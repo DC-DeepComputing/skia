@@ -1572,6 +1572,11 @@
         "Upload-Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-BonusConfigs"
       ]
     },
+    "Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces": {
+      "tasks": [
+        "Upload-Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces"
+      ]
+    },
     "Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-Fast": {
       "tasks": [
         "Upload-Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-Fast"
@@ -2468,6 +2473,16 @@
         "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-BonusConfigs_ASAN"
       ]
     },
+    "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ColorSpaces": {
+      "tasks": [
+        "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ColorSpaces"
+      ]
+    },
+    "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ColorSpaces_ASAN": {
+      "tasks": [
+        "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ColorSpaces_ASAN"
+      ]
+    },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts": {
       "tasks": [
         "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts"
@@ -2511,6 +2526,11 @@
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-BonusConfigs": {
       "tasks": [
         "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-BonusConfigs"
+      ]
+    },
+    "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces": {
+      "tasks": [
+        "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces"
       ]
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-Fast": {
@@ -2883,9 +2903,19 @@
         "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Metal"
       ]
     },
+    "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Metal_ColorSpaces": {
+      "tasks": [
+        "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Metal_ColorSpaces"
+      ]
+    },
     "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal": {
       "tasks": [
         "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal"
+      ]
+    },
+    "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal_ColorSpaces": {
+      "tasks": [
+        "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal_ColorSpaces"
       ]
     },
     "Test-Mac10.15.7-Clang-MacMini7.1-CPU-AVX2-x86_64-Debug-All-NativeFonts": {
@@ -2923,6 +2953,11 @@
         "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-ASAN_Graphite_Metal"
       ]
     },
+    "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-ASAN_Graphite_Metal_ColorSpaces": {
+      "tasks": [
+        "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-ASAN_Graphite_Metal_ColorSpaces"
+      ]
+    },
     "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Metal": {
       "tasks": [
         "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Metal"
@@ -2931,6 +2966,11 @@
     "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal": {
       "tasks": [
         "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal"
+      ]
+    },
+    "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal_ColorSpaces": {
+      "tasks": [
+        "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal_ColorSpaces"
       ]
     },
     "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Metal": {
@@ -31603,6 +31643,104 @@
         "perf"
       ]
     },
+    "Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces": {
+      "caches": [
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
+        }
+      ],
+      "casSpec": "perf",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "skia/bots/skimage",
+          "path": "skimage",
+          "version": "version:47"
+        },
+        {
+          "name": "skia/bots/skp",
+          "path": "skp",
+          "version": "version:413"
+        },
+        {
+          "name": "skia/bots/svg",
+          "path": "svg",
+          "version": "version:14"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "perf",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces\",\"do_upload\":\"true\",\"images\":\"true\",\"nanobench_flags\":\"[\\\"nanobench\\\",\\\"--pre_log\\\",\\\"--scales\\\",\\\"1.0\\\",\\\"1.1\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"8888\\\",\\\"nonrendering\\\",\\\"--internalSamples\\\",\\\"8\\\",\\\"--match\\\",\\\"~inc0.gif\\\",\\\"~inc1.gif\\\",\\\"~incInterlaced.gif\\\",\\\"~inc0.jpg\\\",\\\"~incGray.jpg\\\",\\\"~inc0.wbmp\\\",\\\"~inc1.wbmp\\\",\\\"~inc0.webp\\\",\\\"~inc1.webp\\\",\\\"~inc0.ico\\\",\\\"~inc1.ico\\\",\\\"~inc0.png\\\",\\\"~inc1.png\\\",\\\"~inc2.png\\\",\\\"~inc12.png\\\",\\\"~inc13.png\\\",\\\"~inc14.png\\\",\\\"~inc0.webp\\\",\\\"~inc1.webp\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"cpu_or_gpu\\\",\\\"CPU\\\",\\\"cpu_or_gpu_value\\\",\\\"AVX2\\\",\\\"extra_config\\\",\\\"ColorSpaces\\\",\\\"model\\\",\\\"GCE\\\",\\\"os\\\",\\\"Debian10\\\"]\",\"nanobench_properties\":\"{\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\"}\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"perf\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Build-Debian10-Clang-x86_64-Release",
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
+        ]
+      },
+      "execution_timeout_ns": 14400000000000,
+      "expiration_ns": 72000000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 14400000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "perf"
+      ]
+    },
     "Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-Fast": {
       "caches": [
         {
@@ -48470,6 +48608,214 @@
         "test"
       ]
     },
+    "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ColorSpaces": {
+      "caches": [
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
+        }
+      ],
+      "casSpec": "test",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "skia/bots/gsutil",
+          "path": "gsutil",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/bots/skimage",
+          "path": "skimage",
+          "version": "version:47"
+        },
+        {
+          "name": "skia/bots/skp",
+          "path": "skp",
+          "version": "version:413"
+        },
+        {
+          "name": "skia/bots/svg",
+          "path": "svg",
+          "version": "version:14"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "test",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ColorSpaces\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Debug\\\",\\\"cpu_or_gpu\\\",\\\"CPU\\\",\\\"cpu_or_gpu_value\\\",\\\"AVX2\\\",\\\"extra_config\\\",\\\"ColorSpaces\\\",\\\"model\\\",\\\"GCE\\\",\\\"os\\\",\\\"Debian10\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"f16\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"--match\\\",\\\"async_rescale_and_read_dog_up\\\",\\\"bug6783\\\",\\\"colorspace\\\",\\\"colorspace2\\\",\\\"composeCF\\\",\\\"crbug_224618\\\",\\\"drawlines_with_local_matrix\\\",\\\"gradients_interesting\\\",\\\"manypathatlases_2048\\\",\\\"paint_alpha_normals_rt\\\",\\\"runtimefunctions\\\",\\\"savelayer_f16\\\",\\\"spiral_rt\\\",\\\"srgb_colorfilter\\\",\\\"strokedlines\\\",\\\"sweep_tiling\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ColorSpaces\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Build-Debian10-Clang-x86_64-Debug",
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "gsutil/gsutil",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
+        ]
+      },
+      "execution_timeout_ns": 14400000000000,
+      "expiration_ns": 72000000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 14400000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "test"
+      ],
+      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ColorSpaces_ASAN": {
+      "caches": [
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
+        }
+      ],
+      "casSpec": "test",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "skia/bots/clang_linux",
+          "path": "clang_linux",
+          "version": "version:30"
+        },
+        {
+          "name": "skia/bots/skimage",
+          "path": "skimage",
+          "version": "version:47"
+        },
+        {
+          "name": "skia/bots/skp",
+          "path": "skp",
+          "version": "version:413"
+        },
+        {
+          "name": "skia/bots/svg",
+          "path": "svg",
+          "version": "version:14"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "test",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ColorSpaces_ASAN\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Debug\\\",\\\"cpu_or_gpu\\\",\\\"CPU\\\",\\\"cpu_or_gpu_value\\\",\\\"AVX2\\\",\\\"extra_config\\\",\\\"ColorSpaces_ASAN\\\",\\\"model\\\",\\\"GCE\\\",\\\"os\\\",\\\"Debian10\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"f16\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"--match\\\",\\\"async_rescale_and_read_dog_up\\\",\\\"bug6783\\\",\\\"colorspace\\\",\\\"colorspace2\\\",\\\"composeCF\\\",\\\"crbug_224618\\\",\\\"drawlines_with_local_matrix\\\",\\\"gradients_interesting\\\",\\\"manypathatlases_2048\\\",\\\"paint_alpha_normals_rt\\\",\\\"runtimefunctions\\\",\\\"savelayer_f16\\\",\\\"spiral_rt\\\",\\\"srgb_colorfilter\\\",\\\"strokedlines\\\",\\\"sweep_tiling\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ColorSpaces_ASAN\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"false\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Build-Debian10-Clang-x86_64-Debug-ASAN",
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
+        ]
+      },
+      "execution_timeout_ns": 14400000000000,
+      "expiration_ns": 72000000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 14400000000000,
+      "max_attempts": 1,
+      "outputs": [
+        "test"
+      ]
+    },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts": {
       "caches": [
         {
@@ -49362,6 +49708,111 @@
         "${ISOLATED_OUTDIR}",
         "test",
         "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-BonusConfigs\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"CPU\\\",\\\"cpu_or_gpu_value\\\",\\\"AVX2\\\",\\\"extra_config\\\",\\\"BonusConfigs\\\",\\\"model\\\",\\\"GCE\\\",\\\"os\\\",\\\"Debian10\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"r8\\\",\\\"565\\\",\\\"pic-8888\\\",\\\"serialize-8888\\\",\\\"linear-f16\\\",\\\"srgb-rgba\\\",\\\"srgb-f16\\\",\\\"narrow-rgba\\\",\\\"narrow-f16\\\",\\\"p3-rgba\\\",\\\"p3-f16\\\",\\\"rec2020-rgba\\\",\\\"rec2020-f16\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"--skip\\\",\\\"r8\\\",\\\"image\\\",\\\"_\\\",\\\"_\\\",\\\"r8\\\",\\\"colorImage\\\",\\\"_\\\",\\\"_\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"strict_constraint_batch_no_red_allowed\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"strict_constraint_no_red_allowed\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"fast_constraint_red_is_allowed\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"c_gms\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"colortype\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"colortype_xfermodes\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"drawfilter\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"fontmgr_bounds_0.75_0\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"fontmgr_bounds_1_-0.25\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"fontmgr_bounds\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"fontmgr_match\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"fontmgr_iter\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"imagemasksubset\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"wacky_yuv_formats_domain\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"imagemakewithfilter\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"imagemakewithfilter_crop\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"imagemakewithfilter_crop_ref\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"imagemakewithfilter_ref\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"bitmapfilters\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"bitmapshaders\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"convex_poly_clip\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"extractalpha\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"filterbitmap_checkerboard_32_32_g8\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"filterbitmap_image_mandrill_64\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"shadows\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"simpleaaclip_aaclip\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"composeshader_bitmap\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"scaled_tilemodes_npot\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"scaled_tilemodes\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"typefacerendering_pfaMac\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"parsedpaths\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"ImageGeneratorExternal_rect\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"ImageGeneratorExternal_shader\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"shadow_utils\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"graphitestart\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"persp_images\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"all_bitmap_configs\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"makecolorspace\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"readpixels\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"draw_image_set_rect_to_rect\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"draw_image_set_alpha_only\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"compositor_quads_shader\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"wacky_yuv_formats_qtr\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"runtime_effect_image\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"ctmpatheffect\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"image_out_of_gamut\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"analytic_antialias_convex\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"drawfilter\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"image-cacherator-from-picture\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"image-cacherator-from-picture\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"image-cacherator-from-raster\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"image-cacherator-from-raster\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"image-cacherator-from-ctable\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"image-cacherator-from-ctable\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"complexclip4_bw\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"complexclip4_bw\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"complexclip4_aa\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"complexclip4_aa\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"p3\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"p3\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_text_up_large\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_text_up_large\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_text_up\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_text_up\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_text_down\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_text_down\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_dog_up\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_dog_up\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_dog_down\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_dog_down\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_rose\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_rose\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_no_bleed\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_no_bleed\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_alpha_type\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"async_rescale_and_read_alpha_type\\\",\\\"pic-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"serialize-8888\\\",\\\"gm\\\",\\\"_\\\",\\\"blurrect_compare\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-BonusConfigs\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Build-Debian10-Clang-x86_64-Release",
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "gsutil/gsutil",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
+        ]
+      },
+      "execution_timeout_ns": 14400000000000,
+      "expiration_ns": 72000000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 14400000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "test"
+      ],
+      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces": {
+      "caches": [
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
+        }
+      ],
+      "casSpec": "test",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "skia/bots/gsutil",
+          "path": "gsutil",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/bots/skimage",
+          "path": "skimage",
+          "version": "version:47"
+        },
+        {
+          "name": "skia/bots/skp",
+          "path": "skp",
+          "version": "version:413"
+        },
+        {
+          "name": "skia/bots/svg",
+          "path": "svg",
+          "version": "version:14"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "test",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"CPU\\\",\\\"cpu_or_gpu_value\\\",\\\"AVX2\\\",\\\"extra_config\\\",\\\"ColorSpaces\\\",\\\"model\\\",\\\"GCE\\\",\\\"os\\\",\\\"Debian10\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"f16\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"--match\\\",\\\"async_rescale_and_read_dog_up\\\",\\\"bug6783\\\",\\\"colorspace\\\",\\\"colorspace2\\\",\\\"composeCF\\\",\\\"crbug_224618\\\",\\\"drawlines_with_local_matrix\\\",\\\"gradients_interesting\\\",\\\"manypathatlases_2048\\\",\\\"paint_alpha_normals_rt\\\",\\\"runtimefunctions\\\",\\\"savelayer_f16\\\",\\\"spiral_rt\\\",\\\"srgb_colorfilter\\\",\\\"strokedlines\\\",\\\"sweep_tiling\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
       "dependencies": [
@@ -57114,6 +57565,110 @@
       ],
       "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
+    "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Metal_ColorSpaces": {
+      "caches": [
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
+        }
+      ],
+      "casSpec": "test",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/mac-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "skia/bots/gsutil",
+          "path": "gsutil",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/bots/skimage",
+          "path": "skimage",
+          "version": "version:47"
+        },
+        {
+          "name": "skia/bots/skp",
+          "path": "skp",
+          "version": "version:413"
+        },
+        {
+          "name": "skia/bots/svg",
+          "path": "svg",
+          "version": "version:14"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "test",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Metal_ColorSpaces\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Debug\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"RadeonHD8870M\\\",\\\"extra_config\\\",\\\"Metal_ColorSpaces\\\",\\\"model\\\",\\\"MacBookPro11.5\\\",\\\"os\\\",\\\"Mac10.15.7\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nocpu\\\",\\\"--config\\\",\\\"mtlf16\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"svg\\\",\\\"--match\\\",\\\"async_rescale_and_read_dog_up\\\",\\\"bug6783\\\",\\\"colorspace\\\",\\\"colorspace2\\\",\\\"composeCF\\\",\\\"crbug_224618\\\",\\\"drawlines_with_local_matrix\\\",\\\"gradients_interesting\\\",\\\"manypathatlases_2048\\\",\\\"paint_alpha_normals_rt\\\",\\\"runtimefunctions\\\",\\\"savelayer_f16\\\",\\\"spiral_rt\\\",\\\"srgb_colorfilter\\\",\\\"strokedlines\\\",\\\"sweep_tiling\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Metal_ColorSpaces\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Build-Mac-Clang-x86_64-Debug-Metal",
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "gpu:1002:6821-4.0.20-3.2.8",
+        "os:Mac-10.15.7",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "gsutil/gsutil",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
+        ]
+      },
+      "execution_timeout_ns": 14400000000000,
+      "expiration_ns": 72000000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 14400000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "test"
+      ],
+      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+    },
     "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal": {
       "caches": [
         {
@@ -57176,6 +57731,110 @@
         "${ISOLATED_OUTDIR}",
         "test",
         "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"RadeonHD8870M\\\",\\\"extra_config\\\",\\\"Metal\\\",\\\"model\\\",\\\"MacBookPro11.5\\\",\\\"os\\\",\\\"Mac10.15.7\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nocpu\\\",\\\"--config\\\",\\\"mtl\\\",\\\"mtlmsaa4\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"svg\\\",\\\"--skip\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"rgba32abf.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"rgb24prof.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"rgb24lprof.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"8bpp-pixeldata-cropped.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"4bpp-pixeldata-cropped.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"32bpp-pixeldata-cropped.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"24bpp-pixeldata-cropped.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"frame_larger_than_image.gif\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc0.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc1.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc2.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc3.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc4.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc5.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc6.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc7.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc8.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc9.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc10.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc11.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc12.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc13.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc14.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"incInterlaced.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"incInterlaced.gif\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc1.gif\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc0.gif\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"butterfly.gif\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"testimgari.jpg\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"rle8-height-negative.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"rle4-height-negative.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"_\\\",\\\"tests\\\",\\\"_\\\",\\\"SkSLMatrixScalarNoOpFolding_GPU\\\",\\\"--match\\\",\\\"~WritePixelsNonTextureMSAA_Gpu\\\",\\\"~SurfacePartialDraw_Gpu\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Build-Mac-Clang-x86_64-Release-Metal",
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "gpu:1002:6821-4.0.20-3.2.8",
+        "os:Mac-10.15.7",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "gsutil/gsutil",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
+        ]
+      },
+      "execution_timeout_ns": 14400000000000,
+      "expiration_ns": 72000000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 14400000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "test"
+      ],
+      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal_ColorSpaces": {
+      "caches": [
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
+        }
+      ],
+      "casSpec": "test",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/mac-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "skia/bots/gsutil",
+          "path": "gsutil",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/bots/skimage",
+          "path": "skimage",
+          "version": "version:47"
+        },
+        {
+          "name": "skia/bots/skp",
+          "path": "skp",
+          "version": "version:413"
+        },
+        {
+          "name": "skia/bots/svg",
+          "path": "svg",
+          "version": "version:14"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "test",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal_ColorSpaces\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"RadeonHD8870M\\\",\\\"extra_config\\\",\\\"Metal_ColorSpaces\\\",\\\"model\\\",\\\"MacBookPro11.5\\\",\\\"os\\\",\\\"Mac10.15.7\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nocpu\\\",\\\"--config\\\",\\\"mtlf16\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"svg\\\",\\\"--match\\\",\\\"async_rescale_and_read_dog_up\\\",\\\"bug6783\\\",\\\"colorspace\\\",\\\"colorspace2\\\",\\\"composeCF\\\",\\\"crbug_224618\\\",\\\"drawlines_with_local_matrix\\\",\\\"gradients_interesting\\\",\\\"manypathatlases_2048\\\",\\\"paint_alpha_normals_rt\\\",\\\"runtimefunctions\\\",\\\"savelayer_f16\\\",\\\"spiral_rt\\\",\\\"srgb_colorfilter\\\",\\\"strokedlines\\\",\\\"sweep_tiling\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal_ColorSpaces\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
       "dependencies": [
@@ -57940,6 +58599,103 @@
         "test"
       ]
     },
+    "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-ASAN_Graphite_Metal_ColorSpaces": {
+      "caches": [
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
+        }
+      ],
+      "casSpec": "test",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/mac-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "skia/bots/skimage",
+          "path": "skimage",
+          "version": "version:47"
+        },
+        {
+          "name": "skia/bots/skp",
+          "path": "skp",
+          "version": "version:413"
+        },
+        {
+          "name": "skia/bots/svg",
+          "path": "svg",
+          "version": "version:14"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "test",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-ASAN_Graphite_Metal_ColorSpaces\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Debug\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"AppleM1\\\",\\\"extra_config\\\",\\\"ASAN_Graphite_Metal_ColorSpaces\\\",\\\"model\\\",\\\"MacMini9.1\\\",\\\"os\\\",\\\"Mac11\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nocpu\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grmtlf16\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"--match\\\",\\\"async_rescale_and_read_dog_up\\\",\\\"bug6783\\\",\\\"colorspace\\\",\\\"colorspace2\\\",\\\"composeCF\\\",\\\"crbug_224618\\\",\\\"drawlines_with_local_matrix\\\",\\\"gradients_interesting\\\",\\\"manypathatlases_2048\\\",\\\"paint_alpha_normals_rt\\\",\\\"runtimefunctions\\\",\\\"savelayer_f16\\\",\\\"spiral_rt\\\",\\\"srgb_colorfilter\\\",\\\"strokedlines\\\",\\\"sweep_tiling\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-ASAN_Graphite_Metal_ColorSpaces\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"false\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Build-Mac-Clang-arm64-Debug-ASAN_Graphite_Metal",
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:arm64-64-Apple_M1",
+        "os:Mac-11.4",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
+        ]
+      },
+      "execution_timeout_ns": 14400000000000,
+      "expiration_ns": 72000000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 14400000000000,
+      "max_attempts": 1,
+      "outputs": [
+        "test"
+      ]
+    },
     "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Metal": {
       "caches": [
         {
@@ -58106,6 +58862,110 @@
         "${ISOLATED_OUTDIR}",
         "test",
         "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"AppleM1\\\",\\\"extra_config\\\",\\\"Graphite_Metal\\\",\\\"model\\\",\\\"MacMini9.1\\\",\\\"os\\\",\\\"Mac11\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nocpu\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grmtl\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"--skip\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"image_subset\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"hugebitmapshader\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"path_huge_aa\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"verylargebitmap\\\",\\\"_\\\",\\\"gm\\\",\\\"_\\\",\\\"verylarge_picture_image\\\",\\\"_\\\",\\\"svg\\\",\\\"_\\\",\\\"svgparse_\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"rgba32abf.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"rgb24prof.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"rgb24lprof.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"8bpp-pixeldata-cropped.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"4bpp-pixeldata-cropped.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"32bpp-pixeldata-cropped.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"24bpp-pixeldata-cropped.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"frame_larger_than_image.gif\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc0.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc1.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc2.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc3.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc4.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc5.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc6.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc7.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc8.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc9.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc10.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc11.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc12.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc13.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc14.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"incInterlaced.png\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"incInterlaced.gif\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc1.gif\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"inc0.gif\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"butterfly.gif\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"testimgari.jpg\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"rle8-height-negative.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"rle4-height-negative.bmp\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced1.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced2.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\"interlaced3.png\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".arw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".cr2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".dng\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".nrw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".orf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".raf\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".rw2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".pef\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".srw\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ARW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".CR2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".DNG\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".NRW\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".ORF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RAF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".RW2\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".PEF\\\",\\\"_\\\",\\\"image\\\",\\\"_\\\",\\\".SRW\\\",\\\"--match\\\",\\\"~async_rescale_and_read\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Build-Mac-Clang-arm64-Release-Graphite_Metal",
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:arm64-64-Apple_M1",
+        "os:Mac-11.4",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "gsutil/gsutil",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
+        ]
+      },
+      "execution_timeout_ns": 14400000000000,
+      "expiration_ns": 72000000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 14400000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "test"
+      ],
+      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal_ColorSpaces": {
+      "caches": [
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
+        }
+      ],
+      "casSpec": "test",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/mac-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "skia/bots/gsutil",
+          "path": "gsutil",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/bots/skimage",
+          "path": "skimage",
+          "version": "version:47"
+        },
+        {
+          "name": "skia/bots/skp",
+          "path": "skp",
+          "version": "version:413"
+        },
+        {
+          "name": "skia/bots/svg",
+          "path": "svg",
+          "version": "version:14"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "test",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal_ColorSpaces\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"arm64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"GPU\\\",\\\"cpu_or_gpu_value\\\",\\\"AppleM1\\\",\\\"extra_config\\\",\\\"Graphite_Metal_ColorSpaces\\\",\\\"model\\\",\\\"MacMini9.1\\\",\\\"os\\\",\\\"Mac11\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nocpu\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"grmtlf16\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"--match\\\",\\\"async_rescale_and_read_dog_up\\\",\\\"bug6783\\\",\\\"colorspace\\\",\\\"colorspace2\\\",\\\"composeCF\\\",\\\"crbug_224618\\\",\\\"drawlines_with_local_matrix\\\",\\\"gradients_interesting\\\",\\\"manypathatlases_2048\\\",\\\"paint_alpha_normals_rt\\\",\\\"runtimefunctions\\\",\\\"savelayer_f16\\\",\\\"spiral_rt\\\",\\\"srgb_colorfilter\\\",\\\"strokedlines\\\",\\\"sweep_tiling\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal_ColorSpaces\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
       "dependencies": [
@@ -76938,6 +77798,93 @@
       "dependencies": [
         "Housekeeper-PerCommit-BundleRecipes",
         "Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-BonusConfigs"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-highmem-2",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "gsutil/gsutil"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "service_account": "skia-external-nano-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Upload-Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces": {
+      "caches": [
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
+        }
+      ],
+      "casSpec": "run-recipe",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "skia/bots/gsutil",
+          "path": "gsutil",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "upload_nano_results",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces\",\"gs_bucket\":\"skia-perf\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"revision\":\"<(REVISION)\",\"swarm_out_dir\":\"output_ignored\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes",
+        "Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ColorSpaces"
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
