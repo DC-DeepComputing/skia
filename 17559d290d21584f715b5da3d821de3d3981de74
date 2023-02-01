@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1a5f8fe_6aeb2136",
+        "filename": "src/core/SkSwizzlePriv.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-01T15:22:30Z",
+      "side": 1,
+      "message": "Oops I had missed that, disregard. SkSwizzlePriv is perfect in this case.",
+      "parentUuid": "4ed28923_95fba311",
+      "revId": "17559d290d21584f715b5da3d821de3d3981de74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc1cae80_f2ead541",
