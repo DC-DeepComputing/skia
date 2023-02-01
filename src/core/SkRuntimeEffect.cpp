@@ -62,14 +62,17 @@
 #endif
 
 // This flag can be enabled to use the new Raster Pipeline code generator for SkSL.
-//#define SK_ENABLE_SKSL_IN_RASTER_PIPELINE
+#define SK_ENABLE_SKSL_IN_RASTER_PIPELINE
 
 #ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
 #include "src/core/SkStreamPriv.h"
 #include "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h"
 #include "src/sksl/tracing/SkRPDebugTrace.h"
-constexpr bool kRPEnableLiveTrace = false;
+constexpr bool kRPEnableLiveTrace = true;
 #endif
+
+#include "third_party/externals/imgui/imgui.h"
+
 
 #include <algorithm>
 
@@ -1207,6 +1210,10 @@ public:
 
     bool appendStages(const SkStageRec& rec, bool) const override {
 #ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.KeyShift) {
+            return false;
+        }
         if (const SkSL::RP::Program* program = fEffect->getRPProgram()) {
             sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
                                                                                 fUniforms,
@@ -1217,6 +1224,7 @@ public:
             RuntimeEffectRPCallbacks callbacks(rec, matrix, fChildren, fEffect->fSampleUsages);
             bool success = program->appendStages(rec.fPipeline, rec.fAlloc, &callbacks,
                                                  uniforms_as_span(inputs.get()));
+            rec.fPipeline->append(SkRasterPipelineOp::swap_rb);
             return success;
         }
 #endif
@@ -1403,6 +1411,10 @@ public:
 
     bool appendStages(const SkStageRec& rec, const MatrixRec& mRec) const override {
 #ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.KeyShift) {
+            return false;
+        }
         if (const SkSL::RP::Program* program = fEffect->getRPProgram()) {
             std::optional<MatrixRec> newMRec = mRec.apply(rec);
             if (!newMRec.has_value()) {
@@ -1416,6 +1428,7 @@ public:
             RuntimeEffectRPCallbacks callbacks(rec, *newMRec, fChildren, fEffect->fSampleUsages);
             bool success = program->appendStages(rec.fPipeline, rec.fAlloc, &callbacks,
                                                  uniforms_as_span(inputs.get()));
+            rec.fPipeline->append(SkRasterPipelineOp::swap_rb);
             return success;
         }
 #endif
