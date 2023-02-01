@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38166f26_a1a66f81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-01T07:31:59Z",
+      "side": 1,
+      "message": "1. I don\u0027t know if there is any other descriptors\u0027 configurations that allow sampling from and resolving to the same texture in the same render pass. But during exploration sprint, Dawn threw a validation error when I attempted to do that.\n  - Most of the github and monorail discussions seem to be about the standard MSAA store and resolve operations which should work in Dawn by now.\n  - But our case is different: we don\u0027t want to store the MSAA texture at the end of a render pass, instead we discard it and in the beginning of next pass we copy the resolve texture\u0027s old content to the MSAA texture.\n2. If we go with this approach we may as well use the standard \"MSAA store and resolve\" operation instead: At the end of a render pass, we could just both resolve to a single sample texture and store the MSAA texture\u0027s content (equivalent to Metal\u0027s `MTLStoreActionStoreAndMultisampleResolve `). There is no need for multiple passes anymore. I thought we want to avoid doing that because storing MSAA texture is multiple times more expensive than storing a single sample texture.\n3. I think the approach suggested in #2 is more expensive than extra texture+copy.\n  - First, it requires 4 times more texture memory for 4 samples MSAA texture compare to memoryless texture.\n  - Second, storing and loading MSAA texture to/from memory is also 4 times slower. Especially on mobile chips/tile based GPUs, the system memory is quite slow compare to on chip memory which is used for MSAA rendering without storing the MSAA texture.\n4. Regarding info leaking to higher level layer, I could keep all the info and behaviors internal to Dawn backend, including the extra texture+copy as I did during the exploration sprint. However, I thought we want to keep the backend lean and want the upper layer to know whenever there is extra memory/texture/buffer involved.",
+      "parentUuid": "78e3591d_52e75526",
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c23852b_44ce1744",
