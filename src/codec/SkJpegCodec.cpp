@@ -1097,6 +1097,9 @@ bool SkGetJpegInfo(const void* data, size_t len,
 
 bool SkJpegCodec::onGetGainmapInfo(SkGainmapInfo* info,
                                    std::unique_ptr<SkStream>* gainmapImageStream) {
+    // TODO(ccameron): Move the SK_XML guard closer to the gainmap parameter extraction code inside
+    // SkJpegGainmap.cpp, and remove the SK_CODEC_DECODES_JPEG_GAINMAPS guard.
+#ifdef SK_XML
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     // Attempt to extract SkGainmapInfo from the HDRGM XMP.
     if (SkJpegGetHDRGMGainmapInfo(getXmpMetadata(), info)) {
@@ -1129,6 +1132,7 @@ bool SkJpegCodec::onGetGainmapInfo(SkGainmapInfo* info,
         return true;
     }
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
+#endif  // SK_XML
     return false;
 }
 
