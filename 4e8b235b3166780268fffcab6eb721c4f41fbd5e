@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99ee70be_3ea64c1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-02-02T09:42:56Z",
+      "side": 1,
+      "message": "😍😍 Amazing, I\u0027m impressed that this is done in so few lines of code. Looks great for COLRv1 glyphs in PDFs. Thanks so much for doing this one.",
+      "revId": "4e8b235b3166780268fffcab6eb721c4f41fbd5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
