@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb768f5c_a317a6cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2023-02-02T09:19:35Z",
+      "side": 1,
+      "message": "lgtm (but let\u0027s get brianosman\u0027s weigh-in too).",
+      "revId": "e3915ce0690dc89658e8b64042db5e150ec4a0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
