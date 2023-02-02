@@ -35,5 +35,4 @@
         (RESULT) = VULKAN_CALL(IFACE, X);            \
     } while (false)
 
-
 #endif // skgpu_graphite_VulkanGraphiteUtilsPriv_DEFINED

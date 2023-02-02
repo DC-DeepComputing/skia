@@ -7,9 +7,12 @@
 
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 
+#include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/vk/VulkanBuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
+#include "src/gpu/graphite/vk/VulkanTexture.h"
 
 namespace skgpu::graphite {
 
@@ -269,11 +272,42 @@ bool VulkanCommandBuffer::onCopyTextureToBuffer(const Texture*,
     return false;
 }
 
-bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer*,
-                                                const Texture*,
+bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
+                                                const Texture* texture,
                                                 const BufferTextureCopyData* copyData,
                                                 int count) {
-    return false;
+    VkBuffer srcBuffer = static_cast<const VulkanBuffer*>(buffer)->vkBuffer();
+    const VulkanTexture* dstTexture = static_cast<const VulkanTexture*>(texture);
+    VkImage dstTextureAsVkImage =  dstTexture->vkImage();
+
+    // Determine BPP (bytes per pixel) by obtaining the VkFormat of the destination texture.
+    VulkanTextureInfo dstTextureInfo;
+    dstTexture->textureInfo().getVulkanTextureInfo(&dstTextureInfo);
+    VkFormat textureFormat = dstTextureInfo.fFormat;
+    size_t bpp = VkFormatBytesPerBlock(textureFormat);
+
+    for (int i = 0; i < count; ++i) {
+        // Set up copy region.
+        VkBufferImageCopy region;
+        memset(&region, 0, sizeof(VkBufferImageCopy));
+        region.bufferOffset = copyData[i].fBufferOffset;
+        region.bufferRowLength = (uint32_t)(copyData[i].fBufferRowBytes/bpp);
+        region.bufferImageHeight = 0;
+        region.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
+        region.imageOffset = { copyData[i].fRect.left(), copyData[i].fRect.top(), /*z=*/0 };
+        region.imageExtent = { (uint32_t)copyData[i].fRect.width(),
+                               (uint32_t)copyData[i].fRect.height(),
+                               /*depth=*/1 };
+
+        VULKAN_CALL(fSharedContext->interface(), CmdCopyBufferToImage(
+                fPrimaryCommandBuffer,
+                srcBuffer,
+                dstTextureAsVkImage,
+                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, // TODO: Is this always the layout we want?
+                1,
+                &region));
+    }
+    return true;
 }
 
 bool VulkanCommandBuffer::onCopyTextureToTexture(const Texture* src,
