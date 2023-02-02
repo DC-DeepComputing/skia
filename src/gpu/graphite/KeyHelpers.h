@@ -198,6 +198,17 @@ struct ColorFilterShaderBlock {
                            PipelineDataGatherer*);
 };
 
+struct CoordClampShaderBlock {
+    struct CoordClampShaderData {
+        SkRect fSubset;
+    };
+
+    static void BeginBlock(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           PipelineDataGatherer*,
+                           const CoordClampShaderData&);
+};
+
 struct MatrixColorFilterBlock {
     struct MatrixColorFilterData {
         MatrixColorFilterData(const float matrix[20],

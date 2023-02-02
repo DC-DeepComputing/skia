@@ -602,6 +602,10 @@ $pure half4 sk_conical_grad_8_shader(float2 coords,
     return $colorize_grad_8(colorsParam, offsetsParam, t);
 }
 
+$pure half4 CoordClampShader(float2 coords) {
+
+}
+
 $pure half4 sk_matrix_colorfilter(half4 colorIn, float4x4 m, float4 v, int inHSLA) {
     if (bool(inHSLA)) {
         colorIn = $rgb_to_hsl(colorIn.rgb, colorIn.a); // includes unpremul

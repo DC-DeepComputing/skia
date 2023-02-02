@@ -240,3 +240,163 @@ sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender,
 void SkRegisterComposeShaderFlattenable() {
     SK_REGISTER_FLATTENABLE(SkShader_Blend);
 }
+
+class SkShader_CoordClamp final : public SkShaderBase {
+public:
+    SkShader_CoordClamp(sk_sp<SkShader> shader, const SkRect& subset)
+            : fShader(std::move(shader))
+            , fSubset(subset) {}
+
+#if SK_SUPPORT_GPU
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
+#endif
+
+#if 0
+#ifdef SK_GRAPHITE_ENABLED
+    void addToKey(const skgpu::graphite::KeyContext&,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
+                  skgpu::graphite::PipelineDataGatherer*) const override;
+#endif
+#endif
+
+protected:
+    SkShader_CoordClamp(SkReadBuffer&);
+    void flatten(SkWriteBuffer&) const override;
+    bool appendStages(const SkStageRec&, const MatrixRec&) const override;
+    skvm::Color program(skvm::Builder*,
+                        skvm::Coord device,
+                        skvm::Coord local,
+                        skvm::Color paint,
+                        const MatrixRec&,
+                        const SkColorInfo& dst,
+                        skvm::Uniforms*,
+                        SkArenaAlloc*) const override;
+
+private:
+    friend void ::SkRegisterCoordClampShaderFlattenable();
+    SK_FLATTENABLE_HOOKS(SkShader_CoordClamp)
+
+    sk_sp<SkShader> fShader;
+    SkRect          fSubset;
+};
+
+
+sk_sp<SkFlattenable> SkShader_CoordClamp::CreateProc(SkReadBuffer& buffer) {
+    sk_sp<SkShader> shader(buffer.readShader());
+    SkRect subset = buffer.readRect();
+    sk_sp<SkShader> src(buffer.readShader());
+    if (!buffer.validate(SkToBool(shader))) {
+        return nullptr;
+    }
+    return SkShaders::CoordClamp(std::move(shader), subset);
+}
+
+void SkShader_CoordClamp::flatten(SkWriteBuffer& buffer) const {
+    buffer.writeFlattenable(fShader.get());
+    buffer.writeRect(fSubset);
+}
+
+bool SkShader_CoordClamp::appendStages(const SkStageRec& rec, const MatrixRec& mRec) const {
+    std::optional<MatrixRec> childMRec = mRec.apply(rec);
+    if (!childMRec.has_value()) {
+        return false;
+    }
+    // Strictly speaking, childMRec's total matrix is not valid. It is only valid inside the subset
+    // rectangle. However, we don't mark it as such because we want the "total matrix is valid"
+    // behavior in SkImageShader.
+    auto clampCtx = rec.fAlloc->make<SkRasterPipeline_CoordClampCtx>();
+    *clampCtx = {fSubset.fLeft, fSubset.fTop, fSubset.fRight, fSubset.fBottom};
+    rec.fPipeline->append(SkRasterPipelineOp::clamp_x_and_y, clampCtx);
+    return as_SB(fShader)->appendStages(rec, *childMRec);
+}
+
+skvm::Color SkShader_CoordClamp::program(skvm::Builder* p,
+                                         skvm::Coord device,
+                                         skvm::Coord local,
+                                         skvm::Color paint,
+                                         const MatrixRec& mRec,
+                                         const SkColorInfo& cinfo,
+                                         skvm::Uniforms* uniforms,
+                                         SkArenaAlloc* alloc) const {
+    std::optional<MatrixRec> childMRec = mRec.apply(p, &local, uniforms);
+    if (!childMRec.has_value()) {
+        return {};
+    }
+    // See comment in appendStages about not marking childMRec with an invalid total matrix.
+
+    auto l = uniforms->pushF(fSubset.left());
+    auto t = uniforms->pushF(fSubset.top());
+    auto r = uniforms->pushF(fSubset.right());
+    auto b = uniforms->pushF(fSubset.bottom());
+
+    local.x = p->clamp(local.x, p->uniformF(l), p->uniformF(r));
+    local.y = p->clamp(local.y, p->uniformF(t), p->uniformF(b));
+
+    return as_SB(fShader)->program(p, device, local, paint, *childMRec, cinfo, uniforms, alloc);
+}
+
+#if SK_SUPPORT_GPU
+
+#include "include/effects/SkRuntimeEffect.h"
+#include "include/gpu/GrRecordingContext.h"
+#include "src/gpu/ganesh/GrFragmentProcessor.h"
+#include "src/gpu/ganesh/effects/GrMatrixEffect.h"
+#include "src/gpu/ganesh/effects/GrSkSLFP.h"
+
+std::unique_ptr<GrFragmentProcessor> SkShader_CoordClamp::asFragmentProcessor(
+        const GrFPArgs& args) const {
+    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+"uniform shader c; uniform float4 s; half4 main(float2 p) {return c.eval(clamp(p, s.LT, s.RB));}");
+
+    // See comment in appendStages about not marking childMRec with an invalid total matrix.
+
+    auto child_args = args;
+    child_args.fLocalMatrix = nullptr;
+    auto fp = as_SB(fShader)->asFragmentProcessor(child_args);
+    if (!fp) {
+        return nullptr;
+    }
+
+    fp = GrSkSLFP::Make(effect,
+                        "clamp_fp",
+                        /*inputFP=*/nullptr,
+                        GrSkSLFP::OptFlags::kNone,  // TODO. Copy child flags?
+                        "c", std::move(fp),
+                        "s", fSubset);
+    if (args.fLocalMatrix) {
+        if (SkMatrix inv; args.fLocalMatrix->invert(&inv)) {
+            return GrMatrixEffect::Make(inv, std::move(fp));
+        }
+        return nullptr;
+    }
+    return fp;
+}
+#endif
+
+#if 0
+#ifdef SK_GRAPHITE_ENABLED
+void SkShader_CoordClamp::addToKey(const skgpu::graphite::KeyContext& keyContext,
+                                   skgpu::graphite::PaintParamsKeyBuilder* builder,
+                                   skgpu::graphite::PipelineDataGatherer* gatherer) const {
+    skgpu::graphite::CoordClampShaderBlock::BeginBlock(keyContext, builder, gatherer, { fSubset });
+
+    as_SB(fShader)->addToKey(keyContext, builder, gatherer);
+
+    builder->endBlock();
+}
+#endif
+#endif
+
+void SkRegisterCoordClampShaderFlattenable() {
+    SK_REGISTER_FLATTENABLE(SkShader_CoordClamp);
+}
+
+sk_sp<SkShader> SkShaders::CoordClamp(sk_sp<SkShader> shader, const SkRect& subset) {
+    if (!shader) {
+        return nullptr;
+    }
+    if (!subset.isSorted()) {
+        return nullptr;
+    }
+    return sk_make_sp<SkShader_CoordClamp>(std::move(shader), subset);
+}

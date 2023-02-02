@@ -2741,6 +2741,12 @@ SI F exclusive_mirror(F v, const SkRasterPipeline_TileCtx* ctx) {
     auto biasInUlps = trunc_(s);
     return sk_bit_cast<F>(sk_bit_cast<U32>(m) + ctx->mirrorBiasDir*biasInUlps);
 }
+
+STAGE(clamp_x_and_y, const SkRasterPipeline_CoordClampCtx* ctx) {
+    r = min(ctx->max_x, max(ctx->min_x, r));
+    g = min(ctx->max_y, max(ctx->min_y, g));
+}
+
 // Tile x or y to [0,limit) == [0,limit - 1 ulp] (think, sampling from images).
 // The gather stages will hard clamp the output of these stages to [0,limit)...
 // we just need to do the basic repeat or mirroring.
@@ -4933,6 +4939,10 @@ STAGE_GG(decal_x_and_y, SkRasterPipeline_DecalTileCtx* ctx) {
     auto w = ctx->limit_x;
     auto h = ctx->limit_y;
     sk_unaligned_store(ctx->mask, cond_to_mask_16((0 <= x) & (x < w) & (0 <= y) & (y < h)));
+}
+STAGE_GG(clamp_x_and_y, SkRasterPipeline_CoordClampCtx* ctx) {
+    x = min(ctx->max_x, max(ctx->min_x, x));
+    y = min(ctx->max_y, max(ctx->min_y, y));
 }
 STAGE_PP(check_decal_mask, SkRasterPipeline_DecalTileCtx* ctx) {
     auto mask = sk_unaligned_load<U16>(ctx->mask);

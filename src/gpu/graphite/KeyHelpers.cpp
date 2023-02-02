@@ -427,6 +427,36 @@ void ColorFilterShaderBlock::BeginBlock(const KeyContext& keyContext,
 
 namespace {
 
+void add_clampshader_uniform_data(const ShaderCodeDictionary* dict,
+                                  const SkRect& subset,
+                                  PipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kCoordClampShader)
+    gatherer->write(subset);
+
+    gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kCoordClampShader));
+}
+
+} // anonymous namespace
+
+
+void CoordClampShaderBlock::BeginBlock(const KeyContext& keyContext,
+                                       PaintParamsKeyBuilder *builder,
+                                       PipelineDataGatherer* gatherer,
+                                       const CoordClampShaderData& clampData) {
+
+    auto dict = keyContext.dict();
+
+    if (gatherer) {
+        add_clampshader_uniform_data(dict, clampData.fSubset, gatherer);
+    }
+
+    builder->beginBlock(BuiltInCodeSnippetID::kCoordClampShader);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+namespace {
+
 void add_matrix_colorfilter_uniform_data(const ShaderCodeDictionary* dict,
                                          const MatrixColorFilterBlock::MatrixColorFilterData& data,
                                          PipelineDataGatherer* gatherer) {

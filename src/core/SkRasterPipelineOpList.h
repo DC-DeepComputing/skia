@@ -80,6 +80,7 @@
     M(gauss_a_to_rgba)                                             \
     M(mirror_x)   M(repeat_x)                                      \
     M(mirror_y)   M(repeat_y)                                      \
+    M(clamp_x_and_y)                                               \
     M(negate_x)                                                    \
     M(bicubic_clamp_8888)                                          \
     M(bilinear_nx) M(bilinear_px) M(bilinear_ny) M(bilinear_py)    \

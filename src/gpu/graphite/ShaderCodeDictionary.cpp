@@ -620,6 +620,15 @@ static constexpr char kColorFilterShaderName[] = "ColorFilterShader";
 static constexpr int kNumColorFilterShaderChildren = 2;
 
 //--------------------------------------------------------------------------------------------------
+static constexpr Uniform kCoordClampShaderUniforms[] = {
+        { "subset", SkSLType::kFloat4 },
+};
+
+static constexpr char kCoordClampShaderName[] = "CoordClampShader";
+
+static constexpr int kNumCoordClampShaderChildren = 1;
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kRuntimeShaderName[] = "RuntimeEffect";
 
 class GraphitePipelineCallbacks : public SkSL::PipelineStage::Callbacks {
@@ -1270,6 +1279,18 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateNestedChildrenPreamble,
             kNumColorFilterShaderChildren,
+            { }      // no data payload
+    };
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCoordClampShader] = {
+            "CoordClampShader",
+            SkSpan(kCoordClampShaderUniforms),
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kCoordClampShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNumCoordClampShaderChildren,
             { }      // no data payload
     };
 
