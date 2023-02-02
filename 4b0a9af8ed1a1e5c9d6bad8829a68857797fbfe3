@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4449a834_3ad2a738",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-02T15:36:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d5e0ae6a_5331ad7f",
+      "revId": "4b0a9af8ed1a1e5c9d6bad8829a68857797fbfe3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f91c617_639c9265",
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "I\u0027ve updated Codec_jpegMultiPicture so that it hits this path (and crashed before the fix).",
       "parentUuid": "109050d2_8b28c4cf",
+      "revId": "4b0a9af8ed1a1e5c9d6bad8829a68857797fbfe3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b824c94_0e601259",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-02T15:36:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4b73f504_b8e0ad8f",
       "revId": "4b0a9af8ed1a1e5c9d6bad8829a68857797fbfe3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
