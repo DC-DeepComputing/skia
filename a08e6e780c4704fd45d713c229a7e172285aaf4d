@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50d80b00_11846c7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-02T23:56:03Z",
+      "side": 1,
+      "message": "This turned out to be necessary (lots of the initial test images came out using extended XMP by default). I \"mostly\" follow the spec here.",
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39bc0923_6ca35fed",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-02T23:56:03Z",
+      "side": 1,
+      "message": "(this same comment exists also in the header, but I felt it was worth repeating here -- LMK if you think I should chop this one)",
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b30ed98_fd00ca2b",
+        "filename": "src/images/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-02T23:56:03Z",
+      "side": 1,
+      "message": "(tryjobs failed when I didn\u0027t include this unrelated change...)",
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

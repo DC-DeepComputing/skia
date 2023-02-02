@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d387d96c_7dec557b",
+        "filename": "tests/AndroidCodecTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-02T23:56:03Z",
+      "side": 0,
+      "message": "I added this test when XMP was a new thing ... it\u0027s now baked into lots of tests.",
+      "revId": "5adcf6862c378f643ab34584ade4adbc1a324c99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
