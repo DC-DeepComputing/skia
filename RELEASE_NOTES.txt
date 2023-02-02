@@ -8,6 +8,11 @@ Milestone 112
     include/core/SkSamplingOptions.h instead (the former was an alias for the latter).
   * SkRuntimeColorFilterBuilder has been added. This is a helper class for setting up color filters,
     analogous to SkRuntimeShaderBuilder.
+<<<<<<< PATCH SET (8982a2 start)
+  * SkShaders::CoordClamp has been added. It clamps the coords passed used with another
+    shader to a rectangle.
+=======
+>>>>>>> BASE      (aca545 Revert "Don't overwrite b, a, dr, dg, db, da registers in se)
 
 Milestone 111
 -------------
