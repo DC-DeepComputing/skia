@@ -835,6 +835,7 @@ bool SkMipmap::getLevel(int index, Level* levelPtr) const {
 
 static sk_sp<SkData> encode_to_data(const SkPixmap& pm) {
     SkDynamicMemoryWStream stream;
+    // TODO(kjlubick, scroggo) remove dependency on PNG encoding.
     if (SkPngEncoder::Encode(&stream, pm, SkPngEncoder::Options())) {
         return stream.detachAsData();
     }

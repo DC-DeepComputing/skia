@@ -81,6 +81,7 @@ generate_cpp_files_for_headers(
         "include/core/SkScalar.h",
         "include/core/SkSize.h",
         "include/core/SkTypes.h",
+        "include/encode/SkEncoder.h",
         "include/gpu/GrTypes.h",
         "include/private/SkFixed.h",
         "include/private/SkIDChangeListener.h",

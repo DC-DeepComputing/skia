@@ -472,6 +472,7 @@ skia_filegroup(
         "SkPath.cpp",
         "SkPathBuilder.cpp",
         "SkPathRef.cpp",
+        "SkPixmap.cpp",
         "SkPoint.cpp",
         "SkPoint3.cpp",
         "SkRRect.cpp",

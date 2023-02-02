@@ -11,6 +11,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkRRect.h"
+#include "include/core/SkShader.h"
 #include "include/utils/SkRandom.h"
 #include "src/core/SkPathPriv.h"
 #include "tools/Resources.h"
