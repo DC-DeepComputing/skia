@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fe32a6a_6bc84b7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-02-02T18:09:36Z",
+      "side": 1,
+      "message": "I don\u0027t really have context, but happy to rubberstamp if you\u0027re confident. Asked some questions on the bug, PTAL before submitting.\n\nNit: prefix the bug ID with `b/` (b/267542007), otherwise it links to the wrong tracker.",
+      "revId": "8b06bdb758cbc78010ddd6ab9dd23dc0a179598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0b96627_601d4414",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-02-02T18:09:36Z",
+      "side": 1,
+      "message": "Nit: \"stagging\" typo",
+      "revId": "8b06bdb758cbc78010ddd6ab9dd23dc0a179598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
