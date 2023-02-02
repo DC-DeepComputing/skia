@@ -6,6 +6,8 @@ Milestone 112
 -------------
   * SkImage::CubicResampler has been removed. Clients should use SkCubicResampler from
     include/core/SkSamplingOptions.h instead (the former was an alias for the latter).
+  * SkShaders::CoordClamp has been added. It clamps the coords passed used with another 
+    shader to a rectangle.
 
 Milestone 111
 -------------
