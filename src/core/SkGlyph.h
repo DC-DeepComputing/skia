@@ -336,17 +336,21 @@ public:
         SkASSERT(static_cast<GlyphAction>(fDrawableAction) == GlyphAction::kUnset);
         fDrawableAction = SkTo<uint32_t>(action);
     }
-    skglyph::GlyphAction maskAction() const {
-        return static_cast<skglyph::GlyphAction>(fMaskAction);
+    skglyph::GlyphAction directMaskAction() const {
+        return static_cast<skglyph::GlyphAction>(fDirectMaskAction);
     }
-    void setMaskAction(skglyph::GlyphAction action) {
+    void setDirectMaskAction(skglyph::GlyphAction action) {
         using namespace skglyph;
-        SkASSERT(static_cast<GlyphAction>(fMaskAction) == GlyphAction::kUnset);
-        fMaskAction = SkTo<uint32_t>(action);
+        SkASSERT(static_cast<GlyphAction>(fDirectMaskAction) == GlyphAction::kUnset);
+        fDirectMaskAction = SkTo<uint32_t>(action);
     }
 
-    uint16_t maxDimension()  const {
+    uint16_t maxDimension() const {
         return std::max(fWidth, fHeight);
+    }
+
+    bool fitsInAtlas() const {
+        return this->maxDimension() <= kSkSideTooBigForAtlas;
     }
 
     SkGlyphRect bounds() const {
@@ -364,18 +368,21 @@ private:
     static_assert(SkMask::kCountMaskFormats <= 8);
     static_assert(SkTo<int>(skglyph::GlyphAction::kSize) <= 4);
     struct {
-        uint32_t fIndex          : SkPackedGlyphID::kEndData;
-        uint32_t fIsEmpty        : 1;
-        uint32_t fCanDrawAsMask  : 1;
-        uint32_t fCanDrawAsSDFT  : 1;
-        uint32_t fFormat         : 3;
-        uint32_t fPathAction     : 2;  // GlyphAction
-        uint32_t fDrawableAction : 2;  // GlyphAction
-        uint32_t fMaskAction     : 2;  // GlyphAction for SDFT and transformed mask.
+        uint32_t fIndex            : SkPackedGlyphID::kEndData;
+        uint16_t fIsEmpty          : 1;
+        // TODO: remove fCanDrawAsMask and fCanDrawAsSDFT when fully converted to Action fields.
+        uint32_t fCanDrawAsMask    : 1;
+        uint32_t fCanDrawAsSDFT    : 1;
+        uint32_t fFormat           : 3;
+        uint32_t fPathAction       : 2;  // GlyphAction
+        uint32_t fDrawableAction   : 2;  // GlyphAction
+        uint32_t fDirectMaskAction : 2;  // GlyphAction
     };
     int16_t fLeft, fTop;
     uint16_t fWidth, fHeight;
 };
+
+static_assert(sizeof(SkGlyphDigest) == 12);
 
 class SkGlyph {
 public:
