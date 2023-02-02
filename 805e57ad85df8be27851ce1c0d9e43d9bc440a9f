@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6404d93_f7f17bca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-02T21:29:25Z",
+      "side": 1,
+      "message": "PTAL :)",
+      "revId": "805e57ad85df8be27851ce1c0d9e43d9bc440a9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b151ce45_8e33060b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-02T21:29:25Z",
+      "side": 1,
+      "message": "I would like to double check my understanding here... copyData is already split up by mip level, yes? As in, each copyData array item contains information for one mip level? (See `UploadInstance::Make`). If that\u0027s the case, then I believe we should only need one copy region for each copyData item.",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 300,
+        "endChar": 45
+      },
+      "revId": "805e57ad85df8be27851ce1c0d9e43d9bc440a9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
