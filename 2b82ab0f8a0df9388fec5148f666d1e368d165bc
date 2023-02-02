@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a78dc07_4304a448",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-02-02T17:25:33Z",
+      "side": 1,
+      "message": "Unsure about the spacing, but it felt nicer to me to have a space between including SkTypes and any subsequent #ifdef, but happy to change if preferred.",
+      "revId": "2b82ab0f8a0df9388fec5148f666d1e368d165bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
