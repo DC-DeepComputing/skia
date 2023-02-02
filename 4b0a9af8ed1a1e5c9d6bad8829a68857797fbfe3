@@ -86,6 +86,24 @@
       "parentUuid": "9f91c617_639c9265",
       "revId": "4b0a9af8ed1a1e5c9d6bad8829a68857797fbfe3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b73f504_b8e0ad8f",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-02T15:26:09Z",
+      "side": 1,
+      "message": "I\u0027ve updated Codec_jpegMultiPicture so that it hits this path (and crashed before the fix).",
+      "parentUuid": "109050d2_8b28c4cf",
+      "revId": "4b0a9af8ed1a1e5c9d6bad8829a68857797fbfe3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
