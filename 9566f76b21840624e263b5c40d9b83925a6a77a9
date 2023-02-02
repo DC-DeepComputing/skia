@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d5398d1_5a7c8386",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-02T11:34:41Z",
+      "side": 1,
+      "message": "The patch that added this to SkJpegCodec.cpp does make me think that we should have this here.",
+      "revId": "9566f76b21840624e263b5c40d9b83925a6a77a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
