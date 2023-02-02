@@ -10,7 +10,7 @@
 
 #include "include/private/base/SkMath.h"
 #include "include/core/SkScalar.h"
-#include "include/private/SkFixed.h"
+#include "include/private/base/SkFixed.h"
 #include "include/private/base/SkTo.h"
 
 typedef int32_t SkFDot6;

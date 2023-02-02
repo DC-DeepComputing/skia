@@ -237,7 +237,7 @@ BASE_SRCS_ALL = [
     "include/private/SkChecksum.h",
     "include/private/SkColorData.h",
     "include/private/SkEncodedInfo.h",
-    "include/private/SkFixed.h",
+    "include/private/base/SkFixed.h",
     "include/private/SkGainmapInfo.h",
     "include/private/SkGainmapShader.h",
     "include/private/SkIDChangeListener.h",
