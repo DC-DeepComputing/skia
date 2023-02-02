@@ -206,6 +206,8 @@ DEF_TEST(Codec_jpegMultiPicture, r) {
             {TestStream::Type::kSeekable, true, 1024 * 1024 * 16},
             {TestStream::Type::kUnseekable, false, 1024},
             {TestStream::Type::kUnseekable, true, 1024},
+            {TestStream::Type::kUnseekable, false, 1},
+            {TestStream::Type::kUnseekable, true,  1},
             {TestStream::Type::kUnseekable, false, 7},
             {TestStream::Type::kUnseekable, true, 13},
             {TestStream::Type::kUnseekable, false, 1024 * 1024 * 16},

@@ -21,8 +21,8 @@ static constexpr char gGainmapSKSL[] =
         "uniform half4 logRatioMin;"
         "uniform half4 logRatioMax;"
         "uniform half4 gainmapGamma;"
-        "uniform half epsilonSdr;"
-        "uniform half epsilonHdr;"
+        "uniform half4 offsetSdr;"
+        "uniform half4 offsetHdr;"
         "uniform half W;"
         "uniform int singleChannel;"
         "uniform int noGamma;"
@@ -37,7 +37,7 @@ static constexpr char gGainmapSKSL[] =
         "        } else {"
         "            L = mix(logRatioMin.r, logRatioMax.r, pow(G.r, gainmapGamma.r));"
         "        }"
-        "        half3 H = (S.rgb + epsilonSdr) * exp(L * W) - epsilonHdr;"
+        "        half3 H = (S.rgb + offsetSdr.rgb) * exp(L * W) - offsetHdr.rgb;"
         "        return half4(H.r, H.g, H.b, S.a);"
         "    } else {"
         "        half3 L;"
@@ -46,12 +46,15 @@ static constexpr char gGainmapSKSL[] =
         "        } else {"
         "            L = mix(logRatioMin.rgb, logRatioMax.rgb, pow(G.rgb, gainmapGamma.rgb));"
         "        }"
-        "        half3 H = (S.rgb + epsilonSdr) * exp(L * W) - epsilonHdr;"
+        "        half3 H = (S.rgb + offsetSdr.rgb) * exp(L * W) - offsetHdr.rgb;"
         "        return half4(H.r, H.g, H.b, S.a);"
         "    }"
         "}";
 
 static sk_sp<SkRuntimeEffect> gainmap_apply_effect() {
+    auto result = SkRuntimeEffect::MakeForShader(SkString(gGainmapSKSL), {});
+    printf("%s\n", result.errorText.c_str());
+
     static const SkRuntimeEffect* effect =
             SkRuntimeEffect::MakeForShader(SkString(gGainmapSKSL), {}).effect.release();
     SkASSERT(effect);
@@ -107,17 +110,17 @@ sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
     sk_sp<SkShader> gainmapMathShader;
     {
         SkRuntimeShaderBuilder builder(gainmap_apply_effect());
-        const SkColor4f logRatioMin({gainmapInfo.fLogRatioMin.fR,
-                                     gainmapInfo.fLogRatioMin.fG,
-                                     gainmapInfo.fLogRatioMin.fB,
+        const SkColor4f logRatioMin({sk_float_log(gainmapInfo.fGainmapRatioMin.fR),
+                                     sk_float_log(gainmapInfo.fGainmapRatioMin.fG),
+                                     sk_float_log(gainmapInfo.fGainmapRatioMin.fB),
                                      1.f});
-        const SkColor4f logRatioMax({gainmapInfo.fLogRatioMax.fR,
-                                     gainmapInfo.fLogRatioMax.fG,
-                                     gainmapInfo.fLogRatioMax.fB,
+        const SkColor4f logRatioMax({sk_float_log(gainmapInfo.fGainmapRatioMax.fR),
+                                     sk_float_log(gainmapInfo.fGainmapRatioMax.fG),
+                                     sk_float_log(gainmapInfo.fGainmapRatioMax.fB),
                                      1.f});
         const float Wunclamped =
-                (sk_float_log(dstHdrRatio) - sk_float_log(gainmapInfo.fHdrRatioMin)) /
-                (sk_float_log(gainmapInfo.fHdrRatioMax) - sk_float_log(gainmapInfo.fHdrRatioMin));
+                (sk_float_log(dstHdrRatio) - sk_float_log(gainmapInfo.fDisplayRatioSdr)) /
+                (sk_float_log(gainmapInfo.fDisplayRatioHdr) - sk_float_log(gainmapInfo.fDisplayRatioSdr));
         const float W = std::max(std::min(Wunclamped, 1.f), 0.f);
         const int noGamma =
             gainmapInfo.fGainmapGamma.fR == 1.f &&
@@ -125,16 +128,16 @@ sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
             gainmapInfo.fGainmapGamma.fB == 1.f;
         const int singleChannel =
             all_channels_equal(gainmapInfo.fGainmapGamma) &&
-            all_channels_equal(gainmapInfo.fLogRatioMin) &&
-            all_channels_equal(gainmapInfo.fLogRatioMax) &&
+            all_channels_equal(gainmapInfo.fGainmapRatioMin) &&
+            all_channels_equal(gainmapInfo.fGainmapRatioMax) &&
             gainmapImage->colorType() == kGray_8_SkColorType;
         builder.child("base") = baseImageShader;
         builder.child("gainmap") = gainmapImageShader;
         builder.uniform("logRatioMin") = logRatioMin;
         builder.uniform("logRatioMax") = logRatioMax;
         builder.uniform("gainmapGamma") = gainmapInfo.fGainmapGamma;
-        builder.uniform("epsilonSdr") = gainmapInfo.fEpsilonSdr;
-        builder.uniform("epsilonHdr") = gainmapInfo.fEpsilonHdr;
+        builder.uniform("offsetSdr") = gainmapInfo.fOffsetSdr;
+        builder.uniform("offsetHdr") = gainmapInfo.fOffsetHdr;
         builder.uniform("noGamma") = noGamma;
         builder.uniform("singleChannel") = singleChannel;
         builder.uniform("W") = W;
