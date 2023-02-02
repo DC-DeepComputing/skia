@@ -1208,6 +1208,7 @@ optional("jpeg_decode") {
   sources = [
     "src/codec/SkJpegCodec.cpp",
     "src/codec/SkJpegDecoderMgr.cpp",
+    "src/codec/SkJpegSegmentScan.cpp",
     "src/codec/SkJpegSourceMgr.cpp",
     "src/codec/SkJpegUtility.cpp",
   ]
@@ -1219,7 +1220,6 @@ optional("jpeg_decode") {
     sources += [
       "src/codec/SkJpegGainmap.cpp",
       "src/codec/SkJpegMultiPicture.cpp",
-      "src/codec/SkJpegSegmentScan.cpp",
     ]
   }
 }
