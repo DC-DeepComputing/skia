@@ -52,6 +52,23 @@
       "parentUuid": "5e51f66c_43d69735",
       "revId": "758c0b5c950123e534a8e2cd5007c63dbd7dcedb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e438fc6f_3eb2780e",
+        "filename": "include/private/SkGainmapShader.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-02T15:19:03Z",
+      "side": 1,
+      "message": "I see this was added to include/private, but is not directly included by other files in include.\n\nWould we be able to move this (and SkGainmapInfo) to src/? (e.g. src/shaders)",
+      "revId": "758c0b5c950123e534a8e2cd5007c63dbd7dcedb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
