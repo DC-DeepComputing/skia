@@ -69,12 +69,14 @@ public:
     static constexpr size_t kParameterLengthSize = 2;
 
 private:
+    class ForwardScanAdapter;
+
     SkJpegSegmentScan(SkStream* stream, size_t initialPosition, std::vector<Segment>&&);
 
     // Skip past any entropy-coded data. If this function returns true, then the stream is
     // positioned to read the next (potentially valid) marker code. If the function returns false,
     // then there was a read failure.
-    static bool SkipPastEntropyCodedData(SkStream* stream);
+    static bool SkipPastEntropyCodedData(ForwardScanAdapter& adapter);
 
     // Returns true if this is a valid marker code (starts with 0xFF and is not 0xFF,0x00 or
     // 0xFF,0xFF).
