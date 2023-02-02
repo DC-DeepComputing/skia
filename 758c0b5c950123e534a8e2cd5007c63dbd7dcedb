@@ -87,6 +87,24 @@
       "parentUuid": "e438fc6f_3eb2780e",
       "revId": "758c0b5c950123e534a8e2cd5007c63dbd7dcedb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d67b2e2b_86fd9752",
+        "filename": "include/private/SkGainmapShader.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-02T15:32:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "67150284_cb8f57ef",
+      "revId": "758c0b5c950123e534a8e2cd5007c63dbd7dcedb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
