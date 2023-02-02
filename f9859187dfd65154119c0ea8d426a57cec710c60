@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "512aa1a7_98b82e4c",
+        "filename": "gn/skia.gni",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-02T14:25:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "65c84883_c8e87b4a",
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe42142b_75d4cc08",
@@ -191,6 +209,24 @@
       "side": 1,
       "message": "Removed the default value and added an SkAssert that we dont\u0027 specify a size greater than fBuffer-\u003esize().",
       "parentUuid": "5c40463b_a0929b45",
+      "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fc95704_52e6f6ee",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-02T14:25:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "601db929_f1fcb68c",
       "revId": "f9859187dfd65154119c0ea8d426a57cec710c60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
