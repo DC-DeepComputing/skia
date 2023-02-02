@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b4c6b74_65d521cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-02T14:47:31Z",
+      "side": 1,
+      "message": "Thanks -- let me cook up a test to stress these.",
+      "revId": "4b0a9af8ed1a1e5c9d6bad8829a68857797fbfe3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a8c51de_1d360022",
@@ -20,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5e0ae6a_5331ad7f",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-02T14:47:31Z",
+      "side": 1,
+      "message": "I was trying to be emphatic, but I\u0027ll be emphatic with an SkASSERT instead.",
+      "parentUuid": "6a8c51de_1d360022",
+      "revId": "4b0a9af8ed1a1e5c9d6bad8829a68857797fbfe3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9f91c617_639c9265",
         "filename": "src/codec/SkJpegSourceMgr.cpp",
         "patchSetId": 9
@@ -31,6 +66,24 @@
       "writtenOn": "2023-02-02T14:25:49Z",
       "side": 1,
       "message": "`std::min(size, fLastReadSize - offsetIntoBuffer)`, I presume? Otherwise we can copy too much data. Worse, we\u0027ll underflow when we adjust size on 281, and then read the entire stream before failing?",
+      "revId": "4b0a9af8ed1a1e5c9d6bad8829a68857797fbfe3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "109050d2_8b28c4cf",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-02T14:47:31Z",
+      "side": 1,
+      "message": "Let me cook up a test to ensure this gets fixed.",
+      "parentUuid": "9f91c617_639c9265",
       "revId": "4b0a9af8ed1a1e5c9d6bad8829a68857797fbfe3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
