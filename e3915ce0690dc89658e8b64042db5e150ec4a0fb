@@ -16,6 +16,23 @@
       "message": "lgtm (but let\u0027s get brianosman\u0027s weigh-in too).",
       "revId": "e3915ce0690dc89658e8b64042db5e150ec4a0fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42abb912_43a05a8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-02T13:52:54Z",
+      "side": 1,
+      "message": "Yeah, this is fine. (We\u0027re inconsistent about SkImage const-ness, mostly because SkImage is considered immutable, anyway).",
+      "revId": "e3915ce0690dc89658e8b64042db5e150ec4a0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
