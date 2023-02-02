@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b5542a5_2d534a99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19629
+      },
+      "writtenOn": "2023-02-02T18:14:29Z",
+      "side": 1,
+      "message": "Replied on bug.",
+      "parentUuid": "9fe32a6a_6bc84b7a",
+      "revId": "8b06bdb758cbc78010ddd6ab9dd23dc0a179598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0b96627_601d4414",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-02-02T18:09:36Z",
       "side": 1,
       "message": "Nit: \"stagging\" typo",
+      "revId": "8b06bdb758cbc78010ddd6ab9dd23dc0a179598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4edcbfe_6903ba4d",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 19629
+      },
+      "writtenOn": "2023-02-02T18:14:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0b96627_601d4414",
       "revId": "8b06bdb758cbc78010ddd6ab9dd23dc0a179598f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
