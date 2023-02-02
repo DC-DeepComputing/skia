@@ -34,6 +34,24 @@
       "parentUuid": "c8cb71a3_e01c821e",
       "revId": "934ef0660509eede59b0fc7a6b82ee1d09c39661",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c4cd509_5bf8ba66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2023-02-02T11:00:31Z",
+      "side": 1,
+      "message": "I did some archeology and I think this should fix the issue\nhttps://skia-review.googlesource.com/c/skia/+/637177\n\nI\u0027m also going to be include SkJpegSegmentScan.cpp in the build by default (whereupon we can remove these guards).",
+      "parentUuid": "a0966031_c8a8b727",
+      "revId": "934ef0660509eede59b0fc7a6b82ee1d09c39661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
