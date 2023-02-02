@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b887d506_f0895c1f",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-02T17:58:53Z",
+      "side": 1,
+      "message": "Is this group of jobs doing anything useful?",
+      "range": {
+        "startLine": 402,
+        "startChar": 32,
+        "endLine": 402,
+        "endChar": 35
+      },
+      "revId": "3a2ef390a1a39034dc971643a1adf51bbf4d8217",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
