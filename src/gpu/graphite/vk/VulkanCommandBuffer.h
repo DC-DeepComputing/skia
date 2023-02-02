@@ -19,6 +19,11 @@ class VulkanSharedContext;
 
 class VulkanCommandBuffer final : public CommandBuffer {
 public:
+struct MipLevel {
+    const void* fPixels = nullptr;
+    size_t fRowBytes = 0;
+};
+
     static std::unique_ptr<VulkanCommandBuffer> Make(const VulkanSharedContext*,
                                                      VulkanResourceProvider*);
     ~VulkanCommandBuffer() override;

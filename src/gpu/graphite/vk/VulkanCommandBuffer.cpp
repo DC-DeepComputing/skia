@@ -7,9 +7,12 @@
 
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 
+#include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/vk/VulkanBuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
+#include "src/gpu/graphite/vk/VulkanTexture.h"
 
 namespace skgpu::graphite {
 
@@ -269,11 +272,62 @@ bool VulkanCommandBuffer::onCopyTextureToBuffer(const Texture*,
     return false;
 }
 
-bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer*,
-                                                const Texture*,
+bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
+                                                const Texture* texture,
                                                 const BufferTextureCopyData* copyData,
                                                 int count) {
-    return false;
+    // TODO: CopyData can be an array, so iterate accordingly.
+    // SkASSERT(!fActiveRenderCommandEncoder);
+    // SkASSERT(!fActiveComputeCommandEncoder);
+
+    VkBuffer srcBuffer = static_cast<const VulkanBuffer*>(buffer)->vkBuffer();
+    const VulkanTexture* dstTexture = static_cast<const VulkanTexture*>(texture);
+    VkImage dstTextureAsVkImage =  dstTexture->vkImage();
+
+    // Determine BPP (bytes per pixel) by obtaining the VkFormat of the destination texture.
+    VulkanTextureInfo dstTextureInfo;
+    dstTexture->textureInfo().getVulkanTextureInfo(&dstTextureInfo);
+    VkFormat textureFormat = dstTextureInfo.fFormat;
+    size_t bpp = VkFormatBytesPerBlock(textureFormat);
+
+    // sk_sp<SkMipmap> mipmaps;
+    // std::vector<MipLevel> texels;
+    // if (copyData[i].fMipLevel == 1) {
+    //     texels.resize(copyData[i].fMipLevel);
+    //     texels[0].fPixels = bmpToUpload.getPixels();
+    //     texels[0].fRowBytes = bmpToUpload.rowBytes();
+    // }
+    // Get a staging buffer slice to hold our mip data.
+    // Vulkan requires offsets in the buffer to be aligned to multiple of the texel size and 4
+    // size_t alignment = bpp;
+    // switch (alignment & 0b11) {
+    //     case 0:                     break;   // alignment is already a multiple of 4.
+    //     case 2:     alignment *= 2; break;   // alignment is a multiple of 2 but not 4.
+    //     default:    alignment *= 4; break;   // alignment is not a multiple of 2.
+    // }
+    for (int i = 0; i < count; ++i) {
+        // Set up copy region.
+        VkBufferImageCopy region;
+        memset(&region, 0, sizeof(VkBufferImageCopy));
+        region.bufferOffset = copyData[i].fBufferOffset;
+        region.bufferRowLength = (uint32_t)(copyData[i].fBufferRowBytes/bpp);
+        region.bufferImageHeight = 0;
+        region.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
+        region.imageOffset = { copyData[i].fRect.left(), copyData[i].fRect.top(), 0 };
+        region.imageExtent = { (uint32_t)copyData[i].fRect.width(), (uint32_t)copyData[i].fRect.height(), 1 };
+
+        // TODO: Check result and determine why the result macro isn't working. VkResult result;
+        VULKAN_CALL(fSharedContext->interface(), /*result,*/ CmdCopyBufferToImage(
+                fPrimaryCommandBuffer,
+                srcBuffer,
+                dstTextureAsVkImage,
+                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, // TODO: Is this always the layout we want?
+                1, // TODO: Handle cases with more than 1 regionCount (mip level).
+                &region));
+    }
+
+    // TODO: Add resource to command buffer, perhaps using setNewCommandBufferResources?
+    return true;
 }
 
 bool VulkanCommandBuffer::onCopyTextureToTexture(const Texture* src,
