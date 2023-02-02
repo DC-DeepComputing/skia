@@ -16,6 +16,24 @@
       "message": "I think this is causing the Skia-\u003eAndroid roll to fail:\n\nhttps://googleplex-android-review.git.corp.google.com/c/platform/external/skia/+/21184898?tab\u003dchecks\n\n```\nexternal/skia/src/codec/SkJpegSourceMgr.cpp\nexternal/skia/src/codec/SkJpegSourceMgr.cpp:82:56: error: only virtual member functions can be marked \u0027override\u0027\n    const std::vector\u003cSkJpegSegment\u003e\u0026 getAllSegments() override\n```",
       "revId": "934ef0660509eede59b0fc7a6b82ee1d09c39661",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0966031_c8a8b727",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2023-02-02T09:16:59Z",
+      "side": 1,
+      "message": "This is really baffling to me.\n\nThe function `getAllSegemnts` is guarded by `SK_CODEC_DECODES_JPEG_GAINMAPS` in the .h file and in the .cpp file.\n\nIt appears that, when compiling SkJpegSourceMgr.cpp, we\u0027re not seeing `getAllSegments` where it\u0027s declared in the header but ARE are seeing it in the source file.\n\nI\u0027ll start an email thread.",
+      "parentUuid": "c8cb71a3_e01c821e",
+      "revId": "934ef0660509eede59b0fc7a6b82ee1d09c39661",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
