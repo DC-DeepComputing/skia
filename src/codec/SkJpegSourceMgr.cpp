@@ -7,14 +7,12 @@
 
 #include "src/codec/SkJpegSourceMgr.h"
 
+#ifdef SK_CODEC_DECODES_JPEG
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "src/codec/SkCodecPriv.h"
-
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 #include "src/codec/SkJpegSegmentScan.h"
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // SkStream helpers.
@@ -78,7 +76,6 @@ public:
         bytesInBuffer -= bytesToSkip;
         return true;
     }
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     const std::vector<SkJpegSegment>& getAllSegments() override {
         if (fScanner) {
             return fScanner->getSegments();
@@ -94,7 +91,6 @@ public:
         return SkMemoryStream::MakeCopy(
                 reinterpret_cast<const uint8_t*>(fStream->getMemoryBase()) + offset, size);
     }
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +139,6 @@ public:
         nextInputByte = fBuffer->bytes();
         return true;
     }
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     const std::vector<SkJpegSegment>& getAllSegments() override {
         if (fScanner) {
             return fScanner->getSegments();
@@ -175,7 +170,6 @@ public:
         }
         return SkMemoryStream::Make(data);
     }
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
 private:
     sk_sp<SkData> fBuffer;
@@ -196,7 +190,6 @@ SkJpegSourceMgr::SkJpegSourceMgr(SkStream* stream) : fStream(stream) {}
 
 SkJpegSourceMgr::~SkJpegSourceMgr() = default;
 
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 sk_sp<SkData> SkJpegSourceMgr::copyParameters(const SkJpegSegment& segment,
                                               const void* signature,
                                               const size_t signatureLength) {
@@ -256,4 +249,4 @@ sk_sp<SkData> SkJpegSourceMgr::copyParameters(const SkJpegSegment& segment,
 
     return result;
 }
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
+#endif  // SK_CODEC_DECODES_JPEG
