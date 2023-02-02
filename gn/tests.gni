@@ -73,6 +73,7 @@ tests_sources = [
   "$_tests/FakeStreams.h",
   "$_tests/FillPathTest.cpp",
   "$_tests/FindCubicConvex180ChopsTest.cpp",
+  "$_tests/FilterResultTest.cpp",
   "$_tests/FitsInTest.cpp",
   "$_tests/FlattenDrawableTest.cpp",
   "$_tests/FlattenableFactoryToName.cpp",

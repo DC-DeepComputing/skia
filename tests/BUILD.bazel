@@ -226,6 +226,7 @@ GANESH_TESTS = [
     "EGLImageTest.cpp",
     "ExtendedSkColorTypeTests.cpp",
     "FindCubicConvex180ChopsTest.cpp",
+    "FilterResultTest.cpp",
     "FloatingPointTextureTest.cpp",
     "GLBackendSurfaceTest.cpp",
     "GpuDrawPathTest.cpp",
