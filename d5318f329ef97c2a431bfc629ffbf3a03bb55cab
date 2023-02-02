@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bfa5b56_e73d72c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-02T14:52:38Z",
+      "side": 1,
+      "message": "I think capturing the discussion that was here, and in chat between the Dawn rooms and the Skia rooms would be valuable, but I wanted to summarize what I believe the plan is for both the short term and long term:\n\nLong term, it sounds like webgpu/Dawn are open to some form of \"expand-from-resolve-texture\" load op that Dawn could then apply in particular ways per backend. Under those very constrained circumstances that avoids the race issues that are the main reason behind preventing resources from being both read and written in the same encoder. There\u0027s still planning and scheduling of this work to resolve so a work around will need to be put in place in Graphite until we can leverage that.\n\nShort term, the Dawn backend of graphite will use the extra copy approach you\u0027ve done here. I had not considered the increased cost of storing an MSAA attachment being more expensive than an extra single sample attachment, but that makes sense, and others on the Skia team agreed with your assessment. However, with the hoped for integration into webgpu directly, the implementation of this approach should be pulled back so it\u0027s just something that the Dawn backend does automatically without leaking higher.\n\nThere are definitely trade offs to this encapsulation, like you said, where Graphite is trying to keep backends as barebones as possible. However, there is a competing objective of having the high-level code operate on a unified \"low-level\" GPU API, so backends are still responsible for smoothing over any of their particular rough edges. This is particularly true for Vulkan and OpenGL (that backend will have to work hard to handle thread-safe resource creation and stub out a command buffer). \n\nAnother benefit of having the Dawn backend handle this extra copy texture is that it\u0027s only ever used to copy and immediately sampled by the render encoder. This will be able to use the Context\u0027s primary ResourceProvider since it can be created or fetched from the cache on the main thread during inserting of a Recording instead of when the Recording has to be created. This also means that the same texture could be reused across many surfaces.",
+      "parentUuid": "ab1fce07_a64cddee",
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c23852b_44ce1744",
