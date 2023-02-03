@@ -16,6 +16,23 @@
       "message": "save_xy is only used before bicubic/bilinear. We could fold save_xy into the two _setup stages to save a stage in both paths.",
       "revId": "61ac2cd8f4926f40986ca4b2c9f3ef0c2730a377",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "973b344b_32d9c8d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-02-03T18:46:57Z",
+      "side": 1,
+      "message": "Or expand save_xy to be save_xy_zero_dst and leave bicubic_setup as it was.",
+      "revId": "61ac2cd8f4926f40986ca4b2c9f3ef0c2730a377",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
