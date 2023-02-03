@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "900d455d_92af52e1",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-03T19:34:34Z",
+      "side": 1,
+      "message": "I think we want (need) to do this slightly differently. There are non-zero values that produce infinities when you take the reciprocal. Elsewhere, we tend to just do the division blindly, then check if the result is finite. In that case, you\u0027ll want to do the division using `sk_ieee_double_divide`, which disables divide-by-zero checks in the sanitizers.\n\nAlso: Have we previously checked that the literal in the right hand side fits in float? What happens when we end up with a double that fits in double, but not in float here?",
+      "revId": "8a8cb7911e18fce3a3a0ee1c889e7b46c08207e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
