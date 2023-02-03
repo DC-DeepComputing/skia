@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "283991a0_cf0a92ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-03T14:44:55Z",
+      "side": 1,
+      "message": "This is the outcome of the \"bikeshed the parameters\" discussion that we\u0027ve been having for a little while. I\u0027m happy with the result of the bikeshed and I think these are reasonable parameters to expose in Android\u0027s APIs (the log stuff is just a bugfarm ... and it also has less precision for the high end of the range).",
+      "revId": "53da4864211e8a884728dcddfaef603cb1204a6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
