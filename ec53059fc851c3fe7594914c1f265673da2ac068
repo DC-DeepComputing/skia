@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58b38528_9bce0c80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-02-03T14:38:27Z",
+      "side": 1,
+      "message": "Locally no changes for me. I added the force-RP bot to the CQ. Is there an existing bug it would make sense to tag this with?",
+      "revId": "ec53059fc851c3fe7594914c1f265673da2ac068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
