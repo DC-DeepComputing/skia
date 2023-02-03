@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5ddcb45_b34e6049",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-03T15:15:17Z",
+      "side": 1,
+      "message": "To my surprise, SkVM never implemented this optimization, so this change might actually give a slight perf improvement even pre-SkRP SkSL.",
+      "revId": "44a660de430f7282b79a17c79d3d5b7796aade80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
