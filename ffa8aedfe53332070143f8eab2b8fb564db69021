@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4801ed92_82773c6b",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-03T20:21:21Z",
+      "side": 1,
+      "message": "So there is `bazel/copts.bzl:DEFAULT_COPTS` which contains (among other things) `-fno-rtti` and `-fWerror`. Then this is set as the default list of `copts` in `bazel/macros.bzl:skia_cc_*`. So then this is essentially turning all of those off. This is more or less in an attempt to add a \"is_official_build\" like setting.\n\nAt the moment the Skia specific bazel build (the parts in `bazel/`) are more or less how a developer of Skia would want to build Skia. The idea seems to have been that if someone wanted their own build of Skia for any reason they would need to implement all of that for their own build (e.g. one cannot just change the toolchain without re-implementing the rest, since the rest kinda depends on the toolchain). This seems to be some sort of attempt to make the Skia build a bit more \"flexible\", but if that is the goal then that needs to go much further as `is_official_build` does, potentially requiring the user to provide their own hooks to any dependencies (use system libraries or their own versions of libraries or what have you).",
+      "revId": "ffa8aedfe53332070143f8eab2b8fb564db69021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
