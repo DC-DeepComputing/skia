@@ -1602,9 +1602,8 @@ STAGE(seed_shader, NoCtx) {
     // On Intel this breaks a data dependency on previous loop iterations' registers.
     r = cast(dx) + sk_unaligned_load<F>(iota);
     g = cast(dy) + 0.5f;
-    b = 1.0f;
+    b = 1.0f;  // This is w=1 for matrix multiplies by the device coords.
     a = 0;
-    dr = dg = db = da = 0;
 }
 
 STAGE(dither, const float* rate) {
@@ -3073,6 +3072,11 @@ SI void bilinear_y(SkRasterPipeline_SamplerCtx* ctx, F* y) {
     sk_unaligned_store(ctx->scaley, scaley);
 }
 
+STAGE(bilinear_setup, NoCtx) {
+    // Init for accumulate
+    dr = dg = db = da = 0;
+}
+
 STAGE(bilinear_nx, SkRasterPipeline_SamplerCtx* ctx) { bilinear_x<-1>(ctx, &r); }
 STAGE(bilinear_px, SkRasterPipeline_SamplerCtx* ctx) { bilinear_x<+1>(ctx, &r); }
 STAGE(bilinear_ny, SkRasterPipeline_SamplerCtx* ctx) { bilinear_y<-1>(ctx, &g); }
@@ -3126,6 +3130,9 @@ STAGE(bicubic_setup, SkRasterPipeline_SamplerCtx* ctx) {
     sk_unaligned_store(ctx->wy[1], bicubic_wts(fy, w[1], w[5], w[ 9], w[13]));
     sk_unaligned_store(ctx->wy[2], bicubic_wts(fy, w[2], w[6], w[10], w[14]));
     sk_unaligned_store(ctx->wy[3], bicubic_wts(fy, w[3], w[7], w[11], w[15]));
+
+    // Init for accumulate
+    dr = dg = db = da = 0;
 }
 
 STAGE(bicubic_n3x, SkRasterPipeline_SamplerCtx* ctx) { bicubic_x<-3>(ctx, &r); }

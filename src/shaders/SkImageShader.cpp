@@ -729,6 +729,7 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const MatrixRec& mRec) c
         p->append(SkRasterPipelineOp::move_dst_src);
     } else if (sampling.filter == SkFilterMode::kLinear) {
         p->append(SkRasterPipelineOp::save_xy, sampler);
+        p->append(SkRasterPipelineOp::bilinear_setup);
 
         sample(SkRasterPipelineOp::bilinear_nx, SkRasterPipelineOp::bilinear_ny);
         sample(SkRasterPipelineOp::bilinear_px, SkRasterPipelineOp::bilinear_ny);

@@ -82,6 +82,7 @@
     M(mirror_y)   M(repeat_y)                                      \
     M(negate_x)                                                    \
     M(bicubic_clamp_8888)                                          \
+    M(bilinear_setup)                                              \
     M(bilinear_nx) M(bilinear_px) M(bilinear_ny) M(bilinear_py)    \
     M(bicubic_setup)                                               \
     M(bicubic_n3x) M(bicubic_n1x) M(bicubic_p1x) M(bicubic_p3x)    \
