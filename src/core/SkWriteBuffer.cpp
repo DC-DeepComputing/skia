@@ -150,19 +150,12 @@ bool SkBinaryWriteBuffer::writeToStream(SkWStream* stream) const {
 /*  Format:
  *      flags: U32
  *      encoded : size_32 + data[]
- *      [subset: IRect]
- *      [mips]  : size_32 + data[]
  */
 void SkBinaryWriteBuffer::writeImage(const SkImage* image) {
     uint32_t flags = 0;
-    const SkMipmap* mips = as_IB(image)->onPeekMips();
-    if (mips) {
-        flags |= SkWriteBufferImageFlags::kHasMipmap;
-    }
     if (image->alphaType() == kUnpremul_SkAlphaType) {
         flags |= SkWriteBufferImageFlags::kUnpremul;
     }
-
     this->write32(flags);
 
     sk_sp<SkData> data;
@@ -173,10 +166,6 @@ void SkBinaryWriteBuffer::writeImage(const SkImage* image) {
         data = image->encodeToData();
     }
     this->writeDataAsByteArray(data.get());
-
-    if (flags & SkWriteBufferImageFlags::kHasMipmap) {
-        this->writeDataAsByteArray(mips->serialize().get());
-    }
 }
 
 void SkBinaryWriteBuffer::writeTypeface(SkTypeface* obj) {
