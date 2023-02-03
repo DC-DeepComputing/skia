@@ -150,11 +150,14 @@ private:
 };
 
 enum SkWriteBufferImageFlags {
-    kVersion_bits   = 8,
+    kVersion_bits   = 8, // Reserve 8 bits for the image storage version
+    // This version controls the meaning of the flags below. It is unlikely
+    // to ever be needed, unless we needed to store more than 24 bits of
+    // flags at once.
     kCurrVersion    = 0,
 
-    kHasSubsetRect  = 1 << 8,
-    kHasMipmap      = 1 << 9,
+    kHasSubsetRect  = 1 << 8, // Unused after kNoSerializedMipMaps
+    kHasMipmap      = 1 << 9, // Unused after kNoSerializedMipMaps
     kUnpremul       = 1 << 10,
 };
 

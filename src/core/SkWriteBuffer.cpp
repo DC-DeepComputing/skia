@@ -148,21 +148,18 @@ bool SkBinaryWriteBuffer::writeToStream(SkWStream* stream) const {
 #include "src/image/SkImage_Base.h"
 
 /*  Format:
- *      flags: U32
+ *      flags: U32 (8 for version, then up to 24 for flags)
  *      encoded : size_32 + data[]
- *      [subset: IRect]
- *      [mips]  : size_32 + data[]
  */
 void SkBinaryWriteBuffer::writeImage(const SkImage* image) {
     uint32_t flags = 0;
-    const SkMipmap* mips = as_IB(image)->onPeekMips();
-    if (mips) {
-        flags |= SkWriteBufferImageFlags::kHasMipmap;
-    }
+    // version must fit in 8 bits
+    static_assert(static_cast<size_t>(SkWriteBufferImageFlags::kCurrVersion) <= 255);
+    uint8_t version = SkWriteBufferImageFlags::kCurrVersion;
+    flags |= version;
     if (image->alphaType() == kUnpremul_SkAlphaType) {
         flags |= SkWriteBufferImageFlags::kUnpremul;
     }
-
     this->write32(flags);
 
     sk_sp<SkData> data;
@@ -173,10 +170,6 @@ void SkBinaryWriteBuffer::writeImage(const SkImage* image) {
         data = image->encodeToData();
     }
     this->writeDataAsByteArray(data.get());
-
-    if (flags & SkWriteBufferImageFlags::kHasMipmap) {
-        this->writeDataAsByteArray(mips->serialize().get());
-    }
 }
 
 void SkBinaryWriteBuffer::writeTypeface(SkTypeface* obj) {
