@@ -70,8 +70,11 @@
 #include "src/core/SkStreamPriv.h"
 #include "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h"
 #include "src/sksl/tracing/SkRPDebugTrace.h"
-constexpr bool kRPEnableLiveTrace = false;
+constexpr bool kRPEnableLiveTrace = true;
 #endif
+
+#include "third_party/externals/imgui/imgui.h"
+
 
 #include <algorithm>
 
@@ -1214,6 +1217,10 @@ public:
             // usage in runtime effects to just #version 100.
             return false;
         }
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.KeyShift) {
+            return false;
+        }
         if (const SkSL::RP::Program* program = fEffect->getRPProgram()) {
             sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
                                                                                 fUniforms,
@@ -1223,6 +1230,7 @@ public:
             RuntimeEffectRPCallbacks callbacks(rec, matrix, fChildren, fEffect->fSampleUsages);
             bool success = program->appendStages(rec.fPipeline, rec.fAlloc, &callbacks,
                                                  uniforms_as_span(inputs.get()));
+            rec.fPipeline->append(SkRasterPipelineOp::swap_rb);
             return success;
         }
 #endif
@@ -1418,6 +1426,10 @@ public:
             // SkRP doesn't support debug traces yet; fall back to SkVM until this is implemented.
             return false;
         }
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.KeyShift) {
+            return false;
+        }
         if (const SkSL::RP::Program* program = fEffect->getRPProgram()) {
             std::optional<MatrixRec> newMRec = mRec.apply(rec);
             if (!newMRec.has_value()) {
@@ -1431,6 +1443,7 @@ public:
             RuntimeEffectRPCallbacks callbacks(rec, *newMRec, fChildren, fEffect->fSampleUsages);
             bool success = program->appendStages(rec.fPipeline, rec.fAlloc, &callbacks,
                                                  uniforms_as_span(inputs.get()));
+            rec.fPipeline->append(SkRasterPipelineOp::swap_rb);
             return success;
         }
 #endif
