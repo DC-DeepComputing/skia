@@ -14,6 +14,7 @@
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
 #include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
@@ -24,6 +25,7 @@
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
+#include <cmath>
 #include <cstdint>
 #include <limits>
 #include <optional>
@@ -341,43 +343,83 @@ static bool contains_constant_zero(const Expression& expr) {
     return false;
 }
 
-// Returns true if the expression contains `value` in every slot.
-static bool is_constant_splat(const Expression& expr, double value) {
+// If the expression contains the same value in every slot, returns that value.
+static std::optional<double> is_any_constant_splat(const Expression& expr) {
+    std::optional<double> value = expr.getConstantValue(0);
+    if (!value.has_value()) {
+        return std::nullopt;
+    }
     int numSlots = expr.type().slotCount();
-    for (int index = 0; index < numSlots; ++index) {
-        std::optional<double> slotVal = expr.getConstantValue(index);
-        if (!slotVal.has_value() || *slotVal != value) {
-            return false;
+    for (int index = 1; index < numSlots; ++index) {
+        if (expr.getConstantValue(index) != value) {
+            return std::nullopt;
         }
     }
-    return true;
+    return value;
 }
 
-// Returns true if the expression is a square diagonal matrix containing `value`.
-static bool is_constant_diagonal(const Expression& expr, double value) {
+// Returns true if the expression contains the same value in every slot.
+static bool is_constant_splat(const Expression& expr, double value) {
+    return is_any_constant_splat(expr) == value;
+}
+
+// If the expression is a square diagonal matrix containing `value`, returns that value.
+static std::optional<double> is_any_constant_diagonal(const Expression& expr) {
     SkASSERT(expr.type().isMatrix());
     int columns = expr.type().columns();
     int rows = expr.type().rows();
     if (columns != rows) {
-        return false;
+        return std::nullopt;
+    }
+    std::optional<double> value = expr.getConstantValue(0);
+    if (!value.has_value()) {
+        return std::nullopt;
     }
     int slotIdx = 0;
     for (int c = 0; c < columns; ++c) {
         for (int r = 0; r < rows; ++r) {
-            double expectation = (c == r) ? value : 0;
-            std::optional<double> slotVal = expr.getConstantValue(slotIdx++);
-            if (!slotVal.has_value() || *slotVal != expectation) {
-                return false;
+            double expectation = (c == r) ? *value : 0;
+            if (expr.getConstantValue(slotIdx++) != expectation) {
+                return std::nullopt;
             }
         }
     }
-    return true;
+    return value;
+}
+
+// Returns true if the expression is a square diagonal matrix containing `value`.
+static bool is_constant_diagonal(const Expression& expr, double value) {
+    return is_any_constant_diagonal(expr) == value;
+}
+
+// If the expression is a scalar, vector, or diagonal matrix that holds a constant value, returns
+// that value.
+static std::optional<double> is_any_constant_value(const Expression& expr) {
+    return expr.type().isMatrix() ? is_any_constant_diagonal(expr)
+                                  : is_any_constant_splat(expr);
 }
 
 // Returns true if the expression is a scalar, vector, or diagonal matrix containing `value`.
 static bool is_constant_value(const Expression& expr, double value) {
     return expr.type().isMatrix() ? is_constant_diagonal(expr, value)
                                   : is_constant_splat(expr, value);
+}
+
+// The expression is the right-hand side of a division op; if the division can be strength-reduced
+// into multiplication by a reciprocal, return the reciprocal as an expression.
+static std::unique_ptr<Expression> make_reciprocal_expression(const Context& context,
+                                                              const Expression& right) {
+    if (right.type().isMatrix() || !right.type().componentType().isFloat()) {
+        return nullptr;
+    }
+    std::optional<double> value = is_any_constant_value(right);
+    if (!value || !std::isfinite(*value) || *value == 0.0f) {
+        // The right-hand side wasn't a finite, non-zero constant.
+        return nullptr;
+    }
+    // Return the reciprocal, matching the type of the original expression.
+    Literal reciprocal{right.fPosition, 1.0 / *value, &right.type().componentType()};
+    return cast_expression(context, reciprocal.fPosition, reciprocal, right.type());
 }
 
 static bool error_on_divide_by_zero(const Context& context, Position pos, Operator op,
@@ -442,12 +484,12 @@ static bool is_matrix_op_scalar(const Expression& left, const Expression& right)
     return is_scalar_op_matrix(right, left);
 }
 
-static std::unique_ptr<Expression> simplify_no_op_arithmetic(const Context& context,
-                                                             Position pos,
-                                                             const Expression& left,
-                                                             Operator op,
-                                                             const Expression& right,
-                                                             const Type& resultType) {
+static std::unique_ptr<Expression> simplify_arithmetic(const Context& context,
+                                                       Position pos,
+                                                       const Expression& left,
+                                                       Operator op,
+                                                       const Expression& right,
+                                                       const Type& resultType) {
     switch (op.kind()) {
         case Operator::Kind::PLUS:
             if (!is_scalar_op_matrix(left, right) && is_constant_splat(right, 0.0)) {  // x + 0
@@ -519,6 +561,12 @@ static std::unique_ptr<Expression> simplify_no_op_arithmetic(const Context& cont
                     return expr;
                 }
             }
+            if (!left.type().isMatrix()) {  // convert `x / 2` into `x * 0.5`
+                if (std::unique_ptr<Expression> expr = make_reciprocal_expression(context, right)) {
+                    return BinaryExpression::Make(context, pos, left.clone(), Operator::Kind::STAR,
+                                                  std::move(expr));
+                }
+            }
             break;
 
         case Operator::Kind::PLUSEQ:
@@ -549,6 +597,10 @@ static std::unique_ptr<Expression> simplify_no_op_arithmetic(const Context& cont
                     Analysis::UpdateVariableRefKind(var.get(), VariableRefKind::kRead);
                     return var;
                 }
+            }
+            if (std::unique_ptr<Expression> expr = make_reciprocal_expression(context, right)) {
+                return BinaryExpression::Make(context, pos, left.clone(), Operator::Kind::STAREQ,
+                                              std::move(expr));
             }
             break;
 
@@ -640,137 +692,143 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
         return nullptr;
     }
 
-    // Optimize away no-op arithmetic like `x * 1`, `x *= 1`, `x + 0`, `x * 0`, `0 / x`, etc.
+    // Perform full constant folding when both sides are compile-time constants.
     const Type& leftType = left->type();
     const Type& rightType = right->type();
-    if (context.fConfig->fSettings.fOptimize) {
-        if (std::unique_ptr<Expression> expr = simplify_no_op_arithmetic(context, pos, *left, op,
-                                                                         *right, resultType)) {
-            return expr;
-        }
-    }
+    bool leftSideIsConstant = Analysis::IsCompileTimeConstant(*left);
+    bool rightSideIsConstant = Analysis::IsCompileTimeConstant(*right);
 
-    // Other than the cases above, constant folding requires both sides to be constant.
-    if (!Analysis::IsCompileTimeConstant(*left) || !Analysis::IsCompileTimeConstant(*right)) {
-        return nullptr;
-    }
+    if (leftSideIsConstant && rightSideIsConstant) {
+        // Handle pairs of integer literals.
+        if (left->isIntLiteral() && right->isIntLiteral()) {
+            using SKSL_UINT = uint64_t;
+            SKSL_INT leftVal  = left->as<Literal>().intValue();
+            SKSL_INT rightVal = right->as<Literal>().intValue();
 
-    // Note that fold_expression returns null if the result would overflow its type.
-    using SKSL_UINT = uint64_t;
-    if (left->isIntLiteral() && right->isIntLiteral()) {
-        SKSL_INT leftVal  = left->as<Literal>().intValue();
-        SKSL_INT rightVal = right->as<Literal>().intValue();
-
-        #define RESULT(Op)   fold_expression(pos, \
-                                        (SKSL_INT)(leftVal) Op (SKSL_INT)(rightVal), &resultType)
-        #define URESULT(Op)  fold_expression(pos, \
-                             (SKSL_INT)((SKSL_UINT)(leftVal) Op (SKSL_UINT)(rightVal)), &resultType)
-        switch (op.kind()) {
-            case Operator::Kind::PLUS:       return URESULT(+);
-            case Operator::Kind::MINUS:      return URESULT(-);
-            case Operator::Kind::STAR:       return URESULT(*);
-            case Operator::Kind::SLASH:
-                if (leftVal == std::numeric_limits<SKSL_INT>::min() && rightVal == -1) {
-                    context.fErrors->error(pos, "arithmetic overflow");
+            // Note that fold_expression returns null if the result would overflow its type.
+            #define RESULT(Op)   fold_expression(pos, (SKSL_INT)(leftVal) Op \
+                                                      (SKSL_INT)(rightVal), &resultType)
+            #define URESULT(Op)  fold_expression(pos, (SKSL_INT)((SKSL_UINT)(leftVal) Op \
+                                                      (SKSL_UINT)(rightVal)), &resultType)
+            switch (op.kind()) {
+                case Operator::Kind::PLUS:       return URESULT(+);
+                case Operator::Kind::MINUS:      return URESULT(-);
+                case Operator::Kind::STAR:       return URESULT(*);
+                case Operator::Kind::SLASH:
+                    if (leftVal == std::numeric_limits<SKSL_INT>::min() && rightVal == -1) {
+                        context.fErrors->error(pos, "arithmetic overflow");
+                        return nullptr;
+                    }
+                    return RESULT(/);
+                case Operator::Kind::PERCENT:
+                    if (leftVal == std::numeric_limits<SKSL_INT>::min() && rightVal == -1) {
+                        context.fErrors->error(pos, "arithmetic overflow");
+                        return nullptr;
+                    }
+                    return RESULT(%);
+                case Operator::Kind::BITWISEAND: return RESULT(&);
+                case Operator::Kind::BITWISEOR:  return RESULT(|);
+                case Operator::Kind::BITWISEXOR: return RESULT(^);
+                case Operator::Kind::EQEQ:       return RESULT(==);
+                case Operator::Kind::NEQ:        return RESULT(!=);
+                case Operator::Kind::GT:         return RESULT(>);
+                case Operator::Kind::GTEQ:       return RESULT(>=);
+                case Operator::Kind::LT:         return RESULT(<);
+                case Operator::Kind::LTEQ:       return RESULT(<=);
+                case Operator::Kind::SHL:
+                    if (rightVal >= 0 && rightVal <= 31) {
+                        // Left-shifting a negative (or really, any signed) value is undefined
+                        // behavior in C++, but not in GLSL. Do the shift on unsigned values to avoid
+                        // triggering an UBSAN error.
+                        return URESULT(<<);
+                    }
+                    context.fErrors->error(pos, "shift value out of range");
                     return nullptr;
-                }
-                return RESULT(/);
-            case Operator::Kind::PERCENT:
-                if (leftVal == std::numeric_limits<SKSL_INT>::min() && rightVal == -1) {
-                    context.fErrors->error(pos, "arithmetic overflow");
+                case Operator::Kind::SHR:
+                    if (rightVal >= 0 && rightVal <= 31) {
+                        return RESULT(>>);
+                    }
+                    context.fErrors->error(pos, "shift value out of range");
                     return nullptr;
-                }
-                return RESULT(%);
-            case Operator::Kind::BITWISEAND: return RESULT(&);
-            case Operator::Kind::BITWISEOR:  return RESULT(|);
-            case Operator::Kind::BITWISEXOR: return RESULT(^);
-            case Operator::Kind::EQEQ:       return RESULT(==);
-            case Operator::Kind::NEQ:        return RESULT(!=);
-            case Operator::Kind::GT:         return RESULT(>);
-            case Operator::Kind::GTEQ:       return RESULT(>=);
-            case Operator::Kind::LT:         return RESULT(<);
-            case Operator::Kind::LTEQ:       return RESULT(<=);
-            case Operator::Kind::SHL:
-                if (rightVal >= 0 && rightVal <= 31) {
-                    // Left-shifting a negative (or really, any signed) value is undefined behavior
-                    // in C++, but not GLSL. Do the shift on unsigned values, to avoid UBSAN.
-                    return URESULT(<<);
-                }
-                context.fErrors->error(pos, "shift value out of range");
-                return nullptr;
-            case Operator::Kind::SHR:
-                if (rightVal >= 0 && rightVal <= 31) {
-                    return RESULT(>>);
-                }
-                context.fErrors->error(pos, "shift value out of range");
-                return nullptr;
 
-            default:
-                return nullptr;
+                default:
+                    return nullptr;
+            }
+            #undef RESULT
+            #undef URESULT
         }
-        #undef RESULT
-        #undef URESULT
-    }
 
-    // Perform constant folding on pairs of floating-point literals.
-    if (left->isFloatLiteral() && right->isFloatLiteral()) {
-        SKSL_FLOAT leftVal  = left->as<Literal>().floatValue();
-        SKSL_FLOAT rightVal = right->as<Literal>().floatValue();
+        // Handle pairs of floating-point literals.
+        if (left->isFloatLiteral() && right->isFloatLiteral()) {
+            SKSL_FLOAT leftVal  = left->as<Literal>().floatValue();
+            SKSL_FLOAT rightVal = right->as<Literal>().floatValue();
 
-        #define RESULT(Op) fold_expression(pos, leftVal Op rightVal, &resultType)
-        switch (op.kind()) {
-            case Operator::Kind::PLUS:  return RESULT(+);
-            case Operator::Kind::MINUS: return RESULT(-);
-            case Operator::Kind::STAR:  return RESULT(*);
-            case Operator::Kind::SLASH: return RESULT(/);
-            case Operator::Kind::EQEQ:  return RESULT(==);
-            case Operator::Kind::NEQ:   return RESULT(!=);
-            case Operator::Kind::GT:    return RESULT(>);
-            case Operator::Kind::GTEQ:  return RESULT(>=);
-            case Operator::Kind::LT:    return RESULT(<);
-            case Operator::Kind::LTEQ:  return RESULT(<=);
-            default:                    return nullptr;
+            #define RESULT(Op) fold_expression(pos, leftVal Op rightVal, &resultType)
+            switch (op.kind()) {
+                case Operator::Kind::PLUS:  return RESULT(+);
+                case Operator::Kind::MINUS: return RESULT(-);
+                case Operator::Kind::STAR:  return RESULT(*);
+                case Operator::Kind::SLASH: return RESULT(/);
+                case Operator::Kind::EQEQ:  return RESULT(==);
+                case Operator::Kind::NEQ:   return RESULT(!=);
+                case Operator::Kind::GT:    return RESULT(>);
+                case Operator::Kind::GTEQ:  return RESULT(>=);
+                case Operator::Kind::LT:    return RESULT(<);
+                case Operator::Kind::LTEQ:  return RESULT(<=);
+                default:                    return nullptr;
+            }
+            #undef RESULT
         }
-        #undef RESULT
-    }
 
-    // Perform matrix multiplication.
-    if (op.kind() == Operator::Kind::STAR) {
-        if (leftType.isMatrix() && rightType.isMatrix()) {
-            return simplify_matrix_times_matrix(context, pos, *left, *right);
+        // Perform matrix multiplication.
+        if (op.kind() == Operator::Kind::STAR) {
+            if (leftType.isMatrix() && rightType.isMatrix()) {
+                return simplify_matrix_times_matrix(context, pos, *left, *right);
+            }
+            if (leftType.isVector() && rightType.isMatrix()) {
+                return simplify_vector_times_matrix(context, pos, *left, *right);
+            }
+            if (leftType.isMatrix() && rightType.isVector()) {
+                return simplify_matrix_times_vector(context, pos, *left, *right);
+            }
         }
-        if (leftType.isVector() && rightType.isMatrix()) {
-            return simplify_vector_times_matrix(context, pos, *left, *right);
+
+        // Perform constant folding on pairs of vectors/matrices.
+        if (is_vec_or_mat(leftType) && leftType.matches(rightType)) {
+            return simplify_componentwise(context, pos, *left, op, *right);
         }
-        if (leftType.isMatrix() && rightType.isVector()) {
-            return simplify_matrix_times_vector(context, pos, *left, *right);
+
+        // Perform constant folding on vectors/matrices against scalars, e.g.: half4(2) + 2
+        if (rightType.isScalar() && is_vec_or_mat(leftType) &&
+            leftType.componentType().matches(rightType)) {
+            return simplify_componentwise(context, pos,
+                                          *left, op, *splat_scalar(context, *right, left->type()));
+        }
+
+        // Perform constant folding on scalars against vectors/matrices, e.g.: 2 + half4(2)
+        if (leftType.isScalar() && is_vec_or_mat(rightType) &&
+            rightType.componentType().matches(leftType)) {
+            return simplify_componentwise(context, pos,
+                                          *splat_scalar(context, *left, right->type()), op, *right);
+        }
+
+        // Perform constant folding on pairs of matrices, arrays or structs.
+        if ((leftType.isMatrix() && rightType.isMatrix()) ||
+            (leftType.isArray() && rightType.isArray()) ||
+            (leftType.isStruct() && rightType.isStruct())) {
+            return simplify_constant_equality(context, pos, *left, op, *right);
         }
     }
 
-    // Perform constant folding on pairs of vectors/matrices.
-    if (is_vec_or_mat(leftType) && leftType.matches(rightType)) {
-        return simplify_componentwise(context, pos, *left, op, *right);
-    }
-
-    // Perform constant folding on vectors/matrices against scalars, e.g.: half4(2) + 2
-    if (rightType.isScalar() && is_vec_or_mat(leftType) &&
-        leftType.componentType().matches(rightType)) {
-        return simplify_componentwise(context, pos, *left, op,
-                                      *splat_scalar(context, *right, left->type()));
-    }
-
-    // Perform constant folding on scalars against vectors/matrices, e.g.: 2 + half4(2)
-    if (leftType.isScalar() && is_vec_or_mat(rightType) &&
-        rightType.componentType().matches(leftType)) {
-        return simplify_componentwise(context, pos, *splat_scalar(context, *left, right->type()),
-                                      op, *right);
-    }
-
-    // Perform constant folding on pairs of matrices, arrays or structs.
-    if ((leftType.isMatrix() && rightType.isMatrix()) ||
-        (leftType.isArray() && rightType.isArray()) ||
-        (leftType.isStruct() && rightType.isStruct())) {
-        return simplify_constant_equality(context, pos, *left, op, *right);
+    // If just one side is constant, we might still be able to simplify arithmetic expressions like
+    // `x * 1`, `x *= 1`, `x + 0`, `x * 0`, `0 / x`, etc.
+    if (leftSideIsConstant || rightSideIsConstant) {
+        if (context.fConfig->fSettings.fOptimize) {
+            if (std::unique_ptr<Expression> expr = simplify_arithmetic(context, pos, *left, op,
+                                                                       *right, resultType)) {
+                return expr;
+            }
+        }
     }
 
     // We aren't able to constant-fold.
