@@ -335,29 +335,7 @@ private:
     // into fBuffer.
     size_t fLastReadOffset = 0;
 };
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// SkJpegSourceMgr
-
-// static
-std::unique_ptr<SkJpegSourceMgr> SkJpegSourceMgr::Make(SkStream* stream, size_t bufferSize) {
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
-    if (!stream->hasPosition()) {
-        return std::make_unique<SkJpegUnseekableSourceMgr>(stream, bufferSize);
-    }
-#endif
-    if (stream->hasLength() && stream->getMemoryBase()) {
-        return std::make_unique<SkJpegMemorySourceMgr>(stream);
-    }
-    return std::make_unique<SkJpegBufferedSourceMgr>(stream, bufferSize);
-}
-
-SkJpegSourceMgr::SkJpegSourceMgr(SkStream* stream) : fStream(stream) {}
-
-SkJpegSourceMgr::~SkJpegSourceMgr() = default;
-
-#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 sk_sp<SkData> SkJpegSourceMgr::copyParameters(const SkJpegSegment& segment,
                                               const void* signature,
                                               const size_t signatureLength) {
@@ -417,5 +395,33 @@ sk_sp<SkData> SkJpegSourceMgr::copyParameters(const SkJpegSegment& segment,
 
     return result;
 }
+
+// static
+std::unique_ptr<SkJpegSourceMgr> SkJpegSourceMgr::Make(SkStream* stream, size_t bufferSize) {
+#ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
+    if (!stream->hasPosition()) {
+        return std::make_unique<SkJpegUnseekableSourceMgr>(stream, bufferSize);
+    }
+#endif
+    if (stream->hasLength() && stream->getMemoryBase()) {
+        return std::make_unique<SkJpegMemorySourceMgr>(stream);
+    }
+    return std::make_unique<SkJpegBufferedSourceMgr>(stream, bufferSize);
+}
+
+SkJpegSourceMgr::SkJpegSourceMgr(SkStream* stream) : fStream(stream) {}
+
+SkJpegSourceMgr::~SkJpegSourceMgr() = default;
+
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
-#endif  // SK_CODEC_DECODES_JPEG
+#else // SK_CODEC_DECODES_JPEG
+
+std::unique_ptr<SkJpegSourceMgr> SkJpegSourceMgr::Make(SkStream* stream, size_t bufferSize) {
+    return nullptr;
+}
+
+SkJpegSourceMgr::SkJpegSourceMgr(SkStream* stream): fStream(nullptr) {}
+
+SkJpegSourceMgr::~SkJpegSourceMgr() = default;
+
+#endif
