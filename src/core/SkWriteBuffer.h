@@ -150,11 +150,8 @@ private:
 };
 
 enum SkWriteBufferImageFlags {
-    kVersion_bits   = 8,
-    kCurrVersion    = 0,
-
-    kHasSubsetRect  = 1 << 8,
-    kHasMipmap      = 1 << 9,
+    kHasSubsetRect  = 1 << 8, // Unused after kNoSerializedMipMaps
+    kHasMipmap      = 1 << 9, // Unused after kNoSerializedMipMaps
     kUnpremul       = 1 << 10,
 };
 
