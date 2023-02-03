@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33bf26c4_acd47abc",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-03T19:20:25Z",
+      "side": 1,
+      "message": "Ack (this section was reverted)",
+      "parentUuid": "f5f700b9_092646a9",
+      "range": {
+        "startLine": 404,
+        "startChar": 0,
+        "endLine": 405,
+        "endChar": 67
+      },
+      "revId": "c8b5aac03882663b1cc4a516f1a65a8c59b3d1d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e491822_ebc36a63",
@@ -55,6 +79,24 @@
       "side": 1,
       "message": "! You\u0027re absolutely right. They don\u0027t need to all match. They just need to fit the criteria (finite, nonzero, constant).",
       "parentUuid": "5e491822_ebc36a63",
+      "revId": "c8b5aac03882663b1cc4a516f1a65a8c59b3d1d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a577fe1a_f36b77a3",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-03T19:20:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b27efa6_c2f5a98c",
       "revId": "c8b5aac03882663b1cc4a516f1a65a8c59b3d1d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
