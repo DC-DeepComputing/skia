@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5f700b9_092646a9",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-03T17:40:03Z",
+      "side": 1,
+      "message": "`return is_any_constant_value(expr) \u003d\u003d value;`, to match the established pattern?",
+      "range": {
+        "startLine": 404,
+        "startChar": 0,
+        "endLine": 405,
+        "endChar": 67
+      },
+      "revId": "c8b5aac03882663b1cc4a516f1a65a8c59b3d1d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e491822_ebc36a63",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-03T17:40:03Z",
+      "side": 1,
+      "message": "Vector division isn\u0027t common, but if someone did use it, we don\u0027t actually *need* all elements to be the same, right? eg, we could convert:\n\n    v \u003d v / vec3(1, 2, 4);\n\nto\n\n    v \u003d v * vec3(1, 0.5, 0.25);",
+      "revId": "c8b5aac03882663b1cc4a516f1a65a8c59b3d1d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
