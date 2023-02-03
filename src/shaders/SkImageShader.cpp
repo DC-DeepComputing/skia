@@ -461,6 +461,7 @@ static SkSamplingOptions tweak_sampling(SkSamplingOptions sampling, const SkMatr
 
 bool SkImageShader::appendStages(const SkStageRec& rec, const MatrixRec& mRec) const {
     SkASSERT(!needs_subset(fImage.get(), fSubset));  // TODO(skbug.com/12784)
+
     // We only support certain sampling options in stages so far
     auto sampling = fSampling;
     if (sampling.isAniso()) {
@@ -473,40 +474,50 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const MatrixRec& mRec) c
     SkRasterPipeline* p = rec.fPipeline;
     SkArenaAlloc* alloc = rec.fAlloc;
 
-    SkMatrix totalInverse;
+    SkMatrix baseInv;
     // If the total matrix isn't valid then we will always access the base MIP level.
     if (mRec.totalMatrixIsValid()) {
-        if (!mRec.totalInverse(&totalInverse)) {
+        if (!mRec.totalInverse(&baseInv)) {
             return false;
         }
-        totalInverse.normalizePerspective();
+        baseInv.normalizePerspective();
     }
 
     SkASSERT(!sampling.useCubic || sampling.mipmap == SkMipmapMode::kNone);
-    auto* access = SkMipmapAccessor::Make(alloc, fImage.get(), totalInverse, sampling.mipmap);
+    auto* access = SkMipmapAccessor::Make(alloc, fImage.get(), baseInv, sampling.mipmap);
     if (!access) {
         return false;
     }
-    SkPixmap pm;
-    SkMatrix sampleM;
-    std::tie(pm, sampleM) = access->level();
+
+    SkPixmap upper;
+    SkMatrix upperInv;
+    std::tie(upper, upperInv) = access->level();
 
     if (!sampling.useCubic) {
         // TODO: can tweak_sampling sometimes for cubic too when B=0
         if (mRec.totalMatrixIsValid()) {
-            SkMatrix totalSampleM = SkMatrix::Concat(sampleM, totalInverse);
-            sampling = tweak_sampling(sampling, totalSampleM);
+            sampling = tweak_sampling(sampling, SkMatrix::Concat(upperInv, baseInv));
         }
     }
-    if (!mRec.apply(rec, sampleM)) {
+
+    SkPixmap lowerPixmap;
+    SkMatrix lowerInv;
+    SkPixmap* lower = nullptr;
+    float lowerWeight = access->lowerWeight();
+    if (lowerWeight > 0) {
+        std::tie(lowerPixmap, lowerInv) = access->lowerLevel();
+        lower = &lowerPixmap;
+    }
+
+    if (!mRec.apply(rec, upperInv)) {
         return false;
     }
 
     auto gather = alloc->make<SkRasterPipeline_GatherCtx>();
-    gather->pixels = pm.addr();
-    gather->stride = pm.rowBytesAsPixels();
-    gather->width = pm.width();
-    gather->height = pm.height();
+    gather->pixels = upper.addr();
+    gather->stride = upper.rowBytesAsPixels();
+    gather->width = upper.width();
+    gather->height = upper.height();
 
     if (sampling.useCubic) {
         CubicResamplerMatrix(sampling.cubic.B, sampling.cubic.C).getColMajor(gather->weights);
@@ -514,10 +525,10 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const MatrixRec& mRec) c
 
     auto limit_x = alloc->make<SkRasterPipeline_TileCtx>(),
          limit_y = alloc->make<SkRasterPipeline_TileCtx>();
-    limit_x->scale = pm.width();
-    limit_x->invScale = 1.0f / pm.width();
-    limit_y->scale = pm.height();
-    limit_y->invScale = 1.0f / pm.height();
+    limit_x->scale = upper.width();
+    limit_x->invScale = 1.0f / upper.width();
+    limit_y->scale = upper.height();
+    limit_y->invScale = 1.0f / upper.height();
 
     // We would like an image that is mapped 1:1 with device pixels but at a half pixel offset
     // to select every pixel from the src image once. Our rasterizer biases upward. That is a rect
@@ -572,7 +583,7 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const MatrixRec& mRec) c
         }
 
         void* ctx = gather;
-        switch (pm.colorType()) {
+        switch (upper.colorType()) {
             case kAlpha_8_SkColorType:      p->append(SkRasterPipelineOp::gather_a8,    ctx); break;
             case kA16_unorm_SkColorType:    p->append(SkRasterPipelineOp::gather_a16,   ctx); break;
             case kA16_float_SkColorType:    p->append(SkRasterPipelineOp::gather_af16,  ctx); break;
@@ -638,11 +649,11 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const MatrixRec& mRec) c
     };
 
     auto append_misc = [&] {
-        SkColorSpace* cs = pm.colorSpace();
-        SkAlphaType   at = pm.alphaType();
+        SkColorSpace* cs = upper.colorSpace();
+        SkAlphaType   at = upper.alphaType();
 
         // Color for alpha-only images comes from the paint.
-        if (SkColorTypeIsAlphaOnly(pm.colorType()) && !fRaw) {
+        if (SkColorTypeIsAlphaOnly(upper.colorType()) && !fRaw) {
             SkColor4f rgb = rec.fPaint.getColor4f();
             p->append_set_rgb(alloc, rgb);
 
@@ -666,10 +677,11 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const MatrixRec& mRec) c
     };
 
     // Check for fast-path stages.
-    auto ct = pm.colorType();
+    SkColorType ct = upper.colorType();
     if (true
         && (ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType)
         && !sampling.useCubic && sampling.filter == SkFilterMode::kLinear
+        && sampling.mipmap != SkMipmapMode::kLinear
         && fTileModeX == SkTileMode::kClamp && fTileModeY == SkTileMode::kClamp) {
 
         p->append(SkRasterPipelineOp::bilerp_clamp_8888, gather);
@@ -766,12 +778,17 @@ skvm::Color SkImageShader::program(skvm::Builder* p,
         }
         baseInv.normalizePerspective();
     }
+
+    SkASSERT(!sampling.useCubic || sampling.mipmap == SkMipmapMode::kNone);
     auto* access = SkMipmapAccessor::Make(alloc, fImage.get(), baseInv, sampling.mipmap);
     if (!access) {
         return {};
     }
 
-    auto [upper, upperInv] = access->level();
+    SkPixmap upper;
+    SkMatrix upperInv;
+    std::tie(upper, upperInv) = access->level();
+
     if (!sampling.useCubic) {
         // TODO: can tweak_sampling sometimes for cubic too when B=0
         if (mRec.totalMatrixIsValid()) {
@@ -904,7 +921,7 @@ skvm::Color SkImageShader::program(skvm::Builder* p,
         return c;
     };
 
-    auto sample_level = [&](const SkPixmap& pm, const SkMatrix& inv, skvm::Coord local) {
+    auto sample_level = [&](const SkPixmap& pm, skvm::Coord local) {
         const Uniforms u = setup_uniforms(pm);
 
         if (sampling.useCubic) {
@@ -978,7 +995,7 @@ skvm::Color SkImageShader::program(skvm::Builder* p,
         }
     };
 
-    skvm::Color c = sample_level(upper, upperInv, upperLocal);
+    skvm::Color c = sample_level(upper, upperLocal);
     if (lower) {
         skvm::Coord lowerLocal = origLocal;
         if (!mRec.apply(p, &lowerLocal, uniforms, lowerInv)) {
@@ -986,7 +1003,7 @@ skvm::Color SkImageShader::program(skvm::Builder* p,
         }
         // lower * weight + upper * (1 - weight)
         c = lerp(c,
-                 sample_level(*lower, lowerInv, lowerLocal),
+                 sample_level(*lower, lowerLocal),
                  p->uniformF(uniforms->pushF(lowerWeight)));
     }
 
