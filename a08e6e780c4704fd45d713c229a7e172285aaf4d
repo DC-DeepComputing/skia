@@ -37,6 +37,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c5fea17c_ad10b00d",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1132,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-03T22:42:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bc88136_755cff78",
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "61e213d0_19c32e65",
         "filename": "src/codec/SkJpegXmp.cpp",
         "patchSetId": 7
@@ -71,6 +89,24 @@
       "writtenOn": "2023-02-03T16:33:15Z",
       "side": 1,
       "message": "We could just defer this to outside the loop (right before we check), and do a single write() against xmpExtendedData, right? Seems simpler?",
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "958c2ba0_8d9dea7c",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-03T22:42:29Z",
+      "side": 1,
+      "message": "good point -- done.",
+      "parentUuid": "0fc5c871_7d773533",
       "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -123,6 +159,24 @@
       "writtenOn": "2023-02-03T16:33:15Z",
       "side": 1,
       "message": "nit: redundant, as we also need the header included?",
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88577367_bb2b0bf4",
+        "filename": "src/codec/SkJpegXmp.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-03T22:42:29Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "73b5d186_f55d74e8",
       "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
