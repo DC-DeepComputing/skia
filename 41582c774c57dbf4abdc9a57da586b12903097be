@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be58f2df_d237e2a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-03T14:25:56Z",
+      "side": 1,
+      "message": "Thanks for catching those mistakes. I surprised we didn\u0027t get gold differences, but this would only occur with very large emoji. Hummmm...",
+      "revId": "41582c774c57dbf4abdc9a57da586b12903097be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
