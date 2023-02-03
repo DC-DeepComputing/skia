@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1872f4e7_dc6cb681",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-03T16:45:17Z",
+      "side": 1,
+      "message": "This allows dm to run in Debug with Graphite-Dawn and progress through most of the tests and gms. One gm, runtime_intrinsics_matrix, has a shader compilation error\nwhich I didn\u0027t address -- we can skip that one in the test jobs for now. However, we are running out of memory before dm can complete. I believe there\u0027s a leak in Dawn regarding Metal command buffers.",
+      "revId": "4d61f00501c19b449db9fda65346d2cb754bd79d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
