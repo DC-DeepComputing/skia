@@ -18,6 +18,52 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0628f1d2_971cf9e7",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-03T18:06:54Z",
+      "side": 1,
+      "message": "Suggestion: add \" // tightly packed\" after this.",
+      "range": {
+        "startLine": 295,
+        "startChar": 36,
+        "endLine": 295,
+        "endChar": 37
+      },
+      "revId": "805e57ad85df8be27851ce1c0d9e43d9bc440a9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff530cc_33a04675",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-03T18:06:54Z",
+      "side": 1,
+      "message": "This should be copyData[i].fMipLevel.",
+      "range": {
+        "startLine": 296,
+        "startChar": 63,
+        "endLine": 296,
+        "endChar": 64
+      },
+      "revId": "805e57ad85df8be27851ce1c0d9e43d9bc440a9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b151ce45_8e33060b",
@@ -36,6 +82,76 @@
         "startChar": 0,
         "endLine": 300,
         "endChar": 45
+      },
+      "revId": "805e57ad85df8be27851ce1c0d9e43d9bc440a9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd4002d0_30e75f39",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-03T18:06:54Z",
+      "side": 1,
+      "message": "Suggestion: you might consider using same layout for these, i.e., line by line like imageExtent, since they\u0027re so similar in form. Up to you.",
+      "range": {
+        "startLine": 297,
+        "startChar": 8,
+        "endLine": 300,
+        "endChar": 45
+      },
+      "revId": "805e57ad85df8be27851ce1c0d9e43d9bc440a9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4aef339_fd12840a",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-03T18:06:54Z",
+      "side": 1,
+      "message": "An array of copyData is just a general batch of stuff to be copied. It could be a mipchain, in which case the miplevel would be different for each copyData element. Or it could be copying data into different (hopefully not overlapping...) subregions of a texture.",
+      "parentUuid": "b151ce45_8e33060b",
+      "range": {
+        "startLine": 289,
+        "startChar": 0,
+        "endLine": 300,
+        "endChar": 45
+      },
+      "revId": "805e57ad85df8be27851ce1c0d9e43d9bc440a9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "713a4ed1_44c8674f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-03T18:06:54Z",
+      "side": 1,
+      "message": "Nit: this is a little hard to read. I\u0027d probably do something like:\nVULKAN_CALL(x,\n            y(arg1,\n              arg2,\n              arg3));\n              \nThe way it is looks like fPrimaryCommandBuffer is an argument to VULKAN_CALL.\n\n(and my formatting is not showing up but the y is under the x, and the args line up).",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 303,
+        "endChar": 16
       },
       "revId": "805e57ad85df8be27851ce1c0d9e43d9bc440a9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
