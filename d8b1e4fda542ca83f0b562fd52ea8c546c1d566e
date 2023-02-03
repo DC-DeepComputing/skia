@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10ff1e01_def2e768",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-03T14:04:50Z",
+      "side": 1,
+      "message": "fMaskAction !?",
+      "range": {
+        "startLine": 359,
+        "startChar": 8,
+        "endLine": 359,
+        "endChar": 19
+      },
+      "revId": "d8b1e4fda542ca83f0b562fd52ea8c546c1d566e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd602ee2_728b0261",
+        "filename": "src/core/SkStrike.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-03T14:04:50Z",
+      "side": 1,
+      "message": "Is this right ?",
+      "range": {
+        "startLine": 377,
+        "startChar": 55,
+        "endLine": 377,
+        "endChar": 66
+      },
+      "revId": "d8b1e4fda542ca83f0b562fd52ea8c546c1d566e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
