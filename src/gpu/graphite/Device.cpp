@@ -9,6 +9,7 @@
 
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
+#include "src/core/SkColorSpaceXformSteps.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
@@ -66,6 +67,17 @@ using ReadPixelsContext  = SkImage::ReadPixelsContext;
 
 namespace skgpu::graphite {
 
+/** Converts an SkColor4f to the destination color space. */
+SkColor4f SkColor4fPrepForDst(SkColor4f srcColor, const SkColorInfo& dstColorInfo) {
+    // xform from sRGB to the destination colorspace
+    SkColorSpaceXformSteps steps(sk_srgb_singleton(),       kUnpremul_SkAlphaType,
+                                 dstColorInfo.colorSpace(), kUnpremul_SkAlphaType);
+
+    SkColor4f result = srcColor;
+    steps.apply(result.vec());
+    return result;
+}
+
 namespace {
 
 static const SkStrokeRec kFillStyle(SkStrokeRec::kFill_InitStyle);
@@ -93,7 +105,7 @@ bool paint_depends_on_dst(SkColor4f color,
 }
 
 bool paint_depends_on_dst(const PaintParams& paintParams) {
-    return paint_depends_on_dst(paintParams.color(), paintParams.shader(),
+    return paint_depends_on_dst(paintParams.color7(), paintParams.shader(),
                                 paintParams.colorFilter(), paintParams.finalBlender());
 }
 
@@ -105,16 +117,20 @@ bool paint_depends_on_dst(const SkPaint& paint) {
 }
 
 /** If the paint can be reduced to a solid flood-fill, determine the correct color to fill with. */
-std::optional<SkColor4f> extract_paint_color(const SkPaint& paint) {
+std::optional<SkColor4f> extract_paint_color(const SkPaint& paint,
+                                             const SkColorInfo& dstColorInfo) {
     SkASSERT(!paint_depends_on_dst(paint));
     if (paint.getShader()) {
         return std::nullopt;
     }
+
+    SkColor4f dstPaintColor = SkColor4fPrepForDst(paint.getColor4f(), dstColorInfo);
+
     if (SkColorFilter* filter = paint.getColorFilter()) {
-        // TODO: SkColorSpace support
-        return filter->filterColor4f(paint.getColor4f(), sk_srgb_singleton(), sk_srgb_singleton());
+        SkColorSpace* dstCS = dstColorInfo.colorSpace();
+        return filter->filterColor4f(dstPaintColor, dstCS, dstCS);
     }
-    return paint.getColor4f();
+    return dstPaintColor;
 }
 
 SkIRect rect_to_pixelbounds(const Rect& r) {
@@ -215,12 +231,13 @@ private:
     SkSTArenaAllocWithReset<4 * sizeof(IntersectionTree)> fTreeStore;
 };
 
-sk_sp<Device> Device::Make(Recorder* recorder,
+sk_sp<Device> Device::Make1(Recorder* recorder,
                            const SkImageInfo& ii,
                            skgpu::Budgeted budgeted,
                            Mipmapped mipmapped,
                            const SkSurfaceProps& props,
-                           bool addInitialClear) {
+                           bool addInitialClear,
+                           bool foo) {
     if (!recorder) {
         return nullptr;
     }
@@ -236,23 +253,23 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
-    return Make(recorder, std::move(target), ii.colorInfo(), props, addInitialClear);
+    return Make2(recorder, std::move(target), ii.colorInfo(), props, addInitialClear, foo);
 }
 
-sk_sp<Device> Device::Make(Recorder* recorder,
+sk_sp<Device> Device::Make2(Recorder* recorder,
                            sk_sp<TextureProxy> target,
                            const SkColorInfo& colorInfo,
                            const SkSurfaceProps& props,
-                           bool addInitialClear) {
-    return Make(recorder, target, target->dimensions(), colorInfo, props, addInitialClear);
+                           bool addInitialClear, bool foo) {
+    return Make3(recorder, target, target->dimensions(), colorInfo, props, addInitialClear, foo);
 }
 
-sk_sp<Device> Device::Make(Recorder* recorder,
+sk_sp<Device> Device::Make3(Recorder* recorder,
                            sk_sp<TextureProxy> target,
                            SkISize deviceSize,
                            const SkColorInfo& colorInfo,
                            const SkSurfaceProps& props,
-                           bool addInitialClear) {
+                           bool addInitialClear, bool foo) {
     if (!recorder) {
         return nullptr;
     }
@@ -260,7 +277,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
-    sk_sp<DrawContext> dc = DrawContext::Make(std::move(target), deviceSize, colorInfo, props);
+    sk_sp<DrawContext> dc = DrawContext::Make(std::move(target), deviceSize, colorInfo, props, foo);
     if (!dc) {
         return nullptr;
     }
@@ -331,12 +348,12 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& info, const SkPaint*) {
     // Skia's convention is to only clear a device if it is non-opaque.
     bool addInitialClear = !info.fInfo.isOpaque();
 
-    return Make(fRecorder,
+    return Make1(fRecorder,
                 info.fInfo,
                 skgpu::Budgeted::kYes,
                 Mipmapped::kNo,
                 props,
-                addInitialClear)
+                addInitialClear, true)
             .release();
 }
 
@@ -601,7 +618,8 @@ void Device::drawPaint(const SkPaint& paint) {
     // entire final surface.
     if (this->clipIsWideOpen() && !fDC->target()->isFullyLazy()) {
         if (!paint_depends_on_dst(paint)) {
-            if (std::optional<SkColor4f> color = extract_paint_color(paint)) {
+            if (std::optional<SkColor4f> color = extract_paint_color(paint,
+                                                                     fDC->imageInfo().colorInfo())) {
                 // do fullscreen clear
                 fDC->clear(*color);
                 return;

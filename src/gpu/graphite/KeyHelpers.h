@@ -82,7 +82,7 @@ struct GradientShaderBlocks {
                      float bias, float scale,
                      SkTileMode,
                      int numStops,
-                     SkColor4f* colors,
+                     const SkColor4f* colors,
                      float* offsets);
 
         bool operator==(const GradientData& rhs) const {

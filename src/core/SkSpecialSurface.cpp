@@ -120,12 +120,12 @@ sk_sp<SkSpecialSurface> SkSpecialSurface::MakeGraphite(skgpu::graphite::Recorder
         return nullptr;
     }
 
-    sk_sp<Device> device = Device::Make(recorder,
+    sk_sp<Device> device = Device::Make1(recorder,
                                         ii,
                                         skgpu::Budgeted::kYes,
                                         Mipmapped::kNo,
                                         {props.flags(), kUnknown_SkPixelGeometry},
-                                        /* addInitialClear= */ false);
+                                        /* addInitialClear= */ false, true);
     if (!device) {
         return nullptr;
     }

@@ -129,9 +129,9 @@ sk_sp<SkSurface> Surface::MakeGraphite(Recorder* recorder,
                                        skgpu::Budgeted budgeted,
                                        Mipmapped mipmapped,
                                        const SkSurfaceProps* props) {
-    sk_sp<Device> device = Device::Make(recorder, info, budgeted, mipmapped,
+    sk_sp<Device> device = Device::Make1(recorder, info, budgeted, mipmapped,
                                         SkSurfacePropsCopyOrDefault(props),
-                                        /* addInitialClear= */ true);
+                                        /* addInitialClear= */ true, true);
     if (!device) {
         return nullptr;
     }
@@ -204,11 +204,11 @@ sk_sp<SkSurface> SkSurface::MakeGraphiteFromBackendTexture(Recorder* recorder,
 
     sk_sp<TextureProxy> proxy(new TextureProxy(std::move(texture)));
 
-    sk_sp<Device> device = Device::Make(recorder,
+    sk_sp<Device> device = Device::Make2(recorder,
                                         std::move(proxy),
                                         info,
                                         SkSurfacePropsCopyOrDefault(props),
-                                        /* addInitialClear= */ false);
+                                        /* addInitialClear= */ false, true);
     if (!device) {
         return nullptr;
     }

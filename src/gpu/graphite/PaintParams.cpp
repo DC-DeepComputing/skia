@@ -26,7 +26,7 @@ PaintParams::PaintParams(const SkColor4f& color,
                          sk_sp<SkColorFilter> colorFilter,
                          sk_sp<SkBlender> primitiveBlender,
                          bool skipColorXform)
-        : fColor(color)
+        : fColor7(color)
         , fFinalBlender(std::move(finalBlender))
         , fShader(std::move(shader))
         , fColorFilter(std::move(colorFilter))
@@ -36,12 +36,14 @@ PaintParams::PaintParams(const SkColor4f& color,
 PaintParams::PaintParams(const SkPaint& paint,
                          sk_sp<SkBlender> primitiveBlender,
                          bool skipColorXform)
-        : fColor(paint.getColor4f())
+        : fColor7(paint.getColor4f())
         , fFinalBlender(paint.refBlender())
         , fShader(paint.refShader())
         , fColorFilter(paint.refColorFilter())
         , fPrimitiveBlender(std::move(primitiveBlender))
-        , fSkipColorXform(skipColorXform) {}
+        , fSkipColorXform(skipColorXform) {
+
+}
 
 PaintParams::PaintParams(const PaintParams& other) = default;
 PaintParams::~PaintParams() = default;
@@ -60,13 +62,17 @@ sk_sp<SkColorFilter> PaintParams::refColorFilter() const { return fColorFilter; 
 
 sk_sp<SkBlender> PaintParams::refPrimitiveBlender() const { return fPrimitiveBlender; }
 
+SkColor4f SkColor4fPrepForDst(SkColor4f srcColor, const SkColorInfo& dstColorInfo);
+
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
 
+    SkColor4f dstPaintColor = SkColor4fPrepForDst(fColor7, keyContext.dstColorInfo());
+
     // TODO: figure out how we can omit this block when the Paint's color isn't used.
     SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
-                                      fColor.makeOpaque().premul());
+                                      dstPaintColor.makeOpaque().premul());
     builder->endBlock();
 
     if (fShader) {
@@ -79,7 +85,7 @@ void PaintParams::toKey(const KeyContext& keyContext,
     }
 
     // Apply the paint's alpha value.
-    auto alphaColorFilter = SkColorFilters::Blend({0, 0, 0, fColor[3]},
+    auto alphaColorFilter = SkColorFilters::Blend({0, 0, 0, fColor7.fA},
                                                   /*colorSpace*/nullptr,
                                                   SkBlendMode::kDstIn);
     if (alphaColorFilter) {

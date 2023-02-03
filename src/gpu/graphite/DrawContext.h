@@ -51,7 +51,7 @@ public:
     static sk_sp<DrawContext> Make(sk_sp<TextureProxy> target,
                                    SkISize deviceSize,
                                    const SkColorInfo&,
-                                   const SkSurfaceProps&);
+                                   const SkSurfaceProps&, bool);
 
     ~DrawContext() override;
 

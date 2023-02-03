@@ -127,7 +127,7 @@ struct Sink {
         const = 0;
 
     // Override the color space of this Sink, after creation
-    virtual void setColorSpace(sk_sp<SkColorSpace>) {}
+    virtual void setColorSpace7(sk_sp<SkColorSpace>) = 0;
 
     // Force Tasks using this Sink to run on the main thread?
     virtual bool serial() const { return false; }
@@ -138,7 +138,7 @@ struct Sink {
     virtual SinkFlags flags() const = 0;
 
     /** Returns the color type and space used by the sink. */
-    virtual SkColorInfo colorInfo() const { return SkColorInfo(); }
+    virtual SkColorInfo colorInfo7() const = 0;
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -372,6 +372,9 @@ public:
     Result draw(const Src& src, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return ""; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kNull, SinkFlags::kDirect }; }
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
 };
 
 class GPUSink : public Sink {
@@ -397,9 +400,9 @@ public:
         return SinkFlags{ SinkFlags::kGPU, SinkFlags::kDirect, ms };
     }
     const GrContextOptions& baseContextOptions() const { return fBaseContextOptions; }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
-    SkColorInfo colorInfo() const override {
-        return SkColorInfo(fColorType, fAlphaType, fColorSpace);
+    void setColorSpace7(sk_sp<SkColorSpace> colorSpace) override { fColorSpace1 = colorSpace; }
+    SkColorInfo colorInfo7() const override {
+        return SkColorInfo(fColorType, fAlphaType, fColorSpace1);
     }
 
 protected:
@@ -414,7 +417,7 @@ private:
     uint32_t                                          fSurfaceFlags;
     SkColorType                                       fColorType;
     SkAlphaType                                       fAlphaType;
-    sk_sp<SkColorSpace>                               fColorSpace;
+    sk_sp<SkColorSpace>                               fColorSpace1;
     GrContextOptions                                  fBaseContextOptions;
     sk_gpu_test::MemoryCache                          fMemoryCache;
 };
@@ -540,6 +543,10 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "pdf"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
+
     bool fPDFA;
     SkScalar fRasterDpi;
 };
@@ -551,6 +558,9 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "xps"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
 };
 
 class RasterSink : public Sink {
@@ -560,11 +570,15 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "png"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kRaster, SinkFlags::kDirect }; }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
+    void setColorSpace7(sk_sp<SkColorSpace> colorSpace) override { fColorSpace3 = colorSpace; }
+
+    SkColorInfo colorInfo7() const override {
+        return SkColorInfo(fColorType, kPremul_SkAlphaType /*??*/, fColorSpace3);
+    }
 
 private:
     SkColorType         fColorType;
-    sk_sp<SkColorSpace> fColorSpace;
+    sk_sp<SkColorSpace> fColorSpace3;
 };
 
 class SKPSink : public Sink {
@@ -574,6 +588,9 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "skp"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
 };
 
 class DebugSink : public Sink {
@@ -581,6 +598,9 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "json"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
 };
 
 class SVGSink : public Sink {
@@ -590,6 +610,9 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "svg"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
 
 private:
     int fPageIndex;
@@ -607,16 +630,16 @@ public:
     bool serial() const override { return true; }
     const char* fileExtension() const override { return "png"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kGPU, SinkFlags::kDirect }; }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
-    SkColorInfo colorInfo() const override {
-        return SkColorInfo(fColorType, fAlphaType, fColorSpace);
+    void setColorSpace7(sk_sp<SkColorSpace> colorSpace) override { fColorSpace2 = colorSpace; }
+    SkColorInfo colorInfo7() const override {
+        return SkColorInfo(fColorType, fAlphaType, fColorSpace2);
     }
 
 private:
     ContextType fContextType;
     SkColorType fColorType;
     SkAlphaType fAlphaType;
-    sk_sp<SkColorSpace> fColorSpace;
+    sk_sp<SkColorSpace> fColorSpace2;
 };
 
 #endif
@@ -633,8 +656,8 @@ public:
         flags.approach = SinkFlags::kIndirect;
         return flags;
     }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override {
-        fSink->setColorSpace(colorSpace);
+    void setColorSpace7(sk_sp<SkColorSpace> colorSpace) override {
+        fSink->setColorSpace7(colorSpace);
     }
 protected:
     std::unique_ptr<Sink> fSink;
@@ -644,6 +667,10 @@ class ViaMatrix : public Via {
 public:
     ViaMatrix(SkMatrix, Sink*);
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
+
 private:
     const SkMatrix fMatrix;
 };
@@ -652,6 +679,10 @@ class ViaUpright : public Via {
 public:
     ViaUpright(SkMatrix, Sink*);
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
+
 private:
     const SkMatrix fMatrix;
 };
@@ -660,24 +691,36 @@ class ViaSerialization : public Via {
 public:
     explicit ViaSerialization(Sink* sink) : Via(sink) {}
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
 };
 
 class ViaPicture : public Via {
 public:
     explicit ViaPicture(Sink* sink) : Via(sink) {}
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
 };
 
 class ViaRuntimeBlend : public Via {
 public:
     explicit ViaRuntimeBlend(Sink* sink) : Via(sink) {}
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
 };
 
 class ViaSVG : public Via {
 public:
     explicit ViaSVG(Sink* sink) : Via(sink) {}
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+    void setColorSpace7(sk_sp<SkColorSpace>) override {}
+    SkColorInfo colorInfo7() const override { return SkColorInfo(); }
 };
 
 }  // namespace DM

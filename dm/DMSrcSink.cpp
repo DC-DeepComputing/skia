@@ -1490,7 +1490,7 @@ Result GPUSink::draw(const Src& src, SkBitmap* dst, SkWStream* dstStream, SkStri
 sk_sp<SkSurface> GPUSink::createDstSurface(GrDirectContext* context, SkISize size) const {
     sk_sp<SkSurface> surface;
 
-    SkImageInfo info = SkImageInfo::Make(size, fColorType, fAlphaType, fColorSpace);
+    SkImageInfo info = SkImageInfo::Make(size, fColorType, fAlphaType, fColorSpace1);
     SkSurfaceProps props(fSurfaceFlags, kRGB_H_SkPixelGeometry);
 
     switch (fSurfType) {
@@ -1524,7 +1524,7 @@ bool GPUSink::readBack(SkSurface* surface, SkBitmap* dst) const {
     SkCanvas* canvas = surface->getCanvas();
     SkISize size = surface->imageInfo().dimensions();
 
-    SkImageInfo info = SkImageInfo::Make(size, fColorType, fAlphaType, fColorSpace);
+    SkImageInfo info = SkImageInfo::Make(size, fColorType, fAlphaType, fColorSpace1);
     dst->allocPixels(info);
     return canvas->readPixels(*dst, 0, 0);
 }
@@ -2161,7 +2161,7 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
     SkAlphaType alphaType = kPremul_SkAlphaType;
     (void)SkColorTypeValidateAlphaType(fColorType, alphaType, &alphaType);
 
-    dst->allocPixelsFlags(SkImageInfo::Make(size, fColorType, alphaType, fColorSpace),
+    dst->allocPixelsFlags(SkImageInfo::Make(size, fColorType, alphaType, fColorSpace3),
                           SkBitmap::kZeroPixels_AllocFlag);
 
     SkCanvas canvas(*dst, SkSurfaceProps(0, kRGB_H_SkPixelGeometry));
@@ -2182,7 +2182,7 @@ Result GraphiteSink::draw(const Src& src,
                           SkBitmap* dst,
                           SkWStream* dstStream,
                           SkString* log) const {
-    SkImageInfo ii = SkImageInfo::Make(src.size(), fColorType, fAlphaType, fColorSpace);
+    SkImageInfo ii = SkImageInfo::Make(src.size(), fColorType, fAlphaType, fColorSpace2);
 
     skiatest::graphite::ContextFactory factory;
     auto [_, context] = factory.getContextInfo(fContextType);
