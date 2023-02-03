@@ -23,6 +23,24 @@ skia_cc_library(
     ],
 )
 
+# This target is the same as skia_public, but sets no copts. This may be easier for some
+# clients to deal with if they need more control about how everything is compiled.
+skia_cc_library(
+    name = "skia_public_no_copts",
+    srcs = [
+        "//include:private_hdrs",
+        "//include:srcs",
+        "//src:private_hdrs",
+        "//src:srcs",
+    ],
+    hdrs = ["//include:public_hdrs"],
+    copts = [],
+    defines = DEFAULT_DEFINES,
+    local_defines = DEFAULT_LOCAL_DEFINES,
+    visibility = ["//visibility:public"],
+    deps = ["//src:deps"],
+)
+
 # This target exposes headers beyond the public, supported API. It is intended to be
 # used by Skia's tests and tooling.
 skia_cc_library(
