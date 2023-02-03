@@ -39,7 +39,7 @@ namespace skgpu::graphite {
 sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
                                      SkISize deviceSize,
                                      const SkColorInfo& colorInfo,
-                                     const SkSurfaceProps& props) {
+                                     const SkSurfaceProps& props, bool) {
     if (!target) {
         return nullptr;
     }

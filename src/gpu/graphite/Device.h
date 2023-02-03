@@ -44,23 +44,23 @@ class Device final : public SkBaseDevice  {
 public:
     ~Device() override;
 
-    static sk_sp<Device> Make(Recorder*,
+    static sk_sp<Device> Make1(Recorder*,
                               const SkImageInfo&,
                               skgpu::Budgeted,
                               Mipmapped,
                               const SkSurfaceProps&,
-                              bool addInitialClear);
-    static sk_sp<Device> Make(Recorder*,
+                              bool addInitialClear, bool);
+    static sk_sp<Device> Make2(Recorder*,
                               sk_sp<TextureProxy>,
                               const SkColorInfo&,
                               const SkSurfaceProps&,
-                              bool addInitialClear);
-    static sk_sp<Device> Make(Recorder* recorder,
+                              bool addInitialClear, bool);
+    static sk_sp<Device> Make3(Recorder* recorder,
                               sk_sp<TextureProxy>,
                               SkISize deviceSize,
                               const SkColorInfo&,
                               const SkSurfaceProps&,
-                              bool addInitialClear);
+                              bool addInitialClear, bool);
 
     Device* asGraphiteDevice() override { return this; }
 

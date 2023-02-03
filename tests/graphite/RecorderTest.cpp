@@ -19,12 +19,12 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecorderDevicePtrTest, reporter, context) {
 
     SkImageInfo info = SkImageInfo::Make({16, 16}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
-    sk_sp<Device> device1 = Device::Make(recorder.get(),
+    sk_sp<Device> device1 = Device::Make1(recorder.get(),
                                          info,
                                          skgpu::Budgeted::kYes,
                                          Mipmapped::kNo,
                                          SkSurfaceProps(),
-                                         /* addInitialClear= */ true);
+                                         /* addInitialClear= */ true, true);
 
     REPORTER_ASSERT(reporter, device1->recorder() == recorder.get());
     REPORTER_ASSERT(reporter, recorder->deviceIsRegistered(device1.get()));
@@ -34,24 +34,24 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecorderDevicePtrTest, reporter, context) {
     REPORTER_ASSERT(reporter, !recorder->deviceIsRegistered(devPtr));
 
     // Test adding multiple devices
-    device1 = Device::Make(recorder.get(),
+    device1 = Device::Make1(recorder.get(),
                            info,
                            skgpu::Budgeted::kYes,
                            Mipmapped::kNo,
                            SkSurfaceProps(),
-                           /* addInitialClear= */ true);
-    sk_sp<Device> device2 = Device::Make(recorder.get(),
+                           /* addInitialClear= */ true, true);
+    sk_sp<Device> device2 = Device::Make1(recorder.get(),
                                          info,
                                          skgpu::Budgeted::kYes,
                                          Mipmapped::kNo,
                                          SkSurfaceProps(),
-                                         /* addInitialClear= */ true);
-    sk_sp<Device> device3 = Device::Make(recorder.get(),
+                                         /* addInitialClear= */ true, true);
+    sk_sp<Device> device3 = Device::Make1(recorder.get(),
                                          info,
                                          skgpu::Budgeted::kYes,
                                          Mipmapped::kNo,
                                          SkSurfaceProps(),
-                                         /* addInitialClear= */ true);
+                                         /* addInitialClear= */ true, true);
     REPORTER_ASSERT(reporter, device1->recorder() == recorder.get());
     REPORTER_ASSERT(reporter, device2->recorder() == recorder.get());
     REPORTER_ASSERT(reporter, device3->recorder() == recorder.get());
