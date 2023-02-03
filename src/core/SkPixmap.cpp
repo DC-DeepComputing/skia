@@ -7,29 +7,35 @@
 
 #include "include/core/SkPixmap.h"
 
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColorPriv.h"
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkData.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkShader.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkTileMode.h"
 #include "include/core/SkUnPreMultiply.h"
 #include "include/private/SkColorData.h"
+#include "include/private/base/SkAssert.h"
+#include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTPin.h"
-#include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkTo.h"
 #include "src/base/SkHalf.h"
-#include "src/base/SkUtils.h"
 #include "src/base/SkVx.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMatrixProvider.h"
-#include "src/core/SkPixmapPriv.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkSwizzlePriv.h"
 #include "src/image/SkReadPixelsRec.h"
 #include "src/shaders/SkImageShader.h"
 
+#include <cstring>
 #include <utility>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -760,52 +766,3 @@ bool SkPixmap::computeIsOpaque() const {
     return false;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-static bool draw_orientation(const SkPixmap& dst, const SkPixmap& src, SkEncodedOrigin origin) {
-    auto surf = SkSurface::MakeRasterDirect(dst.info(), dst.writable_addr(), dst.rowBytes());
-    if (!surf) {
-        return false;
-    }
-
-    SkBitmap bm;
-    bm.installPixels(src);
-
-    SkMatrix m = SkEncodedOriginToMatrix(origin, dst.width(), dst.height());
-
-    SkPaint p;
-    p.setBlendMode(SkBlendMode::kSrc);
-    surf->getCanvas()->concat(m);
-    surf->getCanvas()->drawImage(SkImage::MakeFromBitmap(bm), 0, 0, SkSamplingOptions(), &p);
-    return true;
-}
-
-bool SkPixmapPriv::Orient(const SkPixmap& dst, const SkPixmap& src, SkEncodedOrigin origin) {
-    if (src.colorType() != dst.colorType()) {
-        return false;
-    }
-    // note: we just ignore alphaType and colorSpace for this transformation
-
-    int w = src.width();
-    int h = src.height();
-    if (SkEncodedOriginSwapsWidthHeight(origin)) {
-        using std::swap;
-        swap(w, h);
-    }
-    if (dst.width() != w || dst.height() != h) {
-        return false;
-    }
-    if (w == 0 || h == 0) {
-        return true;
-    }
-
-    // check for aliasing to self
-    if (src.addr() == dst.addr()) {
-        return kTopLeft_SkEncodedOrigin == origin;
-    }
-    return draw_orientation(dst, src, origin);
-}
-
-SkImageInfo SkPixmapPriv::SwapWidthHeight(const SkImageInfo& info) {
-    return info.makeWH(info.height(), info.width());
-}

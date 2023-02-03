@@ -173,7 +173,10 @@ skia_cc_library(
     ],
     hdrs = ["//include/core:core_hdrs"],
     visibility = ["//:__pkg__"],
-    deps = [":base"],
+    deps = [
+        ":base",
+        "//modules/skcms",
+    ],
 )
 
 skia_cc_library(
@@ -201,5 +204,23 @@ skia_cc_library(
         ":base",
         ":core",
         ":core_priv",
+    ],
+)
+
+skia_cc_library(
+    name = "png_encode_codec",
+    srcs = [
+        "//include/encode:private_hdrs",
+        "//src/images:buffet_png_encode_srcs",
+    ],
+    hdrs = [
+        "//include/encode:png_public_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":base",
+        ":core",
+        "@libpng",
     ],
 )

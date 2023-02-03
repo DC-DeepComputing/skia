@@ -63,7 +63,7 @@ DEF_BENCH( return new ReadPixBench(kBGRA_8888_SkColorType, kUnpremul_SkAlphaType
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "include/core/SkBitmap.h"
-#include "src/core/SkPixmapPriv.h"
+#include "src/codec/SkPixmapUtils.h"
 
 class PixmapOrientBench : public Benchmark {
 public:

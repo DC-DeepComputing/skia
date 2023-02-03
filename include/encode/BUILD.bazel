@@ -14,3 +14,19 @@ skia_filegroup(
     ],
     visibility = ["//include:__pkg__"],
 )
+
+skia_filegroup(
+    name = "private_hdrs",
+    srcs = [
+        "SkEncoder.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "png_public_hdrs",
+    srcs = [
+        "SkPngEncoder.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
