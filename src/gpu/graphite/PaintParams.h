@@ -42,7 +42,7 @@ public:
 
     PaintParams& operator=(const PaintParams&);
 
-    SkColor4f color() const { return fColor; }
+    SkColor4f color7() const { return fColor7; }
 
     std::optional<SkBlendMode> asFinalBlendMode() const;
     SkBlender* finalBlender() const { return fFinalBlender.get(); }
@@ -64,7 +64,7 @@ public:
                PipelineDataGatherer*) const;
 
 private:
-    SkColor4f            fColor;
+    SkColor4f            fColor7;
     sk_sp<SkBlender>     fFinalBlender; // A nullptr here means SrcOver blending
     sk_sp<SkShader>      fShader;
     sk_sp<SkColorFilter> fColorFilter;
