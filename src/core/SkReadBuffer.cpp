@@ -346,29 +346,30 @@ sk_sp<SkImage> SkReadBuffer::readImage() {
         }
     }
 
-    if (flags & SkWriteBufferImageFlags::kHasSubsetRect) {
-        SkIRect subset;
-        this->readIRect(&subset);
-        if (image) {
-            image = image->makeSubset(subset);
+    if (this->isVersionLT(SkPicturePriv::kNoSerializedMipMaps)) {
+        if (flags & SkWriteBufferImageFlags::kHasSubsetRect) {
+            SkIRect subset;
+            this->readIRect(&subset);
+            if (image) {
+                image = image->makeSubset(subset);
+            }
         }
-    }
-
-    if (flags & SkWriteBufferImageFlags::kHasMipmap) {
-        sk_sp<SkData> data = this->readByteArrayAsData();
-        if (!data) {
-            this->validate(false);
-            return nullptr;
-        }
-        if (image) {
-            SkMipmapBuilder builder(image->imageInfo());
-            if (SkMipmap::Deserialize(&builder, data->data(), data->size())) {
-                // TODO: need to make lazy images support mips
-                if (auto ri = image->makeRasterImage()) {
-                    image = ri;
+        if (flags & SkWriteBufferImageFlags::kHasMipmap) {
+            sk_sp <SkData> data = this->readByteArrayAsData();
+            if (!data) {
+                this->validate(false);
+                return nullptr;
+            }
+            if (image) {
+                SkMipmapBuilder builder(image->imageInfo());
+                if (SkMipmap::Deserialize(&builder, data->data(), data->size())) {
+                    // TODO: need to make lazy images support mips
+                    if (auto ri = image->makeRasterImage()) {
+                        image = ri;
+                    }
+                    image = builder.attachTo(image);
+                    SkASSERT(image);    // withMipmaps should never return null
                 }
-                image = builder.attachTo(image);
-                SkASSERT(image);    // withMipmaps should never return null
             }
         }
     }

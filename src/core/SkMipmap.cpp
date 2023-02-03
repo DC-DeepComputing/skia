@@ -829,40 +829,9 @@ bool SkMipmap::getLevel(int index, Level* levelPtr) const {
 
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkStream.h"
-#include "include/encode/SkPngEncoder.h"
 #include "src/core/SkReadBuffer.h"
-#include "src/core/SkWriteBuffer.h"
 
-static sk_sp<SkData> encode_to_data(const SkPixmap& pm) {
-    SkDynamicMemoryWStream stream;
-    if (SkPngEncoder::Encode(&stream, pm, SkPngEncoder::Options())) {
-        return stream.detachAsData();
-    }
-    return nullptr;
-}
-
-/*  Format
-        count_levels:32
-        for each level, starting with the biggest (index 0 in our iterator)
-            encoded_size:32
-            encoded_data (padded)
- */
-sk_sp<SkData> SkMipmap::serialize() const {
-    const int count = this->countLevels();
-
-    SkBinaryWriteBuffer buffer;
-    buffer.write32(count);
-    for (int i = 0; i < count; ++i) {
-        Level level;
-        if (this->getLevel(i, &level)) {
-            buffer.writeDataAsByteArray(encode_to_data(level.fPixmap).get());
-        } else {
-            return nullptr;
-        }
-    }
-    return buffer.snapshotAsData();
-}
-
+// TODO(kjlubick, herb) remove after kNoSerializedMipMaps is not a supported SKP version
 bool SkMipmap::Deserialize(SkMipmapBuilder* builder, const void* data, size_t length) {
     SkReadBuffer buffer(data, length);
 
