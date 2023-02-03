@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c555f6a1_4de8b6da",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-03T16:53:21Z",
+      "side": 1,
+      "message": "// This enum also encodes the offset of each of the action types w/in fActions\n\n?",
+      "revId": "8594ca41b1b36ddec564bd6b17dc0b6bdb617e9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
