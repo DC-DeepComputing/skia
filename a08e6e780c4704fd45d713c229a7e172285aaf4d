@@ -20,6 +20,63 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0bc88136_755cff78",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1132,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-03T16:33:15Z",
+      "side": 1,
+      "message": "nit: 100 columns",
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61e213d0_19c32e65",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-03T16:33:15Z",
+      "side": 1,
+      "message": "Wow, it would be nice if we already code to do this somewhere, but I didn\u0027t see anything pre-existing. Sigh.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 5
+      },
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fc5c871_7d773533",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-03T16:33:15Z",
+      "side": 1,
+      "message": "We could just defer this to outside the loop (right before we check), and do a single write() against xmpExtendedData, right? Seems simpler?",
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39bc0923_6ca35fed",
         "filename": "src/codec/SkJpegXmp.cpp",
         "patchSetId": 7
@@ -31,6 +88,41 @@
       "writtenOn": "2023-02-02T23:56:03Z",
       "side": 1,
       "message": "(this same comment exists also in the header, but I felt it was worth repeating here -- LMK if you think I should chop this one)",
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45b035e6_16ab7a0f",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-03T16:33:15Z",
+      "side": 1,
+      "message": "No, this seems worth repeating (and it\u0027s not that long).",
+      "parentUuid": "39bc0923_6ca35fed",
+      "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73b5d186_f55d74e8",
+        "filename": "src/codec/SkJpegXmp.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-03T16:33:15Z",
+      "side": 1,
+      "message": "nit: redundant, as we also need the header included?",
       "revId": "a08e6e780c4704fd45d713c229a7e172285aaf4d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
