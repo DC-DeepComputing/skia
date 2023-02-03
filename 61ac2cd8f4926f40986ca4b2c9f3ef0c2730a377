@@ -51,6 +51,24 @@
       "parentUuid": "1794d460_adbaf68c",
       "revId": "61ac2cd8f4926f40986ca4b2c9f3ef0c2730a377",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f562b4d8_0e267337",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-03T18:52:50Z",
+      "side": 1,
+      "message": "Yes, we should minimize the number of stages. Let\u0027s make `save_xy` a `SI` helper function instead of a stage, and call it at the top of those setup stages. It\u0027s extremely small anyway.",
+      "parentUuid": "1794d460_adbaf68c",
+      "revId": "61ac2cd8f4926f40986ca4b2c9f3ef0c2730a377",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
