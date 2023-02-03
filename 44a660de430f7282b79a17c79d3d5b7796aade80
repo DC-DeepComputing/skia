@@ -34,6 +34,24 @@
       "parentUuid": "d5ddcb45_b34e6049",
       "revId": "44a660de430f7282b79a17c79d3d5b7796aade80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a391d144_d8a2194e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-03T15:18:11Z",
+      "side": 1,
+      "message": "I noticed some Gold diffs in SkVM CPU so I double checked...",
+      "parentUuid": "53af51ad_3b3381ba",
+      "revId": "44a660de430f7282b79a17c79d3d5b7796aade80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
