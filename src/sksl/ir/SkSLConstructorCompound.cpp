@@ -8,9 +8,11 @@
 #include "src/sksl/ir/SkSLConstructorCompound.h"
 
 #include "include/core/SkTypes.h"
+#include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLConstructorSplat.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLType.h"
 
@@ -38,6 +40,29 @@ static bool is_safe_to_eliminate(const Type& type, const Expression& arg) {
     // This is a meaningful single-argument compound constructor (e.g. vector-from-matrix,
     // matrix-from-vector).
     return false;
+}
+
+static bool is_reducible_to_splat(const Type& type, const ExpressionArray& args) {
+    // Splats cannot represent a matrix.
+    if (type.isMatrix()) {
+        return false;
+    }
+    // An N-slot constructor can only be reduced to a splat if it contains exactly N scalars,
+    // where N > 1.
+    if (args.size() <= 1 || args.size() != (int)type.slotCount()) {
+        return false;
+    }
+    for (int index = 1; index < args.size(); ++index) {
+        // The check above should have ruled out non-scalar arguments, but let's confirm it.
+        if (!args[index]->type().isScalar()) {
+            return false;
+        }
+        // Note that IsSameExpressionTree will always reject an Expression with side effects.
+        if (!Analysis::IsSameExpressionTree(*args[0], *args[index])) {
+            return false;
+        }
+    }
+    return true;
 }
 
 std::unique_ptr<Expression> ConstructorCompound::Make(const Context& context,
@@ -109,6 +134,13 @@ std::unique_ptr<Expression> ConstructorCompound::Make(const Context& context,
     // compile down to `float2(1.0, 2.0)` (the latter is a compile-time constant).
     for (std::unique_ptr<Expression>& arg : args) {
         arg = ConstantFolder::MakeConstantValueForVariable(pos, std::move(arg));
+    }
+
+    if (context.fConfig->fSettings.fOptimize) {
+        // Reduce compound constructors to splats where possible.
+        if (is_reducible_to_splat(type, args)) {
+            return ConstructorSplat::Make(context, pos, type, std::move(args[0]));
+        }
     }
 
     return std::make_unique<ConstructorCompound>(pos, type, std::move(args));
