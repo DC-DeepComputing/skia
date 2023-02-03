@@ -16,6 +16,24 @@
       "message": "This is problematic for G3 builds because SkJpegSourceMgr unconditionally defines SkJpegSourceMgr::Make but now there\u0027s no implementation available.",
       "revId": "9ad7ab5d966b3864ef6f98b39a3fb53a6d2581aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d0d9aa2_75a98a36",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-03T15:38:12Z",
+      "side": 1,
+      "message": "Possible solution: https://skia-review.googlesource.com/c/skia/+/638019",
+      "parentUuid": "a396771c_a1eadda5",
+      "revId": "9ad7ab5d966b3864ef6f98b39a3fb53a6d2581aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
