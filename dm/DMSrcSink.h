@@ -397,9 +397,9 @@ public:
         return SinkFlags{ SinkFlags::kGPU, SinkFlags::kDirect, ms };
     }
     const GrContextOptions& baseContextOptions() const { return fBaseContextOptions; }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
+    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace1 = colorSpace; }
     SkColorInfo colorInfo() const override {
-        return SkColorInfo(fColorType, fAlphaType, fColorSpace);
+        return SkColorInfo(fColorType, fAlphaType, fColorSpace1);
     }
 
 protected:
@@ -414,7 +414,7 @@ private:
     uint32_t                                          fSurfaceFlags;
     SkColorType                                       fColorType;
     SkAlphaType                                       fAlphaType;
-    sk_sp<SkColorSpace>                               fColorSpace;
+    sk_sp<SkColorSpace>                               fColorSpace1;
     GrContextOptions                                  fBaseContextOptions;
     sk_gpu_test::MemoryCache                          fMemoryCache;
 };
@@ -540,6 +540,7 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "pdf"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
+
     bool fPDFA;
     SkScalar fRasterDpi;
 };
@@ -560,11 +561,19 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "png"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kRaster, SinkFlags::kDirect }; }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
+    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace3 = colorSpace; }
+
+    SkColorInfo colorInfo() const override {
+        // If there's an appropriate alpha type for this color type, use it, otherwise use premul.
+        SkAlphaType alphaType = kPremul_SkAlphaType;
+        (void)SkColorTypeValidateAlphaType(fColorType, alphaType, &alphaType);
+
+        return SkColorInfo(fColorType, alphaType, fColorSpace3);
+    }
 
 private:
     SkColorType         fColorType;
-    sk_sp<SkColorSpace> fColorSpace;
+    sk_sp<SkColorSpace> fColorSpace3;
 };
 
 class SKPSink : public Sink {
@@ -607,16 +616,16 @@ public:
     bool serial() const override { return true; }
     const char* fileExtension() const override { return "png"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kGPU, SinkFlags::kDirect }; }
-    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
+    void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace2 = colorSpace; }
     SkColorInfo colorInfo() const override {
-        return SkColorInfo(fColorType, fAlphaType, fColorSpace);
+        return SkColorInfo(fColorType, fAlphaType, fColorSpace2);
     }
 
 private:
     ContextType fContextType;
     SkColorType fColorType;
     SkAlphaType fAlphaType;
-    sk_sp<SkColorSpace> fColorSpace;
+    sk_sp<SkColorSpace> fColorSpace2;
 };
 
 #endif
@@ -644,6 +653,7 @@ class ViaMatrix : public Via {
 public:
     ViaMatrix(SkMatrix, Sink*);
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
 private:
     const SkMatrix fMatrix;
 };
@@ -652,6 +662,7 @@ class ViaUpright : public Via {
 public:
     ViaUpright(SkMatrix, Sink*);
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
 private:
     const SkMatrix fMatrix;
 };

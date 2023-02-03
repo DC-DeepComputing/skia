@@ -265,7 +265,7 @@ SkCommandLineConfig::SkCommandLineConfig(const SkString& tag,
         if (it == kColorSpaces->end()) {
             fViaParts.push_back(via);
         } else {
-            fColorSpace = sk_ref_sp(it->second);
+            fColorSpace1 = sk_ref_sp(it->second);
         }
     }
 }

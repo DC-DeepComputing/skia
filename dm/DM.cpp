@@ -1070,7 +1070,7 @@ static bool gather_sinks(const GrContextOptions& grCtxOptions, bool defaultConfi
         }
 
         // The command line config already parsed out the via-style color space. Apply it here.
-        sink->setColorSpace(config.refColorSpace());
+        sink->setColorSpace(config.refColorSpace1());
 
         const SkTArray<SkString>& parts = config.getViaParts();
         for (int j = parts.size(); j-- > 0;) {
