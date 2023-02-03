@@ -406,12 +406,22 @@ void SkGlyph::ensureIntercepts(const SkScalar* bounds, SkScalar scale, SkScalar 
     offsetResults(intercept, array, count);
 }
 
+namespace {
+uint32_t initActions(const SkGlyph& glyph) {
+    constexpr uint32_t allUnset = 0;
+    constexpr uint32_t drop = SkTo<uint32_t>(GlyphAction::kDrop);
+    constexpr uint32_t allDrop =
+            drop | drop << kPath | drop << kDrawable | drop << kSDFT | drop << kMask;
+    return glyph.isEmpty() ? allDrop : allUnset;
+}
+}  // namespace
+
 // -- SkGlyphDigest --------------------------------------------------------------------------------
 SkGlyphDigest::SkGlyphDigest(size_t index, const SkGlyph& glyph)
         : fIndex{SkTo<uint32_t>(index)}
         , fIsEmpty(glyph.isEmpty())
         , fFormat(glyph.maskFormat())
-        , fActions{0}
+        , fActions{initActions(glyph)}
         , fLeft{SkTo<int16_t>(glyph.left())}
         , fTop{SkTo<int16_t>(glyph.top())}
         , fWidth{SkTo<uint16_t>(glyph.width())}
