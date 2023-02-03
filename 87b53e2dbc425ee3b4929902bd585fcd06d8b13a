@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ff44916_9e58f59f",
+        "filename": "tests/sksl/shared/MatrixEquality.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-03T20:34:07Z",
+      "side": 1,
+      "message": "^ a non-literal example",
+      "range": {
+        "startLine": 18,
+        "startChar": 45,
+        "endLine": 18,
+        "endChar": 57
+      },
+      "revId": "87b53e2dbc425ee3b4929902bd585fcd06d8b13a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
