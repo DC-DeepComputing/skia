@@ -34,6 +34,8 @@ private:
     }
 
     void onDraw(SkCanvas* canvas) override {
+        constexpr SkColor4f kTeal{.03f, .91f, .87f, 1};
+
         canvas->clear(SkColors::kYellow);
 
         // Flush the context to make the DAG empty. This will test the case where we try to add an
@@ -60,7 +62,7 @@ private:
                               .lineTo(0, 20).cubicTo(20, 20, 20, 20, 20, 0);
         path.setIsVolatile(true);
         SkPaint teal;
-        teal.setColor4f({.03f, .91f, .87f, 1});
+        teal.setColor4f(kTeal);
         teal.setAntiAlias(true);
         canvas->drawPath(path, teal);
     }

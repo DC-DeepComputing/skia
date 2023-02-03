@@ -41,7 +41,9 @@ PaintParams::PaintParams(const SkPaint& paint,
         , fShader(paint.refShader())
         , fColorFilter(paint.refColorFilter())
         , fPrimitiveBlender(std::move(primitiveBlender))
-        , fSkipColorXform(skipColorXform) {}
+        , fSkipColorXform(skipColorXform) {
+
+}
 
 PaintParams::PaintParams(const PaintParams& other) = default;
 PaintParams::~PaintParams() = default;
@@ -60,13 +62,17 @@ sk_sp<SkColorFilter> PaintParams::refColorFilter() const { return fColorFilter; 
 
 sk_sp<SkBlender> PaintParams::refPrimitiveBlender() const { return fPrimitiveBlender; }
 
+SkColor4f SkColor4fPrepForDst(SkColor4f srcColor, const SkColorInfo& dstColorInfo);
+
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
                         PipelineDataGatherer* gatherer) const {
 
+    SkColor4f dstPaintColor = SkColor4fPrepForDst(fColor, keyContext.dstColorInfo());
+
     // TODO: figure out how we can omit this block when the Paint's color isn't used.
     SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
-                                      fColor.makeOpaque().premul());
+                                      dstPaintColor.makeOpaque().premul());
     builder->endBlock();
 
     if (fShader) {
@@ -79,7 +85,7 @@ void PaintParams::toKey(const KeyContext& keyContext,
     }
 
     // Apply the paint's alpha value.
-    auto alphaColorFilter = SkColorFilters::Blend({0, 0, 0, fColor[3]},
+    auto alphaColorFilter = SkColorFilters::Blend({0, 0, 0, fColor.fA},
                                                   /*colorSpace*/nullptr,
                                                   SkBlendMode::kDstIn);
     if (alphaColorFilter) {

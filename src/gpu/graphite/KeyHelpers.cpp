@@ -168,7 +168,7 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
                                                  float bias, float scale,
                                                  SkTileMode tm,
                                                  int numStops,
-                                                 SkColor4f* color4fs,
+                                                 const SkColor4f* color4fs,
                                                  float* offsets)
         : fType(type)
         , fBias(bias)

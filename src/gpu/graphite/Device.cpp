@@ -9,6 +9,7 @@
 
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
+#include "src/core/SkColorSpaceXformSteps.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
@@ -66,6 +67,17 @@ using ReadPixelsContext  = SkImage::ReadPixelsContext;
 
 namespace skgpu::graphite {
 
+/** Converts an SkColor4f to the destination color space. */
+SkColor4f SkColor4fPrepForDst(SkColor4f srcColor, const SkColorInfo& dstColorInfo) {
+    // xform from sRGB to the destination colorspace
+    SkColorSpaceXformSteps steps(sk_srgb_singleton(),       kUnpremul_SkAlphaType,
+                                 dstColorInfo.colorSpace(), kUnpremul_SkAlphaType);
+
+    SkColor4f result = srcColor;
+    steps.apply(result.vec());
+    return result;
+}
+
 namespace {
 
 static const SkStrokeRec kFillStyle(SkStrokeRec::kFill_InitStyle);
@@ -105,16 +117,20 @@ bool paint_depends_on_dst(const SkPaint& paint) {
 }
 
 /** If the paint can be reduced to a solid flood-fill, determine the correct color to fill with. */
-std::optional<SkColor4f> extract_paint_color(const SkPaint& paint) {
+std::optional<SkColor4f> extract_paint_color(const SkPaint& paint,
+                                             const SkColorInfo& dstColorInfo) {
     SkASSERT(!paint_depends_on_dst(paint));
     if (paint.getShader()) {
         return std::nullopt;
     }
+
+    SkColor4f dstPaintColor = SkColor4fPrepForDst(paint.getColor4f(), dstColorInfo);
+
     if (SkColorFilter* filter = paint.getColorFilter()) {
-        // TODO: SkColorSpace support
-        return filter->filterColor4f(paint.getColor4f(), sk_srgb_singleton(), sk_srgb_singleton());
+        SkColorSpace* dstCS = dstColorInfo.colorSpace();
+        return filter->filterColor4f(dstPaintColor, dstCS, dstCS);
     }
-    return paint.getColor4f();
+    return dstPaintColor;
 }
 
 SkIRect rect_to_pixelbounds(const Rect& r) {
@@ -601,7 +617,8 @@ void Device::drawPaint(const SkPaint& paint) {
     // entire final surface.
     if (this->clipIsWideOpen() && !fDC->target()->isFullyLazy()) {
         if (!paint_depends_on_dst(paint)) {
-            if (std::optional<SkColor4f> color = extract_paint_color(paint)) {
+            if (std::optional<SkColor4f> color = extract_paint_color(paint,
+                                                                     fDC->imageInfo().colorInfo())) {
                 // do fullscreen clear
                 fDC->clear(*color);
                 return;
