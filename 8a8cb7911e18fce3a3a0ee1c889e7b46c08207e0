@@ -16,6 +16,24 @@
       "message": "I think we want (need) to do this slightly differently. There are non-zero values that produce infinities when you take the reciprocal. Elsewhere, we tend to just do the division blindly, then check if the result is finite. In that case, you\u0027ll want to do the division using `sk_ieee_double_divide`, which disables divide-by-zero checks in the sanitizers.\n\nAlso: Have we previously checked that the literal in the right hand side fits in float? What happens when we end up with a double that fits in double, but not in float here?",
       "revId": "8a8cb7911e18fce3a3a0ee1c889e7b46c08207e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd256509_5bc78e1c",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-03T19:51:12Z",
+      "side": 1,
+      "message": "You\u0027re right. I\u0027ll beef up the checking, and add bounds checks like FunctionCall:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/ir/SkSLFunctionCall.cpp;l\u003d147-148;drc\u003d27876ec0d69511d3dfd1c2a12873e55eacddc0fd",
+      "parentUuid": "900d455d_92af52e1",
+      "revId": "8a8cb7911e18fce3a3a0ee1c889e7b46c08207e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
