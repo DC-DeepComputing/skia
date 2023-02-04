@@ -995,8 +995,13 @@ void SkMatrix::Affine_vpts(const SkMatrix& m, SkPoint dst[], const SkPoint src[]
             dst += 2;
         }
         if (trailingElement) {
-            dst->set(src->fX * sx + src->fY * kx + tx,
-                     src->fX * ky + src->fY * sy + ty);
+            // Recalculating the second-to-last point is safer than switching to scalar math
+            // (and potentially calculating things slightly differently).
+            --src;
+            --dst;
+            skvx::float4 src4 = skvx::float4::Load(src);
+            skvx::float4 swz4 = skvx::shuffle<1,0,3,2>(src4);  // y0 x0, y1 x1
+            (src4 * scale4 + swz4 * skew4 + trans4).store(dst);
         }
     }
 }
