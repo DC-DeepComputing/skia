@@ -32,6 +32,7 @@
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 #include "src/codec/SkJpegGainmap.h"
+#include "src/codec/SkJpegMultiPicture.h"
 #include "src/codec/SkJpegXmp.h"
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
@@ -1135,10 +1136,20 @@ bool SkJpegCodec::onGetGainmapInfo(SkGainmapInfo* info,
     }
 
     // Attempt to extract Multi-Picture Format gainmap formats.
-    auto mpfMetadata = read_metadata(fDecoderMgr->dinfo(), kMpfMarker, kMpfSig, sizeof(kMpfSig));
-    if (SkJpegGetMultiPictureGainmap(
-                mpfMetadata, fDecoderMgr->getSourceMgr(), info, gainmapImageStream)) {
-        return true;
+    for (jpeg_marker_struct* marker = fDecoderMgr->dinfo()->marker_list; marker;
+         marker = marker->next) {
+        if (marker->marker != kMpfMarker) {
+            continue;
+        }
+        auto mpParams =
+                SkJpegParseMultiPicture(SkData::MakeWithoutCopy(marker->data, marker->data_length));
+        if (!mpParams) {
+            continue;
+        }
+        if (SkJpegGetMultiPictureGainmap(
+                    mpParams.get(), fDecoderMgr->getSourceMgr(), info, gainmapImageStream)) {
+            return true;
+        }
     }
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
     return false;

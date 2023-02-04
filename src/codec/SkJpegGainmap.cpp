@@ -31,66 +31,6 @@
 // SkDOM and XMP helpers.
 
 /*
- * Build an SkDOM from an SkData. Return true on success and false on failure (including the input
- * data being nullptr).
- */
-bool SkDataToSkDOM(sk_sp<const SkData> data, SkDOM* dom) {
-    if (!data) {
-        return false;
-    }
-    auto stream = SkMemoryStream::MakeDirect(data->data(), data->size());
-    if (!stream) {
-        return false;
-    }
-    return dom->build(*stream) != nullptr;
-}
-
-/*
- * Given an SkDOM, verify that the dom is XMP, and find the first rdf:Description node that matches
- * the specified namespaces to the specified URIs. The XML structure that this function matches is
- * as follows (with NAMESPACEi and URIi being the parameters specified to this function):
- *
- *   <x:xmpmeta ...>
- *     <rdf:RDF ...>
- *       <rdf:Description NAMESPACE0="URI0" NAMESPACE1="URI1" .../>
- *     </rdf:RDF>
- *   </x:xmpmeta>
- */
-const SkDOM::Node* FindXmpNamespaceUriMatch(const SkDOM& dom,
-                                            const char* namespaces[],
-                                            const char* uris[],
-                                            size_t count) {
-    const SkDOM::Node* root = dom.getRootNode();
-    if (!root) {
-        return nullptr;
-    }
-    const char* rootName = dom.getName(root);
-    if (!rootName || strcmp(rootName, "x:xmpmeta") != 0) {
-        return nullptr;
-    }
-
-    const char* kRdf = "rdf:RDF";
-    for (const auto* rdf = dom.getFirstChild(root, kRdf); rdf;
-         rdf = dom.getNextSibling(rdf, kRdf)) {
-        const char* kDesc = "rdf:Description";
-        for (const auto* desc = dom.getFirstChild(rdf, kDesc); desc;
-             desc = dom.getNextSibling(desc, kDesc)) {
-            bool allNamespaceURIsMatch = true;
-            for (size_t i = 0; i < count; ++i) {
-                if (!dom.hasAttr(desc, namespaces[i], uris[i])) {
-                    allNamespaceURIsMatch = false;
-                    break;
-                }
-            }
-            if (allNamespaceURIsMatch) {
-                return desc;
-            }
-        }
-    }
-    return nullptr;
-}
-
-/*
  * Given a node, see if that node has only one child with the indicated name. If so, see if that
  * child has only a single child of its own, and that child is text. If all of that is the case
  * then return the text, otherwise return nullptr.
@@ -157,53 +97,48 @@ static bool UniqueChildTextMatches(const SkDOM& dom,
 // Multi-PictureFormat Gainmap Functions
 
 // Return true if the specified XMP metadata identifies this image as an HDR gainmap.
-static bool XmpIsHDRGainMap(const sk_sp<const SkData>& xmpMetadata) {
-    // Parse the XMP.
-    SkDOM dom;
-    if (!SkDataToSkDOM(xmpMetadata, &dom)) {
-        return false;
-    }
-
+static bool get_hdr_gain_map_info(const SkJpegXmp* xmp, SkGainmapInfo* info) {
     // Find a node that matches the requested namespaces and URIs.
     const char* namespaces[2] = {"xmlns:apdi", "xmlns:HDRGainMap"};
     const char* uris[2] = {"http://ns.apple.com/pixeldatainfo/1.0/",
                            "http://ns.apple.com/HDRGainMap/1.0/"};
-    const SkDOM::Node* node = FindXmpNamespaceUriMatch(dom, namespaces, uris, 2);
-    if (!node) {
+    const SkDOM* dom = nullptr;
+    const SkDOM::Node* node = nullptr;
+    if (!xmp->findNamespaceUriMatch(namespaces, uris, 2, &dom, &node)) {
         return false;
     }
     if (!UniqueChildTextMatches(
-                dom, node, "apdi:AuxiliaryImageType", "urn:com:apple:photo:2020:aux:hdrgainmap")) {
+                *dom, node, "apdi:AuxiliaryImageType", "urn:com:apple:photo:2020:aux:hdrgainmap")) {
         SkCodecPrintf("Did not find auxiliary image type.\n");
         return false;
     }
-    if (!UniqueChildTextMatches(dom, node, "HDRGainMap:HDRGainMapVersion", 65536)) {
+    if (!UniqueChildTextMatches(*dom, node, "HDRGainMap:HDRGainMapVersion", 65536)) {
         SkCodecPrintf("HDRGainMapVersion absent or not 65536.\n");
         return false;
     }
 
     // This node will often have StoredFormat and NativeFormat children that have inner text that
     // specifies the integer 'L008' (also known as kCVPixelFormatType_OneComponent8).
+    const float kRatioMax = sk_float_exp(1.f);
+    info->fGainmapRatioMin = {1.f, 1.f, 1.f, 1.f};
+    info->fGainmapRatioMax = {kRatioMax, kRatioMax, kRatioMax, 1.f};
+    info->fGainmapGamma = {1.f, 1.f, 1.f, 1.f};
+    info->fEpsilonSdr = {0.f, 0.f, 0.f, 1.f};
+    info->fEpsilonHdr = {0.f, 0.f, 0.f, 1.f};
+    info->fDisplayRatioSdr = 1.f;
+    info->fDisplayRatioHdr = kRatioMax;
+    info->fBaseImageType = SkGainmapInfo::BaseImageType::kSDR;
+    info->fType = SkGainmapInfo::Type::kMultiPicture;
     return true;
 }
 
-bool SkJpegGetMultiPictureGainmap(sk_sp<const SkData> decoderMpfMetadata,
+bool SkJpegGetMultiPictureGainmap(const SkJpegMultiPictureParameters* mpParams,
                                   SkJpegSourceMgr* decoderSource,
                                   SkGainmapInfo* outInfo,
                                   std::unique_ptr<SkStream>* outGainmapImageStream) {
-    // The decoder has already scanned for MPF metadata. If it doesn't exist, or it doesn't parse,
-    // then early-out.
-    if (!decoderMpfMetadata) {
-        return false;
-    }
-    auto mpParams = SkJpegParseMultiPicture(decoderMpfMetadata);
-    if (!mpParams) {
-        return false;
-    }
-
     // Extract the Multi-Picture image streams in the original decoder stream (we needed the scan to
     // find the offsets of the MP images within the original decoder stream).
-    auto mpStreams = SkJpegExtractMultiPictureStreams(mpParams.get(), decoderSource);
+    auto mpStreams = SkJpegExtractMultiPictureStreams(mpParams, decoderSource);
     if (!mpStreams) {
         SkCodecPrintf("Failed to extract MP image streams.\n");
         return false;
@@ -218,43 +153,41 @@ bool SkJpegGetMultiPictureGainmap(sk_sp<const SkData> decoderMpfMetadata,
         // Create a temporary source manager for this MP image.
         auto mpImageSource = SkJpegSourceMgr::Make(mpImage.stream.get());
 
-        // Search for the XMP metadata in the MP image's scan.
+        // Collect the potential XMP segments.
+        std::vector<sk_sp<SkData>> app1Params;
         for (const auto& segment : mpImageSource->getAllSegments()) {
             if (segment.marker != kXMPMarker) {
                 continue;
             }
-            auto xmpMetadata = mpImageSource->copyParameters(
-                    segment, kXMPStandardSig, sizeof(kXMPStandardSig));
-            if (!xmpMetadata) {
+            auto parameters = mpImageSource->getSegmentParameters(segment);
+            if (!parameters) {
                 continue;
             }
-
-            // If this XMP does not indicate that the image is an HDR gainmap, then continue.
-            if (!XmpIsHDRGainMap(xmpMetadata)) {
-                continue;
-            }
-
-            // This MP image is the gainmap image. Populate its stream and the rendering parameters
-            // for its format.
-            if (outGainmapImageStream) {
-                if (!mpImage.stream->rewind()) {
-                    SkCodecPrintf("Failed to rewind gainmap image stream.\n");
-                    return false;
-                }
-                *outGainmapImageStream = std::move(mpImage.stream);
-            }
-            const float kRatioMax = sk_float_exp(1.f);
-            outInfo->fGainmapRatioMin = {1.f, 1.f, 1.f, 1.f};
-            outInfo->fGainmapRatioMax = {kRatioMax, kRatioMax, kRatioMax, 1.f};
-            outInfo->fGainmapGamma = {1.f, 1.f, 1.f, 1.f};
-            outInfo->fEpsilonSdr = {0.f, 0.f, 0.f, 1.f};
-            outInfo->fEpsilonHdr = {0.f, 0.f, 0.f, 1.f};
-            outInfo->fDisplayRatioSdr = 1.f;
-            outInfo->fDisplayRatioHdr = kRatioMax;
-            outInfo->fBaseImageType = SkGainmapInfo::BaseImageType::kSDR;
-            outInfo->fType = SkGainmapInfo::Type::kMultiPicture;
-            return true;
+            app1Params.push_back(std::move(parameters));
         }
+
+        // Build XMP if possible.
+        auto xmp = SkJpegXmp::Make(app1Params);
+        if (!xmp) {
+            continue;
+        }
+
+        // Check if this is an MPF gainmap.
+        if (!get_hdr_gain_map_info(xmp.get(), outInfo) &&
+            !SkJpegGetHDRGMGainmapInfo(xmp.get(), outInfo)) {
+            continue;
+        }
+
+        // This MP image is the gainmap image. Populate its stream and the rendering parameters
+        // for its format.
+        if (outGainmapImageStream) {
+            if (!mpImage.stream->rewind()) {
+                SkCodecPrintf("Failed to rewind gainmap image stream.\n");
+                return false;
+            }
+            *outGainmapImageStream = std::move(mpImage.stream);
+        }
+        return true;
     }
     return false;
 }
@@ -494,7 +427,6 @@ bool SkJpegGetHDRGMGainmapInfo(const SkJpegXmp* xmp, SkGainmapInfo* outGainmapIn
     dom->findScalar(node, "hdrgm:HDRCapacityMax", &hdrCapacityMax);
 
     // Translate all parameters to SkGainmapInfo's expected format.
-    // TODO(ccameron): Move all of SkGainmapInfo to linear space.
     const float kLog2 = sk_float_log(2.f);
     outGainmapInfo->fGainmapRatioMin = {sk_float_exp(gainMapMin.fR * kLog2),
                                         sk_float_exp(gainMapMin.fG * kLog2),
