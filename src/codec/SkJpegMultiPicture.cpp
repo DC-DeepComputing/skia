@@ -36,9 +36,18 @@
 
 std::unique_ptr<SkJpegMultiPictureParameters> SkJpegParseMultiPicture(
         const sk_sp<const SkData>& data) {
-    std::unique_ptr<SkMemoryStream> stream = SkMemoryStream::MakeDirect(data->data(), data->size());
-    // This function reads the structure described in Figure 6 of CIPA DC-x007-2009.
+    // Read the MP Format identifier starting after the APP2 Field Length. See Figure 4 of CIPA
+    // DC-x007-2009.
+    if (data->size() < sizeof(kMpfSig)) {
+        return nullptr;
+    }
+    if (memcmp(data->data(), kMpfSig, sizeof(kMpfSig)) != 0) {
+        return nullptr;
+    }
+    std::unique_ptr<SkMemoryStream> stream = SkMemoryStream::MakeDirect(
+            data->bytes() + sizeof(kMpfSig), data->size() - sizeof(kMpfSig));
 
+    // The rest of this function reads the structure described in Figure 6 of CIPA DC-x007-2009.
     // Determine the endianness of the values in the structure. See Figure 5 (MP endian tag
     // structure).
     bool streamIsBigEndian = false;
