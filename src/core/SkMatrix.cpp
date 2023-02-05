@@ -1009,13 +1009,24 @@ void SkMatrix::Affine_vpts(const SkMatrix& m, SkPoint dst[], const SkPoint src[]
         skvx::float4 scale4(sx, sy, sx, sy);
         skvx::float4  skew4(kx, ky, kx, ky);    // applied to swizzle of src4
         count >>= 1;
+        skvx::float4 src4;
         for (int i = 0; i < count; ++i) {
-            skvx::float4 src4 = skvx::float4::Load(src);
+            src4 = skvx::float4::Load(src);
             skvx::float4 swz4 = skvx::shuffle<1,0,3,2>(src4);  // y0 x0, y1 x1
             (src4 * scale4 + swz4 * skew4 + trans4).store(dst);
             src += 2;
             dst += 2;
         }
+<<<<<<< HEAD   (7e1844 [metal] Fix issues with non-AA clip.)
+=======
+        if (trailingElement) {
+            // We use the same logic here to ensure that the math stays consistent throughout, even
+            // though the high float2 is ignored.
+            src4.lo = skvx::float2::Load(src);
+            skvx::float4 swz4 = skvx::shuffle<1,0,3,2>(src4);  // y0 x0, y1 x1
+            (src4 * scale4 + swz4 * skew4 + trans4).lo.store(dst);
+        }
+>>>>>>> CHANGE (47dac4 Avoid switching between scalar and SIMD in Affine_vpts.)
     }
 }
 
