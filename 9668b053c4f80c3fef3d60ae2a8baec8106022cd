@@ -16,6 +16,23 @@
       "message": "Sorry that this got as big as it did. I was hoping to chop it into two parts (one that updates MPF, and one that updates XMP), but I was never happy with the border that I ended up getting there.\n\nI have one more patch in this sequence, which will probably remove SkJpegGainmap.cpp (because it\u0027s now getting very small, and `SkJpegGetMultiPictureGainmap` has a bug in it that inlining will fix).",
       "revId": "9668b053c4f80c3fef3d60ae2a8baec8106022cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9670068_6706851d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-05T21:01:00Z",
+      "side": 1,
+      "message": "Sorry that this got so huge -- I tried to slice it (along the \"update MPF vs merge XMP\" lines), but that kept creating bizarre intermediate steps, so I eventually gave up.",
+      "revId": "9668b053c4f80c3fef3d60ae2a8baec8106022cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
