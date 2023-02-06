@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9f8755d_4d44549c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-06T17:51:19Z",
+      "side": 1,
+      "message": "This fixes the problem with some GMs dropping very large emoji.",
+      "revId": "8d610a366e34881b6768b5dae6248b328c54b1af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
