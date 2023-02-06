@@ -15,7 +15,6 @@ class SkColorInfo;
 class SkShader;
 
 namespace skgpu::graphite {
-
 class KeyContext;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
