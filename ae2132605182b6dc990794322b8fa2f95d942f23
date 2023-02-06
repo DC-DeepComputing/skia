@@ -16,6 +16,75 @@
       "message": "This integrates quite cleanly!",
       "revId": "ae2132605182b6dc990794322b8fa2f95d942f23",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c7da3c9_3b87389f",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-06T15:17:04Z",
+      "side": 1,
+      "message": "up to you: for a reader skimming this code for the first time, `MipLevelHelper` might be a more descriptive name",
+      "range": {
+        "startLine": 450,
+        "startChar": 7,
+        "endLine": 450,
+        "endChar": 18
+      },
+      "revId": "ae2132605182b6dc990794322b8fa2f95d942f23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ca18ca3_1e57cd10",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-06T15:17:04Z",
+      "side": 1,
+      "message": "tiny naming-convention nits: `limitX`, `limitY`, `decalCtx`",
+      "range": {
+        "startLine": 454,
+        "startChar": 30,
+        "endLine": 456,
+        "endChar": 44
+      },
+      "revId": "ae2132605182b6dc990794322b8fa2f95d942f23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "778be7a2_fc43be58",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-06T15:17:04Z",
+      "side": 1,
+      "message": "Feels like this should be `allocAndInit`? I know SkRP op names get `this_style` for some reason, but this isn\u0027t an SkRP op, it\u0027s just a method.",
+      "range": {
+        "startLine": 458,
+        "startChar": 9,
+        "endLine": 458,
+        "endChar": 23
+      },
+      "revId": "ae2132605182b6dc990794322b8fa2f95d942f23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
