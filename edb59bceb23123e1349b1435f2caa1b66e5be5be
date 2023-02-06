@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8e3e796_0ce95936",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-06T21:42:20Z",
+      "side": 1,
+      "message": "This isn\u0027t a great solution, but it fixes the issue at least for now.\n\nAnd the issue is going to be a real one, because I\u0027m going to add encoder support for MPF.",
+      "revId": "edb59bceb23123e1349b1435f2caa1b66e5be5be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
