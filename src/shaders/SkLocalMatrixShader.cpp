@@ -75,15 +75,9 @@ void SkLocalMatrixShader::flatten(SkWriteBuffer& buffer) const {
 SkShaderBase::Context* SkLocalMatrixShader::onMakeContext(
     const ContextRec& rec, SkArenaAlloc* alloc) const
 {
-    SkTCopyOnFirstWrite<SkMatrix> lm(fLocalMatrix);
-    if (rec.fLocalMatrix) {
-        *lm.writable() = ConcatLocalMatrices(*rec.fLocalMatrix, *lm);
-    }
-
-    ContextRec newRec(rec);
-    newRec.fLocalMatrix = lm;
-
-    return as_SB(fWrappedShader)->makeContext(newRec, alloc);
+    MatrixRec childMRec = rec.fMatrixRec.concat(fLocalMatrix);
+    ContextRec childRec(rec, childMRec);
+    return as_SB(fWrappedShader)->makeContext(childRec, alloc);
 }
 #endif
 
