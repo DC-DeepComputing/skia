@@ -16,6 +16,24 @@
       "message": "Does this potentially impede itself in a nested case? We do have an optimization that expands nested vector constructors, right? Just wondering if that happens first or second, given something like this:\n\n    vec4 v \u003d vec4(0, vec2(0, 0), 0);",
       "revId": "cb25d9c3e2e94550cba632db2970584691ac8d63",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac839d9e_0b0f4cf2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-06T14:01:19Z",
+      "side": 1,
+      "message": "Good thought; I added a test case like this to VectorConstructors.sksl and it does not fully flatten out. I will take a closer look.",
+      "parentUuid": "a12f2f9e_27c5dbba",
+      "revId": "cb25d9c3e2e94550cba632db2970584691ac8d63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
