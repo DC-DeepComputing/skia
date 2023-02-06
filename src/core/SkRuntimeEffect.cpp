@@ -57,6 +57,7 @@
 #endif
 
 #ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #endif
@@ -1197,7 +1198,14 @@ public:
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
         using namespace skgpu::graphite;
 
-        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
+        sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
+                fEffect->uniforms(),
+                fUniforms,
+                keyContext.dstColorInfo().colorSpace());
+        SkASSERT(uniforms);
+
+        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
+                                       { fEffect, std::move(uniforms) });
 
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
 
@@ -1397,7 +1405,14 @@ public:
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
         using namespace skgpu::graphite;
 
-        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
+        sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
+                fEffect->uniforms(),
+                fUniforms,
+                keyContext.dstColorInfo().colorSpace());
+        SkASSERT(uniforms);
+
+        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
+                                       { fEffect, std::move(uniforms) });
 
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
 
@@ -1607,7 +1622,14 @@ public:
                   bool primitiveColorBlender) const override {
         using namespace skgpu::graphite;
 
-        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
+        sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
+                fEffect->uniforms(),
+                fUniforms,
+                keyContext.dstColorInfo().colorSpace());
+        SkASSERT(uniforms);
+
+        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
+                                       { fEffect, std::move(uniforms) });
 
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
 
