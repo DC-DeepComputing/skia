@@ -68,6 +68,24 @@
       "parentUuid": "8f8ab09f_e5885518",
       "revId": "9668b053c4f80c3fef3d60ae2a8baec8106022cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42b8e759_aace8e9a",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1139,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-06T21:05:18Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a9fd8392_32bcabfb",
+      "revId": "9668b053c4f80c3fef3d60ae2a8baec8106022cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
