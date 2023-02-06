@@ -39,6 +39,30 @@
       },
       "revId": "ee3fefa2d2397225a58d4f7670fe5fb41fa186f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df29c16c_31cfbdf3",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-06T18:59:04Z",
+      "side": 1,
+      "message": "I kept this one as it was since I think a uniform buffer should never be GPU-only? This, of course, means that the result here may not be what the caller wanted but that was the existing behavior.\n\nI think storage, however, should respect `PrioritizeGpuReads` and should be GPU-only unless it has to be mappable, since storage is the type we would use for intermediate buffers between compute pipeline stages for example (which is different from our current \"uniform buffer as SSBO\" use case, in which we want it to be mappable).",
+      "parentUuid": "2b7a84e5_58a488c6",
+      "range": {
+        "startLine": 71,
+        "startChar": 12,
+        "endLine": 71,
+        "endChar": 57
+      },
+      "revId": "ee3fefa2d2397225a58d4f7670fe5fb41fa186f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
