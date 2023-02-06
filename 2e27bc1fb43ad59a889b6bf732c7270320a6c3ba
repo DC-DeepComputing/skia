@@ -70,6 +70,30 @@
       },
       "revId": "2e27bc1fb43ad59a889b6bf732c7270320a6c3ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7294f8ec_8bea3288",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-06T15:39:04Z",
+      "side": 1,
+      "message": "Ack, was assuming 2^n sizes",
+      "parentUuid": "260e7cf5_2aceda2c",
+      "range": {
+        "startLine": 580,
+        "startChar": 0,
+        "endLine": 581,
+        "endChar": 86
+      },
+      "revId": "2e27bc1fb43ad59a889b6bf732c7270320a6c3ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
