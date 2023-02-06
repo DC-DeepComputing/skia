@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9f2f073_dbeebbe2",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-06T15:38:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c7da3c9_3b87389f",
+      "range": {
+        "startLine": 450,
+        "startChar": 7,
+        "endLine": 450,
+        "endChar": 18
+      },
+      "revId": "ae2132605182b6dc990794322b8fa2f95d942f23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ca18ca3_1e57cd10",
@@ -88,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88041a0f_ae4bf893",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-06T15:38:11Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/638978",
+      "parentUuid": "1a59add6_fbc8e1a2",
+      "range": {
+        "startLine": 454,
+        "startChar": 30,
+        "endLine": 456,
+        "endChar": 44
+      },
+      "revId": "ae2132605182b6dc990794322b8fa2f95d942f23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "778be7a2_fc43be58",
@@ -101,6 +149,30 @@
       "writtenOn": "2023-02-06T15:17:04Z",
       "side": 1,
       "message": "Feels like this should be `allocAndInit`? I know SkRP op names get `this_style` for some reason, but this isn\u0027t an SkRP op, it\u0027s just a method.",
+      "range": {
+        "startLine": 458,
+        "startChar": 9,
+        "endLine": 458,
+        "endChar": 23
+      },
+      "revId": "ae2132605182b6dc990794322b8fa2f95d942f23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9085e111_0fb67676",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-06T15:38:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "778be7a2_fc43be58",
       "range": {
         "startLine": 458,
         "startChar": 9,
