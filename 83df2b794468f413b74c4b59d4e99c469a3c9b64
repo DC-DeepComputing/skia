@@ -33,6 +33,24 @@
       "message": "Seems better to change the storage in GradientData to SkPMColor4f ?",
       "revId": "83df2b794468f413b74c4b59d4e99c469a3c9b64",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fac66439_00a17259",
+        "filename": "src/shaders/gradients/SkLinearGradient.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-06T19:06:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e839107_48001cc5",
+      "revId": "83df2b794468f413b74c4b59d4e99c469a3c9b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
