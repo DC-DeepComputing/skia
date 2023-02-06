@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "128de4bf_9604d836",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-02-06T20:42:09Z",
+      "side": 1,
+      "message": "This is a reland of https://skia-review.googlesource.com/c/skia/+/501016, but using\nnew enum values to avoid disrupting existing assets.\n\nWill wait for clients to be updated to kHybrid enums first (cl/507472452).",
+      "revId": "2438e021231284c8cfffca8a33c6369c834c561a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
