@@ -540,18 +540,10 @@ SkShaderBase::Context* SkPerlinNoiseShaderImpl::onMakeContext(const ContextRec& 
 }
 #endif
 
-static inline SkMatrix total_matrix(const SkShaderBase::ContextRec& rec,
-                                    const SkShaderBase& shader) {
-    if (rec.fLocalMatrix) {
-        return SkMatrix::Concat(*rec.fMatrix, *rec.fLocalMatrix);
-    }
-    return *rec.fMatrix;
-}
-
 SkPerlinNoiseShaderImpl::PerlinNoiseShaderContext::PerlinNoiseShaderContext(
         const SkPerlinNoiseShaderImpl& shader, const ContextRec& rec)
     : INHERITED(shader, rec)
-    , fMatrix(total_matrix(rec, shader)) // used for temp storage, adjusted below
+    , fMatrix(rec.fMatrixRec.totalMatrix()) // used for temp storage, adjusted below
     , fPaintingData(shader.fTileSize, shader.fSeed, shader.fBaseFrequencyX,
                     shader.fBaseFrequencyY, fMatrix)
 {
