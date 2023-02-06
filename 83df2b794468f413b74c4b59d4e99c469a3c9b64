@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7837af68_4e3de0da",
+        "filename": "src/shaders/gradients/SkLinearGradient.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-06T19:34:36Z",
+      "side": 1,
+      "message": "Respecting the interpolateInPremul setting is a bit intertwined with honoring the destination colorSpace so I\u0027ll probably address both at the same time. Most of that will involve passing data down to the shader generation phase so that it can emit an addendum to the shader that maps to the destination\u0027s alphaType and colorSpace. I\u0027m not sure yet if that means centralizing this conversion.",
+      "parentUuid": "29b6902e_2a6a7b28",
+      "revId": "83df2b794468f413b74c4b59d4e99c469a3c9b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2e839107_48001cc5",
         "filename": "src/shaders/gradients/SkLinearGradient.cpp",
         "patchSetId": 1
