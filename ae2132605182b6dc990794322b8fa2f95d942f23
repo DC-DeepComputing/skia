@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a59add6_fbc8e1a2",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-06T15:28:05Z",
+      "side": 1,
+      "message": "I can do a second pass to fix up naming. All of the code this was copied from used the underscore naming (also for all the helper lambdas, which is how alloc_and_init ended up like that).",
+      "parentUuid": "0ca18ca3_1e57cd10",
+      "range": {
+        "startLine": 454,
+        "startChar": 30,
+        "endLine": 456,
+        "endChar": 44
+      },
+      "revId": "ae2132605182b6dc990794322b8fa2f95d942f23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "778be7a2_fc43be58",
         "filename": "src/shaders/SkImageShader.cpp",
         "patchSetId": 5
