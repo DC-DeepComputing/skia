@@ -139,8 +139,8 @@ bool SkShaderBase::asLuminanceColor(SkColor* colorPtr) const {
 SkShaderBase::Context* SkShaderBase::makeContext(const ContextRec& rec, SkArenaAlloc* alloc) const {
 #ifdef SK_ENABLE_LEGACY_SHADERCONTEXT
     // We always fall back to raster pipeline when perspective is present.
-    if (rec.fMatrix->hasPerspective() || (rec.fLocalMatrix && rec.fLocalMatrix->hasPerspective()) ||
-        !this->computeTotalInverse(*rec.fMatrix, rec.fLocalMatrix, nullptr)) {
+    auto totalMatrix = rec.fMatrixRec.totalMatrix();
+    if (totalMatrix.hasPerspective() || !totalMatrix.invert(nullptr)) {
         return nullptr;
     }
 
@@ -151,15 +151,14 @@ SkShaderBase::Context* SkShaderBase::makeContext(const ContextRec& rec, SkArenaA
 }
 
 SkShaderBase::Context::Context(const SkShaderBase& shader, const ContextRec& rec)
-    : fShader(shader), fCTM(*rec.fMatrix)
+    : fShader(shader)
 {
     // We should never use a context with perspective.
-    SkASSERT(!rec.fMatrix->hasPerspective());
-    SkASSERT(!rec.fLocalMatrix || !rec.fLocalMatrix->hasPerspective());
+    SkASSERT(!rec.fMatrixRec.totalMatrix().hasPerspective());
 
     // Because the context parameters must be valid at this point, we know that the matrix is
     // invertible.
-    SkAssertResult(fShader.computeTotalInverse(*rec.fMatrix, rec.fLocalMatrix, &fTotalInverse));
+    SkAssertResult(rec.fMatrixRec.totalInverse(&fTotalInverse));
 
     fPaintAlpha = rec.fPaintAlpha;
 }
@@ -230,12 +229,8 @@ bool SkShaderBase::appendStages(const SkStageRec& rec, const MatrixRec& mRec) co
         opaquePaint.writable()->setAlpha(SK_AlphaOPAQUE);
     }
 
-    // We don't have a separate ctm and local matrix at this point. Just pass the combined matrix
-    // as the CTM. TODO: thread the MatrixRec through the legacy context system.
-    auto tm = mRec.totalMatrix();
     ContextRec cr(*opaquePaint,
-                  tm,
-                  nullptr,
+                  mRec,
                   rec.fDstColorType,
                   sk_srgb_singleton(),
                   rec.fSurfaceProps);

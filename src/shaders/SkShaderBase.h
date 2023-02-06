@@ -125,28 +125,34 @@ public:
         kPrefers4f_Flag  = 1 << 2,
     };
 
+    class MatrixRec;
     /**
      *  ContextRec acts as a parameter bundle for creating Contexts.
      */
     struct ContextRec {
-        ContextRec(const SkPaint& paint, const SkMatrix& matrix, const SkMatrix* localM,
-                   SkColorType dstColorType, SkColorSpace* dstColorSpace, SkSurfaceProps props)
-            : fMatrix(&matrix)
-            , fLocalMatrix(localM)
+        ContextRec(const SkPaint& paint,
+                   const MatrixRec& matrixRec,
+                   SkColorType dstColorType,
+                   SkColorSpace* dstColorSpace,
+                   SkSurfaceProps props)
+            : fMatrixRec(matrixRec)
             , fDstColorType(dstColorType)
             , fDstColorSpace(dstColorSpace)
-            , fProps(props) {
-                fPaintAlpha = paint.getAlpha();
-                fPaintDither = paint.isDither();
-            }
+            , fProps(props)
+            , fPaintAlpha(paint.getAlpha()) {}
 
-        const SkMatrix* fMatrix;           // the current matrix in the canvas
-        const SkMatrix* fLocalMatrix;      // optional local matrix
-        SkColorType     fDstColorType;     // the color type of the dest surface
-        SkColorSpace*   fDstColorSpace;    // the color space of the dest surface (if any)
-        SkSurfaceProps  fProps;            // props of the dest surface
-        SkAlpha         fPaintAlpha;
-        bool            fPaintDither;
+        ContextRec(const ContextRec& parentRec, const MatrixRec& newMRec)
+                : fMatrixRec(newMRec)
+                , fDstColorType(parentRec.fDstColorType)
+                , fDstColorSpace(parentRec.fDstColorSpace)
+                , fProps(parentRec.fProps)
+                , fPaintAlpha(parentRec.fPaintAlpha) {}
+
+        const MatrixRec& fMatrixRec;
+        SkColorType      fDstColorType;     // the color type of the dest surface
+        SkColorSpace*    fDstColorSpace;    // the color space of the dest surface (if any)
+        SkSurfaceProps   fProps;            // props of the dest surface
+        SkAlpha          fPaintAlpha;
 
         bool isLegacyCompatible(SkColorSpace* shadersColorSpace) const;
     };
@@ -179,7 +185,6 @@ public:
 
         uint8_t         getPaintAlpha() const { return fPaintAlpha; }
         const SkMatrix& getTotalInverse() const { return fTotalInverse; }
-        const SkMatrix& getCTM() const { return fCTM; }
 
     private:
         SkMatrix    fCTM;
