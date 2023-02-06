@@ -912,7 +912,12 @@ int CreateIntegralTable(float sixSigma, SkBitmap* table) {
     // six-sigma range centered at zero. We want enough resolution so that the linear
     // interpolation done in texture lookup doesn't introduce noticeable artifacts. We
     // conservatively choose to have 2 texels for each dst pixel.
-    int minWidth = 2 * sk_float_ceil2int(sixSigma);
+    int minWidth = sk_float_ceil2int(sixSigma);
+    // Ensure that minWidth won't overflow.
+    if (minWidth > SK_MaxS32/2) {
+        return 0;
+    }
+    minWidth *= 2;
     // Bin by powers of 2 with a minimum so we get good profile reuse.
     int width = std::max(SkNextPow2(minWidth), 32);
 
