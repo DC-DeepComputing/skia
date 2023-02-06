@@ -16,6 +16,23 @@
       "message": "Is addressing this todo going to look identical for every gradient type? And if so, would it make sense to pass the ColorSpace into the GradientData object and handle the transformation there?",
       "revId": "83df2b794468f413b74c4b59d4e99c469a3c9b64",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e839107_48001cc5",
+        "filename": "src/shaders/gradients/SkLinearGradient.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-06T17:53:23Z",
+      "side": 1,
+      "message": "Seems better to change the storage in GradientData to SkPMColor4f ?",
+      "revId": "83df2b794468f413b74c4b59d4e99c469a3c9b64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
