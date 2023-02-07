@@ -10,7 +10,6 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkMatrix.h"
 #include "src/base/SkVx.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/core/SkRectPriv.h"
@@ -1142,14 +1141,14 @@ static constexpr int kMaxAnalyticFPs = 4;
 // across our set of GMs, SKPs, and SVGs used for testing.
 static constexpr int kNumStackMasks = 4;
 
-ClipStack::ClipStack(const SkIRect& deviceBounds, const SkMatrixProvider* matrixProvider,
+ClipStack::ClipStack(const SkIRect& deviceBounds, const SkMatrix* ctm,
                      bool forceAA)
         : fElements(kElementStackIncrement)
         , fSaves(kSaveStackIncrement)
         , fMasks(kMaskStackIncrement)
         , fProxyProvider(nullptr)
         , fDeviceBounds(deviceBounds)
-        , fMatrixProvider(matrixProvider)
+        , fCTM(ctm)
         , fForceAA(forceAA) {
     // Start with a save record that is wide open
     fSaves.emplace_back(deviceBounds);
@@ -1299,8 +1298,7 @@ GrClip::Effect ClipStack::apply(GrRecordingContext* rContext,
         static const GrColorInfo kCoverageColorInfo{GrColorType::kUnknown, kPremul_SkAlphaType,
                                                     nullptr};
         GrFPArgs args(rContext, &kCoverageColorInfo, sdc->surfaceProps());
-        clipFP = as_SB(cs.shader())->asRootFragmentProcessor(args,
-                                                             fMatrixProvider->localToDevice());
+        clipFP = as_SB(cs.shader())->asRootFragmentProcessor(args, *fCTM);
         if (clipFP) {
             // The initial input is the coverage from the geometry processor, so this ensures it
             // is multiplied properly with the alpha of the clip shader.

@@ -17,7 +17,6 @@
 #include "src/core/SkMaskFilterBase.h"
 #include "src/text/gpu/SubRunContainer.h"
 
-class SkMatrixProvider;
 class SkStrikeClient;
 class SkSurfaceProps;
 class SkTextBlob;
@@ -122,7 +121,7 @@ public:
 #if SK_SUPPORT_GPU
     void draw(SkCanvas*,
               const GrClip* clip,
-              const SkMatrixProvider& viewMatrix,
+              const SkMatrix& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
               skgpu::v1::SurfaceDrawContext* sdc);
@@ -153,7 +152,7 @@ private:
 }  // namespace sktext::gpu
 
 namespace skgpu::v1 {
-sk_sp<sktext::gpu::Slug> MakeSlug(const SkMatrixProvider& drawMatrix,
+sk_sp<sktext::gpu::Slug> MakeSlug(const SkMatrix& drawMatrix,
                                   const sktext::GlyphRunList& glyphRunList,
                                   const SkPaint& initialPaint,
                                   const SkPaint& drawingPaint,

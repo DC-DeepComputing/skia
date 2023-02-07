@@ -792,7 +792,7 @@ public:
 #if SK_SUPPORT_GPU
     void draw(SkCanvas* canvas,
               const GrClip*,
-              const SkMatrixProvider&,
+              const SkMatrix&,
               SkPoint drawOrigin,
               const SkPaint& paint,
               sk_sp<SkRefCnt>,
@@ -1023,7 +1023,7 @@ public:
 #if SK_SUPPORT_GPU
     void draw(SkCanvas* canvas,
               const GrClip* clip,
-              const SkMatrixProvider& viewMatrix,
+              const SkMatrix& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
@@ -1213,7 +1213,7 @@ public:
 #if SK_SUPPORT_GPU
     void draw(SkCanvas*,
               const GrClip* clip,
-              const SkMatrixProvider& viewMatrix,
+              const SkMatrix& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunOwner,
@@ -1240,7 +1240,7 @@ public:
 
     std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(const GrClip*,
-                    const SkMatrixProvider& viewMatrix,
+                    const SkMatrix& viewMatrix,
                     SkPoint,
                     const SkPaint&,
                     sk_sp<SkRefCnt>&& subRunStorage,
@@ -1394,7 +1394,7 @@ size_t DirectMaskSubRun::vertexStride(const SkMatrix& positionMatrix) const {
 
 void DirectMaskSubRun::draw(SkCanvas*,
                             const GrClip* clip,
-                            const SkMatrixProvider& viewMatrix,
+                            const SkMatrix& viewMatrix,
                             SkPoint drawOrigin,
                             const SkPaint& paint,
                             sk_sp<SkRefCnt> subRunStorage,
@@ -1408,14 +1408,13 @@ void DirectMaskSubRun::draw(SkCanvas*,
 
 std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(
         const GrClip* clip,
-        const SkMatrixProvider& viewMatrix,
+        const SkMatrix& viewMatrix,
         SkPoint drawOrigin,
         const SkPaint& paint,
         sk_sp<SkRefCnt>&& subRunStorage,
         skgpu::v1::SurfaceDrawContext* sdc) const {
     SkASSERT(this->glyphCount() != 0);
-    const SkMatrix& drawMatrix = viewMatrix.localToDevice();
-    const SkMatrix& positionMatrix = position_matrix(drawMatrix, drawOrigin);
+    const SkMatrix& positionMatrix = position_matrix(viewMatrix, drawOrigin);
 
     auto [integerTranslate, subRunDeviceBounds] = this->deviceRectAndCheckTransform(positionMatrix);
     if (subRunDeviceBounds.isEmpty()) {
@@ -1451,12 +1450,12 @@ std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(
     GrPaint grPaint;
     const SkPMColor4f drawingColor = calculate_colors(sdc,
                                                       paint,
-                                                      drawMatrix,
+                                                      viewMatrix,
                                                       fMaskFormat,
                                                       &grPaint);
 
     auto geometry = AtlasTextOp::Geometry::Make(*this,
-                                                drawMatrix,
+                                                viewMatrix,
                                                 drawOrigin,
                                                 geometricClipRect,
                                                 std::move(subRunStorage),
@@ -1766,7 +1765,7 @@ public:
 
     void draw(SkCanvas*,
               const GrClip* clip,
-              const SkMatrixProvider& viewMatrix,
+              const SkMatrix& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
@@ -1780,24 +1779,22 @@ public:
 
     std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(const GrClip* clip,
-                    const SkMatrixProvider& viewMatrix,
+                    const SkMatrix& viewMatrix,
                     SkPoint drawOrigin,
                     const SkPaint& paint,
                     sk_sp<SkRefCnt>&& subRunStorage,
                     skgpu::v1::SurfaceDrawContext* sdc) const override {
         SkASSERT(this->glyphCount() != 0);
 
-        const SkMatrix& drawMatrix = viewMatrix.localToDevice();
-
         GrPaint grPaint;
         SkPMColor4f drawingColor = calculate_colors(sdc,
                                                     paint,
-                                                    drawMatrix,
+                                                    viewMatrix,
                                                     fVertexFiller.grMaskType(),
                                                     &grPaint);
 
         auto geometry = AtlasTextOp::Geometry::Make(*this,
-                                                    drawMatrix,
+                                                    viewMatrix,
                                                     drawOrigin,
                                                     SkIRect::MakeEmpty(),
                                                     std::move(subRunStorage),
@@ -1805,7 +1802,7 @@ public:
                                                     sdc->arenaAlloc());
 
         GrRecordingContext* const rContext = sdc->recordingContext();
-        SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
+        SkMatrix positionMatrix = position_matrix(viewMatrix, drawOrigin);
         GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
                                                  fVertexFiller.opMaskType(),
                                                  true,
@@ -2025,7 +2022,7 @@ public:
 #if SK_SUPPORT_GPU
     void draw(SkCanvas*,
               const GrClip* clip,
-              const SkMatrixProvider& viewMatrix,
+              const SkMatrix& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
               sk_sp<SkRefCnt> subRunStorage,
@@ -2039,27 +2036,25 @@ public:
 
     std::tuple<const GrClip*, GrOp::Owner> makeAtlasTextOp(
             const GrClip* clip,
-            const SkMatrixProvider& viewMatrix,
+            const SkMatrix& viewMatrix,
             SkPoint drawOrigin,
             const SkPaint& paint,
             sk_sp<SkRefCnt>&& subRunStorage,
             skgpu::v1::SurfaceDrawContext* sdc) const override {
         SkASSERT(this->glyphCount() != 0);
 
-        const SkMatrix& drawMatrix = viewMatrix.localToDevice();
-
         GrPaint grPaint;
         SkPMColor4f drawingColor = calculate_colors(sdc,
                                                     paint,
-                                                    drawMatrix,
+                                                    viewMatrix,
                                                     MaskFormat::kA8,
                                                     &grPaint);
 
         auto [maskType, DFGPFlags, useGammaCorrectDistanceTable] =
-                calculate_sdf_parameters(*sdc, drawMatrix, fUseLCDText, fAntiAliased);
+                calculate_sdf_parameters(*sdc, viewMatrix, fUseLCDText, fAntiAliased);
 
         auto geometry = AtlasTextOp::Geometry::Make(*this,
-                                                    drawMatrix,
+                                                    viewMatrix,
                                                     drawOrigin,
                                                     SkIRect::MakeEmpty(),
                                                     std::move(subRunStorage),
@@ -2067,7 +2062,7 @@ public:
                                                     sdc->arenaAlloc());
 
         GrRecordingContext* const rContext = sdc->recordingContext();
-        SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
+        SkMatrix positionMatrix = position_matrix(viewMatrix, drawOrigin);
         GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
                                                  maskType,
                                                  true,
@@ -2830,7 +2825,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
 #if SK_SUPPORT_GPU
 void SubRunContainer::draw(SkCanvas* canvas,
                            const GrClip* clip,
-                           const SkMatrixProvider& viewMatrix,
+                           const SkMatrix& viewMatrix,
                            SkPoint drawOrigin,
                            const SkPaint& paint,
                            const SkRefCnt* subRunStorage,
