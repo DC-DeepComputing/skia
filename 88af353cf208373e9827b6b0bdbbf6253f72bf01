@@ -70,6 +70,24 @@
       "parentUuid": "da279bad_4569e62a",
       "revId": "88af353cf208373e9827b6b0bdbbf6253f72bf01",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "127c8218_73723bf4",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-07T15:48:14Z",
+      "side": 1,
+      "message": "Actually, thinking hard about that example, the new code actually isn\u0027t equivalent anyway. Running the copies in sequence will give a different result than the glommed-together version. I take it all back, the slot-range check is truly important.",
+      "parentUuid": "e5effd81_f3315d42",
+      "revId": "88af353cf208373e9827b6b0bdbbf6253f72bf01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
