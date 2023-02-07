@@ -12,7 +12,6 @@
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkMatrixPriv.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkMipmapAccessor.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
@@ -22,7 +21,6 @@
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkLocalMatrixShader.h"
-#include "src/shaders/SkTransformShader.h"
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "src/gpu/graphite/ImageUtils.h"

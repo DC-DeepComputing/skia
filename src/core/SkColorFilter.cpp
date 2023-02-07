@@ -16,7 +16,6 @@
 #include "src/core/SkColorFilterPriv.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -111,7 +110,6 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
     pipeline.append_constant_color(&alloc, color.vec());
     SkPaint solidPaint;
     solidPaint.setColor4f(color.unpremul());
-    SkMatrixProvider matrixProvider(SkMatrix::I());
     SkSurfaceProps props{}; // default OK; colorFilters don't render text
     SkStageRec rec = {&pipeline, &alloc, kRGBA_F32_SkColorType, dstCS, solidPaint, props};
 
