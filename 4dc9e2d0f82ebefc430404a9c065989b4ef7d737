@@ -22,6 +22,30 @@
       },
       "revId": "4dc9e2d0f82ebefc430404a9c065989b4ef7d737",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5983c2c_ac84cf7e",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-07T21:55:02Z",
+      "side": 1,
+      "message": "Ah, great call to test that. Setting an out-of-bounds viewport seems to be fine, but setting out-of-bounds scissors is not. So that needs to be addressed somehow. I guess we could track the viewport on the command buffer, and intersect the scissor with that... but it feels a little brittle to me, and then there\u0027s the question of what to do with an empty intersection. Maybe we could do the intersection higher up and toss out entire draws if the intersection is empty?",
+      "parentUuid": "fd245107_7a25f1bf",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 472,
+        "endChar": 38
+      },
+      "revId": "4dc9e2d0f82ebefc430404a9c065989b4ef7d737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
