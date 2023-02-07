@@ -95,6 +95,37 @@ public:
     using Visitor = std::function<void(int lineNumber, const VisitorInfo*)>;
     virtual void visit(const Visitor&) = 0;
 
+    // Editing API
+
+    // Line Metrics
+  //virtual size_t lineNumber() = 0;
+    virtual size_t getLineNumberAt(size_t codeUnitIndex);
+    virtual bool getLineMetricsAt(size_t lineNumber, LineMetrics* lineMetrics);
+    virtual SkScalar getActualWidth(size_t lineNumber); // In case of ellipsis
+  //virtual void getLineMetrics(std::vector<LineMetrics>&) = 0;
+
+    // Glyph Cluster Metrics
+    struct GlyphClusterInfo {
+        SkRect fBounds;
+        TextDirection fGlyphClusterPosition;
+    };
+    virtual bool getGlyphClusterAt(size_t codeUnitIndex, GlyphClusterInfo* glyphInfo);
+
+    // Hit-Testing
+    virtual GlyphClusterInfo getClosestGlyphClusterAt(SkScalar dx, SkScalar dy);
+
+    // Turning Logical Order Traversal to Visual Order Traversal
+    //ui.TextVisualOrderPivot? leftVisualOrderPivotAt(int codeUnitOffset, TextRange searchRange)
+    //ui.TextVisualOrderPivot? rightVisualOrderPivotAt(int codeUnitOffset, TextRange searchRange);
+
+    // Debugging Fonts
+    struct FontInfo {
+        SkFont fFont;
+        TextRange fTextRange;
+    };
+    virtual SkFont getFontAt(int codeUnitIndex);
+    virtual std::vector<FontInfo> getFonts();
+
 protected:
     sk_sp<FontCollection> fFontCollection;
     ParagraphStyle fParagraphStyle;
