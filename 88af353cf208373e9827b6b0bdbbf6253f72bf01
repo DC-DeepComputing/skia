@@ -52,6 +52,24 @@
       "parentUuid": "34c58d05_accfd0b4",
       "revId": "88af353cf208373e9827b6b0bdbbf6253f72bf01",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5effd81_f3315d42",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-07T15:46:26Z",
+      "side": 1,
+      "message": "All that being said, I just tested it and the _only_ improvement in codegen we see is in the example I posted above. \n\n```\n-    4. copy_slot_unmasked             i₁ \u003d i\n-    5. copy_slot_unmasked             i₂ \u003d i₁\n-    6. copy_slot_unmasked             i₃ \u003d i₂\n-    7. copy_slot_unmasked             i₄ \u003d i₃\n+    4. copy_4_slots_unmasked          i₁, i₂, i₃, i₄ \u003d i, i₁, i₂, i₃\n```\n\nGiven the marginal difference I am inclined to leave this as-is. Otherwise I have to reason about copy-direction when writing large overlapping blocks (you\u0027d need to decide to copy backwards or forwards in `Program::appendCopy`) and it\u0027s not going to be well-tested unless I craft some really bonkers test cases.",
+      "parentUuid": "da279bad_4569e62a",
+      "revId": "88af353cf208373e9827b6b0bdbbf6253f72bf01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
