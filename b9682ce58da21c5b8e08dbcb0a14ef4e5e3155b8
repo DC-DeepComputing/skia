@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33848497_a90254a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-07T15:30:40Z",
+      "side": 1,
+      "message": "/refs/tags will *not* be stable https://github.com/community/community/discussions/46034",
+      "revId": "b9682ce58da21c5b8e08dbcb0a14ef4e5e3155b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
