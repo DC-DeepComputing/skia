@@ -23,7 +23,6 @@
 #include "src/core/SkDraw.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkMask.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkPixmapPriv.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkSwizzlePriv.h"
@@ -196,10 +195,9 @@ bool SkPixmap::erase(const SkColor4f& color, SkColorSpace* cs, const SkIRect* su
     SkRasterClip rc{clip};
 
     SkDraw draw;
-    SkMatrixProvider matrixProvider(SkMatrix::I());
-    draw.fDst            = *this;
-    draw.fMatrixProvider = &matrixProvider;
-    draw.fRC             = &rc;
+    draw.fDst = *this;
+    draw.fCTM = &SkMatrix::I();
+    draw.fRC  = &rc;
 
     draw.drawPaint(paint);
     return true;
