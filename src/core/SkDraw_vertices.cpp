@@ -14,7 +14,6 @@
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkDraw.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkScan.h"
@@ -363,9 +362,8 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
     // There is a paintShader iff there is texCoords.
     SkASSERT((texCoords != nullptr) == (paintShader != nullptr));
 
-    SkMatrix ctm = fMatrixProvider->localToDevice();
     // Explicit texture coords can't contain perspective - only the CTM can.
-    const bool usePerspective = ctm.hasPerspective();
+    const bool usePerspective = fCTM->hasPerspective();
 
     SkTriColorShader* triColorShader = nullptr;
     SkPMColor4f* dstColors = nullptr;
@@ -399,14 +397,13 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
 
     // If there are separate texture coords then we need to insert a transform shader to update
     // a matrix derived from each triangle's coords. In that case we will fold the CTM into
-    // each update and use an identity matrix provider.
+    // each update and use an identity matrix.
     SkTransformShader* transformShader = nullptr;
-    const SkMatrixProvider* matrixProvider = fMatrixProvider;
-    SkTLazy<SkMatrixProvider> identityProvider;
+    const SkMatrix* ctm = fCTM;
     if (texCoords && texCoords != positions) {
         paintShader = transformShader = outerAlloc->make<SkTransformShader>(*as_SB(paintShader),
                                                                             usePerspective);
-        matrixProvider = identityProvider.init(SkMatrix::I());
+        ctm = &SkMatrix::I();
     }
     sk_sp<SkShader> blenderShader = applyShaderColorBlend(paintShader);
 
@@ -420,7 +417,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
 
         auto blitter = SkCreateRasterPipelineBlitter(fDst,
                                                      finalPaint,
-                                                     matrixProvider->localToDevice(),
+                                                     *ctm,
                                                      outerAlloc,
                                                      fRC->clipShader(),
                                                      props);
@@ -435,7 +432,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
 
             SkMatrix localM;
             if (!transformShader || (texture_to_matrix(state, positions, texCoords, &localM) &&
-                                     transformShader->update(SkMatrix::Concat(ctm, localM)))) {
+                                     transformShader->update(SkMatrix::Concat(*fCTM, localM)))) {
                 fill_triangle(state, blitter, *fRC, dev2, dev3);
             }
         }
@@ -448,7 +445,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
 
         auto blitter = SkVMBlitter::Make(fDst,
                                          finalPaint,
-                                         matrixProvider->localToDevice(),
+                                         *ctm,
                                          outerAlloc,
                                          this->fRC->clipShader());
         if (!blitter) {
@@ -457,7 +454,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
         while (vertProc(&state)) {
             SkMatrix localM;
             if (transformShader && !(texture_to_matrix(state, positions, texCoords, &localM) &&
-                                     transformShader->update(SkMatrix::Concat(ctm, localM)))) {
+                                     transformShader->update(SkMatrix::Concat(*fCTM, localM)))) {
                 continue;
             }
 
@@ -483,9 +480,8 @@ void SkDraw::drawVertices(const SkVertices* vertices,
     if (vertexCount < 3 || (indexCount > 0 && indexCount < 3) || fRC->isEmpty()) {
         return;
     }
-    SkMatrix ctm = fMatrixProvider->localToDevice();
     SkMatrix ctmInv;
-    if (!ctm.invert(&ctmInv)) {
+    if (!fCTM->invert(&ctmInv)) {
         return;
     }
 
@@ -497,16 +493,16 @@ void SkDraw::drawVertices(const SkVertices* vertices,
     SkPoint*  dev2 = nullptr;
     SkPoint3* dev3 = nullptr;
 
-    if (ctm.hasPerspective()) {
+    if (fCTM->hasPerspective()) {
         dev3 = outerAlloc.makeArray<SkPoint3>(vertexCount);
-        ctm.mapHomogeneousPoints(dev3, info.positions(), vertexCount);
+        fCTM->mapHomogeneousPoints(dev3, info.positions(), vertexCount);
         // similar to the bounds check for 2d points (below)
         if (!SkScalarsAreFinite((const SkScalar*)dev3, vertexCount * 3)) {
             return;
         }
     } else {
         dev2 = outerAlloc.makeArray<SkPoint>(vertexCount);
-        ctm.mapPoints(dev2, info.positions(), vertexCount);
+        fCTM->mapPoints(dev2, info.positions(), vertexCount);
 
         SkRect bounds;
         // this also sets bounds to empty if we see a non-finite value

@@ -22,7 +22,6 @@ class SkClipStack;
 class SkBaseDevice;
 class SkBlitter;
 class SkMatrix;
-class SkMatrixProvider;
 class SkPath;
 class SkSurfaceProps;
 class SkRegion;
@@ -164,9 +163,9 @@ private:
 
 public:
     SkPixmap                fDst;
-    const SkMatrixProvider* fMatrixProvider{nullptr};  // required
-    const SkRasterClip*     fRC{nullptr};              // required
-    const SkSurfaceProps*   fProps{nullptr};           // optional
+    const SkMatrix*         fCTM{nullptr};    // required
+    const SkRasterClip*     fRC{nullptr};     // required
+    const SkSurfaceProps*   fProps{nullptr};  // optional
 
 #ifdef SK_DEBUG
     void validate() const;

@@ -154,8 +154,8 @@ static void draw_points(SkCanvas::PointMode mode,
     SkRasterClip rc(bounds);
     SkDraw draw;
     draw.fDst = SkPixmap(SkImageInfo::MakeUnknown(bounds.right(), bounds.bottom()), nullptr, 0);
-    draw.fMatrixProvider = device;
-    draw.fRC = &rc;
+    draw.fCTM = &device->localToDevice();
+    draw.fRC  = &rc;
     draw.drawPoints(mode, count, points, paint, device);
 }
 
