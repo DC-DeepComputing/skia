@@ -35,7 +35,7 @@ public:
 #if SK_SUPPORT_GPU
     void drawGlyphRunList(SkCanvas* canvas,
                           const GrClip* clip,
-                          const SkMatrixProvider& viewMatrix,
+                          const SkMatrix& viewMatrix,
                           const GlyphRunList& glyphRunList,
                           const SkPaint& paint,
                           SkStrikeDeviceInfo strikeDeviceInfo,
@@ -92,7 +92,7 @@ private:
         SkSTArray<1, sk_sp<TextBlob>> fBlobs;
     };
 
-    sk_sp<TextBlob> findOrCreateBlob(const SkMatrixProvider& viewMatrix,
+    sk_sp<TextBlob> findOrCreateBlob(const SkMatrix& viewMatrix,
                                      const GlyphRunList& glyphRunList,
                                      const SkPaint& paint,
                                      SkStrikeDeviceInfo strikeDeviceInfo);

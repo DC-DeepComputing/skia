@@ -108,7 +108,7 @@ public:
     static GrOp::Owner CreateOpTestingOnly(skgpu::v1::SurfaceDrawContext*,
                                            const SkPaint&,
                                            const SkFont&,
-                                           const SkMatrixProvider&,
+                                           const SkMatrix&,
                                            const char* text,
                                            int x,
                                            int y);

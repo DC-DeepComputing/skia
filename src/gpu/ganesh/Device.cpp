@@ -226,7 +226,7 @@ Device::Device(std::unique_ptr<SurfaceDrawContext> sdc, DeviceFlags flags)
                        sdc->surfaceProps().isUseDeviceIndependentFonts()))
         , fSurfaceDrawContext(std::move(sdc))
         , fClip(SkIRect::MakeSize(fSurfaceDrawContext->dimensions()),
-                &this->asMatrixProvider(),
+                &this->localToDevice(),
                 force_aa_clip(fSurfaceDrawContext.get())) {
     if (flags & DeviceFlags::kNeedClear) {
         this->clearAll();
@@ -459,14 +459,15 @@ void Device::drawPoints(SkCanvas::PointMode mode,
 
     GrPrimitiveType primitiveType = point_mode_to_primitive_type(mode);
 
-    const SkMatrixProvider* matrixProvider = this;
+    const SkMatrix* ctm = &this->localToDevice();
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
-    SkTLazy<SkPostTranslateMatrixProvider> postTranslateMatrixProvider;
+    SkTLazy<SkMatrix> translatedMatrix;
     // This offsetting in device space matches the expectations of the Android framework for non-AA
     // points and lines.
     if (GrIsPrimTypeLines(primitiveType) || GrPrimitiveType::kPoints == primitiveType) {
         static const SkScalar kOffset = 0.063f; // Just greater than 1/16.
-        matrixProvider = postTranslateMatrixProvider.init(*matrixProvider, kOffset, kOffset);
+        ctm = translatedMatrix.init(*ctm);
+        translatedMatrix->postTranslate(kOffset, kOffset)
     }
 #endif
 
@@ -474,7 +475,7 @@ void Device::drawPoints(SkCanvas::PointMode mode,
     if (!SkPaintToGrPaint(this->recordingContext(),
                           fSurfaceDrawContext->colorInfo(),
                           paint,
-                          matrixProvider->localToDevice(),
+                          *ctm,
                           fSurfaceDrawContext->surfaceProps(),
                           &grPaint)) {
         return;
@@ -484,7 +485,7 @@ void Device::drawPoints(SkCanvas::PointMode mode,
     sk_sp<SkVertices> vertices = SkVertices::MakeCopy(kIgnoredMode, SkToS32(count), pts, nullptr,
                                                       nullptr);
 
-    fSurfaceDrawContext->drawVertices(this->clip(), std::move(grPaint), *matrixProvider,
+    fSurfaceDrawContext->drawVertices(this->clip(), std::move(grPaint), *ctm,
                                       std::move(vertices), &primitiveType);
 }
 
@@ -501,7 +502,7 @@ void Device::drawRect(const SkRect& rect, const SkPaint& paint) {
         GrStyledShape shape(rect, style);
 
         GrBlurUtils::drawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(),
-                                             this->clip(), paint, this->asMatrixProvider(), shape);
+                                             this->clip(), paint, this->localToDevice(), shape);
         return;
     }
 
@@ -574,7 +575,7 @@ void Device::drawRRect(const SkRRect& rrect, const SkPaint& paint) {
         GrStyledShape shape(rrect, style);
 
         GrBlurUtils::drawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(),
-                                             this->clip(), paint, this->asMatrixProvider(), shape);
+                                             this->clip(), paint, this->localToDevice(), shape);
         return;
     }
 
@@ -643,7 +644,7 @@ void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPain
     GrStyledShape shape(path, paint);
 
     GrBlurUtils::drawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
-                                         paint, this->asMatrixProvider(), shape);
+                                         paint, this->localToDevice(), shape);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -755,7 +756,7 @@ void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint, bool path
     GrStyledShape shape(origSrcPath, paint);
 
     GrBlurUtils::drawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
-                                         paint, this->asMatrixProvider(), shape);
+                                         paint, this->localToDevice(), shape);
 }
 
 sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap& bitmap) {
@@ -989,7 +990,7 @@ void Device::drawVertices(const SkVertices* vertices,
     }
     fSurfaceDrawContext->drawVertices(this->clip(),
                                       std::move(grPaint),
-                                      this->asMatrixProvider(),
+                                      this->localToDevice(),
                                       sk_ref_sp(const_cast<SkVertices*>(vertices)),
                                       nullptr,
                                       skipColorXform);
@@ -1011,7 +1012,7 @@ void Device::drawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPain
                              &grPaint)) {
         return;
     }
-    fSurfaceDrawContext->drawMesh(this->clip(), std::move(grPaint), this->asMatrixProvider(), mesh);
+    fSurfaceDrawContext->drawMesh(this->clip(), std::move(grPaint), this->localToDevice(), mesh);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1251,7 +1252,7 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
     } else {
         fSurfaceDrawContext->drawGlyphRunList(canvas,
                                               this->clip(),
-                                              this->asMatrixProvider(),
+                                              this->localToDevice(),
                                               glyphRunList,
                                               this->strikeDeviceInfo(),
                                               drawingPaint);

@@ -31,7 +31,7 @@ TextBlobRedrawCoordinator::TextBlobRedrawCoordinator(uint32_t messageBusID)
 #if SK_SUPPORT_GPU
 void TextBlobRedrawCoordinator::drawGlyphRunList(SkCanvas* canvas,
                                                  const GrClip* clip,
-                                                 const SkMatrixProvider& viewMatrix,
+                                                 const SkMatrix& viewMatrix,
                                                  const GlyphRunList& glyphRunList,
                                                  const SkPaint& paint,
                                                  SkStrikeDeviceInfo strikeDeviceInfo,
@@ -57,11 +57,11 @@ void TextBlobRedrawCoordinator::drawGlyphRunList(SkCanvas* canvas,
 }
 #endif
 
-sk_sp<TextBlob> TextBlobRedrawCoordinator::findOrCreateBlob(const SkMatrixProvider& viewMatrix,
+sk_sp<TextBlob> TextBlobRedrawCoordinator::findOrCreateBlob(const SkMatrix& viewMatrix,
                                                             const GlyphRunList& glyphRunList,
                                                             const SkPaint& paint,
                                                             SkStrikeDeviceInfo strikeDeviceInfo) {
-    SkMatrix positionMatrix{viewMatrix.localToDevice()};
+    SkMatrix positionMatrix{viewMatrix};
     positionMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
 
     auto [canCache, key] = TextBlob::Key::Make(

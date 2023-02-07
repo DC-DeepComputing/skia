@@ -17,7 +17,6 @@
 
 class SkArenaAlloc;
 class SkMatrix;
-class SkMatrixProvider;
 class SkPaint;
 class SkPixmap;
 class SkSurfaceProps;

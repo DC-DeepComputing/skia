@@ -14,7 +14,6 @@
 #include "include/private/chromium/Slug.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkMaskFilterBase.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRectPriv.h"
@@ -92,7 +91,7 @@ public:
              SkPoint origin);
     ~SlugImpl() override = default;
 
-    static sk_sp<SlugImpl> Make(const SkMatrixProvider& viewMatrix,
+    static sk_sp<SlugImpl> Make(const SkMatrix& viewMatrix,
                                 const sktext::GlyphRunList& glyphRunList,
                                 const SkPaint& initialPaint,
                                 const SkPaint& drawingPaint,
@@ -105,7 +104,7 @@ public:
 #if SK_SUPPORT_GPU
     void surfaceDraw(SkCanvas*,
                      const GrClip* clip,
-                     const SkMatrixProvider& viewMatrix,
+                     const SkMatrix& viewMatrix,
                      const SkPaint& paint,
                      skgpu::v1::SurfaceDrawContext* sdc) const;
 #endif
@@ -146,7 +145,7 @@ SlugImpl::SlugImpl(SubRunAllocator&& alloc,
         , fOrigin{origin} {}
 
 #if SK_SUPPORT_GPU
-void SlugImpl::surfaceDraw(SkCanvas* canvas, const GrClip* clip, const SkMatrixProvider& viewMatrix,
+void SlugImpl::surfaceDraw(SkCanvas* canvas, const GrClip* clip, const SkMatrix& viewMatrix,
                            const SkPaint& drawingPaint, skgpu::v1::SurfaceDrawContext* sdc) const {
     fSubRuns->draw(canvas, clip, viewMatrix, fOrigin, drawingPaint, this, sdc);
 }
@@ -181,7 +180,7 @@ sk_sp<Slug> SlugImpl::MakeFromBuffer(SkReadBuffer& buffer, const SkStrikeClient*
             std::move(alloc), std::move(container), sourceBounds, paint, origin));
 }
 
-sk_sp<SlugImpl> SlugImpl::Make(const SkMatrixProvider& viewMatrix,
+sk_sp<SlugImpl> SlugImpl::Make(const SkMatrix& viewMatrix,
                                const sktext::GlyphRunList& glyphRunList,
                                const SkPaint& initialPaint,
                                const SkPaint& drawingPaint,
@@ -191,8 +190,7 @@ sk_sp<SlugImpl> SlugImpl::Make(const SkMatrixProvider& viewMatrix,
     auto [initializer, _, alloc] =
             SubRunAllocator::AllocateClassMemoryAndArena<SlugImpl>(subRunSizeHint);
 
-    const SkMatrix positionMatrix =
-            position_matrix(viewMatrix.localToDevice(), glyphRunList.origin());
+    const SkMatrix positionMatrix = position_matrix(viewMatrix, glyphRunList.origin());
 
     auto subRuns = SubRunContainer::MakeInAlloc(glyphRunList,
                                                 positionMatrix,
@@ -382,7 +380,7 @@ const TextBlob::Key& TextBlob::key() const { return fKey; }
 #if SK_SUPPORT_GPU
 void TextBlob::draw(SkCanvas* canvas,
                     const GrClip* clip,
-                    const SkMatrixProvider& viewMatrix,
+                    const SkMatrix& viewMatrix,
                     SkPoint drawOrigin,
                     const SkPaint& paint,
                     skgpu::v1::SurfaceDrawContext* sdc) {
@@ -438,7 +436,7 @@ sk_sp<Slug>
 Device::convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,
                                   const SkPaint& initialPaint,
                                   const SkPaint& drawingPaint) {
-    return SlugImpl::Make(this->asMatrixProvider(),
+    return SlugImpl::Make(this->localToDevice(),
                           glyphRunList,
                           initialPaint,
                           drawingPaint,
@@ -448,23 +446,22 @@ Device::convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,
 
 void Device::drawSlug(SkCanvas* canvas, const Slug* slug, const SkPaint& drawingPaint) {
     const SlugImpl* slugImpl = static_cast<const SlugImpl*>(slug);
-    auto matrixProvider = this->asMatrixProvider();
 #if defined(SK_DEBUG)
     if (!fContext->priv().options().fSupportBilerpFromGlyphAtlas) {
         // We can draw a slug if the atlas has padding or if the creation matrix and the
         // drawing matrix are the same. If they are the same, then the Slug will use the direct
         // drawing code and not use bi-lerp.
         SkMatrix slugMatrix = slugImpl->initialPositionMatrix();
-        SkMatrix positionMatrix = matrixProvider.localToDevice();
+        SkMatrix positionMatrix = this->localToDevice();
         positionMatrix.preTranslate(slugImpl->origin().x(), slugImpl->origin().y());
         SkASSERT(slugMatrix == positionMatrix);
     }
 #endif
     slugImpl->surfaceDraw(
-            canvas, this->clip(), matrixProvider, drawingPaint, fSurfaceDrawContext.get());
+            canvas, this->clip(), this->localToDevice(), drawingPaint, fSurfaceDrawContext.get());
 }
 
-sk_sp<Slug> MakeSlug(const SkMatrixProvider& drawMatrix,
+sk_sp<Slug> MakeSlug(const SkMatrix& drawMatrix,
                      const sktext::GlyphRunList& glyphRunList,
                      const SkPaint& initialPaint,
                      const SkPaint& drawingPaint,

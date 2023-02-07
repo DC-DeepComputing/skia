@@ -15,7 +15,6 @@
 #include "src/text/gpu/SubRunAllocator.h"
 
 class SkMatrix;
-class SkMatrixProvider;
 class SkPaint;
 class SkReadBuffer;
 class SkStrikeClient;
@@ -86,7 +85,7 @@ public:
     virtual std::tuple<const GrClip*, GrOp::Owner>
     makeAtlasTextOp(
             const GrClip*,
-            const SkMatrixProvider& viewMatrix,
+            const SkMatrix& viewMatrix,
             SkPoint drawOrigin,
             const SkPaint&,
             sk_sp<SkRefCnt>&& subRunStorage,
@@ -146,7 +145,7 @@ public:
     // Produce GPU ops for this subRun or just draw them.
     virtual void draw(SkCanvas*,
                       const GrClip*,
-                      const SkMatrixProvider& viewMatrix,
+                      const SkMatrix& viewMatrix,
                       SkPoint drawOrigin,
                       const SkPaint&,
                       sk_sp<SkRefCnt> subRunStorage,
@@ -267,7 +266,7 @@ public:
 #if SK_SUPPORT_GPU
     void draw(SkCanvas* canvas,
               const GrClip* clip,
-              const SkMatrixProvider& viewMatrix,
+              const SkMatrix& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
               const SkRefCnt* subRunStorage,

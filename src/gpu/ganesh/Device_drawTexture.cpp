@@ -420,7 +420,7 @@ void draw_texture(skgpu::v1::SurfaceDrawContext* sdc,
 void draw_image(GrRecordingContext* rContext,
                 skgpu::v1::SurfaceDrawContext* sdc,
                 const GrClip* clip,
-                const SkMatrixProvider& matrixProvider,
+                const SkMatrix& ctm,
                 const SkPaint& paint,
                 const SkImage_Base& image,
                 const SkRect& src,
@@ -431,7 +431,6 @@ void draw_image(GrRecordingContext* rContext,
                 SkCanvas::SrcRectConstraint constraint,
                 SkSamplingOptions sampling,
                 SkTileMode tm = SkTileMode::kClamp) {
-    const SkMatrix& ctm(matrixProvider.localToDevice());
     if (tm == SkTileMode::kClamp && !image.isYUVA() && can_use_draw_texture(paint, sampling)) {
         // We've done enough checks above to allow us to pass ClampNearest() and not check for
         // scaling adjustments.
@@ -518,7 +517,7 @@ void draw_image(GrRecordingContext* rContext,
         if (const auto* shader = as_SB(paint.getShader())) {
             auto shaderFP = shader->asRootFragmentProcessor(
                     GrFPArgs(rContext, &sdc->colorInfo(), sdc->surfaceProps()),
-                    matrixProvider.localToDevice());
+                    ctm);
             if (!shaderFP) {
                 return;
             }
@@ -581,7 +580,7 @@ void draw_tiled_bitmap(GrRecordingContext* rContext,
                        const GrClip* clip,
                        const SkBitmap& bitmap,
                        int tileSize,
-                       const SkMatrixProvider& matrixProvider,
+                       const SkMatrix& ctm,
                        const SkMatrix& srcToDst,
                        const SkRect& srcRect,
                        const SkIRect& clippedSrcIRect,
@@ -666,7 +665,7 @@ void draw_tiled_bitmap(GrRecordingContext* rContext,
                 draw_image(rContext,
                            sdc,
                            clip,
-                           matrixProvider,
+                           ctm,
                            paint,
                            *as_IB(image.get()),
                            tileR,
@@ -734,11 +733,10 @@ void Device::drawSpecial(SkSpecialImage* special,
                       special->colorInfo());
     // In most cases this ought to hit draw_texture since there won't be a color filter,
     // alpha-only texture+shader, or a high filter quality.
-    SkMatrixProvider matrixProvider(localToDevice);
     draw_image(fContext.get(),
                fSurfaceDrawContext.get(),
                this->clip(),
-               matrixProvider,
+               localToDevice,
                paint,
                image,
                src,
@@ -775,9 +773,10 @@ void Device::drawImageQuad(const SkImage* image,
     SkTileMode tileMode = mode == ImageDrawMode::kDecal ? SkTileMode::kDecal : SkTileMode::kClamp;
 
     // Get final CTM matrix
-    SkPreConcatMatrixProvider matrixProvider(this->asMatrixProvider(),
-                                             preViewMatrix ? *preViewMatrix : SkMatrix::I());
-    const SkMatrix& ctm(matrixProvider.localToDevice());
+    SkMatrix ctm = this->localToDevice();
+    if (preViewMatrix) {
+        ctm.preConcat(*preViewMatrix);
+    }
 
     SkSamplingOptions sampling = origSampling;
     if (sampling.mipmap != SkMipmapMode::kNone && can_disable_mipmap(ctm, srcToDst)) {
@@ -818,7 +817,7 @@ void Device::drawImageQuad(const SkImage* image,
                                   clip,
                                   bm,
                                   tileSize,
-                                  matrixProvider,
+                                  ctm,
                                   srcToDst,
                                   src,
                                   clippedSubset,
@@ -835,7 +834,7 @@ void Device::drawImageQuad(const SkImage* image,
     draw_image(fContext.get(),
                fSurfaceDrawContext.get(),
                clip,
-               matrixProvider,
+               ctm,
                paint,
                *as_IB(image),
                src,

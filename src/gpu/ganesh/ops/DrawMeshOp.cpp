@@ -455,7 +455,7 @@ public:
            const SkMesh&,
            GrAAType,
            sk_sp<GrColorSpaceXform>,
-           const SkMatrixProvider&);
+           const SkMatrix&);
 
     MeshOp(GrProcessorSet*,
            const SkPMColor4f&,
@@ -463,7 +463,7 @@ public:
            const GrPrimitiveType*,
            GrAAType,
            sk_sp<GrColorSpaceXform>,
-           const SkMatrixProvider&);
+           const SkMatrix&);
 
     const char* name() const override { return "MeshOp"; }
 
@@ -697,13 +697,13 @@ MeshOp::MeshOp(GrProcessorSet*          processorSet,
                const SkMesh&            mesh,
                GrAAType                 aaType,
                sk_sp<GrColorSpaceXform> colorSpaceXform,
-               const SkMatrixProvider&  matrixProvider)
+               const SkMatrix&          viewMatrix)
         : INHERITED(ClassID())
         , fHelper(processorSet, aaType)
         , fPrimitiveType(primitive_type(mesh.mode()))
         , fColorSpaceXform(std::move(colorSpaceXform))
         , fColor(color)
-        , fViewMatrix(matrixProvider.localToDevice()) {
+        , fViewMatrix(viewMatrix) {
     fMeshes.emplace_back(mesh);
 
     fSpecification = mesh.refSpec();
@@ -774,12 +774,12 @@ MeshOp::MeshOp(GrProcessorSet*          processorSet,
                const GrPrimitiveType*   overridePrimitiveType,
                GrAAType                 aaType,
                sk_sp<GrColorSpaceXform> colorSpaceXform,
-               const SkMatrixProvider&  matrixProvider)
+               const SkMatrix&          viewMatrix)
         : INHERITED(ClassID())
         , fHelper(processorSet, aaType)
         , fColorSpaceXform(std::move(colorSpaceXform))
         , fColor(color)
-        , fViewMatrix(matrixProvider.localToDevice()) {
+        , fViewMatrix(viewMatrix) {
     int attrs = (vertices->priv().hasColors()    ? 0b01 : 0b00) |
                 (vertices->priv().hasTexCoords() ? 0b10 : 0b00);
     switch (attrs) {
@@ -1054,7 +1054,7 @@ namespace skgpu::v1::DrawMeshOp {
 GrOp::Owner Make(GrRecordingContext* context,
                  GrPaint&& paint,
                  const SkMesh& mesh,
-                 const SkMatrixProvider& matrixProvider,
+                 const SkMatrix& viewMatrix,
                  GrAAType aaType,
                  sk_sp<GrColorSpaceXform> colorSpaceXform) {
     return GrSimpleMeshDrawOpHelper::FactoryHelper<MeshOp>(context,
@@ -1062,14 +1062,14 @@ GrOp::Owner Make(GrRecordingContext* context,
                                                            mesh,
                                                            aaType,
                                                            std::move(colorSpaceXform),
-                                                           matrixProvider);
+                                                           viewMatrix);
 }
 
 GrOp::Owner Make(GrRecordingContext* context,
                  GrPaint&& paint,
                  sk_sp<SkVertices> vertices,
                  const GrPrimitiveType* overridePrimitiveType,
-                 const SkMatrixProvider& matrixProvider,
+                 const SkMatrix& viewMatrix,
                  GrAAType aaType,
                  sk_sp<GrColorSpaceXform> colorSpaceXform) {
     return GrSimpleMeshDrawOpHelper::FactoryHelper<MeshOp>(context,
@@ -1078,7 +1078,7 @@ GrOp::Owner Make(GrRecordingContext* context,
                                                            overridePrimitiveType,
                                                            aaType,
                                                            std::move(colorSpaceXform),
-                                                           matrixProvider);
+                                                           viewMatrix);
 }
 
 }  // namespace skgpu::v1::DrawMeshOp
