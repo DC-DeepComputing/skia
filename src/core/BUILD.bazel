@@ -194,7 +194,6 @@ CORE_FILES = [
     "SkMaskGamma.h",
     "SkMatrix.cpp",
     "SkMatrixPriv.h",
-    "SkMatrixProvider.h",
     "SkMatrixUtils.h",
     "SkMesh.cpp",
     "SkMeshPriv.h",
