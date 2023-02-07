@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5dc622a_2f3ac205",
+        "filename": "bazel/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-07T14:56:35Z",
+      "side": 0,
+      "message": "Why get rid of the `--remote_download_minimal`?",
+      "range": {
+        "startLine": 83,
+        "startChar": 23,
+        "endLine": 83,
+        "endChar": 49
+      },
+      "revId": "24d78778b90f6ccb837fed15aa387fae2f8dff37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
