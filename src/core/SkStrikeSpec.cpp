@@ -7,6 +7,7 @@
 
 #include "src/core/SkStrikeSpec.h"
 
+#include "SkGlyphBuffer.h"
 #include "include/core/SkGraphics.h"
 #include "src/base/SkTLazy.h"
 #include "src/core/SkDraw.h"
@@ -186,7 +187,7 @@ SkStrikeSpec::SkStrikeSpec(const SkFont& font, const SkPaint& paint,
     fTypeface = font.refTypefaceOrDefault();
 }
 
-sktext::ScopedStrikeForGPU SkStrikeSpec::findOrCreateScopedStrike(
+sk_sp<sktext::StrikeForGPU> SkStrikeSpec::findOrCreateScopedStrike(
         sktext::StrikeForGPUCacheInterface* cache) const {
     return cache->findOrCreateScopedStrike(*this);
 }

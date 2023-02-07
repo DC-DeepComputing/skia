@@ -9,6 +9,7 @@
 
 #include <cctype>
 
+#include "SkGlyphBuffer.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTraceMemoryDump.h"
@@ -20,6 +21,8 @@
 #if SK_SUPPORT_GPU
 #include "src/text/gpu/StrikeCache.h"
 #endif
+
+using namespace sktext;
 
 bool gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental = false;
 
@@ -42,8 +45,8 @@ auto SkStrikeCache::findOrCreateStrike(const SkStrikeSpec& strikeSpec) -> sk_sp<
     return strike;
 }
 
-sktext::ScopedStrikeForGPU SkStrikeCache::findOrCreateScopedStrike(const SkStrikeSpec& strikeSpec) {
-    return sktext::ScopedStrikeForGPU{this->findOrCreateStrike(strikeSpec).release()};
+sk_sp<StrikeForGPU> SkStrikeCache::findOrCreateScopedStrike(const SkStrikeSpec& strikeSpec) {
+    return this->findOrCreateStrike(strikeSpec);
 }
 
 void SkStrikeCache::PurgeAll() {
