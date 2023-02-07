@@ -922,7 +922,7 @@ void SkCanvas::internalDrawDeviceWithFilter(SkBaseDevice* src,
         // The src device can be snapped directly
         skif::LayerSpace<SkIRect> srcSubset(SkIRect::MakeSize(srcDims));
         if (srcSubset.intersect(requiredInput)) {
-            filterInput = src->snapSpecial(SkIRect(srcSubset));
+            filterInput = src->snapSpecial(SkIRect(srcSubset), false, filter);
 
             // TODO: For now image filter input images need to have a (0,0) origin. The required
             // input's top left has been baked into srcSubset so we use that as the image origin.
@@ -959,7 +959,7 @@ void SkCanvas::internalDrawDeviceWithFilter(SkBaseDevice* src,
 
         if (!filterInput) {
             // Either a complex transform or the scaled copy failed so do a copy-as-draw fallback.
-            sk_sp<SkSpecialImage> srcImage = src->snapSpecial(srcSubset);
+            sk_sp<SkSpecialImage> srcImage = src->snapSpecial(srcSubset, false, filter);
             if (!srcImage) {
                 return;
             }
@@ -989,7 +989,7 @@ void SkCanvas::internalDrawDeviceWithFilter(SkBaseDevice* src,
                                                    SkSamplingOptions{SkFilterMode::kLinear},
                                                    SkMatrix::Translate(srcSubset.topLeft())));
             intermediateDevice->drawPaint(imageFill);
-            filterInput = intermediateDevice->snapSpecial();
+            filterInput = intermediateDevice->snapSpecial(filter);
 
             // TODO: Like the non-intermediate case, we need to apply the image origin.
             mapping.applyOrigin(requiredInput.topLeft());
@@ -1248,7 +1248,7 @@ void SkCanvas::internalSaveBehind(const SkRect* localBounds) {
     // a client, and the drawClippedToSaveBehind below). Since this is not saving a layer, with its
     // own device, we need to explicitly copy the back image contents so that its original content
     // is available when we splat it back later during restore.
-    auto backImage = device->snapSpecial(devBounds, /* forceCopy= */ true);
+    auto backImage = device->snapSpecial(devBounds, /* forceCopy= */ true, true);
     if (!backImage) {
         return;
     }

@@ -413,6 +413,12 @@ bool SkGradientShaderBase::appendStages(const SkStageRec& rec, const MatrixRec& 
 
     // Transform all of the colors to destination color space, possibly premultiplied
     SkColor4fXformer xformedColors(this, rec.fDstCS);
+
+//    for (int i = 0; i < this->fColorCount; i++) {
+//        const SkPMColor4f* colors = xformedColors.fColors.begin();
+//        SkDebugf("a %d: %.2f %.2f %.2f %.2f\n", i, colors[i].fR, colors[i].fG, colors[i].fB, colors[i].fA);
+//    }
+
     AppendGradientFillStages(p, alloc, xformedColors.fColors.begin(), fPositions, fColorCount);
 
     using ColorSpace = Interpolation::ColorSpace;
@@ -460,6 +466,17 @@ bool SkGradientShaderBase::appendStages(const SkStageRec& rec, const MatrixRec& 
     if (fColorsAreOpaque) {
         intermediateAlphaType = dstAlphaType = kUnpremul_SkAlphaType;
     }
+
+#if 0
+    SkDebugf("dstCS %s intAlpha %d, dstAlpha %d %d %d %d %s\n",
+             dstColorSpace == sk_srgb_singleton() ? "srgb" : "other",
+             intermediateAlphaType,
+             dstAlphaType,
+             fInterpolation.fInPremul,
+             fInterpolation.fColorSpace,
+             fInterpolation.fHueMethod,
+             fColorsAreOpaque ? "true" : "false");
+#endif
 
     alloc->make<SkColorSpaceXformSteps>(xformedColors.fIntermediateColorSpace.get(),
                                         intermediateAlphaType,
@@ -625,6 +642,12 @@ skvm::Color SkGradientShaderBase::program(skvm::Builder* p,
 
     // Transform our colors as we want them interpolated, in dst color space, possibly premul.
     SkColor4fXformer xformedColors(this, dstInfo.colorSpace());
+
+    for (int i = 0; i < this->fColorCount; i++) {
+        const SkPMColor4f* colors = xformedColors.fColors.begin();
+        SkDebugf("b %d: %.2f %.2f %.2f %.2f\n", i, colors[i].fR, colors[i].fG, colors[i].fB, colors[i].fA);
+    }
+
     const SkPMColor4f* rgba = xformedColors.fColors.begin();
 
     // Transform our colors into a scale factor f and bias b such that for

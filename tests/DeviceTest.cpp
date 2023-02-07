@@ -36,7 +36,7 @@ public:
     }
 
     static sk_sp<SkSpecialImage> SnapSpecial(SkBaseDevice* dev) {
-        return dev->snapSpecial();
+        return dev->snapSpecial(false);
     }
 };
 

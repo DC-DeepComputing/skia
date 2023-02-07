@@ -1524,9 +1524,15 @@ bool GPUSink::readBack(SkSurface* surface, SkBitmap* dst) const {
     SkCanvas* canvas = surface->getCanvas();
     SkISize size = surface->imageInfo().dimensions();
 
-    SkImageInfo info = SkImageInfo::Make(size, this->colorInfo());
+    SkImageInfo info = SkImageInfo::Make(size, kRGBA_F16_SkColorType, kPremul_SkAlphaType,
+                                         SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020, SkNamedGamut::kRec2020));
     dst->allocPixels(info);
-    return canvas->readPixels(*dst, 0, 0);
+    bool result = canvas->readPixels(*dst, 0, 0);
+
+    SkColor4f c = dst->getColor4f(0, 0);
+    SkDebugf("%.2f %.2f %.2f %.2f\n", c.fR, c.fG, c.fB, c.fA);
+
+    return result;
 }
 
 Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,

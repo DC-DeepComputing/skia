@@ -142,7 +142,7 @@ sk_sp<SkSpecialImage> SkSpecialImage::MakeFromImage(GrRecordingContext* rContext
     // raster to gpu is supported here, but gpu to raster is not
     SkBitmap bm;
     if (as_IB(image)->getROPixels(nullptr, &bm)) {
-        return MakeFromRaster(subset, bm, props);
+        return MakeFromRaster(subset, bm, props, true); //$$
     }
     return nullptr;
 }
@@ -195,7 +195,7 @@ public:
 
     sk_sp<SkSpecialImage> onMakeSubset(const SkIRect& subset) const override {
         // No need to extract subset, onGetROPixels handles that when needed
-        return SkSpecialImage::MakeFromRaster(subset, fBitmap, this->props());
+        return SkSpecialImage::MakeFromRaster(subset, fBitmap, this->props(), true); //$$
     }
 
     sk_sp<SkImage> onAsImage(const SkIRect* subset) const override {
@@ -238,7 +238,8 @@ private:
 
 sk_sp<SkSpecialImage> SkSpecialImage::MakeFromRaster(const SkIRect& subset,
                                                      const SkBitmap& bm,
-                                                     const SkSurfaceProps& props) {
+                                                     const SkSurfaceProps& props,
+                                                     bool careAboutIF) {
     SkASSERT(RectFits(subset, bm.width(), bm.height()));
 
     if (!bm.pixelRef()) {
@@ -248,7 +249,7 @@ sk_sp<SkSpecialImage> SkSpecialImage::MakeFromRaster(const SkIRect& subset,
     const SkBitmap* srcBM = &bm;
     SkBitmap tmp;
     // ImageFilters only handle N32 at the moment, so force our src to be that
-    if (!valid_for_imagefilters(bm.info())) {
+    if (careAboutIF && !valid_for_imagefilters(bm.info())) {
         if (!tmp.tryAllocPixels(bm.info().makeColorType(kN32_SkColorType)) ||
             !bm.readPixels(tmp.info(), tmp.getPixels(), tmp.rowBytes(), 0, 0))
         {

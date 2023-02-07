@@ -176,7 +176,7 @@ private:
 
     sk_sp<SkSpecialImage> makeSpecial(const SkBitmap&) override;
     sk_sp<SkSpecialImage> makeSpecial(const SkImage*) override;
-    sk_sp<SkSpecialImage> snapSpecial(const SkIRect& subset, bool forceCopy = false) override;
+    sk_sp<SkSpecialImage> snapSpecial(const SkIRect& subset, bool forceCopy, bool careAboutIF) override;
 
     // DrawFlags alters the effects used by drawShape.
     enum class DrawFlags : unsigned {

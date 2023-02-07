@@ -39,7 +39,7 @@ sk_sp<SkSpecialImage> SkSpecialSurface::makeImageSnapshot() {
         return nullptr;
     }
 
-    sk_sp<SkSpecialImage> image = baseDevice->snapSpecial(this->subset());
+    sk_sp<SkSpecialImage> image = baseDevice->snapSpecial(this->subset(), false, true);
 
     fCanvas.reset();
     return image;

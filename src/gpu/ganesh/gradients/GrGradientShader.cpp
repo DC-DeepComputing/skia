@@ -793,6 +793,7 @@ std::unique_ptr<GrFragmentProcessor> MakeGradientFP(const SkGradientShaderBase& 
     const SkPMColor4f* colors = xformedColors.fColors.begin();
 
     for (int i = 0; i < shader.fColorCount; i++) {
+//        SkDebugf("%d: %.2f %.2f %.2f %.2f\n", i, colors[i].fR, colors[i].fG, colors[i].fB, colors[i].fA);
         if (allOpaque && !SkScalarNearlyEqual(colors[i].fA, 1.0)) {
             allOpaque = false;
         }
@@ -849,6 +850,20 @@ std::unique_ptr<GrFragmentProcessor> MakeGradientFP(const SkGradientShaderBase& 
                                              /* colorsAreOpaque */ false);
             break;
     }
+
+#if 0
+    SkColorSpace* dstColorSpace = args.fDstColorInfo->colorSpace();
+    SkAlphaType dstAlphaType = args.fDstColorInfo->alphaType();
+
+    SkDebugf("dstCS %s intAlpha %d, dstAlpha %d %d %d %d %s\n",
+             dstColorSpace == sk_srgb_singleton() ? "srgb" : "other",
+             kUnpremul_SkAlphaType, //$$
+             dstAlphaType,
+             (int) shader.fInterpolation.fInPremul,
+             (int) shader.fInterpolation.fColorSpace,
+             (int) shader.fInterpolation.fHueMethod,
+             allOpaque ? "true" : "false");
+#endif
 
     // If interpolation space is different than destination, wrap the colorizer in a conversion.
     // This also handles any final premultiplication, etc.

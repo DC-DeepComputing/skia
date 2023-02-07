@@ -794,7 +794,7 @@ sk_sp<SkSpecialImage> copy_image_with_bounds(
 
     return SkSpecialImage::MakeFromRaster(SkIRect::MakeWH(dstBounds.width(),
                                                           dstBounds.height()),
-                                          dst, ctx.surfaceProps());
+                                          dst, ctx.surfaceProps(), true);
 }
 
 // TODO: Implement CPU backend for different fTileMode.
@@ -924,7 +924,7 @@ sk_sp<SkSpecialImage> cpu_blur(
 
     return SkSpecialImage::MakeFromRaster(SkIRect::MakeWH(dstBounds.width(),
                                                           dstBounds.height()),
-                                          dst, ctx.surfaceProps());
+                                          dst, ctx.surfaceProps(), true);
 }
 }  // namespace
 

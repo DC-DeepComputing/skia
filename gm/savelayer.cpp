@@ -150,12 +150,18 @@ DEF_SIMPLE_GM(savelayer_f16, canvas, 900, 300) {
     SkRect r{0, 0, 300, 300};
     SkPaint paint;
 
+#if 1
     const SkColor colors[] = { SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE, SK_ColorRED };
     paint.setShader(SkGradientShader::MakeSweep(r.centerX(), r.centerY(),
                                                 colors, nullptr, std::size(colors)));
 
     canvas->drawOval(r, paint);
+#else
+    paint.setColor(SK_ColorBLUE);
+    canvas->drawRect(r, paint);
+#endif
 
+#if 1
     paint.setAlphaf(1.0f/n);
     paint.setBlendMode(SkBlendMode::kPlus);
 
@@ -166,8 +172,10 @@ DEF_SIMPLE_GM(savelayer_f16, canvas, 900, 300) {
         rec.fSaveLayerFlags = flags;
         canvas->saveLayer(rec);
         for (int i = 0; i < n; ++i) {
+//            canvas->drawRect(r, paint);
             canvas->drawOval(r, paint);
         }
         canvas->restore();
     }
+#endif
 }
