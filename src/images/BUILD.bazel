@@ -60,3 +60,11 @@ skia_cc_deps(
         },
     ),
 )
+
+skia_filegroup(
+    name = "buffet_png_encode_srcs",
+    srcs = [
+        "SkPngEncoder.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
