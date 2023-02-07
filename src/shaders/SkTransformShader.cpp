@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/shaders/SkTransformShader.h"
 

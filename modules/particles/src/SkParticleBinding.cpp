@@ -17,7 +17,6 @@
 #include "include/utils/SkTextUtils.h"
 #include "modules/particles/include/SkReflected.h"
 #include "modules/skresources/include/SkResources.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkVM.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/sksl/SkSLBuiltinTypes.h"

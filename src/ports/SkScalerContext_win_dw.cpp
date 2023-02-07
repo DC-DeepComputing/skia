@@ -27,7 +27,6 @@
 #include "src/core/SkEndian.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMaskGamma.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkSharedMutex.h"

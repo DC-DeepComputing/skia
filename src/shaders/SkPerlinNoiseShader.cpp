@@ -14,7 +14,6 @@
 #include "include/core/SkUnPreMultiply.h"
 #include "include/private/base/SkTPin.h"
 #include "src/base/SkArenaAlloc.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"

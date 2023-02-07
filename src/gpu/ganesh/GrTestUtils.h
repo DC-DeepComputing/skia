@@ -17,7 +17,6 @@
 #include "include/private/base/SkMacros.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/utils/SkRandom.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkPathEffectBase.h"
 #include "src/gpu/ganesh/GrColor.h"
 #include "src/gpu/ganesh/GrFPArgs.h"

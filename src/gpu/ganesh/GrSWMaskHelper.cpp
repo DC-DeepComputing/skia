@@ -9,7 +9,6 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/gpu/GrRecordingContext.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"

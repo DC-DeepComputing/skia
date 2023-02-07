@@ -17,7 +17,6 @@
 #include "src/core/SkAntiRun.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskFilterBase.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkReadBuffer.h"
