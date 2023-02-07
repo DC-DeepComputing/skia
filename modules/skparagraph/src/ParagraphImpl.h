@@ -104,7 +104,7 @@ public:
                   sk_sp<FontCollection> fonts,
                   std::shared_ptr<SkUnicode> unicode);
 
-    ~ParagraphImpl() override;
+    ~ParagraphImpl() override = default;
 
     void layout(SkScalar width) override;
     void paint(SkCanvas* canvas, SkScalar x, SkScalar y) override;
@@ -222,6 +222,14 @@ public:
     }
 
     SkUnicode* getUnicode() { return fUnicode.get(); }
+
+    int getLineNumberAt(TextIndex codeUnitIndex) override;
+    bool getLineMetricsAt(int lineNumber, LineMetrics* lineMetrics) override;
+    SkScalar getActualWidth(int lineNumber) override;
+    bool getGlyphClusterAt(TextIndex codeUnitIndex, GlyphClusterInfo* glyphInfo) override;
+    bool getClosestGlyphClusterAt(SkScalar dx, SkScalar dy, GlyphClusterInfo* glyphInfo) override;
+    SkFont getFontAt(TextIndex codeUnitIndex) override;
+    std::vector<FontInfo> getFonts() override;
 
 private:
     friend class ParagraphBuilder;

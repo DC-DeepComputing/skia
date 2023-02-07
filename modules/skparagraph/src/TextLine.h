@@ -78,6 +78,7 @@ public:
     SkScalar width() const {
         return fAdvance.fX + (fEllipsis != nullptr ? fEllipsis->fAdvance.fX : 0);
     }
+    SkScalar widthWithoutEllipsis() const { return fAdvance.fX; }
     SkVector offset() const;
 
     SkScalar alphabeticBaseline() const { return fSizes.alphabeticBaseline(); }

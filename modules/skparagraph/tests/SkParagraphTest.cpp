@@ -7649,3 +7649,60 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_Zalgo, reporter) {
     auto posH = paragraph->getGlyphPositionAtCoordinate(resPh.back().rect.fRight, height/2);
     REPORTER_ASSERT(reporter, posK.position == 148 && posP.position == 264 && posH.position == 572);
 };
+
+UNIX_ONLY_TEST(SkParagraph_TextEditingFunctionality, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    if (!fontCollection->fontsFound()) return;
+    TestCanvas canvas("SkParagraph_TextEditingFunctionality.png");
+    const char* text =
+            "This is a very long sentence to test if the text will properly wrap "
+            "around and go to the next line. Sometimes, short sentence. Longer "
+            "sentences are okay too because they are nessecary. Very short. ";
+
+    const size_t len = strlen(text);
+
+    ParagraphStyle paragraph_style;
+    paragraph_style.setMaxLines(2);
+    TestParagraphBuilderImpl builder(paragraph_style, fontCollection);
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setFontSize(20);
+    text_style.setColor(SK_ColorBLACK);
+    builder.pushStyle(text_style);
+    builder.addText(text, len);
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(TestCanvasWidth);
+    paragraph->paint(canvas.get(), 0, 0);
+
+    auto lineNumber = paragraph->getLineNumberAt(0);
+    lineNumber = paragraph->getLineNumberAt(len % 2);
+    lineNumber = paragraph->getLineNumberAt(len);
+    lineNumber = paragraph->getLineNumberAt(len + 10);
+
+    LineMetrics lineMetrics;
+    auto foundMetrics = paragraph->getLineMetricsAt(0, &lineMetrics);
+    foundMetrics = paragraph->getLineMetricsAt(len % 2, &lineMetrics);
+    foundMetrics = paragraph->getLineMetricsAt(len, &lineMetrics);
+    foundMetrics = paragraph->getLineMetricsAt(len + 10, &lineMetrics);
+
+    auto actualWidth = paragraph->getActualWidth(0);
+    actualWidth = paragraph->getActualWidth(1);
+    actualWidth = paragraph->getActualWidth(2);
+
+    Paragraph::GlyphClusterInfo glyphInfo;
+    auto foundCluster = paragraph->getGlyphClusterAt(0, &glyphInfo);
+    foundCluster = paragraph->getGlyphClusterAt(len % 2, &glyphInfo);
+    foundCluster = paragraph->getGlyphClusterAt(len, &glyphInfo);
+
+    auto foundClosest = paragraph->getClosestGlyphClusterAt(0, 10, &glyphInfo);
+    foundClosest = paragraph->getClosestGlyphClusterAt(TestCanvasWidth %2, 20, &glyphInfo);
+    foundClosest = paragraph->getClosestGlyphClusterAt(TestCanvasWidth + 10, 30, &glyphInfo);
+
+    auto font = paragraph->getFontAt(10);
+
+    auto fonts = paragraph->getFonts();
+
+    REPORTER_ASSERT(reporter, true);
+}
