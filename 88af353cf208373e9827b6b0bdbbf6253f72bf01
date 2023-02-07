@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7eb3c845_56a646d3",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-07T14:35:16Z",
+      "side": 1,
+      "message": "Just making I understand: We only need to check the to-be-appended `src` against the \"expanded\" (old) `dst`, because the resulting copy will happen in-order? (eg, even if doing the expansion would cause `lastInstr`\u0027s src and dst to overlap, it\u0027s okay, because we\u0027ll always copy  sequentially, and read from the start of the new src before we overwrite it later in the op?",
+      "revId": "88af353cf208373e9827b6b0bdbbf6253f72bf01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
