@@ -292,6 +292,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a1fc2a6_158d71ea",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-07T20:50:03Z",
+      "side": 1,
+      "message": "I think this is a pretty small (and possibly backend-specific) implementation detail, so I\u0027m not too worried about it (but let me know if you disagree). For now I changed the CL to apply the translation to the setViewport arguments.",
+      "parentUuid": "61c77cc3_63385a05",
+      "range": {
+        "startLine": 334,
+        "startChar": 30,
+        "endLine": 334,
+        "endChar": 71
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4223cd29_055dc4fa",
@@ -454,6 +478,24 @@
       "side": 1,
       "message": "Yeah, InsertRecordingInfo has too much other baggage on it. I think a new type makes sense. It could be an internal type or also defined in GraphiteTypes.h so that InsertRecordingInfo can refer to it.",
       "parentUuid": "6e170bb8_bdce03aa",
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2774e109_77d2d9fe",
+        "filename": "src/gpu/graphite/Task.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-07T20:50:03Z",
+      "side": 1,
+      "message": "I ended up putting this in Task, as Task::ReplayTargetData. Open to alternatives.",
+      "parentUuid": "e814f2bd_41900793",
       "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },

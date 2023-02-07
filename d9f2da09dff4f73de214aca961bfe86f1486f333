@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a28af56f_f9e1d5a0",
+        "filename": "gm/graphite_replay.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-07T20:50:03Z",
+      "side": 1,
+      "message": "Yea, my thinking here was that it was useful to have a non-graphite reference to compare the graphite result with. I actually added GraphiteGM just as a way to access the graphite context in a GM, but since we added a test-only method to access the context from a Recorder I was actually going to remove the GraphiteGM subclass entirely. But that\u0027s a separate topic.",
+      "parentUuid": "e69a7a6b_0370e459",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 16
+      },
+      "revId": "d9f2da09dff4f73de214aca961bfe86f1486f333",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "605a36f8_3f215849",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-07T15:40:16Z",
       "side": 1,
       "message": "I\u0027d recommend using `canvas-\u003emakeSurface(tileImageInfo)` so that Ganesh and other non-raster backends can be used throughout the GM (assuming we keep around the behavior to draw on -non-graphite backends).",
+      "range": {
+        "startLine": 128,
+        "startChar": 40,
+        "endLine": 128,
+        "endChar": 77
+      },
+      "revId": "d9f2da09dff4f73de214aca961bfe86f1486f333",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c094ec9d_9bd4a8b6",
+        "filename": "gm/graphite_replay.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-07T20:50:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "605a36f8_3f215849",
       "range": {
         "startLine": 128,
         "startChar": 40,
