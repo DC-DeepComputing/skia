@@ -17,7 +17,6 @@
 #include "include/core/SkSurfaceProps.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "src/core/SkMatrixPriv.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkScalerContext.h"
 #include "src/shaders/SkShaderBase.h"
@@ -54,7 +53,7 @@ struct SkStrikeDeviceInfo {
     const sktext::gpu::SDFTControl* const fSDFTControl;
 };
 
-class SkBaseDevice : public SkRefCnt, public SkMatrixProvider {
+class SkBaseDevice : public SkRefCnt {
 public:
     SkBaseDevice(const SkImageInfo&, const SkSurfaceProps&);
 
@@ -133,6 +132,12 @@ public:
      *  On failure, returns false and ignores the pixmap parameter.
      */
     bool peekPixels(SkPixmap*);
+
+    /**
+     *  Returns the transformation that maps from the local space to the device's coordinate space.
+     */
+    const SkM44& localToDevice44() const { return fLocalToDevice; }
+    const SkMatrix& localToDevice() const { return fLocalToDevice33; }
 
     /**
      *  Return the device's coordinate space transform: this maps from the device's coordinate space
@@ -507,12 +512,16 @@ private:
 
     const SkImageInfo    fInfo;
     const SkSurfaceProps fSurfaceProps;
+    SkM44 fLocalToDevice;
     // fDeviceToGlobal and fGlobalToDevice are inverses of each other; there are never that many
     // SkDevices, so pay the memory cost to avoid recalculating the inverse.
     SkM44 fDeviceToGlobal;
     SkM44 fGlobalToDevice;
 
-    // fLocalToDevice (inherited from SkMatrixProvider) is the device CTM, not the global CTM
+    // fLocalToDevice but as a 3x3.
+    SkMatrix fLocalToDevice33;
+
+    // fLocalToDevice is the device CTM, not the global CTM.
     // It maps from local space to the device's coordinate space.
     // fDeviceToGlobal * fLocalToDevice will match the canvas' CTM.
     //
