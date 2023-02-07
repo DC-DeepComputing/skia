@@ -230,7 +230,7 @@ CORE_FILES = [
     "SkPixelRef.cpp",
     "SkPixelRefPriv.h",
     "SkPixmap.cpp",
-    "SkPixmapPriv.h",
+    "SkPixmapDraw.cpp",
     "SkPoint.cpp",
     "SkPoint3.cpp",
     "SkPointPriv.h",
@@ -443,7 +443,10 @@ skia_filegroup(
         "SkRRectPriv.h",
         "SkRectPriv.h",
         "SkSamplingPriv.h",
+        "SkSwizzlePriv.h",
         "SkStreamPriv.h",
+        "SkSpecialImage.h",
+        "SkConvertPixels.h",
     ],
     visibility = ["//src:__pkg__"],
 )
@@ -459,6 +462,7 @@ skia_filegroup(
         "SkPathMakers.h",
         "SkScaleToSides.h",
         "SkStringUtils.h",
+        "SkNextID.h",
     ] + [
         # Implementation of public and private headers
         "SkColor.cpp",
@@ -472,6 +476,7 @@ skia_filegroup(
         "SkPath.cpp",
         "SkPathBuilder.cpp",
         "SkPathRef.cpp",
+        "SkPixmap.cpp",
         "SkPoint.cpp",
         "SkPoint3.cpp",
         "SkRRect.cpp",

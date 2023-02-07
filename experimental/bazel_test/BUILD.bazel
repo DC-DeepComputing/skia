@@ -59,3 +59,15 @@ cc_binary(
         "//:pathops",
     ],
 )
+
+cc_binary(
+    name = "skia_with_codec",
+    srcs = ["codec_main.cpp"],
+    features = ["layering_check"],
+    deps = [
+        "//:core",
+        "//:default_logging",
+        "//:default_malloc",
+        "//:png_encode_codec",
+    ],
+)

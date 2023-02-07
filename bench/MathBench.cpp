@@ -10,7 +10,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkString.h"
 #include "include/private/SkColorData.h"
-#include "include/private/SkFixed.h"
+#include "include/private/base/SkFixed.h"
 #include "include/utils/SkRandom.h"
 #include "src/base/SkMathPriv.h"
 
