@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2e6fb72_204374be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-07T20:52:09Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "7c0a44639f00ff4c874d81e1f05ae940acd58626",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7f53767_d3321151",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-02-07T20:49:59Z",
       "side": 1,
       "message": "Is this name going to change later ?",
+      "range": {
+        "startLine": 2790,
+        "startChar": 52,
+        "endLine": 2790,
+        "endChar": 76
+      },
+      "revId": "7c0a44639f00ff4c874d81e1f05ae940acd58626",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49229aeb_fb51b735",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2790,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-07T20:52:09Z",
+      "side": 1,
+      "message": "Yes it is.",
+      "parentUuid": "e7f53767_d3321151",
       "range": {
         "startLine": 2790,
         "startChar": 52,
