@@ -1089,7 +1089,7 @@ bool TextLine::endsWithHardLineBreak() const {
 void TextLine::getRectsForRange(TextRange textRange0,
                                 RectHeightStyle rectHeightStyle,
                                 RectWidthStyle rectWidthStyle,
-                                std::vector<TextBox>& boxes)
+                                std::vector<TextBox>& boxes) const
 {
     const Run* lastRun = nullptr;
     auto startBox = boxes.size();
