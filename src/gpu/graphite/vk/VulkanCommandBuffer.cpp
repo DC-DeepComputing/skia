@@ -263,12 +263,34 @@ bool VulkanCommandBuffer::onCopyBufferToBuffer(const Buffer* srcBuffer,
     return false;
 }
 
-bool VulkanCommandBuffer::onCopyTextureToBuffer(const Texture*,
+bool VulkanCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
                                                 SkIRect srcRect,
-                                                const Buffer*,
+                                                const Buffer* buffer,
                                                 size_t bufferOffset,
                                                 size_t bufferRowBytes) {
-    return false;
+    const VulkanTexture* srcTexture = static_cast<const VulkanTexture*>(texture);
+    VkImage srcTextureAsVkImage =  srcTexture->vkImage();
+    VkBuffer dstBuffer = static_cast<const VulkanBuffer*>(buffer)->vkBuffer();
+    // TODO: Set image layout? Or just add TODO for lazy images / textures?
+
+    // Set up copy region
+    VkBufferImageCopy region;
+    memset(&region, 0, sizeof(VkBufferImageCopy));
+    region.bufferOffset = bufferOffset;
+    region.bufferRowLength = srcRect.width();
+    region.bufferImageHeight = 0; // Tightly packed
+    region.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
+    region.imageOffset = { srcRect.left(), srcRect.top(), 0 };
+    region.imageExtent = { (uint32_t)srcRect.width(), (uint32_t)srcRect.height(), 1 };
+
+    VULKAN_CALL(fSharedContext->interface(),
+                CmdCopyImageToBuffer(fPrimaryCommandBuffer,
+                                     srcTextureAsVkImage,
+                                     VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                                     dstBuffer,
+                                     /*regionCount=*/1,
+                                     &region));
+    return true;
 }
 
 bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
