@@ -33,6 +33,23 @@
       "message": "The Dawn builder failed as expected. I\u0027ll re-run it after the next dawn roll.",
       "revId": "7abf06d794c22cb7b64e95129df2eca17a903343",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5e00563_f5500cad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-07T17:18:16Z",
+      "side": 1,
+      "message": "I just requested a manual roll to the latest Dawn revision which should include https://dawn-review.googlesource.com/c/dawn/+/118421 (although it\u0027s not reflected in the commit message for some reason): https://skia-review.googlesource.com/c/skia/+/639374",
+      "revId": "7abf06d794c22cb7b64e95129df2eca17a903343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
