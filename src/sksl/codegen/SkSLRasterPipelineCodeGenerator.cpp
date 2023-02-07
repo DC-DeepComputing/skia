@@ -33,6 +33,7 @@
 #include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
 #include "src/sksl/ir/SkSLConstructorMatrixResize.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
+#include "src/sksl/ir/SkSLConstructorStruct.h"
 #include "src/sksl/ir/SkSLContinueStatement.h"
 #include "src/sksl/ir/SkSLDoStatement.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -234,7 +235,7 @@ public:
                                             const Expression& right);
     [[nodiscard]] bool pushChildCall(const ChildCall& c);
     [[nodiscard]] bool pushConstructorCast(const AnyConstructor& c);
-    [[nodiscard]] bool pushConstructorCompound(const ConstructorCompound& c);
+    [[nodiscard]] bool pushConstructorCompound(const AnyConstructor& c);
     [[nodiscard]] bool pushConstructorDiagonalMatrix(const ConstructorDiagonalMatrix& c);
     [[nodiscard]] bool pushConstructorMatrixResize(const ConstructorMatrixResize& c);
     [[nodiscard]] bool pushConstructorSplat(const ConstructorSplat& c);
@@ -1210,7 +1211,8 @@ bool Generator::pushExpression(const Expression& e, bool usesResult) {
             return this->pushChildCall(e.as<ChildCall>());
 
         case Expression::Kind::kConstructorCompound:
-            return this->pushConstructorCompound(e.as<ConstructorCompound>());
+        case Expression::Kind::kConstructorStruct:
+            return this->pushConstructorCompound(e.asAnyConstructor());
 
         case Expression::Kind::kConstructorCompoundCast:
         case Expression::Kind::kConstructorScalarCast:
@@ -1599,8 +1601,8 @@ bool Generator::pushBinaryExpression(const Expression& left, Operator op, const 
     return true;
 }
 
-bool Generator::pushConstructorCompound(const ConstructorCompound& c) {
-    for (const std::unique_ptr<Expression> &arg : c.arguments()) {
+bool Generator::pushConstructorCompound(const AnyConstructor& c) {
+    for (const std::unique_ptr<Expression> &arg : c.argumentSpan()) {
         if (!this->pushExpression(*arg)) {
             return unsupported();
         }
