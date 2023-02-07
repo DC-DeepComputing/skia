@@ -372,6 +372,8 @@ public:
         fActions |= SkTo<uint32_t>(action) << actionType;
     }
 
+    void setActionFor(skglyph::ActionType, SkGlyph*, SkScalerContext*, SkArenaAlloc*);
+
     uint16_t maxDimension() const {
         return std::max(fWidth, fHeight);
     }
