@@ -456,14 +456,20 @@ void MtlCommandBuffer::bindTextureAndSampler(const Texture* texture,
 void MtlCommandBuffer::setScissor(unsigned int left, unsigned int top,
                                   unsigned int width, unsigned int height) {
     SkASSERT(fActiveRenderCommandEncoder);
-    MTLScissorRect scissorRect = { left, top, width, height };
+    MTLScissorRect scissorRect = {
+            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height};
     fActiveRenderCommandEncoder->setScissorRect(scissorRect);
 }
 
 void MtlCommandBuffer::setViewport(float x, float y, float width, float height,
                                    float minDepth, float maxDepth) {
     SkASSERT(fActiveRenderCommandEncoder);
-    MTLViewport viewport = { x, y, width, height, minDepth, maxDepth };
+    MTLViewport viewport = {x + fReplayTranslation.x(),
+                            y + fReplayTranslation.y(),
+                            width,
+                            height,
+                            minDepth,
+                            maxDepth};
     fActiveRenderCommandEncoder->setViewport(viewport);
 
     float invTwoW = 2.f / width;
