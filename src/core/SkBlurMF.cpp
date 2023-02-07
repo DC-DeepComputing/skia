@@ -15,7 +15,6 @@
 #include "src/core/SkBlurMask.h"
 #include "src/core/SkGpuBlurUtils.h"
 #include "src/core/SkMaskFilterBase.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStringUtils.h"
