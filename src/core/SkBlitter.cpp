@@ -791,9 +791,13 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
     // Legacy blitters keep their shader state on a shader context.
     SkShaderBase::Context* shaderContext = nullptr;
     if (paint->getShader()) {
-        shaderContext = as_SB(paint->getShader())->makeContext(
-                {*paint, ctm, nullptr, device.colorType(), device.colorSpace(), props},
-                alloc);
+        shaderContext = as_SB(paint->getShader())
+                                ->makeContext({paint->getAlpha(),
+                                               SkShaderBase::MatrixRec(ctm),
+                                               device.colorType(),
+                                               device.colorSpace(),
+                                               props},
+                                              alloc);
 
         // Creating the context isn't always possible... try fallbacks before giving up.
         if (!shaderContext) {
