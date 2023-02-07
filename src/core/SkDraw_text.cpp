@@ -9,7 +9,6 @@
 #include "src/base/SkUtils.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkFontPriv.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkScalerContext.h"
@@ -41,7 +40,7 @@ void SkDraw::paintMasks(SkDrawableGlyphBuffer* accepted, const SkPaint& paint) c
     // The size used for a typical blitter.
     SkSTArenaAlloc<3308> alloc;
     SkBlitter* blitter = SkBlitter::Choose(fDst,
-                                           fMatrixProvider->localToDevice(),
+                                           *fCTM,
                                            paint,
                                            &alloc,
                                            false,
@@ -122,8 +121,7 @@ void SkDraw::drawGlyphRunList(SkCanvas* canvas,
         return;
     }
 
-    glyphPainter->drawForBitmapDevice(canvas, this, glyphRunList, paint,
-                                      fMatrixProvider->localToDevice());
+    glyphPainter->drawForBitmapDevice(canvas, this, glyphRunList, paint, *fCTM);
 }
 
 #if defined _WIN32

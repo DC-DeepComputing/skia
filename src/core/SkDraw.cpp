@@ -65,7 +65,7 @@ bool SkDraw::computeConservativeLocalClipBounds(SkRect* localBounds) const {
     }
 
     SkMatrix inverse;
-    if (!fMatrixProvider->localToDevice().invert(&inverse)) {
+    if (!fCTM->invert(&inverse)) {
         return false;
     }
 
@@ -367,9 +367,8 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
         return;
     }
 
-    SkMatrix ctm = fMatrixProvider->localToDevice();
     PtProcRec rec;
-    if (!device && rec.init(mode, paint, &ctm, fRC)) {
+    if (!device && rec.init(mode, paint, fCTM, fRC)) {
         SkAutoBlitterChoose blitter(*this, nullptr, paint);
 
         SkPoint             devPts[MAX_DEV_PTS];
@@ -383,7 +382,7 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
             if (n > MAX_DEV_PTS) {
                 n = MAX_DEV_PTS;
             }
-            ctm.mapPoints(devPts, pts, n);
+            fCTM->mapPoints(devPts, pts, n);
             if (!SkScalarsAreFinite(&devPts[0].fX, n * 2)) {
                 return;
             }
@@ -453,7 +452,7 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
 
                     SkRect cullRect = SkRect::Make(fRC->getBounds());
 
-                    if (as_PEB(paint.getPathEffect())->asPoints(&pointData, path, stroke, ctm,
+                    if (as_PEB(paint.getPathEffect())->asPoints(&pointData, path, stroke, *fCTM,
                                                                 &cullRect)) {
                         // 'asPoints' managed to find some fast path
 
@@ -605,9 +604,9 @@ static SkPoint* rect_points(SkRect& r) {
 }
 
 static void draw_rect_as_path(const SkDraw& orig, const SkRect& prePaintRect,
-                              const SkPaint& paint, const SkMatrixProvider* matrixProvider) {
+                              const SkPaint& paint, const SkMatrix& ctm) {
     SkDraw draw(orig);
-    draw.fMatrixProvider = matrixProvider;
+    draw.fCTM = &ctm;
     SkPath  tmp;
     tmp.addRect(prePaintRect);
     tmp.setFillType(SkPathFillType::kWinding);
@@ -623,28 +622,26 @@ void SkDraw::drawRect(const SkRect& prePaintRect, const SkPaint& paint,
         return;
     }
 
-    const SkMatrixProvider* matrixProvider = fMatrixProvider;
-    SkTLazy<SkPreConcatMatrixProvider> preConcatMatrixProvider;
+    SkTCopyOnFirstWrite<SkMatrix> matrix(fCTM);
     if (paintMatrix) {
         SkASSERT(postPaintRect);
-        matrixProvider = preConcatMatrixProvider.init(*matrixProvider, *paintMatrix);
+        matrix.writable()->preConcat(*paintMatrix);
     } else {
         SkASSERT(!postPaintRect);
     }
 
-    SkMatrix ctm = fMatrixProvider->localToDevice();
     SkPoint strokeSize;
-    RectType rtype = ComputeRectType(prePaintRect, paint, ctm, &strokeSize);
+    RectType rtype = ComputeRectType(prePaintRect, paint, *fCTM, &strokeSize);
 
     if (kPath_RectType == rtype) {
-        draw_rect_as_path(*this, prePaintRect, paint, matrixProvider);
+        draw_rect_as_path(*this, prePaintRect, paint, *matrix);
         return;
     }
 
     SkRect devRect;
     const SkRect& paintRect = paintMatrix ? *postPaintRect : prePaintRect;
     // skip the paintMatrix when transforming the rect by the CTM
-    ctm.mapPoints(rect_points(devRect), rect_points(paintRect), 2);
+    fCTM->mapPoints(rect_points(devRect), rect_points(paintRect), 2);
     devRect.sort();
 
     // look for the quick exit, before we build a blitter
@@ -657,7 +654,7 @@ void SkDraw::drawRect(const SkRect& prePaintRect, const SkPaint& paint,
             // For kStroke_RectType, strokeSize is already computed.
             const SkPoint& ssize = (kStroke_RectType == rtype)
                 ? strokeSize
-                : compute_stroke_size(paint, ctm);
+                : compute_stroke_size(paint, *fCTM);
             bbox.outset(SkScalarHalf(ssize.x()), SkScalarHalf(ssize.y()));
         }
     }
@@ -666,7 +663,7 @@ void SkDraw::drawRect(const SkRect& prePaintRect, const SkPaint& paint,
     }
 
     if (!SkRectPriv::FitsInFixed(bbox) && rtype != kHair_RectType) {
-        draw_rect_as_path(*this, prePaintRect, paint, matrixProvider);
+        draw_rect_as_path(*this, prePaintRect, paint, *matrix);
         return;
     }
 
@@ -675,7 +672,7 @@ void SkDraw::drawRect(const SkRect& prePaintRect, const SkPaint& paint,
         return;
     }
 
-    SkAutoBlitterChoose blitterStorage(*this, matrixProvider, paint);
+    SkAutoBlitterChoose blitterStorage(*this, matrix, paint);
     const SkRasterClip& clip = *fRC;
     SkBlitter*          blitter = blitterStorage.get();
 
@@ -719,8 +716,7 @@ void SkDraw::drawDevMask(const SkMask& srcM, const SkPaint& paint) const {
 
     SkMask dstM;
     if (paint.getMaskFilter() &&
-        as_MFB(paint.getMaskFilter())
-                ->filterMask(&dstM, srcM, fMatrixProvider->localToDevice(), nullptr)) {
+        as_MFB(paint.getMaskFilter())->filterMask(&dstM, srcM, *fCTM, nullptr)) {
         mask = &dstM;
     }
     SkAutoMaskFreeImage ami(dstM.fImage);
@@ -783,13 +779,12 @@ void SkDraw::drawRRect(const SkRRect& rrect, const SkPaint& paint) const {
         return;
     }
 
-    SkMatrix ctm = fMatrixProvider->localToDevice();
     {
         // TODO: Investigate optimizing these options. They are in the same
         // order as SkDraw::drawPath, which handles each case. It may be
         // that there is no way to optimize for these using the SkRRect path.
         SkScalar coverage;
-        if (SkDrawTreatAsHairline(paint, ctm, &coverage)) {
+        if (SkDrawTreatAsHairline(paint, *fCTM, &coverage)) {
             goto DRAW_PATH;
         }
 
@@ -801,9 +796,9 @@ void SkDraw::drawRRect(const SkRRect& rrect, const SkPaint& paint) const {
     if (paint.getMaskFilter()) {
         // Transform the rrect into device space.
         SkRRect devRRect;
-        if (rrect.transform(ctm, &devRRect)) {
+        if (rrect.transform(*fCTM, &devRRect)) {
             SkAutoBlitterChoose blitter(*this, nullptr, paint);
-            if (as_MFB(paint.getMaskFilter())->filterRRect(devRRect, ctm, *fRC, blitter.get())) {
+            if (as_MFB(paint.getMaskFilter())->filterRRect(devRRect, *fCTM, *fRC, blitter.get())) {
                 return;  // filterRRect() called the blitter, so we're done
             }
         }
@@ -832,8 +827,7 @@ void SkDraw::drawDevPath(const SkPath& devPath, const SkPaint& paint, bool drawC
     if (paint.getMaskFilter()) {
         SkStrokeRec::InitStyle style = doFill ? SkStrokeRec::kFill_InitStyle
                                               : SkStrokeRec::kHairline_InitStyle;
-        if (as_MFB(paint.getMaskFilter())
-                    ->filterPath(devPath, fMatrixProvider->localToDevice(), *fRC, blitter, style)) {
+        if (as_MFB(paint.getMaskFilter())->filterPath(devPath, *fCTM, *fRC, blitter, style)) {
             return;  // filterPath() called the blitter, so we're done
         }
     }
@@ -890,8 +884,9 @@ void SkDraw::drawPath(const SkPath& origSrcPath, const SkPaint& origPaint,
     bool            doFill = true;
     SkPath          tmpPathStorage;
     SkPath*         tmpPath = &tmpPathStorage;
-    const SkMatrixProvider*            matrixProvider = fMatrixProvider;
-    SkTLazy<SkPreConcatMatrixProvider> preConcatMatrixProvider;
+
+    SkTCopyOnFirstWrite<SkMatrix> matrix(fCTM);
+
     tmpPath->setIsVolatile(true);
 
     if (prePathMatrix) {
@@ -905,7 +900,7 @@ void SkDraw::drawPath(const SkPath& origSrcPath, const SkPaint& origPaint,
             pathPtr->transform(*prePathMatrix, result);
             pathPtr = result;
         } else {
-            matrixProvider = preConcatMatrixProvider.init(*matrixProvider, *prePathMatrix);
+            matrix.writable()->preConcat(*prePathMatrix);
         }
     }
 
@@ -913,15 +908,14 @@ void SkDraw::drawPath(const SkPath& origSrcPath, const SkPaint& origPaint,
 
     {
         SkScalar coverage;
-        if (SkDrawTreatAsHairline(origPaint, matrixProvider->localToDevice(), &coverage)) {
+        if (SkDrawTreatAsHairline(origPaint, *matrix, &coverage)) {
             const auto bm = origPaint.asBlendMode();
             if (SK_Scalar1 == coverage) {
                 paint.writable()->setStrokeWidth(0);
             } else if (bm && SkBlendMode_SupportsCoverageAsAlpha(bm.value())) {
                 U8CPU newAlpha;
 #if 0
-                newAlpha = SkToU8(SkScalarRoundToInt(coverage *
-                                                     origPaint.getAlpha()));
+                newAlpha = SkToU8(SkScalarRoundToInt(coverage * origPaint.getAlpha()));
 #else
                 // this is the old technique, which we preserve for now so
                 // we don't change previous results (testing)
@@ -942,8 +936,7 @@ void SkDraw::drawPath(const SkPath& origSrcPath, const SkPaint& origPaint,
         if (this->computeConservativeLocalClipBounds(&cullRect)) {
             cullRectPtr = &cullRect;
         }
-        doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, tmpPath, cullRectPtr,
-                                                fMatrixProvider->localToDevice());
+        doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, tmpPath, cullRectPtr, *fCTM);
         pathPtr = tmpPath;
     }
 
@@ -951,7 +944,7 @@ void SkDraw::drawPath(const SkPath& origSrcPath, const SkPaint& origPaint,
     SkPath* devPathPtr = pathIsMutable ? pathPtr : tmpPath;
 
     // transform the path into device space
-    pathPtr->transform(matrixProvider->localToDevice(), devPathPtr);
+    pathPtr->transform(*matrix, devPathPtr);
 
 #if defined(SK_BUILD_FOR_FUZZER)
     if (devPathPtr->countPoints() > 1000) {
@@ -972,11 +965,10 @@ void SkDraw::drawBitmapAsMask(const SkBitmap& bitmap, const SkSamplingOptions& s
         return;
     }
 
-    SkMatrix ctm = fMatrixProvider->localToDevice();
-    if (SkTreatAsSprite(ctm, bitmap.dimensions(), sampling, paint.isAntiAlias()))
+    if (SkTreatAsSprite(*fCTM, bitmap.dimensions(), sampling, paint.isAntiAlias()))
     {
-        int ix = SkScalarRoundToInt(ctm.getTranslateX());
-        int iy = SkScalarRoundToInt(ctm.getTranslateY());
+        int ix = SkScalarRoundToInt(fCTM->getTranslateX());
+        int iy = SkScalarRoundToInt(fCTM->getTranslateY());
 
         SkPixmap pmap;
         if (!bitmap.peekPixels(&pmap)) {
@@ -995,7 +987,7 @@ void SkDraw::drawBitmapAsMask(const SkBitmap& bitmap, const SkSamplingOptions& s
         SkMask  mask;
 
         r.setIWH(bitmap.width(), bitmap.height());
-        ctm.mapRect(&r);
+        fCTM->mapRect(&r);
         r.round(&mask.fBounds);
 
         // set the mask's bounds to the transformed bitmap-bounds,
@@ -1033,7 +1025,7 @@ void SkDraw::drawBitmapAsMask(const SkBitmap& bitmap, const SkSamplingOptions& s
             // need the unclipped top/left for the translate
             c.translate(-SkIntToScalar(mask.fBounds.fLeft),
                         -SkIntToScalar(mask.fBounds.fTop));
-            c.concat(ctm);
+            c.concat(*fCTM);
 
             // We can't call drawBitmap, or we'll infinitely recurse. Instead
             // we manually build a shader and draw that into our new mask
@@ -1085,8 +1077,7 @@ void SkDraw::drawBitmap(const SkBitmap& bitmap, const SkMatrix& prematrix,
         paint.writable()->setStyle(SkPaint::kFill_Style);
     }
 
-    SkPreConcatMatrixProvider matrixProvider(*fMatrixProvider, prematrix);
-    SkMatrix matrix = matrixProvider.localToDevice();
+    SkMatrix matrix = *fCTM * prematrix;
 
     if (clipped_out(matrix, *fRC, bitmap.width(), bitmap.height())) {
         return;
@@ -1121,7 +1112,7 @@ void SkDraw::drawBitmap(const SkBitmap& bitmap, const SkMatrix& prematrix,
     // now make a temp draw on the stack, and use it
     //
     SkDraw draw(*this);
-    draw.fMatrixProvider = &matrixProvider;
+    draw.fCTM = &matrix;
 
     // For a long time, the CPU backend treated A8 bitmaps as coverage, rather than alpha. This was
     // inconsistent with the GPU backend (skbug.com/9692). When this was fixed, it altered behavior
@@ -1177,8 +1168,8 @@ void SkDraw::drawSprite(const SkBitmap& bitmap, int x, int y, const SkPaint& ori
         }
     }
 
-    SkMatrix        matrix;
-    SkRect          r;
+    SkMatrix matrix;
+    SkRect   r;
 
     // get a scalar version of our rect
     r.set(bounds);
@@ -1187,8 +1178,7 @@ void SkDraw::drawSprite(const SkBitmap& bitmap, int x, int y, const SkPaint& ori
     matrix.setTranslate(r.fLeft, r.fTop);
     SkPaint paintWithShader = make_paint_with_image(paint, bitmap, SkSamplingOptions(), &matrix);
     SkDraw draw(*this);
-    SkMatrixProvider matrixProvider(SkMatrix::I());
-    draw.fMatrixProvider = &matrixProvider;
+    draw.fCTM = &SkMatrix::I();
     // call ourself with a rect
     draw.drawRect(r, paintWithShader);
 }
@@ -1198,8 +1188,8 @@ void SkDraw::drawSprite(const SkBitmap& bitmap, int x, int y, const SkPaint& ori
 #ifdef SK_DEBUG
 
 void SkDraw::validate() const {
-    SkASSERT(fMatrixProvider != nullptr);
-    SkASSERT(fRC != nullptr);
+    SkASSERT(fCTM != nullptr);
+    SkASSERT(fRC  != nullptr);
 
     const SkIRect&  cr = fRC->getBounds();
     SkIRect         br;
@@ -1267,9 +1257,8 @@ static void draw_into_mask(const SkMask& mask, const SkPath& devPath,
     matrix.setTranslate(-SkIntToScalar(mask.fBounds.fLeft),
                         -SkIntToScalar(mask.fBounds.fTop));
 
-    SkMatrixProvider matrixProvider(matrix);
-    draw.fRC             = &clip;
-    draw.fMatrixProvider = &matrixProvider;
+    draw.fRC  = &clip;
+    draw.fCTM = &matrix;
     paint.setAntiAlias(true);
     switch (style) {
         case SkStrokeRec::kHairline_InitStyle:
