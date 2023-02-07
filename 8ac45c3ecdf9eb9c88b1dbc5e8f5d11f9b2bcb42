@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff8dc0e4_35765583",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-07T16:46:24Z",
+      "side": 1,
+      "message": "Suggestion: /\\*mipLevel\u003d\\*/0,\n\nI don\u0027t think you need to specify the other params, but if you do I\u0027d do it in onCopyBufferToTexture as well.",
+      "range": {
+        "startLine": 286,
+        "startChar": 59,
+        "endLine": 286,
+        "endChar": 60
+      },
+      "revId": "8ac45c3ecdf9eb9c88b1dbc5e8f5d11f9b2bcb42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8287f2f3_0694e48c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-07T16:46:24Z",
+      "side": 1,
+      "message": "/\\*z\u003d\\*/0? Like in onCopyBufferToTexture.",
+      "range": {
+        "startLine": 287,
+        "startChar": 58,
+        "endLine": 287,
+        "endChar": 60
+      },
+      "revId": "8ac45c3ecdf9eb9c88b1dbc5e8f5d11f9b2bcb42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1aa65b1_05114e9e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-07T16:46:24Z",
+      "side": 1,
+      "message": "/\\*depth\u003d\\*/1?",
+      "range": {
+        "startLine": 288,
+        "startChar": 82,
+        "endLine": 288,
+        "endChar": 84
+      },
+      "revId": "8ac45c3ecdf9eb9c88b1dbc5e8f5d11f9b2bcb42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f170f631_28536567",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-07T16:46:24Z",
+      "side": 1,
+      "message": "So I apologize -- I missed this in the previous CL. I\u0027d change this to allocate an array of VkBufferImageCopy of size count, fill it in with the loop, and then make one call to CmdCopyBufferToImage (like what\u0027s done in GrVkGpu::uploadTexDataOptimal). But update that in a separate CL to keep this one clean.\n\nIn addition, we need to transition the VkImage\u0027s layout in this case to VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, and in the texture-\u003ebuffer case to VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL. I think it\u0027s on my plate to add the barrier code for that so I\u0027ll take a look at it.",
+      "range": {
+        "startLine": 333,
+        "startChar": 41,
+        "endLine": 334,
+        "endChar": 48
+      },
+      "revId": "8ac45c3ecdf9eb9c88b1dbc5e8f5d11f9b2bcb42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
