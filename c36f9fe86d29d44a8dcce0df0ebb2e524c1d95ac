@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4be00275_f486d32c",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2023-02-07T17:02:26Z",
+      "side": 1,
+      "message": "That\u0027s a good point. It needs to be held somewhere. I made Context just own it rather than keep a reference. It seems simpler, less error prone, unlikely to cause a perf problem, and led to a couple more simplifications.",
+      "parentUuid": "44b7f58a_bb5fbd26",
+      "revId": "c36f9fe86d29d44a8dcce0df0ebb2e524c1d95ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0deb1c20_10d07308",
         "filename": "src/shaders/SkShaderBase.h",
         "patchSetId": 8
