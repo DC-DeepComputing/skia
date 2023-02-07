@@ -166,8 +166,6 @@ public:
 
     virtual void* getRasterHandle() const { return nullptr; }
 
-    const SkMatrixProvider& asMatrixProvider() const { return *this; }
-
     void save() { this->onSave(); }
     void restore(const SkM44& ctm) {
         this->onRestore();

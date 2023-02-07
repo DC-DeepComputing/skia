@@ -32,7 +32,6 @@
 #include "include/private/SkColorData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkBlendModePriv.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrPaint.h"
 #include "src/gpu/ganesh/GrPixmap.h"
@@ -78,7 +77,7 @@ static void draw_paint_with_dmsaa(skgpu::v1::SurfaceDrawContext* sdc,
     GrPaint paint;
     paint.setColor4f(color);
     paint.setXPFactory(SkBlendMode_AsXPFactory(blendMode));
-    sdc->drawVertices(nullptr, std::move(paint), SkMatrixProvider(SkMatrix::I()), vertices);
+    sdc->drawVertices(nullptr, std::move(paint), SkMatrix::I(), vertices);
 }
 
 static bool fuzzy_equals(const float a[4], const SkPMColor4f& b) {
