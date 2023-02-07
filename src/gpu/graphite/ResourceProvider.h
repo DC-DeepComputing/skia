@@ -85,6 +85,11 @@ protected:
     ResourceProvider(SharedContext* sharedContext,
                      SingleOwner* singleOwner);
 
+    sk_sp<Texture> findOrCreateTextureWithKey(SkISize dimensions,
+                                              const TextureInfo& info,
+                                              const GraphiteResourceKey& key,
+                                              skgpu::Budgeted);
+
     SharedContext* fSharedContext;
 
 private:
@@ -98,11 +103,6 @@ private:
     virtual sk_sp<Sampler> createSampler(const SkSamplingOptions&,
                                          SkTileMode xTileMode,
                                          SkTileMode yTileMode) = 0;
-
-    sk_sp<Texture> findOrCreateTextureWithKey(SkISize dimensions,
-                                              const TextureInfo& info,
-                                              const GraphiteResourceKey& key,
-                                              skgpu::Budgeted);
 
     virtual BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) = 0;
     virtual void onDeleteBackendTexture(BackendTexture&) = 0;
