@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10d61804_8d48c652",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-07T20:27:26Z",
+      "side": 1,
+      "message": "lgtm % nit",
+      "revId": "d4c92585ddcaf6e9a487b7b2b1af820ee9ebbaab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6534afe5_e0355f5d",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-07T20:27:26Z",
+      "side": 1,
+      "message": "I recommend adding some comments that explain the offsets here.",
+      "range": {
+        "startLine": 690,
+        "startChar": 19,
+        "endLine": 690,
+        "endChar": 21
+      },
+      "revId": "d4c92585ddcaf6e9a487b7b2b1af820ee9ebbaab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
