@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9067f384_11c90b40",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-07T15:45:34Z",
+      "side": 1,
+      "message": "For future readers, this comment doesn\u0027t really explain why or when this should happen?",
+      "range": {
+        "startLine": 252,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 69
+      },
+      "revId": "c58a4eda4d92e7318011a98ad33e767a82ffedba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
