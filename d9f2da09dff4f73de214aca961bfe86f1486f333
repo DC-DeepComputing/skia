@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e69a7a6b_0370e459",
+        "filename": "gm/graphite_replay.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-07T15:40:16Z",
+      "side": 1,
+      "message": "There\u0027s a `GraphiteGM` subclass in gm.h/gm.cpp that never quite got finished that should be responsible for this logic. I thought it was done, but just checked and its onDraw() just calls SK_ABORT. If you updated it to check for `canvas-\u003erecorder()` and call its graphite-specific virtual, and otherwise return DrawResult::kSkip (see the GaneshGM version above it), then this replay GM can drop the drawNonGraphite function entirely.\n\nThat said, if you find value in being able to compare what the replays should have looked like, then it makes sense to keep it as a regular `GM` and have both variants.",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 16
+      },
+      "revId": "d9f2da09dff4f73de214aca961bfe86f1486f333",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "605a36f8_3f215849",
+        "filename": "gm/graphite_replay.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-07T15:40:16Z",
+      "side": 1,
+      "message": "I\u0027d recommend using `canvas-\u003emakeSurface(tileImageInfo)` so that Ganesh and other non-raster backends can be used throughout the GM (assuming we keep around the behavior to draw on -non-graphite backends).",
+      "range": {
+        "startLine": 128,
+        "startChar": 40,
+        "endLine": 128,
+        "endChar": 77
+      },
+      "revId": "d9f2da09dff4f73de214aca961bfe86f1486f333",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

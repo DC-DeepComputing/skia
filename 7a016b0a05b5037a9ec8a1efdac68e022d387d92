@@ -270,6 +270,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "61c77cc3_63385a05",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-07T15:40:16Z",
+      "side": 1,
+      "message": "The viewport values that are passed to MTLRenderCommandEncoder::setViewpoert are the same that get passed down to the command buffer from DrawCommand::List/DrawPass. I do think for now we just always use (0,0,target.width,target.height) for the viewport at the DrawPass level but it could change in the future where we split content into multiple tiles that use grids of viewports so that encoders can run in parallel. On vulkan in particular, we can specify these bounds as limits on what needs to be loaded/stored to the target and I suspect that Metal does this automatically based on the GPU tiles that are touched.\n\nSkia likes to operate in the window/device coordinates and output pixels, but the GPU needs to consume normalized device coordinates from [-1, 1], which is where rtAdjust comes in. Assuming that\u0027s in-sync with the viewport then they effectively cancel each other out and Skia gets to keep thinking it\u0027s writing device pixels.\n\nIf we just translate the viewport but not rtAdjust, then I think it would be okay. Scaling should work out as well. There are two complications I can think of to look out for if you try it:\n- what happens to sk_FragCoord in the fragment shader. It likely responds to the viewport translation, but if a shader were to use it as the input to an inverse transform, we might get surprising results. Honestly, we probably need to handle that regardless of how the translation is specified, so maybe this is moot.\n- what happens when the new setViewport extends offscreen. I think then we\u0027d have to update rtAdjust accordingly.\n\nBut I think it\u0027s certainly doable and worth trying.",
+      "parentUuid": "372ec3e4_185cd9a9",
+      "range": {
+        "startLine": 334,
+        "startChar": 30,
+        "endLine": 334,
+        "endChar": 71
+      },
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4223cd29_055dc4fa",
         "filename": "src/gpu/graphite/RenderPassTask.h",
         "patchSetId": 1
@@ -412,6 +436,24 @@
       "side": 1,
       "message": "I like the idea of consolidating the transform and target arguments, but using InsertRecordingInfo seems a little weird to me. Would it be worth defining a new type? This could introduce less noise into the `addCommands` signatures.",
       "parentUuid": "fe387170_9cf08a86",
+      "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e814f2bd_41900793",
+        "filename": "src/gpu/graphite/Task.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-07T15:40:16Z",
+      "side": 1,
+      "message": "Yeah, InsertRecordingInfo has too much other baggage on it. I think a new type makes sense. It could be an internal type or also defined in GraphiteTypes.h so that InsertRecordingInfo can refer to it.",
+      "parentUuid": "6e170bb8_bdce03aa",
       "revId": "7a016b0a05b5037a9ec8a1efdac68e022d387d92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
