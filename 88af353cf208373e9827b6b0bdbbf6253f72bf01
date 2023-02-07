@@ -16,6 +16,24 @@
       "message": "Just making I understand: We only need to check the to-be-appended `src` against the \"expanded\" (old) `dst`, because the resulting copy will happen in-order? (eg, even if doing the expansion would cause `lastInstr`\u0027s src and dst to overlap, it\u0027s okay, because we\u0027ll always copy  sequentially, and read from the start of the new src before we overwrite it later in the op?",
       "revId": "88af353cf208373e9827b6b0bdbbf6253f72bf01",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34c58d05_accfd0b4",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-07T15:18:01Z",
+      "side": 1,
+      "message": "`copy_slots_unmasked` is using `memcpy` which doesn\u0027t guarantee its behavior when the ranges overlap: https://osscs.corp.google.com/skia/skia/+/main:src/opts/SkRasterPipeline_opts.h;l\u003d3351;drc\u003d5935b0dc422b930b490944c5874c90e33560a633\n\nSo I added in a check to ensure that this overlap can\u0027t occur.\nAnother way to fix this would be to rewrite the copy functions to load everything into registers then store it back out, rather than using memcpy. In practice this is probably going to generate ~the same code. Then we could remove this check. (I actually wrote this version at one point then decided the slot-range check was the safer change.)\n\nI could experiment with this and see how the codegen looks for hand-rolled memcpy. I know this case _does_ actually happen in at least one test, but probably not often enough that it matters. (This block of assignments rolls up: https://osscs.corp.google.com/skia/skia/+/main:tests/sksl/runtime/LargeProgram_Functions.skrp;l\u003d4-8;drc\u003dfb67bdb6c4e94a2a3af6a0b37c85d7d9b35d9ba4 )",
+      "parentUuid": "7eb3c845_56a646d3",
+      "revId": "88af353cf208373e9827b6b0bdbbf6253f72bf01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
