@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "44b7f58a_bb5fbd26",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-07T16:36:14Z",
+      "side": 1,
+      "message": "Hmm. This is going to pessimistically allocate the MatrixRec from the arena, even when we (frequently) have to fall back to RP/VM. Does the MatrixRec actually need to be arena-allocated? If not, we ought to put it on the stack here. If it does need to be in the arena, then it seems like we\u0027d need to do the same thing for the one we create in SkLocalMatrixShader ?",
+      "revId": "c36f9fe86d29d44a8dcce0df0ebb2e524c1d95ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0deb1c20_10d07308",
