@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd245107_7a25f1bf",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-07T21:16:28Z",
+      "side": 1,
+      "message": "This https://developer.apple.com/documentation/metal/mtlrendercommandencoder/1515527-setviewport makes it sound like there\u0027s no requirement that XYWH actually be contained in the (0,0,target width, target height), which is convenient if true.\n\nIf you\u0027re in `viewer` on your replay GM and translate the contents around to extend offscreen, does it still work okay?",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 472,
+        "endChar": 38
+      },
+      "revId": "4dc9e2d0f82ebefc430404a9c065989b4ef7d737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
