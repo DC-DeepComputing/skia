@@ -34,6 +34,24 @@
       "parentUuid": "7eb3c845_56a646d3",
       "revId": "88af353cf208373e9827b6b0bdbbf6253f72bf01",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da279bad_4569e62a",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-07T15:42:32Z",
+      "side": 1,
+      "message": "Looking at the actual disassembly of the unmasked copies today, it\u0027s doing exactly what I would expect (all loads then all stores), so the codegen shouldn\u0027t change much at all:\n\nhttps://paste.googleplex.com/4946600685207552",
+      "parentUuid": "34c58d05_accfd0b4",
+      "revId": "88af353cf208373e9827b6b0bdbbf6253f72bf01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
