@@ -260,12 +260,26 @@ void MtlCommandBuffer::endRenderPass() {
     SkASSERT(fActiveRenderCommandEncoder);
     fActiveRenderCommandEncoder->endEncoding();
     fActiveRenderCommandEncoder.reset();
+    fDrawIsOffscreen = false;
 }
 
 void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
     drawPass->addResourceRefs(this);
 
     for (auto[type, cmdPtr] : drawPass->commands()) {
+        // Skip draw commands if they'd be offscreen.
+        if (fDrawIsOffscreen) {
+            switch (type) {
+                case DrawPassCommands::Type::kDraw:
+                case DrawPassCommands::Type::kDrawIndexed:
+                case DrawPassCommands::Type::kDrawInstanced:
+                case DrawPassCommands::Type::kDrawIndexedInstanced:
+                    continue;
+                default:
+                    break;
+            }
+        }
+
         switch (type) {
             case DrawPassCommands::Type::kBindGraphicsPipeline: {
                 auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
@@ -456,14 +470,30 @@ void MtlCommandBuffer::bindTextureAndSampler(const Texture* texture,
 void MtlCommandBuffer::setScissor(unsigned int left, unsigned int top,
                                   unsigned int width, unsigned int height) {
     SkASSERT(fActiveRenderCommandEncoder);
-    MTLScissorRect scissorRect = { left, top, width, height };
+    SkIRect rect = SkIRect::MakeXYWH(
+            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height);
+    bool intersects = rect.intersect(SkIRect::MakeSize(fRenderPassSize));
+    if (!intersects) {
+        rect.setEmpty();
+        fDrawIsOffscreen = true;
+    }
+
+    left = rect.x();
+    top = rect.y();
+    width = rect.width();
+    height = rect.height();
+    MTLScissorRect scissorRect = {left, top, width, height};
     fActiveRenderCommandEncoder->setScissorRect(scissorRect);
 }
 
 void MtlCommandBuffer::setViewport(float x, float y, float width, float height,
                                    float minDepth, float maxDepth) {
     SkASSERT(fActiveRenderCommandEncoder);
-    MTLViewport viewport = { x, y, width, height, minDepth, maxDepth };
+    SkRect rect =
+            SkRect::MakeXYWH(x + fReplayTranslation.x(), y + fReplayTranslation.y(), width, height);
+    fDrawIsOffscreen = fDrawIsOffscreen || !SkRect::Intersects(rect, SkRect::Make(fRenderPassSize));
+
+    MTLViewport viewport = {rect.x(), rect.y(), rect.width(), rect.height(), minDepth, maxDepth};
     fActiveRenderCommandEncoder->setViewport(viewport);
 
     float invTwoW = 2.f / width;
