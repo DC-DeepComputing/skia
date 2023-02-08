@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19e6788f_75911440",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T15:10:00Z",
+      "side": 1,
+      "message": "Thanks for all the updates Quyen! I have a few nits in the main code, and then one question about keeping the ResourceProvider more private if possible.  Most of the comments are on revising the new unit test, which is a great test to have added, so thank you for that 😊",
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e16ad82_f4dd07c6",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T15:10:00Z",
+      "side": 1,
+      "message": "nit: for constructors, Skia style likes to have each initializer on its own line, keeping the `:` and the `,` aligned at the start.",
+      "range": {
+        "startLine": 40,
+        "startChar": 39,
+        "endLine": 40,
+        "endChar": 40
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81e3d7f8_8b695e0d",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T15:10:00Z",
+      "side": 1,
+      "message": "nit: Skia style uses `this-\u003e` for member function calls.",
+      "range": {
+        "startLine": 210,
+        "startChar": 13,
+        "endLine": 210,
+        "endChar": 57
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "058dd101_90dfa0dd",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T15:10:00Z",
+      "side": 1,
+      "message": "nit: line length. For this situation, we usually bump all arguments down to the line below the function and indent twice, each arg on its own line.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 100
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d6344d9_f1603280",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T15:10:00Z",
+      "side": 1,
+      "message": "This is the first time I\u0027m aware of in Skia to use a single triangle to cover the entire render target. Historically we\u0027ve always just drawn a quad as two triangles. This likely stemmed from these draws being issued from `DrawRect` operations at a high-level.\n\nWhat are your impressions of this technique vs. the two triangle approach? It would be nice to use a consistent strategy across the backends that have to do a draw blit, but that could easily mean we update the Metal backend to do it this way as well.",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 75
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d55da8_149f30ba",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T15:10:00Z",
+      "side": 1,
+      "message": "WDYT about having this call `findOrCreateDiscardableMSAAAttachment` with `dawnMsaaLoadTextureInfo` instead of having to make `findOrCreateTextureWithKey` a protected function?\n\nThe main implication is that the MSAA attachments and the MSAA load textures share the same ResourceType, but I don\u0027t think that\u0027s a problem in this case.",
+      "range": {
+        "startLine": 168,
+        "startChar": 4,
+        "endLine": 171,
+        "endChar": 73
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d84a4c2_cf8eb5e7",
+        "filename": "tests/graphite/MultisampleTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T15:10:00Z",
+      "side": 1,
+      "message": "We shouldn\u0027t have to go through the deferred canvas w/ a replay target for this test.\n\nIf you call `surface-\u003egetCanvas()` and use that for `surfaceCanvas`, everything will go into `surfaceRecorder` automatically, and then when you insert the Recording you\u0027d not specify a replay target.",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 70
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff0281b_e29cc97a",
+        "filename": "tests/graphite/MultisampleTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T15:10:00Z",
+      "side": 1,
+      "message": "We should be able to keep using the existing `surfaceRecorder` here, in general Recorders should be pretty long lived since caches are tied to their lifetimes.",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 85
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "353c3136_9a38740e",
+        "filename": "tests/graphite/MultisampleTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T15:10:00Z",
+      "side": 1,
+      "message": "We don\u0027t need a separate SkPixmap variable. You can access `bitmap.pixmap()` directly.",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 20
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c748139_6a5739e3",
+        "filename": "tests/graphite/MultisampleTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T15:10:00Z",
+      "side": 1,
+      "message": "This can be called shorter by just `bitmap.getColor4f(0,0)` w/o needing the pixmap as well.",
+      "range": {
+        "startLine": 78,
+        "startChar": 30,
+        "endLine": 78,
+        "endChar": 53
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
