@@ -8,6 +8,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkFloatingPoint.h"
+#include "src/base/SkBezierCurves.h"
 #include "src/base/SkCubics.h"
 #include "src/base/SkUtils.h"
 #include "src/pathops/SkPathOpsCubic.h"
@@ -218,6 +219,12 @@ DEF_TEST(CubicRootsReal_Quadratics, reporter) {
     testCubicRootsReal(reporter, "no roots x^2 + 2x + 7",
                        0, 1, 2, 7,
                        {});
+
+    // similar to oss-fuzz:
+    testCubicRootsReal(reporter, "two roots one small one big (and ignored)",
+                       0, -0.01, 200000000000000, -120000000000000,
+                       { 0.6 },
+                        true /* == skipPathops */);
 }
 
 DEF_TEST(CubicRootsReal_Linear, reporter) {
@@ -403,4 +410,71 @@ DEF_TEST(CubicRootsValidT_ClampToZeroAndOne, reporter) {
         std::sort(std::begin(roots), std::begin(roots) + rootCount);
         REPORTER_ASSERT(reporter, sk_double_nearly_zero(roots[0]), "%.16f != 0", roots[0]);
     }
+}
+
+static void testCubicExtrema(skiatest::Reporter* reporter, std::string name,
+                             double A, double B, double C, double D,
+                             SkSpan<const double> expectedExtrema) {
+    skiatest::ReporterContext subtest(reporter, name);
+    // Validate test case
+    REPORTER_ASSERT(reporter, expectedExtrema.size() <= 2,
+                    "Invalid test case, up to 2 extrema allowed");
+    {
+        const double inputs[8] = {A, 0, B, 0, C, 0, D, 0};
+        std::array<double, 4> bezier = SkBezierCubic::ConvertToPolynomial(inputs, false);
+        // The X extrema of the Bezier curve represented by the 4 provided X coordinates
+        // (Start, Control Point 1, Control Point 2, Stop) are where the derivative of that
+        // polynomial is zero. We can verify this for the expected Extrema.
+        // lowercase letters to emphasize we are referring to Bezier curve (using t),
+        // not X,Y values.
+        auto [a, b, c, d] = bezier;
+        a *= 3; // derivative (at^3 -> 3at^2)
+        b *= 2; // derivative (bt^2 -> 2bt)
+        c *= 1; // derivative (ct^1 -> c)
+        d = 0;  // derivative (d    -> 0)
+        for (size_t i = 0; i < expectedExtrema.size(); i++) {
+            double t = expectedExtrema[i];
+            REPORTER_ASSERT(reporter, t >= 0 && t <= 1,
+                            "Invalid test case root %zu. Roots must be in [0, 1]", i);
+            double shouldBeZero = a * t * t + b * t + c;
+            REPORTER_ASSERT(reporter, sk_double_nearly_zero(shouldBeZero),
+                    "Invalid test case root %zu. %.16f != 0", i, shouldBeZero);
+        }
+    }
+
+    {
+        skiatest::ReporterContext subsubtest(reporter, "Pathops Implementation");
+        double extrema[2] = {0, 0};
+        // This implementation expects the coefficients to be (X, Y), (X, Y), (X, Y), (X, Y)
+        // but it ignores the values at odd indices.
+        const double inputs[8] = {A, 0, B, 0, C, 0, D, 0};
+        int extremaCount = SkDCubic::FindExtrema(&inputs[0], extrema);
+        REPORTER_ASSERT(reporter, expectedExtrema.size() == size_t(extremaCount),
+                        "Wrong number of extrema returned %zu != %d",
+                        expectedExtrema.size(), extremaCount);
+
+        // We don't care which order the roots are returned from the algorithm.
+        // For determinism, we will sort them (and ensure the provided solutions are also sorted).
+        std::sort(std::begin(extrema), std::begin(extrema) + extremaCount);
+        for (int i = 0; i < extremaCount; i++) {
+            if (sk_double_nearly_zero(expectedExtrema[i])) {
+                REPORTER_ASSERT(reporter, sk_double_nearly_zero(extrema[i]),
+                                "0 != %.16f at index %d", extrema[i], i);
+            } else {
+                REPORTER_ASSERT(reporter,
+                                sk_doubles_nearly_equal_ulps(expectedExtrema[i], extrema[i], 64),
+                                "%.16f != %.16f at index %d", expectedExtrema[i], extrema[i], i);
+            }
+        }
+    }
+}
+
+DEF_TEST(CubicExtrema_FindsExtremaInRangeZeroToOneInclusive, reporter) {
+    // All answers are given with 16 significant digits (max for a double) or as an integer
+    // when the answer is exact.
+    // https://www.desmos.com/calculator/t7r4mnl294
+    testCubicExtrema(reporter, "(24, N) (-46, N) (-29, N) (-6, N) with 2 extrema",
+                    24, -46, 29, -6,
+                    {0.3476582809885365,
+                     0.7895966209722478});
 }
