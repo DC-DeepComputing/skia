@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96d3bbb0_e9ff040e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-08T20:17:32Z",
+      "side": 1,
+      "message": "We discussed offline and decided not to spin up a DDL3 preAbandonGpuContext job to prevent regressions. DDLs are on their way out and the incidence of this bug is very low.",
+      "revId": "27613eec039246ff697051ab14a2b3e38757660c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
