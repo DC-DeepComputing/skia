@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6e9787b_401a3924",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "I have changed this CL to be simpler. Dawn backend no longer leaks info to upper layer. Extra texture + copy are now known and handled internally by Dawn backend only. PTAL.",
+      "parentUuid": "1bfa5b56_e73d72c9",
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c23852b_44ce1744",
@@ -160,6 +178,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e396929_5aa1f117",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "Removed all the external caps. Now the extra texture + copy is only known internally inside Dawn backend.",
+      "parentUuid": "68dc5300_e75449ff",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 89
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cb038e3_4bd67f31",
@@ -173,6 +215,30 @@
       "writtenOn": "2023-01-30T23:10:49Z",
       "side": 1,
       "message": "nit: Align with other assignments",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 120,
+        "endChar": 55
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "378853e9_d1f63c02",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9cb038e3_4bd67f31",
       "range": {
         "startLine": 120,
         "startChar": 4,
@@ -254,6 +320,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93593e7e_ae069451",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "`fTextureCopyRequiresRenderable` flag removed.",
+      "parentUuid": "c3f74757_6f0157f9",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 1
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbef5fbd_34ad8675",
@@ -267,6 +357,30 @@
       "writtenOn": "2023-01-30T23:10:49Z",
       "side": 1,
       "message": "Reformat this to adhere to the line length limit",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 105
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac9ec7fb_016e92b0",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbef5fbd_34ad8675",
       "range": {
         "startLine": 37,
         "startChar": 0,
@@ -300,6 +414,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56775643_2560279a",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "This code has been removed. We no longer need to support sub-region blitting. Now only full screen blitting is required so this constant buffer is not needed anymore.",
+      "parentUuid": "292a8fc8_7490e6e9",
+      "range": {
+        "startLine": 267,
+        "startChar": 32,
+        "endLine": 267,
+        "endChar": 34
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b803671_152845b7",
@@ -313,6 +451,30 @@
       "writtenOn": "2023-01-30T23:10:49Z",
       "side": 1,
       "message": "Do we have a buganizer item for this? If not, we should make one and add the issue here.",
+      "range": {
+        "startLine": 284,
+        "startChar": 0,
+        "endLine": 284,
+        "endChar": 39
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b6eacbd_ca592419",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b803671_152845b7",
       "range": {
         "startLine": 284,
         "startChar": 0,
@@ -346,6 +508,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3227bea_48d5453c",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0af0893b_36d398e4",
+      "range": {
+        "startLine": 787,
+        "startChar": 16,
+        "endLine": 787,
+        "endChar": 28
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5886bcd9_373feb87",
@@ -359,6 +545,30 @@
       "writtenOn": "2023-01-30T23:10:49Z",
       "side": 1,
       "message": "Same feedback about TODOs as above - we should create \u0026 tag a buganizer task to ensure this actually gets addressed.",
+      "range": {
+        "startLine": 794,
+        "startChar": 3,
+        "endLine": 794,
+        "endChar": 55
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94c0683a_f658606b",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "Code has been removed.",
+      "parentUuid": "5886bcd9_373feb87",
       "range": {
         "startLine": 794,
         "startChar": 3,
@@ -416,6 +626,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "716bfc8d_6269bcac",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "These comments have been removed. We no longer need to support sub-region blitting.",
+      "parentUuid": "2beabc3e_bd6915d9",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 14
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9376962_0d4fd3cc",
@@ -429,6 +663,30 @@
       "writtenOn": "2023-01-30T23:10:49Z",
       "side": 1,
       "message": "Shouldn\u0027t this method only be populated if `directLoadMSAAFromResolveSupport` is false? Does Metal support sampling from and writing to the same texture in one render pass? From what I could briefly dig up, it does.\n\nIf I am mistaken and Metal does not support this and this method should, in fact, be populated, then we should set that flag to false. If it *is* supported, we should delete this implementation like you did for `VulkanCaps`, right?",
+      "range": {
+        "startLine": 634,
+        "startChar": 0,
+        "endLine": 649,
+        "endChar": 1
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd36938a_33e1214b",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "Done. This code is not needed anymore.",
+      "parentUuid": "a9376962_0d4fd3cc",
       "range": {
         "startLine": 634,
         "startChar": 0,
@@ -462,6 +720,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e8ce588_92ac3c51",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "Done. This code is not needed anymore.",
+      "parentUuid": "32aeec39_6b7b3fe6",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 252,
+        "endChar": 52
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fb7d8de_21e72b8b",
@@ -475,6 +757,30 @@
       "writtenOn": "2023-01-30T23:10:49Z",
       "side": 1,
       "message": "Clarification suggestion: We could point out that for Vulkan, caps.directLoadMSAAFromResolveSupport() should always be false since it is supported.",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 87
+      },
+      "revId": "d5318f329ef97c2a431bfc629ffbf3a03bb55cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4ac7cc2_e38bd66e",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-08T06:47:26Z",
+      "side": 1,
+      "message": "Done. This code is not needed anymore.",
+      "parentUuid": "4fb7d8de_21e72b8b",
       "range": {
         "startLine": 199,
         "startChar": 0,
