@@ -66,6 +66,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "81f35d33_15b3de47",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-08T15:31:00Z",
+      "side": 1,
+      "message": "Nit: From what I\u0027ve seen, we typically just do `b/260368758`.",
+      "range": {
+        "startLine": 298,
+        "startChar": 13,
+        "endLine": 298,
+        "endChar": 63
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "058dd101_90dfa0dd",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.h",
         "patchSetId": 16
@@ -82,6 +105,29 @@
         "startChar": 0,
         "endLine": 56,
         "endChar": 100
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b5e017c_949018ac",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-08T15:31:00Z",
+      "side": 1,
+      "message": "Is there a reason we shouldn\u0027t attempt to figure that out within the scope of this CL? If not, does it make sense to create a bug for it?",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 346,
+        "endChar": 46
       },
       "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -174,6 +220,29 @@
         "startChar": 4,
         "endLine": 42,
         "endChar": 85
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f94dbaa6_4d8ff9de",
+        "filename": "tests/graphite/MultisampleTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-08T15:31:00Z",
+      "side": 1,
+      "message": "Nit: I think these should be only indented once from the alignment with `constexpr`, this looks to be indented more than that.",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 20
       },
       "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
