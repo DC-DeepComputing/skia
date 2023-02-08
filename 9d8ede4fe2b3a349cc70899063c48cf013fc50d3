@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d85aab99_a0746d4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6026
+      },
+      "writtenOn": "2023-02-08T16:45:24Z",
+      "side": 1,
+      "message": "(originally added in https://codereview.chromium.org/2001203003)",
+      "revId": "9d8ede4fe2b3a349cc70899063c48cf013fc50d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
