@@ -46,6 +46,30 @@
       },
       "revId": "4dc9e2d0f82ebefc430404a9c065989b4ef7d737",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0a27446_719a4387",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-08T14:17:18Z",
+      "side": 1,
+      "message": "Well, I had imagined that \"higher up\" could be in DrawPass::Make or something, but of course at that point we\u0027re only recording and don\u0027t have a replay translation. Also, I said viewport but I guess what I meant was the size of the render target. Maybe remembering the size of the colorTexture in CommandBuffer::onAddRenderPass and then intersecting translated scissors with that is ok? And if there\u0027s no intersection we can just set an empty scissor.",
+      "parentUuid": "f5983c2c_ac84cf7e",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 472,
+        "endChar": 38
+      },
+      "revId": "4dc9e2d0f82ebefc430404a9c065989b4ef7d737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
