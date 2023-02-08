@@ -61,6 +61,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <float.h>
+#include <map>
 #include <numeric>
 #include <optional>
 #include <string>
@@ -98,8 +99,8 @@ public:
      * Creates a single temporary slot for scratch storage. Temporary slots can be recycled, which
      * frees them up for reuse. Temporary slots are not assigned a name and have an arbitrary type.
      */
-    SlotRange createTemporarySlot(const Type& type);
-    void recycleTemporarySlot(SlotRange temporarySlot);
+    SlotRange createTemporarySlots(const Type& type);
+    void recycleTemporarySlots(SlotRange temporarySlot);
 
 
     /** Looks up the slots associated with an SkSL variable; creates the slot if necessary. */
@@ -119,7 +120,7 @@ private:
     std::string makeTempName() { return SkSL::String::printf("[temporary %d]", fTemporaryCount++); }
 
     SkTHashMap<const IRNode*, SlotRange> fSlotMap;
-    SkTArray<Slot> fRecycledSlots;
+    std::multimap<int, int> fRecycledSlots;  // <length of range, initial slot index of range>
     int fSlotCount = 0;
     int fTemporaryCount = 0;
     std::vector<SlotDebugInfo>* fSlotDebugInfo;
@@ -131,7 +132,7 @@ public:
 
     ~AutoContinueMask() {
         if (fSlotRange) {
-            fSlotManager->recycleTemporarySlot(*fSlotRange);
+            fSlotManager->recycleTemporarySlots(*fSlotRange);
             *fSlotRange = fPreviousSlotRange;
         }
     }
@@ -140,7 +141,7 @@ public:
         fSlotManager = mgr;
         fSlotRange = range;
         fPreviousSlotRange = *fSlotRange;
-        *fSlotRange = fSlotManager->createTemporarySlot(type);
+        *fSlotRange = fSlotManager->createTemporarySlots(type);
     }
 
     void enterLoopBody(Builder& builder) {
@@ -670,13 +671,21 @@ void SlotManager::addSlotDebugInfo(const std::string& varName,
     SkASSERT((size_t)groupIndex == type.slotCount());
 }
 
-SlotRange SlotManager::createTemporarySlot(const Type& type) {
-    SkASSERT(type.slotCount() == 1);
-
-    // If we have an available slot to reclaim, take it now.
-    if (!fRecycledSlots.empty()) {
-        SlotRange result = {fRecycledSlots.back(), 1};
-        fRecycledSlots.pop_back();
+SlotRange SlotManager::createTemporarySlots(const Type& type) {
+    // Look for a range of slots to reclaim, as close to the target size as possible (but not
+    // smaller!).
+    int nslots = type.slotCount();
+    auto iter = fRecycledSlots.lower_bound(nslots);
+    if (iter != fRecycledSlots.end()) {
+        SlotRange result = {iter->second, nslots};
+        if (iter->first > nslots) {
+            // The recycled range has an unused tail; put that back into the recycled slot list.
+            // We don't make any attempt to fuse adjacent temporary ranges, because there isn't
+            // much of a penalty to using more temporary slots (within reason).
+            SlotRange remainder = {iter->second + nslots, iter->first - nslots};
+            fRecycledSlots.insert({remainder.count, remainder.index});
+        }
+        fRecycledSlots.erase(iter);
         return result;
     }
 
@@ -691,17 +700,16 @@ SlotRange SlotManager::createTemporarySlot(const Type& type) {
                                /*isFunctionReturnValue=*/false);
 
         // Confirm that we added the expected number of slots.
-        SkASSERT(fSlotDebugInfo->size() == (size_t)(fSlotCount + 1));
+        SkASSERT(fSlotDebugInfo->size() == (size_t)(fSlotCount + nslots));
     }
 
-    SlotRange result = {fSlotCount, 1};
-    ++fSlotCount;
+    SlotRange result = {fSlotCount, nslots};
+    fSlotCount += nslots;
     return result;
 }
 
-void SlotManager::recycleTemporarySlot(SlotRange temporarySlot) {
-    SkASSERT(temporarySlot.count == 1);
-    fRecycledSlots.push_back(temporarySlot.index);
+void SlotManager::recycleTemporarySlots(SlotRange temporarySlot) {
+    fRecycledSlots.insert({temporarySlot.count, temporarySlot.index});
 }
 
 SlotRange SlotManager::createSlots(std::string name,
