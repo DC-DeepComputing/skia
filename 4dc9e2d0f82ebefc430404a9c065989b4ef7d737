@@ -70,6 +70,30 @@
       },
       "revId": "4dc9e2d0f82ebefc430404a9c065989b4ef7d737",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d84e99a_bc331ba2",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-08T14:37:55Z",
+      "side": 1,
+      "message": "Yeah, I think tracking enough information to know if the contents of DrawPass::Make would be offscreen makes sense. We might already have that because you can look at `DrawPass::bounds()` in onAddRenderPass(). If the translated bounds are offscreen, we skip the DrawPass\u0027s command list entirely.\n\nWe could get fancier and every time we have a setViewport or setScissor that is entirely offscreen (which could happen for a subset of the draws within a DrawPass that was partially off the edge of the render target), we could just skip over all the drawing commands (probably can\u0027t skip binding commands so that state is valid for the next time we have a draw that has a non-empty scissor).",
+      "parentUuid": "d0a27446_719a4387",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 472,
+        "endChar": 38
+      },
+      "revId": "4dc9e2d0f82ebefc430404a9c065989b4ef7d737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
