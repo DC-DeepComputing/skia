@@ -42,6 +42,10 @@ public:
     std::tuple<UniformWriter, BindBufferInfo> getUniformWriter(size_t requiredBytes);
     std::tuple<UniformWriter, BindBufferInfo> getSsboWriter(size_t requiredBytes);
 
+    // An upload writer might have additional alignment constraints (for example due to texture row
+    // stride).
+    std::tuple<UploadWriter, BindBufferInfo> getUploadWriter(size_t requiredBytes, size_t requiredAlignment);
+
     // Returns a pointer to a mapped storage buffer slice without a specific data writer.
     std::tuple<void*, BindBufferInfo> getMappedStorage(size_t requiredBytes);
 
@@ -81,8 +85,9 @@ private:
         }
     };
     std::pair<void*, BindBufferInfo> prepareMappedBindBuffer(BufferInfo* info,
-                                                             size_t requiredBytes);
-    BindBufferInfo prepareBindBuffer(BufferInfo* info, size_t requiredBytes, bool mappable = false);
+                                                             size_t requiredBytes,
+                                                             size_t requiredAlignment = 0);
+    BindBufferInfo prepareBindBuffer(BufferInfo* info, size_t requiredBytes, size_t requiredAlignment = 0, bool mappable = false);
 
     ResourceProvider* const fResourceProvider;
     const Caps* const fCaps;
@@ -95,7 +100,8 @@ private:
     static constexpr size_t kVertexStorageBufferIndex   = 5;
     static constexpr size_t kIndexStorageBufferIndex    = 6;
     static constexpr size_t kIndirectStorageBufferIndex = 7;
-    std::array<BufferInfo, 8> fCurrentBuffers;
+    static constexpr size_t kUploadBufferIndex          = 8;
+    std::array<BufferInfo, 9> fCurrentBuffers;
 
     // Vector of buffer and transfer buffer pairs.
     std::vector<std::pair<sk_sp<Buffer>, sk_sp<Buffer>>> fUsedBuffers;

@@ -12,13 +12,13 @@
 #include "include/gpu/graphite/Recording.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/RecorderPriv.h"
-#include "src/gpu/graphite/UploadBufferManager.h"
+#include "src/gpu/graphite/BufferManager.h"
 
 namespace skgpu::graphite {
 
 DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(UploadBufferManagerTest, reporter, context) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
-    UploadBufferManager* bufferManager = recorder->priv().uploadBufferManager();
+    DrawBufferManager* bufferManager = recorder->priv().drawBufferManager();
 
     // The test source data.
     char src[8] = {

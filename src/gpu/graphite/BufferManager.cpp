@@ -27,6 +27,7 @@ static constexpr size_t kVertexBufferSize = 16 << 10; // 16 KB
 static constexpr size_t kIndexBufferSize =   2 << 10; //  2 KB
 static constexpr size_t kUniformBufferSize = 2 << 10; //  2 KB
 static constexpr size_t kStorageBufferSize = 2 << 10; //  2 KB
+static constexpr size_t kUploadBufferSize = 64 << 10; // 64 KB
 
 // TODO: Is it better to keep this above the max data size so we typically have one transfer buffer
 // allocation? Or have it line up with kVertexBufferSize so if we end up needing to use transfer
@@ -91,7 +92,8 @@ DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider, const C
                 { BufferType::kStorage,       kStorageBufferSize, caps },  // GPU-only storage
                 { BufferType::kVertexStorage, kVertexBufferSize,  caps },
                 { BufferType::kIndexStorage,  kIndexBufferSize,   caps },
-                { BufferType::kIndirect,      kStorageBufferSize, caps } }} {}
+                { BufferType::kIndirect,      kStorageBufferSize, caps },
+                { BufferType::kXferCpuToGpu,  kUploadBufferSize,  caps }}} {}
 
 DrawBufferManager::~DrawBufferManager() {}
 
@@ -100,7 +102,7 @@ DrawBufferManager::~DrawBufferManager() {}
 // the same in memory.
 DrawBufferManager::BufferInfo::BufferInfo(BufferType type, size_t blockSize, const Caps* caps)
         : fType(type)
-        , fStartAlignment(starting_alignment(type, !caps->drawBufferCanBeMapped(), caps))
+        , fStartAlignment(starting_alignment(type, !caps->drawBufferCanBeMapped() || type == BufferType::kXferCpuToGpu, caps))
         , fBlockSize(SkAlignTo(blockSize, fStartAlignment)) {}
 
 std::tuple<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t requiredBytes) {
@@ -162,6 +164,19 @@ std::tuple<UniformWriter, BindBufferInfo> DrawBufferManager::getSsboWriter(size_
         return {};
     }
     return {UniformWriter(ptr, requiredBytes), bindInfo};
+}
+
+std::tuple<UploadWriter, BindBufferInfo> DrawBufferManager::getUploadWriter(size_t requiredBytes, size_t requiredAlignment) {
+    if (!requiredBytes) {
+        return {};
+    }
+
+    auto& info = fCurrentBuffers[kUploadBufferIndex];
+    auto [ptr, bindInfo] = this->prepareMappedBindBuffer(&info, requiredBytes, requiredAlignment);
+    if (!ptr) {
+        return {};
+    }
+    return {UploadWriter(ptr, requiredBytes), bindInfo};
 }
 
 std::tuple<void*, BindBufferInfo> DrawBufferManager::getMappedStorage(size_t requiredBytes) {
@@ -254,8 +269,9 @@ void DrawBufferManager::transferToRecording(Recording* recording) {
 }
 
 std::pair<void*, BindBufferInfo> DrawBufferManager::prepareMappedBindBuffer(BufferInfo* info,
-                                                                            size_t requiredBytes) {
-    auto bindInfo = this->prepareBindBuffer(info, requiredBytes, /*mappable=*/true);
+                                                                            size_t requiredBytes,
+                                                                            size_t requiredAlignment) {
+    auto bindInfo = this->prepareBindBuffer(info, requiredBytes, requiredAlignment, /*mappable=*/true);
     if (!bindInfo) {
         return {nullptr, {}};
     }
@@ -267,14 +283,18 @@ std::pair<void*, BindBufferInfo> DrawBufferManager::prepareMappedBindBuffer(Buff
 
 BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
                                                     size_t requiredBytes,
+                                                    size_t requiredAlignment,
                                                     bool mappable) {
     SkASSERT(info);
     SkASSERT(requiredBytes);
 
-    bool useTransferBuffer = mappable && !fCaps->drawBufferCanBeMapped();
+    // We don't need an additional transfer buffer is `info` is already a transfer buffer (e.g. used
+    // for texture uploads).
+    bool useTransferBuffer = info->fType != BufferType::kXferCpuToGpu && mappable && !fCaps->drawBufferCanBeMapped();
+    size_t alignment = std::max(requiredAlignment, info->fStartAlignment);
 
     if (info->fBuffer &&
-        !can_fit(requiredBytes, info->fBuffer.get(), info->fOffset, info->fStartAlignment)) {
+        !can_fit(requiredBytes, info->fBuffer.get(), info->fOffset, alignment)) {
         SkASSERT(!info->fTransferBuffer || info->fBuffer->size() == info->fTransferBuffer->size());
         fUsedBuffers.emplace_back(std::move(info->fBuffer), std::move(info->fTransferBuffer));
     }
@@ -303,7 +323,7 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
         }
     }
 
-    info->fOffset = SkAlignTo(info->fOffset, info->fStartAlignment);
+    info->fOffset = SkAlignTo(info->fOffset, alignment);
     BindBufferInfo bindInfo{info->fBuffer.get(), info->fOffset};
     info->fOffset += requiredBytes;
 
