@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea1a3d84_3ffba65f",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-09T03:36:49Z",
+      "side": 1,
+      "message": "The current plan is to handle indirect draw buffesrs outside of DrawWriter.",
+      "parentUuid": "bc8dff6d_99a1395c",
+      "range": {
+        "startLine": 115,
+        "startChar": 8,
+        "endLine": 119,
+        "endChar": 66
+      },
+      "revId": "ab39cdb95a5e1a1eca827843aa634e0f8776ad9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2e0880b_3efc9ee7",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15b13384_a57aff23",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-09T03:36:49Z",
+      "side": 1,
+      "message": "The current plan is to handle indirect draw buffesrs outside of DrawWriter.",
+      "parentUuid": "e2e0880b_3efc9ee7",
+      "range": {
+        "startLine": 189,
+        "startChar": 55,
+        "endLine": 189,
+        "endChar": 74
+      },
+      "revId": "ab39cdb95a5e1a1eca827843aa634e0f8776ad9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3025c712_61d35705",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-12-17T00:28:47Z",
       "side": 1,
       "message": "Should either of these functions take an `instances` buffer as well? Or should there be separate `drawInstancedIndirect` and `drawIndexedInstancedIndirect` variants that define an `instanced` parameter?",
+      "range": {
+        "startLine": 191,
+        "startChar": 9,
+        "endLine": 191,
+        "endChar": 28
+      },
+      "revId": "ab39cdb95a5e1a1eca827843aa634e0f8776ad9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2099a275_92c7e670",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-09T03:36:49Z",
+      "side": 1,
+      "message": "The current plan is to handle indirect draw buffesrs outside of DrawWriter.",
+      "parentUuid": "3025c712_61d35705",
       "range": {
         "startLine": 191,
         "startChar": 9,
