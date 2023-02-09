@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dde4a1fd_c8cef30a",
+        "filename": "modules/skcms/skcms.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2023-02-09T20:28:09Z",
+      "side": 1,
+      "message": "Thanks.  I\u0027ll move that over later.  FYI I had to add this enum here because the location of the enum determines if the components are clamped to [0..1] or not.  I think ideally we\u0027d remove all logic that depends on the order of this enum, but I\u0027m probably not the best person to make that change.",
+      "parentUuid": "3746fa0f_86cb1ee3",
+      "revId": "6c642361c0980a1fecb078027d1bf65bd4022990",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c170b8f9_0ada7051",
         "filename": "src/core/SkRasterPipeline.cpp",
         "patchSetId": 1
