@@ -16,6 +16,24 @@
       "message": "@jvanverth@google.com, can I get your opinion on the Gold differences?",
       "revId": "eef3041e25b256af6e8c7928165944eafb856f60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21ea88ae_0963f697",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-09T18:25:53Z",
+      "side": 1,
+      "message": "Yeah, a number of those don\u0027t look quite right.",
+      "parentUuid": "d8fcaec0_229eed8e",
+      "revId": "eef3041e25b256af6e8c7928165944eafb856f60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
