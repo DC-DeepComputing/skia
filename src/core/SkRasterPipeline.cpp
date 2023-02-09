@@ -183,6 +183,7 @@ void SkRasterPipeline::append_matrix(SkArenaAlloc* alloc, const SkMatrix& matrix
 void SkRasterPipeline::append_load(SkColorType ct, const SkRasterPipeline_MemoryCtx* ctx) {
     switch (ct) {
         case kUnknown_SkColorType: SkASSERT(false); break;
+        case kBGR_101010x_XR_SkColorType: SkASSERT(false); break;
 
         case kAlpha_8_SkColorType:           this->append(Op::load_a8,      ctx); break;
         case kA16_unorm_SkColorType:         this->append(Op::load_a16,     ctx); break;
@@ -238,6 +239,7 @@ void SkRasterPipeline::append_load(SkColorType ct, const SkRasterPipeline_Memory
 void SkRasterPipeline::append_load_dst(SkColorType ct, const SkRasterPipeline_MemoryCtx* ctx) {
     switch (ct) {
         case kUnknown_SkColorType: SkASSERT(false); break;
+        case kBGR_101010x_XR_SkColorType: SkASSERT(false); break;
 
         case kAlpha_8_SkColorType:            this->append(Op::load_a8_dst,      ctx); break;
         case kA16_unorm_SkColorType:          this->append(Op::load_a16_dst,     ctx); break;
@@ -296,6 +298,7 @@ void SkRasterPipeline::append_load_dst(SkColorType ct, const SkRasterPipeline_Me
 void SkRasterPipeline::append_store(SkColorType ct, const SkRasterPipeline_MemoryCtx* ctx) {
     switch (ct) {
         case kUnknown_SkColorType: SkASSERT(false); break;
+        case kBGR_101010x_XR_SkColorType: SkASSERT(false); break;
 
         case kAlpha_8_SkColorType:            this->append(Op::store_a8,      ctx); break;
         case kR8_unorm_SkColorType:           this->append(Op::store_r8,      ctx); break;
