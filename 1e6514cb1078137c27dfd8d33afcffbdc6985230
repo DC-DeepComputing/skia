@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3043ead4_0f3ec823",
+        "filename": "tests/sksl/shared/MatrixScalarMath.hlsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-09T20:42:09Z",
+      "side": 1,
+      "message": "^\nNote that SPIR-V also does componentwise division\n(The HLSL is just decompiled SPIR-V)",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 40
+      },
+      "revId": "1e6514cb1078137c27dfd8d33afcffbdc6985230",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
