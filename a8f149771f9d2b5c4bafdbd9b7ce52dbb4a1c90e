@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7488243d_9ae8db23",
+        "filename": "src/gpu/graphite/Texture.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-09T16:59:13Z",
+      "side": 1,
+      "message": "In your opinion, do you think it is alright to make `fMutableState` a protected member variable such that VulkanTexture can make calls on it? Or would you prefer another approach, such as keeping the member private but adding a protected getter method?",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 48
+      },
+      "revId": "a8f149771f9d2b5c4bafdbd9b7ce52dbb4a1c90e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
