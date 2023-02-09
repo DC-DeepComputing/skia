@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "249dd32f_385faecc",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 2371,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-09T19:05:40Z",
+      "side": 1,
+      "message": "For skcms, I\u0027d like to see Op_load_101010x_XR as well. If you grab the skcms repo, there are also unit tests for each format, in tests.c. (test_FormatConversions_Foo). They mostly test specific values to make sure the conversions are correct.",
+      "revId": "6c642361c0980a1fecb078027d1bf65bd4022990",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3746fa0f_86cb1ee3",
+        "filename": "modules/skcms/skcms.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-09T19:05:40Z",
+      "side": 1,
+      "message": "The skcms changes actually need to be landed in a separate repo (we roll skcms into skia from https://skia.googlesource.com/skcms/).\n\nI\u0027d also prefer to put the new PixelFormat directly after 1010102, just to keep the \"grouped by byte-size\" pattern.",
+      "revId": "6c642361c0980a1fecb078027d1bf65bd4022990",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c170b8f9_0ada7051",
         "filename": "src/core/SkRasterPipeline.cpp",
         "patchSetId": 1
