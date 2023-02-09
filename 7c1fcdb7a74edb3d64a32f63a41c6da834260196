@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20349272_b0c681c3",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-09T17:17:59Z",
+      "side": 1,
+      "message": "We have some clang format rules but I believe you have to run a script to sync them (`./bin/fetch-clang-format`) Our team has lots of mixed feelings about autoformatting so it\u0027s typically been an if-you-want-to sort of thing and not every part of the typical style translates into rules. So if you do use clang format, definitely just have it process your modified lines or lots of source files could be modified.",
+      "parentUuid": "f9968188_eaafd9a3",
+      "range": {
+        "startLine": 40,
+        "startChar": 39,
+        "endLine": 40,
+        "endChar": 40
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81e3d7f8_8b695e0d",
@@ -314,6 +338,30 @@
       "side": 1,
       "message": "The recommended way of doing fullscreen pass nowadays is using 1 big triangle instead of 2 triangles AFAIK. This article has some explanations: https://wallisc.github.io/rendering/2021/04/18/Fullscreen-Pass.html\n\nThe fragment shaders would be executed twice unnecessarily along the diagonal edge if 2 triangles were used. That\u0027s because of helper shader invocations typically running in a group of 4 to compute derivatives.\n\nFor graphite\u0027s texture copying shader, I imagine the performance win by using 1 big triangle is rather small. But a performance win, even small is always better than nothing. Nevertheless, the bigger the texture\u0027s resolution is, the more performance gain would be get from 1 triangle vs 2 triangles.",
       "parentUuid": "8d6344d9_f1603280",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 75
+      },
+      "revId": "7c1fcdb7a74edb3d64a32f63a41c6da834260196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d9ac9ef_59cf78fc",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-09T17:17:59Z",
+      "side": 1,
+      "message": "Thank you for that context, I created b/268493368 to track future consolidation of the other backends to use this approach.",
+      "parentUuid": "4e5bbf9c_c16946b7",
       "range": {
         "startLine": 101,
         "startChar": 0,
