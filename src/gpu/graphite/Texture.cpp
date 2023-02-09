@@ -19,9 +19,9 @@ Texture::Texture(const SharedContext* sharedContext,
                  Ownership ownership,
                  skgpu::Budgeted budgeted)
         : Resource(sharedContext, ownership, budgeted)
+        , fMutableState(std::move(mutableState))
         , fDimensions(dimensions)
-        , fInfo(info)
-        , fMutableState(std::move(mutableState)) {}
+        , fInfo(info) {}
 
 Texture::~Texture() {}
 
