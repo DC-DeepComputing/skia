@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10305cc9_4edbbfdf",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-09T20:51:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5e4745a_40dd8a34",
+      "range": {
+        "startLine": 475,
+        "startChar": 4,
+        "endLine": 475,
+        "endChar": 8
+      },
+      "revId": "40b7cd6e964142ff7fb698c61e4bb029917f2824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b966395_522d1d7f",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-09T17:10:46Z",
       "side": 1,
       "message": "I think we need to set fDrawIsOffscreen to false if the scissor *does* intersect the render pass.",
+      "range": {
+        "startLine": 476,
+        "startChar": 4,
+        "endLine": 479,
+        "endChar": 5
+      },
+      "revId": "40b7cd6e964142ff7fb698c61e4bb029917f2824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a69a9f45_220ab7d6",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-09T20:51:02Z",
+      "side": 1,
+      "message": "Right... thankfully this is simplified if we don\u0027t bother checking the viewport intersection.",
+      "parentUuid": "0b966395_522d1d7f",
       "range": {
         "startLine": 476,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16534d89_1443ac36",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-09T20:51:02Z",
+      "side": 1,
+      "message": "The only annoying thing is having to explicitly cast back to unsigned ints, but it does seem worth it to me now.",
+      "parentUuid": "20893ad9_b42eef61",
+      "range": {
+        "startLine": 481,
+        "startChar": 4,
+        "endLine": 484,
+        "endChar": 27
+      },
+      "revId": "40b7cd6e964142ff7fb698c61e4bb029917f2824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "064d2dca_7008de43",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1be6a41_b2b0ac0d",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-09T20:51:02Z",
+      "side": 1,
+      "message": "Done (no longer using `rect`)",
+      "parentUuid": "064d2dca_7008de43",
+      "range": {
+        "startLine": 492,
+        "startChar": 4,
+        "endLine": 493,
+        "endChar": 100
+      },
+      "revId": "40b7cd6e964142ff7fb698c61e4bb029917f2824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc7c8bd1_f4c550ae",
@@ -106,6 +202,30 @@
       "writtenOn": "2023-02-09T17:10:46Z",
       "side": 1,
       "message": "Since scissors are going to be restricted to the viewport anyways, it should be sufficient to have `fDrawIsOffscreen` only updated in setScissor.",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 494,
+        "endChar": 100
+      },
+      "revId": "40b7cd6e964142ff7fb698c61e4bb029917f2824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b1e465c_beabcb0b",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-09T20:51:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc7c8bd1_f4c550ae",
       "range": {
         "startLine": 494,
         "startChar": 0,
