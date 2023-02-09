@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "ef27eafd7ab762d8dd12975f135986e30a9b2f3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32cf06a4_13607eea",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 14
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2023-02-09T20:15:02Z",
+      "side": 1,
+      "message": "Are there (or should there be) bugs filed for these?",
+      "range": {
+        "startLine": 334,
+        "startChar": 0,
+        "endLine": 334,
+        "endChar": 66
+      },
+      "revId": "ef27eafd7ab762d8dd12975f135986e30a9b2f3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
