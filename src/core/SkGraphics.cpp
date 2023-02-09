@@ -144,14 +144,7 @@ static SkGraphics::VariableColrV1EnabledFunc gVariableCOLRv1EnabledFunc = nullpt
 /* static */
 SkGraphics::VariableColrV1EnabledFunc SkGraphics::SetVariableColrV1EnabledFunc(
         VariableColrV1EnabledFunc variableCOLRV1EnabledFunc) {
-    VariableColrV1EnabledFunc old = gVariableCOLRv1EnabledFunc;
-    gVariableCOLRv1EnabledFunc = variableCOLRV1EnabledFunc;
-    return old;
-}
-
-/* static */
-bool SkGraphics::GetVariableColrV1Enabled() {
-    return gVariableCOLRv1EnabledFunc ? gVariableCOLRv1EnabledFunc() : false;
+    return nullptr;
 }
 
 extern bool gSkVMAllowJIT;
