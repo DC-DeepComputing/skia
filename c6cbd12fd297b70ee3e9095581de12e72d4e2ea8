@@ -16,6 +16,29 @@
       "message": "This is basically a copypasta from GrVkCommandBuffer, with some changes to make it Graphite friendly. I don\u0027t see any reason why it shouldn\u0027t work though we won\u0027t know for sure until everything has landed.",
       "revId": "c6cbd12fd297b70ee3e9095581de12e72d4e2ea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9141e37d_6bb749c5",
+        "filename": "tools/CrashHandler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-09T19:01:09Z",
+      "side": 1,
+      "message": "I was running into a compiler issue without this -- not sure what is different about my setup but I don\u0027t think it will hurt.",
+      "range": {
+        "startLine": 157,
+        "startChar": 8,
+        "endLine": 157,
+        "endChar": 27
+      },
+      "revId": "c6cbd12fd297b70ee3e9095581de12e72d4e2ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
