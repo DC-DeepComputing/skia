@@ -30,7 +30,7 @@ public:
     int numNonVolatilePromiseImages() const;
 #endif
 
-    bool addCommands(Context*, CommandBuffer*, Surface* targetSurface);
+    bool addCommands(Context*, CommandBuffer*, Surface* replaySurface, SkIVector replayTranslation);
     void addResourceRef(sk_sp<Resource> resource);
     void addTask(sk_sp<Task> task);
 
