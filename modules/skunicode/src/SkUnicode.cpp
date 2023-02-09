@@ -7,9 +7,16 @@
 
 #include "modules/skunicode/include/SkUnicode.h"
 
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkTemplates.h"
 #include "include/private/SkBitmaskEnum.h"
+#include "include/private/base/SkDebug.h"
+#include "include/private/base/SkTFitsIn.h"
+#include "include/private/base/SkTemplates.h"
+#include "modules/skunicode/src/SkUnicode_icu_bidi.h"
+
+#include <unicode/ubidi.h>
+#include <unicode/umachine.h>
+#include <unicode/utypes.h>
+#include <utility>
 
 using namespace skia_private;
 
@@ -25,13 +32,12 @@ std::unique_ptr<SkUnicode> SkUnicode::Make() {
 
 std::unique_ptr<SkUnicode> MakeClientBasedUnicode(
         SkSpan<char> text,
-        std::vector<SkUnicode::BidiRegion> bidiRegions,
         std::vector<SkUnicode::Position> words,
         std::vector<SkUnicode::Position> graphemeBreaks,
         std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
 #ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
-    std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeClientBasedUnicode(
-                                text, bidiRegions, words, graphemeBreaks, lineBreaks);
+    std::unique_ptr<SkUnicode> unicode =
+            SkUnicode::MakeClientBasedUnicode(text, words, graphemeBreaks, lineBreaks);
     if (unicode) {
         return unicode;
     }

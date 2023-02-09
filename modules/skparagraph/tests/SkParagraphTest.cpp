@@ -239,7 +239,7 @@ public:
             ++pos;
         }
 
-        fClient = SkUnicode::MakeClientBasedUnicode(text, bidiRegions, words, graphemeBreaks, lineBreaks);
+        fClient = SkUnicode::MakeClientBasedUnicode(text, words, graphemeBreaks, lineBreaks);
         SkTArray<SkUnicode::CodeUnitFlags, true> codeUnitFlags1;
         fClient->computeCodeUnitFlags(
                 text.data(), text.size(), style.getReplaceTabCharacters(), &codeUnitFlags1);
