@@ -54,6 +54,8 @@ public:
     bool isDirect(SkScalar approximateDeviceTextSize, const SkPaint& paint,
                   const SkMatrix& matrix) const;
 
+    SkScalar maxSize() const { return fMaxDistanceFieldFontSize; }
+
 private:
 #if !defined(SK_DISABLE_SDF_TEXT)
     static SkScalar MinSDFTRange(bool useSDFTForSmallText, SkScalar min);
