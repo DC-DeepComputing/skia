@@ -445,7 +445,10 @@ void TextLine::justify(SkScalar maxWidth) {
     size_t whitespacePatches = 0;
     SkScalar textLen = 0;
     bool whitespacePatch = false;
-    this->iterateThroughClustersInGlyphsOrder(false, false,
+    this->iterateThroughClustersInGlyphsOrder(
+        /*reversedRuns=*/false,
+        /*reversedClusters=*/false,
+        /*includeGhosts=*/false,
         [&whitespacePatches, &textLen, &whitespacePatch](const Cluster* cluster, bool ghost) {
             if (cluster->isWhitespaceBreak()) {
                 if (!whitespacePatch) {
@@ -470,7 +473,11 @@ void TextLine::justify(SkScalar maxWidth) {
     auto ghostShift = maxWidth - this->fAdvance.fX;
     // Spread the extra whitespaces
     whitespacePatch = false;
-    this->iterateThroughClustersInGlyphsOrder(false, true, [&](const Cluster* cluster, bool ghost) {
+    this->iterateThroughClustersInGlyphsOrder(
+            /*reversedRuns=*/false,
+            /*reversedClusters=*/false,
+            /*includeGhosts=*/true,
+            [&](const Cluster* cluster, bool ghost) {
 
         if (ghost) {
             if (cluster->run().leftToRight()) {
@@ -532,21 +539,38 @@ void TextLine::createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool)
     // In all the other cases we attach the ellipsis on the right
     RunIndex lastRun = EMPTY_RUN;
     std::unique_ptr<Run> ellipsisRun;
+    SkString lineText(this->fOwner->text(this->fText).data(), this->fOwner->text(this->fText).size());
+    SkDebugf("Line [%d:%d) [%d:%d) '%s'\n",
+             this->fText.start, this->fText.end,
+             fGhostClusterRange.start, fGhostClusterRange.end,
+             lineText.data());
+    for (auto& r : fRunsInVisualOrder) {
+        auto& run = fOwner->run(r);
+        SkString runText(fOwner->text(run.textRange()).data(), fOwner->text(run.textRange()).size());
+        SkDebugf("run[%d] [%d:%d) %d [%d:%d)'%s'\n",
+                 r, run.fTextRange.start, run.fTextRange.end,
+                 run.size(), run.fClusterRange.start, run.fClusterRange.end,
+                 runText.data());
+    }
     this->iterateThroughClustersInGlyphsOrder(
-            /*reverse=*/paraTextDirectionIsLtr,
+            /*reversedRuns=*/paraTextDirectionIsLtr,
+            /*reversedClusters=*/true,
             /*includeGhosts=*/false,
             [&](const Cluster* cluster, bool ghost) {
             // Shape the ellipsis if the run has changed
             if (lastRun != cluster->runIndex()) {
+                auto& run = cluster->run();
+                SkString runText(fOwner->text(run.textRange()).data(), fOwner->text(run.textRange()).size());
+                SkDebugf("Run [%d:%d) %s '%s'\n",
+                         run.textRange().start, run.textRange().end,
+                         run.leftToRight() ? "LTR" : "RTL",
+                         runText.data());
                 ellipsisRun = this->shapeEllipsis(ellipsis, cluster);
                 if (ellipsisRun->advance().fX > maxWidth) {
                     // Ellipsis is bigger than the entire line; no way we can add it at all
                     // BUT! We can keep scanning in case the next run will give us better results
                     lastRun = EMPTY_RUN;
                     return true;
-                } else {
-                    // We may need to continue
-                    lastRun = cluster->runIndex();
                 }
             }
 
@@ -554,13 +578,25 @@ void TextLine::createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool)
             if (width + ellipsisRun->advance().fX > maxWidth) {
                 width -= cluster->width();
                 // Continue if the ellipsis does not fit
+                SkString clusterText(fOwner->text(cluster->textRange()).data(), fOwner->text(cluster->textRange()).size());
+                SkDebugf("Cut off [%d:%d) [%d:%d) '%s'\n",
+                         cluster->textRange().start, cluster->textRange().end,
+                         cluster->startPos(), cluster->endPos(),
+                         clusterText.c_str());
+                // We need to continue
+                lastRun = cluster->runIndex();
                 return true;
             }
+            SkString clusterText(fOwner->text(cluster->textRange()).data(), fOwner->text(cluster->textRange()).size());
+            SkDebugf("Keep [%d:%d) [%d:%d) '%s'\n",
+                     cluster->textRange().start, cluster->textRange().end,
+                     cluster->startPos(), cluster->endPos(),
+                     clusterText.c_str());
             fAdvance.fX = width;
             fEllipsis = std::move(ellipsisRun);
             fEllipsis->setOwner(fOwner);
-
-            if (cluster->run().leftToRight() == paraTextDirectionIsLtr) {
+            SkDebugf("text[%d:%d), clusters[%d:%d) => ", fText.start, fText.end, fClusterRange.start, fClusterRange.end);
+            if (cluster->run().leftToRight()) {
                 fEllipsis->fClusterStart = cluster->textRange().start;
             } else {
                 fEllipsis->fClusterStart = 0;
@@ -577,6 +613,7 @@ void TextLine::createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool)
             fText.end = cluster->textRange().end;
             fTextIncludingNewlines.end = cluster->textRange().end;
             fTextExcludingSpaces.end = cluster->textRange().end;
+            SkDebugf("text[%d:%d), clusters[%d:%d)\n", fText.start, fText.end, fClusterRange.start, fClusterRange.end);
 
             return false;
         });
@@ -847,13 +884,14 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
     return result;
 }
 
-void TextLine::iterateThroughClustersInGlyphsOrder(bool reversed,
+void TextLine::iterateThroughClustersInGlyphsOrder(bool reversedRuns,
+                                                   bool reversedClusters,
                                                    bool includeGhosts,
                                                    const ClustersVisitor& visitor) const {
     // Walk through the clusters in the logical order (or reverse)
     SkSpan<const size_t> runs(fRunsInVisualOrder.data(), fRunsInVisualOrder.size());
     bool ignore = false;
-    directional_for_each(runs, !reversed, [&](decltype(runs[0]) r) {
+    directional_for_each(runs, !reversedRuns, [&](decltype(runs[0]) r) {
         if (ignore) return;
         auto run = this->fOwner->run(r);
         auto trimmedRange = fClusterRange.intersection(run.clusterRange());
@@ -862,7 +900,7 @@ void TextLine::iterateThroughClustersInGlyphsOrder(bool reversed,
 
         auto trailed = fOwner->clusters(trailedRange);
         auto trimmed = fOwner->clusters(trimmedRange);
-        directional_for_each(trailed, reversed != run.leftToRight(), [&](Cluster& cluster) {
+        directional_for_each(trailed, reversedClusters ? false : reversedRuns, [&](Cluster& cluster) {
             if (ignore) return;
             bool ghost =  &cluster >= trimmed.end();
             if (!includeGhosts && ghost) {

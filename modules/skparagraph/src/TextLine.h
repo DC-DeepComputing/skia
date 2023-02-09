@@ -97,7 +97,8 @@ public:
                                              const RunStyleVisitor& visitor) const;
 
     using ClustersVisitor = std::function<bool(const Cluster* cluster, bool ghost)>;
-    void iterateThroughClustersInGlyphsOrder(bool reverse,
+    void iterateThroughClustersInGlyphsOrder(bool reversedRuns,
+                                             bool reversedClusters,
                                              bool includeGhosts,
                                              const ClustersVisitor& visitor) const;
 

@@ -4019,16 +4019,24 @@ public:
         fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
         fontCollection->enableFontFallback();
         TextStyle text_style;
-        text_style.setFontFamilies({SkString("Noto Naskh Arabic")});
         text_style.setFontSize(100);
         text_style.setColor(SK_ColorBLACK);
         ParagraphStyle paragraph_style;
-        paragraph_style.setTextStyle(text_style);
-        paragraph_style.setTextDirection(TextDirection::kRtl);
         paragraph_style.setTextAlign(TextAlign::kStart);
         paragraph_style.setEllipsis(u"\u2026");
-        auto draw = [&](std::u16string text, size_t lines) {
+        auto draw =
+                [&](std::u16string text, size_t lines, TextDirection dir) {
+            /*
+            if (dir == TextDirection::kLtr) {
+                text_style.setFontFamilies({SkString("Roboto")});
+            } else {
+                text_style.setFontFamilies({SkString("Noto Naskh Arabic")});
+            }
+            */
+            text_style.setFontFamilies({SkString("Roboto")});
+            paragraph_style.setTextStyle(text_style);
             paragraph_style.setMaxLines(lines);
+            paragraph_style.setTextDirection(dir);
             ParagraphBuilderImpl builder(paragraph_style, fontCollection);
             builder.pushStyle(text_style);
             builder.addText(text);
@@ -4038,8 +4046,12 @@ public:
             canvas->translate(0, paragraph->getHeight() + 10);
         };
 
-        draw(u"1  2  3  4  5  6  7  8  9", 1);
-        draw(u"تظاهرات و تجمعات اعتراضی در سراسر کشور ۲۳ مهر", 2);
+        //draw(u"1  2  3  4  5  6  7  8  9", 1, TextDirection::kLtr);
+        //draw(u"1  2  3  4  5  6  7  8  9", 1, TextDirection::kRtl);
+        //draw(u"123456789ABCDEFGHIJ", 1, TextDirection::kLtr);
+        //draw(u"123456789ABCDEFGHIJ", 1, TextDirection::kRtl);
+        draw(u"تظاهرات و تجمعات اعتراضی در سراسر کشور ۲۳ مهر", 2, TextDirection::kRtl);
+        draw(u"تظاهرات و تجمعات اعتراضی در سراسر کشور ۲۳ مهر", 2, TextDirection::kLtr);
     }
 };
 }  // namespace
