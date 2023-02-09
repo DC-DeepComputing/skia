@@ -304,7 +304,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		}
 
 		// Dawn bot *only* runs the dawn config
-		if b.extraConfig("Dawn") {
+		if b.extraConfig("Dawn") && !b.extraConfig("Graphite") {
 			// tint:1045: Tint doesn't implement MatrixInverse yet.
 			skip(ALL, "gm", ALL, "runtime_intrinsics_matrix")
 			configs = []string{"dawn"}
@@ -315,7 +315,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			configs = []string{"gl"}
 		}
 
-		// Graphite bot *only* runs the grmtl config
+		// Graphite bot *only* runs the gr*** configs
 		if b.extraConfig("Graphite") {
 			args = append(args, "--nogpu") // disable non-Graphite tests
 
@@ -331,6 +331,23 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			if b.extraConfig("Metal") {
 				configs = []string{"grmtl"}
 			}
+                        if b.extraConfig("Dawn") {
+				configs = []string{"grdawn"}
+				// Shader doesn't compile
+				skip(ALL, "gm", ALL, "runtime_intrinsics_matrix")
+                                // Crashes
+                                skip(ALL, "test", ALL, "GraphitePromiseImageMultipleImgUses")
+                                skip(ALL, "test", ALL, "GraphitePromiseImageRecorderLoss")
+				skip(ALL, "test", ALL, "MutableImagesTest")
+				skip(ALL, "test", ALL, "PaintParamsKeyTest")
+				skip(ALL, "test", ALL, "VolatileGraphitePromiseImageTest")
+                                // Fails
+				skip(ALL, "test", ALL, "ImageAsyncReadPixelsGraphite")
+				skip(ALL, "test", ALL, "ImageProviderTest_Graphite_Default")
+				skip(ALL, "test", ALL, "ImageProviderTest_Graphite_Testing")
+				skip(ALL, "test", ALL, "SurfaceAsyncReadPixelsGraphite")
+				skip(ALL, "test", ALL, "UpdateImageBackendTextureTest")
+                        }
 		}
 
 		// ANGLE bot *only* runs the angle configs
