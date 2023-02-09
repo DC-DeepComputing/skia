@@ -25,13 +25,7 @@
     SKICU_FUNC(u_isspace)             \
     SKICU_FUNC(u_isWhitespace)        \
     SKICU_FUNC(u_strToUpper)          \
-    SKICU_FUNC(ubidi_close)           \
-    SKICU_FUNC(ubidi_getDirection)    \
-    SKICU_FUNC(ubidi_getLength)       \
-    SKICU_FUNC(ubidi_getLevelAt)      \
-    SKICU_FUNC(ubidi_openSized)       \
     SKICU_FUNC(ubidi_reorderVisual)   \
-    SKICU_FUNC(ubidi_setPara)         \
     SKICU_FUNC(ubrk_close)            \
     SKICU_FUNC(ubrk_current)          \
     SKICU_FUNC(ubrk_first)            \
