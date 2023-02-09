@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73038d5e_28d0295a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-09T01:56:37Z",
+      "side": 1,
+      "message": "Hi Michael,\n\nAs we discussed earlier, I removed the indirect draw logic from DrawWriter. I\u0027m thinking that any static/template buffer assignments could be performed through a dedicated RenderStep method if we want to keep this logic out of DrawWriter.\n\nI\u0027ll address that in a follow-up CL. This CL now only adds the command buffer level plumbing. PTAL.",
+      "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
