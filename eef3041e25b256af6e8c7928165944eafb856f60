@@ -34,6 +34,23 @@
       "parentUuid": "d8fcaec0_229eed8e",
       "revId": "eef3041e25b256af6e8c7928165944eafb856f60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca6f25f8_2773f041",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-09T19:24:53Z",
+      "side": 1,
+      "message": "Thanks for the quick review!\n\nThis is going in with gold differences. They indicate that SDFT does not handle\nstroke width properly sometimes.",
+      "revId": "eef3041e25b256af6e8c7928165944eafb856f60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
