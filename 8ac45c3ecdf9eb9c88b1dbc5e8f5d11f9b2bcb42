@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b579313_4a3efb9e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-09T18:59:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff8dc0e4_35765583",
+      "range": {
+        "startLine": 286,
+        "startChar": 59,
+        "endLine": 286,
+        "endChar": 60
+      },
+      "revId": "8ac45c3ecdf9eb9c88b1dbc5e8f5d11f9b2bcb42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8287f2f3_0694e48c",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-07T16:46:24Z",
       "side": 1,
       "message": "/\\*z\u003d\\*/0? Like in onCopyBufferToTexture.",
+      "range": {
+        "startLine": 287,
+        "startChar": 58,
+        "endLine": 287,
+        "endChar": 60
+      },
+      "revId": "8ac45c3ecdf9eb9c88b1dbc5e8f5d11f9b2bcb42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9fce4ac_fab9b2b7",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-09T18:59:45Z",
+      "side": 1,
+      "message": "Done. I kept both `imageOffset` and `imageExtent` assignments on one line here (unlike in `onCopyBufferToTexture`) since they both fit on one line, but let me know if you prefer having them be the same layout between methods even if it isn\u0027t necessitated by length in this one.",
+      "parentUuid": "8287f2f3_0694e48c",
       "range": {
         "startLine": 287,
         "startChar": 58,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7976602e_a9b3a72b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-09T18:59:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1aa65b1_05114e9e",
+      "range": {
+        "startLine": 288,
+        "startChar": 82,
+        "endLine": 288,
+        "endChar": 84
+      },
+      "revId": "8ac45c3ecdf9eb9c88b1dbc5e8f5d11f9b2bcb42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f170f631_28536567",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-02-07T16:46:24Z",
       "side": 1,
       "message": "So I apologize -- I missed this in the previous CL. I\u0027d change this to allocate an array of VkBufferImageCopy of size count, fill it in with the loop, and then make one call to CmdCopyBufferToImage (like what\u0027s done in GrVkGpu::uploadTexDataOptimal). But update that in a separate CL to keep this one clean.\n\nIn addition, we need to transition the VkImage\u0027s layout in this case to VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, and in the texture-\u003ebuffer case to VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL. I think it\u0027s on my plate to add the barrier code for that so I\u0027ll take a look at it.",
+      "range": {
+        "startLine": 333,
+        "startChar": 41,
+        "endLine": 334,
+        "endChar": 48
+      },
+      "revId": "8ac45c3ecdf9eb9c88b1dbc5e8f5d11f9b2bcb42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "246b206e_5acff31d",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-09T18:59:45Z",
+      "side": 1,
+      "message": "Follow-up CL created for the looping comment (https://skia-review.googlesource.com/c/skia/+/640886/1?usp\u003drelated-change). TODO added for the latter part of your comment (for both methods), but I will also create a separate CL for changing that for texture-\u003ebuffer copies and buffer-\u003etexture copies all at once so it can more cleanly depend upon the setImageLayout work landing.",
+      "parentUuid": "f170f631_28536567",
       "range": {
         "startLine": 333,
         "startChar": 41,
