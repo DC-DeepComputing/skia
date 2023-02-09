@@ -41,10 +41,11 @@ protected:
             Ownership,
             skgpu::Budgeted);
 
+    sk_sp<MutableTextureStateRef> fMutableState;
+
 private:
     SkISize fDimensions;
     TextureInfo fInfo;
-    sk_sp<MutableTextureStateRef> fMutableState;
     sk_sp<RefCntedCallback> fReleaseCallback;
 };
 
