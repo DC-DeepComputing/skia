@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0618a923_0ebec0f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-09T18:59:02Z",
+      "side": 1,
+      "message": "This is basically a copypasta from GrVkCommandBuffer, with some changes to make it Graphite friendly. I don\u0027t see any reason why it shouldn\u0027t work though we won\u0027t know for sure until everything has landed.",
+      "revId": "c6cbd12fd297b70ee3e9095581de12e72d4e2ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
