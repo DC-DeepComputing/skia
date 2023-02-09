@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5e4745a_40dd8a34",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-09T17:10:46Z",
+      "side": 1,
+      "message": "nit: `const bool` or just have `!rect.intersect(...)` in the if statement (which is a pretty common pattern in skia\u0027s code that checks for and calculates intersections at the same time).",
+      "range": {
+        "startLine": 475,
+        "startChar": 4,
+        "endLine": 475,
+        "endChar": 8
+      },
+      "revId": "40b7cd6e964142ff7fb698c61e4bb029917f2824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b966395_522d1d7f",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-09T17:10:46Z",
+      "side": 1,
+      "message": "I think we need to set fDrawIsOffscreen to false if the scissor *does* intersect the render pass.",
+      "range": {
+        "startLine": 476,
+        "startChar": 4,
+        "endLine": 479,
+        "endChar": 5
+      },
+      "revId": "40b7cd6e964142ff7fb698c61e4bb029917f2824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20893ad9_b42eef61",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-09T17:10:46Z",
+      "side": 1,
+      "message": "any reason we can\u0027t just create `scissorRect` directly from `rect` at this point?",
+      "range": {
+        "startLine": 481,
+        "startChar": 4,
+        "endLine": 484,
+        "endChar": 27
+      },
+      "revId": "40b7cd6e964142ff7fb698c61e4bb029917f2824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "064d2dca_7008de43",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-09T17:10:46Z",
+      "side": 1,
+      "message": "altneratives to consider:\n\n    SkRect rect \u003d SkRect::MakeXYWH(x, y, width, height);\n    rect.offset(fReplayTranslation.x(), fReplayTranslation.y());\n    \nor\n\n    SkRect rect \u003d SkRect::MakeXYWH(x, y, width, height).makeOffset(fReplayTranslation.x(), fReplayTranslation.y());\n    \notherwise I think formatting it this way is more readable IMO:\n\n    SkRect rect \u003d SkRect::MakeXYWH(x + fReplayTranslation.x(),\n                                   y + fReplayTranslation.y(),\n                                   width,\n                                   height);",
+      "range": {
+        "startLine": 492,
+        "startChar": 4,
+        "endLine": 493,
+        "endChar": 100
+      },
+      "revId": "40b7cd6e964142ff7fb698c61e4bb029917f2824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc7c8bd1_f4c550ae",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-09T17:10:46Z",
+      "side": 1,
+      "message": "Since scissors are going to be restricted to the viewport anyways, it should be sufficient to have `fDrawIsOffscreen` only updated in setScissor.",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 494,
+        "endChar": 100
+      },
+      "revId": "40b7cd6e964142ff7fb698c61e4bb029917f2824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

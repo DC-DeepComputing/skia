@@ -118,6 +118,30 @@
       },
       "revId": "4dc9e2d0f82ebefc430404a9c065989b4ef7d737",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7eae00c5_b4825954",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-09T17:10:46Z",
+      "side": 1,
+      "message": "Yikes! That is definitely a bug. It looks like I accidentally removed the assignment to fBounds in DrawPass::Make in this CL: https://skia-review.googlesource.com/c/skia/+/576577.\n\nI can fix that, but for our purposes on replay, just using the render target size is sufficient. The DrawPass bounds are strictly tighter than that so maybe would let us skip more operations but it\u0027s not critical.",
+      "parentUuid": "88fc325b_6e7e16cc",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 472,
+        "endChar": 38
+      },
+      "revId": "4dc9e2d0f82ebefc430404a9c065989b4ef7d737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
