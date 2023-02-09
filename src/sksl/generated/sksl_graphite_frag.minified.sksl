@@ -115,7 +115,7 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 "(c.w,.125))).x;}$pure half4 sk_gaussian_colorfilter(half4 a){half b=1.-a.w;"
 "b=exp((-b*b)*4.)-.018;return half4(b);}$pure float2 coverage_scale_and_bias"
 "(float a){float b=min(1.,a);return float2(b,1.-.5*b);}$pure float inverse_grad_len"
-"(float2 a,float2x2 b){float2 c=a*b;return inversesqrt(dot(c,c));}$pure float2"
+"(float2 a,float2x2 b){float2 c=a*b;return 1./(abs(c.x)+abs(c.y));}$pure float2"
 " elliptical_distance(float2 a,float2 b,float c,float2x2 d){float2 e=1./(b*b"
 "+c*c);float2 g=e*a;float h=inverse_grad_len(g,d);float i=(.5*h)*(dot(a,g)-1."
 ");float j=((b.x*c)*e.x)*h;return float2(j-i,j+i);}void corner_distance(inout"

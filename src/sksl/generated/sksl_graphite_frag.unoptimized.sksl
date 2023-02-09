@@ -201,7 +201,7 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 " half4(factor);}$pure float2 coverage_scale_and_bias(float minDim){float width"
 "=min(1.,minDim);return float2(width,1.-.5*width);}$pure float inverse_grad_len"
 "(float2 localGrad,float2x2 jacobian){float2 devGrad=localGrad*jacobian;return"
-" inversesqrt(dot(devGrad,devGrad));}$pure float2 elliptical_distance(float2"
+" 1./(abs(devGrad.x)+abs(devGrad.y));}$pure float2 elliptical_distance(float2"
 " uv,float2 radii,float strokeRadius,float2x2 jacobian){float2 invR2=1./(radii"
 "*radii+strokeRadius*strokeRadius);float2 normUV=invR2*uv;float invGradLength"
 "=inverse_grad_len(normUV,jacobian);float f=(.5*invGradLength)*(dot(uv,normUV"
