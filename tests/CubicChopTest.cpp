@@ -203,47 +203,137 @@ DEF_TEST(ChopCubicAtT_ArbitraryCubic, reporter) {
     );
 }
 
-static void testConvertToPolynomial(skiatest::Reporter* reporter, std::string name,
-                                    SkSpan<const DoublePoint> curveInputs, bool yValues,
-                                    double expectedA, double expectedB,
-                                    double expectedC, double expectedD) {
+
+static void testBezierCurveHorizontalIntersectBinarySearch(skiatest::Reporter* reporter,
+                std::string name, SkSpan<const DoublePoint> curveInputs, double xToIntersect,
+                SkSpan<const double> expectedTValues,
+                bool skipPathops = false) {
     skiatest::ReporterContext subtest(reporter, name);
+    // Validate test case
     REPORTER_ASSERT(reporter, curveInputs.size() == 4,
-                    "Invalid test case. Need 4 points (start, control, control, end)");
+                    "Invalid test case. Input curve should have 4 points");
+    REPORTER_ASSERT(reporter, expectedTValues.size() <= 3,
+                    "Invalid test case, up to 3 intersections possible");
 
-    {
-        skiatest::ReporterContext subsubtest(reporter, "Pathops Implementation");
-        const double* input = &curveInputs[0].x;
-        if (yValues) {
-            input = &curveInputs[0].y;
+    for (size_t i = 0; i < expectedTValues.size(); i++) {
+        double t = expectedTValues[i];
+        REPORTER_ASSERT(reporter, t >= 0.0 && t <= 1.0,
+                    "Invalid test case t %zu. Should be between 0 and 1 inclusive.", i);
+
+        auto [x, y] = SkBezierCubic::EvalAt(reinterpret_cast<const double*>(curveInputs.data()), t);
+        REPORTER_ASSERT(reporter, approximately_equal(xToIntersect, x),
+                    "Invalid test case %zu, %1.16f != %1.16f", i, xToIntersect, x);
+
+        if (i > 0) {
+            REPORTER_ASSERT(reporter, expectedTValues[i-1] <= expectedTValues[i],
+                    "Invalid test case t %zu. Sort intersections in ascending order", i);
         }
-        double A, B, C, D;
-        SkDCubic::Coefficients(input, &A, &B, &C, &D);
-
-        REPORTER_ASSERT(reporter, nearly_equal(expectedA, A), "%f != %f", expectedA, A);
-        REPORTER_ASSERT(reporter, nearly_equal(expectedB, B), "%f != %f", expectedB, B);
-        REPORTER_ASSERT(reporter, nearly_equal(expectedC, C), "%f != %f", expectedC, C);
-        REPORTER_ASSERT(reporter, nearly_equal(expectedD, D), "%f != %f", expectedD, D);
     }
-    {
-        skiatest::ReporterContext subsubtest(reporter, "SkBezierCurve Implementation");
-        const double* input = &curveInputs[0].x;
-        auto [A, B, C, D] = SkBezierCubic::ConvertToPolynomial(input, yValues);
 
-        REPORTER_ASSERT(reporter, nearly_equal(expectedA, A), "%f != %f", expectedA, A);
-        REPORTER_ASSERT(reporter, nearly_equal(expectedB, B), "%f != %f", expectedB, B);
-        REPORTER_ASSERT(reporter, nearly_equal(expectedC, C), "%f != %f", expectedC, C);
-        REPORTER_ASSERT(reporter, nearly_equal(expectedD, D), "%f != %f", expectedD, D);
+    if (!skipPathops) {
+        skiatest::ReporterContext subsubtest(reporter, "Pathops Implementation");
+        // This implementation expects the coefficients to be (X, Y), (X, Y), (X, Y), (X, Y)
+        // but it ignores the values at odd indices.
+        SkDCubic inputCubic;
+        for (int i = 0; i < 4; i++) {
+            inputCubic.fPts[i].fX = curveInputs[i].x;
+            inputCubic.fPts[i].fY = curveInputs[i].y;
+        }
+        double actualTValues[3] = {0, 0, 0};
+        double extremeTs[6] = {0, 0, 0, 0, 0};
+        int extrema = SkDCubic::FindExtrema(&inputCubic[0].fX, extremeTs);
+        int rootCount = inputCubic.searchRoots(extremeTs, extrema, xToIntersect, SkDCubic::kXAxis,
+                                               actualTValues);
+        REPORTER_ASSERT(reporter, expectedTValues.size() == size_t(rootCount),
+                        "Wrong number of roots returned %zu != %d", expectedTValues.size(),
+                        rootCount);
+
+        // We don't care which order the t values which are returned from the algorithm.
+        // For determinism, we will sort them (and ensure the provided solutions are also sorted).
+        std::sort(std::begin(actualTValues), std::begin(actualTValues) + rootCount);
+        for (int i = 0; i < rootCount; i++) {
+            if (sk_double_nearly_zero(expectedTValues[i])) {
+                REPORTER_ASSERT(reporter, sk_double_nearly_zero(actualTValues[i]),
+                                "0 != %.16f at index %d", actualTValues[i], i);
+            } else {
+                REPORTER_ASSERT(reporter,
+                        sk_doubles_nearly_equal_ulps(expectedTValues[i], actualTValues[i], 64),
+                        "%.16f != %.16f at index %d", expectedTValues[i], actualTValues[i], i);
+            }
+        }
     }
 }
 
-DEF_TEST(BezierCurvesToPolynomials, reporter) {
-    testConvertToPolynomial(reporter, "Arbitrary control points X direction",
-        {{1, 2}, {-3, 4}, {5, -6}, {7, 8}}, false, /*=yValues*/
-        -18, 36, -12, 1
-    );
-    testConvertToPolynomial(reporter, "Arbitrary control points Y direction",
-        {{1, 2}, {-3, 4}, {5, -6}, {7, 8}}, true, /*=yValues*/
-        36, -36, 6, 2
-    );
+DEF_TEST(BezierCurveHorizontalIntersectBinarySearch, reporter) {
+    // All answers are given with 16 significant digits (max for a double) or as an integer
+    // when the answer is exact.
+    // The Y values in these curves do not impact the test case, but make it easier to visualize
+    // when plotting the curves to verify the solutions.
+    testBezierCurveHorizontalIntersectBinarySearch(reporter,
+           "straight curve crosses once @ 2.0",
+           {{ 0, 0 }, { 0, 0 }, { 10, 10 }, { 10, 10 }},
+           2.0,
+           {0.2871407270431519});
+
+    testBezierCurveHorizontalIntersectBinarySearch(reporter,
+           "straight curve crosses once @ 6.0",
+           {{ 0, 0 }, { 3, 3 }, { 6, 6 }, { 10, 10 }},
+           6.0,
+           {0.6378342509269714});
+
+
+    testBezierCurveHorizontalIntersectBinarySearch(reporter,
+           "out and back curve exactly touches @ 3.0",
+           {{ 0, 0 }, { 4, 4 }, { 4, 4 }, { 0, 8 }},
+           3.0,
+           // The binary search algorithm (currently) gets close to, but not quite 0.5
+           {0.4999389648437500,
+            0.5000610351562500});
+
+    testBezierCurveHorizontalIntersectBinarySearch(reporter,
+           "out and back curve crosses twice @ 2.0",
+           {{ 0, 0 }, { 4, 4 }, { 4, 4 }, { 0, 8 }},
+           2.0,
+           {0.2113248705863953,
+            0.7886751294136047});
+
+    testBezierCurveHorizontalIntersectBinarySearch(reporter,
+           "out and back curve never crosses 4.0",
+           {{ 0, 0 }, { 4, 4 }, { 4, 4 }, { 0, 8 }},
+           4.0,
+           {});
+
+
+    testBezierCurveHorizontalIntersectBinarySearch(reporter,
+            "left right left curve crosses three times @ 2.0",
+           {{ 4, 0 }, { -3, 4 }, { 7, 4 }, { 0, 8 }},
+           2.0,
+           {  0.1361965624455005,
+           // 0.1361965624455005397216403 according to Wolfram Alpha
+              0.5,
+              0.8638034375544995
+           // 0.8638034375544994602783597 according to Wolfram Alpha
+            },
+            // PathOps version fails to find these roots (has not been investigated yet)
+            true /* = skipPathops */);
+
+    testBezierCurveHorizontalIntersectBinarySearch(reporter,
+            "left right left curve crosses one time @ 1.0",
+           {{ 4, 0 }, { -3, 4 }, { 7, 4 }, { 0, 8 }},
+           1.0,
+           {  0.9454060400510326,
+           // 0.9454060415952252910201453 according to Wolfram Alpha
+            });
+
+    testBezierCurveHorizontalIntersectBinarySearch(reporter,
+            "left right left curve crosses three times @ 2.5",
+           {{ 4, 0 }, { -3, 4 }, { 7, 4 }, { 0, 8 }},
+           2.5,
+           {  0.0898667385750473,
+           // 0.08986673805184604633583244 according to Wolfram Alpha
+              0.6263520961813417,
+           // 0.6263521357441907129444252 according to Wolfram Alpha
+              0.7837811281217468,
+           // 0.7837811262039632407197424 according to Wolfram Alpha
+            });
 }

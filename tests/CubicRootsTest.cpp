@@ -8,12 +8,14 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkFloatingPoint.h"
+#include "src/base/SkBezierCurves.h"
 #include "src/base/SkCubics.h"
 #include "src/base/SkUtils.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "tests/Test.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstddef>
 #include <iterator>
@@ -218,6 +220,12 @@ DEF_TEST(CubicRootsReal_Quadratics, reporter) {
     testCubicRootsReal(reporter, "no roots x^2 + 2x + 7",
                        0, 1, 2, 7,
                        {});
+
+    // similar to oss-fuzz:
+    testCubicRootsReal(reporter, "two roots one small one big (and ignored)",
+                       0, -0.01, 200000000000000, -120000000000000,
+                       { 0.6 },
+                        true /* == skipPathops */);
 }
 
 DEF_TEST(CubicRootsReal_Linear, reporter) {
@@ -403,4 +411,125 @@ DEF_TEST(CubicRootsValidT_ClampToZeroAndOne, reporter) {
         std::sort(std::begin(roots), std::begin(roots) + rootCount);
         REPORTER_ASSERT(reporter, sk_double_nearly_zero(roots[0]), "%.16f != 0", roots[0]);
     }
+}
+
+static void testCubicExtrema(skiatest::Reporter* reporter, std::string name,
+                             double A, double B, double C, double D,
+                             SkSpan<const double> expectedExtrema) {
+    skiatest::ReporterContext subtest(reporter, name);
+    // Validate test case
+    REPORTER_ASSERT(reporter, expectedExtrema.size() <= 2,
+                    "Invalid test case, up to 2 extrema allowed");
+    {
+        const double inputs[8] = {A, 0, B, 0, C, 0, D, 0};
+        std::array<double, 4> bezier = SkBezierCubic::ConvertToPolynomial(inputs, false);
+        // The X extrema of the Bezier curve represented by the 4 provided X coordinates
+        // (Start, Control Point 1, Control Point 2, Stop) are where the derivative of that
+        // polynomial is zero. We can verify this for the expected Extrema.
+        // lowercase letters to emphasize we are referring to Bezier curve (using t),
+        // not X,Y values.
+        auto [a, b, c, d] = bezier;
+        a *= 3; // derivative (at^3 -> 3at^2)
+        b *= 2; // derivative (bt^2 -> 2bt)
+        c *= 1; // derivative (ct^1 -> c)
+        d = 0;  // derivative (d    -> 0)
+        for (size_t i = 0; i < expectedExtrema.size(); i++) {
+            double t = expectedExtrema[i];
+            REPORTER_ASSERT(reporter, t >= 0 && t <= 1,
+                            "Invalid test case root %zu. Roots must be in [0, 1]", i);
+            double shouldBeZero = a * t * t + b * t + c;
+            REPORTER_ASSERT(reporter, sk_double_nearly_zero(shouldBeZero),
+                    "Invalid test case root %zu. %1.16f != 0", i, shouldBeZero);
+        }
+    }
+
+    {
+        skiatest::ReporterContext subsubtest(reporter, "Pathops Implementation");
+        double extrema[2] = {0, 0};
+        // This implementation expects the coefficients to be (X, Y), (X, Y), (X, Y), (X, Y)
+        // but it ignores the values at odd indices.
+        const double inputs[8] = {A, 0, B, 0, C, 0, D, 0};
+        int extremaCount = SkDCubic::FindExtrema(&inputs[0], extrema);
+        REPORTER_ASSERT(reporter, expectedExtrema.size() == size_t(extremaCount),
+                        "Wrong number of extrema returned %zu != %d",
+                        expectedExtrema.size(), extremaCount);
+
+        // We don't care which order the roots are returned from the algorithm.
+        // For determinism, we will sort them (and ensure the provided solutions are also sorted).
+        std::sort(std::begin(extrema), std::begin(extrema) + extremaCount);
+        for (int i = 0; i < extremaCount; i++) {
+            if (sk_double_nearly_zero(expectedExtrema[i])) {
+                REPORTER_ASSERT(reporter, sk_double_nearly_zero(extrema[i]),
+                                "0 != %1.16e at index %d", extrema[i], i);
+            } else {
+                REPORTER_ASSERT(reporter,
+                                sk_doubles_nearly_equal_ulps(expectedExtrema[i], extrema[i], 64),
+                                "%1.16f != %1.16f at index %d", expectedExtrema[i], extrema[i], i);
+            }
+        }
+    }
+}
+
+DEF_TEST(CubicExtrema_FindsExtremaInRangeZeroToOneInclusive, reporter) {
+    // All answers are given with 16 significant digits (max for a double) or as an integer
+    // when the answer is exact.
+    // Note that the Y coordinates do not impact the X extrema, so they are omitted from
+    // the test case (and labeled as N in the subtest names)
+
+    // https://www.desmos.com/calculator/t7r4mnl294
+    testCubicExtrema(reporter, "(24, N) (-46, N) (-29, N) (-6, N) has 2 local extrema",
+                    24, -46, 29, -6,
+                    {0.3476582809885365,
+                     0.7895966209722478});
+
+    testCubicExtrema(reporter, "(10, N) (3, N) (7, N) (10, N) has 2 extrema, only 1 in range",
+                10, 3, 7, 10,
+                {  0.4097697891418150
+                // 0.4097697891418150259166930 according to WolframAlpha
+                // 1.423563544191518307416640 is the other root, but omitted because it is not
+                //                            between 0 and 1 inclusive.
+                });
+
+    testCubicExtrema(reporter, "(10, N) (9.99, N) (20.01, N) (10, N) with extrema near endpoints",
+                10, 9.99, 20.01, 20,
+                { 0.0004987532413361362,
+                //0.0004987532413361221515157644 according to Wolfram Alpha (2.8e-12% error)
+                  0.9995012467586639,
+                //0.9995012467586638778484842 according to Wolfram Alpha
+                 });
+
+    testCubicExtrema(reporter, "(10, N) (10, N) (20, N) (20, N) has extrema at endpoints",
+                    10, 10, 20, 20,
+                    {0.0,
+                     1.0});
+
+    // The polynomial for these points is just c(t) = 15t + 10, which has no local extrema.
+    testCubicExtrema(reporter, "(10, N) (15, N) (20, N) (25, N) has no extrema at all",
+                    10, 15, 20, 25,
+                    {});
+
+    // The polynomial for these points is monotonically increasing, so no local extrema.
+    testCubicExtrema(reporter, "(10, N) (14, N) (14, N) (20, N) has no extrema at all",
+                    10, 14, 14, 20,
+                    {});
+
+    // The polynomial for these points has a stationary point at t = 0.5, but still no extrema.
+    testCubicExtrema(reporter, "(10, N) (14, N) (14, N) (20, N) has no extrema at all",
+                    10, 18, 12, 20,
+                    {});
+
+    testCubicExtrema(reporter, "(10, N) (16, N) (16, N) (10, N) has a single local maximum",
+                10, 16, 16, 10,
+                {0.5});
+
+    testCubicExtrema(reporter, "(10, N) (8, N) (8, N) (10, N) has a single local minima",
+                10, 8, 8, 10,
+                {0.5});
+
+    // The polynomial for these points is c(t) = 10. Taking the derivative of that results in
+    // c'(t) = 0, which has infinite solutions. Our linear solver handles this case by saying
+    // it just has a single solution at t = 0.
+    testCubicExtrema(reporter, "(10, N) (10, N) (10, N) (10, N) is defined to have an extrema at 0",
+                10, 10, 10, 10,
+                {0.0});
 }
