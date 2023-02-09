@@ -732,11 +732,9 @@ $pure float2 coverage_scale_and_bias(float minDim) {
 $pure float inverse_grad_len(float2 localGrad, float2x2 jacobian) {
     // NOTE: By chain rule, the local gradient is on the left side of the Jacobian matrix
     float2 devGrad = localGrad * jacobian;
-    // NOTE: This uses the L2 norm, which is more accurate than the L1 norm used by fwidth().
-    // TODO: Switch to L1 since it is a 2x perf improvement according to Xcode with little visual
-    // impact, but start with L2 to measure the change separately from the algorithmic update.
-    // return 1.0 / (abs(devGrad.x) + abs(devGrad.y));
-    return inversesqrt(dot(devGrad, devGrad));
+    // NOTE: This uses the L1 norm, which matches what is calculated by fwidth(), and is faster than
+    // the L2 norm (although arguably less accurate).
+    return 1.0 / (abs(devGrad.x) + abs(devGrad.y));
 }
 
 // Returns distance from both sides of a stroked circle or ellipse. Elliptical coverage is
