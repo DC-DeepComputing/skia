@@ -12,6 +12,8 @@
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/Texture.h"
 
+#include "src/gpu/MutableTextureStateRef.h" // TODO: Move, remove, or access through Texture?
+
 #include <utility>
 
 namespace skgpu { class MutableTextureStateRef; }
@@ -19,6 +21,7 @@ namespace skgpu { class MutableTextureStateRef; }
 namespace skgpu::graphite {
 
 class VulkanSharedContext;
+class VulkanCommandBuffer;
 
 class VulkanTexture : public Texture {
 public:
@@ -48,6 +51,30 @@ public:
     ~VulkanTexture() override {}
 
     VkImage vkImage() const { return fImage; }
+
+   void setImageLayout(const VulkanCommandBuffer* buffer,
+                       VkImageLayout newLayout,
+                       VkAccessFlags dstAccessMask,
+                       VkPipelineStageFlags dstStageMask,
+                       bool byRegion) {
+        this->setImageLayoutAndQueueIndex(buffer, newLayout, dstAccessMask, dstStageMask, byRegion,
+                                          VK_QUEUE_FAMILY_IGNORED);
+    }
+
+    void setImageLayoutAndQueueIndex(const VulkanCommandBuffer*,
+                                     VkImageLayout newLayout,
+                                     VkAccessFlags dstAccessMask,
+                                     VkPipelineStageFlags dstStageMask,
+                                     bool byRegion,
+                                     uint32_t newQueueFamilyIndex);
+
+    VkImageLayout currentLayout() const { return fMutableState->getImageLayout(); }
+
+    uint32_t currentQueueFamilyIndex() const { return fMutableState->getQueueFamilyIndex(); }
+
+    // Helpers to use for setting the layout of the VkImage
+    static VkPipelineStageFlags LayoutToPipelineSrcStageFlags(const VkImageLayout layout);
+    static VkAccessFlags LayoutToSrcAccessMask(const VkImageLayout layout);
 
 private:
     VulkanTexture(const VulkanSharedContext* sharedContext,

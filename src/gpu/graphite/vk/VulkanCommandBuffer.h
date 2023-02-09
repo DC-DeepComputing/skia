@@ -35,7 +35,7 @@ public:
                                VkPipelineStageFlags srcStageMask,
                                VkPipelineStageFlags dstStageMask,
                                bool byRegion,
-                               VkImageMemoryBarrier* barrier) { /* TODO */ }
+                               VkImageMemoryBarrier* barrier) const { /* TODO */ }
 
 private:
     VulkanCommandBuffer(VkCommandPool pool,
