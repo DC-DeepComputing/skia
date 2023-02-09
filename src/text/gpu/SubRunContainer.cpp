@@ -2549,7 +2549,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
         // Atlas mask cases - SDFT and direct mask
         // Only consider using direct or SDFT drawing if not drawing hairlines and not too big.
         if ((runPaint.getStyle() != SkPaint::kStroke_Style || runPaint.getStrokeWidth() != 0) &&
-                approximateDeviceTextSize < 512) {
+                approximateDeviceTextSize < 512 && !glyphRunList.isDisplay()) {
 
 #if !defined(SK_DISABLE_SDF_TEXT)
             // SDFT case
@@ -2589,6 +2589,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                     rejected->flipRejectsToSource();
 
                     if (creationBehavior == kAddSubRuns && !accepted->empty()) {
+                        SkDebugf("SDFT\n");
                         container->fSubRuns.append(SDFTSubRun::Make(
                                 accepted->accepted(),
                                 runFont,
@@ -2628,6 +2629,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                 rejected->flipRejectsToSource();
 
                 if (creationBehavior == kAddSubRuns && !accepted->empty()) {
+                    SkDebugf("Direct\n");
                     auto addGlyphsWithSameFormat =
                             [&](const SkZip<SkGlyphVariant, SkPoint>& acceptedGlyphsAndLocations,
                                 MaskFormat format) {
@@ -2666,6 +2668,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                 rejected->flipRejectsToSource();
 
                 if (creationBehavior == kAddSubRuns && !accepted->empty()) {
+                    SkDebugf("Drawable\n");
                     container->fSubRuns.append(make_drawable_sub_run<DrawableSubRun>(
                             convertToGlyphIDs(accepted->accepted()),
                             strikeToSourceScale,
@@ -2697,6 +2700,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
                 rejected->flipRejectsToSource();
 
                 if (creationBehavior == kAddSubRuns && !accepted->empty()) {
+                    SkDebugf("Path\n");
                     container->fSubRuns.append(
                             PathSubRun::Make(convertToGlyphIDs(accepted->accepted()),
                                              has_some_antialiasing(runFont),
@@ -2795,6 +2799,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
             SkASSERT(rejected->source().empty());
 
             if (creationBehavior == kAddSubRuns && !accepted->empty()) {
+                SkDebugf("DOLR\n");
                 auto addGlyphsWithSameFormat =
                         [&](const SkZip<SkGlyphVariant, SkPoint>& acceptedGlyphsAndLocations,
                             MaskFormat format) {

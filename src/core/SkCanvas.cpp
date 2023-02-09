@@ -2497,7 +2497,7 @@ void SkCanvas::drawGlyphs(int count, const SkGlyphID* glyphs, const SkPoint* pos
     };
 
     sktext::GlyphRunList glyphRunList = fScratchGlyphRunBuilder->makeGlyphRunList(
-            glyphRun, paint, origin);
+            glyphRun, paint, origin, /*isDisplay=*/true);
     this->onDrawGlyphRunList(glyphRunList, paint);
 }
 
@@ -2515,7 +2515,7 @@ void SkCanvas::drawGlyphs(int count, const SkGlyphID glyphs[], const SkPoint pos
     };
 
     sktext::GlyphRunList glyphRunList = fScratchGlyphRunBuilder->makeGlyphRunList(
-            glyphRun, paint, origin);
+            glyphRun, paint, origin, /*isDisplay=*/true);
     this->onDrawGlyphRunList(glyphRunList, paint);
 }
 

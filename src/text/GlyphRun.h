@@ -99,7 +99,8 @@ public:
     GlyphRunList(const GlyphRun& glyphRun,
                  const SkRect& bounds,
                  SkPoint origin,
-                 GlyphRunBuilder* builder);
+                 GlyphRunBuilder* builder,
+                 bool isDisplay = false);
     uint64_t uniqueID() const;
     bool anyRunsLCD() const;
     void temporaryShuntBlobNotifyAddedToCache(uint32_t cacheID) const;
@@ -128,6 +129,7 @@ public:
     SkRect sourceBoundsWithOrigin() const { return fSourceBounds.makeOffset(fOrigin); }
     const SkTextBlob* blob() const { return fOriginalTextBlob; }
     GlyphRunBuilder* builder() const { return fBuilder; }
+    bool isDisplay() const { return fIsDisplay; }
     SkSubRunBuffers* buffers() const;
 
     auto begin() -> decltype(fGlyphRuns.begin())               { return fGlyphRuns.begin();      }
@@ -145,11 +147,13 @@ private:
     const SkRect fSourceBounds{SkRect::MakeEmpty()};
     const SkPoint fOrigin = {0, 0};
     GlyphRunBuilder* const fBuilder;
+    const bool fIsDisplay{false};
 };
 
 class GlyphRunBuilder {
 public:
-    GlyphRunList makeGlyphRunList(const GlyphRun& run, const SkPaint& paint, SkPoint origin);
+    GlyphRunList makeGlyphRunList(
+            const GlyphRun& run, const SkPaint& paint, SkPoint origin, bool isDisplay = false);
     const GlyphRunList& textToGlyphRunList(const SkFont& font,
                                            const SkPaint& paint,
                                            const void* bytes,

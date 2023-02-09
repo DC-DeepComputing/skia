@@ -54,12 +54,14 @@ GlyphRunList::GlyphRunList(const SkTextBlob* blob,
 GlyphRunList::GlyphRunList(const GlyphRun& glyphRun,
                            const SkRect& bounds,
                            SkPoint origin,
-                           GlyphRunBuilder* builder)
+                           GlyphRunBuilder* builder,
+                           bool isDisplay)
         : fGlyphRuns{SkSpan<const GlyphRun>{&glyphRun, 1}}
         , fOriginalTextBlob{nullptr}
         , fSourceBounds{bounds}
         , fOrigin{origin}
-        , fBuilder{builder} {}
+        , fBuilder{builder}
+        , fIsDisplay{isDisplay} {}
 
 uint64_t GlyphRunList::uniqueID() const {
     return fOriginalTextBlob != nullptr ? fOriginalTextBlob->uniqueID()
@@ -182,10 +184,10 @@ static SkRect glyphrun_source_bounds(
 }
 
 GlyphRunList GlyphRunBuilder::makeGlyphRunList(
-        const GlyphRun& run, const SkPaint& paint, SkPoint origin) {
+        const GlyphRun& run, const SkPaint& paint, SkPoint origin, bool isDisplay) {
     const SkRect bounds =
             glyphrun_source_bounds(run.font(), paint, run.source(), run.scaledRotations());
-    return GlyphRunList{run, bounds, origin, this};
+    return GlyphRunList{run, bounds, origin, this, isDisplay};
 }
 
 static SkSpan<const SkPoint> draw_text_positions(
