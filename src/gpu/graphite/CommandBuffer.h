@@ -100,6 +100,10 @@ public:
 protected:
     CommandBuffer();
 
+#ifdef SK_DEBUG
+    bool fHasWork = false;
+#endif
+
 private:
     // Release all tracked Resources
     void releaseResources();
@@ -140,10 +144,6 @@ private:
 
 #ifdef SK_ENABLE_PIET_GPU
     virtual void onRenderPietScene(const skgpu::piet::Scene& scene, const Texture* target) = 0;
-#endif
-
-#ifdef SK_DEBUG
-    bool fHasWork = false;
 #endif
 
     inline static constexpr int kInitialTrackedResourcesCount = 32;
