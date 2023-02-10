@@ -230,6 +230,11 @@ public:
                     fUseStorageBuffers ? bufferMgr->getSsboWriter(udbSize * cache.size())
                                        : bufferMgr->getUniformWriter(udbSize * cache.size());
 
+            if (!fUseStorageBuffers) {
+                // For certain backends such as Dawn we need to tell exactly how many bytes
+                // we want to use in the buffer.
+                bufferInfo.fBytes = udbSize;
+            }
             for (CpuOrGpuData& dataBlock : cache.data()) {
                 SkASSERT(dataBlock.fCpuData->size() == udbDataSize);
                 writer.write(dataBlock.fCpuData->data(), udbDataSize);
