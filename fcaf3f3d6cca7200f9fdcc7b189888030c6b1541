@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "767d9c83_e0725c8a",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2257,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-10T19:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "238346fc_3ad7f2ee",
+      "range": {
+        "startLine": 2255,
+        "startChar": 16,
+        "endLine": 2257,
+        "endChar": 50
+      },
+      "revId": "fcaf3f3d6cca7200f9fdcc7b189888030c6b1541",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e6aab7d_5cde27c4",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-02-10T19:00:27Z",
       "side": 1,
       "message": "I suggest adding a comment here explaining that for a arg2 of type float we\u0027re doing a blend but when arg2 is a boolean scalar or composite we\u0027re performing a select (since both branches push a \"ternary mix op\" it\u0027s not immediately obvious that the op semantics are slightly different.",
+      "range": {
+        "startLine": 2261,
+        "startChar": 16,
+        "endLine": 2261,
+        "endChar": 84
+      },
+      "revId": "fcaf3f3d6cca7200f9fdcc7b189888030c6b1541",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "992b2ba0_adaa6be0",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2261,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-10T19:40:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e6aab7d_5cde27c4",
       "range": {
         "startLine": 2261,
         "startChar": 16,
