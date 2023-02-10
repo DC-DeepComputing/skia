@@ -56,6 +56,30 @@
       },
       "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bf74f81_f06de911",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T23:04:02Z",
+      "side": 1,
+      "message": "Sounds good. Some of the existing functions (like `drawIndexed`, `drawIndexedInstanced`) have the same comment, I can fix these all up together in a follow-up CL.\n\nIt looks like these could log something like `Minimum supported version is MacOS 10.14 / iOS 11.0`. Do you think these methods should just log `SKGPU_LOG_E` or should they abort too? Or should we do away with the version checks here altogether?",
+      "parentUuid": "0344b212_2b467377",
+      "range": {
+        "startLine": 593,
+        "startChar": 56,
+        "endLine": 593,
+        "endChar": 88
+      },
+      "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
