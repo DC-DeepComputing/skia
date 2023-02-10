@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81cffb2f_02c8df3f",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 0,
+      "message": "This was just wrong; the aa refers to an edge not a vertex",
+      "range": {
+        "startLine": 50,
+        "startChar": 23,
+        "endLine": 50,
+        "endChar": 38
+      },
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4592fbd7_0c7fb214",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 0,
+      "message": "This derivation\u0027s hand-waviness around the 3rd row and column for the inverse matrix is incorrect. The output of M*(u,v,0,1) can have a non-zero z/w that we discard. Using the 4x4 inverse here should actually be using that z/w value in order to arrive at the correct (u,v,0,1).\n\nFor now, I\u0027ve just simplified the logic in the shader to use the 3x3 inverse, so have updated the derivation to reflect that (which remains valid).\n\nVisually this only really showed up in 4x4 matrices that embedded lots of Z axis transformations and resulted in the outset vertices being squished closer to the original shape, so the coverage ramp was more compressed.",
+      "range": {
+        "startLine": 89,
+        "startChar": 57,
+        "endLine": 89,
+        "endChar": 72
+      },
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c4d3d8b_964ce463",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 0,
+      "message": "This comment is pretty much all out of date because the mesh no longer orients each corner separately. Everything is calculated in the local coordinate space (up to a translation).",
+      "range": {
+        "startLine": 109,
+        "startChar": 3,
+        "endLine": 129,
+        "endChar": 2
+      },
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ffa5275_91aea99f",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 0,
+      "message": "This is still employed in the fragment shader to reduce re-calculating things, but it\u0027s not something fundamental to how the vertex shader and fragment shader communicate, so I moved the derivation to the SkSL function intead.",
+      "range": {
+        "startLine": 134,
+        "startChar": 3,
+        "endLine": 137,
+        "endChar": 64
+      },
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9de3ec62_cf6ab8cc",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 0,
+      "message": "We had previously been uploading the components from the inverse 4x4. There wasn\u0027t a significant change in performance to just calculate the inverse of `float3x3(mat0,mat1,mat2)` in the vertex shader and save on instance size, vs. calculate the 3x3 inverse and upload those correct values. For now I figured we can just keep the instance data compact.",
+      "range": {
+        "startLine": 411,
+        "startChar": 29,
+        "endLine": 412,
+        "endChar": 88
+      },
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

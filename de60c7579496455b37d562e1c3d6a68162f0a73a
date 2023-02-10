@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8210b9f2_895984cf",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 1,
+      "message": "The corner radii no longer have to be swizzled to maintain a consistent CW flow.",
+      "range": {
+        "startLine": 130,
+        "startChar": 65,
+        "endLine": 130,
+        "endChar": 67
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3a1e28e_0e45be6d",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 1,
+      "message": "Other than changing the template to have signed positions and normals, this TL section is identical to the original. However, instead of copying the template 4 times into the vertex buffer, each corner template now has its positions/normals oriented to match each corner\u0027s basis.\n\nFor the time being, the total vertex count and triangle mesh is unchanged to reduce the amount of things in motion. However, one of the benefits of leaning more on the fragment shader is that a lot of the vertices that controlled how varyings were interpolated or bounded the per-pixel coverage regions are not critical. These vertices have been marked with a `// not strictly needed` comment and a follow-up CL will remove them.",
+      "range": {
+        "startLine": 329,
+        "startChar": 8,
+        "endLine": 353,
+        "endChar": 93
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4984d616_99622d21",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 1,
+      "message": "A downside of the fragment shader approach is that the number of varyings is even higher than before (which was already not small).\n\nA significant source of this is instance-constant corner radii and the 2x2 jacobian. Now that the jacobian uses a consistent transform across the entire instance it can be re-calculated from the inverse matrix in the fragment shader if that were available in a storage buffer.\n\nWhile it is more data for now, I think it positions the renderer for better optimizations in the future. With it being functional as-is, I\u0027m not going to immediately pursue them though.\n\nI briefly hacked in flat interpolation for these attributes thinking that might save some performance but at least on the M1 it actual hurt performance and increased the instruction count and reduced residency. Eventually they could be tagged `kCanBeFlat` for platforms where that\u0027s faster, assuming they haven\u0027t all been lifted to storage buffers.",
+      "range": {
+        "startLine": 447,
+        "startChar": 29,
+        "endLine": 473,
+        "endChar": 68
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1d637f5_e347ae11",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 1,
+      "message": "When a corner had W \u003c 0, and we outset to `(devPos.xy + devPos.z*N, devPos.z)`, that specific vertex would project to `devPos.xy/devPos.z + N` like we\u0027d want. However, in practice, the rest of the triangle connecting the w\u003c0 vertex to corners with w\u003e\u003d 0 would do surprising things and not just follow a 1px outset line from the original.\n\nThis extra check improves robustness on very extreme perspective inputs but could result in squished coverage ramps. I think in those circumstances it will be hard to see anyways.",
+      "range": {
+        "startLine": 632,
+        "startChar": 33,
+        "endLine": 632,
+        "endChar": 47
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cef3a87e_836453b2",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 1,
+      "message": "The 8 linear edges possibly in play (4 outer and 4 inner) only have 4 gradient vectors, but two differ only by a factor of -1 so the gradient length is unchanged.",
+      "range": {
+        "startLine": 698,
+        "startChar": 12,
+        "endLine": 699,
+        "endChar": 78
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2f9bdc8_ccf333d8",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 1,
+      "message": "For rounded corners where the stroke width \u003c 1px, this introduces approximation error because the device-space stroke width is based only on the vertical and horizontal gradient lengths instead of recalculating the correct stroke width aligned with the pixel\u0027s position on the curve. However that would change for each of the corners and require converting each distance to coverage with its own scale+bias.\n\nIn practice I haven\u0027t been able to see a difference in the calculated coverage. We could probably calculate the scale and bias (up to a division by W) in the vertex shader, but that would require adding more varyings so for now it\u0027s semi-redundant fragment shader work.",
+      "range": {
+        "startLine": 733,
+        "startChar": 0,
+        "endLine": 733,
+        "endChar": 67
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f89189f_1cf809d0",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 1,
+      "message": "I could have kept these in sksl_graphite_vert.sksl but they seemed more generally useful primitives.",
+      "range": {
+        "startLine": 310,
+        "startChar": 0,
+        "endLine": 310,
+        "endChar": 30
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a283aafb_11b9a813",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 1,
+      "message": "While I\u0027ve tested this, I don\u0027t want to land it amidst all the rest of the changes that will trigger lots of gold diffs and perf changes.",
+      "range": {
+        "startLine": 736,
+        "startChar": 4,
+        "endLine": 738,
+        "endChar": 54
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "888ebdc7_7044b065",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T03:15:46Z",
+      "side": 1,
+      "message": "This function is pretty much exactly what the old fragment shader body was, but has been functionalized do so it can be called up to 4 times, once per corner.",
+      "range": {
+        "startLine": 744,
+        "startChar": 13,
+        "endLine": 744,
+        "endChar": 32
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
