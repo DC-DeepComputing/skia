@@ -52,6 +52,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b756e9be_c6f8e5f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T21:13:33Z",
+      "side": 1,
+      "message": "Thanks for the comments, here\u0027s some quick answers that don\u0027t require actual code changes, and I can address the rest of the feedback tonight.",
+      "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3df915b4_bce38aae",
@@ -75,6 +92,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "557b0dc5_acd415c0",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T21:13:33Z",
+      "side": 1,
+      "message": "I agree that it would be nice to make them public. The workflow for getting google docs made public is very awkward unfortunately. I also will have to update it a little bit to reflect some of the simplifications to the mesh in the upcoming CLs.",
+      "parentUuid": "3df915b4_bce38aae",
+      "range": {
+        "startLine": 67,
+        "startChar": 7,
+        "endLine": 67,
+        "endChar": 107
+      },
+      "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb31e5ca_d712a920",
@@ -88,6 +129,30 @@
       "writtenOn": "2023-02-10T21:03:25Z",
       "side": 1,
       "message": "We\u0027re not using this for ovals or circles?",
+      "range": {
+        "startLine": 248,
+        "startChar": 17,
+        "endLine": 248,
+        "endChar": 32
+      },
+      "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "821a3ea5_f1b454f8",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T21:13:33Z",
+      "side": 1,
+      "message": "We are, but ovals and circles are encoded as SkRRects in `Shape`.",
+      "parentUuid": "fb31e5ca_d712a920",
       "range": {
         "startLine": 248,
         "startChar": 17,
@@ -180,6 +245,30 @@
       "writtenOn": "2023-02-10T20:01:47Z",
       "side": 1,
       "message": "I probably missed this in the comments above but why does subtracting this swizzle give you dx?",
+      "range": {
+        "startLine": 616,
+        "startChar": 20,
+        "endLine": 616,
+        "endChar": 32
+      },
+      "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecf08281_e293de06",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T21:13:33Z",
+      "side": 1,
+      "message": "`xs` and `ys` are ordered (top-left, top-right, bot-right, bot-left) or (LRRL) and (TTBB).  The wxyz swizzle shuffles these to (LLRR) and (BTTB) so then the subtraction gives us `(L-L, R-L, R-R, L-R)` and `(T-B, T-T, B-T, B-B)`. These differences work out to the clockwise direction vectors for the left, top, right, bottom edges of the shape. It also generalizes to when the four corners are an arbitrary convex quadrilateral. A similar technique is used throughout the `GrQuadUtils` code on the CPU to handle AA rects in Ganesh.",
+      "parentUuid": "2afc79dd_7d659d3b",
       "range": {
         "startLine": 616,
         "startChar": 20,
