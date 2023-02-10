@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b21cba6_10a86767",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2023-02-10T19:04:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed104cd4_bc657ce3",
+      "revId": "c1bbcb977fcef32e07e4731fcaf4fefd01880d1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5948447_69b81942",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-02-10T18:43:08Z",
       "side": 1,
       "message": "This is a judgement call -- I can see arguments for leaving this at zero, or moving this up to the prior block, so we do (slight) dithering. Probably better to leave it like you did, though.",
+      "revId": "c1bbcb977fcef32e07e4731fcaf4fefd01880d1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebf964c4_5cd6d7e0",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2023-02-10T19:04:12Z",
+      "side": 1,
+      "message": "Acknowledged. That sounds good to me.  I suspect we might want dithering if we ever go down this code path, but it\u0027s probably better if someone with more familiarity with this codebase makes that decision.  I could turn it to a SkDEBUGFAIL too if you want.",
+      "parentUuid": "c5948447_69b81942",
       "revId": "c1bbcb977fcef32e07e4731fcaf4fefd01880d1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
