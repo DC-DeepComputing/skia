@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7294fe7_04239ba7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T01:52:28Z",
+      "side": 1,
+      "message": "This adds several stroked round rect cases that are not handled correctly by the AnalyticRRectRenderStep at ToT, but draw correctly with the subsequent fragment shader approach.",
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
