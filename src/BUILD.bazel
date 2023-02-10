@@ -134,9 +134,12 @@ generate_cpp_files_for_headers(
     # generated that is a copy of the header file just with a .cpp suffix so Bazel will try to
     # compile it. This allows us to run IWYU on these files.
     to_generate = [
+        "src/core/SkColorSpacePriv.h",
         "src/core/SkMatrixPriv.h",
         "src/core/SkPathPriv.h",
         "src/image/SkImage_Base.h",
+        "src/images/SkImageEncoderFns.h",
+        "src/images/SkImageEncoderPriv.h",
     ],
 )
 
@@ -148,6 +151,7 @@ skia_cc_library(
     srcs = [
         "//include/config:public_hdrs",
         "//src/base:srcs",
+        "//src/ports:buffet_base_srcs",
     ] + select({
         "//bazel/common_config_settings:compile_generated_cpp_files_for_headers_true": [
             "//include/private/base:generated_base_header_cpps",
@@ -170,10 +174,15 @@ skia_cc_library(
         "//include/private:buffet_srcs",
         "//src/core:buffet_hdrs",
         "//src/core:buffet_srcs",
+        "//src/ports:buffet_core_srcs",
     ],
     hdrs = ["//include/core:core_hdrs"],
     visibility = ["//:__pkg__"],
-    deps = [":base"],
+    deps = [
+        ":base",
+        "//modules/skcms",
+        "//src/opts:opts_buffet",
+    ],
 )
 
 skia_cc_library(
@@ -201,5 +210,25 @@ skia_cc_library(
         ":base",
         ":core",
         ":core_priv",
+    ],
+)
+
+skia_cc_library(
+    name = "png_encode_codec",
+    srcs = [
+        "//include/encode:private_hdrs",
+        "//src/codec:buffet_png_srcs",
+        "//src/images:buffet_png_encode_srcs",
+    ],
+    hdrs = [
+        "//include/encode:png_public_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":base",
+        ":core",
+        "//modules/skcms",
+        "@libpng",
     ],
 )

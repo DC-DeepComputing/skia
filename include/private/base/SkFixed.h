@@ -8,7 +8,7 @@
 #ifndef SkFixed_DEFINED
 #define SkFixed_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkMath.h" // IWYU pragma: keep
 #include "include/private/base/SkTPin.h" // IWYU pragma: keep
 

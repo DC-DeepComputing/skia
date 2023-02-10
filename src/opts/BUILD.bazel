@@ -119,3 +119,10 @@ skia_cc_deps(
         "//conditions:default": [],
     }),
 )
+
+skia_cc_library(
+    name = "opts_buffet",
+    srcs = ["SkOpts_buffet.cpp"],
+    textual_hdrs = OPTS_HDRS,
+    visibility = ["//src:__pkg__"],
+)

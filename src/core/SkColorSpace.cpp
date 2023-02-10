@@ -10,7 +10,7 @@
 #include "include/private/SkOpts_spi.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTemplates.h"
-#include "modules/skcms/skcms.h"
+#include "include/private/base/SkAssert.h"
 #include "src/core/SkColorSpacePriv.h"
 
 #include <cstring>

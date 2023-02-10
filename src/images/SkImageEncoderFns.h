@@ -8,12 +8,15 @@
 #ifndef SkImageEncoderFns_DEFINED
 #define SkImageEncoderFns_DEFINED
 
-#include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkData.h"
 #include "include/core/SkICC.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkColorData.h"
 #include "modules/skcms/skcms.h"
+
+#include <cstring>
 
 typedef void (*transform_scanline_proc)(char* dst, const char* src, int width, int bpp);
 
@@ -27,7 +30,6 @@ static inline void transform_scanline_A8_to_GrayAlpha(char* dst, const char* src
         *dst++ = *src++;
     }
 }
-
 
 static void skcms(char* dst, const char* src, int n,
                   skcms_PixelFormat srcFmt, skcms_AlphaFormat srcAlpha,
