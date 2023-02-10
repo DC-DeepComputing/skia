@@ -142,6 +142,7 @@ private:
     virtual void onRenderPietScene(const skgpu::piet::Scene& scene, const Texture* target) = 0;
 #endif
 
+
 #ifdef SK_DEBUG
     bool fHasWork = false;
 #endif
