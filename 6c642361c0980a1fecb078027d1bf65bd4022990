@@ -138,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0762a11_d03a4c71",
+        "filename": "src/core/SkRasterPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-10T18:43:08Z",
+      "side": 1,
+      "message": "There would need to be some additional stages added, to handle the non-standard range encoded. Simplest is probably to just use the matrix_3x4 stage:\n\n    static const float kXREncode[12] \u003d { range, 0, 0, min,\n                                         0, range, 0, min,\n                                         ... };\n    this-\u003eappend(Op::matrix_3x4, kXREncode);  // Inserted right after Op::load_1010102, and before the force_opaque and swap_rb",
+      "parentUuid": "c170b8f9_0ada7051",
+      "range": {
+        "startLine": 223,
+        "startChar": 13,
+        "endLine": 223,
+        "endChar": 37
+      },
+      "revId": "6c642361c0980a1fecb078027d1bf65bd4022990",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f820dd03_feb66f15",
         "filename": "src/core/SkRasterPipeline.cpp",
         "patchSetId": 1

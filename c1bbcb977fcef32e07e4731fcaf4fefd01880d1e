@@ -16,6 +16,40 @@
       "message": "skcms changes pulled into https://skia-review.googlesource.com/c/skcms/+/640893",
       "revId": "c1bbcb977fcef32e07e4731fcaf4fefd01880d1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed104cd4_bc657ce3",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-10T18:43:08Z",
+      "side": 1,
+      "message": "nit: wrap at 100 columns",
+      "revId": "c1bbcb977fcef32e07e4731fcaf4fefd01880d1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5948447_69b81942",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-10T18:43:08Z",
+      "side": 1,
+      "message": "This is a judgement call -- I can see arguments for leaving this at zero, or moving this up to the prior block, so we do (slight) dithering. Probably better to leave it like you did, though.",
+      "revId": "c1bbcb977fcef32e07e4731fcaf4fefd01880d1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
