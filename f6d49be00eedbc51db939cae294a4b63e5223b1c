@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d095bfee_e0bf382e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T20:01:19Z",
+      "side": 1,
+      "message": "976 bytes for BinarySearchRootsValidT seems like a lot to me, but without a further breakdown I couldn\u0027t spot anything trivial that\u0027s the cause of it.",
+      "revId": "f6d49be00eedbc51db939cae294a4b63e5223b1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6cf2846_f96f2dab",
+        "filename": "src/base/SkCubics.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T20:01:19Z",
+      "side": 1,
+      "message": "What do we get from \u003calgorithm\u003e?",
+      "range": {
+        "startLine": 15,
+        "startChar": 10,
+        "endLine": 15,
+        "endChar": 20
+      },
+      "revId": "f6d49be00eedbc51db939cae294a4b63e5223b1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b28ad01_5c3818a1",
+        "filename": "src/base/SkCubics.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T20:01:19Z",
+      "side": 1,
+      "message": "nit: find_extrema_valid_t",
+      "range": {
+        "startLine": 159,
+        "startChar": 11,
+        "endLine": 159,
+        "endChar": 28
+      },
+      "revId": "f6d49be00eedbc51db939cae294a4b63e5223b1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e20cf2c_4da55546",
+        "filename": "src/base/SkCubics.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T20:01:19Z",
+      "side": 1,
+      "message": "nit: binary_search for internal static functions.",
+      "range": {
+        "startLine": 176,
+        "startChar": 14,
+        "endLine": 176,
+        "endChar": 26
+      },
+      "revId": "f6d49be00eedbc51db939cae294a4b63e5223b1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
