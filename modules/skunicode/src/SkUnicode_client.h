@@ -18,10 +18,4 @@
 #include <unicode/utext.h>
 #include <unicode/utypes.h>
 
-#define SKICU_FUNC(funcname) decltype(funcname)* sk_##funcname;
-
-SKICU_FUNC(ubidi_reorderVisual)
-
-#undef SKICU_FUNC
-
 #endif // SkUnicode_client_DEFINED

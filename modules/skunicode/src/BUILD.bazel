@@ -19,9 +19,13 @@ skia_filegroup(
 # In own group for export to //modules/skunicode/skunicode.gni:skia_unicode_common_icu_sources.
 skia_filegroup(
     name = "srcs",
-    srcs = [
-        "SkUnicode.cpp",
-    ],
+    srcs = ["SkUnicode.cpp"],
+    visibility = ["//modules/skunicode:__pkg__"],
+)
+
+skia_filegroup(
+    name = "icu_bidi_srcs",
+    srcs = ["SkUnicode_icu_bidi.cpp"],
     visibility = ["//modules/skunicode:__pkg__"],
 )
 
