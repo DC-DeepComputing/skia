@@ -420,6 +420,7 @@ void DawnCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlo
 
     fBoundUniformBuffers[bufferIndex] = dawnBuffer;
     fBoundUniformBufferOffsets[bufferIndex] = static_cast<uint32_t>(info.fOffset);
+    fBoundUniformBufferRanges[bufferIndex] = static_cast<uint32_t>(info.fBytes);
 
     fBoundUniformBuffersDirty = true;
 }
@@ -505,7 +506,8 @@ void DawnCommandBuffer::syncUniformBuffers() {
                             ->dawnBuffer();
             entries[numBuffers].offset =
                     fBoundUniformBufferOffsets[DawnGraphicsPipeline::kRenderStepUniformBufferIndex];
-            entries[numBuffers].size = wgpu::kWholeSize;
+            entries[numBuffers].size =
+                    fBoundUniformBufferRanges[DawnGraphicsPipeline::kRenderStepUniformBufferIndex];
             ++numBuffers;
         }
 
@@ -517,7 +519,8 @@ void DawnCommandBuffer::syncUniformBuffers() {
                             ->dawnBuffer();
             entries[numBuffers].offset =
                     fBoundUniformBufferOffsets[DawnGraphicsPipeline::kPaintUniformBufferIndex];
-            entries[numBuffers].size = wgpu::kWholeSize;
+            entries[numBuffers].size =
+                    fBoundUniformBufferRanges[DawnGraphicsPipeline::kPaintUniformBufferIndex];
             ++numBuffers;
         }
 
