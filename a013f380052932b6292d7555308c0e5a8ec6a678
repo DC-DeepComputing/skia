@@ -16,6 +16,24 @@
       "message": "Maybe add a comment here that mixing with a floating point 3rd argument is covered by MixFloatES2.sksl?",
       "revId": "a013f380052932b6292d7555308c0e5a8ec6a678",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a9c1b0c_48c974d4",
+        "filename": "resources/sksl/intrinsics/MixFloatES3.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-10T19:34:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1835fbc_4b884676",
+      "revId": "a013f380052932b6292d7555308c0e5a8ec6a678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

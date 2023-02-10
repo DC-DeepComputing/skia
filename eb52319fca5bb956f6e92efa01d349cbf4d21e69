@@ -16,6 +16,24 @@
       "message": "This appears to fail under Mac 10.15 + Intel HD6000 (not emitting anything) so I will need to add a test disable.",
       "revId": "eb52319fca5bb956f6e92efa01d349cbf4d21e69",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "726aee79_2e23eb64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-10T19:34:30Z",
+      "side": 1,
+      "message": "It looks like this is running into an existing/known bug (`not` fails on Metal + old Intel GPUs) so I\u0027ll try to dodge it by avoiding `not`.",
+      "parentUuid": "ab78c192_bb015c37",
+      "revId": "eb52319fca5bb956f6e92efa01d349cbf4d21e69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
