@@ -9,6 +9,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
+#include "src/codec/SkPixmapUtils.h"
 
 // Time variants of read-pixels
 //  [ colortype ][ alphatype ][ colorspace ]
@@ -63,7 +64,7 @@ DEF_BENCH( return new ReadPixBench(kBGRA_8888_SkColorType, kUnpremul_SkAlphaType
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "include/core/SkBitmap.h"
-#include "src/core/SkPixmapPriv.h"
+#include "src/codec/SkPixmapUtils.h"
 
 class PixmapOrientBench : public Benchmark {
 public:
@@ -90,7 +91,7 @@ protected:
         fSrc.peekPixels(&src);
         fDst.peekPixels(&dst);
         for (int i = 0; i < loops; ++i) {
-            SkPixmapPriv::Orient(dst, src, kTopRight_SkEncodedOrigin);
+            SkPixmapUtils::Orient(dst, src, kTopRight_SkEncodedOrigin);
         }
     }
 

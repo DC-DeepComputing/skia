@@ -11,6 +11,10 @@
 #include "include/core/SkPixmap.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTemplates.h"
+#include "include/private/base/SkAPI.h"
+
+#include <cstddef>
+#include <cstdint>
 
 class SK_API SkEncoder : SkNoncopyable {
 public:
