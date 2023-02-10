@@ -22,6 +22,30 @@
       },
       "revId": "badcdf5635ab8b0be562a83a82fa4894929131c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d891bb2c_e7a717d1",
+        "filename": "src/gpu/ganesh/GrDistanceFieldGenFromVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T20:20:45Z",
+      "side": 0,
+      "message": "Yeah I can\u0027t make heads of it either, but definitely seems like it works out to something like the midpoint. Your version seems more robust to inputs and is much clearer what\u0027s going on.",
+      "parentUuid": "95be8c9e_e97d2d70",
+      "range": {
+        "startLine": 259,
+        "startChar": 8,
+        "endLine": 267,
+        "endChar": 38
+      },
+      "revId": "badcdf5635ab8b0be562a83a82fa4894929131c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
