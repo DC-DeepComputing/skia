@@ -72,6 +72,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48940425_35a6beb1",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T20:01:47Z",
+      "side": 1,
+      "message": "\u003e I briefly hacked in flat interpolation for these attributes thinking that might save some performance but at least on the M1 it actual hurt performance and increased the instruction count and reduced residency. Eventually they could be tagged `kCanBeFlat` for platforms where that\u0027s faster, assuming they haven\u0027t all been lifted to storage buffers.\n\nThat\u0027s interesting. I\u0027m curious why having flat interpolants on some of the varyings gave you poor performance. I\u0027d be curious to see the Metal frame capture data.\n\nMy intuition says that putting per-instance attributes that don\u0027t change between vertex and fragment invocations in an SSBO should have decent performance provided that the SSBO fetches are fairly local to the fragment invocations.",
+      "parentUuid": "4984d616_99622d21",
+      "range": {
+        "startLine": 447,
+        "startChar": 29,
+        "endLine": 473,
+        "endChar": 68
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d1d637f5_e347ae11",
         "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
         "patchSetId": 3

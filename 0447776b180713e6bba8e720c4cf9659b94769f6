@@ -33,6 +33,138 @@
       "message": "Also note that while this is capable of handling all stroked round rects with circular corners, I\u0027m going to enable that in another CL so that perf results reflect draws that were already routed to AnalyticRRectRenderStep.",
       "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62d91b54_5a07e9f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T20:01:47Z",
+      "side": 1,
+      "message": "I did a first pass and left a few comments (mostly minor nits). The SkSL module changes lgtm. I didn\u0027t check the math rigorously but overall looks good.\n\nThank you for spending time on comments with explanations. They were very useful in understanding the overall logic.\n\nlgtm but Jim should take a look as well.",
+      "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3df915b4_bce38aae",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T20:01:47Z",
+      "side": 1,
+      "message": "These diagrams are very useful, thank you for putting them together earlier. Since our code is open source, it would be nice if we could eventually make them publicly available (for example on skia.org) not have to reference an internal docs link.",
+      "range": {
+        "startLine": 67,
+        "startChar": 7,
+        "endLine": 67,
+        "endChar": 107
+      },
+      "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0161b50e_e3fcdfec",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T20:01:47Z",
+      "side": 1,
+      "message": "nit: drop `is`",
+      "range": {
+        "startLine": 324,
+        "startChar": 49,
+        "endLine": 324,
+        "endChar": 51
+      },
+      "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bc958f7_bebc5996",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T20:01:47Z",
+      "side": 1,
+      "message": "nit: indentation",
+      "range": {
+        "startLine": 460,
+        "startChar": 28,
+        "endLine": 460,
+        "endChar": 30
+      },
+      "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11691820_e89a89b6",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T20:01:47Z",
+      "side": 1,
+      "message": "Maybe declare this as a constant (locally above alongside the scale constants or in the module)?",
+      "range": {
+        "startLine": 549,
+        "startChar": 37,
+        "endLine": 549,
+        "endChar": 80
+      },
+      "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2afc79dd_7d659d3b",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T20:01:47Z",
+      "side": 1,
+      "message": "I probably missed this in the comments above but why does subtracting this swizzle give you dx?",
+      "range": {
+        "startLine": 616,
+        "startChar": 20,
+        "endLine": 616,
+        "endChar": 32
+      },
+      "revId": "0447776b180713e6bba8e720c4cf9659b94769f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
