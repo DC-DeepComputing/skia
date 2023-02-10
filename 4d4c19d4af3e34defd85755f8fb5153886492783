@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "682bf0a8_a39f9a91",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-02-10T14:52:14Z",
+      "side": 1,
+      "message": "This method should be removed since getBidiRegions is now the common functionality and does not have to be compared. I will remove it later.",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 294,
+        "endChar": 0
+      },
+      "revId": "4d4c19d4af3e34defd85755f8fb5153886492783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b359eb0a_5e28289e",
+        "filename": "modules/skunicode/skunicode.gni",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-02-10T14:52:14Z",
+      "side": 1,
+      "message": "See the comment in the beginning of this file: it has to be generated.\nThis is the command for generating it: make -C bazel generate_gni (from Skia, or you can do it from SkUnicode, I believe).",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 51
+      },
+      "revId": "4d4c19d4af3e34defd85755f8fb5153886492783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "289895e5_8e1d35ea",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-02-10T14:52:14Z",
+      "side": 1,
+      "message": "This should go into SkUnicode_icu_bidi.cpp as all the other bidi methods that you created there.",
+      "range": {
+        "startLine": 238,
+        "startChar": 0,
+        "endLine": 246,
+        "endChar": 5
+      },
+      "revId": "4d4c19d4af3e34defd85755f8fb5153886492783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b156497e_a581e8b7",
+        "filename": "modules/skunicode/src/SkUnicode_icu_bidi.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-02-10T14:52:14Z",
+      "side": 1,
+      "message": "You should add a comment there:\n}  // namespace\nBuild-Debian10-Clang-x86_64-Debug-Tidy breaks on that.",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 1
+      },
+      "revId": "4d4c19d4af3e34defd85755f8fb5153886492783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

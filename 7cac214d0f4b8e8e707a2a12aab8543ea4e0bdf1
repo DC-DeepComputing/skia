@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48a0eae1_a02d10de",
+        "filename": "modules/skunicode/src/SkUnicode_icu.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-02-10T14:52:14Z",
+      "side": 0,
+      "message": "I don\u0027t think this is going to work like this. We need SKICU_EMIT_FUNCS for Android, and we need all of them here.\nFor instance, CodeSize-skottie_tool-Debian10-Clang-x86_64-OptimizeForSize fails on that.\nEmitted methods have prefixes and without it they will not be found.",
+      "revId": "7cac214d0f4b8e8e707a2a12aab8543ea4e0bdf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f76d2ee_5d0c8d69",
+        "filename": "modules/skunicode/src/SkUnicode_icu.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-02-10T14:52:14Z",
+      "side": 0,
+      "message": "I kept reorderVisual exactly for the same reason - we need it emitted for Android.",
+      "revId": "7cac214d0f4b8e8e707a2a12aab8543ea4e0bdf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
