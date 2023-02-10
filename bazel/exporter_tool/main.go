@@ -410,6 +410,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{"//modules/skunicode/include:hdrs"}},
 		{Var: "skia_unicode_sources",
 			Rules: []string{"//modules/skunicode/src:srcs"}},
+		{Var: "skia_unicode_icu_bidi_sources",
+			Rules: []string{"//modules/skunicode/src:icu_bidi_srcs"}},
 		{Var: "skia_unicode_icu_sources",
 			Rules: []string{"//modules/skunicode/src:icu_srcs"}},
 		{Var: "skia_unicode_client_icu_sources",
