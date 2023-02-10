@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9c439e7_6b4ff725",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-10T21:39:23Z",
+      "side": 1,
+      "message": "Maybe just a bunch of inlined stuff like 3 copies of SkCubics::EvalAt?",
+      "parentUuid": "d095bfee_e0bf382e",
+      "revId": "f6d49be00eedbc51db939cae294a4b63e5223b1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6cf2846_f96f2dab",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-02-10T20:01:19Z",
       "side": 1,
       "message": "What do we get from \u003calgorithm\u003e?",
+      "range": {
+        "startLine": 15,
+        "startChar": 10,
+        "endLine": 15,
+        "endChar": 20
+      },
+      "revId": "f6d49be00eedbc51db939cae294a4b63e5223b1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffc7d2a0_004035f4",
+        "filename": "src/base/SkCubics.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-10T21:39:23Z",
+      "side": 1,
+      "message": "min/max",
+      "parentUuid": "c6cf2846_f96f2dab",
       "range": {
         "startLine": 15,
         "startChar": 10,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a4a073a_7168b081",
+        "filename": "src/base/SkCubics.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-10T21:39:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b28ad01_5c3818a1",
+      "range": {
+        "startLine": 159,
+        "startChar": 11,
+        "endLine": 159,
+        "endChar": 28
+      },
+      "revId": "f6d49be00eedbc51db939cae294a4b63e5223b1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e20cf2c_4da55546",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-02-10T20:01:19Z",
       "side": 1,
       "message": "nit: binary_search for internal static functions.",
+      "range": {
+        "startLine": 176,
+        "startChar": 14,
+        "endLine": 176,
+        "endChar": 26
+      },
+      "revId": "f6d49be00eedbc51db939cae294a4b63e5223b1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b9607d5_71d37f83",
+        "filename": "src/base/SkCubics.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-10T21:39:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e20cf2c_4da55546",
       "range": {
         "startLine": 176,
         "startChar": 14,
