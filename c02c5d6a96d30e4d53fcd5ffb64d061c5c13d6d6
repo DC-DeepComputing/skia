@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46423c80_9a1e6345",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-10T19:18:34Z",
+      "side": 1,
+      "message": "Thank you for your patience :D",
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2e99723_66238c9c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-10T19:18:34Z",
+      "side": 1,
+      "message": "`VulkanTexture`?",
+      "range": {
+        "startLine": 402,
+        "startChar": 42,
+        "endLine": 402,
+        "endChar": 51
+      },
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3315c48_ae693281",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-10T19:18:34Z",
+      "side": 1,
+      "message": "I don\u0027t immediately see taskflow items to add wrapped or secondary command buffers - should we add some? If so, we can reference the bug ID here in the TODO.",
+      "range": {
+        "startLine": 420,
+        "startChar": 0,
+        "endLine": 420,
+        "endChar": 60
+      },
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1307c6b7_561dec0b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-10T19:18:34Z",
+      "side": 1,
+      "message": "I would argue that we don\u0027t need this. `fHasWork` used to be private to the parent `CommandBuffer` class and it seems to set it whenever it calls down into the backend to do work. We could maybe even have a getter for `hasWork` to check against for debug purposes but not allow editing of it from within backend command buffer class implementations? WDYT?",
+      "range": {
+        "startLine": 475,
+        "startChar": 0,
+        "endLine": 480,
+        "endChar": 0
+      },
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d33bc271_4999f208",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-10T19:18:34Z",
+      "side": 1,
+      "message": "Suggestion: It might make sense to add `/*memoryBarrierCount\u003d*/` and `/* pMemoryBarriers\u003d*/` here, or otherwise indicate that the 0 and nullptr args mean that we are not passing in any memory barriers.",
+      "range": {
+        "startLine": 508,
+        "startChar": 56,
+        "endLine": 508,
+        "endChar": 66
+      },
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfe2e094_abbe02b4",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-10T19:18:34Z",
+      "side": 1,
+      "message": "Would this maybe be VkRenderPass? Ganesh\u0027s `fActiveRenderPass` is a `GrVkRenderPass` which can provide a `VkRenderPass`. Looks like that might be more relevant once we get to `VulkanCommandBuffer::onAddRenderPass`.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 32
+      },
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -39,6 +39,30 @@
       },
       "revId": "c6cbd12fd297b70ee3e9095581de12e72d4e2ea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c7571e9_93d81feb",
+        "filename": "tools/CrashHandler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-10T19:18:34Z",
+      "side": 1,
+      "message": "Weird, but I\u0027m not bothered.",
+      "parentUuid": "9141e37d_6bb749c5",
+      "range": {
+        "startLine": 157,
+        "startChar": 8,
+        "endLine": 157,
+        "endChar": 27
+      },
+      "revId": "c6cbd12fd297b70ee3e9095581de12e72d4e2ea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
