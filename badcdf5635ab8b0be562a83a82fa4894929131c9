@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95be8c9e_e97d2d70",
+        "filename": "src/gpu/ganesh/GrDistanceFieldGenFromVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T19:33:21Z",
+      "side": 0,
+      "message": "So I\u0027m not entirely sure what\u0027s going on here -- the calculation doesn\u0027t make much sense to me and there\u0027s no other context. Best I can tell it\u0027s trying to calculate the midpoint m through projection, maybe? But in many cases the initial t.fX or t.fY could be 0 so the result doesn\u0027t seem well defined.",
+      "range": {
+        "startLine": 259,
+        "startChar": 8,
+        "endLine": 267,
+        "endChar": 38
+      },
+      "revId": "badcdf5635ab8b0be562a83a82fa4894929131c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
