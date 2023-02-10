@@ -16,6 +16,23 @@
       "message": "This adds several stroked round rect cases that are not handled correctly by the AnalyticRRectRenderStep at ToT, but draw correctly with the subsequent fragment shader approach.",
       "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92a978cd_32ad097b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T02:05:16Z",
+      "side": 1,
+      "message": "All the new diffs in Gold seem to look as expected. lgtm!",
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
