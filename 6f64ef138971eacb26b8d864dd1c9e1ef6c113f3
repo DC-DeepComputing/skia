@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "785cfb99_122b4cad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T20:04:29Z",
+      "side": 1,
+      "message": "lgtm, though it looks like we\u0027re still getting failures on Intel macs?",
+      "revId": "6f64ef138971eacb26b8d864dd1c9e1ef6c113f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
