@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aece1fc2_f5933722",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-02-10T08:27:42Z",
+      "side": 1,
+      "message": "Ah, thanks for doing that. I had lost track that we connected some of the behavior changes in COLRv1 to this flag as well, to gate them and release them at the same time.",
+      "revId": "2152f62ea55a35478772b39daa1bc120f8b7aed5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
