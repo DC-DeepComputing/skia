@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b51414e_e248836f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T21:33:47Z",
+      "side": 1,
+      "message": "This no longer applies -- in the original code this was commenting on a check to see if there was an active command buffer, but as best I can tell we should always have a fPrimaryCommandBuffer here.",
+      "parentUuid": "f2e99723_66238c9c",
+      "range": {
+        "startLine": 402,
+        "startChar": 42,
+        "endLine": 402,
+        "endChar": 51
+      },
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3315c48_ae693281",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-02-10T19:18:34Z",
       "side": 1,
       "message": "I don\u0027t immediately see taskflow items to add wrapped or secondary command buffers - should we add some? If so, we can reference the bug ID here in the TODO.",
+      "range": {
+        "startLine": 420,
+        "startChar": 0,
+        "endLine": 420,
+        "endChar": 60
+      },
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6681308_111054f9",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T21:33:47Z",
+      "side": 1,
+      "message": "I don\u0027t know what Greg has in mind. Both are only needed because Chrome/Android has been handing us a wrapped SecondaryCommandBuffer for us to fill in, but I\u0027m not sure if that still applies. If they\u0027re creating a graphite::CommandBuffer at their level then they could just hand that to us instead. I\u0027ll make the comments more speculative.",
+      "parentUuid": "f3315c48_ae693281",
       "range": {
         "startLine": 420,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fbb6421_ba04be7b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T21:33:47Z",
+      "side": 1,
+      "message": "I\u0027m ok with removing it. It\u0027s only here to prevent a warning from being printed in Debug builds when we try to submit empty command buffers, and in theory we\u0027re doing some work. However, submitting a command buffer that only has barriers is probably worth drawing attention to as well.",
+      "parentUuid": "1307c6b7_561dec0b",
+      "range": {
+        "startLine": 475,
+        "startChar": 0,
+        "endLine": 480,
+        "endChar": 0
+      },
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d33bc271_4999f208",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6a06b41_87cafd14",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T21:33:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d33bc271_4999f208",
+      "range": {
+        "startLine": 508,
+        "startChar": 56,
+        "endLine": 508,
+        "endChar": 66
+      },
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfe2e094_abbe02b4",
@@ -123,6 +219,30 @@
       "writtenOn": "2023-02-10T19:18:34Z",
       "side": 1,
       "message": "Would this maybe be VkRenderPass? Ganesh\u0027s `fActiveRenderPass` is a `GrVkRenderPass` which can provide a `VkRenderPass`. Looks like that might be more relevant once we get to `VulkanCommandBuffer::onAddRenderPass`.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 32
+      },
+      "revId": "c02c5d6a96d30e4d53fcd5ffb64d061c5c13d6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "819687ec_d463bfd8",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T21:33:47Z",
+      "side": 1,
+      "message": "Yes, it\u0027s not immediately clear to me if it would be a wrapper class like in the Metal backend, or a raw VkRenderPass so this is a placeholder for now. Updated the comment.",
+      "parentUuid": "cfe2e094_abbe02b4",
       "range": {
         "startLine": 118,
         "startChar": 0,
