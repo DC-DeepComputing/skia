@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7712fe7c_c4d4a47b",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 2371,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2023-02-10T18:14:40Z",
+      "side": 1,
+      "message": "Done https://skia-review.googlesource.com/c/skcms/+/640893",
+      "parentUuid": "249dd32f_385faecc",
+      "revId": "6c642361c0980a1fecb078027d1bf65bd4022990",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3746fa0f_86cb1ee3",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "Thanks.  I\u0027ll move that over later.  FYI I had to add this enum here because the location of the enum determines if the components are clamped to [0..1] or not.  I think ideally we\u0027d remove all logic that depends on the order of this enum, but I\u0027m probably not the best person to make that change.",
       "parentUuid": "3746fa0f_86cb1ee3",
+      "revId": "6c642361c0980a1fecb078027d1bf65bd4022990",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c613160f_302fe36e",
+        "filename": "modules/skcms/skcms.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2023-02-10T18:14:40Z",
+      "side": 1,
+      "message": "Done https://skia-review.googlesource.com/c/skcms/+/640893",
+      "parentUuid": "dde4a1fd_c8cef30a",
       "revId": "6c642361c0980a1fecb078027d1bf65bd4022990",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
