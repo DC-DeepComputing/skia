@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "51e6399a_f523fd7c",
+        "filename": "modules/skunicode/src/SkUnicode_icu.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-02-10T21:38:06Z",
+      "side": 0,
+      "message": "The skottie failure says that `ubidi_reorderVisual` is an undefined symbol. But these emitted functions are all prefixed with `f_`, so I don\u0027t think they are related to the skottie failure? I could be wrong of course.",
+      "parentUuid": "48a0eae1_a02d10de",
+      "revId": "7cac214d0f4b8e8e707a2a12aab8543ea4e0bdf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f76d2ee_5d0c8d69",
         "filename": "modules/skunicode/src/SkUnicode_icu.h",
         "patchSetId": 9
