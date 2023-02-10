@@ -16,6 +16,46 @@
       "message": "Hi Michael,\n\nAs we discussed earlier, I removed the indirect draw logic from DrawWriter. I\u0027m thinking that any static/template buffer assignments could be performed through a dedicated RenderStep method if we want to keep this logic out of DrawWriter.\n\nI\u0027ll address that in a follow-up CL. This CL now only adds the command buffer level plumbing. PTAL.",
       "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2f55e33_84743832",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T22:27:47Z",
+      "side": 1,
+      "message": "Draw interface lgtm",
+      "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0344b212_2b467377",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T22:27:47Z",
+      "side": 1,
+      "message": "Practically this will never happen because you can\u0027t create a Metal context with a version this old. I think LOG_E is fine.",
+      "range": {
+        "startLine": 593,
+        "startChar": 56,
+        "endLine": 593,
+        "endChar": 88
+      },
+      "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
