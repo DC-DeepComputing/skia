@@ -16,6 +16,23 @@
       "message": "This is a simple change, anyone can give a thumbs up.",
       "revId": "057df3cf4ff0fda9e5696854951ab2e57eca5446",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0487237d_5f904f6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-10T15:53:11Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "057df3cf4ff0fda9e5696854951ab2e57eca5446",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
