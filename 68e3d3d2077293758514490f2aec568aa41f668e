@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c386dc5_d014608b",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T19:52:40Z",
+      "side": 1,
+      "message": "I\u0027m not opposed to the idea of carrying a size around so that `BindBufferInfo` can represent a slice of a buffer but I think it\u0027s awkward that it\u0027s only used for uniforms at the moment and everything is 0.\n\nThe down side to this is that a lot of other usage of BindBufferInfo while writing vertex/draw data should probably be updated as well, and their size would start out as the remainder of the buffer and then `DrawWriter` would reduce it based on what was actually utilized. This becomes a larger scale effort that is probably worth it, but I\u0027m wondering if we can get away with leaving BindBufferInfo as is for now and use one of the strategies I outlined in my other comment to get past the validation error?",
+      "range": {
+        "startLine": 119,
+        "startChar": 4,
+        "endLine": 119,
+        "endChar": 22
+      },
+      "revId": "68e3d3d2077293758514490f2aec568aa41f668e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67ef6253_aa22d287",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-10T19:52:40Z",
+      "side": 1,
+      "message": "At least for uniforms (not SSBOs), we should be able to have this available on the `fActiveGraphiscPipeline` and use that directly instead of carrying the value around in `BindBufferInfo`.\n\nSince we\u0027d have to add code to sum this up in DawnGraphicsPipeline::Make(), could we get away with just setting this to either 64k or kWholeSize when the DawnBuffer is smaller?",
+      "range": {
+        "startLine": 510,
+        "startChar": 20,
+        "endLine": 510,
+        "endChar": 98
+      },
+      "revId": "68e3d3d2077293758514490f2aec568aa41f668e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
