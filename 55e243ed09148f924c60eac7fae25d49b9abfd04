@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66844e2c_a34e7e34",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T21:03:25Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "81cffb2f_02c8df3f",
+      "range": {
+        "startLine": 50,
+        "startChar": 23,
+        "endLine": 50,
+        "endChar": 38
+      },
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4592fbd7_0c7fb214",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-10T03:15:46Z",
       "side": 0,
       "message": "This derivation\u0027s hand-waviness around the 3rd row and column for the inverse matrix is incorrect. The output of M*(u,v,0,1) can have a non-zero z/w that we discard. Using the 4x4 inverse here should actually be using that z/w value in order to arrive at the correct (u,v,0,1).\n\nFor now, I\u0027ve just simplified the logic in the shader to use the 3x3 inverse, so have updated the derivation to reflect that (which remains valid).\n\nVisually this only really showed up in 4x4 matrices that embedded lots of Z axis transformations and resulted in the outset vertices being squished closer to the original shape, so the coverage ramp was more compressed.",
+      "range": {
+        "startLine": 89,
+        "startChar": 57,
+        "endLine": 89,
+        "endChar": 72
+      },
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1865f289_bcbdcf2b",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T21:03:25Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "4592fbd7_0c7fb214",
       "range": {
         "startLine": 89,
         "startChar": 57,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6950a891_0087eb0c",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T21:03:25Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "3c4d3d8b_964ce463",
+      "range": {
+        "startLine": 109,
+        "startChar": 3,
+        "endLine": 129,
+        "endChar": 2
+      },
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ffa5275_91aea99f",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3197c31_e7473d5a",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T21:03:25Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "9ffa5275_91aea99f",
+      "range": {
+        "startLine": 134,
+        "startChar": 3,
+        "endLine": 137,
+        "endChar": 64
+      },
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9de3ec62_cf6ab8cc",
@@ -106,6 +202,30 @@
       "writtenOn": "2023-02-10T03:15:46Z",
       "side": 0,
       "message": "We had previously been uploading the components from the inverse 4x4. There wasn\u0027t a significant change in performance to just calculate the inverse of `float3x3(mat0,mat1,mat2)` in the vertex shader and save on instance size, vs. calculate the 3x3 inverse and upload those correct values. For now I figured we can just keep the instance data compact.",
+      "range": {
+        "startLine": 411,
+        "startChar": 29,
+        "endLine": 412,
+        "endChar": 88
+      },
+      "revId": "55e243ed09148f924c60eac7fae25d49b9abfd04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d2b79ef_a21faa15",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-10T21:03:25Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "9de3ec62_cf6ab8cc",
       "range": {
         "startLine": 411,
         "startChar": 29,
