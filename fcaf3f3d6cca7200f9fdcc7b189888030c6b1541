@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "792369c2_3f9e14b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T19:00:27Z",
+      "side": 1,
+      "message": "lgtm % small suggestions",
+      "revId": "fcaf3f3d6cca7200f9fdcc7b189888030c6b1541",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "238346fc_3ad7f2ee",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2257,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T19:00:27Z",
+      "side": 1,
+      "message": "This assertion (`arg0` and `arg1` have the same type) and the first two pushExpression calls are common to both branches, so you could pull those out of the if statements.",
+      "range": {
+        "startLine": 2255,
+        "startChar": 16,
+        "endLine": 2257,
+        "endChar": 50
+      },
+      "revId": "fcaf3f3d6cca7200f9fdcc7b189888030c6b1541",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e6aab7d_5cde27c4",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2261,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T19:00:27Z",
+      "side": 1,
+      "message": "I suggest adding a comment here explaining that for a arg2 of type float we\u0027re doing a blend but when arg2 is a boolean scalar or composite we\u0027re performing a select (since both branches push a \"ternary mix op\" it\u0027s not immediately obvious that the op semantics are slightly different.",
+      "range": {
+        "startLine": 2261,
+        "startChar": 16,
+        "endLine": 2261,
+        "endChar": 84
+      },
+      "revId": "fcaf3f3d6cca7200f9fdcc7b189888030c6b1541",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
