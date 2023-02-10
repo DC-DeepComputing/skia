@@ -108,7 +108,9 @@ static SkString make_unary_sksl_1d(const char* fn, bool requireES3) {
             "    int2  pi = int2(floor(p));"
             "    int   xi = pi.x;"
             "    float y = float(%s) * yScale + yBias;"
-            "    return y.xxx1;"
+            "    float4 color = y.xxx1;"
+            "    color.r *= 0.92;"
+            "    return color;"
             "}",
             requireES3 ? "300" : "100", fn);
 }
@@ -146,7 +148,7 @@ static void plot(SkCanvas* canvas,
         SkPoint pts[kBoxSize];
         for (int x = 0; x < kBoxSize; ++x) {
             SkColor c = bitmap.getColor(x, 0);
-            SkScalar y = (1 - (SkColorGetR(c) / 255.0f)) * kBoxSize;
+            SkScalar y = (1 - (SkColorGetG(c) / 255.0f)) * kBoxSize;
             pts[x].set(x + 0.5f, y);
         }
         plotPaint.setAntiAlias(true);
