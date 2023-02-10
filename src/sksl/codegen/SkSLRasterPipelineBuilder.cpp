@@ -27,6 +27,7 @@
 #include <cmath>
 #include <cstring>
 #include <iterator>
+#include <map>
 #include <string>
 #include <string_view>
 #include <tuple>
@@ -1011,7 +1012,7 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
     // Assemble a map holding the current stack-top for each temporary stack. Position each temp
     // stack immediately after the previous temp stack; temp stacks are never allowed to overlap.
     int pos = 0;
-    SkTHashMap<int, float*> tempStackMap;
+    std::map<int, float*> tempStackMap;
     for (auto& [idx, depth] : fTempStackMaxDepths) {
         tempStackMap[idx] = slots.stack.begin() + (pos * N);
         pos += depth;
