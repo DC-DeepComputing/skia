@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6367c179_80735cbe",
+        "filename": "fuzz/FuzzCubicQuadRoots.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-10T16:59:11Z",
+      "side": 1,
+      "message": "I tested this locally and did not see any asserts happen.",
+      "range": {
+        "startLine": 82,
+        "startChar": 8,
+        "endLine": 82,
+        "endChar": 24
+      },
+      "revId": "66d92482f455c5da939c6e3d409e10662abf8d7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
