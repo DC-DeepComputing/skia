@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1835fbc_4b884676",
+        "filename": "resources/sksl/intrinsics/MixFloatES3.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T18:59:42Z",
+      "side": 1,
+      "message": "Maybe add a comment here that mixing with a floating point 3rd argument is covered by MixFloatES2.sksl?",
+      "revId": "a013f380052932b6292d7555308c0e5a8ec6a678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
