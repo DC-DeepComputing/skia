@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fa2ee4c_08228d44",
+        "filename": "src/gpu/graphite/ComputePipelineDesc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-10T22:22:02Z",
+      "side": 1,
+      "message": "I\u0027m not sure whether a `ComputeStep` is always guaranteed to outlive a `ComputePipelineDesc`. A `GraphicsPipelineDesc` only caches a `RenderStep`\u0027s unique ID, which is later used by the backend `ResourceProvider` to look up the `RenderStep` from the shared context\u0027s `RendererProvider`.\n\nI went with this approach because this made it easier define one-off `ComputeStep`s in unit tests. If the lifetime assumption here is wrong, then I can explore a different approach for dependency injection in unit tests (e.g. by defining an overwritable \"lookup callback\" that can by-pass the `RendererProvider` lookup).",
+      "range": {
+        "startLine": 22,
+        "startChar": 67,
+        "endLine": 22,
+        "endChar": 92
+      },
+      "revId": "0bd4978e527469c160ef09fafd2a144b1c81fcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
