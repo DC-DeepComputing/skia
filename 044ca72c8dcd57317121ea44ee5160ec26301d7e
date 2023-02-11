@@ -80,6 +80,30 @@
       },
       "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be80f8e3_553a2c33",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-11T02:06:58Z",
+      "side": 1,
+      "message": "I would be okay getting rid of the version checks entirely except that they are useful documentation about the minimum required for that bit of code and helps make sure we wouldn\u0027t relax the requirement on the context creation side somehow. I\u0027m not sure if it\u0027s possible to put the version checks in an assert though? If not, a log seems fine.",
+      "parentUuid": "8bf74f81_f06de911",
+      "range": {
+        "startLine": 593,
+        "startChar": 56,
+        "endLine": 593,
+        "endChar": 88
+      },
+      "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
