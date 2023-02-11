@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "024e93d0_bb6888dd",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-11T01:53:44Z",
+      "side": 1,
+      "message": "From the frame captures I\u0027ve done, other than texture writing the result, the largest bottleneck is FS interpolation. The timing breakdown frequently lists interpolation as 25-35% of the work in the fragment shader as well.",
+      "parentUuid": "48940425_35a6beb1",
+      "range": {
+        "startLine": 447,
+        "startChar": 29,
+        "endLine": 473,
+        "endChar": 68
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1d637f5_e347ae11",
@@ -320,6 +344,30 @@
       "side": 1,
       "message": "My preference would have been to name this \"perp\" to match \"perp dot product\" but I\u0027m not tied to it.",
       "parentUuid": "7f89189f_1cf809d0",
+      "range": {
+        "startLine": 310,
+        "startChar": 0,
+        "endLine": 310,
+        "endChar": 30
+      },
+      "revId": "de60c7579496455b37d562e1c3d6a68162f0a73a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14c061cc_5e4e571e",
+        "filename": "src/sksl/sksl_gpu.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-11T01:53:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b92a1861_df1ae275",
       "range": {
         "startLine": 310,
         "startChar": 0,
