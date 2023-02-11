@@ -16,6 +16,24 @@
       "message": "I did write some feedback on this CL, but I\u0027m also wondering if your intended usage requires this. I know that you\u0027re trying to get your images into this format (in the destination color space), so that you don\u0027t lose precision along the way. I *think* you can do that with just the skcms changes you landed (and the net effect will be roughly the same performance wise):\n\nWhen you do the decode, ask the SkCodec what the native colorspace is. Decode to 8888 in that colorspace. Then, just use skcms directly to do a transcode to 101010xr in the required (P3?) colorspace. You\u0027re going to upload the resulting buffer directly to a Metal texture anyway, right? That avoids needing to add anything to Skia\u0027s SkColorType, which was really just there so we could plumb it into the codec code anyway. And the way that the new format would work in codec amounted to what I\u0027m describing anyway...",
       "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15ae2825_db160377",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-11T17:29:12Z",
+      "side": 1,
+      "message": "Note that this approach doesn\u0027t even require an extra buffer on your part (skcms allows in-place transform, as long as the src and dst bpp are the same).",
+      "parentUuid": "60d3f825_ef22a6f9",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
