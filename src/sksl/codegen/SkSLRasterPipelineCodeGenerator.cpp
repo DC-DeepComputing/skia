@@ -2480,6 +2480,17 @@ bool Generator::pushTernaryExpression(const Expression& test,
         return this->pushDynamicallyUniformTernaryExpression(test, ifTrue, ifFalse);
     }
 
+    // If neither side has side effects, we can use a mix.
+    bool ifFalseSideEffects = Analysis::HasSideEffects(ifFalse);
+    bool ifTrueSideEffects  = Analysis::HasSideEffects(ifTrue);
+    if (!ifFalseSideEffects && !ifTrueSideEffects) {
+        const Type& bvecType = test.type().toCompound(*fProgram.fContext,
+                                                      ifTrue.type().columns(),
+                                                      /*rows=*/1);
+        ConstructorSplat vectorSplat{test.fPosition, bvecType, test.clone()};
+        return this->pushIntrinsic(k_mix_IntrinsicKind, ifFalse, ifTrue, vectorSplat);
+    }
+
     fBuilder.enableExecutionMaskWrites();
 
     // First, push the current condition-mask and the test-expression into a separate stack.
@@ -2493,7 +2504,7 @@ bool Generator::pushTernaryExpression(const Expression& test,
     // We can take some shortcuts with condition-mask handling if the false-expression is entirely
     // side-effect free. (We can evaluate it without masking off its effects.) We always handle the
     // condition mask properly for the test-expression and true-expression properly.
-    if (!Analysis::HasSideEffects(ifFalse)) {
+    if (!ifFalseSideEffects) {
         // Push the false-expression onto the primary stack.
         int cleanupLabelID = fBuilder.nextLabelID();
         if (!this->pushExpression(ifFalse)) {
