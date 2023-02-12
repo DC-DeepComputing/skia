@@ -3717,12 +3717,14 @@ SI void apply_adjacent_ternary(T* dst, T* src0, T* src1) {
     } while (dst != end);
 }
 
-SI void mix_fn(F* a, F* b, F* c) {
-    *a = lerp(*a, *b, *c);
+SI void mix_fn(F* a, F* x, F* y) {
+    // Unlike GLSL's mix(x,y,a), SkRP takes mix(a,x,y).
+    *a = lerp(*x, *y, *a);
 }
 
-SI void mix_fn(I32* a, I32* b, I32* c) {
-    *a = if_then_else(*c, *b, *a);
+SI void mix_fn(I32* a, I32* x, I32* y) {
+    // Unlike GLSL's mix(x,y,a), SkRP takes mix(a,x,y).
+    *a = if_then_else(*a, *y, *x);
 }
 
 #define DECLARE_TERNARY_FLOAT(name)                                                           \
