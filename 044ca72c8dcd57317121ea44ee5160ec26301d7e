@@ -104,6 +104,30 @@
       },
       "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b88b0447_4e26d73d",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-12T01:18:32Z",
+      "side": 1,
+      "message": "I believe the API requires the @available checks unfortunately. And they can\u0027t be in an assert, nor can they be combined with another boolean expression.",
+      "parentUuid": "be80f8e3_553a2c33",
+      "range": {
+        "startLine": 593,
+        "startChar": 56,
+        "endLine": 593,
+        "endChar": 88
+      },
+      "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
