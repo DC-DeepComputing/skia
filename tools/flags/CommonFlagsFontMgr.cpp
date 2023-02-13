@@ -25,6 +25,10 @@ static DEFINE_bool(nativeFonts,
 static DEFINE_bool(gdi, false, "Use GDI instead of DirectWrite for font rendering.");
 #endif
 
+bool NativeFonts() {
+    return FLAGS_nativeFonts;
+}
+
 void SetDefaultFontMgr() {
     if (!FLAGS_nativeFonts) {
         gSkFontMgr_DefaultFactory = &ToolUtils::MakePortableFontMgr;
