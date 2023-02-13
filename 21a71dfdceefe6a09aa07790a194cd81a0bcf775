@@ -93,6 +93,30 @@
       },
       "revId": "21a71dfdceefe6a09aa07790a194cd81a0bcf775",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06128d5a_6d1697eb",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 3726,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-13T15:14:34Z",
+      "side": 1,
+      "message": "GLSL `mix` does take `x,y,a`. SkRP code generator emits `a,x,y` to the stack (so that the test-expression can be evaluated/pushed first). Argument order to `if_then_else` is `a,y,x` (because it was written to mimic an if-then-else statement: test-expression, true-value, false-value, so the 1 case comes before the 0 case).",
+      "parentUuid": "2a2d610a_9f85f183",
+      "range": {
+        "startLine": 3726,
+        "startChar": 25,
+        "endLine": 3726,
+        "endChar": 30
+      },
+      "revId": "21a71dfdceefe6a09aa07790a194cd81a0bcf775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
