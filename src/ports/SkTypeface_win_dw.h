@@ -59,6 +59,8 @@ public:
         SkTScopedComPtr<IDWriteFontCollectionLoader> fDWriteFontCollectionLoader;
     };
 
+    static constexpr SkTypeface::FactoryId FactoryId = SkSetFourByteTag('d','w','r','t');
+    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>, const SkFontArguments&);
 private:
     DWriteFontTypeface(const SkFontStyle& style,
                        IDWriteFactory* factory,
