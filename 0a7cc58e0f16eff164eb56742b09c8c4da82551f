@@ -124,6 +124,24 @@
       "parentUuid": "a6b17896_f44661ab",
       "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "442fc40e_4dfb3d61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-13T21:58:23Z",
+      "side": 1,
+      "message": "Gotcha. Right - the \"need a container to hold the pixels\" problem is real, though. That\u0027s too bad. I\u0027m just going to kick off some CQ bots here -- I\u0027m actually okay with having a color-type that\u0027s not completely implemented (although it\u0027s not great, given how little we\u0027re doing). But I suspect some unit tests that iterate over all color types may end up triggering some of the unimplemented code paths. Let\u0027s see.",
+      "parentUuid": "e80b0809_c72b9584",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
