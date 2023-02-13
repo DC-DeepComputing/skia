@@ -87,6 +87,30 @@
       },
       "revId": "8368bc8a48e953548a168731fda11af84f28c1fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faf88698_9634c55e",
+        "filename": "src/core/SkStrikeSpec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-13T20:30:23Z",
+      "side": 1,
+      "message": "The stroke width (if it applies) and path effect are also part of the (SkScalerContext) key?",
+      "parentUuid": "79bfc125_4e2b0b4c",
+      "range": {
+        "startLine": 196,
+        "startChar": 66,
+        "endLine": 196,
+        "endChar": 79
+      },
+      "revId": "8368bc8a48e953548a168731fda11af84f28c1fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
