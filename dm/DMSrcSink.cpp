@@ -123,7 +123,7 @@ Result GMSrc::draw(skgpu::graphite::Context* graphiteContext,
     std::unique_ptr<skiagm::GM> gm(fFactory());
     SkString msg;
 
-    skiagm::DrawResult gpuSetupResult = gm->gpuSetup(ganeshContext, canvas, &msg);
+    skiagm::DrawResult gpuSetupResult = gm->gpuSetup(canvas, &msg);
     switch (gpuSetupResult) {
         case skiagm::DrawResult::kOk  : break;
         case skiagm::DrawResult::kFail: return Result(Result::Status::Fatal, msg);
