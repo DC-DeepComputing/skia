@@ -33,6 +33,23 @@
       "message": "This is a reland of https://skia-review.googlesource.com/c/skia/+/501016, but using\nnew enum values to avoid disrupting existing assets.\n\nWill wait for clients to be updated to kHybrid enums first (cl/507472452).",
       "revId": "2438e021231284c8cfffca8a33c6369c834c561a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f0b6117_7f626f18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-13T16:32:19Z",
+      "side": 1,
+      "message": "So long as it does what you want, lgtm.",
+      "revId": "2438e021231284c8cfffca8a33c6369c834c561a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
