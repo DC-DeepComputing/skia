@@ -17,6 +17,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkColorData.h"
 #include "src/core/SkOpts.h"
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
 
