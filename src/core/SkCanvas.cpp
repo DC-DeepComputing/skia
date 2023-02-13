@@ -2688,8 +2688,11 @@ void SkCanvas::onDrawAtlas2(const SkImage* atlas, const SkRSXform xform[], const
 
     auto layer = this->aboutToDraw(this, realPaint);
     if (layer) {
-        this->topDevice()->drawAtlas(xform, tex, colors, count, SkBlender::Mode(bmode),
-                                     layer->paint());
+        sk_sp<SkBlender> blender = SkBlender::Mode(bmode);
+        if (blender) {
+            this->topDevice()->drawAtlas(xform, tex, colors, count, std::move(blender),
+                                         layer->paint());
+        }
     }
 }
 
