@@ -16,6 +16,23 @@
       "message": "(originally added in https://codereview.chromium.org/2001203003)",
       "revId": "9d8ede4fe2b3a349cc70899063c48cf013fc50d3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21da3249_a152d931",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6026
+      },
+      "writtenOn": "2023-02-13T20:06:30Z",
+      "side": 1,
+      "message": "Note that https://color.org/security/android_bug.xalter explicitly calls out a zero date/time as invalid.",
+      "revId": "9d8ede4fe2b3a349cc70899063c48cf013fc50d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
