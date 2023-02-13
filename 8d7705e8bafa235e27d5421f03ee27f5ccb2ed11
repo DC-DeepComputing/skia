@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb939ecb_fcc4f5ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-13T18:38:19Z",
+      "side": 1,
+      "message": "Skia builds with C++17 and will continue to do so for some time. It may be interesting to also add a C++20 build to ensure we build with that as well, since C++20 introduces so many backwards incompatibilities. Skia is an actual library built by many users outside of Chromium where the default C++ version may not be C++17 or greater. Also, note that this is not really in any way related to the Chromium build of Skia, which is in \u003cchromium\u003e/src/skia/BUILD.gn.",
+      "revId": "8d7705e8bafa235e27d5421f03ee27f5ccb2ed11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
