@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09237ddd_bd23e228",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-02-13T15:56:18Z",
+      "side": 1,
+      "message": "It took me a while to understand this special case. It\u0027s because the next run could have different styles (e.g. smaller font-size) that may make the ellipsis smaller, right?",
+      "revId": "b91d9c0b36eb861bd9b6357cc7961aa3d3994ccd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79946a1b_177909c1",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 978,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-02-13T15:56:18Z",
+      "side": 1,
+      "message": "Should the ellipsis run always be created with the same direction as the paragraph?",
+      "revId": "b91d9c0b36eb861bd9b6357cc7961aa3d3994ccd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
