@@ -342,6 +342,43 @@ DEF_TEST(SkRasterPipeline_ReenableLoopMask, r) {
     }
 }
 
+DEF_TEST(SkRasterPipeline_CaseOp, r) {
+    alignas(64) int32_t initial[]  = {~0, ~0, ~0, ~0, ~0,  0, ~0, ~0,  // dr (condition)
+                                       0, ~0, ~0,  0, ~0, ~0,  0, ~0,  // dg (loop)
+                                      ~0,  0, ~0, ~0,  0,  0,  0, ~0,  // db (return)
+                                       0,  0, ~0,  0,  0,  0,  0, ~0}; // da (combined)
+    alignas(64) int32_t values[]   = { 2,  1,  2,  4,  5,  2,  2,  8};
+    alignas(64) int32_t dst[4 * SkRasterPipeline_kMaxStride_highp] = {};
+    static_assert(std::size(initial) == (4 * SkRasterPipeline_kMaxStride_highp));
+
+    SkRasterPipeline_CaseOpCtx ctx;
+    ctx.ptr = values;
+    ctx.expectedValue = 2;
+
+    SkRasterPipeline_<256> p;
+    p.append(SkRasterPipelineOp::load_dst, initial);
+    p.append(SkRasterPipelineOp::case_op, &ctx);
+    p.append(SkRasterPipelineOp::store_dst, dst);
+    p.run(0,0,SkOpts::raster_pipeline_highp_stride,1);
+
+    const int dr = 0 * SkOpts::raster_pipeline_highp_stride;
+    const int dg = 1 * SkOpts::raster_pipeline_highp_stride;
+    const int db = 2 * SkOpts::raster_pipeline_highp_stride;
+    const int da = 3 * SkOpts::raster_pipeline_highp_stride;
+    for (size_t index = 0; index < SkOpts::raster_pipeline_highp_stride; ++index) {
+        // `dg` have been set to true for each lane containing 2.
+        bool match = (values[index] == 2);
+        REPORTER_ASSERT(r, dst[dg + index] == (initial[dg + index] | match));
+
+        // `dr` and `db` should be unchanged.
+        REPORTER_ASSERT(r, dst[dr + index] == initial[dr + index]);
+        REPORTER_ASSERT(r, dst[db + index] == initial[db + index]);
+
+        // `da` should contain `dr & dg & gb`.
+        REPORTER_ASSERT(r, dst[da + index] == (dst[dr+index] & dst[dg+index] & dst[db+index]));
+    }
+}
+
 DEF_TEST(SkRasterPipeline_MaskOffLoopMask, r) {
     alignas(64) int32_t initial[]  = {~0, ~0, ~0, ~0, ~0,  0, ~0, ~0,  // dr (condition)
                                       ~0,  0, ~0, ~0,  0,  0,  0, ~0,  // dg (loop)
