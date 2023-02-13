@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6c089fde_fa4f474e",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-02-13T16:04:05Z",
+      "side": 1,
+      "message": "Yes, with different font sizes I can come up with a situation when we should continue trying to place en ellipsis even if it\u0027s longer than the entire line. Another font can be smaller and it will fit.\n(This is the difference between my approach and Safari; they take the very first font only).",
+      "parentUuid": "09237ddd_bd23e228",
+      "revId": "b91d9c0b36eb861bd9b6357cc7961aa3d3994ccd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "79946a1b_177909c1",
         "filename": "modules/skparagraph/src/TextLine.cpp",
         "patchSetId": 5
@@ -31,6 +49,24 @@
       "writtenOn": "2023-02-13T15:56:18Z",
       "side": 1,
       "message": "Should the ellipsis run always be created with the same direction as the paragraph?",
+      "revId": "b91d9c0b36eb861bd9b6357cc7961aa3d3994ccd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67fd4a75_87e203e8",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 978,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-02-13T16:04:05Z",
+      "side": 1,
+      "message": "Yes, but if the ellipsis is positioned on the left we have to draw it first and then the rest of the text; if it\u0027s on the right, then first goes the text and then the ellipsis. Look down and you will see the other case (line 1013). It probably does not matter but I prefer to place glyphs in the visual order and not to jump back and forth.",
+      "parentUuid": "79946a1b_177909c1",
       "revId": "b91d9c0b36eb861bd9b6357cc7961aa3d3994ccd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
