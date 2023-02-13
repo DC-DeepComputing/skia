@@ -16,6 +16,29 @@
       "message": "Thanks for the quick review!",
       "revId": "8368bc8a48e953548a168731fda11af84f28c1fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad42d839_8653b523",
+        "filename": "src/core/SkStrikeSpec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-13T15:58:00Z",
+      "side": 1,
+      "message": "Will passing in the right scale matrix here do what you want? This seems like the kind of thing SkScalerContext::internalGetPath (SkScalerContext.cpp:749) already does normally for a CTM? If not it would be interesting to state what is different.",
+      "range": {
+        "startLine": 196,
+        "startChar": 66,
+        "endLine": 196,
+        "endChar": 79
+      },
+      "revId": "8368bc8a48e953548a168731fda11af84f28c1fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
