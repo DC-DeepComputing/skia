@@ -5,10 +5,13 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkData.h"
 #include "include/core/SkDataTable.h"
+
+
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkOnce.h"
+
+#include <cstring>
 
 static void malloc_freeproc(void* context) {
     sk_free(context);
