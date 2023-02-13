@@ -70,6 +70,42 @@
       "parentUuid": "9935ae8f_5b9e4ba8",
       "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e245926_11bb91f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2023-02-13T21:28:34Z",
+      "side": 1,
+      "message": "Okay, I gave it a shot.  The problem is that the code that decodes images is not the code that creates the graphics api specific textures.  The decoder returns memory in the format of an SkBitmap instance.  If there is no way to represent BGR10XR in SkColorType we don\u0027t have a valid SkBitmap.",
+      "parentUuid": "7540caa1_0ec1af7b",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6b17896_f44661ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2023-02-13T21:28:34Z",
+      "side": 1,
+      "message": "Hey Brian, I gave it a shot.  skcms is private",
+      "parentUuid": "7540caa1_0ec1af7b",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
