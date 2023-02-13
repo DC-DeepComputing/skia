@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00bc4ec0_0515f3ff",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-13T10:26:28Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9c386dc5_d014608b",
+      "range": {
+        "startLine": 119,
+        "startChar": 4,
+        "endLine": 119,
+        "endChar": 22
+      },
+      "revId": "68e3d3d2077293758514490f2aec568aa41f668e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67ef6253_aa22d287",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-10T19:52:40Z",
       "side": 1,
       "message": "At least for uniforms (not SSBOs), we should be able to have this available on the `fActiveGraphiscPipeline` and use that directly instead of carrying the value around in `BindBufferInfo`.\n\nSince we\u0027d have to add code to sum this up in DawnGraphicsPipeline::Make(), could we get away with just setting this to either 64k or kWholeSize when the DawnBuffer is smaller?",
+      "range": {
+        "startLine": 510,
+        "startChar": 20,
+        "endLine": 510,
+        "endChar": 98
+      },
+      "revId": "68e3d3d2077293758514490f2aec568aa41f668e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3de4099_5a609041",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-02-13T10:26:28Z",
+      "side": 1,
+      "message": "Yes. clamping to 64KB would work. I imagine you would do the same for Vulkan backend in future.\n\nDone.",
+      "parentUuid": "67ef6253_aa22d287",
       "range": {
         "startLine": 510,
         "startChar": 20,
