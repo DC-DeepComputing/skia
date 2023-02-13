@@ -270,6 +270,13 @@ static bool compatible_sampling(const SkSamplingOptions& currentSampling,
         *nextSampling =  SkSamplingOptions::Aniso(std::max(currentSampling.maxAniso,
                                                            nextSampling->maxAniso));
         return true;
+    } else if (currentSampling.isAniso() && nextSampling->filter == SkFilterMode::kLinear) {
+        // Assume we can get away with the current anisotropic filter since the next is linear
+        *nextSampling = currentSampling;
+        return true;
+    } else if (nextSampling->isAniso() && currentSampling.filter == SkFilterMode::kLinear) {
+        // Mirror of the aove, assume we can just get away with next's anisotropic filter
+        return true;
     } else if (currentSampling.useCubic && (nextSampling->filter == SkFilterMode::kLinear ||
                                             (nextSampling->useCubic &&
                                              currentSampling.cubic.B == nextSampling->cubic.B &&
