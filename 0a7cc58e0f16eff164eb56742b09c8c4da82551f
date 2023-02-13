@@ -52,6 +52,24 @@
       "parentUuid": "15ae2825_db160377",
       "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7540caa1_0ec1af7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-13T17:56:32Z",
+      "side": 1,
+      "message": "Motivation: Yes -- adding in and plumbing a SkColorType that has extremely limited implementation feels like something we should avoid if we can.\n\nAs for compute: It should be exactly the same work either way. The codec logic that\u0027s been added is going to do a decode to 8888, then invoke skcms to do a format + colorspace conversion. Alternately, you can ask the codec to decode to 8888, then invoke skcms to do a format + colorspace conversion. I think the cost is identical.",
+      "parentUuid": "9935ae8f_5b9e4ba8",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
