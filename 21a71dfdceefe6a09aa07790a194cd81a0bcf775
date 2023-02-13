@@ -22,6 +22,30 @@
       },
       "revId": "21a71dfdceefe6a09aa07790a194cd81a0bcf775",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bc51efa_200298d0",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 3722,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-13T15:04:16Z",
+      "side": 1,
+      "message": "Yes, this is intentional. On L3720 we take `mix(a, x, y)` which puts the interpolation point first. We reorder the arguments when we call `lerp(x, y, a)` which is written with a GLSL-style ordering (interpolation point last). I\u0027m trying to call out this discrepancy in argument ordering. I could rephrase the comment if you can think of a better phrasing which makes this more clear.",
+      "parentUuid": "e8d6bcf6_a3323154",
+      "range": {
+        "startLine": 3722,
+        "startChar": 14,
+        "endLine": 3722,
+        "endChar": 24
+      },
+      "revId": "21a71dfdceefe6a09aa07790a194cd81a0bcf775",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
