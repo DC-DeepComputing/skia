@@ -32,20 +32,21 @@ bool SkJpegGetMultiPictureGainmap(const SkJpegMultiPictureParameters* mpParams,
                                   std::unique_ptr<SkStream>* outGainmapImageStream) {
     // Extract the Multi-Picture image streams in the original decoder stream (we needed the scan to
     // find the offsets of the MP images within the original decoder stream).
-    auto mpStreams = SkJpegExtractMultiPictureStreams(mpParams, mpParamsSegment, decoderSource);
-    if (!mpStreams) {
-        SkCodecPrintf("Failed to extract MP image streams.\n");
+    auto mpImages = SkJpegExtractMultiPictureImageData(mpParams, mpParamsSegment, decoderSource);
+    if (mpImages.empty()) {
+        SkCodecPrintf("Failed to extract MP images.\n");
         return false;
     }
 
     // Iterate over the MP image streams.
-    for (auto& mpImage : mpStreams->images) {
-        if (!mpImage.stream) {
+    for (auto& mpImage : mpImages) {
+        if (!mpImage) {
             continue;
         }
 
         // Create a temporary source manager for this MP image.
-        auto mpImageSource = SkJpegSourceMgr::Make(mpImage.stream.get());
+        SkMemoryStream mpImageStream(mpImage);
+        auto mpImageSource = SkJpegSourceMgr::Make(&mpImageStream);
 
         // Collect the potential XMP segments.
         std::vector<sk_sp<SkData>> app1Params;
@@ -75,11 +76,7 @@ bool SkJpegGetMultiPictureGainmap(const SkJpegMultiPictureParameters* mpParams,
         // This MP image is the gainmap image. Populate its stream and the rendering parameters
         // for its format.
         if (outGainmapImageStream) {
-            if (!mpImage.stream->rewind()) {
-                SkCodecPrintf("Failed to rewind gainmap image stream.\n");
-                return false;
-            }
-            *outGainmapImageStream = std::move(mpImage.stream);
+            *outGainmapImageStream = SkMemoryStream::MakeCopy(mpImage->data(), mpImage->size());
         }
         *outInfo = info;
         return true;
@@ -112,19 +109,16 @@ bool SkJpegGetJpegRGainmap(const SkJpegXmp* xmp,
     const size_t itemOffsetFromStartOfImage = endOfImageOffset + itemOffsetFromEndOfImage;
 
     // Extract the gainmap image's stream.
-    auto gainmapImageStream = decoderSource->getSubsetStream(itemOffsetFromStartOfImage, itemSize);
-    if (!gainmapImageStream) {
-        SkCodecPrintf("Failed to extract gainmap stream.");
+    auto gainmapImageData = decoderSource->getSubset(itemOffsetFromStartOfImage, itemSize);
+    if (!gainmapImageData) {
+        SkCodecPrintf("Failed to extract gainmap data.");
         return false;
     }
 
     // Populate the output parameters for this format.
     if (outGainmapImageStream) {
-        if (!gainmapImageStream->rewind()) {
-            SkCodecPrintf("Failed to rewind gainmap image stream.");
-            return false;
-        }
-        *outGainmapImageStream = std::move(gainmapImageStream);
+        *outGainmapImageStream =
+                SkMemoryStream::MakeCopy(gainmapImageData->data(), gainmapImageData->size());
     }
 
     *outInfo = info;
