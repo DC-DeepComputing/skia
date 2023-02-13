@@ -16,6 +16,24 @@
       "message": "Skia builds with C++17 and will continue to do so for some time. It may be interesting to also add a C++20 build to ensure we build with that as well, since C++20 introduces so many backwards incompatibilities. Skia is an actual library built by many users outside of Chromium where the default C++ version may not be C++17 or greater. Also, note that this is not really in any way related to the Chromium build of Skia, which is in \u003cchromium\u003e/src/skia/BUILD.gn.",
       "revId": "8d7705e8bafa235e27d5421f03ee27f5ccb2ed11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9070627c_2ae1e8ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2023-02-13T18:41:26Z",
+      "side": 1,
+      "message": "I see -- so modifying just that file is sufficient to build all Skia sources in C++20 in Chromium?\n\nFor context, Chromium is moving to C++20 imminently, so adding a C++20 builder in Skia upstream probably makes sense, as otherwise any incompatibilities that land will halt the autoroller. For now, I\u0027ll abandon this change and simply fix any compile incompatibilities that currently occur (I didn\u0027t see any locally).",
+      "parentUuid": "bb939ecb_fcc4f5ea",
+      "revId": "8d7705e8bafa235e27d5421f03ee27f5ccb2ed11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
