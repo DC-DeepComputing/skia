@@ -221,7 +221,6 @@ skia_wasm_lib("canvaskit") {
   }
 
   ldflags += [
-    "-std=c++17",
     "--bind",
     "--no-entry",
     "--pre-js",
