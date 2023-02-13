@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54606da4_cd4a81d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-13T16:32:56Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "461abbe40f5d2ac52079399eac6f336768b57c42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43a80f5e_8d470b9b",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2691,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-13T16:32:56Z",
+      "side": 1,
+      "message": "An alternative I see would be to have SkBlender::Mode() return some default blendmode like kSrc or kSrcOver when bmode is invalid. WDYT?",
+      "range": {
+        "startLine": 2691,
+        "startChar": 35,
+        "endLine": 2691,
+        "endChar": 50
+      },
+      "revId": "461abbe40f5d2ac52079399eac6f336768b57c42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
