@@ -1375,6 +1375,7 @@ optional("raw") {
 
 optional("typeface_freetype") {
   enabled = skia_use_freetype
+  public_defines = [ "SK_TYPEFACE_FACTORY_FREETYPE" ]
 
   deps = [ "//third_party/freetype2" ]
   sources = [
