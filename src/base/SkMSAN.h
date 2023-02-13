@@ -8,8 +8,9 @@
 #ifndef SkMSAN_DEFINED
 #define SkMSAN_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/private/base/SkAssert.h"
 
+#include <cstddef>
 #include <string.h>
 
 // Typically declared in LLVM's msan_interface.h.  Easier for us to just re-declare.
@@ -39,4 +40,4 @@ static inline void sk_msan_mark_initialized(const void* begin, const void* end, 
 #endif
 }
 
-#endif//SkMSAN_DEFINED
+#endif //SkMSAN_DEFINED

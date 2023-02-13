@@ -31,6 +31,7 @@ skia_filegroup(
 skia_filegroup(
     name = "srcs",
     srcs = [
+        "SkEncoder.cpp",
         "SkImageEncoder.cpp",
         ":optional_srcs",
     ],
@@ -59,4 +60,15 @@ skia_cc_deps(
             ":webp_encode_codec": ["@libwebp"],
         },
     ),
+)
+
+skia_filegroup(
+    name = "buffet_png_encode_srcs",
+    srcs = [
+        "SkEncoder.cpp",
+        "SkImageEncoderFns.h",
+        "SkImageEncoderPriv.h",
+        "SkPngEncoder.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
 )
