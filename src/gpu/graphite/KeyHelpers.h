@@ -29,6 +29,7 @@ class KeyContext;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class UniquePaintParamsID;
+enum class ReadSwizzle;
 
 /**
  * The KeyHelpers can be used to manually construct an SkPaintParamsKey.
@@ -145,11 +146,13 @@ struct ImageShaderBlock {
         ImageData(const SkSamplingOptions& sampling,
                   SkTileMode tileModeX,
                   SkTileMode tileModeY,
-                  SkRect subset);
+                  SkRect subset,
+                  ReadSwizzle readSwizzle);
 
         SkSamplingOptions fSampling;
         SkTileMode fTileModes[2];
         SkRect fSubset;
+        ReadSwizzle fReadSwizzle;
 
         SkColorSpaceXformSteps fSteps;
 
