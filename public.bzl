@@ -503,7 +503,7 @@ BASE_SRCS_ALL = [
     "src/core/SkM44.cpp",
     "src/core/SkMD5.cpp",
     "src/core/SkMD5.h",
-    "src/core/SkMSAN.h",
+    "src/base/SkMSAN.h",
     "src/core/SkMallocPixelRef.cpp",
     "src/core/SkMask.cpp",
     "src/core/SkMask.h",
