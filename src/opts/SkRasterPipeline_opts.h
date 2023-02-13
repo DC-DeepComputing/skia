@@ -3255,6 +3255,13 @@ STAGE_TAIL(merge_loop_mask, I32* ptr) {
     update_execution_mask();
 }
 
+STAGE_TAIL(case_op, SkRasterPipeline_CaseOpCtx* ctx) {
+    // Enable the loop mask in lanes where the value at the pointer matches the expected value.
+    I32 actualValue = *(I32*)ctx->ptr;
+    dg = sk_bit_cast<F>(sk_bit_cast<I32>(dg) | cond_to_mask(actualValue == ctx->expectedValue));
+    update_execution_mask();
+}
+
 STAGE_TAIL(load_return_mask, F* ctx) {
     db = sk_unaligned_load<F>(ctx);
     update_execution_mask();

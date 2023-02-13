@@ -179,4 +179,9 @@ struct SkRasterPipeline_BranchIfEqualCtx : public SkRasterPipeline_BranchCtx {
     const int *ptr;
 };
 
+struct SkRasterPipeline_CaseOpCtx {
+    const int* ptr;
+    int expectedValue;
+};
+
 #endif  // SkRasterPipelineOpContexts_DEFINED
