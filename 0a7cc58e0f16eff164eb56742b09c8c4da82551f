@@ -34,6 +34,24 @@
       "parentUuid": "60d3f825_ef22a6f9",
       "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9935ae8f_5b9e4ba8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2023-02-13T17:46:31Z",
+      "side": 1,
+      "message": "Wouldn\u0027t that result in extra compute though?  I can look into it, I wonder what the motivation is though since this works.  Do we not want an SkColorType that hasn\u0027t been fully implemented across all usage?",
+      "parentUuid": "15ae2825_db160377",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
