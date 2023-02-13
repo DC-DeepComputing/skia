@@ -39,6 +39,30 @@
       },
       "revId": "8368bc8a48e953548a168731fda11af84f28c1fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d9b39a7_e5758b40",
+        "filename": "src/core/SkStrikeSpec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-13T16:51:51Z",
+      "side": 1,
+      "message": "Doesn\u0027t that also affect font size? Currently, the code uses font size as the way it produces larger glyphs. Could it be that instead of changing the font size, that we just calculate the scale factor, keep the font size the same, and use the matrix to produce the glyph size we want?",
+      "parentUuid": "ad42d839_8653b523",
+      "range": {
+        "startLine": 196,
+        "startChar": 66,
+        "endLine": 196,
+        "endChar": 79
+      },
+      "revId": "8368bc8a48e953548a168731fda11af84f28c1fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
