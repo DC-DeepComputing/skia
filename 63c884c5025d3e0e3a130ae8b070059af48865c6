@@ -33,6 +33,23 @@
       "message": "Note: The 2 Test-Ubuntu failures don\u0027t seem related to this CL?\n\n```ninja: error: WriteFile(./text_editor.rsp): Unable to close the file. No space left on device\nninja: build stopped: .```",
       "revId": "63c884c5025d3e0e3a130ae8b070059af48865c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f632e2c2_16b50e28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-13T22:07:44Z",
+      "side": 1,
+      "message": "LGTM assuming the build issues are just a glitch.",
+      "revId": "63c884c5025d3e0e3a130ae8b070059af48865c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
