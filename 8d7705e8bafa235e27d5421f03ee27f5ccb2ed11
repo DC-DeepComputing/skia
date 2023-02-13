@@ -34,6 +34,24 @@
       "parentUuid": "bb939ecb_fcc4f5ea",
       "revId": "8d7705e8bafa235e27d5421f03ee27f5ccb2ed11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19d94384_466b7b43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-13T18:47:18Z",
+      "side": 1,
+      "message": "Yes, the only thing that should be required is to update https://source.chromium.org/chromium/chromium/src/+/main:skia/BUILD.gn;l\u003d623;drc\u003d54aa31e273eac8459cad4149575da7bf00c01301 . Though it looks like https://source.chromium.org/chromium/chromium/src/+/main:skia/BUILD.gn;l\u003d130;drc\u003d54aa31e273eac8459cad4149575da7bf00c01301 could also be removed now as well.",
+      "parentUuid": "9070627c_2ae1e8ee",
+      "revId": "8d7705e8bafa235e27d5421f03ee27f5ccb2ed11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
