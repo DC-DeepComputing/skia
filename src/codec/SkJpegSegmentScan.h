@@ -8,15 +8,13 @@
 #ifndef SkJpegSegmentScan_codec_DEFINED
 #define SkJpegSegmentScan_codec_DEFINED
 
-#include "include/core/SkRefCnt.h"
+#include "include/core/SkTypes.h"
+
+#ifdef SK_CODEC_DECODES_JPEG
 
 #include <cstddef>
 #include <cstdint>
-#include <memory>
 #include <vector>
-
-class SkData;
-class SkStream;
 
 /*
  * A JPEG segment.
@@ -137,5 +135,5 @@ private:
 
     std::vector<SkJpegSegment> fSegments;
 };
-
+#endif  // SK_CODEC_DECODES_JPEG
 #endif
