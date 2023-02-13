@@ -22,6 +22,30 @@
       },
       "revId": "0bd4978e527469c160ef09fafd2a144b1c81fcd9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb018274_92143d8e",
+        "filename": "src/gpu/graphite/ComputePipelineDesc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-13T15:25:22Z",
+      "side": 1,
+      "message": "I\u0027m not sure about the lifetime issues either, but I think if possible the constructor interface should be consistent, i.e., if a GraphitePipelineDesc takes an ID then the ComputePipelineDesc should, or both should take corresponding \u0027Step\u0027 pointer.",
+      "parentUuid": "5fa2ee4c_08228d44",
+      "range": {
+        "startLine": 22,
+        "startChar": 67,
+        "endLine": 22,
+        "endChar": 92
+      },
+      "revId": "0bd4978e527469c160ef09fafd2a144b1c81fcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
