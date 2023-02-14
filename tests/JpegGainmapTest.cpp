@@ -248,26 +248,27 @@ DEF_TEST(Codec_jpegMultiPicture, r) {
         auto sourceMgr = SkJpegSourceMgr::Make(&testStream, rec.bufferSize);
 
         // Extract the streams for the MultiPicture images.
-        auto mpStreams =
-                SkJpegExtractMultiPictureStreams(&testMpParams, mpParamsSegment, sourceMgr.get());
-        REPORTER_ASSERT(r, mpStreams);
-        size_t numberOfImages = mpStreams->images.size();
+        auto mpImages = SkJpegExtractMultiPictureImagesData(
+                &testMpParams, mpParamsSegment, sourceMgr.get());
+        REPORTER_ASSERT(r, !mpImages.empty());
+        size_t numberOfImages = mpImages.size();
 
         // Decode them into bitmaps.
         std::vector<SkBitmap> bitmaps(numberOfImages);
         for (size_t i = 0; i < numberOfImages; ++i) {
-            auto imageStream = std::move(mpStreams->images[i].stream);
+            auto imageData = mpImages[i];
             if (i == 0) {
-                REPORTER_ASSERT(r, !imageStream);
+                REPORTER_ASSERT(r, !imageData);
                 continue;
             }
             if (i == 1 && rec.skipFirstImage) {
-                REPORTER_ASSERT(r, !imageStream);
+                REPORTER_ASSERT(r, !imageData);
                 continue;
             }
-            REPORTER_ASSERT(r, imageStream);
+            REPORTER_ASSERT(r, imageData);
 
-            std::unique_ptr<SkCodec> codec = SkCodec::MakeFromStream(std::move(imageStream));
+            std::unique_ptr<SkCodec> codec =
+                    SkCodec::MakeFromStream(SkMemoryStream::Make(imageData));
             REPORTER_ASSERT(r, codec);
 
             SkBitmap bm;
