@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "26be098b_d86113ac",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-14T18:52:50Z",
+      "side": 1,
+      "message": "Seems like there should be a blank line before this? It\u0027s easy to not see that the following two are in a namespace since they aren\u0027t indented and there\u0027s no break before this line.",
+      "revId": "39fa85dd9e6a1a007c5829eb970697f473ca3280",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d4c3863_9698ae12",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 2368,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-14T18:52:50Z",
+      "side": 1,
+      "message": "Before I think this would have had a default move constructor as well, but it is now default deleted? Should do all five here (including `operator\u003d`) and then default all of them in SkCanvas.cpp. Also, this comment can just be one line with the important part \"// Out of line to avoid including SkSpecialImage.h\".",
+      "revId": "39fa85dd9e6a1a007c5829eb970697f473ca3280",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e4dee9d3_62fab272",
         "filename": "src/core/SkBitmap.cpp",
         "patchSetId": 11
