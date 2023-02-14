@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d40484a0_95a2c3c0",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T18:25:03Z",
+      "side": 1,
+      "message": "I personally do not like this approach of having variables and then injecting them in exactly one place. Just inline these.",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 22
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f94d1415_c4e18e75",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T18:25:03Z",
+      "side": 1,
+      "message": "All http_archives should include at least 2 urls (see //bazel/gcs_mirror)\n\nAlso, the archive link from GitHub is *not* guaranteed to stay the same. \nhttps://skia-review.googlesource.com/c/buildbot/+/635613\n\nFor this reason, the mirror created should come first, given that https://github.com/bazelbuild/rules_jvm_external/releases/tag/4.5 does not actually upload the source code to a stable GitHub URL.",
+      "range": {
+        "startLine": 101,
+        "startChar": 4,
+        "endLine": 101,
+        "endChar": 7
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c04424b6_f52d495a",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T18:25:03Z",
+      "side": 1,
+      "message": "You should make a comment that 1.6.0-rc1 did not work and link to a tracking bug filed with the owners of this library.",
+      "range": {
+        "startLine": 116,
+        "startChar": 18,
+        "endLine": 116,
+        "endChar": 39
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ebaea05_5f0bf0a4",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T18:25:03Z",
+      "side": 1,
+      "message": "Explicitly call this out as a non-hermetic use of an Android SDK/NDK.\n\nDo we plan to ever have a hermetic version? Mention the rationale for this in the commit message.",
+      "range": {
+        "startLine": 229,
+        "startChar": 2,
+        "endLine": 229,
+        "endChar": 7
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48d398cd_50aa1d12",
+        "filename": "bazel/platform/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T18:25:03Z",
+      "side": 1,
+      "message": "Call this android_arm32 to make it explicitly a 32 bit build.",
+      "range": {
+        "startLine": 57,
+        "startChar": 12,
+        "endLine": 57,
+        "endChar": 23
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5099ace3_3ee35ba5",
+        "filename": "bazel/platform/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T18:25:03Z",
+      "side": 1,
+      "message": "In theory, we should probably use one of the armv* options to be more explicit, but I don\u0027t know enough to recommend one.",
+      "range": {
+        "startLine": 60,
+        "startChar": 21,
+        "endLine": 60,
+        "endChar": 28
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
