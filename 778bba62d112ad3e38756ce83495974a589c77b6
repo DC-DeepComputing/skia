@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11efe152_e30ec298",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T15:20:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c1905ef_2e5c6272",
+      "revId": "778bba62d112ad3e38756ce83495974a589c77b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed7f2b0d_1da96dc5",
@@ -66,6 +84,24 @@
       "writtenOn": "2023-02-14T15:11:48Z",
       "side": 1,
       "message": "ditto",
+      "revId": "778bba62d112ad3e38756ce83495974a589c77b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31e1d2d4_fad45670",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T15:20:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed7f2b0d_1da96dc5",
       "revId": "778bba62d112ad3e38756ce83495974a589c77b6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
