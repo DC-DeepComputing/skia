@@ -16,6 +16,24 @@
       "message": "We could enable these in our clang-tidy as well, if you are willing to do the one-time jumbo fixup that this would entail.\n\nWhen I was new on the team, I did a lot of these cleanups, but eventually burned through enough reviewer goodwill that I backed off of them. I will volunteer to review these if you are willing to do the fixups. IIRC you just need to set up a dedicated gn out directory for clang-tidy testing (and we might be able to do it with Bazel now?)",
       "revId": "778bba62d112ad3e38756ce83495974a589c77b6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcfa0cdb_8e24b248",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T15:11:03Z",
+      "side": 1,
+      "message": "Adding clang-tidy to the Bazel build sgtm. See b/256862645 for the tracking bug.",
+      "parentUuid": "dee530b0_20810338",
+      "revId": "778bba62d112ad3e38756ce83495974a589c77b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
