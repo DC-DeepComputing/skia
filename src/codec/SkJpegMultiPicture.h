@@ -64,23 +64,16 @@ struct SkJpegMultiPictureParameters {
 };
 
 /*
- * Create SkStreams for all MultiPicture images, given an SkJpegSourceMgr for an image, and the
- * SkJpegSegment whose parameters produced the parameters. This will return nullptr if there is not
- * MultiPicture segment, or if the MultiPicture parameters fail to parse.
+ * Create SkData for all MultiPicture images, given an SkJpegSourceMgr for an image, and the
+ * SkJpegSegment whose parameters produced the parameters. This will return an empty vector if there
+ * is not MultiPicture segment, or if the MultiPicture parameters fail to parse.
+ *
+ * The returned vector will have an entry for each image listed in the Index Image File Directory.
+ * The entry is nullptr for the First Individual Image and for any images which encounter errors
+ * (e.g, they are outside of the range of the stream). If possible, the result will refer directly
+ * to memory owned by stream of the SkJpegSourceMgr that was used to create this object.
  */
-struct SkJpegMultiPictureStreams {
-    // An individual image.
-    struct Image {
-        // An SkStream from which the image's data may be read. This is nullptr for the First
-        // Individual Image and for any images which encounter errors (e.g, they are outside of
-        // the range of the stream).
-        std::unique_ptr<SkStream> stream;
-    };
-
-    // The images as listed in the Index Image File Directory.
-    std::vector<Image> images;
-};
-std::unique_ptr<SkJpegMultiPictureStreams> SkJpegExtractMultiPictureStreams(
+std::vector<sk_sp<SkData>> SkJpegExtractMultiPictureImagesData(
         const SkJpegMultiPictureParameters* mpParams,
         const SkJpegSegment& mpParamsSegment,
         SkJpegSourceMgr* decoderSource);
