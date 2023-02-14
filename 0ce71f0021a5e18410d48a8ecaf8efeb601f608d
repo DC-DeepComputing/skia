@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fa6decc_ea886b53",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-14T14:37:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cff55f6f_7c9506d3",
+      "range": {
+        "startLine": 223,
+        "startChar": 65,
+        "endLine": 223,
+        "endChar": 78
+      },
+      "revId": "0ce71f0021a5e18410d48a8ecaf8efeb601f608d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83a7c018_2d046c35",
@@ -95,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f22e5f17_f7a0984d",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-14T14:37:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5da7f7d3_a2bbc412",
+      "range": {
+        "startLine": 272,
+        "startChar": 21,
+        "endLine": 272,
+        "endChar": 58
+      },
+      "revId": "0ce71f0021a5e18410d48a8ecaf8efeb601f608d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b02cdcb_79e05b82",
@@ -126,6 +174,24 @@
       "side": 1,
       "message": "Add #undefs (and also for DEFINE_AND_READ_UINT above).",
       "parentUuid": "8b02cdcb_79e05b82",
+      "revId": "0ce71f0021a5e18410d48a8ecaf8efeb601f608d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79757172_bb75d273",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-14T14:37:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d049098a_355e5211",
       "revId": "0ce71f0021a5e18410d48a8ecaf8efeb601f608d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
