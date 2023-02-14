@@ -12,6 +12,7 @@
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkFontTypes.h"
+#include "include/core/SkImageFilter.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
@@ -26,13 +27,13 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
+#include "include/private/base/SkCPUTypes.h"
 #include "include/private/base/SkDeque.h"
-#include "include/private/base/SkMacros.h"
 
+#include <cstdint>
 #include <cstring>
 #include <memory>
 #include <optional>
-#include <vector>
 
 #ifndef SK_SUPPORT_LEGACY_GETTOTALMATRIX
 #define SK_SUPPORT_LEGACY_GETTOTALMATRIX
@@ -44,29 +45,29 @@ class GlyphRunList;
 }
 
 class AutoLayerForImageFilter;
-class GrBackendRenderTarget;
 class GrRecordingContext;
 class SkBaseDevice;
 class SkBitmap;
+class SkBlender;
 class SkData;
 class SkDrawable;
-struct SkDrawShadowRec;
 class SkFont;
 class SkImage;
-class SkImageFilter;
+class SkMesh;
 class SkPaintFilterCanvas;
 class SkPath;
 class SkPicture;
 class SkPixmap;
-class SkRegion;
 class SkRRect;
-struct SkRSXform;
-class SkMesh;
+class SkRegion;
+class SkShader;
 class SkSpecialImage;
 class SkSurface;
 class SkSurface_Base;
 class SkTextBlob;
 class SkVertices;
+struct SkDrawShadowRec;
+struct SkRSXform;
 
 namespace skgpu::graphite { class Recorder; }
 namespace sktext::gpu { class Slug; }
@@ -2356,6 +2357,12 @@ private:
 
     // Encapsulate state needed to restore from saveBehind()
     struct BackImage {
+        // Explicitly define these and implement in SkCanvas.cpp to avoid having to include
+        // SkSpecialImage.h
+        BackImage(sk_sp<SkSpecialImage>, SkIPoint);
+        BackImage(const BackImage&);
+        ~BackImage();
+
         sk_sp<SkSpecialImage> fImage;
         SkIPoint              fLoc;
     };
