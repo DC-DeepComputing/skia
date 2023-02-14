@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b97e2e2c_72dc02fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T19:50:05Z",
+      "side": 1,
+      "message": "Just waiting on http://ag/21423604 and then hopefully a happy Android canary",
+      "revId": "08d16efcb207cb5eed733346f4f77c51dd8188de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
