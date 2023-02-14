@@ -46,6 +46,30 @@
       },
       "revId": "0bd4978e527469c160ef09fafd2a144b1c81fcd9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33dfb8e9_ec1ed6d0",
+        "filename": "src/gpu/graphite/ComputePipelineDesc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-14T16:19:31Z",
+      "side": 1,
+      "message": "Originally GraphicsPipelineDesc just held on to a RenderStep* since the lifetime was guaranteed to outlive the description.\n\nThat lifetime guarantee still exists for RenderSteps since they live as long as the SHaredContext. If ComputeSteps could have the same guarantee it could also just stay as a pointer.\n\nOne of the main reasons for switching to an id from a pointer was to keep the pipeline description compact. GraphicsPipelineDesc is just 64 bits now instead of 128 (including alignment padding). It certainly complicates look up since you have to be able to get to the RendererProvider in order to generate the SkSL, but that is not a performance critical path so I figured it was worth while. Having the description be just integer types makes it easier to write dependent keys as well, since caps have to combine them into a final render pass key.\n\nIt\u0027s valid to cast the RenderStep* or ComputeStep* to a uintptr_t and use that in the key but then all of our keys get 4 bytes bigger.",
+      "parentUuid": "fb018274_92143d8e",
+      "range": {
+        "startLine": 22,
+        "startChar": 67,
+        "endLine": 22,
+        "endChar": 92
+      },
+      "revId": "0bd4978e527469c160ef09fafd2a144b1c81fcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
