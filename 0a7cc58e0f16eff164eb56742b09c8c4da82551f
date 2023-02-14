@@ -142,6 +142,24 @@
       "parentUuid": "e80b0809_c72b9584",
       "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39018b34_ed381dfe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-14T14:22:59Z",
+      "side": 1,
+      "message": "Looks like there\u0027s one switch missing a case (in tools/HashAndEncode.cpp).",
+      "parentUuid": "442fc40e_4dfb3d61",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
