@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61a35410_19e765ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-14T00:04:02Z",
+      "side": 1,
+      "message": "The various formats have pivoted to using MPF, so now we need to encode this. Fortunately it allows me to delete a bunch of other stuff later.\n\nI also want to put all of this stuff in a SkJpegMultiPicture class (with sub-structs and static methods). But I\u0027ll do that in a separate patch (already enough refactoring here!)",
+      "revId": "5692936267c6cde13987ca34b6e6ac6108909fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
