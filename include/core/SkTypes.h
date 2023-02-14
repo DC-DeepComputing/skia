@@ -171,22 +171,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/** @return the number of entries in an array (not a pointer)
-*/
-// The SkArrayCountHelper template returns a type 'char (&)[N]', a reference to an array of
-// char with N elements, where N is deduced using function parameter type deduction. This is then
-// used in the sizeof operator in SK_ARRAY_COUNT. The sizeof operator ignores the reference, and
-// just evaluates the size of the array type.
-//
-// DEPRECATED: use std::size() instead.
-// Note: Rarely, std::size(z) can't deduce the type of z during compile time for static_assert
-// while SK_ARRAY_COUNT can. It can't be deduced because z is part of class, and the class' this
-// pointer is not a valid constexpr expression. Use SkASSERT instead.
-template <typename T, size_t N> char (&SkArrayCountHelper(T (&array)[N]))[N];
-#define SK_ARRAY_COUNT(array) (sizeof(SkArrayCountHelper(array)))
-
-////////////////////////////////////////////////////////////////////////////////
-
 typedef uint32_t SkFourByteTag;
 static inline constexpr SkFourByteTag SkSetFourByteTag(char a, char b, char c, char d) {
     return (((uint32_t)a << 24) | ((uint32_t)b << 16) | ((uint32_t)c << 8) | (uint32_t)d);
