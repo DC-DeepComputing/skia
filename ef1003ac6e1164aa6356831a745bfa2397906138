@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e24daf31_020a3f42",
+        "filename": "src/gpu/graphite/compute/ComputeStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-14T16:11:32Z",
+      "side": 1,
+      "message": "`\"ComputeSteps using kPathInput must override writePathInput()\"`?",
+      "range": {
+        "startLine": 71,
+        "startChar": 13,
+        "endLine": 71,
+        "endChar": 30
+      },
+      "revId": "ef1003ac6e1164aa6356831a745bfa2397906138",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e28cc5ab_5bfedc26",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-14T16:11:32Z",
+      "side": 1,
+      "message": "Can we generalize this to `kDrawInput`? This flow doesn\u0027t necessarily have to be tied to an SkPath. I could imagine a compute based stroker that would want to process the shape and the style that are in DrawParams. \n\nRenderSteps already have the policy that their writeVertices() can assume that the DrawParam\u0027s Geometry is the type that they support, e.g. Shape or SubRun. And the same goes for the specific type of Shape, although those can always be converted into an SkPath.",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 19
+      },
+      "revId": "ef1003ac6e1164aa6356831a745bfa2397906138",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4d26aed_cdeed670",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-14T16:11:32Z",
+      "side": 1,
+      "message": "I think this should be a VertexWriter (which isn\u0027t necessarily the best name given its actual generality for writing templated data). That ensures that consuming code can\u0027t try and read from the buffer or hold on to the address.",
+      "range": {
+        "startLine": 110,
+        "startChar": 72,
+        "endLine": 110,
+        "endChar": 78
+      },
+      "revId": "ef1003ac6e1164aa6356831a745bfa2397906138",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a532a7ef_3cca8a93",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-14T16:11:32Z",
+      "side": 1,
+      "message": "See note above, but I think this should be named such that it\u0027s not implicitly coupled to just paths.",
+      "range": {
+        "startLine": 110,
+        "startChar": 17,
+        "endLine": 110,
+        "endChar": 31
+      },
+      "revId": "ef1003ac6e1164aa6356831a745bfa2397906138",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
