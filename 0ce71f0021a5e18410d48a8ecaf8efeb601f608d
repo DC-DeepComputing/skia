@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cff55f6f_7c9506d3",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-14T14:26:44Z",
+      "side": 1,
+      "message": "Updated to match that we read the offset.",
+      "parentUuid": "fda045c5_00d128a6",
+      "range": {
+        "startLine": 223,
+        "startChar": 65,
+        "endLine": 223,
+        "endChar": 78
+      },
+      "revId": "0ce71f0021a5e18410d48a8ecaf8efeb601f608d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "83a7c018_2d046c35",
         "filename": "src/codec/SkJpegMultiPicture.cpp",
         "patchSetId": 14
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5da7f7d3_a2bbc412",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-14T14:26:44Z",
+      "side": 1,
+      "message": "Changed to ::serialize.",
+      "parentUuid": "83a7c018_2d046c35",
+      "range": {
+        "startLine": 272,
+        "startChar": 21,
+        "endLine": 272,
+        "endChar": 58
+      },
+      "revId": "0ce71f0021a5e18410d48a8ecaf8efeb601f608d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b02cdcb_79e05b82",
         "filename": "src/codec/SkJpegMultiPicture.cpp",
         "patchSetId": 14
@@ -60,6 +108,24 @@
       "writtenOn": "2023-02-14T14:20:36Z",
       "side": 1,
       "message": "`#undef WRITE_UINT16`, ... (We usually try to remember to do this, but I know we have forgotten elsewhere).",
+      "revId": "0ce71f0021a5e18410d48a8ecaf8efeb601f608d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d049098a_355e5211",
+        "filename": "src/codec/SkJpegMultiPicture.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-14T14:26:44Z",
+      "side": 1,
+      "message": "Add #undefs (and also for DEFINE_AND_READ_UINT above).",
+      "parentUuid": "8b02cdcb_79e05b82",
       "revId": "0ce71f0021a5e18410d48a8ecaf8efeb601f608d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
