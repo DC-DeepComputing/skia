@@ -7,3 +7,6 @@
 # [alignment]
 src:.*third_party/externals/libpng/intel/filter_sse2_intrinsics.c
 src:.*third_party/externals/zlib/deflate.c
+
+# Intel Iris Xe Vulkan driver is littered with TSAN failures
+called_from_lib:iris_dri.so
