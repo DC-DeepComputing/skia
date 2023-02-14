@@ -25,6 +25,8 @@ CORE_FILES = [
     "SkMaskSwizzler.h",
     "SkMasks.cpp",
     "SkMasks.h",
+    "SkPixmapUtils.cpp",
+    "SkPixmapUtils.h",
     "SkSampler.cpp",
     "SkSampler.h",
     "SkSwizzler.cpp",
@@ -255,4 +257,22 @@ skia_cc_deps(
             ":webp_decode_codec": ["@libwebp"],
         },
     ),
+)
+
+skia_filegroup(
+    name = "buffet_png_decode_srcs",
+    srcs = [
+        "SkEncodedInfo.cpp",
+        "SkPngCodec.cpp",
+        "SkPngCodec.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "buffet_png_srcs",
+    srcs = [
+        "SkPngPriv.h",
+    ],
+    visibility = ["//src:__pkg__"],
 )

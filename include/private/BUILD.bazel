@@ -31,7 +31,6 @@ skia_filegroup(
         "SkChecksum.h",
         "SkColorData.h",
         "SkEncodedInfo.h",
-        "SkFixed.h",
         "SkGainmapInfo.h",
         "SkGainmapShader.h",
         "SkIDChangeListener.h",
@@ -58,6 +57,7 @@ skia_filegroup(
         # Files listed here will be available to Skia internals via the core_priv target.
         "SkColorData.h",
         "SkIDChangeListener.h",
+        "SkOpts_spi.h",
     ],
     visibility = ["//src:__pkg__"],
 )
