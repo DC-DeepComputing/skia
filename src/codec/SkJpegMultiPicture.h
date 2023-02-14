@@ -21,7 +21,7 @@ struct SkJpegSegment;
 
 /*
  * Parsed Jpeg Multi-Picture Format structure as specified in CIPA DC-x007-2009. An introduction to
- * the format can be found in Figure 1 (Basic MP File format data structure)  and Figure 6 (Internal
+ * the format can be found in Figure 1 (Basic MP File format data structure) and Figure 6 (Internal
  * Structure of the MP Index IFD) in that document. This parsing will extract only the size and
  * offset parameters from the images in the Index Image File Directory.
  */
@@ -70,5 +70,11 @@ std::unique_ptr<SkJpegMultiPictureStreams> SkJpegExtractMultiPictureStreams(
         const SkJpegMultiPictureParameters* mpParams,
         const SkJpegSegment& mpParamsSegment,
         SkJpegSourceMgr* decoderSource);
+
+/*
+ * Serialize Jpeg Multi-Picture Format parameters into a segment. This segment will start with the
+ * {'M', 'P', 'F', 0} signature (it will not include the segment marker or parameter length).
+ */
+sk_sp<SkData> SkJpegMultiPictureParametersSerialize(const SkJpegMultiPictureParameters* parameters);
 
 #endif
