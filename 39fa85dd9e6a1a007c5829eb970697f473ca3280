@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcf4fbc5_20468dd5",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T19:49:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26be098b_d86113ac",
+      "revId": "39fa85dd9e6a1a007c5829eb970697f473ca3280",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d4c3863_9698ae12",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-02-14T18:52:50Z",
       "side": 1,
       "message": "Before I think this would have had a default move constructor as well, but it is now default deleted? Should do all five here (including `operator\u003d`) and then default all of them in SkCanvas.cpp. Also, this comment can just be one line with the important part \"// Out of line to avoid including SkSpecialImage.h\".",
+      "revId": "39fa85dd9e6a1a007c5829eb970697f473ca3280",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "479192f8_7441f929",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 2368,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T19:49:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d4c3863_9698ae12",
       "revId": "39fa85dd9e6a1a007c5829eb970697f473ca3280",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -58,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11a64680_4f72b2ca",
+        "filename": "src/core/SkBitmap.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T19:49:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4dee9d3_62fab272",
+      "range": {
+        "startLine": 644,
+        "startChar": 11,
+        "endLine": 644,
+        "endChar": 21
+      },
+      "revId": "39fa85dd9e6a1a007c5829eb970697f473ca3280",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f35fe02_159a7ad4",
@@ -71,6 +131,30 @@
       "writtenOn": "2023-02-14T18:47:14Z",
       "side": 1,
       "message": "ditto",
+      "range": {
+        "startLine": 650,
+        "startChar": 11,
+        "endLine": 650,
+        "endChar": 31
+      },
+      "revId": "39fa85dd9e6a1a007c5829eb970697f473ca3280",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ec27e4c_e1724fb5",
+        "filename": "src/core/SkBitmap.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-14T19:49:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f35fe02_159a7ad4",
       "range": {
         "startLine": 650,
         "startChar": 11,
