@@ -21,7 +21,7 @@ struct SkJpegSegment;
 
 /*
  * Parsed Jpeg Multi-Picture Format structure as specified in CIPA DC-x007-2009. An introduction to
- * the format can be found in Figure 1 (Basic MP File format data structure)  and Figure 6 (Internal
+ * the format can be found in Figure 1 (Basic MP File format data structure) and Figure 6 (Internal
  * Structure of the MP Index IFD) in that document. This parsing will extract only the size and
  * offset parameters from the images in the Index Image File Directory.
  */
@@ -38,16 +38,22 @@ struct SkJpegMultiPictureParameters {
 
     // The images listed in the Index Image File Directory.
     std::vector<Image> images;
-};
 
-/*
- * Parse Jpeg Multi-Picture Format parameters. The specified data should be APP2 segment parameters,
- * which, if they are MPF parameter, should stat with the {'M', 'P', 'F', 0} signature. Returns
- * nullptr the parameters do not start with the MPF signature, or if there is an error in parsing
- * the parameters.
- */
-std::unique_ptr<SkJpegMultiPictureParameters> SkJpegParseMultiPicture(
+    /*
+     * Parse Jpeg Multi-Picture Format parameters. The specified data should be APP2 segment
+     * parameters, which, if they are MPF parameter, should start with the {'M', 'P', 'F', 0}
+     * signature. Returns nullptr the parameters do not start with the MPF signature, or if there
+     * is an error in parsing the parameters.
+     */
+    static std::unique_ptr<SkJpegMultiPictureParameters> Make(
         const sk_sp<const SkData>& segmentParameters);
+
+    /*
+     * Serialize Jpeg Multi-Picture Format parameters into a segment. This segment will start with the
+     * {'M', 'P', 'F', 0} signature (it will not include the segment marker or parameter length).
+     */
+    sk_sp<SkData> serialize() const;
+};
 
 /*
  * Create SkStreams for all MultiPicture images, given an SkJpegSourceMgr for an image, and the
