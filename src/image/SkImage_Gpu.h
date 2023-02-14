@@ -37,7 +37,6 @@ enum SkColorType : int;
 enum SkYUVColorSpace : int;
 enum class GrColorType;
 enum class GrImageTexGenPolicy : int;
-enum class GrMipmapped : bool;
 enum class GrSemaphoresSubmitted : bool;
 enum class SkTileMode;
 struct GrFlushInfo;
@@ -45,6 +44,10 @@ struct SkIRect;
 struct SkISize;
 struct SkImageInfo;
 struct SkRect;
+
+namespace skgpu {
+enum class Mipmapped : bool;
+}
 
 class SkImage_Gpu final : public SkImage_GpuBase {
 public:
@@ -109,7 +112,7 @@ private:
                 SkColorInfo);
 
     std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
-                                                         GrMipmapped,
+                                                         skgpu::Mipmapped,
                                                          GrImageTexGenPolicy) const override;
 
     std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,

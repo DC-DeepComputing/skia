@@ -29,11 +29,14 @@ class SkMatrix;
 enum SkColorType : int;
 enum class GrColorType;
 enum class GrImageTexGenPolicy : int;
-enum class GrMipmapped : bool;
 enum class GrSemaphoresSubmitted : bool;
 enum class SkTileMode;
 struct GrFlushInfo;
 struct SkRect;
+
+namespace skgpu {
+enum class Mipmapped : bool;
+}
 
 // Wraps the 1 to 4 planes of a YUVA image for consumption by the GPU.
 // Initially any direct rendering will be done by passing the individual planes to a shader.
