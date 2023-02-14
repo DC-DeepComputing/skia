@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a111ea_76be5bea",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4455,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-14T15:59:47Z",
+      "side": 0,
+      "message": "Ooh, per https://b.corp.google.com/issues/188239650 the tessellating path renderer works correctly on SwANGLE. It was just the legacy GL swiftshader that didn\u0027t work with gl_VertexID correctly. I will do an audit to see if we can remove the vertex ID workarounds for tessellating path renderers if this was the only \"device\" that required it.",
+      "range": {
+        "startLine": 4455,
+        "startChar": 8,
+        "endLine": 4455,
+        "endChar": 46
+      },
+      "revId": "8de7f68a3661ec43f5692305b225575292381b1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
