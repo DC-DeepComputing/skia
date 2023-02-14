@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffcecfce_cb5bf9d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-02-14T18:21:58Z",
+      "side": 1,
+      "message": "Can skapp use these instead of duplicating?",
+      "revId": "0f62dbb45d48ed251de5f222efee803dcf7ab55a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
