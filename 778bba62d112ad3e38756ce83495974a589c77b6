@@ -34,6 +34,40 @@
       "parentUuid": "dee530b0_20810338",
       "revId": "778bba62d112ad3e38756ce83495974a589c77b6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c1905ef_2e5c6272",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-02-14T15:11:48Z",
+      "side": 1,
+      "message": "nit: These are now too close for comfort, and the differentiation is lost. Rename to adj_txt or similar.",
+      "revId": "778bba62d112ad3e38756ce83495974a589c77b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed7f2b0d_1da96dc5",
+        "filename": "modules/skottie/src/text/SkottieShaper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-02-14T15:11:48Z",
+      "side": 1,
+      "message": "ditto",
+      "revId": "778bba62d112ad3e38756ce83495974a589c77b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
