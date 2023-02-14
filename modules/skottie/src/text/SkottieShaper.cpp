@@ -565,9 +565,9 @@ private:
 
 } // namespace
 
-Shaper::Result Shaper::Shape(const SkString& orig_txt, const TextDesc& desc, const SkPoint& point,
+Shaper::Result Shaper::Shape(const SkString& text, const TextDesc& desc, const SkPoint& point,
                              const sk_sp<SkFontMgr>& fontmgr) {
-    const AdjustedText txt(orig_txt, desc);
+    const AdjustedText txt(text, desc);
 
     return (desc.fResize == ResizePolicy::kScaleToFit ||
             desc.fResize == ResizePolicy::kDownscaleToFit) // makes no sense in point mode
@@ -575,9 +575,9 @@ Shaper::Result Shaper::Shape(const SkString& orig_txt, const TextDesc& desc, con
             : ShapeImpl(txt, desc, SkRect::MakeEmpty().makeOffset(point.x(), point.y()), fontmgr);
 }
 
-Shaper::Result Shaper::Shape(const SkString& orig_txt, const TextDesc& desc, const SkRect& box,
+Shaper::Result Shaper::Shape(const SkString& text, const TextDesc& desc, const SkRect& box,
                              const sk_sp<SkFontMgr>& fontmgr) {
-    const AdjustedText txt(orig_txt, desc);
+    const AdjustedText txt(text, desc);
 
     switch(desc.fResize) {
     case ResizePolicy::kNone:
