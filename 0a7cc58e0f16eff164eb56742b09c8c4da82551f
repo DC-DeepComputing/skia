@@ -178,6 +178,24 @@
       "parentUuid": "39018b34_ed381dfe",
       "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11d506a9_406ea138",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-14T16:12:49Z",
+      "side": 1,
+      "message": "I think you can omit it from that test (with it not being supported by the GPU, all of the surface creation checks would fail quickly anyway, so it would be ignored). Many of the tests that iterate over color types work that way (try to make a surface/texture, continue if we can\u0027t), but I imagine there are some tests that will require extra care.",
+      "parentUuid": "b466eebb_a64782f1",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
