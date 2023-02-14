@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4dee9d3_62fab272",
+        "filename": "src/core/SkBitmap.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-14T18:47:14Z",
+      "side": 1,
+      "message": "`this-\u003emakeShader`, otherwise it looks like a static method call",
+      "range": {
+        "startLine": 644,
+        "startChar": 11,
+        "endLine": 644,
+        "endChar": 21
+      },
+      "revId": "39fa85dd9e6a1a007c5829eb970697f473ca3280",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f35fe02_159a7ad4",
+        "filename": "src/core/SkBitmap.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-14T18:47:14Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 650,
+        "startChar": 11,
+        "endLine": 650,
+        "endChar": 31
+      },
+      "revId": "39fa85dd9e6a1a007c5829eb970697f473ca3280",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
