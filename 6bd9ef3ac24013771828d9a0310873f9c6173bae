@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "96a69b79_4e095e12",
+        "filename": "src/shaders/SkGainmapShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-15T12:29:06Z",
+      "side": 1,
+      "message": "From my reading of the spec, it\u0027s legal to have a single channel gainmap where some of the per-channel parameters are different. It\u0027s ridiculous, but it\u0027s legal.\n\nSo I\u0027m requiring that all r,g,b components always be set. (It also feels easier to me -- the same SkGainmapInfo is valid for a color and non-color version of the same file).",
+      "parentUuid": "59b4e8b8_6d5037cb",
+      "revId": "6bd9ef3ac24013771828d9a0310873f9c6173bae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "abacf1c4_f9007141",
         "filename": "tests/JpegGainmapTest.cpp",
         "patchSetId": 3
