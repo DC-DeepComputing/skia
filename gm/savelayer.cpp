@@ -155,7 +155,6 @@ DEF_SIMPLE_GM(savelayer_f16, canvas, 900, 300) {
                                                 colors, nullptr, std::size(colors)));
 
     canvas->drawOval(r, paint);
-
     paint.setAlphaf(1.0f/n);
     paint.setBlendMode(SkBlendMode::kPlus);
 

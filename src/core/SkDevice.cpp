@@ -306,18 +306,18 @@ void SkBaseDevice::drawSpecial(SkSpecialImage*, const SkMatrix&, const SkSamplin
                                const SkPaint&) {}
 sk_sp<SkSpecialImage> SkBaseDevice::makeSpecial(const SkBitmap&) { return nullptr; }
 sk_sp<SkSpecialImage> SkBaseDevice::makeSpecial(const SkImage*) { return nullptr; }
-sk_sp<SkSpecialImage> SkBaseDevice::snapSpecial(const SkIRect&, bool forceCopy) { return nullptr; }
+sk_sp<SkSpecialImage> SkBaseDevice::snapSpecial(const SkIRect&, bool forceCopy, bool careAboutIF) { return nullptr; }
 sk_sp<SkSpecialImage> SkBaseDevice::snapSpecialScaled(const SkIRect& subset,
                                                       const SkISize& dstDims) {
     return nullptr;
 }
-sk_sp<SkSpecialImage> SkBaseDevice::snapSpecial() {
-    return this->snapSpecial(SkIRect::MakeWH(this->width(), this->height()));
+sk_sp<SkSpecialImage> SkBaseDevice::snapSpecial(bool careAboutIF) {
+    return this->snapSpecial(SkIRect::MakeWH(this->width(), this->height()), false, careAboutIF);
 }
 
 void SkBaseDevice::drawDevice(SkBaseDevice* device, const SkSamplingOptions& sampling,
                               const SkPaint& paint) {
-    sk_sp<SkSpecialImage> deviceImage = device->snapSpecial();
+    sk_sp<SkSpecialImage> deviceImage = device->snapSpecial(paint.getImageFilter());
     if (deviceImage) {
         this->drawSpecial(deviceImage.get(), device->getRelativeTransform(*this), sampling, paint);
     }

@@ -155,13 +155,13 @@ DEF_TEST(SpecialImage_Raster, reporter) {
 
     sk_sp<SkSpecialImage> fullSImage(SkSpecialImage::MakeFromRaster(
                                                             SkIRect::MakeWH(kFullSize, kFullSize),
-                                                            bm, SkSurfaceProps()));
+                                                            bm, SkSurfaceProps(), false));
 
     const SkIRect& subset = SkIRect::MakeXYWH(kPad, kPad, kSmallerSize, kSmallerSize);
 
     {
         sk_sp<SkSpecialImage> subSImg1(SkSpecialImage::MakeFromRaster(subset, bm,
-                                                                      SkSurfaceProps()));
+                                                                      SkSurfaceProps(), true));
         test_image(subSImg1, reporter, nullptr, false);
     }
 

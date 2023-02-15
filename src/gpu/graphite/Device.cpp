@@ -1164,7 +1164,7 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
     return nullptr;
 }
 
-sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
+sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy, bool careAboutIF) {
     this->flushPendingWorkToRecorder();
 
     SkIRect finalSubset = subset;

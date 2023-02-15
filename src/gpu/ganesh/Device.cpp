@@ -861,14 +861,14 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage* image) {
     }
 }
 
-sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
+sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy, bool careAboutIF) {
     ASSERT_SINGLE_OWNER
 
     auto sdc = fSurfaceDrawContext.get();
 
     // If we are wrapping a vulkan secondary command buffer, then we can't snap off a special image
     // since it would require us to make a copy of the underlying VkImage which we don't have access
-    // to. Additionaly we can't stop and start the render pass that is used with the secondary
+    // to. Additionally we can't stop and start the render pass that is used with the secondary
     // command buffer.
     if (sdc->wrapsVkSecondaryCB()) {
         return nullptr;
