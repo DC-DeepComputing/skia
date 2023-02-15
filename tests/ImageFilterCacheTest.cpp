@@ -186,12 +186,12 @@ DEF_TEST(ImageFilterCache_RasterBacked, reporter) {
 
     const SkIRect& full = SkIRect::MakeWH(kFullSize, kFullSize);
 
-    sk_sp<SkSpecialImage> fullImg(SkSpecialImage::MakeFromRaster(full, srcBM, SkSurfaceProps()));
+    sk_sp<SkSpecialImage> fullImg(SkSpecialImage::MakeFromRaster(full, srcBM, SkSurfaceProps(), true));
 
     const SkIRect& subset = SkIRect::MakeXYWH(kPad, kPad, kSmallerSize, kSmallerSize);
 
     sk_sp<SkSpecialImage> subsetImg(SkSpecialImage::MakeFromRaster(subset, srcBM,
-                                                                   SkSurfaceProps()));
+                                                                   SkSurfaceProps(), true));
 
     test_find_existing(reporter, fullImg, subsetImg);
     test_dont_find_if_diff_key(reporter, fullImg, subsetImg);

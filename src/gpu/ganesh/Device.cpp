@@ -861,7 +861,7 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage* image) {
     }
 }
 
-sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
+sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy, bool careAboutIF) {
     ASSERT_SINGLE_OWNER
 
     auto sdc = fSurfaceDrawContext.get();

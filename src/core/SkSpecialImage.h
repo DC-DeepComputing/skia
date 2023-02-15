@@ -94,7 +94,8 @@ public:
                                                const SkSurfaceProps&);
     static sk_sp<SkSpecialImage> MakeFromRaster(const SkIRect& subset,
                                                 const SkBitmap&,
-                                                const SkSurfaceProps&);
+                                                const SkSurfaceProps&,
+                                                bool careAboutIF);
     static sk_sp<SkSpecialImage> CopyFromRaster(const SkIRect& subset,
                                                 const SkBitmap&,
                                                 const SkSurfaceProps&);

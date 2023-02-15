@@ -292,5 +292,5 @@ sk_sp<SkSpecialImage> SkMagnifierImageFilter::onFilterImage(const Context& ctx,
     offset->fX = bounds.left();
     offset->fY = bounds.top();
     return SkSpecialImage::MakeFromRaster(SkIRect::MakeWH(bounds.width(), bounds.height()),
-                                          dst, ctx.surfaceProps());
+                                          dst, ctx.surfaceProps(), true);
 }

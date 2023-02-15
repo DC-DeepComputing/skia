@@ -1369,7 +1369,7 @@ sk_sp<SkSpecialImage> SkDiffuseLightingImageFilter::onFilterImage(const Context&
                                                              bounds);
 
     return SkSpecialImage::MakeFromRaster(SkIRect::MakeWH(bounds.width(), bounds.height()),
-                                          dst, ctx.surfaceProps());
+                                          dst, ctx.surfaceProps(), true);
 }
 
 #if SK_SUPPORT_GPU
@@ -1513,7 +1513,7 @@ sk_sp<SkSpecialImage> SkSpecularLightingImageFilter::onFilterImage(const Context
                                                               bounds);
 
     return SkSpecialImage::MakeFromRaster(SkIRect::MakeWH(bounds.width(), bounds.height()), dst,
-                                          ctx.surfaceProps());
+                                          ctx.surfaceProps(), true);
 }
 
 #if SK_SUPPORT_GPU
