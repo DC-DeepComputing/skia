@@ -150,6 +150,24 @@
       "message": "why this change?",
       "revId": "6bd9ef3ac24013771828d9a0310873f9c6173bae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72a516bd_ba9e2f66",
+        "filename": "tests/JpegGainmapTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-15T15:32:48Z",
+      "side": 1,
+      "message": "Also curious about this",
+      "parentUuid": "abacf1c4_f9007141",
+      "revId": "6bd9ef3ac24013771828d9a0310873f9c6173bae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
