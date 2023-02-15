@@ -25,7 +25,10 @@ skia_filegroup(
 
 skia_filegroup(
     name = "icu_bidi_srcs",
-    srcs = ["SkUnicode_icu_bidi.cpp"],
+    srcs = [
+      "SkUnicode_icu_bidi.cpp",
+      "SkUnicode_icu_bidi.h"
+      ],
     visibility = ["//modules/skunicode:__pkg__"],
 )
 
@@ -44,6 +47,7 @@ skia_filegroup(
     name = "client_srcs",
     srcs = [
         "SkUnicode_client.cpp",
+        "SkUnicode_client.h",
     ],
     visibility = ["//modules/skunicode:__pkg__"],
 )

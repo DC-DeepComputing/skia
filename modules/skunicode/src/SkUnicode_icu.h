@@ -18,6 +18,11 @@
 #include <unicode/utext.h>
 #include <unicode/utypes.h>
 
+#if defined(SK_USING_THIRD_PARTY_ICU)
+#include "SkLoadICU.h"
+#endif
+#include "modules/skunicode/include/SkUnicode.h"
+
 #define SKICU_EMIT_FUNCS              \
     SKICU_FUNC(u_errorName)           \
     SKICU_FUNC(u_getIntPropertyValue) \
@@ -25,6 +30,13 @@
     SKICU_FUNC(u_isspace)             \
     SKICU_FUNC(u_isWhitespace)        \
     SKICU_FUNC(u_strToUpper)          \
+    SKICU_FUNC(ubidi_close)           \
+    SKICU_FUNC(ubidi_getDirection)    \
+    SKICU_FUNC(ubidi_getLength)       \
+    SKICU_FUNC(ubidi_getLevelAt)      \
+    SKICU_FUNC(ubidi_openSized)       \
+    SKICU_FUNC(ubidi_reorderVisual)   \
+    SKICU_FUNC(ubidi_setPara)         \
     SKICU_FUNC(ubrk_close)            \
     SKICU_FUNC(ubrk_current)          \
     SKICU_FUNC(ubrk_first)            \
@@ -54,5 +66,21 @@ struct SkICULib {
 
 // Platform/config specific ICU factory.
 std::unique_ptr<SkICULib> SkLoadICULib();
+
+static const SkICULib* ICULib() {
+    static const auto gICU = SkLoadICULib();
+
+    return gICU.get();
+}
+
+// sk_* wrappers for ICU funcs
+#define SKICU_FUNC(funcname)                                                                \
+    template <typename... Args>                                                             \
+    auto sk_##funcname(Args&&... args) -> decltype(funcname(std::forward<Args>(args)...)) { \
+        return ICULib()->f_##funcname(std::forward<Args>(args)...);                         \
+    }                                                                                       \
+
+SKICU_EMIT_FUNCS
+#undef SKICU_FUNC
 
 #endif // SkUnicode_icu_DEFINED
