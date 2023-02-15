@@ -14,7 +14,7 @@
 #include "include/core/SkStream.h"
 #include "include/private/base/SkAssert.h"
 #include "src/codec/SkCodecPriv.h"
-#include "src/codec/SkJpegPriv.h"
+#include "src/codec/SkJpegConstants.h"
 
 #include <cstring>
 #include <utility>
