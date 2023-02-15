@@ -69,6 +69,24 @@
       "parentUuid": "d3745586_29ed2627",
       "revId": "f0d29fb67ab3d3e3c2bcedfc5d50d47258dde1f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b74998b_93932770",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1245,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-15T19:37:58Z",
+      "side": 1,
+      "message": "Right - it\u0027s in the public_defines of the jpeg_decode component, but that\u0027s not a dependency of this (jpeg_encode). And although it\u0027s odd to consider someone wanting encode without decode -- that\u0027s the basic issue. (ie, they could be added here by adding \":jpeg_decode\" to the deps list, but that\u0027s not really correct ... if anything the newer shared (by encode/decode) jpeg stuff should be pulled into a separate optional component that\u0027s a dep of both jpeg_decode and jpeg_encode.",
+      "parentUuid": "95db0dc6_ca8cc998",
+      "revId": "f0d29fb67ab3d3e3c2bcedfc5d50d47258dde1f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
