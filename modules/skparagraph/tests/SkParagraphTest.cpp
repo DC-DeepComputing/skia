@@ -280,6 +280,13 @@ public:
         return fClient->getWords(utf8, utf8Units, locale, results);
     }
 
+    bool getBidiRegions(const char utf8[],
+                        int utf8Units,
+                        TextDirection dir,
+                        std::vector<BidiRegion>* results) override {
+        return fClient->getBidiRegions(utf8, utf8Units, dir, results);
+    }
+
     SkString toUpper(const SkString& str) override {
         return fClient->toUpper(str);
     }
@@ -287,7 +294,7 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        fIcu->reorderVisual(runLevels, levelsCount, logicalFromVisual);
+        fClient->reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 private:
     friend class SkBidiIterator_test;
@@ -342,12 +349,12 @@ public:
 
 std::unique_ptr<SkBidiIterator> SkUnicode_test::makeBidiIterator(const uint16_t text[], int count,
                                                  SkBidiIterator::Direction dir) {
-    return fIcu.makeBidiIterator(text, count, dir);
+    return fIcu->makeBidiIterator(text, count, dir);
 }
 std::unique_ptr<SkBidiIterator> SkUnicode_test::makeBidiIterator(const char text[],
                                                  int count,
                                                  SkBidiIterator::Direction dir) {
-    return fIcu.makeBidiIterator(text, count, dir);
+    return fIcu->makeBidiIterator(text, count, dir);
 }
 std::unique_ptr<SkBreakIterator> SkUnicode_test::makeBreakIterator(const char locale[],
                                                                    BreakType breakType) {
