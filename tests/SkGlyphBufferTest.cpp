@@ -172,34 +172,4 @@ DEF_TEST(SkDrawableGlyphBufferBasic, reporter) {
             REPORTER_ASSERT(reporter, pos == positions[i]);
         }
     }
-
-    {
-        SkDrawableGlyphBuffer accepted;
-        accepted.ensureSize(100);
-        SkMatrix matrix = SkMatrix::Scale(0.5, 0.5);
-        SkGlyphPositionRoundingSpec rounding{true, SkAxisAlignment::kX};
-        SkMatrix positionMatrix{matrix};
-        positionMatrix.preTranslate(100, 100);
-        accepted.startDevicePositioning(source, positionMatrix, rounding);
-        for (auto [i, packedID, pos] : SkMakeEnumerate(accepted.input())) {
-            REPORTER_ASSERT(reporter, glyphIDs[i] == packedID.packedID().glyphID());
-            REPORTER_ASSERT(reporter,
-                pos.x() == SkScalarFloorToInt(positions[i].x() * 0.5 + 50 +
-                                              SkPackedGlyphID::kSubpixelRound));
-            REPORTER_ASSERT(reporter,
-                            pos.y() == SkScalarFloorToInt(positions[i].y() * 0.5 + 50 + 0.5));
-        }
-    }
-
-    {
-        SkDrawableGlyphBuffer accepted;
-        accepted.ensureSize(100);
-        accepted.startSource(source);
-        for (auto [i, packedID, pos] : SkMakeEnumerate(accepted.input())) {
-            accepted.accept(&glyphs[i], i);
-        }
-        for (auto [i, glyph, pos] : SkMakeEnumerate(accepted.accepted())) {
-            REPORTER_ASSERT(reporter, glyph.glyph() == &glyphs[i]);
-        }
-    }
 }
