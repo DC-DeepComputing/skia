@@ -9,6 +9,7 @@ skia_cc_library(
     srcs = [
       "//modules/skunicode/src:srcs",
       "//modules/skunicode/src:icu_srcs",
+      "//modules/skunicode/src:icu_bidi_srcs",
       ],
     hdrs = ["//modules/skunicode/include:hdrs"],
     defines = [
