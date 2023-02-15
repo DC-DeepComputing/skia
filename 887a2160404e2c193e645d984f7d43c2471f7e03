@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f28b355_294433f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-15T19:33:44Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "887a2160404e2c193e645d984f7d43c2471f7e03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a23cedd4_f3ebee77",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-15T19:33:44Z",
+      "side": 1,
+      "message": "Not sure if this fell into what you and Greg discussed, but it\u0027s how Ganesh handles it in GrVkGpu.",
+      "range": {
+        "startLine": 132,
+        "startChar": 26,
+        "endLine": 132,
+        "endChar": 39
+      },
+      "revId": "887a2160404e2c193e645d984f7d43c2471f7e03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
