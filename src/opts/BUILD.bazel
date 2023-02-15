@@ -119,3 +119,22 @@ skia_cc_deps(
         "//conditions:default": [],
     }),
 )
+
+skia_cc_library(
+    name = "opts_buffet",
+    srcs = ["SkOpts_buffet.cpp"],
+    textual_hdrs = OPTS_HDRS,
+    visibility = ["//src:__pkg__"],
+)
+
+skia_cc_library(
+    name = "memset_opts",
+    srcs = [
+        "Memset_opts_default.cpp",
+        "Memset_opts_impl.h",
+        "SkOpts_namespace.h",
+    ],
+    hdrs = ["Memset_opts.h"],
+    visibility = ["//src:__pkg__"],
+    deps = ["//src:base"],
+)
