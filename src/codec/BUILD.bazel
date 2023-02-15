@@ -258,3 +258,27 @@ skia_cc_deps(
         },
     ),
 )
+
+skia_filegroup(
+    name = "buffet_png_decode_srcs",
+    srcs = [
+        "SkCodecPriv.h",
+        "SkColorTable.cpp",
+        "SkColorTable.h",
+        "SkEncodedInfo.cpp",
+        "SkPngCodec.cpp",
+        "SkPngCodec.h",
+        "SkPngPriv.h",
+        "SkSwizzler.cpp",
+        "SkSwizzler.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "buffet_png_srcs",
+    srcs = [
+        "SkPngPriv.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)

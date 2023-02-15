@@ -31,7 +31,6 @@ static inline void transform_scanline_A8_to_GrayAlpha(char* dst, const char* src
     }
 }
 
-
 static void skcms(char* dst, const char* src, int n,
                   skcms_PixelFormat srcFmt, skcms_AlphaFormat srcAlpha,
                   skcms_PixelFormat dstFmt, skcms_AlphaFormat dstAlpha) {
