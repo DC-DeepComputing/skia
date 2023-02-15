@@ -14,6 +14,7 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkPromiseImageTexture.h"
 #include "include/core/SkSize.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
@@ -46,7 +47,6 @@
 class GrContextThreadSafeProxy;
 class SkImage;
 enum SkColorType : int;
-namespace skgpu { enum class Budgeted : bool; }
 struct SkIRect;
 
 #ifdef SK_GRAPHITE_ENABLED
@@ -133,7 +133,7 @@ bool SkImage_GpuBase::getROPixels(GrDirectContext* dContext,
         }
     }
 
-    auto [view, ct] = this->asView(dContext, GrMipmapped::kNo);
+    auto [view, ct] = this->asView(dContext, skgpu::Mipmapped::kNo);
     if (!view) {
         return false;
     }
@@ -161,14 +161,14 @@ sk_sp<SkImage> SkImage_GpuBase::onMakeSubset(const SkIRect& subset,
         return nullptr;
     }
 
-    auto [view, ct] = this->asView(direct, GrMipmapped::kNo);
+    auto [view, ct] = this->asView(direct, skgpu::Mipmapped::kNo);
     SkASSERT(view);
     SkASSERT(ct == SkColorTypeToGrColorType(this->colorType()));
 
     skgpu::Budgeted isBudgeted = view.proxy()->isBudgeted();
     auto copyView = GrSurfaceProxyView::Copy(direct,
                                              std::move(view),
-                                             GrMipmapped::kNo,
+                                             skgpu::Mipmapped::kNo,
                                              subset,
                                              SkBackingFit::kExact,
                                              isBudgeted,
@@ -219,7 +219,7 @@ bool SkImage_GpuBase::onReadPixels(GrDirectContext* dContext,
         return false;
     }
 
-    auto [view, ct] = this->asView(dContext, GrMipmapped::kNo);
+    auto [view, ct] = this->asView(dContext, skgpu::Mipmapped::kNo);
     SkASSERT(view);
 
     GrColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
@@ -248,7 +248,7 @@ sk_sp<GrTextureProxy> SkImage_GpuBase::MakePromiseImageLazyProxy(
         GrContextThreadSafeProxy* tsp,
         SkISize dimensions,
         GrBackendFormat backendFormat,
-        GrMipmapped mipmapped,
+        skgpu::Mipmapped mipmapped,
         PromiseImageTextureFulfillProc fulfillProc,
         sk_sp<skgpu::RefCntedCallback> releaseHelper) {
     SkASSERT(tsp);
@@ -259,7 +259,7 @@ sk_sp<GrTextureProxy> SkImage_GpuBase::MakePromiseImageLazyProxy(
         return nullptr;
     }
 
-    if (mipmapped == GrMipmapped::kYes &&
+    if (mipmapped == skgpu::Mipmapped::kYes &&
         GrTextureTypeHasRestrictedSampling(backendFormat.textureType())) {
         // It is invalid to have a GL_TEXTURE_EXTERNAL or GL_TEXTURE_RECTANGLE and have mips as
         // well.

@@ -524,7 +524,7 @@ sk_sp<SkSpecialImage> SkLightingImageFilterInternal::filterImageGPU(
                                         "LightingImageFilterInternal_FilterImageGPU",
                                         SkBackingFit::kApprox,
                                         1,
-                                        GrMipmapped::kNo,
+                                        skgpu::Mipmapped::kNo,
                                         inputView.proxy()->isProtected(),
                                         kBottomLeft_GrSurfaceOrigin);
     if (!sfc) {
