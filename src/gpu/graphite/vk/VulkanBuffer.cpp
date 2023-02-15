@@ -180,7 +180,10 @@ void VulkanBuffer::internalMap(size_t readOffset, size_t readSize) {
         const VulkanSharedContext* sharedContext = this->vulkanSharedContext();
 
         auto allocator = sharedContext->memoryAllocator();
-        fMapPtr = skgpu::VulkanMemory::MapAlloc(allocator, fAlloc, nullptr);
+        auto checkResult = [sharedContext](VkResult result) {
+            return sharedContext->checkVkResult(result);
+        };
+        fMapPtr = skgpu::VulkanMemory::MapAlloc(allocator, fAlloc, checkResult);
         if (fMapPtr && readSize != 0) {
             // "Invalidate" here means make device writes visible to the host. That is, it makes
             // sure any GPU writes are finished in the range we might read from.
