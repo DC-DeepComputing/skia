@@ -1859,6 +1859,7 @@ void MetalCodeGenerator::writeBinaryExpression(const BinaryExpression& b,
         this->write(" = ");
         this->writeExpression(left, Precedence::kAssignment);
         this->write(operator_name(op.removeAssignment()));
+        precedence = op.removeAssignment().getBinaryPrecedence();
     } else {
         this->write(operator_name(op));
     }
