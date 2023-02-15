@@ -16,6 +16,23 @@
       "message": "Thanks -- updated!",
       "revId": "0dfe61919f3708c8f24fd60af15ed08792114ae2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ce0b620_f8a581cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-02-15T15:24:48Z",
+      "side": 1,
+      "message": "can confirm alpha8 gainmaps work as expected with this",
+      "revId": "0dfe61919f3708c8f24fd60af15ed08792114ae2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
