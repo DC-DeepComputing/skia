@@ -87,6 +87,24 @@
       "parentUuid": "95db0dc6_ca8cc998",
       "revId": "f0d29fb67ab3d3e3c2bcedfc5d50d47258dde1f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0cea68e_05ef3a55",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1245,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-15T20:52:00Z",
+      "side": 1,
+      "message": "Ah, got it.\n\nI added a jpeg_mpf component for the MPF and SegmentScan stuff and put it before this CL.\n\nThat patch unfortunately had to add a bunch of diffs to accommodate changes in where constants live. LMK if this seems reasonable now.",
+      "parentUuid": "2b74998b_93932770",
+      "revId": "f0d29fb67ab3d3e3c2bcedfc5d50d47258dde1f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
