@@ -12,6 +12,8 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "modules/skunicode/src/SkUnicode_client.h"
+#include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 #include "src/base/SkUTF.h"
 
 #include <algorithm>
@@ -21,10 +23,38 @@
 #include <utility>
 #include <vector>
 
-#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
-#include "modules/skunicode/src/SkUnicode_client.h"
-#else
-#include <unicode/ubidi.h>
+#ifndef SK_UNICODE_ICU_IMPLEMENTATION
+const char* SkUnicode_IcuBidi::errorName(UErrorCode status) {
+    return cl_u_errorName(status);
+}
+void SkUnicode_IcuBidi::bidi_close(UBiDi* bidi) {
+    cl_ubidi_close(bidi);
+}
+UBiDiDirection SkUnicode_IcuBidi::bidi_getDirection(const UBiDi* bidi) {
+    return cl_ubidi_getDirection(bidi);
+}
+SkBidiIterator::Position SkUnicode_IcuBidi::bidi_getLength(const UBiDi* bidi) {
+    return cl_ubidi_getLength(bidi);
+}
+SkBidiIterator::Level SkUnicode_IcuBidi::bidi_getLevelAt(const UBiDi* bidi, int pos) {
+    return cl_ubidi_getLevelAt(bidi, pos);
+}
+UBiDi* SkUnicode_IcuBidi::bidi_openSized(int32_t maxLength, int32_t maxRunCount, UErrorCode* pErrorCode) {
+    return cl_ubidi_openSized(maxLength, maxRunCount, pErrorCode);
+}
+void SkUnicode_IcuBidi::bidi_setPara(UBiDi* bidi,
+                         const UChar* text,
+                         int32_t length,
+                         UBiDiLevel paraLevel,
+                         UBiDiLevel* embeddingLevels,
+                         UErrorCode* status) {
+    return cl_ubidi_setPara(bidi, text, length, paraLevel, embeddingLevels, status);
+}
+void SkUnicode_IcuBidi::bidi_reorderVisual(const SkUnicode::BidiLevel runLevels[],
+                               int levelsCount,
+                               int32_t logicalFromVisual[]) {
+    cl_ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+}
 #endif
 
 class SkUnicode_client : public SkUnicode {
@@ -238,7 +268,7 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        defaultReorderVisual(runLevels, levelsCount, logicalFromVisual);
+        SkUnicode_IcuBidi::bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 private:
     friend class SkBreakIterator_client;
