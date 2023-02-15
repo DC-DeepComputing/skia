@@ -3,6 +3,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74b5eea9_d015f44a",
+        "filename": "modules/jetski/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-15T19:21:02Z",
+      "side": 1,
+      "message": "I don\u0027t know how this works given it\u0027s not imported from //bazel:macros.bzl",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 20
+      },
+      "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff04c925_b9ea5ecb",
+        "filename": "modules/jetski/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-15T19:21:02Z",
+      "side": 1,
+      "message": "Shouldn\u0027t be necessary now that this is set in copts, right?",
+      "range": {
+        "startLine": 23,
+        "startChar": 9,
+        "endLine": 23,
+        "endChar": 19
+      },
+      "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9565922_858599d4",
+        "filename": "platform_tools/android/apps/jetski/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-15T19:21:02Z",
+      "side": 1,
+      "message": "need to refer to //bazel:macros.bzl for this",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 20
+      },
+      "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "782a5b5e_75888dfa",
+        "filename": "platform_tools/android/apps/jetski/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-15T19:21:02Z",
+      "side": 1,
+      "message": "Why is this testonly?",
+      "range": {
+        "startLine": 7,
+        "startChar": 15,
+        "endLine": 7,
+        "endChar": 19
+      },
+      "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "66d44bd4_d0bb4de9",
         "filename": "platform_tools/android/apps/jetski/BUILD.bazel",
         "patchSetId": 3
@@ -14,6 +106,24 @@
       "writtenOn": "2023-02-15T19:15:03Z",
       "side": 1,
       "message": "What is a solution for making sure this dep gets rolled correctly into g3?\nIdea: we can keep a 1-1 mapping in of compatible targets that satisfy the dep. Keep that in g3.",
+      "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5706471a_5c39eb69",
+        "filename": "platform_tools/android/apps/jetski/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-15T19:21:02Z",
+      "side": 1,
+      "message": "Sent DM.",
+      "parentUuid": "66d44bd4_d0bb4de9",
       "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
