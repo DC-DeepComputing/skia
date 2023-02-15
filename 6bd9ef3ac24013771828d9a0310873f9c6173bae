@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f985fa6f_bbe27daf",
+        "filename": "src/shaders/SkGainmapShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-15T14:17:07Z",
+      "side": 1,
+      "message": "There\u0027s an `SkColorTypeIsAlphaOnly(ct)` that I\u0027d recommend. Alternately, you can just say: `gainmapImage-\u003eisAlphaOnly()`, which uses that internally.",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 87
+      },
+      "revId": "6bd9ef3ac24013771828d9a0310873f9c6173bae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f6ca202_74bf5547",
+        "filename": "src/shaders/SkGainmapShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-15T14:17:07Z",
+      "side": 1,
+      "message": "Similarly future-proof: `SkColorTypeChannelFlags(gainmapImage-\u003ecolorType()) \u003d\u003d kRed_SkColorChannelFlag` (in case we ever add R16_unorm or something...).",
+      "range": {
+        "startLine": 138,
+        "startChar": 33,
+        "endLine": 138,
+        "endChar": 84
+      },
+      "revId": "6bd9ef3ac24013771828d9a0310873f9c6173bae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59b4e8b8_6d5037cb",
         "filename": "src/shaders/SkGainmapShader.cpp",
         "patchSetId": 3
@@ -50,6 +96,23 @@
       "side": 1,
       "message": "discussed offline, this is good as-is pending spec clarification",
       "parentUuid": "96a69b79_4e095e12",
+      "revId": "6bd9ef3ac24013771828d9a0310873f9c6173bae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffe082f7_74850d8a",
+        "filename": "src/shaders/SkGainmapShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-15T14:17:07Z",
+      "side": 1,
+      "message": "Hmm, actually ... with this here too - I\u0027d probably just get the ColorTypeChannelFlags for the colorType above, and use that to do all of these checks?",
       "revId": "6bd9ef3ac24013771828d9a0310873f9c6173bae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
