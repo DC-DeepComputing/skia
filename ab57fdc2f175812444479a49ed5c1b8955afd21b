@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b960ba0_9be94077",
+        "filename": "modules/jetski/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-15T21:24:53Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "74b5eea9_d015f44a",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 20
+      },
+      "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff04c925_b9ea5ecb",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-15T19:21:02Z",
       "side": 1,
       "message": "Shouldn\u0027t be necessary now that this is set in copts, right?",
+      "range": {
+        "startLine": 23,
+        "startChar": 9,
+        "endLine": 23,
+        "endChar": 19
+      },
+      "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0655b96_6c0e7b06",
+        "filename": "modules/jetski/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-15T21:24:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff04c925_b9ea5ecb",
       "range": {
         "startLine": 23,
         "startChar": 9,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "389dadf2_4bd22c52",
+        "filename": "platform_tools/android/apps/jetski/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-15T21:24:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9565922_858599d4",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 20
+      },
+      "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "782a5b5e_75888dfa",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-02-15T19:21:02Z",
       "side": 1,
       "message": "Why is this testonly?",
+      "range": {
+        "startLine": 7,
+        "startChar": 15,
+        "endLine": 7,
+        "endChar": 19
+      },
+      "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a4fee56_5f72a090",
+        "filename": "platform_tools/android/apps/jetski/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-15T21:24:53Z",
+      "side": 1,
+      "message": "Artifact from when we relied on sk_app. Done.",
+      "parentUuid": "782a5b5e_75888dfa",
       "range": {
         "startLine": 7,
         "startChar": 15,
