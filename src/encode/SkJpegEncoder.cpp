@@ -21,9 +21,9 @@
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkMSAN.h"
 #include "src/codec/SkJpegPriv.h"
-#include "src/images/SkImageEncoderFns.h"
-#include "src/images/SkImageEncoderPriv.h"
-#include "src/images/SkJPEGWriteUtility.h"
+#include "src/encode/SkImageEncoderFns.h"
+#include "src/encode/SkImageEncoderPriv.h"
+#include "src/encode/SkJPEGWriteUtility.h"
 
 #include <csetjmp>
 #include <cstdint>

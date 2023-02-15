@@ -77,7 +77,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/shaders:skpicture_srcs",
 			}},
 		{Var: "src_images_srcs",
-			Rules: []string{"//src/images:srcs"}},
+			Rules: []string{"//src/encode:srcs"}},
 		{Var: "skia_discardable_memory_chromium",
 			Rules: []string{"//include/private/chromium:discardable_memory_hdrs"}},
 		},
