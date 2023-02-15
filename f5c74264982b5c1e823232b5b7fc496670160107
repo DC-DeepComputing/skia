@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cdcac5d_4be678f0",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-15T17:53:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d40484a0_95a2c3c0",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 22
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f94d1415_c4e18e75",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-14T18:25:03Z",
       "side": 1,
       "message": "All http_archives should include at least 2 urls (see //bazel/gcs_mirror)\n\nAlso, the archive link from GitHub is *not* guaranteed to stay the same. \nhttps://skia-review.googlesource.com/c/buildbot/+/635613\n\nFor this reason, the mirror created should come first, given that https://github.com/bazelbuild/rules_jvm_external/releases/tag/4.5 does not actually upload the source code to a stable GitHub URL.",
+      "range": {
+        "startLine": 101,
+        "startChar": 4,
+        "endLine": 101,
+        "endChar": 7
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "141ffd84_f8b2e84c",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-15T17:53:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f94d1415_c4e18e75",
       "range": {
         "startLine": 101,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f465104_d38f9d88",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-15T17:53:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c04424b6_f52d495a",
+      "range": {
+        "startLine": 116,
+        "startChar": 18,
+        "endLine": 116,
+        "endChar": 39
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ebaea05_5f0bf0a4",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ba8ea8a_ef5b931f",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-15T17:53:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ebaea05_5f0bf0a4",
+      "range": {
+        "startLine": 229,
+        "startChar": 2,
+        "endLine": 229,
+        "endChar": 7
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48d398cd_50aa1d12",
@@ -106,6 +202,30 @@
       "writtenOn": "2023-02-14T18:25:03Z",
       "side": 1,
       "message": "Call this android_arm32 to make it explicitly a 32 bit build.",
+      "range": {
+        "startLine": 57,
+        "startChar": 12,
+        "endLine": 57,
+        "endChar": 23
+      },
+      "revId": "f5c74264982b5c1e823232b5b7fc496670160107",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "100f6870_5b377e54",
+        "filename": "bazel/platform/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-15T17:53:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48d398cd_50aa1d12",
       "range": {
         "startLine": 57,
         "startChar": 12,
