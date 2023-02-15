@@ -49,6 +49,16 @@ def compile_fn(api, checkout_root, _ignore):
   with api.env(env):
     api.run(
         api.step,
+        'cat /home/chrome-bot/.docker',
+        cmd=['cat', '/home/chrome-bot/.docker'])
+
+    api.run(
+        api.step,
+        'docker image ls',
+        cmd=['docker', 'image', 'ls'])
+
+    api.run(
+        api.step,
         'Build CanvasKit with Docker',
         cmd=cmd)
 
