@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5051a47b_c4cf7a0d",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-15T20:48:05Z",
+      "side": 1,
+      "message": "We are essentially doing the same result check in `VulkanTexture.cpp` that should probably go through the new SharedContext method.",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 10
+      },
+      "revId": "887a2160404e2c193e645d984f7d43c2471f7e03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a23cedd4_f3ebee77",
         "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
         "patchSetId": 1
@@ -31,6 +54,30 @@
       "writtenOn": "2023-02-15T19:33:44Z",
       "side": 1,
       "message": "Not sure if this fell into what you and Greg discussed, but it\u0027s how Ganesh handles it in GrVkGpu.",
+      "range": {
+        "startLine": 132,
+        "startChar": 26,
+        "endLine": 132,
+        "endChar": 39
+      },
+      "revId": "887a2160404e2c193e645d984f7d43c2471f7e03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39935e61_6dd84fad",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-15T20:48:05Z",
+      "side": 1,
+      "message": "Greg\u0027s main concern with handling this is that it needs to be thread-safe, so maybe we should explicitly outline that in the comment? IE, \"Determine how to track this in a thread-safe way\". Otherwise, the location of it LGTM.",
+      "parentUuid": "a23cedd4_f3ebee77",
       "range": {
         "startLine": 132,
         "startChar": 26,
