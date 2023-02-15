@@ -24,12 +24,16 @@ static constexpr char gGainmapSKSL[] =
         "uniform half4 epsilonSdr;"
         "uniform half4 epsilonHdr;"
         "uniform half W;"
+        "uniform int gainmapIsAlpha;"
         "uniform int singleChannel;"
         "uniform int noGamma;"
         ""
         "half4 main(float2 coord) {"
         "    half4 S = base.eval(coord);"
         "    half4 G = gainmap.eval(coord);"
+        "    if (gainmapIsAlpha == 1) {"
+        "        G = half4(G.a, G.a, G.a, 1.0);"
+        "    }"
         "    if (singleChannel == 1) {"
         "        half L;"
         "        if (noGamma == 1) {"
@@ -52,9 +56,6 @@ static constexpr char gGainmapSKSL[] =
         "}";
 
 static sk_sp<SkRuntimeEffect> gainmap_apply_effect() {
-    auto result = SkRuntimeEffect::MakeForShader(SkString(gGainmapSKSL), {});
-    printf("%s\n", result.errorText.c_str());
-
     static const SkRuntimeEffect* effect =
             SkRuntimeEffect::MakeForShader(SkString(gGainmapSKSL), {}).effect.release();
     SkASSERT(effect);
@@ -127,10 +128,17 @@ sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
             gainmapInfo.fGainmapGamma.fR == 1.f &&
             gainmapInfo.fGainmapGamma.fG == 1.f &&
             gainmapInfo.fGainmapGamma.fB == 1.f;
+        const int gainmapIsAlpha = gainmapImage->colorType() == kAlpha_8_SkColorType ||
+                                   gainmapImage->colorType() == kA16_float_SkColorType ||
+                                   gainmapImage->colorType() == kA16_unorm_SkColorType;
         const int singleChannel = all_channels_equal(gainmapInfo.fGainmapGamma) &&
                                   all_channels_equal(gainmapInfo.fGainmapRatioMin) &&
                                   all_channels_equal(gainmapInfo.fGainmapRatioMax) &&
-                                  gainmapImage->colorType() == kGray_8_SkColorType;
+                                  (gainmapImage->colorType() == kGray_8_SkColorType ||
+                                   gainmapImage->colorType() == kAlpha_8_SkColorType ||
+                                   gainmapImage->colorType() == kA16_float_SkColorType ||
+                                   gainmapImage->colorType() == kA16_unorm_SkColorType ||
+                                   gainmapImage->colorType() == kR8_unorm_SkColorType);
         builder.child("base") = baseImageShader;
         builder.child("gainmap") = gainmapImageShader;
         builder.uniform("logRatioMin") = logRatioMin;
@@ -140,6 +148,7 @@ sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
         builder.uniform("epsilonHdr") = gainmapInfo.fEpsilonHdr;
         builder.uniform("noGamma") = noGamma;
         builder.uniform("singleChannel") = singleChannel;
+        builder.uniform("gainmapIsAlpha") = gainmapIsAlpha;
         builder.uniform("W") = W;
         gainmapMathShader = builder.makeShader();
         SkASSERT(gainmapMathShader);
