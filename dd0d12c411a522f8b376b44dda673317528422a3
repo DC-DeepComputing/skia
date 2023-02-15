@@ -22,6 +22,30 @@
       },
       "revId": "dd0d12c411a522f8b376b44dda673317528422a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c1d9e36_b8c02de1",
+        "filename": "tests/SkSLErrorTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-15T16:21:38Z",
+      "side": 1,
+      "message": "Doh, oops. I was going to do the empty file thing, then pivoted the list (which I think is nicer in the long-run -- it\u0027s purpose is self-documenting with the comment, vs. having empty files for no obvious reason without git history). I\u0027ll remove this.",
+      "parentUuid": "fafab5e0_48375149",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 5
+      },
+      "revId": "dd0d12c411a522f8b376b44dda673317528422a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
