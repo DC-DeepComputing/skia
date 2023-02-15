@@ -94,4 +94,17 @@ print('%d:%d' % (os.getuid(), os.getgid()))
 
     env = {'DOCKER_CONFIG': '/home/chrome-bot/.docker'}
     with self.m.env(env):
+      self.m.python.inline(
+                name='Print env and docker command, sleep for 600 seconds',
+                program='''import os
+import time
+print("Environment variableas:")
+for k in os.environ.keys(): print("%s = %s" % (k, os.environ[k]))
+print()
+print("Docker command:")
+print(''' + "'''" + " ".join(cmd) + "'''" + ''')
+print('Sleeping for 600 seconds')
+time.sleep(600)
+''',
+                )      
       self.m.run.with_retry(self.m.step, name, attempts, cmd=cmd)
