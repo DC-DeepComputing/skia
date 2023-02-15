@@ -1242,7 +1242,11 @@ optional("jpeg_encode") {
     "src/images/SkJpegEncoder.cpp",
   ]
 
-  if (skia_use_jpeg_gainmaps) {
+  if (skia_use_libjpeg_turbo_decode && skia_use_jpeg_gainmaps) {
+    defines = [
+      "SK_CODEC_DECODES_JPEG",
+      "SK_CODEC_DECODES_JPEG_GAINMAPS",
+    ]
     sources += [ "src/images/SkJpegGainmapEncoder.cpp" ]
   }
 }
