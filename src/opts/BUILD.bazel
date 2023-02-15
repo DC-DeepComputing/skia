@@ -39,6 +39,9 @@ skia_filegroup(
         "SkUtils_opts.h",
         "SkVM_opts.h",
         "SkXfermode_opts.h",
+        # Experimental buffet opts below
+        "Memset_opts.h",
+        "Swizzle_opts.h",
     ],
     visibility = ["//src:__pkg__"],
 )
@@ -118,4 +121,28 @@ skia_cc_deps(
         "//bazel/common_config_settings:cpu_wasm": [],
         "//conditions:default": [],
     }),
+)
+
+skia_cc_library(
+    name = "memset_opts",
+    srcs = [
+        "Memset_opts.cpp",
+        "Memset_opts_impl.h",
+        "SkOpts_namespace.h",
+    ],
+    hdrs = ["Memset_opts.h"],
+    visibility = ["//src:__pkg__"],
+    deps = ["//src:base"],
+)
+
+skia_cc_library(
+    name = "swizzle_opts",
+    srcs = [
+        "SkOpts_namespace.h",
+        "Swizzle_opts.cpp",
+        "Swizzle_opts_impl.h",
+    ],
+    hdrs = ["Swizzle_opts.h"],
+    visibility = ["//src:__pkg__"],
+    deps = ["//src:base"],
 )
