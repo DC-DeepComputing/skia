@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66d44bd4_d0bb4de9",
+        "filename": "platform_tools/android/apps/jetski/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-15T19:15:03Z",
+      "side": 1,
+      "message": "What is a solution for making sure this dep gets rolled correctly into g3?\nIdea: we can keep a 1-1 mapping in of compatible targets that satisfy the dep. Keep that in g3.",
+      "revId": "ab57fdc2f175812444479a49ed5c1b8955afd21b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
