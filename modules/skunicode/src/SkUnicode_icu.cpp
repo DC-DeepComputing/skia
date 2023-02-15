@@ -9,15 +9,17 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkBitmaskEnum.h"
+#include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkOnce.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTo.h"
-#include "modules/skunicode/include/SkUnicode.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkTHash.h"
+
+#include "modules/skunicode/include/SkUnicode.h"
+#include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 
 #include <functional>
 #include <string>
@@ -310,7 +312,7 @@ public:
 
     SkString toUpper(const SkString& str) override {
         // Convert to UTF16 since that's what ICU wants.
-        auto str16 = convertUtf8ToUtf16(str.c_str(), str.size());
+        auto str16 = SkUnicode::convertUtf8ToUtf16(str.c_str(), str.size());
 
         UErrorCode icu_err = U_ZERO_ERROR;
         const auto upper16len = sk_u_strToUpper(nullptr, 0, (UChar*)(str16.c_str()), str16.size(),
@@ -447,7 +449,7 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        defaultReorderVisual(runLevels, levelsCount, logicalFromVisual);
+        SkUnicode_IcuBidi::bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 };
 
