@@ -33,6 +33,24 @@
       "message": "I was surprised that I needed to add this... maybe I\u0027m doing it wrong?",
       "revId": "f0d29fb67ab3d3e3c2bcedfc5d50d47258dde1f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3745586_29ed2627",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1245,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-15T16:18:40Z",
+      "side": 1,
+      "message": "I assume all the segment scan stuff is guarded behind SK_CODEC_DECODES_JPEG? And the build allows the encoder without the decoder. If I\u0027m right about that, it would be better to arrange the necessary utilities so that they\u0027re guarded by either (in the source code, ie:\n\n    #if defined(SK_CODEC_DECODES_JPEG) || defined(SK_ENCODE_JPEG)\n    ...\n    #endif",
+      "parentUuid": "61eb1fce_66fc37ed",
+      "revId": "f0d29fb67ab3d3e3c2bcedfc5d50d47258dde1f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
