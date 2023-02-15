@@ -21,11 +21,7 @@
 #include <utility>
 #include <vector>
 
-#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
-#include "modules/skunicode/src/SkUnicode_client.h"
-#else
-#include <unicode/ubidi.h>
-#endif
+#include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 
 class SkUnicode_client : public SkUnicode {
 public:
@@ -238,7 +234,7 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        defaultReorderVisual(runLevels, levelsCount, logicalFromVisual);
+        SkUnicode_IcuBidi::bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 private:
     friend class SkBreakIterator_client;
