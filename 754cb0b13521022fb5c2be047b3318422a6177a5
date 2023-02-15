@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52d56a0b_864adc5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-15T16:01:38Z",
+      "side": 1,
+      "message": "I think this is finally ready (Debian build failure appears to be due to running out of disk space).",
+      "revId": "754cb0b13521022fb5c2be047b3318422a6177a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
