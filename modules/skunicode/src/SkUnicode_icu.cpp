@@ -15,9 +15,11 @@
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTo.h"
-#include "modules/skunicode/include/SkUnicode.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkTHash.h"
+
+#include "modules/skunicode/include/SkUnicode.h"
+#include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 
 #include <functional>
 #include <string>
@@ -30,6 +32,7 @@
 #endif
 
 using namespace skia_private;
+using namespace SkUnicode_CommonBidi;
 
 static const SkICULib* ICULib() {
     static const auto gICU = SkLoadICULib();
