@@ -277,9 +277,6 @@ class SKUNICODE_API SkUnicode {
                 std::vector<SkUnicode::Position> words,
                 std::vector<SkUnicode::Position> graphemeBreaks,
                 std::vector<SkUnicode::LineBreakBefore> lineBreaks);
-
-protected:
-        void defaultReorderVisual(const BidiLevel runLevels[], int levelsCount, int32_t logicalFromVisual[]);
 };
 
 namespace sknonstd {

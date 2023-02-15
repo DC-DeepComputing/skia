@@ -9,15 +9,17 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkBitmaskEnum.h"
+#include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkOnce.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTo.h"
-#include "modules/skunicode/include/SkUnicode.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkTHash.h"
+
+#include "modules/skunicode/src/SkUnicode_icu.h"
+#include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 
 #include <functional>
 #include <string>
@@ -46,6 +48,39 @@ static const SkICULib* ICULib() {
 
 SKICU_EMIT_FUNCS
 #undef SKICU_FUNC
+
+const char* SkUnicode_IcuBidi::errorName(UErrorCode status) {
+    return sk_u_errorName(status);
+}
+
+void SkUnicode_IcuBidi::bidi_close(UBiDi* bidi) {
+    sk_ubidi_close(bidi);
+}
+UBiDiDirection SkUnicode_IcuBidi::bidi_getDirection(const UBiDi* bidi) {
+    return sk_ubidi_getDirection(bidi);
+}
+SkBidiIterator::Position SkUnicode_IcuBidi::bidi_getLength(const UBiDi* bidi) {
+    return sk_ubidi_getLength(bidi);
+}
+SkBidiIterator::Level SkUnicode_IcuBidi::bidi_getLevelAt(const UBiDi* bidi, int pos) {
+    return sk_ubidi_getLevelAt(bidi, pos);
+}
+UBiDi* SkUnicode_IcuBidi::bidi_openSized(int32_t maxLength, int32_t maxRunCount, UErrorCode* pErrorCode) {
+    return sk_ubidi_openSized(maxLength, maxRunCount, pErrorCode);
+}
+void SkUnicode_IcuBidi::bidi_setPara(UBiDi* bidi,
+                         const UChar* text,
+                         int32_t length,
+                         UBiDiLevel paraLevel,
+                         UBiDiLevel* embeddingLevels,
+                         UErrorCode* status) {
+    return sk_ubidi_setPara(bidi, text, length, paraLevel, embeddingLevels, status);
+}
+void SkUnicode_IcuBidi::bidi_reorderVisual(const SkUnicode::BidiLevel runLevels[],
+                               int levelsCount,
+                               int32_t logicalFromVisual[]) {
+    sk_ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+}
 
 static inline UBreakIterator* sk_ubrk_clone(const UBreakIterator* bi, UErrorCode* status) {
     const auto* icu = ICULib();
@@ -310,7 +345,7 @@ public:
 
     SkString toUpper(const SkString& str) override {
         // Convert to UTF16 since that's what ICU wants.
-        auto str16 = convertUtf8ToUtf16(str.c_str(), str.size());
+        auto str16 = SkUnicode::convertUtf8ToUtf16(str.c_str(), str.size());
 
         UErrorCode icu_err = U_ZERO_ERROR;
         const auto upper16len = sk_u_strToUpper(nullptr, 0, (UChar*)(str16.c_str()), str16.size(),
@@ -447,7 +482,7 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        defaultReorderVisual(runLevels, levelsCount, logicalFromVisual);
+        SkUnicode_IcuBidi::bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 };
 
