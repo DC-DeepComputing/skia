@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fafab5e0_48375149",
+        "filename": "tests/SkSLErrorTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-15T16:19:17Z",
+      "side": 1,
+      "message": "Are we going to leave empty files, or hardcode the list of names?",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 5
+      },
+      "revId": "dd0d12c411a522f8b376b44dda673317528422a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
