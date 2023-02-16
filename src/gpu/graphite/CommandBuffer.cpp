@@ -87,14 +87,11 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
     return true;
 }
 
-bool CommandBuffer::addComputePass(const ComputePassDesc& computePassDesc,
-                                   sk_sp<ComputePipeline> pipeline,
-                                   const std::vector<ResourceBinding>& bindings) {
-    if (!this->onAddComputePass(computePassDesc, pipeline.get(), bindings)) {
+bool CommandBuffer::addComputePass(
+        const std::vector<std::unique_ptr<DispatchGroup>>& dispatchGroups) {
+    if (!this->onAddComputePass(dispatchGroups)) {
         return false;
     }
-
-    this->trackResource(std::move(pipeline));
 
     SkDEBUGCODE(fHasWork = true;)
 

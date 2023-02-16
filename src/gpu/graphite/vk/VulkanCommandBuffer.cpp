@@ -248,9 +248,8 @@ bool VulkanCommandBuffer::onAddRenderPass(
     return false;
 }
 
-bool VulkanCommandBuffer::onAddComputePass(const ComputePassDesc&,
-                                           const ComputePipeline*,
-                                           const std::vector<ResourceBinding>& bindings) {
+bool VulkanCommandBuffer::onAddComputePass(const std::vector < std::unique_ptr < DispatchGroup >>>
+                                           &bindings) {
     return false;
 }
 
