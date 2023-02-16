@@ -207,10 +207,16 @@ void SkSweepGradient::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                             fTileMode,
                                             fColorCount,
                                             colors,
-                                            fPositions);
+                                            fPositions,
+                                            fInterpolation);
 
     GradientShaderBlocks::BeginBlock(keyContext, builder, gatherer, data);
     builder->endBlock();
+
+    MakeInterpolatedToDst(keyContext, builder, gatherer,
+                          fInterpolation,
+                          xformedColors.fIntermediateColorSpace.get());
+
 }
 #endif
 

@@ -553,10 +553,15 @@ void SkTwoPointConicalGradient::addToKey(const skgpu::graphite::KeyContext& keyC
                                             fTileMode,
                                             fColorCount,
                                             colors,
-                                            fPositions);
+                                            fPositions,
+                                            fInterpolation);
 
     GradientShaderBlocks::BeginBlock(keyContext, builder, gatherer, data);
     builder->endBlock();
+
+    MakeInterpolatedToDst(keyContext, builder, gatherer,
+                          fInterpolation,
+                          xformedColors.fIntermediateColorSpace.get());
 }
 #endif
 

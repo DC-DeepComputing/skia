@@ -18,6 +18,13 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/core/SkColorSpacePriv.h"
+#include "src/gpu/graphite/KeyContext.h"
+#include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
+#endif
+
 #include <cmath>
 
 enum GradientSerializationFlags {
@@ -1262,3 +1269,50 @@ SkGradientShaderBase::ColorStopOptimizer::ColorStopOptimizer(const SkColor4f* co
         }
     }
 }
+
+#ifdef SK_GRAPHITE_ENABLED
+void SkGradientShaderBase::MakeInterpolatedToDst(const skgpu::graphite::KeyContext& keyContext,
+                                                 skgpu::graphite::PaintParamsKeyBuilder* builder,
+                                                 skgpu::graphite::PipelineDataGatherer* gatherer,
+                                                 const SkGradientShaderBase::Interpolation& interpolation,
+                                                 SkColorSpace* intermediateCS) {
+    using ColorSpace = SkGradientShader::Interpolation::ColorSpace;
+    using ColorSpaceTransformBlock = skgpu::graphite::ColorSpaceTransformBlock;
+
+    static_assert(static_cast<int>(ColorSpace::kLab)   == 2);
+    static_assert(static_cast<int>(ColorSpace::kOKLab) == 3);
+    static_assert(static_cast<int>(ColorSpace::kLCH)   == 4);
+    static_assert(static_cast<int>(ColorSpace::kOKLCH) == 5);
+    static_assert(static_cast<int>(ColorSpace::kHSL)   == 7);
+    static_assert(static_cast<int>(ColorSpace::kHWB)   == 8);
+
+    bool inputPremul = static_cast<bool>(interpolation.fInPremul);
+
+    switch (interpolation.fColorSpace) {
+        case ColorSpace::kLab:
+        case ColorSpace::kOKLab:
+        case ColorSpace::kLCH:
+        case ColorSpace::kOKLCH:
+        case ColorSpace::kHSL:
+        case ColorSpace::kHWB:
+            // These exotic spaces will be converted to unpremul
+            inputPremul = false;
+            break;
+        default:
+            break;
+    }
+
+    const SkColorInfo& dstColorInfo = keyContext.dstColorInfo();
+
+    SkColorSpace* dstColorSpace = dstColorInfo.colorSpace() ? dstColorInfo.colorSpace()
+                                                            : sk_srgb_singleton();
+
+    SkAlphaType intermediateAlphaType = inputPremul ? kPremul_SkAlphaType : kUnpremul_SkAlphaType;
+
+    ColorSpaceTransformBlock::ColorSpaceTransformData data(intermediateCS, intermediateAlphaType,
+                                                           dstColorSpace, dstColorInfo.alphaType());
+
+    ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data);
+    builder->endBlock();
+}
+#endif
