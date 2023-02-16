@@ -99,8 +99,8 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     bool useLazyAllocation =
             SkToBool(spec.fImageUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT);
 
-    auto checkResult = [](VkResult result) {
-        return result == VK_SUCCESS;
+    auto checkResult = [sharedContext](VkResult result) {
+        return sharedContext->checkVkResult(result);
     };
     if (!skgpu::VulkanMemory::AllocImageMemory(allocator,
                                                image,
