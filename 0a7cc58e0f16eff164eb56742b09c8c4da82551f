@@ -250,6 +250,24 @@
       "parentUuid": "213fa56e_797e7fb5",
       "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5828522_d405e23c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-16T17:05:20Z",
+      "side": 1,
+      "message": "Aha. Yes, GrConvertPixels ultimately uses raster pipeline, but it describes the buffers using GrColorType, which will fail for Unknown. I\u0027d suggest just skipping the new color type in `graphite_read_pixels_test_driver` (ReadWritePixelsGraphiteTest.cpp). There are two nested color-type loops, so you probably just need to continue in each case.",
+      "parentUuid": "22edd854_4f9634f1",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
