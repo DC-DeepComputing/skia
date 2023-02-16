@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23cd44d1_5d30976f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2023-02-16T16:28:27Z",
+      "side": 1,
+      "message": "Looks like this branch just hasn\u0027t been updated in a long time.",
+      "revId": "434119b79cb4de3a59667fb656000dc30d508300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
