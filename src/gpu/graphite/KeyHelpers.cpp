@@ -81,10 +81,24 @@ void SolidColorShaderBlock::BeginBlock(const KeyContext& keyContext,
 
 namespace {
 
-void add_linear_gradient_uniform_data(const ShaderCodeDictionary* dict,
+void foo(const GradientShaderBlocks::GradientData& gradData,
+         PipelineDataGatherer* gatherer) {
+
+
+    // Are we interpreting premul colors? We use this later to decide if we need to inject a final
+    // premultiplication step.
+    bool inputPremul = static_cast<bool>(gradData.fInterpolation.fInPremul);
+
+    gatherer->write(static_cast<int>(gradData.fInterpolation.fColorSpace));
+    gatherer->write(static_cast<int>(inputPremul));
+}
+
+void add_linear_gradient_uniform_data(const KeyContext& keyContext,
                                       BuiltInCodeSnippetID codeSnippetID,
                                       const GradientShaderBlocks::GradientData& gradData,
                                       PipelineDataGatherer* gatherer) {
+    auto dict = keyContext.dict();
+
     VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)
     size_t stops = codeSnippetID == BuiltInCodeSnippetID::kLinearGradientShader4 ? 4 : 8;
 
@@ -93,14 +107,17 @@ void add_linear_gradient_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(gradData.fPoints[0]);
     gatherer->write(gradData.fPoints[1]);
     gatherer->write(static_cast<int>(gradData.fTM));
+    foo(gradData, gatherer);
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(codeSnippetID));
 };
 
-void add_radial_gradient_uniform_data(const ShaderCodeDictionary* dict,
+void add_radial_gradient_uniform_data(const KeyContext& keyContext,
                                       BuiltInCodeSnippetID codeSnippetID,
                                       const GradientShaderBlocks::GradientData& gradData,
                                       PipelineDataGatherer* gatherer) {
+    auto dict = keyContext.dict();
+
     VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)
     size_t stops = codeSnippetID == BuiltInCodeSnippetID::kRadialGradientShader4 ? 4 : 8;
 
@@ -109,14 +126,17 @@ void add_radial_gradient_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(gradData.fPoints[0]);
     gatherer->write(gradData.fRadii[0]);
     gatherer->write(static_cast<int>(gradData.fTM));
+    foo(gradData, gatherer);
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(codeSnippetID));
 };
 
-void add_sweep_gradient_uniform_data(const ShaderCodeDictionary* dict,
+void add_sweep_gradient_uniform_data(const KeyContext& keyContext,
                                      BuiltInCodeSnippetID codeSnippetID,
                                      const GradientShaderBlocks::GradientData& gradData,
                                      PipelineDataGatherer* gatherer) {
+    auto dict = keyContext.dict();
+
     VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)
     size_t stops = codeSnippetID == BuiltInCodeSnippetID::kSweepGradientShader4 ? 4 : 8;
 
@@ -126,14 +146,17 @@ void add_sweep_gradient_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(gradData.fBias);
     gatherer->write(gradData.fScale);
     gatherer->write(static_cast<int>(gradData.fTM));
+    foo(gradData, gatherer);
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(codeSnippetID));
 };
 
-void add_conical_gradient_uniform_data(const ShaderCodeDictionary* dict,
+void add_conical_gradient_uniform_data(const KeyContext& keyContext,
                                        BuiltInCodeSnippetID codeSnippetID,
                                        const GradientShaderBlocks::GradientData& gradData,
                                        PipelineDataGatherer* gatherer) {
+    auto dict = keyContext.dict();
+
     VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)
     size_t stops = codeSnippetID == BuiltInCodeSnippetID::kConicalGradientShader4 ? 4 : 8;
 
@@ -144,6 +167,7 @@ void add_conical_gradient_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);
     gatherer->write(gradData.fRadii[1]);
     gatherer->write(static_cast<int>(gradData.fTM));
+    foo(gradData, gatherer);
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(codeSnippetID));
 };
@@ -169,12 +193,14 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
                                                  SkTileMode tm,
                                                  int numStops,
                                                  const SkPMColor4f* colors,
-                                                 float* offsets)
+                                                 float* offsets,
+                                                 const SkGradientShaderBase::Interpolation& interp)
         : fType(type)
         , fBias(bias)
         , fScale(scale)
         , fTM(tm)
-        , fNumStops(std::min(numStops, kMaxStops)) {
+        , fNumStops(std::min(numStops, kMaxStops))
+        , fInterpolation(interp) {
     SkASSERT(fNumStops >= 1);
 
     fPoints[0] = point0;
@@ -202,7 +228,6 @@ void GradientShaderBlocks::BeginBlock(const KeyContext& keyContext,
                                       PaintParamsKeyBuilder *builder,
                                       PipelineDataGatherer* gatherer,
                                       const GradientData& gradData) {
-    auto dict = keyContext.dict();
     BuiltInCodeSnippetID codeSnippetID = BuiltInCodeSnippetID::kSolidColorShader;
     switch (gradData.fType) {
         case SkShaderBase::GradientType::kLinear:
@@ -210,7 +235,7 @@ void GradientShaderBlocks::BeginBlock(const KeyContext& keyContext,
                                     ? BuiltInCodeSnippetID::kLinearGradientShader4
                                     : BuiltInCodeSnippetID::kLinearGradientShader8;
             if (gatherer) {
-                add_linear_gradient_uniform_data(dict, codeSnippetID, gradData, gatherer);
+                add_linear_gradient_uniform_data(keyContext, codeSnippetID, gradData, gatherer);
             }
             break;
         case SkShaderBase::GradientType::kRadial:
@@ -218,7 +243,7 @@ void GradientShaderBlocks::BeginBlock(const KeyContext& keyContext,
                                     ? BuiltInCodeSnippetID::kRadialGradientShader4
                                     : BuiltInCodeSnippetID::kRadialGradientShader8;
             if (gatherer) {
-                add_radial_gradient_uniform_data(dict, codeSnippetID, gradData, gatherer);
+                add_radial_gradient_uniform_data(keyContext, codeSnippetID, gradData, gatherer);
             }
             break;
         case SkShaderBase::GradientType::kSweep:
@@ -226,7 +251,7 @@ void GradientShaderBlocks::BeginBlock(const KeyContext& keyContext,
                                     ? BuiltInCodeSnippetID::kSweepGradientShader4
                                     : BuiltInCodeSnippetID::kSweepGradientShader8;
             if (gatherer) {
-                add_sweep_gradient_uniform_data(dict, codeSnippetID, gradData, gatherer);
+                add_sweep_gradient_uniform_data(keyContext, codeSnippetID, gradData, gatherer);
             }
             break;
         case SkShaderBase::GradientType::kConical:
@@ -234,7 +259,7 @@ void GradientShaderBlocks::BeginBlock(const KeyContext& keyContext,
                                     ? BuiltInCodeSnippetID::kConicalGradientShader4
                                     : BuiltInCodeSnippetID::kConicalGradientShader8;
             if (gatherer) {
-                add_conical_gradient_uniform_data(dict, codeSnippetID, gradData, gatherer);
+                add_conical_gradient_uniform_data(keyContext, codeSnippetID, gradData, gatherer);
             }
             break;
         case SkShaderBase::GradientType::kColor:
@@ -569,6 +594,7 @@ void ColorSpaceTransformBlock::BeginBlock(const KeyContext& keyContext,
     }
     builder->beginBlock(BuiltInCodeSnippetID::kColorSpaceXformColorFilter);
 }
+
 
 //--------------------------------------------------------------------------------------------------
 namespace {

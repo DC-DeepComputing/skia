@@ -287,14 +287,18 @@ public:
 #endif
 
 #ifdef SK_GRAPHITE_ENABLED
+
+
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
         using namespace skgpu::graphite;
 
-        constexpr SkAlphaType alphaType = kPremul_SkAlphaType;
+        constexpr SkAlphaType kSrcAlphaType = kPremul_SkAlphaType;
+        constexpr SkAlphaType kDstAlphaType = kPremul_SkAlphaType;
+
         ColorSpaceTransformBlock::ColorSpaceTransformData data(
-                fSrc.get(), alphaType, fDst.get(), alphaType);
+                fSrc.get(), kSrcAlphaType, fDst.get(), kDstAlphaType);
         ColorSpaceTransformBlock::BeginBlock(keyContext, builder, gatherer, &data);
         builder->endBlock();
     }
