@@ -115,6 +115,14 @@ protected:
     const SkMatrix fPtsToUnit;
     SkTileMode     fTileMode;
 
+#ifdef SK_GRAPHITE_ENABLED
+    static void MakeInterpolatedToDst(const skgpu::graphite::KeyContext&,
+                                      skgpu::graphite::PaintParamsKeyBuilder*,
+                                      skgpu::graphite::PipelineDataGatherer*,
+                                      const SkGradientShaderBase::Interpolation&,
+                                      SkColorSpace* intermediateCS);
+#endif
+
 public:
     static void AppendGradientFillStages(SkRasterPipeline* p,
                                          SkArenaAlloc* alloc,

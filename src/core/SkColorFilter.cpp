@@ -287,6 +287,8 @@ public:
 #endif
 
 #ifdef SK_GRAPHITE_ENABLED
+
+
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
