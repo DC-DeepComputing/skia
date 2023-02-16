@@ -34,6 +34,24 @@
       "parentUuid": "159ac507_c41604af",
       "revId": "9e14d82e9ba561d33b32b0f4dc364cde9642c976",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "177a24e2_5ce5a2b9",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-16T16:21:36Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "ae3072e7_930d82bb",
+      "revId": "9e14d82e9ba561d33b32b0f4dc364cde9642c976",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
