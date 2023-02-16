@@ -70,11 +70,11 @@ public:
             kSRGBLinear,
             kLab,
             kOKLab,
-            kLCH,
-            kOKLCH,
+            kLCH,  //
+            kOKLCH, //
             kSRGB,
-            kHSL,
-            kHWB,
+            kHSL, //
+            kHWB, //
 
             kLastColorSpace = kHWB,
         };
