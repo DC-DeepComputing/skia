@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e0a0147_d2056d6c",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-16T20:35:48Z",
+      "side": 1,
+      "message": "Ah yes, this is incorrect. Changed it to \"visible to a single ComputeStep\".",
+      "parentUuid": "dc96bf48_964fd600",
+      "range": {
+        "startLine": 55,
+        "startChar": 46,
+        "endLine": 55,
+        "endChar": 72
+      },
+      "revId": "4b9b7c2aa1a1647545d45d531859734a45c94ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16a5a740_6abb3d96",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f8047370_4a7bafdf",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-16T20:35:48Z",
+      "side": 1,
+      "message": "I think `ResourceDesc` is pretty accurate and with the scoping we\u0027d get `ComputeStep::ResourceDesc`. WDYT?",
+      "parentUuid": "16a5a740_6abb3d96",
+      "range": {
+        "startLine": 106,
+        "startChar": 11,
+        "endLine": 106,
+        "endChar": 19
+      },
+      "revId": "4b9b7c2aa1a1647545d45d531859734a45c94ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c55b25c1_7e3b463a",
         "filename": "src/gpu/graphite/compute/ComputeStep.h",
         "patchSetId": 3
@@ -60,6 +108,30 @@
       "writtenOn": "2023-02-16T19:36:59Z",
       "side": 1,
       "message": "Can this not be inferred from the local dispatch size?",
+      "range": {
+        "startLine": 153,
+        "startChar": 26,
+        "endLine": 153,
+        "endChar": 53
+      },
+      "revId": "4b9b7c2aa1a1647545d45d531859734a45c94ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15cf138a_267abc7e",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-16T20:35:48Z",
+      "side": 1,
+      "message": "The local dispatch size definitely factors into it but the exact dimensions are hard to predict without knowing about the algorithm. For instance, a ComputeStep that processes a path stream may choose a one-dimensional layout whereas an image operation might prefer a 2D workgroup layout. Others might prefer to process everything in a single workgroup with multiple iterations. This is why I made this a dynamic query.",
+      "parentUuid": "c55b25c1_7e3b463a",
       "range": {
         "startLine": 153,
         "startChar": 26,
