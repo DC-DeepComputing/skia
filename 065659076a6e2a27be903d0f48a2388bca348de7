@@ -16,6 +16,24 @@
       "message": "Can you test this locally?",
       "revId": "065659076a6e2a27be903d0f48a2388bca348de7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e5c1d35_1c0e396b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-16T15:28:30Z",
+      "side": 1,
+      "message": "I\u0027m not sure how to do so without setting up a new Mac. I tried disabling the installed Python3 just now, but I wasn\u0027t able to repro skia:13993. I suppose I can try on my non-work computer...",
+      "parentUuid": "be12288d_a2b2bd5d",
+      "revId": "065659076a6e2a27be903d0f48a2388bca348de7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
