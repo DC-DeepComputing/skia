@@ -245,6 +245,8 @@ func (b *taskBuilder) usesGo() {
 // usesDocker adds attributes to tasks which use docker.
 func (b *taskBuilder) usesDocker() {
 	b.dimension("docker_installed:true")
+
+	// b.env("CLOUDSDK_PYTHON", "/b/s/w/ir/cipd_bin_packages/cpython3/bin/python3")
 }
 
 // usesGSUtil adds the gsutil dependency from CIPD and puts it on PATH.
