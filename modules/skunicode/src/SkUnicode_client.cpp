@@ -14,6 +14,7 @@
 #include "modules/skunicode/include/SkUnicode.h"
 #include "src/base/SkUTF.h"
 
+#include <unicode/ubidi.h>
 #include <algorithm>
 #include <cstdint>
 #include <memory>
@@ -21,29 +22,72 @@
 #include <utility>
 #include <vector>
 
-#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
-#include "modules/skunicode/src/SkUnicode_client.h"
-#else
-#include <unicode/ubidi.h>
-#endif
+#include "modules/skunicode/src/SkUnicode_icu_bidi.h"
+
+#define SKCL_FUNC(funcname) decltype(funcname)* cl_##funcname;
+
+SKCL_FUNC(u_errorName)
+SKCL_FUNC(ubidi_close)
+SKCL_FUNC(ubidi_getDirection)
+SKCL_FUNC(ubidi_getLength)
+SKCL_FUNC(ubidi_getLevelAt)
+SKCL_FUNC(ubidi_openSized)
+SKCL_FUNC(ubidi_reorderVisual)
+SKCL_FUNC(ubidi_setPara)
+
+#undef SKCL_FUNC
+
+#ifndef SK_UNICODE_ICU_IMPLEMENTATION
+const char* SkUnicode_IcuBidi::errorName(UErrorCode status) {
+    return cl_u_errorName(status);
+}
+void SkUnicode_IcuBidi::close(UBiDi* bidi) {
+    cl_ubidi_close(bidi);
+}
+UBiDiDirection SkUnicode_IcuBidi::getDirection(const UBiDi* bidi) {
+    return cl_ubidi_getDirection(bidi);
+}
+SkBidiIterator::Position SkUnicode_IcuBidi::getLength(const UBiDi* bidi) {
+    return cl_ubidi_getLength(bidi);
+}
+SkBidiIterator::Level SkUnicode_IcuBidi::getLevelAt(const UBiDi* bidi, int pos) {
+    return cl_ubidi_getLevelAt(bidi, pos);
+}
+UBiDi* SkUnicode_IcuBidi::openSized(int32_t maxLength,
+                                    int32_t maxRunCount,
+                                    UErrorCode* pErrorCode) {
+    return cl_ubidi_openSized(maxLength, maxRunCount, pErrorCode);
+}
+void SkUnicode_IcuBidi::setPara(UBiDi* bidi,
+                                const UChar* text,
+                                int32_t length,
+                                UBiDiLevel paraLevel,
+                                UBiDiLevel* embeddingLevels,
+                                UErrorCode* status) {
+    return cl_ubidi_setPara(bidi, text, length, paraLevel, embeddingLevels, status);
+}
+
+void SkUnicode_IcuBidi::reorderVisual(const SkUnicode::BidiLevel runLevels[],
+                                      int levelsCount,
+                                      int32_t logicalFromVisual[]) {
+    cl_ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+}
+#endif // SK_UNICODE_ICU_IMPLEMENTATION
 
 class SkUnicode_client : public SkUnicode {
 public:
     struct Data {
         SkSpan<const char> fText8;
         SkSpan<const char16_t> fText16;
-        std::vector<BidiRegion> fBidiRegions;
         std::vector<Position> fWords;
         std::vector<SkUnicode::Position> fGraphemeBreaks;
         std::vector<SkUnicode::LineBreakBefore> fLineBreaks;
         Data(SkSpan<char> text,
-             std::vector<SkUnicode::BidiRegion> bidiRegions,
              std::vector<SkUnicode::Position> words,
              std::vector<SkUnicode::Position> graphemeBreaks,
              std::vector<SkUnicode::LineBreakBefore> lineBreaks)
             : fText8(text)
             , fText16(SkSpan<const char16_t>(nullptr, 0))
-            , fBidiRegions(std::move(bidiRegions))
             , fWords(std::move(words))
             , fGraphemeBreaks(std::move(graphemeBreaks))
             , fLineBreaks(std::move(lineBreaks)) {
@@ -52,19 +96,16 @@ public:
         void reset() {
             fText8 = SkSpan<const char>(nullptr, 0);
             fText16 = SkSpan<const char16_t>(nullptr, 0);
-            fBidiRegions.clear();
             fGraphemeBreaks.clear();
             fLineBreaks.clear();
         }
     };
     SkUnicode_client() = delete;
     SkUnicode_client(SkSpan<char> text,
-                     std::vector<SkUnicode::BidiRegion> bidiRegions,
                      std::vector<SkUnicode::Position> words,
                      std::vector<SkUnicode::Position> graphemeBreaks,
                      std::vector<SkUnicode::LineBreakBefore> lineBreaks)
             : fData(std::make_shared<Data>(text,
-                                           std::move(bidiRegions),
                                            std::move(words),
                                            std::move(graphemeBreaks),
                                            std::move(lineBreaks))) {}
@@ -93,8 +134,7 @@ public:
                         int utf8Units,
                         TextDirection dir,
                         std::vector<BidiRegion>* results) override {
-        *results = fData->fBidiRegions;
-        return true;
+        return SkUnicode::extractBidi(utf8, utf8Units, dir, results);
     }
 
     // TODO: Take if from the Client or hard code here?
@@ -245,35 +285,14 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        #ifdef SK_UNICODE_ICU_IMPLEMENTATION
-        ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
-        #else
-        ubidi_reorderVisual_skia(runLevels, levelsCount, logicalFromVisual);
-        #endif
+        SkUnicode_IcuBidi::reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 private:
-    friend class SkBidiIterator_client;
     friend class SkBreakIterator_client;
 
     std::shared_ptr<Data> fData;
 };
 
-class SkBidiIterator_client : public SkBidiIterator {
-    std::shared_ptr<SkUnicode_client::Data> fData;
-public:
-    explicit SkBidiIterator_client(std::shared_ptr<SkUnicode_client::Data> data) : fData(data) { }
-    Position getLength() override { return fData->fBidiRegions.size(); }
-    Level getLevelAt(Position pos) override {
-        auto found = std::lower_bound(
-                fData->fBidiRegions.begin(),
-                fData->fBidiRegions.end(),
-                SkUnicode::BidiRegion(pos, pos, 0),
-                [](const SkUnicode::BidiRegion& a, const SkUnicode::BidiRegion& b) {
-                    return a.start <= b.start && a.end <= b.end;
-                });
-        return found->level;
-    }
-};
 class SkBreakIterator_client: public SkBreakIterator {
     std::shared_ptr<SkUnicode_client::Data> fData;
     Position fLastResult;
@@ -313,12 +332,12 @@ public:
 };
 std::unique_ptr<SkBidiIterator> SkUnicode_client::makeBidiIterator(const uint16_t text[], int count,
                                                  SkBidiIterator::Direction dir) {
-    return std::make_unique<SkBidiIterator_client>(fData);
+    return SkUnicode::makeBidiIterator(text, count, dir);
 }
 std::unique_ptr<SkBidiIterator> SkUnicode_client::makeBidiIterator(const char text[],
                                                  int count,
                                                  SkBidiIterator::Direction dir) {
-    return std::make_unique<SkBidiIterator_client>(fData);
+    return SkUnicode::makeBidiIterator(text, count, dir);
 }
 std::unique_ptr<SkBreakIterator> SkUnicode_client::makeBreakIterator(const char locale[],
                                                    BreakType breakType) {
@@ -330,9 +349,8 @@ std::unique_ptr<SkBreakIterator> SkUnicode_client::makeBreakIterator(BreakType b
 
 std::unique_ptr<SkUnicode> SkUnicode::MakeClientBasedUnicode(
         SkSpan<char> text,
-        std::vector<SkUnicode::BidiRegion> bidiRegions,
         std::vector<SkUnicode::Position> words,
         std::vector<SkUnicode::Position> graphemeBreaks,
         std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
-    return std::make_unique<SkUnicode_client>(text, bidiRegions, words, graphemeBreaks, lineBreaks);
+    return std::make_unique<SkUnicode_client>(text, words, graphemeBreaks, lineBreaks);
 }
