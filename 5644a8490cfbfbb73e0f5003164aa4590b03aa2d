@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb3c1afa_7b569b41",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-16T22:06:19Z",
+      "side": 1,
+      "message": "nit: I\u0027d call this `interpolated_to_rgb_unpremul`. The actual output color space of this function depends on the input color space (it might be sRGB, linear sRGB, or linear XYZ). (The actual space is what\u0027s stored in `fIntermediateColorSpace`, and then we append the conversion from that to dst). The one common factor in the ouput spaces is that they can be represented as an SkColorSpace (because they\u0027re essentially RGB spaces, vs. things like Lab or HSL).",
+      "range": {
+        "startLine": 511,
+        "startChar": 13,
+        "endLine": 511,
+        "endChar": 42
+      },
+      "revId": "5644a8490cfbfbb73e0f5003164aa4590b03aa2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
