@@ -49,6 +49,56 @@ def compile_fn(api, checkout_root, _ignore):
   with api.env(env):
     api.run(
         api.step,
+        'ls /home/chrome-bot/.docker',
+        cmd=['ls', '/home/chrome-bot/.docker'])
+
+    api.run(
+        api.step,
+        'cat /home/chrome-bot/.docker/config.json',
+        cmd=['cat', '/home/chrome-bot/.docker/config.json'])
+
+    api.run(
+        api.step,
+        'which docker',
+        cmd=['which', 'docker'])
+
+    api.run(
+        api.step,
+        'which gcloud',
+        cmd=['which', 'gcloud'])
+
+    api.run(
+        api.step,
+        'which python',
+        cmd=['which', 'python'])
+
+    api.run(
+        api.step,
+        'which python2',
+        cmd=['which', 'python2'])
+
+    api.run(
+        api.step,
+        'which python3',
+        cmd=['which', 'python3'])
+
+    # api.run(
+    #     api.step,
+    #     'sleep 600',
+    #     cmd=['sleep', '600'])
+
+    api.run(
+        api.step,
+        'docker image ls',
+        cmd=['docker', 'image', 'ls'])
+
+    api.run(
+      api.step,
+      'print docker command',
+      cmd=['echo'] + cmd)
+
+    api.run(
+        api.step,
         'Build CanvasKit with Docker',
         cmd=cmd)
 
