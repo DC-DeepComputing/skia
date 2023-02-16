@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "159ac507_c41604af",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-16T15:08:49Z",
+      "side": 0,
+      "message": "I\u0027m trying to understand this set of changes in particular... it looks like the old code was trying to match the container prefix, plus `ItemSemantic` as a single thing ... which doesn\u0027t appear to be how the files are structured? The new code looks like it\u0027s matching `Item:Semantic`, which does match the (new?) examples in the docs. Is this part of the CL meant to alter what\u0027s detected?",
+      "revId": "9e14d82e9ba561d33b32b0f4dc364cde9642c976",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
