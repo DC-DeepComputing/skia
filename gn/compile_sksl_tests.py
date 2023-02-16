@@ -11,6 +11,9 @@ import subprocess
 import sys
 import tempfile
 
+# skbug.com/13993
+if "CPATH" in os.environ: os.environ.pop("CPATH")
+
 batchCompile = True
 
 skslc = sys.argv[1]

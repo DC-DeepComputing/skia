@@ -13,6 +13,9 @@ import os
 import subprocess
 import sys
 
+# skbug.com/13993
+if "CPATH" in os.environ: os.environ.pop("CPATH")
+
 # Finds all public sources in include directories then write them to skia.h.
 
 # Also write skia.h.deps, which Ninja uses to track dependencies. It's the

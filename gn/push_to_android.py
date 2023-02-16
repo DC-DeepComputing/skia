@@ -9,6 +9,9 @@ import os
 import subprocess
 import sys
 
+# skbug.com/13993
+if "CPATH" in os.environ: os.environ.pop("CPATH")
+
 host, serial, stamp = sys.argv[1:]
 device = '/data/local/tmp/' + os.path.basename(host)
 

@@ -9,6 +9,9 @@ import os
 import subprocess
 import sys
 
+# skbug.com/13993
+if "CPATH" in os.environ: os.environ.pop("CPATH")
+
 sksl_minify = sys.argv[1]
 targetDir = sys.argv[2]
 modules = sys.argv[3:]

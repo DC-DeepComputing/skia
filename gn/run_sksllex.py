@@ -9,6 +9,9 @@ import os
 import subprocess
 import sys
 
+# skbug.com/13993
+if "CPATH" in os.environ: os.environ.pop("CPATH")
+
 sksllex = sys.argv[1]
 clangFormat = sys.argv[2]
 fetchClangFormat = sys.argv[3]

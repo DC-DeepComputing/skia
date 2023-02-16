@@ -9,6 +9,9 @@ import os.path
 import sys
 from optparse import OptionParser
 
+# skbug.com/13993
+if "CPATH" in os.environ: os.environ.pop("CPATH")
+
 _LICENSE = """// Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
