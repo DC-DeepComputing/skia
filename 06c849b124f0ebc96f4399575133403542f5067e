@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74278052_5e0b7f92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-16T21:12:15Z",
+      "side": 1,
+      "message": "Last-second branch-day fix. We\u0027re recommending that people write the MPF segment last, so we should probably do this in our encoder.\n\nBTW, the whole \"send a pile of segments to the encoder\" scheme is something I\u0027m going to want to remove. It made sense for one of the (many) intermediate gainmap formats, but I would prefer to change this to be a scheme wherein we explicitly say \"use this XMP and this MPF\" to the encoder.",
+      "revId": "06c849b124f0ebc96f4399575133403542f5067e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
