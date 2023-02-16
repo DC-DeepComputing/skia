@@ -36,13 +36,13 @@ static inline bool SkPixmapIsValid(const SkPixmap& src) {
     #define SkEncodeImageWithCG(...) false
 #endif
 
-#ifdef SK_BUILD_FOR_WIN
+#if defined(SK_BUILD_FOR_WIN)
     bool SkEncodeImageWithWIC(SkWStream*, const SkPixmap&, SkEncodedImageFormat, int quality);
 #else
     #define SkEncodeImageWithWIC(...) false
 #endif
 
-#ifdef SK_ENABLE_NDK_IMAGES
+#if defined(SK_ENABLE_NDK_IMAGES)
     bool SkEncodeImageWithNDK(SkWStream*, const SkPixmap&, SkEncodedImageFormat, int quality);
 #else
     #define SkEncodeImageWithNDK(...) false

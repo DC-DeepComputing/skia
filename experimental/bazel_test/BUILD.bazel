@@ -54,8 +54,29 @@ cc_binary(
     features = ["layering_check"],
     deps = [
         "//:core",
-        "//:default_logging",
         "//:default_malloc",
         "//:pathops",
+    ],
+)
+
+cc_binary(
+    name = "encode_gradient_as_png",
+    srcs = ["encode_png_main.cpp"],
+    features = ["layering_check"],
+    deps = [
+        "//:core",
+        "//:default_malloc",
+        "//:png_encode_codec",
+    ],
+)
+
+cc_binary(
+    name = "decode_png",
+    srcs = ["decode_png_main.cpp"],
+    features = ["layering_check"],
+    deps = [
+        "//:core",
+        "//:default_malloc",
+        "//:png_decode_codec",
     ],
 )

@@ -5,30 +5,33 @@
  * found in the LICENSE file.
  */
 
-#ifndef SkChecksum_opts_DEFINED
-#define SkChecksum_opts_DEFINED
+#ifndef SkHash_opts_impl_DEFINED
+#define SkHash_opts_impl_DEFINED
 
-#include "include/core/SkTypes.h"
-#include "include/private/SkChecksum.h"
+#if !defined(SK_OPTS_NS)
+#error "SK_OPTS_NS must be defined, e.g. to 'portable' or 'avx' typically using SkOpts_namespace.h"
+#endif
+
+#include "include/private/base/SkFeatures.h"
 #include "src/base/SkUtils.h"   // sk_unaligned_load
 
 // This function is designed primarily to deliver consistent results no matter the platform,
 // but then also is optimized for speed on modern machines with CRC32c instructions.
 // (ARM supports both CRC32 and CRC32c, but Intel only CRC32c, so we use CRC32c.)
 
-#if 1 && SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSE42
+#if SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSE42
     #include <immintrin.h>
     static uint32_t crc32c_1(uint32_t seed, uint8_t  v) { return _mm_crc32_u8(seed, v); }
     static uint32_t crc32c_4(uint32_t seed, uint32_t v) { return _mm_crc32_u32(seed, v); }
     static uint32_t crc32c_8(uint32_t seed, uint64_t v) {
-    #if 1 && (defined(__x86_64__) || defined(_M_X64))
+    #if (defined(__x86_64__) || defined(_M_X64))
         return _mm_crc32_u64(seed, v);
     #else
         seed = _mm_crc32_u32(seed, (uint32_t)(v      ));
         return _mm_crc32_u32(seed, (uint32_t)(v >> 32));
     #endif
     }
-#elif 1 && defined(SK_ARM_HAS_CRC32)
+#elif defined(SK_ARM_HAS_CRC32)
     #include <arm_acle.h>
     static uint32_t crc32c_1(uint32_t seed, uint8_t  v) { return __crc32cb(seed, v); }
     static uint32_t crc32c_4(uint32_t seed, uint32_t v) { return __crc32cw(seed, v); }
@@ -142,4 +145,4 @@ namespace SK_OPTS_NS {
 
 }  // namespace SK_OPTS_NS
 
-#endif//SkChecksum_opts_DEFINED
+#endif // SkChecksum_opts_DEFINED

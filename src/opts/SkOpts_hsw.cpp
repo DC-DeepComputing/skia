@@ -11,12 +11,12 @@
 
 #define SK_OPTS_NS hsw
 #include "src/core/SkCubicSolver.h"
+#include "src/opts/Memset_opts_impl.h"
 #include "src/opts/SkBitmapProcState_opts.h"
 #include "src/opts/SkBlitRow_opts.h"
 #include "src/opts/SkRasterPipeline_opts.h"
-#include "src/opts/SkSwizzler_opts.h"
-#include "src/opts/SkUtils_opts.h"
 #include "src/opts/SkVM_opts.h"
+#include "src/opts/Swizzle_opts_impl.h"
 
 namespace SkOpts {
     void Init_hsw() {
