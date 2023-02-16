@@ -188,6 +188,30 @@
       },
       "revId": "4b9b7c2aa1a1647545d45d531859734a45c94ff6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f78da6b_e0bda4d0",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-16T20:50:09Z",
+      "side": 1,
+      "message": "The local dispatch size is algorithm-specific as well but it\u0027s also tied to the pipeline and will be fixed at pipeline creation (Metal is the exception but you almost always want something that aligns well with the hardware SIMD group size and not vary the workgroup size arbitrarily). Most likely I\u0027ll add some utility to calculate this automatically based on Caps (like \"max workgroup size\" and \"subgroup width\"). Again, the dimensions are going to be algorithm specific but unlike the global dispatch size, the local size doesn\u0027t depend on the input data and can be fixed when the ComputeStep gets constructed.\n\nSo overall:\n\n  - Local dispatch size (aka \"workgroup size\"): Depends on the hardware and the ComputeStep\u0027s algorithm, fixed at ComputeStep construction time.\n  - Global dispatch size (aka \"workgroup count\"): Depends on DrawParams and the ComputeStep\u0027s algorithm, queried dynamically when the DrawParams are known.",
+      "parentUuid": "7dd79241_2d9ac4a8",
+      "range": {
+        "startLine": 153,
+        "startChar": 26,
+        "endLine": 153,
+        "endChar": 53
+      },
+      "revId": "4b9b7c2aa1a1647545d45d531859734a45c94ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
