@@ -37,6 +37,7 @@ if (skia_use_icu || skia_use_client_icu) {
 
     if (skia_use_icu) {
       sources += skia_unicode_icu_sources
+      sources += skia_unicode_icu_bidi_sources
       if (skia_use_icu) {
         defines += [ "SK_UNICODE_ICU_IMPLEMENTATION" ]
       }
@@ -56,6 +57,7 @@ if (skia_use_icu || skia_use_client_icu) {
       configs += [ "../../third_party/icu/config:no_cxx" ]
     } else if (skia_use_client_icu) {
       sources += skia_unicode_client_icu_sources
+      sources += skia_unicode_icu_bidi_sources
       defines += [ "SK_UNICODE_CLIENT_IMPLEMENTATION" ]
       deps += [ skia_icu_bidi_third_party_dir ]
     }
