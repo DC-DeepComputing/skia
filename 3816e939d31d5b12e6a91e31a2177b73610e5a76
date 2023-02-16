@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6770c32_7b0fbf98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-16T14:14:41Z",
+      "side": 1,
+      "message": "I tried to get TSAN suppressions working, but didn\u0027t have any luck yet. I can take another stab at that tomorrow, but I\u0027d like to get something landed. This version of the CL has fully working ASAN, and the TSAN bots are just skipping unit tests.",
+      "revId": "3816e939d31d5b12e6a91e31a2177b73610e5a76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
