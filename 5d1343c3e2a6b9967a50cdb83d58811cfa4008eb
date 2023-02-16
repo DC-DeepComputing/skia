@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afba210f_09400507",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-16T22:52:49Z",
+      "side": 1,
+      "message": "I fixed the earlier mac compute test failure but the new docker error seems unrelated?",
+      "revId": "5d1343c3e2a6b9967a50cdb83d58811cfa4008eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9809bdb_90633964",
+        "filename": "src/gpu/graphite/mtl/MtlComputeCommandEncoder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-16T22:52:49Z",
+      "side": 1,
+      "message": "Oops, I had forgotten to initialize these which was the cause of the earlier Mac test failure.",
+      "range": {
+        "startLine": 110,
+        "startChar": 8,
+        "endLine": 116,
+        "endChar": 9
+      },
+      "revId": "5d1343c3e2a6b9967a50cdb83d58811cfa4008eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
