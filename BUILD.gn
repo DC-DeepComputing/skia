@@ -1248,13 +1248,13 @@ optional("jpeg_encode") {
   deps = [ "//third_party/libjpeg-turbo:libjpeg" ]
   public = [ "include/encode/SkJpegEncoder.h" ]
   sources = [
-    "src/images/SkJPEGWriteUtility.cpp",
-    "src/images/SkJpegEncoder.cpp",
+    "src/encode/SkJPEGWriteUtility.cpp",
+    "src/encode/SkJpegEncoder.cpp",
   ]
 
   if (skia_use_jpeg_gainmaps) {
     deps += [ ":jpeg_mpf" ]
-    sources += [ "src/images/SkJpegGainmapEncoder.cpp" ]
+    sources += [ "src/encode/SkJpegGainmapEncoder.cpp" ]
   }
 }
 
@@ -1364,7 +1364,7 @@ optional("png_encode") {
   public_defines = [ "SK_ENCODE_PNG" ]
 
   deps = [ "//third_party/libpng" ]
-  sources = [ "src/images/SkPngEncoder.cpp" ]
+  sources = [ "src/encode/SkPngEncoder.cpp" ]
 }
 
 optional("raw") {
@@ -1408,7 +1408,7 @@ optional("webp_encode") {
   public_defines = [ "SK_ENCODE_WEBP" ]
 
   deps = [ "//third_party/libwebp" ]
-  sources = [ "src/images/SkWebpEncoder.cpp" ]
+  sources = [ "src/encode/SkWebpEncoder.cpp" ]
 }
 
 optional("wuffs") {
@@ -1531,8 +1531,8 @@ skia_component("skia") {
     "src/codec/SkEncodedInfo.cpp",
     "src/codec/SkParseEncodedOrigin.cpp",
     "src/codec/SkSampledCodec.cpp",
-    "src/images/SkEncoder.cpp",
-    "src/images/SkImageEncoder.cpp",
+    "src/encode/SkEncoder.cpp",
+    "src/encode/SkImageEncoder.cpp",
     "src/ports/SkDiscardableMemory_none.cpp",
     "src/ports/SkGlobalInitialization_default.cpp",
     "src/ports/SkImageGenerator_skia.cpp",
