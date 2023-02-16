@@ -16,6 +16,24 @@
       "message": "I\u0027m trying to understand this set of changes in particular... it looks like the old code was trying to match the container prefix, plus `ItemSemantic` as a single thing ... which doesn\u0027t appear to be how the files are structured? The new code looks like it\u0027s matching `Item:Semantic`, which does match the (new?) examples in the docs. Is this part of the CL meant to alter what\u0027s detected?",
       "revId": "9e14d82e9ba561d33b32b0f4dc364cde9642c976",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae3072e7_930d82bb",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-16T16:09:23Z",
+      "side": 0,
+      "message": "\u003e I\u0027m trying to understand this set of changes in particular... it looks like the old code was trying to match the container prefix, plus ItemSemantic as a single thing ... which doesn\u0027t appear to be how the files are structured? \n\nYeah, that was what was in the original examples I was given. Indeed it\u0027s not how the files were supposed to be structured.\n\nNow I\u0027ve updated it so that we are correctly detecting \"the Item with Semantic `RecoveryMap`\". (I suspect we may change this from `RecoveryMap` to `GainMap` or something, but ... I\u0027ll not anticipate that change).\n\nThe code also used to extract the gainmap parameters (using the `\"http://ns.google.com/photos/1.0/recoverymap/\"` interface), but that is no longer a thing.",
+      "parentUuid": "159ac507_c41604af",
+      "revId": "9e14d82e9ba561d33b32b0f4dc364cde9642c976",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
