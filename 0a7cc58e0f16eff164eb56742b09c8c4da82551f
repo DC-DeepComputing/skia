@@ -214,6 +214,24 @@
       "parentUuid": "11d506a9_406ea138",
       "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "213fa56e_797e7fb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-16T14:43:26Z",
+      "side": 1,
+      "message": "I\u0027ll look at the failures and code, but it looks like the failures are all on Graphite bots -- that\u0027s controlled by a separate GN argument (as it\u0027s still under development, etc...). You probably just need `skia_enable_graphite \u003d true` in your GN args.",
+      "parentUuid": "3e683ce4_c5f39dfb",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
