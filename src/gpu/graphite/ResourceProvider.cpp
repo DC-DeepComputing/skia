@@ -40,7 +40,8 @@ ResourceProvider::~ResourceProvider() {
 sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
-        const RenderPassDesc& renderPassDesc) {
+        const RenderPassDesc& renderPassDesc,
+        SkColorType ct) {
     auto globalCache = fSharedContext->globalCache();
     UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
                                                                             renderPassDesc);
@@ -51,7 +52,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         // threads. If this happens, GlobalCache returns the first-through-gate pipeline and we
         // discard the redundant pipeline. While this is wasted effort in the rare event of a race,
         // it allows pipeline creation to be performed without locking the global cache.
-        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineDesc, renderPassDesc);
+        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineDesc, renderPassDesc, ct);
         if (pipeline) {
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?

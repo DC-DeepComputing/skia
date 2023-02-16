@@ -665,7 +665,8 @@ const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
 }
 
 UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
-                                           const RenderPassDesc& renderPassDesc) const {
+                                           const RenderPassDesc& renderPassDesc,
+                                           Swizzle writeSwizzle) const {
     UniqueKey pipelineKey;
     {
         static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
@@ -679,6 +680,10 @@ UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineD
         uint64_t renderPassKey = this->getRenderPassDescKey(renderPassDesc);
         builder[2] = renderPassKey & 0xFFFFFFFF;
         builder[3] = (renderPassKey >> 32) & 0xFFFFFFFF;
+
+
+        // Add color type (TODO: write swizzle, as key) information to key
+        builder[4] = ct.
         builder.finish();
     }
 

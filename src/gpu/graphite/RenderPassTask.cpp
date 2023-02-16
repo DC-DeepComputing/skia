@@ -19,22 +19,25 @@ namespace skgpu::graphite {
 
 sk_sp<RenderPassTask> RenderPassTask::Make(std::vector<std::unique_ptr<DrawPass>> passes,
                                            const RenderPassDesc& desc,
-                                           sk_sp<TextureProxy> target) {
+                                           sk_sp<TextureProxy> target,
+                                           SkColorType ct) {
     // For now we have one DrawPass per RenderPassTask
     SkASSERT(passes.size() == 1);
     if (!target) {
         return nullptr;
     }
 
-    return sk_sp<RenderPassTask>(new RenderPassTask(std::move(passes), desc, target));
+    return sk_sp<RenderPassTask>(new RenderPassTask(std::move(passes), desc, target, ct));
 }
 
 RenderPassTask::RenderPassTask(std::vector<std::unique_ptr<DrawPass>> passes,
                                const RenderPassDesc& desc,
-                               sk_sp<TextureProxy> target)
+                               sk_sp<TextureProxy> target,
+                               SkColorType ct)
         : fDrawPasses(std::move(passes))
         , fRenderPassDesc(desc)
-        , fTarget(std::move(target)) {}
+        , fTarget(std::move(target))
+        , fColorType(ct) {}
 
 RenderPassTask::~RenderPassTask() = default;
 
@@ -51,7 +54,7 @@ bool RenderPassTask::prepareResources(ResourceProvider* resourceProvider,
     // Assuming one draw pass per renderpasstask for now
     SkASSERT(fDrawPasses.size() == 1);
     for (const auto& drawPass: fDrawPasses) {
-        if (!drawPass->prepareResources(resourceProvider, runtimeDict, fRenderPassDesc)) {
+        if (!drawPass->prepareResources(resourceProvider, runtimeDict, fRenderPassDesc, fColorType)) {
             return false;
         }
     }

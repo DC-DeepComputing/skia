@@ -227,7 +227,7 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
                                                drawPass->requiresMSAA());
 
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
-    return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
+    return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy), this->colorInfo().colorType());
 }
 
 sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {

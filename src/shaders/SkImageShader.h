@@ -87,7 +87,6 @@ private:
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc*) const override;
 
-    bool doStages(const SkStageRec&, TransformShader* = nullptr) const;
 #ifdef SK_GRAPHITE_ENABLED
     skgpu::graphite::ReadSwizzle swizzleClassToReadEnum(const skgpu::Swizzle& swizzle) const;
 #endif

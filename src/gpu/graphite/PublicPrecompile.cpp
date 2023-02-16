@@ -56,7 +56,8 @@ void compile(const RendererProvider* rendererProvider,
                 auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(
                         keyContext.rtEffectDict(),
                         pipelineDesc,
-                        renderPassDesc);
+                        renderPassDesc,
+                        kRGBA_8888_SkColorType);
                 if (!pipeline) {
                     SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
                     return;

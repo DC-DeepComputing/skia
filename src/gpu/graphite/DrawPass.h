@@ -19,6 +19,8 @@
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+#include "include/core/SkColorType.h"
+
 #include <memory>
 
 struct SkImageInfo;
@@ -82,7 +84,8 @@ public:
     // etc.
     bool prepareResources(ResourceProvider*,
                           const RuntimeEffectDictionary*,
-                          const RenderPassDesc&);
+                          const RenderPassDesc&,
+                          SkColorType);
 
     DrawPassCommands::List::Iter commands() const {
         return fCommandList.commands();

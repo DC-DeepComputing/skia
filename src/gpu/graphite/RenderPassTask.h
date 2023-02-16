@@ -28,7 +28,8 @@ class RenderPassTask final : public Task {
 public:
     static sk_sp<RenderPassTask> Make(std::vector<std::unique_ptr<DrawPass>> passes,
                                       const RenderPassDesc&,
-                                      sk_sp<TextureProxy> target);
+                                      sk_sp<TextureProxy> target,
+                                      SkColorType);
 
     ~RenderPassTask() override;
 
@@ -39,11 +40,13 @@ public:
 private:
     RenderPassTask(std::vector<std::unique_ptr<DrawPass>> passes,
                    const RenderPassDesc&,
-                   sk_sp<TextureProxy> target);
+                   sk_sp<TextureProxy> target,
+                   SkColorType);
 
     std::vector<std::unique_ptr<DrawPass>> fDrawPasses;
     RenderPassDesc fRenderPassDesc;
     sk_sp<TextureProxy> fTarget;
+    SkColorType fColorType;
 };
 
 } // namespace skgpu::graphite

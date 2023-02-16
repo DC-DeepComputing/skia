@@ -596,12 +596,14 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
 bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 const RuntimeEffectDictionary* runtimeDict,
-                                const RenderPassDesc& renderPassDesc) {
+                                const RenderPassDesc& renderPassDesc,
+                                SkColorType ct) {
     fFullPipelines.reserve_back(fPipelineDescs.size());
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
                                                                        pipelineDesc,
-                                                                       renderPassDesc);
+                                                                       renderPassDesc,
+                                                                       ct);
         if (!pipeline) {
             SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
             return false;
