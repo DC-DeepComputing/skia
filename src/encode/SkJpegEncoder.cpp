@@ -178,6 +178,12 @@ std::unique_ptr<SkEncoder> SkJpegEncoder::Make(SkWStream* dst, const SkPixmap& s
     return Make(dst, src, options, 0, nullptr, nullptr, nullptr);
 }
 
+static bool segment_is_mpf(uint8_t segmentMarker, SkData* segmentData) {
+    return segmentMarker == kMpfMarker &&
+           segmentData->size() >= sizeof(kMpfSig) &&
+           memcmp(segmentData->bytes(), kMpfSig, sizeof(kMpfSig) == 0;
+}
+
 std::unique_ptr<SkEncoder> SkJpegEncoder::Make(SkWStream* dst,
                                                const SkPixmap& src,
                                                const Options& options,
@@ -208,6 +214,9 @@ std::unique_ptr<SkEncoder> SkJpegEncoder::Make(SkWStream* dst,
             continue;
         }
         SkASSERT(segmentData[i]->size() <= kSegmentDataMaxSize);
+        if (segment_is_mpf(segmentMarkers[i], segmentData[i])) {
+            continue;
+        }
         jpeg_write_marker(encoderMgr->cinfo(),
                           segmentMarkers[i],
                           segmentData[i]->bytes(),
@@ -228,6 +237,21 @@ std::unique_ptr<SkEncoder> SkJpegEncoder::Make(SkWStream* dst,
         memcpy(ptr, icc->data(), icc->size());
 
         jpeg_write_marker(encoderMgr->cinfo(), kICCMarker, markerData->bytes(), markerData->size());
+    }
+
+    // Append the MPF segment last, so that edits to the previous segments don't break offset
+    // computations.
+    for (size_t i = 0; i < segmentCount; ++i) {
+        if (!segmentData[i] || segmentData[i]->isEmpty()) {
+            continue;
+        }
+        if (!segment_is_mpf(segmentMarkers[i], segmentData[i])) {
+            continue;
+        }
+        jpeg_write_marker(encoderMgr->cinfo(),
+                          segmentMarkers[i],
+                          segmentData[i]->bytes(),
+                          segmentData[i]->size());
     }
 
     return std::unique_ptr<SkJpegEncoder>(new SkJpegEncoder(std::move(encoderMgr), src));
