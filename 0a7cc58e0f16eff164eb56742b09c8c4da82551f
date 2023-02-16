@@ -196,6 +196,24 @@
       "parentUuid": "b466eebb_a64782f1",
       "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e683ce4_c5f39dfb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2023-02-16T00:33:05Z",
+      "side": 1,
+      "message": "Okay, I\u0027m going to need a bit more help please Brian.  I spent a good part of a day trying to make CI happy.  I eventually just tried to implement the functions for SkRasterPipeline since it would probably be less work than turning off the tests.  Everything compiles but I get an error when it appears to try to read pixels into the BGR10_XR format.  I can\u0027t figure out how to reproduce the failure locally.  I\u0027ve built with `skia_use_metal\u003dtrue` but my `dm` never seems to execute that test.  Please advise.",
+      "parentUuid": "11d506a9_406ea138",
+      "revId": "0a7cc58e0f16eff164eb56742b09c8c4da82551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
