@@ -8,7 +8,7 @@
 #define skgpu_graphite_ComputePipelineDesc_DEFINED
 
 #include "include/core/SkSpan.h"
-#include "include/private/SkOpts_spi.h"
+#include "src/opts/Hash_opts.h"
 
 #include <array>
 #include <string>

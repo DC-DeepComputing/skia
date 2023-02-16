@@ -9,9 +9,9 @@
 #define SKSL_SYMBOLTABLE
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkOpts_spi.h"
 #include "include/private/SkSLSymbol.h"
 #include "src/core/SkTHash.h"
+#include "src/opts/Hash_opts.h"
 
 #include <cstddef>
 #include <cstdint>

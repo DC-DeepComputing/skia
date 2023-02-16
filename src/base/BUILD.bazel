@@ -65,6 +65,7 @@ skia_filegroup(
         "SkMathPriv.cpp",
         "SkSafeMath.cpp",
         "SkSemaphore.cpp",
+        "SkString.cpp",
         "SkThreadID.cpp",
         "SkUTF.cpp",
         "SkUtils.cpp",

@@ -5,22 +5,32 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkString.h"
+#include "include/private/base/SkString_impl.h"
 
-#include "include/private/base/SkTPin.h"
-#include "include/private/base/SkMalloc.h"
+#include "include/private/base/SkAssert.h"
+#include "include/private/base/SkAttributes.h"
 #include "include/private/base/SkDebug.h"
+#include "include/private/base/SkMalloc.h"
+#include "include/private/base/SkRefCnt_impl.h"
+#include "include/private/base/SkTArray.h"
+#include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkSafeMath.h"
 #include "src/base/SkUTF.h"
 #include "src/base/SkUtils.h"
 
 #include <algorithm>
+#include <atomic>
+#include <cmath>
+#include <cstdarg>
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
 #include <new>
+#include <string>
 #include <string_view>
 #include <utility>
+
 
 // number of bytes (on the stack) to receive the printf result
 static const size_t kBufferSize = 1024;
@@ -160,14 +170,14 @@ char* SkStrAppendS64(char string[], int64_t dec, int minDigits) {
     return SkStrAppendU64(string, udec, minDigits);
 }
 
-char* SkStrAppendScalar(char string[], SkScalar value) {
+char* SkStrAppendScalar(char string[], float value) {
     // Handle infinity and NaN ourselves to ensure consistent cross-platform results.
     // (e.g.: `inf` versus `1.#INF00`, `nan` versus `-nan` for high-bit-set NaNs)
-    if (SkScalarIsNaN(value)) {
+    if (std::isnan(value)) {
         strcpy(string, "nan");
         return string + 3;
     }
-    if (!SkScalarIsFinite(value)) {
+    if (!std::isfinite(value)) {
         if (value > 0) {
             strcpy(string, "inf");
             return string + 3;
@@ -517,7 +527,7 @@ void SkString::insertHex(size_t offset, uint32_t hex, int minDigits) {
     this->insert(offset, p, buffer + sizeof(buffer) - p);
 }
 
-void SkString::insertScalar(size_t offset, SkScalar value) {
+void SkString::insertScalar(size_t offset, float value) {
     char    buffer[kSkStrAppendScalar_MaxSize];
     char*   stop = SkStrAppendScalar(buffer, value);
     this->insert(offset, buffer, stop - buffer);

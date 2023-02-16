@@ -10,6 +10,7 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkString.h"
+#include "include/core/SkTypes.h"
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkAlignedStorage.h"
 #include "include/private/base/SkOnce.h"

@@ -410,6 +410,11 @@
 
   { symbol: ["SkScalar", "private", "\"include/core/SkScalar.h\"", "public"] },
 
+  { symbol: ["SkUnichar", "private", "\"include/core/SkTypes.h\"", "public"] },
+  { symbol: ["SkUnichar", "private", "\"include/core/SkString.h\"", "public"] },
+  { symbol: ["SkUnichar", "private", "\"src/base/SkUTF.h\"", "public"] },
+  { symbol: ["SkUnichar", "private", "\"include/private/base/SkString_impl.h\"", "public"] },
+
   # IWYU seems to get confused on where the namespace sktext is "defined". Any files in
   # this list are ok.
   { symbol: ["sktext", "private", "\"src/text/StrikeForGPU.h\"", "public"] },

@@ -9,7 +9,6 @@
 #define skgpu_graphite_Recording_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkChecksum.h"
 
 #include <memory>
 #include <unordered_set>
@@ -57,9 +56,7 @@ private:
     };
 
     struct ProxyHash {
-        std::size_t operator()(const sk_sp<TextureProxy>& proxy) const {
-            return SkGoodHash()(proxy.get());
-        }
+        std::size_t operator()(const sk_sp<TextureProxy>& proxy) const;
     };
 
     Recording(std::unique_ptr<TaskGraph>,

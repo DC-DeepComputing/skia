@@ -9,7 +9,6 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkOpts_spi.h"
 #include "include/private/SkSLIRNode.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
@@ -22,6 +21,7 @@
 #include "include/sksl/SkSLErrorReporter.h"
 #include "include/sksl/SkSLOperator.h"
 #include "include/sksl/SkSLPosition.h"
+#include "src/opts/Hash_opts.h"
 #include "src/sksl/GLSL.std.450.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"

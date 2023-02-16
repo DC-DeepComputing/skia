@@ -9,9 +9,9 @@
 #define SkOpts_DEFINED
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkOpts_spi.h"
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkXfermodePriv.h"
+#include "src/opts/Hash_opts.h"
 
 /**
  * SkOpts (short for SkOptimizations) is a mechanism where we can ship with multiple implementations

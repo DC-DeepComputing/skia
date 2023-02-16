@@ -9,7 +9,6 @@
 
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
-#include "include/private/SkOpts_spi.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/d3d/GrD3DBuffer.h"
 #include "src/gpu/ganesh/d3d/GrD3DCommandList.h"
@@ -17,6 +16,7 @@
 #include "src/gpu/ganesh/d3d/GrD3DPipelineState.h"
 #include "src/gpu/ganesh/d3d/GrD3DPipelineStateBuilder.h"
 #include "src/gpu/ganesh/d3d/GrD3DRenderTarget.h"
+#include "src/opts/Hash_opts.h"
 
 GrD3DResourceProvider::GrD3DResourceProvider(GrD3DGpu* gpu)
         : fGpu(gpu)
