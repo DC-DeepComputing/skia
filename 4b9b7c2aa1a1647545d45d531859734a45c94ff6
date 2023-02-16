@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3d135b4_6c4ca6e8",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-16T20:42:28Z",
+      "side": 1,
+      "message": "That looks good to me.",
+      "parentUuid": "f8047370_4a7bafdf",
+      "range": {
+        "startLine": 106,
+        "startChar": 11,
+        "endLine": 106,
+        "endChar": 19
+      },
+      "revId": "4b9b7c2aa1a1647545d45d531859734a45c94ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c55b25c1_7e3b463a",
         "filename": "src/gpu/graphite/compute/ComputeStep.h",
         "patchSetId": 3
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "The local dispatch size definitely factors into it but the exact dimensions are hard to predict without knowing about the algorithm. For instance, a ComputeStep that processes a path stream may choose a one-dimensional layout whereas an image operation might prefer a 2D workgroup layout. Others might prefer to process everything in a single workgroup with multiple iterations. This is why I made this a dynamic query.",
       "parentUuid": "c55b25c1_7e3b463a",
+      "range": {
+        "startLine": 153,
+        "startChar": 26,
+        "endLine": 153,
+        "endChar": 53
+      },
+      "revId": "4b9b7c2aa1a1647545d45d531859734a45c94ff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dd79241_2d9ac4a8",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-16T20:42:28Z",
+      "side": 1,
+      "message": "Ok, I\u0027m still a little fuzzy then on needing to specify both in a compute step then, but I am betting it will become apparent when I review the follow-up CLs.",
+      "parentUuid": "15cf138a_267abc7e",
       "range": {
         "startLine": 153,
         "startChar": 26,
