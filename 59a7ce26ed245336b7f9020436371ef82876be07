@@ -46,6 +46,30 @@
       },
       "revId": "59a7ce26ed245336b7f9020436371ef82876be07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f06ba49e_2b36c531",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-16T21:12:50Z",
+      "side": 1,
+      "message": "I wasn\u0027t sure hence the \"I believe\" -- we still have examples of SkNoncopyable around.",
+      "parentUuid": "11afaca6_1db2925e",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 0
+      },
+      "revId": "59a7ce26ed245336b7f9020436371ef82876be07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
