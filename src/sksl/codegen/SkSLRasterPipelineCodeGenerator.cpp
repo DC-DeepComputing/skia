@@ -429,35 +429,51 @@ public:
     /** Pushes the lvalue onto the top-of-stack. */
     void push(Generator* gen);
 
-    /**
-     * Returns the value slots associated with this LValue. For instance, a plain four-slot Variable
-     * will have monotonically increasing slots like {5,6,7,8}.
-     */
-    struct SlotMap {
-        SkTArray<int> slots;  // the destination slots
-    };
-    virtual SlotMap getSlotMap(Generator* gen) const = 0;
+    /** Returns true if this lvalue is actually writable--temporaries and uniforms are not. */
+    virtual bool isWritable() const = 0;
 
-    /** Returns true if this lvalue actually refers to a uniform. */
-    virtual bool isUniform() const = 0;
+    /** Returns the number of slots in this LValue. */
+    virtual int numSlots() const = 0;
+
+    /** Pushes a single slot directly onto the stack. */
+    virtual void push(Generator* gen, Slot slot) const = 0;
+
+    /**
+     * Stores a single stack value directly into the lvalue. The value on the stack covers
+     * `numSlots` in total, and we are taking the value from the `index`th stack position in range
+     * [0, numSlots).
+     */
+    virtual void store(Generator* gen, Slot slot, int index, int numSlots) const = 0;
 };
 
 class VariableLValue final : public LValue {
 public:
     VariableLValue(const Variable* v) : fVariable(v) {}
 
-    SlotMap getSlotMap(Generator* gen) const override {
-        // Map every slot in the variable, in consecutive order, e.g. a half4 at slot 5 = {5,6,7,8}.
-        SlotMap out;
-        SlotRange range = this->isUniform() ? gen->getUniformSlots(*fVariable)
-                                            : gen->getVariableSlots(*fVariable);
-        out.slots.resize(range.count);
-        std::iota(out.slots.begin(), out.slots.end(), range.index);
-        return out;
+    bool isWritable() const override {
+        return !Generator::IsUniform(*fVariable);
     }
 
-    bool isUniform() const override {
-        return Generator::IsUniform(*fVariable);
+    int numSlots() const override {
+        return fVariable->type().slotCount();
+    }
+
+    void push(Generator* gen, Slot slot) const override {
+        if (Generator::IsUniform(*fVariable)) {
+            SlotRange range = gen->getUniformSlots(*fVariable);
+            gen->builder()->push_uniform(SlotRange{range.index + slot, 1});
+        } else {
+            SlotRange range = gen->getVariableSlots(*fVariable);
+            gen->builder()->push_slots(SlotRange{range.index + slot, 1});
+        }
+    }
+
+    void store(Generator* gen, Slot slot, int index, int numSlots) const override {
+        SkASSERT(!Generator::IsUniform(*fVariable));
+
+        SlotRange range = gen->getVariableSlots(*fVariable);
+        int offsetFromStackTop = numSlots - index;
+        gen->builder()->copy_stack_to_slots(SlotRange{range.index + slot, 1}, offsetFromStackTop);
     }
 
     const Variable* fVariable;
@@ -469,23 +485,25 @@ public:
             : fParent(std::move(p))
             , fComponents(c) {}
 
-    SlotMap getSlotMap(Generator* gen) const override {
-        // Get slots from the parent expression.
-        SlotMap in = fParent->getSlotMap(gen);
-
-        // Rearrange the slots based to honor the swizzle components.
-        SlotMap out;
-        out.slots.resize(fComponents.size());
-        for (int index = 0; index < fComponents.size(); ++index) {
-            SkASSERT(fComponents[index] < in.slots.size());
-            out.slots[index] = in.slots[fComponents[index]];
-        }
-
-        return out;
+    bool isWritable() const override {
+        return fParent->isWritable();
     }
 
-    bool isUniform() const override {
-        return fParent->isUniform();
+    int numSlots() const override {
+        return fComponents.size();
+    }
+
+    Slot adjust(Slot slot) const {
+        SkASSERT(slot < fComponents.size());
+        return fComponents[slot];
+    }
+
+    void push(Generator* gen, Slot slot) const override {
+        return fParent->push(gen, this->adjust(slot));
+    }
+
+    void store(Generator* gen, Slot slot, int index, int numSlots) const override {
+        return fParent->store(gen, this->adjust(slot), index, numSlots);
     }
 
     std::unique_ptr<LValue> fParent;
@@ -499,21 +517,26 @@ public:
             , fIndexValue(v)
             , fIndexedType(ti) {}
 
-    SlotMap getSlotMap(Generator* gen) const override {
-        // Get slots from the parent expression.
-        SlotMap in = fParent->getSlotMap(gen);
-
-        // Take a subset of the parent's slots.
-        int numElements = fIndexedType.slotCount();
-        int startingIndex = numElements * fIndexValue;
-
-        SlotMap out;
-        out.slots.push_back_n(numElements, &in.slots[startingIndex]);
-        return out;
+    bool isWritable() const override {
+        return fParent->isWritable();
     }
 
-    bool isUniform() const override {
-        return fParent->isUniform();
+    int numSlots() const override {
+        return fIndexedType.slotCount();
+    }
+
+    Slot adjust(Slot slot) const {
+        int numElements = fIndexedType.slotCount();
+        int startingIndex = numElements * fIndexValue;
+        return slot + startingIndex;
+    }
+
+    void push(Generator* gen, Slot slot) const override {
+        return fParent->push(gen, this->adjust(slot));
+    }
+
+    void store(Generator* gen, Slot slot, int index, int numSlots) const override {
+        return fParent->store(gen, this->adjust(slot), index, numSlots);
     }
 
     std::unique_ptr<LValue> fParent;
@@ -529,18 +552,20 @@ public:
         fNumSlots = fieldAccess.type().slotCount();
     }
 
-    SlotMap getSlotMap(Generator* gen) const override {
-        // Get the slot map from the base expression.
-        SlotMap in = fParent->getSlotMap(gen);
-
-        // Take a subset of the parent's slots.
-        SlotMap out;
-        out.slots.push_back_n(fNumSlots, &in.slots[fInitialSlot]);
-        return out;
+    bool isWritable() const override {
+        return fParent->isWritable();
     }
 
-    bool isUniform() const override {
-        return fParent->isUniform();
+    int numSlots() const override {
+        return fNumSlots;
+    }
+
+    void push(Generator* gen, Slot slot) const override {
+        return fParent->push(gen, slot + fInitialSlot);
+    }
+
+    void store(Generator* gen, Slot slot, int index, int numSlots) const override {
+        return fParent->store(gen, slot + fInitialSlot, index, numSlots);
     }
 
     std::unique_ptr<LValue> fParent;
@@ -580,32 +605,22 @@ std::unique_ptr<LValue> LValue::Make(const Expression& e) {
 }
 
 void LValue::store(Generator* gen) {
-    SkASSERT(!this->isUniform());
-
-    SlotMap out = this->getSlotMap(gen);
+    SkASSERT(this->isWritable());
 
     // Copy our slots from the stack into their slots. The Builder will coalesce single-slot pushes
     // into contiguous ranges where possible.
-    int offsetFromStackTop = out.slots.size();
-    for (Slot s : out.slots) {
-        gen->builder()->copy_stack_to_slots(SlotRange{s, 1}, offsetFromStackTop);
-        --offsetFromStackTop;
+    int numSlots = this->numSlots();
+    for (Slot slot = 0; slot < numSlots; ++slot) {
+        this->store(gen, slot, /*index=*/(int)slot, numSlots);
     }
-    SkASSERT(offsetFromStackTop == 0);
 }
 
 void LValue::push(Generator* gen) {
-    SlotMap out = this->getSlotMap(gen);
-
-    // Push our slots onto the stack. The Builder will coalesce single-slot pushes into contiguous
-    // ranges where possible.
-    bool isUniform = this->isUniform();
-    for (Slot s : out.slots) {
-        if (isUniform) {
-            gen->builder()->push_uniform(SlotRange{s, 1});
-        } else {
-            gen->builder()->push_slots(SlotRange{s, 1});
-        }
+    // Push our slots onto the stack one-by-one. The Builder will coalesce single-slot pushes into
+    // contiguous ranges where possible.
+    int numSlots = this->numSlots();
+    for (Slot slot = 0; slot < numSlots; ++slot) {
+        this->push(gen, slot);
     }
 }
 
