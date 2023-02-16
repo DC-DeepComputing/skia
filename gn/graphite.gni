@@ -150,6 +150,7 @@ skia_graphite_sources = [
   "$_src/YUVATextureProxies.cpp",
   "$_src/YUVATextureProxies.h",
   "$_src/geom/BoundsManager.h",
+  "$_src/geom/EdgeAAQuad.h",
   "$_src/geom/Geometry.h",
   "$_src/geom/IntersectionTree.cpp",
   "$_src/geom/IntersectionTree.h",
