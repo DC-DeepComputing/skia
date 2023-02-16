@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb46dff_01dc1ccf",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-16T21:08:21Z",
+      "side": 1,
+      "message": "I believe you can also derive from SkNoncopyable.",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 0
+      },
+      "revId": "59a7ce26ed245336b7f9020436371ef82876be07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
