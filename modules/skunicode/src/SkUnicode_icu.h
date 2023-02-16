@@ -18,6 +18,8 @@
 #include <unicode/utext.h>
 #include <unicode/utypes.h>
 
+#include "modules/skunicode/include/SkUnicode.h"
+
 #define SKICU_EMIT_FUNCS              \
     SKICU_FUNC(u_errorName)           \
     SKICU_FUNC(u_getIntPropertyValue) \
