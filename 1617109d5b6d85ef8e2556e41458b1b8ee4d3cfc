@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3dda7e5_60aa010d",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-16T13:17:29Z",
+      "side": 0,
+      "message": "Other than `label`, the branching methods here were all moved to the cpp as-is with no code changes.",
+      "range": {
+        "startLine": 321,
+        "startChar": 9,
+        "endLine": 321,
+        "endChar": 13
+      },
+      "revId": "1617109d5b6d85ef8e2556e41458b1b8ee4d3cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
