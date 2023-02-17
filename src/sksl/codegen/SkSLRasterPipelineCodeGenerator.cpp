@@ -431,6 +431,10 @@ public:
         fGenerator->recycleStack(fStackID);
     }
 
+    int stackID() {
+        return fStackID;
+    }
+
     void enter() {
         fParentStackID = fGenerator->currentStack();
         fGenerator->setCurrentStack(fStackID);
@@ -449,6 +453,23 @@ private:
     Generator* fGenerator;
     int fStackID = 0;
     int fParentStackID = 0;
+};
+
+class AutoEnterStack {
+public:
+    AutoEnterStack(Generator* g, int stackID)
+            : fGenerator(g)
+            , fParentStackID(fGenerator->currentStack()) {
+        fGenerator->setCurrentStack(stackID);
+    }
+
+    ~AutoEnterStack() {
+        fGenerator->setCurrentStack(fParentStackID);
+    }
+
+private:
+    Generator* fGenerator;
+    int fParentStackID;
 };
 
 class LValue {
@@ -1465,17 +1486,18 @@ bool Generator::pushMatrixMultiply(LValue* lvalue,
     // Push the left matrix onto the adjacent-neighbor stack. We transpose it so that we can copy
     // rows from it in a single op, instead of gathering one element at a time.
     AutoStack matrixStack(this);
-    matrixStack.enter();
-    if (!this->pushLValueOrExpression(lvalue, left)) {
-        return unsupported();
-    }
-    fBuilder.transpose(leftColumns, leftRows);
+    {
+        AutoEnterStack enter(this, matrixStack.stackID());
+        if (!this->pushLValueOrExpression(lvalue, left)) {
+            return unsupported();
+        }
+        fBuilder.transpose(leftColumns, leftRows);
 
-    // Push the right matrix as well, then go back to the primary stack.
-    if (!this->pushExpression(right)) {
-        return unsupported();
+        // Push the right matrix as well, then go back to the primary stack.
+        if (!this->pushExpression(right)) {
+            return unsupported();
+        }
     }
-    matrixStack.exit();
 
     // Calculate the offsets of the left- and right-matrix, relative to the stack-top.
     int leftMtxBase  = left.type().slotCount() + right.type().slotCount() - leftColumns;
@@ -1494,10 +1516,11 @@ bool Generator::pushMatrixMultiply(LValue* lvalue,
     }
 
     // Dispose of the source matrices on the adjacent-neighbor stack.
-    matrixStack.enter();
-    this->discardExpression(left.type().slotCount());
-    this->discardExpression(right.type().slotCount());
-    matrixStack.exit();
+    {
+        AutoEnterStack enter(this, matrixStack.stackID());
+        this->discardExpression(left.type().slotCount());
+        this->discardExpression(right.type().slotCount());
+    }
 
     // If this multiply was actually an assignment (via *=), write the result back to the lvalue.
     if (lvalue) {
@@ -1908,11 +1931,12 @@ bool Generator::pushFieldAccess(const FieldAccess& f) {
     }
     // Push the entire base expression onto a separate stack.
     AutoStack baseStack(this);
-    baseStack.enter();
-    if (!this->pushExpression(*f.base())) {
-        return unsupported();
+    {
+        AutoEnterStack enter(this, baseStack.stackID());
+        if (!this->pushExpression(*f.base())) {
+            return unsupported();
+        }
     }
-    baseStack.exit();
 
     // Copy the field we want onto the primary stack.
     int totalSlots = f.base()->type().slotCount();
@@ -1922,9 +1946,10 @@ bool Generator::pushFieldAccess(const FieldAccess& f) {
     baseStack.pushClone(fieldSlots, totalSlots - fieldOffset - fieldSlots);
 
     // The rest of the base expression, on the separate stack, can now be jettisoned.
-    baseStack.enter();
-    this->discardExpression(totalSlots);
-    baseStack.exit();
+    {
+        AutoEnterStack enter(this, baseStack.stackID());
+        this->discardExpression(totalSlots);
+    }
     return true;
 }
 
