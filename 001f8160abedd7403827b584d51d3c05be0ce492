@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe0c8b5a_cf0b7c43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9944
+      },
+      "writtenOn": "2023-02-17T18:11:11Z",
+      "side": 1,
+      "message": "Looks like the chromium tests ran into some infra failures: \"GET https://chrome-gold.skia.org/json/v1/groupings resulted in a 503: 503 Service Unavailable.\"\n\nhttps://ci.chromium.org/ui/p/chromium/builders/try/android_optional_gpu_tests_rel/123058/overview\n\nI don\u0027t think there is anything I can do to help but reach out if at some point the opportunity arises.",
+      "revId": "001f8160abedd7403827b584d51d3c05be0ce492",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
