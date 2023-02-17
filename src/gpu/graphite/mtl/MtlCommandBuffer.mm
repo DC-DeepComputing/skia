@@ -709,11 +709,13 @@ bool MtlCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
             return false;
         }
 
+        SkIRect rect = copyData[i].fRect;
+        rect.offset(fReplayTranslation);
         blitCmdEncoder->copyFromBuffer(mtlBuffer,
                                        copyData[i].fBufferOffset,
                                        copyData[i].fBufferRowBytes,
                                        mtlTexture,
-                                       copyData[i].fRect,
+                                       rect,
                                        copyData[i].fMipLevel);
     }
 

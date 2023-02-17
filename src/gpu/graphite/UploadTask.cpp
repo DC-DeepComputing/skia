@@ -183,8 +183,16 @@ bool UploadInstance::prepareResources(ResourceProvider* resourceProvider) {
     return true;
 }
 
-void UploadInstance::addCommand(Context* context, CommandBuffer* commandBuffer) const {
+void UploadInstance::addCommand(Context* context,
+                                CommandBuffer* commandBuffer,
+                                Task::ReplayTargetData replayData) const {
     SkASSERT(fTextureProxy && fTextureProxy->isInstantiated());
+
+    if (fTextureProxy->texture() == replayData.fTarget) {
+        commandBuffer->setReplayTranslation(replayData.fTranslation);
+    } else {
+        commandBuffer->clearReplayTranslation();
+    }
 
     if (!fConditionalContext || fConditionalContext->needsUpload(context)) {
         // The CommandBuffer doesn't take ownership of the upload buffer here; it's owned by
@@ -247,9 +255,11 @@ bool UploadTask::prepareResources(ResourceProvider* resourceProvider,
     return true;
 }
 
-bool UploadTask::addCommands(Context* context, CommandBuffer* commandBuffer, ReplayTargetData) {
+bool UploadTask::addCommands(Context* context,
+                             CommandBuffer* commandBuffer,
+                             ReplayTargetData replayData) {
     for (unsigned int i = 0; i < fInstances.size(); ++i) {
-        fInstances[i].addCommand(context, commandBuffer);
+        fInstances[i].addCommand(context, commandBuffer, replayData);
     }
 
     return true;
