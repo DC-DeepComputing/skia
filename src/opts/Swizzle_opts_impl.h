@@ -5,11 +5,15 @@
  * found in the LICENSE file.
  */
 
-#ifndef SkSwizzler_opts_DEFINED
-#define SkSwizzler_opts_DEFINED
+#ifndef SwizzleOptsImpl_DEFINED
+#define SwizzleOptsImpl_DEFINED
 
-#include "include/private/SkColorData.h"
+#if !defined(SK_OPTS_NS)
+#error "SK_OPTS_NS must be defined, e.g. to 'portable' or 'avx' typically using SkOpts_namespace.h"
+#endif
+
 #include "src/base/SkVx.h"
+
 #include <utility>
 
 #if SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSSE3
@@ -1386,4 +1390,4 @@ static void RGB_to_BGR1_portable(uint32_t dst[], const uint8_t* src, int count) 
 
 }  // namespace SK_OPTS_NS
 
-#endif // SkSwizzler_opts_DEFINED
+#endif // SwizzleOptsImpl_DEFINED

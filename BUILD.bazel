@@ -78,13 +78,19 @@ alias(
 )
 
 alias(
-    name = "default_malloc",
-    actual = "//src/ports:default_malloc",
+    name = "png_decode_codec",
+    actual = "//src:png_decode_codec",
     visibility = ["//visibility:public"],
 )
 
 alias(
-    name = "default_logging",
-    actual = "//src/ports:default_logging",
+    name = "png_encode_codec",
+    actual = "//src:png_encode_codec",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "default_malloc",
+    actual = "//src/ports:default_malloc",
     visibility = ["//visibility:public"],
 )

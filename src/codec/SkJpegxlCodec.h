@@ -9,7 +9,7 @@
 #define SkJpegxlCodec_DEFINED
 
 #include "include/core/SkData.h"
-#include "include/core/SkEncodedImageFormat.h"
+#include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkRefCnt.h"
 #include "src/codec/SkScalingCodec.h"
 

@@ -8,7 +8,7 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkData.h"
-#include "include/core/SkEncodedImageFormat.h"
+#include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"

@@ -33,12 +33,15 @@ skia_filegroup(
         "SkBitmapProcState_opts.h",
         "SkBlitMask_opts.h",
         "SkBlitRow_opts.h",
-        "SkChecksum_opts.h",
+        "Hash_opts_impl.h",
         "SkRasterPipeline_opts.h",
-        "SkSwizzler_opts.h",
-        "SkUtils_opts.h",
+        "Swizzle_opts_impl.h",
+        "Memset_opts_impl.h",
         "SkVM_opts.h",
         "SkXfermode_opts.h",
+        # Experimental buffet opts below
+        "Memset_opts.h",
+        "Swizzle_opts.h",
     ],
     visibility = ["//src:__pkg__"],
 )
@@ -118,4 +121,40 @@ skia_cc_deps(
         "//bazel/common_config_settings:cpu_wasm": [],
         "//conditions:default": [],
     }),
+)
+
+skia_cc_library(
+    name = "hash_opts",
+    srcs = [
+        "Hash_opts.cpp",
+        "Hash_opts_impl.h",
+        "SkOpts_namespace.h",
+    ],
+    hdrs = ["Hash_opts.h"],
+    visibility = ["//src:__pkg__"],
+    deps = ["//src:base"],
+)
+
+skia_cc_library(
+    name = "memset_opts",
+    srcs = [
+        "Memset_opts.cpp",
+        "Memset_opts_impl.h",
+        "SkOpts_namespace.h",
+    ],
+    hdrs = ["Memset_opts.h"],
+    visibility = ["//src:__pkg__"],
+    deps = ["//src:base"],
+)
+
+skia_cc_library(
+    name = "swizzle_opts",
+    srcs = [
+        "SkOpts_namespace.h",
+        "Swizzle_opts.cpp",
+        "Swizzle_opts_impl.h",
+    ],
+    hdrs = ["Swizzle_opts.h"],
+    visibility = ["//src:__pkg__"],
+    deps = ["//src:base"],
 )

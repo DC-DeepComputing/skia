@@ -9,7 +9,7 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/core/SkColorType.h"
-#include "include/core/SkEncodedImageFormat.h"
+#include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkTypes.h"
 #include "modules/skcms/skcms.h"
 
