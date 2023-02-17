@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c604d9fb_606f7edf",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-17T01:11:19Z",
+      "side": 1,
+      "message": "I don\u0027t think the AutoStack would ever be used in a context where implicit conversions are an issue, but marking `explicit` is good practice. Done.",
+      "parentUuid": "94299633_2576c610",
+      "range": {
+        "startLine": 426,
+        "startChar": 4,
+        "endLine": 426,
+        "endChar": 13
+      },
+      "revId": "d87982abb457105c252ecdcd62981bb1375a3fc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0d75cf9_be330db5",
