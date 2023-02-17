@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "876243c6_a4eba07d",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-17T18:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "550f0145_6f76f449",
+      "range": {
+        "startLine": 674,
+        "startChar": 3,
+        "endLine": 679,
+        "endChar": 61
+      },
+      "revId": "318b906391a4c42dabe03a035683544784248e67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4b2bcad_fa1152f0",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-17T18:30:48Z",
       "side": 1,
       "message": "http://review.skia.org/645497 has landed, you can use a switch again",
+      "range": {
+        "startLine": 431,
+        "startChar": 7,
+        "endLine": 432,
+        "endChar": 29
+      },
+      "revId": "318b906391a4c42dabe03a035683544784248e67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27a4e79d_da61d014",
+        "filename": "src/sksl/sksl_shared.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-17T18:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4b2bcad_fa1152f0",
       "range": {
         "startLine": 431,
         "startChar": 7,
