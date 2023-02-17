@@ -46,6 +46,30 @@
       },
       "revId": "9e5ef2ce437e39587d49ac8f82bea56795da314a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "745c2781_b5e9cf7c",
+        "filename": "tests/sksl/shared/OutParamsFunctionCallInArgument.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-17T21:36:20Z",
+      "side": 1,
+      "message": "I mean, technically I caused it too, but I\u0027m older and wiser now ... I hope!",
+      "parentUuid": "ac96e847_df4f5167",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 1
+      },
+      "revId": "9e5ef2ce437e39587d49ac8f82bea56795da314a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
