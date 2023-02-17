@@ -13015,12 +13015,31 @@
         {
           "name": "docker",
           "path": "cache/docker"
+        },
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
         }
       ],
       "casSpec": "compile",
       "cipd_packages": [
         {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
+        {
           "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
         }
@@ -13051,9 +13070,19 @@
         "os:Debian-10.3",
         "pool:Skia"
       ],
+      "environment": {
+        "VPYTHON_LOG_TRACE": "1"
+      },
       "env_prefixes": {
         "CLOUDSDK_PYTHON": [
           "cipd_bin_packages/cpython3/bin/python3"
+        ],
+        "PATH": [
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
         ]
       },
       "execution_timeout_ns": 3600000000000,
@@ -26721,10 +26750,19 @@
         {
           "name": "git_cache",
           "path": "cache/git_cache"
+        },
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
         }
       ],
       "casSpec": "empty",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
         {
           "name": "infra/3pp/tools/git/linux-amd64",
           "path": "cipd_bin_packages",
@@ -26737,6 +26775,16 @@
         },
         {
           "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
         }
@@ -26783,13 +26831,21 @@
         "pool:Skia",
         "docker_installed:true"
       ],
+      "environment": {
+        "VPYTHON_LOG_TRACE": "1"
+      },
       "env_prefixes": {
         "CLOUDSDK_PYTHON": [
           "cipd_bin_packages/cpython3/bin/python3"
         ],
         "PATH": [
           "cipd_bin_packages",
-          "cipd_bin_packages/bin"
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
         ]
       },
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
@@ -26807,10 +26863,19 @@
         {
           "name": "git_cache",
           "path": "cache/git_cache"
+        },
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
         }
       ],
       "casSpec": "empty",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
         {
           "name": "infra/3pp/tools/git/linux-amd64",
           "path": "cipd_bin_packages",
@@ -26823,6 +26888,16 @@
         },
         {
           "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
         }
@@ -26869,13 +26944,21 @@
         "pool:Skia",
         "docker_installed:true"
       ],
+      "environment": {
+        "VPYTHON_LOG_TRACE": "1"
+      },
       "env_prefixes": {
         "CLOUDSDK_PYTHON": [
           "cipd_bin_packages/cpython3/bin/python3"
         ],
         "PATH": [
           "cipd_bin_packages",
-          "cipd_bin_packages/bin"
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
         ]
       },
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
@@ -27140,10 +27223,19 @@
         {
           "name": "git_cache",
           "path": "cache/git_cache"
+        },
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
         }
       ],
       "casSpec": "empty",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
         {
           "name": "infra/3pp/tools/git/linux-amd64",
           "path": "cipd_bin_packages",
@@ -27156,6 +27248,16 @@
         },
         {
           "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
         },
@@ -27198,6 +27300,9 @@
         "pool:Skia",
         "docker_installed:true"
       ],
+      "environment": {
+        "VPYTHON_LOG_TRACE": "1"
+      },
       "env_prefixes": {
         "CLOUDSDK_PYTHON": [
           "cipd_bin_packages/cpython3/bin/python3"
@@ -27205,7 +27310,12 @@
         "PATH": [
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
-          "bazelisk"
+          "bazelisk",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
         ]
       },
       "execution_timeout_ns": 7200000000000,
@@ -27225,10 +27335,19 @@
         {
           "name": "git_cache",
           "path": "cache/git_cache"
+        },
+        {
+          "name": "vpython",
+          "path": "cache/vpython"
         }
       ],
       "casSpec": "empty",
       "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:2@3.8.10.chromium.19"
+        },
         {
           "name": "infra/3pp/tools/git/linux-amd64",
           "path": "cipd_bin_packages",
@@ -27241,6 +27360,16 @@
         },
         {
           "name": "infra/tools/luci/git-credential-luci/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython-native/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
+        },
+        {
+          "name": "infra/tools/luci/vpython/${platform}",
           "path": "cipd_bin_packages",
           "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
         },
@@ -27275,6 +27404,9 @@
         "pool:Skia",
         "docker_installed:true"
       ],
+      "environment": {
+        "VPYTHON_LOG_TRACE": "1"
+      },
       "env_prefixes": {
         "CLOUDSDK_PYTHON": [
           "cipd_bin_packages/cpython3/bin/python3"
@@ -27282,7 +27414,12 @@
         "PATH": [
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
-          "bazelisk"
+          "bazelisk",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython"
         ]
       },
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
