@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "550f0145_6f76f449",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-17T18:32:35Z",
+      "side": 1,
+      "message": "Might want to add a comment above saying \"if these values change, you will need to edit sksl_shared\" ?",
+      "range": {
+        "startLine": 674,
+        "startChar": 3,
+        "endLine": 679,
+        "endChar": 61
+      },
+      "revId": "318b906391a4c42dabe03a035683544784248e67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4b2bcad_fa1152f0",
         "filename": "src/sksl/sksl_shared.sksl",
         "patchSetId": 5
