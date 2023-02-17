@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a457d33_aa712daa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T21:18:50Z",
+      "side": 1,
+      "message": "Yeah...",
+      "parentUuid": "303124cf_66ea48ee",
+      "range": {
+        "startLine": 23,
+        "startChar": 10,
+        "endLine": 24,
+        "endChar": 20
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d37e76cb_42a355f6",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23e1b301_3c6c7d99",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 999,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T21:18:50Z",
+      "side": 1,
+      "message": "This is possible when a variable in global scope is used as an out-param argument (imagine passing a module-private variable or, e.g., `sk_FragColor`). This is allowed by the front-end and seems to hit this exact code path.\n\nI described what I expect the final transformations to look like at skbug.com/14082, in which I actually expect the out-param helpers to go away entirely but the pointer dereferencing logic will stay around.\n\nP.S.:\nThe generated code for these doesn\u0027t actually work due to the reasons I outlined in skbug.com/14082 and because taking the address of a component is actually not allowed, s.t. the following code is not valid WGSL:\n\n    fn _outParamHelper_vec4(_var0: ptr\u003cfunction, vec4\u003cf32\u003e\u003e) {...}\n    \n    fn main(_stageOut: ptr\u003cfunction, FSOut\u003e) {\n        _outParamHelper_vec4(\u0026(*_stageOut).sk_FragColor);\n    }\n\nwhich generates `error: :102:42 error: arguments of pointer type must not point to a subset of the originating variable` (this is the \"taking the address of a struct component\" issue that I mentioned in the commit message).\n\nThat\u0027s why I left TODOs to write test cases for this situation after skbug.com/14082 is addressed. For now, this CL leaves the out-param handling in a partially functioning state while still introducing some tests for the trivial cases.\n\nOnce I address skbug.com/14082, I expect all out-param arguments to always be local variables only, at which point we can safely assert `!fOutParamArgVars.contains`.",
+      "parentUuid": "d37e76cb_42a355f6",
+      "range": {
+        "startLine": 999,
+        "startChar": 54,
+        "endLine": 999,
+        "endChar": 78
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3600535_7125df2e",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-01-26T20:40:58Z",
       "side": 1,
       "message": "`empty()`",
+      "range": {
+        "startLine": 1298,
+        "startChar": 25,
+        "endLine": 1298,
+        "endChar": 39
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb18dd51_6017b05a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1298,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T21:18:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3600535_7125df2e",
       "range": {
         "startLine": 1298,
         "startChar": 25,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eafd8138_ef1af272",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1464,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T21:18:50Z",
+      "side": 1,
+      "message": "\u003e The control flow is kind of hairy here--`writeFunctionCall` calls this function, and this function calls `writeExpression`. It should only be possible to call it for an lvalue, but I\u0027m not sure if that\u0027s enough to consider it as safe. It might be possible to use `myArray[func()]` as an lvalue and get back into `writeFunctionCall`, then we nuke this set ahead of its time.\n\u003e \n\u003e Rather than reset `fOutParamArgVars`, can we save it off at the top of the function by `std::move`-ing it into a local, then `std::move` it back at this point? It should generally be fast (since it\u0027s going to be empty).\n\u003e\n\nGood catch, I hadn\u0027t thought of array access as a potential argument expression.\n\nI added a test case for this and it looks like MSL codegen is actually broken (it emits an out param function in the middle of another out param function). See review.skia.org/645676 and review.skia.org/645677.\n\n(FYI I haven\u0027t enabled that test for WGSL in this CL since index expressions aren\u0027t supported until a later CL in this stack. It does exercise and indeed catch the bug you found by failing the assertion on line 1348).\n\n\u003e Tangentially, we probably want to make sure we forbid `myArray[func()]` as an out-param anyway... we don\u0027t want to double-evaluate `func()`. ES2 wouldn\u0027t allow it, but when we go to ES3, AFAIK, there\u0027s nothing preventing it. Either that, or rethink out-param helpers from scratch? +brianosman@google.com\n\nYes the double evaluation is indeed the case when an inout parameter is involved. We\u0027ll need to think about improving this when we evaluate the result of an out-param helper. Even with pure `out` parameters, the function evaluation order is not what I would expect, e.g.:\n\n     void out_param_func1(out half v) { ... }\n     int out_param_func2(out half v) { ... }\n     \n     void main() {\n         half testArray[2];        \n         out_param_func1(testArray[out_param_func2(testArray[0])]);\n         ...\n     }\n     \nThe generated code evaluates `out_param_func1` first and then `out_param_func2`. If `out_param_func1`\u0027s parameter is changed to `inout` then we get a call to `out_param_func2`, then `out_param_func1`, then `out_param_func2` again. See review.skia.org/645676 for a demonstration.\n\nI filed skbug.com/14130 to track this issue. FWIW the SPIR-V (and HLSL) codegen seems to work correctly (no double evaluation, correct evaluation order). I intend for the WGSL codegen to produce a very similar output once skbug.com/14082 is addressed.",
+      "parentUuid": "8f388794_58ee1c14",
+      "range": {
+        "startLine": 1464,
+        "startChar": 4,
+        "endLine": 1464,
+        "endChar": 28
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d13cfe1_a9fca247",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
         "patchSetId": 5
@@ -106,6 +202,30 @@
       "writtenOn": "2023-01-26T20:40:58Z",
       "side": 1,
       "message": "I read \"regular expression-tree\" and got temporarily confused by the overloaded terminology; how about \"normal expression-tree\" or just \"expression-tree\"?",
+      "range": {
+        "startLine": 247,
+        "startChar": 49,
+        "endLine": 247,
+        "endChar": 67
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f51d9419_0f9769a6",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T21:18:50Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "5d13cfe1_a9fca247",
       "range": {
         "startLine": 247,
         "startChar": 49,
@@ -152,6 +272,30 @@
       "writtenOn": "2023-01-26T20:40:58Z",
       "side": 1,
       "message": "synthesized",
+      "range": {
+        "startLine": 257,
+        "startChar": 53,
+        "endLine": 257,
+        "endChar": 64
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b260cc96_211c417a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T21:18:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9fcf182_79012259",
       "range": {
         "startLine": 257,
         "startChar": 53,
