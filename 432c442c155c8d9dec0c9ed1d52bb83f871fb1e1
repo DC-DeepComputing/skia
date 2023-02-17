@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a9b4d50_49fe6b6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-17T21:26:14Z",
+      "side": 1,
+      "message": "Please indicate `Bug: skia:14130` in the commit msg",
+      "revId": "432c442c155c8d9dec0c9ed1d52bb83f871fb1e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
