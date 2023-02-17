@@ -56,18 +56,10 @@ static void sk_term_destination (j_compress_ptr cinfo) {
         }
     }
 
-    if (dest->fSuffix) {
-        if (!dest->fStream->write(dest->fSuffix->data(), dest->fSuffix->size())) {
-            ERREXIT(cinfo, JERR_FILE_WRITE);
-            return;
-        }
-    }
-
     dest->fStream->flush();
 }
 
-skjpeg_destination_mgr::skjpeg_destination_mgr(SkWStream* stream, SkData* suffix)
-        : fStream(stream), fSuffix(suffix) {
+skjpeg_destination_mgr::skjpeg_destination_mgr(SkWStream* stream) : fStream(stream) {
     this->init_destination = sk_init_destination;
     this->empty_output_buffer = sk_empty_output_buffer;
     this->term_destination = sk_term_destination;
