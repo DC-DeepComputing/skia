@@ -709,12 +709,21 @@ bool MtlCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
             return false;
         }
 
-        blitCmdEncoder->copyFromBuffer(mtlBuffer,
-                                       copyData[i].fBufferOffset,
-                                       copyData[i].fBufferRowBytes,
-                                       mtlTexture,
-                                       copyData[i].fRect,
-                                       copyData[i].fMipLevel);
+        SkIRect dstRect = copyData[i].fRect;
+        dstRect.offset(fReplayTranslation);
+        SkIRect croppedDstRect = dstRect;
+        if (!croppedDstRect.intersect(SkIRect::MakeSize(texture->dimensions()))) {
+            return false;
+        }
+        blitCmdEncoder->copyFromBuffer(
+                mtlBuffer,
+                copyData[i].fBufferOffset +
+                        (croppedDstRect.y() - dstRect.y()) * copyData[i].fBufferRowBytes +
+                        (croppedDstRect.x() - dstRect.x()) * copyData[i].fBufferPixelBytes,
+                copyData[i].fBufferRowBytes,
+                mtlTexture,
+                croppedDstRect,
+                copyData[i].fMipLevel);
     }
 
 #ifdef SK_ENABLE_MTL_DEBUG_INFO

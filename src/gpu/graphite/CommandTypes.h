@@ -16,6 +16,7 @@ namespace skgpu::graphite {
 // specifies a single region for copying, either from buffer to texture, or vice versa
 struct BufferTextureCopyData {
     size_t fBufferOffset;
+    size_t fBufferPixelBytes;
     size_t fBufferRowBytes;
     SkIRect fRect;
     unsigned int fMipLevel;

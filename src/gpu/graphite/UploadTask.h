@@ -60,7 +60,7 @@ public:
     bool prepareResources(ResourceProvider*);
 
     // Adds upload command to the given CommandBuffer
-    void addCommand(Context*, CommandBuffer*) const;
+    void addCommand(Context*, CommandBuffer*, Task::ReplayTargetData) const;
 
 private:
     UploadInstance() {}
