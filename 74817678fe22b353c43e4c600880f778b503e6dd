@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da5e3398_f0543ed5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T22:56:49Z",
+      "side": 1,
+      "message": "lgtm % two suggestions. Feel free to ignore them if you don\u0027t agree.",
+      "revId": "74817678fe22b353c43e4c600880f778b503e6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "735b0a20_d5b14699",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T22:56:49Z",
+      "side": 1,
+      "message": "I wonder if the owning versions should be called `OwnedFieldLValue` etc and `FieldLValue` could be unowned by default (or still have the `Unowned` prefix), just to make it explicit that the wrapped LValue is destroyed when you have an `OwnedFieldLValue`.",
+      "range": {
+        "startLine": 680,
+        "startChar": 0,
+        "endLine": 680,
+        "endChar": 18
+      },
+      "revId": "74817678fe22b353c43e4c600880f778b503e6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bf1e0ba_599c6ff1",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T22:56:49Z",
+      "side": 1,
+      "message": "I don\u0027t know how much you care about the extra storage occupied by both `fParent` and `fOwnedParent` in the subclass type which ultimately store the same pointer. If that\u0027s a concern, you could have `FieldLValue` declare no members, call `p.release()` instead of `p.get()` while invoking the parent destructor, and explicitly delete `fParent` (which would need to be declared as protected) in `FieldLValue`\u0027s destructor.\n\nAn alternate pattern would be to have the parent type store a `std::unique_ptr\u003cLValue\u003e`, have the subclass be the \"unowned\" type which releases `fParent` in its destructor.\n\nBoth approaches would save on the extra pointer storage but I don\u0027t know if that\u0027s worth the additional bookkeeping in destructors. Just food for thought.",
+      "range": {
+        "startLine": 687,
+        "startChar": 4,
+        "endLine": 687,
+        "endChar": 41
+      },
+      "revId": "74817678fe22b353c43e4c600880f778b503e6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
