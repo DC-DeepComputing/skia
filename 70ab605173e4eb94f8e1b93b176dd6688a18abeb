@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaba432d_ae3d31a2",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-17T16:39:15Z",
+      "side": 1,
+      "message": "Since this is modeled after the way codecs work, this change should not actually affect users of Skia until their builds include these defines.\n\nHave tested adding these defines to Chromium with this change, which fixes the issue where COLRv1 doesn\u0027t print correctly on Mac and Windows because Chromium was using a FreeType backed typeface for layout but the typeface was deserialized into a system backed typeface which didn\u0027t support COLRv1.",
+      "revId": "70ab605173e4eb94f8e1b93b176dd6688a18abeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c775b525_d8170b93",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-17T16:39:15Z",
+      "side": 1,
+      "message": "FreeType needs to come last here so that `SkTypeface::MakeFromStream` will try one of the other system factories first. This is awkward, but if the user wanted to get something specific, they will need to make a more direct call (currently though some `SkFontMgr`).",
+      "revId": "70ab605173e4eb94f8e1b93b176dd6688a18abeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6262ca0f_72341818",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-17T16:39:15Z",
+      "side": 1,
+      "message": "This is probably a good change to make (if also changing all the others here, or removing them). However, this means that the `--nonativeFonts` flag no longer works the way it used to. Before this just looked to the default `SkFontMgr` for creating a typeface from a stream, so setting it the the test font manager was enough to prevent any OpenType data from being interpreted. However, this now looks though all the registered factories, so if we built in some handler (FreeType, CoreText, or DirectWrite) then it will be used.",
+      "revId": "70ab605173e4eb94f8e1b93b176dd6688a18abeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8987e407_cae65dc0",
+        "filename": "tests/TextBlobTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-17T16:39:15Z",
+      "side": 1,
+      "message": "Need to specify a non-default typeface. Now that the test font manager doesn\u0027t create new typefaces for every instance, in a `--nonativeFonts` run `ToolUtils::create_portable_typeface()` will return the exact same typeface as the default font manager\u0027s default.",
+      "range": {
+        "startLine": 199,
+        "startChar": 70,
+        "endLine": 199,
+        "endChar": 89
+      },
+      "revId": "70ab605173e4eb94f8e1b93b176dd6688a18abeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

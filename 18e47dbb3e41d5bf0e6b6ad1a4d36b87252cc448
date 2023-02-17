@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20cc69ac_74082f4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-17T16:39:15Z",
+      "side": 1,
+      "message": "This looks enormous, but most of this change is moving all of the stream based creation of typefaces out of font manager implementations and into the typeface implementations.",
+      "revId": "18e47dbb3e41d5bf0e6b6ad1a4d36b87252cc448",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
