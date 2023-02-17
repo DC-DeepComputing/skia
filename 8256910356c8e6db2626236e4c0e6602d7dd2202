@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "573f1390_8bbacefe",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-17T18:46:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd59845c_432ea30a",
+      "range": {
+        "startLine": 698,
+        "startChar": 38,
+        "endLine": 698,
+        "endChar": 45
+      },
+      "revId": "8256910356c8e6db2626236e4c0e6602d7dd2202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7e05175_78a00cab",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-17T16:06:05Z",
       "side": 1,
       "message": "Remove this indentation",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 6
+      },
+      "revId": "8256910356c8e6db2626236e4c0e6602d7dd2202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "340b2b69_77010895",
+        "filename": "src/gpu/graphite/geom/EdgeAAQuad.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-17T18:46:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7e05175_78a00cab",
       "range": {
         "startLine": 1,
         "startChar": 0,
