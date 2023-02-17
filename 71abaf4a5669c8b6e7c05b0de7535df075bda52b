@@ -259,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a409636a_b208e9db",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T21:21:20Z",
+      "side": 1,
+      "message": "Correct. I rephrased this to make it more clear.",
+      "parentUuid": "d41bd16b_98d73ee8",
+      "range": {
+        "startLine": 248,
+        "startChar": 67,
+        "endLine": 249,
+        "endChar": 63
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9fcf182_79012259",
