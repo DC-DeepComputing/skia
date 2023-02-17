@@ -16,6 +16,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	sk_exec "go.skia.org/infra/go/exec"
 	"go.skia.org/infra/go/skerr"
@@ -113,6 +114,9 @@ func main() {
 			"cpu_or_gpu_value": *cpuOrGPUValue,
 		},
 	}
+
+	time.Sleep(600 * time.Second)
+
 	if err := uploadDataToGold(ctx, skiaDir, conf); err != nil {
 		td.Fatal(ctx, err)
 	}
