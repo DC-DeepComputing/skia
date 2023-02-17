@@ -7,6 +7,7 @@
 
 #include "include/codec/SkCodec.h"
 
+#include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodecAnimation.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
@@ -28,10 +29,6 @@
 #include "src/codec/SkWbmpCodec.h"
 
 #include <utility>
-
-#ifdef SK_HAS_ANDROID_CODEC
-#include "include/codec/SkAndroidCodec.h"
-#endif
 
 #ifdef SK_CODEC_DECODES_AVIF
 #include "src/codec/SkAvifCodec.h"
@@ -361,12 +358,10 @@ SkCodec::Result SkCodec::handleFrameIndex(const SkImageInfo& info, void* pixels,
         if (options.fPriorFrame == kNoFrame) {
             Result result = kInternalError;
             if (androidCodec) {
-#ifdef SK_HAS_ANDROID_CODEC
                 SkAndroidCodec::AndroidOptions prevFrameOptions(
                         reinterpret_cast<const SkAndroidCodec::AndroidOptions&>(options));
                 prevFrameOptions.fFrameIndex = requiredFrame;
                 result = androidCodec->getAndroidPixels(info, pixels, rowBytes, &prevFrameOptions);
-#endif
             } else {
                 Options prevFrameOptions(options);
                 prevFrameOptions.fFrameIndex = requiredFrame;
