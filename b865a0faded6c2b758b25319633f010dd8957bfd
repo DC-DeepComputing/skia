@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a0cb8af_523b2b44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T18:23:12Z",
+      "side": 1,
+      "message": "lgtm % one comment",
+      "revId": "b865a0faded6c2b758b25319633f010dd8957bfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb4ee632_979b2447",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T18:23:12Z",
+      "side": 1,
+      "message": "Is the offset in `pushClone` allowed to be negative? Is it worth adding a debug assert here like `SkASSERT(slot \u003c this-\u003enumSlots())`?",
+      "range": {
+        "startLine": 524,
+        "startChar": 57,
+        "endLine": 524,
+        "endChar": 61
+      },
+      "revId": "b865a0faded6c2b758b25319633f010dd8957bfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
