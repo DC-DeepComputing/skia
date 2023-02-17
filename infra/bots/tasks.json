@@ -10337,6 +10337,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -12272,6 +12275,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -12370,6 +12376,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -12468,6 +12477,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -12566,6 +12578,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -12664,6 +12679,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -12762,6 +12780,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -12860,6 +12881,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -12958,6 +12982,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -13024,6 +13051,11 @@
         "os:Debian-10.3",
         "pool:Skia"
       ],
+      "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ]
+      },
       "execution_timeout_ns": 3600000000000,
       "io_timeout_ns": 3600000000000,
       "max_attempts": 1,
@@ -13105,6 +13137,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -13203,6 +13238,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -13301,6 +13339,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -13399,6 +13440,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -13497,6 +13541,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -13595,6 +13642,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -13693,6 +13743,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -24069,6 +24122,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -24185,6 +24241,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -24301,6 +24360,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -24417,6 +24479,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -24533,6 +24598,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -24649,6 +24717,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -24765,6 +24836,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -24881,6 +24955,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin",
@@ -26707,6 +26784,9 @@
         "docker_installed:true"
       ],
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages",
           "cipd_bin_packages/bin"
@@ -26790,6 +26870,9 @@
         "docker_installed:true"
       ],
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages",
           "cipd_bin_packages/bin"
@@ -27116,6 +27199,9 @@
         "docker_installed:true"
       ],
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
@@ -27190,6 +27276,9 @@
         "docker_installed:true"
       ],
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
@@ -51853,6 +51942,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "gsutil/gsutil",
           "cipd_bin_packages/cpython3",
@@ -51944,6 +52036,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "gsutil/gsutil",
           "cipd_bin_packages/cpython3",
@@ -52035,6 +52130,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "gsutil/gsutil",
           "cipd_bin_packages/cpython3",
@@ -52126,6 +52224,9 @@
         "VPYTHON_LOG_TRACE": "1"
       },
       "env_prefixes": {
+        "CLOUDSDK_PYTHON": [
+          "cipd_bin_packages/cpython3/bin/python3"
+        ],
         "PATH": [
           "gsutil/gsutil",
           "cipd_bin_packages/cpython3",
