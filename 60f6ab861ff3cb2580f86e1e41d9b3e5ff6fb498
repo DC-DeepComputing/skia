@@ -16,6 +16,24 @@
       "message": "code looks good, not sure exactly how to parse the generated rp sksl to validate it though :/",
       "revId": "60f6ab861ff3cb2580f86e1e41d9b3e5ff6fb498",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a849fee1_9ddb7eea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-17T17:01:37Z",
+      "side": 1,
+      "message": "Thanks. Yeah, the instruction output is a little baroque. I tried to make it easier to read than a raw assembly dump, but there are still quirks for sure. $123 is a value on the stack, in position 123. $123..125 is three values on the stack (in positions 123, 124, and 125). Most ops should hopefully be somewhat self-explanatory ($1 +\u003d $2 means, compute \"$1 + $2\" and store it in \"$1\"). The mask handling stuff is a little weird if you\u0027ve never dealt with SIMD pseudo control flow before unfortunately.",
+      "parentUuid": "f0ae14cf_adce2fd9",
+      "revId": "60f6ab861ff3cb2580f86e1e41d9b3e5ff6fb498",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
