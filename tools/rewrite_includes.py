@@ -50,6 +50,8 @@ ignorelist = [
   'SkFixed.h',
   'SkMalloc.h',
   'SkTSearch.h',
+  # Shims for most clients
+  'SkEncodedImageFormat.h',
 ]
 
 assert '/' in [os.sep, os.altsep]

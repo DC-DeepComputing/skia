@@ -10,6 +10,7 @@
 
 #include "include/private/base/SkAPI.h"
 
+#include <cstdint>
 #include <cstddef>
 
 // These are exposed as SK_SPI (e.g. SkParagraph), the rest of SkOpts is

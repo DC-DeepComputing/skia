@@ -13,7 +13,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
-#include "include/core/SkEncodedImageFormat.h"
+#include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkImage.h"

@@ -44,6 +44,7 @@ skia_filegroup(
     name = "srcs",
     srcs = [
         "SkEncoder.cpp",
+        "SkICC.cpp",
         "SkImageEncoder.cpp",
     ] + select_multi({
         ":jpeg_encode_codec": [":jpeg_encode_srcs"],
@@ -58,6 +59,7 @@ skia_filegroup(
     srcs = [
         "SkImageEncoderFns.h",
         "SkImageEncoderPriv.h",
+        "SkICCPriv.h",
     ] + select({
         ":jpeg_encode_codec": [":jpeg_encode_hdrs"],
         "//conditions:default": [],
@@ -75,4 +77,17 @@ skia_cc_deps(
             ":webp_encode_codec": ["@libwebp"],
         },
     ),
+)
+
+skia_filegroup(
+    name = "buffet_png_encode_srcs",
+    srcs = [
+        "SkEncoder.cpp",
+        "SkICC.cpp",
+        "SkICCPriv.h",
+        "SkImageEncoderFns.h",
+        "SkImageEncoderPriv.h",
+        "SkPngEncoder.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
 )
