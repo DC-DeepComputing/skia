@@ -490,7 +490,7 @@ public:
 
 class ScratchLValue final : public LValue {
 public:
-    ScratchLValue(const Expression& e) : fExpression(&e) {}
+    explicit ScratchLValue(const Expression& e) : fExpression(&e) {}
 
     ~ScratchLValue() override {
         if (fGenerator && fDedicatedStack.has_value()) {
@@ -536,7 +536,7 @@ public:
 
 class VariableLValue final : public LValue {
 public:
-    VariableLValue(const Variable* v) : fVariable(v) {}
+    explicit VariableLValue(const Variable* v) : fVariable(v) {}
 
     bool isWritable() const override {
         return !Generator::IsUniform(*fVariable);
@@ -570,7 +570,7 @@ public:
 
 class SwizzleLValue final : public LValue {
 public:
-    SwizzleLValue(std::unique_ptr<LValue> p, const ComponentArray& c)
+    explicit SwizzleLValue(std::unique_ptr<LValue> p, const ComponentArray& c)
             : fParent(std::move(p))
             , fComponents(c) {}
 
@@ -601,23 +601,28 @@ public:
 
 class FixedIndexLValue final : public LValue {
 public:
-    FixedIndexLValue(std::unique_ptr<LValue> p, SKSL_INT v, const Type& ti)
-            : fParent(std::move(p))
+    explicit FixedIndexLValue(std::unique_ptr<LValue> p, SKSL_INT v, int c)
+            : fOwnedParent(std::move(p))
+            , fParent(fOwnedParent.get())
             , fIndexValue(v)
-            , fIndexedType(ti) {}
+            , fNumElementSlots(c) {}
+
+    explicit FixedIndexLValue(LValue* p, SKSL_INT v, int c)
+            : fOwnedParent()
+            , fParent(std::move(p))
+            , fIndexValue(v)
+            , fNumElementSlots(c) {}
 
     bool isWritable() const override {
         return fParent->isWritable();
     }
 
     int numSlots() const override {
-        return fIndexedType.slotCount();
+        return fNumElementSlots;
     }
 
     Slot adjust(Slot slot) const {
-        int numElements = fIndexedType.slotCount();
-        int startingIndex = numElements * fIndexValue;
-        return slot + startingIndex;
+        return slot + fNumElementSlots * fIndexValue;
     }
 
     [[nodiscard]] bool push(Generator* gen, Slot slot) override {
@@ -628,14 +633,15 @@ public:
         fParent->store(gen, this->adjust(slot), index, numSlots);
     }
 
-    std::unique_ptr<LValue> fParent;
+    std::unique_ptr<LValue> fOwnedParent;
+    LValue* fParent;
     SKSL_INT fIndexValue;
-    const Type& fIndexedType;
+    int fNumElementSlots;
 };
 
 class FieldLValue final : public LValue {
 public:
-    FieldLValue(std::unique_ptr<LValue> p, const FieldAccess& fieldAccess)
+    explicit FieldLValue(std::unique_ptr<LValue> p, const FieldAccess& fieldAccess)
             : fParent(std::move(p)) {
         fInitialSlot = fieldAccess.initialSlot();
         fNumSlots = fieldAccess.type().slotCount();
@@ -688,7 +694,7 @@ std::unique_ptr<LValue> LValue::Make(const Expression& e, bool allowScratch) {
             SKSL_INT indexValue;
             if (ConstantFolder::GetConstantInt(*indexExpr.index(), &indexValue)) {
                 return std::make_unique<FixedIndexLValue>(std::move(base), indexValue,
-                                                          indexExpr.type());
+                                                          indexExpr.type().slotCount());
             }
 
             // TODO(skia:13676): support non-constant indices
@@ -1533,41 +1539,49 @@ bool Generator::pushMatrixMultiply(LValue* lvalue,
     int outColumns   = rightColumns,
         outRows      = leftRows;
 
-    // Push the left matrix onto the adjacent-neighbor stack. We transpose it so that we can copy
-    // rows from it in a single op, instead of gathering one element at a time.
+    // Push the left matrix onto the adjacent-neighbor stack. We transpose it here so that we can
+    // copy rows from it in a single op, instead of gathering one element at a time.
     AutoStack matrixStack(this);
     matrixStack.enter();
     if (!this->pushLValueOrExpression(lvalue, left)) {
         return unsupported();
     }
     fBuilder.transpose(leftColumns, leftRows);
-
-    // Push the right matrix as well, then go back to the primary stack.
-    if (!this->pushExpression(right)) {
-        return unsupported();
-    }
     matrixStack.exit();
 
+    // Turn the right matrix into a scratch lvalue; depending on the expression type, this may end
+    // up pushing the matrix onto a scratch stack, or we may end up indexing directly into the value
+    // slots.
+    std::unique_ptr<LValue> lvRight = LValue::Make(right, /*allowScratch=*/true);
+
     // Calculate the offsets of the left- and right-matrix, relative to the stack-top.
-    int leftMtxBase  = left.type().slotCount() + right.type().slotCount() - leftColumns;
-    int rightMtxBase = right.type().slotCount() - leftColumns;
+    int leftMtxBase  = left.type().slotCount() - leftColumns;
 
     // Emit each matrix element.
     for (int c = 0; c < outColumns; ++c) {
         for (int r = 0; r < outRows; ++r) {
             // Dot a vector from left[*][r] with right[c][*].
-            // (Because the left=matrix has been transposed, we actually pull left[r][*], which
+
+            // Start by cloning from the transposed left-matrix.
+            // (Because the left-matrix has been transposed, we actually push left[r][*], which
             // allows us to clone a column at once instead of cloning each slot individually.)
-            matrixStack.pushClone(leftColumns, leftMtxBase  - r * leftColumns);
-            matrixStack.pushClone(leftColumns, rightMtxBase - c * leftColumns);
+            matrixStack.pushClone(leftColumns, leftMtxBase - r * leftColumns);
+
+            // Next, clone slots from right[c][*] by indexing directly into it.
+            FixedIndexLValue indexedRight{lvRight.get(), c, leftColumns};
+            for (Slot slot = 0; slot < leftColumns; ++slot) {
+                if (!indexedRight.push(this, slot)) {
+                    return unsupported();
+                }
+            }
+
             fBuilder.dot_floats(leftColumns);
         }
     }
 
-    // Dispose of the source matrices on the adjacent-neighbor stack.
+    // Dispose of the left matrix on the adjacent-neighbor stack.
     matrixStack.enter();
     this->discardExpression(left.type().slotCount());
-    this->discardExpression(right.type().slotCount());
     matrixStack.exit();
 
     // If this multiply was actually an assignment (via *=), write the result back to the lvalue.
