@@ -39,6 +39,30 @@
       },
       "revId": "18e47dbb3e41d5bf0e6b6ad1a4d36b87252cc448",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d57da708_247905d8",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 2365,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-17T20:38:04Z",
+      "side": 1,
+      "message": "Earlier I think this constructor was private, then everything got moved around and made internally public and... sure, why not.",
+      "parentUuid": "71a1e021_a41ca145",
+      "range": {
+        "startLine": 2364,
+        "startChar": 11,
+        "endLine": 2365,
+        "endChar": 37
+      },
+      "revId": "18e47dbb3e41d5bf0e6b6ad1a4d36b87252cc448",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
