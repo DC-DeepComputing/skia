@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0c0f065_333af0e3",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1464,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-17T21:28:58Z",
+      "side": 1,
+      "message": "OK, I think it would be ideal if you actually come up with a strategy to fix this and implement the fix in both WGSL/Metal. The two codegens already seem to share a lot of the same polyfill logic so hopefully the fix is mostly shared code as well. Thanks for filing the tracking bug.",
+      "parentUuid": "eafd8138_ef1af272",
+      "range": {
+        "startLine": 1464,
+        "startChar": 4,
+        "endLine": 1464,
+        "endChar": 28
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5d13cfe1_a9fca247",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
         "patchSetId": 5
