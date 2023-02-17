@@ -389,12 +389,15 @@ SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& requestInfo,
         }
     }
 
-    if (auto result = fCodec->handleFrameIndex(requestInfo, requestPixels, requestRowBytes,
-            *options, this); result != SkCodec::kSuccess) {
+    auto [frameIndex, result] = fCodec->getRequiredFrameIndex(requestInfo, requestPixels,
+                                                              requestRowBytes, *options);
+    if (result != SkCodec::kSuccess) {
         return result;
     }
+    AndroidOptions optionsWithFrame = *options;
+    optionsWithFrame.fFrameIndex = frameIndex;
 
-    return this->onGetAndroidPixels(requestInfo, requestPixels, requestRowBytes, *options);
+    return this->onGetAndroidPixels(requestInfo, requestPixels, requestRowBytes, optionsWithFrame);
 }
 
 SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& info, void* pixels,
