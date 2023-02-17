@@ -94,6 +94,30 @@
       },
       "revId": "0bd4978e527469c160ef09fafd2a144b1c81fcd9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3092a126_3e5643c3",
+        "filename": "src/gpu/graphite/ComputePipelineDesc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-17T18:43:30Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s no different for now and for testability since there\u0027s no ComputeProvider yet, I think this is fine.",
+      "parentUuid": "1d588acc_a0addb53",
+      "range": {
+        "startLine": 22,
+        "startChar": 67,
+        "endLine": 22,
+        "endChar": 92
+      },
+      "revId": "0bd4978e527469c160ef09fafd2a144b1c81fcd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
