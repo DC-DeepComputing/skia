@@ -684,25 +684,7 @@ static std::unique_ptr<GrFragmentProcessor> make_interpolated_to_dst(
         "uniform int do_unpremul;"   // specialized
 
         "half4 main(half4 color) {"
-            "if (bool(do_unpremul)) {"
-                "switch (colorSpace) {"
-                    /* kLab   */ "case 2:"
-                    /* kOKLab */ "case 3: color = unpremul(color); break;"
-                    /* kLCH   */ "case 4:"
-                    /* kOKLCH */ "case 5:"
-                    /* kHSL   */ "case 7:"
-                    /* kHWB   */ "case 8: color = $unpremul_polar(color); break;"
-                "}"
-            "}"
-            "switch (colorSpace) {"
-                /* kLab   */ "case 2: color.rgb = $css_lab_to_xyz(color.rgb); break;"
-                /* kOKLab */ "case 3: color.rgb = $css_oklab_to_linear_srgb(color.rgb); break;"
-                /* kLCH   */ "case 4: color.rgb = $css_hcl_to_xyz(color.rgb); break;"
-                /* kOKLCH */ "case 5: color.rgb = $css_okhcl_to_linear_srgb(color.rgb); break;"
-                /* kHSL   */ "case 7: color.rgb = $css_hsl_to_srgb(color.rgb); break;"
-                /* kHWB   */ "case 8: color.rgb = $css_hwb_to_srgb(color.rgb); break;"
-            "}"
-            "return color;"
+            "return $interpolated_to_rgb_unpremul(color, colorSpace, do_unpremul);"
         "}"
     );
 
