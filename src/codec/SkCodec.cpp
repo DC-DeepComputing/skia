@@ -29,10 +29,6 @@
 
 #include <utility>
 
-#ifdef SK_HAS_ANDROID_CODEC
-#include "include/codec/SkAndroidCodec.h"
-#endif
-
 #ifdef SK_CODEC_DECODES_AVIF
 #include "src/codec/SkAvifCodec.h"
 #endif
@@ -316,76 +312,18 @@ bool zero_rect(const SkImageInfo& dstInfo, void* pixels, size_t rowBytes,
 }
 
 SkCodec::Result SkCodec::handleFrameIndex(const SkImageInfo& info, void* pixels, size_t rowBytes,
-                                          const Options& options, SkAndroidCodec* androidCodec) {
-    if (androidCodec) {
-        // This is never set back to false. If SkAndroidCodec is calling this method, its fCodec
-        // should never call it directly.
-        fAndroidCodecHandlesFrameIndex = true;
-    } else if (fAndroidCodecHandlesFrameIndex) {
-        return kSuccess;
+                                          const Options& options) {
+    auto [requiredFrame, result] = this->getRequiredFrameIndex(info, pixels, rowBytes, options);
+    if (result != kSuccess) {
+        return result;
     }
-
-    if (!this->rewindIfNeeded()) {
-        return kCouldNotRewind;
-    }
-
-    const int index = options.fFrameIndex;
-    if (0 == index) {
-        return this->initializeColorXform(info, fEncodedInfo.alpha(), fEncodedInfo.opaque())
-            ? kSuccess : kInvalidConversion;
-    }
-
-    if (index < 0) {
-        return kInvalidParameters;
-    }
-
-    if (options.fSubset) {
-        // If we add support for this, we need to update the code that zeroes
-        // a kRestoreBGColor frame.
-        return kInvalidParameters;
-    }
-
-    if (index >= this->onGetFrameCount()) {
-        return kIncompleteInput;
-    }
-
     const auto* frameHolder = this->getFrameHolder();
     SkASSERT(frameHolder);
 
-    const auto* frame = frameHolder->getFrame(index);
+    const auto* frame = frameHolder->getFrame(options.fFrameIndex);
     SkASSERT(frame);
-
-    const int requiredFrame = frame->getRequiredFrame();
     if (requiredFrame != kNoFrame) {
-        const SkFrame* preppedFrame = nullptr;
-        if (options.fPriorFrame == kNoFrame) {
-            Result result = kInternalError;
-            if (androidCodec) {
-#ifdef SK_HAS_ANDROID_CODEC
-                SkAndroidCodec::AndroidOptions prevFrameOptions(
-                        reinterpret_cast<const SkAndroidCodec::AndroidOptions&>(options));
-                prevFrameOptions.fFrameIndex = requiredFrame;
-                result = androidCodec->getAndroidPixels(info, pixels, rowBytes, &prevFrameOptions);
-#endif
-            } else {
-                Options prevFrameOptions(options);
-                prevFrameOptions.fFrameIndex = requiredFrame;
-                result = this->getPixels(info, pixels, rowBytes, &prevFrameOptions);
-            }
-            if (result != kSuccess) {
-                return result;
-            }
-            preppedFrame = frameHolder->getFrame(requiredFrame);
-        } else {
-            // Check for a valid frame as a starting point. Alternatively, we could
-            // treat an invalid frame as not providing one, but rejecting it will
-            // make it easier to catch the mistake.
-            if (options.fPriorFrame < requiredFrame || options.fPriorFrame >= index) {
-                return kInvalidParameters;
-            }
-            preppedFrame = frameHolder->getFrame(options.fPriorFrame);
-        }
-
+        const SkFrame* preppedFrame = frameHolder->getFrame(requiredFrame);
         SkASSERT(preppedFrame);
         switch (preppedFrame->getDisposalMethod()) {
             case SkCodecAnimation::DisposalMethod::kRestorePrevious:
@@ -411,6 +349,64 @@ SkCodec::Result SkCodec::handleFrameIndex(const SkImageInfo& info, void* pixels,
 
     return this->initializeColorXform(info, frame->reportedAlpha(), !frame->hasAlpha())
         ? kSuccess : kInvalidConversion;
+}
+
+std::tuple<int, SkCodec::Result> SkCodec::getRequiredFrameIndex(const SkImageInfo& info,
+                                                                void* pixels,
+                                                                size_t rowBytes,
+                                                                const Options& options) {
+    if (!this->rewindIfNeeded()) {
+        return {0, kCouldNotRewind};
+    }
+
+    const int index = options.fFrameIndex;
+    if (0 == index) {
+        if (this->initializeColorXform(info, fEncodedInfo.alpha(), fEncodedInfo.opaque())) {
+            return {0, kSuccess};
+        }
+        return {0, kInvalidConversion};
+    }
+
+    if (index < 0) {
+        return {0, kInvalidParameters};
+    }
+
+    if (options.fSubset) {
+        // If we add support for this, we need to update the code that zeroes
+        // a kRestoreBGColor frame.
+        return {0, kInvalidParameters};
+    }
+
+    if (index >= this->onGetFrameCount()) {
+        return {0, kIncompleteInput};
+    }
+
+    const auto* frameHolder = this->getFrameHolder();
+    SkASSERT(frameHolder);
+
+    const auto* frame = frameHolder->getFrame(index);
+    SkASSERT(frame);
+
+    const int requiredFrame = frame->getRequiredFrame();
+    if (requiredFrame != kNoFrame) {
+        if (options.fPriorFrame == kNoFrame) {
+            Options prevFrameOptions(options);
+            prevFrameOptions.fFrameIndex = requiredFrame;
+            Result result = this->getPixels(info, pixels, rowBytes, &prevFrameOptions);
+            if (result != kSuccess) {
+                return {0, result};
+            }
+            return {requiredFrame, kSuccess};
+        }
+        // Check for a valid frame as a starting point. Alternatively, we could
+        // treat an invalid frame as not providing one, but rejecting it will
+        // make it easier to catch the mistake.
+        if (options.fPriorFrame < requiredFrame || options.fPriorFrame >= index) {
+            return {0, kInvalidParameters};
+        }
+        return {options.fPriorFrame, kSuccess};
+    }
+    return {kNoFrame, kSuccess};
 }
 
 SkCodec::Result SkCodec::getPixels(const SkImageInfo& info, void* pixels, size_t rowBytes,

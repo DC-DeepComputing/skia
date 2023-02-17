@@ -25,7 +25,6 @@
 #include <tuple>
 #include <vector>
 
-class SkAndroidCodec;
 class SkData;
 class SkFrameHolder;
 class SkImage;
@@ -951,8 +950,16 @@ private:
      *  handleFrameIndex, it will immediately return kSuccess, since SkAndroidCodec already handled
      *  it.
      */
-    Result handleFrameIndex(const SkImageInfo&, void* pixels, size_t rowBytes, const Options&,
-            SkAndroidCodec* androidCodec = nullptr);
+    Result handleFrameIndex(const SkImageInfo&, void* pixels, size_t rowBytes, const Options&);
+
+    /**
+     * Returns the index of a previous frame which must be decoded before the frame corresponding
+     * to options.fFrameIndex can be decoded.
+     */
+    std::tuple<int, SkCodec::Result> getRequiredFrameIndex(const SkImageInfo& info,
+                                                           void* pixels,
+                                                           size_t rowBytes,
+                                                           const Options& options);
 
     // Methods for scanline decoding.
     virtual Result onStartScanlineDecode(const SkImageInfo& /*dstInfo*/,
