@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f7de583_4dc25003",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-17T16:06:05Z",
+      "side": 0,
+      "message": "The relocating of the other methods is fine, but is there a reason this method was removed?",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 21
+      },
+      "revId": "b7508e2f257751e168add493e2a1c416a69a98cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
