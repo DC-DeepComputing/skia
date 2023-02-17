@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0ae14cf_adce2fd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-17T16:11:03Z",
+      "side": 1,
+      "message": "code looks good, not sure exactly how to parse the generated rp sksl to validate it though :/",
+      "revId": "60f6ab861ff3cb2580f86e1e41d9b3e5ff6fb498",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
