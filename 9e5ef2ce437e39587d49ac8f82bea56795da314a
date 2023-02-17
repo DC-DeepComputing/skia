@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b650cbf7_ad15c2f4",
+        "filename": "tests/sksl/shared/OutParamsFunctionCallInArgument.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-17T21:25:15Z",
+      "side": 1,
+      "message": "Wow! It just dumped this helper wherever.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 1
+      },
+      "revId": "9e5ef2ce437e39587d49ac8f82bea56795da314a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
