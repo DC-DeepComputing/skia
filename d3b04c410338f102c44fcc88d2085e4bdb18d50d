@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78018bb5_acc8fd5c",
+        "filename": "src/core/SkOpts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-17T16:32:57Z",
+      "side": 0,
+      "message": "So the last time this was attempted to be removed was https://skia-review.googlesource.com/c/skia/+/90026 with revert at https://skia-review.googlesource.com/c/skia/+/90524. Looks like it was issues with some Android build. Hopefully it isn\u0027t being used anymore, but should probably make sure with Android?",
+      "range": {
+        "startLine": 99,
+        "startChar": 16,
+        "endLine": 99,
+        "endChar": 22
+      },
+      "revId": "d3b04c410338f102c44fcc88d2085e4bdb18d50d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
