@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7768f5a4_7fe0bd7c",
+        "filename": "src/shaders/gradients/SkGradientShaderBase.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1314,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-17T15:11:49Z",
+      "side": 1,
+      "message": "one",
+      "range": {
+        "startLine": 1314,
+        "startChar": 7,
+        "endLine": 1314,
+        "endChar": 11
+      },
+      "revId": "617793ba766964ec547043d01d3a073b63c98bbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd806018_0eb9acc8",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 12
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-17T15:11:49Z",
+      "side": 1,
+      "message": "Line width",
+      "revId": "617793ba766964ec547043d01d3a073b63c98bbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19be24ef_e0e69d2e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 12
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-17T15:11:49Z",
+      "side": 1,
+      "message": "Should we define these as constants?",
+      "range": {
+        "startLine": 518,
+        "startChar": 15,
+        "endLine": 518,
+        "endChar": 19
+      },
+      "revId": "617793ba766964ec547043d01d3a073b63c98bbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
