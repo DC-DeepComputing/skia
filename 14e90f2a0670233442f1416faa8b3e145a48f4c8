@@ -22,6 +22,30 @@
       },
       "revId": "14e90f2a0670233442f1416faa8b3e145a48f4c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aa98235_5e034f2a",
+        "filename": "resources/sksl/wgsl/Equality.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T22:27:03Z",
+      "side": 1,
+      "message": "Oops. Done (prefix expressions aren\u0027t supported until a later CL so I rewrote the tests check inequality against a 3rd set of uniforms).",
+      "parentUuid": "003c0f93_a8dffbc3",
+      "range": {
+        "startLine": 17,
+        "startChar": 12,
+        "endLine": 17,
+        "endChar": 14
+      },
+      "revId": "14e90f2a0670233442f1416faa8b3e145a48f4c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
