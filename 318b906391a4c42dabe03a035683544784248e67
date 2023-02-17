@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4b2bcad_fa1152f0",
+        "filename": "src/sksl/sksl_shared.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-17T18:30:48Z",
+      "side": 1,
+      "message": "http://review.skia.org/645497 has landed, you can use a switch again",
+      "range": {
+        "startLine": 431,
+        "startChar": 7,
+        "endLine": 432,
+        "endChar": 29
+      },
+      "revId": "318b906391a4c42dabe03a035683544784248e67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
