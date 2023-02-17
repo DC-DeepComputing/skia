@@ -104,14 +104,7 @@ std::unique_ptr<Expression> FieldAccess::Make(const Context& context,
 }
 
 size_t FieldAccess::initialSlot() const {
-    SkSpan<const Type::Field> fields = this->base()->type().fields();
-    const int fieldIndex = this->fieldIndex();
-
-    size_t slot = 0;
-    for (int index = 0; index < fieldIndex; ++index) {
-        slot += fields[index].fType->slotCount();
-    }
-    return slot;
+    return this->base()->type().fieldInitialSlot(this->fieldIndex());
 }
 
 std::string FieldAccess::description(OperatorPrecedence) const {

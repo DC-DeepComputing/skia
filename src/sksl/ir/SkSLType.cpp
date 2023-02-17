@@ -1057,6 +1057,15 @@ std::unique_ptr<Expression> Type::coerceExpression(std::unique_ptr<Expression> e
     return nullptr;
 }
 
+size_t Type::fieldInitialSlot(int fieldIndex) const {
+    SkSpan<const Type::Field> fields = this->fields();
+    size_t slot = 0;
+    for (int index = 0; index < fieldIndex; ++index) {
+        slot += fields[index].fType->slotCount();
+    }
+    return slot;
+}
+
 static bool is_or_contains_array(const Type* type, bool onlyMatchUnsizedArrays) {
     if (type->isStruct()) {
         for (const Type::Field& f : type->fields()) {

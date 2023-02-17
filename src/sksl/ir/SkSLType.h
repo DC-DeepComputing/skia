@@ -420,9 +420,13 @@ public:
         return 0;
     }
 
+    /** Returns the fields in a struct. */
     virtual const std::vector<Field>& fields() const {
         SK_ABORT("Internal error: not a struct");
     }
+
+    /** Returns the initial slot of a field in a struct. */
+    size_t fieldInitialSlot(int fieldIndex) const;
 
     /**
      * For generic types, returns the types that this generic type can substitute for.
