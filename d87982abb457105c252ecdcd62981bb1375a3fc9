@@ -62,6 +62,30 @@
       },
       "revId": "d87982abb457105c252ecdcd62981bb1375a3fc9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7942a15_66683bd4",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1467,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-17T01:08:47Z",
+      "side": 1,
+      "message": "Here\u0027s what I tried when I first implemented this: http://review.skia.org/645059\n\nThere might be parts where AutoEnterStack is missing, since this was written when AutoStack was at PS1 and it\u0027s likely evolved since then.\n\nPassing the pointer is probably better than what I originally did with the stackID accessor, but that\u0027s neither here nor there; I\u0027d probably change it to pointer-passing if we decide to land it.\n\nWhen I wrote it, I felt like the benefit of RAII was super minimal, and I didn\u0027t like the extra scopes everywhere. Forgetting to `stack.exit()` isn\u0027t a minor thing you can forget; it will set the whole program on fire, so it\u0027s not going to save us from an accidental oops (every SkSL test failing will do that).",
+      "parentUuid": "c0d75cf9_be330db5",
+      "range": {
+        "startLine": 1467,
+        "startChar": 4,
+        "endLine": 1467,
+        "endChar": 32
+      },
+      "revId": "d87982abb457105c252ecdcd62981bb1375a3fc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
