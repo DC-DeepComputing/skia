@@ -113,6 +113,14 @@ func main() {
 			"cpu_or_gpu_value": *cpuOrGPUValue,
 		},
 	}
+
+	// if err := td.Do(ctx, td.Props("sleep"), func(ctx context.Context) error {
+	// 	time.Sleep(600 * time.Second)
+	// 	return nil
+	// }); err != nil {
+	// 	td.Fatal(ctx, err)
+	// }
+
 	if err := uploadDataToGold(ctx, skiaDir, conf); err != nil {
 		td.Fatal(ctx, err)
 	}
