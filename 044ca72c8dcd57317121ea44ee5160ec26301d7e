@@ -128,6 +128,30 @@
       },
       "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37ac2880_2a3aca00",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 6
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T00:36:33Z",
+      "side": 1,
+      "message": "I\u0027ll remove the comment and change these LOG_E. If we want to have a fatal failure in the future we can always change the else branches to call `SK_ABORT` or something similar.",
+      "parentUuid": "b88b0447_4e26d73d",
+      "range": {
+        "startLine": 593,
+        "startChar": 56,
+        "endLine": 593,
+        "endChar": 88
+      },
+      "revId": "044ca72c8dcd57317121ea44ee5160ec26301d7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
