@@ -213,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dbdade3_04be0e6d",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1464,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-17T21:58:14Z",
+      "side": 1,
+      "message": "+1. My plan for WGSL is to rewrite the IR such that all out param temporaries are emitted locally around the function call without needing the out-param polyfill, (which may cause some changes in the program structure, for example to preserve short-circuiting, see skbug.com/14082)\n\nI\u0027ll think about building that transform in a way that can apply to both backends. tests/sksl/shared/OutParamsFunctionCallInArgument.hlsl is close to what I think would be the ideal output for both Metal and WGSL.",
+      "parentUuid": "b0c0f065_333af0e3",
+      "range": {
+        "startLine": 1464,
+        "startChar": 4,
+        "endLine": 1464,
+        "endChar": 28
+      },
+      "revId": "71abaf4a5669c8b6e7c05b0de7535df075bda52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d13cfe1_a9fca247",
