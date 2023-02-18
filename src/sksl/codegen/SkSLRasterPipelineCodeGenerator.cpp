@@ -483,7 +483,7 @@ public:
     virtual int numSlots() const = 0;
 
     /** Pushes a single slot directly onto the stack. */
-    [[nodiscard]] virtual bool push(Generator* gen, Slot slot) = 0;
+    [[nodiscard]] virtual bool push(Generator* gen, int offset, int numSlots) = 0;
 
     /**
      * Stores a single stack value directly into the lvalue. The value on the stack covers
@@ -514,7 +514,7 @@ public:
         return fExpression->type().slotCount();
     }
 
-    [[nodiscard]] bool push(Generator* gen, Slot slot) override {
+    [[nodiscard]] bool push(Generator* gen, int offset, int numSlots) override {
         if (!fDedicatedStack.has_value()) {
             // Push the scratch expression onto a dedicated stack.
             fGenerator = gen;
@@ -526,8 +526,9 @@ public:
             fDedicatedStack->exit();
         }
 
-        SkASSERT(slot >= 0 && slot < this->numSlots());
-        fDedicatedStack->pushClone(1, this->numSlots() - slot - 1);
+        SkASSERT(numSlots >= 1);
+        SkASSERT(offset >= 0 && offset + numSlots <= this->numSlots());
+        fDedicatedStack->pushClone(numSlots, this->numSlots() - offset - numSlots);
         return true;
     }
 
@@ -553,13 +554,17 @@ public:
         return fVariable->type().slotCount();
     }
 
-    [[nodiscard]] bool push(Generator* gen, Slot slot) override {
+    [[nodiscard]] bool push(Generator* gen, int offset, int numSlots) override {
         if (Generator::IsUniform(*fVariable)) {
             SlotRange range = gen->getUniformSlots(*fVariable);
-            gen->builder()->push_uniform(SlotRange{range.index + slot, 1});
+            SkASSERT(numSlots >= 1);
+            SkASSERT(offset >= 0 && offset + numSlots <= range.count);
+            gen->builder()->push_uniform(SlotRange{range.index + offset, numSlots});
         } else {
             SlotRange range = gen->getVariableSlots(*fVariable);
-            gen->builder()->push_slots(SlotRange{range.index + slot, 1});
+            SkASSERT(numSlots >= 1);
+            SkASSERT(offset >= 0 && offset + numSlots <= range.count);
+            gen->builder()->push_slots(SlotRange{range.index + offset, numSlots});
         }
         return true;
     }
@@ -590,17 +595,17 @@ public:
         return fComponents.size();
     }
 
-    Slot adjust(Slot slot) const {
-        SkASSERT(slot < fComponents.size());
-        return fComponents[slot];
-    }
-
-    [[nodiscard]] bool push(Generator* gen, Slot slot) override {
-        return fParent->push(gen, this->adjust(slot));
+    [[nodiscard]] bool push(Generator* gen, int offset, int numSlots) override {
+        for (int8_t c : fComponents) {
+            if (!fParent->push(gen, offset + c, 1)) {
+                return unsupported();
+            }
+        }
+        return true;
     }
 
     void store(Generator* gen, Slot slot, int index, int numSlots) override {
-        fParent->store(gen, this->adjust(slot), index, numSlots);
+        fParent->store(gen, fComponents[slot], index, numSlots);
     }
 
 private:
@@ -629,8 +634,8 @@ public:
         return slot + startingIndex;
     }
 
-    [[nodiscard]] bool push(Generator* gen, Slot slot) override {
-        return fParent->push(gen, this->adjust(slot));
+    [[nodiscard]] bool push(Generator* gen, int offset, int numSlots) override {
+        return fParent->push(gen, this->adjust(offset), numSlots);
     }
 
     void store(Generator* gen, Slot slot, int index, int numSlots) override {
@@ -670,8 +675,8 @@ public:
         return fNumSlots;
     }
 
-    [[nodiscard]] bool push(Generator* gen, Slot slot) override {
-        return fParent->push(gen, slot + fInitialSlot);
+    [[nodiscard]] bool push(Generator* gen, int offset, int numSlots) override {
+        return fParent->push(gen, offset + fInitialSlot, numSlots);
     }
 
     void store(Generator* gen, Slot slot, int index, int numSlots) override {
@@ -752,15 +757,7 @@ void LValue::store(Generator* gen) {
 }
 
 bool LValue::push(Generator* gen) {
-    // Push our slots onto the stack one-by-one. The Builder will coalesce single-slot pushes into
-    // contiguous ranges where possible.
-    int numSlots = this->numSlots();
-    for (Slot slot = 0; slot < numSlots; ++slot) {
-        if (!this->push(gen, slot)) {
-            return unsupported();
-        }
-    }
-    return true;
+    return this->push(gen, /*offset=*/0, this->numSlots());
 }
 
 void SlotManager::addSlotDebugInfoForGroup(const std::string& varName,
