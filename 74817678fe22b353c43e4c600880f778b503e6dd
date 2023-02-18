@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25ac4f54_61a1b8ce",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-18T15:38:36Z",
+      "side": 1,
+      "message": "If this ends up being confusing, we could make the names more explicit, but for now I think passing a unique_ptr makes it pretty self-evident.",
+      "parentUuid": "735b0a20_d5b14699",
+      "range": {
+        "startLine": 680,
+        "startChar": 0,
+        "endLine": 680,
+        "endChar": 18
+      },
+      "revId": "74817678fe22b353c43e4c600880f778b503e6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bf1e0ba_599c6ff1",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-02-17T22:56:49Z",
       "side": 1,
       "message": "I don\u0027t know how much you care about the extra storage occupied by both `fParent` and `fOwnedParent` in the subclass type which ultimately store the same pointer. If that\u0027s a concern, you could have `FieldLValue` declare no members, call `p.release()` instead of `p.get()` while invoking the parent destructor, and explicitly delete `fParent` (which would need to be declared as protected) in `FieldLValue`\u0027s destructor.\n\nAn alternate pattern would be to have the parent type store a `std::unique_ptr\u003cLValue\u003e`, have the subclass be the \"unowned\" type which releases `fParent` in its destructor.\n\nBoth approaches would save on the extra pointer storage but I don\u0027t know if that\u0027s worth the additional bookkeeping in destructors. Just food for thought.",
+      "range": {
+        "startLine": 687,
+        "startChar": 4,
+        "endLine": 687,
+        "endChar": 41
+      },
+      "revId": "74817678fe22b353c43e4c600880f778b503e6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a1e6916_160c95ab",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-18T15:38:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bf1e0ba_599c6ff1",
       "range": {
         "startLine": 687,
         "startChar": 4,
