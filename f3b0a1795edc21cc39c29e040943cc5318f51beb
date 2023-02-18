@@ -34,6 +34,24 @@
       "parentUuid": "c8f4fd8f_51bf7b3a",
       "revId": "f3b0a1795edc21cc39c29e040943cc5318f51beb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ae151fd_6b8fb2e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-18T00:03:23Z",
+      "side": 1,
+      "message": "Hey, I found a bug with translating unnamed function parameters in WGSL. I\u0027ll fix that in a follow-up. In the meantime the WGSL test output looks as expected and passes Tint\u0027s validation.",
+      "parentUuid": "572f56e6_263f140e",
+      "revId": "f3b0a1795edc21cc39c29e040943cc5318f51beb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
