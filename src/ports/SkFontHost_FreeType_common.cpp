@@ -989,7 +989,27 @@ bool colrv1_configure_skpaint(FT_Face face,
             SkScalar endAngleScaled = startAngle + sectorAngle * stops.back();
 
             // 2) Scale stops accordingly to 0 to 1 range.
-            SkScalar scaleFactor = 1 / (stops.back() - stops.front());
+
+            float colorStopRange = stops.back() - stops.front();
+            if (colorStopRange == 0.f) {
+              if (tileMode != SkTileMode::kClamp) {
+                paint->setColor(SK_ColorTRANSPARENT);
+                return true;
+              } else {
+                // Insert duplicated fake color stop in pad case at +1.0f to feed the shader correct
+                // values and enable painting a pad sweep gradient with two colors. Adding this stop
+                // will paint the equivalent gradient, because: All font specified color stops are
+                // in the same spot, mode is pad, so everything before this spot is painted with the
+                // first color, everything after this spot is painted with the last color. Not
+                // adding this stop will skip the projection and result in specifying non-normalized
+                // color stops to the shader.
+                stops.push_back(*(stops.end() - 1) + 1.0f);
+                colors.push_back(*(colors.end()-1));
+                colorStopRange = 1.0f;
+              }
+            }
+
+            SkScalar scaleFactor = 1 / colorStopRange;
             SkScalar startOffset = stops.front();
 
             for (SkScalar& stop : stops) {
