@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4bb6417_b9687e25",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 845,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-20T00:41:28Z",
+      "side": 1,
+      "message": "There\u0027s no real changes in these big blocks. The code\u0027s just moved downwards, and `this-\u003emakeLValue` replaces `LValue::Make`.",
+      "range": {
+        "startLine": 845,
+        "startChar": 4,
+        "endLine": 845,
+        "endChar": 6
+      },
+      "revId": "2b934c20093f093bc3f37369cd62b1080b883e89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
