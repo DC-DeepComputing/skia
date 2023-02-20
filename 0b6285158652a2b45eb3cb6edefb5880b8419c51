@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d030be7_b8285a36",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-20T16:11:14Z",
+      "side": 1,
+      "message": "I think this should be `oss-fuzz:55906`.",
+      "revId": "0b6285158652a2b45eb3cb6edefb5880b8419c51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
