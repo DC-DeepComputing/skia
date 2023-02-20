@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53670bfd_90943f8d",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1275,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-20T13:54:59Z",
+      "side": 0,
+      "message": "This is technically a different mask than the generic unpack loop, which masks to `0xF`, but we don\u0027t allow regular swizzles that go past `xyzw`, so it didn\u0027t make any difference either way; the inputs will always be in that range, and we always pack into 4-bit nybbles. (The SkRP \"shuffle\" op allows 16-wide shuffling, but that isn\u0027t exposed directly in SkSL anywhere; it\u0027s used to do things like matrix transposes.)",
+      "range": {
+        "startLine": 1275,
+        "startChar": 43,
+        "endLine": 1275,
+        "endChar": 57
+      },
+      "revId": "c5303fb8f24e746f83a478ee30f1bb6db55c0f25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
