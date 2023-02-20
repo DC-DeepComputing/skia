@@ -482,15 +482,15 @@ public:
     /** Returns the number of slots in this LValue. */
     virtual int numSlots() const = 0;
 
-    /** Pushes a single slot directly onto the stack. */
-    [[nodiscard]] virtual bool push(Generator* gen, Slot slot) = 0;
+    /** Pushes values directly onto the stack. */
+    [[nodiscard]] virtual bool push(Generator* gen, SlotRange fixedOffset) = 0;
 
     /**
-     * Stores a single stack value directly into the lvalue. The value on the stack covers
-     * `numSlots` in total, and we are taking the value from the `index`th stack position in range
-     * [0, numSlots).
+     * Stores topmost values from the stack directly into the lvalue. `offsetFromStackTop` will
+     * match `fixedOffset.count` at the start of the store; if the store is split up into smaller
+     * pieces (via swizzled store), the stack-top offset will shrink as values are stored out.
      */
-    virtual void store(Generator* gen, Slot slot, int index, int numSlots) = 0;
+    virtual void store(Generator* gen, SlotRange fixedOffset, int offsetFromStackTop) = 0;
 };
 
 class ScratchLValue final : public LValue {
@@ -514,7 +514,7 @@ public:
         return fExpression->type().slotCount();
     }
 
-    [[nodiscard]] bool push(Generator* gen, Slot slot) override {
+    [[nodiscard]] bool push(Generator* gen, SlotRange fixedOffset) override {
         if (!fDedicatedStack.has_value()) {
             // Push the scratch expression onto a dedicated stack.
             fGenerator = gen;
@@ -526,12 +526,14 @@ public:
             fDedicatedStack->exit();
         }
 
-        SkASSERT(slot >= 0 && slot < this->numSlots());
-        fDedicatedStack->pushClone(1, this->numSlots() - slot - 1);
+        SkASSERT(fixedOffset.index >= 0);
+        SkASSERT((fixedOffset.index + fixedOffset.count) <= this->numSlots());
+        fDedicatedStack->pushClone(fixedOffset.count,
+                                   this->numSlots() - fixedOffset.count - fixedOffset.index);
         return true;
     }
 
-    void store(Generator*, Slot, int, int) override {
+    void store(Generator*, SlotRange, int) override {
         SkDEBUGFAIL("scratch lvalues cannot be stored into");
     }
 
@@ -553,23 +555,30 @@ public:
         return fVariable->type().slotCount();
     }
 
-    [[nodiscard]] bool push(Generator* gen, Slot slot) override {
+    SlotRange adjust(SlotRange fixedOffset, SlotRange variable) {
+        // The fixed offset should be entirely inside the variable.
+        SkASSERT(fixedOffset.index >= 0);
+        SkASSERT(fixedOffset.count <= variable.count);
+        fixedOffset.index += variable.index;
+        return fixedOffset;
+    }
+
+    [[nodiscard]] bool push(Generator* gen, SlotRange fixedOffset) override {
         if (Generator::IsUniform(*fVariable)) {
-            SlotRange range = gen->getUniformSlots(*fVariable);
-            gen->builder()->push_uniform(SlotRange{range.index + slot, 1});
+            fixedOffset = this->adjust(fixedOffset, gen->getUniformSlots(*fVariable));
+            gen->builder()->push_uniform(fixedOffset);
         } else {
-            SlotRange range = gen->getVariableSlots(*fVariable);
-            gen->builder()->push_slots(SlotRange{range.index + slot, 1});
+            fixedOffset = this->adjust(fixedOffset, gen->getVariableSlots(*fVariable));
+            gen->builder()->push_slots(fixedOffset);
         }
         return true;
     }
 
-    void store(Generator* gen, Slot slot, int index, int numSlots) override {
+    void store(Generator* gen, SlotRange fixedOffset, int offsetFromStackTop) override {
         SkASSERT(!Generator::IsUniform(*fVariable));
 
-        SlotRange range = gen->getVariableSlots(*fVariable);
-        int offsetFromStackTop = numSlots - index;
-        gen->builder()->copy_stack_to_slots(SlotRange{range.index + slot, 1}, offsetFromStackTop);
+        fixedOffset = this->adjust(fixedOffset, gen->getVariableSlots(*fVariable));
+        gen->builder()->copy_stack_to_slots(fixedOffset, offsetFromStackTop);
     }
 
 private:
@@ -590,17 +599,23 @@ public:
         return fComponents.size();
     }
 
-    Slot adjust(Slot slot) const {
-        SkASSERT(slot < fComponents.size());
-        return fComponents[slot];
+    SlotRange adjust(SlotRange range, int index) const {
+        return SlotRange{range.index + fComponents[index], 1};
     }
 
-    [[nodiscard]] bool push(Generator* gen, Slot slot) override {
-        return fParent->push(gen, this->adjust(slot));
+    [[nodiscard]] bool push(Generator* gen, SlotRange fixedOffset) override {
+        for (int index = 0; index < fComponents.size(); ++index) {
+            if (!fParent->push(gen, this->adjust(fixedOffset, index))) {
+                return unsupported();
+            }
+        }
+        return true;
     }
 
-    void store(Generator* gen, Slot slot, int index, int numSlots) override {
-        fParent->store(gen, this->adjust(slot), index, numSlots);
+    void store(Generator* gen, SlotRange fixedOffset, int offsetFromStackTop) override {
+        for (int index = 0; index < fComponents.size(); ++index) {
+            fParent->store(gen, this->adjust(fixedOffset, index), offsetFromStackTop--);
+        }
     }
 
 private:
@@ -610,39 +625,38 @@ private:
 
 class UnownedFixedIndexLValue : public LValue {
 public:
-    explicit UnownedFixedIndexLValue(LValue* p, SKSL_INT v, const Type& ti)
+    explicit UnownedFixedIndexLValue(LValue* p, SKSL_INT indexValue, const Type& indexedType)
             : fParent(p)
-            , fIndexValue(v)
-            , fIndexedType(ti) {}
+            , fNumSlots(indexedType.slotCount())
+            , fInitialSlot(fNumSlots * indexValue) {}
 
     bool isWritable() const override {
         return fParent->isWritable();
     }
 
     int numSlots() const override {
-        return fIndexedType.slotCount();
+        return fNumSlots;
     }
 
-    Slot adjust(Slot slot) const {
-        int numElements = fIndexedType.slotCount();
-        int startingIndex = numElements * fIndexValue;
-        return slot + startingIndex;
+    SlotRange adjust(SlotRange range) const {
+        range.index += fInitialSlot;
+        return range;
     }
 
-    [[nodiscard]] bool push(Generator* gen, Slot slot) override {
-        return fParent->push(gen, this->adjust(slot));
+    [[nodiscard]] bool push(Generator* gen, SlotRange fixedOffset) override {
+        return fParent->push(gen, this->adjust(fixedOffset));
     }
 
-    void store(Generator* gen, Slot slot, int index, int numSlots) override {
-        fParent->store(gen, this->adjust(slot), index, numSlots);
+    void store(Generator* gen, SlotRange fixedOffset, int offsetFromStackTop) override {
+        fParent->store(gen, this->adjust(fixedOffset), offsetFromStackTop);
     }
 
 protected:
     LValue* fParent;
 
 private:
-    SKSL_INT fIndexValue;
-    const Type& fIndexedType;
+    int fNumSlots = 0;
+    int fInitialSlot = 0;
 };
 
 class FixedIndexLValue final : public UnownedFixedIndexLValue {
@@ -670,12 +684,17 @@ public:
         return fNumSlots;
     }
 
-    [[nodiscard]] bool push(Generator* gen, Slot slot) override {
-        return fParent->push(gen, slot + fInitialSlot);
+    SlotRange adjust(SlotRange range) const {
+        range.index += fInitialSlot;
+        return range;
     }
 
-    void store(Generator* gen, Slot slot, int index, int numSlots) override {
-        fParent->store(gen, slot + fInitialSlot, index, numSlots);
+    [[nodiscard]] bool push(Generator* gen, SlotRange fixedOffset) override {
+        return fParent->push(gen, this->adjust(fixedOffset));
+    }
+
+    void store(Generator* gen, SlotRange fixedOffset, int offsetFromStackTop) override {
+        fParent->store(gen, this->adjust(fixedOffset), offsetFromStackTop);
     }
 
 protected:
@@ -887,25 +906,12 @@ std::unique_ptr<LValue> Generator::makeLValue(const Expression& e, bool allowScr
 
 void Generator::store(LValue& lvalue) {
     SkASSERT(lvalue.isWritable());
-
-    // Copy our slots from the stack into their slots. The Builder will coalesce single-slot pushes
-    // into contiguous ranges where possible.
     int numSlots = lvalue.numSlots();
-    for (Slot slot = 0; slot < numSlots; ++slot) {
-        lvalue.store(this, slot, /*index=*/(int)slot, numSlots);
-    }
+    return lvalue.store(this, SlotRange{0, numSlots}, /*offsetFromStackTop=*/numSlots);
 }
 
 bool Generator::push(LValue& lvalue) {
-    // Push our slots onto the stack one-by-one. The Builder will coalesce single-slot pushes into
-    // contiguous ranges where possible.
-    int numSlots = lvalue.numSlots();
-    for (Slot slot = 0; slot < numSlots; ++slot) {
-        if (!lvalue.push(this, slot)) {
-            return unsupported();
-        }
-    }
-    return true;
+    return lvalue.push(this, SlotRange{0, lvalue.numSlots()});
 }
 
 int Generator::getFunctionDebugInfo(const FunctionDeclaration& decl) {
