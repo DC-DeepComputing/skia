@@ -11,13 +11,12 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkOpts_spi.h"
-#include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTLogic.h"
 
 #include <string>
 #include <string_view>
 
-class SkChecksum : SkNoncopyable {
+class SkChecksum {
 public:
     /**
      * uint32_t -> uint32_t hash, useful for when you're about to trucate this hash but you
@@ -46,6 +45,13 @@ public:
         hash ^= hash >> 16;
         return hash;
     }
+
+private:
+    // Make noncopyable
+    SkChecksum(SkChecksum&&) = delete;
+    SkChecksum(const SkChecksum&) = delete;
+    SkChecksum& operator =(SkChecksum&&) = delete;
+    SkChecksum& operator=(const SkChecksum&) = delete;
 };
 
 // SkGoodHash should usually be your first choice in hashing data.

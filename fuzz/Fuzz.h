@@ -21,7 +21,7 @@
 #include <signal.h>
 #include <limits>
 
-class Fuzz : SkNoncopyable {
+class Fuzz {
 public:
     explicit Fuzz(sk_sp<SkData> bytes) : fBytes(bytes), fNextByte(0) {}
 
@@ -86,6 +86,13 @@ public:
     void nextRange(float* f, float min, float max);
 
 private:
+    // Make noncopyable
+    Fuzz() = default;
+    Fuzz(Fuzz&&) = delete;
+    Fuzz(Fuzz&) = delete;
+    Fuzz& operator=(Fuzz&&) = delete;
+    Fuzz& operator=(Fuzz&) = delete;
+
     template <typename T>
     T nextT();
 

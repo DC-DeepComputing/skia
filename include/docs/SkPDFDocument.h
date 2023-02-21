@@ -12,7 +12,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTime.h"
-#include "include/private/base/SkNoncopyable.h"
 
 #define SKPDF_STRING(X) SKPDF_STRING_IMPL(X)
 #define SKPDF_STRING_IMPL(X) #X
@@ -24,7 +23,7 @@ class SkPDFTagTree;
 namespace SkPDF {
 
 /** Attributes for nodes in the PDF tree. */
-class SK_API AttributeList : SkNoncopyable {
+class SK_API AttributeList {
 public:
     AttributeList();
     ~AttributeList();
@@ -43,6 +42,12 @@ public:
                            const std::vector<int>& nodeIds);
 
 private:
+    // Make noncopyable
+    AttributeList(AttributeList&&) = delete;
+    AttributeList(const AttributeList&) = delete;
+    AttributeList& operator =(AttributeList&&) = delete;
+    AttributeList& operator=(const AttributeList&) = delete;
+
     friend class ::SkPDFTagTree;
 
     std::unique_ptr<SkPDFArray> fAttrs;

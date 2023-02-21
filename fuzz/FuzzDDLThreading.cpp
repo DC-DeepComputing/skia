@@ -18,7 +18,6 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/base/SkDeque.h"
 #include "include/private/base/SkMutex.h"
-#include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkThreadID.h"
 #include "src/core/SkTaskGroup.h"
@@ -46,7 +45,7 @@ class DDLFuzzer;
 
 // This class stores the state of a given promise image owned by the fuzzer. It acts as the
 // context for the callback procs of the promise image.
-class PromiseImageInfo : public SkNVRefCnt<PromiseImageInfo>, SkNoncopyable {
+class PromiseImageInfo : public SkNVRefCnt<PromiseImageInfo> {
 public:
     enum class State : int {
         kInitial,
@@ -54,6 +53,7 @@ public:
         kDone
     };
 
+    PromiseImageInfo() = default;
     ~PromiseImageInfo() {
         // If we hit this, then the image or the texture will outlive this object which is bad.
         SkASSERT_RELEASE(!fImage || fImage->unique());
@@ -70,7 +70,15 @@ public:
     // happen on the same thread. See the TODO below about them unreffing them off the GPU thread.
     std::atomic<State> fState{State::kInitial};
     std::atomic<bool> fDrawn{false};
+
     sk_sp<SkPromiseImageTexture> fTexture;
+
+private:
+    // Make noncopyable
+    PromiseImageInfo(PromiseImageInfo&&) = delete;
+    PromiseImageInfo(PromiseImageInfo&) = delete;
+    PromiseImageInfo& operator=(PromiseImageInfo&&) = delete;
+    PromiseImageInfo& operator=(PromiseImageInfo&) = delete;
 };
 
 static constexpr int kPromiseImageCount = 8;
@@ -83,7 +91,7 @@ static constexpr int kIterationCount = 10000;
 // and concurrently records DDLs that reference them, playing each DDL back on the GPU thread.
 // The backing textures for promise images may be recycled into a pool, or not, for each case
 // as determined by the fuzzing data.
-class DDLFuzzer : SkNoncopyable {
+class DDLFuzzer {
 public:
     DDLFuzzer(Fuzz*, ContextType);
     void run();
@@ -95,6 +103,13 @@ private:
     void recordAndPlayDDL();
     bool isOnGPUThread() const { return SkGetThreadID() == fGpuThread; }
     bool isOnMainThread() const { return SkGetThreadID() == fMainThread; }
+
+    // Make noncopyable
+    DDLFuzzer() = default;
+    DDLFuzzer(DDLFuzzer&&) = delete;
+    DDLFuzzer(DDLFuzzer&) = delete;
+    DDLFuzzer& operator=(DDLFuzzer&&) = delete;
+    DDLFuzzer& operator=(DDLFuzzer&) = delete;
 
     Fuzz* fFuzz = nullptr;
     GrDirectContext* fContext = nullptr;

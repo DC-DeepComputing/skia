@@ -16,7 +16,7 @@
  * A generic LRU cache.
  */
 template <typename K, typename V, typename HashK = SkGoodHash>
-class SkLRUCache : public SkNoncopyable {
+class SkLRUCache {
 private:
     struct Entry {
         Entry(const K& key, V&& value)
@@ -106,6 +106,13 @@ private:
             return HashK()(k);
         }
     };
+
+    // Make noncopyable
+    SkLRUCache() = default;
+    SkLRUCache(SkLRUCache&&) = delete;
+    SkLRUCache(const SkLRUCache&) = delete;
+    SkLRUCache& operator =(SkLRUCache&&) = delete;
+    SkLRUCache& operator=(const SkLRUCache&) = delete;
 
     void remove(const K& key) {
         Entry** value = fMap.find(key);
