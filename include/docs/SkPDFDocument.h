@@ -12,7 +12,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTime.h"
-#include "include/private/base/SkNoncopyable.h"
 
 #define SKPDF_STRING(X) SKPDF_STRING_IMPL(X)
 #define SKPDF_STRING_IMPL(X) #X
@@ -24,10 +23,14 @@ class SkPDFTagTree;
 namespace SkPDF {
 
 /** Attributes for nodes in the PDF tree. */
-class SK_API AttributeList : SkNoncopyable {
+class SK_API AttributeList {
 public:
     AttributeList();
     ~AttributeList();
+
+    // Make noncopyable
+    AttributeList(const AttributeList&) = delete;
+    AttributeList& operator=(const AttributeList&) = delete;
 
     // Each attribute must have an owner (e.g. "Layout", "List", "Table", etc)
     // and an attribute name (e.g. "BBox", "RowSpan", etc.) from PDF32000_2008 14.8.5,
