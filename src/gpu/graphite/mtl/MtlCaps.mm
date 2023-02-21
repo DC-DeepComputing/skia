@@ -670,7 +670,7 @@ UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineD
     {
         static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
         // 4 uint32_t's (render step id, paint id, uint64 renderpass desc)
-        UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 4, "GraphicsPipeline");
+        UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 5, "GraphicsPipeline");
         // add graphicspipelinedesc key
         builder[0] = pipelineDesc.renderStepID();
         builder[1] = pipelineDesc.paintParamsID().asUInt();
@@ -679,6 +679,8 @@ UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineD
         uint64_t renderPassKey = this->getRenderPassDescKey(renderPassDesc);
         builder[2] = renderPassKey & 0xFFFFFFFF;
         builder[3] = (renderPassKey >> 32) & 0xFFFFFFFF;
+        builder[4] = renderPassDesc.fWriteSwizzle.asKey();
+
         builder.finish();
     }
 
@@ -692,7 +694,8 @@ uint64_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) con
     SkASSERT(colorInfo.fFormat < 65535 && depthStencilInfo.fFormat < 65535);
     uint32_t colorAttachmentKey = colorInfo.fFormat << 16 | colorInfo.fSampleCount;
     uint32_t dsAttachmentKey = depthStencilInfo.fFormat << 16 | depthStencilInfo.fSampleCount;
-    return (((uint64_t) colorAttachmentKey) << 32) | dsAttachmentKey;
+    // uint16_t swizzleKey = renderPassDesc.fWriteSwizzle.asKey();
+    return (((uint64_t) colorAttachmentKey) << 32 | dsAttachmentKey);
 }
 
 UniqueKey MtlCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDesc) const {
