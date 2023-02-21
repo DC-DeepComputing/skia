@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkShadow.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkCPUTypes.h"
 #include "include/private/base/SkFloatingPoint.h"
@@ -498,6 +499,9 @@ public:
      */
     void setBlender(sk_sp<SkBlender> blender);
 
+    void setShadow(sk_sp<SkShadow> shadow) { fShadow = std::move(shadow); }
+    SkShadow* getShadow() const { return fShadow.get(); }
+
     /** Returns SkPathEffect if set, or nullptr.
         Does not alter SkPathEffect SkRefCnt.
 
@@ -664,6 +668,7 @@ private:
     sk_sp<SkColorFilter>  fColorFilter;
     sk_sp<SkImageFilter>  fImageFilter;
     sk_sp<SkBlender>      fBlender;
+    sk_sp<SkShadow>       fShadow;
 
     SkColor4f       fColor4f;
     SkScalar        fWidth;
@@ -686,6 +691,7 @@ private:
     static_assert(::sk_is_trivially_relocatable<decltype(fColorFilter)>::value);
     static_assert(::sk_is_trivially_relocatable<decltype(fImageFilter)>::value);
     static_assert(::sk_is_trivially_relocatable<decltype(fBlender)>::value);
+    static_assert(::sk_is_trivially_relocatable<decltype(fShadow)>::value);
     static_assert(::sk_is_trivially_relocatable<decltype(fColor4f)>::value);
     static_assert(::sk_is_trivially_relocatable<decltype(fBitfields)>::value);
 

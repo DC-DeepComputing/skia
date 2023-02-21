@@ -91,6 +91,7 @@ skia_filegroup(
         "SkSamplingOptions.h",
         "SkScalar.h",
         "SkSerialProcs.h",
+        "SkShadow.h",
         "SkShader.h",
         "SkSize.h",
         "SkSpan.h",
