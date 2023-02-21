@@ -7,6 +7,7 @@
 
 #include "src/text/gpu/GlyphVector.h"
 
+#include "src/core/SkGlyph.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStrike.h"
 #include "src/core/SkStrikeCache.h"
@@ -27,20 +28,22 @@ GlyphVector::GlyphVector(SkStrikePromise&& strikePromise, SkSpan<Variant> glyphs
     SkASSERT(fGlyphs.size() > 0);
 }
 
-GlyphVector::Variant*
-GlyphVector::MakeGlyphs(SkSpan<SkGlyphVariant> glyphs, sktext::gpu::SubRunAllocator* alloc) {
-    Variant* variants = alloc->makePODArray<Variant>(glyphs.size());
-    for (auto [i, gv] : SkMakeEnumerate(glyphs)) {
-        variants[i] = gv.packedID();
+SkSpan<GlyphVector::Variant>
+GlyphVector::MakeGlyphs(SkSpan<const SkPackedGlyphID> packedIDs,
+                        sktext::gpu::SubRunAllocator* alloc) {
+    Variant* variants = alloc->makePODArray<Variant>(packedIDs.size());
+    for (auto [variant, packedID] : SkMakeZip(variants, packedIDs)) {
+        variant = packedID;
     }
-    return variants;
+    return {variants, packedIDs.size()};
 }
 
-GlyphVector GlyphVector::Make(
-        SkStrikePromise&& promise, SkSpan<SkGlyphVariant> glyphs, SubRunAllocator* alloc) {
-    SkASSERT(glyphs.size() > 0);
-    Variant* variants = MakeGlyphs(glyphs, alloc);
-    return GlyphVector{std::move(promise), SkSpan(variants, glyphs.size())};
+GlyphVector GlyphVector::Make(SkStrikePromise&& promise,
+                              SkSpan<const SkPackedGlyphID> packedIDs,
+                              SubRunAllocator* alloc) {
+    SkASSERT(packedIDs.size() > 0);
+    SkSpan<Variant> variants = MakeGlyphs(packedIDs, alloc);
+    return GlyphVector{std::move(promise), variants};
 }
 
 std::optional<GlyphVector> GlyphVector::MakeFromBuffer(SkReadBuffer& buffer,
