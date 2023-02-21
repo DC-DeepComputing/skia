@@ -120,6 +120,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a576d62f_7821f8da",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-21T15:09:19Z",
+      "side": 1,
+      "message": "I realize I\u0027m 2.5 years late on this, but I don\u0027t see how that second stacktrace happens. (Maybe Gerrit lost some indentation over the years?)\n```\nSkAndroidCodec\ngetAndroidPixels\n  handleFrameIndex (androidCodec \u003d this SkAndroidCodec)\n    getAndroidPixels // possibly - to decode prior frame\n      handleFrameIndex (androidCodec \u003d this SkAndroidCodec again)\n        SkCodec-\u003egetPixels // How does this get called if androidCodec is non-null?\n```\nFrom what I can tell, the call flow should be something like\n\n```\nSkAndroidCodec\ngetAndroidPixels\n  handleFrameIndex (androidCodec \u003d this SkAndroidCodec)\n    getAndroidPixels // possibly - to decode prior frame\n      handleFrameIndex (androidCodec \u003d this SkAndroidCodec again)\n        return kSuccess bc fAndroidCodecHandlesFrameIndex \u003d true\n      return something (presume kSuccess)\n    FrameHolder-\u003egetFrame(requiredFrame)\n    return something (presume kSuccess)\n  onGetAndroidPixels()\n    SkCodec-\u003egetPixels\n       handleFrameIndex (androidCodec \u003d nullptr)\n    return kSuccess bc fAndroidCodecHandlesFrameIndex \u003d true\n  return something\n```\nRight?",
+      "parentUuid": "b1a8f11c_2771cc68",
+      "range": {
+        "startLine": 279,
+        "startChar": 6,
+        "endLine": 279,
+        "endChar": 10
+      },
+      "revId": "a8f1d78af5f3fc8974f206bcdd1fc07171137b12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59fb9314_eb0a3c13",
