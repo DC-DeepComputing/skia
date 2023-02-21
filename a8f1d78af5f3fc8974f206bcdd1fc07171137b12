@@ -168,6 +168,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "303b4527_b01cc98f",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-21T18:16:25Z",
+      "side": 1,
+      "message": "I think I get it. Suppose we have a 4 frame image, and frame 0 and 1 are stand-alone frames (frame-\u003egetRequiredFrame() would be kNoFrame), frame 2 depends on frame 1 and frame and frame 3 depends on frame 2. Let us also suppose the user calls getAndroidPixels for frame 3.\n\n```\nAC \u003d this \u003d AndroidCodec instance\nfC \u003d this-\u003efCodec\n\nAC-\u003egetAndroidPixels(..., {frameIndex: 3})\n  fC-\u003ehandleFrameIndex(..., {frameIndex: 3}, androidCodec \u003d AC)\n     // sets fAndroidCodecHandlesFrameIndex to true\n     frame-\u003egetRequiredFrame()\n       returns 2\n     AC-\u003egetAndroidPixels(..., {frameIndex: 2})\n       fC-\u003ehandleFrameIndex(..., {frameIndex: 2}, androidCodec \u003d AC)\n         // fAndroidCodecHandlesFrameIndex is true anway, but it is set to true again\n         frame-\u003egetRequiredFrame()\n           returns 1\n         AC-\u003egetAndroidPixels(..., {frameIndex: 1})\n           fC-\u003ehandleFrameIndex(..., {frameIndex: 1}, androidCodec \u003d AC)\n             frame-\u003egetRequiredFrame()\n               returns kNoFrame\n             // getAndroidPixels is *not* called because requiredFrame \u003d\u003d kNoFrame\n             fC-\u003einitializeColorXform({frameIndex: 1})\n           onGetAndroidPixels(..., {frameIndex: 1})\n             // If SkAndroidCodecAdapter\n             fC-\u003egetPixels(..., {frameIndex: 1})\n               fC-\u003ehandleFrameIndex(..., androidCodec \u003d\u003d null, {frameIndex: 1})\n                 return kSuccess because !androidCodec and fAndroidCodecHandlesFrameIndex\n             // SkSampledCodec has a few additional calls after this\n               fC-\u003eonGetPixels(..., {frameIndex: 1})\n               // ...\n         // preppedFrame disposal stuff\n         fC-\u003einitializeColorXform({frameIndex: 2})\n       onGetAndroidPixels(..., {frameIndex: 2})\n         fC-\u003egetPixels(..., {frameIndex: 2})\n           fC-\u003ehandleFrameIndex(..., androidCodec \u003d null, {frameIndex: 2})\n             return kSuccess because !androidCodec and fAndroidCodecHandlesFrameIndex\n           //...\n       // preppedFrame disposal stuff\n       fC-\u003einitializeColorXform({frameIndex: 3})\n  onGetAndroidPixels(..., {frameIndex: 3})\n    fC-\u003egetPixels(..., {frameIndex: 3})\n      fC-\u003ehandleFrameIndex(..., androidCodec \u003d null, {frameIndex: 3})\n        return kSuccess because !androidCodec and fAndroidCodecHandlesFrameIndex\n```\n\nI realize that the above is probably not as clear as I hoped it would be, but working it through helped me realize how to properly decouple things in the case where we need to recursively step back a frame until we find a stand-alone frame (even if that takes us all the way to the frame 0).",
+      "parentUuid": "28ed9ecf_81c83a06",
+      "range": {
+        "startLine": 279,
+        "startChar": 6,
+        "endLine": 279,
+        "endChar": 10
+      },
+      "revId": "a8f1d78af5f3fc8974f206bcdd1fc07171137b12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59fb9314_eb0a3c13",
