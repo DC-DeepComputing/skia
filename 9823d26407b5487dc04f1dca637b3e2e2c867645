@@ -16,6 +16,69 @@
       "message": "One thing here is that we can\u0027t assume the translated copy destination is within the render target bounds, so we have to do an intersection while adding the upload commands. I\u0027m hoping this isn\u0027t too much of an issue, but previously we were very explicitly assuming this intersection had already been calculated before adding commands.",
       "revId": "9823d26407b5487dc04f1dca637b3e2e2c867645",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f6e026c_7635ad43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-21T14:32:07Z",
+      "side": 1,
+      "message": "It all looks good pending lifting the logic higher if possible.",
+      "revId": "9823d26407b5487dc04f1dca637b3e2e2c867645",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0048d8c_33f7da8e",
+        "filename": "src/gpu/graphite/CommandTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-21T14:32:07Z",
+      "side": 1,
+      "message": "See note below, but if we have UploadTask handle the replay intersection, I don\u0027t think we need to add this field.",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 28
+      },
+      "revId": "9823d26407b5487dc04f1dca637b3e2e2c867645",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45e32798_4f558553",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-21T14:32:07Z",
+      "side": 1,
+      "message": "WDYT about having this logic be in `UploadTask`? If it\u0027s not the replay target then it just submits its original BufferTextureCopyData\u0027s, but if it is the replay target, it uses this to make a cropped BufferTextureCopyData on the stack that\u0027s passed to this function?\n\nThis seems like a subtle issue that could be missed in backend implementations so it\u0027d be nice to have as much replay retargeting handled above the backend-specific logic if possible.",
+      "range": {
+        "startLine": 712,
+        "startChar": 8,
+        "endLine": 726,
+        "endChar": 39
+      },
+      "revId": "9823d26407b5487dc04f1dca637b3e2e2c867645",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
