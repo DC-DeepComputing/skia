@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d39df21_f07505b6",
+        "filename": "src/ports/SkFontMgr_FontConfigInterface.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-21T15:00:11Z",
+      "side": 1,
+      "message": "Looks like this maybe should have been false.",
+      "range": {
+        "startLine": 40,
+        "startChar": 17,
+        "endLine": 40,
+        "endChar": 21
+      },
+      "revId": "b588fea44342247eeb038f0517d91474c524db12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
