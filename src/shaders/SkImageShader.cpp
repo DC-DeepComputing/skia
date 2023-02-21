@@ -39,12 +39,12 @@ skgpu::graphite::ReadSwizzle SkImageShader::swizzleClassToReadEnum(const skgpu::
     if (swizzle == skgpu::Swizzle()) {
     } else if (swizzle == skgpu::Swizzle::RGB1()) {
         readSwizzle = skgpu::graphite::ReadSwizzle::kRGB1;
-    } else if (swizzle == skgpu::Swizzle("000r")) {
-        readSwizzle = skgpu::graphite::ReadSwizzle::k000R;
     } else if (swizzle == skgpu::Swizzle("rrr1")) {
         readSwizzle = skgpu::graphite::ReadSwizzle::kRRR1;
     } else if (swizzle == skgpu::Swizzle::BGRA()) {
         readSwizzle = skgpu::graphite::ReadSwizzle::kBGRA;
+    } else if (swizzle == skgpu::Swizzle("000r")) {
+        readSwizzle = skgpu::graphite::ReadSwizzle::k000R;
     } else {
         SkDebugf("Encountered unsupported read swizzle. Defaulting to RGBA.");
     }
@@ -417,7 +417,6 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                                                            fSampling);
     ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset,
                                         ReadSwizzle::kRGBA);
-
     if (!fRaw) {
         imgData.fSteps = SkColorSpaceXformSteps(fImage->colorSpace(),
                                                 fImage->alphaType(),

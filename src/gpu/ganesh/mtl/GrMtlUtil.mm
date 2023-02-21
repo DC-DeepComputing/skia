@@ -55,7 +55,7 @@ MTLTextureDescriptor* GrGetMTLTextureDescriptor(id<MTLTexture> mtlTexture) {
 }
 
 // Print the source code for all shaders generated.
-static const bool gPrintSKSL = false;
+static const bool gPrintSKSL = true;
 static const bool gPrintMSL = false;
 
 bool GrSkSLToMSL(const GrMtlGpu* gpu,

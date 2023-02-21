@@ -19,6 +19,8 @@
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+#include "include/core/SkColorType.h"
+
 #include <memory>
 
 struct SkImageInfo;
