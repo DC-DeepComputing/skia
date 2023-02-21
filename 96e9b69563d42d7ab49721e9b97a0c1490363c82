@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26fa9c3e_9c2a0ea1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-21T18:48:34Z",
+      "side": 1,
+      "message": "PTAL. I think I\u0027ve preserved the existing functionality and reduced the build complexity to make the modular codec build more feasible.",
+      "revId": "96e9b69563d42d7ab49721e9b97a0c1490363c82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
