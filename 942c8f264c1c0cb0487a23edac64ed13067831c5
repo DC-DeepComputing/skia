@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c5b2eff_6079b919",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-21T18:11:55Z",
+      "side": 1,
+      "message": "Does the parent type\u0027s slot count have any meaning when taking a slice? For example, is it valid to create an `UnownedLValueSlice` with a larger `numSlots` than the parent\u0027s slot count?",
+      "range": {
+        "startLine": 642,
+        "startChar": 8,
+        "endLine": 642,
+        "endChar": 31
+      },
+      "revId": "942c8f264c1c0cb0487a23edac64ed13067831c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
