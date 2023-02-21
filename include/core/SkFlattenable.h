@@ -36,6 +36,7 @@ public:
         kSkMaskFilter_Type,
         kSkPathEffect_Type,
         kSkShader_Type,
+        kSkShadow_Type,
     };
 
     typedef sk_sp<SkFlattenable> (*Factory)(SkReadBuffer&);

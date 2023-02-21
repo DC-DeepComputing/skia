@@ -1695,6 +1695,7 @@ skia_static_library("pathkit") {
     "src/base/SkThreadID.cpp",
     "src/base/SkUTF.cpp",
     "src/base/SkUtils.cpp",
+    "src/code/SkShadow.cpp",
     "src/core/SkAnalyticEdge.cpp",
     "src/core/SkContourMeasure.cpp",
     "src/core/SkCubicMap.cpp",
