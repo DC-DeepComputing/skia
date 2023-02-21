@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c96ddd65_b6ae0cd5",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-21T16:55:43Z",
+      "side": 1,
+      "message": "Right, I can adjust the name to `opposite_insets_intersect` to make that clearer.",
+      "parentUuid": "cf3faffc_970d7250",
+      "range": {
+        "startLine": 245,
+        "startChar": 12,
+        "endLine": 245,
+        "endChar": 28
+      },
+      "revId": "953a203109eb84f6102f9de93b6ecb7cccc47c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c8a6681_282576b7",
         "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
         "patchSetId": 7
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d8fe39e_eea91f15",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-21T16:55:43Z",
+      "side": 1,
+      "message": "`shape()` internally asserts that it\u0027s a shape, if that\u0027s ok?",
+      "parentUuid": "8c8a6681_282576b7",
+      "range": {
+        "startLine": 766,
+        "startChar": 58,
+        "endLine": 766,
+        "endChar": 86
+      },
+      "revId": "953a203109eb84f6102f9de93b6ecb7cccc47c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7d17709_7be40658",
         "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
         "patchSetId": 7
@@ -60,6 +108,30 @@
       "writtenOn": "2023-02-21T16:50:42Z",
       "side": 1,
       "message": "No other optimization for quad.isRect() needed here?",
+      "range": {
+        "startLine": 808,
+        "startChar": 24,
+        "endLine": 808,
+        "endChar": 35
+      },
+      "revId": "953a203109eb84f6102f9de93b6ecb7cccc47c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd13f6c6_2c7a05db",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-21T16:55:43Z",
+      "side": 1,
+      "message": "Nope, the main optimization that rects get over quads is that the AA inset isn\u0027t assumed to intersect so it can take advantage of the fill triangles that just set coverage to 1.0 in the fragment shader.\n\nThat said, in a follow-up CL that I\u0027m cleaning up, the fragment shader is optimized a bit so that when we only have to deal with outer edge distances (rects and quads), it lifts a lot of the math into the vertex shader.",
+      "parentUuid": "a7d17709_7be40658",
       "range": {
         "startLine": 808,
         "startChar": 24,
