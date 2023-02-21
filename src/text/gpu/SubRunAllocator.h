@@ -255,6 +255,16 @@ public:
         return reinterpret_cast<T*>(fAlloc.template allocateBytesFor<T>(n));
     }
 
+    template<typename T>
+    SkSpan<T> makePODSpan(SkSpan<const T> s) {
+        static_assert(HasNoDestructor<T>, "This is not POD. Use makeUniqueArray.");
+        if (s.empty()) {
+            return SkSpan<T>{};
+        }
+        T* buffer = reinterpret_cast<T*>(fAlloc.template allocateBytesFor<T>(s.size()));
+        memcpy(buffer, s.data(), s.size_bytes());
+    }
+
     template<typename T, typename Src, typename Map>
     SkSpan<T> makePODArray(const Src& src, Map map) {
         static_assert(HasNoDestructor<T>, "This is not POD. Use makeUniqueArray.");
