@@ -8,26 +8,32 @@
 #ifndef SkImageGenerator_DEFINED
 #define SkImageGenerator_DEFINED
 
-#include "include/core/SkBitmap.h"
-#include "include/core/SkColor.h"
+#include "include/core/SkData.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkYUVAPixmaps.h"
+#include "include/gpu/GrTypes.h"
+#include "include/private/base/SkAPI.h"
 
+#include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <optional>
 
 class GrRecordingContext;
 class GrSurfaceProxyView;
-class GrSamplerState;
-class SkBitmap;
-class SkData;
+class SkColorSpace;
 class SkMatrix;
 class SkPaint;
 class SkPicture;
-
+enum SkAlphaType : int;
 enum class GrImageTexGenPolicy : int;
+struct SkISize;
+
+namespace skgpu { enum class Mipmapped : bool; }
 
 class SK_API SkImageGenerator {
 public:

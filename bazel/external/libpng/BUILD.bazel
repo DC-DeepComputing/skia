@@ -12,7 +12,6 @@ config_setting(
 
 LIBPNG_SRCS = [
     "png.c",
-    "pngconf.h",
     "pngdebug.h",
     "pngerror.c",
     "pngget.c",
@@ -58,6 +57,7 @@ cc_library(
     srcs = LIBPNG_SRCS,
     hdrs = [
         "png.h",
+        "pngconf.h",
     ],
     copts = [
         "-Wno-unused-but-set-variable",

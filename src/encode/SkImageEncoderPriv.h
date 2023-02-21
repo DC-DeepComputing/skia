@@ -14,7 +14,7 @@
 
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS) || \
     defined(SK_BUILD_FOR_WIN) || defined(SK_ENABLE_NDK_IMAGES)
-#include "include/core/SkEncodedImageFormat.h"
+#include "include/codec/SkEncodedImageFormat.h"
 class SkWStream;
 #endif
 
@@ -36,13 +36,13 @@ static inline bool SkPixmapIsValid(const SkPixmap& src) {
     #define SkEncodeImageWithCG(...) false
 #endif
 
-#ifdef SK_BUILD_FOR_WIN
+#if defined(SK_BUILD_FOR_WIN)
     bool SkEncodeImageWithWIC(SkWStream*, const SkPixmap&, SkEncodedImageFormat, int quality);
 #else
     #define SkEncodeImageWithWIC(...) false
 #endif
 
-#ifdef SK_ENABLE_NDK_IMAGES
+#if defined(SK_ENABLE_NDK_IMAGES)
     bool SkEncodeImageWithNDK(SkWStream*, const SkPixmap&, SkEncodedImageFormat, int quality);
 #else
     #define SkEncodeImageWithNDK(...) false

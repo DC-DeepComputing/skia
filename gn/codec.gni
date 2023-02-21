@@ -12,6 +12,7 @@ _src = get_path_info("../src", "abspath")
 #  //src/codec:core_srcs
 skia_codec_core = [
   "$_src/codec/SkCodec.cpp",
+  "$_src/codec/SkCodecDecodeAll.cpp",
   "$_src/codec/SkCodecImageGenerator.cpp",
   "$_src/codec/SkCodecImageGenerator.h",
   "$_src/codec/SkCodecPriv.h",

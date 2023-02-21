@@ -1,15 +1,21 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2023 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#ifndef SkUtils_opts_DEFINED
-#define SkUtils_opts_DEFINED
+#ifndef Memset_opts_impl_DEFINED
+#define Memset_opts_impl_DEFINED
 
-#include <stdint.h>
+#if !defined(SK_OPTS_NS)
+#error "SK_OPTS_NS must be defined, e.g. to 'portable' or 'avx' typically using SkOpts_namespace.h"
+#endif
+
+#include "include/private/base/SkFeatures.h"
 #include "src/base/SkVx.h"
+
+#include <cstdint>
 
 namespace SK_OPTS_NS {
 
@@ -63,4 +69,4 @@ namespace SK_OPTS_NS {
 
 }  // namespace SK_OPTS_NS
 
-#endif//SkUtils_opts_DEFINED
+#endif //Memset_opts_DEFINED
