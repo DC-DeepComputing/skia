@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8ed637c_f2a87c95",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-21T21:22:55Z",
+      "side": 1,
+      "message": "nit: Should be followed by a comma. Took me a few reads to understanding this sentence.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 11
+      },
+      "revId": "85459a2ad2a571356d479683595275ea8db29fdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32d93910_ca450702",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-21T21:22:55Z",
+      "side": 1,
+      "message": "Thank you! I never liked this behavior...\n\nI\u0027m also running a canary to check for any failing Android-side tests.",
+      "revId": "85459a2ad2a571356d479683595275ea8db29fdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
