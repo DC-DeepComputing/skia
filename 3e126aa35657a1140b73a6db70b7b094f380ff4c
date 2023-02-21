@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "105fd853_f26aedaf",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-21T19:34:44Z",
+      "side": 1,
+      "message": "I\u0027m surprised this doesn\u0027t need to be \"makePODArray\u003cT\u003e\"",
+      "range": {
+        "startLine": 265,
+        "startChar": 26,
+        "endLine": 265,
+        "endChar": 38
+      },
+      "revId": "3e126aa35657a1140b73a6db70b7b094f380ff4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
