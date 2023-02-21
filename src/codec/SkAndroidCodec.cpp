@@ -40,44 +40,6 @@ static bool is_valid_sample_size(int sampleSize) {
     return sampleSize > 0;
 }
 
-/**
- *  Loads the gamut as a set of three points (triangle).
- */
-static void load_gamut(SkPoint rgb[], const skcms_Matrix3x3& xyz) {
-    // rx = rX / (rX + rY + rZ)
-    // ry = rY / (rX + rY + rZ)
-    // gx, gy, bx, and gy are calulcated similarly.
-    for (int rgbIdx = 0; rgbIdx < 3; rgbIdx++) {
-        float sum = xyz.vals[rgbIdx][0] + xyz.vals[rgbIdx][1] + xyz.vals[rgbIdx][2];
-        rgb[rgbIdx].fX = xyz.vals[rgbIdx][0] / sum;
-        rgb[rgbIdx].fY = xyz.vals[rgbIdx][1] / sum;
-    }
-}
-
-/**
- *  Calculates the area of the triangular gamut.
- */
-static float calculate_area(SkPoint abc[]) {
-    SkPoint a = abc[0];
-    SkPoint b = abc[1];
-    SkPoint c = abc[2];
-    return 0.5f * SkTAbs(a.fX*b.fY + b.fX*c.fY - a.fX*c.fY - c.fX*b.fY - b.fX*a.fY);
-}
-
-static constexpr float kSRGB_D50_GamutArea = 0.084f;
-
-static bool is_wide_gamut(const skcms_ICCProfile& profile) {
-    // Determine if the source image has a gamut that is wider than sRGB.  If so, we
-    // will use P3 as the output color space to avoid clipping the gamut.
-    if (profile.has_toXYZD50) {
-        SkPoint rgb[3];
-        load_gamut(rgb, profile.toXYZD50);
-        return calculate_area(rgb) > kSRGB_D50_GamutArea;
-    }
-
-    return false;
-}
-
 SkAndroidCodec::SkAndroidCodec(SkCodec* codec)
     : fInfo(codec->getInfo())
     , fCodec(codec)
@@ -207,8 +169,9 @@ sk_sp<SkColorSpace> SkAndroidCodec::computeOutputColorSpace(SkColorType outputCo
                     return encodedSpace;
                 }
 
-                if (is_wide_gamut(*encodedProfile)) {
-                    return SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kDisplayP3);
+                if (encodedProfile->has_toXYZD50) {
+                    return SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
+                                                 encodedProfile->toXYZD50);
                 }
             }
 
