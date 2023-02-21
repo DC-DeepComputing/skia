@@ -3707,7 +3707,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -3749,7 +3749,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -3791,7 +3791,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -3833,7 +3833,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -3875,7 +3875,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -3917,7 +3917,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -3959,7 +3959,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4001,7 +4001,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4043,7 +4043,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4085,7 +4085,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4127,7 +4127,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4169,7 +4169,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4211,7 +4211,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4253,7 +4253,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4304,7 +4304,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4355,7 +4355,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4391,7 +4391,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4427,7 +4427,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -4463,7 +4463,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -10327,7 +10327,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -12265,7 +12265,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -12366,7 +12366,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -12467,7 +12467,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -12568,7 +12568,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -12669,7 +12669,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -12770,7 +12770,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -12871,7 +12871,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -12972,7 +12972,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -13066,7 +13066,7 @@
         "docker_installed:true",
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -13156,7 +13156,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -13257,7 +13257,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -13358,7 +13358,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -13459,7 +13459,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -13560,7 +13560,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -13661,7 +13661,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -13762,7 +13762,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -24141,7 +24141,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -24260,7 +24260,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -24379,7 +24379,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -24498,7 +24498,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -24617,7 +24617,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -24736,7 +24736,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -24855,7 +24855,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -24974,7 +24974,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -26546,7 +26546,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -26575,7 +26575,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -26604,7 +26604,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -26726,7 +26726,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -26826,7 +26826,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -26939,7 +26939,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -27295,7 +27295,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -27399,7 +27399,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -31379,7 +31379,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -31477,7 +31477,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -31575,7 +31575,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -31673,7 +31673,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -31771,7 +31771,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -31869,7 +31869,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -32161,7 +32161,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -40252,7 +40252,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -47852,7 +47852,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -47957,7 +47957,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -48062,7 +48062,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -48165,7 +48165,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -48270,7 +48270,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -48375,7 +48375,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -48478,7 +48478,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -48581,7 +48581,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -48676,7 +48676,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -48781,7 +48781,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -48886,7 +48886,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -48991,7 +48991,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -49096,7 +49096,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -49201,7 +49201,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -49306,7 +49306,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -49411,7 +49411,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -49516,7 +49516,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -49621,7 +49621,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -49726,7 +49726,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -49831,7 +49831,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -49936,7 +49936,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -50041,7 +50041,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -50146,7 +50146,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -50667,7 +50667,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -50772,7 +50772,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -52069,7 +52069,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -52163,7 +52163,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -52257,7 +52257,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -52351,7 +52351,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Debian-10.3",
         "pool:Skia",
         "docker_installed:true"
@@ -69872,7 +69872,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -69970,7 +69970,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -70068,7 +70068,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -70166,7 +70166,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -70264,7 +70264,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -70362,7 +70362,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -70460,7 +70460,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -70558,7 +70558,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -70656,7 +70656,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -70754,7 +70754,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -70852,7 +70852,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -70950,7 +70950,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
@@ -71048,7 +71048,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
-        "machine_type:n1-standard-16",
+        "machine_type:n1-standard-32",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
