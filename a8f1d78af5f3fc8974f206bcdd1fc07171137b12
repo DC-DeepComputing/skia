@@ -144,6 +144,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28ed9ecf_81c83a06",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-21T17:14:17Z",
+      "side": 1,
+      "message": "\u003e (Maybe Gerrit lost some indentation over the years?)\n\nUgh - I think so. At one point, you could tell Gerrit to make a code block simply by indenting a block of text. Eventually, they supported the new markdown method of three ticks. I\u0027m guessing I wrote it the old way, and the latest version of Gerrit doesn\u0027t support it anymore.\n\nI\u0027ll try to step back a little to explain what I think should be going on.\n\nFor an `SkCodec` *not* owned by an `SkAndroidCodec`, `handleFrameIndex` may decode prior frames.\n\nThen we have the messy separation between `SkAndroidCodec` and `SkCodec`. `SkCodec` is owned by the former, but it (somewhat) doesn\u0027t know what the former is doing.\n\nWe want to decode prior frames using `SkAndroidCodec`, since it knows the size it wants to use. But that requires calling into its `SkCodec`, which *also* calls `handleFrameIndex` (inside `startIncrementalDecode` or `startScanlineDecode`). But the `SkAndroidCodec` should be the one decoding prior frames, so we want `SkCodec`\u0027s calls to be skipped (or, more precisely - short-circuited).\n\nWhen `SkAndroidCodec` calls `handleFrameIndex`, it always passes itself to the method. This means `fAndroidCodecHandlesFrameIndex` will be set to `true` (on subsequent calls this is redundant). \n\nWhen `SkCodec` calls `handleFrameIndex`, it never passes an `SkCodec`. So it checks whether `fAndroidCodecHandlesFrameIndex` is `true` - if so, it assumes it\u0027s been handled, so it returns `kSuccess`.\n\nBack to the stack traces:\n\n\u003e ```\n\u003e SkAndroidCodec\n\u003e getAndroidPixels\n\u003e   handleFrameIndex (androidCodec \u003d this SkAndroidCodec)\n\u003e     getAndroidPixels // possibly - to decode prior frame\n\u003e       handleFrameIndex (androidCodec \u003d this SkAndroidCodec again)\n\u003e         SkCodec-\u003egetPixels // How does this get called if androidCodec is non-null?\n\u003e ```\n\nAh, sorry - you\u0027re right - this is actually going to call `getAndroidPixels` again. But that is going to call into either `SkAndroidCodecAdapter::onGetAndroidPixels` or `SkSampledCodec::onGetAndroidPixels`. The former calls `SkCodec::getPixels` directly, and the latter will use either `startIncrementalDecode` or `startScanlineDecode`.\n\nI was probably subconsciously using `SkCodec-\u003egetPixels` as a shorthand for \"decode the pixels via `SkCodec`\". Whichever of the three `SkCodec` methods we call to get the pixels, we\u0027ll call `handleFrameIndex` again, this time with a null `SkAndroidCodec`. And in that case, we short-circuit and return `kSuccess`.\n\n\n           \n\u003e From what I can tell, the call flow should be something like\n\u003e \n\u003e ```\n\u003e SkAndroidCodec\n\u003e getAndroidPixels\n\u003e   handleFrameIndex (androidCodec \u003d this SkAndroidCodec)\n\u003e     getAndroidPixels // possibly - to decode prior frame\n\u003e       handleFrameIndex (androidCodec \u003d this SkAndroidCodec again)\n\u003e         return kSuccess bc fAndroidCodecHandlesFrameIndex \u003d true\n\u003e ```\n\u003e Right?\n\nI\u0027ve cut your stack trace short where it doesn\u0027t match what I expect. Even though `fAndroidCodecHandlesFrameIndex` is true, we never reach that check, since `androidCodec` is *not* null.\n\n- All calls to `handleFrameIndex` by `SkAndroidCodec` -\u003e `androidCodec` is non-null -\u003e set `fAndroidCodecHandlesFrameIndex` to `true` -\u003e `SkAndroidCodec::getAndroidPixels`\n- All calls to `handleFrameIndex` by `SkCodec` (internal to calls to `getAndroidPixels`) -\u003e `androidCodec` is null -\u003e `fAndroidCodecHandlesFrameIndex` was already set to `true` -\u003e short circuit and return `kSuccess`\n\nDoes that make sense?",
+      "parentUuid": "a576d62f_7821f8da",
+      "range": {
+        "startLine": 279,
+        "startChar": 6,
+        "endLine": 279,
+        "endChar": 10
+      },
+      "revId": "a8f1d78af5f3fc8974f206bcdd1fc07171137b12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59fb9314_eb0a3c13",
