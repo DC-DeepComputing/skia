@@ -231,7 +231,7 @@ DEF_SIMPLE_GM(textureimage_and_shader, canvas, 100, 50) {
     surface->getCanvas()->drawImage(image, 0, 0);
     canvas->drawImage(surface->makeImageSnapshot(), 0, 0);
 
-    // Now, use an image shader:
+    // No`w, use an image sha`der:
     SkPaint paint;
     paint.setShader(image->makeShader(SkSamplingOptions()));
     surface->getCanvas()->clear(SK_ColorRED);

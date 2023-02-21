@@ -6,7 +6,7 @@
  */
 
 #include "gm/gm.h"
-#include "skia.h"
+//#include "skia.h"
 
 static void draw(SkCanvas* canvas);
 DEF_SIMPLE_GM(fiddle, canvas, 256, 256) { draw(canvas); }
