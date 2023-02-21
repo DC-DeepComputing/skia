@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9749720_b80eee09",
+        "filename": "resources/sksl/shared/PrefixExpressions.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-21T15:42:34Z",
+      "side": 1,
+      "message": "This isn\u0027t one of the presupplied uniforms.",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 16
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0536957e_f52ec9a6",
+        "filename": "resources/sksl/shared/PrefixExpressions.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-21T15:42:34Z",
+      "side": 1,
+      "message": "This will make `ok` false; this isn\u0027t correct, but we never check `ok` again.",
+      "range": {
+        "startLine": 6,
+        "startChar": 9,
+        "endLine": 6,
+        "endChar": 38
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d85506e4_ba3a9768",
+        "filename": "resources/sksl/shared/PrefixExpressions.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-21T15:42:34Z",
+      "side": 1,
+      "message": "Shadows the global-scope uniform",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32ae7bd7_d9ede099",
+        "filename": "resources/sksl/shared/PrefixExpressions.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-21T15:42:34Z",
+      "side": 1,
+      "message": "We should somehow test these ops for correctness and update `ok`",
+      "range": {
+        "startLine": 11,
+        "startChar": 4,
+        "endLine": 11,
+        "endChar": 8
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0eeabf5_734fd264",
+        "filename": "resources/sksl/shared/PrefixExpressions.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-21T15:42:34Z",
+      "side": 1,
+      "message": "Way too hard to reason about (what\u0027s mask.x going to be here?), fold the check into `ok` and then return `ok ? colorGreen : colorRed`",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 52
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
