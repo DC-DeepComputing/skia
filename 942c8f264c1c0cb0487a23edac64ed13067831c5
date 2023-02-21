@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88fad08e_aab1851e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-21T18:18:24Z",
+      "side": 1,
+      "message": "lgtm % assertion around not escaping a parent LValue\u0027s slot range.",
+      "revId": "942c8f264c1c0cb0487a23edac64ed13067831c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c5b2eff_6079b919",
@@ -38,6 +55,30 @@
       "side": 1,
       "message": "We should never break out of the parent\u0027s slot range; we should only winnow down an existing range. I can add asserts for this.",
       "parentUuid": "5c5b2eff_6079b919",
+      "range": {
+        "startLine": 642,
+        "startChar": 8,
+        "endLine": 642,
+        "endChar": 31
+      },
+      "revId": "942c8f264c1c0cb0487a23edac64ed13067831c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffe593d3_b95f827c",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-21T18:18:24Z",
+      "side": 1,
+      "message": "Sounds good, I think adding a debug assertion for this is reasonable.",
+      "parentUuid": "06eeace3_964771eb",
       "range": {
         "startLine": 642,
         "startChar": 8,
