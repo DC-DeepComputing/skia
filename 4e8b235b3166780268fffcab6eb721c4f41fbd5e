@@ -16,6 +16,23 @@
       "message": "😍😍 Amazing, I\u0027m impressed that this is done in so few lines of code. Looks great for COLRv1 glyphs in PDFs. Thanks so much for doing this one.",
       "revId": "4e8b235b3166780268fffcab6eb721c4f41fbd5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "903c2d78_b37ba778",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-21T18:55:16Z",
+      "side": 1,
+      "message": "So two notes about this.\n\nCurrent pdf.js does not support function shaders [0]. They do have a full interpreter which even has some optimizations, but it isn\u0027t hooked into the shader code. Skia is using these a lot for gradients which PDF otherwise doesn\u0027t support.\n\nPreview appears to be getting some transform or clip box incorrect, and doesn\u0027t appear to be drawing or filling all of the contours in some cases. Will need to investigate that a lot more.\n\n[0] https://github.com/mozilla/pdf.js/issues/5046",
+      "revId": "4e8b235b3166780268fffcab6eb721c4f41fbd5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
