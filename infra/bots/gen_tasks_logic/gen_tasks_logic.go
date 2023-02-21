@@ -24,6 +24,7 @@ import (
 
 	"go.skia.org/infra/go/cas/rbe"
 	"go.skia.org/infra/go/cipd"
+	"go.skia.org/infra/go/sklog"
 	"go.skia.org/infra/task_scheduler/go/specs"
 )
 
@@ -681,6 +682,42 @@ func (b *taskBuilder) internalHardwareLabel() *int {
 	return nil
 }
 
+const (
+	minMediumMachineID = 0
+	maxMediumMachineID = 29
+)
+
+var nextMediumMachineID = minMediumMachineID
+var mediumMachineIDsByTaskName map[string]string
+
+func getNextMediumMachineIDForTaskName(taskName string) string {
+	if taskName == "" {
+		sklog.Fatal("Task name cannot be empty.")
+	}
+
+	// Some tasks are defined multiple times. If a task is redefined with different dimensions,
+	// gen_tasks_logic.go panics. We avoid this by always returning the same machine ID for a given
+	// task name.
+	//
+	// https://skia.googlesource.com/buildbot/+/93135c93218c19e7f8899105f1074f79d6c00fd9/task_scheduler/go/specs/helpers.go#138
+	if mediumMachineIDsByTaskName == nil {
+		mediumMachineIDsByTaskName = map[string]string{}
+	}
+	if id, ok := mediumMachineIDsByTaskName[taskName]; ok {
+		return id
+	}
+
+	id := fmt.Sprintf("skia-e-gce-%03d", nextMediumMachineID)
+	if nextMediumMachineID == maxMediumMachineID {
+		nextMediumMachineID = minMediumMachineID
+	} else {
+		nextMediumMachineID++
+	}
+
+	mediumMachineIDsByTaskName[taskName] = id
+	return id
+}
+
 // linuxGceDimensions adds the Swarming bot dimensions for Linux GCE instances.
 func (b *taskBuilder) linuxGceDimensions(machineType string) {
 	b.dimension(
@@ -692,6 +729,9 @@ func (b *taskBuilder) linuxGceDimensions(machineType string) {
 		fmt.Sprintf("os:%s", DEFAULT_OS_LINUX_GCE),
 		fmt.Sprintf("pool:%s", b.cfg.Pool),
 	)
+	if machineType == MACHINE_TYPE_MEDIUM {
+		b.dimension("id:" + getNextMediumMachineIDForTaskName(b.Name))
+	}
 }
 
 // codesizeTaskNameRegexp captures the "CodeSize-<binary name>-" prefix of a CodeSize task name.
@@ -946,6 +986,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			}
 			if b.model("GCE") && d["cpu"] == "x86-64-Haswell_GCE" {
 				d["machine_type"] = MACHINE_TYPE_MEDIUM
+				d["id"] = getNextMediumMachineIDForTaskName(b.Name)
 			}
 		} else {
 			// It's a GPU job.

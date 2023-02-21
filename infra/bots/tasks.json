@@ -3709,7 +3709,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-001"
       ],
       "env_prefixes": {
         "PATH": [
@@ -3751,7 +3752,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-000"
       ],
       "env_prefixes": {
         "PATH": [
@@ -3793,7 +3795,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-003"
       ],
       "env_prefixes": {
         "PATH": [
@@ -3835,7 +3838,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-004"
       ],
       "env_prefixes": {
         "PATH": [
@@ -3877,7 +3881,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-005"
       ],
       "env_prefixes": {
         "PATH": [
@@ -3919,7 +3924,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-002"
       ],
       "env_prefixes": {
         "PATH": [
@@ -3961,7 +3967,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-006"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4003,7 +4010,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-008"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4045,7 +4053,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-007"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4087,7 +4096,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-010"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4129,7 +4139,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-011"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4171,7 +4182,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-009"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4213,7 +4225,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-012"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4255,7 +4268,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-013"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4306,7 +4320,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-014"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4357,7 +4372,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-016"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4393,7 +4409,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-017"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4429,7 +4446,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-018"
       ],
       "env_prefixes": {
         "PATH": [
@@ -4465,7 +4483,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-019"
       ],
       "env_prefixes": {
         "PATH": [
@@ -10330,6 +10349,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-027",
         "docker_installed:true"
       ],
       "environment": {
@@ -12268,6 +12288,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-028",
         "docker_installed:true"
       ],
       "environment": {
@@ -12369,6 +12390,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-029",
         "docker_installed:true"
       ],
       "environment": {
@@ -12470,6 +12492,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-000",
         "docker_installed:true"
       ],
       "environment": {
@@ -12571,6 +12594,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-001",
         "docker_installed:true"
       ],
       "environment": {
@@ -12672,6 +12696,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-002",
         "docker_installed:true"
       ],
       "environment": {
@@ -12773,6 +12798,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-003",
         "docker_installed:true"
       ],
       "environment": {
@@ -12874,6 +12900,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-004",
         "docker_installed:true"
       ],
       "environment": {
@@ -12975,6 +13002,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-005",
         "docker_installed:true"
       ],
       "environment": {
@@ -13068,7 +13096,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-006"
       ],
       "environment": {
         "VPYTHON_LOG_TRACE": "1"
@@ -13159,6 +13188,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-020",
         "docker_installed:true"
       ],
       "environment": {
@@ -13260,6 +13290,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-021",
         "docker_installed:true"
       ],
       "environment": {
@@ -13361,6 +13392,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-022",
         "docker_installed:true"
       ],
       "environment": {
@@ -13462,6 +13494,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-023",
         "docker_installed:true"
       ],
       "environment": {
@@ -13563,6 +13596,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-024",
         "docker_installed:true"
       ],
       "environment": {
@@ -13664,6 +13698,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-025",
         "docker_installed:true"
       ],
       "environment": {
@@ -13765,6 +13800,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-026",
         "docker_installed:true"
       ],
       "environment": {
@@ -24144,6 +24180,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-007",
         "docker_installed:true"
       ],
       "environment": {
@@ -24263,6 +24300,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-008",
         "docker_installed:true"
       ],
       "environment": {
@@ -24382,6 +24420,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-009",
         "docker_installed:true"
       ],
       "environment": {
@@ -24501,6 +24540,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-010",
         "docker_installed:true"
       ],
       "environment": {
@@ -24620,6 +24660,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-011",
         "docker_installed:true"
       ],
       "environment": {
@@ -24739,6 +24780,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-012",
         "docker_installed:true"
       ],
       "environment": {
@@ -24858,6 +24900,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-013",
         "docker_installed:true"
       ],
       "environment": {
@@ -24977,6 +25020,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-014",
         "docker_installed:true"
       ],
       "environment": {
@@ -26548,7 +26592,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-015"
       ],
       "env_prefixes": {
         "PATH": [
@@ -26577,7 +26622,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-015"
       ],
       "env_prefixes": {
         "PATH": [
@@ -26606,7 +26652,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-016"
       ],
       "env_prefixes": {
         "PATH": [
@@ -26728,7 +26775,8 @@
         "gpu:none",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-017"
       ],
       "env_prefixes": {
         "PATH": [
@@ -26829,6 +26877,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-018",
         "docker_installed:true"
       ],
       "environment": {
@@ -26942,6 +26991,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-019",
         "docker_installed:true"
       ],
       "environment": {
@@ -27298,6 +27348,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-020",
         "docker_installed:true"
       ],
       "environment": {
@@ -27402,6 +27453,7 @@
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
+        "id:skia-e-gce-021",
         "docker_installed:true"
       ],
       "environment": {
@@ -31379,6 +31431,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-022",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -31477,6 +31530,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-023",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -31575,6 +31629,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-024",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -31673,6 +31728,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-025",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -31771,6 +31827,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-026",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -31869,6 +31926,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-027",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -32161,6 +32219,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-028",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -40252,6 +40311,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-029",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -47852,6 +47912,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-000",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -47957,6 +48018,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-001",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -48062,6 +48124,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-003",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -48165,6 +48228,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-004",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -48270,6 +48334,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-005",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -48375,6 +48440,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-006",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -48478,6 +48544,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-007",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -48581,6 +48648,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-008",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -48676,6 +48744,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-002",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -48781,6 +48850,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-009",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -48886,6 +48956,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-010",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -48991,6 +49062,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-011",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -49096,6 +49168,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-012",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -49201,6 +49274,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-013",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -49306,6 +49380,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-014",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -49411,6 +49486,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-015",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -49516,6 +49592,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-016",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -49621,6 +49698,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-017",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -49726,6 +49804,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-018",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -49831,6 +49910,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-019",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -49936,6 +50016,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-020",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -50041,6 +50122,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-021",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -50146,6 +50228,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-022",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -50667,6 +50750,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-023",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -50772,6 +50856,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-024",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
@@ -52069,6 +52154,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-025",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
@@ -52163,6 +52249,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-026",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
@@ -52257,6 +52344,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-027",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
@@ -52351,6 +52439,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-028",
         "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia",
@@ -69872,6 +69961,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-029",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -69970,6 +70060,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-000",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -70068,6 +70159,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-002",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -70166,6 +70258,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-003",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -70264,6 +70357,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-001",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -70362,6 +70456,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-004",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -70460,6 +70555,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-005",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -70558,6 +70654,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-006",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -70656,6 +70753,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-007",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -70754,6 +70852,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-008",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -70852,6 +70951,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-009",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -70950,6 +71050,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-010",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
@@ -71048,6 +71149,7 @@
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
+        "id:skia-e-gce-011",
         "machine_type:n1-standard-16",
         "os:Windows-Server-17763",
         "pool:Skia"
