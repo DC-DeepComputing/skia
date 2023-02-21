@@ -114,6 +114,75 @@
       },
       "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb7ce365_a540ffc1",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1034,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-21T15:51:58Z",
+      "side": 1,
+      "message": "I don\u0027t know WGSL that well--is `(x +\u003d 1)` not usable as an expression that returns a value?",
+      "range": {
+        "startLine": 1032,
+        "startChar": 12,
+        "endLine": 1034,
+        "endChar": 91
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7eed5dd_ea3d1b4e",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-21T15:51:58Z",
+      "side": 1,
+      "message": "I don\u0027t really like using assertions in this way; an assertion should state that \"X should not ever occur\" but right now this is not just a condition that _might_ occur, it\u0027s a very common condition that occurs in many programs. Might make more sense to generate an error here; we don\u0027t love errors in the backend, but I think it\u0027s still more honest.",
+      "range": {
+        "startLine": 1040,
+        "startChar": 0,
+        "endLine": 1041,
+        "endChar": 54
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be5f226e_dbe67926",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1063,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-21T15:51:58Z",
+      "side": 1,
+      "message": "I _think_ this is safe as-is, but it might be safest to rewrite as\n\n    if (needsNegation) {\n        this-\u003ewrite(\"-1.0 * \");\n        this-\u003ewriteExpression(*p.operand(), Precedence::kMultiplicative);\n    } else {\n        this-\u003ewrite(p.getOperator().tightOperatorName());\n        this-\u003ewriteExpression(*p.operand(), Precedence::kPrefix);\n    }",
+      "range": {
+        "startLine": 1063,
+        "startChar": 4,
+        "endLine": 1063,
+        "endChar": 61
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
