@@ -22,6 +22,30 @@
       },
       "revId": "3e126aa35657a1140b73a6db70b7b094f380ff4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa4612f0_d4acfa46",
+        "filename": "src/text/gpu/SubRunAllocator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-21T19:45:32Z",
+      "side": 1,
+      "message": "It does. Added.",
+      "parentUuid": "105fd853_f26aedaf",
+      "range": {
+        "startLine": 265,
+        "startChar": 26,
+        "endLine": 265,
+        "endChar": 38
+      },
+      "revId": "3e126aa35657a1140b73a6db70b7b094f380ff4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
