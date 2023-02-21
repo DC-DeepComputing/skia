@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d95f0b1a_aff5daba",
+        "filename": "src/gpu/graphite/CommandTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-21T21:12:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4e6710c1_b75299d9",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 28
+      },
+      "revId": "9823d26407b5487dc04f1dca637b3e2e2c867645",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45e32798_4f558553",
