@@ -361,7 +361,8 @@ SkISize SkAndroidCodec::getSampledSubsetDimensions(int sampleSize, const SkIRect
 }
 
 SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& requestInfo,
-        void* requestPixels, size_t requestRowBytes, const AndroidOptions* options) {
+        void* requestPixels, size_t requestRowBytes, const AndroidOptions* options,
+        bool shouldHandleFrameIndex) {
     if (!requestPixels) {
         return SkCodec::kInvalidParameters;
     }
@@ -389,9 +390,20 @@ SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& requestInfo,
         }
     }
 
-    if (auto result = fCodec->handleFrameIndex(requestInfo, requestPixels, requestRowBytes,
-            *options, this); result != SkCodec::kSuccess) {
-        return result;
+    if (shouldHandleFrameIndex) {
+        auto getPixelsFn = [&](const SkImageInfo& info, void* pixels, size_t rowBytes,
+                               const SkCodec::Options& opts, int requiredFrame
+                               ) -> SkCodec::Result {
+            SkAndroidCodec::AndroidOptions prevFrameOptions(
+                            reinterpret_cast<const SkAndroidCodec::AndroidOptions&>(opts));
+            prevFrameOptions.fFrameIndex = requiredFrame;
+            return this->getAndroidPixels(info, pixels, rowBytes, &prevFrameOptions, false);
+        };
+
+        if (auto result = fCodec->handleFrameIndex(requestInfo, requestPixels, requestRowBytes,
+                *options, getPixelsFn); result != SkCodec::kSuccess) {
+            return result;
+        }
     }
 
     return this->onGetAndroidPixels(requestInfo, requestPixels, requestRowBytes, *options);
@@ -399,7 +411,12 @@ SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& requestInfo,
 
 SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& info, void* pixels,
         size_t rowBytes) {
-    return this->getAndroidPixels(info, pixels, rowBytes, nullptr);
+    return this->getAndroidPixels(info, pixels, rowBytes, nullptr, true);
+}
+
+SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& info, void* pixels,
+        size_t rowBytes, const AndroidOptions* options) {
+    return this->getAndroidPixels(info, pixels, rowBytes, options, true);
 }
 
 bool SkAndroidCodec::getAndroidGainmap(SkGainmapInfo* info,

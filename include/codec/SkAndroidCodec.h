@@ -293,6 +293,9 @@ protected:
             size_t rowBytes, const AndroidOptions& options) = 0;
 
 private:
+    SkCodec::Result getAndroidPixels(const SkImageInfo& info, void* pixels, size_t rowBytes,
+            const AndroidOptions* options, bool shouldHandleFrameIndex);
+
     const SkImageInfo               fInfo;
     std::unique_ptr<SkCodec>        fCodec;
 };
