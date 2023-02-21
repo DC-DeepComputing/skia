@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d989237_1fc55d3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-21T17:41:40Z",
+      "side": 1,
+      "message": "CanvasKit removal LGTM, small nit on Bazel/GN stuff",
+      "revId": "fd10676b1f9cbee4640890c9461d59737f8006ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35d51f53_ae302139",
+        "filename": "modules/skunicode/src/BUILD.bazel",
+        "patchSetId": 19
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-21T17:41:40Z",
+      "side": 1,
+      "message": "You could just list the bidi files in each filegroup, or if you don\u0027t want to list them twice, make a ICU_BIDI_SRCS \u003d [ \"SkUnicode_icu_bidi.cpp\", ...] and add that file list to both filegroups. Then you don\u0027t have to make another .gni file list and all that.\n\nAlso, please run `buildifier` on this file to format it after edits. \nhttps://github.com/bazelbuild/buildtools/releases/tag/6.0.1",
+      "range": {
+        "startLine": 43,
+        "startChar": 10,
+        "endLine": 43,
+        "endChar": 23
+      },
+      "revId": "fd10676b1f9cbee4640890c9461d59737f8006ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
