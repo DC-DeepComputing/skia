@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c531c795_128a4212",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2023-02-21T17:35:04Z",
+      "side": 1,
+      "message": "Can we abandon this? (so that we can delete the next-release branch)",
+      "revId": "e9c20d072ccabe8d12b5ebd2c08f8973c3ad7196",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
