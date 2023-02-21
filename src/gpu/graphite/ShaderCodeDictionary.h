@@ -161,7 +161,8 @@ public:
                        const RenderStep* step,
                        const bool useStorageBuffers,
                        const bool defineLocalCoordsVarying,
-                       int* numTexturesAndSamplersUsed) const;
+                       int* numTexturesAndSamplersUsed,
+                       std::string swizzle) const; // TODO: take in enum instead of raw string
 
 private:
     std::vector<PaintParamsKey::BlockReader> fBlockReaders;
