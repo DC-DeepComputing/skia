@@ -692,6 +692,16 @@ public:
     }
 };
 
+class SliceableSwizzleLValue final : public UnownedLValueSlice {
+public:
+    explicit SliceableSwizzleLValue(std::unique_ptr<LValue> p, int initialSlot, int numSlots)
+            : UnownedLValueSlice(p.release(), initialSlot, numSlots) {}
+
+    ~SliceableSwizzleLValue() override {
+        delete fParent;
+    }
+};
+
 void SlotManager::addSlotDebugInfoForGroup(const std::string& varName,
                                            const Type& type,
                                            Position pos,
@@ -837,6 +847,18 @@ SlotRange SlotManager::getFunctionSlots(const IRNode& callSite, const FunctionDe
     return range;
 }
 
+static bool is_sliceable_swizzle(SkSpan<const int8_t> components) {
+    // Determine if the swizzle rearranges its elements, or if it's a simple subset of its elements.
+    // (A simple subset would be a sequential non-repeating range of components, like `.xyz` or
+    // `.yzw` or `.z`, but not `.xx` or `.xz`, which can be accessed as a slice of the variable.)
+    for (size_t index = 1; index < components.size(); ++index) {
+        if (components[index] != int8_t(components[0] + index)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 std::unique_ptr<LValue> Generator::makeLValue(const Expression& e, bool allowScratch) {
     if (e.is<VariableReference>()) {
         return std::make_unique<VariableLValue>(e.as<VariableReference>().variable());
@@ -845,7 +867,13 @@ std::unique_ptr<LValue> Generator::makeLValue(const Expression& e, bool allowScr
         const Swizzle& swizzleExpr = e.as<Swizzle>();
         if (std::unique_ptr<LValue> base = this->makeLValue(*swizzleExpr.base(),
                                                             allowScratch)) {
-            return std::make_unique<SwizzleLValue>(std::move(base), swizzleExpr.components());
+            const ComponentArray& components = swizzleExpr.components();
+            if (is_sliceable_swizzle(components)) {
+                return std::make_unique<SliceableSwizzleLValue>(std::move(base), components[0],
+                                                                components.size());
+            } else {
+                return std::make_unique<SwizzleLValue>(std::move(base), components);
+            }
         }
         return nullptr;
     }
@@ -2697,17 +2725,8 @@ bool Generator::pushPrefixExpression(Operator op, const Expression& expr) {
 bool Generator::pushSwizzle(const Swizzle& s) {
     SkASSERT(!s.components().empty() && s.components().size() <= 4);
 
-    // Determine if the swizzle rearranges its elements, or if it's a simple subset of its elements.
-    // (A simple subset would be a sequential non-repeating range of components, like `.xyz` or
-    // `.yzw` or `.z`, but not `.xx` or `.xz`.)
-    bool isSimpleSubset = true;
-    for (int index = 1; index < s.components().size(); ++index) {
-        if (s.components()[index] != s.components()[0] + index) {
-            isSimpleSubset = false;
-            break;
-        }
-    }
     // If this is a simple subset of a variable's slots...
+    bool isSimpleSubset = is_sliceable_swizzle(s.components());
     if (isSimpleSubset && s.base()->is<VariableReference>()) {
         // ... we can just push part of the variable directly onto the stack, rather than pushing
         // the whole expression and then immediately cutting it down. (Either way works, but this
