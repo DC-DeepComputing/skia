@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef9f6289_33819144",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-21T21:40:53Z",
+      "side": 1,
+      "message": "That\u0027s true, they\u0027re effectively identical now. I\u0027ll do that.",
+      "parentUuid": "5f5554ee_79de3d13",
+      "range": {
+        "startLine": 695,
+        "startChar": 6,
+        "endLine": 695,
+        "endChar": 28
+      },
+      "revId": "c6a46bf909e8d7e5a56ce50dd3aeaafd8810baf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f99f44f_54bf4e0e",
         "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
         "patchSetId": 2
