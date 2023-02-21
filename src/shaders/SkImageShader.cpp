@@ -26,30 +26,10 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "src/gpu/graphite/ImageUtils.h"
-#include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
-#include "src/gpu/graphite/ReadWriteSwizzle.h"
 #include "src/gpu/graphite/TextureProxyView.h"
-
-
-skgpu::graphite::ReadSwizzle SkImageShader::swizzleClassToReadEnum(const skgpu::Swizzle& swizzle) const {
-    skgpu::graphite::ReadSwizzle readSwizzle = skgpu::graphite::ReadSwizzle::kRGBA;
-    if (swizzle == skgpu::Swizzle()) {
-    } else if (swizzle == skgpu::Swizzle::RGB1()) {
-        readSwizzle = skgpu::graphite::ReadSwizzle::kRGB1;
-    } else if (swizzle == skgpu::Swizzle("000r")) {
-        readSwizzle = skgpu::graphite::ReadSwizzle::k000R;
-    } else if (swizzle == skgpu::Swizzle("rrr1")) {
-        readSwizzle = skgpu::graphite::ReadSwizzle::kRRR1;
-    } else if (swizzle == skgpu::Swizzle::BGRA()) {
-        readSwizzle = skgpu::graphite::ReadSwizzle::kBGRA;
-    } else {
-        SkDebugf("Encountered unsupported read swizzle. Defaulting to RGBA.");
-    }
-    return readSwizzle;
-}
 #endif
 
 SkM44 SkImageShader::CubicResamplerMatrix(float B, float C) {
@@ -412,11 +392,7 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
                              skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;
 
-    auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),
-                                                                           fImage.get(),
-                                                                           fSampling);
-    ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset,
-                                        ReadSwizzle::kRGBA);
+    ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset);
 
     if (!fRaw) {
         imgData.fSteps = SkColorSpaceXformSteps(fImage->colorSpace(),
@@ -427,6 +403,10 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
         // TODO: add alpha-only image handling here
     }
 
+    auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),
+                                                                           fImage.get(),
+                                                                           fSampling);
+
     if (imageToDraw) {
         imgData.fSampling = newSampling;
         skgpu::graphite::Mipmapped mipmapped = (newSampling.mipmap != SkMipmapMode::kNone)
@@ -435,7 +415,6 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
 
         auto [view, _] = as_IB(imageToDraw)->asView(keyContext.recorder(), mipmapped);
         imgData.fTextureProxy = view.refProxy();
-        imgData.fReadSwizzle = this->swizzleClassToReadEnum(view.swizzle());
     }
 
     ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);

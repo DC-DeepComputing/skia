@@ -28,6 +28,9 @@
 #include "src/gpu/graphite/mtl/MtlUtilsPriv.h"
 #include "src/sksl/SkSLProgramSettings.h"
 
+#include "include/core/SkColorType.h"
+#include "src/gpu/Swizzle.h"
+
 #import <Metal/Metal.h>
 
 namespace skgpu::graphite {
@@ -114,12 +117,18 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
     bool useShadingSsboIndex =
             fSharedContext->caps()->storageBufferPreferred() && step->performsShading();
 
+    // SkColorType
+    // TextureInfo: render pass description -> attachment -> textureInfo
+    // TODO: Which AttachmentDesc member should I reference to get TextureInfo?
+    // SkColorType test = kRGBA_8888_SkColorType;
+    // todo: ignore color type for now arg, delete ltr
     const FragSkSLInfo fsSkSLInfo = GetSkSLFS(fSharedContext->caps()->resourceBindingRequirements(),
                                               fSharedContext->shaderCodeDictionary(),
                                               runtimeDict,
                                               step,
                                               pipelineDesc.paintParamsID(),
-                                              useShadingSsboIndex);
+                                              useShadingSsboIndex,
+                                              renderPassDesc.fWriteSwizzle.asString().data());
     const std::string& fsSkSL = fsSkSLInfo.fSkSL;
     const BlendInfo& blendInfo = fsSkSLInfo.fBlendInfo;
     const bool localCoordsNeeded = fsSkSLInfo.fRequiresLocalCoords;
