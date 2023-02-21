@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99a7fa5f_16d8e76c",
+        "filename": "modules/skunicode/src/SkUnicode_icu.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-02-21T21:37:01Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "51e6399a_f523fd7c",
+      "revId": "7cac214d0f4b8e8e707a2a12aab8543ea4e0bdf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f76d2ee_5d0c8d69",
@@ -49,6 +67,24 @@
       "writtenOn": "2023-02-10T14:52:14Z",
       "side": 0,
       "message": "I kept reorderVisual exactly for the same reason - we need it emitted for Android.",
+      "revId": "7cac214d0f4b8e8e707a2a12aab8543ea4e0bdf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "962b5691_69b335cb",
+        "filename": "modules/skunicode/src/SkUnicode_icu.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-02-21T21:37:01Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "6f76d2ee_5d0c8d69",
       "revId": "7cac214d0f4b8e8e707a2a12aab8543ea4e0bdf1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
