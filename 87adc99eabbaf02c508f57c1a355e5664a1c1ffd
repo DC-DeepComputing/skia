@@ -22,6 +22,30 @@
       },
       "revId": "87adc99eabbaf02c508f57c1a355e5664a1c1ffd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "268e1a1f_8e57aa87",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-21T23:16:34Z",
+      "side": 1,
+      "message": "Both work, but I guess CL is probably better\ngo/cr-vs-cl",
+      "parentUuid": "fc7f3e47_06f6669b",
+      "range": {
+        "startLine": 16,
+        "startChar": 10,
+        "endLine": 16,
+        "endChar": 12
+      },
+      "revId": "87adc99eabbaf02c508f57c1a355e5664a1c1ffd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
