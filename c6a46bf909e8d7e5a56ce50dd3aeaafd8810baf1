@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5f5554ee_79de3d13",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-21T21:39:56Z",
+      "side": 1,
+      "message": "Is there any value in having this and FieldLValue use the same subclass and just a `using` to give a more context specific name?\n\nHaving both of these delete fParent makes them effectively an OwnedLValueSlice, right?",
+      "range": {
+        "startLine": 695,
+        "startChar": 6,
+        "endLine": 695,
+        "endChar": 28
+      },
+      "revId": "c6a46bf909e8d7e5a56ce50dd3aeaafd8810baf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f99f44f_54bf4e0e",
         "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
         "patchSetId": 2
