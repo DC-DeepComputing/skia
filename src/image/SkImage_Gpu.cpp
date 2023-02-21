@@ -538,39 +538,6 @@ sk_sp<SkImage> SkImage::MakeFromAdoptedTexture(GrRecordingContext* rContext,
                                       kAdopt_GrWrapOwnership, nullptr);
 }
 
-sk_sp<SkImage> SkImage::MakeTextureFromCompressed(GrDirectContext* direct, sk_sp<SkData> data,
-                                                  int width, int height, CompressionType type,
-                                                  GrMipmapped mipmapped,
-                                                  GrProtected isProtected) {
-    if (!direct || !data) {
-        return nullptr;
-    }
-
-    GrBackendFormat beFormat = direct->compressedBackendFormat(type);
-    if (!beFormat.isValid()) {
-        sk_sp<SkImage> tmp = MakeRasterFromCompressed(std::move(data), width, height, type);
-        if (!tmp) {
-            return nullptr;
-        }
-        return tmp->makeTextureImage(direct, mipmapped);
-    }
-
-    GrProxyProvider* proxyProvider = direct->priv().proxyProvider();
-    sk_sp<GrTextureProxy> proxy = proxyProvider->createCompressedTextureProxy(
-            {width, height}, skgpu::Budgeted::kYes, mipmapped, isProtected, type, std::move(data));
-    if (!proxy) {
-        return nullptr;
-    }
-    GrSurfaceProxyView view(std::move(proxy));
-
-    SkColorType colorType = GrCompressionTypeToSkColorType(type);
-
-    return sk_make_sp<SkImage_Gpu>(sk_ref_sp(direct),
-                                   kNeedNewImageUniqueID,
-                                   std::move(view),
-                                   SkColorInfo(colorType, kOpaque_SkAlphaType, nullptr));
-}
-
 sk_sp<SkImage> SkImage::makeTextureImage(GrDirectContext* dContext,
                                          GrMipmapped mipmapped,
                                          skgpu::Budgeted budgeted) const {

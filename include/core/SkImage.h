@@ -210,45 +210,6 @@ public:
     static sk_sp<SkImage> MakeFromEncoded(sk_sp<SkData> encoded,
                                           std::optional<SkAlphaType> alphaType = std::nullopt);
 
-    /*
-     * Experimental:
-     *   Skia                | GL_COMPRESSED_*     | MTLPixelFormat*      | VK_FORMAT_*_BLOCK
-     *  --------------------------------------------------------------------------------------
-     *   kETC2_RGB8_UNORM    | ETC1_RGB8           | ETC2_RGB8 (iOS-only) | ETC2_R8G8B8_UNORM
-     *                       | RGB8_ETC2           |                      |
-     *  --------------------------------------------------------------------------------------
-     *   kBC1_RGB8_UNORM     | RGB_S3TC_DXT1_EXT   | N/A                  | BC1_RGB_UNORM
-     *  --------------------------------------------------------------------------------------
-     *   kBC1_RGBA8_UNORM    | RGBA_S3TC_DXT1_EXT  | BC1_RGBA (macOS-only)| BC1_RGBA_UNORM
-     */
-    enum class CompressionType {
-        kNone,
-        kETC2_RGB8_UNORM, // the same as ETC1
-
-        kBC1_RGB8_UNORM,
-        kBC1_RGBA8_UNORM,
-        kLast = kBC1_RGBA8_UNORM,
-    };
-
-    static constexpr int kCompressionTypeCount = static_cast<int>(CompressionType::kLast) + 1;
-
-    static const CompressionType kETC1_CompressionType = CompressionType::kETC2_RGB8_UNORM;
-
-    /** Creates a CPU-backed SkImage from compressed data.
-
-        This method will decompress the compressed data and create an image wrapping
-        it. Any mipmap levels present in the compressed data are discarded.
-
-        @param data     compressed data to store in SkImage
-        @param width    width of full SkImage
-        @param height   height of full SkImage
-        @param type     type of compression used
-        @return         created SkImage, or nullptr
-    */
-    static sk_sp<SkImage> MakeRasterFromCompressed(sk_sp<SkData> data,
-                                                   int width, int height,
-                                                   CompressionType type);
-
     enum class BitDepth {
         kU8,  //!< uses 8-bit unsigned int per color component
         kF16, //!< uses 16-bit float per color component
@@ -278,31 +239,6 @@ public:
                                           BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace);
 
 #if SK_SUPPORT_GPU
-        /** Creates a GPU-backed SkImage from compressed data.
-
-        This method will return an SkImage representing the compressed data.
-        If the GPU doesn't support the specified compression method, the data
-        will be decompressed and then wrapped in a GPU-backed image.
-
-        Note: one can query the supported compression formats via
-        GrRecordingContext::compressedBackendFormat.
-
-        @param context     GPU context
-        @param data        compressed data to store in SkImage
-        @param width       width of full SkImage
-        @param height      height of full SkImage
-        @param type        type of compression used
-        @param mipmapped   does 'data' contain data for all the mipmap levels?
-        @param isProtected do the contents of 'data' require DRM protection (on Vulkan)?
-        @return            created SkImage, or nullptr
-    */
-    static sk_sp<SkImage> MakeTextureFromCompressed(GrDirectContext* direct,
-                                                    sk_sp<SkData> data,
-                                                    int width, int height,
-                                                    CompressionType type,
-                                                    GrMipmapped mipmapped = GrMipmapped::kNo,
-                                                    GrProtected isProtected = GrProtected::kNo);
-
     /** User function called when supplied texture may be deleted.
     */
     typedef void (*TextureReleaseProc)(ReleaseContext releaseContext);
