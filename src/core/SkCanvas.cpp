@@ -33,6 +33,7 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
+#include "include/effects/SkImageFilters.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkSafe32.h"
 #include "include/private/base/SkSpan_impl.h"
@@ -1143,9 +1144,10 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec, SaveLayerStrategy stra
     restorePaint.setAntiAlias(true);
 
     bool optimizedCFAffectsTransparent;
-    const SkImageFilter* filter = optimize_layer_filter(
-            rec.fPaint ? rec.fPaint->getImageFilter() : nullptr, &restorePaint,
-            &optimizedCFAffectsTransparent);
+    const SkImageFilter* filter = rec.fPaint ? rec.fPaint->getImageFilter() : nullptr;
+    if (!restorePaint.getShadow()) {
+        filter = optimize_layer_filter(filter, &restorePaint, &optimizedCFAffectsTransparent);
+    }
 
 #if !defined(SK_LEGACY_LAYER_BOUNDS_EXPANSION)
     SkASSERT(!optimizedCFAffectsTransparent); // shouldn't be needed by new code
@@ -1325,13 +1327,36 @@ void SkCanvas::internalRestore() {
         // internalSaveLayer and internalRestore.
         if (this->predrawNotify()) {
             SkBaseDevice* dstDev = this->topDevice();
+
+            SkShadow* shadow = layer->fPaint.getShadow();
+            sk_sp<SkImageFilter> shadow_filter;
+            if (shadow) {
+                shadow_filter = SkImageFilters::DropShadowOnly(
+                            shadow->dx(), shadow->dy(), shadow->sigmaX(), shadow->sigmaY(),
+                            shadow->color().toSkColor(), layer->fImageFilter);
+            }
+
             if (layer->fImageFilter) {
-                this->internalDrawDeviceWithFilter(layer->fDevice.get(), // src
-                                                   dstDev,               // dst
+                if (shadow_filter) {
+                    this->internalDrawDeviceWithFilter(layer->fDevice.get(),  // src
+                                                       dstDev,                // dst
+                                                       shadow_filter.get(),
+                                                       layer->fPaint,
+                                                       DeviceCompatibleWithFilter::kYes);
+                }
+                this->internalDrawDeviceWithFilter(layer->fDevice.get(),  // src
+                                                   dstDev,                // dst
                                                    layer->fImageFilter.get(),
                                                    layer->fPaint,
                                                    DeviceCompatibleWithFilter::kYes);
             } else {
+                if (shadow_filter) {
+                    this->internalDrawDeviceWithFilter(layer->fDevice.get(),  // src
+                                                       dstDev,                // dst
+                                                       shadow_filter.get(),
+                                                       layer->fPaint,
+                                                       DeviceCompatibleWithFilter::kYes);
+                }
                 // NOTE: We don't just call internalDrawDeviceWithFilter with a null filter
                 // because we want to take advantage of overridden drawDevice functions for
                 // document-based devices.
