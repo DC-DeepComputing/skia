@@ -22,6 +22,30 @@
       },
       "revId": "c6a46bf909e8d7e5a56ce50dd3aeaafd8810baf1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c788537_57da8096",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-21T21:30:19Z",
+      "side": 1,
+      "message": "It\u0027s debatable for sure, but I feel like as a reader, the current approach makes it easier to understand the structure; if I build up the class hierarchy too deep, it makes it much more difficult to understand at a glance what the class will _actually_ do in practice. It\u0027s already nested a lot IMO. I\u0027m willing to hear counterarguments.",
+      "parentUuid": "5f99f44f_54bf4e0e",
+      "range": {
+        "startLine": 700,
+        "startChar": 4,
+        "endLine": 702,
+        "endChar": 5
+      },
+      "revId": "c6a46bf909e8d7e5a56ce50dd3aeaafd8810baf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
