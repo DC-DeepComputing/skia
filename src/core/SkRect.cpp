@@ -7,6 +7,8 @@
 
 #include "include/core/SkRect.h"
 
+#include "include/core/SkM44.h"
+#include "include/core/SkMatrix.h"
 #include "include/private/base/SkDebug.h"
 #include "src/core/SkRectPriv.h"
 
@@ -251,4 +253,35 @@ bool SkRectPriv::Subtract(const SkRect& a, const SkRect& b, SkRect* out) {
 
 bool SkRectPriv::Subtract(const SkIRect& a, const SkIRect& b, SkIRect* out) {
     return subtract<SkIRect>(a, b, out);
+}
+
+bool SkRectPriv::QuadContainsRect(const SkMatrix& m, const SkIRect& a, const SkIRect& b) {
+    return QuadContainsRect(SkM44(m), SkRect::Make(a), SkRect::Make(b));
+}
+
+bool SkRectPriv::QuadContainsRect(const SkM44& m, const SkRect& a, const SkRect& b) {
+    // Calculate the 4 homogenous coordinates of 'a' transformed by 'm' where Z=0 and W=1.
+    auto bSides = skvx::float4{b.fLeft, b.fTop, b.fRight, b.fBottom};
+
+    auto ax = skvx::float4{a.fLeft, a.fRight, a.fRight, a.fLeft};
+    auto ay = skvx::float4{a.fTop, a.fTop, a.fBottom, a.fBottom};
+
+    auto max = m.rc(0,0)*ax + m.rc(0,1)*ay + m.rc(0,3);
+    auto may = m.rc(1,0)*ax + m.rc(1,1)*ay + m.rc(1,3);
+    auto maw = m.rc(3,0)*ax + m.rc(3,1)*ay + m.rc(3,3);
+
+    // Cross product of adjacent vertices provides homogenous lines for the 4 sides of the quad
+    auto lA = may*skvx::shuffle<1,2,3,0>(maw) - maw*skvx::shuffle<1,2,3,0>(may);
+    auto lB = maw*skvx::shuffle<1,2,3,0>(max) - max*skvx::shuffle<1,2,3,0>(maw);
+    auto lC = max*skvx::shuffle<1,2,3,0>(may) - may*skvx::shuffle<1,2,3,0>(max);
+
+    // FIXME confirm this is fine with different determinant signs from M
+
+    // Calculate distance from 'b' to each edge
+    auto bx = skvx::float4{b.fLeft, b.fRight, b.fRight, b.fLeft};
+    auto by = skvx::float4{b.fTop, b.fTop, b.fBottom, b.fBottom};
+    auto d = lA*bx + lB*by + lC;
+
+    // 'b' is contained in the mapped rectangle if all distances are >= 0
+    return all(d >= 0.f);
 }
