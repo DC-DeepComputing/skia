@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d4f4aec_b317e5e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19629
+      },
+      "writtenOn": "2023-02-21T21:47:47Z",
+      "side": 1,
+      "message": "In preparation for when https://r.android.com/2434853 is submitted, with a fix for the miscompile.",
+      "revId": "aa22364dc50c87545893d84780319c2d16636298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
