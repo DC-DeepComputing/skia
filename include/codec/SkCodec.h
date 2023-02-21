@@ -21,11 +21,11 @@
 #include "modules/skcms/skcms.h"
 
 #include <cstddef>
+#include <functional>
 #include <memory>
 #include <tuple>
 #include <vector>
 
-class SkAndroidCodec;
 class SkData;
 class SkFrameHolder;
 class SkImage;
@@ -942,17 +942,19 @@ private:
         return nullptr;
     }
 
+    using GetPixelsCallback = std::function<Result(const SkImageInfo&, void* pixels, size_t rowBytes,
+                                                   const Options&, int requiredFrame)>;
+
     /**
      *  Check for a valid Options.fFrameIndex, and decode prior frames if necessary.
      *
-     *  If androidCodec is not null, that means this SkCodec is owned by an SkAndroidCodec. In that
-     *  case, the Options will be treated as an AndroidOptions, and SkAndroidCodec will be used to
-     *  decode a prior frame, if a prior frame is needed. When such an owned SkCodec calls
-     *  handleFrameIndex, it will immediately return kSuccess, since SkAndroidCodec already handled
-     *  it.
+     *  If getPixelsFn is not null, that means this SkCodec is owned by an SkAndroidCodec. In that
+     *  case, getPixelsFn will be used to decode a prior frame, if a prior frame is needed. When such
+     *  an owned SkCodec calls handleFrameIndex, it will immediately return kSuccess, since
+     *  SkAndroidCodec already handled it.
      */
     Result handleFrameIndex(const SkImageInfo&, void* pixels, size_t rowBytes, const Options&,
-            SkAndroidCodec* androidCodec = nullptr);
+                            GetPixelsCallback getPixelsFn = nullptr);
 
     // Methods for scanline decoding.
     virtual Result onStartScanlineDecode(const SkImageInfo& /*dstInfo*/,
