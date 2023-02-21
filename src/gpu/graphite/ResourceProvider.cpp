@@ -56,6 +56,8 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
             pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
+        } else {
+            bool pipelineCreationFailed = true;
         }
     }
     return pipeline;
