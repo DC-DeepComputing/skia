@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83fb7725_343f2072",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-22T09:15:42Z",
+      "side": 1,
+      "message": "The GContainer structure can use some syntax that I didn\u0027t support. This adds that. \n\nI had some people from photos take a look at this to make sure I wasn\u0027t missing anything.\n\nAnd ... lots of tests. The GContainer thing is redundant to MPF (but if we\u0027re going to support it, let\u0027s get it right).\n\nI suspect that we\u0027ll want to add a library that is explicitly developed for XMP reading/writing ... at some point. Not for this year\u0027s release.",
+      "revId": "9500d06d254e63b9063b960c7e60dc79e0a7f264",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
