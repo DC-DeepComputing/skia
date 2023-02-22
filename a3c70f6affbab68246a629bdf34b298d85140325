@@ -390,6 +390,30 @@
       },
       "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c045b922_7354b61d",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 15
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T21:33:26Z",
+      "side": 1,
+      "message": "I don\u0027t believe so since we control the creation of the colorfilter\u0027s table and it is always going to be RGBA",
+      "parentUuid": "e33cac0f_0c090e5a",
+      "range": {
+        "startLine": 760,
+        "startChar": 0,
+        "endLine": 767,
+        "endChar": 1
+      },
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
