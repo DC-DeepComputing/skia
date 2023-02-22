@@ -22,7 +22,7 @@ SkColorSpaceXformSteps::SkColorSpaceXformSteps(const SkColorSpace* src, SkAlphaT
     // Opaque outputs are treated as the same alpha type as the source input.
     // TODO: we'd really like to have a good way of explaining why we think this is useful.
     if (dstAT == kOpaque_SkAlphaType) {
-        dstAT =  srcAT;
+        dstAT = srcAT;
     }
 
     // We have some options about what to do with null src or dst here.
