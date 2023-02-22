@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "773b7ad2_e4c20320",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:09:21Z",
+      "side": 1,
+      "message": "From C++11, enum class declarations have a default type of \"int\" - so no explicit size specifier is required. Added it for clarity, though. There is at least one example on either side of this coin within our codebase already.",
+      "parentUuid": "80173dc1_4e635468",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24b6281d_52be0be9",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-02-22T18:02:05Z",
       "side": 1,
       "message": "Add skgpu_graphite_ prefix ?",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 32
+      },
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "067db7b1_24974914",
+        "filename": "src/gpu/graphite/ReadWriteSwizzle.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:09:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24b6281d_52be0be9",
       "range": {
         "startLine": 8,
         "startChar": 8,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea93aaf9_8b437e5d",
+        "filename": "src/gpu/graphite/ReadWriteSwizzle.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:09:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88ba43aa_a0a803c7",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 1
+      },
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92bfb5fc_9af7a229",
@@ -94,6 +160,30 @@
       "writtenOn": "2023-02-22T18:02:05Z",
       "side": 1,
       "message": "spelling ?",
+      "range": {
+        "startLine": 124,
+        "startChar": 40,
+        "endLine": 124,
+        "endChar": 49
+      },
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad8d44c6_9626fb2d",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:09:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92bfb5fc_9af7a229",
       "range": {
         "startLine": 124,
         "startChar": 40,
@@ -121,6 +211,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "536e01f9_b042c372",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:09:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e726c6f_aaa6c69e",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "542892d7_f1c6e3ad",
@@ -134,6 +242,24 @@
       "writtenOn": "2023-02-22T18:02:05Z",
       "side": 1,
       "message": "This empty block is kind of odd. I would just ditch the \u0027readSwizzle\u0027 variable and return the correct swizzle from each code block.",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cfe6614_7124f464",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:09:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "542892d7_f1c6e3ad",
       "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -155,6 +281,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76f30855_1e570d03",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:09:21Z",
+      "side": 1,
+      "message": "Nothing at all. This change as a remnant of a prior approach. Moved back!",
+      "parentUuid": "2ac61141_3bc9047e",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0dde2f0f_42609a8d",
@@ -172,6 +316,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "429cdffa_083d9546",
+        "filename": "src/shaders/SkImageShader.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:09:21Z",
+      "side": 1,
+      "message": "I made it a static function within `SkImageShader.cpp`. No other class references it, so it should be fine to live there.",
+      "parentUuid": "0dde2f0f_42609a8d",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33f279cf_db5b4129",
@@ -185,6 +347,47 @@
       "writtenOn": "2023-02-22T18:02:05Z",
       "side": 1,
       "message": "Don\u0027t you need to swizzle here too ?",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76ef6f59_f2fdd058",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 15
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:09:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33f279cf_db5b4129",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e33cac0f_0c090e5a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 15
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:09:21Z",
+      "side": 1,
+      "message": "Do we need to pass in a readSwizzle for the sample calls here?",
+      "range": {
+        "startLine": 760,
+        "startChar": 0,
+        "endLine": 767,
+        "endChar": 1
+      },
       "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
