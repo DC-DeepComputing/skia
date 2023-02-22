@@ -11,7 +11,7 @@
 #include "include/core/SkRect.h"
 #include "src/base/SkMathPriv.h"
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/ganesh/GrCaps.h"

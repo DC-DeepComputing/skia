@@ -13,7 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurfaceProps.h"
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrTypes.h"
 #endif
@@ -22,7 +22,7 @@
 #include <android/hardware_buffer.h>
 #endif
 
-#if SK_SUPPORT_GPU && defined(SK_METAL)
+#if defined(SK_GANESH_ENABLED) && defined(SK_METAL)
 #include "include/gpu/mtl/GrMtlTypes.h"
 #endif
 
@@ -208,7 +208,7 @@ public:
         backend API (accounting only for use of the texture by this surface). If SkSurface creation
         fails textureReleaseProc is called before this function returns.
 
-        If SK_SUPPORT_GPU is defined as zero, has no effect and returns nullptr.
+        If defined(SK_GANESH_ENABLED) is defined as zero, has no effect and returns nullptr.
 
         @param context             GPU context
         @param backendTexture      texture residing on GPU
@@ -243,7 +243,7 @@ public:
         backend API (accounting only for use of the render target by this surface). If SkSurface
         creation fails releaseProc is called before this function returns.
 
-        If SK_SUPPORT_GPU is defined as zero, has no effect and returns nullptr.
+        If defined(SK_GANESH_ENABLED) is defined as zero, has no effect and returns nullptr.
 
         @param context                  GPU context
         @param backendRenderTarget      GPU intermediate memory buffer
@@ -278,7 +278,7 @@ public:
 
         shouldCreateWithMips hints that SkImage returned by makeImageSnapshot() is mip map.
 
-        If SK_SUPPORT_GPU is defined as zero, has no effect and returns nullptr.
+        If defined(SK_GANESH_ENABLED) is defined as zero, has no effect and returns nullptr.
 
         @param context               GPU context
         @param imageInfo             width, height, SkColorType, SkAlphaType, SkColorSpace;
@@ -323,7 +323,7 @@ public:
                                              const SkImageInfo& imageInfo,
                                              int sampleCount,
                                              const SkSurfaceProps* surfaceProps) {
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
         return MakeRenderTarget(context, budgeted, imageInfo, sampleCount,
                                 kBottomLeft_GrSurfaceOrigin, surfaceProps);
 #else
@@ -348,7 +348,7 @@ public:
     static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context,
                                              skgpu::Budgeted budgeted,
                                              const SkImageInfo& imageInfo) {
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
         if (!imageInfo.width() || !imageInfo.height()) {
             return nullptr;
         }
@@ -438,7 +438,7 @@ public:
 
 #endif // SK_GRAPHITE_ENABLED
 
-#if SK_SUPPORT_GPU && defined(SK_METAL)
+#if defined(SK_GANESH_ENABLED) && defined(SK_METAL)
     /** Creates SkSurface from CAMetalLayer.
         Returned SkSurface takes a reference on the CAMetalLayer. The ref on the layer will be
         released when the SkSurface is destroyed.
@@ -572,7 +572,7 @@ public:
      */
     skgpu::graphite::Recorder* recorder();
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
     enum BackendHandleAccess {
         kFlushRead_BackendHandleAccess,    //!< back-end object is readable
         kFlushWrite_BackendHandleAccess,   //!< back-end object is writable
@@ -998,7 +998,7 @@ public:
         kPresent,   //!< back-end surface will be used for presenting to screen
     };
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
     /** If a surface is GPU texture backed, is being drawn with MSAA, and there is a resolve
         texture, this call will insert a resolve command into the stream of gpu commands. In order
         for the resolve to actually have an effect, the work still needs to be flushed and submitted
@@ -1104,7 +1104,7 @@ public:
     */
     GrSemaphoresSubmitted flush(const GrFlushInfo& info,
                                 const skgpu::MutableTextureState* newState = nullptr);
-#endif // SK_SUPPORT_GPU
+#endif // defined(SK_GANESH_ENABLED)
 
     void flush();
 

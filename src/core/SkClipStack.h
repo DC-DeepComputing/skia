@@ -18,7 +18,7 @@
 #include "src/base/SkTLazy.h"
 #include "src/core/SkMessageBus.h"
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
 class GrProxyProvider;
 
 #include "src/gpu/ResourceKey.h"
@@ -189,7 +189,7 @@ public:
         void dump() const;
 #endif
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
         /**
          * This is used to purge any GPU resource cache items that become unreachable when
          * the element is destroyed because their key is based on this element's gen ID.
@@ -237,7 +237,7 @@ public:
         bool fIsIntersectionOfRects;
 
         uint32_t fGenID;
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
         mutable GrProxyProvider*           fProxyProvider = nullptr;
         mutable SkTArray<skgpu::UniqueKey> fKeysToInvalidate;
 #endif

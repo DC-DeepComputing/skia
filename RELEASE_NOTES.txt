@@ -13,6 +13,9 @@ Milestone 112
   * SkRandom is no longer part of the public API.
   * SK_ARRAY_COUNT is no longer part of the public API. Clients should use std::size.
   * SK_SCALAR_IS_FLOAT is not set anymore. SkScalar is always a float (and has been since 2017).
+  * The define SK_SUPPORT_GPU is now SK_GANESH_ENABLED. It is no longer detected as a 0 or 1, but
+    as the absence or presence of that define. As a result, it defaults to off (not defined) if
+    not defined (SK_SUPPORT_GPU would default to SK_SUPPORT_GPU=1 if not defined).
 
 Milestone 111
 -------------
