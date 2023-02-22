@@ -201,6 +201,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "349b77ff_4d362409",
+        "filename": "src/ports/SkMemory_malloc.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-22T14:23:58Z",
+      "side": 1,
+      "message": "I misunderstood your request then. I thought you meant renaming the *_throw APIs.\n\nRenaming just throw_on_failure, sure I can do that.",
+      "parentUuid": "51ba35af_abb8f526",
+      "range": {
+        "startLine": 39,
+        "startChar": 20,
+        "endLine": 39,
+        "endChar": 36
+      },
+      "revId": "3607d616be30e6a5c97db07423d2b11fc58c7e61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c693097_688cdc2d",
