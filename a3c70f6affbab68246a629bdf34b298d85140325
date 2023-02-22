@@ -16,6 +16,177 @@
       "message": "After much turmoil, I figured out the missing piece (for reading) is that I needed to concatenate the swizzle for alpha-only color types with \"aaaa\". PTAL :)",
       "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80173dc1_4e635468",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T18:02:05Z",
+      "side": 1,
+      "message": "How is this working? I believe the compiler will need to know the size for \u0027fReadSwizzle\u0027.",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24b6281d_52be0be9",
+        "filename": "src/gpu/graphite/ReadWriteSwizzle.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T18:02:05Z",
+      "side": 1,
+      "message": "Add skgpu_graphite_ prefix ?",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 32
+      },
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88ba43aa_a0a803c7",
+        "filename": "src/gpu/graphite/ReadWriteSwizzle.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T18:02:05Z",
+      "side": 1,
+      "message": "// namespace skgpu::graphite ?",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 1
+      },
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92bfb5fc_9af7a229",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T18:02:05Z",
+      "side": 1,
+      "message": "spelling ?",
+      "range": {
+        "startLine": 124,
+        "startChar": 40,
+        "endLine": 124,
+        "endChar": 49
+      },
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e726c6f_aaa6c69e",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T18:02:05Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "542892d7_f1c6e3ad",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T18:02:05Z",
+      "side": 1,
+      "message": "This empty block is kind of odd. I would just ditch the \u0027readSwizzle\u0027 variable and return the correct swizzle from each code block.",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ac61141_3bc9047e",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T18:02:05Z",
+      "side": 1,
+      "message": "What are you getting by moving this block up here ?",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dde2f0f_42609a8d",
+        "filename": "src/shaders/SkImageShader.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T18:02:05Z",
+      "side": 1,
+      "message": "Can this be static ?",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33f279cf_db5b4129",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 15
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T18:02:05Z",
+      "side": 1,
+      "message": "Don\u0027t you need to swizzle here too ?",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
