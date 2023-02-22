@@ -22,7 +22,7 @@ SK_API extern void sk_free(void*);
 
 /**
  *  Called internally if we run out of memory. The platform implementation must
- *  not return, but should either throw an exception or otherwise exit.
+ *  not return, but should either abort or otherwise exit.
  */
 SK_API extern void sk_out_of_memory(void);
 
@@ -34,14 +34,16 @@ enum {
     SK_MALLOC_ZERO_INITIALIZE   = 1 << 0,
 
     /**
-     *  If this bit is set, the implementation must throw/crash/quit if the request cannot
+     *  If this bit is set, the implementation must abort/crash/quit if the request cannot
      *  be fulfilled. If this bit is not set, then it should return nullptr on failure.
+     *  For historical reasons, "throw" is used, even though we do not mean to throw an
+     *  actual exception (as Skia does not use exceptions).
      */
     SK_MALLOC_THROW             = 1 << 1,
 };
 /**
  *  Return a block of memory (at least 4-byte aligned) of at least the specified size.
- *  If the requested memory cannot be returned, either return nullptr or throw/exit, depending
+ *  If the requested memory cannot be returned, either return nullptr or abort/exit, depending
  *  on the SK_MALLOC_THROW bit. If the allocation succeeds, the memory will be zero-initialized
  *  if the SK_MALLOC_ZERO_INITIALIZE bit was set.
  *
@@ -49,8 +51,10 @@ enum {
  */
 SK_API extern void* sk_malloc_flags(size_t size, unsigned flags);
 
-/** Same as standard realloc(), but this one never returns null on failure. It will throw
- *  an exception if it fails.
+/** Same as standard realloc(), but this one never returns null on failure. It will abort
+ *  if it fails.
+ *  If size is 0, it will call sk_free on buffer and return null. (This behavior is implementation-
+ *  defined for normal realloc. We follow what glibc does.)
  */
 SK_API extern void* sk_realloc_throw(void* buffer, size_t size);
 
