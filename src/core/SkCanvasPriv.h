@@ -24,11 +24,11 @@ namespace skgpu::v1 {
 #endif // GR_TEST_UTILS
 
 // This declaration must match the one in SkDeferredDisplayList.h
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
 class GrRenderTargetProxy;
 #else
 using GrRenderTargetProxy = SkRefCnt;
-#endif // SK_SUPPORT_GPU
+#endif // defined(SK_GANESH_ENABLED)
 
 #if GRAPHITE_TEST_UTILS
 namespace skgpu::graphite {
