@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73940f88_14421518",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-22T20:29:07Z",
+      "side": 1,
+      "message": "Going back to what we discussed on other replay CLs, it would be nice to have this command and DrawPass skipping logic handled at a higher level but the performance-oriented design of adding an entire RenderPassTask makes it so that the backends are responsible for iterating over each drawpass and command.\n\nPerhaps as more backends get fleshed out we can figure out how to lift some of the scissor/bounds tracking into helper functions that are defined in the base class and just invoked when appropriate by the subclass impls.",
+      "range": {
+        "startLine": 269,
+        "startChar": 0,
+        "endLine": 269,
+        "endChar": 85
+      },
+      "revId": "bec4357f9c66c0865a9985f51630228d855d8d58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
