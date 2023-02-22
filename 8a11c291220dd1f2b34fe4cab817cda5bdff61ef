@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b115dd35_1803c547",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-22T14:09:49Z",
+      "side": 1,
+      "message": "This is now failing with an issue building the Dawn code itself on Windows:\n\n```\n../../../../../../skia/third_party/externals/dawn/src/dawn/native/d3d12/AdapterD3D12.cpp(557,5): error: unknown type name \u0027D3D12_FEATURE_DATA_D3D12_OPTIONS13\u0027\n    D3D12_FEATURE_DATA_D3D12_OPTIONS13 featureData13;\n    ^\n../../../../../../skia/third_party/externals/dawn/src/dawn/native/d3d12/AdapterD3D12.cpp(558,50): error: use of undeclared identifier \u0027D3D12_FEATURE_D3D12_OPTIONS13\u0027\n    if (FAILED(mD3d12Device-\u003eCheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS13, \u0026featureData13,\n                                                 ^\n2 errors generated.\n```\n\nPerhaps there is a missing include in one of those Dawn files?",
+      "revId": "8a11c291220dd1f2b34fe4cab817cda5bdff61ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
