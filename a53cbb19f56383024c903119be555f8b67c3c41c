@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52241584_6f706d5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-22T21:30:06Z",
+      "side": 1,
+      "message": "This, at least, gets the paint\u0027s color in the game but, probably, won\u0027t be cool until https://skia-review.googlesource.com/c/skia/+/629536 ([graphite] Apply a swizzle to image sample calls for formats that need it) lands.",
+      "revId": "a53cbb19f56383024c903119be555f8b67c3c41c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
