@@ -13,8 +13,13 @@
 #include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkShaderBase.h"
 
+namespace skgpu {
+class Swizzle;
+}
+
 namespace skgpu::graphite {
 class KeyContext;
+enum class ReadSwizzle;
 }
 
 class SkImageShader : public SkShaderBase {
@@ -82,6 +87,9 @@ private:
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc*) const override;
 
+#ifdef SK_GRAPHITE_ENABLED
+    skgpu::graphite::ReadSwizzle swizzleClassToReadEnum(const skgpu::Swizzle& swizzle) const;
+#endif
     sk_sp<SkImage>          fImage;
     const SkSamplingOptions fSampling;
     const SkTileMode        fTileModeX;
