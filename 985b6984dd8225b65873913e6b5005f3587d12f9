@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0ebc3a3_c4347738",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-22T14:18:02Z",
+      "side": 1,
+      "message": "Should we reach out to Chrome? (Herb will remember the owner here)",
+      "range": {
+        "startLine": 18,
+        "startChar": 54,
+        "endLine": 18,
+        "endChar": 60
+      },
+      "revId": "985b6984dd8225b65873913e6b5005f3587d12f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
