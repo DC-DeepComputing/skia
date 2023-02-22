@@ -22,6 +22,30 @@
       },
       "revId": "658d34de2b2d7c931797a74a29bfa83406abcf3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5a1fdf2_96cf0206",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-22T21:27:09Z",
+      "side": 0,
+      "message": "Meant to move it. Sorry for the bamboozle. Done.",
+      "parentUuid": "5dd00026_1ed95394",
+      "range": {
+        "startLine": 341,
+        "startChar": 19,
+        "endLine": 341,
+        "endChar": 29
+      },
+      "revId": "658d34de2b2d7c931797a74a29bfa83406abcf3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
