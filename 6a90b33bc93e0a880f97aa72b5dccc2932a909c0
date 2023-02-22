@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db66b784_f52a9564",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:48:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7d9bef9_e1a4fb2f",
+      "range": {
+        "startLine": 37,
+        "startChar": 36,
+        "endLine": 37,
+        "endChar": 58
+      },
+      "revId": "6a90b33bc93e0a880f97aa72b5dccc2932a909c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f65385c_bf464067",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-22T21:41:52Z",
       "side": 1,
       "message": "Maybe: skgpu::Swizzle::RGBA ?",
+      "range": {
+        "startLine": 38,
+        "startChar": 19,
+        "endLine": 38,
+        "endChar": 35
+      },
+      "revId": "6a90b33bc93e0a880f97aa72b5dccc2932a909c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7a9508a_aeca2308",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T21:48:50Z",
+      "side": 1,
+      "message": "Sure, same effect but more clear. 👍",
+      "parentUuid": "2f65385c_bf464067",
       "range": {
         "startLine": 38,
         "startChar": 19,
