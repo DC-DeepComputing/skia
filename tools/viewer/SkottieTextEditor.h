@@ -33,6 +33,7 @@ public:
 private:
     struct GlyphData {
         SkRect fDevBounds; // Glyph bounds mapped to device space.
+        size_t fCluster;   // UTF8 cluster index.
     };
 
     std::tuple<size_t, size_t> currentSelection() const;
@@ -40,6 +41,7 @@ private:
     void drawCursor(SkCanvas*, const GlyphInfo glyphs[], size_t size) const;
     void insertChar(SkUnichar c);
     void deleteChars(size_t offset, size_t count);
+    bool deleteSelection();
     void updateDeps(const SkString&);
 
     const std::unique_ptr<skottie::TextPropertyHandle>              fTextProp;
