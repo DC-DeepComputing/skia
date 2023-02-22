@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80c495f4_641e964a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T17:20:09Z",
+      "side": 1,
+      "message": "Fixed",
+      "parentUuid": "d5f48c8c_42b89d75",
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05c4977d_3cb95a7a",
@@ -65,6 +83,30 @@
       "writtenOn": "2023-01-19T17:55:02Z",
       "side": 1,
       "message": "Misspelled? This says red blue green alpha",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 9
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5069b7e7_95868e1a",
+        "filename": "include/core/SkSwizzle.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T17:20:09Z",
+      "side": 1,
+      "message": "Yep, fixed",
+      "parentUuid": "05c4977d_3cb95a7a",
       "range": {
         "startLine": 25,
         "startChar": 4,
@@ -170,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d63a43fd_0afc0fa0",
+        "filename": "include/core/SkSwizzle.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T17:20:09Z",
+      "side": 1,
+      "message": "Rob suggested `src/gpu/graphite`, so I moved them there.",
+      "parentUuid": "641e4432_2d07e849",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 29
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43f6157e_48cd37dc",
@@ -217,6 +283,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e2703c5_69edc35e",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T17:20:09Z",
+      "side": 1,
+      "message": "I think we can actually remove this line, which would nullify this comment. We can set it to the default swizzle, and then just reassign later on in the `if (imageToDraw)` block. I believe this was actually the line causing the Radeon failures. Good catch, John!",
+      "parentUuid": "2d53d69b_bf26a5c9",
+      "range": {
+        "startLine": 418,
+        "startChar": 12,
+        "endLine": 418,
+        "endChar": 51
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0be51a2e_12dfb0a7",
@@ -240,6 +330,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f98c4d30_13be674a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T17:20:09Z",
+      "side": 1,
+      "message": "It is not, thank you!",
+      "parentUuid": "0be51a2e_12dfb0a7",
+      "range": {
+        "startLine": 40,
+        "startChar": 12,
+        "endLine": 40,
+        "endChar": 25
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13ae984c_558cc236",
@@ -253,6 +367,30 @@
       "writtenOn": "2023-01-19T18:08:51Z",
       "side": 1,
       "message": "Remove; just modify `color` directly.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 33
+      },
+      "revId": "8332d43fcd4c1bcd4878c16fcf3c8be16a7087e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "745eaf37_5d6f7e24",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T17:20:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13ae984c_558cc236",
       "range": {
         "startLine": 41,
         "startChar": 4,

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "110c1759_e345428e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-22T17:20:09Z",
+      "side": 1,
+      "message": "After much turmoil, I figured out the missing piece (for reading) is that I needed to concatenate the swizzle for alpha-only color types with \"aaaa\". PTAL :)",
+      "revId": "a3c70f6affbab68246a629bdf34b298d85140325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
