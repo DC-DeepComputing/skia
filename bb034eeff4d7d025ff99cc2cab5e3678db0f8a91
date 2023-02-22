@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "256f2ca1_d1da95a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-22T20:01:26Z",
+      "side": 1,
+      "message": "You probably also need to update externs.js",
+      "revId": "bb034eeff4d7d025ff99cc2cab5e3678db0f8a91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30c20b7c_75c9cf1d",
         "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
         "patchSetId": 1
