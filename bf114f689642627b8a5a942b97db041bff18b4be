@@ -33,6 +33,24 @@
       "message": "If we do go down this road (not saying that we will), I\u0027d really want to see this somewhere like SaveLayerRec, rather than SkPaint.",
       "revId": "bf114f689642627b8a5a942b97db041bff18b4be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "099cba4e_61c981d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19669
+      },
+      "writtenOn": "2023-02-22T00:35:59Z",
+      "side": 1,
+      "message": "Note that having Skia support shadows via SkPaint could be useful for all draw calls, not just layers. Right now, Blink needs to add complexity on top of Skia to be spec compliant:\nhttps://crsrc.org/c/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h;l\u003d752-754,765-776;drc\u003de1ace5e8c2cdf2de1c1c7170624b5b84cdb83250\nhttps://crsrc.org/c/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h;l\u003d845-888;drc\u003de1591f7e48004bf610e6e53a4f213d032e221f23\n\nThen, we need to implement shadows differently for layers:\nhttps://crsrc.org/c/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc;l\u003d205-240;drc\u003de1ace5e8c2cdf2de1c1c7170624b5b84cdb83250\n\nHaving different implementations means that draw calls produce different pixel values depending on whether they are used in a layer or not:\nhttps://crsrc.org/c/third_party/blink/web_tests/external/wpt/html/canvas/element/layers/2d.layer.several-complex.html;l\u003d4;drc\u003d4ed4036fb30111fbcd4314e9639c1ea3b46480ca\n\nMoreover, the complexity we are adding in blink might be detrimental to the performance. For instance, we have to nest two layers to support layers with a shadow (or filter) and an alpha blending:\nhttps://crsrc.org/c/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc;l\u003d205-209;drc\u003de1ace5e8c2cdf2de1c1c7170624b5b84cdb83250\n\nTo sum up, having Skia behave closer to what the spec requires might reduce code complexity, improve consistency in pixel precision from different code paths and improve performance.\n\nThoughts?",
+      "parentUuid": "3ba2e554_635538d3",
+      "revId": "bf114f689642627b8a5a942b97db041bff18b4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
