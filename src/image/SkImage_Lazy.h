@@ -22,7 +22,7 @@
 #include <memory>
 #include <tuple>
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
 #include "include/core/SkYUVAPixmaps.h"
 class GrCaps;
 class GrDirectContext;
@@ -91,7 +91,7 @@ public:
 
     bool onIsValid(GrRecordingContext*) const override;
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
     // Returns the texture proxy. CachingHint refers to whether the generator's output should be
     // cached in CPU memory. We will always cache the generated texture on success.
     GrSurfaceProxyView lockTextureProxyView(GrRecordingContext*,
@@ -108,7 +108,7 @@ public:
 private:
     void addUniqueIDListener(sk_sp<SkIDChangeListener>) const;
     bool readPixelsProxy(GrDirectContext*, const SkPixmap&) const;
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
     std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
                                                          skgpu::Mipmapped,
                                                          GrImageTexGenPolicy) const override;
@@ -141,7 +141,7 @@ private:
     mutable SkMutex        fOnMakeColorTypeAndSpaceMutex;
     mutable sk_sp<SkImage> fOnMakeColorTypeAndSpaceResult;
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
     // When the SkImage_Lazy goes away, we will iterate over all the listeners to inform them
     // of the unique ID's demise. This is used to remove cached textures from GrContext.
     mutable SkIDChangeListener::List fUniqueIDListeners;
