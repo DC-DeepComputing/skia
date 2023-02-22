@@ -7,17 +7,20 @@
 
 #include "src/gpu/graphite/KeyContext.h"
 
+#include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 
 namespace skgpu::graphite {
 
 KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        const SkM44& local2Dev,
-                       const SkColorInfo& dstColorInfo)
+                       const SkColorInfo& dstColorInfo,
+                       SkColor4f paintColor)
         : fRecorder(recorder)
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)
-        , fDstColorInfo(dstColorInfo) {
+        , fDstColorInfo(dstColorInfo)
+        , fPaintColor(PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul()) {
     fDictionary = fRecorder->priv().shaderCodeDictionary();
     fRTEffectDict = fRecorder->priv().runtimeEffectDictionary();
 }

@@ -184,8 +184,10 @@ void SkShader_Blend::addToKey(const skgpu::graphite::KeyContext& keyContext,
     if (!porterDuffConstants.empty()) {
         PorterDuffBlendShaderBlock::BeginBlock(keyContext, builder, gatherer,
                                                {porterDuffConstants});
+        // expects dst, src
     } else {
         BlendShaderBlock::BeginBlock(keyContext, builder, gatherer, {fMode});
+        // expects dst, src
     }
 
     as_SB(fDst)->addToKey(keyContext, builder, gatherer);
