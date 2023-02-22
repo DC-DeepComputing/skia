@@ -775,6 +775,7 @@ function skottieTests(CK: CanvasKit, canvas?: Canvas) {
     const i = mAnim.setColor('foo', CK.RED);  // $ExpectType boolean
     const j = mAnim.setOpacity('foo', 0.5);  // $ExpectType boolean
     const k = mAnim.setText('foo', 'bar', 12);  // $ExpectType boolean
+    const l = mAnim.setTransform('foo', new Float32Array([1, 2]), new Float32Array([3, 4]), [5, 6], 90, 1, 0);
 }
 
 function shaderTests(CK: CanvasKit) {

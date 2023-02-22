@@ -900,14 +900,61 @@ export interface TextProperty {
     value: TextValue;
 }
 
+/**
+ * Transform property value.
+ */
+export interface TransformValue {
+    /**
+     * The text string payload.
+     */
+    anchor: Point;
+    /**
+     * Font size.
+     */
+    position: Point;
+    /**
+     * The text string payload.
+     */
+    scale: VectorN;
+    /**
+     * Font size.
+     */
+    rotation: number;
+    /**
+     * The text string payload.
+     */
+    skew: number;
+    /**
+     * Font size.
+     */
+    skew_axis: number;
+}
+
+/**
+ * Named transform property for Skottie property observer.
+ */
+export interface TransformProperty {
+    /**
+     * Property identifier, usually the node name.
+     */
+    key: string;
+    /**
+     * Property value.
+     */
+    value: TransformValue;
+}
+
 export interface ManagedSkottieAnimation extends SkottieAnimation {
     setColor(key: string, color: InputColor): boolean;
     setOpacity(key: string, opacity: number): boolean;
     setText(key: string, text: string, size: number): boolean;
+    setTransform(key: string, anchor: Point | VectorN, position: Point | VectorN, scale: VectorN,
+                 rotation: number, skew: number, skew_axis: number): boolean;
     getMarkers(): AnimationMarker[];
     getColorProps(): ColorProperty[];
     getOpacityProps(): OpacityProperty[];
     getTextProps(): TextProperty[];
+    getTransformProps(): TransformProperty[];
 }
 
 /**
