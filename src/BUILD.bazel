@@ -135,10 +135,11 @@ generate_cpp_files_for_headers(
     # compile it. This allows us to run IWYU on these files.
     to_generate = [
         "src/core/SkColorSpacePriv.h",
-        "src/core/SkICCPriv.h",
         "src/core/SkMatrixPriv.h",
+        "src/core/SkOpts.h",
         "src/core/SkPathPriv.h",
         "src/image/SkImage_Base.h",
+        "src/encode/SkICCPriv.h",
         "src/encode/SkImageEncoderFns.h",
         "src/encode/SkImageEncoderPriv.h",
     ],
@@ -152,6 +153,7 @@ skia_cc_library(
     srcs = [
         "//include/config:public_hdrs",
         "//src/base:srcs",
+        "//src/ports:buffet_base_srcs",
     ] + select({
         "//bazel/common_config_settings:compile_generated_cpp_files_for_headers_true": [
             "//include/private/base:generated_base_header_cpps",
@@ -174,10 +176,19 @@ skia_cc_library(
         "//include/private:buffet_srcs",
         "//src/core:buffet_hdrs",
         "//src/core:buffet_srcs",
+        "//src/image:buffet_raster_srcs",
+        "//src/ports:buffet_core_srcs",
     ],
-    hdrs = ["//include/core:core_hdrs"],
+    hdrs = [
+        "//include/codec:core_hdrs",
+        "//include/core:core_hdrs",
+    ],
     visibility = ["//:__pkg__"],
-    deps = [":base"],
+    deps = [
+        ":base",
+        "//modules/skcms",
+        "//src/opts:hash_opts",
+    ],
 )
 
 skia_cc_library(
@@ -205,5 +216,50 @@ skia_cc_library(
         ":base",
         ":core",
         ":core_priv",
+    ],
+)
+
+skia_cc_library(
+    name = "png_decode_codec",
+    srcs = [
+        "//include/private:decode_srcs",
+        "//src/codec:buffet_png_decode_srcs",
+        "//src/codec:buffet_png_srcs",
+    ],
+    hdrs = [
+        "//include/codec:png_public_hdrs",
+        "//include/encode:buffet_public_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":base",
+        ":core",
+        ":core_priv",
+        "//modules/skcms",
+        "//src/opts:memset_opts",
+        "//src/opts:swizzle_opts",
+        "@libpng",
+    ],
+)
+
+skia_cc_library(
+    name = "png_encode_codec",
+    srcs = [
+        "//include/encode:private_hdrs",
+        "//src/codec:buffet_png_srcs",
+        "//src/encode:buffet_png_encode_srcs",
+    ],
+    hdrs = [
+        "//include/encode:png_public_hdrs",
+    ],
+    features = ["layering_check"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":base",
+        ":core",
+        ":core_priv",
+        "//modules/skcms",
+        "@libpng",
     ],
 )

@@ -15,6 +15,7 @@ exports_files_legacy()
 
 CORE_FILES = [
     "SkCodec.cpp",
+    "SkCodecDecodeAll.cpp",
     "SkCodecImageGenerator.cpp",
     "SkCodecImageGenerator.h",
     "SkCodecPriv.h",
@@ -258,4 +259,33 @@ skia_cc_deps(
             ":webp_decode_codec": ["@libwebp"],
         },
     ),
+)
+
+skia_filegroup(
+    name = "buffet_png_decode_srcs",
+    srcs = [
+        "SkCodec.cpp",
+        "SkCodecPriv.h",
+        "SkColorTable.cpp",
+        "SkColorTable.h",
+        "SkEncodedInfo.cpp",
+        "SkFrameHolder.h",
+        "SkPngCodec.cpp",
+        "SkPngCodec.h",
+        "SkPngDecoder.cpp",
+        "SkPngPriv.h",
+        "SkSampler.cpp",
+        "SkSampler.h",
+        "SkSwizzler.cpp",
+        "SkSwizzler.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "buffet_png_srcs",
+    srcs = [
+        "SkPngPriv.h",
+    ],
+    visibility = ["//src:__pkg__"],
 )

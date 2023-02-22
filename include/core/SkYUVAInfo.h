@@ -10,9 +10,14 @@
 
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkMatrix.h"
 #include "include/core/SkSize.h"
+#include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAssert.h"
 
 #include <array>
+#include <cstddef>
+#include <cstdint>
 #include <tuple>
 
 /**

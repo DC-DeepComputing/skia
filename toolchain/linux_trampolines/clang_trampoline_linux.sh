@@ -66,6 +66,8 @@ supported_files_or_dirs=(
   "src/core/SkString.cpp"
   "src/core/SkWriteBuffer.cpp"
   "src/core/SkWritePixelsRec.cpp"
+  "src/core/SkYUVAInfo.cpp"
+  "src/core/SkYUVAPixmaps.cpp"
   "src/gpu/ganesh/Device.cpp"
   "src/gpu/ganesh/GrCaps.cpp"
   "src/gpu/ganesh/GrMemoryPool.cpp"
