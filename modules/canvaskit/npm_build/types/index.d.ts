@@ -900,14 +900,61 @@ export interface TextProperty {
     value: TextValue;
 }
 
+/**
+ * Transform property value. Maps to AE styled transform.
+ */
+export interface TransformValue {
+    /**
+     * Anchor point for transform. x and y value.
+     */
+    anchor: Point;
+    /**
+     * Position of transform. x and y value.
+     */
+    position: Point;
+    /**
+     * Scale of transform. x and y value.
+     */
+    scale: Vector3;
+    /**
+     * Rotation of transform in degrees.
+     */
+    rotation: number;
+    /**
+     * Skew to apply during transform.
+     */
+    skew: number;
+    /**
+     * Direction of skew in degrees.
+     */
+    skew_axis: number;
+}
+
+/**
+ * Named transform property for Skottie property observer.
+ */
+export interface TransformProperty {
+    /**
+     * Property identifier, usually the node name.
+     */
+    key: string;
+    /**
+     * Property value.
+     */
+    value: TransformValue;
+}
+
 export interface ManagedSkottieAnimation extends SkottieAnimation {
     setColor(key: string, color: InputColor): boolean;
     setOpacity(key: string, opacity: number): boolean;
     setText(key: string, text: string, size: number): boolean;
+    setTransform(key: string, anchor: InputPoint, position: InputPoint, scale: InputVector3,
+                 rotation: number, skew: number, skew_axis: number): boolean;
     getMarkers(): AnimationMarker[];
     getColorProps(): ColorProperty[];
     getOpacityProps(): OpacityProperty[];
     getTextProps(): TextProperty[];
+    getTransformProps(): TransformProperty[];
 }
 
 /**
