@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c62caca2_c0afb181",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-22T13:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e2e053a_29eb8d90",
+      "range": {
+        "startLine": 9,
+        "startChar": 39,
+        "endLine": 9,
+        "endChar": 45
+      },
+      "revId": "3607d616be30e6a5c97db07423d2b11fc58c7e61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "239a5df0_b62ae01b",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-02-22T13:48:07Z",
       "side": 1,
       "message": "Please update RELEASE_NOTES",
+      "revId": "3607d616be30e6a5c97db07423d2b11fc58c7e61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b34fdcf_be4a0bd4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-22T13:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "239a5df0_b62ae01b",
       "revId": "3607d616be30e6a5c97db07423d2b11fc58c7e61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
