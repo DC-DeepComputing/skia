@@ -249,6 +249,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f126fafd_34464da0",
+        "filename": "src/ports/SkMemory_malloc.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-22T14:26:50Z",
+      "side": 1,
+      "message": "I thought I removed those comments. Did I miss some?",
+      "parentUuid": "16e412b5_2c434d05",
+      "range": {
+        "startLine": 39,
+        "startChar": 20,
+        "endLine": 39,
+        "endChar": 36
+      },
+      "revId": "3607d616be30e6a5c97db07423d2b11fc58c7e61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c693097_688cdc2d",
