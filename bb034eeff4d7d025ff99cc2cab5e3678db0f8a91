@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30c20b7c_75c9cf1d",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-22T19:53:02Z",
+      "side": 1,
+      "message": "I thought using Point as the input type would be elegant, but the constructor for a Float32Array doesn\u0027t seem to be invoked if you pass in a number array, making the API a bit clunky, is it fine to accept a series of VectorNs?",
+      "revId": "bb034eeff4d7d025ff99cc2cab5e3678db0f8a91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3db24ec2_cfa9db6f",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-22T19:53:02Z",
+      "side": 1,
+      "message": "Is it fine to set a property to a SkPoint or do we want to unpack it into x y values?",
+      "revId": "bb034eeff4d7d025ff99cc2cab5e3678db0f8a91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
