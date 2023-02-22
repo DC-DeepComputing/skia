@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dd00026_1ed95394",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-22T20:12:04Z",
+      "side": 0,
+      "message": "You don\u0027t want to delete this binding",
+      "range": {
+        "startLine": 341,
+        "startChar": 19,
+        "endLine": 341,
+        "endChar": 29
+      },
+      "revId": "658d34de2b2d7c931797a74a29bfa83406abcf3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
