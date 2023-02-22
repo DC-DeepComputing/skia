@@ -77,11 +77,11 @@
 /* Determines whether to build code that supports the GPU backend. Some classes
    that are not GPU-specific, such as SkShader subclasses, have optional code
    that is used allows them to interact with the GPU backend. If you'd like to
-   omit this code set SK_SUPPORT_GPU to 0. This also allows you to omit the gpu
+   omit this code set defined(SK_GANESH_ENABLED) to 0. This also allows you to omit the gpu
    directories from your include search path when you're not building the GPU
    backend. Defaults to 1 (build the GPU code).
 */
-//#define SK_SUPPORT_GPU 1
+//#define defined(SK_GANESH_ENABLED) 1
 
 /* Skia makes use of histogram logging macros to trace the frequency of
    events. By default, Skia provides no-op versions of these macros.

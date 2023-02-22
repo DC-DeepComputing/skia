@@ -16,6 +16,9 @@ Milestone 112
   * sk_realloc_throw (an internal API) now frees up memory when 0 is passed in as the size.
     This should have no user-facing impacts for clients which use the default allocator, but
     requires custom allocators to also implement this change.
+  * The define SK_SUPPORT_GPU is now SK_GANESH_ENABLED. It is no longer detected as a 0 or 1, but
+    as the absence or presence of that define. As a result, it defaults to off (not defined) if
+    not defined (SK_SUPPORT_GPU would default to SK_SUPPORT_GPU=1 if not defined).
 
 Milestone 111
 -------------
