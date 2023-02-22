@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7387781_5f05b7b3",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 3501,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-22T22:45:30Z",
+      "side": 1,
+      "message": "We\u0027re not consistent in our definitions of `iota`. Some places use 8 values and others 16. Is the 16-element form just extremely thorough future-proofing? Maybe AVX512 was in the cards at one point?\n\nIt looked to me like the codegen was identical either way, at any rate.",
+      "range": {
+        "startLine": 3501,
+        "startChar": 63,
+        "endLine": 3501,
+        "endChar": 92
+      },
+      "revId": "2ff2f043206d34aae7d7723513b2b75c955a760e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
