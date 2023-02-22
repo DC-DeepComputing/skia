@@ -1061,7 +1061,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 				return
 			}
 			// Use many-core machines for Build tasks.
-			b.linuxGceDimensions(MACHINE_TYPE_LARGE)
+			b.linuxGceDimensions("n1-standard-32")
 			return
 		} else if d["os"] == DEFAULT_OS_WIN {
 			// Windows CPU bots.
@@ -2042,7 +2042,7 @@ func (b *jobBuilder) presubmit() {
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
 		// Use MACHINE_TYPE_LARGE because it seems to save time versus
 		// MEDIUM and we want presubmit to be fast.
-		b.linuxGceDimensions(MACHINE_TYPE_LARGE)
+		b.linuxGceDimensions("n1-standard-32")
 		b.usesGit()
 		b.cipd(&specs.CipdPackage{
 			Name:    "infra/recipe_bundles/chromium.googlesource.com/chromium/tools/build",
