@@ -22,6 +22,30 @@
       },
       "revId": "bec4357f9c66c0865a9985f51630228d855d8d58",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "250b5b1b_57b9b603",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-22T20:46:45Z",
+      "side": 1,
+      "message": "Yea, sounds good. And thanks for taking care of this CL!",
+      "parentUuid": "73940f88_14421518",
+      "range": {
+        "startLine": 269,
+        "startChar": 0,
+        "endLine": 269,
+        "endChar": 85
+      },
+      "revId": "bec4357f9c66c0865a9985f51630228d855d8d58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
