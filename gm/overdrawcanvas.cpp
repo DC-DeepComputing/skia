@@ -25,7 +25,7 @@
 #define HEIGHT 500
 
 static const SkColor kOverdrawColors[6] = {
-    0x00000000, 0x5fff0000, 0x2f0000ff, 0x2f00ff00, 0x3fff0000, 0x7fff0000,
+    0x00000000, 0xff0000ff, 0x00ff00ff, 0x0000ffff, 0x00ffffff, 0xffff00ff,
 };
 
 
