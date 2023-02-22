@@ -154,6 +154,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ecb5c918_b3b6aeb8",
+        "filename": "tests/SkMallocTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-22T13:58:23Z",
+      "side": 1,
+      "message": "`sk_free` takes a `void*` already so I think the compiler do the right thing here automatically",
+      "parentUuid": "0c693097_688cdc2d",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 15
+      },
+      "revId": "3607d616be30e6a5c97db07423d2b11fc58c7e61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c7e2cb13_80d4b1ce",
         "filename": "tests/SkMallocTest.cpp",
         "patchSetId": 2
