@@ -22,6 +22,29 @@
       },
       "revId": "5ad92eaf6d534a050d862d7c0ab43cec066bc291",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aef6cefb_1bdfb24c",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-22T13:57:41Z",
+      "side": 1,
+      "message": "This is only true for users who don\u0027t attempt to replace the allocator. Users who _do_ replace the allocator will need to port this change into their version.",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 43
+      },
+      "revId": "5ad92eaf6d534a050d862d7c0ab43cec066bc291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
