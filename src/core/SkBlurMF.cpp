@@ -21,7 +21,7 @@
 #include "src/core/SkStringUtils.h"
 #include "src/core/SkWriteBuffer.h"
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/gpu/SkBackingFit.h"
@@ -45,7 +45,7 @@
 #if SK_GPU_V1
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
 #endif // SK_GPU_V1
-#endif // SK_SUPPORT_GPU
+#endif // defined(SK_GANESH_ENABLED)
 
 using namespace skia_private;
 
@@ -58,7 +58,7 @@ public:
     bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
                     SkIPoint* margin) const override;
 
-#if SK_SUPPORT_GPU && SK_GPU_V1
+#if defined(SK_GANESH_ENABLED) && SK_GPU_V1
     bool canFilterMaskGPU(const GrStyledShape& shape,
                           const SkIRect& devSpaceShapeBounds,
                           const SkIRect& clipBounds,
@@ -581,7 +581,7 @@ void SkBlurMaskFilterImpl::flatten(SkWriteBuffer& buffer) const {
 }
 
 
-#if SK_SUPPORT_GPU && SK_GPU_V1
+#if defined(SK_GANESH_ENABLED) && SK_GPU_V1
 
 ///////////////////////////////////////////////////////////////////////////////
 //  Circle Blur
@@ -1669,7 +1669,7 @@ GrSurfaceProxyView SkBlurMaskFilterImpl::filterMaskGPU(GrRecordingContext* conte
     return surfaceDrawContext->readSurfaceView();
 }
 
-#endif // SK_SUPPORT_GPU && SK_GPU_V1
+#endif // defined(SK_GANESH_ENABLED) && SK_GPU_V1
 
 void sk_register_blur_maskfilter_createproc() { SK_REGISTER_FLATTENABLE(SkBlurMaskFilterImpl); }
 
