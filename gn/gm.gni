@@ -258,6 +258,7 @@ gm_sources = [
   "$_gm/localmatrixshader.cpp",
   "$_gm/lumafilter.cpp",
   "$_gm/mac_aa_explorer.cpp",
+  "$_gm/mac_emoji_issue.cpp",
   "$_gm/make_raster_image.cpp",
   "$_gm/makecolorspace.cpp",
   "$_gm/mandoline.cpp",
