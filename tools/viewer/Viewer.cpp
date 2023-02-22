@@ -56,7 +56,7 @@
 #include "tools/viewer/SlideDir.h"
 #include "tools/viewer/SvgSlide.h"
 
-#if SK_GPU_V1
+#if defined(SK_GANESH_ENABLED)
 #include "src/gpu/ganesh/ops/AtlasPathRenderer.h"
 #include "src/gpu/ganesh/ops/TessellationPathRenderer.h"
 #endif
@@ -2056,7 +2056,7 @@ void Viewer::drawImGui() {
                         ImGui::RadioButton("Software", true);
                     } else {
                         prButton(GpuPathRenderers::kDefault);
-#if SK_GPU_V1
+#if defined(SK_GANESH_ENABLED)
                         if (fWindow->sampleCount() > 1 || FLAGS_dmsaa) {
                             const auto* caps = ctx->priv().caps();
                             if (skgpu::v1::AtlasPathRenderer::IsSupported(ctx)) {
@@ -3016,7 +3016,7 @@ void Viewer::updateUIState() {
                 writer.appendNString("Software");
             } else {
                 writer.appendString(gPathRendererNames[GpuPathRenderers::kDefault]);
-#if SK_GPU_V1
+#if defined(SK_GANESH_ENABLED)
                 if (fWindow->sampleCount() > 1 || FLAGS_dmsaa) {
                     const auto* caps = ctx->priv().caps();
                     if (skgpu::v1::AtlasPathRenderer::IsSupported(ctx)) {
