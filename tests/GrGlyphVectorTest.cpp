@@ -49,7 +49,7 @@ DEF_TEST(GlyphVector_Serialization, r) {
     SubRunAllocator alloc;
 
     const int N = 10;
-    SkGlyphVariant* glyphs = alloc.makePODArray<SkGlyphVariant>(N);
+    SkPackedGlyphID* glyphs = alloc.makePODArray<SkPackedGlyphID>(N);
     for (int i = 0; i < N; i++) {
         glyphs[i] = SkPackedGlyphID(SkGlyphID(i));
     }
