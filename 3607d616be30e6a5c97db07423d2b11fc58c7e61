@@ -81,6 +81,52 @@
       "parentUuid": "239a5df0_b62ae01b",
       "revId": "3607d616be30e6a5c97db07423d2b11fc58c7e61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dda7bac3_60d860f1",
+        "filename": "include/private/base/SkMalloc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-22T13:52:07Z",
+      "side": 1,
+      "message": "implementation-defined\n\n(I don\u0027t think C++11 has anything to do with it--this behavior was, in practice, implementation-defined before C++11, and remains implementation-defined today)",
+      "range": {
+        "startLine": 56,
+        "startChar": 84,
+        "endLine": 57,
+        "endChar": 23
+      },
+      "revId": "3607d616be30e6a5c97db07423d2b11fc58c7e61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d37a58f_b90144f1",
+        "filename": "src/ports/SkMemory_malloc.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-22T13:52:07Z",
+      "side": 1,
+      "message": "I would suggest renaming this to something accurate in a separate CL, and moving all the comment fixes about throwing to that CL.",
+      "range": {
+        "startLine": 39,
+        "startChar": 20,
+        "endLine": 39,
+        "endChar": 36
+      },
+      "revId": "3607d616be30e6a5c97db07423d2b11fc58c7e61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
