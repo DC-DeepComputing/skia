@@ -8,12 +8,18 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 
 # Run a command and symbolize anything that looks like a stacktrace in the
 # stdout/stderr. This will return with the same error code as the command.
 def main(basedir, cmd):
     logs = collections.deque(maxlen=500)
+
+    print("***** ABOUT TO RUN THE FOLLOWING COMMAND *****")
+    print(cmd)
+    print("***** SLEEPING FOR 20 MINUTES *****")
+    time.sleep(20*60)
 
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT,
