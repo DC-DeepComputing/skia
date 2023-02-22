@@ -70,6 +70,24 @@
       "parentUuid": "a6d00dd6_9388f1ad",
       "revId": "8a11c291220dd1f2b34fe4cab817cda5bdff61ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c62f6627_744d8c05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-22T16:13:18Z",
+      "side": 1,
+      "message": "Dawn-side fix https://dawn-review.googlesource.com/c/dawn/+/120983 should let the roll proceed. Tested it locally and it worked.",
+      "parentUuid": "103974f1_c0e435d1",
+      "revId": "8a11c291220dd1f2b34fe4cab817cda5bdff61ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
