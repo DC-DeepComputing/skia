@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43a5b93e_026b12ab",
+        "filename": "include/core/SkColorType.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-22T20:39:15Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "fe37efcaa451751f5e18d4bb4ef31500ce11fe4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
