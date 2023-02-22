@@ -945,7 +945,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 				d["os"] = DEFAULT_OS_LINUX_GCE
 			}
 			if b.model("GCE") && d["cpu"] == "x86-64-Haswell_GCE" {
-				d["machine_type"] = MACHINE_TYPE_MEDIUM
+				d["machine_type"] = "n1-standard-32"
 			}
 		} else {
 			// It's a GPU job.
@@ -1057,7 +1057,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 		}
 		if d["os"] == DEFAULT_OS_LINUX_GCE {
 			if b.extraConfig("CanvasKit", "CMake", "Docker", "PathKit") || b.role("BuildStats", "CodeSize") {
-				b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+				b.linuxGceDimensions("n1-standard-32")
 				return
 			}
 			// Use many-core machines for Build tasks.
@@ -1108,7 +1108,7 @@ func (b *jobBuilder) buildTaskDrivers(goos, goarch string) string {
 		b.cmd("/bin/bash", "skia/infra/bots/build_task_drivers.sh",
 			specs.PLACEHOLDER_ISOLATED_OUTDIR,
 			goos+"_"+goarch)
-		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+		b.linuxGceDimensions("n1-standard-32")
 		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
 		b.addToPATH("bazelisk")
 		b.idempotent()
@@ -1154,7 +1154,7 @@ func (b *jobBuilder) createDockerImage(wasm bool) string {
 		b.addToPATH("cipd_bin_packages", "cipd_bin_packages/bin")
 		b.cas(CAS_EMPTY)
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
-		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+		b.linuxGceDimensions("n1-standard-32")
 		b.usesDocker()
 		b.cache(CACHES_DOCKER...)
 	})
@@ -1185,7 +1185,7 @@ func (b *jobBuilder) createPushAppsFromSkiaDockerImage() {
 		b.cas(CAS_EMPTY)
 		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
-		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+		b.linuxGceDimensions("n1-standard-32")
 		b.usesDocker()
 		b.cache(CACHES_DOCKER...)
 		b.timeout(2 * time.Hour)
@@ -1213,7 +1213,7 @@ func (b *jobBuilder) createPushBazelAppsFromWASMDockerImage() {
 		b.cas(CAS_EMPTY)
 		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
-		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+		b.linuxGceDimensions("n1-standard-32")
 		b.usesDocker()
 		b.cache(CACHES_DOCKER...)
 	})
@@ -1397,7 +1397,7 @@ func (b *jobBuilder) checkGeneratedFiles() {
 		b.cipd(specs.CIPD_PKGS_GIT_LINUX_AMD64...)
 		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
 		b.addToPATH("bazelisk")
-		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+		b.linuxGceDimensions("n1-standard-32")
 		b.serviceAccount(b.cfg.ServiceAccountHousekeeper)
 	})
 }
@@ -1491,7 +1491,7 @@ func (b *jobBuilder) buildstats() {
 		b.kitchenTask("compute_buildstats", OUTPUT_PERF)
 		b.dep(compileTaskName)
 		b.asset("bloaty")
-		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+		b.linuxGceDimensions("n1-standard-32")
 		b.usesDocker()
 		b.usesGit()
 		b.cache(CACHES_WORKDIR...)
@@ -2059,7 +2059,7 @@ func (b *jobBuilder) compileWasmGMTests(compileName string) {
 	b.addTask(compileName, func(b *taskBuilder) {
 		b.attempts(1)
 		b.usesDocker()
-		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+		b.linuxGceDimensions("n1-standard-32")
 		b.cipd(CIPD_PKG_LUCI_AUTH)
 		b.dep(b.buildTaskDrivers("linux", "amd64"))
 		b.output("wasm_out")
@@ -2170,7 +2170,7 @@ func (b *jobBuilder) bazelBuild() {
 			cmd = append(cmd, "--cross="+cross)
 		}
 		if host == "linux_x64" {
-			b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+			b.linuxGceDimensions("n1-standard-32")
 			// Use a built task_driver from CIPD instead of building it from scratch. The
 			// task_driver should not need to change often, so using a CIPD version should reduce
 			// build latency.
@@ -2248,7 +2248,7 @@ func (b *jobBuilder) bazelTest() {
 			cmd = append(cmd, "--cross="+cross)
 		}
 		if host == "linux_x64" {
-			b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+			b.linuxGceDimensions("n1-standard-32")
 			b.dep(b.buildTaskDrivers("linux", "amd64"))
 		} else {
 			panic("unsupported Bazel host " + host)
