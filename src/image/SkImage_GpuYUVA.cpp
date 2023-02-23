@@ -24,6 +24,7 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/GrYUVABackendTextures.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -377,7 +378,7 @@ sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage::MakePromiseYUVATexture(sk_sp<GrContextThreadSafeProxy> threadSafeProxy,
+sk_sp<SkImage> SkImageGanesh::MakePromiseYUVATexture(sk_sp<GrContextThreadSafeProxy> threadSafeProxy,
                                                const GrYUVABackendTextureInfo& backendTextureInfo,
                                                sk_sp<SkColorSpace> imageColorSpace,
                                                PromiseImageTextureFulfillProc textureFulfillProc,

@@ -12,6 +12,7 @@
 #include "include/core/SkPixmap.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
@@ -28,7 +29,7 @@ sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
     if (!mbet) {
         return nullptr;
     }
-    return SkImage::MakeFromTexture(dContext,
+    return SkImageGanesh::MakeFromTexture(dContext,
                                     mbet->texture(),
                                     origin,
                                     pixmap.colorType(),
@@ -61,7 +62,7 @@ sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
     if (!mbet) {
         return nullptr;
     }
-    return SkImage::MakeFromTexture(dContext,
+    return SkImageGanesh::MakeFromTexture(dContext,
                                     mbet->texture(),
                                     origin,
                                     info.colorType(),

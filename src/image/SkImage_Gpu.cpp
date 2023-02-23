@@ -24,6 +24,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -472,7 +473,7 @@ sk_sp<SkImage> SkImage::MakeFromCompressedTexture(GrRecordingContext* rContext,
                                    SkColorInfo(ct, at, std::move(cs)));
 }
 
-sk_sp<SkImage> SkImage::MakeFromTexture(GrRecordingContext* rContext,
+sk_sp<SkImage> SkImageGanesh::MakeFromTexture(GrRecordingContext* rContext,
                                         const GrBackendTexture& tex, GrSurfaceOrigin origin,
                                         SkColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs,
                                         TextureReleaseProc releaseP, ReleaseContext releaseC) {
@@ -610,7 +611,7 @@ sk_sp<SkImage> SkImage::makeTextureImage(GrDirectContext* dContext,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage::MakePromiseTexture(sk_sp<GrContextThreadSafeProxy> threadSafeProxy,
+sk_sp<SkImage> SkImageGanesh::MakePromiseTexture(sk_sp<GrContextThreadSafeProxy> threadSafeProxy,
                                            const GrBackendFormat& backendFormat,
                                            SkISize dimensions,
                                            GrMipmapped mipmapped,
@@ -823,7 +824,7 @@ sk_sp<SkImage> SkImage::MakeFromAHardwareBufferWithData(GrDirectContext* dContex
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SkImage::MakeBackendTextureFromSkImage(GrDirectContext* direct,
+bool SkImageGanesh::MakeBackendTextureFromSkImage(GrDirectContext* direct,
                                             sk_sp<SkImage> image,
                                             GrBackendTexture* backendTexture,
                                             BackendTextureReleaseProc* releaseProc) {

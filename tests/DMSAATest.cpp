@@ -30,6 +30,7 @@
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/SkColorData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkBlendModePriv.h"
@@ -254,7 +255,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
                                                        GrRenderable::kYes,
                                                        GrProtected::kNo);
 
-    auto sourceImage = SkImage::MakeFromTexture(context,
+    auto sourceImage = SkImageGanesh::MakeFromTexture(context,
                                                 sourceTexture,
                                                 kTopLeft_GrSurfaceOrigin,
                                                 kRGBA_8888_SkColorType,
@@ -330,7 +331,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
     }
 
     {
-        auto readImage = SkImage::MakeFromTexture(context,
+        auto readImage = SkImageGanesh::MakeFromTexture(context,
                                                   texture2,
                                                   kTopLeft_GrSurfaceOrigin,
                                                   kRGBA_8888_SkColorType,

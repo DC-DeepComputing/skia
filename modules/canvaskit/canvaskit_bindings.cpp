@@ -53,6 +53,7 @@
 #include "include/effects/SkPerlinNoiseShader.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/effects/SkTrimPathEffect.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/SkShadowFlags.h"
 #include "include/utils/SkParsePath.h"
 #include "include/utils/SkShadowUtils.h"
@@ -2145,7 +2146,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             GrBackendTexture gbt(ii.width, ii.height, GrMipmapped::kNo, gti);
             auto dContext = GrAsDirectContext(self.getCanvas()->recordingContext());
 
-            return SkImage::MakeFromTexture(
+            return SkImageGanesh::MakeFromTexture(
                              dContext,
                              gbt,
                              GrSurfaceOrigin::kTopLeft_GrSurfaceOrigin,

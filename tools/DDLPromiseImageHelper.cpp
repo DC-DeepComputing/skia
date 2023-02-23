@@ -12,6 +12,7 @@
 #include "include/core/SkSerialProcs.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrYUVABackendTextures.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/codec/SkCodecImageGenerator.h"
 #include "src/core/SkCachedData.h"
 #include "src/core/SkMipmap.h"
@@ -339,7 +340,7 @@ sk_sp<SkImage> DDLPromiseImageHelper::CreatePromiseImages(const void* rawData,
                                                      backendFormats,
                                                      GrMipmapped::kNo,
                                                      kTopLeft_GrSurfaceOrigin);
-        image = SkImage::MakePromiseYUVATexture(
+        image = SkImageGanesh::MakePromiseYUVATexture(
                                             procContext->fThreadSafeProxy,
                                             yuvaBackendTextures,
                                             curImage.refOverallColorSpace(),
@@ -357,7 +358,7 @@ sk_sp<SkImage> DDLPromiseImageHelper::CreatePromiseImages(const void* rawData,
         const GrBackendFormat& backendFormat = curImage.backendFormat(0);
         SkASSERT(backendFormat.isValid());
 
-        image = SkImage::MakePromiseTexture(procContext->fThreadSafeProxy,
+        image = SkImageGanesh::MakePromiseTexture(procContext->fThreadSafeProxy,
                                             backendFormat,
                                             curImage.overallDimensions(),
                                             curImage.mipmapped(0),

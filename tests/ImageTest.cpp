@@ -38,6 +38,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/SkColorData.h"
 #include "include/private/base/SkCPUTypes.h"
 #include "include/private/base/SkDebug.h"
@@ -562,7 +563,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsImage,
                 dContext, kSize, kSize, colorType, GrMipmapped::kNo, GrRenderable::kNo);
         sk_sp<SkImage> img;
         if (mbet) {
-            img = SkImage::MakeFromTexture(dContext, mbet->texture(), kTopLeft_GrSurfaceOrigin,
+            img = SkImageGanesh::MakeFromTexture(dContext, mbet->texture(), kTopLeft_GrSurfaceOrigin,
                                            colorType, kOpaque_SkAlphaType, nullptr);
         }
         REPORTER_ASSERT(reporter, can == SkToBool(img),
@@ -931,7 +932,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SkImage_NewFromTextureRelease,
 
     TextureReleaseChecker releaseChecker;
     GrSurfaceOrigin texOrigin = kBottomLeft_GrSurfaceOrigin;
-    sk_sp<SkImage> refImg = SkImage::MakeFromTexture(
+    sk_sp<SkImage> refImg = SkImageGanesh::MakeFromTexture(
             dContext,
             mbet->texture(),
             texOrigin,
@@ -1214,9 +1215,9 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(makeBackendTexture,
         }
 
         GrBackendTexture newBackend;
-        SkImage::BackendTextureReleaseProc proc;
-        bool result = SkImage::MakeBackendTextureFromSkImage(context, std::move(image),
-                                                             &newBackend, &proc);
+        SkImageGanesh::BackendTextureReleaseProc proc;
+        bool result = SkImageGanesh::MakeBackendTextureFromSkImage(context, std::move(image),
+                                                                   &newBackend, &proc);
         if (result != testCase.fExpectation) {
             static const char *const kFS[] = { "fail", "succeed" };
             ERRORF(reporter, "This image was expected to %s but did not.",

@@ -24,6 +24,7 @@
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/SkColorData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkAutoPixmapStorage.h"
@@ -148,7 +149,7 @@ void test_wrapping(GrDirectContext* dContext,
     }
 
     {
-        sk_sp<SkImage> img = SkImage::MakeFromTexture(dContext,
+        sk_sp<SkImage> img = SkImageGanesh::MakeFromTexture(dContext,
                                                       mbet->texture(),
                                                       kTopLeft_GrSurfaceOrigin,
                                                       skColorType,

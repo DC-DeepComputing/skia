@@ -28,6 +28,7 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/utils/SkMultiPictureDocument.h"
 #include "tests/Test.h"
 #include "tools/SkSharingProc.h"
@@ -308,7 +309,7 @@ static sk_sp<SkImage> makeAHardwareBufferTestImage(
         false   // isRenderable
     );
     SkColorType colorType = GrAHardwareBufferUtils::GetSkColorTypeFromBufferFormat(hwbDesc.format);
-    sk_sp<SkImage> image = SkImage::MakeFromTexture(
+    sk_sp<SkImage> image = SkImageGanesh::MakeFromTexture(
         context, texture, kTopLeft_GrSurfaceOrigin, colorType, kPremul_SkAlphaType,
         SkColorSpace::MakeSRGB(),
         deleteProc,

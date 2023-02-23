@@ -16,6 +16,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/base/SkDeque.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkTemplates.h"
@@ -236,7 +237,7 @@ void DDLFuzzer::initPromiseImage(int index) {
     promiseImage.fFuzzer = this;
     GrBackendFormat backendFmt = fContext->defaultBackendFormat(kRGBA_8888_SkColorType,
                                                                 GrRenderable::kYes);
-    promiseImage.fImage = SkImage::MakePromiseTexture(fContext->threadSafeProxy(),
+    promiseImage.fImage = SkImageGanesh::MakePromiseTexture(fContext->threadSafeProxy(),
                                                       backendFmt,
                                                       kPromiseImageSize,
                                                       GrMipmapped::kNo,

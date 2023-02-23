@@ -23,6 +23,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/gl/GrGLTypes.h"
 #include "include/private/gpu/ganesh/GrGLTypesPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -83,7 +84,7 @@ DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLTextureParameters,
     REPORTER_ASSERT(reporter, backendTexCopy.isSameTexture(backendTex));
 
     sk_sp<SkImage> wrappedImage =
-            SkImage::MakeFromTexture(dContext, backendTex, kTopLeft_GrSurfaceOrigin,
+            SkImageGanesh::MakeFromTexture(dContext, backendTex, kTopLeft_GrSurfaceOrigin,
                                      kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
     REPORTER_ASSERT(reporter, wrappedImage);
 

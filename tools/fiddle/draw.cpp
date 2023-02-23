@@ -30,7 +30,7 @@ void draw(SkCanvas* canvas) {
     SkDebugf("This is text output: %d", 2);
 
     if (auto dContext = GrAsDirectContext(canvas->recordingContext())) {
-        sk_sp<SkImage> tmp = SkImage::MakeFromTexture(dContext,
+        sk_sp<SkImage> tmp = SkImageGanesh::MakeFromTexture(dContext,
                                                       backEndTexture,
                                                       kTopLeft_GrSurfaceOrigin,
                                                       kRGBA_8888_SkColorType,

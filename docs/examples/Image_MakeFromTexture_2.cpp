@@ -14,7 +14,7 @@ void draw(SkCanvas* canvas) {
     };
     int x = 0, y = 0;
     for (auto origin : { kBottomLeft_GrSurfaceOrigin, kTopLeft_GrSurfaceOrigin } ) {
-        sk_sp<SkImage> image = SkImage::MakeFromTexture(dContext, backEndTexture,
+        sk_sp<SkImage> image = SkImageGanesh::MakeFromTexture(dContext, backEndTexture,
                                                         origin, kRGBA_8888_SkColorType,
                                                         kOpaque_SkAlphaType, nullptr,
                                                         releaseCallback, &x);
