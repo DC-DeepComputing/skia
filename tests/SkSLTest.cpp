@@ -654,6 +654,7 @@ SKSL_TEST(RP + GPU_ES3,      kNever,      MatricesNonsquare,               "shar
 SKSL_TEST(RP + VM,           kNever,      MatrixConstructorsES2,           "shared/MatrixConstructorsES2.sksl")
 SKSL_TEST(RP,                kNever,      MatrixConstructorsES3,           "shared/MatrixConstructorsES3.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, MatrixEquality,                  "shared/MatrixEquality.sksl")
+SKSL_TEST(RP + GPU_ES3,      kNextRelease,MatrixIndexLookup,               "shared/MatrixIndexLookup.sksl")
 SKSL_TEST(RP + VM + GPU,     kNextRelease,MatrixOpEqualsES2,               "shared/MatrixOpEqualsES2.sksl")
 SKSL_TEST(RP + GPU_ES3,      kNextRelease,MatrixOpEqualsES3,               "shared/MatrixOpEqualsES3.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, MatrixScalarMath,                "shared/MatrixScalarMath.sksl")
