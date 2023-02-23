@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "07ca7f78_0ee1b932",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-23T20:30:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a81ff37_9c7cc205",
+      "range": {
+        "startLine": 15,
+        "startChar": 30,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "39f9955e_b04fbdef",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eff9ea26_ac9c02e3",
+        "filename": "include/encode/SkEncoder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-23T20:30:01Z",
+      "side": 1,
+      "message": "Yeah, I had that as a requirement on the caller, which, yeah, it\u0027s messy.\n\nTo think of it a bit more ... it doesn\u0027t make sense to have `fSrc` here at all. We only use its size (to do math during `encodeRows`), so it probably makes more sense just to have a `SkISize` for that use.\n\nI\u0027ve moved this into the `SkJpegEncoder` class.",
+      "parentUuid": "68d3bf15_37df07d1",
+      "range": {
+        "startLine": 65,
+        "startChar": 7,
+        "endLine": 65,
+        "endChar": 81
+      },
+      "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f4c6d7f1_b2fab2e0",
         "filename": "src/encode/SkImageEncoderFns.h",
         "patchSetId": 4
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "511deb55_f2caaee2",
+        "filename": "src/encode/SkImageEncoderFns.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-23T20:30:01Z",
+      "side": 1,
+      "message": "This is the work that I started at the beginning of this \"gee this file format looks odd\" odyssey. I\u0027d promised to remove the tonemap-generating code from Skia and to instead use this interface. And I never did that.\n\nWe should revisit this. At this point, I think that the HDR tonemapping would be nice to have in Skia itself.",
+      "parentUuid": "f4c6d7f1_b2fab2e0",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 5
+      },
+      "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "62ee3317_6dd5807c",
         "filename": "src/encode/SkJpegEncoder.cpp",
         "patchSetId": 4
@@ -100,6 +172,30 @@
       "writtenOn": "2023-02-23T17:35:35Z",
       "side": 1,
       "message": "Is this (and the next line) supposed to be 2 ?",
+      "range": {
+        "startLine": 262,
+        "startChar": 21,
+        "endLine": 262,
+        "endChar": 22
+      },
+      "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4798e917_740338da",
+        "filename": "src/encode/SkJpegEncoder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-02-23T20:30:01Z",
+      "side": 1,
+      "message": "Yes. Actually ... these are always initialized to 1 [0]. And they should be 1 for all the configurations we support (we don\u0027t support any configurations where U and V have different subsampling, also on the decode size [1]).\n\n[0] https://source.chromium.org/chromium/chromium/src/+/main:third_party/libjpeg_turbo/libjpeg.txt;l\u003d1143;drc\u003ded683925e4897a84b3bffc5c1414c85b97a129a3\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkJpegCodec.cpp;l\u003d873;drc\u003de83f4cb12be07ad31562d8950ca37e6e36b8a354",
+      "parentUuid": "62ee3317_6dd5807c",
       "range": {
         "startLine": 262,
         "startChar": 21,
