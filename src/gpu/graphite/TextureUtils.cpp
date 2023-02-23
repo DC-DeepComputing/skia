@@ -110,6 +110,7 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
 
     // Src and dst colorInfo are the same
     const SkColorInfo& colorInfo = bmpToUpload.info().colorInfo();
+
     // Add UploadTask to Recorder
     UploadInstance upload = UploadInstance::Make(
             recorder, proxy, colorInfo, colorInfo, texels,
@@ -121,6 +122,11 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
     recorder->priv().add(UploadTask::Make(std::move(upload)));
 
     Swizzle swizzle = caps->getReadSwizzle(ct, textureInfo);
+    // TODO: Check if alpha-only. For now, check for just the alpha-only type we expect.
+    if (colorInfo.colorType() == kAlpha_8_SkColorType) {
+        swizzle = Swizzle::Concat(swizzle, Swizzle("aaaa"));
+        // proxy.concatSwizzle("aaaa");
+    }
     return {{std::move(proxy), swizzle}, ct};
 }
 

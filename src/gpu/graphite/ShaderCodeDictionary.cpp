@@ -19,6 +19,7 @@
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/ReadWriteSwizzle.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
@@ -112,7 +113,8 @@ std::string ShaderInfo::toSkSL(const ResourceBindingRequirements& bindingReqs,
                                const RenderStep* step,
                                const bool useStorageBuffers,
                                const bool defineLocalCoordsVarying,
-                               int* numTexturesAndSamplersUsed) const {
+                               int* numTexturesAndSamplersUsed,
+                               std::string swizzle) const {
     std::string preamble = EmitVaryings(step,
                                         /*direction=*/"in",
                                         /*emitShadingSsboIndexVarying=*/useStorageBuffers,
@@ -176,6 +178,11 @@ std::string ShaderInfo::toSkSL(const ResourceBindingRequirements& bindingReqs,
         emit_preamble_for_entry(*this, &entryIndex, &preamble);
     }
 
+    if (swizzle != "rgba") {
+        SkSL::String::appendf(&mainBody, "%s = %s.%s;", lastOutputVar.c_str(), lastOutputVar.c_str(), swizzle.c_str());
+    }
+    // std::string swizzleStr = "" : "." + swizzle;
+    //SkSL::String::appendf(&mainBody, "%s = %s%s;", lastOutputVar.c_str(), lastOutputVar.c_str(), swizzle.c_str());
     if (step->emitsCoverage()) {
         mainBody += "half4 outputCoverage;";
         mainBody += step->fragmentCoverageSkSL();
@@ -589,6 +596,7 @@ static constexpr Uniform kImageShaderUniforms[] = {
         { "filterMode",            SkSLType::kInt },
         { "useCubic",              SkSLType::kInt },
         { "cubicCoeffs",           SkSLType::kFloat4x4 },
+        { "readSwizzle",           SkSLType::kInt },
         // The next 6 uniforms are for the color space transformation
         { "csXformFlags",          SkSLType::kInt },
         { "csXformSrcKind",        SkSLType::kInt },
@@ -611,6 +619,17 @@ static_assert(0 == static_cast<int>(SkFilterMode::kNearest),
               "ImageShader code depends on SkFilterMode");
 static_assert(1 == static_cast<int>(SkFilterMode::kLinear),
               "ImageShader code depends on SkFilterMode");
+
+static_assert(0 == static_cast<int>(ReadSwizzle::kRGBA),
+              "ImageShader code depends on ReadSwizzle");
+static_assert(1 == static_cast<int>(ReadSwizzle::kRGB1),
+              "ImageShader code depends on ReadSwizzle");
+static_assert(2 == static_cast<int>(ReadSwizzle::k000R),
+              "ImageShader code depends on ReadSwizzle");
+static_assert(3 == static_cast<int>(ReadSwizzle::kRRR1),
+              "ImageShader code depends on ReadSwizzle");
+static_assert(4 == static_cast<int>(ReadSwizzle::kBGRA),
+              "ImageShader code depends on ReadSwizzle");
 
 static constexpr char kImageShaderName[] = "sk_image_shader";
 
