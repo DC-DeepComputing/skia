@@ -16,6 +16,24 @@
       "message": "If the same thing happens with `resources/fonts/sbix.ttf` that would be better, as we do not want to check in a ~200MB font with an incompatible license. If it doesn\u0027t, that would also be interesting so we can make a glyph which does.",
       "revId": "7b1edad45626e1ac19966dd0f20efe01a186efd2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "299a13e3_acc076f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19599
+      },
+      "writtenOn": "2023-02-23T13:24:07Z",
+      "side": 1,
+      "message": "Thanks, replaced with resources/fonts/sbix.ttf, issue is still reproducible. Sorry didn\u0027t think about it before you mentioned it.",
+      "parentUuid": "e2415bc8_7db531e4",
+      "revId": "7b1edad45626e1ac19966dd0f20efe01a186efd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
