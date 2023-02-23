@@ -183,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26ea7094_75b0f56c",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-23T18:23:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6657a35_cc68f164",
+      "range": {
+        "startLine": 918,
+        "startChar": 11,
+        "endLine": 918,
+        "endChar": 18
+      },
+      "revId": "bb034eeff4d7d025ff99cc2cab5e3678db0f8a91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fde750f8_02ff67fa",
@@ -291,6 +315,30 @@
       "side": 1,
       "message": "We can add more type aliases. These are things *we* define to help document our APIs.",
       "parentUuid": "a460d2aa_17556e89",
+      "range": {
+        "startLine": 951,
+        "startChar": 89,
+        "endLine": 951,
+        "endChar": 96
+      },
+      "revId": "bb034eeff4d7d025ff99cc2cab5e3678db0f8a91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a004f990_14c207c4",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-23T18:23:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e049809f_19d72bcc",
       "range": {
         "startLine": 951,
         "startChar": 89,

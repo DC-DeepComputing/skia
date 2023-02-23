@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c07a4103_c5399a77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-23T18:23:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88512c87_9dad89d1",
+      "revId": "2f023e81faa35c72070433eb04430d90b9e7e99a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "510f8517_4d25db3f",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-02-23T13:15:17Z",
       "side": 1,
       "message": "Include this so we verify the return type also.",
+      "range": {
+        "startLine": 777,
+        "startChar": 51,
+        "endLine": 777,
+        "endChar": 70
+      },
+      "revId": "2f023e81faa35c72070433eb04430d90b9e7e99a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b49b632_e6371fe5",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-23T18:23:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "510f8517_4d25db3f",
       "range": {
         "startLine": 777,
         "startChar": 51,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bed314d7_301cfce4",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-23T18:23:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25b767c6_b0a06fdf",
+      "range": {
+        "startLine": 918,
+        "startChar": 11,
+        "endLine": 918,
+        "endChar": 18
+      },
+      "revId": "2f023e81faa35c72070433eb04430d90b9e7e99a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea769ad6_c65f3526",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-02-23T13:15:17Z",
       "side": 1,
       "message": "This should also be InputPoint if we only care about 2.\n\nAlso, the rest of these methods are pretty self explanatory, but setTransform has a lot of moving parts. Maybe reference the TransformValue type here as a place to see more details.",
+      "range": {
+        "startLine": 951,
+        "startChar": 79,
+        "endLine": 951,
+        "endChar": 91
+      },
+      "revId": "2f023e81faa35c72070433eb04430d90b9e7e99a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed54610f_4f7d7d0e",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-02-23T18:23:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea769ad6_c65f3526",
       "range": {
         "startLine": 951,
         "startChar": 79,
