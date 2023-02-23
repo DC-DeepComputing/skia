@@ -159,6 +159,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d956491a_f0b66adc",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T20:46:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5230f0ab_9a379bc7",
+      "revId": "f3dfc89ce4bcd7e53dfd6e48276ae0c1fecbb4e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "250c4b4a_08a404e3",
@@ -196,6 +214,30 @@
       "side": 1,
       "message": "I think so -- if the pixmaps are too big and you haven\u0027t requested rescaling it bails.",
       "parentUuid": "250c4b4a_08a404e3",
+      "range": {
+        "startLine": 81,
+        "startChar": 12,
+        "endLine": 81,
+        "endChar": 34
+      },
+      "revId": "f3dfc89ce4bcd7e53dfd6e48276ae0c1fecbb4e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e14a583e_e37aafd2",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T20:46:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "74cd8f48_f4868e45",
       "range": {
         "startLine": 81,
         "startChar": 12,

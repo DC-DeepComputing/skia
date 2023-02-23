@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7572ab83_f8301d58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T20:46:07Z",
+      "side": 1,
+      "message": "Still lgtm",
+      "revId": "4d78b71bf3582ff9e70a5389a39b937ef88d67d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80daffb9_f0deee02",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1260,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T20:46:07Z",
+      "side": 1,
+      "message": "imgColorSpace to match the actual param ?",
+      "range": {
+        "startLine": 1260,
+        "startChar": 69,
+        "endLine": 1260,
+        "endChar": 84
+      },
+      "revId": "4d78b71bf3582ff9e70a5389a39b937ef88d67d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a58b161c_b7297b1e",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1280,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T20:46:07Z",
+      "side": 1,
+      "message": "I think it is a bit odd that this doesn\u0027t default to true.\n\nI guess, wrt the principle of least surprise, is it more surprising if your image creation just fails when it gets too big vs. automagically losing detail.",
+      "range": {
+        "startLine": 1280,
+        "startChar": 83,
+        "endLine": 1280,
+        "endChar": 88
+      },
+      "revId": "4d78b71bf3582ff9e70a5389a39b937ef88d67d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
