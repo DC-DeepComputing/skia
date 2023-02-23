@@ -22,6 +22,30 @@
       },
       "revId": "727c4927753ca143bdf8b77201fe0684555c331c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be76176d_9872cfa0",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 797,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-23T21:05:15Z",
+      "side": 1,
+      "message": "OK, this is fixed now. I\u0027ll upload the followup test CL in a sec.",
+      "parentUuid": "390fc54f_26a47b8c",
+      "range": {
+        "startLine": 797,
+        "startChar": 0,
+        "endLine": 797,
+        "endChar": 47
+      },
+      "revId": "727c4927753ca143bdf8b77201fe0684555c331c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
