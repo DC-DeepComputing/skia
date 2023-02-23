@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc0d90f9_f35d7d90",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T16:46:53Z",
+      "side": 1,
+      "message": "The shaders form a DAG (w/ ComposeShaders, LocalMatrixShaders, ColorFilterShaders, etc) and we can\u0027t tell where the ImageShader will appear in that DAG. To pass the paint\u0027s color explicitly we would need to add it as a parameter to all the addToKey methods.",
+      "parentUuid": "05172882_149c8eca",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 75
+      },
+      "revId": "96f0b76aded4e8196f843cd6c9532d27f898cc72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6e881beb_4940c0d8",
         "filename": "src/shaders/SkImageShader.cpp",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-23T16:06:14Z",
       "side": 1,
       "message": "Since you need the paint color here too, could you store it on `imgData`?",
+      "range": {
+        "startLine": 446,
+        "startChar": 50,
+        "endLine": 446,
+        "endChar": 73
+      },
+      "revId": "96f0b76aded4e8196f843cd6c9532d27f898cc72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b2d5e65_d49b45c4",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T16:46:53Z",
+      "side": 1,
+      "message": "In this case we need to create an enclosing ColorFilter block to adding the paint\u0027s color to the ImageData wouldn\u0027t buy us anything.",
+      "parentUuid": "6e881beb_4940c0d8",
       "range": {
         "startLine": 446,
         "startChar": 50,
