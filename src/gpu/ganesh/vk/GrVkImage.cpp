@@ -107,8 +107,13 @@ static bool make_views(GrVkGpu* gpu,
     if (SkToBool(attachmentUsages & GrAttachment::UsageFlags::kStencilAttachment) ||
         SkToBool(attachmentUsages & GrAttachment::UsageFlags::kColorAttachment)) {
         // Attachments can only have a mip level of 1
-        *framebufferView = GrVkImageView::Make(
-                gpu, info.fImage, info.fFormat, viewType, 1, info.fYcbcrConversionInfo);
+        *framebufferView = GrVkImageView::Make(gpu,
+                                               info.fImage,
+                                               info.fFormat,
+                                               viewType,
+                                               1,
+                                               info.fPlaneIndex,
+                                               info.fYcbcrConversionInfo);
         if (!*framebufferView) {
             return false;
         }
@@ -120,6 +125,7 @@ static bool make_views(GrVkGpu* gpu,
                                            info.fFormat,
                                            viewType,
                                            info.fLevelCount,
+                                           info.fPlaneIndex,
                                            info.fYcbcrConversionInfo);
         if (!*textureView) {
             return false;
@@ -711,4 +717,3 @@ void GrVkImage::setCurrentQueueFamilyToGraphicsQueue(GrVkGpu* gpu) {
     fMutableState->setQueueFamilyIndex(gpu->queueIndex());
 }
 #endif
-
