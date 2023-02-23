@@ -62,6 +62,30 @@
       },
       "revId": "4d78b71bf3582ff9e70a5389a39b937ef88d67d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0aa4fc3_7c12fb58",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1280,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-23T20:54:47Z",
+      "side": 1,
+      "message": "I don\u0027t think there\u0027s a definite argument -- if it was set to true we\u0027d probably get complaints about unexpectedly blurry images. I\u0027d also say it\u0027s least surprising if we follow the same behavior as Ganesh, which defaults this to false.",
+      "parentUuid": "a58b161c_b7297b1e",
+      "range": {
+        "startLine": 1280,
+        "startChar": 83,
+        "endLine": 1280,
+        "endChar": 88
+      },
+      "revId": "4d78b71bf3582ff9e70a5389a39b937ef88d67d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
