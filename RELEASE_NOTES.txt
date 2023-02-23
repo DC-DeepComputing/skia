@@ -16,6 +16,7 @@ Milestone 112
   * sk_realloc_throw (an internal API) now frees up memory when 0 is passed in as the size.
     This should have no user-facing impacts for clients which use the default allocator, but
     requires custom allocators to also implement this change.
+  * Add support for encoding SkYUVAPixmaps via SkJpegEncoder.
 
 Milestone 111
 -------------

@@ -53,6 +53,7 @@ public:
         /**
          *  Choose the downsampling factor for the U and V components.  This is only
          *  meaningful if the |src| is not kGray, since kGray will not be encoded as YUV.
+         *  This is ignored in favor of |src|'s subsampling when |src| is an SkYUVAPixmaps.
          *
          *  Our default value matches the libjpeg-turbo default.
          */
@@ -69,11 +70,11 @@ public:
         AlphaOption fAlphaOption = AlphaOption::kIgnore;
 
         /**
-         * An optional ICC profile to override the default behavior.
+         *  An optional ICC profile to override the default behavior.
          *
-         * The default behavior is to generate an ICC profile using a primary matrix and
-         * analytic transfer function. If the color space of |src| cannot be represented
-         * in this way (e.g, it is HLG or PQ), then no profile will be embedded.
+         *  The default behavior is to generate an ICC profile using a primary matrix and
+         *  analytic transfer function. If the color space of |src| cannot be represented
+         *  in this way (e.g, it is HLG or PQ), then no profile will be embedded.
          */
         const skcms_ICCProfile* fICCProfile = nullptr;
         const char* fICCProfileDescription = nullptr;
@@ -86,6 +87,10 @@ public:
      *  Returns true on success.  Returns false on an invalid or unsupported |src|.
      */
     static bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options);
+    static bool Encode(SkWStream* dst,
+                       const SkYUVAPixmaps& src,
+                       const SkColorSpace* srcColorSpace,
+                       const Options& options);
 
     /**
      *  Create a jpeg encoder that will encode the |src| pixels to the |dst| stream.
@@ -97,6 +102,10 @@ public:
      */
     static std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src,
                                            const Options& options);
+    static std::unique_ptr<SkEncoder> Make(SkWStream* dst,
+                                           const SkYUVAPixmaps& src,
+                                           const SkColorSpace* srcColorSpace,
+                                           const Options& options);
 
     ~SkJpegEncoder() override;
 
@@ -105,7 +114,9 @@ protected:
 
 private:
     friend class SkJpegGainmapEncoder;
-    SkJpegEncoder(std::unique_ptr<SkJpegEncoderMgr>, const SkPixmap& src);
+    SkJpegEncoder(std::unique_ptr<SkJpegEncoderMgr>,
+                  const SkPixmap& src,
+                  const SkYUVAPixmaps* srcYUVA);
 
     /**
      *  Create a jpeg encoder that will encode the |src| pixels and |segmentData| to the |dst|
@@ -124,6 +135,8 @@ private:
 
     static std::unique_ptr<SkEncoder> Make(SkWStream* dst,
                                            const SkPixmap& src,
+                                           const SkYUVAPixmaps* srcYUVA,
+                                           const SkColorSpace* srcYUVAColorSpace,
                                            const Options& options,
                                            const OptionsPrivate& optionsPrivate);
 
