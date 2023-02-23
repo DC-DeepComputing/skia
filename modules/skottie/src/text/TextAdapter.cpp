@@ -95,7 +95,7 @@ public:
 
         for (size_t i = 0; i < recs.size(); ++i) {
             const auto& rec = recs[i];
-            fFragInfo[i] = {rec.fOrigin, rec.fGlyphs, rec.fMatrixNode};
+            fFragInfo[i] = {rec.fGlyphs, rec.fMatrixNode, rec.fAdvance};
         }
 
         SkASSERT(!fDecoratorInfo);
@@ -112,6 +112,7 @@ public:
             fDecoratorInfo[i].fMatrix = sksg::TransformPriv::As<SkMatrix>(fFragInfo[i].fMatrixNode);
 
             fDecoratorInfo[i].fCluster = glyphs->fClusters.empty() ? 0 : glyphs->fClusters.front();
+            fDecoratorInfo[i].fAdvance = fFragInfo[i].fAdvance;
         }
 
         return child_bounds;
@@ -128,9 +129,9 @@ public:
 
 private:
     struct FragmentInfo {
-        SkPoint                     fOrigin;
         const Shaper::ShapedGlyphs* fGlyphs;
         sk_sp<sksg::Matrix<SkM44>>  fMatrixNode;
+        float                       fAdvance;
     };
 
     const sk_sp<GlyphDecorator>                  fDecorator;
@@ -599,7 +600,7 @@ uint32_t TextAdapter::shaperFlags() const {
         flags |= Shaper::Flags::kFragmentGlyphs;
     }
 
-    if (fRequiresAnchorPoint) {
+    if (fRequiresAnchorPoint || fText->fDecorator) {
         flags |= Shaper::Flags::kTrackFragmentAdvanceAscent;
     }
 

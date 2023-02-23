@@ -145,11 +145,12 @@ void SkottieTextEditor::drawCursor(SkCanvas* canvas, const GlyphInfo glyphs[], s
     //   1 -> after the first char
     //   2 -> after the second char
     //   ...
-    // The cursor is bottom-aligned, and centered to the right/left edge of the glyph bounding box.
+    // The cursor is bottom-aligned to the baseline (y = 0), and horizontally centered to the right
+    // of the glyph advance.
     const auto cscale = txt_prop.fTextSize,
-                cxpos = (fCursorIndex ? glyph_bounds.fRight : glyph_bounds.fLeft)
+                cxpos = (fCursorIndex ? glyphs[glyph_index].fAdvance : 0)
                          - fCursorBounds.width() * cscale * 0.5f,
-                cypos = glyph_bounds.fBottom - fCursorBounds.height() * cscale;
+                cypos = - fCursorBounds.height() * cscale;
     const auto cpath  = fCursorPath.makeTransform(SkMatrix::Translate(cxpos, cypos) *
                                                   SkMatrix::Scale(cscale, cscale));
 
