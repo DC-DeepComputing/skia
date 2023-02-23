@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb74569f_e70e13b3",
+        "filename": "modules/skottie/src/text/TextAdapter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-02-23T15:21:00Z",
+      "side": 0,
+      "message": "This was unused.",
+      "revId": "73f5c0d4d5e924813fcceb8ba0af53bb99f928a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
