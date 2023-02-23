@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6240b8a4_ac5aaa01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T18:57:17Z",
+      "side": 1,
+      "message": "I don\u0027t know why it took us so long to get burnt by this but ASAN started complaining of:\n\n/skcms/skcms.cc:146:57: runtime error: -3.57483e+32 is outside the range of representable values of type \u0027int\u0027\n    #0 0x104cb97a4 in classify(skcms_TransferFunction const\u0026, TF_PQish*, TF_HLGish*)\n    #1 0x104cb944c in skcms_TransferFunction_getType\n    #2 0x104816fec in skgpu::graphite::(anonymous namespace)::add_color_space_uniforms(SkColorSpaceXformSteps const\u0026, skgpu::graphite::PipelineDataGatherer*",
+      "revId": "06826d459acfeb7259b2e0f42d4514e69cdada03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
