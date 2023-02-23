@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25203a97_66852435",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-23T13:38:21Z",
+      "side": 1,
+      "message": "lgtm (I had some of this in my pending CL, but going to land this one first, as you\u0027ve got the new proper place for the full build). Thanks!",
+      "revId": "a51c8bc8fc3f77aa31835b3e868176c54be98880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
