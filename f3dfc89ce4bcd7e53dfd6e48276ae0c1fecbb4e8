@@ -16,6 +16,132 @@
       "message": "PTAL",
       "revId": "f3dfc89ce4bcd7e53dfd6e48276ae0c1fecbb4e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fbcfdf2_e5f9722a",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1273,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T16:33:32Z",
+      "side": 1,
+      "message": "Doc limitToMaxTextureSize ?",
+      "revId": "f3dfc89ce4bcd7e53dfd6e48276ae0c1fecbb4e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c84c9ec5_921d9319",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1284,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T16:33:32Z",
+      "side": 1,
+      "message": "Can\u0027t we just make the above entry point have a default (nullptr) imageColorSpace and remove this entry point ?",
+      "range": {
+        "startLine": 1281,
+        "startChar": 0,
+        "endLine": 1284,
+        "endChar": 90
+      },
+      "revId": "f3dfc89ce4bcd7e53dfd6e48276ae0c1fecbb4e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "469f7a1c_53b45fe9",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T16:33:32Z",
+      "side": 1,
+      "message": "I don\u0027t know if this is a good idea: wdyt about having a resizeYUVAPixmaps helper that is in skgpu ?",
+      "revId": "f3dfc89ce4bcd7e53dfd6e48276ae0c1fecbb4e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "250c4b4a_08a404e3",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T16:33:32Z",
+      "side": 1,
+      "message": "Is the sense of this test correct ?",
+      "range": {
+        "startLine": 81,
+        "startChar": 12,
+        "endLine": 81,
+        "endChar": 34
+      },
+      "revId": "f3dfc89ce4bcd7e53dfd6e48276ae0c1fecbb4e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3eb7aaf_314e154e",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T16:33:32Z",
+      "side": 1,
+      "message": "rowBytes\u003d ?",
+      "range": {
+        "startLine": 90,
+        "startChar": 70,
+        "endLine": 90,
+        "endChar": 79
+      },
+      "revId": "f3dfc89ce4bcd7e53dfd6e48276ae0c1fecbb4e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29a7b720_840ff0c1",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T16:33:32Z",
+      "side": 1,
+      "message": "It seems like this should go up a line",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 9
+      },
+      "revId": "f3dfc89ce4bcd7e53dfd6e48276ae0c1fecbb4e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
