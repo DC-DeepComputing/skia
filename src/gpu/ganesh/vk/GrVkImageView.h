@@ -19,13 +19,14 @@ struct GrVkYcbcrConversionInfo;
 
 class GrVkImageView : public GrVkManagedResource {
 public:
-    enum Type {
-        kColor_Type,
-        kStencil_Type
-    };
+    enum Type { kColor_Type, kStencil_Type };
 
-    static sk_sp<const GrVkImageView> Make(GrVkGpu* gpu, VkImage image, VkFormat format,
-                                           Type viewType, uint32_t miplevels,
+    static sk_sp<const GrVkImageView> Make(GrVkGpu* gpu,
+                                           VkImage image,
+                                           VkFormat format,
+                                           Type viewType,
+                                           uint32_t miplevels,
+                                           int plane_index,
                                            const GrVkYcbcrConversionInfo& ycbcrInfo);
 
     VkImageView imageView() const { return fImageView; }
