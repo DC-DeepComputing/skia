@@ -22,6 +22,30 @@
       },
       "revId": "73f5c0d4d5e924813fcceb8ba0af53bb99f928a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5986f808_f45b9086",
+        "filename": "infra/bots/task_drivers/push_bazel_apps_from_wasm_image/push_bazel_apps_from_wasm_image.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-23T14:09:35Z",
+      "side": 0,
+      "message": "Ack. It\u0027ll vanish when I rebase.",
+      "parentUuid": "ece72594_e2d46bf6",
+      "range": {
+        "startLine": 131,
+        "startChar": 11,
+        "endLine": 131,
+        "endChar": 20
+      },
+      "revId": "73f5c0d4d5e924813fcceb8ba0af53bb99f928a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
