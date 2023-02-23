@@ -33,6 +33,24 @@
       "message": "So two notes about this.\n\nCurrent pdf.js does not support function shaders [0]. They do have a full interpreter which even has some optimizations, but it isn\u0027t hooked into the shader code. Skia is using these a lot for gradients which PDF otherwise doesn\u0027t support.\n\nPreview appears to be getting some transform or clip box incorrect, and doesn\u0027t appear to be drawing or filling all of the contours in some cases. Will need to investigate that a lot more.\n\n[0] https://github.com/mozilla/pdf.js/issues/5046",
       "revId": "4e8b235b3166780268fffcab6eb721c4f41fbd5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a141694_1f70baf2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-23T15:44:38Z",
+      "side": 1,
+      "message": "Also wanted to point out here that SkPDFGradientShader#make_function_shader already does try to use PDF\u0027s built-in gradient support if it can. However, this can only be done in non-perspective and clamp tiling [0] (aka. pad extend [1,2], aka how css gradients work [3]) mode [4]. (In theory it looks like decal mode could also be supported, but it isn\u0027t used very often.) However, a number of ColrV1 fonts currently available (like Bungee Spice) default all their gradients to reflect extend mode. Even if the reflect is not seen, we do not attempt to analyze how the gradient will be used to notice if the extend mode doesn\u0027t matter and then lower to clamp/pad.\n\n\n[0] https://skia.googlesource.com/skia/+/88338f726819e04b5ddf46f66d50c0c86a486a4f/include/core/SkTileMode.h#18\n[1] https://learn.microsoft.com/en-us/typography/opentype/spec/colr#color-lines\n[2] https://www.w3.org/TR/2011/REC-SVG11-20110816/pservers.html#LinearGradientElementSpreadMethodAttribute\n[3] https://html.spec.whatwg.org/multipage/canvas.html#interpolation\n[4] https://skia.googlesource.com/skia/+/88338f726819e04b5ddf46f66d50c0c86a486a4f/src/pdf/SkPDFGradientShader.cpp#686",
+      "parentUuid": "903c2d78_b37ba778",
+      "revId": "4e8b235b3166780268fffcab6eb721c4f41fbd5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
