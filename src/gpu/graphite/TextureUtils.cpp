@@ -110,6 +110,7 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
 
     // Src and dst colorInfo are the same
     const SkColorInfo& colorInfo = bmpToUpload.info().colorInfo();
+
     // Add UploadTask to Recorder
     UploadInstance upload = UploadInstance::Make(
             recorder, proxy, colorInfo, colorInfo, texels,

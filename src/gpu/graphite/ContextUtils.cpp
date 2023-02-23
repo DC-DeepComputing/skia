@@ -348,11 +348,12 @@ std::string GetSkSLVS(const ResourceBindingRequirements& bindingReqs,
 }
 
 FragSkSLInfo GetSkSLFS(const ResourceBindingRequirements& bindingReqs,
-                      const ShaderCodeDictionary* dict,
-                      const RuntimeEffectDictionary* rteDict,
-                      const RenderStep* step,
-                      UniquePaintParamsID paintID,
-                      bool useStorageBuffers) {
+                       const ShaderCodeDictionary* dict,
+                       const RuntimeEffectDictionary* rteDict,
+                       const RenderStep* step,
+                       UniquePaintParamsID paintID,
+                       bool useStorageBuffers,
+                       std::string writeSwizzle) {
     if (!paintID.isValid()) {
         // TODO: we should return the error shader code here
         return {};
@@ -367,14 +368,17 @@ FragSkSLInfo GetSkSLFS(const ResourceBindingRequirements& bindingReqs,
     result.fBlendInfo = shaderInfo.blendInfo();
     result.fRequiresLocalCoords = shaderInfo.needsLocalCoords();
 
-    // Extra RenderStep uniforms are always backed by a UBO. Uniforms for the PaintParams are either
-    // UBO or SSBO backed based on `useStorageBuffers`.
+    if (writeSwizzle != "rgba" && writeSwizzle != "RGBA") {
+        bool test = true;
+    }
+
     result.fSkSL =
             shaderInfo.toSkSL(bindingReqs,
                               step,
                               useStorageBuffers,
                               /*defineLocalCoordsVarying=*/result.fRequiresLocalCoords,
-                              /*numTexturesAndSamplersUsed=*/&result.fNumTexturesAndSamplers);
+                              /*numTexturesAndSamplersUsed=*/&result.fNumTexturesAndSamplers,
+                              writeSwizzle);
 
     return result;
 }

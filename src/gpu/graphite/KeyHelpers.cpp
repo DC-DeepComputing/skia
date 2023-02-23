@@ -347,6 +347,7 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
     } else {
         gatherer->write(SkM44());
     }
+
     gatherer->write(SkTo<int>(imgData.fReadSwizzle));
 
     add_color_space_uniforms(imgData.fSteps, gatherer);

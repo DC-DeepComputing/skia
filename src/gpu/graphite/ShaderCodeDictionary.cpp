@@ -113,7 +113,8 @@ std::string ShaderInfo::toSkSL(const ResourceBindingRequirements& bindingReqs,
                                const RenderStep* step,
                                const bool useStorageBuffers,
                                const bool defineLocalCoordsVarying,
-                               int* numTexturesAndSamplersUsed) const {
+                               int* numTexturesAndSamplersUsed,
+                               std::string swizzle) const {
     std::string preamble = EmitVaryings(step,
                                         /*direction=*/"in",
                                         /*emitShadingSsboIndexVarying=*/useStorageBuffers,
@@ -177,6 +178,11 @@ std::string ShaderInfo::toSkSL(const ResourceBindingRequirements& bindingReqs,
         emit_preamble_for_entry(*this, &entryIndex, &preamble);
     }
 
+    if (swizzle != "rgba") {
+        SkSL::String::appendf(&mainBody, "%s = %s.%s;", lastOutputVar.c_str(), lastOutputVar.c_str(), swizzle.c_str());
+    }
+    // std::string swizzleStr = "" : "." + swizzle;
+    //SkSL::String::appendf(&mainBody, "%s = %s%s;", lastOutputVar.c_str(), lastOutputVar.c_str(), swizzle.c_str());
     if (step->emitsCoverage()) {
         mainBody += "half4 outputCoverage;";
         mainBody += step->fragmentCoverageSkSL();

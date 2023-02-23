@@ -33,7 +33,6 @@
 #include "src/gpu/graphite/ReadWriteSwizzle.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 
-
 static skgpu::graphite::ReadSwizzle swizzle_class_to_read_enum(const skgpu::Swizzle& swizzle) {
     if (swizzle == skgpu::Swizzle::RGBA()) {
         return skgpu::graphite::ReadSwizzle::kRGBA;
@@ -414,7 +413,6 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
 
     ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset,
                                         ReadSwizzle::kRGBA);
-
     if (!fRaw) {
         imgData.fSteps = SkColorSpaceXformSteps(fImage->colorSpace(),
                                                 fImage->alphaType(),
