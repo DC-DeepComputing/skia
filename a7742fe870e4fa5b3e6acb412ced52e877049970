@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75e524dd_023db0bc",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T17:57:19Z",
+      "side": 1,
+      "message": "Should this \u0027const\u0027 go away ?",
+      "range": {
+        "startLine": 151,
+        "startChar": 44,
+        "endLine": 151,
+        "endChar": 49
+      },
+      "revId": "a7742fe870e4fa5b3e6acb412ced52e877049970",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4151e39a_80d01547",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T17:57:19Z",
+      "side": 1,
+      "message": "get_positions ?",
+      "range": {
+        "startLine": 545,
+        "startChar": 22,
+        "endLine": 545,
+        "endChar": 34
+      },
+      "revId": "a7742fe870e4fa5b3e6acb412ced52e877049970",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84fd34a4_e5393b0b",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-23T17:57:19Z",
+      "side": 1,
+      "message": "Should this be a const\u0026 ? or, maybe, not passed by reference ?",
+      "range": {
+        "startLine": 545,
+        "startChar": 35,
+        "endLine": 545,
+        "endChar": 40
+      },
+      "revId": "a7742fe870e4fa5b3e6acb412ced52e877049970",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
