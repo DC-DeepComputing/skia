@@ -268,7 +268,8 @@ sk_sp<SkData> SkJpegGainmapEncoder::EncodeToData(const SkPixmap& pm,
     optionsPrivate.xmpMetadata = xmpMetadata;
     optionsPrivate.mpfSegment = mpfSegment;
     SkDynamicMemoryWStream encodeStream;
-    auto encoder = SkJpegEncoder::Make(&encodeStream, pm, options, optionsPrivate);
+    auto encoder =
+            SkJpegEncoder::Make(&encodeStream, pm, nullptr, nullptr, options, optionsPrivate);
     if (!encoder || !encoder->encodeRows(pm.height())) {
         return nullptr;
     }
