@@ -16,6 +16,8 @@
 #include <cstddef>
 #include <cstdint>
 
+class SkYUVAPixmaps;
+
 class SK_API SkEncoder : SkNoncopyable {
 public:
     /**
@@ -55,7 +57,13 @@ protected:
         , fStorage(storageBytes)
     {}
 
+    SkEncoder(const SkPixmap& src, const SkYUVAPixmaps* srcYUVA, size_t storageBytes)
+            : fSrc(src), fSrcYUVA(srcYUVA), fCurrRow(0), fStorage(storageBytes) {}
+
     const SkPixmap&        fSrc;
+
+    // If fSrcYUVA is non-nullptr, then fSrc must be the first plane of fSrcYUVA.
+    const SkYUVAPixmaps* fSrcYUVA = nullptr;
     int                    fCurrRow;
     skia_private::AutoTMalloc<uint8_t> fStorage;
 };
