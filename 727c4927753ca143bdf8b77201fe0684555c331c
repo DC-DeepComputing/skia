@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "390fc54f_26a47b8c",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 797,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-23T20:46:48Z",
+      "side": 1,
+      "message": "FYI--this logic actually doesn\u0027t work right for nested dynamic indices. I\u0027ve got a fix and dedicated unit test coming soon.",
+      "range": {
+        "startLine": 797,
+        "startChar": 0,
+        "endLine": 797,
+        "endChar": 47
+      },
+      "revId": "727c4927753ca143bdf8b77201fe0684555c331c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
