@@ -608,7 +608,7 @@ SKSL_TEST(RP + GPU_ES3 + UsesNaN, kNever, RecursiveComparison_Vectors, "runtime/
 
 SKSL_TEST(GPU_ES3,           kNever,      ArrayCast,                       "shared/ArrayCast.sksl")
 SKSL_TEST(GPU_ES3,           kNever,      ArrayComparison,                 "shared/ArrayComparison.sksl")
-SKSL_TEST(GPU_ES3,           kNever,      ArrayConstructors,               "shared/ArrayConstructors.sksl")
+SKSL_TEST(RP + GPU_ES3,      kNever,      ArrayConstructors,               "shared/ArrayConstructors.sksl")
 SKSL_TEST(RP + VM + GPU_ES3, kNever,      ArrayFollowedByScalar,           "shared/ArrayFollowedByScalar.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, ArrayTypes,                      "shared/ArrayTypes.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, Assignment,                      "shared/Assignment.sksl")
@@ -617,7 +617,7 @@ SKSL_TEST(RP + VM + GPU,     kApiLevel_T, CommaMixedTypes,                 "shar
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, CommaSideEffects,                "shared/CommaSideEffects.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, CompileTimeConstantVariables,    "shared/CompileTimeConstantVariables.sksl")
 SKSL_TEST(GPU_ES3,           kNever,      ConstantCompositeAccessViaConstantIndex, "shared/ConstantCompositeAccessViaConstantIndex.sksl")
-SKSL_TEST(GPU_ES3,           kNever,      ConstantCompositeAccessViaDynamicIndex,  "shared/ConstantCompositeAccessViaDynamicIndex.sksl")
+SKSL_TEST(RP + GPU_ES3,      kNever,      ConstantCompositeAccessViaDynamicIndex,  "shared/ConstantCompositeAccessViaDynamicIndex.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, ConstantIf,                      "shared/ConstantIf.sksl")
 SKSL_TEST(RP + GPU_ES3,      kNever,      ConstArray,                      "shared/ConstArray.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, ConstVariableComparison,         "shared/ConstVariableComparison.sksl")
@@ -679,6 +679,7 @@ SKSL_TEST(RP + VM + GPU,     kApiLevel_T, ScopedSymbol,                    "shar
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, StackingVectorCasts,             "shared/StackingVectorCasts.sksl")
 SKSL_TEST(RP + VM + GPU_ES3, kNever,      StaticSwitch,                    "shared/StaticSwitch.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, StructArrayFollowedByScalar,     "shared/StructArrayFollowedByScalar.sksl")
+SKSL_TEST(RP + GPU_ES3,      kNextRelease,StructIndexLookup,               "shared/StructIndexLookup.sksl")
 // TODO(skia:13920): StructComparison currently exposes a bug in SPIR-V codegen.
 // SKSL_TEST(RP /* +GPU_ES3 */, kNever,      StructComparison,                "shared/StructComparison.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, StructsInFunctions,              "shared/StructsInFunctions.sksl")

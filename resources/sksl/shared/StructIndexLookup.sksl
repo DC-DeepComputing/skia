@@ -1,0 +1,48 @@
+uniform half4 colorGreen, colorRed;
+
+struct InnerLUT {
+    float3 values;
+};
+struct OuterLUT {
+    InnerLUT inner[3];
+};
+struct Root {
+    OuterLUT outer[3];
+};
+
+half4 main(float2 coords) {
+    Root data = Root(
+        OuterLUT[3](
+            OuterLUT(InnerLUT[3](InnerLUT(float3(1, 10, 100)),
+                                 InnerLUT(float3(2, 20, 200)),
+                                 InnerLUT(float3(3, 30, 300)))),
+            OuterLUT(InnerLUT[3](InnerLUT(float3(4, 40, 400)),
+                                 InnerLUT(float3(5, 50, 500)),
+                                 InnerLUT(float3(6, 60, 600)))),
+            OuterLUT(InnerLUT[3](InnerLUT(float3(7, 70, 700)),
+                                 InnerLUT(float3(8, 80, 800)),
+                                 InnerLUT(float3(9, 90, 900))))
+        )
+    );
+
+    float3 expected = float3(0);
+    for (int i=0; i<3; ++i) {
+        for (int j=0; j<3; ++j) {
+            expected += float3(1, 10, 100);
+
+            // Compare the float3 as a group.
+            if (data.outer[i].inner[j].values != expected) {
+                return colorRed;
+            }
+
+            // Compare the float3 as individual units.
+            for (int k=0; k<3; ++k) {
+                if (data.outer[i].inner[j].values[k] != expected[k]) {
+                    return colorRed;
+                }
+            }
+        }
+    }
+
+    return colorGreen;
+}
