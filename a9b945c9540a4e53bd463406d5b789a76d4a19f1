@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "679f3ee8_4eb5bf40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-23T20:20:17Z",
+      "side": 1,
+      "message": "PTAL. Tested it and I\u0027m getting renders of the Y plane, so looks like it works.",
+      "revId": "a9b945c9540a4e53bd463406d5b789a76d4a19f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
