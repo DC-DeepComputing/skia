@@ -17,6 +17,7 @@
 #include <tuple>
 
 class SkData;
+namespace skgpu::graphite { class Recorder; }
 
 namespace sk_gpu_test {
 
@@ -49,6 +50,7 @@ public:
     SkISize dimensions() const { return fPixmaps.yuvaInfo().dimensions(); }
 
     sk_sp<SkImage> refImage(GrRecordingContext* rContext, Type);
+    sk_sp<SkImage> refImage(skgpu::graphite::Recorder* recorder, Type);
 
 private:
     // Decoded YUV data
@@ -67,6 +69,7 @@ private:
     bool reset(SkYUVAPixmaps pixmaps, GrMipmapped, sk_sp<SkColorSpace>);
 
     bool ensureYUVImage(GrRecordingContext* rContext, Type type);
+    bool ensureYUVImage(skgpu::graphite::Recorder* recorder, Type type);
 };
 
 } // namespace sk_gpu_test

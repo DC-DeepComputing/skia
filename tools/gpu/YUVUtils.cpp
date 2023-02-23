@@ -19,6 +19,7 @@
 #include "src/core/SkYUVMath.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#include "src/image/SkImage_Base.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
 namespace {
@@ -218,6 +219,16 @@ sk_sp<SkImage> LazyYUVImage::refImage(GrRecordingContext* rContext, Type type) {
     }
 }
 
+sk_sp<SkImage> LazyYUVImage::refImage(skgpu::graphite::Recorder* recorder, Type type) {
+    if (this->ensureYUVImage(recorder, type)) {
+        size_t idx = static_cast<size_t>(type);
+        SkASSERT(idx < std::size(fYUVImage));
+        return fYUVImage[idx];
+    } else {
+        return nullptr;
+    }
+}
+
 bool LazyYUVImage::reset(sk_sp<SkData> data, GrMipmapped mipmapped, sk_sp<SkColorSpace> cs) {
     fMipmapped = mipmapped;
     auto codec = SkCodecImageGenerator::MakeFromEncodedCodec(data);
@@ -327,4 +338,74 @@ bool LazyYUVImage::ensureYUVImage(GrRecordingContext* rContext, Type type) {
     }
     return fYUVImage[idx] != nullptr;
 }
+
+bool LazyYUVImage::ensureYUVImage(skgpu::graphite::Recorder* recorder, Type type) {
+    size_t idx = static_cast<size_t>(type);
+    SkASSERT(idx < std::size(fYUVImage));
+    if (fYUVImage[idx] && as_IB(fYUVImage[idx])->isGraphiteBacked()) {
+        return true;  // Have already made a YUV image suitable for Graphite.
+    }
+    // Try to make a new YUV image for this context.
+    switch (type) {
+        case Type::kFromPixmaps:
+            if (!recorder) {
+                return false;
+            }
+            fYUVImage[idx] = SkImage::MakeGraphiteFromYUVAPixmaps(recorder,
+                                                                  fPixmaps,
+                                                                  { fMipmapped },
+                                                                  /*limitToMaxTextureSize=*/false,
+                                                                  fColorSpace);
+            break;
+        case Type::kFromGenerator: {
+            // Make sure the generator has ownership of its backing planes.
+            auto generator = std::make_unique<Generator>(fPixmaps, fColorSpace);
+            fYUVImage[idx] = SkImage::MakeFromGenerator(std::move(generator));
+            break;
+        }
+        case Type::kFromTextures:
+            if (!recorder) {
+                return false;
+            }
+            if (fMipmapped == GrMipmapped::kYes) {
+                // If this becomes necessary we should invoke SkMipmapBuilder here to make mip
+                // maps from our src data (and then pass a pixmaps array to initialize the planar
+                // textures.
+                return false;
+            }
+            // TODO: implement this and MakeGraphiteFromYUVATextures()
+            return false;
+//            sk_sp<sk_gpu_test::ManagedBackendTexture> mbets[SkYUVAInfo::kMaxPlanes];
+//            GrBackendTexture textures[SkYUVAInfo::kMaxPlanes];
+//            for (int i = 0; i < fPixmaps.numPlanes(); ++i) {
+//                mbets[i] = sk_gpu_test::ManagedBackendTexture::MakeWithData(
+//                        direct,
+//                        fPixmaps.plane(i),
+//                        kTopLeft_GrSurfaceOrigin,
+//                        GrRenderable::kNo,
+//                        GrProtected::kNo);
+//                if (mbets[i]) {
+//                    textures[i] = mbets[i]->texture();
+//                } else {
+//                    return false;
+//                }
+//            }
+//            GrYUVABackendTextures yuvaTextures(fPixmaps.yuvaInfo(),
+//                                               textures,
+//                                               kTopLeft_GrSurfaceOrigin);
+//            if (!yuvaTextures.isValid()) {
+//                return false;
+//            }
+//            void* planeRelContext =
+//                    sk_gpu_test::ManagedBackendTexture::MakeYUVAReleaseContext(mbets);
+//            fYUVImage[idx] = SkImage::MakeFromYUVATextures(
+//                    direct,
+//                    yuvaTextures,
+//                    fColorSpace,
+//                    sk_gpu_test::ManagedBackendTexture::ReleaseProc,
+//                    planeRelContext);
+    }
+    return fYUVImage[idx] != nullptr;
+}
+
 } // namespace sk_gpu_test
