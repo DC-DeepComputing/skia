@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6c38999_d5aa4e15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2023-02-23T13:22:58Z",
+      "side": 1,
+      "message": "This was intended to be the only ongoing maintenance needed for SkQP when we snap a release branch.  Has that assumption held true?\n\nAlso, if we have a document that lists the steps for the Android release branching process it would be good to add this as a step there.",
+      "revId": "cfd67c284a25dff73437ce1600bd8c68d99afcd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
