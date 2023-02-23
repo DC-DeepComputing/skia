@@ -279,6 +279,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e049809f_19d72bcc",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-23T13:15:17Z",
+      "side": 1,
+      "message": "We can add more type aliases. These are things *we* define to help document our APIs.",
+      "parentUuid": "a460d2aa_17556e89",
+      "range": {
+        "startLine": 951,
+        "startChar": 89,
+        "endLine": 951,
+        "endChar": 96
+      },
+      "revId": "bb034eeff4d7d025ff99cc2cab5e3678db0f8a91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70e9f9f3_bd0d0865",
         "filename": "modules/canvaskit/skottie.js",
         "patchSetId": 1
