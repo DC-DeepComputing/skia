@@ -874,8 +874,10 @@ protected:
             return DrawResult::kSkip;
         }
 
+        skgpu::graphite::Recorder* recorder = canvas->recorder();
+
         // Only the generator is expected to work with the CPU backend.
-        if (fImageType != Type::kFromGenerator && !dContext) {
+        if (fImageType != Type::kFromGenerator && !dContext && !recorder) {
             return DrawResult::kSkip;
         }
 
