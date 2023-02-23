@@ -30,7 +30,7 @@ namespace SK_OPTS_NS {
 
 namespace SkVMInterpreterTypes {
 #if SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_AVX2
-    constexpr inline int K = 32;  // 1024-bit: 4 ymm or 2 zmm at a time
+    constexpr inline int K = 1;  // 1024-bit: 4 ymm or 2 zmm at a time
 #else
     constexpr inline int K = 8;   // 256-bit: 2 xmm, 2 v-registers, etc.
 #endif
