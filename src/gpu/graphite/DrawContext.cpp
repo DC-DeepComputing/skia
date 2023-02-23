@@ -158,9 +158,10 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                     StoreOp storeOp,
                                     SkEnumBitMask<DepthStencilFlags> depthStencilFlags,
                                     const std::array<float, 4>& clearColor,
-                                    bool requiresMSAA) {
+                                    bool requiresMSAA,
+                                    const Swizzle& writeSwizzle) {
     RenderPassDesc desc;
-
+     desc.fWriteSwizzle = writeSwizzle; // TODO: Remove if no longer necessary.
     // It doesn't make sense to have a storeOp for our main target not be store. Why are we doing
     // this DrawPass then
     SkASSERT(storeOp == StoreOp::kStore);
@@ -203,6 +204,9 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
     }
 
+    // TODO: Get write swizzle from here instead?
+    // desc.fWriteSwizzle = caps->getWriteSwizzle( , desc.fColorResolveAttachment.fTextureInfo);
+
     return desc;
 }
 
@@ -222,11 +226,16 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder) {
     const TextureInfo& targetInfo = drawPass->target()->textureInfo();
     auto [loadOp, storeOp] = drawPass->ops();
 
+    // TODO: Get from drawPass instead?
+    Swizzle writeSwizzle = caps->getWriteSwizzle(this->colorInfo().colorType(), targetInfo);
     RenderPassDesc desc = RenderPassDesc::Make(caps, targetInfo, loadOp, storeOp,
                                                drawPass->depthStencilFlags(),
                                                drawPass->clearColor(),
-                                               drawPass->requiresMSAA());
-
+                                               drawPass->requiresMSAA(),
+                                               writeSwizzle);
+    // TODO: Just pass in color info to Make, then determine swizzle w/ caps and texture info?
+    // Alternatively, figure out another way to take into account that the target can change if MSAA
+    // is required.
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
     return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
 }
