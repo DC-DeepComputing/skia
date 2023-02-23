@@ -46,6 +46,30 @@
       },
       "revId": "a2812a6298f97bfaf0f56be94f99e72760f4bcf5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea26d9d2_2498cc35",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-23T16:03:50Z",
+      "side": 0,
+      "message": "We\u0027re going to nuke Generic programs entirely?\nI suppose there\u0027s no clients for them anymore.",
+      "parentUuid": "def5d299_fe00e780",
+      "range": {
+        "startLine": 202,
+        "startChar": 75,
+        "endLine": 203,
+        "endChar": 50
+      },
+      "revId": "a2812a6298f97bfaf0f56be94f99e72760f4bcf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
