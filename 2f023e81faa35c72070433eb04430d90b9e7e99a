@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88512c87_9dad89d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-23T13:54:53Z",
+      "side": 1,
+      "message": "Can you add an entry to CanvasKit\u0027s CHANGELOG.md also?",
+      "revId": "2f023e81faa35c72070433eb04430d90b9e7e99a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "510f8517_4d25db3f",
         "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
         "patchSetId": 2
