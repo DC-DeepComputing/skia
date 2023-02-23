@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a81ff37_9c7cc205",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-23T17:35:35Z",
+      "side": 1,
+      "message": "nit: interface",
+      "range": {
+        "startLine": 15,
+        "startChar": 30,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "39f9955e_b04fbdef",
@@ -14,6 +37,75 @@
       "writtenOn": "2023-02-23T16:17:37Z",
       "side": 1,
       "message": "And the last one (until the next time)",
+      "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68d3bf15_37df07d1",
+        "filename": "include/encode/SkEncoder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-23T17:35:35Z",
+      "side": 1,
+      "message": "Is this true? I tried to figure out where this was a requirement, and didn\u0027t see anything. It\u0027s also strange to have a pixmap AND yuvapixmaps in the constructor, because we only use one or the other, right?",
+      "range": {
+        "startLine": 65,
+        "startChar": 7,
+        "endLine": 65,
+        "endChar": 81
+      },
+      "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4c6d7f1_b2fab2e0",
+        "filename": "src/encode/SkImageEncoderFns.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-23T17:35:35Z",
+      "side": 1,
+      "message": "Unrelated to this CL, this function is strange. If we\u0027re going to use `profile` when it\u0027s present, then why do we check `cs` first?",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 5
+      },
+      "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62ee3317_6dd5807c",
+        "filename": "src/encode/SkJpegEncoder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-23T17:35:35Z",
+      "side": 1,
+      "message": "Is this (and the next line) supposed to be 2 ?",
+      "range": {
+        "startLine": 262,
+        "startChar": 21,
+        "endLine": 262,
+        "endChar": 22
+      },
       "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
