@@ -159,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "882ba158_c1d6cf6c",
+        "filename": "src/encode/SkImageEncoderFns.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-24T13:54:37Z",
+      "side": 1,
+      "message": "Acknowledged.\n\nI know jreck@ has asked for that as well -- I think we\u0027d need to meet and figure out a solution that works for everyone\u0027s use-case.",
+      "parentUuid": "511deb55_f2caaee2",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 5
+      },
+      "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62ee3317_6dd5807c",
@@ -196,6 +220,30 @@
       "side": 1,
       "message": "Yes. Actually ... these are always initialized to 1 [0]. And they should be 1 for all the configurations we support (we don\u0027t support any configurations where U and V have different subsampling, also on the decode size [1]).\n\n[0] https://source.chromium.org/chromium/chromium/src/+/main:third_party/libjpeg_turbo/libjpeg.txt;l\u003d1143;drc\u003ded683925e4897a84b3bffc5c1414c85b97a129a3\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkJpegCodec.cpp;l\u003d873;drc\u003de83f4cb12be07ad31562d8950ca37e6e36b8a354",
       "parentUuid": "62ee3317_6dd5807c",
+      "range": {
+        "startLine": 262,
+        "startChar": 21,
+        "endLine": 262,
+        "endChar": 22
+      },
+      "revId": "eb875ff65308e237817ad65e74a3de0efca0f01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d6e2cf8_38d80974",
+        "filename": "src/encode/SkJpegEncoder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-24T13:54:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4798e917_740338da",
       "range": {
         "startLine": 262,
         "startChar": 21,
