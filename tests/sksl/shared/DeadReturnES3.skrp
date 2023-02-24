@@ -44,11 +44,11 @@
    44. branch_if_no_active_lanes      branch_if_no_active_lanes +17 (label 6 at #61)
    45. store_loop_mask                $42 = LoopMask
    46. label                          label 0x0000000D
-   47. zero_slot_unmasked             [temporary 0] = 0
-   48. copy_constant                  $43 = 0xFFFFFFFF
-   49. copy_slot_masked               [temporary 0] = Mask($43)
+   47. zero_slot_unmasked             $12 = 0
+   48. copy_constant                  $13 = 0xFFFFFFFF
+   49. copy_slot_masked               $12 = Mask($13)
    50. mask_off_loop_mask             LoopMask &= ~(CondMask & LoopMask & RetMask)
-   51. reenable_loop_mask             LoopMask |= [temporary 0]
+   51. reenable_loop_mask             LoopMask |= $12
    52. zero_slot_unmasked             $43 = 0
    53. merge_loop_mask                LoopMask &= $43
    54. stack_rewind
@@ -66,7 +66,7 @@
    66. store_return_mask              $21 = RetMask
    67. store_loop_mask                $22 = LoopMask
    68. label                          label 0x0000000F
-   69. zero_slot_unmasked             [temporary 0] = 0
+   69. zero_slot_unmasked             $36 = 0
    70. zero_slot_unmasked             $23 = 0
    71. copy_constant                  $24 = colorGreen(1)
    72. cmplt_float                    $23 = lessThan($23, $24)
@@ -78,10 +78,10 @@
    78. label                          label 0x00000010
    79. mask_off_loop_mask             LoopMask &= ~(CondMask & LoopMask & RetMask)
    80. label                          label 0x00000011
-   81. copy_constant                  $23 = 0xFFFFFFFF
-   82. copy_slot_masked               [temporary 0] = Mask($23)
+   81. copy_constant                  $37 = 0xFFFFFFFF
+   82. copy_slot_masked               $36 = Mask($37)
    83. mask_off_loop_mask             LoopMask &= ~(CondMask & LoopMask & RetMask)
-   84. reenable_loop_mask             LoopMask |= [temporary 0]
+   84. reenable_loop_mask             LoopMask |= $36
    85. zero_slot_unmasked             $23 = 0
    86. merge_loop_mask                LoopMask &= $23
    87. stack_rewind
@@ -100,7 +100,7 @@
   100. branch_if_no_active_lanes      branch_if_no_active_lanes +25 (label 4 at #125)
   101. store_loop_mask                $33 = LoopMask
   102. label                          label 0x00000013
-  103. zero_slot_unmasked             [temporary 0] = 0
+  103. zero_slot_unmasked             $40 = 0
   104. zero_slot_unmasked             $34 = 0
   105. copy_constant                  $35 = colorGreen(1)
   106. cmplt_float                    $34 = lessThan($34, $35)
@@ -108,11 +108,11 @@
   108. mask_off_loop_mask             LoopMask &= ~(CondMask & LoopMask & RetMask)
   109. jump                           jump +5 (label 21 at #114)
   110. label                          label 0x00000014
-  111. copy_constant                  $35 = 0xFFFFFFFF
-  112. copy_slot_masked               [temporary 0] = Mask($35)
+  111. copy_constant                  $41 = 0xFFFFFFFF
+  112. copy_slot_masked               $40 = Mask($41)
   113. mask_off_loop_mask             LoopMask &= ~(CondMask & LoopMask & RetMask)
   114. label                          label 0x00000015
-  115. reenable_loop_mask             LoopMask |= [temporary 0]
+  115. reenable_loop_mask             LoopMask |= $40
   116. zero_slot_unmasked             $34 = 0
   117. merge_loop_mask                LoopMask &= $34
   118. stack_rewind
