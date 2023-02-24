@@ -23,6 +23,7 @@ split_srcs_and_hdrs(
 )
 
 GPU_FILES = [
+    "SkImage_GaneshFactories.cpp",
     "SkImage_Gpu.cpp",
     "SkImage_Gpu.h",
     "SkImage_GpuBase.cpp",
@@ -36,6 +37,11 @@ GPU_FILES = [
 split_srcs_and_hdrs(
     name = "gpu",
     files = GPU_FILES,
+)
+
+skia_filegroup(
+    name = "android_srcs",
+    srcs = ["SkImage_AndroidFactories.cpp"],
 )
 
 # Not referenced by Bazel target.

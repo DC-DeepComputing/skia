@@ -239,8 +239,8 @@ static sk_sp<SkImage> make_picture(const SkImageInfo& info,
                                    void (*draw)(SkCanvas*)) {
     SkPictureRecorder recorder;
     draw(recorder.beginRecording(SkRect::MakeIWH(info.width(), info.height())));
-    return SkImage::MakeFromPicture(recorder.finishRecordingAsPicture(),
-                                    info.dimensions(), nullptr, nullptr, SkImage::BitDepth::kU8,
+    return sk_image_factory::MakeFromPicture(recorder.finishRecordingAsPicture(),
+                                    info.dimensions(), nullptr, nullptr, sk_image_factory::BitDepth::kU8,
                                     SkColorSpace::MakeSRGB());
 }
 
@@ -248,7 +248,7 @@ static sk_sp<SkImage> make_codec(const SkImageInfo& info,
                                  GrRecordingContext*,
                                  void (*draw)(SkCanvas*)) {
     sk_sp<SkImage> image(make_raster(info, nullptr, draw));
-    return SkImage::MakeFromEncoded(image->encodeToData());
+    return sk_image_factory::MakeFromEncoded(image->encodeToData());
 }
 
 static sk_sp<SkImage> make_gpu(const SkImageInfo& info,
@@ -349,12 +349,12 @@ DEF_SIMPLE_GM_CAN_FAIL(new_texture_image, canvas, errorMsg, 280, 115) {
             // Create encoded image.
             [&] {
                 auto src = SkEncodeBitmap(bmp, SkEncodedImageFormat::kPNG, 100);
-                return SkImage::MakeFromEncoded(std::move(src));
+                return sk_image_factory::MakeFromEncoded(std::move(src));
             },
             // Create YUV encoded image.
             [&] {
                 auto src = SkEncodeBitmap(bmp, SkEncodedImageFormat::kJPEG, 100);
-                return SkImage::MakeFromEncoded(std::move(src));
+                return sk_image_factory::MakeFromEncoded(std::move(src));
             },
             // Create a picture image.
             [&] {
@@ -363,11 +363,11 @@ DEF_SIMPLE_GM_CAN_FAIL(new_texture_image, canvas, errorMsg, 280, 115) {
                         recorder.beginRecording(SkIntToScalar(kSize), SkIntToScalar(kSize));
                 render_image(canvas);
                 sk_sp<SkColorSpace> srgbColorSpace = SkColorSpace::MakeSRGB();
-                return SkImage::MakeFromPicture(recorder.finishRecordingAsPicture(),
+                return sk_image_factory::MakeFromPicture(recorder.finishRecordingAsPicture(),
                                                 SkISize::Make(kSize, kSize),
                                                 nullptr,
                                                 nullptr,
-                                                SkImage::BitDepth::kU8,
+                                                sk_image_factory::BitDepth::kU8,
                                                 srgbColorSpace);
             },
             // Create a texture image
@@ -417,7 +417,7 @@ DEF_SIMPLE_GM_CAN_FAIL(new_texture_image, canvas, errorMsg, 280, 115) {
 }
 
 static void draw_pixmap(SkCanvas* canvas, const SkPixmap& pm, SkScalar x, SkScalar y) {
-    canvas->drawImage(SkImage::MakeRasterCopy(pm), x, y);
+    canvas->drawImage(sk_image_factory::MakeRasterCopy(pm), x, y);
 }
 
 static void slam_ff(const SkPixmap& pm) {
@@ -456,7 +456,7 @@ static sk_sp<SkImage> make_lazy_image(SkSurface* surf) {
     if (!data) {
         return nullptr;
     }
-    return SkImage::MakeFromEncoded(std::move(data));
+    return sk_image_factory::MakeFromEncoded(std::move(data));
 }
 
 static sk_sp<SkImage> serial_deserial(SkImage* img) {

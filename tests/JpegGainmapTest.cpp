@@ -407,8 +407,8 @@ SkBitmap render_gainmap(const SkImageInfo& renderInfo,
 
     SkRect dstRect = SkRect::Make(renderInfo.dimensions());
 
-    sk_sp<SkImage> baseImage = SkImage::MakeFromBitmap(baseBitmap);
-    sk_sp<SkImage> gainmapImage = SkImage::MakeFromBitmap(gainmapBitmap);
+    sk_sp<SkImage> baseImage = sk_image_factory::MakeFromBitmap(baseBitmap);
+    sk_sp<SkImage> gainmapImage = sk_image_factory::MakeFromBitmap(gainmapBitmap);
     sk_sp<SkShader> shader = SkGainmapShader::Make(baseImage,
                                                    baseRect,
                                                    SkSamplingOptions(),

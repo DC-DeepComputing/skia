@@ -13,7 +13,7 @@ void draw(SkCanvas* canvas) {
     SkPixmap pixmap(imageInfo, storage[0], sizeof(storage) / 5);
     SkBitmap bitmap;
     bitmap.installPixels(pixmap);
-    sk_sp<SkImage> image = SkImage::MakeRasterCopy(pixmap);
+    sk_sp<SkImage> image = sk_image_factory::MakeRasterCopy(pixmap);
     *pixmap.writable_addr8(2, 2) = 0x00;
     canvas->scale(10, 10);
     canvas->drawImage(bitmap.asImage(), 0, 0);

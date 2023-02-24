@@ -247,12 +247,12 @@ sk_sp<SkData> SkImage::refEncodedData() const {
     return sk_sp<SkData>(as_IB(this)->onRefEncoded());
 }
 
-sk_sp<SkImage> SkImage::MakeFromEncoded(sk_sp<SkData> encoded,
+sk_sp<SkImage> sk_image_factory::MakeFromEncoded(sk_sp<SkData> encoded,
                                         std::optional<SkAlphaType> alphaType) {
     if (nullptr == encoded || 0 == encoded->size()) {
         return nullptr;
     }
-    return SkImage::MakeFromGenerator(
+    return sk_image_factory::MakeFromGenerator(
             SkImageGenerator::MakeFromEncoded(std::move(encoded), alphaType));
 }
 
@@ -304,6 +304,8 @@ bool SkImage::isValid(GrRecordingContext* rContext) const {
     return as_IB(this)->onIsValid(rContext);
 }
 
+void SkImage::flush(GrDirectContext* context) const { this->flush(context, {}); }
+
 GrSemaphoresSubmitted SkImage::flush(GrDirectContext* dContext,
                                      const GrFlushInfo& flushInfo) const {
     return as_IB(this)->onFlush(dContext, flushInfo);
@@ -324,6 +326,15 @@ bool SkImage::isValid(GrRecordingContext* rContext) const {
     }
     return as_IB(this)->onIsValid(nullptr);
 }
+
+void SkImage::flush(GrDirectContext* context) const {}
+
+GrSemaphoresSubmitted SkImage::flush(GrDirectContext* dContext,
+                                     const GrFlushInfo& flushInfo) const {
+    return 0;
+}
+
+void SkImage::flushAndSubmit(GrDirectContext* dContext) const {}
 
 #endif
 
@@ -635,7 +646,7 @@ bool SkImage::readPixels(const SkPixmap& pmap, int srcX, int srcY, CachingHint c
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage::MakeFromBitmap(const SkBitmap& bm) {
+sk_sp<SkImage> sk_image_factory::MakeFromBitmap(const SkBitmap& bm) {
     if (!bm.pixelRef()) {
         return nullptr;
     }
@@ -667,13 +678,13 @@ bool SkImage_Base::onAsLegacyBitmap(GrDirectContext* dContext, SkBitmap* bitmap)
     return true;
 }
 
-sk_sp<SkImage> SkImage::MakeFromPicture(sk_sp<SkPicture> picture, const SkISize& dimensions,
+sk_sp<SkImage> sk_image_factory::MakeFromPicture(sk_sp<SkPicture> picture, const SkISize& dimensions,
                                         const SkMatrix* matrix, const SkPaint* paint,
                                         BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace) {
-    return SkImage::MakeFromPicture(picture, dimensions, matrix, paint, bitDepth, colorSpace, {});
+    return sk_image_factory::MakeFromPicture(picture, dimensions, matrix, paint, bitDepth, colorSpace, {});
 }
 
-sk_sp<SkImage> SkImage::MakeFromPicture(sk_sp<SkPicture> picture, const SkISize& dimensions,
+sk_sp<SkImage> sk_image_factory::MakeFromPicture(sk_sp<SkPicture> picture, const SkISize& dimensions,
                                         const SkMatrix* matrix, const SkPaint* paint,
                                         BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace,
                                         SkSurfaceProps props) {
@@ -831,7 +842,7 @@ sk_sp<SkImage> SkImage::makeRasterImage(CachingHint chint) const {
         return nullptr;
     }
 
-    return SkImage::MakeRasterData(fInfo, std::move(data), rowBytes);
+    return sk_image_factory::MakeRasterData(fInfo, std::move(data), rowBytes);
 }
 
 bool SkImage_pinAsTexture(const SkImage* image, GrRecordingContext* rContext) {

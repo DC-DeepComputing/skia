@@ -88,7 +88,7 @@ private:
                                                           info.minRowBytes());
             // binding needs to make a shader from this image, so we wrap it in a special asset
             // that always returns the image made from storage
-            auto image = SkImage::MakeRasterData(info, storage, info.minRowBytes());
+            auto image = sk_image_factory::MakeRasterData(info, storage, info.minRowBytes());
             auto wrapper = WrapperAsset::Make(image);
 
             auto driver = std::make_unique<MultiFrameAssetDriver>(asset, std::move(imageCanvas));

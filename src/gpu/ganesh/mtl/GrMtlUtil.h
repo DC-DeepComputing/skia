@@ -124,7 +124,7 @@ bool GrMtlFormatIsCompressed(MTLPixelFormat mtlFormat);
 /**
  * Maps a MTLPixelFormat into the CompressionType enum if applicable.
  */
-SkImage::CompressionType GrMtlFormatToCompressionType(MTLPixelFormat mtlFormat);
+sk_image_factory::CompressionType GrMtlFormatToCompressionType(MTLPixelFormat mtlFormat);
 
 size_t GrMtlFormatBytesPerBlock(MTLPixelFormat);
 

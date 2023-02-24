@@ -169,7 +169,7 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     // Wrap AHardwareBuffer in SkImage
     ///////////////////////////////////////////////////////////////////////////
 
-    sk_sp<SkImage> image = SkImage::MakeFromAHardwareBuffer(buffer, kPremul_SkAlphaType,
+    sk_sp<SkImage> image = sk_image_factory::MakeFromAHardwareBuffer(buffer, kPremul_SkAlphaType,
                                                             nullptr, surfaceOrigin);
     REPORTER_ASSERT(reporter, image);
 

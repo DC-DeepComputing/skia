@@ -103,7 +103,7 @@ public:
                                                        skgpu::Budgeted,
                                                        GrMipmapped,
                                                        GrProtected,
-                                                       SkImage::CompressionType,
+                                                       sk_image_factory::CompressionType,
                                                        sk_sp<SkData> data);
 
     // These match the definitions in SkImage & GrTexture.h, for whence they came
