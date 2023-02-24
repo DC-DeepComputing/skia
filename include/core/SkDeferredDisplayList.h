@@ -13,6 +13,7 @@
 #include "include/core/SkTypes.h"
 
 class SkDeferredDisplayListPriv;
+class SkPromiseImageTexture;
 
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrRecordingContext.h"

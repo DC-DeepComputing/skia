@@ -112,7 +112,7 @@ sk_sp<SkImage> mask_to_greyscale_image(SkMask* mask) {
         SkJpegEncoder::Options jpegOptions;
         jpegOptions.fQuality = imgQuality;
         if (SkJpegEncoder::Encode(&buffer, pm, jpegOptions)) {
-            img = SkImage::MakeFromEncoded(buffer.detachAsData());
+            img = sk_image_factory::MakeFromEncoded(buffer.detachAsData());
             SkASSERT(img);
             if (img) {
                 SkMask::FreeImage(mask->fImage);
@@ -120,7 +120,7 @@ sk_sp<SkImage> mask_to_greyscale_image(SkMask* mask) {
         }
     }
     if (!img) {
-        img = SkImage::MakeFromRaster(pm, [](const void* p, void*) { SkMask::FreeImage((void*)p); },
+        img = sk_image_factory::MakeFromRaster(pm, [](const void* p, void*) { SkMask::FreeImage((void*)p); },
                                       nullptr);
     }
     *mask = SkMask();  // destructive;

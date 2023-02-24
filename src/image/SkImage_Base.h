@@ -159,10 +159,6 @@ public:
     virtual bool isYUVA() const { return false; }
 #endif
 
-    virtual bool onPinAsTexture(GrRecordingContext*) const { return false; }
-    virtual void onUnpinAsTexture(GrRecordingContext*) const {}
-    virtual bool isPinnedOnContext(GrRecordingContext*) const { return false; }
-
     // return a read-only copy of the pixels. We promise to not modify them,
     // but only inspect them (or encode them).
     virtual bool getROPixels(GrDirectContext*, SkBitmap*,

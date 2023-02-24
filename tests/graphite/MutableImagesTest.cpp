@@ -223,7 +223,7 @@ public:
         update_backend_texture(fReporter, fRecorder, fBETexture, kRGBA_8888_SkColorType,
                                fWithMips, kInitialColor);
 
-        fMutatingImg = SkImage::MakeGraphiteFromBackendTexture(fRecorder,
+        fMutatingImg = sk_image_factory::MakeGraphiteFromBackendTexture(fRecorder,
                                                                fBETexture,
                                                                kRGBA_8888_SkColorType,
                                                                kPremul_SkAlphaType,
@@ -316,7 +316,7 @@ public:
                                    fWithMips, kMutationColors[i]);
         }
 
-        fMutatingImg = SkImage::MakeGraphitePromiseTexture(fRecorder,
+        fMutatingImg = sk_image_factory::MakeGraphitePromiseTexture(fRecorder,
                                                            kImageSize,
                                                            info,
                                                            SkColorInfo(kRGBA_8888_SkColorType,

@@ -8,26 +8,34 @@
 #ifndef SkImageGenerator_DEFINED
 #define SkImageGenerator_DEFINED
 
-#include "include/core/SkBitmap.h"
-#include "include/core/SkColor.h"
-#include "include/core/SkImage.h"
+#include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
-#include "include/core/SkSurfaceProps.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSurfaceProps.h" // IWYU pragma: keep
 #include "include/core/SkYUVAPixmaps.h"
+#include "include/private/base/SkAPI.h"
 
+#if SK_SUPPORT_GPU
+#include "include/gpu/GrTypes.h"
+#endif
+
+#include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <optional>
 
 class GrRecordingContext;
 class GrSurfaceProxyView;
-class GrSamplerState;
-class SkBitmap;
-class SkData;
+class SkColorSpace;
 class SkMatrix;
 class SkPaint;
 class SkPicture;
-
+enum SkAlphaType : int;
 enum class GrImageTexGenPolicy : int;
+namespace skgpu { enum class Mipmapped : bool; }
+namespace sk_image_factory { enum class BitDepth; }
+struct SkISize;
 
 class SK_API SkImageGenerator {
 public:
@@ -165,7 +173,7 @@ public:
      */
     static std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize&, sk_sp<SkPicture>,
                                                              const SkMatrix*, const SkPaint*,
-                                                             SkImage::BitDepth,
+                                                             sk_image_factory::BitDepth,
                                                              sk_sp<SkColorSpace>,
                                                              SkSurfaceProps props = {});
 
