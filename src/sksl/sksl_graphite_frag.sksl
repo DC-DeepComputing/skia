@@ -283,6 +283,12 @@ $pure half4 sk_image_shader(float2 coords,
                                     csXformGamutTransform, csXformDstKind, csXformDstCoeffs);
 }
 
+$pure half4 sk_coordclamp_shader(float2 coords,
+                                 float4 subset) {
+    float2 clampedCoords = clamp(coords, subset.LT, subset.RB);
+    return half4(0);
+}
+
 $pure float2 $tile_grad(int tileMode, float2 t) {
     switch (tileMode) {
         case $kTileModeClamp:
@@ -772,7 +778,6 @@ $pure half4 sk_gaussian_colorfilter(half4 inColor) {
     factor = exp(-factor * factor * 4) - 0.018;
     return half4(factor);
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Support functions for analytic round rectangles

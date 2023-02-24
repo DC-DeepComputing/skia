@@ -628,6 +628,15 @@ static_assert(4 == static_cast<int>(ReadSwizzle::kBGRA),
 static constexpr char kImageShaderName[] = "sk_image_shader";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr Uniform kCoordClampShaderUniforms[] = {
+        { "subset", SkSLType::kFloat4 },
+};
+
+static constexpr char kCoordClampShaderName[] = "sk_coordclamp_shader";
+
+static constexpr int kNumCoordClampShaderChildren = 2;
+
+//--------------------------------------------------------------------------------------------------
 static constexpr Uniform kPorterDuffBlendShaderUniforms[] = {
         { "blendConstants", SkSLType::kHalf4 },
 };
@@ -1264,6 +1273,17 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCoordClampShader] = {
+            "CoordClampShader",
+            SkSpan(kCoordClampShaderUniforms),
+            SnippetRequirementFlags::kLocalCoords,
+            { },     // no samplers
+            kCoordClampShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNumCoordClampShaderChildren,
             { }      // no data payload
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPorterDuffBlendShader] = {
