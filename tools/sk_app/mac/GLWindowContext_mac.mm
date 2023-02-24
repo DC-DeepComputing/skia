@@ -38,12 +38,10 @@ private:
     NSView*              fMainView;
     NSOpenGLContext*     fGLContext;
     NSOpenGLPixelFormat* fPixelFormat;
-
-    using INHERITED = GLWindowContext;
 };
 
 GLWindowContext_mac::GLWindowContext_mac(const MacWindowInfo& info, const DisplayParams& params)
-    : INHERITED(params)
+    : GLWindowContext(params)
     , fMainView(info.fMainView)
     , fGLContext(nil) {
 
@@ -157,7 +155,7 @@ void GLWindowContext_mac::resize(int w, int h) {
     [fGLContext update];
 
     // The super class always recreates the context.
-    INHERITED::resize(0, 0);
+    GLWindowContext::resize(0, 0);
 }
 
 

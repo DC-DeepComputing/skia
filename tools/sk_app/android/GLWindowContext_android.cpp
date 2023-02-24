@@ -36,13 +36,11 @@ private:
 
     // For setDisplayParams and resize which call onInitializeContext with null platformData
     ANativeWindow* fNativeWindow = nullptr;
-
-    using INHERITED = GLWindowContext;
 };
 
 GLWindowContext_android::GLWindowContext_android(ANativeWindow* window,
                                                  const DisplayParams& params)
-    : INHERITED(params)
+    : GLWindowContext(params)
     , fDisplay(EGL_NO_DISPLAY)
     , fEGLContext(EGL_NO_CONTEXT)
     , fSurfaceAndroid(EGL_NO_SURFACE)
