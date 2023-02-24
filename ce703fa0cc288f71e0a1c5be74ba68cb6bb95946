@@ -22,6 +22,30 @@
       },
       "revId": "ce703fa0cc288f71e0a1c5be74ba68cb6bb95946",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cac682d_8d389132",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-24T15:31:01Z",
+      "side": 1,
+      "message": "I feel like `kFragment` is a better choice. That mirrors `loadSharedModule`. RTS has a bunch of special semantics that we don\u0027t want to enforce on any modules ever (e.g. some statements like `discard` are forbidden).",
+      "parentUuid": "d45716ab_ca25294f",
+      "range": {
+        "startLine": 305,
+        "startChar": 70,
+        "endLine": 305,
+        "endChar": 91
+      },
+      "revId": "ce703fa0cc288f71e0a1c5be74ba68cb6bb95946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
