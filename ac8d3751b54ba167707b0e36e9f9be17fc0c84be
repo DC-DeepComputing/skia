@@ -46,6 +46,30 @@
       },
       "revId": "ac8d3751b54ba167707b0e36e9f9be17fc0c84be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be1cbc79_7aec99d7",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-24T22:25:02Z",
+      "side": 1,
+      "message": "Since not all backends care about usages, I\u0027d advocate to keep such a check within Vulkan-specific graphite code. I\u0027m also not sure there\u0027s a more sensible place to perform that check other than here. (Unless maybe checking usage flags is common for more backends than not)\n\nI\u0027m also not immediately seeing a way to query usage flags of a VkBuffer after the initial creation where we set the `VkBufferUsageFlags` in `VkBufferCreateInfo` (without performing a buffer copy for each). Should we track as a member attribute in `VulkanBuffer` whether a `VkBuffer` was created with a `TRANSFER_SRC` or `TRANSFER_DST` flags, and query that before copying in this method? We also do not store the `BufferType` after creation within `Buffer` nor `VulkanBuffer`, which is another way to check but is a bit more fragile to changes.",
+      "parentUuid": "38723f89_1795fd5c",
+      "range": {
+        "startLine": 264,
+        "startChar": 13,
+        "endLine": 264,
+        "endChar": 24
+      },
+      "revId": "ac8d3751b54ba167707b0e36e9f9be17fc0c84be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
