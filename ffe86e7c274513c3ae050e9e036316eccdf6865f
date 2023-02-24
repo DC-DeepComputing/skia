@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c8c5e0b_817d1904",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-24T03:48:03Z",
+      "side": 1,
+      "message": "I wanted to pass this to you now given the size of FilterResultTest. All tests pass on my M1 and linux desktop for raster, opengl and metal although it currently crashes in Graphite because I don\u0027t have the synchronous image readback wired up quite right.\n\nI wouldn\u0027t be surprised if there needs to be some image diff tweaking to make other bots happy as well.",
+      "revId": "ffe86e7c274513c3ae050e9e036316eccdf6865f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
