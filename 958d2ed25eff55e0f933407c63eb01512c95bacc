@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2528c3a5_07a2e448",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-24T14:22:36Z",
+      "side": 1,
+      "message": "This seems difficult to test in a unit test or GM; not sure how to count how many times we\u0027re adding copy commands to a command buffer. I verified it\u0027s working with local testing and print statements.\n\nThis also changes ConditionalUploadContext::needsUpload to be non-const. Tracking additional state on the Graphite Context seemed overly complicated and I couldn\u0027t think of any alternatives.",
+      "revId": "958d2ed25eff55e0f933407c63eb01512c95bacc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
