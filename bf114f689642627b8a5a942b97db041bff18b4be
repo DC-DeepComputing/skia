@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9dd4cd04_d8e57775",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-24T19:39:28Z",
+      "side": 1,
+      "message": "Ah, ok - I went and read some more details on how beginLayer is specified to interact with shadows, so this makes sense. You\u0027re right - there\u0027s no way to do this efficiently today, but the multiple image filters solution should solve the problem.",
+      "parentUuid": "b144af31_ae95c985",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 47
+      },
+      "revId": "bf114f689642627b8a5a942b97db041bff18b4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "718f1d49_fdff4315",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
