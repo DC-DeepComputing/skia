@@ -19,6 +19,7 @@
 #include "src/core/SkYUVMath.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#include "src/image/SkImage_Base.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
 namespace {
@@ -218,6 +219,16 @@ sk_sp<SkImage> LazyYUVImage::refImage(GrRecordingContext* rContext, Type type) {
     }
 }
 
+sk_sp<SkImage> LazyYUVImage::refImage(skgpu::graphite::Recorder* recorder, Type type) {
+    if (this->ensureYUVImage(recorder, type)) {
+        size_t idx = static_cast<size_t>(type);
+        SkASSERT(idx < std::size(fYUVImage));
+        return fYUVImage[idx];
+    } else {
+        return nullptr;
+    }
+}
+
 bool LazyYUVImage::reset(sk_sp<SkData> data, GrMipmapped mipmapped, sk_sp<SkColorSpace> cs) {
     fMipmapped = mipmapped;
     auto codec = SkCodecImageGenerator::MakeFromEncodedCodec(data);
@@ -327,4 +338,40 @@ bool LazyYUVImage::ensureYUVImage(GrRecordingContext* rContext, Type type) {
     }
     return fYUVImage[idx] != nullptr;
 }
+
+bool LazyYUVImage::ensureYUVImage(skgpu::graphite::Recorder* recorder, Type type) {
+    size_t idx = static_cast<size_t>(type);
+    SkASSERT(idx < std::size(fYUVImage));
+    if (fYUVImage[idx] && as_IB(fYUVImage[idx])->isGraphiteBacked()) {
+        return true;  // Have already made a YUV image suitable for Graphite.
+    }
+    // Try to make a new YUV image for this context.
+    switch (type) {
+        case Type::kFromPixmaps:
+            if (!recorder) {
+                return false;
+            }
+#ifdef SK_GRAPHITE_ENABLED
+            fYUVImage[idx] = SkImage::MakeGraphiteFromYUVAPixmaps(recorder,
+                                                                  fPixmaps,
+                                                                  { fMipmapped },
+                                                                  /*limitToMaxTextureSize=*/false,
+                                                                  fColorSpace);
+#else
+            return false;
+#endif
+            break;
+        case Type::kFromGenerator: {
+            // Make sure the generator has ownership of its backing planes.
+            auto generator = std::make_unique<Generator>(fPixmaps, fColorSpace);
+            fYUVImage[idx] = SkImage::MakeFromGenerator(std::move(generator));
+            break;
+        }
+        case Type::kFromTextures:
+            // TODO: implement this and MakeGraphiteFromYUVATextures()
+            return false;
+    }
+    return fYUVImage[idx] != nullptr;
+}
+
 } // namespace sk_gpu_test
