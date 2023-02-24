@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44443b75_5d5f078e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-24T21:17:19Z",
+      "side": 1,
+      "message": "I suggest we keep this simple and don\u0027t bother with the alignment (unless we can prove it helps). If it does, we\u0027d probably want the same treatment for some of the contexts used by image-shader that also hold per-lane data.",
+      "revId": "73c967e5bfb49041446d464342daf57ed8d4c69c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
