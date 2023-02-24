@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d45716ab_ca25294f",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-24T15:19:28Z",
+      "side": 1,
+      "message": "Somewhat arbitrary choice, but it needs to be something private, due to some `$` prefixed symbols.",
+      "range": {
+        "startLine": 305,
+        "startChar": 70,
+        "endLine": 305,
+        "endChar": 91
+      },
+      "revId": "ce703fa0cc288f71e0a1c5be74ba68cb6bb95946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
