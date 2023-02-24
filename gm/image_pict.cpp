@@ -85,13 +85,13 @@ protected:
 
         SkMatrix matrix;
         matrix.setTranslate(-100, -100);
-        fImage0 = SkImage::MakeFromPicture(fPicture, size, &matrix, nullptr,
-                                           SkImage::BitDepth::kU8, srgbColorSpace);
+        fImage0 = sk_image_factory::MakeFromPicture(fPicture, size, &matrix, nullptr,
+                                           sk_image_factory::BitDepth::kU8, srgbColorSpace);
         matrix.postTranslate(-50, -50);
         matrix.postRotate(45);
         matrix.postTranslate(50, 50);
-        fImage1 = SkImage::MakeFromPicture(fPicture, size, &matrix, nullptr,
-                                           SkImage::BitDepth::kU8, srgbColorSpace);
+        fImage1 = sk_image_factory::MakeFromPicture(fPicture, size, &matrix, nullptr,
+                                           sk_image_factory::BitDepth::kU8, srgbColorSpace);
     }
 
     void drawSet(SkCanvas* canvas) const {
@@ -131,7 +131,7 @@ static std::unique_ptr<SkImageGenerator> make_pic_generator(SkCanvas*,
     SkMatrix matrix;
     matrix.setTranslate(-100, -100);
     return SkImageGenerator::MakeFromPicture({ 100, 100 }, std::move(pic), &matrix, nullptr,
-                                            SkImage::BitDepth::kU8,
+                                            sk_image_factory::BitDepth::kU8,
                                             SkColorSpace::MakeSRGB());
 }
 
@@ -283,7 +283,7 @@ protected:
             if (!gen) {
                 return false;
             }
-            fImage = SkImage::MakeFromGenerator(std::move(gen));
+            fImage = sk_image_factory::MakeFromGenerator(std::move(gen));
             if (!fImage) {
                 return false;
             }
@@ -301,12 +301,12 @@ protected:
             }
 
             if (dContext) {
-                fImageSubset = SkImage::MakeFromGenerator(std::move(gen))->makeSubset(subset,
+                fImageSubset = sk_image_factory::MakeFromGenerator(std::move(gen))->makeSubset(subset,
                                                                                       dContext);
             } else {
 #ifdef SK_GRAPHITE_ENABLED
                 auto recorder = canvas->recorder();
-                fImageSubset = SkImage::MakeFromGenerator(std::move(gen))->makeSubset(subset,
+                fImageSubset = sk_image_factory::MakeFromGenerator(std::move(gen))->makeSubset(subset,
                                                                                       recorder);
 #endif
             }

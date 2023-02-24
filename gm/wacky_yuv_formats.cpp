@@ -35,6 +35,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
 #include "include/private/base/SkTPin.h"
@@ -1212,7 +1213,7 @@ protected:
                 planes[i]->peekPixels(&pixmaps[i]);
             }
             auto yuvaPixmaps = SkYUVAPixmaps::FromExternalPixmaps(info, pixmaps);
-            auto img = SkImage::MakeFromYUVAPixmaps(canvas->recordingContext(),
+            auto img = sk_image_factory::MakeFromYUVAPixmaps(canvas->recordingContext(),
                                                     yuvaPixmaps,
                                                     GrMipmapped::kNo,
                                                     /* limit to max tex size */ false,

@@ -1268,7 +1268,7 @@ DEF_TEST(surface_image_unity, reporter) {
 
             char tempPixel = 0;    // just need a valid address (not a valid size)
             SkPixmap pmap = { info, &tempPixel, rowBytes };
-            img = SkImage::MakeFromRaster(pmap, nullptr, nullptr);
+            img = sk_image_factory::MakeFromRaster(pmap, nullptr, nullptr);
             REPORTER_ASSERT(reporter, img != nullptr);
         }
     };

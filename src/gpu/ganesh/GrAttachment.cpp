@@ -23,7 +23,7 @@ size_t GrAttachment::onGpuMemorySize() const {
     // the owned attachments will have no size and be uncached.
     if (!(fSupportedUsages & UsageFlags::kTexture) && fMemoryless == GrMemoryless::kNo) {
         GrBackendFormat format = this->backendFormat();
-        SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
+        sk_image_factory::CompressionType compression = GrBackendFormatToCompressionType(format);
 
         uint64_t size = GrNumBlocks(compression, this->dimensions());
         size *= GrBackendFormatBytesPerBlock(this->backendFormat());

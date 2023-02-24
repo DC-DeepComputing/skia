@@ -68,7 +68,7 @@ extern const SkPixelRef* SkBitmapImageGetPixelRef(const SkImage* rasterImage);
  *  All successful calls must be balanced by an equal number of calls to SkImage_unpinAsTexture().
  *
  *  Once in this "pinned" state, the image has all of the same thread restrictions that exist
- *  for a natively created gpu image (e.g. SkImage::MakeFromTexture)
+ *  for a natively created gpu image (e.g. sk_image_factory::MakeFromTexture)
  *  - all drawing, pinning, unpinning must happen in the same thread as the GrContext.
  *
  *  @return true if the image was successfully uploaded and locked into a texture
