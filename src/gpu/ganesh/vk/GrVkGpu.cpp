@@ -823,6 +823,19 @@ void GrVkGpu::onResolveRenderTarget(GrRenderTarget* target, const SkIRect& resol
                        SkIPoint::Make(resolveRect.x(), resolveRect.y()));
 }
 
+static VkFlags GetPlaneAspectFlag(int planeIndex) {
+    switch (planeIndex) {
+        case 0:
+            return VK_IMAGE_ASPECT_PLANE_0_BIT;
+        case 1:
+            return VK_IMAGE_ASPECT_PLANE_1_BIT;
+        case 2:
+            return VK_IMAGE_ASPECT_PLANE_2_BIT;
+        default:
+            return 0;
+    }
+}
+
 bool GrVkGpu::uploadTexDataLinear(GrVkImage* texImage,
                                   SkIRect rect,
                                   GrColorType dataColorType,
@@ -839,9 +852,9 @@ bool GrVkGpu::uploadTexDataLinear(GrVkImage* texImage,
     SkASSERT(VK_IMAGE_LAYOUT_PREINITIALIZED == texImage->currentLayout() ||
              VK_IMAGE_LAYOUT_GENERAL == texImage->currentLayout());
     const VkImageSubresource subres = {
-        VK_IMAGE_ASPECT_COLOR_BIT,
-        0,  // mipLevel
-        0,  // arraySlice
+            VK_IMAGE_ASPECT_COLOR_BIT | GetPlaneAspectFlag(texImage->vkImageInfo().fPlaneIndex),
+            0,  // mipLevel
+            0,  // arraySlice
     };
     VkSubresourceLayout layout;
 
@@ -984,7 +997,6 @@ bool GrVkGpu::uploadTexDataOptimal(GrVkImage* texImage,
         individualMipOffsets.push_back(0);
     }
     SkASSERT(combinedBufferSize);
-
     // Get a staging buffer slice to hold our mip data.
     // Vulkan requires offsets in the buffer to be aligned to multiple of the texel size and 4
     size_t alignment = bpp;
@@ -1022,7 +1034,12 @@ bool GrVkGpu::uploadTexDataOptimal(GrVkImage* texImage,
             region.bufferOffset = slice.fOffset + individualMipOffsets[currentMipLevel];
             region.bufferRowLength = currentWidth;
             region.bufferImageHeight = currentHeight;
-            region.imageSubresource = {VK_IMAGE_ASPECT_COLOR_BIT, SkToU32(currentMipLevel), 0, 1};
+            region.imageSubresource = {
+                    VK_IMAGE_ASPECT_COLOR_BIT |
+                            GetPlaneAspectFlag(texImage->vkImageInfo().fPlaneIndex),
+                    SkToU32(currentMipLevel),
+                    0,
+                    1};
             region.imageOffset = {uploadLeft, uploadTop, 0};
             region.imageExtent = {(uint32_t)currentWidth, (uint32_t)currentHeight, 1};
         }
@@ -2576,16 +2593,16 @@ bool GrVkGpu::onReadPixels(GrSurface* surface,
 
     // Copy the image to a buffer so we can map it to cpu memory
     region.bufferOffset = 0;
-    region.bufferRowLength = 0; // Forces RowLength to be width. We handle the rowBytes below.
-    region.bufferImageHeight = 0; // Forces height to be tightly packed. Only useful for 3d images.
-    region.imageSubresource = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1 };
+    region.bufferRowLength = 0;    // Forces RowLength to be width. We handle the rowBytes below.
+    region.bufferImageHeight = 0;  // Forces height to be tightly packed. Only useful for 3d images.
+    region.imageSubresource = {
+            VK_IMAGE_ASPECT_COLOR_BIT | GetPlaneAspectFlag(image->vkImageInfo().fPlaneIndex),
+            0,
+            0,
+            1};
 
-    this->currentCommandBuffer()->copyImageToBuffer(this,
-                                                    image,
-                                                    VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                                                    transferBuffer,
-                                                    1,
-                                                    &region);
+    this->currentCommandBuffer()->copyImageToBuffer(
+            this, image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, transferBuffer, 1, &region);
 
     // make sure the copy to buffer has finished
     vkBuffer->addMemoryBarrier(VK_ACCESS_TRANSFER_WRITE_BIT,

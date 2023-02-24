@@ -75,6 +75,7 @@ struct GrVkImageInfo {
     GrProtected              fProtected = GrProtected::kNo;
     GrVkYcbcrConversionInfo  fYcbcrConversionInfo;
     VkSharingMode            fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    int                      fPlaneIndex = -1;
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
     bool                     fPartOfSwapchainOrAndroidWindow = false;
 #endif
@@ -82,16 +83,13 @@ struct GrVkImageInfo {
 #if GR_TEST_UTILS
     bool operator==(const GrVkImageInfo& that) const {
         bool equal = fImage == that.fImage && fAlloc == that.fAlloc &&
-                     fImageTiling == that.fImageTiling &&
-                     fImageLayout == that.fImageLayout &&
-                     fFormat == that.fFormat &&
-                     fImageUsageFlags == that.fImageUsageFlags &&
-                     fSampleCount == that.fSampleCount &&
-                     fLevelCount == that.fLevelCount &&
+                     fImageTiling == that.fImageTiling && fImageLayout == that.fImageLayout &&
+                     fFormat == that.fFormat && fImageUsageFlags == that.fImageUsageFlags &&
+                     fSampleCount == that.fSampleCount && fLevelCount == that.fLevelCount &&
                      fCurrentQueueFamily == that.fCurrentQueueFamily &&
                      fProtected == that.fProtected &&
                      fYcbcrConversionInfo == that.fYcbcrConversionInfo &&
-                     fSharingMode == that.fSharingMode;
+                     fSharingMode == that.fSharingMode && fPlaneIndex == that.fPlaneIndex;
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
         equal = equal && (fPartOfSwapchainOrAndroidWindow == that.fPartOfSwapchainOrAndroidWindow);
 #endif
