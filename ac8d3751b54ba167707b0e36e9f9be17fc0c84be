@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d69db372_73bae430",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-02-24T14:14:47Z",
+      "side": 1,
+      "message": "I believe it should be checked higher up, so asserts are fine here, but we should confirm the srcBuffer has transfer_src usage and the dstBuffer transfer_dst. Also maybe its overkill if we know things are checked previously, but we could also check the size and offsets are valids for the buffers if we wanted.",
+      "range": {
+        "startLine": 264,
+        "startChar": 13,
+        "endLine": 264,
+        "endChar": 24
+      },
+      "revId": "ac8d3751b54ba167707b0e36e9f9be17fc0c84be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
