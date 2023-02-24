@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df5579c2_b49cc12a",
+        "filename": "src/text/gpu/SDFTControl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-24T19:44:30Z",
+      "side": 1,
+      "message": "These are the same on Mac (256) but belt and suspenders and all that.",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 44
+      },
+      "revId": "f6107ae6402100830e1f72d5e13cdd053c435c90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
