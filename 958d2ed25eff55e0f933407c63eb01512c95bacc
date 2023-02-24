@@ -39,6 +39,30 @@
       },
       "revId": "958d2ed25eff55e0f933407c63eb01512c95bacc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f63d7105_a6af2779",
+        "filename": "src/gpu/graphite/UploadTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-02-24T15:47:32Z",
+      "side": 1,
+      "message": "Yea, I like that better. Done.",
+      "parentUuid": "0daa8eaf_88f1e3d6",
+      "range": {
+        "startLine": 54,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 29
+      },
+      "revId": "958d2ed25eff55e0f933407c63eb01512c95bacc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
