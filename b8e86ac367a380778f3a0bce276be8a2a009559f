@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a0c170e_c6d63f97",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-24T17:17:46Z",
+      "side": 1,
+      "message": "nit: maybe use `X \u003c 0` (and `Y \u003e 0`) below. `\u003c\u003c` and `\u003e\u003e` make me think of shifts.",
+      "range": {
+        "startLine": 469,
+        "startChar": 37,
+        "endLine": 469,
+        "endChar": 39
+      },
+      "revId": "b8e86ac367a380778f3a0bce276be8a2a009559f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a147260b_55d69c35",
         "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
         "patchSetId": 1
@@ -14,6 +37,30 @@
       "writtenOn": "2023-02-24T02:54:51Z",
       "side": 1,
       "message": "Before this patch device space outsets were using an axis-aligned X/Y normal set up. This actually helped \"empty\" rectangles render correctly with strokes because the normals were just used directly from vertex data.\n\nNow that we reconstruct them from vertex positions, if the vertices are coincident we get infinities here. This will cause some stroke GMs that test empty rects to draw incorrectly again, but the quad code needs to also handle coincident vertices, so a follow up CL will tackle both situations at the same time.",
+      "range": {
+        "startLine": 596,
+        "startChar": 0,
+        "endLine": 596,
+        "endChar": 55
+      },
+      "revId": "b8e86ac367a380778f3a0bce276be8a2a009559f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f71f9515_989eaac6",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-24T17:17:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a147260b_55d69c35",
       "range": {
         "startLine": 596,
         "startChar": 0,
