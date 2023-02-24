@@ -388,7 +388,8 @@ void SkRasterPipeline::append_clamp_if_normalized(const SkImageInfo& info) {
 
 void SkRasterPipeline::append_stack_rewind() {
     if (!fRewindCtx) {
-        fRewindCtx = fAlloc->make<SkRasterPipeline_RewindCtx>();
+        fRewindCtx = static_cast<SkRasterPipeline_RewindCtx*>(fAlloc->makeBytesAlignedTo(
+                sizeof(SkRasterPipeline_RewindCtx), SkOpts::raster_pipeline_highp_stride));
     }
     this->unchecked_append(Op::stack_rewind, fRewindCtx);
 }
