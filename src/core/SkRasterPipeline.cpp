@@ -62,6 +62,12 @@ void SkRasterPipeline::extend(const SkRasterPipeline& src) {
     if (src.empty()) {
         return;
     }
+    // Share the rewind context from `src` if we don't already have one. If we _do_ already have
+    // one, we need to keep it, since we already have rewind ops that reference it. Either way, we
+    // need all the rewind ops to share _one_ rewind context, since we only get one checkpoint.
+    if (!fRewindCtx) {
+        fRewindCtx = src.fRewindCtx;
+    }
     auto stages = fAlloc->makeArrayDefault<StageList>(src.fNumStages);
 
     int n = src.fNumStages;
@@ -69,6 +75,11 @@ void SkRasterPipeline::extend(const SkRasterPipeline& src) {
     while (n --> 1) {
         stages[n]      = *st;
         stages[n].prev = &stages[n-1];
+
+        if (stages[n].stage == Op::stack_rewind) {
+            stages[n].ctx = fRewindCtx;
+        }
+
         st = st->prev;
     }
     stages[0]      = *st;
