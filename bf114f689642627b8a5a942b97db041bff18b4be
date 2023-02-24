@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "25314a1e_9ac7bcca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-24T16:37:17Z",
+      "side": 1,
+      "message": "I\u0027m confused by this paragraph. The model requires drawing everything twice. It sounds like if objects aren\u0027t in a layer, we\u0027re willing to do that. So why don\u0027t we do that for the layer case? Is it just the filtering of the layer that we want to avoid repeating? It seems like this solution you\u0027re proposing still violates the spec?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 47
+      },
+      "revId": "bf114f689642627b8a5a942b97db041bff18b4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "718f1d49_fdff4315",
@@ -49,6 +72,24 @@
       "side": 1,
       "message": "Note that having Skia support shadows via SkPaint could be useful for all draw calls, not just layers. Right now, Blink needs to add complexity on top of Skia to be spec compliant:\nhttps://crsrc.org/c/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h;l\u003d752-754,765-776;drc\u003de1ace5e8c2cdf2de1c1c7170624b5b84cdb83250\nhttps://crsrc.org/c/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h;l\u003d845-888;drc\u003de1591f7e48004bf610e6e53a4f213d032e221f23\n\nThen, we need to implement shadows differently for layers:\nhttps://crsrc.org/c/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc;l\u003d205-240;drc\u003de1ace5e8c2cdf2de1c1c7170624b5b84cdb83250\n\nHaving different implementations means that draw calls produce different pixel values depending on whether they are used in a layer or not:\nhttps://crsrc.org/c/third_party/blink/web_tests/external/wpt/html/canvas/element/layers/2d.layer.several-complex.html;l\u003d4;drc\u003d4ed4036fb30111fbcd4314e9639c1ea3b46480ca\n\nMoreover, the complexity we are adding in blink might be detrimental to the performance. For instance, we have to nest two layers to support layers with a shadow (or filter) and an alpha blending:\nhttps://crsrc.org/c/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc;l\u003d205-209;drc\u003de1ace5e8c2cdf2de1c1c7170624b5b84cdb83250\n\nTo sum up, having Skia behave closer to what the spec requires might reduce code complexity, improve consistency in pixel precision from different code paths and improve performance.\n\nThoughts?",
       "parentUuid": "3ba2e554_635538d3",
+      "revId": "bf114f689642627b8a5a942b97db041bff18b4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cd2ef37_8b39640e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-24T16:37:17Z",
+      "side": 1,
+      "message": "I\u0027m not sure adding first-class shadow logic to Skia will achieve those goals. The exact mechanics of shadows vary across different specs and clients, so enshrining the CSS behavior only helps one client, and adds complexity and waste for everyone else.\n\nSkia has no way to do this any better than the client -- \"supporting this on all draw calls\" would just mean adding a loop to every SkCanvas operation. We had that before (SkDrawLooper). No one liked it, and it\u0027s been deprecated for a long time. Fundamentally that\u0027s because of the first point -- the exact behavior of shadows (blending semantics, etc.) can vary, so it requires a high bandwidth API to express all of the possible knobs and switches that govern the behavior. Skia would *much* rather have a low bandwidth API that lets clients construct their desired behavior from simple operations that are easy to reason about.\n\nAs for layers -- we agree that the current situation is poor. Michael and I chatted, and we think that a more targeted solution could be better: Rather than storing a single image-filter on the SaveLayerRec, we could instead store a list of them and have them computed (then blended as they\u0027re dropped to the original device) in order. They\u0027d share a cache for intermediate-computed filter outputs, so for the case of a shadowed-filtered layer, we would describe both the filter (F), and the shadow (S) using image filters. Then you\u0027d supply two image filter DAGs to the SaveLayerRec: `[ S(F()), F() ]`\n\nDoes that make sense?",
+      "parentUuid": "099cba4e_61c981d7",
       "revId": "bf114f689642627b8a5a942b97db041bff18b4be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
