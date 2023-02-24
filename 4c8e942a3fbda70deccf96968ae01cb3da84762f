@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecfd7833_fc9c1d96",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-24T02:54:51Z",
+      "side": 0,
+      "message": "All of this logic is sufficiently handled by the new `cornerAspectRatio` variable because the only vertices that depend on the elliptical normals are the device-space outset vertices.",
+      "range": {
+        "startLine": 570,
+        "startChar": 8,
+        "endLine": 575,
+        "endChar": 9
+      },
+      "revId": "4c8e942a3fbda70deccf96968ae01cb3da84762f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

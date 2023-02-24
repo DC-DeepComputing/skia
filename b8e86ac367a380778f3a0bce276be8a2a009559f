@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a147260b_55d69c35",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-24T02:54:51Z",
+      "side": 1,
+      "message": "Before this patch device space outsets were using an axis-aligned X/Y normal set up. This actually helped \"empty\" rectangles render correctly with strokes because the normals were just used directly from vertex data.\n\nNow that we reconstruct them from vertex positions, if the vertices are coincident we get infinities here. This will cause some stroke GMs that test empty rects to draw incorrectly again, but the quad code needs to also handle coincident vertices, so a follow up CL will tackle both situations at the same time.",
+      "range": {
+        "startLine": 596,
+        "startChar": 0,
+        "endLine": 596,
+        "endChar": 55
+      },
+      "revId": "b8e86ac367a380778f3a0bce276be8a2a009559f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39e5b645_d10b36b4",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-24T02:54:51Z",
+      "side": 1,
+      "message": "Theoretically this is an optimization for filled rectangles too since it skips calculating J or the inverse gradient lengths or the coverage scale and bias in the fragment shader, the only cost is the series of mins and clamps.\n\nGiven that most of the performance bottleneck is varying interpolation, we might not see the needle move meaningfully.",
+      "range": {
+        "startLine": 750,
+        "startChar": 12,
+        "endLine": 754,
+        "endChar": 72
+      },
+      "revId": "b8e86ac367a380778f3a0bce276be8a2a009559f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
