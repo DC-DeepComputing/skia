@@ -1,0 +1,187 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43eff652_3d63f00c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-24T22:17:00Z",
+      "side": 1,
+      "message": "I like it! My comments are mostly related to the comments (plus line length and one [piece of wishful thinking](https://skia-review.googlesource.com/c/skia/+/645436/comment/d1b59d9b_9a3bdf5a/)).",
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc3fcc6b_42d88be6",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-24T22:17:00Z",
+      "side": 1,
+      "message": "Add a comment. Something like:\n\n```\nCallback for decoding a prior frame. The `Options::fFrameIndex` is ignored,\nbeing replaced by frameIndex.\n```",
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ea62c50_a9553aa6",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-24T22:17:00Z",
+      "side": 1,
+      "message": "nit: line length",
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1b59d9b_9a3bdf5a",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-24T22:17:00Z",
+      "side": 1,
+      "message": "`frameIndex`. This is the frame we want to decode.\n\nI wish we could just pass it as part of the `Options` object, but I don\u0027t think that\u0027s possible. We need to copy the existing `Options` object, but we also need to copy the `SkAndroidCodec::Options` portion of it, and `SkCodec` can\u0027t do that without knowing about `SkAndroidCodec`.",
+      "range": {
+        "startLine": 946,
+        "startChar": 71,
+        "endLine": 946,
+        "endChar": 84
+      },
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44f18c83_7b6ee49a",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-24T22:17:00Z",
+      "side": 1,
+      "message": "I think this should be written more generically, perhaps with a suggestion that it *might* be an `SkAndroidCodec`. How about something like:\n\n```\nIf GetPixelsCallback is not null, it will be used to decode a prior frame instead\nof using this SkCodec directly. It may also be used recursively, if that in turn\ndepends on a prior frame. This is used by SkAndroidCodec.\n```",
+      "range": {
+        "startLine": 951,
+        "startChar": 36,
+        "endLine": 951,
+        "endChar": 89
+      },
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca695a1c_2c3d5cf4",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-24T22:17:00Z",
+      "side": 1,
+      "message": "nit: line length",
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40047703_dc7e7194",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-24T22:17:00Z",
+      "side": 1,
+      "message": "nit/tip: I know I did it, too, but you don\u0027t actually need to provide a name here, even with the default value. So this can just be\n\n```\n    GetPixelsCallback \u003d nullptr);\n```",
+      "range": {
+        "startLine": 958,
+        "startChar": 46,
+        "endLine": 958,
+        "endChar": 57
+      },
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3039aaa_88f9ab48",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-24T22:17:00Z",
+      "side": 1,
+      "message": "How about something like\n\n```\nIf a callback is used, it handles the frame index, so calls from this SkCodec\nshould always short-circuit in the else case below.\n```",
+      "range": {
+        "startLine": 317,
+        "startChar": 44,
+        "endLine": 318,
+        "endChar": 41
+      },
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "530aa68d_6783ed73",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-24T22:17:00Z",
+      "side": 1,
+      "message": "My order of preference here:\n- no comment - this is already described in the header file\n- leave out mention of `SkAndroidCodec`, since in theory other classes could use it\n- Add the \"Sk\": `SkAndroidCodec`",
+      "range": {
+        "startLine": 360,
+        "startChar": 44,
+        "endLine": 360,
+        "endChar": 56
+      },
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
