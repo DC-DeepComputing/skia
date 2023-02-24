@@ -44,7 +44,7 @@ public:
     }
     ~PlotUploadContext() override {}
 
-    bool needsUpload(Context* context) const override {
+    bool needsUpload(Context* context) override {
         return context->priv().plotUploadTracker()->needsUpload(fPlotLocator,
                                                                 fUploadToken,
                                                                 fAtlasID);
