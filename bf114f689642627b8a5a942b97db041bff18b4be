@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b144af31_ae95c985",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 19669
+      },
+      "writtenOn": "2023-02-24T19:27:10Z",
+      "side": 1,
+      "message": "Consider this Canvas code snippet:\n```\nctx.shadowOffsetX \u003d 10;\nctx.fillRect(0, 0, 10, 10);\n```\n\nHere, Blink would essentially do two `SkCanvas::drawRect()` calls. Now consider:\n\n```\nctx.shadowOffsetX \u003d 10;\nctx.beginLayer();\nfor (let i \u003d 0; i \u003c 1000; ++i)\n  ctx.fillRect(...);\nctx.endLayer();\n```\n\nIf blinks had to render this twice, it would do 2004 SkCanvas calls in total, essentially doing (saveLayer + 1000 * drawRect + restore) twice. It would be much better to do (saveLayer + 1000 * drawRect + restore) once, get a hold on the resulting texture, and render that texture twice. I don\u0027t know of a way of doing this using the existing Skia API, although I might be missing something.",
+      "parentUuid": "25314a1e_9ac7bcca",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 47
+      },
+      "revId": "bf114f689642627b8a5a942b97db041bff18b4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "718f1d49_fdff4315",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -90,6 +114,24 @@
       "side": 1,
       "message": "I\u0027m not sure adding first-class shadow logic to Skia will achieve those goals. The exact mechanics of shadows vary across different specs and clients, so enshrining the CSS behavior only helps one client, and adds complexity and waste for everyone else.\n\nSkia has no way to do this any better than the client -- \"supporting this on all draw calls\" would just mean adding a loop to every SkCanvas operation. We had that before (SkDrawLooper). No one liked it, and it\u0027s been deprecated for a long time. Fundamentally that\u0027s because of the first point -- the exact behavior of shadows (blending semantics, etc.) can vary, so it requires a high bandwidth API to express all of the possible knobs and switches that govern the behavior. Skia would *much* rather have a low bandwidth API that lets clients construct their desired behavior from simple operations that are easy to reason about.\n\nAs for layers -- we agree that the current situation is poor. Michael and I chatted, and we think that a more targeted solution could be better: Rather than storing a single image-filter on the SaveLayerRec, we could instead store a list of them and have them computed (then blended as they\u0027re dropped to the original device) in order. They\u0027d share a cache for intermediate-computed filter outputs, so for the case of a shadowed-filtered layer, we would describe both the filter (F), and the shadow (S) using image filters. Then you\u0027d supply two image filter DAGs to the SaveLayerRec: `[ S(F()), F() ]`\n\nDoes that make sense?",
       "parentUuid": "099cba4e_61c981d7",
+      "revId": "bf114f689642627b8a5a942b97db041bff18b4be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85c6d8e1_5c11e6f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19669
+      },
+      "writtenOn": "2023-02-24T19:27:10Z",
+      "side": 1,
+      "message": "I think that this solution might work! I agree with your point about supporting multiple clients and about low bandwidth APIs. The important part is for Skia to provide the right building blocks allowing clients to do what they need without having to add unreasonable overhead, complexity or quality issues.\n\nI suppose I\u0027ll just drop this CL then. What would the road map look like for adding that filter-list feature?",
+      "parentUuid": "5cd2ef37_8b39640e",
       "revId": "bf114f689642627b8a5a942b97db041bff18b4be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
