@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "645c84d6_cc8b0b9e",
+        "filename": "tools/gpu/YUVUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-24T15:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c46ef79_dc327b3f",
+      "range": {
+        "startLine": 382,
+        "startChar": 0,
+        "endLine": 410,
+        "endChar": 39
+      },
+      "revId": "0bd904707cd1b6d746c6bfa41b2f37f8308de0a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cb48ab1_10367c16",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-02-23T21:25:16Z",
       "side": 1,
       "message": "It seems like we might need to wrap this in \"#ifdef SK_GRAPHITE_ENABLED\"",
+      "revId": "0bd904707cd1b6d746c6bfa41b2f37f8308de0a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeee0bf2_e6831c4a",
+        "filename": "tools/gpu/YUVUtils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-24T15:03:09Z",
+      "side": 1,
+      "message": "Doesn\u0027t seem to be needed but sure.",
+      "parentUuid": "6cb48ab1_10367c16",
       "revId": "0bd904707cd1b6d746c6bfa41b2f37f8308de0a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
