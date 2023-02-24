@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c17161b6_3cddba8c",
+        "filename": "src/core/SkMipmapBuilder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-02-24T17:11:13Z",
+      "side": 1,
+      "message": "Should this be deleted?",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "67fec343d326f8eec905b6873267e3d6342a3e82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
