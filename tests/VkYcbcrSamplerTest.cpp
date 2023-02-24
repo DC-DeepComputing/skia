@@ -21,6 +21,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/gpu/vk/VkTestHelper.h"
@@ -64,7 +65,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_DrawImageWithYcbcrSampler,
         return;
     }
 
-    sk_sp<SkImage> srcImage = SkImage::MakeFromTexture(testHelper.directContext(),
+    sk_sp<SkImage> srcImage = sk_image_factory::MakeFromTexture(testHelper.directContext(),
                                                        ycbcrHelper.backendTexture(),
                                                        kTopLeft_GrSurfaceOrigin,
                                                        kRGB_888x_SkColorType,

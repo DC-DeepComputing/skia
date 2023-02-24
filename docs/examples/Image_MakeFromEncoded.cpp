@@ -7,7 +7,7 @@ void draw(SkCanvas* canvas) {
     int x = 0;
     for (int quality : { 100, 50, 10, 1} ) {
         sk_sp<SkData> encodedData = image->encodeToData(SkEncodedImageFormat::kJPEG, quality);
-        sk_sp<SkImage> image = SkImage::MakeFromEncoded(encodedData);
+        sk_sp<SkImage> image = sk_image_factory::MakeFromEncoded(encodedData);
         canvas->drawImage(image, x, 0);
         x += 64;
     }

@@ -275,8 +275,8 @@ sk_sp<GrTexture> GrGpu::createCompressedTexture(SkISize dimensions,
     }
 
     // TODO: expand CompressedDataIsCorrect to work here too
-    SkImage::CompressionType compressionType = GrBackendFormatToCompressionType(format);
-    if (compressionType == SkImage::CompressionType::kNone) {
+    sk_image_factory::CompressionType compressionType = GrBackendFormatToCompressionType(format);
+    if (compressionType == sk_image_factory::CompressionType::kNone) {
         return nullptr;
     }
 
@@ -854,7 +854,7 @@ void GrGpu::Stats::dumpKeyValuePairs(SkTArray<SkString>* keys, SkTArray<double>*
 #endif // GR_TEST_UTILS
 
 bool GrGpu::CompressedDataIsCorrect(SkISize dimensions,
-                                    SkImage::CompressionType compressionType,
+                                    sk_image_factory::CompressionType compressionType,
                                     GrMipmapped mipmapped,
                                     const void* data,
                                     size_t length) {
@@ -919,8 +919,8 @@ GrBackendTexture GrGpu::createCompressedBackendTexture(SkISize dimensions,
         return {};
     }
 
-    SkImage::CompressionType compressionType = GrBackendFormatToCompressionType(format);
-    if (compressionType == SkImage::CompressionType::kNone) {
+    sk_image_factory::CompressionType compressionType = GrBackendFormatToCompressionType(format);
+    if (compressionType == sk_image_factory::CompressionType::kNone) {
         // Uncompressed formats must go through the createBackendTexture API
         return {};
     }
@@ -950,8 +950,8 @@ bool GrGpu::updateCompressedBackendTexture(const GrBackendTexture& backendTextur
 
     GrBackendFormat format = backendTexture.getBackendFormat();
 
-    SkImage::CompressionType compressionType = GrBackendFormatToCompressionType(format);
-    if (compressionType == SkImage::CompressionType::kNone) {
+    sk_image_factory::CompressionType compressionType = GrBackendFormatToCompressionType(format);
+    if (compressionType == sk_image_factory::CompressionType::kNone) {
         // Uncompressed formats must go through the createBackendTexture API
         return false;
     }

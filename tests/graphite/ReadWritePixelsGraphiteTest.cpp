@@ -569,7 +569,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixelsGraphite,
                 return (Image)(nullptr);
             }
 
-            Image image = SkImage::MakeGraphiteFromBackendTexture(recorder.get(),
+            Image image = sk_image_factory::MakeGraphiteFromBackendTexture(recorder.get(),
                                                                   texture,
                                                                   src.colorType(),
                                                                   src.alphaType(),

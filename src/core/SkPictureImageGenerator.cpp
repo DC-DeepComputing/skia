@@ -52,14 +52,14 @@ private:
 std::unique_ptr<SkImageGenerator>
 SkImageGenerator::MakeFromPicture(const SkISize& size, sk_sp<SkPicture> picture,
                                   const SkMatrix* matrix, const SkPaint* paint,
-                                  SkImage::BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace,
+                                  sk_image_factory::BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace,
                                   SkSurfaceProps props) {
     if (!picture || !colorSpace || size.isEmpty()) {
         return nullptr;
     }
 
     SkColorType colorType = kN32_SkColorType;
-    if (SkImage::BitDepth::kF16 == bitDepth) {
+    if (sk_image_factory::BitDepth::kF16 == bitDepth) {
         colorType = kRGBA_F16_SkColorType;
     }
 

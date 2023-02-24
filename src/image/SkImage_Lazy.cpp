@@ -324,7 +324,7 @@ sk_sp<SkImage> SkImage_Lazy::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) 
     return nullptr;
 }
 
-sk_sp<SkImage> SkImage::MakeFromGenerator(std::unique_ptr<SkImageGenerator> generator) {
+sk_sp<SkImage> sk_image_factory::MakeFromGenerator(std::unique_ptr<SkImageGenerator> generator) {
     SkImage_Lazy::Validator
             validator(SharedGenerator::Make(std::move(generator)), nullptr, nullptr);
 

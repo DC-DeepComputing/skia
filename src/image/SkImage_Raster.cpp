@@ -412,11 +412,11 @@ sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id) {
     return sk_make_sp<SkImage_Raster>(pmap.info(), std::move(data), pmap.rowBytes(), id);
 }
 
-sk_sp<SkImage> SkImage::MakeRasterCopy(const SkPixmap& pmap) {
+sk_sp<SkImage> sk_image_factory::MakeRasterCopy(const SkPixmap& pmap) {
     return MakeRasterCopyPriv(pmap, kNeedNewImageUniqueID);
 }
 
-sk_sp<SkImage> SkImage::MakeRasterData(const SkImageInfo& info, sk_sp<SkData> data,
+sk_sp<SkImage> sk_image_factory::MakeRasterData(const SkImageInfo& info, sk_sp<SkData> data,
                                        size_t rowBytes) {
     size_t size;
     if (!SkImage_Raster::ValidArgs(info, rowBytes, &size) || !data) {
@@ -434,7 +434,7 @@ sk_sp<SkImage> SkImage::MakeRasterData(const SkImageInfo& info, sk_sp<SkData> da
 // TODO: this could be improved to decode and make use of the mipmap
 // levels potentially present in the compressed data. For now, any
 // mipmap levels are discarded.
-sk_sp<SkImage> SkImage::MakeRasterFromCompressed(sk_sp<SkData> data,
+sk_sp<SkImage> sk_image_factory::MakeRasterFromCompressed(sk_sp<SkData> data,
                                                  int width, int height,
                                                  CompressionType type) {
     size_t expectedSize = SkCompressedFormatDataSize(type, { width, height }, false);
@@ -464,7 +464,7 @@ sk_sp<SkImage> SkImage::MakeRasterFromCompressed(sk_sp<SkData> data,
     return MakeFromBitmap(bitmap);
 }
 
-sk_sp<SkImage> SkImage::MakeFromRaster(const SkPixmap& pmap, RasterReleaseProc proc,
+sk_sp<SkImage> sk_image_factory::MakeFromRaster(const SkPixmap& pmap, RasterReleaseProc proc,
                                        ReleaseContext ctx) {
     size_t size;
     if (!SkImage_Raster::ValidArgs(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
@@ -539,7 +539,7 @@ sk_sp<SkImage> SkImage_Raster::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS
     // gen ID from the bitmap, which gets it from the pixelRef.
     SkPixmap pixmap = fBitmap.pixmap();
     pixmap.setColorSpace(std::move(newCS));
-    return SkImage::MakeRasterCopy(pixmap);
+    return sk_image_factory::MakeRasterCopy(pixmap);
 }
 
 #if SK_SUPPORT_GPU
