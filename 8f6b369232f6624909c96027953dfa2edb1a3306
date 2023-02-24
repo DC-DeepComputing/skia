@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b12076e_c3ac474e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-24T14:16:43Z",
+      "side": 1,
+      "message": "Just curious: What does the skvm for this one look like? Trying to reason about how much of this it can see through. (Even the non-const variable assignments should propagate correctly, so does this whole thing bake down to ~nothing?)",
+      "revId": "8f6b369232f6624909c96027953dfa2edb1a3306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
