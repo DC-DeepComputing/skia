@@ -598,9 +598,11 @@ SKSL_TEST(GPU_ES3,       kNever,      ArrayNarrowingConversions,       "runtime/
 SKSL_TEST(RP + GPU_ES3,  kNever,      Commutative,                     "runtime/Commutative.rts")
 SKSL_TEST(RP + VM + GPU, kApiLevel_T, LoopFloat,                       "runtime/LoopFloat.rts")
 SKSL_TEST(RP + VM + GPU, kApiLevel_T, LoopInt,                         "runtime/LoopInt.rts")
+SKSL_TEST(RP + VM + GPU, kNextRelease,MatrixIndexLookup,               "runtime/MatrixIndexLookup.rts")
 SKSL_TEST(RP + VM + GPU, kApiLevel_T, Ossfuzz52603,                    "runtime/Ossfuzz52603.rts")
 SKSL_TEST(RP + VM + GPU, kApiLevel_T, QualifierOrder,                  "runtime/QualifierOrder.rts")
 SKSL_TEST(RP + VM + GPU, kApiLevel_T, PrecisionQualifiers,             "runtime/PrecisionQualifiers.rts")
+SKSL_TEST(RP + VM + GPU, kNextRelease,StructIndexLookup,               "runtime/StructIndexLookup.rts")
 
 SKSL_TEST(RP + GPU_ES3 + UsesNaN, kNever, RecursiveComparison_Arrays,  "runtime/RecursiveComparison_Arrays.rts")
 SKSL_TEST(RP + GPU_ES3 + UsesNaN, kNever, RecursiveComparison_Structs, "runtime/RecursiveComparison_Structs.rts")
@@ -656,7 +658,6 @@ SKSL_TEST(RP + GPU_ES3,      kNever,      MatricesNonsquare,               "shar
 SKSL_TEST(RP + VM,           kNever,      MatrixConstructorsES2,           "shared/MatrixConstructorsES2.sksl")
 SKSL_TEST(RP,                kNever,      MatrixConstructorsES3,           "shared/MatrixConstructorsES3.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, MatrixEquality,                  "shared/MatrixEquality.sksl")
-SKSL_TEST(RP + GPU_ES3,      kNextRelease,MatrixIndexLookup,               "shared/MatrixIndexLookup.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_U, MatrixOpEqualsES2,               "shared/MatrixOpEqualsES2.sksl")
 SKSL_TEST(RP + GPU_ES3,      kApiLevel_U, MatrixOpEqualsES3,               "shared/MatrixOpEqualsES3.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, MatrixScalarMath,                "shared/MatrixScalarMath.sksl")
@@ -680,7 +681,6 @@ SKSL_TEST(RP + VM + GPU,     kApiLevel_T, ScopedSymbol,                    "shar
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, StackingVectorCasts,             "shared/StackingVectorCasts.sksl")
 SKSL_TEST(RP + VM + GPU_ES3, kNever,      StaticSwitch,                    "shared/StaticSwitch.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, StructArrayFollowedByScalar,     "shared/StructArrayFollowedByScalar.sksl")
-SKSL_TEST(RP + VM + GPU,     kNextRelease,StructIndexLookup,               "shared/StructIndexLookup.sksl")
 // TODO(skia:13920): StructComparison currently exposes a bug in SPIR-V codegen.
 // SKSL_TEST(RP /* +GPU_ES3 */, kNever,      StructComparison,                "shared/StructComparison.sksl")
 SKSL_TEST(RP + VM + GPU,     kApiLevel_T, StructsInFunctions,              "shared/StructsInFunctions.sksl")
