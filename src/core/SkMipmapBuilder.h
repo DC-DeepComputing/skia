@@ -8,7 +8,12 @@
 #ifndef SkMipmapBuilder_DEFINED
 #define SkMipmapBuilder_DEFINED
 
-#include "include/core/SkImage.h"
+#include "include/core/SkRefCnt.h"
+
+class SkImage;
+class SkMipmap;
+class SkPixmap;
+struct SkImageInfo;
 
 class SkMipmapBuilder {
 public:
@@ -31,7 +36,7 @@ public:
 private:
     sk_sp<SkMipmap> fMM;
 
-    friend class SkImage;
+    //friend class SkImage;
 };
 
 #endif
