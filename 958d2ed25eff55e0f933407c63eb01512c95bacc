@@ -16,6 +16,29 @@
       "message": "This seems difficult to test in a unit test or GM; not sure how to count how many times we\u0027re adding copy commands to a command buffer. I verified it\u0027s working with local testing and print statements.\n\nThis also changes ConditionalUploadContext::needsUpload to be non-const. Tracking additional state on the Graphite Context seemed overly complicated and I couldn\u0027t think of any alternatives.",
       "revId": "958d2ed25eff55e0f933407c63eb01512c95bacc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0daa8eaf_88f1e3d6",
+        "filename": "src/gpu/graphite/UploadTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-24T15:28:40Z",
+      "side": 1,
+      "message": "Having an accessor change the variable it\u0027s accessing feels squirrely to me -- I think I\u0027d prefer we add a method called something like uploadSubmitted() that gets called when the command is added and sets the variable.",
+      "range": {
+        "startLine": 54,
+        "startChar": 8,
+        "endLine": 55,
+        "endChar": 29
+      },
+      "revId": "958d2ed25eff55e0f933407c63eb01512c95bacc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
