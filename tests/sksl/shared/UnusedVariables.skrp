@@ -38,11 +38,11 @@
    38. store_loop_mask                $0 = LoopMask
    39. jump                           jump +11 (label 2 at #50)
    40. label                          label 0x00000003
-   41. zero_slot_unmasked             [temporary 0] = 0
-   42. copy_constant                  $1 = 0xFFFFFFFF
-   43. copy_slot_masked               [temporary 0] = Mask($1)
+   41. zero_slot_unmasked             $5 = 0
+   42. copy_constant                  $6 = 0xFFFFFFFF
+   43. copy_slot_masked               $5 = Mask($6)
    44. mask_off_loop_mask             LoopMask &= ~(CondMask & LoopMask & RetMask)
-   45. reenable_loop_mask             LoopMask |= [temporary 0]
+   45. reenable_loop_mask             LoopMask |= $5
    46. copy_slot_unmasked             $1 = x
    47. copy_constant                  $2 = 0x00000001 (1.401298e-45)
    48. add_int                        $1 += $2
