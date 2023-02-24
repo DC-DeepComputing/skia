@@ -412,69 +412,6 @@ sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id) {
     return sk_make_sp<SkImage_Raster>(pmap.info(), std::move(data), pmap.rowBytes(), id);
 }
 
-sk_sp<SkImage> SkImage::MakeRasterCopy(const SkPixmap& pmap) {
-    return MakeRasterCopyPriv(pmap, kNeedNewImageUniqueID);
-}
-
-sk_sp<SkImage> SkImage::MakeRasterData(const SkImageInfo& info, sk_sp<SkData> data,
-                                       size_t rowBytes) {
-    size_t size;
-    if (!SkImage_Raster::ValidArgs(info, rowBytes, &size) || !data) {
-        return nullptr;
-    }
-
-    // did they give us enough data?
-    if (data->size() < size) {
-        return nullptr;
-    }
-
-    return sk_make_sp<SkImage_Raster>(info, std::move(data), rowBytes);
-}
-
-// TODO: this could be improved to decode and make use of the mipmap
-// levels potentially present in the compressed data. For now, any
-// mipmap levels are discarded.
-sk_sp<SkImage> SkImage::MakeRasterFromCompressed(sk_sp<SkData> data,
-                                                 int width, int height,
-                                                 CompressionType type) {
-    size_t expectedSize = SkCompressedFormatDataSize(type, { width, height }, false);
-    if (!data || data->size() < expectedSize) {
-        return nullptr;
-    }
-
-    SkAlphaType at = SkCompressionTypeIsOpaque(type) ? kOpaque_SkAlphaType
-                                                     : kPremul_SkAlphaType;
-
-    SkImageInfo ii = SkImageInfo::MakeN32(width, height, at);
-
-    if (!SkImage_Raster::ValidArgs(ii, ii.minRowBytes(), nullptr)) {
-        return nullptr;
-    }
-
-    SkBitmap bitmap;
-    if (!bitmap.tryAllocPixels(ii)) {
-        return nullptr;
-    }
-
-    if (!SkDecompress(std::move(data), { width, height }, type, &bitmap)) {
-        return nullptr;
-    }
-
-    bitmap.setImmutable();
-    return MakeFromBitmap(bitmap);
-}
-
-sk_sp<SkImage> SkImage::MakeFromRaster(const SkPixmap& pmap, RasterReleaseProc proc,
-                                       ReleaseContext ctx) {
-    size_t size;
-    if (!SkImage_Raster::ValidArgs(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
-        return nullptr;
-    }
-
-    sk_sp<SkData> data(SkData::MakeWithProc(pmap.addr(), size, proc, ctx));
-    return sk_make_sp<SkImage_Raster>(pmap.info(), std::move(data), pmap.rowBytes());
-}
-
 sk_sp<SkImage> SkMakeImageFromRasterBitmapPriv(const SkBitmap& bm, SkCopyPixelsMode cpm,
                                                uint32_t idForCopy) {
     if (kAlways_SkCopyPixelsMode == cpm || (!bm.isImmutable() && kNever_SkCopyPixelsMode != cpm)) {
@@ -539,7 +476,7 @@ sk_sp<SkImage> SkImage_Raster::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS
     // gen ID from the bitmap, which gets it from the pixelRef.
     SkPixmap pixmap = fBitmap.pixmap();
     pixmap.setColorSpace(std::move(newCS));
-    return SkImage::MakeRasterCopy(pixmap);
+    return sk_image_factory::MakeRasterCopy(pixmap);
 }
 
 #if SK_SUPPORT_GPU
@@ -641,3 +578,67 @@ sk_sp<SkImage> SkImage_Raster::onMakeColorTypeAndColorSpace(
 }
 
 #endif
+
+namespace sk_image_factory {
+
+sk_sp<SkImage> MakeRasterCopy(const SkPixmap& pmap) {
+    return MakeRasterCopyPriv(pmap, kNeedNewImageUniqueID);
+}
+
+sk_sp<SkImage> MakeRasterData(const SkImageInfo& info, sk_sp<SkData> data,
+                              size_t rowBytes) {
+    size_t size;
+    if (!SkImage_Raster::ValidArgs(info, rowBytes, &size) || !data) {
+        return nullptr;
+    }
+
+    // did they give us enough data?
+    if (data->size() < size) {
+        return nullptr;
+    }
+
+    return sk_make_sp<SkImage_Raster>(info, std::move(data), rowBytes);
+}
+
+// TODO: this could be improved to decode and make use of the mipmap
+// levels potentially present in the compressed data. For now, any
+// mipmap levels are discarded.
+sk_sp<SkImage> MakeRasterFromCompressed(sk_sp<SkData> data, int width, int height,
+                                        CompressionType type) {
+    size_t expectedSize = SkCompressedFormatDataSize(type, { width, height }, false);
+    if (!data || data->size() < expectedSize) {
+        return nullptr;
+    }
+
+    SkAlphaType at = SkCompressionTypeIsOpaque(type) ? kOpaque_SkAlphaType
+                                                     : kPremul_SkAlphaType;
+
+    SkImageInfo ii = SkImageInfo::MakeN32(width, height, at);
+
+    if (!SkImage_Raster::ValidArgs(ii, ii.minRowBytes(), nullptr)) {
+        return nullptr;
+    }
+
+    SkBitmap bitmap;
+    if (!bitmap.tryAllocPixels(ii)) {
+        return nullptr;
+    }
+
+    if (!SkDecompress(std::move(data), { width, height }, type, &bitmap)) {
+        return nullptr;
+    }
+
+    bitmap.setImmutable();
+    return MakeFromBitmap(bitmap);
+}
+
+sk_sp<SkImage> MakeFromRaster(const SkPixmap& pmap, RasterReleaseProc proc, ReleaseContext ctx) {
+    size_t size;
+    if (!SkImage_Raster::ValidArgs(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
+        return nullptr;
+    }
+
+    sk_sp<SkData> data(SkData::MakeWithProc(pmap.addr(), size, proc, ctx));
+    return sk_make_sp<SkImage_Raster>(pmap.info(), std::move(data), pmap.rowBytes());
+}
+}

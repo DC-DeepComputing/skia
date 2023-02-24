@@ -50,14 +50,14 @@ bool Caps::isTexturable(const TextureInfo& info) const {
 }
 
 bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {
-    // TODO: add SkImage::CompressionType handling
+    // TODO: add sk_image_factory::CompressionType handling
     // (can be handled by setting up the colorTypeInfo instead?)
 
     return SkToBool(this->getColorTypeInfo(ct, info));
 }
 
 skgpu::Swizzle Caps::getReadSwizzle(SkColorType ct, const TextureInfo& info) const {
-    // TODO: add SkImage::CompressionType handling
+    // TODO: add sk_image_factory::CompressionType handling
     // (can be handled by setting up the colorTypeInfo instead?)
 
     auto colorTypeInfo = this->getColorTypeInfo(ct, info);

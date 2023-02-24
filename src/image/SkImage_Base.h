@@ -159,6 +159,7 @@ public:
     virtual bool isYUVA() const { return false; }
 #endif
 
+    // Used only by Android (SkiaPipeline) atm
     virtual bool onPinAsTexture(GrRecordingContext*) const { return false; }
     virtual void onUnpinAsTexture(GrRecordingContext*) const {}
     virtual bool isPinnedOnContext(GrRecordingContext*) const { return false; }

@@ -89,7 +89,7 @@ sk_sp<SkImage> wrap_backend_texture(skiatest::Reporter* reporter,
                                     const skgpu::graphite::BackendTexture& backendTex,
                                     SkColorType ct,
                                     bool withMips) {
-    sk_sp<SkImage> image = SkImage::MakeGraphiteFromBackendTexture(recorder,
+    sk_sp<SkImage> image = sk_image_factory::MakeGraphiteFromBackendTexture(recorder,
                                                                    backendTex,
                                                                    ct,
                                                                    kPremul_SkAlphaType,

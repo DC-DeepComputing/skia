@@ -13,9 +13,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkEncodedImageFormat.h"
 #include "include/core/SkImageEncoder.h"
-#include "include/core/SkImageGenerator.h"
 #include "include/core/SkMatrix.h"
-#include "include/core/SkPicture.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkSamplingOptions.h"
@@ -30,7 +28,6 @@
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkMipmap.h"
-#include "src/core/SkMipmapBuilder.h"
 #include "src/core/SkNextID.h"
 #include "src/core/SkSamplingPriv.h"
 #include "src/core/SkSpecialImage.h"
@@ -39,9 +36,11 @@
 #include "src/shaders/SkImageShader.h"
 
 #if SK_SUPPORT_GPU
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
+#include "include/gpu/GrTypes.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/SkBackingFit.h"
@@ -247,15 +246,6 @@ sk_sp<SkData> SkImage::refEncodedData() const {
     return sk_sp<SkData>(as_IB(this)->onRefEncoded());
 }
 
-sk_sp<SkImage> SkImage::MakeFromEncoded(sk_sp<SkData> encoded,
-                                        std::optional<SkAlphaType> alphaType) {
-    if (nullptr == encoded || 0 == encoded->size()) {
-        return nullptr;
-    }
-    return SkImage::MakeFromGenerator(
-            SkImageGenerator::MakeFromEncoded(std::move(encoded), alphaType));
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset, GrDirectContext* direct) const {
@@ -304,6 +294,8 @@ bool SkImage::isValid(GrRecordingContext* rContext) const {
     return as_IB(this)->onIsValid(rContext);
 }
 
+void SkImage::flush(GrDirectContext* context) const { this->flush(context, {}); }
+
 GrSemaphoresSubmitted SkImage::flush(GrDirectContext* dContext,
                                      const GrFlushInfo& flushInfo) const {
     return as_IB(this)->onFlush(dContext, flushInfo);
@@ -324,6 +316,15 @@ bool SkImage::isValid(GrRecordingContext* rContext) const {
     }
     return as_IB(this)->onIsValid(nullptr);
 }
+
+void SkImage::flush(GrDirectContext* context) const {}
+
+GrSemaphoresSubmitted SkImage::flush(GrDirectContext* dContext,
+                                     const GrFlushInfo& flushInfo) const {
+    return 0;
+}
+
+void SkImage::flushAndSubmit(GrDirectContext* dContext) const {}
 
 #endif
 
@@ -635,14 +636,6 @@ bool SkImage::readPixels(const SkPixmap& pmap, int srcX, int srcY, CachingHint c
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage::MakeFromBitmap(const SkBitmap& bm) {
-    if (!bm.pixelRef()) {
-        return nullptr;
-    }
-
-    return SkMakeImageFromRasterBitmap(bm, kIfMutable_SkCopyPixelsMode);
-}
-
 bool SkImage::asLegacyBitmap(SkBitmap* bitmap, LegacyBitmapMode ) const {
     // Context TODO: Elevate GrDirectContext requirement to public API.
     auto dContext = as_IB(this)->directContext();
@@ -665,21 +658,6 @@ bool SkImage_Base::onAsLegacyBitmap(GrDirectContext* dContext, SkBitmap* bitmap)
 
     bitmap->setImmutable();
     return true;
-}
-
-sk_sp<SkImage> SkImage::MakeFromPicture(sk_sp<SkPicture> picture, const SkISize& dimensions,
-                                        const SkMatrix* matrix, const SkPaint* paint,
-                                        BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace) {
-    return SkImage::MakeFromPicture(picture, dimensions, matrix, paint, bitDepth, colorSpace, {});
-}
-
-sk_sp<SkImage> SkImage::MakeFromPicture(sk_sp<SkPicture> picture, const SkISize& dimensions,
-                                        const SkMatrix* matrix, const SkPaint* paint,
-                                        BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace,
-                                        SkSurfaceProps props) {
-    return MakeFromGenerator(SkImageGenerator::MakeFromPicture(dimensions, std::move(picture),
-                                                               matrix, paint, bitDepth,
-                                                               std::move(colorSpace), props));
 }
 
 sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext, const SkImageFilter* filter,
@@ -831,7 +809,7 @@ sk_sp<SkImage> SkImage::makeRasterImage(CachingHint chint) const {
         return nullptr;
     }
 
-    return SkImage::MakeRasterData(fInfo, std::move(data), rowBytes);
+    return sk_image_factory::MakeRasterData(fInfo, std::move(data), rowBytes);
 }
 
 bool SkImage_pinAsTexture(const SkImage* image, GrRecordingContext* rContext) {
@@ -844,28 +822,6 @@ void SkImage_unpinAsTexture(const SkImage* image, GrRecordingContext* rContext) 
     SkASSERT(image);
     SkASSERT(rContext);
     as_IB(image)->onUnpinAsTexture(rContext);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-SkMipmapBuilder::SkMipmapBuilder(const SkImageInfo& info) {
-    fMM = sk_sp<SkMipmap>(SkMipmap::Build({info, nullptr, 0}, nullptr, false));
-}
-
-SkMipmapBuilder::~SkMipmapBuilder() {}
-
-int SkMipmapBuilder::countLevels() const {
-    return fMM ? fMM->countLevels() : 0;
-}
-
-SkPixmap SkMipmapBuilder::level(int index) const {
-    SkPixmap pm;
-
-    SkMipmap::Level level;
-    if (fMM && fMM->getLevel(index, &level)) {
-        pm = level.fPixmap;
-    }
-    return pm;
 }
 
 bool SkImage::hasMipmaps() const { return as_IB(this)->onHasMipmaps(); }
@@ -881,26 +837,4 @@ sk_sp<SkImage> SkImage::withMipmaps(sk_sp<SkMipmap> mips) const {
 
 sk_sp<SkImage> SkImage::withDefaultMipmaps() const {
     return this->withMipmaps(nullptr);
-}
-
-sk_sp<SkImage> SkMipmapBuilder::attachTo(const SkImage* src) {
-    return src->withMipmaps(fMM);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-SkSamplingOptions SkSamplingPriv::FromFQ(SkLegacyFQ fq, SkMediumAs behavior) {
-    switch (fq) {
-        case kHigh_SkLegacyFQ:
-            return SkSamplingOptions(SkCubicResampler{1/3.0f, 1/3.0f});
-        case kMedium_SkLegacyFQ:
-            return SkSamplingOptions(SkFilterMode::kLinear,
-                                      behavior == kNearest_SkMediumAs ? SkMipmapMode::kNearest
-                                                                      : SkMipmapMode::kLinear);
-        case kLow_SkLegacyFQ:
-            return SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
-        case kNone_SkLegacyFQ:
-            break;
-    }
-    return SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone);
 }

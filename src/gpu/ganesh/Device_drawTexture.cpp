@@ -785,7 +785,7 @@ void Device::drawImageQuad(const SkImage* image,
     }
     auto clip = this->clip();
 
-    if (!image->isTextureBacked() && !as_IB(image)->isPinnedOnContext(fContext.get())) {
+    if (!image->isTextureBacked()) {
         int tileFilterPad;
         if (sampling.useCubic) {
             tileFilterPad = GrBicubicEffect::kFilterTexelPad;
