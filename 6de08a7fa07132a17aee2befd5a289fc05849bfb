@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fca24e2a_c83e6623",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-24T14:50:08Z",
+      "side": 1,
+      "message": "Not sure if we actually want to move these files or keep as-is? Since most tests in shared/ are runtime shaders anyway, there isn\u0027t much of a tangible benefit to separating \"runtime\" tests from \"shared\" tests anymore that I can see. (If anything, we might want to start separating out non-RTE tests now, since they\u0027re pretty few and far between)",
+      "revId": "6de08a7fa07132a17aee2befd5a289fc05849bfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
