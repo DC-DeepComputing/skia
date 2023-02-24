@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4d6814e_b98ce8ad",
+        "filename": "tools/gpu/YUVUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-24T15:39:05Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 351,
+        "startChar": 35,
+        "endLine": 351,
+        "endChar": 51
+      },
+      "revId": "2382d589be1c195f5a034d3d78c361b8f0d49dae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
