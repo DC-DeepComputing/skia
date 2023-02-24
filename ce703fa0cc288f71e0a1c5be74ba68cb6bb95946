@@ -46,6 +46,30 @@
       },
       "revId": "ce703fa0cc288f71e0a1c5be74ba68cb6bb95946",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c2468fd_01602503",
+        "filename": "src/sksl/SkSLModuleLoader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-24T15:37:07Z",
+      "side": 1,
+      "message": "Ah, I wasn\u0027t sure that would work, but it does. (I\u0027m surprised we allow `shader`, `colorFilter` and `blender` in non-RTE program kinds).",
+      "parentUuid": "5cac682d_8d389132",
+      "range": {
+        "startLine": 305,
+        "startChar": 70,
+        "endLine": 305,
+        "endChar": 91
+      },
+      "revId": "ce703fa0cc288f71e0a1c5be74ba68cb6bb95946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
