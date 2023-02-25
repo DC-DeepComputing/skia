@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6731621f_59ed11dd",
+        "filename": "src/gpu/graphite/ComputeTask.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-02-25T01:48:39Z",
+      "side": 1,
+      "message": "We were using STL collections pretty frequently at the start of graphite\u0027s coding but have moved back towards the ones defined in Skia for a mix of performance and code size reasons. The biggest win was around hash maps, but I\u0027d still vote for SkTArray here or SkTBlockList if these are larger objects and want to avoid copying them on resize (and don\u0027t need random access, just iteration).",
+      "range": {
+        "startLine": 27,
+        "startChar": 30,
+        "endLine": 27,
+        "endChar": 41
+      },
+      "revId": "4a7d5c451740ddec7ddde3f2c52f1030bac0723f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
