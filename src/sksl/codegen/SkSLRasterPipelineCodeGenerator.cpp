@@ -351,13 +351,22 @@ public:
 
     BuilderOp getTypedOp(const SkSL::Type& type, const TypedOps& ops) const;
 
-    bool needsReturnMask() {
+    Analysis::ReturnComplexity complexity(const FunctionDefinition* func) {
         Analysis::ReturnComplexity* complexity = fReturnComplexityMap.find(fCurrentFunction);
         if (!complexity) {
             complexity = fReturnComplexityMap.set(fCurrentFunction,
                                                   Analysis::GetReturnComplexity(*fCurrentFunction));
         }
-        return *complexity >= Analysis::ReturnComplexity::kEarlyReturns;
+        return *complexity;
+    }
+
+    bool needsReturnMask() {
+        return this->complexity(fCurrentFunction) >= Analysis::ReturnComplexity::kEarlyReturns;
+    }
+
+    bool needsFunctionResultSlots() {
+        return fCurrentFunction->declaration().isMain() ||
+               this->complexity(fCurrentFunction) > Analysis::ReturnComplexity::kSingleSafeReturn;
     }
 
     static bool IsUniform(const Variable& var) {
@@ -1523,7 +1532,9 @@ bool Generator::writeReturnStatement(const ReturnStatement& r) {
         if (!this->pushExpression(*r.expression())) {
             return unsupported();
         }
-        this->popToSlotRange(fCurrentFunctionResult);
+        if (this->needsFunctionResultSlots()) {
+            this->popToSlotRange(fCurrentFunctionResult);
+        }
     }
     if (fBuilder.executionMaskWritesAreEnabled() && this->needsReturnMask()) {
         fBuilder.mask_off_return_mask();
@@ -2337,6 +2348,11 @@ bool Generator::pushFunctionCall(const FunctionCall& c) {
         fBuilder.disableExecutionMaskWrites();
     }
 
+    // If the function uses result slots, move its result from slots onto the stack.
+    if (this->needsFunctionResultSlots()) {
+        fBuilder.push_slots(*r);
+    }
+
     // We've returned back to the last function.
     fCurrentFunction = lastFunction;
 
@@ -2357,7 +2373,6 @@ bool Generator::pushFunctionCall(const FunctionCall& c) {
     }
 
     // Copy the function result from its slots onto the stack.
-    fBuilder.push_slots(*r);
     fBuilder.label(skipLabelID);
     return true;
 }
