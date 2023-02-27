@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3295db76_abd0002a",
+        "filename": "src/core/SkRect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-27T21:02:41Z",
+      "side": 1,
+      "message": "Is this necessary? I think b passes the d0, etc. tests even if it\u0027s empty?",
+      "range": {
+        "startLine": 269,
+        "startChar": 23,
+        "endLine": 269,
+        "endChar": 34
+      },
+      "revId": "f8e21366b11e30e24839903b07a05129b3513e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "740cf81f_4e948baa",
+        "filename": "src/core/SkRect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-27T21:02:41Z",
+      "side": 1,
+      "message": "I\u0027m not sure this works if either max or may, e.g., are (0,0,0,0). I think that would only happen if m is degenerate so I\u0027m assuming this is checked higher up?",
+      "range": {
+        "startLine": 281,
+        "startChar": 7,
+        "endLine": 281,
+        "endChar": 41
+      },
+      "revId": "f8e21366b11e30e24839903b07a05129b3513e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc808fb0_f16ebc7a",
         "filename": "tests/RectTest.cpp",
         "patchSetId": 5
