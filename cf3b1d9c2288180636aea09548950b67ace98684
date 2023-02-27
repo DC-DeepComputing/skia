@@ -16,6 +16,24 @@
       "message": "Sorry to get to this late, but what is the logic of putting these defines here? These defines need to be set very consistently across an entire build, so these should be coming from somewhere else more global, like a user config or some config\u0027s public_defines or something.",
       "revId": "cf3b1d9c2288180636aea09548950b67ace98684",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42b71273_ebe406da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-02-27T21:44:23Z",
+      "side": 1,
+      "message": "And by \"entire build\" I mean these defines need to be consistent across all TUs (cpp files) which will run in a single process, both Skia the linrary and any users of the library.",
+      "parentUuid": "154c3ef3_73c1a56c",
+      "revId": "cf3b1d9c2288180636aea09548950b67ace98684",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
