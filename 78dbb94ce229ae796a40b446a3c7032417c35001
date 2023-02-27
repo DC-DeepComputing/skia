@@ -118,6 +118,30 @@
       },
       "revId": "78dbb94ce229ae796a40b446a3c7032417c35001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0f8a1b9_674e11c2",
+        "filename": "src/core/SkExecutor.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-27T19:21:39Z",
+      "side": 1,
+      "message": "I actually asked this question when Mike \u0026 Mike were still around. T in the name is the Skia traditional marking a utility class that could vary by type. The S indicates a portion of the item could be on the \"Stack\". What it really means is that a portion could be inlined.",
+      "parentUuid": "45f99fee_4f73c9d0",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 28
+      },
+      "revId": "78dbb94ce229ae796a40b446a3c7032417c35001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
