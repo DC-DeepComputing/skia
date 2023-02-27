@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98dd9441_cbc6d2ff",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1535,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-27T15:26:20Z",
+      "side": 1,
+      "message": "I think I need a diagram - I\u0027m trying to reason about how the offset and number of slots work together here (going back and looking at the existing code for `push_slots_indirect` just made me even more confused). `src` here seems like it points at the start of the storage for the source data, but the code in `push_clone_indirect_from_stack` is subtracting the range\u0027s index, not count - so I\u0027m not even sure I\u0027m right about that, either.",
+      "range": {
+        "startLine": 1535,
+        "startChar": 37,
+        "endLine": 1535,
+        "endChar": 61
+      },
+      "revId": "9e5425984bbcacbbf8a3402ec83548bff10b718a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
