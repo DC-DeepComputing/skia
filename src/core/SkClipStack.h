@@ -237,10 +237,13 @@ public:
         bool fIsIntersectionOfRects;
 
         uint32_t fGenID;
+<<<<<<< HEAD   (7a4aa0 Replace most uses of macros.bzl with skia_rules.bzl or flags)
 #if SK_SUPPORT_GPU
         mutable GrProxyProvider*           fProxyProvider = nullptr;
         mutable SkTArray<skgpu::UniqueKey> fKeysToInvalidate;
 #endif
+=======
+>>>>>>> CHANGE (40d29b Rename SK_SUPPORT_GPU -> SK_GANESH_ENABLED)
         Element(int saveCount) {
             this->initCommon(saveCount, SkClipOp::kIntersect, false);
             this->setEmpty();

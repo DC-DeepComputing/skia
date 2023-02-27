@@ -26,8 +26,16 @@
 #include "src/core/SkVerticesPriv.h"
 #include "src/core/SkWriteBuffer.h"
 
+<<<<<<< HEAD   (7a4aa0 Replace most uses of macros.bzl with skia_rules.bzl or flags)
 #include <cstring>
 #include <utility>
+=======
+#include <new>
+
+#if defined(SK_GANESH_ENABLED)
+#include "include/private/chromium/Slug.h"
+#endif
+>>>>>>> CHANGE (40d29b Rename SK_SUPPORT_GPU -> SK_GANESH_ENABLED)
 
 using namespace skia_private;
 
@@ -52,7 +60,7 @@ SkPictureData::SkPictureData(const SkPictureRecord& record,
     , fTextBlobs(record.getTextBlobs())
     , fVertices(record.getVertices())
     , fImages(record.getImages())
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
     , fSlugs(record.getSlugs())
 #endif
     , fInfo(info) {
@@ -181,7 +189,7 @@ void SkPictureData::flattenToBuffer(SkWriteBuffer& buffer, bool textBlobsOnly) c
         }
     }
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
     if (!textBlobsOnly) {
         write_tag_size(buffer, SK_PICT_SLUG_BUFFER_TAG, fSlugs.size());
         for (const auto& slug : fSlugs) {
@@ -481,7 +489,7 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
             new_array_from_buffer(buffer, size, fTextBlobs, SkTextBlobPriv::MakeFromBuffer);
             break;
         case SK_PICT_SLUG_BUFFER_TAG:
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
             new_array_from_buffer(buffer, size, fSlugs, sktext::gpu::Slug::MakeFromBuffer);
 #endif
             break;
