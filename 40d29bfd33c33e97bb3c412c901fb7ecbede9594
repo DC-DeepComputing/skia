@@ -16,6 +16,24 @@
       "message": "This contradicts the plans listed in https://docs.google.com/document/d/1f0i8LFovl9LHakIsvuAarZ4rqsAtYxPXRPrOKNjaf5E/edit\n\nI\u0027m OK with it but why are we changing the plan?",
       "revId": "40d29bfd33c33e97bb3c412c901fb7ecbede9594",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cac16a22_433a2e39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T18:57:52Z",
+      "side": 1,
+      "message": "I suggested edits to the plan document. I think the _ENABLED suffix both reads better and does not require a graphite define change.",
+      "parentUuid": "80ba17cd_0e0b204c",
+      "revId": "40d29bfd33c33e97bb3c412c901fb7ecbede9594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
