@@ -16,6 +16,24 @@
       "message": "This is automatically true. I think this meant to be `SkASSERT(src)`, to keep up the \"exactly one must be non-nullptr\" thing?",
       "revId": "70c532c5132a95e1b2725d41eccfebb536e2af81",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "152fd154_6edb11b5",
+        "filename": "src/encode/SkJpegEncoder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2023-02-27T09:46:32Z",
+      "side": 1,
+      "message": "Yes, updated!",
+      "parentUuid": "b1fb9735_c94a7fcb",
+      "revId": "70c532c5132a95e1b2725d41eccfebb536e2af81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
