@@ -34,6 +34,11 @@
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 #endif
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
+#endif // SK_GRAPHITE_ENABLED
+
 static const int kBlockSize = 256;
 static const int kBlockMask = kBlockSize - 1;
 static const int kPerlinNoise = 4096;
@@ -145,8 +150,7 @@ public:
         }
 
         // Only called once. Could be part of the constructor.
-        void init(SkScalar seed)
-        {
+        void init(SkScalar seed) {
             // According to the SVG spec, we must truncate (not round) the seed value.
             fSeed = SkScalarTruncToInt(seed);
             // The seed value clamp to the range [1, kRandMaximum - 1].
@@ -277,8 +281,8 @@ public:
     static const int kMaxOctaves = 255; // numOctaves must be <= 0 and <= kMaxOctaves
 
     SkPerlinNoiseShaderImpl(SkPerlinNoiseShaderImpl::Type type, SkScalar baseFrequencyX,
-                      SkScalar baseFrequencyY, int numOctaves, SkScalar seed,
-                      const SkISize* tileSize);
+                            SkScalar baseFrequencyY, int numOctaves, SkScalar seed,
+                            const SkISize* tileSize);
 
     class PerlinNoiseShaderContext : public Context {
     public:
@@ -288,11 +292,12 @@ public:
 
     private:
         SkPMColor shade(const SkPoint& point, StitchData& stitchData) const;
-        SkScalar calculateTurbulenceValueForPoint(
-                                                  int channel,
-                                                  StitchData& stitchData, const SkPoint& point) const;
+        SkScalar calculateTurbulenceValueForPoint(int channel,
+                                                  StitchData& stitchData,
+                                                  const SkPoint& point) const;
         SkScalar noise2D(int channel,
-                         const StitchData& stitchData, const SkPoint& noiseVector) const;
+                         const StitchData& stitchData,
+                         const SkPoint& noiseVector) const;
 
         SkMatrix     fMatrix;
         PaintingData fPaintingData;
@@ -303,6 +308,11 @@ public:
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
                                                              const MatrixRec&) const override;
+#endif
+#ifdef SK_GRAPHITE_ENABLED
+    void addToKey(const skgpu::graphite::KeyContext&,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
+                  skgpu::graphite::PipelineDataGatherer*) const override;
 #endif
 
     skvm::Color program(skvm::Builder*,
@@ -933,7 +943,7 @@ std::unique_ptr<GrFragmentProcessor> SkPerlinNoiseShaderImpl::asFragmentProcesso
 
     const SkMatrix& totalMatrix = mRec.totalMatrix();
 
-    // Either we don't stitch tiles, either we have a valid tile size
+    // Either we don't stitch tiles, or we have a valid tile size
     SkASSERT(!fStitchTiles || !fTileSize.isEmpty());
 
     auto paintingData = std::make_unique<SkPerlinNoiseShaderImpl::PaintingData>(fTileSize,
@@ -984,6 +994,19 @@ std::unique_ptr<GrFragmentProcessor> SkPerlinNoiseShaderImpl::asFragmentProcesso
     return nullptr;
 }
 
+#endif
+
+#ifdef SK_GRAPHITE_ENABLED
+void SkPerlinNoiseShaderImpl::addToKey(const skgpu::graphite::KeyContext& keyContext,
+                                       skgpu::graphite::PaintParamsKeyBuilder* builder,
+                                       skgpu::graphite::PipelineDataGatherer* gatherer) const {
+    using namespace skgpu::graphite;
+
+    PerlinNoiseShaderBlock::PerlinNoiseData data(SkRect::MakeEmpty());
+
+    PerlinNoiseShaderBlock::BeginBlock(keyContext, builder, gatherer, &data);
+    builder->endBlock();
+}
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

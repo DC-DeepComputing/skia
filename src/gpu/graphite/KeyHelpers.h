@@ -189,6 +189,22 @@ struct CoordClampShaderBlock {
                            const CoordClampData*);
 };
 
+struct PerlinNoiseShaderBlock {
+
+    struct PerlinNoiseData {
+        PerlinNoiseData(SkRect subset) : fSubset(subset) {}
+
+        SkRect fSubset;
+    };
+
+    // The gatherer and data should be null or non-null together
+    static void BeginBlock(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           PipelineDataGatherer*,
+                           const PerlinNoiseData*);
+};
+
+
 struct PorterDuffBlendShaderBlock {
     struct PorterDuffBlendShaderData {
         SkSpan<const float> fPorterDuffConstants;

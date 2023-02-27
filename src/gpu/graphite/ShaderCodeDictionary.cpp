@@ -676,6 +676,13 @@ void GenerateCoordClampPreamble(const ShaderInfo& shaderInfo,
 }
 
 //--------------------------------------------------------------------------------------------------
+static constexpr Uniform kPerlineNoiseShaderUniforms[] = {
+        { "subset", SkSLType::kFloat4 },
+};
+
+static constexpr char kPerlinNoiseShaderName[] = "perlin_noise_shader";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr Uniform kPorterDuffBlendShaderUniforms[] = {
         { "blendConstants", SkSLType::kHalf4 },
 };
@@ -708,7 +715,8 @@ public:
             : fShaderInfo(shaderInfo)
             , fEntryIndex(entryIndex)
             , fChildEntryIndices(childEntryIndices)
-            , fPreamble(preamble) {}
+            , fPreamble(preamble) {
+    }
 
     std::string declareUniform(const SkSL::VarDeclaration* decl) override {
         std::string result = get_mangled_name(std::string(decl->var()->name()), fEntryIndex);
@@ -1323,6 +1331,17 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateCoordClampPreamble,
             kNumCoordClampShaderChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPerlinNoiseShader] = {
+            "PerlinNoiseShader",
+            SkSpan(kPerlineNoiseShaderUniforms),
+            SnippetRequirementFlags::kLocalCoords,
+            { },     // no samplers
+            kPerlinNoiseShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
             { }      // no data payload
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPorterDuffBlendShader] = {

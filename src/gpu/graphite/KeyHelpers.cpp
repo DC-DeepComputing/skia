@@ -442,6 +442,36 @@ void CoordClampShaderBlock::BeginBlock(const KeyContext& keyContext,
 
 //--------------------------------------------------------------------------------------------------
 
+namespace {
+
+void add_perlin_noise_uniform_data(const ShaderCodeDictionary* dict,
+                                   const PerlinNoiseShaderBlock::PerlinNoiseData& noiseData,
+                                   PipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kPerlinNoiseShader)
+
+    gatherer->write(noiseData.fSubset);
+
+    gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kPerlinNoiseShader));
+}
+
+} // anonymous namespace
+
+void PerlinNoiseShaderBlock::BeginBlock(const KeyContext& keyContext,
+                                        PaintParamsKeyBuilder* builder,
+                                        PipelineDataGatherer* gatherer,
+                                        const PerlinNoiseData* noiseData) {
+    SkASSERT(!gatherer == !noiseData);
+
+    auto dict = keyContext.dict();
+    if (gatherer) {
+        add_perlin_noise_uniform_data(dict, *noiseData, gatherer);
+    }
+
+    builder->beginBlock(BuiltInCodeSnippetID::kPerlinNoiseShader);
+}
+
+//--------------------------------------------------------------------------------------------------
+
 void PorterDuffBlendShaderBlock::BeginBlock(const KeyContext& keyContext,
                                             PaintParamsKeyBuilder* builder,
                                             PipelineDataGatherer* gatherer,

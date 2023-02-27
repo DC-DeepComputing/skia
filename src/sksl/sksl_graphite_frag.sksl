@@ -681,6 +681,9 @@ $pure half4 sk_matrix_colorfilter(half4 colorIn, float4x4 m, float4 v, int inHSL
     return colorOut;
 }
 
+$pure half4 perlin_noise_shader(float2 coords) {
+}
+
 $pure half4 sk_blend(int blendMode, half4 src, half4 dst) {
     const int kClear      = 0;
     const int kSrc        = 1;
