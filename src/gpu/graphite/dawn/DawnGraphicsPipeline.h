@@ -80,6 +80,8 @@ private:
 
     void freeGpuData() override;
 
+    const DawnSharedContext* dawnSharedContext() const;
+
     wgpu::RenderPipeline fRenderPipeline;
     const PrimitiveType fPrimitiveType;
     const uint32_t fStencilReferenceValue;

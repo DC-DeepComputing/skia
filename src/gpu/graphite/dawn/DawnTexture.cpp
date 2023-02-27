@@ -91,6 +91,7 @@ wgpu::Texture DawnTexture::MakeDawnTexture(const DawnSharedContext* sharedContex
     desc.viewFormatCount            = 0;
     desc.viewFormats                = nullptr;
 
+    auto autoLock(sharedContext->AcquireLock());
     auto texture = sharedContext->device().CreateTexture(&desc);
     if (!texture) {
         return {};
@@ -164,6 +165,7 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
 }
 
 void DawnTexture::freeGpuData() {
+    auto autoLock(static_cast<const DawnSharedContext*>(sharedContext())->AcquireLock());
     fTexture = nullptr;
     fTextureView = nullptr;
 }

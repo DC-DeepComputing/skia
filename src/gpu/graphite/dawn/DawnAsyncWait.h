@@ -8,16 +8,16 @@
 #ifndef skgpu_graphite_DawnAsyncWait_DEFINED
 #define skgpu_graphite_DawnAsyncWait_DEFINED
 
-#include "webgpu/webgpu_cpp.h"
-
 #include <atomic>
 #include <functional>
+
+#include "src/gpu/graphite/dawn/DawnSharedContext.h"
 
 namespace skgpu::graphite {
 
 class DawnAsyncWait {
 public:
-    explicit DawnAsyncWait(const wgpu::Device& device);
+    explicit DawnAsyncWait(const DawnSharedContext* sharedContext);
 
     // Returns true if the wait has been signaled and false otherwise. This function yields
     // execution to the event loop where Dawn's asynchronous tasks get scheduled and returns
@@ -36,8 +36,8 @@ public:
     void reset() { fSignaled.store(false); }
 
 private:
-    wgpu::Device fDevice;
-    std::atomic_bool fSignaled;
+    const DawnSharedContext* const fSharedContext;
+    std::atomic_bool fSignaled = false;
 };
 
 } // namespace skgpu::graphite
