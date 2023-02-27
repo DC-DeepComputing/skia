@@ -22,6 +22,30 @@
       },
       "revId": "78dbb94ce229ae796a40b446a3c7032417c35001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "720be168_b49e2f7e",
+        "filename": "src/core/SkExecutor.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-27T19:02:38Z",
+      "side": 1,
+      "message": "This is current use, and there are 121 instance of this in the code base already. This has already been used in dozens of CLs. I don\u0027t think the ceremony of individual names buys anything, and templates like TArray would be a total pain. I think the goal here is to reduce the burden of using the private namespace.\n\nPulling in the entire namespace through \u0027using namespace skia_private;\u0027 is only in .cpp files, so the namespace is not polluted. \n\n@brianosman@google.com - what do you think? Do we want to revisit this issue?",
+      "parentUuid": "e38f6bdf_87a0cc7c",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 28
+      },
+      "revId": "78dbb94ce229ae796a40b446a3c7032417c35001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
