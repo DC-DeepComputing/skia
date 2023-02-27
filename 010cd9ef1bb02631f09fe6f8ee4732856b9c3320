@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c5e9643f_207b8234",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-27T15:17:07Z",
+      "side": 1,
+      "message": "Is this comment obsolete? I think I wrote this, and the vibe at the time was that we as a team didn\u0027t see many advantages in SkTArray, but it seems like the pendulum has swung back again to \"we prefer SkTArray\"?",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 95
+      },
+      "revId": "010cd9ef1bb02631f09fe6f8ee4732856b9c3320",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39532ab1_711d4dcf",
         "filename": "include/private/base/SkTArray.h",
         "patchSetId": 1
