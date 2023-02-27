@@ -15,56 +15,56 @@ struct SPIRV_Cross_Output
 float4 main(float2 _24)
 {
     bool ok = true;
-    bool _41 = false;
+    bool _40 = false;
     if (true)
     {
-        _41 = (_10_colorGreen.y == 1.0f) ? true : false;
+        _40 = _10_colorGreen.y == 1.0f;
     }
     else
     {
-        _41 = false;
+        _40 = false;
     }
-    ok = _41;
-    bool _49 = false;
-    if (_41)
+    ok = _40;
+    bool _48 = false;
+    if (_40)
     {
-        _49 = (_10_colorGreen.x == 1.0f) ? false : true;
+        _48 = !(_10_colorGreen.x == 1.0f);
     }
     else
     {
-        _49 = false;
+        _48 = false;
     }
-    ok = _49;
-    bool _63 = false;
-    if (_49)
+    ok = _48;
+    bool _61 = false;
+    if (_48)
     {
-        _63 = all(bool2(_10_colorGreen.yx.x == _10_colorRed.xy.x, _10_colorGreen.yx.y == _10_colorRed.xy.y)) ? true : false;
+        _61 = all(bool2(_10_colorGreen.yx.x == _10_colorRed.xy.x, _10_colorGreen.yx.y == _10_colorRed.xy.y));
     }
     else
     {
-        _63 = false;
+        _61 = false;
     }
-    ok = _63;
-    bool _75 = false;
-    if (_63)
+    ok = _61;
+    bool _73 = false;
+    if (_61)
     {
-        _75 = any(bool2(_10_colorGreen.yx.x != _10_colorRed.xy.x, _10_colorGreen.yx.y != _10_colorRed.xy.y)) ? false : true;
+        _73 = !any(bool2(_10_colorGreen.yx.x != _10_colorRed.xy.x, _10_colorGreen.yx.y != _10_colorRed.xy.y));
     }
     else
     {
-        _75 = false;
+        _73 = false;
     }
-    ok = _75;
-    float4 _76 = 0.0f.xxxx;
-    if (_75)
+    ok = _73;
+    float4 _74 = 0.0f.xxxx;
+    if (_73)
     {
-        _76 = _10_colorGreen;
+        _74 = _10_colorGreen;
     }
     else
     {
-        _76 = _10_colorRed;
+        _74 = _10_colorRed;
     }
-    return _76;
+    return _74;
 }
 
 void frag_main()

@@ -14,10 +14,10 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     Outputs _out;
     (void)_out;
     bool ok = true;
-    ok = ok && (_uniforms.colorGreen.y == 1.0h ? true : false);
-    ok = ok && (_uniforms.colorGreen.x == 1.0h ? false : true);
-    ok = ok && (all(_uniforms.colorGreen.yx == _uniforms.colorRed.xy) ? true : false);
-    ok = ok && (any(_uniforms.colorGreen.yx != _uniforms.colorRed.xy) ? false : true);
+    ok = ok && _uniforms.colorGreen.y == 1.0h;
+    ok = ok && !(_uniforms.colorGreen.x == 1.0h);
+    ok = ok && all(_uniforms.colorGreen.yx == _uniforms.colorRed.xy);
+    ok = ok && !any(_uniforms.colorGreen.yx != _uniforms.colorRed.xy);
     _out.sk_FragColor = ok ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }
