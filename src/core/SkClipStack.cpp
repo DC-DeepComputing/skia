@@ -14,7 +14,7 @@
 #include <atomic>
 #include <new>
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #endif
 
@@ -53,7 +53,7 @@ SkClipStack::Element::Element(const Element& that) {
 }
 
 SkClipStack::Element::~Element() {
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH_ENABLED)
     for (int i = 0; i < fKeysToInvalidate.size(); ++i) {
         fProxyProvider->processInvalidUniqueKey(fKeysToInvalidate[i], nullptr,
                                                 GrProxyProvider::InvalidateGPUResource::kYes);
