@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51593324_988cc786",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-02-27T22:10:03Z",
+      "side": 1,
+      "message": "LGTM as long as other people realize that this is ordered alphabetically and not by review preference. 😜",
+      "revId": "6e6d9e06516f050352e3f96ba7dd6916a106a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d86eda7a_2fba7fb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-02-27T22:10:03Z",
+      "side": 1,
+      "message": "I\u0027m fine with the order (alphabetical), but just want to call out that previously it was both alphabetical and by seniority.",
+      "revId": "6e6d9e06516f050352e3f96ba7dd6916a106a792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
