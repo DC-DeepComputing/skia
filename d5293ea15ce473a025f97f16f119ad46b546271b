@@ -16,6 +16,24 @@
       "message": "The Skia infra into Skia autoroller is failing with:\n```\nfailed pre-upload step: Command exited with exit status 1: /usr/local/bin/bazelisk run //:gazelle -- update-repos -from_file\u003dgo.mod -to_macro\u003dgo_repositories.bzl%go_repositories; Stdout+Stderr:\nStarting local Bazel server and connecting to it...\nLoading:\nLoading: 0 packages loaded\nLoading: 0 packages loaded\nLoading: 0 packages loaded\ncurrently loading:\nAnalyzing: target //:gazelle (1 packages loaded, 0 targets configured)\nAnalyzing: target //:gazelle (42 packages loaded, 21 targets configured)\nAnalyzing: target //:gazelle (56 packages loaded, 567 targets configured)\nAnalyzing: target //:gazelle (82 packages loaded, 11689 targets configured)\nAnalyzing: target //:gazelle (84 packages loaded, 11732 targets configured)\nERROR: /tmp/skia/BUILD.bazel:85:6: in alias rule //:gazelle: target \u0027//infra:gazelle\u0027 is not visible from target \u0027//:gazelle\u0027. Check the visibility declaration of the former target if you think the dependency is legitimate\nERROR: /tmp/skia/BUILD.bazel:85:6: Analysis of target \u0027//:gazelle\u0027 failed\nERROR: Analysis of target \u0027//:gazelle\u0027 failed; build aborted:\nINFO: Elapsed time: 16.826s\nINFO: 0 processes.\nFAILED: Build did NOT complete successfully (97 packages loaded, 11835 targets configured)\nERROR: Build failed. Not running target\nFAILED: Build did NOT complete successfully (97 packages loaded, 11835 targets configured)\n. At pre_upload_steps.go:533 pre_upload_steps.go:446 go_mod.go:98 git_common.go:160 go_mod.go:157 autoroller.go:485 autoroller.go:441 state_machine.go:285 state_machine.go:53 state_machine.go:168 state_machine.go:897 state_machine.go:910 state_machine.go:916 autoroller.go:778 autoroller.go:335 util.go:383 cleanup.go:57 asm_amd64.s:1594\n```\n\nI thought this CL would have fixed that. Do you know what we are missing?",
       "revId": "d5293ea15ce473a025f97f16f119ad46b546271b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "984c8d67_b59bf310",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T14:03:29Z",
+      "side": 1,
+      "message": "I would have thought that too.",
+      "parentUuid": "0a55f0fb_298bc3a7",
+      "revId": "d5293ea15ce473a025f97f16f119ad46b546271b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
