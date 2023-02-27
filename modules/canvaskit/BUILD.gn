@@ -57,6 +57,9 @@ if (skia_enable_tools) {
       "../..:tool_utils",
       "../../modules/svg:svg",
     ]
+    if (skia_enable_gpu || skia_enable_ganesh) {
+      deps += [ "../..:gpu_shared" ]
+    }
   }
 }
 
@@ -114,6 +117,9 @@ skia_wasm_lib("canvaskit") {
   }
   if (skia_canvaskit_enable_embedded_font) {
     deps += [ ":create_notomono_cpp" ]
+  }
+  if (skia_enable_gpu || skia_enable_ganesh) {
+    deps += [ "../..:gpu_shared" ]
   }
 
   sources = [
@@ -357,9 +363,9 @@ skia_wasm_lib("canvaskit") {
   if (skia_canvaskit_enable_skp_serialization) {
     defines += [ "CK_SERIALIZE_SKP" ]
   }
-  if (skia_enable_gpu) {
+  if (skia_enable_gpu || skia_enable_ganesh) {
     defines += [
-      "SK_SUPPORT_GPU=1",
+      "SK_GANESH_ENABLED",
       "SK_DISABLE_LEGACY_SHADERCONTEXT",
     ]
     if (skia_canvaskit_enable_webgl) {
@@ -375,10 +381,7 @@ skia_wasm_lib("canvaskit") {
       ]
     }
   } else {
-    defines += [
-      "SK_SUPPORT_GPU=0",
-      "SK_ENABLE_SKSL",
-    ]
+    defines += [ "SK_ENABLE_SKSL" ]
   }
 
   if (skia_canvaskit_enable_pathops) {
