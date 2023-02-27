@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f2d71755_fbd5b06b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-27T15:19:11Z",
+      "side": 1,
+      "message": "I don\u0027t think I have OWNERS here, but I don\u0027t have a problem with this change assuming that either (a) we don\u0027t use SkTArray in public APIs or (b) we have a plan for getting SkTArray out of any APIs that it might have crept into (SkSpan might help here)",
+      "revId": "010cd9ef1bb02631f09fe6f8ee4732856b9c3320",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c5e9643f_207b8234",
         "filename": "include/private/base/SkTArray.h",
         "patchSetId": 1
