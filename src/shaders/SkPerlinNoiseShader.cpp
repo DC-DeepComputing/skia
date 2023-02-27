@@ -34,6 +34,13 @@
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 #endif
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/KeyContext.h"
+#include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
+#include "src/image/SkImage_Base.h"
+#endif // SK_GRAPHITE_ENABLED
+
 static const int kBlockSize = 256;
 static const int kBlockMask = kBlockSize - 1;
 static const int kPerlinNoise = 4096;
@@ -145,8 +152,7 @@ public:
         }
 
         // Only called once. Could be part of the constructor.
-        void init(SkScalar seed)
-        {
+        void init(SkScalar seed) {
             // According to the SVG spec, we must truncate (not round) the seed value.
             fSeed = SkScalarTruncToInt(seed);
             // The seed value clamp to the range [1, kRandMaximum - 1].
@@ -196,7 +202,7 @@ public:
             // Half of the largest possible value for 16 bit unsigned int
             static constexpr SkScalar kHalfMax16bits = 32767.5f;
 
-            // Compute gradients from permutated noise data
+            // Compute gradients from permuted noise data
             static constexpr SkScalar kInvBlockSizef = 1.0 / SkIntToScalar(kBlockSize);
             for (int channel = 0; channel < 4; ++channel) {
                 for (int i = 0; i < kBlockSize; ++i) {
@@ -266,7 +272,7 @@ public:
      *  doing :
      *  kFractalNoise_Type : noise * 0.5 + 0.5
      *  kTurbulence_Type   : abs(noise)
-     *  Very little differences between the 2 types, although you can tell the difference visually.
+     *  Very little differs between the 2 types, although you can tell the difference visually.
      */
     enum Type {
         kFractalNoise_Type,
@@ -277,8 +283,8 @@ public:
     static const int kMaxOctaves = 255; // numOctaves must be <= 0 and <= kMaxOctaves
 
     SkPerlinNoiseShaderImpl(SkPerlinNoiseShaderImpl::Type type, SkScalar baseFrequencyX,
-                      SkScalar baseFrequencyY, int numOctaves, SkScalar seed,
-                      const SkISize* tileSize);
+                            SkScalar baseFrequencyY, int numOctaves, SkScalar seed,
+                            const SkISize* tileSize);
 
     class PerlinNoiseShaderContext : public Context {
     public:
@@ -288,11 +294,12 @@ public:
 
     private:
         SkPMColor shade(const SkPoint& point, StitchData& stitchData) const;
-        SkScalar calculateTurbulenceValueForPoint(
-                                                  int channel,
-                                                  StitchData& stitchData, const SkPoint& point) const;
+        SkScalar calculateTurbulenceValueForPoint(int channel,
+                                                  StitchData& stitchData,
+                                                  const SkPoint& point) const;
         SkScalar noise2D(int channel,
-                         const StitchData& stitchData, const SkPoint& noiseVector) const;
+                         const StitchData& stitchData,
+                         const SkPoint& noiseVector) const;
 
         SkMatrix     fMatrix;
         PaintingData fPaintingData;
@@ -303,6 +310,11 @@ public:
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
                                                              const MatrixRec&) const override;
+#endif
+#ifdef SK_GRAPHITE_ENABLED
+    void addToKey(const skgpu::graphite::KeyContext&,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
+                  skgpu::graphite::PipelineDataGatherer*) const override;
 #endif
 
     skvm::Color program(skvm::Builder*,
@@ -765,7 +777,7 @@ void GrPerlinNoise2Effect::Impl::emitCode(EmitArgs& args) {
             "latticeIdx = floor(latticeIdx * half2(255.0) + half2(0.5)) * half2(0.003921569);");
 #endif
 
-    // Get (x,y) coordinates with the permutated x
+    // Get (x,y) coordinates with the permuted x
     noiseCode.append("half4 bcoords = 256*latticeIdx.xyxy + floorVal.yyww;");
 
     noiseCode.append("half2 uv;");
@@ -933,7 +945,7 @@ std::unique_ptr<GrFragmentProcessor> SkPerlinNoiseShaderImpl::asFragmentProcesso
 
     const SkMatrix& totalMatrix = mRec.totalMatrix();
 
-    // Either we don't stitch tiles, either we have a valid tile size
+    // Either we don't stitch tiles, or we have a valid tile size
     SkASSERT(!fStitchTiles || !fTileSize.isEmpty());
 
     auto paintingData = std::make_unique<SkPerlinNoiseShaderImpl::PaintingData>(fTileSize,
@@ -984,6 +996,42 @@ std::unique_ptr<GrFragmentProcessor> SkPerlinNoiseShaderImpl::asFragmentProcesso
     return nullptr;
 }
 
+#endif
+
+#ifdef SK_GRAPHITE_ENABLED
+void SkPerlinNoiseShaderImpl::addToKey(const skgpu::graphite::KeyContext& keyContext,
+                                       skgpu::graphite::PaintParamsKeyBuilder* builder,
+                                       skgpu::graphite::PipelineDataGatherer* gatherer) const {
+    using namespace skgpu::graphite;
+
+    SkMatrix totalMatrix = keyContext.local2Dev().asM33();
+
+    auto paintingData = std::make_unique<SkPerlinNoiseShaderImpl::PaintingData>(fTileSize,
+                                                                                fSeed,
+                                                                                fBaseFrequencyX,
+                                                                                fBaseFrequencyY,
+                                                                                totalMatrix);
+
+    const SkBitmap& permutationsBitmap = paintingData->getPermutationsBitmap();
+    const SkBitmap& noiseBitmap        = paintingData->getNoiseBitmap();
+
+    PerlinNoiseShaderBlock::PerlinNoiseData data;
+
+    // TODO(b/239604347): remove this hack. This is just here until we determine what Graphite's
+    // Recorder-level caching story is going to be.
+    sk_sp<SkImage> permutationsImage = SkImage::MakeFromBitmap(permutationsBitmap);
+    permutationsImage = permutationsImage->makeTextureImage(keyContext.recorder(),
+                                                            { skgpu::Mipmapped::kNo });
+
+    if (as_IB(permutationsImage)->isGraphiteBacked()) {
+        auto [view, _] = as_IB(permutationsImage)->asView(keyContext.recorder(),
+                                                          skgpu::Mipmapped::kNo);
+        data.fPermutationsProxy = view.refProxy();
+    }
+
+    PerlinNoiseShaderBlock::BeginBlock(keyContext, builder, gatherer, &data);
+    builder->endBlock();
+}
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
