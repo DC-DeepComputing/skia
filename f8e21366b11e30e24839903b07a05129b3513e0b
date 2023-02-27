@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80a24d7e_cca8a1f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-27T15:38:52Z",
+      "side": 1,
+      "message": "lgtm but I think Jim should take a closer look at the math",
+      "revId": "f8e21366b11e30e24839903b07a05129b3513e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc808fb0_f16ebc7a",
+        "filename": "tests/RectTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-02-27T15:38:52Z",
+      "side": 1,
+      "message": "and \u0027b\u0027 by 1/2px in post-transform space ?",
+      "range": {
+        "startLine": 328,
+        "startChar": 73,
+        "endLine": 328,
+        "endChar": 83
+      },
+      "revId": "f8e21366b11e30e24839903b07a05129b3513e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
