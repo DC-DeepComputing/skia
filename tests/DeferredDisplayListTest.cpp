@@ -13,7 +13,6 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkDeferredDisplayList.h"
 #include "include/core/SkDeferredDisplayListRecorder.h"
-#include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPromiseImageTexture.h"
@@ -30,6 +29,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/core/SkDeferredDisplayListPriv.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -46,6 +46,7 @@
 #include <memory>
 #include <utility>
 
+class SkImage;
 struct GrContextOptions;
 
 #ifdef SK_GL
@@ -936,7 +937,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLWrapBackendTest,
 
     // Wrapped Backend Textures are not supported in DDL
     TextureReleaseChecker releaseChecker;
-    sk_sp<SkImage> image = SkImage::MakeFromTexture(
+    sk_sp<SkImage> image = sk_image_factory::MakeFromTexture(
             rContext,
             mbet->texture(),
             kTopLeft_GrSurfaceOrigin,
@@ -1137,7 +1138,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLSkSurfaceFlush,
 
         SkCanvas* canvas = recorder.getCanvas();
 
-        sk_sp<SkImage> promiseImage = SkImage::MakePromiseTexture(
+        sk_sp<SkImage> promiseImage = sk_image_factory::MakePromiseTexture(
                                                       canvas->recordingContext()->threadSafeProxy(),
                                                       format,
                                                       SkISize::Make(32, 32),
@@ -1258,7 +1259,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(DDLTextureFlagsTest,
         for (auto mipmapped : { GrMipmapped::kNo, GrMipmapped::kYes }) {
             GrBackendFormat format = GrBackendFormat::MakeGL(GR_GL_RGBA8, target);
 
-            sk_sp<SkImage> image = SkImage::MakePromiseTexture(
+            sk_sp<SkImage> image = sk_image_factory::MakePromiseTexture(
                     recorder.getCanvas()->recordingContext()->threadSafeProxy(),
                     format,
                     SkISize::Make(32, 32),

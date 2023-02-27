@@ -74,7 +74,7 @@ public:
     GrBackendTexture onGetBackendTexture(bool flushPendingGrContextIO,
                                          GrSurfaceOrigin* origin) const final;
 
-    bool isGaneshBacked() const override { return true; }
+    ImageType type() const override { return ImageType::kGanesh; }
 
     size_t onTextureSize() const override;
 

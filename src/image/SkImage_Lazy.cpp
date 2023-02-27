@@ -324,13 +324,6 @@ sk_sp<SkImage> SkImage_Lazy::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) 
     return nullptr;
 }
 
-sk_sp<SkImage> SkImage::MakeFromGenerator(std::unique_ptr<SkImageGenerator> generator) {
-    SkImage_Lazy::Validator
-            validator(SharedGenerator::Make(std::move(generator)), nullptr, nullptr);
-
-    return validator ? sk_make_sp<SkImage_Lazy>(&validator) : nullptr;
-}
-
 #if SK_SUPPORT_GPU
 
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Lazy::onAsView(
@@ -688,3 +681,14 @@ sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(
 }
 
 #endif
+
+namespace sk_image_factory {
+
+sk_sp<SkImage> MakeFromGenerator(std::unique_ptr<SkImageGenerator> generator) {
+    SkImage_Lazy::Validator
+            validator(SharedGenerator::Make(std::move(generator)), nullptr, nullptr);
+
+    return validator ? sk_make_sp<SkImage_Lazy>(&validator) : nullptr;
+}
+
+}

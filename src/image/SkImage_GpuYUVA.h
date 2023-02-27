@@ -53,7 +53,7 @@ public:
 
     GrSemaphoresSubmitted onFlush(GrDirectContext*, const GrFlushInfo&) const override;
 
-    bool isGaneshBacked() const override { return true; }
+    ImageType type() const override { return ImageType::kGanesh; }
 
     size_t onTextureSize() const override;
 

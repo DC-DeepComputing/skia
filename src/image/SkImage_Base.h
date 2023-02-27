@@ -59,6 +59,14 @@ enum {
     kNeedNewImageUniqueID = 0
 };
 
+enum ImageType {
+    kUnknown,
+    kRaster,
+    kLazy,
+    kGanesh,
+    kGraphite,
+};
+
 class SkImage_Base : public SkImage {
 public:
     ~SkImage_Base() override;
@@ -159,6 +167,7 @@ public:
     virtual bool isYUVA() const { return false; }
 #endif
 
+    // Used only by Android (SkiaPipeline) atm
     virtual bool onPinAsTexture(GrRecordingContext*) const { return false; }
     virtual void onUnpinAsTexture(GrRecordingContext*) const {}
     virtual bool isPinnedOnContext(GrRecordingContext*) const { return false; }
@@ -174,14 +183,16 @@ public:
 
     virtual bool onAsLegacyBitmap(GrDirectContext*, SkBitmap*) const;
 
+    virtual ImageType type() const { return kUnknown; }
+
     // True for picture-backed and codec-backed
-    virtual bool onIsLazyGenerated() const { return false; }
+    bool onIsLazyGenerated() const { return this->type() == ImageType::kLazy; }
 
     // True for images instantiated by Ganesh in GPU memory
-    virtual bool isGaneshBacked() const { return false; }
+    bool isGaneshBacked() const { return this->type() == ImageType::kGanesh; }
 
     // True for images instantiated by Graphite in GPU memory
-    virtual bool isGraphiteBacked() const { return false; }
+    bool isGraphiteBacked() const { return this->type() == ImageType::kGraphite; }
 
     // Amount of texture memory used by texture-backed images.
     virtual size_t onTextureSize() const { return 0; }
@@ -263,7 +274,6 @@ private:
             const SkRect* subset,
             const SkRect* domain) const = 0;
 #endif
-
     // Set true by caches when they cache content that's derived from the current pixels.
     mutable std::atomic<bool> fAddedToRasterCache;
 };

@@ -20,6 +20,7 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/mock/GrMockTypes.h"
+#include "include/android/SkImageAndroid.h"
 #include "src/core/SkImagePriv.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
@@ -75,7 +76,7 @@ static void basic_test(skiatest::Reporter* reporter, GrRecordingContext* rContex
 
     // w/ pinning - the gpu draw is stuck at the pinned state
     {
-        SkImage_pinAsTexture(img.get(), rContext); // pin at blue
+        skgpu::ganesh::PinAsTexture(rContext, img.get()); // pin at blue
 
         canvas->drawImage(img, 0, 0);
         REPORTER_ASSERT(reporter, surface_is_expected_color(gpuSurface.get(), ii, SK_ColorGREEN));
@@ -85,7 +86,7 @@ static void basic_test(skiatest::Reporter* reporter, GrRecordingContext* rContex
         canvas->drawImage(img, 0, 0);
         REPORTER_ASSERT(reporter, surface_is_expected_color(gpuSurface.get(), ii, SK_ColorGREEN));
 
-        SkImage_unpinAsTexture(img.get(), rContext);
+        skgpu::ganesh::UnpinTexture(rContext, img.get());
     }
 
     // once unpinned local changes will be picked up
@@ -125,17 +126,17 @@ static void cleanup_test(skiatest::Reporter* reporter) {
                 }
 
                 img = SkMakeImageFromRasterBitmap(bm, kNever_SkCopyPixelsMode);
-                if (!SkImage_pinAsTexture(img.get(), dContext)) {
+                if (!skgpu::ganesh::PinAsTexture(dContext, img.get())) {
                     continue;
                 }
                 // Pinning on a second context should be blocked.
-                REPORTER_ASSERT(reporter, !SkImage_pinAsTexture(img.get(), mockContext.get()));
+                REPORTER_ASSERT(reporter, !skgpu::ganesh::PinAsTexture(mockContext.get(), img.get()));
             }
 
             // The context used to pin the image is gone at this point!
             // "context" isn't technically used in this call but it can't be null!
             // We don't really want to support this use case but it currently happens.
-            SkImage_unpinAsTexture(img.get(), dContext);
+            skgpu::ganesh::UnpinTexture(dContext, img.get());
         }
     }
 }
