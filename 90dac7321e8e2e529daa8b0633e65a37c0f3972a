@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8fdf69f_1b0937b1",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-02-27T20:05:22Z",
+      "side": 1,
+      "message": "I suggest renaming this to `returnComplexity` since the function specifically calculates and returns a `ReturnComplexity`.",
+      "range": {
+        "startLine": 354,
+        "startChar": 31,
+        "endLine": 354,
+        "endChar": 41
+      },
+      "revId": "90dac7321e8e2e529daa8b0633e65a37c0f3972a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
