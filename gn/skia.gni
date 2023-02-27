@@ -79,10 +79,9 @@ declare_args() {
   skia_use_x11 = is_linux
   skia_use_xps = true
 
-  # deprecated, used to mean the same as skia_enable_ganesh
+  # deprecated, we will eventually use just skia_enable_ganesh
   skia_enable_gpu = true
   skia_enable_graphite = false
-  skia_enable_ganesh = true
   skia_use_zlib = true
 
   if (is_ios) {
@@ -94,6 +93,10 @@ declare_args() {
 
   # Temporary GN arg for flutter to control updating their unit tests synchronously with new alg.
   skia_use_legacy_layer_bounds = false
+}
+
+declare_args() {
+  skia_enable_ganesh = skia_enable_gpu
 }
 
 declare_args() {
