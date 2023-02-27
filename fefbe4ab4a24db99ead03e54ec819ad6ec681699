@@ -52,6 +52,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d94869f0_1a09ea8b",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T13:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc3fcc6b_42d88be6",
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb0be1d7_dd70024a",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T13:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ea62c50_a9553aa6",
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1b59d9b_9a3bdf5a",
@@ -65,6 +101,30 @@
       "writtenOn": "2023-02-24T22:17:00Z",
       "side": 1,
       "message": "`frameIndex`. This is the frame we want to decode.\n\nI wish we could just pass it as part of the `Options` object, but I don\u0027t think that\u0027s possible. We need to copy the existing `Options` object, but we also need to copy the `SkAndroidCodec::Options` portion of it, and `SkCodec` can\u0027t do that without knowing about `SkAndroidCodec`.",
+      "range": {
+        "startLine": 946,
+        "startChar": 71,
+        "endLine": 946,
+        "endChar": 84
+      },
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2165a28a_1fbb48c7",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T13:39:53Z",
+      "side": 1,
+      "message": "Done. That was what my experimentation led to as well. If we pass in a \n`const SkAndroidCodec::AndroidOptions\u0026` as a `const SkCodec::Options\u0026`, we can \"unpack\" it again using reinterpret_cast without losing the data however, we cannot modify or copy the contents. Thus, we have to pass the frame index separately to something that knows how to copy an `SkAndroidCodec::AndroidOptions`.\n\nAdded comment to explain that.",
+      "parentUuid": "d1b59d9b_9a3bdf5a",
       "range": {
         "startLine": 946,
         "startChar": 71,
@@ -98,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb204d91_97f05d32",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T13:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44f18c83_7b6ee49a",
+      "range": {
+        "startLine": 951,
+        "startChar": 36,
+        "endLine": 951,
+        "endChar": 89
+      },
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca695a1c_2c3d5cf4",
@@ -115,6 +199,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f55e6c90_c8ac3fc4",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T13:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca695a1c_2c3d5cf4",
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40047703_dc7e7194",
@@ -128,6 +230,30 @@
       "writtenOn": "2023-02-24T22:17:00Z",
       "side": 1,
       "message": "nit/tip: I know I did it, too, but you don\u0027t actually need to provide a name here, even with the default value. So this can just be\n\n```\n    GetPixelsCallback \u003d nullptr);\n```",
+      "range": {
+        "startLine": 958,
+        "startChar": 46,
+        "endLine": 958,
+        "endChar": 57
+      },
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12c95c6b_f101a8a9",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T13:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40047703_dc7e7194",
       "range": {
         "startLine": 958,
         "startChar": 46,
@@ -161,6 +287,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b607fda_62fb69cb",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T13:39:53Z",
+      "side": 1,
+      "message": "Done. I also renamed fAndroidCodecHandlesFrameIndex -\u003e fUsingCallbackForHandleFrameIndex to make it named more generally.",
+      "parentUuid": "f3039aaa_88f9ab48",
+      "range": {
+        "startLine": 317,
+        "startChar": 44,
+        "endLine": 318,
+        "endChar": 41
+      },
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "530aa68d_6783ed73",
@@ -174,6 +324,30 @@
       "writtenOn": "2023-02-24T22:17:00Z",
       "side": 1,
       "message": "My order of preference here:\n- no comment - this is already described in the header file\n- leave out mention of `SkAndroidCodec`, since in theory other classes could use it\n- Add the \"Sk\": `SkAndroidCodec`",
+      "range": {
+        "startLine": 360,
+        "startChar": 44,
+        "endLine": 360,
+        "endChar": 56
+      },
+      "revId": "fefbe4ab4a24db99ead03e54ec819ad6ec681699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "484cd468_fa53a04d",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T13:39:53Z",
+      "side": 1,
+      "message": "Done. I\u0027m leaving the comment in (and fleshing it out as per your request) because it took my brain a long while to put this all together and hopefully this saves a future person that time.",
+      "parentUuid": "530aa68d_6783ed73",
       "range": {
         "startLine": 360,
         "startChar": 44,
