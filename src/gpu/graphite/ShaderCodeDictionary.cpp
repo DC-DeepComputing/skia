@@ -708,7 +708,8 @@ public:
             : fShaderInfo(shaderInfo)
             , fEntryIndex(entryIndex)
             , fChildEntryIndices(childEntryIndices)
-            , fPreamble(preamble) {}
+            , fPreamble(preamble) {
+    }
 
     std::string declareUniform(const SkSL::VarDeclaration* decl) override {
         std::string result = get_mangled_name(std::string(decl->var()->name()), fEntryIndex);
