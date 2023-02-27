@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4873e77b_5b73f045",
+        "filename": "BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T21:14:39Z",
+      "side": 1,
+      "message": "I think the inconsistency between here and line 1046 was the cause of the Android roll problems.",
+      "revId": "a2cf8c973fc3a4fdc6f8094d1cb6d41248b1c90e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
