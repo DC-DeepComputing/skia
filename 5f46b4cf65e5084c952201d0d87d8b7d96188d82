@@ -16,6 +16,24 @@
       "message": "I\u0027m not yet sure what\u0027s going on, but I don\u0027t think this is the right fix for the Android roller. `gn_to_bp.py` is already setting `skia_enable_gpu`, and that gets applied when we roll. The `Android.bp` file should be up to date, and all Android builds will be based on that.\n\nSeparately, part of this CL be appropriate in order to transition between the two flags, though if that\u0027s the plan, I\u0027d switch `gn_to_bp.py` to just use the new one.",
       "revId": "5f46b4cf65e5084c952201d0d87d8b7d96188d82",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c62fefec_f81cc5cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T21:03:09Z",
+      "side": 1,
+      "message": "I think the issue is when enable_gpu is false, it is *not* setting skia_enable_ganesh to be false. In a previous CL, I changed one or two places to care about skia_enable_gpu or skia_enable_ganesh, but not in all the places.\n\nThe two issues together I think were causing the problem. The better fix is probably to have skia_enable_ganesh default to skia_enable_gpu, but then we still need to set both places in the Android roller script until we\u0027ve migrated other uses.\n\nWorking on that now.",
+      "parentUuid": "1c316cae_5fbf250c",
+      "revId": "5f46b4cf65e5084c952201d0d87d8b7d96188d82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
