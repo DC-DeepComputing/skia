@@ -16,6 +16,24 @@
       "message": "If the rollers succeed this LGTM.",
       "revId": "11429981727fed0603a0c7141c8f3f617b8d5da9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adf634a4_33e059b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T16:36:56Z",
+      "side": 1,
+      "message": "go/skia-client-search showed no hits for the removed method.",
+      "parentUuid": "79a80ebd_583dfd21",
+      "revId": "11429981727fed0603a0c7141c8f3f617b8d5da9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
