@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e38f6bdf_87a0cc7c",
+        "filename": "src/core/SkExecutor.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-27T18:18:00Z",
+      "side": 1,
+      "message": "Do we actually want to pull in the entire namespace? I\u0027ve been under the impression that it\u0027s better to just pull in the symbols you need individually (`using skia_private::TArray;`) and, FWIW, that\u0027s the law of the land in google3. We might need a template decoration but that\u0027s NBD.",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 28
+      },
+      "revId": "78dbb94ce229ae796a40b446a3c7032417c35001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
