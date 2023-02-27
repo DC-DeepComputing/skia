@@ -53,6 +53,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7c8ddcf_2fcc0b3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-27T15:46:05Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "66965945_1f3b0d2d",
+      "revId": "010cd9ef1bb02631f09fe6f8ee4732856b9c3320",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92c72b6a_db739946",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-27T15:46:05Z",
+      "side": 1,
+      "message": "I think the last instance was in PDFium, but Brian\u0027s skia-client-search, show no clients using SkTArray.",
+      "parentUuid": "bbdf055e_78b733dd",
+      "revId": "010cd9ef1bb02631f09fe6f8ee4732856b9c3320",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5e9643f_207b8234",
@@ -76,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "195abf1d_1b6f450d",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-27T15:46:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5e9643f_207b8234",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 95
+      },
+      "revId": "010cd9ef1bb02631f09fe6f8ee4732856b9c3320",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39532ab1_711d4dcf",
@@ -89,6 +149,30 @@
       "writtenOn": "2023-02-27T15:14:41Z",
       "side": 1,
       "message": "I assume a followup will do the same with SkSTArray?",
+      "range": {
+        "startLine": 644,
+        "startChar": 6,
+        "endLine": 644,
+        "endChar": 15
+      },
+      "revId": "010cd9ef1bb02631f09fe6f8ee4732856b9c3320",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00a37f3a_9e0bc10a",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-27T15:46:05Z",
+      "side": 1,
+      "message": "Yes. SkSTArray will be in a future CL.",
+      "parentUuid": "39532ab1_711d4dcf",
       "range": {
         "startLine": 644,
         "startChar": 6,
