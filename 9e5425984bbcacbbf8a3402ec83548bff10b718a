@@ -22,6 +22,30 @@
       },
       "revId": "9e5425984bbcacbbf8a3402ec83548bff10b718a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2544ada_bf41b867",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1535,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-27T16:36:37Z",
+      "side": 1,
+      "message": "Gotcha. I am pretty sure the logic is right, but it is in fact very hard to reason about without context. This is why I stumbled on the implementation so many times :) (not that you saw these attempts, they never made it to CLs)\n\nThe \"indirect limit\" is where we clamp the dynamic index. Consider an expression like `myMat3[1][x]`. The lvalue range will look like this:\n\n```\n    0       1         2        3        4       5        6       7      8\n    ^                          ^\nstart of lvalue           fixed range\n```\n\nThe fixed range is a single slot on `myMat3[1][0]` because we treat dynamic offsets as zero when calculating fixed offsets. \n\nIn the method `push_clone_indirect_from_stack` we discard the front part of the lvalue range, since it\u0027s never reachable. We do this by subtracting fixedRange.offset. That leaves our lvalue range as this:\n\n```\n    3        4       5        6       7      8\n    ^ immC\n```\n\n`fImmC` is 6; it points to the the start of the indexable space.\n`fImmA` is 1, since we are copying a single slot.\n\nThis means that we will clamp `x` at a maximum of 5, which restricts indexing safely inside of the lvalue `myMat3` . (We do _not_ actually pin the access inside of `myMat3[1]`; we only try to keep inside the lvalue\u0027s entire bound. This does not matter since there are no guarantees about what `myMat3[1][5]` should do; I just want to prevent a crash.) \n\nI will take some time later today to:\n- add an LValue section to the design doc\n- create a CPU-only test that verifies that indexing off either end of an array does not trash neighboring values",
+      "parentUuid": "98dd9441_cbc6d2ff",
+      "range": {
+        "startLine": 1535,
+        "startChar": 37,
+        "endLine": 1535,
+        "endChar": 61
+      },
+      "revId": "9e5425984bbcacbbf8a3402ec83548bff10b718a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
