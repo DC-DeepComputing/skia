@@ -52,6 +52,24 @@
       "parentUuid": "cac16a22_433a2e39",
       "revId": "40d29bfd33c33e97bb3c412c901fb7ecbede9594",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "672f2051_9ae1368f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-02-27T20:58:44Z",
+      "side": 1,
+      "message": "Okay sorry I missed the fact that there wasn\u0027t agreement here and folks were waiting for my actual opinion on the verb or not (I had paged out all discussions from before I left). I do think that we should be consistent with macro format. So because we do things like SK_METAL and SK_VULKAN we had originally planned to drop the verb for GANESH and GRAPHITE to be consistent. I think consistency is important here. So we should land a follow up CL that either drops the ENABLED added here, or add an ENABLED to all the other macros.",
+      "parentUuid": "c8b5d6a3_d7699e99",
+      "revId": "40d29bfd33c33e97bb3c412c901fb7ecbede9594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
