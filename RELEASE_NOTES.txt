@@ -4,6 +4,12 @@ This file includes a list of high level updates for each milestone release.
 
 Milestone 112
 -------------
+  * SkStrSplit is no longer part of the public API.
+
+* * *
+
+Milestone 112
+-------------
   * SkImage::CubicResampler has been removed. Clients should use SkCubicResampler from
     include/core/SkSamplingOptions.h instead (the former was an alias for the latter).
   * SkRuntimeColorFilterBuilder has been added. This is a helper class for setting up color filters,
@@ -19,6 +25,8 @@ Milestone 112
   * The particles module has been deleted.
   * SkJpegEncoder::Options includes a parameter for XMP metadata.
   * SkJpegEncoder includes support for encoding SkYUVAPixmaps directly.
+
+* * *
 
 Milestone 111
 -------------
@@ -36,6 +44,7 @@ Milestone 111
   * SkLeftShift is no longer part of the public API.
   * SK_MaxS32 and related constants are no longer part of the public API.
   * include/core/SkMath.h is no longer part of the public API.
+
 * * *
 
 Milestone 110
