@@ -34,6 +34,24 @@
       "parentUuid": "154c3ef3_73c1a56c",
       "revId": "cf3b1d9c2288180636aea09548950b67ace98684",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bac5d6b_da8f182e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-02-27T21:47:45Z",
+      "side": 1,
+      "message": "The logic was \"I wanted to fix the build without having to dive deep in how these GN rules work or should work\"",
+      "parentUuid": "42b71273_ebe406da",
+      "revId": "cf3b1d9c2288180636aea09548950b67ace98684",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
