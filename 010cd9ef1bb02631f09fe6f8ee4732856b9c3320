@@ -16,6 +16,29 @@
       "message": "Do we use SkTArray in public APIs today? Any idea which ones?",
       "revId": "010cd9ef1bb02631f09fe6f8ee4732856b9c3320",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39532ab1_711d4dcf",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-27T15:14:41Z",
+      "side": 1,
+      "message": "I assume a followup will do the same with SkSTArray?",
+      "range": {
+        "startLine": 644,
+        "startChar": 6,
+        "endLine": 644,
+        "endChar": 15
+      },
+      "revId": "010cd9ef1bb02631f09fe6f8ee4732856b9c3320",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
