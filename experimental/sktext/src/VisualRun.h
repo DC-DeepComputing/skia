@@ -2,6 +2,7 @@
 #ifndef VisualRun_DEFINED
 #define VisualRun_DEFINED
 
+#include "include/private/base/SkTArray.h"
 #include "experimental/sktext/include/Types.h"
 #include "experimental/sktext/src/Line.h"
 #include "modules/skshaper/include/SkShaper.h"

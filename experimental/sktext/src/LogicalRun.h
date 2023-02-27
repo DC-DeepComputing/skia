@@ -2,6 +2,7 @@
 #ifndef LogicalRun_DEFINED
 #define LogicalRun_DEFINED
 
+#include "include/private/base/SkTArray.h"
 #include "experimental/sktext/include/Types.h"
 #include "experimental/sktext/src/Line.h"
 #include "modules/skshaper/include/SkShaper.h"
