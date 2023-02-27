@@ -238,8 +238,8 @@ public:
 
         uint32_t fGenID;
 #if SK_SUPPORT_GPU
-        mutable GrProxyProvider*           fProxyProvider = nullptr;
-        mutable SkTArray<skgpu::UniqueKey> fKeysToInvalidate;
+        mutable GrProxyProvider*                       fProxyProvider = nullptr;
+        mutable skia_private::TArray<skgpu::UniqueKey> fKeysToInvalidate;
 #endif
         Element(int saveCount) {
             this->initCommon(saveCount, SkClipOp::kIntersect, false);
