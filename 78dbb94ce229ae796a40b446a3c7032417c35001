@@ -46,6 +46,30 @@
       },
       "revId": "78dbb94ce229ae796a40b446a3c7032417c35001",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdad8ead_f81f7a88",
+        "filename": "src/core/SkExecutor.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-27T19:05:39Z",
+      "side": 1,
+      "message": "I\u0027m fine with the way we\u0027ve been doing it (bring in the whole namespace in .cpp files, and use fully qualified names in headers). Given the purpose of the namespace is just about cordoning off our code from clients (not about partitioning the library internally), I think it makes sense to simplify our internal usage.",
+      "parentUuid": "720be168_b49e2f7e",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 28
+      },
+      "revId": "78dbb94ce229ae796a40b446a3c7032417c35001",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
