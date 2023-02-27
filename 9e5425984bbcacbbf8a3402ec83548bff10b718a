@@ -46,6 +46,30 @@
       },
       "revId": "9e5425984bbcacbbf8a3402ec83548bff10b718a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c83789fe_9ee7855c",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1535,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-27T16:51:52Z",
+      "side": 1,
+      "message": "Gotcha. Yeah - I think having some known-bad indexing tests are important here, especially with some of these more complex cases.",
+      "parentUuid": "c2544ada_bf41b867",
+      "range": {
+        "startLine": 1535,
+        "startChar": 37,
+        "endLine": 1535,
+        "endChar": 61
+      },
+      "revId": "9e5425984bbcacbbf8a3402ec83548bff10b718a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
