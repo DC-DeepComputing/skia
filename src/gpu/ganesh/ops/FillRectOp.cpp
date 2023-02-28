@@ -309,17 +309,31 @@ private:
         }
 
         if (!fProgramInfo) {
+            TRACE_EVENT0("skia.gpu", "FillRectOp::createProgramInfo");
+
             this->createProgramInfo(flushState);
         }
 
         const int totalNumVertices = fQuads.count() * vertexSpec.verticesPerQuad();
 
-        flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
-        flushState->bindBuffers(std::move(fIndexBuffer), nullptr, std::move(fVertexBuffer));
-        flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        skgpu::v1::QuadPerEdgeAA::IssueDraw(flushState->caps(), flushState->opsRenderPass(),
-                                            vertexSpec, 0, fQuads.count(), totalNumVertices,
-                                            fBaseVertex);
+        {
+            TRACE_EVENT0("skia.gpu", "FillRectOp::bindPipelineAndScissorClip");
+            flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
+        }
+        {
+            TRACE_EVENT0("skia.gpu", "FillRectOp::bindBuffers");
+            flushState->bindBuffers(std::move(fIndexBuffer), nullptr, std::move(fVertexBuffer));
+        }
+        {
+            TRACE_EVENT0("skia.gpu", "FillRectOp::bindTextures");
+            flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
+        }
+        {
+            TRACE_EVENT0("skia.gpu", "FillRectOp::IssueDraw");
+            skgpu::v1::QuadPerEdgeAA::IssueDraw(flushState->caps(), flushState->opsRenderPass(),
+                                                vertexSpec, 0, fQuads.count(), totalNumVertices,
+                                                fBaseVertex);
+        }
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {
