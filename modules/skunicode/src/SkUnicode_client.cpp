@@ -121,6 +121,10 @@ public:
         return SkUnicode::extractBidi(utf8, utf8Units, dir, results);
     }
 
+    bool isBreakingWhitespace(SkUnichar unichar) const override {
+        return SkUnicode_client::isWhitespace(unichar);
+    }
+
     // TODO: Take if from the Client or hard code here?
     static bool isControl(SkUnichar utf8) {
         return (utf8 < ' ') || (utf8 >= 0x7f && utf8 <= 0x9f) ||
