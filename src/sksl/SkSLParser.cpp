@@ -1066,6 +1066,11 @@ DSLType Parser::type(DSLModifiers* modifiers) {
         return DSLType::Invalid();
     }
     DSLType result(this->text(type), modifiers, this->position(type));
+    if (result.isInterfaceBlock()) {
+        this->error(type, "expected a type, found interface block '" +
+                          std::string(this->text(type)) + "'");
+        return DSLType::Invalid();
+    }
     Token bracket;
     while (this->checkNext(Token::Kind::TK_LBRACKET, &bracket)) {
         if (this->checkNext(Token::Kind::TK_RBRACKET)) {
