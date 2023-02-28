@@ -19,10 +19,11 @@ public:
     static sk_sp<Buffer> Make(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads);
     void freeGpuData() override;
     VkBuffer vkBuffer() const { return fBuffer; }
+    VkBufferUsageFlags bufferUsageFlags() const { return fBufferUsageFlags; }
 
 private:
     VulkanBuffer(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads, VkBuffer,
-                 const skgpu::VulkanAlloc&);
+                 const skgpu::VulkanAlloc&, VkBufferUsageFlags);
 
     void onMap() override;
     void onUnmap() override;
@@ -46,6 +47,8 @@ private:
      *    the memory may not be cached).
      */
     bool fBufferUsedForCPURead = false;
+
+    VkBufferUsageFlags fBufferUsageFlags;
 };
 
 } // namespace skgpu::graphite
