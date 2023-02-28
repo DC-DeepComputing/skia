@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d2bd33b_4fb30b81",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-28T18:21:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f6c66bf0_b786cb70",
+      "range": {
+        "startLine": 287,
+        "startChar": 74,
+        "endLine": 287,
+        "endChar": 90
+      },
+      "revId": "912b026cb52d059153f117b00ba8046df1b54c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3cea89b9_f102179a",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3fadf3e_304b6c21",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1378,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-28T18:21:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3cea89b9_f102179a",
+      "range": {
+        "startLine": 1378,
+        "startChar": 23,
+        "endLine": 1378,
+        "endChar": 26
+      },
+      "revId": "912b026cb52d059153f117b00ba8046df1b54c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d50d0570_41319f13",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-02-28T16:40:52Z",
       "side": 1,
       "message": "Maybe `src.rgba \u003d toLinearSrgb(src.rgba)` for clarity?",
+      "range": {
+        "startLine": 2553,
+        "startChar": 26,
+        "endLine": 2553,
+        "endChar": 40
+      },
+      "revId": "912b026cb52d059153f117b00ba8046df1b54c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5039196_1fc2d1cc",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2553,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-28T18:21:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d50d0570_41319f13",
       "range": {
         "startLine": 2553,
         "startChar": 26,
