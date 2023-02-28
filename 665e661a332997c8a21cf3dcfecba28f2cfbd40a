@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eae4dacc_bc87eafc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-28T20:04:36Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "665e661a332997c8a21cf3dcfecba28f2cfbd40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8892f4cd_9f10846c",
@@ -31,6 +48,24 @@
       "writtenOn": "2023-02-28T19:25:20Z",
       "side": 1,
       "message": "I don\u0027t know if this alias is buying us anything anymore",
+      "revId": "665e661a332997c8a21cf3dcfecba28f2cfbd40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd9df86f_ecf4e86d",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1520,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-02-28T20:04:36Z",
+      "side": 1,
+      "message": "Yep. Going to move that to the Combined Vertex filler next CL.",
+      "parentUuid": "8892f4cd_9f10846c",
       "revId": "665e661a332997c8a21cf3dcfecba28f2cfbd40a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
