@@ -8,9 +8,14 @@ import("skunicode.gni")
 
 declare_args() {
   skia_use_runtime_icu = false
+  skunicode_tests_enabled = true
 }
 
+<<<<<<< PATCH SET (ebae3c Experimenting with ICU4X)
+if (skia_use_icu || skia_use_client_icu || skia_use_icu4x) {
+=======
 if (skia_use_icu || skia_use_client_icu || skia_use_test_icu) {
+>>>>>>> BASE      (9a29ed Create icu client SkUnicode implementation)
   config("public_config") {
     include_dirs = [ "include" ]
     defines = [ "SK_UNICODE_AVAILABLE" ]
@@ -20,6 +25,9 @@ if (skia_use_icu || skia_use_client_icu || skia_use_test_icu) {
       defines += [ "SK_UNICODE_CLIENT_IMPLEMENTATION" ]
     } else if (skia_use_test_icu) {
       defines += [ "SK_UNICODE_TEST_ICU_IMPLEMENTATION" ]
+    }
+    if (skia_use_icu4x) {
+      defines += [ "SK_UNICODE_ICU4X_IMPLEMENTATION" ]
     }
     if (is_component_build) {
       defines += [ "SKUNICODE_DLL" ]
@@ -50,10 +58,46 @@ if (skia_use_icu || skia_use_client_icu || skia_use_test_icu) {
         deps += [ "//third_party/icu" ]
       }
       configs += [ "../../third_party/icu/config:no_cxx" ]
-    } else if (skia_use_client_icu) {
+    }
+    if (skia_use_client_icu) {
+      if (!skia_use_icu) {
+        sources += skia_unicode_bidi_icu_sources
+        deps += [ skia_icu_bidi_third_party_dir ]
+      }
       sources += skia_unicode_client_icu_sources
       sources += skia_unicode_bidi_icu_sources
       defines += [ "SK_UNICODE_CLIENT_IMPLEMENTATION" ]
+<<<<<<< PATCH SET (ebae3c Experimenting with ICU4X)
+    }
+    if (skia_use_icu4x) {
+      sources += skia_unicode_icu4x_sources
+      defines += [ "SK_UNICODE_ICU4X_IMPLEMENTATION" ]
+      deps += [ "//third_party/icu4x" ]
+    }
+  }
+
+  skia_source_set("tests") {
+    if (skunicode_tests_enabled && skia_use_icu && skia_use_icu4x &&
+        skia_use_client_icu) {
+      testonly = true
+      sources = skunicode_tests
+
+      if (skia_use_icu4x) {
+        sources += icu4x_skunicode_tests
+      }
+
+      if (skia_use_client_icu) {
+        sources += client_skunicode_tests
+      }
+
+      deps = [
+        ":skunicode",
+        "../..:skia",
+        "../..:test",
+      ]
+    } else {
+      sources = []
+=======
       deps += [ skia_icu_bidi_third_party_dir ]
     } else if (skia_use_test_icu) {
       sources += skia_unicode_icu_sources
@@ -64,9 +108,12 @@ if (skia_use_icu || skia_use_client_icu || skia_use_test_icu) {
       defines += [ "SK_UNICODE_TEST_ICU_IMPLEMENTATION" ]
       deps += [ "//third_party/icu" ]
       configs += [ "../../third_party/icu/config:no_cxx" ]
+>>>>>>> BASE      (9a29ed Create icu client SkUnicode implementation)
     }
   }
 } else {
   group("skunicode") {
+  }
+  group("tests") {
   }
 }

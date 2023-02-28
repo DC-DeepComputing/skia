@@ -199,6 +199,24 @@ private:
     const char* name;
 };
 
+<<<<<<< PATCH SET (ebae3c Experimenting with ICU4X)
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION) && defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+
+class TestParagraphBuilderImpl : public ParagraphBuilderImpl {
+public:
+    TestParagraphBuilderImpl(const ParagraphStyle& style, sk_sp<FontCollection> fontCollection)
+        : ParagraphBuilderImpl(style, fontCollection) { }
+    std::unique_ptr<Paragraph> Build() override {
+        this->SetUnicode(SkUnicode::MakeTestClientUnicode(this->getText()));
+        return ParagraphBuilderImpl::Build();
+    }
+};
+#else
+typedef ParagraphBuilderImpl TestParagraphBuilderImpl;
+#endif
+
+=======
+>>>>>>> BASE      (9a29ed Create icu client SkUnicode implementation)
 }  // namespace
 
 UNIX_ONLY_TEST(SkParagraph_SimpleParagraph, reporter) {

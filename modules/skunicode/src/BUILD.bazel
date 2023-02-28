@@ -51,5 +51,18 @@ skia_filegroup(
         "SkUnicode_client.cpp",
         "SkUnicode_client.h",
     ],
+<<<<<<< PATCH SET (ebae3c Experimenting with ICU4X)
+    visibility = ["//modules/skunicode:__pkg__"],
+)
+
+
+skia_filegroup(
+    name = "icu4x_srcs",
+    srcs = [
+        "SkUnicode_icu4x.cpp",
+        "SkUnicode_icu4x.h",
+    ],
+=======
+>>>>>>> BASE      (9a29ed Create icu client SkUnicode implementation)
     visibility = ["//modules/skunicode:__pkg__"],
 )
