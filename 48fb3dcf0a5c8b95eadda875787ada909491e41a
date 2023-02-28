@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e58b4fc_badd1d34",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 3316,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-28T17:54:53Z",
+      "side": 1,
+      "message": "I checked the generated code, and on Neon, an `if` was two instructions tighter than the equivalent ternary that we do in `init_lane_masks`.",
+      "range": {
+        "startLine": 3316,
+        "startChar": 8,
+        "endLine": 3316,
+        "endChar": 12
+      },
+      "revId": "48fb3dcf0a5c8b95eadda875787ada909491e41a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
