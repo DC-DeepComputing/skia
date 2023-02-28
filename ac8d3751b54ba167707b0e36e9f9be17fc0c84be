@@ -87,6 +87,30 @@
       },
       "revId": "ac8d3751b54ba167707b0e36e9f9be17fc0c84be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7387815_17169866",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-02-28T14:07:10Z",
+      "side": 1,
+      "message": "I say lets store the USAGE flags on the VulkanBuffer. I like the idea of our various backend checks looking at the actual backend capabilities of the buffer instead of relying on a fragile connection between BufferType and what we assume the set usages are.",
+      "parentUuid": "be1cbc79_7aec99d7",
+      "range": {
+        "startLine": 264,
+        "startChar": 13,
+        "endLine": 264,
+        "endChar": 24
+      },
+      "revId": "ac8d3751b54ba167707b0e36e9f9be17fc0c84be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
