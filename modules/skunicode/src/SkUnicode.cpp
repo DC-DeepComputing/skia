@@ -23,6 +23,31 @@ std::unique_ptr<SkUnicode> SkUnicode::Make() {
     return nullptr;
 }
 
+std::unique_ptr<SkUnicode> MakeIcu4xBasedUnicode() {
+#ifdef SK_UNICODE_ICU4X_IMPLEMENTATION
+    std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeIcu4xBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
+    return nullptr;
+}
+
+std::unique_ptr<SkUnicode> MakeClientBasedUnicode(
+        SkSpan<char> text,
+        std::vector<SkUnicode::Position> words,
+        std::vector<SkUnicode::Position> graphemeBreaks,
+        std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
+#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
+    std::unique_ptr<SkUnicode> unicode =
+            SkUnicode::MakeClientBasedUnicode(text, words, graphemeBreaks, lineBreaks);
+    if (unicode) {
+        return unicode;
+    }
+#endif
+    return nullptr;
+}
+
 SkString SkUnicode::convertUtf16ToUtf8(const char16_t* utf16, int utf16Units) {
 
     int utf8Units = SkUTF::UTF16ToUTF8(nullptr, 0, (uint16_t*)utf16, utf16Units);

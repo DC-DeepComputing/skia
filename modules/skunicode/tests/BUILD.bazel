@@ -6,5 +6,15 @@ exports_files_legacy()
 
 skia_filegroup(
     name = "test_srcs",
-    srcs = ["SkUnicode_test.cpp"],
+    srcs = ["SkUnicodeTest.cpp"],
+)
+
+skia_filegroup(
+    name = "icu4x_tests_srcs",
+    srcs = ["SkUnicodeTest_icu4x.cpp"],
+)
+
+skia_filegroup(
+    name = "client_tests_srcs",
+    srcs = ["SkUnicodeTest_client.cpp"],
 )
