@@ -215,6 +215,25 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
     }
 
     //SkDebugf("layout('%s', %f): %f %f\n", fText.c_str(), rawWidth, fMinIntrinsicWidth, fMaxIntrinsicWidth);
+    /*
+    for (auto i = 0; i < fCodeUnitProperties.size(); ++i) {
+        SkDebugf("%d: ", i);
+        auto flags = fCodeUnitProperties[i];
+        if (SkUnicode::isHardLineBreak(flags)) SkDebugf("kHardLineBreak ");
+        if (SkUnicode::isSoftLineBreak(flags)) SkDebugf("kSoftLineBreak ");
+        if (SkUnicode::isPartOfWhiteSpaceBreak(flags)) SkDebugf("kPartOfWhiteSpaceBreak ");
+        if (SkUnicode::isControl(flags)) SkDebugf("kControl ");
+        if (SkUnicode::isGraphemeStart(flags)) SkDebugf("kGraphemeStart ");
+        if (SkUnicode::isTabulation(flags)) SkDebugf("kTabulation ");
+        SkDebugf("\n");
+    }
+    SkDebugf("bidis:\n");
+    for (auto i = 0; i < fBidiRegions.size(); ++i) {
+        SkDebugf("%d: ", i);
+        auto& bidi = fBidiRegions[i];
+        SkDebugf("[%d:%d) %d\n", bidi.start, bidi.end, bidi.level);
+    }
+    */
 }
 
 void ParagraphImpl::paint(SkCanvas* canvas, SkScalar x, SkScalar y) {
