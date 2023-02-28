@@ -33,6 +33,69 @@
       "message": "I think the inconsistency between here and line 1046 was the cause of the Android roll problems.",
       "revId": "a2cf8c973fc3a4fdc6f8094d1cb6d41248b1c90e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e57def08_e8d7e63c",
+        "filename": "gn/skia.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-28T15:37:36Z",
+      "side": 1,
+      "message": "I find GN a bit confusing. Just to make sure I understand - if you specify `skia_enable_ganesh` in your gn args, it will *not* get replaced with `skia_enable_gpu`, right?",
+      "revId": "a2cf8c973fc3a4fdc6f8094d1cb6d41248b1c90e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d52ac015_c21536a8",
+        "filename": "gn/skia.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-28T15:37:36Z",
+      "side": 1,
+      "message": "Should we enable tools if we\u0027re enabling graphite but not ganesh?",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 190,
+        "endChar": 66
+      },
+      "revId": "a2cf8c973fc3a4fdc6f8094d1cb6d41248b1c90e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e56bba60_8b0f86ad",
+        "filename": "gn/skia.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-02-28T15:37:36Z",
+      "side": 1,
+      "message": "nit: These parentheses can be removed without changing anything.",
+      "range": {
+        "startLine": 194,
+        "startChar": 67,
+        "endLine": 194,
+        "endChar": 68
+      },
+      "revId": "a2cf8c973fc3a4fdc6f8094d1cb6d41248b1c90e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
