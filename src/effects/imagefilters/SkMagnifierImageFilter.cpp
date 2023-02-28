@@ -31,7 +31,11 @@
 #include <memory>
 #include <utility>
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
@@ -109,7 +113,11 @@ void SkMagnifierImageFilter::flatten(SkWriteBuffer& buffer) const {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 static std::unique_ptr<GrFragmentProcessor> make_magnifier_fp(
         std::unique_ptr<GrFragmentProcessor> input,
         SkIRect bounds,
@@ -186,7 +194,11 @@ sk_sp<SkSpecialImage> SkMagnifierImageFilter::onFilterImage(const Context& ctx,
     SkScalar invYZoom = fSrcRect.height() / bounds.height();
 
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (ctx.gpuBacked()) {
         auto context = ctx.getContext();
 

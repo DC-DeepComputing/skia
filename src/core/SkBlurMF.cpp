@@ -21,7 +21,11 @@
 #include "src/core/SkStringUtils.h"
 #include "src/core/SkWriteBuffer.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/gpu/SkBackingFit.h"
@@ -42,10 +46,14 @@
 #include "src/gpu/ganesh/glsl/GrGLSLFragmentShaderBuilder.h"
 #include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
 #endif // SK_GPU_V1
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 using namespace skia_private;
 
@@ -58,7 +66,11 @@ public:
     bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
                     SkIPoint* margin) const override;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU && SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     bool canFilterMaskGPU(const GrStyledShape& shape,
                           const SkIRect& devSpaceShapeBounds,
                           const SkIRect& clipBounds,
@@ -581,7 +593,11 @@ void SkBlurMaskFilterImpl::flatten(SkWriteBuffer& buffer) const {
 }
 
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU && SK_GPU_V1
+=======
+#if defined(SK_GANESH) && defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 ///////////////////////////////////////////////////////////////////////////////
 //  Circle Blur
@@ -1079,7 +1095,11 @@ static bool fillin_view_on_gpu(GrDirectContext* dContext,
                                const SkRRect& rrectToDraw,
                                const SkISize& dimensions,
                                float xformedSigma) {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     SkASSERT(!SkGpuBlurUtils::IsEffectivelyZeroSigma(xformedSigma));
 
     // We cache blur masks. Use default surface props here so we can use the same cached mask
@@ -1669,7 +1689,11 @@ GrSurfaceProxyView SkBlurMaskFilterImpl::filterMaskGPU(GrRecordingContext* conte
     return surfaceDrawContext->readSurfaceView();
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU && SK_GPU_V1
+=======
+#endif // defined(SK_GANESH) && defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 void sk_register_blur_maskfilter_createproc() { SK_REGISTER_FLATTENABLE(SkBlurMaskFilterImpl); }
 

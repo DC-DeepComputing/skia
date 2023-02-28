@@ -19,7 +19,11 @@
 #include "src/core/SkSpecialSurface.h"
 #include "src/core/SkValidationUtils.h"
 #include "src/core/SkWriteBuffer.h"
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
@@ -585,7 +589,11 @@ SkImageFilter_Base::Context SkImageFilter_Base::mapContext(const Context& ctx) c
     return ctx.withNewDesiredOutput(childOutput);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 sk_sp<SkSpecialImage> SkImageFilter_Base::DrawWithFP(GrRecordingContext* rContext,
                                                      std::unique_ptr<GrFragmentProcessor> fp,
                                                      const SkIRect& bounds,

@@ -17,10 +17,14 @@
 #include "src/text/gpu/SubRunAllocator.h"
 
 class SkStrikeClient;
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 class GrMeshDrawTarget;
 #endif
-#if defined(SK_GRAPHITE_ENABLED)
+#if defined(SK_GRAPHITE)
 namespace skgpu::graphite { class Recorder; }
 #endif
 
@@ -59,7 +63,11 @@ public:
 
     void packedGlyphIDToGlyph(StrikeCache* cache);
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     std::tuple<bool, int> regenerateAtlas(
             int begin, int end,
             skgpu::MaskFormat maskFormat,
@@ -67,7 +75,7 @@ public:
             GrMeshDrawTarget*);
 #endif
 
-#if defined(SK_GRAPHITE_ENABLED)
+#if defined(SK_GRAPHITE)
     std::tuple<bool, int> regenerateAtlas(
             int begin, int end,
             skgpu::MaskFormat maskFormat,

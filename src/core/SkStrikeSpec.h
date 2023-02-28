@@ -16,7 +16,11 @@
 
 #include <tuple>
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)
+=======
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/text/gpu/SDFTControl.h"
 
 namespace sktext::gpu {
@@ -76,7 +80,11 @@ public:
     // Make a strike spec for PDF Vector strikes
     static SkStrikeSpec MakePDFVector(const SkTypeface& typeface, int* size);
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if (SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)) && !defined(SK_DISABLE_SDF_TEXT)
+=======
+#if (defined(SK_GANESH) || defined(SK_GRAPHITE)) && !defined(SK_DISABLE_SDF_TEXT)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     // Create a strike spec for scaled distance field text.
     static std::tuple<SkStrikeSpec, SkScalar, sktext::gpu::SDFTMatrixRange> MakeSDFT(
             const SkFont& font,

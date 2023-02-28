@@ -24,7 +24,11 @@
 #include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunContainer.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU  // Ganesh Support
+=======
+#if defined(SK_GANESH)  // Ganesh Support
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/Device_v1.h"
 #include "src/gpu/ganesh/GrClip.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
@@ -102,7 +106,11 @@ public:
                                       const SkStrikeClient* client);
     void doFlatten(SkWriteBuffer& buffer) const override;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     void surfaceDraw(SkCanvas*,
                      const GrClip* clip,
                      const SkMatrixProvider& viewMatrix,
@@ -145,7 +153,11 @@ SlugImpl::SlugImpl(SubRunAllocator&& alloc,
         , fInitialPaint{paint}
         , fOrigin{origin} {}
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 void SlugImpl::surfaceDraw(SkCanvas* canvas, const GrClip* clip, const SkMatrixProvider& viewMatrix,
                            const SkPaint& drawingPaint, skgpu::v1::SurfaceDrawContext* sdc) const {
     fSubRuns->draw(canvas, clip, viewMatrix, fOrigin, drawingPaint, this, sdc);
@@ -379,7 +391,11 @@ bool TextBlob::canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) co
 
 const TextBlob::Key& TextBlob::key() const { return fKey; }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 void TextBlob::draw(SkCanvas* canvas,
                     const GrClip* clip,
                     const SkMatrixProvider& viewMatrix,
@@ -390,7 +406,7 @@ void TextBlob::draw(SkCanvas* canvas,
 }
 #endif
 
-#if defined(SK_GRAPHITE_ENABLED)
+#if defined(SK_GRAPHITE)
 void TextBlob::draw(SkCanvas* canvas,
                     SkPoint drawOrigin,
                     const SkPaint& paint,
@@ -432,7 +448,11 @@ sk_sp<Slug> SkMakeSlugFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* cli
 }
 }  // namespace sktext::gpu
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 namespace skgpu::v1 {
 sk_sp<Slug>
 Device::convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,

@@ -46,7 +46,11 @@
 #include "tools/debugger/DebugCanvas.h"
 #include "tools/flags/CommandLineFlags.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tools/gpu/GrContextFactory.h"
@@ -1608,7 +1612,11 @@ DEF_FUZZ(SerializedImageFilter, fuzz) {
     canvas.restore();
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 static void fuzz_ganesh(Fuzz* fuzz, GrDirectContext* context) {
     SkASSERT(context);
     auto surface = SkSurface::MakeRenderTarget(

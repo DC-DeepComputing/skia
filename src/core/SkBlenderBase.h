@@ -46,7 +46,11 @@ public:
         return this->onProgram(p, src, dst, colorInfo, uniforms, alloc);
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     /**
      * Returns a GrFragmentProcessor that implements this blend for the GPU backend.
      * The GrFragmentProcessor expects premultiplied inputs and returns a premultiplied output.
@@ -59,7 +63,7 @@ public:
 
     virtual SkRuntimeEffect* asRuntimeEffect() const { return nullptr; }
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     /**
      * TODO: Make pure virtual.
      * primitiveColorBlender = true when blending the result of the paint evaluation with a

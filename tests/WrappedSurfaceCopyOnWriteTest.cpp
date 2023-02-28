@@ -162,7 +162,11 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipCopyTaskTest,
     CheckSolidPixels(SkColor4f{1, 0, 0, 1}, pixels, kTol, errorReporter);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 // Make sure OpsTask are skippable
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipOpsTaskTest, reporter, ctxInfo, CtsEnforcement::kNever) {
@@ -196,4 +200,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipOpsTaskTest, reporter, ctxInfo, CtsEn
             });
     CheckSolidPixels(SkColor4f{1, 0, 0, 1}, pixels, kTol, errorReporter);
 }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_GPU_V1
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)

@@ -42,7 +42,11 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/tracing/SkVMDebugTrace.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -56,7 +60,7 @@
 #include "src/image/SkImage_Gpu.h"
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
@@ -983,7 +987,11 @@ const SkFilterColorProgram* SkRuntimeEffect::getFilterColorProgram() const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
                                  const char* name,
                                  sk_sp<const SkData> uniforms,
@@ -1041,7 +1049,7 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
 }
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 static void add_children_to_key(SkSpan<const SkRuntimeEffect::ChildPtr> children,
                                 SkSpan<const SkRuntimeEffect::Child> childInfo,
                                 const skgpu::graphite::KeyContext& keyContext,
@@ -1171,7 +1179,11 @@ public:
             , fUniforms(std::move(uniforms))
             , fChildren(children.begin(), children.end()) {}
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                    GrRecordingContext* context,
                                    const GrColorInfo& colorInfo,
@@ -1193,7 +1205,7 @@ public:
     }
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
@@ -1376,7 +1388,11 @@ public:
 
     bool isOpaque() const override { return fEffect->alwaysOpaque(); }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs& args,
                                                              const MatrixRec& mRec) const override {
         if (!SkRuntimeEffectPriv::CanDraw(args.fContext->priv().caps(), fEffect.get())) {
@@ -1410,7 +1426,7 @@ public:
     }
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
@@ -1617,7 +1633,11 @@ public:
                                    src, dst, &callbacks);
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(
             std::unique_ptr<GrFragmentProcessor> srcFP,
             std::unique_ptr<GrFragmentProcessor> dstFP,
@@ -1643,7 +1663,7 @@ public:
     }
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer,
@@ -1775,7 +1795,11 @@ sk_sp<SkImage> SkRuntimeEffect::makeImage(GrRecordingContext* rContext,
     }
     sk_sp<SkSurface> surface;
     if (rContext) {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         if (!rContext->priv().caps()->mipmapSupport()) {
             mipmapped = false;
         }

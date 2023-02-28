@@ -11,7 +11,11 @@
 #include "include/core/SkRect.h"
 #include "src/base/SkMathPriv.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -1036,4 +1040,8 @@ void Compute1DLinearGaussianKernel(float* kernel, float* offset, float sigma, in
 
 }  // namespace SkGpuBlurUtils
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif
+=======
+#endif  // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)

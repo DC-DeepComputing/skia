@@ -38,7 +38,11 @@
 #include "src/image/SkRescaleAndReadPixels.h"
 #include "src/shaders/SkImageShader.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
@@ -60,7 +64,7 @@
 enum class GrColorType;
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
 #endif
@@ -268,7 +272,11 @@ sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset, GrDirectContext* direc
         return nullptr;
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     auto myContext = as_IB(this)->context();
     // This check is also performed in the subclass, but we do it here for the short-circuit below.
     if (myContext && !myContext->priv().matches(direct)) {
@@ -284,7 +292,11 @@ sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset, GrDirectContext* direc
     return as_IB(this)->onMakeSubset(subset, direct);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 bool SkImage::isTextureBacked() const {
     return as_IB(this)->isGaneshBacked() || as_IB(this)->isGraphiteBacked();
@@ -377,7 +389,11 @@ void SkImage_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
     callback(context, nullptr);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Base::asView(GrRecordingContext* context,
                                                                  GrMipmapped mipmapped,
                                                                  GrImageTexGenPolicy policy) const {
@@ -549,9 +565,13 @@ GrSurfaceProxyView SkImage_Base::CopyView(GrRecordingContext* context,
                                     /*label=*/label);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 std::tuple<skgpu::graphite::TextureProxyView, SkColorType> SkImage_Base::asView(
         skgpu::graphite::Recorder* recorder,
         skgpu::Mipmapped mipmapped) const {
@@ -610,10 +630,14 @@ sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
                                                      requiredProps);
 }
 
-#endif // SK_GRAPHITE_ENABLED
+#endif // SK_GRAPHITE
 
 GrDirectContext* SkImage_Base::directContext() const {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     return GrAsDirectContext(this->context());
 #else
     return nullptr;
@@ -690,7 +714,11 @@ sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext, const SkIma
         return nullptr;
     }
     sk_sp<SkSpecialImage> srcSpecialImage;
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     auto myContext = as_IB(this)->context();
     if (myContext && !myContext->priv().matches(rContext)) {
         return nullptr;
@@ -763,7 +791,11 @@ sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
         return nullptr;
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     auto myContext = as_IB(this)->context();
     // This check is also performed in the subclass, but we do it here for the short-circuit below.
     if (myContext && !myContext->priv().matches(dContext)) {

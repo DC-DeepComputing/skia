@@ -48,8 +48,13 @@ public:
         return fTextBlobs;
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
     const SkTArray<sk_sp<const sktext::gpu::Slug>>& getSlugs() const {
+=======
+#if defined(SK_GANESH)
+    const skia_private::TArray<sk_sp<const sktext::gpu::Slug>>& getSlugs() const {
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         return fSlugs;
     }
 #endif
@@ -180,7 +185,11 @@ protected:
 
     void onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
                                 const SkPaint& paint) override;
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     void onDrawSlug(const sktext::gpu::Slug* slug) override;
 #endif
     void onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
@@ -251,6 +260,7 @@ private:
 
     SkWriter32 fWriter;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
     SkTArray<sk_sp<const SkImage>>    fImages;
     SkTArray<sk_sp<const SkPicture>>  fPictures;
     SkTArray<sk_sp<SkDrawable>>       fDrawables;
@@ -258,6 +268,15 @@ private:
     SkTArray<sk_sp<const SkVertices>> fVertices;
 #if SK_SUPPORT_GPU
     SkTArray<sk_sp<const sktext::gpu::Slug>> fSlugs;
+=======
+    skia_private::TArray<sk_sp<const SkImage>>    fImages;
+    skia_private::TArray<sk_sp<const SkPicture>>  fPictures;
+    skia_private::TArray<sk_sp<SkDrawable>>       fDrawables;
+    skia_private::TArray<sk_sp<const SkTextBlob>> fTextBlobs;
+    skia_private::TArray<sk_sp<const SkVertices>> fVertices;
+#if defined(SK_GANESH)
+    skia_private::TArray<sk_sp<const sktext::gpu::Slug>> fSlugs;
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #endif
 
     uint32_t fRecordFlags;

@@ -20,7 +20,11 @@
 #include "src/core/SkStrikeCache.h"
 #include "src/text/StrikeForGPU.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     #include "src/text/gpu/StrikeCache.h"
 #endif
 

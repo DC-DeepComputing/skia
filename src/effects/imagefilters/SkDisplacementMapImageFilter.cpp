@@ -34,7 +34,11 @@
 #include <memory>
 #include <utility>
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
@@ -180,7 +184,11 @@ void SkDisplacementMapImageFilter::flatten(SkWriteBuffer& buffer) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 namespace {
 
@@ -314,7 +322,11 @@ sk_sp<SkSpecialImage> SkDisplacementMapImageFilter::onFilterImage(const Context&
     SkVector scale = SkVector::Make(fScale, fScale);
     ctx.ctm().mapVectors(&scale, 1);
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (ctx.gpuBacked()) {
         auto rContext = ctx.getContext();
 
@@ -431,7 +443,11 @@ SkIRect SkDisplacementMapImageFilter::onFilterBounds(
 
 ///////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 class GrDisplacementMapEffect::Impl : public ProgramImpl {
 public:
     void emitCode(EmitArgs&) override;

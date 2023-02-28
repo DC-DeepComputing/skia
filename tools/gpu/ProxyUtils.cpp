@@ -22,7 +22,11 @@
 #include "src/gpu/ganesh/SurfaceContext.h"
 #include "src/image/SkImage_Base.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/ops/GrSimpleMeshDrawOpHelper.h"
 #endif
 
@@ -92,7 +96,11 @@ GrSurfaceProxyView MakeTextureProxyViewFromData(GrDirectContext* dContext,
     return sContext->readSurfaceView();
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 GrProgramInfo* CreateProgramInfo(const GrCaps* caps,
                                  SkArenaAlloc* arena,
                                  const GrSurfaceProxyView& writeView,
@@ -123,6 +131,10 @@ GrProgramInfo* CreateProgramInfo(const GrCaps* caps,
                                                        primitiveType, renderPassXferBarriers,
                                                        colorLoadOp, flags, stencilSettings);
 }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_GPU_V1
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 }  // namespace sk_gpu_test

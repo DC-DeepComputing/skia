@@ -45,7 +45,11 @@ struct SkPoint;
 struct SkRSXform;
 struct SkRect;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 namespace sktext::gpu {
 class Slug;
 }
@@ -77,7 +81,11 @@ protected:
     void onDrawGlyphRunList(const sktext::GlyphRunList&, const SkPaint&) override;
     void onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
                         const SkPaint& paint) override;
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     void onDrawSlug(const sktext::gpu::Slug* slug) override;
 #endif
     void onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],

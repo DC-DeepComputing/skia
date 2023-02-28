@@ -27,7 +27,11 @@ class SkShader;
 class SkAndroidFrameworkUtils {
 public:
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     /**
      *  clipWithStencil draws the current clip into a stencil buffer with reference value and mask
      *  set to 0x1. This function works only on a GPU canvas.
@@ -37,7 +41,11 @@ public:
      *  @return true on success or false if clip is empty or not a GPU canvas.
      */
     static bool clipWithStencil(SkCanvas* canvas);
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif //SK_SUPPORT_GPU
+=======
+#endif //defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
     static void SafetyNetLog(const char*);
 

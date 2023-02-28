@@ -25,7 +25,11 @@
 #include "include/private/chromium/Slug.h"
 #include "tools/ToolUtils.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrContextOptions.h"
 
 class SlugGM : public skiagm::GM {

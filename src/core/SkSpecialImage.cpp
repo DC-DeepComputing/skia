@@ -18,7 +18,11 @@
 #include "src/core/SkSurfacePriv.h"
 #include "src/image/SkImage_Base.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/SkBackingFit.h"
@@ -86,7 +90,7 @@ sk_sp<SkShader> SkSpecialImage::asShader(const SkSamplingOptions& sampling,
     return this->asShader(SkTileMode::kClamp, sampling, lm);
 }
 
-#if SK_GRAPHITE_ENABLED
+#if SK_GRAPHITE
 #include "src/gpu/graphite/TextureProxyView.h"
 
 bool SkSpecialImage::isGraphiteBacked() const {
@@ -127,7 +131,11 @@ sk_sp<SkSpecialImage> SkSpecialImage::MakeFromImage(GrRecordingContext* rContext
                                                     const SkSurfaceProps& props) {
     SkASSERT(RectFits(subset, image->width(), image->height()));
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (rContext) {
         auto [view, ct] = as_IB(image)->asView(rContext, GrMipmapped::kNo);
         return MakeDeferredFromGpu(rContext,
@@ -173,7 +181,11 @@ public:
         return fBitmap.extractSubset(bm, this->subset());
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrSurfaceProxyView onView(GrRecordingContext* context) const override {
         if (context) {
             return std::get<0>(GrMakeCachedBitmapProxyView(
@@ -288,7 +300,11 @@ sk_sp<SkSpecialImage> SkSpecialImage::CopyFromRaster(const SkIRect& subset,
             SkIRect::MakeWH(subset.width(), subset.height()), tmp, props);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 ///////////////////////////////////////////////////////////////////////////////
 static sk_sp<SkImage> wrap_proxy_in_image(GrRecordingContext* context,
                                           GrSurfaceProxyView view,

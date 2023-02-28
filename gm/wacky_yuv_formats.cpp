@@ -846,8 +846,19 @@ protected:
                                                          resultBMs,
                                                          numPlanes);
                     auto lazyYUV = sk_gpu_test::LazyYUVImage::Make(std::move(pixmaps));
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 
                     fImages[opaque][cs][format] = lazyYUV->refImage(dContext, fImageType);
+=======
+#if defined(SK_GRAPHITE)
+                    if (recorder) {
+                        fImages[opaque][cs][format] = lazyYUV->refImage(recorder, fImageType);
+                    } else
+#endif
+                    {
+                        fImages[opaque][cs][format] = lazyYUV->refImage(dContext, fImageType);
+                    }
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
                 }
                 origin = (origin + 1) % 8;
             }
@@ -899,6 +910,12 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
         auto direct = GrAsDirectContext(canvas->recordingContext());
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
+=======
+#if defined(SK_GRAPHITE)
+        auto recorder = canvas->recorder();
+#endif
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
         float cellWidth = kTileWidthHeight, cellHeight = kTileWidthHeight;
         if (fUseSubset) {
@@ -942,8 +959,22 @@ protected:
                         // Making a CS-specific version of a kIdentity_SkYUVColorSpace YUV image
                         // doesn't make a whole lot of sense. The colorSpace conversion will
                         // operate on the YUV components rather than the RGB components.
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
                         sk_sp<SkImage> csImage =
                             fImages[opaque][cs][format]->makeColorSpace(fTargetColorSpace, direct);
+=======
+                        sk_sp<SkImage> csImage;
+#if defined(SK_GRAPHITE)
+                        if (recorder) {
+                            csImage = fImages[opaque][cs][format]->makeColorSpace(fTargetColorSpace,
+                                                                                  recorder);
+                        } else
+#endif
+                        {
+                            csImage = fImages[opaque][cs][format]->makeColorSpace(fTargetColorSpace,
+                                                                                  direct);
+                        }
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
                         canvas->drawImageRect(csImage, srcRect, dstRect, sampling,
                                               &paint, constraint);
                     } else {

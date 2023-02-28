@@ -14,8 +14,12 @@
 class SkReadBuffer;
 class SkWriteBuffer;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if GR_TEST_UTILS
 #if SK_GPU_V1
+=======
+#if GR_TEST_UTILS && defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 namespace skgpu::v1 {
     class SurfaceDrawContext;
     class SurfaceFillContext;
@@ -24,11 +28,19 @@ namespace skgpu::v1 {
 #endif // GR_TEST_UTILS
 
 // This declaration must match the one in SkDeferredDisplayList.h
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 class GrRenderTargetProxy;
 #else
 using GrRenderTargetProxy = SkRefCnt;
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 #if GRAPHITE_TEST_UTILS
 namespace skgpu::graphite {
@@ -73,8 +85,12 @@ public:
         return canvas->topDevice();
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if GR_TEST_UTILS
 #if SK_GPU_V1
+=======
+#if GR_TEST_UTILS && defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     static skgpu::v1::SurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas*);
     static skgpu::v1::SurfaceFillContext* TopDeviceSurfaceFillContext(SkCanvas*);
 #endif

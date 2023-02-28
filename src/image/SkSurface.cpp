@@ -45,7 +45,11 @@ namespace skgpu { namespace graphite { class Recorder; } }
 struct GrFlushInfo;
 struct SkSamplingOptions;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrBackendSurface.h"
 #endif
 
@@ -73,7 +77,11 @@ SkSurface_Base::~SkSurface_Base() {
     if (fCachedCanvas) {
         fCachedCanvas->setSurfaceBase(nullptr);
     }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (fCachedImage) {
         as_IB(fCachedImage.get())->generatingSurfaceIsDeleted();
     }
@@ -88,7 +96,11 @@ skgpu::graphite::Recorder* SkSurface_Base::onGetRecorder() {
     return nullptr;
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 GrBackendTexture SkSurface_Base::onGetBackendTexture(BackendHandleAccess) {
     return GrBackendTexture(); // invalid
 }
@@ -256,7 +268,7 @@ sk_sp<SkImage> SkSurface::makeImageSnapshot(const SkIRect& srcBounds) {
     }
 }
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/Log.h"
 
 sk_sp<SkImage> SkSurface::asImage() {
@@ -403,7 +415,11 @@ bool SkSurface::draw(sk_sp<const SkDeferredDisplayList> ddl, int xOffset, int yO
     return asSB(this)->onDraw(std::move(ddl), { xOffset, yOffset });
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 GrBackendTexture SkSurface::getBackendTexture(BackendHandleAccess access) {
     return asSB(this)->onGetBackendTexture(access);
 }

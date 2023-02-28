@@ -28,7 +28,11 @@ GrSurfaceProxyView MakeTextureProxyViewFromData(GrDirectContext*,
                                                 GrSurfaceOrigin,
                                                 GrCPixmap pixmap);
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 GrProgramInfo* CreateProgramInfo(const GrCaps*,
                                  SkArenaAlloc*,
                                  const GrSurfaceProxyView& writeView,

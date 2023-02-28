@@ -50,7 +50,11 @@ public:
 
     sk_sp<SkDeferredDisplayList> detach();
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     using PromiseImageTextureContext     = SkImage::PromiseImageTextureContext;
     using PromiseImageTextureFulfillProc = SkImage::PromiseImageTextureFulfillProc;
     using PromiseImageTextureReleaseProc = SkImage::PromiseImageTextureReleaseProc;
@@ -76,7 +80,11 @@ public:
                                           PromiseImageTextureReleaseProc textureReleaseProc,
                                           PromiseImageTextureContext textureContexts[]);
 #endif // SK_MAKE_PROMISE_TEXTURE_DISABLE_LEGACY_API
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 private:
     SkDeferredDisplayListRecorder(const SkDeferredDisplayListRecorder&) = delete;
@@ -86,7 +94,11 @@ private:
 
     const SkSurfaceCharacterization             fCharacterization;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     sk_sp<GrRecordingContext>                   fContext;
     sk_sp<GrRenderTargetProxy>                  fTargetProxy;
     sk_sp<SkDeferredDisplayList::LazyProxyData> fLazyProxyData;

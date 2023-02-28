@@ -26,8 +26,16 @@
 #include "src/core/SkVerticesPriv.h"
 #include "src/core/SkWriteBuffer.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #include <cstring>
 #include <utility>
+=======
+#include <new>
+
+#if defined(SK_GANESH)
+#include "include/private/chromium/Slug.h"
+#endif
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 using namespace skia_private;
 
@@ -52,7 +60,11 @@ SkPictureData::SkPictureData(const SkPictureRecord& record,
     , fTextBlobs(record.getTextBlobs())
     , fVertices(record.getVertices())
     , fImages(record.getImages())
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     , fSlugs(record.getSlugs())
 #endif
     , fInfo(info) {
@@ -181,7 +193,11 @@ void SkPictureData::flattenToBuffer(SkWriteBuffer& buffer, bool textBlobsOnly) c
         }
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (!textBlobsOnly) {
         write_tag_size(buffer, SK_PICT_SLUG_BUFFER_TAG, fSlugs.size());
         for (const auto& slug : fSlugs) {
@@ -481,7 +497,11 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
             new_array_from_buffer(buffer, size, fTextBlobs, SkTextBlobPriv::MakeFromBuffer);
             break;
         case SK_PICT_SLUG_BUFFER_TAG:
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
             new_array_from_buffer(buffer, size, fSlugs, sktext::gpu::Slug::MakeFromBuffer);
 #endif
             break;

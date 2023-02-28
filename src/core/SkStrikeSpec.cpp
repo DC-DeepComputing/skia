@@ -18,7 +18,11 @@
 #include "src/core/SkStrike.h"
 #include "src/core/SkStrikeCache.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)
+=======
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/text/gpu/SDFMaskFilter.h"
 #include "src/text/gpu/SDFTControl.h"
 #include "src/text/gpu/StrikeCache.h"
@@ -154,7 +158,11 @@ SkStrikeSpec SkStrikeSpec::MakePDFVector(const SkTypeface& typeface, int* size) 
                         SkMatrix::I());
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if (SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)) && !defined(SK_DISABLE_SDF_TEXT)
+=======
+#if (defined(SK_GANESH) || defined(SK_GRAPHITE)) && !defined(SK_DISABLE_SDF_TEXT)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 std::tuple<SkStrikeSpec, SkScalar, sktext::gpu::SDFTMatrixRange>
 SkStrikeSpec::MakeSDFT(const SkFont& font, const SkPaint& paint,
                        const SkSurfaceProps& surfaceProps, const SkMatrix& deviceMatrix,

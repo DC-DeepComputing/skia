@@ -31,7 +31,7 @@
 #include <cmath>
 #include <cstring>
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/ImageProvider.h"
 #include <unordered_map>
 #endif
@@ -42,7 +42,11 @@
 #include "src/xml/SkDOM.h"
 #endif
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -566,7 +570,11 @@ void sniff_paths(const char filepath[], std::function<PathSniffCallback> callbac
     }
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
     if (!orig) {
         return nullptr;
@@ -585,7 +593,7 @@ sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
 
         return orig->makeTextureImage(dContext);
     }
-#if defined(SK_GRAPHITE_ENABLED)
+#if defined(SK_GRAPHITE)
     else if (canvas->recorder()) {
         return orig->makeTextureImage(canvas->recorder());
     }
@@ -678,7 +686,7 @@ SkSpan<const SkFontArguments::VariationPosition::Coordinate> VariationSliders::g
                                                                         fAxisSliders.size()};
 }
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 
 // Currently, we give each new Recorder its own ImageProvider. This means we don't have to deal
 // w/ any threading issues.
@@ -735,6 +743,6 @@ skgpu::graphite::RecorderOptions CreateTestingRecorderOptions() {
     return options;
 }
 
-#endif // SK_GRAPHITE_ENABLED
+#endif // SK_GRAPHITE
 
 }  // namespace ToolUtils

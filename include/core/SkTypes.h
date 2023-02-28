@@ -26,11 +26,23 @@
 #include <climits>
 #include <cstdint>
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if !defined(SK_SUPPORT_GPU)
 #  define SK_SUPPORT_GPU 1
+=======
+// Legacy flag
+#if defined(SK_SUPPORT_GPU)
+#if SK_SUPPORT_GPU && !defined(SK_GANESH)
+#  define SK_GANESH
+#endif
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #endif
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)
+=======
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #  if !defined(SK_ENABLE_SKSL)
 #    define SK_ENABLE_SKSL
 #  endif

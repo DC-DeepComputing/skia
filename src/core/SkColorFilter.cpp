@@ -23,13 +23,17 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrColorInfo.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
@@ -64,7 +68,11 @@ bool SkColorFilterBase::onAsAColorMatrix(float matrix[20]) const {
     return false;
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 GrFPResult SkColorFilterBase::asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                                   GrRecordingContext* context,
                                                   const GrColorInfo& dstColorInfo,
@@ -143,7 +151,7 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
     return SkPMColor4f{0,0,0,0};
 }
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 void SkColorFilterBase::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                  skgpu::graphite::PaintParamsKeyBuilder* builder,
                                  skgpu::graphite::PipelineDataGatherer* gatherer) const {
@@ -180,7 +188,11 @@ public:
         return c ? fOuter->program(p, c, dst, uniforms, alloc) : skvm::Color{};
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                    GrRecordingContext* context,
                                    const GrColorInfo& dstColorInfo,
@@ -205,7 +217,7 @@ public:
     }
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
@@ -218,7 +230,7 @@ public:
 
         builder->endBlock();
     }
-#endif // SK_GRAPHITE_ENABLED
+#endif // SK_GRAPHITE
 
 protected:
     void flatten(SkWriteBuffer& buffer) const override {
@@ -273,7 +285,11 @@ public:
 
     {}
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                    GrRecordingContext* context,
                                    const GrColorInfo& dstColorInfo,
@@ -286,7 +302,7 @@ public:
     }
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {
@@ -404,7 +420,11 @@ public:
         return SkColorSpace::MakeRGB(tf, gamut);
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                    GrRecordingContext* context,
                                    const GrColorInfo& dstColorInfo,
@@ -427,7 +447,7 @@ public:
     }
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
                   skgpu::graphite::PipelineDataGatherer* gatherer) const override {

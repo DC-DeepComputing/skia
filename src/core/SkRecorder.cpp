@@ -253,7 +253,11 @@ void SkRecorder::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
     this->append<SkRecords::DrawTextBlob>(paint, sk_ref_sp(blob), x, y);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 void SkRecorder::onDrawSlug(const sktext::gpu::Slug* slug) {
     this->append<SkRecords::DrawSlug>(sk_ref_sp(slug));
 }

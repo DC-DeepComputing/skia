@@ -34,7 +34,11 @@
 #include <memory>
 #include <utility>
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
@@ -205,7 +209,11 @@ SkIRect SkMorphologyImageFilter::onFilterNodeBounds(
     return src.makeOutset(SkScalarCeilToInt(radius.width()), SkScalarCeilToInt(radius.height()));
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 ///////////////////////////////////////////////////////////////////////////////
 /**
@@ -693,7 +701,11 @@ sk_sp<SkSpecialImage> SkMorphologyImageFilter::onFilterImage(const Context& ctx,
         return input->makeSubset(srcBounds);
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (ctx.gpuBacked()) {
         auto context = ctx.getContext();
 

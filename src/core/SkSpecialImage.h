@@ -14,7 +14,11 @@
 #include "include/core/SkSurfaceProps.h"
 #include "src/core/SkNextID.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #endif
@@ -98,7 +102,11 @@ public:
     static sk_sp<SkSpecialImage> CopyFromRaster(const SkIRect& subset,
                                                 const SkBitmap&,
                                                 const SkSurfaceProps&);
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     static sk_sp<SkSpecialImage> MakeDeferredFromGpu(GrRecordingContext*,
                                                      const SkIRect& subset,
                                                      uint32_t uniqueID,
@@ -107,7 +115,7 @@ public:
                                                      const SkSurfaceProps&);
 #endif
 
-#if SK_GRAPHITE_ENABLED
+#if SK_GRAPHITE
     static sk_sp<SkSpecialImage> MakeGraphite(skgpu::graphite::Recorder*,
                                               const SkIRect& subset,
                                               uint32_t uniqueID,
@@ -178,7 +186,11 @@ public:
      */
     GrRecordingContext* getContext() const { return this->onGetContext(); }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     /**
      * Regardless of how the underlying backing data is stored, returns the contents as a
      * GrSurfaceProxyView. The returned view's proxy represents the entire backing image, so texture
@@ -188,7 +200,7 @@ public:
     GrSurfaceProxyView view(GrRecordingContext* context) const { return this->onView(context); }
 #endif
 
-#if SK_GRAPHITE_ENABLED
+#if SK_GRAPHITE
     bool isGraphiteBacked() const;
 
     skgpu::graphite::TextureProxyView textureProxyView() const;
@@ -218,11 +230,15 @@ protected:
 
     virtual GrRecordingContext* onGetContext() const { return nullptr; }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     virtual GrSurfaceProxyView onView(GrRecordingContext*) const = 0;
 #endif
 
-#if SK_GRAPHITE_ENABLED
+#if SK_GRAPHITE
     virtual skgpu::graphite::TextureProxyView onTextureProxyView() const;
 #endif
 

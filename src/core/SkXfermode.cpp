@@ -16,7 +16,11 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/core/SkXfermodePriv.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/effects/GrCustomXfermode.h"
 #include "src/gpu/ganesh/effects/GrPorterDuffXferProcessor.h"
@@ -158,7 +162,11 @@ bool SkXfermode::IsOpaque(SkBlendMode mode, SrcColorOpacity opacityType) {
     }
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 const GrXPFactory* SkBlendMode_AsXPFactory(SkBlendMode mode) {
     if (SkBlendMode_AsCoeff(mode, nullptr, nullptr)) {
         const GrXPFactory* result = GrPorterDuffXPFactory::Get(mode);

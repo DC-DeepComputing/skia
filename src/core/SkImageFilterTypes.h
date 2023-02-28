@@ -728,7 +728,11 @@ public:
     // The output device's color type, which can be used for intermediate images to be
     // compatible with the eventual target of the filtered result.
     SkColorType colorType() const { return fColorType; }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrColorType grColorType() const { return SkColorTypeToGrColorType(fColorType); }
 #endif
     // The output device's color space, so intermediate images can match, and so filtering can

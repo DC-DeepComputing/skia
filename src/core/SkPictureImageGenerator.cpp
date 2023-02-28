@@ -15,7 +15,11 @@
 #include "src/base/SkTLazy.h"
 #include "src/image/SkImage_Base.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrTextureProxy.h"
 #endif
 
@@ -27,12 +31,16 @@ public:
 protected:
     bool onGetPixels(const SkImageInfo&, void* pixels, size_t rowBytes, const Options&) override;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrSurfaceProxyView onGenerateTexture(GrRecordingContext*, const SkImageInfo&,
                                          GrMipmapped, GrImageTexGenPolicy) override;
 #endif
 
-#if SK_GRAPHITE_ENABLED
+#if SK_GRAPHITE
     sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
                                       const SkImageInfo&,
                                       skgpu::Mipmapped) override;
@@ -102,7 +110,11 @@ bool SkPictureImageGenerator::onGetPixels(const SkImageInfo& info, void* pixels,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/SkGr.h"
@@ -135,11 +147,15 @@ GrSurfaceProxyView SkPictureImageGenerator::onGenerateTexture(GrRecordingContext
     return view;
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if SK_GRAPHITE_ENABLED
+#if SK_GRAPHITE
 #include "src/gpu/graphite/Log.h"
 
 sk_sp<SkImage> SkPictureImageGenerator::onMakeTextureImage(skgpu::graphite::Recorder* recorder,
@@ -158,4 +174,4 @@ sk_sp<SkImage> SkPictureImageGenerator::onMakeTextureImage(skgpu::graphite::Reco
     return surface->asImage();
 }
 
-#endif // SK_GRAPHITE_ENABLED
+#endif // SK_GRAPHITE

@@ -35,14 +35,22 @@
 #include <memory>
 #include <utility>
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkGpuBlurUtils.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #if SK_GPU_V1
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_GPU_V1
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 #if SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSE1
     #include <xmmintrin.h>
@@ -75,7 +83,11 @@ private:
     friend void ::SkRegisterBlurImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkBlurImageFilter)
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     sk_sp<SkSpecialImage> gpuFilter(
             const Context& ctx, SkVector sigma,
             const sk_sp<SkSpecialImage> &input,
@@ -961,7 +973,11 @@ sk_sp<SkSpecialImage> SkBlurImageFilter::onFilterImage(const Context& ctx,
              SkScalarIsFinite(sigma.y()) && sigma.y() >= 0.f && sigma.y() <= kMaxSigma);
 
     sk_sp<SkSpecialImage> result;
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (ctx.gpuBacked()) {
         // Ensure the input is in the destination's gamut. This saves us from having to do the
         // xform during the filter itself.
@@ -982,7 +998,11 @@ sk_sp<SkSpecialImage> SkBlurImageFilter::onFilterImage(const Context& ctx,
     return result;
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 sk_sp<SkSpecialImage> SkBlurImageFilter::gpuFilter(
         const Context& ctx, SkVector sigma, const sk_sp<SkSpecialImage> &input, SkIRect inputBounds,
         SkIRect dstBounds, SkIPoint inputOffset, SkIPoint* offset) const {

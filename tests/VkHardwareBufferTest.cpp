@@ -9,7 +9,11 @@
 
 #include "include/core/SkTypes.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU && defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26 && defined(SK_VULKAN)
+=======
+#if defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26 && defined(SK_VULKAN)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -1353,6 +1357,10 @@ DEF_GANESH_TEST(VulkanHardwareBuffer_EGL_Vulkan_Syncs,
 }
 #endif
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif  // SK_SUPPORT_GPU && defined(SK_BUILD_FOR_ANDROID) &&
+=======
+#endif  // defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) &&
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         // __ANDROID_API__ >= 26 && defined(SK_VULKAN)
 

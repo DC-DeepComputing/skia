@@ -14,7 +14,11 @@
 #include "include/core/SkData.h"
 #include "src/core/SkSLTypeShared.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -63,7 +67,11 @@ struct SkMeshSpecificationPriv {
         SkUNREACHABLE;
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     static GrVertexAttribType AttrTypeAsVertexAttribType(Attribute::Type type) {
         switch (type) {
             case Attribute::Type::kFloat:        return kFloat_GrVertexAttribType;
@@ -115,7 +123,11 @@ struct SkMeshPriv {
 
         virtual const void* peek() const { return nullptr; }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         virtual sk_sp<const GrGpuBuffer> asGpuBuffer() const { return nullptr; }
 #endif
     };
@@ -144,7 +156,11 @@ struct SkMeshPriv {
     using CpuIndexBuffer  = CpuBuffer<IB>;
     using CpuVertexBuffer = CpuBuffer<VB>;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     template <typename Base, GrGpuBufferType> class GpuBuffer final : public Base {
     public:
         GpuBuffer() = default;
@@ -166,10 +182,18 @@ struct SkMeshPriv {
 
     using GpuIndexBuffer  = GpuBuffer<IB, GrGpuBufferType::kIndex >;
     using GpuVertexBuffer = GpuBuffer<VB, GrGpuBufferType::kVertex>;
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif  // SK_SUPPORT_GPU
+=======
+#endif  // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 private:
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     static bool UpdateGpuBuffer(GrDirectContext*,
                                 sk_sp<GrGpuBuffer>,
                                 const void*,
@@ -203,7 +227,11 @@ template <typename Base> bool SkMeshPriv::CpuBuffer<Base>::onUpdate(GrDirectCont
     return true;
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 template <typename Base, GrGpuBufferType Type> SkMeshPriv::GpuBuffer<Base, Type>::~GpuBuffer() {
     GrResourceCache::ReturnResourceFromThread(std::move(fBuffer), fContextID);
@@ -243,7 +271,11 @@ bool SkMeshPriv::GpuBuffer<Base, Type>::onUpdate(GrDirectContext* dc,
     return UpdateGpuBuffer(dc, fBuffer, data, offset, size);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif  // SK_SUPPORT_GPU
+=======
+#endif  // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 #endif  // SK_ENABLE_SKSL
 

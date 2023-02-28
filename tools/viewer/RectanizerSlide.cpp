@@ -11,7 +11,11 @@
 #include "src/base/SkRandom.h"
 #include "src/base/SkUTF.h"
 #include "tools/viewer/Slide.h"
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)
+=======
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/RectanizerPow2.h"
 #include "src/gpu/RectanizerSkyline.h"
 

@@ -16,7 +16,11 @@
 
 #include "tests/TestHarness.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
@@ -37,7 +41,11 @@ private:
     bool fFailed = false;
 };
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 namespace skiatest {
 bool IsGLContextType(sk_gpu_test::GrContextFactory::ContextType type) {
     return GrBackendApi::kOpenGL == sk_gpu_test::GrContextFactory::ContextTypeBackend(type);
@@ -109,7 +117,11 @@ void RunWithGaneshTestContexts(GrContextTestFn* testFn, GrContextTypeFilterFn* f
 }
 
 } // namespace skiatest
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // #if SK_GPU_V1
+=======
+#endif // #if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 TestHarness CurrentTestHarness() {
     return TestHarness::kBazelTestRunner;
@@ -125,7 +137,11 @@ int main() {
         }
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrContextOptions grCtxOptions;
     // TODO(kjlubick) DM has grContextOptions set via flags. Should this runner have that too?
     grCtxOptions.fExecutor = nullptr;

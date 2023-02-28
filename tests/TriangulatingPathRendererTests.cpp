@@ -529,7 +529,11 @@ CreatePathFn kNonEdgeAAPaths[] = {
     },
 };
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 // A simple concave path. Test this with a non-invertible matrix.
 static SkPath create_path_17() {
@@ -902,7 +906,11 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(TriangulatingPathRendererTests,
     test_path(ctx, sdc.get(), create_path_47(), SkMatrix(), GrAAType::kCoverage);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_GPU_V1
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 namespace {
 

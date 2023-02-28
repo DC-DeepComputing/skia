@@ -34,10 +34,18 @@
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrStagingBufferManager.h"
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif  // SK_SUPPORT_GPU
+=======
+#endif  // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 #include <locale>
 #include <string>
@@ -655,7 +663,11 @@ sk_sp<IndexBuffer> SkMesh::MakeIndexBuffer(GrDirectContext* dc, const void* data
     if (!dc) {
         return SkMeshPriv::CpuIndexBuffer::Make(data, size);
     }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     return SkMeshPriv::GpuIndexBuffer::Make(dc, data, size);
 #else
     return nullptr;
@@ -678,7 +690,11 @@ sk_sp<VertexBuffer> SkMesh::MakeVertexBuffer(GrDirectContext* dc, const void* da
     if (!dc) {
         return SkMeshPriv::CpuVertexBuffer::Make(data, size);
     }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     return SkMeshPriv::GpuVertexBuffer::Make(dc, data, size);
 #else
     return nullptr;
@@ -868,7 +884,11 @@ bool SkMesh::VertexBuffer::update(GrDirectContext* dc,
     return check_update(data, offset, size, this->size()) && this->onUpdate(dc, data, offset, size);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 bool SkMeshPriv::UpdateGpuBuffer(GrDirectContext* dc,
                                  sk_sp<GrGpuBuffer> buffer,
                                  const void* data,
@@ -920,6 +940,10 @@ bool SkMeshPriv::UpdateGpuBuffer(GrDirectContext* dc,
 
     return true;
 }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif  // SK_SUPPORT_GPU
+=======
+#endif  // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 #endif  // SK_ENABLE_SKSL

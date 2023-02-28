@@ -23,7 +23,11 @@
 #include <limits>
 #include <new>
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)
+=======
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 #endif
 
@@ -150,7 +154,11 @@ SkTextBlob::SkTextBlob(const SkRect& bounds)
     , fCacheID(SK_InvalidUniqueID) {}
 
 SkTextBlob::~SkTextBlob() {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)
+=======
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (SK_InvalidUniqueID != fCacheID.load()) {
         sktext::gpu::TextBlobRedrawCoordinator::PostPurgeBlobMessage(fUniqueID, fCacheID);
     }

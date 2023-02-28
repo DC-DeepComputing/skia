@@ -20,7 +20,11 @@
 #include "src/image/SkImage_Base.h"
 #include "src/utils/SkPatchUtils.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/private/chromium/Slug.h"
 #endif
 
@@ -581,7 +585,11 @@ void SkPictureRecord::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScala
     this->validate(initialOffset, size);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 void SkPictureRecord::onDrawSlug(const sktext::gpu::Slug* slug) {
     // op + slug id
     size_t size = 2 * kUInt32Size;
@@ -936,7 +944,11 @@ void SkPictureRecord::addTextBlob(const SkTextBlob* blob) {
     this->addInt(find_or_append(fTextBlobs, blob) + 1);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 void SkPictureRecord::addSlug(const sktext::gpu::Slug* slug) {
     // follow the convention of recording a 1-based index
     this->addInt(find_or_append(fSlugs, slug) + 1);

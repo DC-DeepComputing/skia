@@ -633,7 +633,11 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
             canvas->drawTextBlob(blob, x, y, paint);
         } break;
         case DRAW_SLUG: {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
             const sktext::gpu::Slug* slug = fPictureData->getSlug(reader);
             BREAK_ON_READ_ERROR(reader);
 

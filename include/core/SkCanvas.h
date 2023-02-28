@@ -74,7 +74,11 @@ namespace skgpu::graphite { class Recorder; }
 namespace sktext::gpu { class Slug; }
 namespace SkRecords { class Draw; }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && SK_SUPPORT_GPU
+=======
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 class GrBackendRenderTarget;
 #endif
 
@@ -2183,7 +2187,11 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && SK_SUPPORT_GPU
+=======
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     // These methods exist to support WebView in Android Framework.
     SkIRect topLayerBounds() const;
     GrBackendRenderTarget topLayerBackendRenderTarget() const;
@@ -2300,7 +2308,11 @@ protected:
 
     virtual void onDiscard();
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if (SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED))
+=======
+#if (defined(SK_GANESH) || defined(SK_GRAPHITE))
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     /** Experimental
      */
     virtual sk_sp<sktext::gpu::Slug> onConvertGlyphRunListToSlug(
@@ -2457,7 +2469,11 @@ private:
     SkCanvas& operator=(SkCanvas&&) = delete;
     SkCanvas& operator=(const SkCanvas&) = delete;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if (SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED))
+=======
+#if (defined(SK_GANESH) || defined(SK_GRAPHITE))
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     friend class sktext::gpu::Slug;
     /** Experimental
      * Convert a SkTextBlob to a sktext::gpu::Slug using the current canvas state.

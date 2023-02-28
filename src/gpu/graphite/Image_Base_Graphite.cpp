@@ -10,7 +10,11 @@
 #include "include/core/SkColorSpace.h"
 #include "src/gpu/graphite/Log.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #endif
 
@@ -50,7 +54,11 @@ void Image_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace
     callback(context, nullptr);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 std::unique_ptr<GrFragmentProcessor> Image_Base::onAsFragmentProcessor(
         GrRecordingContext*,
         SkSamplingOptions,

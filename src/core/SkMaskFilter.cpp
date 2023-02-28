@@ -29,7 +29,11 @@
 #include <cstdint>
 #include <memory>
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/private/base/SkTo.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
@@ -41,7 +45,11 @@ enum class GrColorType;
 struct GrFPArgs;
 namespace skgpu { namespace v1 { class SurfaceDrawContext; } }
 #endif
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)
+=======
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/text/gpu/SDFMaskFilter.h"
 #endif
 
@@ -330,7 +338,11 @@ SkMaskFilterBase::filterRectsToNine(const SkRect[], int count, const SkMatrix&,
     return kUnimplemented_FilterReturn;
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 std::unique_ptr<GrFragmentProcessor>
 SkMaskFilterBase::asFragmentProcessor(const GrFPArgs& args, const SkMatrix& ctm) const {
     auto fp = this->onAsFragmentProcessor(args, MatrixRec(ctm));
@@ -397,7 +409,11 @@ SkRect SkMaskFilter::approximateFilteredBounds(const SkRect& src) const {
 
 void SkMaskFilter::RegisterFlattenables() {
     sk_register_blur_maskfilter_createproc();
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if (SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)) && !defined(SK_DISABLE_SDF_TEXT)
+=======
+#if (defined(SK_GANESH) || defined(SK_GRAPHITE)) && !defined(SK_DISABLE_SDF_TEXT)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     sktext::gpu::register_sdf_maskfilter_createproc();
 #endif
 }

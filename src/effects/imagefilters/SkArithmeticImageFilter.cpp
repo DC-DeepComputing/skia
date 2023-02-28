@@ -40,7 +40,11 @@
 #include <memory>
 #include <utility>
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
@@ -73,7 +77,11 @@ protected:
     SkIRect onFilterBounds(const SkIRect&, const SkMatrix& ctm,
                            MapDirection, const SkIRect* inputRect) const override;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     sk_sp<SkSpecialImage> filterImageGPU(const Context& ctx,
                                          sk_sp<SkSpecialImage> background,
                                          const SkIPoint& backgroundOffset,
@@ -244,7 +252,11 @@ sk_sp<SkSpecialImage> SkArithmeticImageFilter::onFilterImage(const Context& ctx,
     offset->fX = bounds.left();
     offset->fY = bounds.top();
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (ctx.gpuBacked()) {
         return this->filterImageGPU(ctx, background, backgroundOffset, foreground,
                                     foregroundOffset, bounds);
@@ -328,7 +340,11 @@ SkIRect SkArithmeticImageFilter::onFilterBounds(const SkIRect& src,
     return SkIRect::MakeEmpty();
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 std::unique_ptr<GrFragmentProcessor> make_arithmetic_fp(
         std::unique_ptr<GrFragmentProcessor> srcFP,

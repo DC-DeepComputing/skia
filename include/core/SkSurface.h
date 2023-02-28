@@ -13,7 +13,17 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurfaceProps.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+#include "include/gpu/GrTypes.h"
+#else
+enum GrSurfaceOrigin: int;
+#endif
+
+#if defined(SK_GRAPHITE)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrTypes.h"
 #endif
@@ -22,7 +32,11 @@
 #include <android/hardware_buffer.h>
 #endif
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU && defined(SK_METAL)
+=======
+#if defined(SK_GANESH) && defined(SK_METAL)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/mtl/GrMtlTypes.h"
 #endif
 
@@ -208,7 +222,11 @@ public:
         backend API (accounting only for use of the texture by this surface). If SkSurface creation
         fails textureReleaseProc is called before this function returns.
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
         If SK_SUPPORT_GPU is defined as zero, has no effect and returns nullptr.
+=======
+        If defined(SK_GANESH) is defined as zero, has no effect and returns nullptr.
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
         @param context             GPU context
         @param backendTexture      texture residing on GPU
@@ -243,7 +261,11 @@ public:
         backend API (accounting only for use of the render target by this surface). If SkSurface
         creation fails releaseProc is called before this function returns.
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
         If SK_SUPPORT_GPU is defined as zero, has no effect and returns nullptr.
+=======
+        If defined(SK_GANESH) is defined as zero, has no effect and returns nullptr.
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
         @param context                  GPU context
         @param backendRenderTarget      GPU intermediate memory buffer
@@ -278,7 +300,11 @@ public:
 
         shouldCreateWithMips hints that SkImage returned by makeImageSnapshot() is mip map.
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
         If SK_SUPPORT_GPU is defined as zero, has no effect and returns nullptr.
+=======
+        If defined(SK_GANESH) is defined as zero, has no effect and returns nullptr.
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
         @param context               GPU context
         @param imageInfo             width, height, SkColorType, SkAlphaType, SkColorSpace;
@@ -323,7 +349,11 @@ public:
                                              const SkImageInfo& imageInfo,
                                              int sampleCount,
                                              const SkSurfaceProps* surfaceProps) {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         return MakeRenderTarget(context, budgeted, imageInfo, sampleCount,
                                 kBottomLeft_GrSurfaceOrigin, surfaceProps);
 #else
@@ -348,7 +378,11 @@ public:
     static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context,
                                              skgpu::Budgeted budgeted,
                                              const SkImageInfo& imageInfo) {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         if (!imageInfo.width() || !imageInfo.height()) {
             return nullptr;
         }
@@ -404,7 +438,7 @@ public:
                                                     );
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     /**
      * In Graphite, while clients hold a ref on an SkSurface, the backing gpu object does _not_
      * count against the budget. Once an SkSurface is freed, the backing gpu object may or may
@@ -436,9 +470,13 @@ public:
                                                            sk_sp<SkColorSpace> colorSpace,
                                                            const SkSurfaceProps* props);
 
-#endif // SK_GRAPHITE_ENABLED
+#endif // SK_GRAPHITE
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU && defined(SK_METAL)
+=======
+#if defined(SK_GANESH) && defined(SK_METAL)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     /** Creates SkSurface from CAMetalLayer.
         Returned SkSurface takes a reference on the CAMetalLayer. The ref on the layer will be
         released when the SkSurface is destroyed.
@@ -572,7 +610,11 @@ public:
      */
     skgpu::graphite::Recorder* recorder();
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     enum BackendHandleAccess {
         kFlushRead_BackendHandleAccess,    //!< back-end object is readable
         kFlushWrite_BackendHandleAccess,   //!< back-end object is writable
@@ -696,7 +738,7 @@ public:
      */
     sk_sp<SkImage> makeImageSnapshot(const SkIRect& bounds);
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     /**
      * The 'asImage' and 'makeImageCopy' API/entry points are currently only available for
      * Graphite.
@@ -998,7 +1040,11 @@ public:
         kPresent,   //!< back-end surface will be used for presenting to screen
     };
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     /** If a surface is GPU texture backed, is being drawn with MSAA, and there is a resolve
         texture, this call will insert a resolve command into the stream of gpu commands. In order
         for the resolve to actually have an effect, the work still needs to be flushed and submitted
@@ -1104,7 +1150,11 @@ public:
     */
     GrSemaphoresSubmitted flush(const GrFlushInfo& info,
                                 const skgpu::MutableTextureState* newState = nullptr);
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
     void flush();
 

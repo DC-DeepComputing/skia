@@ -2054,6 +2054,11 @@ VULKAN_SRCS = [
 ################################################################################
 
 BASE_DEFINES = [
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
+=======
+    # Our legacy G3 rule *always* has the ganesh backend enabled.
+    "SK_GANESH",
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     # Chrome DEFINES.
     "SK_USE_FREETYPE_EMBOLDEN",
     # Turn on a few Google3-specific build fixes.

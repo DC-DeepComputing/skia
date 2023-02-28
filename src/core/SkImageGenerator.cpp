@@ -10,7 +10,11 @@
 #include "include/core/SkImage.h"
 #include "src/core/SkNextID.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrRecordingContext.h"
 #endif
 
@@ -46,7 +50,11 @@ bool SkImageGenerator::getYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
     return this->onGetYUVAPlanes(yuvaPixmaps);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 
 GrSurfaceProxyView SkImageGenerator::generateTexture(GrRecordingContext* ctx,
@@ -68,9 +76,13 @@ GrSurfaceProxyView SkImageGenerator::onGenerateTexture(GrRecordingContext*,
                                                        GrImageTexGenPolicy) {
     return {};
 }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
-#if SK_GRAPHITE_ENABLED
+#if SK_GRAPHITE
 #include "src/gpu/graphite/Image_Graphite.h"
 
 sk_sp<SkImage> SkImageGenerator::makeTextureImage(skgpu::graphite::Recorder* recorder,
@@ -90,7 +102,7 @@ sk_sp<SkImage> SkImageGenerator::onMakeTextureImage(skgpu::graphite::Recorder*,
     return nullptr;
 }
 
-#endif // SK_GRAPHITE_ENABLED
+#endif // SK_GRAPHITE
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 

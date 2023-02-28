@@ -179,7 +179,11 @@ DEF_TEST(SkMultiPictureDocument_Serialize_and_deserialize, reporter) {
 }
 
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU && defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+=======
+#if defined(SK_GANESH) && defined(SK_BUILD_FOR_ANDROID) && __ANDROID_API__ >= 26
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"

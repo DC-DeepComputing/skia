@@ -31,7 +31,11 @@
 
 class SkMatrix;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 struct GrFPArgs;
 #endif
@@ -52,7 +56,11 @@ public:
     bool asABlur(BlurRec*) const override { return false; }
 
 protected:
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(const GrFPArgs&,
                                                                const MatrixRec&) const override;
     bool onHasFragmentProcessor() const override;
@@ -134,7 +142,11 @@ bool SkShaderMF::filterMask(SkMask* dst, const SkMask& src, const SkMatrix& ctm,
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 std::unique_ptr<GrFragmentProcessor>
 SkShaderMF::onAsFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {

@@ -139,7 +139,11 @@ DRAW(DrawRRect, drawRRect(r.rrect, r.paint))
 DRAW(DrawRect, drawRect(r.rect, r.paint))
 DRAW(DrawRegion, drawRegion(r.region, r.paint))
 DRAW(DrawTextBlob, drawTextBlob(r.blob.get(), r.x, r.y, r.paint))
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 DRAW(DrawSlug, drawSlug(r.slug.get()))
 #else
 // Turn draw into a nop.
@@ -487,7 +491,11 @@ private:
         return this->adjustAndMap(dst, &op.paint);
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     Bounds bounds(const DrawSlug& op) const {
         SkRect dst = op.slug->sourceBoundsWithOrigin();
         return this->adjustAndMap(dst, &op.slug->initialPaint());

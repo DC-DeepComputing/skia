@@ -317,7 +317,11 @@ void GrDrawingManager::sortTasks() {
         }));
         SkASSERT(span.end() == fDAG.end() || fDAG[end]->blocksReordering());
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1 && defined(SK_DEBUG)
+=======
+#if defined(SK_GANESH) && defined(SK_DEBUG)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         // In order to partition the dag array like this it must be the case that each partition
         // only depends on nodes in the partition or earlier partitions.
         auto check = [&](const GrRenderTask* task, auto&& check) -> void {

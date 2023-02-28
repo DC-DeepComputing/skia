@@ -23,7 +23,11 @@ public:
     virtual GrRecordingContext* onGetRecordingContext();
     virtual skgpu::graphite::Recorder* onGetRecorder();
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     virtual GrBackendTexture onGetBackendTexture(BackendHandleAccess);
     virtual GrBackendRenderTarget onGetBackendRenderTarget(BackendHandleAccess);
     virtual bool onReplaceBackendTexture(const GrBackendTexture&,
@@ -66,7 +70,7 @@ public:
      */
     virtual sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subset = nullptr) { return nullptr; }
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     virtual sk_sp<SkImage> onAsImage() { return nullptr; }
 
     virtual sk_sp<SkImage> onMakeImageCopy(const SkIRect* /* subset */,

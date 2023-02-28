@@ -57,6 +57,10 @@ if (skia_enable_tools) {
       "../..:tool_utils",
       "../../modules/svg:svg",
     ]
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
+=======
+    defines = [ "SK_GANESH" ]
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
   }
 }
 
@@ -70,6 +74,10 @@ component("debugger") {
     "../../tools/debugger/DrawCommand.cpp",
     "../../tools/debugger/JsonWriteBuffer.cpp",
   ]
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
+=======
+  defines = [ "SK_GANESH" ]
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 }
 
 action("create_notomono_cpp") {
@@ -359,7 +367,11 @@ skia_wasm_lib("canvaskit") {
   }
   if (skia_enable_gpu) {
     defines += [
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
       "SK_SUPPORT_GPU=1",
+=======
+      "SK_GANESH",
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
       "SK_DISABLE_LEGACY_SHADERCONTEXT",
     ]
     if (skia_canvaskit_enable_webgl) {

@@ -32,7 +32,11 @@ namespace sktext::gpu {
 class TextBlobRedrawCoordinator {
 public:
     TextBlobRedrawCoordinator(uint32_t messageBusID);
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     void drawGlyphRunList(SkCanvas* canvas,
                           const GrClip* clip,
                           const SkMatrixProvider& viewMatrix,
@@ -41,7 +45,7 @@ public:
                           SkStrikeDeviceInfo strikeDeviceInfo,
                           skgpu::v1::SurfaceDrawContext* sdc);
 #endif
-#if defined(SK_GRAPHITE_ENABLED)
+#if defined(SK_GRAPHITE)
     void drawGlyphRunList(SkCanvas* canvas,
                           const SkMatrix& viewMatrix,
                           const GlyphRunList& glyphRunList,

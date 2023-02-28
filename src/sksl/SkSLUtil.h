@@ -176,7 +176,11 @@ protected:
     static std::unique_ptr<ShaderCaps> MakeShaderCaps();
 };
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if !defined(SKSL_STANDALONE) && (SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED))
+=======
+#if !defined(SKSL_STANDALONE) && (defined(SK_GANESH) || defined(SK_GRAPHITE))
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 bool type_to_sksltype(const Context& context, const Type& type, SkSLType* outType);
 #endif
 

@@ -36,7 +36,11 @@
 #include <memory>
 #include <utility>
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
@@ -56,7 +60,11 @@ class SkSurfaceProps;
 enum GrSurfaceOrigin : int;
 enum class GrProtected : bool;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 namespace {
 
@@ -75,7 +83,11 @@ protected:
 
     sk_sp<SkSpecialImage> onFilterImage(const Context&, SkIPoint* offset) const override;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrSurfaceProxyView createMaskTexture(GrRecordingContext*,
                                          const SkMatrix&,
                                          const SkIRect& bounds,
@@ -130,7 +142,11 @@ void SkAlphaThresholdImageFilter::flatten(SkWriteBuffer& buffer) const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 GrSurfaceProxyView SkAlphaThresholdImageFilter::createMaskTexture(
         GrRecordingContext* rContext,
         const SkMatrix& inMatrix,
@@ -201,7 +217,11 @@ static std::unique_ptr<GrFragmentProcessor> make_alpha_threshold_fp(
                           "innerThreshold", innerThreshold,
                           "outerThreshold", outerThreshold);
 }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif
+=======
+#endif  // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 sk_sp<SkSpecialImage> SkAlphaThresholdImageFilter::onFilterImage(const Context& ctx,
                                                                  SkIPoint* offset) const {
@@ -219,7 +239,11 @@ sk_sp<SkSpecialImage> SkAlphaThresholdImageFilter::onFilterImage(const Context& 
         return nullptr;
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (ctx.gpuBacked()) {
         auto context = ctx.getContext();
 

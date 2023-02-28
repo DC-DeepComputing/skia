@@ -113,7 +113,11 @@ sk_sp<const SkCapabilities> Surface::onCapabilities() {
     return fDevice->recorder()->priv().caps()->capabilities();
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if GRAPHITE_TEST_UTILS && SK_SUPPORT_GPU
+=======
+#if GRAPHITE_TEST_UTILS && defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 GrSemaphoresSubmitted Surface::onFlush(BackendSurfaceAccess,
                                        const GrFlushInfo&,
                                        const skgpu::MutableTextureState*) {

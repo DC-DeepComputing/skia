@@ -23,7 +23,11 @@
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkYUVPlanesCache.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
@@ -53,7 +57,7 @@
 #include "src/gpu/ganesh/effects/GrYUVtoRGBEffect.h"
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/TextureUtils.h"
 #endif
 
@@ -203,7 +207,11 @@ bool SkImage_Lazy::getROPixels(GrDirectContext* ctx, SkBitmap* bitmap,
 }
 
 bool SkImage_Lazy::readPixelsProxy(GrDirectContext* ctx, const SkPixmap& pixmap) const {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     if (!ctx) {
         return false;
     }
@@ -225,7 +233,11 @@ bool SkImage_Lazy::readPixelsProxy(GrDirectContext* ctx, const SkPixmap& pixmap)
     return sContext->readPixels(ctx, {this->imageInfo(), pixmap.writable_addr(), rowBytes}, {0, 0});
 #else
     return false;
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -264,7 +276,11 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset, GrDirectContext
     // TODO: can we do this more efficiently, by telling the generator we want to
     //       "realize" a subset?
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     auto pixels = direct ? this->makeTextureImage(direct)
                          : this->makeRasterImage();
 #else
@@ -273,7 +289,7 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset, GrDirectContext
     return pixels ? pixels->makeSubset(subset, direct) : nullptr;
 }
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 
 sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset,
                                           skgpu::graphite::Recorder* recorder,
@@ -287,7 +303,7 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset,
     return nonLazyImg ? nonLazyImg->makeSubset(subset, recorder, requiredProperties) : nullptr;
 }
 
-#endif // SK_GRAPHITE_ENABLED
+#endif // SK_GRAPHITE
 
 sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(SkColorType targetCT,
                                                           sk_sp<SkColorSpace> targetCS,
@@ -331,7 +347,11 @@ sk_sp<SkImage> SkImage::MakeFromGenerator(std::unique_ptr<SkImageGenerator> gene
     return validator ? sk_make_sp<SkImage_Lazy>(&validator) : nullptr;
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Lazy::onAsView(
         GrRecordingContext* context,
@@ -619,9 +639,13 @@ GrColorType SkImage_Lazy::colorTypeOfLockTextureProxy(const GrCaps* caps) const 
 void SkImage_Lazy::addUniqueIDListener(sk_sp<SkIDChangeListener> listener) const {
     fUniqueIDListeners.add(std::move(listener));
 }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 
 /*
  *  We only have 2 ways to create a Graphite-backed image.

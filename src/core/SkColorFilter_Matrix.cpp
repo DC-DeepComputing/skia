@@ -18,10 +18,10 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
-#endif // SK_GRAPHITE_ENABLED
+#endif // SK_GRAPHITE
 
 static bool is_alpha_unchanged(const float matrix[20]) {
     const float* srcA = matrix + 15;
@@ -43,13 +43,17 @@ public:
 
     bool onIsAlphaUnchanged() const override { return fAlphaIsUnchanged; }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                    GrRecordingContext*,
                                    const GrColorInfo&,
                                    const SkSurfaceProps&) const override;
 #endif
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
                   skgpu::graphite::PaintParamsKeyBuilder*,
                   skgpu::graphite::PipelineDataGatherer*) const override;
@@ -159,7 +163,11 @@ skvm::Color SkColorFilter_Matrix::onProgram(skvm::Builder* p, skvm::Color c,
     return premul(clamp01(c));
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 
 static std::unique_ptr<GrFragmentProcessor> rgb_to_hsl(std::unique_ptr<GrFragmentProcessor> child) {
@@ -209,9 +217,13 @@ GrFPResult SkColorFilter_Matrix::asFragmentProcessor(std::unique_ptr<GrFragmentP
     return GrFPSuccess(std::move(fp));
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_SUPPORT_GPU
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 void SkColorFilter_Matrix::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                     skgpu::graphite::PaintParamsKeyBuilder* builder,
                                     skgpu::graphite::PipelineDataGatherer* gatherer) const {
@@ -223,7 +235,7 @@ void SkColorFilter_Matrix::addToKey(const skgpu::graphite::KeyContext& keyContex
     MatrixColorFilterBlock::BeginBlock(keyContext, builder, gatherer, &matrixCFData);
     builder->endBlock();
 }
-#endif // SK_GRAPHITE_ENABLED
+#endif // SK_GRAPHITE
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -18,10 +18,14 @@
 
 namespace SkSL {
 
-// TODO: Once Graphite has its own GPU-caps system, SK_GRAPHITE_ENABLED should get its own mode.
+// TODO: Once Graphite has its own GPU-caps system, SK_GRAPHITE should get its own mode.
 // At the moment, it either mimics what GrShaderCaps reports, or it uses these hard-coded values
 // depending on the build.
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if defined(SKSL_STANDALONE) || !SK_SUPPORT_GPU
+=======
+#if defined(SKSL_STANDALONE) || !defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 std::unique_ptr<ShaderCaps> ShaderCapsFactory::MakeShaderCaps() {
     std::unique_ptr<ShaderCaps> standalone = std::make_unique<ShaderCaps>();
     standalone->fShaderDerivativeSupport = true;
@@ -36,13 +40,21 @@ std::unique_ptr<ShaderCaps> ShaderCapsFactory::MakeShaderCaps() {
 std::unique_ptr<ShaderCaps> ShaderCapsFactory::MakeShaderCaps() {
     return std::make_unique<ShaderCaps>();
 }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif  // defined(SKSL_STANDALONE) || !SK_SUPPORT_GPU
+=======
+#endif  // defined(SKSL_STANDALONE) || !defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 void write_stringstream(const StringStream& s, OutputStream& out) {
     out.write(s.str().c_str(), s.str().size());
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if !defined(SKSL_STANDALONE) && (SK_SUPPORT_GPU || SK_SUPPORT_GRAPHITE)
+=======
+#if !defined(SKSL_STANDALONE) && (defined(SK_GANESH) || SK_SUPPORT_GRAPHITE)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 bool type_to_sksltype(const Context& context, const Type& type, SkSLType* outType) {
     // If a new GrSL type is added, this function will need to be updated.
     static_assert(kSkSLTypeCount == 41);

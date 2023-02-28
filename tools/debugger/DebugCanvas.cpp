@@ -44,7 +44,11 @@ class SkRegion;
 class UrlDataManager;
 struct SkDrawShadowRec;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrAuditTrail.h"
 #endif
 
@@ -163,7 +167,11 @@ void DebugCanvas::drawTo(SkCanvas* originalCanvas, int index, int m) {
     DebugPaintFilterCanvas filterCanvas(originalCanvas);
     SkCanvas* finalCanvas = fOverdrawViz ? &filterCanvas : originalCanvas;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     auto dContext = GrAsDirectContext(finalCanvas->recordingContext());
 
     // If we have a GPU backend we can also visualize the op information
@@ -175,7 +183,11 @@ void DebugCanvas::drawTo(SkCanvas* originalCanvas, int index, int m) {
 #endif
 
     for (int i = 0; i <= index; i++) {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         GrAuditTrail::AutoCollectOps* acb = nullptr;
         if (at) {
             // We need to flush any pending operations, or they might combine with commands below.
@@ -190,7 +202,11 @@ void DebugCanvas::drawTo(SkCanvas* originalCanvas, int index, int m) {
         if (fCommandVector[i]->isVisible()) {
             fCommandVector[i]->execute(finalCanvas);
         }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         if (at && acb) {
             delete acb;
         }
@@ -224,7 +240,11 @@ void DebugCanvas::drawTo(SkCanvas* originalCanvas, int index, int m) {
         finalCanvas->drawRect(fAndroidClip, androidClipPaint);
     }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     // draw any ops if required and issue a full reset onto GrAuditTrail
     if (at) {
         // just in case there is global reordering, we flush the canvas before querying
@@ -292,7 +312,11 @@ DrawCommand* DebugCanvas::getDrawCommandAt(int index) const {
     return fCommandVector[index];
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 GrAuditTrail* DebugCanvas::getAuditTrail(SkCanvas* canvas) {
     GrAuditTrail* at  = nullptr;
     auto ctx = canvas->recordingContext();
@@ -330,12 +354,20 @@ void DebugCanvas::cleanupAuditTrail(GrAuditTrail* at) {
         at->fullReset();
     }
 }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif // SK_GPU_V1
+=======
+#endif // defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 void DebugCanvas::toJSON(SkJSONWriter&   writer,
                          UrlDataManager& urlDataManager,
                          SkCanvas*       canvas) {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     this->drawAndCollectOps(canvas);
 
     // now collect json
@@ -348,7 +380,11 @@ void DebugCanvas::toJSON(SkJSONWriter&   writer,
         writer.beginObject();  // command
         this->getDrawCommandAt(i)->toJSON(writer, urlDataManager);
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         if (at) {
             writer.appendName(SKDEBUGCANVAS_ATTRIBUTE_AUDITTRAIL);
             at->toJson(writer, i);
@@ -358,13 +394,21 @@ void DebugCanvas::toJSON(SkJSONWriter&   writer,
     }
 
     writer.endArray();  // commands
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     this->cleanupAuditTrail(at);
 #endif
 }
 
 void DebugCanvas::toJSONOpsTask(SkJSONWriter& writer, SkCanvas* canvas) {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     this->drawAndCollectOps(canvas);
 
     GrAuditTrail* at = this->getAuditTrail(canvas);

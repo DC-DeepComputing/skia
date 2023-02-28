@@ -59,7 +59,11 @@ public:
 
     TextureProxyView readSurfaceView() const;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if GRAPHITE_TEST_UTILS && SK_SUPPORT_GPU
+=======
+#if GRAPHITE_TEST_UTILS && defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     // TODO: The long-term for the public API around surfaces and flushing/submitting will likely
     // be replaced with explicit control over Recorders and submitting Recordings to the Context
     // directly. For now, internal tools often rely on surface/canvas flushing to control what's

@@ -15,12 +15,16 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/SkColorFilterShader.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrFPArgs.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #endif
@@ -94,7 +98,11 @@ skvm::Color SkColorFilterShader::program(skvm::Builder* p,
     return fFilter->program(p,c, dst, uniforms,alloc);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 /////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<GrFragmentProcessor>
@@ -117,7 +125,7 @@ SkColorFilterShader::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
 
 void SkColorFilterShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                    skgpu::graphite::PaintParamsKeyBuilder* builder,

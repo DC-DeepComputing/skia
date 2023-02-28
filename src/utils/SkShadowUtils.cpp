@@ -38,7 +38,11 @@
 #include "src/utils/SkShadowTessellator.h"
 #endif
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrStyle.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 #endif
@@ -347,14 +351,22 @@ public:
     ShadowedPath(const SkPath* path, const SkMatrix* viewMatrix)
             : fPath(path)
             , fViewMatrix(viewMatrix)
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
             , fShapeForKey(*path, GrStyle::SimpleFill())
 #endif
     {}
 
     const SkPath& path() const { return *fPath; }
     const SkMatrix& viewMatrix() const { return *fViewMatrix; }
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     /** Negative means the vertices should not be cached for this path. */
     int keyBytes() const { return fShapeForKey.unstyledKeySize() * sizeof(uint32_t); }
     void writeKey(void* key) const {
@@ -370,7 +382,11 @@ public:
 private:
     const SkPath* fPath;
     const SkMatrix* fViewMatrix;
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     GrStyledShape fShapeForKey;
 #endif
 };

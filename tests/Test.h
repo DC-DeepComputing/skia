@@ -15,7 +15,11 @@
 #include "tests/CtsEnforcement.h"
 #include "tools/Registry.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "tools/gpu/GrContextFactory.h" // IWYU pragma: export (because it is used by a macro)
 #else
 namespace sk_gpu_test { class ContextInfo; }
@@ -174,7 +178,11 @@ private:
 
 using TestRegistry = sk_tools::Registry<Test>;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 using GrContextFactoryContextType = sk_gpu_test::GrContextFactory::ContextType;
 #else
 using GrContextFactoryContextType = nullptr_t;

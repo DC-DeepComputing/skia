@@ -17,6 +17,12 @@
 #include <tuple>
 
 class SkData;
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
+=======
+#if defined(SK_GRAPHITE)
+namespace skgpu::graphite { class Recorder; }
+#endif
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 namespace sk_gpu_test {
 
@@ -49,6 +55,12 @@ public:
     SkISize dimensions() const { return fPixmaps.yuvaInfo().dimensions(); }
 
     sk_sp<SkImage> refImage(GrRecordingContext* rContext, Type);
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
+=======
+#if defined(SK_GRAPHITE)
+    sk_sp<SkImage> refImage(skgpu::graphite::Recorder* recorder, Type);
+#endif
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 private:
     // Decoded YUV data
@@ -67,6 +79,12 @@ private:
     bool reset(SkYUVAPixmaps pixmaps, GrMipmapped, sk_sp<SkColorSpace>);
 
     bool ensureYUVImage(GrRecordingContext* rContext, Type type);
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
+=======
+#if defined(SK_GRAPHITE)
+    bool ensureYUVImage(skgpu::graphite::Recorder* recorder, Type type);
+#endif
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 };
 
 } // namespace sk_gpu_test

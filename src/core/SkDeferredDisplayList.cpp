@@ -15,7 +15,11 @@
 
 class SkSurfaceCharacterization;
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrRenderTargetProxy.h"
 #include "src/gpu/ganesh/GrRenderTask.h"
@@ -25,19 +29,31 @@ SkDeferredDisplayList::SkDeferredDisplayList(const SkSurfaceCharacterization& ch
                                              sk_sp<GrRenderTargetProxy> targetProxy,
                                              sk_sp<LazyProxyData> lazyProxyData)
         : fCharacterization(characterization)
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         , fArenas(true)
         , fTargetProxy(std::move(targetProxy))
         , fLazyProxyData(std::move(lazyProxyData))
 #endif
 {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     SkASSERT(fTargetProxy->isDDLTarget());
 #endif
 }
 
 SkDeferredDisplayList::~SkDeferredDisplayList() {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU && defined(SK_DEBUG)
+=======
+#if defined(SK_GANESH) && defined(SK_DEBUG)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     for (auto& renderTask : fRenderTasks) {
         SkASSERT(renderTask->unique());
     }
@@ -45,7 +61,11 @@ SkDeferredDisplayList::~SkDeferredDisplayList() {
 }
 
 //-------------------------------------------------------------------------------------------------
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 SkDeferredDisplayList::ProgramIterator::ProgramIterator(GrDirectContext* dContext,
                                                         SkDeferredDisplayList* ddl)

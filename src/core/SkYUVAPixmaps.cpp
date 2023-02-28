@@ -11,13 +11,21 @@
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkYUVAInfoLocation.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #endif
 
 
 SkYUVAPixmapInfo::SupportedDataTypes::SupportedDataTypes(const GrImageContext& context) {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     for (int n = 1; n <= 4; ++n) {
         if (context.defaultBackendFormat(DefaultColorTypeForDataType(DataType::kUnorm8, n),
                                          GrRenderable::kNo).isValid()) {

@@ -31,7 +31,11 @@ class GlyphRunList;
     }
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU  // Ganesh support
+=======
+#if defined(SK_GANESH)  // Ganesh support
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrColor.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 class GrAtlasManager;
@@ -119,7 +123,11 @@ public:
     const Key& key() const;
     size_t size() const { return SkTo<size_t>(fSize); }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     void draw(SkCanvas*,
               const GrClip* clip,
               const SkMatrixProvider& viewMatrix,
@@ -127,7 +135,7 @@ public:
               const SkPaint& paint,
               skgpu::v1::SurfaceDrawContext* sdc);
 #endif
-#if defined(SK_GRAPHITE_ENABLED)
+#if defined(SK_GRAPHITE)
     void draw(SkCanvas*,
               SkPoint drawOrigin,
               const SkPaint& paint,

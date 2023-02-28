@@ -16,7 +16,11 @@
 #include "src/base/SkUTF.h"
 #include "tools/viewer/Slide.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 
@@ -69,7 +73,11 @@ public:
 
         canvas->save();
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         auto direct = GrAsDirectContext(canvas->recordingContext());
         if (direct) {
             SkSamplingOptions sampling(SkFilterMode::kLinear, SkMipmapMode::kNearest);

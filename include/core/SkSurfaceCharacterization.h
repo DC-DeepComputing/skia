@@ -17,7 +17,11 @@
 class SkColorSpace;
 
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextThreadSafeProxy.h"
 #include "include/gpu/GrTypes.h"
@@ -210,7 +214,11 @@ private:
     SkSurfaceProps                  fSurfaceProps;
 };
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #else// !SK_SUPPORT_GPU
+=======
+#else// !defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 class GrBackendFormat;
 
 class SK_API SkSurfaceCharacterization {

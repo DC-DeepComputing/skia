@@ -19,7 +19,11 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrFPArgs.h"
@@ -89,7 +93,11 @@ public:
                 this->stitch();
             }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
     #if SK_SUPPORT_GPU
+=======
+    #if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
             SkImageInfo info = SkImageInfo::MakeA8(kBlockSize, 1);
             fPermutationsBitmap.installPixels(info, fLatticeSelector, info.minRowBytes());
             fPermutationsBitmap.setImmutable();
@@ -100,7 +108,11 @@ public:
     #endif
         }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
     #if SK_SUPPORT_GPU
+=======
+    #if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         PaintingData(const PaintingData& that)
                 : fSeed(that.fSeed)
                 , fTileSize(that.fTileSize)
@@ -124,7 +136,11 @@ public:
 
     private:
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
     #if SK_SUPPORT_GPU
+=======
+    #if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         SkBitmap fPermutationsBitmap;
         SkBitmap fNoiseBitmap;
     #endif
@@ -252,7 +268,11 @@ public:
 
     public:
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         const SkBitmap& getPermutationsBitmap() const { return fPermutationsBitmap; }
 
         const SkBitmap& getNoiseBitmap() const { return fNoiseBitmap; }
@@ -300,7 +320,11 @@ public:
         using INHERITED = Context;
     };
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
                                                              const MatrixRec&) const override;
 #endif
@@ -573,7 +597,11 @@ void SkPerlinNoiseShaderImpl::PerlinNoiseShaderContext::shadeSpan(
 
 /////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 class GrPerlinNoise2Effect : public GrFragmentProcessor {
 public:

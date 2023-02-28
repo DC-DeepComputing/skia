@@ -350,7 +350,11 @@ protected:
                                     const SkPaint& drawingPaint) = 0;
 
     // Slug handling routines.
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if (SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED))
+=======
+#if (defined(SK_GANESH) || defined(SK_GRAPHITE))
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     virtual sk_sp<sktext::gpu::Slug> convertGlyphRunListToSlug(
             const sktext::GlyphRunList& glyphRunList,
             const SkPaint& initialPaint,
@@ -576,7 +580,11 @@ protected:
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override {}
 #endif
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
     void drawSlug(SkCanvas*, const sktext::gpu::Slug*, const SkPaint&) override {}
 #endif
 

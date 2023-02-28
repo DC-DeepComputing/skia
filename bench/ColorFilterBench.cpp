@@ -200,7 +200,11 @@ DEF_BENCH( return new ColorFilterBench("gaussian", []() {
     return SkColorFilterPriv::MakeGaussian();
 }); )
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 DEF_BENCH( return new ColorFilterBench("src_runtime", []() {
         static sk_sp<SkRuntimeEffect> gEffect =
                 SkRuntimeEffect::MakeForColorFilter(SkString(RuntimeNone_GPU_SRC)).effect;

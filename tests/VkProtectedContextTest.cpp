@@ -9,7 +9,11 @@
 
 #include "include/core/SkTypes.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU && defined(SK_VULKAN)
+=======
+#if defined(SK_GANESH) && defined(SK_VULKAN)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
@@ -360,4 +364,8 @@ DEF_GANESH_TEST(VkProtectedContext_DrawProtectedImageOnProtectedSurface,
     canvas->drawImage(image, 0, 0);
 }
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #endif  // SK_SUPPORT_GPU && defined(SK_VULKAN)
+=======
+#endif  // defined(SK_GANESH) && defined(SK_VULKAN)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)

@@ -55,7 +55,11 @@
 #include "tools/viewer/SlideDir.h"
 #include "tools/viewer/SvgSlide.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/ops/AtlasPathRenderer.h"
 #include "src/gpu/ganesh/ops/TessellationPathRenderer.h"
 #endif
@@ -201,7 +205,7 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
 #endif
 #ifdef SK_DAWN
         case sk_app::Window::kDawn_BackendType: return "Dawn";
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
         case sk_app::Window::kGraphiteDawn_BackendType: return "Dawn (Graphite)";
 #endif
 #endif
@@ -210,7 +214,7 @@ const char* get_backend_string(sk_app::Window::BackendType type) {
 #endif
 #ifdef SK_METAL
         case sk_app::Window::kMetal_BackendType: return "Metal";
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
         case sk_app::Window::kGraphiteMetal_BackendType: return "Metal (Graphite)";
 #endif
 #endif
@@ -228,7 +232,7 @@ static sk_app::Window::BackendType get_backend_type(const char* str) {
     if (0 == strcmp(str, "dawn")) {
         return sk_app::Window::kDawn_BackendType;
     } else
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     if (0 == strcmp(str, "grdawn")) {
         return sk_app::Window::kGraphiteDawn_BackendType;
     } else
@@ -248,7 +252,7 @@ static sk_app::Window::BackendType get_backend_type(const char* str) {
     if (0 == strcmp(str, "mtl")) {
         return sk_app::Window::kMetal_BackendType;
     } else
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     if (0 == strcmp(str, "grmtl")) {
         return sk_app::Window::kGraphiteMetal_BackendType;
     } else
@@ -1952,7 +1956,7 @@ void Viewer::drawImGui() {
 #if defined(SK_METAL)
                 ImGui::SameLine();
                 ImGui::RadioButton("Metal", &newBackend, sk_app::Window::kMetal_BackendType);
-#if defined(SK_GRAPHITE_ENABLED)
+#if defined(SK_GRAPHITE)
                 ImGui::SameLine();
                 ImGui::RadioButton("Metal (Graphite)", &newBackend,
                                    sk_app::Window::kGraphiteMetal_BackendType);
@@ -2055,7 +2059,11 @@ void Viewer::drawImGui() {
                         ImGui::RadioButton("Software", true);
                     } else {
                         prButton(GpuPathRenderers::kDefault);
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
                         if (fWindow->sampleCount() > 1 || FLAGS_dmsaa) {
                             const auto* caps = ctx->priv().caps();
                             if (skgpu::v1::AtlasPathRenderer::IsSupported(ctx)) {
@@ -3015,7 +3023,11 @@ void Viewer::updateUIState() {
                 writer.appendNString("Software");
             } else {
                 writer.appendString(gPathRendererNames[GpuPathRenderers::kDefault]);
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_GPU_V1
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
                 if (fWindow->sampleCount() > 1 || FLAGS_dmsaa) {
                     const auto* caps = ctx->priv().caps();
                     if (skgpu::v1::AtlasPathRenderer::IsSupported(ctx)) {

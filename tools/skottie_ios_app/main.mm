@@ -24,9 +24,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     if (![self skiaContext]) {
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
         #if (SK_SUPPORT_GPU && defined(SK_METAL) && !defined(SK_BUILD_FOR_GOOGLE3))
+=======
+        #if (defined(SK_GANESH) && defined(SK_METAL) && !defined(SK_BUILD_FOR_GOOGLE3))
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         [self setSkiaContext:MakeSkiaMetalContext()];
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
         #elif (SK_SUPPORT_GPU && defined(SK_GL) && !defined(SK_BUILD_FOR_GOOGLE3))
+=======
+        #elif (defined(SK_GANESH) && defined(SK_GL) && !defined(SK_BUILD_FOR_GOOGLE3))
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
         [self setSkiaContext:MakeSkiaGLContext()];
         #else
         [self setSkiaContext:MakeSkiaUIContext()];

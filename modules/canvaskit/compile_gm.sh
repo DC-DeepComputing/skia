@@ -48,7 +48,11 @@ rm -f $BUILD_DIR/*.a
 
 GN_GPU="skia_enable_gpu=true skia_gl_standard = \"webgl\""
 GN_GPU_FLAGS="\"-DSK_DISABLE_LEGACY_SHADERCONTEXT\","
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 WASM_GPU="-lGL -DSK_SUPPORT_GPU=1 -DSK_GL -DCK_ENABLE_WEBGL \
+=======
+WASM_GPU="-lGL -DSK_GANESH -DSK_GL -DCK_ENABLE_WEBGL \
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
           -DSK_DISABLE_LEGACY_SHADERCONTEXT --pre-js $BASE_DIR/cpu.js --pre-js $BASE_DIR/webgl.js\
           -sUSE_WEBGL2=1"
 

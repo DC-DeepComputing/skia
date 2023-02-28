@@ -5,7 +5,11 @@
 
 #include "include/core/SkTypes.h"
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"

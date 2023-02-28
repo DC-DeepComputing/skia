@@ -32,7 +32,11 @@ void SkBlendMode_AppendStages(SkBlendMode, SkRasterPipeline*);
 
 SkPMColor4f SkBlendMode_Apply(SkBlendMode, const SkPMColor4f& src, const SkPMColor4f& dst);
 
+<<<<<<< HEAD   (86f93b Enforce IWYU on SkPicture-related files)
 #if SK_SUPPORT_GPU
+=======
+#if defined(SK_GANESH)
+>>>>>>> CHANGE (0f7b44 Use SK_GANESH and SK_GRAPHITE everywhere)
 #include "src/gpu/ganesh/GrXferProcessor.h"
 const GrXPFactory* SkBlendMode_AsXPFactory(SkBlendMode);
 #endif
