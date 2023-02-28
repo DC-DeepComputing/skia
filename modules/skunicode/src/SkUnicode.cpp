@@ -23,6 +23,16 @@ std::unique_ptr<SkUnicode> SkUnicode::Make() {
     return nullptr;
 }
 
+std::unique_ptr<SkUnicode> MakeIcu4xBasedUnicode() {
+#ifdef SK_UNICODE_ICU4X_IMPLEMENTATION
+    std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeIcu4xBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
+    return nullptr;
+}
+
 std::unique_ptr<SkUnicode> MakeClientBasedUnicode(
         SkSpan<char> text,
         std::vector<SkUnicode::Position> words,
