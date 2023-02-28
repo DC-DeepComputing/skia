@@ -21,7 +21,7 @@ public:
 
     SkUnicode_test(SkSpan<char> text) {
 
-        auto icu = SkUnicode::MakeIcuBasedUnicode();
+        auto icu = SkUnicode::Make();
 
         std::vector<SkUnicode::Position> words;
         icu->getWords(text.data(), text.size(), nullptr, &words);
@@ -85,6 +85,10 @@ public:
 
     bool getWords(const char utf8[], int utf8Units, const char* locale, std::vector<Position>* results) override {
         return fClient->getWords(utf8, utf8Units, locale, results);
+    }
+
+    bool isBreakingWhitespace(SkUnichar unichar) const override {
+        return fClient->isBreakingWhitespace(unichar);
     }
 
     SkString toUpper(const SkString& str) override {
