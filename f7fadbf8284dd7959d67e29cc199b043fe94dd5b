@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bef1bd7a_4b7d78ab",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-28T16:18:28Z",
+      "side": 1,
+      "message": "Super minor micro-optimization:\n\n```\nif (oct \u003c\u003d 1.0) { break; }\noct -\u003d 1.0;\n```",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 0
+      },
+      "revId": "f7fadbf8284dd7959d67e29cc199b043fe94dd5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
