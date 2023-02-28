@@ -2297,6 +2297,7 @@ if (skia_enable_tools) {
       "modules/skshaper",
       "modules/skshaper:tests",
       "modules/svg:tests",
+      "modules/skunicode:tests",
       "//third_party/libpng",
       "//third_party/libwebp",
       "//third_party/zlib",

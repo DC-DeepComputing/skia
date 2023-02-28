@@ -1,0 +1,30 @@
+# Copyright 2023 Google Inc.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+import("../third_party.gni")
+
+declare_args() {
+  skia_use_system_icu4x = is_official_build && !is_wasm
+}
+
+if (skia_use_system_icu4x) {
+  system("icu4x") {
+    libs = [ "icu_capi_staticlib" ]
+  }
+} else {
+  third_party("headers") {
+    public_include_dirs = ["../externals/icu4x/ffi/diplomat/cpp/include"]
+  }
+
+  config("library_config") {
+        libs = [ "./out/debug/libicu_capi_staticlib.a" ]
+  }
+
+  group("icu4x") {
+    public_configs = [ ":library_config" ]
+    public_deps = [
+      ":headers",
+    ]
+  }
+}

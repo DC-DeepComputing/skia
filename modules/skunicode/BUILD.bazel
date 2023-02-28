@@ -9,12 +9,15 @@ skia_cc_library(
     srcs = [
       "//modules/skunicode/src:srcs",
       "//modules/skunicode/src:icu_srcs",
+      "//modules/skunicode/src:icu_bidi_srcs",
       ],
     hdrs = ["//modules/skunicode/include:hdrs"],
-    defines = [
-      "SK_UNICODE_AVAILABLE",
-      "SK_UNICODE_ICU_IMPLEMENTATION",
-    ],
+    defines = [ "SK_UNICODE_AVAILABLE" ] + select({
+        "//modules/skunicode:skia_use_icu": ["SK_UNICODE_ICU_IMPLEMENTATION"],
+        "//modules/skunicode:skia_use_icu4x": ["SK_UNICODE_ICU4X_IMPLEMENTATION"],
+        "//modules/skunicode:skia_use_client_icu": ["SK_UNICODE_CLIENT_IMPLEMENTATION"],
+        "//conditions:default": [],
+    }),
     visibility = ["//:__subpackages__"],
     deps = [
         "//:skia_internal",
