@@ -428,12 +428,21 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{"//modules/skunicode/src:icu_bidi_srcs"}},
 		{Var: "skia_unicode_icu_sources",
 			Rules: []string{"//modules/skunicode/src:icu_srcs"}},
+		{Var: "skia_unicode_icu4x_sources",
+			Rules: []string{"//modules/skunicode/src:icu4x_srcs"}},
 		{Var: "skia_unicode_client_icu_sources",
 			Rules: []string{"//modules/skunicode/src:client_srcs"}},
 		{Var: "skia_unicode_builtin_icu_sources",
 			Rules: []string{"//modules/skunicode/src:builtin_srcs"}},
 		{Var: "skia_unicode_runtime_icu_sources",
 			Rules: []string{"//modules/skunicode/src:runtime_srcs"}},
+<<<<<<< PATCH SET (a5fb46 Adding ICU4X implementation for SkUnicode)
+		{Var: "skia_unicode_icu4x_tests",
+			Rules: []string{"//modules/skunicode/tests:icu4x_tests"}},
+		{Var: "skia_unicode_client_tests",
+			Rules: []string{"//modules/skunicode/tests:client_tests"}},
+=======
+>>>>>>> BASE      (0b88c0 Adding SkUnicode tests (for ICU implementation))
 		{Var: "skia_unicode_icu_tests",
 			Rules: []string{"//modules/skunicode/tests:icu_tests"}},
 		{Var: "skia_unicode_tests",

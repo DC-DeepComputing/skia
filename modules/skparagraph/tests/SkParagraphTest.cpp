@@ -198,7 +198,6 @@ private:
     SkCanvas* canvas;
     const char* name;
 };
-
 }  // namespace
 
 UNIX_ONLY_TEST(SkParagraph_SimpleParagraph, reporter) {
