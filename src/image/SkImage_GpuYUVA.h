@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "src/gpu/ganesh/GrYUVATextureProxies.h"
+#include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_GpuBase.h"
 
 #include <cstddef>
@@ -53,7 +54,7 @@ public:
 
     GrSemaphoresSubmitted onFlush(GrDirectContext*, const GrFlushInfo&) const override;
 
-    bool isGaneshBacked() const override { return true; }
+    ImageType type() const override { return ImageType::kGanesh; }
 
     size_t onTextureSize() const override;
 
@@ -73,7 +74,7 @@ private:
 
     std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
                                                          skgpu::Mipmapped,
-                                                         GrImageTexGenPolicy) const override;
+                                                         GrImageTexGenPolicy) const; // FIXME(kjlubick)
 
     std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,
                                                                SkSamplingOptions,

@@ -40,6 +40,7 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
+#include "src/gpu/ganesh/GrImageUtils.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrSamplerState.h"
@@ -324,13 +325,6 @@ sk_sp<SkImage> SkImage_Lazy::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) 
     return nullptr;
 }
 
-sk_sp<SkImage> SkImage::MakeFromGenerator(std::unique_ptr<SkImageGenerator> generator) {
-    SkImage_Lazy::Validator
-            validator(SharedGenerator::Make(std::move(generator)), nullptr, nullptr);
-
-    return validator ? sk_make_sp<SkImage_Lazy>(&validator) : nullptr;
-}
-
 #if SK_SUPPORT_GPU
 
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Lazy::onAsView(
@@ -351,8 +345,9 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Lazy::onAsFragmentProcessor(
     // TODO: If the CPU data is extracted as planes return a FP that reconstructs the image from
     // the planes.
     auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
+
     return MakeFragmentProcessorFromView(rContext,
-                                         std::get<0>(this->asView(rContext, mm)),
+                                         std::get<0>(skgpu::ganesh::AsView(rContext, this, mm)),
                                          this->alphaType(),
                                          sampling,
                                          tileModes,
@@ -688,3 +683,14 @@ sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(
 }
 
 #endif
+
+namespace sk_image_factory {
+
+sk_sp<SkImage> MakeFromGenerator(std::unique_ptr<SkImageGenerator> generator) {
+    SkImage_Lazy::Validator
+            validator(SharedGenerator::Make(std::move(generator)), nullptr, nullptr);
+
+    return validator ? sk_make_sp<SkImage_Lazy>(&validator) : nullptr;
+}
+
+}

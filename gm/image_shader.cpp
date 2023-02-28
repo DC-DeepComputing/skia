@@ -70,8 +70,8 @@ static sk_sp<SkImage> make_texture(GrRecordingContext* ctx,
 static sk_sp<SkImage> make_pict_gen(GrRecordingContext*,
                                     SkPicture* pic,
                                     const SkImageInfo& info) {
-    return SkImage::MakeFromPicture(sk_ref_sp(pic), info.dimensions(), nullptr, nullptr,
-                                    SkImage::BitDepth::kU8,
+    return sk_image_factory::MakeFromPicture(sk_ref_sp(pic), info.dimensions(), nullptr, nullptr,
+                                    sk_image_factory::BitDepth::kU8,
                                     SkColorSpace::MakeSRGB());
 }
 
@@ -86,7 +86,7 @@ static sk_sp<SkImage> make_encode_gen(GrRecordingContext* ctx,
     if (!encoded) {
         return nullptr;
     }
-    return SkImage::MakeFromEncoded(std::move(encoded));
+    return sk_image_factory::MakeFromEncoded(std::move(encoded));
 }
 
 const ImageMakerProc gProcs[] = {

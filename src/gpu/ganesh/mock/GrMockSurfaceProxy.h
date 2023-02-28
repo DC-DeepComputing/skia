@@ -14,7 +14,7 @@ class GrMockSurfaceProxy : public GrSurfaceProxy {
 public:
     GrMockSurfaceProxy(SkString name, std::string_view label)
             : GrSurfaceProxy(GrBackendFormat::MakeMock(GrColorType::kRGBA_8888,
-                                                       SkImage::CompressionType::kNone),
+                                                       sk_image_factory::CompressionType::kNone),
                              SkISize::Make(1, 1),
                              SkBackingFit::kExact,
                              skgpu::Budgeted::kNo,

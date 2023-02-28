@@ -522,7 +522,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createCompressedTextureProxy(
         skgpu::Budgeted budgeted,
         GrMipmapped mipmapped,
         GrProtected isProtected,
-        SkImage::CompressionType compressionType,
+        sk_image_factory::CompressionType compressionType,
         sk_sp<SkData> data) {
     ASSERT_SINGLE_OWNER
     if (this->isAbandoned()) {

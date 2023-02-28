@@ -53,6 +53,7 @@
 #include "include/effects/SkPerlinNoiseShader.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/effects/SkTrimPathEffect.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/SkShadowFlags.h"
 #include "include/utils/SkParsePath.h"
 #include "include/utils/SkShadowUtils.h"
@@ -836,7 +837,7 @@ struct TextureReleaseContext {
     uint32_t texHandle;
 };
 
-void deleteJSTexture(SkImage::ReleaseContext rc) {
+void deleteJSTexture(sk_image_factory::ReleaseContext rc) {
     auto ctx = reinterpret_cast<TextureReleaseContext*>(rc);
     textureCleanup.call<void>("deleteTexture", ctx->webglHandle, ctx->texHandle);
     delete ctx;
@@ -912,7 +913,7 @@ private:
 // surface/WebGLContext that the image is used on (we cannot share WebGLTextures across contexts).
 sk_sp<SkImage> MakeImageFromGenerator(SimpleImageInfo ii, JSObject callbackObj) {
     auto gen = std::make_unique<WebGLTextureImageGenerator>(toSkImageInfo(ii), callbackObj);
-    return SkImage::MakeFromGenerator(std::move(gen));
+    return sk_image_factory::MakeFromGenerator(std::move(gen));
 }
 #endif // CK_ENABLE_WEBGL
 
@@ -955,7 +956,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                                   size_t length)->sk_sp<SkImage> {
         uint8_t* imgData = reinterpret_cast<uint8_t*>(iptr);
         sk_sp<SkData> bytes = SkData::MakeFromMalloc(imgData, length);
-        return SkImage::MakeFromEncoded(std::move(bytes));
+        return sk_image_factory::MakeFromEncoded(std::move(bytes));
     }), allow_raw_pointers());
 
     // These won't be called directly, there are corresponding JS helpers to deal with arrays.
@@ -966,7 +967,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
         SkImageInfo info = toSkImageInfo(ii);
         sk_sp<SkData> pixelData = SkData::MakeFromMalloc(pixels, plen);
 
-        return SkImage::MakeRasterData(info, pixelData, rowBytes);
+        return sk_image_factory::MakeRasterData(info, pixelData, rowBytes);
     }), allow_raw_pointers());
 
     function("_getShadowLocalBounds", optional_override([](
@@ -2145,7 +2146,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             GrBackendTexture gbt(ii.width, ii.height, GrMipmapped::kNo, gti);
             auto dContext = GrAsDirectContext(self.getCanvas()->recordingContext());
 
-            return SkImage::MakeFromTexture(
+            return sk_image_factory::MakeFromTexture(
                              dContext,
                              gbt,
                              GrSurfaceOrigin::kTopLeft_GrSurfaceOrigin,

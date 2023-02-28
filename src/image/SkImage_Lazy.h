@@ -84,7 +84,7 @@ public:
                                                 RequiredImageProperties) const override;
 #endif
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
-    bool onIsLazyGenerated() const override { return true; }
+    ImageType type() const override { return ImageType::kLazy; }
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
                                                 GrDirectContext*) const override;
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const final;
@@ -111,7 +111,7 @@ private:
 #if SK_SUPPORT_GPU
     std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
                                                          skgpu::Mipmapped,
-                                                         GrImageTexGenPolicy) const override;
+                                                         GrImageTexGenPolicy) const; // FIXME(kjlubick)
     std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,
                                                                SkSamplingOptions,
                                                                const SkTileMode[2],

@@ -28,6 +28,7 @@ sk_sp<SkDeferredDisplayList> SkDeferredDisplayListRecorder::detach() { return nu
 #include "include/core/SkPromiseImageTexture.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrYUVABackendTextures.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
@@ -226,7 +227,7 @@ sk_sp<SkImage> SkDeferredDisplayListRecorder::makePromiseTexture(
     if (!fContext) {
         return nullptr;
     }
-    return SkImage::MakePromiseTexture(fContext->threadSafeProxy(),
+    return sk_image_factory::MakePromiseTexture(fContext->threadSafeProxy(),
                                        backendFormat,
                                        {width, height},
                                        mipmapped,
@@ -248,7 +249,7 @@ sk_sp<SkImage> SkDeferredDisplayListRecorder::makeYUVAPromiseTexture(
     if (!fContext) {
         return nullptr;
     }
-    return SkImage::MakePromiseYUVATexture(fContext->threadSafeProxy(),
+    return sk_image_factory::MakePromiseYUVATexture(fContext->threadSafeProxy(),
                                            backendTextureInfo,
                                            std::move(imageColorSpace),
                                            textureFulfillProc,
