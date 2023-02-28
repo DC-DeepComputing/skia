@@ -18,7 +18,7 @@
    18. copy_slot_unmasked             $2 = i
    19. cmple_int                      $1 = lessThanEqual($1, $2)
    20. stack_rewind
-   21. branch_if_no_active_lanes_eq   branch -14 (label 3 at #7) if no lanes of $1 == 0x00000000 (0.0)
+   21. branch_if_no_lanes_active_eq   branch -14 (label 3 at #7) if no lanes of $1 == 0x00000000 (0.0)
    22. label                          label 0x00000002
    23. copy_slot_unmasked             $1 = sum
    24. label                          label 0x00000001
@@ -42,7 +42,7 @@
    42. copy_constant                  $3 = 0x00000004 (5.605194e-45)
    43. cmplt_int                      $2 = lessThan($2, $3)
    44. stack_rewind
-   45. branch_if_no_active_lanes_eq   branch -18 (label 6 at #27) if no lanes of $2 == 0x00000000 (0.0)
+   45. branch_if_no_lanes_active_eq   branch -18 (label 6 at #27) if no lanes of $2 == 0x00000000 (0.0)
    46. label                          label 0x00000005
    47. copy_slot_unmasked             $2 = prod
    48. label                          label 0x00000004
@@ -72,7 +72,7 @@
    72. copy_constant                  $4 = 0x41880000 (17.0)
    73. cmplt_float                    $3 = lessThan($3, $4)
    74. stack_rewind
-   75. branch_if_no_active_lanes_eq   branch -24 (label 10 at #51) if no lanes of $3 == 0x00000000 (0.0)
+   75. branch_if_no_lanes_active_eq   branch -24 (label 10 at #51) if no lanes of $3 == 0x00000000 (0.0)
    76. label                          label 0x00000009
    77. copy_slot_unmasked             $3 = sum₁
    78. label                          label 0x00000008

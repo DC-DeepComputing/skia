@@ -4,14 +4,14 @@
     4. copy_constant                  $0 = colorWhite(0)
     5. copy_constant                  $1 = 0x3F800000 (1.0)
     6. cmpeq_float                    $0 = equal($0, $1)
-    7. branch_if_no_active_lanes_eq   branch +3 (label 0 at #10) if no lanes of $0 == 0xFFFFFFFF
+    7. branch_if_no_lanes_active_eq   branch +3 (label 0 at #10) if no lanes of $0 == 0xFFFFFFFF
     8. copy_constant                  $1 = 0x3F800000 (1.0)
     9. copy_slot_unmasked             color(1) = $1
    10. label                          label 0x00000000
    11. copy_constant                  $0 = colorWhite(0)
    12. copy_constant                  $1 = 0x40000000 (2.0)
    13. cmpeq_float                    $0 = equal($0, $1)
-   14. branch_if_no_active_lanes_eq   branch +2 (label 2 at #16) if no lanes of $0 == 0xFFFFFFFF
+   14. branch_if_no_lanes_active_eq   branch +2 (label 2 at #16) if no lanes of $0 == 0xFFFFFFFF
    15. jump                           jump +4 (label 3 at #19)
    16. label                          label 0x00000002
    17. copy_constant                  $1 = 0x3F800000 (1.0)
@@ -26,7 +26,7 @@
    26. cmpeq_float                    $1 = equal($1, $2)
    27. merge_loop_mask                LoopMask &= $1
    28. stack_rewind
-   29. branch_if_any_active_lanes     branch_if_any_active_lanes -7 (label 5 at #22)
+   29. branch_if_any_lanes_active     branch_if_any_lanes_active -7 (label 5 at #22)
    30. load_loop_mask                 LoopMask = $0
    31. store_loop_mask                $0 = LoopMask
    32. label                          label 0x00000006
@@ -35,7 +35,7 @@
    35. cmpeq_float                    $1 = equal($1, $2)
    36. merge_loop_mask                LoopMask &= $1
    37. stack_rewind
-   38. branch_if_any_active_lanes     branch_if_any_active_lanes -6 (label 6 at #32)
+   38. branch_if_any_lanes_active     branch_if_any_lanes_active -6 (label 6 at #32)
    39. load_loop_mask                 LoopMask = $0
    40. copy_4_slots_unmasked          $0..3 = color
    41. load_src                       src.rgba = $0..3
