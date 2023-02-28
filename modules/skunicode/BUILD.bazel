@@ -1,20 +1,28 @@
-load("//bazel:macros.bzl", "exports_files_legacy", "skia_cc_library")
+load("//bazel:macros.bzl", "exports_files_legacy", "selects", "skia_cc_library")
 
 licenses(["notice"])
 
 exports_files_legacy()
+
+selects.config_setting_group(
+    name = "skia_use_icu",
+    match_all = [
+        "//bazel/common_config_settings:use_icu_true",
+    ],
+)
 
 skia_cc_library(
     name = "skunicode",
     srcs = [
       "//modules/skunicode/src:srcs",
       "//modules/skunicode/src:icu_srcs",
+      "//modules/skunicode/src:icu_bidi_srcs",
       ],
     hdrs = ["//modules/skunicode/include:hdrs"],
-    defines = [
-      "SK_UNICODE_AVAILABLE",
-      "SK_UNICODE_ICU_IMPLEMENTATION",
-    ],
+    defines = [ "SK_UNICODE_AVAILABLE" ] + select({
+        "//modules/skunicode:skia_use_icu": ["SK_UNICODE_ICU_IMPLEMENTATION"],
+        "//conditions:default": [],
+    }),
     visibility = ["//:__subpackages__"],
     deps = [
         "//:skia_internal",
