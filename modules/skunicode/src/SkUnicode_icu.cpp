@@ -289,6 +289,10 @@ class SkUnicode_icu : public SkUnicode {
         return true;
     }
 
+    bool isBreakingWhitespace(SkUnichar unichar) const override {
+        return SkUnicode_icu::isWhitespace(unichar);
+    }
+
     static bool isControl(SkUnichar utf8) {
         return sk_u_iscntrl(utf8);
     }
