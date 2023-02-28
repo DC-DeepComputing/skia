@@ -151,6 +151,10 @@ class SKUNICODE_API SkUnicode {
         virtual bool computeCodeUnitFlags(char16_t utf16[], int utf16Units, bool replaceTabs,
                                       SkTArray<SkUnicode::CodeUnitFlags, true>* results) = 0;
 
+        // TODO: Implement
+        // virtual bool IsAnySpace(SkUnichar unichar) const = 0;
+        virtual bool isBreakingWhitespace(SkUnichar unichar) const = 0;
+
         static SkString convertUtf16ToUtf8(const char16_t * utf16, int utf16Units);
         static SkString convertUtf16ToUtf8(const std::u16string& utf16);
         static std::u16string convertUtf8ToUtf16(const char* utf8, int utf8Units);
@@ -277,6 +281,13 @@ class SKUNICODE_API SkUnicode {
                 std::vector<SkUnicode::Position> words,
                 std::vector<SkUnicode::Position> graphemeBreaks,
                 std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+<<<<<<< PATCH SET (178d08 Adding ICU4X implementation for SkUnicode)
+
+        static std::unique_ptr<SkUnicode> MakeIcu4xBasedUnicode();
+
+        static std::unique_ptr<SkUnicode> MakeTestClientUnicode(SkSpan<char> text);
+=======
+>>>>>>> BASE      (afb4f8 Adding SkUnicode tests)
 };
 
 namespace sknonstd {

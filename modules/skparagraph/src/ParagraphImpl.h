@@ -135,6 +135,10 @@ public:
         return SkSpan<Placeholder>(fPlaceholders.data(), fPlaceholders.size());
     }
     SkSpan<TextLine> lines() { return SkSpan<TextLine>(fLines.data(), fLines.size()); }
+    SkSpan<SkUnicode::BidiRegion> bidis() {
+        return SkSpan<SkUnicode::BidiRegion>(fBidiRegions.data(),
+                                             fBidiRegions.size());
+    }
     const ParagraphStyle& paragraphStyle() const { return fParagraphStyle; }
     SkSpan<Cluster> clusters() { return SkSpan<Cluster>(fClusters.begin(), fClusters.size()); }
     sk_sp<FontCollection> fontCollection() const { return fFontCollection; }

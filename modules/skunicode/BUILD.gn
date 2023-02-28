@@ -11,7 +11,7 @@ declare_args() {
   skunicode_tests_enabled = true
 }
 
-if (skia_use_icu || skia_use_client_icu) {
+if (skia_use_icu || skia_use_icu4x || skia_use_client_icu) {
   config("public_config") {
     include_dirs = [ "include" ]
     defines = [ "SK_UNICODE_AVAILABLE" ]
@@ -20,6 +20,9 @@ if (skia_use_icu || skia_use_client_icu) {
     }
     if (skia_use_client_icu) {
       defines += [ "SK_UNICODE_CLIENT_IMPLEMENTATION" ]
+    }
+    if (skia_use_icu4x) {
+      defines += [ "SK_UNICODE_ICU4X_IMPLEMENTATION" ]
     }
     if (is_component_build) {
       defines += [ "SKUNICODE_DLL" ]
@@ -56,11 +59,16 @@ if (skia_use_icu || skia_use_client_icu) {
       deps += [ skia_icu_bidi_third_party_dir ]
       defines += [ "SK_UNICODE_CLIENT_IMPLEMENTATION" ]
     }
+    if (skia_use_icu4x) {
+      sources += skia_unicode_icu4x_sources
+      defines += [ "SK_UNICODE_ICU4X_IMPLEMENTATION" ]
+      deps += [ "//third_party/icu4x" ]
+    }
   }
 
   if (defined(is_skia_standalone) && skia_enable_tools) {
     skia_source_set("tests") {
-      if (skunicode_tests_enabled && skia_use_icu) {
+      if (skunicode_tests_enabled && (skia_use_icu || skia_use_icu4x)) {
         testonly = true
         deps = [
           ":skunicode",
@@ -68,7 +76,20 @@ if (skia_use_icu || skia_use_client_icu) {
           "../..:test",
         ]
         sources = skia_unicode_tests
+<<<<<<< PATCH SET (178d08 Adding ICU4X implementation for SkUnicode)
+        if (skia_use_icu && skia_use_client_icu) {
+          sources += skia_unicode_client_tests
+          deps += [ "//third_party/icu" ]
+          configs = [ "../../third_party/icu/config:no_cxx" ]
+        } else if (skia_use_icu) {
+          sources += skia_unicode_icu_tests
+          deps += [ skia_icu_bidi_third_party_dir ]
+        } else if (skia_use_icu4x) {
+          sources += skia_unicode_icu4x_tests
+        }
+=======
         deps += [ skia_icu_bidi_third_party_dir ]
+>>>>>>> BASE      (afb4f8 Adding SkUnicode tests)
       } else {
         sources = []
       }

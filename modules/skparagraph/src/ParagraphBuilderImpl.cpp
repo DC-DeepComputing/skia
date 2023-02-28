@@ -180,6 +180,28 @@ void ParagraphBuilderImpl::finalize() {
 std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
     this->finalize();
     this->addPlaceholder(PlaceholderStyle(), true);
+<<<<<<< PATCH SET (178d08 Adding ICU4X implementation for SkUnicode)
+
+    // This is the place where SkUnicode is paired with SkParagraph
+#if defined(SK_UNICODE_CLIENT_IMPLEMENTATION) && \
+    defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    fUnicode = SkUnicode::MakeTestClientUnicode(this->getText());
+#elif defined(SK_UNICODE_CLIENT_IMPLEMENTATION)
+    SkASSERT(fUsingClientInfo);
+    fUTF8IndexForUTF16Index.clear();
+    fUTF16IndexForUTF8Index.clear();
+
+    fUnicode = SkUnicode::MakeClientBasedUnicode(this->getText(),
+                                                 std::move(fWordsUtf16),
+                                                 std::move(fGraphemeBreaksUtf8),
+                                                 std::move(fLineBreaksUtf8));
+#elif defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    // Default ICU implementation already has been created
+#elif defined(SK_UNICODE_ICU_IMPLEMENTATION)
+    // Default ICU implementation already has been created
+#endif
+=======
+>>>>>>> BASE      (afb4f8 Adding SkUnicode tests)
     SkASSERT(fUnicode);
     return std::make_unique<ParagraphImpl>(
             fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, fUnicode);
