@@ -11,24 +11,29 @@
 
 namespace skgpu::graphite {
 
-BackendTexture::BackendTexture() {}
+BackendTexture::BackendTexture()
+#ifdef SK_DAWN
+        : fDawn()
+#endif
+{
+}
 
 BackendTexture::~BackendTexture() {
-    if (!this->isValid()) {
-        return;
-    }
 #ifdef SK_DAWN
     if (this->backend() == BackendApi::kDawn) {
         // Only one of fDawnTexture and fDawnTextureView can be non null.
         SkASSERT(!(fDawn.fTexture && fDawn.fTextureView));
         // Release reference.
-        fDawn.fTexture = nullptr;
-        fDawn.fTextureView = nullptr;
+        fDawn = {};
     }
 #endif
 }
 
-BackendTexture::BackendTexture(const BackendTexture& that) {
+BackendTexture::BackendTexture(const BackendTexture& that)
+#ifdef SK_DAWN
+        : fDawn()
+#endif
+{
     *this = that;
 }
 
@@ -36,6 +41,9 @@ BackendTexture& BackendTexture::operator=(const BackendTexture& that) {
     bool valid = this->isValid();
     if (!that.isValid()) {
         fInfo = {};
+#ifdef SK_DAWN
+        fDawn = {};
+#endif
         return *this;
     } else if (valid && this->backend() != that.backend()) {
         valid = false;

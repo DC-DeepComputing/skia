@@ -23,10 +23,9 @@ public:
     ~DawnQueueManager() override {}
 
     const wgpu::Queue& dawnQueue() const { return fQueue; }
-
-private:
     const DawnSharedContext* dawnSharedContext() const;
 
+private:
     std::unique_ptr<CommandBuffer> getNewCommandBuffer(ResourceProvider*) override;
     OutstandingSubmission onSubmitToGpu() override;
 

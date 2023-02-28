@@ -217,6 +217,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                                        const RuntimeEffectDictionary* runtimeDict,
                                                        const GraphicsPipelineDesc& pipelineDesc,
                                                        const RenderPassDesc& renderPassDesc) {
+    auto autoLock(sharedContext->AcquireLock());
     const auto& device = sharedContext->device();
 
     SkSL::Program::Inputs vsInputs, fsInputs;
@@ -515,7 +516,12 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                      hasFragment));
 }
 
+const DawnSharedContext* DawnGraphicsPipeline::dawnSharedContext() const {
+    return static_cast<const DawnSharedContext*>(sharedContext());
+}
+
 void DawnGraphicsPipeline::freeGpuData() {
+    auto autoLock(dawnSharedContext()->AcquireLock());
     fRenderPipeline = nullptr;
 }
 

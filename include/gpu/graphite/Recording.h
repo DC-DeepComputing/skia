@@ -26,7 +26,7 @@ class Texture;
 class TextureInfo;
 class TextureProxy;
 
-class Recording final {
+class SK_API Recording final {
 public:
     ~Recording();
 

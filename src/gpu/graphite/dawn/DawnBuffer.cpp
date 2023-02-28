@@ -76,6 +76,7 @@ sk_sp<Buffer> DawnBuffer::Make(const DawnSharedContext* sharedContext,
     // it for better performance?
     desc.mappedAtCreation = false;
 
+    auto autoLock(sharedContext->AcquireLock());
     auto buffer = sharedContext->device().CreateBuffer(&desc);
     if (!buffer) {
         return {};
@@ -98,7 +99,8 @@ void DawnBuffer::onMap() {
     SkASSERT((fBuffer.GetUsage() & wgpu::BufferUsage::MapRead) ||
              (fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite));
 
-    DawnAsyncWait wait(dawnSharedContext()->device());
+    auto autoLock(dawnSharedContext()->AcquireLock());
+    DawnAsyncWait wait(dawnSharedContext());
     bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
     fBuffer.MapAsync(isWrite ? wgpu::MapMode::Write: wgpu::MapMode::Read,
                      0,
@@ -123,11 +125,13 @@ void DawnBuffer::onUnmap() {
     SkASSERT(this->isMapped());
     SkASSERT(fBuffer.GetUsage() & (wgpu::BufferUsage::MapRead | wgpu::BufferUsage::MapWrite));
 
+    auto autoLock(dawnSharedContext()->AcquireLock());
     fBuffer.Unmap();
     fMapPtr = nullptr;
 }
 
 void DawnBuffer::freeGpuData() {
+    auto autoLock(dawnSharedContext()->AcquireLock());
     fBuffer = nullptr;
 }
 
