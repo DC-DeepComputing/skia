@@ -16,6 +16,24 @@
       "message": "Maybe comment this out with a TODO comment instead of removing it so I remember to enable it alongside https://skia-review.googlesource.com/c/skia/+/634676.\n\nOne concern I have is that the TernaryExpression test now entirely reduces to a set of boolean binary expressions and the test doesn\u0027t exercise the ternary expression handling logic in the backends (except for the return statement but that\u0027s common to many tests already).\n\nPerhaps rename this test to `SimpleBooleanTernaryExpression.sksl` and introduce a new test file (called `TernaryExpression.sksl`) that still exercises simple ternary expressions for selecting a matrix, scalar, vector, value etc.",
       "revId": "7a03a0e52abb436b5b8900dd7bf351c9ef5559ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d499258_01d41912",
+        "filename": "resources/sksl/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 1039,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-28T01:25:31Z",
+      "side": 0,
+      "message": "Done.",
+      "parentUuid": "44225afc_19b7f65d",
+      "revId": "7a03a0e52abb436b5b8900dd7bf351c9ef5559ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
