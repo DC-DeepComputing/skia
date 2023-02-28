@@ -121,6 +121,7 @@ private:
     std::vector<SlotDebugInfo>* fSlotDebugInfo;
 };
 
+class AutoBreakTarget;
 class AutoContinueMask;
 class LValue;
 
@@ -352,6 +353,7 @@ private:
     const FunctionDefinition* fCurrentFunction = nullptr;
     SlotRange fCurrentFunctionResult;
     AutoContinueMask* fCurrentContinueMask = nullptr;
+    int fCurrentBreakTarget = -1;
     int fCurrentStack = 0;
     int fNextStackID = 0;
     SkTArray<int> fRecycledStacks;
@@ -406,6 +408,7 @@ private:
                                              BuilderOp::unsupported,
                                              BuilderOp::unsupported,
                                              BuilderOp::unsupported};
+    friend class AutoBreakTarget;
     friend class AutoContinueMask;
 };
 
@@ -450,6 +453,28 @@ private:
     Generator* fGenerator;
     int fStackID = 0;
     int fParentStackID = 0;
+};
+
+class AutoBreakTarget {
+public:
+    AutoBreakTarget(Generator* gen) : fGenerator(gen) {
+        fLabelID = fGenerator->builder()->nextLabelID();
+        fPreviousBreakTarget = fGenerator->fCurrentBreakTarget;
+        fGenerator->fCurrentBreakTarget = fLabelID;
+    }
+
+    ~AutoBreakTarget() {
+        fGenerator->fCurrentBreakTarget = fPreviousBreakTarget;
+    }
+
+    int labelID() {
+        return fLabelID;
+    }
+
+private:
+    Generator* fGenerator = nullptr;
+    int fPreviousBreakTarget;
+    int fLabelID;
 };
 
 class AutoContinueMask {
@@ -1246,7 +1271,7 @@ bool Generator::writeContinueStatement(const ContinueStatement&) {
 
 bool Generator::writeDoStatement(const DoStatement& d) {
     // Set up a break target.
-    int breakTargetID = fBuilder.nextLabelID();
+    AutoBreakTarget breakTarget(this);
 
     // Save off the original loop mask.
     fBuilder.enableExecutionMaskWrites();
@@ -1272,7 +1297,7 @@ bool Generator::writeDoStatement(const DoStatement& d) {
 
     autoContinueMask.exitLoopBody();
 
-    fBuilder.label(breakTargetID);
+    fBuilder.label(breakTarget.labelID());
 
     // Emit the test-expression, in order to combine it with the loop mask.
     if (!this->pushExpression(*d.test())) {
@@ -1359,7 +1384,7 @@ bool Generator::writeForStatement(const ForStatement& f) {
     }
 
     // Set up a break target.
-    int breakTargetID = fBuilder.nextLabelID();
+    AutoBreakTarget breakTarget(this);
 
     // Run the loop initializer.
     if (f.initializer() && !this->writeStatement(*f.initializer())) {
@@ -1393,7 +1418,7 @@ bool Generator::writeForStatement(const ForStatement& f) {
 
     autoContinueMask.exitLoopBody();
 
-    fBuilder.label(breakTargetID);
+    fBuilder.label(breakTarget.labelID());
 
     // Run the next-expression. Immediately discard its result.
     if (f.next()) {
@@ -1533,7 +1558,7 @@ bool Generator::writeSwitchStatement(const SwitchStatement& s) {
     }));
 
     // Set up a break target.
-    int breakTargetID = fBuilder.nextLabelID();
+    AutoBreakTarget breakTarget(this);
 
     // Save off the original loop mask.
     fBuilder.enableExecutionMaskWrites();
@@ -1582,7 +1607,7 @@ bool Generator::writeSwitchStatement(const SwitchStatement& s) {
         fBuilder.label(skipLabelID);
     }
 
-    fBuilder.label(breakTargetID);
+    fBuilder.label(breakTarget.labelID());
 
     // Jettison the switch value, and the default case mask if it was never consumed above.
     this->discardExpression(/*slots=*/foundDefaultCase ? 1 : 2);
