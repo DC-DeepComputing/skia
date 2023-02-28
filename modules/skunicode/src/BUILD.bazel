@@ -49,3 +49,13 @@ skia_filegroup(
     ] + ICU_BIDI_SRCS,
     visibility = ["//modules/skunicode:__pkg__"],
 )
+
+
+skia_filegroup(
+    name = "icu4x_srcs",
+    srcs = [
+        "SkUnicode_icu4x.cpp",
+        "SkUnicode_icu4x.h",
+    ],
+    visibility = ["//modules/skunicode:__pkg__"],
+)

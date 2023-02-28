@@ -1444,7 +1444,6 @@ UNIX_ONLY_TEST(SkParagraph_NearZeroHeightMixedDistribution, reporter) {
 
 UNIX_ONLY_TEST(SkParagraph_StrutHalfLeading, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
-
     if (!fontCollection->fontsFound()) {
         return;
     }
@@ -5174,6 +5173,7 @@ UNIX_ONLY_TEST(SkParagraph_NullInMiddleOfText, reporter) {
     TextStyle text_style;
     text_style.setColor(SK_ColorBLACK);
     text_style.setFontSize(16);
+    text_style.setColor(SK_ColorBLACK);
     text_style.setFontFamilies({SkString("Roboto")});
     ParagraphBuilderImpl builder(paragraph_style, fontCollection);
     builder.addText(text.c_str(), text.size());
@@ -5193,7 +5193,6 @@ UNIX_ONLY_TEST(SkParagraph_PlaceholderOnly, reporter) {
     text_style.setFontFamilies({SkString("Roboto")});
     text_style.setBackgroundColor(SkPaint(SkColors::kRed));
     ParagraphBuilderImpl builder(paragraph_style, fontCollection);
-
     PlaceholderStyle placeholder(0, 0, PlaceholderAlignment::kBaseline, TextBaseline::kAlphabetic, 0);
     builder.addPlaceholder(placeholder);
 
@@ -5297,6 +5296,14 @@ UNIX_ONLY_TEST(SkParagraph_Bidi1, reporter) {
     auto paragraph = builder.Build();
     paragraph->layout(400);
     paragraph->paint(canvas.get(), 0, 0);
+    /*
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+    auto bidis = impl->bidis();
+    for (auto i = 0; i < bidis.size(); ++i) {
+        auto& bidi = bidis[i];
+        SkDebugf("%d: [%d:%d) %d\n", i, bidi.start, bidi.end, bidi.level, bidi);
+    }
+    */
 }
 
 UNIX_ONLY_TEST(SkParagraph_Bidi2, reporter) {
@@ -5317,6 +5324,7 @@ UNIX_ONLY_TEST(SkParagraph_Bidi2, reporter) {
     text_style.setFontFamilies({ SkString("sans-serif")});
     text_style.setFontSize(40);
     text_style.setColor(SK_ColorBLACK);
+
     {
         ParagraphBuilderImpl builder(paragraph_style, fontCollection);
         builder.pushStyle(text_style);
@@ -5328,6 +5336,15 @@ UNIX_ONLY_TEST(SkParagraph_Bidi2, reporter) {
         auto paragraph = builder.Build();
         paragraph->layout(360);
         paragraph->paint(canvas.get(), 0, 0);
+        /*
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        auto bidis = impl->bidis();
+        SkDebugf("1:\n");
+        for (auto i = 0; i < bidis.size(); ++i) {
+            auto& bidi = bidis[i];
+            SkDebugf("%d: [%d:%d) %d\n", i, bidi.start, bidi.end, bidi.level, bidi);
+        }
+        */
     }
     canvas.get()->translate(0, 400);
     {
@@ -5337,6 +5354,15 @@ UNIX_ONLY_TEST(SkParagraph_Bidi2, reporter) {
         auto paragraph = builder.Build();
         paragraph->layout(360);
         paragraph->paint(canvas.get(), 0, 0);
+        /*
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        auto bidis = impl->bidis();
+        SkDebugf("2:\n");
+        for (auto i = 0; i < bidis.size(); ++i) {
+            auto& bidi = bidis[i];
+            SkDebugf("%d: [%d:%d) %d\n", i, bidi.start, bidi.end, bidi.level, bidi);
+        }
+        */
     }
 }
 
@@ -5763,6 +5789,7 @@ UNIX_ONLY_TEST(SkParagraph_LineMetricsTextAlign, reporter) {
         paragraph->layout(200);
         paragraph->paint(canvas.get(), 0, 0);
         canvas.get()->translate(0, paragraph->getHeight());
+
         std::vector<LineMetrics> metrics;
         paragraph->getLineMetrics(metrics);
         REPORTER_ASSERT(reporter, metrics.size() > 0);
@@ -5877,6 +5904,7 @@ UNIX_ONLY_TEST(SkParagraph_NoCache1, reporter) {
 
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
     if (!fontCollection->fontsFound()) return;
+
     // Long arabic text with english spaces
     const char* text =
             "من أسر وإعلان الخاصّة وهولندا،, عل قائمة الضغوط بالمطالبة تلك. الصفحة "
@@ -5895,7 +5923,6 @@ UNIX_ONLY_TEST(SkParagraph_NoCache1, reporter) {
     text_style.setFontSize(14);
     text_style.setColor(SK_ColorBLACK);
 
-
     auto test = [&](const char* test, const char* text, bool editing) {
         ParagraphBuilderImpl builder(paragraph_style, fontCollection);
         //SkDebugf("test %s:\n", test);
@@ -5908,7 +5935,6 @@ UNIX_ONLY_TEST(SkParagraph_NoCache1, reporter) {
         auto paragraph = builder.Build();
         paragraph->layout(TestCanvasWidth);
         auto countAfter = cache->count();
-
         if (test == nullptr) {
             return;
         }
@@ -6818,6 +6844,7 @@ UNIX_ONLY_TEST(SkParagraph_EllipsisGetRectForRange, reporter) {
 UNIX_ONLY_TEST(SkParagraph_StrutAndTextBehavior, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     if (!fontCollection->fontsFound()) return;
+
     const char* text = "";
     const size_t len = strlen(text);
 
