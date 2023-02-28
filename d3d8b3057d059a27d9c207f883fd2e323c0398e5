@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6c94a35_d6dd5214",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19709
+      },
+      "writtenOn": "2023-02-28T00:37:25Z",
+      "side": 1,
+      "message": "I probably don\u0027t have permissions to submit this CL, so once you approve it could you please do that on my behalf? Thanks!",
+      "revId": "d3d8b3057d059a27d9c207f883fd2e323c0398e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
