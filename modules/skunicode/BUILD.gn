@@ -8,9 +8,10 @@ import("skunicode.gni")
 
 declare_args() {
   skia_use_runtime_icu = false
+  skunicode_tests_enabled = true
 }
 
-if (skia_use_icu || skia_use_client_icu) {
+if (skia_use_icu || skia_use_icu4x || skia_use_client_icu) {
   config("public_config") {
     include_dirs = [ "include" ]
     defines = [ "SK_UNICODE_AVAILABLE" ]
@@ -19,6 +20,9 @@ if (skia_use_icu || skia_use_client_icu) {
     }
     if (skia_use_client_icu) {
       defines += [ "SK_UNICODE_CLIENT_IMPLEMENTATION" ]
+    }
+    if (skia_use_icu4x) {
+      defines += [ "SK_UNICODE_ICU4X_IMPLEMENTATION" ]
     }
     if (is_component_build) {
       defines += [ "SKUNICODE_DLL" ]
@@ -60,8 +64,38 @@ if (skia_use_icu || skia_use_client_icu) {
       }
       defines += [ "SK_UNICODE_CLIENT_IMPLEMENTATION" ]
     }
+    if (skia_use_icu4x) {
+      sources += skia_unicode_icu4x_sources
+      defines += [ "SK_UNICODE_ICU4X_IMPLEMENTATION" ]
+      deps += [ "//third_party/icu4x" ]
+    }
+  }
+
+  skia_source_set("tests") {
+    sources = []
+    if (skunicode_tests_enabled) {
+      testonly = true
+      deps = [
+        ":skunicode",
+        "../..:skia",
+        "../..:test",
+      ]
+      sources = skia_unicode_tests
+      if (skia_use_icu && skia_use_client_icu) {
+        sources += skia_unicode_client_tests
+        deps += [ "//third_party/icu" ]
+        configs = [ "../../third_party/icu/config:no_cxx" ]
+      } else if (skia_use_icu) {
+        sources += skia_unicode_icu_tests
+        deps += [ skia_icu_bidi_third_party_dir ]
+      } else if (skia_use_icu4x) {
+        sources += skia_unicode_icu4x_tests
+      }
+    }
   }
 } else {
   group("skunicode") {
+  }
+  group("tests") {
   }
 }
