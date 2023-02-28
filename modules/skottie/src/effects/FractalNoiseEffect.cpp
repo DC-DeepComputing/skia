@@ -98,23 +98,19 @@ static constexpr char gNoiseEffectSkSL[] =
              "wacc = 0,"         // weight accumulator
                 "n = 0;"         // noise accumulator
 
-        // Constant loop counter chosen to be >= ceil(u_octaves).
-        // The logical counter is actually 'oct'.
-        "for (float i = 0; i < %u; ++i) {"
-            // effective layer weight computed to accommodate fixed loop counters
-            //
+        // Fixed loop count chosen to cover the max number of AE octaves.
+        "for (float i = 0; i < 20; ++i) {"
+            // effective layer weight
             //   -- for full octaves:              layer amplitude
             //   -- for fractional octave:         layer amplitude modulated by fractional part
-            //   -- for octaves > ceil(u_octaves): 0
-            //
-            // e.g. for 6 loops and u_octaves = 2.3, this generates the sequence [1,1,.3,0,0]
-            "float w = amp*saturate(oct);"
+            "float w = amp*min(1.0,oct);"
 
             "n += w*fractal(filter(xy));"
 
             "wacc += w;"
-            "amp  *= u_persistence;"
             "oct  -= 1;"
+            "if (oct <= 0){break;}"
+            "amp  *= u_persistence;"
 
             "xy = (u_submatrix*float3(xy,1)).xy;"
         "}"
@@ -194,9 +190,9 @@ enum class NoiseFractal {
     kTurbulentSharp,
 };
 
-sk_sp<SkRuntimeEffect> make_noise_effect(unsigned loops, const char* filter, const char* fractal) {
+sk_sp<SkRuntimeEffect> make_noise_effect(const char* filter, const char* fractal) {
     auto result = SkRuntimeEffect::MakeForShader(
-            SkStringPrintf(gNoiseEffectSkSL, filter, fractal, loops), {});
+            SkStringPrintf(gNoiseEffectSkSL, filter, fractal), {});
 
     return std::move(result.effect);
 }
@@ -218,44 +214,13 @@ sk_sp<SkRuntimeEffect> noise_effect(float octaves, NoiseFilter filter, NoiseFrac
     SkASSERT(static_cast<size_t>(filter)  < std::size(gFilters));
     SkASSERT(static_cast<size_t>(fractal) < std::size(gFractals));
 
-    // Bin the loop counter based on the number of octaves (range: [1..20]).
-    // Low complexities are common, so we maximize resolution for the low end.
-    struct BinInfo {
-        float    threshold;
-        unsigned loops;
-    };
-    static constexpr BinInfo kLoopBins[] = {
-        { 8, 20 },
-        { 4,  8 },
-        { 3,  4 },
-        { 2,  3 },
-        { 1,  2 },
-        { 0,  1 }
-    };
-
-    auto bin_index = [](float octaves) {
-        SkASSERT(octaves > kLoopBins[std::size(kLoopBins) - 1].threshold);
-
-        for (size_t i = 0; i < std::size(kLoopBins); ++i) {
-            if (octaves > kLoopBins[i].threshold) {
-                return i;
-            }
-        }
-        SkUNREACHABLE;
-    };
-
-    static SkRuntimeEffect* kEffectCache[std::size(kLoopBins)]
-                                        [std::size(gFilters)]
+    static SkRuntimeEffect* kEffectCache[std::size(gFilters)]
                                         [std::size(gFractals)];
 
-    const size_t bin = bin_index(octaves);
-
-    auto& effect = kEffectCache[bin]
-                               [static_cast<size_t>(filter)]
+    auto& effect = kEffectCache[static_cast<size_t>(filter)]
                                [static_cast<size_t>(fractal)];
     if (!effect) {
-        effect = make_noise_effect(kLoopBins[bin].loops,
-                                   gFilters[static_cast<size_t>(filter)],
+        effect = make_noise_effect(gFilters[static_cast<size_t>(filter)],
                                    gFractals[static_cast<size_t>(fractal)])
                  .release();
     }
