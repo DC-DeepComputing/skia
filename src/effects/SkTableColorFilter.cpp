@@ -33,6 +33,7 @@
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 
 namespace skgpu::graphite {
 class PipelineDataGatherer;
@@ -301,12 +302,13 @@ void SkTable_ColorFilter::addToKey(const skgpu::graphite::KeyContext& keyContext
 
     TableColorFilterBlock::TableColorFilterData data;
 
-    // TODO(b/239604347): remove this hack. This is just here until we determine what Graphite's
-    // Recorder-level caching story is going to be.
-    sk_sp<SkImage> image = SkImage::MakeFromBitmap(fBitmap);
-    image = image->makeTextureImage(keyContext.recorder(), { skgpu::Mipmapped::kNo });
+    sk_sp<SkImage> image = RecorderPriv::Foo(keyContext.recorder(), fBitmap);
 
-    if (as_IB(image)->isGraphiteBacked()) {
+    if (!image) {
+        return;
+    }
+
+    {
         auto [view, _] = as_IB(image)->asView(keyContext.recorder(), skgpu::Mipmapped::kNo);
         data.fTextureProxy = view.refProxy();
     }
