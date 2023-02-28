@@ -7,6 +7,7 @@
 
 #include "tools/gpu/YUVUtils.h"
 
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorPriv.h"
@@ -14,6 +15,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrYUVABackendTextures.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/codec/SkCodecImageGenerator.h"
 #include "src/core/SkYUVAInfoLocation.h"
 #include "src/core/SkYUVMath.h"
@@ -284,7 +286,7 @@ bool LazyYUVImage::ensureYUVImage(GrRecordingContext* rContext, Type type) {
             if (!rContext || rContext->abandoned()) {
                 return false;
             }
-            fYUVImage[idx] = SkImage::MakeFromYUVAPixmaps(rContext,
+            fYUVImage[idx] = sk_image_factory::MakeFromYUVAPixmaps(rContext,
                                                           fPixmaps,
                                                           fMipmapped,
                                                           /*limit to max tex size*/ false,
@@ -293,7 +295,7 @@ bool LazyYUVImage::ensureYUVImage(GrRecordingContext* rContext, Type type) {
         case Type::kFromGenerator: {
             // Make sure the generator has ownership of its backing planes.
             auto generator = std::make_unique<Generator>(fPixmaps, fColorSpace);
-            fYUVImage[idx] = SkImage::MakeFromGenerator(std::move(generator));
+            fYUVImage[idx] = sk_image_factory::MakeFromGenerator(std::move(generator));
             break;
         }
         case Type::kFromTextures:
@@ -330,7 +332,7 @@ bool LazyYUVImage::ensureYUVImage(GrRecordingContext* rContext, Type type) {
                 }
                 void* planeRelContext =
                         sk_gpu_test::ManagedBackendTexture::MakeYUVAReleaseContext(mbets);
-                fYUVImage[idx] = SkImage::MakeFromYUVATextures(
+                fYUVImage[idx] = sk_image_factory::MakeFromYUVATextures(
                         direct,
                         yuvaTextures,
                         fColorSpace,

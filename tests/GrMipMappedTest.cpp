@@ -28,6 +28,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/mock/GrMockTypes.h"
 #include "include/private/SkColorData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -130,7 +131,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrWrappedMipMappedTest,
                 auto device = ((SkSurface_Gpu*)surface.get())->getDevice();
                 proxy = device->readSurfaceView().asTextureProxyRef();
             } else {
-                image = SkImage::MakeFromTexture(dContext,
+                image = sk_image_factory::MakeFromTexture(dContext,
                                                  mbet->texture(),
                                                  kTopLeft_GrSurfaceOrigin,
                                                  kRGBA_8888_SkColorType,

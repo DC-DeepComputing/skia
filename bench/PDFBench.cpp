@@ -99,7 +99,7 @@ protected:
             SkAutoPixmapStorage pixmap;
             pixmap.alloc(SkImageInfo::MakeN32Premul(img->dimensions()));
             if (img->readPixels(nullptr, pixmap, 0, 0)) {
-                fImage = SkImage::MakeRasterCopy(pixmap);
+                fImage = sk_image_factory::MakeRasterCopy(pixmap);
             }
         }
     }

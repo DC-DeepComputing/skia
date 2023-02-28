@@ -25,6 +25,8 @@
 #if defined(SK_GANESH)
 #include "include/gpu/GrTypes.h"
 #include "src/gpu/ganesh/SkGr.h"
+
+#include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #endif
 
 #if defined(SK_GRAPHITE)
@@ -57,6 +59,14 @@ struct SkRect;
 
 enum {
     kNeedNewImageUniqueID = 0
+};
+
+enum ImageType {
+    kUnknown,
+    kRaster,
+    kLazy,
+    kGanesh,
+    kGraphite,
 };
 
 class SkImage_Base : public SkImage {
@@ -114,14 +124,13 @@ public:
         return GrSemaphoresSubmitted::kNo;
     }
 
-    // Returns a GrSurfaceProxyView representation of the image, if possible. This also returns
-    // a color type. This may be different than the image's color type when the image is not
-    // texture-backed and the capabilities of the GPU require a data type conversion to put
-    // the data in a texture.
-    std::tuple<GrSurfaceProxyView, GrColorType> asView(
-            GrRecordingContext* context,
-            GrMipmapped mipmapped,
-            GrImageTexGenPolicy policy = GrImageTexGenPolicy::kDraw) const;
+    // TODO(kjlubick) move the implementations of this out into GrImageUtils.cpp
+    virtual std::tuple<GrSurfaceProxyView, GrColorType> onAsView(
+            GrRecordingContext*,
+            GrMipmapped,
+            GrImageTexGenPolicy policy) const {
+        return {};
+    }
 
     /**
      * Returns a GrFragmentProcessor that can be used with the passed GrRecordingContext to
@@ -159,6 +168,7 @@ public:
     virtual bool isYUVA() const { return false; }
 #endif
 
+    // Used only by Android (SkiaPipeline) atm
     virtual bool onPinAsTexture(GrRecordingContext*) const { return false; }
     virtual void onUnpinAsTexture(GrRecordingContext*) const {}
     virtual bool isPinnedOnContext(GrRecordingContext*) const { return false; }
@@ -174,14 +184,16 @@ public:
 
     virtual bool onAsLegacyBitmap(GrDirectContext*, SkBitmap*) const;
 
+    virtual ImageType type() const { return kUnknown; }
+
     // True for picture-backed and codec-backed
-    virtual bool onIsLazyGenerated() const { return false; }
+    bool onIsLazyGenerated() const { return this->type() == ImageType::kLazy; }
 
     // True for images instantiated by Ganesh in GPU memory
-    virtual bool isGaneshBacked() const { return false; }
+    bool isGaneshBacked() const { return this->type() == ImageType::kGanesh; }
 
     // True for images instantiated by Graphite in GPU memory
-    virtual bool isGraphiteBacked() const { return false; }
+    bool isGraphiteBacked() const { return this->type() == ImageType::kGraphite; }
 
     // Amount of texture memory used by texture-backed images.
     virtual size_t onTextureSize() const { return 0; }
@@ -250,11 +262,6 @@ protected:
 
 private:
 #if defined(SK_GANESH)
-    virtual std::tuple<GrSurfaceProxyView, GrColorType> onAsView(
-            GrRecordingContext*,
-            GrMipmapped,
-            GrImageTexGenPolicy policy) const = 0;
-
     virtual std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(
             GrRecordingContext*,
             SkSamplingOptions,
@@ -263,7 +270,6 @@ private:
             const SkRect* subset,
             const SkRect* domain) const = 0;
 #endif
-
     // Set true by caches when they cache content that's derived from the current pixels.
     mutable std::atomic<bool> fAddedToRasterCache;
 };

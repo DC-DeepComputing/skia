@@ -21,7 +21,7 @@ namespace {
 jlong Image_Create(JNIEnv* env, jobject, jbyteArray jdata) {
     auto  size = env->GetArrayLength(jdata);
     auto* data = env->GetByteArrayElements(jdata, nullptr);
-    auto image = SkImage::MakeFromEncoded(SkData::MakeWithCopy(data, SkToSizeT(size)));
+    auto image = sk_image_factory::MakeFromEncoded(SkData::MakeWithCopy(data, SkToSizeT(size)));
 
     env->ReleaseByteArrayElements(jdata, data, 0);
 

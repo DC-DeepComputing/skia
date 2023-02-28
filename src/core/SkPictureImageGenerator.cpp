@@ -16,6 +16,7 @@
 #include "src/image/SkImage_Base.h"
 
 #if defined(SK_GANESH)
+#include "src/gpu/ganesh/GrImageUtils.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
 #endif
 
@@ -32,7 +33,7 @@ protected:
                                          GrMipmapped, GrImageTexGenPolicy) override;
 #endif
 
-#if SK_GRAPHITE
+#if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
                                       const SkImageInfo&,
                                       skgpu::Mipmapped) override;
@@ -52,14 +53,14 @@ private:
 std::unique_ptr<SkImageGenerator>
 SkImageGenerator::MakeFromPicture(const SkISize& size, sk_sp<SkPicture> picture,
                                   const SkMatrix* matrix, const SkPaint* paint,
-                                  SkImage::BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace,
+                                  sk_image_factory::BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace,
                                   SkSurfaceProps props) {
     if (!picture || !colorSpace || size.isEmpty()) {
         return nullptr;
     }
 
     SkColorType colorType = kN32_SkColorType;
-    if (SkImage::BitDepth::kF16 == bitDepth) {
+    if (sk_image_factory::BitDepth::kF16 == bitDepth) {
         colorType = kRGBA_F16_SkColorType;
     }
 
@@ -128,7 +129,8 @@ GrSurfaceProxyView SkPictureImageGenerator::onGenerateTexture(GrRecordingContext
     if (!image) {
         return {};
     }
-    auto [view, ct] = as_IB(image)->asView(ctx, mipmapped);
+
+    auto [view, ct] = skgpu::ganesh::AsView(ctx, image, mipmapped);
     SkASSERT(view);
     SkASSERT(mipmapped == GrMipmapped::kNo ||
              view.asTextureProxy()->mipmapped() == GrMipmapped::kYes);
@@ -139,7 +141,7 @@ GrSurfaceProxyView SkPictureImageGenerator::onGenerateTexture(GrRecordingContext
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if SK_GRAPHITE
+#if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/Log.h"
 
 sk_sp<SkImage> SkPictureImageGenerator::onMakeTextureImage(skgpu::graphite::Recorder* recorder,
