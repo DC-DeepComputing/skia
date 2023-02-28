@@ -259,7 +259,28 @@ bool VulkanCommandBuffer::onCopyBufferToBuffer(const Buffer* srcBuffer,
                                                const Buffer* dstBuffer,
                                                size_t dstOffset,
                                                size_t size) {
-    return false;
+    this->submitPipelineBarriers();
+
+    auto vkSrcBuffer = static_cast<const VulkanBuffer*>(srcBuffer);
+    auto vkDstBuffer = static_cast<const VulkanBuffer*>(dstBuffer);
+
+    SkASSERT(vkSrcBuffer->bufferUsageFlags() & VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
+    SkASSERT(vkDstBuffer->bufferUsageFlags() & VK_BUFFER_USAGE_TRANSFER_DST_BIT);
+
+    VkBufferCopy region;
+    memset(&region, 0, sizeof(VkBufferCopy));
+    region.srcOffset = srcOffset;
+    region.dstOffset = dstOffset;
+    region.size = size;
+
+    VULKAN_CALL(fSharedContext->interface(),
+                CmdCopyBuffer(fPrimaryCommandBuffer,
+                              vkSrcBuffer->vkBuffer(),
+                              vkDstBuffer->vkBuffer(),
+                              /*regionCount=*/1,
+                              &region));
+
+    return true;
 }
 
 bool VulkanCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
