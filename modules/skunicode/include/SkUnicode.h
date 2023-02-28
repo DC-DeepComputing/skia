@@ -131,6 +131,7 @@ class SKUNICODE_API SkUnicode {
         virtual bool isHardBreak(SkUnichar utf8) = 0;
         virtual bool isEmoji(SkUnichar utf8) = 0;
         virtual bool isIdeographic(SkUnichar utf8) = 0;
+        virtual bool isBreakingWhitespace(SkUnichar unichar) = 0;
 
         // Methods used in SkShaper and SkText
         virtual std::unique_ptr<SkBidiIterator> makeBidiIterator
@@ -303,6 +304,8 @@ class SKUNICODE_API SkUnicode {
                 std::vector<SkUnicode::LineBreakBefore> lineBreaks);
 
         static std::unique_ptr<SkUnicode> MakeLibgraphemeBasedUnicode();
+
+        static std::unique_ptr<SkUnicode> MakeIcu4xBasedUnicode();
 };
 
 namespace sknonstd {

@@ -420,6 +420,10 @@ class SkUnicode_icu : public SkUnicode {
         return sk_u_iscntrl(utf8);
     }
 
+    bool isBreakingWhitespace(SkUnichar unichar) override {
+        return SkUnicode_icu::isWhitespace(unichar);
+    }
+
     bool isWhitespace(SkUnichar utf8) override {
         return sk_u_isWhitespace(utf8);
     }

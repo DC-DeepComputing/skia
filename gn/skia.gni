@@ -53,6 +53,7 @@ declare_args() {
   skia_use_harfbuzz = true
   skia_use_gl = !is_fuchsia
   skia_use_icu = !is_fuchsia
+  skia_use_icu4x = false
   skia_use_libavif = false
   skia_use_libgrapheme = false
   skia_use_libheif = is_skia_dev_build

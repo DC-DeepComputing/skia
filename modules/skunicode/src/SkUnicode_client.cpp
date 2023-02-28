@@ -97,6 +97,10 @@ public:
         return SkUnicode_IcuBidi::ExtractBidi(utf8, utf8Units, dir, results);
     }
 
+    bool isBreakingWhitespace(SkUnichar unichar) override {
+        return SkUnicode_client::isWhitespace(unichar);
+    }
+
     bool computeCodeUnitFlags(char utf8[],
                               int utf8Units,
                               bool replaceTabs,
