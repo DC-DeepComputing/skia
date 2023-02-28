@@ -103,7 +103,7 @@ enum class BuilderOp {
     pop_src_rgba,
     pop_dst_rgba,
     set_current_stack,
-    branch_if_no_active_lanes_on_stack_top_equal,
+    branch_if_no_lanes_active_on_stack_top_equal,
     unsupported
 };
 
@@ -254,7 +254,7 @@ public:
     /**
      * Peels off a label ID for use in the program. Set the label's position in the program with
      * the `label` instruction. Actually branch to the target with an instruction like
-     * `branch_if_any_active_lanes` or `jump`.
+     * `branch_if_any_lanes_active` or `jump`.
      */
     int nextLabelID() {
         return fNumLabels++;
@@ -324,13 +324,13 @@ public:
     void jump(int labelID);
 
     // Branches to a label if the execution mask is active in any lane.
-    void branch_if_any_active_lanes(int labelID);
+    void branch_if_any_lanes_active(int labelID);
 
     // Branches to a label if the execution mask is inactive across all lanes.
-    void branch_if_no_active_lanes(int labelID);
+    void branch_if_no_lanes_active(int labelID);
 
     // Branches to a label if the top value on the stack is _not_ equal to `value` in any lane.
-    void branch_if_no_active_lanes_on_stack_top_equal(int value, int labelID);
+    void branch_if_no_lanes_active_on_stack_top_equal(int value, int labelID);
 
     // We use the same SkRasterPipeline op regardless of the literal type, and bitcast the value.
     void push_literal_f(float val) {

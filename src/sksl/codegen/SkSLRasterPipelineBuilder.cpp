@@ -204,9 +204,9 @@ void Builder::label(int labelID) {
         Instruction& lastInstruction = fInstructions.back();
         switch (lastInstruction.fOp) {
             case BuilderOp::jump:
-            case BuilderOp::branch_if_any_active_lanes:
-            case BuilderOp::branch_if_no_active_lanes:
-            case BuilderOp::branch_if_no_active_lanes_on_stack_top_equal:
+            case BuilderOp::branch_if_any_lanes_active:
+            case BuilderOp::branch_if_no_lanes_active:
+            case BuilderOp::branch_if_no_lanes_active_on_stack_top_equal:
                 if (lastInstruction.fImmA == labelID) {
                     fInstructions.pop_back();
                     continue;
@@ -230,7 +230,7 @@ void Builder::jump(int labelID) {
     fInstructions.push_back({BuilderOp::jump, {}, labelID});
 }
 
-void Builder::branch_if_any_active_lanes(int labelID) {
+void Builder::branch_if_any_lanes_active(int labelID) {
     if (!this->executionMaskWritesAreEnabled()) {
         this->jump(labelID);
         return;
@@ -238,42 +238,42 @@ void Builder::branch_if_any_active_lanes(int labelID) {
 
     SkASSERT(labelID >= 0 && labelID < fNumLabels);
     if (!fInstructions.empty() &&
-        (fInstructions.back().fOp == BuilderOp::branch_if_any_active_lanes ||
+        (fInstructions.back().fOp == BuilderOp::branch_if_any_lanes_active ||
          fInstructions.back().fOp == BuilderOp::jump)) {
-        // The previous instruction was `jump` or `branch_if_any_active_lanes`, so this branch
+        // The previous instruction was `jump` or `branch_if_any_lanes_active`, so this branch
         // could never possibly occur.
         return;
     }
-    fInstructions.push_back({BuilderOp::branch_if_any_active_lanes, {}, labelID});
+    fInstructions.push_back({BuilderOp::branch_if_any_lanes_active, {}, labelID});
 }
 
-void Builder::branch_if_no_active_lanes(int labelID) {
+void Builder::branch_if_no_lanes_active(int labelID) {
     if (!this->executionMaskWritesAreEnabled()) {
         return;
     }
 
     SkASSERT(labelID >= 0 && labelID < fNumLabels);
     if (!fInstructions.empty() &&
-        (fInstructions.back().fOp == BuilderOp::branch_if_no_active_lanes ||
+        (fInstructions.back().fOp == BuilderOp::branch_if_no_lanes_active ||
          fInstructions.back().fOp == BuilderOp::jump)) {
-        // The previous instruction was `jump` or `branch_if_no_active_lanes`, so this branch
+        // The previous instruction was `jump` or `branch_if_no_lanes_active`, so this branch
         // could never possibly occur.
         return;
     }
-    fInstructions.push_back({BuilderOp::branch_if_no_active_lanes, {}, labelID});
+    fInstructions.push_back({BuilderOp::branch_if_no_lanes_active, {}, labelID});
 }
 
-void Builder::branch_if_no_active_lanes_on_stack_top_equal(int value, int labelID) {
+void Builder::branch_if_no_lanes_active_on_stack_top_equal(int value, int labelID) {
     SkASSERT(labelID >= 0 && labelID < fNumLabels);
     if (!fInstructions.empty() &&
         (fInstructions.back().fOp == BuilderOp::jump ||
-         (fInstructions.back().fOp == BuilderOp::branch_if_no_active_lanes_on_stack_top_equal &&
+         (fInstructions.back().fOp == BuilderOp::branch_if_no_lanes_active_on_stack_top_equal &&
           fInstructions.back().fImmB == value))) {
-        // The previous instruction was `jump` or `branch_if_no_active_lanes_on_stack_top_equal`
+        // The previous instruction was `jump` or `branch_if_no_lanes_active_on_stack_top_equal`
         // (checking against the same value), so this branch could never possibly occur.
         return;
     }
-    fInstructions.push_back({BuilderOp::branch_if_no_active_lanes_on_stack_top_equal,
+    fInstructions.push_back({BuilderOp::branch_if_no_lanes_active_on_stack_top_equal,
                              {}, labelID, value});
 }
 
@@ -1128,8 +1128,8 @@ bool Program::appendStages(SkRasterPipeline* pipeline,
                 break;
             }
             case ProgramOp::jump:
-            case ProgramOp::branch_if_any_active_lanes:
-            case ProgramOp::branch_if_no_active_lanes:
+            case ProgramOp::branch_if_any_lanes_active:
+            case ProgramOp::branch_if_no_lanes_active:
             case ProgramOp::branch_if_no_active_lanes_eq: {
                 // The branch context contain a valid label ID at this point.
                 auto* branchCtx = static_cast<SkRasterPipeline_BranchCtx*>(stage.ctx);
@@ -1219,8 +1219,8 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
                 break;
 
             case BuilderOp::jump:
-            case BuilderOp::branch_if_any_active_lanes:
-            case BuilderOp::branch_if_no_active_lanes: {
+            case BuilderOp::branch_if_any_lanes_active:
+            case BuilderOp::branch_if_no_lanes_active: {
                 SkASSERT(inst.fImmA >= 0 && inst.fImmA < fNumLabels);
                 EmitStackRewindForBackwardsBranch(inst.fImmA);
 
@@ -1229,7 +1229,7 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
                 pipeline->push_back({(ProgramOp)inst.fOp, ctx});
                 break;
             }
-            case BuilderOp::branch_if_no_active_lanes_on_stack_top_equal: {
+            case BuilderOp::branch_if_no_lanes_active_on_stack_top_equal: {
                 SkASSERT(inst.fImmA >= 0 && inst.fImmA < fNumLabels);
                 EmitStackRewindForBackwardsBranch(inst.fImmA);
 
@@ -2181,8 +2181,8 @@ void Program::dump(SkWStream* out) const {
                 break;
 
             case POp::jump:
-            case POp::branch_if_any_active_lanes:
-            case POp::branch_if_no_active_lanes:
+            case POp::branch_if_any_lanes_active:
+            case POp::branch_if_no_lanes_active:
                 opArg1 = BranchOffset(static_cast<SkRasterPipeline_BranchCtx*>(stage.ctx));
                 break;
 
@@ -2520,8 +2520,8 @@ void Program::dump(SkWStream* out) const {
                 break;
 
             case POp::jump:
-            case POp::branch_if_any_active_lanes:
-            case POp::branch_if_no_active_lanes:
+            case POp::branch_if_any_lanes_active:
+            case POp::branch_if_no_lanes_active:
             case POp::invoke_shader:
             case POp::invoke_color_filter:
             case POp::invoke_blender:
