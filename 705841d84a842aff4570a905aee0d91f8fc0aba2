@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b7ccf25_2607ba7f",
+        "filename": "src/core/SkMatrix.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-02-28T21:27:19Z",
+      "side": 1,
+      "message": "This has a merge conflict in it.",
+      "range": {
+        "startLine": 1020,
+        "startChar": 0,
+        "endLine": 1022,
+        "endChar": 0
+      },
+      "revId": "705841d84a842aff4570a905aee0d91f8fc0aba2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
