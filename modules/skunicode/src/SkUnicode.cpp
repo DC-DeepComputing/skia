@@ -19,6 +19,11 @@ std::unique_ptr<SkUnicode> SkUnicode::Make() {
     if (unicode) {
         return unicode;
     }
+#elif defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeIcu4xBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
 #endif
     return nullptr;
 }

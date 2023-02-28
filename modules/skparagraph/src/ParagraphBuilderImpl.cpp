@@ -194,6 +194,8 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
                                                  std::move(fWordsUtf16),
                                                  std::move(fGraphemeBreaksUtf8),
                                                  std::move(fLineBreaksUtf8));
+#elif defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    // Default ICU implementation already has been created
 #elif defined(SK_UNICODE_ICU_IMPLEMENTATION)
     // Default ICU implementation already has been created
 #endif
