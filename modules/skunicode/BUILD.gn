@@ -8,9 +8,10 @@ import("skunicode.gni")
 
 declare_args() {
   skia_use_runtime_icu = false
+  skunicode_tests_enabled = true
 }
 
-if (skia_use_icu || skia_use_client_icu) {
+if (skia_use_icu || skia_use_client_icu || skia_use_icu4x) {
   config("public_config") {
     include_dirs = [ "include" ]
     defines = [ "SK_UNICODE_AVAILABLE" ]
@@ -19,6 +20,9 @@ if (skia_use_icu || skia_use_client_icu) {
     }
     if (skia_use_icu) {
       defines += [ "SK_UNICODE_ICU_IMPLEMENTATION" ]
+    }
+    if (skia_use_icu4x) {
+      defines += [ "SK_UNICODE_ICU4X_IMPLEMENTATION" ]
     }
     if (is_component_build) {
       defines += [ "SKUNICODE_DLL" ]
@@ -37,13 +41,8 @@ if (skia_use_icu || skia_use_client_icu) {
 
     if (skia_use_icu) {
       sources += skia_unicode_icu_sources
-      if (skia_use_icu) {
-        defines += [ "SK_UNICODE_ICU_IMPLEMENTATION" ]
-      }
-      if (skia_use_client_icu) {
-        sources += skia_unicode_client_icu_sources
-        defines += [ "SK_UNICODE_CLIENT_IMPLEMENTATION" ]
-      }
+      sources += skia_unicode_bidi_icu_sources
+      defines += [ "SK_UNICODE_ICU_IMPLEMENTATION" ]
 
       # only available for Android at the moment
       if (skia_use_runtime_icu && (is_android || is_linux)) {
@@ -54,13 +53,38 @@ if (skia_use_icu || skia_use_client_icu) {
         deps += [ "//third_party/icu" ]
       }
       configs += [ "../../third_party/icu/config:no_cxx" ]
-    } else if (skia_use_client_icu) {
+    }
+    if (skia_use_client_icu) {
+      if (!skia_use_icu) {
+        sources += skia_unicode_bidi_icu_sources
+      }
       sources += skia_unicode_client_icu_sources
       defines += [ "SK_UNICODE_CLIENT_IMPLEMENTATION" ]
       deps += [ skia_icu_bidi_third_party_dir ]
     }
+    if (skia_use_icu4x) {
+      sources += skia_unicode_icu4x_sources
+      defines += [ "SK_UNICODE_ICU4X_IMPLEMENTATION" ]
+      deps += [ "//third_party/icu4x" ]
+    }
+  }
+
+  skia_source_set("tests") {
+    if (skunicode_tests_enabled && skia_use_icu && skia_use_icu4x && skia_use_client_icu) {
+      testonly = true
+      sources = skunicode_tests
+      deps = [
+        ":skunicode",
+        "../..:skia",
+        "../..:test",
+      ]
+    } else {
+      sources = []
+    }
   }
 } else {
   group("skunicode") {
+  }
+  group("tests") {
   }
 }
