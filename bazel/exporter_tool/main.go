@@ -422,14 +422,25 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{"//modules/skunicode/src:icu_bidi_srcs"}},
 		{Var: "skia_unicode_icu_sources",
 			Rules: []string{"//modules/skunicode/src:icu_srcs"}},
+		{Var: "skia_unicode_icu4x_sources",
+			Rules: []string{"//modules/skunicode/src:icu4x_srcs"}},
 		{Var: "skia_unicode_client_icu_sources",
 			Rules: []string{"//modules/skunicode/src:client_srcs"}},
 		{Var: "skia_unicode_builtin_icu_sources",
 			Rules: []string{"//modules/skunicode/src:builtin_srcs"}},
 		{Var: "skia_unicode_runtime_icu_sources",
 			Rules: []string{"//modules/skunicode/src:runtime_srcs"}},
+<<<<<<< PATCH SET (e009ad Adding ICU4X implementation for SkUnicode)
+		{Var: "skia_unicode_icu4x_tests",
+			Rules: []string{"//modules/skunicode/tests:icu4x_tests_srcs"}},
+		{Var: "skia_unicode_client_tests",
+			Rules: []string{"//modules/skunicode/tests:client_tests_srcs"}},
+		{Var: "skia_unicode_tests",
+			Rules: []string{"//modules/skunicode/tests:test_srcs"}},
+=======
 		{Var: "skia_unicode_test_icu_sources",
 			Rules: []string{"//modules/skunicode/tests:test_icu_srcs"}},
+>>>>>>> BASE      (85c9ed Create icu client SkUnicode implementation)
 	}},
 	{GNI: "modules/sksg/sksg.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_sksg_sources",

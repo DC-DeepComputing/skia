@@ -194,8 +194,16 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
                                                  std::move(fWordsUtf16),
                                                  std::move(fGraphemeBreaksUtf8),
                                                  std::move(fLineBreaksUtf8));
+<<<<<<< PATCH SET (e009ad Adding ICU4X implementation for SkUnicode)
+#elif defined(SK_UNICODE_ICU4X_IMPLEMENTATION)
+    // This is the place where SkUnicode is paired with SkParagraph
+    fUnicode = SkUnicode::MakeIcu4xBasedUnicode();
+#elif defined(SK_UNICODE_TEST_ICU_IMPLEMENTATION)
+    fUnicode = SkUnicode::MakeTestClientUnicode(this->getText());
+=======
 #elif defined(SK_UNICODE_ICU_IMPLEMENTATION)
     // Default ICU implementation already has been created
+>>>>>>> BASE      (85c9ed Create icu client SkUnicode implementation)
 #endif
     SkASSERT(fUnicode);
     return std::make_unique<ParagraphImpl>(

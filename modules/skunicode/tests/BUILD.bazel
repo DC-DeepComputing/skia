@@ -5,6 +5,21 @@ licenses(["notice"])
 exports_files_legacy()
 
 skia_filegroup(
+<<<<<<< PATCH SET (e009ad Adding ICU4X implementation for SkUnicode)
+    name = "test_srcs",
+    srcs = ["SkUnicodeTest.cpp"],
+)
+
+skia_filegroup(
+    name = "icu4x_tests_srcs",
+    srcs = ["SkUnicodeTest_icu4x.cpp"],
+)
+
+skia_filegroup(
+    name = "client_tests_srcs",
+    srcs = ["SkUnicodeTest_client.cpp"],
+=======
     name = "test_icu_srcs",
     srcs = ["SkUnicode_test.cpp"],
+>>>>>>> BASE      (85c9ed Create icu client SkUnicode implementation)
 )
