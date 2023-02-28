@@ -1185,14 +1185,14 @@ void transformed_direct_3D(SkZip<Quad, const Glyph*, const VertexData> quadData,
 class DirectMaskSubRun final : public SubRun, public AtlasSubRun {
 public:
     DirectMaskSubRun(MaskFormat format,
-                     const SkMatrix& initialPositionMatrix,
-                     SkRect deviceBounds,
-                     SkSpan<const SkPoint> devicePositions,
+                     const SkMatrix& creationMatrix,
+                     SkRect creationBounds,
+                     SkSpan<const SkPoint> positions,
                      GlyphVector&& glyphs)
             : fMaskFormat{format}
-            , fInitialPositionMatrix{initialPositionMatrix}
-            , fGlyphDeviceBounds{deviceBounds}
-            , fLeftTopDevicePos{devicePositions}
+            , fCreationMatrix{creationMatrix}
+            , fCreationBounds{creationBounds}
+            , fLeftTopDevicePos{positions}
             , fGlyphs{std::move(glyphs)} {}
 
     static SubRunOwner Make(SkRect runBounds,
@@ -1373,7 +1373,7 @@ public:
 
         const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
         auto [noTransformNeeded, originOffset] =
-                can_use_direct(fInitialPositionMatrix, positionMatrix);
+                can_use_direct(fCreationMatrix, positionMatrix);
 
         if (noTransformNeeded) {
             if (clip.isEmpty()) {
@@ -1397,7 +1397,7 @@ public:
                     generalized_direct_2D(quadData((Quad*)vertexDst), color, originOffset, &clip);
                 }
             }
-        } else if (SkMatrix inverse; fInitialPositionMatrix.invert(&inverse)) {
+        } else if (SkMatrix inverse; fCreationMatrix.invert(&inverse)) {
             SkMatrix viewDifference = SkMatrix::Concat(positionMatrix, inverse);
             if (!viewDifference.hasPerspective()) {
                 if (fMaskFormat != MaskFormat::kARGB) {
@@ -1434,36 +1434,36 @@ public:
             const Transform& localToDevice, SkPoint drawOrigin) const override {
         // The baked-in matrix differs from the current localToDevice by a translation if the
         // upper 2x2 remains the same, and there's no perspective. Since there's no projection,
-        // Z is irrelevant, so it's okay that fInitialPositionMatrix is an SkMatrix and has
+        // Z is irrelevant, so it's okay that fCreationMatrix is an SkMatrix and has
         // discarded the 3rd row/col, and can ignore those values in localToDevice.
         const SkM44& positionMatrix = localToDevice.matrix();
-        const bool compatibleMatrix = positionMatrix.rc(0,0) == fInitialPositionMatrix.rc(0,0) &&
-                                      positionMatrix.rc(0,1) == fInitialPositionMatrix.rc(0,1) &&
-                                      positionMatrix.rc(1,0) == fInitialPositionMatrix.rc(1,0) &&
-                                      positionMatrix.rc(1,1) == fInitialPositionMatrix.rc(1,1) &&
+        const bool compatibleMatrix = positionMatrix.rc(0,0) == fCreationMatrix.rc(0, 0) &&
+                                      positionMatrix.rc(0,1) == fCreationMatrix.rc(0, 1) &&
+                                      positionMatrix.rc(1,0) == fCreationMatrix.rc(1, 0) &&
+                                      positionMatrix.rc(1,1) == fCreationMatrix.rc(1, 1) &&
                                       localToDevice.type() != Transform::Type::kProjection &&
-                                      !fInitialPositionMatrix.hasPerspective();
+                                      !fCreationMatrix.hasPerspective();
 
         if (compatibleMatrix) {
             const SkV4 mappedOrigin = positionMatrix.map(drawOrigin.x(), drawOrigin.y(), 0.f, 1.f);
-            const SkV2 offset = {mappedOrigin.x - fInitialPositionMatrix.getTranslateX(),
-                                 mappedOrigin.y - fInitialPositionMatrix.getTranslateY()};
+            const SkV2 offset = {mappedOrigin.x - fCreationMatrix.getTranslateX(),
+                                 mappedOrigin.y - fCreationMatrix.getTranslateY()};
             if (SkScalarIsInt(offset.x) && SkScalarIsInt(offset.y)) {
                 // The offset is an integer (but make sure), which means the generated mask can be
                 // accessed without changing how texels would be sampled.
-                return {gr::Rect(fGlyphDeviceBounds),
+                return {gr::Rect(fCreationBounds),
                         Transform(SkM44::Translate(SkScalarRoundToInt(offset.x),
                                                    SkScalarRoundToInt(offset.y)))};
             }
         }
 
-        // Otherwise compute the relative transformation from fInitialPositionMatrix to
-        // localToDevice, with the drawOrigin applied. If fInitialPositionMatrix or the
+        // Otherwise compute the relative transformation from fCreationMatrix to
+        // localToDevice, with the drawOrigin applied. If fCreationMatrix or the
         // concatenation is not invertible the returned Transform is marked invalid and the draw
         // will be automatically dropped.
-        return {gr::Rect(fGlyphDeviceBounds),
+        return {gr::Rect(fCreationBounds),
                 localToDevice.preTranslate(drawOrigin.x(), drawOrigin.y())
-                        .concatInverse(SkM44(fInitialPositionMatrix))};
+                        .concatInverse(SkM44(fCreationMatrix))};
     }
 
     const Renderer* renderer(const RendererProvider* renderers) const override {
@@ -1494,7 +1494,7 @@ public:
 #endif  // defined(SK_GRAPHITE)
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
-        auto [reuse, _] = can_use_direct(fInitialPositionMatrix, positionMatrix);
+        auto [reuse, _] = can_use_direct(fCreationMatrix, positionMatrix);
         return reuse;
     }
 
@@ -1507,7 +1507,7 @@ protected:
 
     void doFlatten(SkWriteBuffer& buffer) const override {
         buffer.writeInt(static_cast<int>(fMaskFormat));
-        buffer.writeRect(fGlyphDeviceBounds);
+        buffer.writeRect(fCreationBounds);
         buffer.writePointArray(fLeftTopDevicePos.data(), SkCount(fLeftTopDevicePos));
         fGlyphs.flatten(buffer);
     }
@@ -1517,7 +1517,7 @@ private:
     // bounding box of all the glyphs. If the bounding box is empty, then something went singular
     // and this operation should be dropped.
     std::tuple<bool, SkRect> deviceRectAndCheckTransform(const SkMatrix& positionMatrix) const {
-        const SkMatrix& initialMatrix = fInitialPositionMatrix;
+        const SkMatrix& initialMatrix = fCreationMatrix;
         const SkPoint offset = positionMatrix.mapOrigin() - initialMatrix.mapOrigin();
 
         const bool compatibleMatrix = positionMatrix[0] == initialMatrix[0] &&
@@ -1528,10 +1528,10 @@ private:
                                       !initialMatrix.hasPerspective();
 
         if (compatibleMatrix && SkScalarIsInt(offset.x()) && SkScalarIsInt(offset.y())) {
-            return {true, fGlyphDeviceBounds.makeOffset(offset)};
-        } else if (SkMatrix inverse; fInitialPositionMatrix.invert(&inverse)) {
+            return {true, fCreationBounds.makeOffset(offset)};
+        } else if (SkMatrix inverse; fCreationMatrix.invert(&inverse)) {
             SkMatrix viewDifference = SkMatrix::Concat(positionMatrix, inverse);
-            return {false, viewDifference.mapRect(fGlyphDeviceBounds)};
+            return {false, viewDifference.mapRect(fCreationBounds)};
         }
 
         // initialPositionMatrix is singular. Do nothing.
@@ -1539,10 +1539,10 @@ private:
     }
 
     const MaskFormat fMaskFormat;
-    const SkMatrix& fInitialPositionMatrix;
+    const SkMatrix& fCreationMatrix;
 
     // The vertex bounds in device space. The bounds are the joined rectangles of all the glyphs.
-    const SkRect fGlyphDeviceBounds;
+    const SkRect fCreationBounds;
     const SkSpan<const SkPoint> fLeftTopDevicePos;
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
