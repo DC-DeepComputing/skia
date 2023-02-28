@@ -99,7 +99,7 @@ MTLPixelFormat MtlDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags> mas
 #ifdef SK_PRINT_SKSL_SHADERS
 static const bool gPrintSKSL = true;
 #else
-static const bool gPrintSKSL = false;
+static const bool gPrintSKSL = true;
 #endif
 
 #ifdef SK_PRINT_NATIVE_SHADERS

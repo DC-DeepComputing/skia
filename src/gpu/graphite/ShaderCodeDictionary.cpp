@@ -676,6 +676,22 @@ void GenerateCoordClampPreamble(const ShaderInfo& shaderInfo,
 }
 
 //--------------------------------------------------------------------------------------------------
+static constexpr Uniform kPerlinNoiseShaderUniforms[] = {
+        { "noiseType",     SkSLType::kInt },
+        { "baseFrequency", SkSLType::kHalf2 },
+        { "numOctaves",    SkSLType::kInt },
+        { "stitching",     SkSLType::kInt },
+        { "stitchData",    SkSLType::kHalf2 },
+};
+
+static constexpr TextureAndSampler kPerlinNoiseShaderTexturesAndSamplers[] = {
+        { "permutationsSampler" },
+        { "noiseSampler" },
+};
+
+static constexpr char kPerlinNoiseShaderName[] = "perlin_noise_shader";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr Uniform kPorterDuffBlendShaderUniforms[] = {
         { "blendConstants", SkSLType::kHalf4 },
 };
@@ -708,7 +724,8 @@ public:
             : fShaderInfo(shaderInfo)
             , fEntryIndex(entryIndex)
             , fChildEntryIndices(childEntryIndices)
-            , fPreamble(preamble) {}
+            , fPreamble(preamble) {
+    }
 
     std::string declareUniform(const SkSL::VarDeclaration* decl) override {
         std::string result = get_mangled_name(std::string(decl->var()->name()), fEntryIndex);
@@ -1323,6 +1340,17 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateCoordClampPreamble,
             kNumCoordClampShaderChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPerlinNoiseShader] = {
+            "PerlinNoiseShader",
+            SkSpan(kPerlinNoiseShaderUniforms),
+            SnippetRequirementFlags::kLocalCoords,
+            SkSpan(kPerlinNoiseShaderTexturesAndSamplers),
+            kPerlinNoiseShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
             { }      // no data payload
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPorterDuffBlendShader] = {
