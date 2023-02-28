@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87c180ed_7383eef3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-02-28T16:56:02Z",
+      "side": 1,
+      "message": "Thought I\u0027d take a look since there\u0027s a deadline coming up. I\u0027m not sure why the first two w\u0027s end up as 0 in the outset code -- it\u0027s a bit of a mystery to me how all of that works. However, this seems like a reasonable fix.",
+      "revId": "0ab75dfa2885e54d43fe10bfb17356f7f58de437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
