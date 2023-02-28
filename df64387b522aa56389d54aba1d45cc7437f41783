@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78911f42_b9b2ef53",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-02-28T21:26:56Z",
+      "side": 1,
+      "message": "While doing this work, I realized this code is wrong: https://skbug.com/14153",
+      "revId": "df64387b522aa56389d54aba1d45cc7437f41783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
