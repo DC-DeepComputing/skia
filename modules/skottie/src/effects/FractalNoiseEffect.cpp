@@ -101,22 +101,19 @@ static constexpr char gNoiseEffectSkSL[] =
         // Constant loop counter chosen to be >= ceil(u_octaves).
         // The logical counter is actually 'oct'.
         "for (float i = 0; i < %u; ++i) {"
-            // effective layer weight computed to accommodate fixed loop counters
-            //
+            // effective layer weight
             //   -- for full octaves:              layer amplitude
             //   -- for fractional octave:         layer amplitude modulated by fractional part
-            //   -- for octaves > ceil(u_octaves): 0
-            //
-            // e.g. for 6 loops and u_octaves = 2.3, this generates the sequence [1,1,.3,0,0]
-            "float w = amp*saturate(oct);"
+            "float w = amp*min(oct,1.0);"
 
             "n += w*fractal(filter(xy));"
 
             "wacc += w;"
-            "amp  *= u_persistence;"
             "oct  -= 1;"
+            "if (oct <= 0){break;}"
 
-            "xy = (u_submatrix*float3(xy,1)).xy;"
+            "amp *= u_persistence;"
+            "xy   = (u_submatrix*float3(xy,1)).xy;"
         "}"
 
         "n /= wacc;"
