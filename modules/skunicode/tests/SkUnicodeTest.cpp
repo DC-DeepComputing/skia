@@ -4,21 +4,48 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
 #include "include/core/SkEncodedImageFormat.h"
+#include "include/core/SkFontMgr.h"
+#include "include/core/SkFontStyle.h"
+#include "include/core/SkImageEncoder.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
+#include "include/core/SkTypes.h"
+#include "src/core/SkOSFile.h"
+#include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
+#include "tools/Resources.h"
+
+#include <string.h>
+#include <algorithm>
+#include <limits>
+#include <memory>
+#include <string>
+#include <utility>
 #include <vector>
+#include <thread>
+
 #include "modules/skunicode/include/SkUnicode.h"
 
 UNIX_ONLY_TEST(SkUnicode_GetWords, reporter) {
     SkString text("1 22 333 4444 55555 666666 7777777");
     std::vector<SkUnicode::Position> expected = { 0, 1, 2, 4, 5, 8, 9, 13, 14, 19, 20, 26, 27, 34 };
+
     auto icu = SkUnicode::Make();
+
     std::vector<SkUnicode::Position> results;
     auto result = icu->getWords(text.data(), text.size(), "en", &results);
+
     REPORTER_ASSERT(reporter, result);
     REPORTER_ASSERT(reporter, results.size() == expected.size());
     for (auto i = 0ul; i < results.size(); ++i) {
@@ -28,12 +55,15 @@ UNIX_ONLY_TEST(SkUnicode_GetWords, reporter) {
 
 UNIX_ONLY_TEST(SkUnicode_GetBidiRegionsLTR, reporter) {
     SkString text("1 22 333 4444 55555 666666 7777777");
+
     auto icu = SkUnicode::Make();
+
     std::vector<SkUnicode::BidiRegion> results;
     auto result = icu->getBidiRegions(text.data(),
                                       text.size(),
                                       SkUnicode::TextDirection::kLTR,
                                       &results);
+
     REPORTER_ASSERT(reporter, result);
     REPORTER_ASSERT(reporter, results.size() == 1);
     REPORTER_ASSERT(reporter, results[0].start == 0 &&
@@ -43,12 +73,15 @@ UNIX_ONLY_TEST(SkUnicode_GetBidiRegionsLTR, reporter) {
 
 UNIX_ONLY_TEST(SkUnicode_GetBidiRegionsRTL, reporter) {
     SkString text("الهيمنة على العالم عبارة قبيحة ، أفضل أن أسميها تحسين العالم.");
+
     auto icu = SkUnicode::Make();
+
     std::vector<SkUnicode::BidiRegion> results;
     auto result = icu->getBidiRegions(text.data(),
                                       text.size(),
                                       SkUnicode::TextDirection::kRTL,
                                       &results);
+
     REPORTER_ASSERT(reporter, result);
     REPORTER_ASSERT(reporter, results.size() == 1);
     REPORTER_ASSERT(reporter, results[0].start == 0 &&
@@ -74,12 +107,15 @@ UNIX_ONLY_TEST(SkUnicode_GetBidiRegionsMix1, reporter) {
         {26, 27, 1},
         {27, 34, 2},
     };
+
     auto icu = SkUnicode::Make();
+
     std::vector<SkUnicode::BidiRegion> results;
     auto result = icu->getBidiRegions(text.data(),
                                       text.size(),
                                       SkUnicode::TextDirection::kRTL,
                                       &results);
+
     REPORTER_ASSERT(reporter, result);
     REPORTER_ASSERT(reporter, results.size() == expected.size());
     for (auto i = 0ul; i < results.size(); ++i) {
@@ -97,12 +133,15 @@ UNIX_ONLY_TEST(SkUnicode_GetBidiRegionsMix2, reporter) {
         { 24, 80, 1},
         { 80, 107, 0},
     };
+
     auto icu = SkUnicode::Make();
+
     std::vector<SkUnicode::BidiRegion> results;
     auto result = icu->getBidiRegions(text.data(),
                                       text.size(),
                                       SkUnicode::TextDirection::kLTR,
                                       &results);
+
     REPORTER_ASSERT(reporter, result);
     REPORTER_ASSERT(reporter, results.size() == expected.size());
     for (auto i = 0ul; i < results.size(); ++i) {
@@ -112,21 +151,69 @@ UNIX_ONLY_TEST(SkUnicode_GetBidiRegionsMix2, reporter) {
     }
 }
 
+UNIX_ONLY_TEST(SkUnicode_IsBreakingWhitespace, reporter) {
+
+    char16_t whitespaces [] = {
+        0x0009, // character tabulation
+        0x000A, // line feed
+        0x000B, // line tabulation
+        0x000C, // form feed
+        0x000D, // carriage return
+        0x0020, // space
+      //0x0085, // next line
+      //0x00A0, // no-break space
+        0x1680, // ogham space mark
+        0x2000, // en quad
+        0x2001, // em quad
+        0x2002, // en space
+        0x2003, // em space
+        0x2004, // three-per-em space
+        0x2005, // four-per-em space
+        0x2006, // six-per-em space
+      //0x2007, // figure space
+        0x2008, // punctuation space
+        0x2009, // thin space
+        0x200A, // hair space
+        0x2028, // line separator
+        0x2029, // paragraph separator
+      //0x202F, // narrow no-break space
+        0x205F, // medium mathematical space
+        0x3000, // ideographic space
+    };
+    char16_t letters[] = { 'a', 'b', 'c', 'd' };
+
+    auto icu = SkUnicode::Make();
+
+    for (auto& uc : whitespaces) {
+        REPORTER_ASSERT(reporter, icu->isBreakingWhitespace(uc));
+    }
+
+    for (auto& uc : letters) {
+        REPORTER_ASSERT(reporter, !icu->isBreakingWhitespace(uc));
+    }
+}
+
 UNIX_ONLY_TEST(SkUnicode_ToUpper, reporter) {
+
     SkString lower("abcdefghijklmnopqrstuvwxyz");
     SkString upper("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
     auto icu = SkUnicode::Make();
+
     auto icu_result1 = icu->toUpper(lower);
     REPORTER_ASSERT(reporter, icu_result1.equals(upper));
+
     auto icu_result2 = icu->toUpper(upper);
     REPORTER_ASSERT(reporter, icu_result2.equals(upper));
 }
 
 UNIX_ONLY_TEST(SkUnicode_ComputeCodeUnitFlags, reporter) {
+
     //SkString text("World domination is such an ugly phrase - I prefer to call it world optimisation");
     SkString text("1\n22 333 4444 55555 666666 7777777");
     // 4 8 13 19 24
     auto icu = SkUnicode::Make();
+
     SkTArray<SkUnicode::CodeUnitFlags> results;
     auto result = icu->computeCodeUnitFlags(text.data(),
                                             text.size(),
@@ -156,7 +243,9 @@ UNIX_ONLY_TEST(SkUnicode_ComputeCodeUnitFlags, reporter) {
 }
 
 UNIX_ONLY_TEST(SkUnicode_ReorderVisual, reporter) {
+
     auto icu = SkUnicode::Make();
+
     auto reorder = [&](std::vector<SkUnicode::BidiLevel> levels,
                        std::vector<int32_t> expected) {
             std::vector<int32_t> logicalOrder(levels.size());
