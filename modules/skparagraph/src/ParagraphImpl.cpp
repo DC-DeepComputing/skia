@@ -114,10 +114,14 @@ int32_t ParagraphImpl::unresolvedGlyphs() {
     return fUnresolvedGlyphs;
 }
 
-void ParagraphImpl::layout(SkScalar rawWidth) {
+void ParagraphImpl::layout(SkScalar rawWidth, bool applyRoundingHack) {
+    fApplyRoundingHack = applyRoundingHack;
 
     // TODO: This rounding is done to match Flutter tests. Must be removed...
-    auto floorWidth = SkScalarFloorToScalar(rawWidth);
+    auto floorWidth = rawWidth;
+    if (applyRoundingHack) {
+        floorWidth = SkScalarFloorToScalar(floorWidth);
+    }
 
     if ((!SkScalarIsFinite(rawWidth) || fLongestLine <= floorWidth) &&
         fState >= kLineBroken &&
@@ -197,9 +201,11 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
     this->fOldWidth = floorWidth;
     this->fOldHeight = this->fHeight;
 
-    // TODO: This rounding is done to match Flutter tests. Must be removed...
-    fMinIntrinsicWidth = littleRound(fMinIntrinsicWidth);
-    fMaxIntrinsicWidth = littleRound(fMaxIntrinsicWidth);
+    if (applyRoundingHack) {
+        // TODO: This rounding is done to match Flutter tests. Must be removed...
+        fMinIntrinsicWidth = littleRound(fMinIntrinsicWidth);
+        fMaxIntrinsicWidth = littleRound(fMaxIntrinsicWidth);
+    }
 
     // TODO: This is strictly Flutter thing. Must be factored out into some flutter code
     if (fParagraphStyle.getMaxLines() == 1 ||

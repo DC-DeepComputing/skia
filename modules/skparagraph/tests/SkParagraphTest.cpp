@@ -451,7 +451,7 @@ UNIX_ONLY_TEST(SkParagraph_SimpleParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -469,6 +469,39 @@ UNIX_ONLY_TEST(SkParagraph_SimpleParagraph, reporter) {
                             ++index;
                         });
     }
+}
+
+UNIX_ONLY_TEST(SkParagraph_Rounding_OFF, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    if (!fontCollection->fontsFound()) return;
+    const char* text = "abc";
+    const size_t len = strlen(text);
+
+    ParagraphStyle paragraph_style;
+    paragraph_style.turnHintingOff();
+    TestParagraphBuilderImpl builder(paragraph_style, fontCollection);
+
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Ahem")});
+    text_style.setColor(SK_ColorBLACK);
+
+    text_style.setFontSize(1.5)
+    builder.pushStyle(text_style);
+    builder.addText(text, len);
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    // Slightly wider than the max intrinsic width.
+    paragraph->layout(4.6, false);
+    REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
+
+    ParagraphImpl* impl = static_cast<ParagraphImpl*>(paragraph.get());
+
+    REPORTER_ASSERT(reporter, impl->lines().size() == 1);
+    auto& line = impl->lines()[0];
+
+    const LineMetrics metrics = line.getMetrics();
+    REPORTER_ASSERT(reporter, SkScalarNearlyEqual(metrics.fWidth, 4.5));
 }
 
 UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderParagraph, reporter) {
@@ -527,7 +560,7 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle rect_height_style = RectHeightStyle::kTight;
@@ -601,7 +634,7 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderBaselineParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto boxes = paragraph->getRectsForPlaceholders();
@@ -657,7 +690,7 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderAboveBaselineParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto boxes = paragraph->getRectsForPlaceholders();
@@ -713,7 +746,7 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderBelowBaselineParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto boxes = paragraph->getRectsForPlaceholders();
@@ -769,7 +802,7 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderBottomParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle rect_height_style = RectHeightStyle::kTight;
@@ -823,7 +856,7 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderTopParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle rect_height_style = RectHeightStyle::kTight;
@@ -877,7 +910,7 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderMiddleParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle rect_height_style = RectHeightStyle::kTight;
@@ -930,7 +963,7 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderIdeographicBaselineParagraph, report
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle rect_height_style = RectHeightStyle::kTight;
@@ -1048,7 +1081,7 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderBreakParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle rect_height_style = RectHeightStyle::kTight;
@@ -1171,7 +1204,7 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderGetRectsParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle rect_height_style = RectHeightStyle::kMax;
@@ -1234,7 +1267,7 @@ UNIX_ONLY_TEST(SkParagraph_SimpleRedParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -1319,7 +1352,7 @@ UNIX_ONLY_TEST(SkParagraph_RainbowParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(1000);
+    paragraph->layout(1000, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
@@ -1394,7 +1427,7 @@ UNIX_ONLY_TEST(SkParagraph_DefaultStyleParagraph, reporter) {
     builder.addText(text, len);
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 10.0, 15.0);
 
     REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
@@ -1440,7 +1473,7 @@ UNIX_ONLY_TEST(SkParagraph_BoldParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(VeryLongCanvasWidth);
+    paragraph->layout(VeryLongCanvasWidth, false);
     paragraph->paint(canvas.get(), 10.0, 60.0);
 
     REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
@@ -1486,7 +1519,7 @@ UNIX_ONLY_TEST(SkParagraph_HeightOverrideParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->runs().size() == 5);
@@ -1547,7 +1580,7 @@ UNIX_ONLY_TEST(SkParagraph_BasicHalfLeading, reporter) {
     builder.addText(text);
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->styles().size() == 1);  // paragraph style does not count
@@ -1615,7 +1648,7 @@ UNIX_ONLY_TEST(SkParagraph_NearZeroHeightMixedDistribution, reporter) {
     builder.addText(text);
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -1709,7 +1742,7 @@ UNIX_ONLY_TEST(SkParagraph_StrutHalfLeading, reporter) {
     builder.addText(text);
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->styles().size() == 1);  // paragraph style does not count
@@ -1769,7 +1802,7 @@ UNIX_ONLY_TEST(SkParagraph_TrimLeadingDistribution, reporter) {
     builder.addText(text);
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     const RectWidthStyle rect_width_style = RectWidthStyle::kTight;
@@ -1849,7 +1882,7 @@ UNIX_ONLY_TEST(SkParagraph_LeftAlignParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -1933,7 +1966,7 @@ UNIX_ONLY_TEST(SkParagraph_RightAlignParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
 
     paragraph->paint(canvas.get(), 0, 0);
 
@@ -2020,7 +2053,7 @@ UNIX_ONLY_TEST(SkParagraph_CenterAlignParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -2105,7 +2138,7 @@ UNIX_ONLY_TEST(SkParagraph_JustifyAlignParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle rect_height_style = RectHeightStyle::kMax;
@@ -2177,7 +2210,7 @@ UNIX_ONLY_TEST(SkParagraph_JustifyRTL, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -2241,7 +2274,7 @@ UNIX_ONLY_TEST(SkParagraph_JustifyRTLNewLine, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -2314,7 +2347,7 @@ UNIX_ONLY_TEST(SkParagraph_LeadingSpaceRTL, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     SkPaint paint;
@@ -2391,7 +2424,7 @@ UNIX_ONLY_TEST(SkParagraph_DecorationsParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -2481,7 +2514,7 @@ UNIX_ONLY_TEST(SkParagraph_ItalicsParagraph, reporter) {
     builder.addText(text3, strlen(text3));
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -2553,7 +2586,7 @@ UNIX_ONLY_TEST(SkParagraph_ChineseParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
@@ -2598,7 +2631,7 @@ UNIX_ONLY_TEST(SkParagraph_ArabicParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
@@ -2639,7 +2672,7 @@ UNIX_ONLY_TEST(SkParagraph_ArabicRectsParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->runs().size() == 1);
@@ -2690,7 +2723,7 @@ UNIX_ONLY_TEST(SkParagraph_ArabicRectsLTRLeftAlignParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->runs().size() == 3);
@@ -2738,7 +2771,7 @@ UNIX_ONLY_TEST(SkParagraph_ArabicRectsLTRRightAlignParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->runs().size() == 3);
@@ -2787,7 +2820,7 @@ UNIX_ONLY_TEST(SkParagraph_GetGlyphPositionAtCoordinateParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     // Tests for getGlyphPositionAtCoordinate()
@@ -2848,7 +2881,7 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle heightStyle = RectHeightStyle::kMax;
@@ -2951,7 +2984,7 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeTight, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle heightStyle = RectHeightStyle::kTight;
@@ -3019,7 +3052,7 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeIncludeLineSpacingMiddle, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle heightStyle = RectHeightStyle::kIncludeLineSpacingMiddle;
@@ -3141,7 +3174,7 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeIncludeLineSpacingTop, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle heightStyle = RectHeightStyle::kIncludeLineSpacingTop;
@@ -3263,7 +3296,7 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeIncludeLineSpacingBottom, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle heightStyle = RectHeightStyle::kIncludeLineSpacingBottom;
@@ -3383,7 +3416,7 @@ DEF_TEST_DISABLED(SkParagraph_GetRectsForRangeIncludeCombiningCharacter, reporte
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -3450,7 +3483,7 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeCenterParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     // Some of the formatting lazily done on paint
@@ -3544,7 +3577,7 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeCenterParagraphNewlineCentered, repor
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
 
     paragraph->paint(canvas.get(), 0, 0);
 
@@ -3606,7 +3639,7 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeCenterMultiLineParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
 
     paragraph->paint(canvas.get(), 0, 0);
 
@@ -3708,7 +3741,7 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeStrut, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     {
@@ -3753,7 +3786,7 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeStrutFallback, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
 
@@ -3795,7 +3828,7 @@ UNIX_ONLY_TEST(SkParagraph_GetWordBoundaryParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     REPORTER_ASSERT(reporter, paragraph->getWordBoundary(0) == SkRange<size_t>(0, 5));
@@ -3906,7 +3939,7 @@ UNIX_ONLY_TEST(SkParagraph_SpacingParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -3955,7 +3988,7 @@ UNIX_ONLY_TEST(SkParagraph_LongWordParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth / 2);
+    paragraph->layout(TestCanvasWidth / 2, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -3999,7 +4032,7 @@ UNIX_ONLY_TEST(SkParagraph_KernScaleParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth / scale);
+    paragraph->layout(TestCanvasWidth / scale, false);
     canvas.get()->scale(scale, scale);
     paragraph->paint(canvas.get(), 0, 0);
     canvas.get()->scale(1, 1);
@@ -4041,7 +4074,7 @@ UNIX_ONLY_TEST(SkParagraph_NewlineParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 300);
+    paragraph->layout(TestCanvasWidth - 300, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -4083,7 +4116,7 @@ UNIX_ONLY_TEST(SkParagraph_EmojiParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
@@ -4128,7 +4161,7 @@ UNIX_ONLY_TEST(SkParagraph_EmojiMultiLineRectsParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 300);
+    paragraph->layout(TestCanvasWidth - 300, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle rect_height_style = RectHeightStyle::kTight;
@@ -4187,7 +4220,7 @@ UNIX_ONLY_TEST(SkParagraph_RepeatLayoutParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(300);
+    paragraph->layout(300, false);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     // Some of the formatting lazily done on paint
@@ -4195,7 +4228,7 @@ UNIX_ONLY_TEST(SkParagraph_RepeatLayoutParagraph, reporter) {
     REPORTER_ASSERT(reporter, impl->styles().size() == 1);
     REPORTER_ASSERT(reporter, impl->lines().size() == 12);
 
-    paragraph->layout(600);
+    paragraph->layout(600, false);
     paragraph->paint(canvas.get(), 0, 0);
     REPORTER_ASSERT(reporter, impl->runs().size() == 1);
     REPORTER_ASSERT(reporter, impl->styles().size() == 1);
@@ -4229,7 +4262,7 @@ UNIX_ONLY_TEST(SkParagraph_Ellipsize, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -4269,7 +4302,7 @@ UNIX_ONLY_TEST(SkParagraph_UnderlineShiftParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -4281,7 +4314,7 @@ UNIX_ONLY_TEST(SkParagraph_UnderlineShiftParagraph, reporter) {
     builder1.pop();
 
     auto paragraph1 = builder1.Build();
-    paragraph1->layout(TestCanvasWidth);
+    paragraph1->layout(TestCanvasWidth, false);
     paragraph1->paint(canvas.get(), 0, 25);
 
     auto impl1 = static_cast<ParagraphImpl*>(paragraph1.get());
@@ -4331,7 +4364,7 @@ UNIX_ONLY_TEST(SkParagraph_SimpleShadow, reporter) {
     builder.addText(text, len);
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 10.0, 15.0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -4384,7 +4417,7 @@ UNIX_ONLY_TEST(SkParagraph_ComplexShadow, reporter) {
     builder.addText(text, len);
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 10.0, 15.0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -4448,7 +4481,7 @@ UNIX_ONLY_TEST(SkParagraph_BaselineParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth - 100);
+    paragraph->layout(TestCanvasWidth - 100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     SkRect rect1 = SkRect::MakeXYWH(0, paragraph->getIdeographicBaseline(),
@@ -4526,7 +4559,7 @@ UNIX_ONLY_TEST(SkParagraph_FontFallbackParagraph, reporter) {
 
     auto paragraph = builder.Build();
     REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == -1); // Not shaped yet
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 10.0, 15.0);
 
     size_t spaceRun = 1;
@@ -4592,7 +4625,7 @@ UNIX_ONLY_TEST(SkParagraph_StrutParagraph1, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -4698,7 +4731,7 @@ UNIX_ONLY_TEST(SkParagraph_StrutParagraph2, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -4805,7 +4838,7 @@ UNIX_ONLY_TEST(SkParagraph_StrutParagraph3, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -4912,7 +4945,7 @@ UNIX_ONLY_TEST(SkParagraph_StrutForceParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -5009,7 +5042,7 @@ UNIX_ONLY_TEST(SkParagraph_StrutDefaultParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(550);
+    paragraph->layout(550, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     RectHeightStyle rect_height_style = RectHeightStyle::kTight;
@@ -5069,7 +5102,7 @@ UNIX_ONLY_TEST(SkParagraph_FontFeaturesParagraph, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
 
     paragraph->paint(canvas.get(), 10.0, 15.0);
 
@@ -5109,7 +5142,7 @@ UNIX_ONLY_TEST(SkParagraph_WhitespacesInMultipleFonts, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
 
     REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
 
@@ -5139,7 +5172,7 @@ DEF_TEST_DISABLED(SkParagraph_JSON1, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->runs().size() == 1);
@@ -5180,7 +5213,7 @@ DEF_TEST_DISABLED(SkParagraph_JSON2, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->runs().size() == 1);
@@ -5380,7 +5413,7 @@ UNIX_ONLY_TEST(SkParagraph_EmptyParagraphWithLineBreak, reporter) {
     builder.addText("abc\n\ndef");
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     // Select a position at the second (empty) line
@@ -5406,7 +5439,7 @@ UNIX_ONLY_TEST(SkParagraph_NullInMiddleOfText, reporter) {
     builder.addText(text.c_str(), text.size());
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 }
 
@@ -5422,7 +5455,7 @@ UNIX_ONLY_TEST(SkParagraph_PlaceholderOnly, reporter) {
     builder.addPlaceholder(placeholder);
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     auto result = paragraph->getRectsForPlaceholders();
     paragraph->paint(canvas.get(), 0, 0);
 }
@@ -5464,7 +5497,7 @@ UNIX_ONLY_TEST(SkParagraph_Fallbacks, reporter) {
         builder.pop();
 
         auto paragraph = builder.Build();
-        paragraph->layout(TestCanvasWidth);
+        paragraph->layout(TestCanvasWidth, false);
         paragraph->paint(canvas.get(), 0, 0);
         canvas.get()->translate(0, paragraph->getHeight() + 10);
     }
@@ -5518,7 +5551,7 @@ UNIX_ONLY_TEST(SkParagraph_Bidi1, reporter) {
     builder.addText(mno);
 
     auto paragraph = builder.Build();
-    paragraph->layout(400);
+    paragraph->layout(400, false);
     paragraph->paint(canvas.get(), 0, 0);
 }
 
@@ -5549,7 +5582,7 @@ UNIX_ONLY_TEST(SkParagraph_Bidi2, reporter) {
         builder.pushStyle(text_style);
         builder.addText(iJKLmno);
         auto paragraph = builder.Build();
-        paragraph->layout(360);
+        paragraph->layout(360, false);
         paragraph->paint(canvas.get(), 0, 0);
     }
     canvas.get()->translate(0, 400);
@@ -5558,7 +5591,7 @@ UNIX_ONLY_TEST(SkParagraph_Bidi2, reporter) {
         builder.pushStyle(text_style);
         builder.addText(abcDEFghiJKLmno);
         auto paragraph = builder.Build();
-        paragraph->layout(360);
+        paragraph->layout(360, false);
         paragraph->paint(canvas.get(), 0, 0);
     }
 }
@@ -5580,7 +5613,7 @@ UNIX_ONLY_TEST(SkParagraph_NewlineOnly, reporter) {
     TestParagraphBuilderImpl builder(paragraph_style, fontCollection);
     builder.addText("\n");
     auto paragraph = builder.Build();
-    paragraph->layout(1000);
+    paragraph->layout(1000, false);
     REPORTER_ASSERT(reporter, paragraph->getHeight() == 28);
 }
 
@@ -5626,7 +5659,7 @@ UNIX_ONLY_TEST(SkParagraph_FontResolutions, reporter) {
     builder.addText(u"à");
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->runs().size() == 2);
@@ -5675,7 +5708,7 @@ UNIX_ONLY_TEST(SkParagraph_FontStyle, reporter) {
     builder.pop();
     builder.addText("back to normal");
     auto paragraph = builder.Build();
-    paragraph->layout(250);
+    paragraph->layout(250, false);
     paragraph->paint(canvas.get(), 0, 0);
 }
 
@@ -5703,7 +5736,7 @@ UNIX_ONLY_TEST(SkParagraph_Shaping, reporter) {
     builder.pushStyle(text_style);
     builder.addText("Eat0 apple0 pies0 | Eat1 apple1 pies1 | Eat2 apple2 pies2");
     auto paragraph = builder.Build();
-    paragraph->layout(380);
+    paragraph->layout(380, false);
     paragraph->paint(canvas.get(), 0, 0);
 }
 
@@ -5734,7 +5767,7 @@ UNIX_ONLY_TEST(SkParagraph_Ellipsis, reporter) {
         TestParagraphBuilderImpl builder(paragraph_style, fontCollection);
         builder.addText(text);
         auto paragraph = builder.Build();
-        paragraph->layout(50);
+        paragraph->layout(50, false);
         paragraph->paint(canvas.get(), 0, 0);
         canvas.get()->translate(50, paragraph->getHeight() + 10);
         auto result = paragraph->getRectsForRange(0, strlen(text), RectHeightStyle::kTight, RectWidthStyle::kTight);
@@ -5792,7 +5825,7 @@ UNIX_ONLY_TEST(SkParagraph_MemoryLeak, reporter) {
 		builder.addText(text.c_str());
 
 		auto paragraph = builder.Build();
-		paragraph->layout(100);
+		paragraph->layout(100, false);
 
 		//used to add a delay so I can monitor memory usage
 		//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -5823,7 +5856,7 @@ UNIX_ONLY_TEST(SkParagraph_FormattingInfinity, reporter) {
         TestParagraphBuilderImpl builder(paragraphStyle, fontCollection);
         builder.addText(text);
         auto paragraph = builder.Build();
-        paragraph->layout(SK_ScalarInfinity);
+        paragraph->layout(SK_ScalarInfinity, false);
         paragraph->paint(canvas.get(), 0, 0);
         canvas.get()->translate(0, 100);
     };
@@ -5892,7 +5925,7 @@ UNIX_ONLY_TEST(SkParagraph_LineMetrics, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
 
     std::vector<LineMetrics> metrics;
     paragraph->getLineMetrics(metrics);
@@ -5958,7 +5991,7 @@ DEF_TEST_DISABLED(SkParagraph_PlaceholderHeightInf, reporter) {
     builder.addText("Limited by budget");
     builder.addPlaceholder(placeholder_style);
     auto paragraph = builder.Build();
-    paragraph->layout(SK_ScalarInfinity);
+    paragraph->layout(SK_ScalarInfinity, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -5985,7 +6018,7 @@ UNIX_ONLY_TEST(SkParagraph_LineMetricsTextAlign, reporter) {
         builder.pushStyle(text_style);
         builder.addText("Some text that takes more than 200 px");
         auto paragraph = builder.Build();
-        paragraph->layout(200);
+        paragraph->layout(200, false);
 
         std::vector<LineMetrics> metrics;
         paragraph->getLineMetrics(metrics);
@@ -6033,7 +6066,7 @@ UNIX_ONLY_TEST(SkParagraph_FontResolutionInRTL, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -6060,7 +6093,7 @@ UNIX_ONLY_TEST(SkParagraph_FontResolutionInLTR, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -6089,7 +6122,7 @@ UNIX_ONLY_TEST(SkParagraph_Intrinsic, reporter) {
     builder.addText(text.c_str());
 
     auto paragraph = builder.Build();
-    paragraph->layout(300000.0f);
+    paragraph->layout(300000.0f, false);
     REPORTER_ASSERT(reporter, paragraph->getMinIntrinsicWidth() <= paragraph->getMaxIntrinsicWidth());
 }
 
@@ -6130,7 +6163,7 @@ UNIX_ONLY_TEST(SkParagraph_NoCache1, reporter) {
         auto cache = fontCollection->getParagraphCache();
         auto countBefore = cache->count();
         auto paragraph = builder.Build();
-        paragraph->layout(TestCanvasWidth);
+        paragraph->layout(TestCanvasWidth, false);
         auto countAfter = cache->count();
         //paragraph->paint(canvas.get(), 0, 0);
 
@@ -6180,7 +6213,7 @@ UNIX_ONLY_TEST(SkParagraph_HeightCalculations, reporter) {
         builder.addText(text);
 
         auto paragraph = builder.Build();
-        paragraph->layout(500);
+        paragraph->layout(500, false);
         paragraph->paint(canvas.get(), 0, 0);
         canvas.get()->translate(0, paragraph->getHeight());
         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(paragraph->getHeight(), height));
@@ -6227,7 +6260,7 @@ UNIX_ONLY_TEST(SkParagraph_RTL_With_Styles, reporter) {
     builder.addText(arabic);
 
     auto paragraph = builder.Build();
-    paragraph->layout(300);
+    paragraph->layout(300, false);
     paragraph->paint(canvas.get(), 0, 0);
 }
 
@@ -6249,7 +6282,7 @@ UNIX_ONLY_TEST(SkParagraph_PositionInsideEmoji, reporter) {
     builder.addText(text);
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     // UTF8       UTF16
@@ -6306,7 +6339,7 @@ UNIX_ONLY_TEST(SkParagraph_SingleLineHeight1, reporter) {
         builder.pushStyle(text_style);
         builder.addText(text);
         auto paragraph = builder.Build();
-        paragraph->layout(80);
+        paragraph->layout(80, false);
         paragraph->paint(canvas.get(), 0, 0);
         REPORTER_ASSERT(reporter, paragraph->getHeight() == 14.0f);
     };
@@ -6334,7 +6367,7 @@ UNIX_ONLY_TEST(SkParagraph_SingleLineHeight2, reporter) {
         builder.pushStyle(text_style);
         builder.addText(text);
         auto paragraph = builder.Build();
-        paragraph->layout(80);
+        paragraph->layout(80, false);
         paragraph->paint(canvas.get(), 0, 0);
         REPORTER_ASSERT(reporter, paragraph->getHeight() == 28.0f);
     };
@@ -6373,7 +6406,7 @@ UNIX_ONLY_TEST(SkParagraph_PlaceholderWidth, reporter) {
         builder.addText(text);
 
         auto paragraph = builder.Build();
-        paragraph->layout(950);
+        paragraph->layout(950, false);
         paragraph->paint(canvas.get(), 0, 0);
         canvas.get()->translate(0, paragraph->getHeight());
         return paragraph->getMinIntrinsicWidth();
@@ -6403,7 +6436,7 @@ UNIX_ONLY_TEST(SkParagraph_GlyphPositionsInEmptyLines, reporter) {
     builder.addText("A\n\n");
     builder.pop();
     auto paragraph = builder.Build();
-    paragraph->layout(300);
+    paragraph->layout(300, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto res1 = paragraph->
@@ -6436,7 +6469,7 @@ UNIX_ONLY_TEST(SkParagraph_RTLGlyphPositions, reporter) {
     builder.addText("אאאא");
     builder.pop();
     auto paragraph = builder.Build();
-    paragraph->layout(500);
+    paragraph->layout(500, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     std::vector<std::pair<SkScalar, PositionWithAffinity>> checks  = {
@@ -6478,7 +6511,7 @@ UNIX_ONLY_TEST(SkParagraph_RTLGlyphPositionsInEmptyLines, reporter) {
     builder.addText("בבבב\n\nאאאא");
     builder.pop();
     auto paragraph = builder.Build();
-    paragraph->layout(500);
+    paragraph->layout(500, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto height = paragraph->getHeight();
@@ -6511,7 +6544,7 @@ UNIX_ONLY_TEST(SkParagraph_LTRGlyphPositionsForTrailingSpaces, reporter) {
         builder.pop();
         SkPaint gray; gray.setColor(SK_ColorGRAY);
         auto paragraph = builder.Build();
-        paragraph->layout(100);
+        paragraph->layout(100, false);
         canvas.get()->translate(0, 20);
         canvas.get()->drawRect(SkRect::MakeXYWH(0, 0, paragraph->getMaxIntrinsicWidth(), paragraph->getHeight()), gray);
         paragraph->paint(canvas.get(), 0, 0);
@@ -6555,7 +6588,7 @@ UNIX_ONLY_TEST(SkParagraph_RTLGlyphPositionsForTrailingSpaces, reporter) {
         builder.pop();
         SkPaint gray; gray.setColor(SK_ColorGRAY);
         auto paragraph = builder.Build();
-        paragraph->layout(100);
+        paragraph->layout(100, false);
         canvas.get()->translate(0, 20);
         auto res = paragraph->getRectsForRange(0, str.size(), RectHeightStyle::kTight, RectWidthStyle::kTight);
         bool even = true;
@@ -6604,7 +6637,7 @@ UNIX_ONLY_TEST(SkParagraph_LTRLineMetricsDoesNotIncludeNewLine, reporter) {
     builder.addText("one two\n\nthree four\nwith spaces     \n    \n______________________");
     builder.pop();
     auto paragraph = builder.Build();
-    paragraph->layout(190);
+    paragraph->layout(190, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     std::vector<std::tuple<size_t, size_t, size_t, size_t>> expected = {
@@ -6648,7 +6681,7 @@ UNIX_ONLY_TEST(SkParagraph_RTLLineMetricsDoesNotIncludeNewLine, reporter) {
     builder.addText(mirror("______________________\none two\n\nthree four\nwith spaces     \n    "));
     builder.pop();
     auto paragraph = builder.Build();
-    paragraph->layout(190);
+    paragraph->layout(190, false);
     paragraph->paint(canvas.get(), 0, 0);
     //auto impl = static_cast<ParagraphImpl*>(paragraph.get());
 
@@ -6728,7 +6761,7 @@ UNIX_ONLY_TEST(SkParagraph_PlaceholderPosition, reporter) {
     builder.addPlaceholder(placeholder_style);
 
     auto paragraph = builder.Build();
-    paragraph->layout(500);
+    paragraph->layout(500, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto result = paragraph->getGlyphPositionAtCoordinate(41.0f, 0.0f);
@@ -6757,7 +6790,7 @@ UNIX_ONLY_TEST(SkParagraph_LineEnd, reporter) {
     builder.addText("world");
 
     auto paragraph = builder.Build();
-    paragraph->layout(60.0f);
+    paragraph->layout(60.0f, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     std::vector<LineMetrics> lm;
@@ -6790,7 +6823,7 @@ UNIX_ONLY_TEST(SkParagraph_Utf16Indexes, reporter) {
     builder.pushStyle(text_style);
     builder.addText("áéíóú\nxxxx");
     auto paragraph = builder.Build();
-    paragraph->layout(60.0f);
+    paragraph->layout(60.0f, false);
     paragraph->paint(canvas.get(), 0, 0);
     std::vector<LineMetrics> lm;
     paragraph->getLineMetrics(lm);
@@ -6819,7 +6852,7 @@ UNIX_ONLY_TEST(SkParagraph_RTLFollowedByLTR, reporter) {
     builder.pushStyle(text_style);
     builder.addText(u"\u05D0\u05D0\u05D0ABC");
     auto paragraph = builder.Build();
-    paragraph->layout(100);
+    paragraph->layout(100, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto boxes = paragraph->getRectsForRange(
@@ -6888,7 +6921,7 @@ UNIX_ONLY_TEST(SkParagraph_StrutTopLine, reporter) {
     builder.addText(u"Atwater Peel Sherbrooke Bonaventure\nhi\nwasssup!");
 
     auto paragraph = builder.Build();
-    paragraph->layout(797);
+    paragraph->layout(797, false);
     paragraph->paint(canvas.get(), 0, 0);
     auto boxes = paragraph->getRectsForRange(0, 60, RectHeightStyle::kIncludeLineSpacingTop, RectWidthStyle::kMax);
     REPORTER_ASSERT(reporter, boxes.size() == 4);
@@ -6934,7 +6967,7 @@ UNIX_ONLY_TEST(SkParagraph_DifferentFontsTopLine, reporter) {
     builder.addText(u"hi wassup!");
 
     auto paragraph = builder.Build();
-    paragraph->layout(797);
+    paragraph->layout(797, false);
     paragraph->paint(canvas.get(), 0, 0);
     auto boxes = paragraph->getRectsForRange(0, 60, RectHeightStyle::kIncludeLineSpacingTop, RectWidthStyle::kMax);
     REPORTER_ASSERT(reporter, boxes.size() == 4);
@@ -6973,7 +7006,7 @@ UNIX_ONLY_TEST(SkParagraph_SimpleParagraphReset, reporter) {
         builder.pop();
 
         auto paragraph = builder.Build();
-        paragraph->layout(TestCanvasWidth);
+        paragraph->layout(TestCanvasWidth, false);
         REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
 
         auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -7020,7 +7053,7 @@ UNIX_ONLY_TEST(SkParagraph_EllipsisGetRectForRange, reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -7066,7 +7099,7 @@ UNIX_ONLY_TEST(SkParagraph_StrutAndTextBehavior, reporter) {
         builder.pushStyle(text_style);
         builder.addText(text, len);
         auto paragraph = builder.Build();
-        paragraph->layout(SK_ScalarInfinity);
+        paragraph->layout(SK_ScalarInfinity, false);
         return paragraph->getHeight();
     };
 
@@ -7110,9 +7143,9 @@ UNIX_ONLY_TEST(SkParagraph_NonMonotonicGlyphsLTR, reporter) {
     builder.pushStyle(text_style);
     builder.addText(text);
     auto paragraph = builder.Build();
-    paragraph->layout(SK_ScalarInfinity);
+    paragraph->layout(SK_ScalarInfinity, false);
 
-    paragraph->layout(paragraph->getMinIntrinsicWidth() + 1);
+    paragraph->layout(paragraph->getMinIntrinsicWidth() + 1, false);
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->runs().size() > 1); // It's not the simple case
     bool hasNonMonotonicPlacement = false;
@@ -7152,9 +7185,9 @@ UNIX_ONLY_TEST(SkParagraph_NonMonotonicGlyphsRTL, reporter) {
     builder.pushStyle(text_style);
     builder.addText(text, len);
     auto paragraph = builder.Build();
-    paragraph->layout(SK_ScalarInfinity);
+    paragraph->layout(SK_ScalarInfinity, false);
 
-    paragraph->layout(paragraph->getMinIntrinsicWidth() + 1);
+    paragraph->layout(paragraph->getMinIntrinsicWidth() + 1, false);
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, impl->runs().size() > 1); // It's not the simple case
     bool hasNonMonotonicPlacement = false;
@@ -7193,7 +7226,7 @@ void performGetRectsForRangeConcurrently(skiatest::Reporter* reporter) {
     builder.pop();
 
     auto paragraph = builder.Build();
-    paragraph->layout(std::numeric_limits<float>::max());
+    paragraph->layout(std::numeric_limits<float>::max(), false);
 
     RectHeightStyle heightStyle = RectHeightStyle::kMax;
     RectWidthStyle widthStyle = RectWidthStyle::kMax;
@@ -7238,7 +7271,7 @@ UNIX_ONLY_TEST(SkParagraph_TabSubstitution, reporter) {
     builder1.pushStyle(text_style);
     builder1.addText("There is a tab>\t<right here");
     auto paragraph1 = builder1.Build();
-    paragraph1->layout(TestCanvasWidth);
+    paragraph1->layout(TestCanvasWidth, false);
     paragraph1->paint(canvas.get(), 0, 0);
 
     paragraph_style.setReplaceTabCharacters(false);
@@ -7246,7 +7279,7 @@ UNIX_ONLY_TEST(SkParagraph_TabSubstitution, reporter) {
     builder2.pushStyle(text_style);
     builder2.addText("There is a tab>\t<right here");
     auto paragraph2 = builder2.Build();
-    paragraph2->layout(TestCanvasWidth);
+    paragraph2->layout(TestCanvasWidth, false);
     paragraph2->paint(canvas.get(), 0, 0);
 
     // Second paragraph has an unresolved \t (glyph == 0)
@@ -7271,7 +7304,7 @@ DEF_TEST(SkParagraph_lineMetricsWithEllipsis, reporter) {
     builder.addText("hello");
 
     auto paragraph = builder.Build();
-    paragraph->layout(1.);
+    paragraph->layout(1., false);
 
     std::vector<LineMetrics> lm;
     paragraph->getLineMetrics(lm);
@@ -7292,14 +7325,14 @@ DEF_TEST(SkParagraph_lineMetricsAfterUpdate, reporter) {
     builder.addText(text);
 
     auto paragraph = builder.Build();
-    paragraph->layout(200.);
+    paragraph->layout(200., false);
 
     std::vector<LineMetrics> lm;
     paragraph->getLineMetrics(lm);
     REPORTER_ASSERT(reporter, lm.size() == 1);
 
     paragraph->updateFontSize(0, text.size(), 42);
-    paragraph->layout(200.);
+    paragraph->layout(200., false);
     paragraph->getLineMetrics(lm);
     REPORTER_ASSERT(reporter, lm.size() == 2);
 }
@@ -7378,7 +7411,7 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_Logo, reporter) {
     builder.addText(logo6, strlen(logo6));
 
     auto paragraph = builder.Build();
-    paragraph->layout(width - 40);
+    paragraph->layout(width - 40, false);
     paragraph->paint(canvas.get(), 20, 20);
 
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
@@ -7446,7 +7479,7 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_FFI, reporter) {
     builder.pushStyle(text_style);
     builder.addText("i");
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
     auto width = paragraph->getLongestLine();
     auto height = paragraph->getHeight();
@@ -7501,7 +7534,7 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_EmojiFamily, reporter) {
     builder.pushStyle(text_style);
     builder.addText(u"\U0001F468\u200D\U0001F469\u200D\U0001F467\u200D\U0001F466");
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     SkPaint paint;
     paint.setStyle(SkPaint::kStroke_Style);
     paint.setAntiAlias(true);
@@ -7564,7 +7597,7 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_Arabic, reporter) {
     builder.pushStyle(text_style);
     builder.addText("ـ");
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, 0);
 
     auto width = paragraph->getLongestLine();
@@ -7624,7 +7657,7 @@ UNIX_ONLY_TEST(SkParagraph_MultiStyle_Zalgo, reporter) {
     builder.pushStyle(text_style);
     builder.addText(text.data() + h, text.size() - h);
     auto paragraph = builder.Build();
-    paragraph->layout(TestCanvasWidth);
+    paragraph->layout(TestCanvasWidth, false);
     paragraph->paint(canvas.get(), 0, paragraph->getHeight() / 2);
     //auto width = paragraph->getLongestLine();
     auto height = paragraph->getHeight();
@@ -7673,7 +7706,7 @@ UNIX_ONLY_TEST(SkParagraph_RtlEllipsis1, reporter) {
     builder.pushStyle(text_style);
     builder.addText(u"1  2  3  4  5  6  7  8  9");
     auto paragraph = builder.Build();
-    paragraph->layout(474);
+    paragraph->layout(474, false);
     paragraph->paint(canvas.get(), 0, 0);
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, paragraph->lineNumber() == 1);
@@ -7710,7 +7743,7 @@ UNIX_ONLY_TEST(SkParagraph_RtlEllipsis2, reporter) {
     builder.pushStyle(text_style);
     builder.addText(u"تظاهرات و تجمعات اعتراضی در سراسر کشور ۲۳ مهر");
     auto paragraph = builder.Build();
-    paragraph->layout(474);
+    paragraph->layout(474, false);
     paragraph->paint(canvas.get(), 0, 0);
     auto impl = static_cast<ParagraphImpl*>(paragraph.get());
     REPORTER_ASSERT(reporter, paragraph->lineNumber() == 2);
