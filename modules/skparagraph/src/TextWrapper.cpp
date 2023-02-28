@@ -7,12 +7,16 @@ namespace textlayout {
 
 namespace {
 struct LineBreakerWithLittleRounding {
-    LineBreakerWithLittleRounding(SkScalar maxWidth)
+    LineBreakerWithLittleRounding(SkScalar maxWidth, bool applyRoundingHack)
         : fLower(maxWidth - 0.25f)
         , fMaxWidth(maxWidth)
-        , fUpper(maxWidth + 0.25f) {}
+        , fUpper(maxWidth + 0.25f)
+        , fApplyRoundingHack(applyRoundingHack) {}
 
     bool breakLine(SkScalar width) const {
+        if (!fApplyRoundingHack) {
+            return width > fMaxWidth && !nearlyEqual(width, fMaxWidth);
+        }
         if (width < fLower) {
             return false;
         } else if (width > fUpper) {
@@ -32,12 +36,13 @@ struct LineBreakerWithLittleRounding {
     }
 
     const SkScalar fLower, fMaxWidth, fUpper;
+    const bool fApplyRoundingHack;
 };
 }  // namespace
 
 // Since we allow cluster clipping when they don't fit
 // we have to work with stretches - parts of clusters
-void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters) {
+void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters, bool applyRoundingHack) {
 
     reset();
     fEndLine.metrics().clean();
@@ -45,7 +50,7 @@ void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters) {
     fClusters.startFrom(fEndLine.startCluster(), fEndLine.startPos());
     fClip.startFrom(fEndLine.startCluster(), fEndLine.startPos());
 
-    LineBreakerWithLittleRounding breaker(maxWidth);
+    LineBreakerWithLittleRounding breaker(maxWidth, applyRoundingHack);
     Cluster* nextNonBreakingSpace = nullptr;
     for (auto cluster = fEndLine.endCluster(); cluster < endOfClusters; ++cluster) {
         if (cluster->isHardBreak()) {
@@ -287,7 +292,7 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
     bool needEllipsis = false;
     while (fEndLine.endCluster() != end) {
 
-        this->lookAhead(maxWidth, end);
+        this->lookAhead(maxWidth, end, parent->applyRoundingHack());
 
         auto lastLine = (hasEllipsis && unlimitedLines) || fLineNumber >= maxLines;
         needEllipsis = hasEllipsis && !endlessLine && lastLine;
