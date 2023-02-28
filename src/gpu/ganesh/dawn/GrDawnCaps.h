@@ -42,7 +42,7 @@ public:
 
     int maxRenderTargetSampleCount(const GrBackendFormat& format) const override;
 
-    GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const override;
+    GrBackendFormat getBackendFormatFromCompressionType(sk_image_factory::CompressionType) const override;
 
     skgpu::Swizzle getWriteSwizzle(const GrBackendFormat&, GrColorType) const override;
 

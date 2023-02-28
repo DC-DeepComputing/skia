@@ -16,6 +16,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkYUVAInfo.h"
+#include "include/private/base/SkAssert.h"
 #include "src/core/SkBitmapCache.h"
 #include "src/core/SkCachedData.h"
 #include "src/core/SkNextID.h"
@@ -39,6 +40,7 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
+#include "src/gpu/ganesh/GrImageUtils.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrSamplerState.h"
@@ -224,7 +226,7 @@ bool SkImage_Lazy::readPixelsProxy(GrDirectContext* ctx, const SkPixmap& pixmap)
     return sContext->readPixels(ctx, {this->imageInfo(), pixmap.writable_addr(), rowBytes}, {0, 0});
 #else
     return false;
-#endif // defined(SK_GANESH)
+#endif // SK_GANESH
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -323,13 +325,6 @@ sk_sp<SkImage> SkImage_Lazy::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) 
     return nullptr;
 }
 
-sk_sp<SkImage> SkImage::MakeFromGenerator(std::unique_ptr<SkImageGenerator> generator) {
-    SkImage_Lazy::Validator
-            validator(SharedGenerator::Make(std::move(generator)), nullptr, nullptr);
-
-    return validator ? sk_make_sp<SkImage_Lazy>(&validator) : nullptr;
-}
-
 #if defined(SK_GANESH)
 
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Lazy::onAsView(
@@ -350,8 +345,9 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Lazy::onAsFragmentProcessor(
     // TODO: If the CPU data is extracted as planes return a FP that reconstructs the image from
     // the planes.
     auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
+
     return MakeFragmentProcessorFromView(rContext,
-                                         std::get<0>(this->asView(rContext, mm)),
+                                         std::get<0>(skgpu::ganesh::AsView(rContext, this, mm)),
                                          this->alphaType(),
                                          sampling,
                                          tileModes,
@@ -618,7 +614,7 @@ GrColorType SkImage_Lazy::colorTypeOfLockTextureProxy(const GrCaps* caps) const 
 void SkImage_Lazy::addUniqueIDListener(sk_sp<SkIDChangeListener> listener) const {
     fUniqueIDListeners.add(std::move(listener));
 }
-#endif // defined(SK_GANESH)
+#endif // SK_GANESH
 
 #if defined(SK_GRAPHITE)
 
@@ -687,3 +683,14 @@ sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(
 }
 
 #endif
+
+namespace sk_image_factory {
+
+sk_sp<SkImage> MakeFromGenerator(std::unique_ptr<SkImageGenerator> generator) {
+    SkImage_Lazy::Validator
+            validator(SharedGenerator::Make(std::move(generator)), nullptr, nullptr);
+
+    return validator ? sk_make_sp<SkImage_Lazy>(&validator) : nullptr;
+}
+
+}
