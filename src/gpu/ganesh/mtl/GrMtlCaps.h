@@ -69,7 +69,7 @@ public:
                           const SkIPoint& dstPoint,
                           bool areDstSrcSameObj) const;
 
-    GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const override;
+    GrBackendFormat getBackendFormatFromCompressionType(sk_image_factory::CompressionType) const override;
 
     MTLPixelFormat getFormatFromColorType(GrColorType colorType) const {
         int idx = static_cast<int>(colorType);

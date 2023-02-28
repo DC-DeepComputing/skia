@@ -57,7 +57,7 @@ DEF_TEST(serial_procs_image, reporter) {
             return nullptr;
         },
         [](const void* data, size_t length, void*) {
-            return SkImage::MakeFromEncoded(SkData::MakeWithCopy(data, length));
+            return sk_image_factory::MakeFromEncoded(SkData::MakeWithCopy(data, length));
         },
         [](const void* data, size_t length, void* ctx) -> sk_sp<SkImage> {
             State* state = (State*)ctx;

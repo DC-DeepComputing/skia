@@ -67,7 +67,7 @@ sk_sp<SkImage> create_raster(Mipmapped mipmapped) {
 
     bm.eraseColor(kBaseImageColor);
 
-    sk_sp<SkImage> img = SkImage::MakeFromBitmap(bm);
+    sk_sp<SkImage> img = sk_image_factory::MakeFromBitmap(bm);
 
     if (mipmapped == Mipmapped::kYes) {
         img = create_and_attach_mipmaps(std::move(img));
@@ -109,11 +109,11 @@ sk_sp<SkImage> create_picture_backed_image(Recorder*) {
     canvas->drawIRect(r, paint);
     sk_sp<SkPicture> picture = recorder.finishRecordingAsPicture();
 
-    return SkImage::MakeFromPicture(std::move(picture),
+    return sk_image_factory::MakeFromPicture(std::move(picture),
                                     r.size(),
                                     /* matrix= */ nullptr,
                                     /* paint= */ nullptr,
-                                    SkImage::BitDepth::kU8,
+                                    sk_image_factory::BitDepth::kU8,
                                     SkColorSpace::MakeSRGB());
 }
 
@@ -151,7 +151,7 @@ sk_sp<SkImage> create_bitmap_generator_backed_image(Recorder*) {
 
     std::unique_ptr<SkImageGenerator> gen(new BitmapBackedGenerator());
 
-    return SkImage::MakeFromGenerator(std::move(gen));
+    return sk_image_factory::MakeFromGenerator(std::move(gen));
 }
 
 bool check_img(skiatest::Reporter* reporter,

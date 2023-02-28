@@ -46,7 +46,7 @@ SkAnimCodecPlayer::SkAnimCodecPlayer(std::unique_ptr<SkCodec> codec) : fCodec(st
         // Static image -- may or may not have returned a single frame info.
         fFrameInfos.clear();
         fImages.clear();
-        fImages.push_back(SkImage::MakeFromGenerator(
+        fImages.push_back(sk_image_factory::MakeFromGenerator(
                               SkCodecImageGenerator::MakeFromCodec(std::move(fCodec))));
     }
 }
@@ -114,7 +114,7 @@ sk_sp<SkImage> SkAnimCodecPlayer::getFrameAt(int index) {
         return nullptr;
     }
 
-    auto image = SkImage::MakeRasterData(imageInfo, std::move(data), rb);
+    auto image = sk_image_factory::MakeRasterData(imageInfo, std::move(data), rb);
     if (origin != kDefault_SkEncodedOrigin) {
         imageInfo = imageInfo.makeDimensions(orientedDims);
         rb = imageInfo.minRowBytes();
@@ -123,7 +123,7 @@ sk_sp<SkImage> SkAnimCodecPlayer::getFrameAt(int index) {
         auto canvas = SkCanvas::MakeRasterDirect(imageInfo, data->writable_data(), rb);
         canvas->concat(originMatrix);
         canvas->drawImage(image, 0, 0, SkSamplingOptions(), &paint);
-        image = SkImage::MakeRasterData(imageInfo, std::move(data), rb);
+        image = sk_image_factory::MakeRasterData(imageInfo, std::move(data), rb);
     }
     return fImages[index] = image;
 }

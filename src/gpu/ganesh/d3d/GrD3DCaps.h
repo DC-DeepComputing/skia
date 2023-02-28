@@ -83,7 +83,7 @@ public:
     bool canCopyAsResolve(DXGI_FORMAT dstFormat, int dstSampleCnt,
                           DXGI_FORMAT srcFormat, int srcSamplecnt) const;
 
-    GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const override;
+    GrBackendFormat getBackendFormatFromCompressionType(sk_image_factory::CompressionType) const override;
 
     DXGI_FORMAT getFormatFromColorType(GrColorType colorType) const {
         int idx = static_cast<int>(colorType);
