@@ -12,7 +12,7 @@ void draw(SkCanvas* canvas) {
     canvas->scale(.25f, .25f);
     int x = 0;
     for (auto origin : { kBottomLeft_GrSurfaceOrigin, kTopLeft_GrSurfaceOrigin } ) {
-        sk_sp<SkImage> image = SkImage::MakeFromTexture(dContext, backEndTexture,
+        sk_sp<SkImage> image = sk_image_factory::MakeFromTexture(dContext, backEndTexture,
                                                         origin, kRGBA_8888_SkColorType,
                                                         kOpaque_SkAlphaType, nullptr);
         canvas->drawImage(image, x, 0);
