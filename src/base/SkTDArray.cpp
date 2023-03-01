@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/base/SkTDArray.h"
 #include "include/private/base/SkMalloc.h"
+#include "include/private/base/SkTDArray.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTo.h"
 
