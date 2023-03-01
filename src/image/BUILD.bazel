@@ -6,10 +6,13 @@ exports_files_legacy()
 
 CORE_FILES = [
     "SkImage.cpp",
+    "SkImage_Base.cpp",
     "SkImage_Base.h",
+    "SkImage_Factories.cpp",
     "SkImage_Lazy.cpp",
     "SkImage_Lazy.h",
     "SkImage_Raster.cpp",
+    "SkImage_Raster.h",
     "SkRescaleAndReadPixels.cpp",
     "SkRescaleAndReadPixels.h",
     "SkSurface.cpp",
@@ -23,6 +26,7 @@ split_srcs_and_hdrs(
 )
 
 GPU_FILES = [
+    "SkImage_GaneshFactories.cpp",
     "SkImage_Gpu.cpp",
     "SkImage_Gpu.h",
     "SkImage_GpuBase.cpp",
@@ -36,6 +40,11 @@ GPU_FILES = [
 split_srcs_and_hdrs(
     name = "gpu",
     files = GPU_FILES,
+)
+
+skia_filegroup(
+    name = "android_srcs",
+    srcs = ["SkImage_AndroidFactories.cpp"],
 )
 
 # Not referenced by Bazel target.
