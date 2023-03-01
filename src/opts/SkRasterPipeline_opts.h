@@ -3313,13 +3313,21 @@ STAGE_TAIL(mask_off_return_mask, NoCtx) {
 }
 
 STAGE_BRANCH(branch_if_all_lanes_active, SkRasterPipeline_BranchCtx* ctx) {
+    int result;
     if (tail) {
         uint32_t iota[] = {0,1,2,3,4,5,6,7};
         I32 tailLanes = cond_to_mask(tail <= sk_unaligned_load<U32>(iota));
-        return all(execution_mask() | tailLanes) ? ctx->offset : 1;
+        result = all(execution_mask() | tailLanes) ? ctx->offset : 1;
     } else {
-        return all(execution_mask()) ? ctx->offset : 1;
+        result = all(execution_mask()) ? ctx->offset : 1;
     }
+
+    // We encountered a break statement. If a lane was active, it should be masked off now, and stay
+    // masked-off until the termination of the loop.
+    dg = sk_bit_cast<F>(sk_bit_cast<I32>(dg) & ~execution_mask());
+    update_execution_mask();
+
+    return result;
 }
 
 STAGE_BRANCH(branch_if_any_lanes_active, SkRasterPipeline_BranchCtx* ctx) {
