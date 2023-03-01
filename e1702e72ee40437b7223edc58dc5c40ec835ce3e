@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "713b6bf7_a411a117",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1387,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-01T21:04:19Z",
+      "side": 1,
+      "message": "This seems a bit odd. We\u0027re pulling something out of the vertex filler just to pass it back in.",
+      "revId": "e1702e72ee40437b7223edc58dc5c40ec835ce3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
