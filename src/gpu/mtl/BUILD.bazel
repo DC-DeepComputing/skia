@@ -12,6 +12,7 @@ skia_filegroup(
         "MtlMemoryAllocatorImpl.h",
         "MtlMemoryAllocatorImpl.mm",
         "MtlUtils.mm",
+        "MtlUtilsCppPriv.h",
         "MtlUtilsPriv.h",
     ],
 )
