@@ -33,6 +33,24 @@
       "message": "My gut reaction is that the namespace alias is cool, but I\u0027m not sure it\u0027s actually any better than just `TArray`. I can\u0027t find a compelling reason to actually prefer it. I definitely think we should be consistent--i.e., we should either use `sp::` everywhere (fix up the existing sites), or not change anything. \n\nAlso `sp` might get confused with `sk_sp`. We should think hard about the choice of abbrevation. `sk::` could be nice?",
       "revId": "5103adda9fe12ccdad5ebe539e70bbf43c07d0e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13d1d1c7_b8642b30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-01T21:18:16Z",
+      "side": 1,
+      "message": "Yeah, after seeing it in action, I think I prefer the existing convention (pull in the whole namespace for .cpp files).",
+      "parentUuid": "c51c9fff_39aa85b1",
+      "revId": "5103adda9fe12ccdad5ebe539e70bbf43c07d0e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
