@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f685555_fd306177",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-01T21:32:09Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "e1702e72ee40437b7223edc58dc5c40ec835ce3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "713b6bf7_a411a117",
@@ -14,6 +31,24 @@
       "writtenOn": "2023-03-01T21:04:19Z",
       "side": 1,
       "message": "This seems a bit odd. We\u0027re pulling something out of the vertex filler just to pass it back in.",
+      "revId": "e1702e72ee40437b7223edc58dc5c40ec835ce3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a821554a_6325242b",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1387,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-01T21:32:09Z",
+      "side": 1,
+      "message": "I thought the same thing. This seems to be a graphitism. For SDFT, we need to set the flags to zero instead of use the mask type.",
+      "parentUuid": "713b6bf7_a411a117",
       "revId": "e1702e72ee40437b7223edc58dc5c40ec835ce3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
