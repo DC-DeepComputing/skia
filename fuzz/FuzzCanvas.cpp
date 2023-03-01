@@ -807,7 +807,7 @@ static sk_sp<SkImage> make_fuzz_image(Fuzz* fuzz) {
         data[i] = SkPreMultiplyColor(c);
     }
     (void)data.release();
-    return SkImage::MakeFromRaster(pixmap, [](const void* p, void*) { sk_free((void*)p); },
+    return sk_image_factory::MakeFromRaster(pixmap, [](const void* p, void*) { sk_free((void*)p); },
                                    nullptr);
 }
 

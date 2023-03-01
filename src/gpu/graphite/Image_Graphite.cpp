@@ -210,7 +210,7 @@ sk_sp<TextureProxy> Image::MakePromiseImageLazyProxy(
                                   std::move(callback));
 }
 
-sk_sp<SkImage> SkImage::MakeGraphitePromiseTexture(
+sk_sp<SkImage> sk_image_factory::MakeGraphitePromiseTexture(
         Recorder* recorder,
         SkISize dimensions,
         const TextureInfo& textureInfo,
@@ -259,7 +259,7 @@ sk_sp<SkImage> SkImage::MakeGraphitePromiseTexture(
     return sk_make_sp<Image>(view, colorInfo);
 }
 
-sk_sp<SkImage> SkImage::MakeGraphiteFromBackendTexture(Recorder* recorder,
+sk_sp<SkImage> sk_image_factory::MakeGraphiteFromBackendTexture(Recorder* recorder,
                                                        const BackendTexture& backendTex,
                                                        SkColorType ct,
                                                        SkAlphaType at,

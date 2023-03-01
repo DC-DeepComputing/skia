@@ -11,7 +11,7 @@ void draw(SkCanvas* canvas) {
 
     SkPixmap pixmap;
     if (source.peekPixels(&pixmap)) {
-        sk_sp<SkImage> image = SkImage::MakeCrossContextFromPixmap(dContext, pixmap, false);
+        sk_sp<SkImage> image = sk_image_factory::MakeCrossContextFromPixmap(dContext, pixmap, false);
         canvas->drawImage(image, 0, 0);
     }
 }

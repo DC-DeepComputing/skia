@@ -14,7 +14,7 @@ void draw(SkCanvas* canvas) {
     int x = 0, y = 0;
     for (auto origin : { kBottomLeft_GrSurfaceOrigin, kTopLeft_GrSurfaceOrigin } ) {
         for (auto alpha : { kOpaque_SkAlphaType, kPremul_SkAlphaType, kUnpremul_SkAlphaType } ) {
-            sk_sp<SkImage> image = SkImage::MakeFromAdoptedTexture(dContext,
+            sk_sp<SkImage> image = sk_image_factory::MakeFromAdoptedTexture(dContext,
                                                                    backEndTexture, origin,
                                                                    kRGBA_8888_SkColorType, alpha);
             canvas->drawImage(image, x, y);
