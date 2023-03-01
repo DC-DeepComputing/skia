@@ -8,6 +8,11 @@
 #ifndef skgpu_graphite_DawnBackendContext_DEFINED
 #define skgpu_graphite_DawnBackendContext_DEFINED
 
+#include <memory>
+#include <mutex>
+
+#include "include/core/SkTypes.h"
+
 #include "webgpu/webgpu_cpp.h"
 
 namespace skgpu::graphite {
@@ -17,7 +22,8 @@ namespace skgpu::graphite {
 // when setting up Skia.
 struct SK_API DawnBackendContext {
     wgpu::Device fDevice;
-    wgpu::Queue  fQueue;
+    wgpu::Queue fQueue;
+    std::mutex* fLock = nullptr;
 };
 
 } // namespace skgpu::graphite

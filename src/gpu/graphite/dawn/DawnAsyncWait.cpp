@@ -32,7 +32,8 @@ EM_ASYNC_JS(void, asyncSleep, (), {
 
 }  // namespace
 
-DawnAsyncWait::DawnAsyncWait(const wgpu::Device& device) : fDevice(device), fSignaled(false) {}
+DawnAsyncWait::DawnAsyncWait(const DawnSharedContext* sharedContext)
+        : fSharedContext(sharedContext) {}
 
 bool DawnAsyncWait::yieldAndCheck() const {
     if (fSignaled.load()) {
@@ -41,7 +42,8 @@ bool DawnAsyncWait::yieldAndCheck() const {
 #ifdef __EMSCRIPTEN__
     asyncSleep();
 #else
-    fDevice.Tick();
+    fSharedContext->AssertLocked();
+    fSharedContext->device().Tick();
 #endif  // __EMSCRIPTEN__
     return fSignaled.load();
 }
