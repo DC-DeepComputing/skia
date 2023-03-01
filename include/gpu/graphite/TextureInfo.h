@@ -75,6 +75,8 @@ public:
     Mipmapped mipmapped() const { return fMipmapped; }
     Protected isProtected() const { return fProtected; }
 
+    uint32_t channelMask() const;
+
 #ifdef SK_DAWN
     bool getDawnTextureInfo(DawnTextureInfo* info) const {
         if (!this->isValid() || fBackend != BackendApi::kDawn) {
