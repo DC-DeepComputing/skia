@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c573312a_8707397a",
+        "filename": "tests/SkRasterPipelineTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-01T19:55:26Z",
+      "side": 1,
+      "message": "This looks superficially similar to the test for `SkRasterPipeline_CopyFromIndirectUniformUnmasked`, but there are lots of changes in the inner verification loop, and to add masking support.",
+      "range": {
+        "startLine": 566,
+        "startChar": 9,
+        "endLine": 566,
+        "endChar": 46
+      },
+      "revId": "02490873df56b485fdeaf0be69c2ce1aab8e7bc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
