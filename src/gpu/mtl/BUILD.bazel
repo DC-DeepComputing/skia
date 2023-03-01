@@ -9,6 +9,7 @@ exports_files_legacy()
 skia_filegroup(
     name = "shared_srcs",
     srcs = [
+        "MtlCppUtilsPriv.h",
         "MtlMemoryAllocatorImpl.h",
         "MtlMemoryAllocatorImpl.mm",
         "MtlUtils.mm",
