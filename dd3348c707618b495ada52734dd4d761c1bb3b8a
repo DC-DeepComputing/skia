@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f02da7f8_322ed1e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-01T17:15:58Z",
+      "side": 1,
+      "message": "Thoughts on the API? It\u0027s a bit ugly in my opinion that it depends on the callback being the last thing deleted from GrDirectContext, but not sure if there is a cleaner way to guarantee it.",
+      "revId": "dd3348c707618b495ada52734dd4d761c1bb3b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
