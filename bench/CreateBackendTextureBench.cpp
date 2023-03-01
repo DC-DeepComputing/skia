@@ -9,10 +9,12 @@
 #include "include/core/SkCanvas.h"
 #include "include/gpu/GrDirectContext.h"
 
+namespace sp = skia_private;
+
 class CreateBackendTextureBench : public Benchmark {
 private:
     SkString fName;
-    SkTArray<GrBackendTexture> fBackendTextures;
+    sp::TArray<GrBackendTexture> fBackendTextures;
     GrMipmapped fMipmapped;
 
 public:

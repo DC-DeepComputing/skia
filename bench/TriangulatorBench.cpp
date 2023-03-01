@@ -13,7 +13,7 @@
 #include "src/gpu/ganesh/geometry/GrTriangulator.h"
 #include <vector>
 
-using namespace skia_private;
+namespace sp = skia_private;
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
@@ -89,8 +89,8 @@ protected:
     virtual void doLoop() = 0;
 
     SkString fName;
-    SkTArray<SkPath> fPaths;
-    AutoTMalloc<char> fVertexData;
+    sp::TArray<SkPath> fPaths;
+    sp::AutoTMalloc<char> fVertexData;
     size_t fVertexAllocSize = 0;
     SkArenaAllocWithReset fArena{GrTriangulator::kArenaDefaultChunkSize};
 };
