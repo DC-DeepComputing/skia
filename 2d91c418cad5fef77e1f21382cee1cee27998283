@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fc877c0_833cd132",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-01T17:03:33Z",
+      "side": 1,
+      "message": "This rathole occurred because I wanted to put some shared code in MtlUtilsPriv.h and realized that we already had one, in the wrong place.",
+      "revId": "2d91c418cad5fef77e1f21382cee1cee27998283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
