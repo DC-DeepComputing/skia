@@ -16,6 +16,29 @@
       "message": "Thoughts on the API? It\u0027s a bit ugly in my opinion that it depends on the callback being the last thing deleted from GrDirectContext, but not sure if there is a cleaner way to guarantee it.",
       "revId": "dd3348c707618b495ada52734dd4d761c1bb3b8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "600d5c02_ef7a3532",
+        "filename": "include/gpu/GrDirectContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-01T18:03:08Z",
+      "side": 1,
+      "message": "signal",
+      "range": {
+        "startLine": 876,
+        "startChar": 46,
+        "endLine": 876,
+        "endChar": 52
+      },
+      "revId": "dd3348c707618b495ada52734dd4d761c1bb3b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
