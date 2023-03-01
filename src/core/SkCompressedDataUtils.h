@@ -16,25 +16,25 @@
 class SkBitmap;
 class SkData;
 
-static constexpr bool SkCompressionTypeIsOpaque(SkImage::CompressionType compression) {
+static constexpr bool SkCompressionTypeIsOpaque(sk_image_factory::CompressionType compression) {
     switch (compression) {
-        case SkImage::CompressionType::kNone:            return true;
-        case SkImage::CompressionType::kETC2_RGB8_UNORM: return true;
-        case SkImage::CompressionType::kBC1_RGB8_UNORM:  return true;
-        case SkImage::CompressionType::kBC1_RGBA8_UNORM: return false;
+        case sk_image_factory::CompressionType::kNone:            return true;
+        case sk_image_factory::CompressionType::kETC2_RGB8_UNORM: return true;
+        case sk_image_factory::CompressionType::kBC1_RGB8_UNORM:  return true;
+        case sk_image_factory::CompressionType::kBC1_RGBA8_UNORM: return false;
     }
 
     SkUNREACHABLE;
 }
 
-size_t SkCompressedDataSize(SkImage::CompressionType, SkISize baseDimensions,
+size_t SkCompressedDataSize(sk_image_factory::CompressionType, SkISize baseDimensions,
                             skia_private::TArray<size_t>* individualMipOffsets, bool mipmapped);
-size_t SkCompressedBlockSize(SkImage::CompressionType type);
+size_t SkCompressedBlockSize(sk_image_factory::CompressionType type);
 
 /**
- * Returns the data size for the given SkImage::CompressionType
+ * Returns the data size for the given sk_image_factory::CompressionType
  */
-size_t SkCompressedFormatDataSize(SkImage::CompressionType compressionType,
+size_t SkCompressedFormatDataSize(sk_image_factory::CompressionType compressionType,
                                   SkISize dimensions, bool mipmapped);
 
  /*
@@ -42,7 +42,7 @@ size_t SkCompressedFormatDataSize(SkImage::CompressionType compressionType,
   */
 bool SkDecompress(sk_sp<SkData> data,
                   SkISize dimensions,
-                  SkImage::CompressionType compressionType,
+                  sk_image_factory::CompressionType compressionType,
                   SkBitmap* dst);
 
 #endif

@@ -18,8 +18,8 @@ void draw(SkCanvas* canvas) {
     for (auto alpha : { 70, 140, 210 } ) {
         paint.setAlpha(alpha);
         auto srgbColorSpace = SkColorSpace::MakeSRGB();
-        sk_sp<SkImage> image = SkImage::MakeFromPicture(playback, {50, 50}, nullptr, &paint,
-                                                        SkImage::BitDepth::kU8, srgbColorSpace);
+        sk_sp<SkImage> image = sk_image_factory::MakeFromPicture(playback, {50, 50}, nullptr, &paint,
+                                                        sk_image_factory::BitDepth::kU8, srgbColorSpace);
         canvas->drawImage(image, x, y);
         x += 70; y += 70;
     }

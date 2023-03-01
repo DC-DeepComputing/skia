@@ -19,16 +19,17 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/vk/GrVkTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrImageUtils.h"
 #include "src/gpu/ganesh/GrSurface.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 #include "src/gpu/ganesh/vk/GrVkImage.h"
 #include "src/gpu/ganesh/vk/GrVkTexture.h"
-#include "src/image/SkImage_Base.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/gpu/ManagedBackendTexture.h"
@@ -69,7 +70,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo, CtsEnfo
     REPORTER_ASSERT(reporter, drmBETex.textureType() == GrTextureType::kExternal);
 
     // Now wrap the texture in an SkImage and make sure we have the required read only properties
-    sk_sp<SkImage> drmImage = SkImage::MakeFromTexture(dContext,
+    sk_sp<SkImage> drmImage = sk_image_factory::MakeFromTexture(dContext,
                                                        drmBETex,
                                                        kTopLeft_GrSurfaceOrigin,
                                                        kRGBA_8888_SkColorType,
@@ -80,7 +81,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo, CtsEnfo
     REPORTER_ASSERT(reporter,
             GrBackendTexture::TestingOnly_Equals(drmImage->getBackendTexture(false), drmBETex));
 
-    auto[view, _] = as_IB(drmImage.get()) -> asView(dContext, GrMipmapped::kNo);
+    auto[view, _] = skgpu::ganesh::AsView(dContext, drmImage, GrMipmapped::kNo);
     REPORTER_ASSERT(reporter, view);
     const GrSurfaceProxy* proxy = view.proxy();
     REPORTER_ASSERT(reporter, proxy);
@@ -126,7 +127,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkImageLayoutTest, reporter, ctxInfo, CtsEnfo
     // Setting back the layout since we didn't actually change it
     backendTex1.setVkImageLayout(initLayout);
 
-    sk_sp<SkImage> wrappedImage = SkImage::MakeFromTexture(
+    sk_sp<SkImage> wrappedImage = sk_image_factory::MakeFromTexture(
             dContext,
             backendTex1,
             kTopLeft_GrSurfaceOrigin,
@@ -221,7 +222,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkTransitionExternalQueueTest, reporter, ctxI
 
     GrBackendTexture vkExtTex(1, 1, vkInfo);
     REPORTER_ASSERT(reporter, vkExtTex.isValid());
-    image = SkImage::MakeFromTexture(dContext, vkExtTex, kTopLeft_GrSurfaceOrigin,
+    image = sk_image_factory::MakeFromTexture(dContext, vkExtTex, kTopLeft_GrSurfaceOrigin,
                                      kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr, nullptr,
                                      nullptr);
 
