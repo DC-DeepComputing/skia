@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db8b60b6_62c6ae81",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-01T20:38:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0670204f_5f5971c4",
+      "range": {
+        "startLine": 160,
+        "startChar": 63,
+        "endLine": 160,
+        "endChar": 72
+      },
+      "revId": "a1e14a31a96fcff656e9ab9e39ec23d5d2d41703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0e23786_183a4480",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-01T19:04:30Z",
       "side": 1,
       "message": "`and assumes that` feels less ambiguous in its phrasing, but up to you",
+      "range": {
+        "startLine": 161,
+        "startChar": 55,
+        "endLine": 161,
+        "endChar": 63
+      },
+      "revId": "a1e14a31a96fcff656e9ab9e39ec23d5d2d41703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "254dac5e_323f2d27",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-01T20:38:55Z",
+      "side": 1,
+      "message": "Yup, agreed.",
+      "parentUuid": "a0e23786_183a4480",
       "range": {
         "startLine": 161,
         "startChar": 55,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a68dded7_dcacdb56",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-01T20:38:55Z",
+      "side": 1,
+      "message": "I wasn\u0027t sure how to phrase this one - the original phrasing only described the parts that aren\u0027t included in the color pipeline. Now that the blend piece is extracted, I removed that from the list of responsibilities, although the blit pipeline(s) end up including that work, too.\n\nI ended up rewriting it to explicitly mention both the color and blend pipelines in this sentence, which is probably the clearest explanation.",
+      "parentUuid": "ad4e0980_17dfc23c",
+      "range": {
+        "startLine": 164,
+        "startChar": 43,
+        "endLine": 164,
+        "endChar": 44
+      },
+      "revId": "a1e14a31a96fcff656e9ab9e39ec23d5d2d41703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3077d264_fcbd0eaa",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-03-01T19:04:30Z",
       "side": 1,
       "message": "WDYT about going straight to `fStage.fPipeline-\u003eappend(SkRasterPipelineOp::srcover);` ?",
+      "range": {
+        "startLine": 288,
+        "startChar": 8,
+        "endLine": 288,
+        "endChar": 74
+      },
+      "revId": "a1e14a31a96fcff656e9ab9e39ec23d5d2d41703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ed15aae_c687e2da",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-01T20:38:55Z",
+      "side": 1,
+      "message": "Sure. (It also lets me remove SkBlendModePriv.h)",
+      "parentUuid": "3077d264_fcbd0eaa",
       "range": {
         "startLine": 288,
         "startChar": 8,
