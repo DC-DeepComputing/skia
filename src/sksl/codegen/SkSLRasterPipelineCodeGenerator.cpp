@@ -113,11 +113,8 @@ public:
     int slotCount() const { return fSlotCount; }
 
 private:
-    std::string makeTempName() { return SkSL::String::printf("[temporary %d]", fTemporaryCount++); }
-
     SkTHashMap<const IRNode*, SlotRange> fSlotMap;
     int fSlotCount = 0;
-    int fTemporaryCount = 0;
     std::vector<SlotDebugInfo>* fSlotDebugInfo;
 };
 
