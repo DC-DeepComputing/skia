@@ -186,10 +186,7 @@ static skiagm::DrawResult do_rescale_image_grid(SkCanvas* canvas,
     }
 
     auto dContext = GrAsDirectContext(canvas->recordingContext());
-    if (!dContext && canvas->recordingContext()) {
-        *errorMsg = "Not supported in DDL mode";
-        return skiagm::DrawResult::kSkip;
-    }
+    auto recorder = canvas->recorder();
 
     if (doSurface) {
         // Turn the image into a surface in order to call the read and rescale API
@@ -212,8 +209,13 @@ static skiagm::DrawResult do_rescale_image_grid(SkCanvas* canvas,
         surface->getCanvas()->drawImage(image, 0, 0, SkSamplingOptions(), &paint);
         return do_rescale_grid(canvas, surface.get(), dContext, srcRect, newSize,
                                doYUV420, errorMsg);
-    } else if (dContext) {
-        image = image->makeTextureImage(dContext);
+    } else if (dContext || recorder) {
+        if (dContext) {
+            image = image->makeTextureImage(dContext);
+        }
+        if (recorder) {
+            image = image->makeTextureImage(recorder);
+        }
         if (!image) {
             *errorMsg = "Could not create image.";
             // When testing abandoned GrContext we expect surface creation to fail.
