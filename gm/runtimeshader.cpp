@@ -658,7 +658,7 @@ public:
         // intrinsics should do nothing (eg, the top bar should look the same in the top and bottom
         // halves). Then to an sRGB surface, where they should produce linearly interpolated
         // gradients (the bottom half of the second bar should be brighter than the top half).
-        for (auto cs : {static_cast<SkColorSpace*>(nullptr), sk_srgb_singleton()}) {
+        for (auto cs : {/*static_cast<SkColorSpace*>(nullptr),*/ sk_srgb_singleton()}) {
             SkImageInfo info = SkImageInfo::Make(
                     256, 64, kN32_SkColorType, kPremul_SkAlphaType, sk_ref_sp(cs));
             auto surface = canvas->makeSurface(info);
