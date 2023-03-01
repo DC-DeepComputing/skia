@@ -102,14 +102,15 @@ SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap& dst,
     SkColorType dstCT = dst.colorType();
     SkColor4f paintColor = paint.getColor4f();
 
+    // Transform the paint color to the destination color space
+    SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
+                           dstCS,               kUnpremul_SkAlphaType).apply(paintColor.vec());
+
     auto shader = as_SB(paint.getShader());
 
     SkRasterPipeline_<256> shaderPipeline;
     if (!shader) {
-        // Having no shader makes things nice and easy... just use the paint color, but transform
-        // to destination color space first
-        SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
-                               dstCS,               kUnpremul_SkAlphaType).apply(paintColor.vec());
+        // Having no shader makes things nice and easy... just use the paint color
         shaderPipeline.append_constant_color(alloc, paintColor.premul().vec());
         bool is_opaque    = paintColor.fA == 1.0f,
              is_constant  = true;
@@ -156,6 +157,11 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
                                            sk_sp<SkShader> clipShader) {
     auto blitter = alloc->make<SkRasterPipelineBlitter>(dst, alloc);
 
+    SkColor4f paintColor = paint.getColor4f();
+    SkColorSpaceXformSteps{sk_srgb_singleton(), kUnpremul_SkAlphaType,
+                           dst.colorSpace(),    kUnpremul_SkAlphaType}
+            .apply(paintColor.vec());
+
     // Our job in this factory is to fill out the blitter's color and blend pipelines.
     // The color pipeline is the common front of the full blit pipeline. The blend pipeline is just
     // the portion that does the actual blending math (and assumes that src and dst are already
@@ -194,7 +200,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
     if (auto colorFilter = paint.getColorFilter()) {
         SkSurfaceProps props{}; // default OK; colorFilter doesn't render text
         SkStageRec rec = {
-                colorPipeline, alloc, dst.colorType(), dst.colorSpace(), paint.getColor4f(), props};
+                colorPipeline, alloc, dst.colorType(), dst.colorSpace(), paintColor, props};
         if (!as_CFB(colorFilter)->appendStages(rec, is_opaque)) {
             return nullptr;
         }
@@ -314,7 +320,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
     {
         SkSurfaceProps props{};  // default OK; blender doesn't render text
         SkStageRec rec = {
-                blendPipeline, alloc, dst.colorType(), dst.colorSpace(), paint.getColor4f(), props};
+                blendPipeline, alloc, dst.colorType(), dst.colorSpace(), paintColor, props};
         if (!as_BB(blender)->appendStages(rec)) {
             return nullptr;
         }
