@@ -143,8 +143,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(GrSurfaceRenderability,
     auto createTexture = [](SkISize dimensions, GrColorType colorType,
                             const GrBackendFormat& format, GrRenderable renderable,
                             GrResourceProvider* rp) -> sk_sp<GrTexture> {
-        SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
-        if (compression != SkImage::CompressionType::kNone) {
+        sk_image_factory::CompressionType compression = GrBackendFormatToCompressionType(format);
+        if (compression != sk_image_factory::CompressionType::kNone) {
             if (renderable == GrRenderable::kYes) {
                 return nullptr;
             }

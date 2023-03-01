@@ -8,6 +8,10 @@ Milestone 113
     as the absence or presence of that define. As a result, it defaults to off (not defined) if
     not defined (SK_SUPPORT_GPU would default to SK_SUPPORT_GPU=1 if not defined).
   * SkStrSplit is no longer part of the public API.
+  * SkImage Factory methods have been moved to the sk_image_factory namespace. Factories specific
+    to the Ganesh GPU backend, are defined publicly in include/gpu/ganesh/SkImageGanesh.h. To help
+    in the transition, there is some temporary bridge code (e.g. aliases) which will eventually be
+    removed.
 
 * * *
 

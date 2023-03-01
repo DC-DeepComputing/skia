@@ -219,7 +219,7 @@ void setup_test_context(Context* context,
                                        kRGBA_8888_SkColorType,
                                        kPremul_SkAlphaType);
 
-    testCtx->fImg = SkImage::MakeGraphitePromiseTexture(testCtx->fRecorder.get(),
+    testCtx->fImg = sk_image_factory::MakeGraphitePromiseTexture(testCtx->fRecorder.get(),
                                                         dimensions,
                                                         textureInfo,
                                                         ii.colorInfo(),
