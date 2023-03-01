@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0670204f_5f5971c4",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-01T19:04:30Z",
+      "side": 1,
+      "message": "`pipeline`? (Preexisting, but you tweaked the sentence structure)",
+      "range": {
+        "startLine": 160,
+        "startChar": 63,
+        "endLine": 160,
+        "endChar": 72
+      },
+      "revId": "a1e14a31a96fcff656e9ab9e39ec23d5d2d41703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0e23786_183a4480",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-01T19:04:30Z",
+      "side": 1,
+      "message": "`and assumes that` feels less ambiguous in its phrasing, but up to you",
+      "range": {
+        "startLine": 161,
+        "startChar": 55,
+        "endLine": 161,
+        "endChar": 63
+      },
+      "revId": "a1e14a31a96fcff656e9ab9e39ec23d5d2d41703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad4e0980_17dfc23c",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-01T19:04:30Z",
+      "side": 1,
+      "message": "`and blending`?",
+      "range": {
+        "startLine": 164,
+        "startChar": 43,
+        "endLine": 164,
+        "endChar": 44
+      },
+      "revId": "a1e14a31a96fcff656e9ab9e39ec23d5d2d41703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3077d264_fcbd0eaa",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-01T19:04:30Z",
+      "side": 1,
+      "message": "WDYT about going straight to `fStage.fPipeline-\u003eappend(SkRasterPipelineOp::srcover);` ?",
+      "range": {
+        "startLine": 288,
+        "startChar": 8,
+        "endLine": 288,
+        "endChar": 74
+      },
+      "revId": "a1e14a31a96fcff656e9ab9e39ec23d5d2d41703",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
