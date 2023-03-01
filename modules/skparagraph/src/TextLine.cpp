@@ -806,7 +806,11 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
     result.clip.offset(textStartInLine, 0);
     //SkDebugf("@%f[%f:%f)\n", textStartInLine, result.clip.fLeft, result.clip.fRight);
 
-    if (compareRound(result.clip.fRight, fAdvance.fX) > 0 && !includeGhostSpaces) {
+    const bool exceedsLineWidth = fOwner->applyRoundingHack()
+        ? compareRound(result.clip.fRight, fAdvance.fX) > 0
+        : result.clip.fRight > fAdvance.fX && !nearlyEqual(result.clip.fRight, fAdvance.fX);
+
+    if (exceedsLineWidth && !includeGhostSpaces) {
         // There are few cases when we need it.
         // The most important one: we measure the text with spaces at the end (or at the beginning in RTL)
         // and we should ignore these spaces
@@ -1016,9 +1020,13 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
         }
     }
 
+    // Floating point additions are not associative.
+    const bool notNearlyEqual = fOwner->applyRoundingHack()
+        ? compareRound(totalWidth, this->width()) != 0
+        : !nearlyEqual(totalWidth, this->width());
     // This is a very important assert!
     // It asserts that 2 different ways of calculation come with the same results
-    if (!includingGhostSpaces && compareRound(totalWidth, this->width()) != 0) {
+    if (!includingGhostSpaces && notNearlyEqual) {
         SkDebugf("ASSERT: %f != %f\n", totalWidth, this->width());
         SkASSERT(false);
     }
@@ -1041,8 +1049,12 @@ LineMetrics TextLine::getMetrics() const {
     result.fAscent = - fMaxRunMetrics.ascent();
     result.fDescent = fMaxRunMetrics.descent();
     result.fUnscaledAscent = - fMaxRunMetrics.ascent(); // TODO: implement
-    result.fHeight = littleRound(fAdvance.fY);
-    result.fWidth = littleRound(fAdvance.fX);
+    result.fHeight = fAdvance.fY;
+    result.fWidth = fAdvance.fX;
+    if (fOwner->applyRoundingHack()) {
+        result.fHeight = littleRound(result.fHeight);
+        result.fWidth = littleRound(result.fWidth);
+    }
     result.fLeft = this->offset().fX;
     // This is Flutter definition of a baseline
     result.fBaseline = this->offset().fY + this->height() - this->sizes().descent();
@@ -1281,11 +1293,13 @@ void TextLine::getRectsForRange(TextRange textRange0,
         });
         return true;
     });
-    for (auto& r : boxes) {
-        r.rect.fLeft = littleRound(r.rect.fLeft);
-        r.rect.fRight = littleRound(r.rect.fRight);
-        r.rect.fTop = littleRound(r.rect.fTop);
-        r.rect.fBottom = littleRound(r.rect.fBottom);
+    if (fOwner->applyRoundingHack()) {
+        for (auto& r : boxes) {
+            r.rect.fLeft = littleRound(r.rect.fLeft);
+            r.rect.fRight = littleRound(r.rect.fRight);
+            r.rect.fTop = littleRound(r.rect.fTop);
+            r.rect.fBottom = littleRound(r.rect.fBottom);
+        }
     }
 }
 
@@ -1358,7 +1372,10 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                 size_t found = context.pos;
                 for (size_t index = context.pos; index < context.pos + context.size; ++index) {
                     // TODO: this rounding is done to match Flutter tests. Must be removed..
-                    auto end = littleRound(context.run->positionX(index) + context.fTextShift + offsetX);
+                    auto end = context.run->positionX(index) + context.fTextShift + offsetX;
+                    if (fOwner->applyRoundingHack()) {
+                        end = littleRound(end);
+                    }
                     if (end > dx) {
                         break;
                     } else if (end == dx && !context.run->leftToRight()) {
@@ -1434,10 +1451,12 @@ void TextLine::getRectsForPlaceholders(std::vector<TextBox>& boxes) {
             SkRect clip = context.clip;
             clip.offset(this->offset());
 
-            clip.fLeft = littleRound(clip.fLeft);
-            clip.fRight = littleRound(clip.fRight);
-            clip.fTop = littleRound(clip.fTop);
-            clip.fBottom = littleRound(clip.fBottom);
+            if (fOwner->applyRoundingHack()) {
+                clip.fLeft = littleRound(clip.fLeft);
+                clip.fRight = littleRound(clip.fRight);
+                clip.fTop = littleRound(clip.fTop);
+                clip.fBottom = littleRound(clip.fBottom);
+            }
             boxes.emplace_back(clip, run->getTextDirection());
             return true;
         });

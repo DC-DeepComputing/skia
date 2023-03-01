@@ -106,7 +106,7 @@ public:
 
     ~ParagraphImpl() override;
 
-    void layout(SkScalar width) override;
+    void layout(SkScalar width, bool applyRoundingHack) override;
     void paint(SkCanvas* canvas, SkScalar x, SkScalar y) override;
     void paint(ParagraphPainter* canvas, SkScalar x, SkScalar y) override;
     std::vector<TextBox> getRectsForRange(unsigned start,
@@ -224,6 +224,8 @@ public:
 
     SkUnicode* getUnicode() { return fUnicode.get(); }
 
+    bool applyRoundingHack() const { return fApplyRoundingHack; }
+
 private:
     friend class ParagraphBuilder;
     friend class ParagraphCacheKey;
@@ -277,6 +279,9 @@ private:
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
     TextIndex fTrailingSpaces;
+
+    // Temporary flag set by the layout method.
+    bool fApplyRoundingHack = false;
 };
 }  // namespace textlayout
 }  // namespace skia
