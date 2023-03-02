@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkSpinlock.h"
+#include "include/private/gpu/ganesh/GrClockPriv.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkTInternalLList.h"
 #include "src/core/SkTDynamicHash.h"

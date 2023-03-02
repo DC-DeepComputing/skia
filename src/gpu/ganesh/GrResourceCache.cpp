@@ -6,11 +6,14 @@
  */
 
 #include "src/gpu/ganesh/GrResourceCache.h"
+
 #include <atomic>
 #include <vector>
+
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/base/SingleOwner.h"
 #include "include/private/base/SkTo.h"
+#include "include/private/gpu/ganesh/GrClockPriv.h"
 #include "src/base/SkRandom.h"
 #include "src/base/SkScopeExit.h"
 #include "src/base/SkTSort.h"

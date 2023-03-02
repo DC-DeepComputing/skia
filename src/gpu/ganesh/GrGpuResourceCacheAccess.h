@@ -8,6 +8,7 @@
 #ifndef GrGpuResourceCacheAccess_DEFINED
 #define GrGpuResourceCacheAccess_DEFINED
 
+#include "include/private/gpu/ganesh/GrClockPriv.h"
 #include "src/gpu/ganesh/GrGpuResource.h"
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"
 
