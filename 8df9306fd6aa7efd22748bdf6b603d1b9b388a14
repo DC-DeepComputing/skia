@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b34cdbf_9f191fbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-02T14:19:23Z",
+      "side": 1,
+      "message": "PS1 may be easier to read. PS2 is just a slight tweak from there, but changed a bunch of variable names.",
+      "revId": "8df9306fd6aa7efd22748bdf6b603d1b9b388a14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dd1f483_52d49701",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-02T14:19:23Z",
+      "side": 1,
+      "message": "This is a change I added in PS2, so we wouldn\u0027t have to re-convert the paint color in both `SkCreateRasterPipelineBlitter` and `SkRasterPipelineBlitter::Create`",
+      "revId": "8df9306fd6aa7efd22748bdf6b603d1b9b388a14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
