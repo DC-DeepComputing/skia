@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37f21625_6f58c8be",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-02T19:47:10Z",
+      "side": 1,
+      "message": "should this be dstTexture? Like is this meant to be the target of the draw (i.e. the color attachment we draw to) or the texture for the dst read?",
+      "range": {
+        "startLine": 44,
+        "startChar": 37,
+        "endLine": 44,
+        "endChar": 43
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ad29c68f_0ad33cf2",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 1
@@ -36,6 +59,52 @@
         "startChar": 0,
         "endLine": 897,
         "endChar": 91
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "def148a7_e9e699bb",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-02T19:47:10Z",
+      "side": 1,
+      "message": "Just because we need the dst color doesn\u0027t mean we have to flush previous work. This is only the case if we end up needing to do a dst copy. Maybe we want to start, even at this early CL, distinguishing between needing to read the dst value and needing a dst texture. And in the dst texture case distinguishing between needing a copy or not.",
+      "range": {
+        "startLine": 898,
+        "startChar": 4,
+        "endLine": 900,
+        "endChar": 5
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30057e72_f74f5c21",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-02T19:47:10Z",
+      "side": 1,
+      "message": "This should be :kYes as it is an internal texture.",
+      "range": {
+        "startLine": 410,
+        "startChar": 67,
+        "endLine": 410,
+        "endChar": 70
       },
       "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
