@@ -24,7 +24,7 @@
 #include "src/shaders/SkLocalMatrixShader.h"
 #include "src/shaders/SkTransformShader.h"
 
-#if defined(SK_GRAPHITE)
+#ifdef SK_GRAPHITE
 #include "src/gpu/graphite/ImageUtils.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/KeyContext.h"
@@ -50,7 +50,7 @@ static skgpu::graphite::ReadSwizzle swizzle_class_to_read_enum(const skgpu::Swiz
         return skgpu::graphite::ReadSwizzle::kRGBA;
     }
 }
-#endif
+#endif // SK_GRAPHITE
 
 SkM44 SkImageShader::CubicResamplerMatrix(float B, float C) {
 #if 0
