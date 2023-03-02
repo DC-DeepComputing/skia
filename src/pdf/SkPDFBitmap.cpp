@@ -84,7 +84,50 @@ static void emit_image_stream(SkPDFDocument* doc,
     pdfDict.insertName("Subtype", "Image");
     pdfDict.insertInt("Width", size.width());
     pdfDict.insertInt("Height", size.height());
-    pdfDict.insertName("ColorSpace", colorSpace);
+
+    if (strcmp(colorSpace, "DeviceRGB") == 0) {
+        SkDynamicMemoryWStream tint;
+        tint.writeText("{"
+            " pop" // ignore blue
+
+            // f = f(x), shift and scale to [0,1].
+            // f(r) + min(f(r)) / (max(f(r)) - min(f(r)))
+            " exch 360 mul sin 2 add 4 div"
+            //" exch 360 mul cos 2 add 4 div"
+            //" exch 360 mul dup sin exch cos atan 360 div" // atan2(sin(t), cos(t))
+
+            // d = distance from f along y=green
+            " sub abs"
+
+            // shade out to radious s based on distance d
+            " .1 exch sub dup 0 lt { pop 0 } if 10 mul sqrt" // sqrt(max(1/s - d, 0) * s)
+
+            " 1 exch sub" // invert
+            " dup dup" // greyscale
+        " }");
+        auto domain = SkPDFMakeArray(0, 1, 0, 1, 0, 1);
+        auto range = SkPDFMakeArray(0, 1, 0, 1, 0, 1);
+        std::unique_ptr<SkPDFDict> dict = SkPDFMakeDict();
+        dict->insertInt("FunctionType", 4);
+        dict->insertObject("Domain", std::move(domain));
+        dict->insertObject("Range", std::move(range));
+        SkPDFIndirectReference tintRef = SkPDFStreamOut(std::move(dict), tint.detachAsStream(), doc);
+
+        SkPDFArray cs;
+        cs.appendName("DeviceN");
+        std::unique_ptr<SkPDFArray> names = SkPDFMakeArray();
+        names->appendName("X");
+        names->appendName("Y");
+        names->appendName("Z");
+        cs.appendObject(std::move(names));
+        cs.appendName(colorSpace);
+        cs.appendRef(tintRef);
+        SkPDFIndirectReference csRef = doc->emit(cs);
+
+        pdfDict.insertRef("ColorSpace", csRef);
+    } else {
+        pdfDict.insertName("ColorSpace", colorSpace);
+    }
     if (sMask) {
         pdfDict.insertRef("SMask", sMask);
     }
