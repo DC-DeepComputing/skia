@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68097e45_a87080bf",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-02T14:37:01Z",
+      "side": 1,
+      "message": "So we have a goal of getting rid of all these #defines in our code. Obviously we have other uses in this file, but I think we should try to not add more. So I think we\u0027ll need to do something where we\u0027re either storing the channelMask on the TextureInfo, querying it via some caps/sharedContext virtual, or making TextureInfo more virtual. If we go with the last version, we should probably spend a little time thinking about how we\u0027d want to hand all the *Spec members of TextureInfo.",
+      "range": {
+        "startLine": 95,
+        "startChar": 7,
+        "endLine": 95,
+        "endChar": 16
+      },
+      "revId": "07ba6a98b7b6bffa5d733d0d5bfb308f75069319",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
