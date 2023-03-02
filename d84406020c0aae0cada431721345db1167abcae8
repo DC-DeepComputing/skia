@@ -16,6 +16,24 @@
       "message": "Turns out for the new shared code I\u0027d need to use MtlTypesPriv.h in a cpp file so this won\u0027t work as is for that (MtlTypesPriv.h includes Metal.h). But it seems worth doing regardless.",
       "revId": "d84406020c0aae0cada431721345db1167abcae8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b8cee75_54c5f8ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-02T17:46:10Z",
+      "side": 1,
+      "message": "With the updated follow-on the new shared code does end up in MtlTypesPriv.h. Also ping.",
+      "parentUuid": "e2f0ff61_8d7657ab",
+      "revId": "d84406020c0aae0cada431721345db1167abcae8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
