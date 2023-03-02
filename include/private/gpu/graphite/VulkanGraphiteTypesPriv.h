@@ -38,7 +38,7 @@ struct VulkanTextureSpec {
     }
 
     VkImageCreateFlags       fFlags;
-    VkFormat                 fFormat;
+    VkFormat                 fFormat; // y
     VkImageTiling            fImageTiling;
     VkImageUsageFlags        fImageUsageFlags;
     VkSharingMode            fSharingMode;
