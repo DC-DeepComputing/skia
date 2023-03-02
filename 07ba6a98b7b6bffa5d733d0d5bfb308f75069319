@@ -46,6 +46,30 @@
       },
       "revId": "07ba6a98b7b6bffa5d733d0d5bfb308f75069319",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d73fc418_c2082e50",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-02T15:18:17Z",
+      "side": 1,
+      "message": "Working this up now -- it\u0027s looking pretty clean.",
+      "parentUuid": "10bd3407_4c1d48d1",
+      "range": {
+        "startLine": 95,
+        "startChar": 7,
+        "endLine": 95,
+        "endChar": 16
+      },
+      "revId": "07ba6a98b7b6bffa5d733d0d5bfb308f75069319",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
