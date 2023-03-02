@@ -19,7 +19,7 @@
 class SkUniform;
 
 namespace SkSL {
-    class Compiler;
+class Compiler;
 }
 namespace skgpu {
 struct BlendInfo;
