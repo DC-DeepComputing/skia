@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3738441a_9204cc8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-02T17:28:59Z",
+      "side": 1,
+      "message": "LGTM--how would I verify that this actually works? Are there GMs which you are checking in different color modes?",
+      "revId": "8df9306fd6aa7efd22748bdf6b603d1b9b388a14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "8dd1f483_52d49701",
