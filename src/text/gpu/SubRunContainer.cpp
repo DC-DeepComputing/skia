@@ -1410,7 +1410,7 @@ public:
     }
 #endif  // defined(SK_GANESH)
 
-#ifdef SK_GRAPHITE
+#if defined(SK_GRAPHITE)
     void draw(SkCanvas*,
               SkPoint drawOrigin,
               const SkPaint& paint,

@@ -794,8 +794,8 @@ GrBackendTexture GrDirectContext::createCompressedBackendTexture(
         return {};
     }
 
-    SkImage::CompressionType compression = GrBackendFormatToCompressionType(backendFormat);
-    if (compression == SkImage::CompressionType::kNone) {
+    sk_image_factory::CompressionType compression = GrBackendFormatToCompressionType(backendFormat);
+    if (compression == sk_image_factory::CompressionType::kNone) {
         return {};
     }
 
@@ -817,7 +817,7 @@ GrBackendTexture GrDirectContext::createCompressedBackendTexture(
 
 GrBackendTexture GrDirectContext::createCompressedBackendTexture(
         int width, int height,
-        SkImage::CompressionType compression,
+        sk_image_factory::CompressionType compression,
         const SkColor4f& color,
         GrMipmapped mipmapped,
         GrProtected isProtected,
@@ -858,7 +858,7 @@ GrBackendTexture GrDirectContext::createCompressedBackendTexture(
 
 GrBackendTexture GrDirectContext::createCompressedBackendTexture(
         int width, int height,
-        SkImage::CompressionType compression,
+        sk_image_factory::CompressionType compression,
         const void* data, size_t dataSize,
         GrMipmapped mipmapped,
         GrProtected isProtected,
@@ -880,9 +880,9 @@ bool GrDirectContext::updateCompressedBackendTexture(const GrBackendTexture& bac
         return false;
     }
 
-    SkImage::CompressionType compression =
+    sk_image_factory::CompressionType compression =
             GrBackendFormatToCompressionType(backendTexture.getBackendFormat());
-    if (compression == SkImage::CompressionType::kNone) {
+    if (compression == sk_image_factory::CompressionType::kNone) {
         return {};
     }
     size_t size = SkCompressedDataSize(compression,

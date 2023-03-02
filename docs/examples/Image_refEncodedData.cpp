@@ -15,9 +15,10 @@ void draw(SkCanvas* canvas) {
     } tests[] = {
         { "image", image },
         { "bitmap", source.asImage() },
-        { "texture", SkImage::MakeFromTexture(dContext, backEndTexture, kTopLeft_GrSurfaceOrigin,
-                                              kRGBA_8888_SkColorType, kOpaque_SkAlphaType,
-                                              nullptr) }
+        { "texture", sk_image_factory::MakeFromTexture(dContext, backEndTexture,
+                                                       kTopLeft_GrSurfaceOrigin,
+                                                       kRGBA_8888_SkColorType, kOpaque_SkAlphaType,
+                                                       nullptr) }
     };
     SkString string;
     SkPaint paint;

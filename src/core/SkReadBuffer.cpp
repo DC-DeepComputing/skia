@@ -43,7 +43,7 @@ namespace {
     };
 
     static sk_sp<SkImage> MakeEmptyImage(int width, int height) {
-        return SkImage::MakeFromGenerator(
+        return sk_image_factory::MakeFromGenerator(
               std::make_unique<EmptyImageGenerator>(SkImageInfo::MakeN32Premul(width, height)));
     }
 
@@ -353,7 +353,7 @@ sk_sp<SkImage> SkReadBuffer::readImage() {
             if (flags & SkWriteBufferImageFlags::kUnpremul) {
                 alphaType = kUnpremul_SkAlphaType;
             }
-            image = SkImage::MakeFromEncoded(std::move(data), alphaType);
+            image = sk_image_factory::MakeFromEncoded(std::move(data), alphaType);
         }
     }
 

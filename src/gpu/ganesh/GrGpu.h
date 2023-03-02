@@ -680,7 +680,7 @@ public:
 
 protected:
     static bool CompressedDataIsCorrect(SkISize dimensions,
-                                        SkImage::CompressionType,
+                                        sk_image_factory::CompressionType,
                                         GrMipmapped,
                                         const void* data,
                                         size_t length);
