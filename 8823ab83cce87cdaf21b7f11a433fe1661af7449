@@ -16,6 +16,29 @@
       "message": "Back to YUVA stuff, PTAL.",
       "revId": "8823ab83cce87cdaf21b7f11a433fe1661af7449",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd1ea059_fd1679a6",
+        "filename": "include/gpu/graphite/YUVABackendTextures.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-02T18:53:23Z",
+      "side": 1,
+      "message": "I need to change this (and below) to Recorder I think, as using Caps assumes access to a private class.",
+      "range": {
+        "startLine": 37,
+        "startChar": 27,
+        "endLine": 37,
+        "endChar": 38
+      },
+      "revId": "8823ab83cce87cdaf21b7f11a433fe1661af7449",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
