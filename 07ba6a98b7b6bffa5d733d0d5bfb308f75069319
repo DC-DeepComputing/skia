@@ -22,6 +22,30 @@
       },
       "revId": "07ba6a98b7b6bffa5d733d0d5bfb308f75069319",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10bd3407_4c1d48d1",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-02T15:08:32Z",
+      "side": 1,
+      "message": "It\u0027s probably simplest to store it on the TextureInfo. Querying it with Caps assumes you have access to Caps at that point in the code which may not be true and I don\u0027t think virtualization is necessary. ChannelMask seems like a shared parameter like sampleCount and mipmapped.",
+      "parentUuid": "68097e45_a87080bf",
+      "range": {
+        "startLine": 95,
+        "startChar": 7,
+        "endLine": 95,
+        "endChar": 16
+      },
+      "revId": "07ba6a98b7b6bffa5d733d0d5bfb308f75069319",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
