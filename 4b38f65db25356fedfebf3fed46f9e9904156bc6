@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27829c08_cdcf1d4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-02T18:24:08Z",
+      "side": 1,
+      "message": "In addition to the inline comments, another big missing piece of this is that the dst blend doesn\u0027t take coverage into account. This is already evident on some GMs where blending is otherwise working, for example\nhttps://public-gold.skia.org/detail?grouping\u003dname%3Dsavelayer_initfromprev%26source_type%3Dgm\u0026digest\u003d8e68120064326fe05a441852eaac7319",
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad29c68f_0ad33cf2",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-02T18:24:08Z",
+      "side": 1,
+      "message": "In this CL, this is where we make a decision to add a dst read for a draw. As Greg and I discussed, this decision-making probably needs to look a lot different than this and probably needs to be much more sophisticated (for example from looking at Ganesh: https://crsrc.org/c/third_party/skia/src/gpu/ganesh/effects/GrPorterDuffXferProcessor.cpp;l\u003d764).",
+      "range": {
+        "startLine": 895,
+        "startChar": 0,
+        "endLine": 897,
+        "endChar": 91
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1d68b6f_a9d44d01",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-02T18:24:08Z",
+      "side": 1,
+      "message": "Creating a new DstRead block that outputs this assignment was a convenient way to handle the dst coords uniform and dst texture uploads, but of course it feels very awkward to output the assignment to surfaceColor this way. Is there / should there be another mechanism to output code into the fragment shader body that isn\u0027t necessarily the rhs of an assignment?",
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dab81f56_5e77ea3e",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-02T18:24:08Z",
+      "side": 1,
+      "message": "Can we always just use the surface color directly as the destColor input to runtime blenders? Is it possible for a runtime blender to need a different destColor input?",
+      "range": {
+        "startLine": 861,
+        "startChar": 66,
+        "endLine": 861,
+        "endChar": 80
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b872125a_ea77a6c9",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-02T18:24:08Z",
+      "side": 1,
+      "message": "Similar to the above question about using the surface color directly, is it possible that we\u0027d ever need to use a different value for the destColor input in this context (i.e. would we ever need to use the result of a previous computation)?",
+      "range": {
+        "startLine": 1029,
+        "startChar": 72,
+        "endLine": 1029,
+        "endChar": 86
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
