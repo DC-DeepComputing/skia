@@ -7,13 +7,6 @@
 
 #include "include/gpu/graphite/TextureInfo.h"
 
-#ifdef SK_VULKAN
-#include "src/gpu/vk/VulkanUtilsPriv.h"
-#endif
-#ifdef SK_METAL
-#include "src/gpu/mtl/MtlCppUtilsPriv.h"
-#endif
-
 namespace skgpu::graphite {
 
 TextureInfo& TextureInfo::operator=(const TextureInfo& that) {
@@ -87,7 +80,7 @@ bool TextureInfo::operator==(const TextureInfo& that) const {
     }
 }
 
-uint32_t TextureInfo::channelMask() const {
+/*uint32_t TextureInfo::channelMask() const {
     if (!this->isValid()) {
         return 0;
     }
@@ -109,7 +102,7 @@ uint32_t TextureInfo::channelMask() const {
         default:
             return 0;
     }
-}
+}*/
 
 } // namespace skgpu::graphite
 

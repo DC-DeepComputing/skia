@@ -26,6 +26,8 @@ GrColorFormatDesc GrMtlFormatDesc(GrMTLPixelFormat);
 
 SkImage::CompressionType GrMtlBackendFormatToCompressionType(const GrBackendFormat& format);
 
+uint32_t GrMtlFormatChannels(GrMTLPixelFormat);
+
 /**
  * Gets the sample count of a texture held by GrMtlTextureInfo or zero if the texture is nil.
  */

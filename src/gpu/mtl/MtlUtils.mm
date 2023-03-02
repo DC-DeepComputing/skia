@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/mtl/MtlCppUtilsPriv.h"
 #include "src/gpu/mtl/MtlUtilsPriv.h"
 
 #include "include/gpu/ShaderErrorHandler.h"
@@ -93,7 +92,7 @@ const char* MtlFormatToString(MTLPixelFormat mtlFormat) {
     }
 }
 
-uint32_t MtlFormatChannels(unsigned int mtlFormat) {
+uint32_t MtlFormatChannels(MTLPixelFormat mtlFormat) {
     switch (mtlFormat) {
         case MTLPixelFormatRGBA8Unorm:      return kRGBA_SkColorChannelFlags;
         case MTLPixelFormatR8Unorm:         return kRed_SkColorChannelFlag;
