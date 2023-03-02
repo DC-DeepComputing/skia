@@ -39,6 +39,30 @@
       },
       "revId": "3702a0ddfb5db9ff519500843d6eb997354d88a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cbc6e0e_f35445db",
+        "filename": "src/image/SkImage_Raster.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-02T22:52:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f38f49e2_b7fb5c1d",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "3702a0ddfb5db9ff519500843d6eb997354d88a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
