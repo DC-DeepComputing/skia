@@ -17,6 +17,7 @@ skia_graphite_public = [
   "$_include/Recorder.h",
   "$_include/Recording.h",
   "$_include/TextureInfo.h",
+  "$_include/YUVABackendTextures.h",
 ]
 
 skia_graphite_sources = [
@@ -148,6 +149,7 @@ skia_graphite_sources = [
   "$_src/UploadBufferManager.h",
   "$_src/UploadTask.cpp",
   "$_src/UploadTask.h",
+  "$_src/YUVABackendTextures.cpp",
   "$_src/YUVATextureProxies.cpp",
   "$_src/YUVATextureProxies.h",
   "$_src/compute/ComputeStep.cpp",
@@ -219,9 +221,9 @@ skia_graphite_dawn_sources = [
 
 skia_graphite_mtl_sources = [
   "$_include/mtl/MtlBackendContext.h",
-  "$_include/mtl/MtlTypes.h",
-  "$_include/mtl/MtlUtils.h",
-  "$_include_private/MtlTypesPriv.h",
+  "$_include/mtl/MtlGraphiteTypes.h",
+  "$_include/mtl/MtlGraphiteUtils.h",
+  "$_include_private/MtlGraphiteTypesPriv.h",
   "$_src/mtl/MtlBlitCommandEncoder.h",
   "$_src/mtl/MtlBuffer.h",
   "$_src/mtl/MtlBuffer.mm",
@@ -234,6 +236,9 @@ skia_graphite_mtl_sources = [
   "$_src/mtl/MtlComputePipeline.mm",
   "$_src/mtl/MtlGraphicsPipeline.h",
   "$_src/mtl/MtlGraphicsPipeline.mm",
+  "$_src/mtl/MtlGraphiteTypes.mm",
+  "$_src/mtl/MtlGraphiteUtils.mm",
+  "$_src/mtl/MtlGraphiteUtilsPriv.h",
   "$_src/mtl/MtlQueueManager.h",
   "$_src/mtl/MtlQueueManager.mm",
   "$_src/mtl/MtlRenderCommandEncoder.h",
@@ -245,9 +250,6 @@ skia_graphite_mtl_sources = [
   "$_src/mtl/MtlSharedContext.mm",
   "$_src/mtl/MtlTexture.h",
   "$_src/mtl/MtlTexture.mm",
-  "$_src/mtl/MtlTypesPriv.mm",
-  "$_src/mtl/MtlUtils.mm",
-  "$_src/mtl/MtlUtilsPriv.h",
 ]
 
 skia_graphite_vk_sources = [

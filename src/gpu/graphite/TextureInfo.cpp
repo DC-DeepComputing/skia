@@ -80,5 +80,29 @@ bool TextureInfo::operator==(const TextureInfo& that) const {
     }
 }
 
+/*uint32_t TextureInfo::channelMask() const {
+    if (!this->isValid()) {
+        return 0;
+    }
+    switch (fBackend) {
+#ifdef SK_VULKAN
+        case BackendApi::kVulkan:
+            return skgpu::VkFormatChannels(fVkSpec.fFormat);
+#endif
+#ifdef SK_METAL
+        case BackendApi::kMetal:
+            return skgpu::MtlFormatChannels(fMtlSpec.fFormat);
+#endif
+#ifdef SK_DAWN
+        case BackendApi::kDawn:
+            // TODO: Move GrDawnFormatChannels() to shared loc and use
+            return 0;
+#endif
+
+        default:
+            return 0;
+    }
+}*/
+
 } // namespace skgpu::graphite
 
