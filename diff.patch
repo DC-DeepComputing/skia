@@ -1,0 +1,288 @@
+diff --git a/gn/graphite.gni b/gn/graphite.gni
+index fcf972a8c6..680bd2f903 100644
+--- a/gn/graphite.gni
++++ b/gn/graphite.gni
+@@ -17,6 +17,7 @@ skia_graphite_public = [
+   "$_include/Recorder.h",
+   "$_include/Recording.h",
+   "$_include/TextureInfo.h",
++  "$_include/YUVABackendTextures.h",
+ ]
+ 
+ skia_graphite_sources = [
+@@ -148,6 +149,7 @@ skia_graphite_sources = [
+   "$_src/UploadBufferManager.h",
+   "$_src/UploadTask.cpp",
+   "$_src/UploadTask.h",
++  "$_src/YUVABackendTextures.cpp",
+   "$_src/YUVATextureProxies.cpp",
+   "$_src/YUVATextureProxies.h",
+   "$_src/compute/ComputeStep.cpp",
+diff --git a/include/gpu/graphite/YUVABackendTextures.h b/include/gpu/graphite/YUVABackendTextures.h
+new file mode 100644
+index 0000000000..4af2da7c05
+--- /dev/null
++++ b/include/gpu/graphite/YUVABackendTextures.h
+@@ -0,0 +1,136 @@
++/*
++ * Copyright 2023 Google LLC
++ *
++ * Use of this source code is governed by a BSD-style license that can be
++ * found in the LICENSE file.
++ */
++
++#ifndef skgpu_graphite_YUVABackendTextures_DEFINED
++#define skgpu_graphite_YUVABackendTextures_DEFINED
++
++#include "include/core/SkYUVAInfo.h"
++#include "include/gpu/graphite/BackendTexture.h"
++
++#include <tuple>
++
++namespace skgpu::graphite {
++
++/**
++ * A description of a set of BackendTextures that hold the planar data described by a SkYUVAInfo.
++ */
++class SK_API YUVABackendTextureInfo {
++public:
++    static constexpr auto kMaxPlanes = SkYUVAInfo::kMaxPlanes;
++
++    /** Default YUVABackendTextureInfo is invalid. */
++    YUVABackendTextureInfo() = default;
++
++    /**
++     * Initializes a YUVABackendTextureInfo to describe a set of textures that can store the
++     * planes indicated by the SkYUVAInfo. The texture dimensions are taken from the SkYUVAInfo's
++     * plane dimensions. All the described textures share a common origin. The planar image this
++     * describes will be mip mapped if all the textures are individually mip mapped as indicated
++     * by Mipmapped. This will produce an invalid result (return false from isValid()) if the
++     * passed colortypes are not compatible with the texture infos or the colortypes' channels
++     * don't agree with SkYUVAInfo.
++     */
++    YUVABackendTextureInfo(const SkYUVAInfo&,
++                           const TextureInfo[kMaxPlanes],
++                           const SkColorType[kMaxPlanes],
++                           Mipmapped);
++
++    YUVABackendTextureInfo(const YUVABackendTextureInfo&) = default;
++
++    YUVABackendTextureInfo& operator=(const YUVABackendTextureInfo&) = default;
++
++    bool operator==(const YUVABackendTextureInfo&) const;
++    bool operator!=(const YUVABackendTextureInfo& that) const { return !(*this == that); }
++
++    const SkYUVAInfo& yuvaInfo() const { return fYUVAInfo; }
++
++    SkYUVColorSpace yuvColorSpace() const { return fYUVAInfo.yuvColorSpace(); }
++
++    Mipmapped mipmapped() const { return fMipmapped; }
++
++    /** The number of SkPixmap planes, 0 if this YUVABackendTextureInfo is invalid. */
++    int numPlanes() const { return fYUVAInfo.numPlanes(); }
++
++    /** TextureInfo for the ith plane, or invalid if i >= numPlanes() */
++    const TextureInfo& planeTextureInfo(int i) const { return fPlaneTextureInfos[i]; }
++
++    /**
++     * Returns true if this has been configured with a valid SkYUVAInfo with compatible texture
++     * formats.
++     */
++    bool isValid() const { return fYUVAInfo.isValid(); }
++
++    /**
++     * Computes a YUVALocations representation of the planar layout. The result is guaranteed to be
++     * valid if this->isValid().
++     */
++    SkYUVAInfo::YUVALocations toYUVALocations() const;
++
++private:
++    SkYUVAInfo fYUVAInfo;
++    std::array<TextureInfo, kMaxPlanes> fPlaneTextureInfos;
++    std::array<SkColorType, kMaxPlanes>  fPlaneColorTypes;
++    Mipmapped fMipmapped = Mipmapped::kNo;
++};
++
++/**
++ * A set of GrBackendTextures that hold the planar data for an image described a SkYUVAInfo.
++ */
++class SK_API YUVABackendTextures {
++public:
++    static constexpr auto kMaxPlanes = SkYUVAInfo::kMaxPlanes;
++
++    YUVABackendTextures() = default;
++    YUVABackendTextures(const YUVABackendTextures&) = delete;
++    YUVABackendTextures(YUVABackendTextures&&) = default;
++
++    YUVABackendTextures& operator=(const YUVABackendTextures&) = delete;
++    YUVABackendTextures& operator=(YUVABackendTextures&&) = default;
++
++    /**
++     * Initializes a YUVABackendTextureInfo to describe a set of textures that can store the
++     * planes indicated by the SkYUVAInfo. The texture dimensions are taken from the SkYUVAInfo's
++     * plane dimensions. All the described textures share a common origin. The planar image this
++     * describes will be mip mapped if all the textures are individually mip mapped as indicated
++     * by Mipmapped. This will produce an invalid result (return false from isValid()) if the
++     * passed colortypes are not compatible with the backend textures or the colortypes' channels
++     * don't agree with SkYUVAInfo.
++     */
++    YUVABackendTextures(const SkYUVAInfo&,
++                        const BackendTexture[kMaxPlanes],
++                        const SkColorType[kMaxPlanes]);
++
++    const std::array<BackendTexture, SkYUVAInfo::kMaxPlanes>& textures() const {
++        return fTextures;
++    }
++
++    BackendTexture texture(int i) const {
++        SkASSERT(i >= 0 && i < kMaxPlanes);
++        return fTextures[static_cast<size_t>(i)];
++    }
++
++    const SkYUVAInfo& yuvaInfo() const { return fYUVAInfo; }
++
++    int numPlanes() const { return fYUVAInfo.numPlanes(); }
++
++    bool isValid() const { return fYUVAInfo.isValid(); }
++
++    /**
++     * Computes a YUVALocations representation of the planar layout. The result is guaranteed to be
++     * valid if this->isValid().
++     */
++    SkYUVAInfo::YUVALocations toYUVALocations() const;
++
++private:
++    SkYUVAInfo fYUVAInfo;
++    std::array<BackendTexture, kMaxPlanes> fTextures;
++    std::array<SkColorType, kMaxPlanes> fColorTypes;
++};
++
++}  // End of namespace skgpu::graphite
++
++#endif  // skgpu_graphite_YUVABackendTextures_DEFINED
+diff --git a/src/gpu/graphite/YUVABackendTextures.cpp b/src/gpu/graphite/YUVABackendTextures.cpp
+new file mode 100644
+index 0000000000..847d6db016
+--- /dev/null
++++ b/src/gpu/graphite/YUVABackendTextures.cpp
+@@ -0,0 +1,120 @@
++/*
++ * Copyright 2020 Google LLC
++ *
++ * Use of this source code is governed by a BSD-style license that can be
++ * found in the LICENSE file.
++ */
++
++#include "include/gpu/graphite/YUVABackendTextures.h"
++
++#include "src/core/SkImageInfoPriv.h"
++#include "src/core/SkYUVAInfoLocation.h"
++
++namespace skgpu::graphite {
++
++namespace {
++int num_channels(SkColorType colorType) {
++    switch (SkColorTypeChannelFlags(colorType)) {
++        case kRed_SkColorChannelFlag        : return 1;
++        case kAlpha_SkColorChannelFlag      : return 1;
++        case kGray_SkColorChannelFlag       : return 1;
++        case kGrayAlpha_SkColorChannelFlags : return 2;
++        case kRG_SkColorChannelFlags        : return 2;
++        case kRGB_SkColorChannelFlags       : return 3;
++        case kRGBA_SkColorChannelFlags      : return 4;
++        default                             : return 0;
++    }
++}
++}
++
++YUVABackendTextureInfo::YUVABackendTextureInfo(const SkYUVAInfo& yuvaInfo,
++                                               const TextureInfo textureInfos[kMaxPlanes],
++                                               const SkColorType colorTypes[kMaxPlanes],
++                                               Mipmapped mipmapped)
++        : fYUVAInfo(yuvaInfo)
++        , fMipmapped(mipmapped) {
++    if (!yuvaInfo.isValid()) {
++        *this = {};
++        SkASSERT(!this->isValid());
++        return;
++    }
++    int n = yuvaInfo.numPlanes();
++    for (size_t i = 0; i < static_cast<size_t>(n); ++i) {
++        if (!textureInfos[i].isValid() || textureInfos[i].backend() != textureInfos[0].backend()) {
++            *this = {};
++            SkASSERT(!this->isValid());
++            return;
++        }
++        int numRequiredChannels = yuvaInfo.numChannelsInPlane(i);
++        SkASSERT(numRequiredChannels > 0);
++        int numActualChannels = num_channels(colorTypes[i]);
++        if (numActualChannels < numRequiredChannels) {
++            *this = {};
++            SkASSERT(!this->isValid());
++            return;
++        }
++        fPlaneTextureInfos[i] = textureInfos[i];
++    }
++    SkASSERT(this->isValid());
++}
++
++bool YUVABackendTextureInfo::operator==(const YUVABackendTextureInfo& that) const {
++    if (fYUVAInfo != that.fYUVAInfo || fMipmapped != that.fMipmapped) {
++        return false;
++    }
++    return fPlaneTextureInfos == that.fPlaneTextureInfos;
++}
++
++SkYUVAInfo::YUVALocations YUVABackendTextureInfo::toYUVALocations() const {
++    uint32_t channelFlags[] = {
++        SkColorTypeChannelFlags(fPlaneColorTypes[0]),
++        SkColorTypeChannelFlags(fPlaneColorTypes[1]),
++        SkColorTypeChannelFlags(fPlaneColorTypes[2]),
++        SkColorTypeChannelFlags(fPlaneColorTypes[3])
++    };
++    auto result = fYUVAInfo.toYUVALocations(channelFlags);
++    SkDEBUGCODE(int numPlanes;)
++    SkASSERT(SkYUVAInfo::YUVALocation::AreValidLocations(result, &numPlanes));
++    SkASSERT(numPlanes == this->numPlanes());
++    return result;
++}
++
++//////////////////////////////////////////////////////////////////////////////
++
++YUVABackendTextures::YUVABackendTextures(const SkYUVAInfo& yuvaInfo,
++                                         const BackendTexture textures[kMaxPlanes],
++                                         const SkColorType colorTypes[kMaxPlanes])
++        : fYUVAInfo(yuvaInfo) {
++    if (!fYUVAInfo.isValid()) {
++        return;
++    }
++    SkISize planeDimensions[SkYUVAInfo::kMaxPlanes];
++    int numPlanes = yuvaInfo.planeDimensions(planeDimensions);
++    for (int i = 0; i < numPlanes; ++i) {
++        int numRequiredChannels = fYUVAInfo.numChannelsInPlane(i);
++        if (!textures[i].isValid() ||
++            textures[i].dimensions() != planeDimensions[i] ||
++            textures[i].backend() != textures[0].backend() ||
++            num_channels(colorTypes[i]) < numRequiredChannels) {
++            *this = {};
++            return;
++        }
++        fTextures[i] = textures[i];
++    }
++}
++
++SkYUVAInfo::YUVALocations YUVABackendTextures::toYUVALocations() const {
++    uint32_t channelFlags[] = {
++        SkColorTypeChannelFlags(fColorTypes[0]),
++        SkColorTypeChannelFlags(fColorTypes[1]),
++        SkColorTypeChannelFlags(fColorTypes[2]),
++        SkColorTypeChannelFlags(fColorTypes[3])
++    };
++    auto result = fYUVAInfo.toYUVALocations(channelFlags);
++    SkDEBUGCODE(int numPlanes;)
++    SkASSERT(SkYUVAInfo::YUVALocation::AreValidLocations(result, &numPlanes));
++    SkASSERT(numPlanes == this->numPlanes());
++    return result;
++}
++
++}  // End of namespace skgpu::graphite
