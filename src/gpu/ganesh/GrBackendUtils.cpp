@@ -30,7 +30,7 @@
 #include "src/gpu/ganesh/dawn/GrDawnUtil.h"
 #endif
 
-SkImage::CompressionType GrBackendFormatToCompressionType(const GrBackendFormat& format) {
+sk_image_factory::CompressionType GrBackendFormatToCompressionType(const GrBackendFormat& format) {
     switch (format.backend()) {
         case GrBackendApi::kOpenGL: {
 #ifdef SK_GL
@@ -38,13 +38,13 @@ SkImage::CompressionType GrBackendFormatToCompressionType(const GrBackendFormat&
             switch (glFormat) {
                 case GrGLFormat::kCOMPRESSED_ETC1_RGB8:
                 case GrGLFormat::kCOMPRESSED_RGB8_ETC2:
-                    return SkImage::CompressionType::kETC2_RGB8_UNORM;
+                    return sk_image_factory::CompressionType::kETC2_RGB8_UNORM;
                 case GrGLFormat::kCOMPRESSED_RGB8_BC1:
-                    return SkImage::CompressionType::kBC1_RGB8_UNORM;
+                    return sk_image_factory::CompressionType::kBC1_RGB8_UNORM;
                 case GrGLFormat::kCOMPRESSED_RGBA8_BC1:
-                    return SkImage::CompressionType::kBC1_RGBA8_UNORM;
+                    return sk_image_factory::CompressionType::kBC1_RGBA8_UNORM;
                 default:
-                    return SkImage::CompressionType::kNone;
+                    return sk_image_factory::CompressionType::kNone;
             }
 #else
             break;
@@ -56,13 +56,13 @@ SkImage::CompressionType GrBackendFormatToCompressionType(const GrBackendFormat&
             SkAssertResult(format.asVkFormat(&vkFormat));
             switch (vkFormat) {
                 case VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK:
-                    return SkImage::CompressionType::kETC2_RGB8_UNORM;
+                    return sk_image_factory::CompressionType::kETC2_RGB8_UNORM;
                 case VK_FORMAT_BC1_RGB_UNORM_BLOCK:
-                    return SkImage::CompressionType::kBC1_RGB8_UNORM;
+                    return sk_image_factory::CompressionType::kBC1_RGB8_UNORM;
                 case VK_FORMAT_BC1_RGBA_UNORM_BLOCK:
-                    return SkImage::CompressionType::kBC1_RGBA8_UNORM;
+                    return sk_image_factory::CompressionType::kBC1_RGBA8_UNORM;
                 default:
-                    return SkImage::CompressionType::kNone;
+                    return sk_image_factory::CompressionType::kNone;
             }
 #else
             break;
@@ -81,22 +81,22 @@ SkImage::CompressionType GrBackendFormatToCompressionType(const GrBackendFormat&
             SkAssertResult(format.asDxgiFormat(&dxgiFormat));
             switch (dxgiFormat) {
                 case DXGI_FORMAT_BC1_UNORM:
-                    return SkImage::CompressionType::kBC1_RGBA8_UNORM;
+                    return sk_image_factory::CompressionType::kBC1_RGBA8_UNORM;
                 default:
-                    return SkImage::CompressionType::kNone;
+                    return sk_image_factory::CompressionType::kNone;
             }
 #else
             break;
 #endif
         }
         case GrBackendApi::kDawn: {
-            return SkImage::CompressionType::kNone;
+            return sk_image_factory::CompressionType::kNone;
         }
         case GrBackendApi::kMock: {
             return format.asMockCompressionType();
         }
     }
-    return SkImage::CompressionType::kNone;
+    return sk_image_factory::CompressionType::kNone;
 }
 
 size_t GrBackendFormatBytesPerBlock(const GrBackendFormat& format) {
@@ -144,8 +144,8 @@ size_t GrBackendFormatBytesPerBlock(const GrBackendFormat& format) {
 #endif
         }
         case GrBackendApi::kMock: {
-            SkImage::CompressionType compression = format.asMockCompressionType();
-            if (compression != SkImage::CompressionType::kNone) {
+            sk_image_factory::CompressionType compression = format.asMockCompressionType();
+            if (compression != sk_image_factory::CompressionType::kNone) {
                 return GrCompressedRowBytes(compression, 1);
             } else if (format.isMockStencilFormat()) {
                 static constexpr int kMockStencilSize = 4;
@@ -158,7 +158,7 @@ size_t GrBackendFormatBytesPerBlock(const GrBackendFormat& format) {
 }
 
 size_t GrBackendFormatBytesPerPixel(const GrBackendFormat& format) {
-    if (GrBackendFormatToCompressionType(format) != SkImage::CompressionType::kNone) {
+    if (GrBackendFormatToCompressionType(format) != sk_image_factory::CompressionType::kNone) {
         return 0;
     }
     return GrBackendFormatBytesPerBlock(format);

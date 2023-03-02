@@ -79,7 +79,7 @@ static void create_BC1_block(BC1Block* block, bool transparent) {
 static sk_sp<SkData> make_compressed_data() {
     SkISize dim{ kImgWidth, kImgHeight };
 
-    size_t totalSize = SkCompressedDataSize(SkImage::CompressionType::kBC1_RGB8_UNORM, dim,
+    size_t totalSize = SkCompressedDataSize(sk_image_factory::CompressionType::kBC1_RGB8_UNORM, dim,
                                             nullptr, false);
 
     sk_sp<SkData> tmp = SkData::MakeUninitialized(totalSize);
@@ -102,15 +102,15 @@ static sk_sp<SkData> make_compressed_data() {
 }
 
 static sk_sp<SkImage> data_to_img(GrDirectContext *direct, sk_sp<SkData> data,
-                                  SkImage::CompressionType compression) {
+                                  sk_image_factory::CompressionType compression) {
     if (direct) {
-        return SkImage::MakeTextureFromCompressed(direct, std::move(data),
+        return sk_image_factory::MakeTextureFromCompressed(direct, std::move(data),
                                                   kImgWidth,
                                                   kImgHeight,
                                                   compression,
                                                   GrMipmapped::kNo);
     } else {
-        return SkImage::MakeRasterFromCompressed(std::move(data),
+        return sk_image_factory::MakeRasterFromCompressed(std::move(data),
                                                  kImgWidth,
                                                  kImgHeight,
                                                  compression);
@@ -186,9 +186,9 @@ protected:
 
         sk_sp<SkData> bc1Data = make_compressed_data();
 
-        fRGBImage = data_to_img(dContext, bc1Data, SkImage::CompressionType::kBC1_RGB8_UNORM);
+        fRGBImage = data_to_img(dContext, bc1Data, sk_image_factory::CompressionType::kBC1_RGB8_UNORM);
         fRGBAImage = data_to_img(dContext, std::move(bc1Data),
-                                 SkImage::CompressionType::kBC1_RGBA8_UNORM);
+                                 sk_image_factory::CompressionType::kBC1_RGBA8_UNORM);
         if (!fRGBImage || !fRGBAImage) {
             *errorMsg = "Failed to create BC1 images.";
             return DrawResult::kFail;

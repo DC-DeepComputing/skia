@@ -26,13 +26,13 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/GrTexture.h"
-#include "src/image/SkImage_Gpu.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/gpu/FenceSync.h"
@@ -164,7 +164,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTest,
 
     PromiseTextureChecker promiseChecker(backendTex, reporter, false);
     GrSurfaceOrigin texOrigin = kTopLeft_GrSurfaceOrigin;
-    sk_sp<SkImage> refImg(SkImage_Gpu::MakePromiseTexture(ctx->threadSafeProxy(),
+    sk_sp<SkImage> refImg(sk_image_factory::MakePromiseTexture(ctx->threadSafeProxy(),
                                                           backendFormat,
                                                           {kWidth, kHeight},
                                                           GrMipmapped::kNo,
@@ -271,7 +271,7 @@ DEF_GANESH_TEST(PromiseImageTextureShutdown, reporter, ctxInfo, CtsEnforcement::
             SkCanvas* canvas = surface->getCanvas();
 
             PromiseTextureChecker promiseChecker(mbet->texture(), reporter, false);
-            sk_sp<SkImage> image(SkImage_Gpu::MakePromiseTexture(ctx->threadSafeProxy(),
+            sk_sp<SkImage> image(sk_image_factory::MakePromiseTexture(ctx->threadSafeProxy(),
                                                                  mbet->texture().getBackendFormat(),
                                                                  {kWidth, kHeight},
                                                                  GrMipmapped::kNo,
@@ -322,7 +322,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
     SkCanvas* canvas = surface->getCanvas();
 
     PromiseTextureChecker promiseChecker(backendTex, reporter, false);
-    sk_sp<SkImage> image(SkImage_Gpu::MakePromiseTexture(dContext->threadSafeProxy(),
+    sk_sp<SkImage> image(sk_image_factory::MakePromiseTexture(dContext->threadSafeProxy(),
                                                          backendTex.getBackendFormat(),
                                                          {kWidth, kHeight},
                                                          GrMipmapped::kNo,
@@ -411,7 +411,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageNullFulfill,
         ++static_cast<Counts*>(ctx)->fReleaseCount;
     };
     GrSurfaceOrigin texOrigin = kTopLeft_GrSurfaceOrigin;
-    sk_sp<SkImage> refImg(SkImage_Gpu::MakePromiseTexture(dContext->threadSafeProxy(),
+    sk_sp<SkImage> refImg(sk_image_factory::MakePromiseTexture(dContext->threadSafeProxy(),
                                                           backendFormat,
                                                           {kWidth, kHeight},
                                                           GrMipmapped::kNo,

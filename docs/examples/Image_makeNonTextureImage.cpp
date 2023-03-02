@@ -21,7 +21,7 @@ void draw(SkCanvas* canvas) {
         canvas->drawString(label, 20, nonTexture->height() / 4, font, paint);
     };
     sk_sp<SkImage> bitmapImage(source.asImage());
-    sk_sp<SkImage> textureImage(SkImage::MakeFromTexture(dContext, backEndTexture,
+    sk_sp<SkImage> textureImage(sk_image_factory::MakeFromTexture(dContext, backEndTexture,
                                                          kTopLeft_GrSurfaceOrigin,
                                                          kRGBA_8888_SkColorType,
                                                          kOpaque_SkAlphaType, nullptr));
