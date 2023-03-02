@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fee734c_232f05b4",
+        "filename": "src/gpu/ganesh/GrImagePin.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-02T14:45:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2baece5_d6599d9f",
+      "revId": "0eaf82bbdc397fc5c2bedd43598cdaeff89a2eb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50a807f2_ac053a89",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-03-02T14:17:06Z",
       "side": 1,
       "message": "I\u0027d really like to be using `std::unique_ptr` here. I already spotted one potential memory leak, and I don\u0027t want to be dependent on the API calls getting paired perfectly to ensure that the pinning data is freed.",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 110,
+        "endChar": 53
+      },
+      "revId": "0eaf82bbdc397fc5c2bedd43598cdaeff89a2eb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1032788c_a508e279",
+        "filename": "src/image/SkImage_Raster.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-02T14:45:38Z",
+      "side": 1,
+      "message": "I would too, however, unique_ptr needs to know the size of the thing it is managing, which we cannot do with and have skgpu::ganesh::PinnedData be only forward-declared.\n\nThe existing code had an assert for un-balanced pins and unpins, as does this new approach (checking for a nullptr).",
+      "parentUuid": "50a807f2_ac053a89",
       "range": {
         "startLine": 110,
         "startChar": 4,
