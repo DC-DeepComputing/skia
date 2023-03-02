@@ -192,6 +192,151 @@ static bool find_mp_params_segment(SkStream* stream,
     return false;
 }
 
+DEF_TEST(Codec_massTranscode, r) {
+    const struct Rec {
+        const char* base;
+        const char* gainmap;
+        float logratioMin;
+        float logratioMax;
+        float hdrMin;
+        float hdrMax;
+        float epsilonSdr;
+        float epsilonHdr;
+    } recs[] = {
+  {"new/XXXX_20220124_142949_982_final", "new/XXXX_20220124_142949_982_final-gainmap", -0.5761, 4.7091, 1, 26.796875, 0.015625, 0.015625, },
+  {"new/XXXX_20201124_215019_825_final", "new/XXXX_20201124_215019_825_final-gainmap", -1.1045, 4.6532, 1, 26.203125, 0.015625, 0.015625, },
+  {"new/XXXX_20221005_211633_682_final", "new/XXXX_20221005_211633_682_final-gainmap", -0.1961, 4.5452, 1, 22.859375, 0.015625, 0.015625, },
+  {"personal/fuoco",                  "personal/fuoco-g",                         0.0000, 1.4427, 1, -1, 0.015625, 0.015625, },
+  {"personal/pescariello04",          "personal/pescariello04-g",                 0.0000, 1.4427, 1, -1, 0.015625, 0.015625, },
+  {"personal/salerno02",              "personal/salerno02-g",                     0.0000, 1.4427, 1, -1, 0.015625, 0.015625, },
+  {"personal/salerno01",              "personal/salerno01-g",                     0.0000, 1.4427, 1, -1, 0.015625, 0.015625, },
+  {"personal/salerno00",              "personal/salerno00-g",                     0.0000, 1.4427, 1, -1, 0.015625, 0.015625, },
+  {"personal/trattore0",              "personal/trattore0-g",                     0.0000, 1.4427, 1, -1, 0.015625, 0.015625, },
+  {"personal/trattore1",              "personal/trattore1-g",                     0.0000, 1.4427, 1, -1, 0.015625, 0.015625, },
+  {"personal/conigli",                "personal/conigli-g",                       0.0000, 1.4427, 1, -1, 0.015625, 0.015625, },
+  {"export/XXXX_20220630_024551_651", "export/XXXX_20220630_024551_651-gainmap", -0.6004, 2.9713, 1, 8.265625, 0.015625, 0.015625, },
+  {"export/XXXX_20220630_002404_950", "export/XXXX_20220630_002404_950-gainmap", -2.0920, 2.9859, 1, 7.96875, 0.015625, 0.015625, },
+  {"export/XXXX_20220630_002137_756", "export/XXXX_20220630_002137_756-gainmap", -1.0789, 3.7703, 1, 14.09375, 0.015625, 0.015625, },
+  {"export/XXXX_20220629_213204_938", "export/XXXX_20220629_213204_938-gainmap", -0.8783, 2.9065, 1, 7.63671875, 0.015625, 0.015625, },
+  {"export/XXXX_20220629_191252_036", "export/XXXX_20220629_191252_036-gainmap", -0.8186, 3.3632, 1, 10.765625, 0.015625, 0.015625, },
+  {"export/XXXX_20220629_171926_835", "export/XXXX_20220629_171926_835-gainmap", -0.6750, 3.5421, 1, 12.359375, 0.015625, 0.015625, },
+  {"export/XXXX_20220625_052117_681", "export/XXXX_20220625_052117_681-gainmap", -0.4852, 2.7477, 1, 6.79296875, 0.015625, 0.015625, },
+  {"export/XXXX_20220625_051341_845", "export/XXXX_20220625_051341_845-gainmap", -1.0269, 2.7744, 1, 7.22265625, 0.015625, 0.015625, },
+  {"export/XXXX_20220625_022257_767", "export/XXXX_20220625_022257_767-gainmap", -2.1208, 3.2575, 1, 8.453125, 0.015625, 0.015625, },
+  {"export/XXXX_20220615_110943_423", "export/XXXX_20220615_110943_423-gainmap", -1.3406, 3.8409, 1, 15.0703125, 0.015625, 0.015625, },
+  {"export/XXXX_20220615_105423_160", "export/XXXX_20220615_105423_160-gainmap", -1.2008, 3.2805, 1, 9.890625, 0.015625, 0.015625, },
+  {"export/XXXX_20220512_234713_367", "export/XXXX_20220512_234713_367-gainmap", -2.6119, 2.2894, 1, 3.974609375, 0.015625, 0.015625, },
+  {"export/XXXX_20220314_130549_539", "export/XXXX_20220314_130549_539-gainmap", -0.8376, 3.4176, 1, 15.96875, 0.015625, 0.015625, },
+  {"export/XXXX_20220309_204648_807", "export/XXXX_20220309_204648_807-gainmap", -1.2540, 2.9122, 1, 8.015625, 0.015625, 0.015625, },
+  {"export/XXXX_20220309_204526_146", "export/XXXX_20220309_204526_146-gainmap", -1.1994, 2.2764, 1, 4.609375, 0.015625, 0.015625, },
+  {"export/XXXX_20220308_224912_678", "export/XXXX_20220308_224912_678-gainmap", -1.8087, 3.2942, 1, 7.51171875, 0.015625, 0.015625, },
+  {"export/XXXX_20220302_031303_284", "export/XXXX_20220302_031303_284-gainmap", -1.7954, 3.6480, 1, 10.5625, 0.015625, 0.015625, },
+  {"export/XXXX_20220301_021039_607", "export/XXXX_20220301_021039_607-gainmap", -0.8739, 2.6521, 1, 6.88671875, 0.015625, 0.015625, },
+  {"export/XXXX_20220223_214338_595", "export/XXXX_20220223_214338_595-gainmap", -0.4049, 2.6167, 1, 6.2109375, 0.015625, 0.015625, },
+  {"export/XXXX_20220222_004410_905", "export/XXXX_20220222_004410_905-gainmap", -0.6448, 1.3670, 1, 2.626953125, 0.015625, 0.015625, },
+  {"export/XXXX_20220222_000647_474", "export/XXXX_20220222_000647_474-gainmap", -0.7731, 2.4213, 1, 4.65625, 0.015625, 0.015625, },
+  {"export/XXXX_20220221_201601_970", "export/XXXX_20220221_201601_970-gainmap", -2.0978, 3.2784, 1, 6.2421875, 0.015625, 0.015625, },
+  {"export/XXXX_20220220_210402_167", "export/XXXX_20220220_210402_167-gainmap", -2.5298, 2.2189, 1, 3.46875, 0.015625, 0.015625, },
+  {"export/XXXX_20220220_195603_814", "export/XXXX_20220220_195603_814-gainmap", -2.2051, 2.9563, 1, 6.578125, 0.015625, 0.015625, },
+  {"export/XXXX_20220219_231124_267", "export/XXXX_20220219_231124_267-gainmap", -0.9345, 2.8468, 1, 7.54296875, 0.015625, 0.015625, },
+  {"export/XXXX_20220204_183435_167", "export/XXXX_20220204_183435_167-gainmap", -0.7051, 2.7274, 1, 6.74609375, 0.015625, 0.015625, },
+  {"export/XXXX_20220204_165427_219", "export/XXXX_20220204_165427_219-gainmap", -0.6678, 2.6069, 1, 6.2109375, 0.015625, 0.015625, },
+  {"export/XXXX_20220204_140738_092", "export/XXXX_20220204_140738_092-gainmap", -0.8353, 3.4030, 1, 11.015625, 0.015625, 0.015625, },
+  {"export/XXXX_20220204_004940_440", "export/XXXX_20220204_004940_440-gainmap", -0.6577, 3.1061, 1, 9.03125, 0.015625, 0.015625, },
+  {"export/XXXX_20220203_191714_442", "export/XXXX_20220203_191714_442-gainmap", -0.7268, 2.6061, 1, 6.17578125, 0.015625, 0.015625, },
+  {"export/XXXX_20220203_183756_582", "export/XXXX_20220203_183756_582-gainmap", -0.5215, 3.9608, 1, 16.234375, 0.015625, 0.015625, },
+  {"export/XXXX_20220202_200628_697", "export/XXXX_20220202_200628_697-gainmap", -2.2002, 3.1369, 1, 7.640625, 0.015625, 0.015625, },
+  {"export/XXXX_20220202_190616_477", "export/XXXX_20220202_190616_477-gainmap", -0.6087, 2.8879, 1, 8.2421875, 0.015625, 0.015625, },
+  {"export/XXXX_20220128_203657_193", "export/XXXX_20220128_203657_193-gainmap", -0.6593, 2.8160, 1, 7.6484375, 0.015625, 0.015625, },
+  {"export/XXXX_20220128_201013_864", "export/XXXX_20220128_201013_864-gainmap", -0.7794, 2.9000, 1, 7.87109375, 0.015625, 0.015625, },
+  {"export/XXXX_20220120_054656_367", "export/XXXX_20220120_054656_367-gainmap", -2.5616, 3.3973, 1, 8.1171875, 0.015625, 0.015625, },
+  {"export/XXXX_20220120_041934_556", "export/XXXX_20220120_041934_556-gainmap", -1.7306, 2.9674, 1, 7.515625, 0.015625, 0.015625, },
+  {"export/5066_20160413_204559_095", "export/5066_20160413_204559_095-gainmap", -0.7878, 3.5823, 1, 13.2265625, 0.015625, 0.015625, },
+  {"export/020E_20180503_190546_154", "export/020E_20180503_190546_154-gainmap", -0.8433, 2.7848, 1, 12.1015625, 0.015625, 0.015625, },
+  {"export/0LBZ_20180902_145636_775", "export/0LBZ_20180902_145636_775-gainmap", -0.9237, 2.4004, 1, 6.78515625, 0.015625, 0.015625, },
+  {"export/XXXX_20220128_161408_826", "export/XXXX_20220128_161408_826-gainmap", -0.6390, 4.0659, 1, 17.8125, 0.015625, 0.015625, },
+  {"new/XXXX_20220510_215110_619_final", "new/XXXX_20220510_215110_619_final-gainmap", -0.5759, 5.2160, 1, 43.1875, 0.015625, 0.015625, },
+  {"new/XXXX_20201108_192227_492_final", "new/XXXX_20201108_192227_492_final-gainmap", -0.7604, 4.5103, 1, 26.859375, 0.015625, 0.015625, },
+  {"new/XXXX_20201014_193707_751_final", "new/XXXX_20201014_193707_751_final-gainmap", -0.5887, 4.7109, 1, 27.21875, 0.015625, 0.015625, },
+  {"new/XXXX_20200707_120115_232_final", "new/XXXX_20200707_120115_232_final-gainmap", -0.7066, 4.6813, 1, 26.21875, 0.015625, 0.015625, },
+  {"new/XXXX_20190814_143648_113_final", "new/XXXX_20190814_143648_113_final-gainmap", -0.9981, 4.6832, 1, 26.28125, 0.015625, 0.015625, },
+  {"new/2769_20171211_144118_688_final", "new/2769_20171211_144118_688_final-gainmap", -0.5473, 4.6963, 1, 25.109375, 0.015625, 0.015625, },
+  {"export/0FF7_20180813_212359_039", "export/0FF7_20180813_212359_039-gainmap", -0.9453, 2.7254, 1, 7.55078125, 0.015625, 0.015625, },
+  {"XXXX_20220625_184938_987", "XXXX_20220625_184938_987-gainmap", -1.93, 3.0185, 1, 7.99609375, 0.015625, 0.015625, },
+  {"XXXX_20220221_201550_252", "XXXX_20220221_201550_252-gainmap", -0.8177, 2.6247, 1, 6.00390625, 0.015625, 0.015625, },
+  {"KMBB_20181031_192304_835", "KMBB_20181031_192304_835-gainmap", -0.3441, 3.0690, 1, 7.99609375, 0.015625, 0.015625, },
+  {"final", "final-gainmap", -0.7581, 2.3769, 1, 5.25, 0.015625, 0.015625, }};
+
+  for (const auto& rec :recs) {
+      printf("%s\n", rec.base);
+      const std::string prefix = "gainmap/";
+      const std::string suffix = ".jpg";
+      auto base = GetResourceAsData((prefix + rec.base + suffix).c_str());
+      auto gainmap = GetResourceAsData((prefix + rec.gainmap + suffix).c_str());
+      const std::string out = "resources/" + prefix + rec.base + "-compound" + suffix;
+        REPORTER_ASSERT(r, base);
+        REPORTER_ASSERT(r, gainmap);
+
+{
+    std::unique_ptr<SkCodec> gainmapCodec = SkCodec::MakeFromStream(SkMemoryStream::Make(gainmap));
+    REPORTER_ASSERT(r, gainmapCodec);
+    SkBitmap bm;
+    bm.allocPixels(gainmapCodec->getInfo());
+    SkBitmap gainmapBitmap;
+    gainmapBitmap.allocPixels(gainmapCodec->getInfo());
+    REPORTER_ASSERT(r,
+                    SkCodec::kSuccess == gainmapCodec->getPixels(gainmapBitmap.info(),
+                                                                 gainmapBitmap.getPixels(),
+                                                                 gainmapBitmap.rowBytes()));
+
+    SkBitmap monoBitmap;
+    monoBitmap.allocPixels(gainmapCodec->getInfo().makeColorType(kR8_unorm_SkColorType));
+    REPORTER_ASSERT(r, gainmapBitmap.readPixels(monoBitmap.pixmap(), 0, 0));
+    
+
+    SkDynamicMemoryWStream encodeStream;
+    SkJpegEncoder::Options options;
+    SkJpegEncoder::Encode(&encodeStream, monoBitmap.pixmap(), options);
+    gainmap = encodeStream.detachAsData();
+    REPORTER_ASSERT(r, gainmap);
+    REPORTER_ASSERT(r, gainmap->size());
+
+      const std::string gout = "resources/" + prefix + rec.gainmap + "-mono" + suffix;
+        SkFILEWStream s(gout.c_str());
+        s.write(gainmap->data(), gainmap->size());
+}
+
+        const float kLog2 = sk_float_log(2.f);
+        SkGainmapInfo info;
+        info.fGainmapRatioMin.fR = 
+        info.fGainmapRatioMin.fG = 
+        info.fGainmapRatioMin.fB = sk_float_exp(rec.logratioMin * kLog2);
+
+        info.fGainmapRatioMax.fR = 
+        info.fGainmapRatioMax.fG = 
+        info.fGainmapRatioMax.fB = sk_float_exp(rec.logratioMax * kLog2);
+
+        info.fEpsilonSdr.fR = 
+        info.fEpsilonSdr.fG = 
+        info.fEpsilonSdr.fB = rec.epsilonSdr;
+
+        info.fEpsilonHdr.fR = 
+        info.fEpsilonHdr.fG = 
+        info.fEpsilonHdr.fB = rec.epsilonHdr;
+
+        info.fDisplayRatioSdr = 1.f;
+        info.fDisplayRatioHdr = info.fGainmapRatioMax.fR;
+
+        SkFILEWStream encodeStream(out.c_str());
+
+            SkJpegGainmapEncoder::Encode(&encodeStream,
+info,
+                                                        base.get(),
+                                                        gainmap.get());
+
+    }
+}
+
 DEF_TEST(Codec_multiPictureParams, r) {
     // Little-endian test.
     {
