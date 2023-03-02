@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc31250f_1a8b3049",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-02T15:51:26Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "33d987cb4ffe166b71e67734c503f6d5f7d12d26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57b4da82_b962230d",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-03-02T15:32:35Z",
       "side": 1,
       "message": "Maybe a /* paramName\u003d */ here ?",
+      "range": {
+        "startLine": 1207,
+        "startChar": 90,
+        "endLine": 1207,
+        "endChar": 94
+      },
+      "revId": "33d987cb4ffe166b71e67734c503f6d5f7d12d26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82eaa99f_d9533412",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1207,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-02T15:51:26Z",
+      "side": 1,
+      "message": "In the next CL, I\u0027m going to add an enum.",
+      "parentUuid": "57b4da82_b962230d",
       "range": {
         "startLine": 1207,
         "startChar": 90,
