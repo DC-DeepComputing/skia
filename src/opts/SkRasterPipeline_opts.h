@@ -3499,12 +3499,12 @@ STAGE_TAIL(shuffle, SkRasterPipeline_ShuffleCtx* ctx) {
 }
 
 template <int NumSlots>
-SI void swizzle_copy_masked_fn(F* dst, const F* src, uint16_t* offsets, I32 mask) {
+SI void swizzle_copy_masked_fn(F* dst, const F* src, uint16_t* swizzle, I32 mask) {
     std::byte* dstB = (std::byte*)dst;
     for (int count = 0; count < NumSlots; ++count) {
-        F* dstS = (F*)(dstB + *offsets);
+        F* dstS = (F*)(dstB + *swizzle);
         *dstS = if_then_else(mask, *src, *dstS);
-        offsets += 1;
+        swizzle += 1;
         src     += 1;
     }
 }
@@ -3582,6 +3582,32 @@ STAGE_TAIL(copy_to_indirect_masked, SkRasterPipeline_CopyIndirectCtx* ctx) {
         scatter_masked(*src, dst, offsets, mask);
         dst += N;
         src += 1;
+    } while (src != end);
+}
+
+STAGE_TAIL(swizzle_copy_to_indirect_masked, SkRasterPipeline_SwizzleCopyIndirectCtx* ctx) {
+    // Clamp the indirect offsets to stay within the limit.
+    U32 offsets = *(U32*)ctx->indirectOffset;
+    offsets = min(offsets, ctx->indirectLimit);
+
+    // Scale up the offsets to account for the N lanes per value.
+    offsets *= N;
+
+    // Adjust the offsets forward so that they store into the correct lane.
+    static constexpr uint32_t iota[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    offsets += sk_unaligned_load<I32>(iota);
+
+    // Perform indirect, masked, swizzled writes into `dst`.
+    const F*        src     = (F*)ctx->src;
+    const F*        end     = src + ctx->slots;
+    std::byte*      dstB    = (std::byte*)ctx->dst;
+    const uint16_t* swizzle = ctx->offsets;
+    I32             mask    = execution_mask();
+    do {
+        float* dst = (float*)(dstB + *swizzle);
+        scatter_masked(*src, dst, offsets, mask);
+        swizzle += 1;
+        src     += 1;
     } while (src != end);
 }
 
