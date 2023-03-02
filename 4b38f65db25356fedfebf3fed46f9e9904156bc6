@@ -60,6 +60,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "421af901_562727b9",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-02T18:30:19Z",
+      "side": 1,
+      "message": "This is not my area of expertise of the code so I\u0027ll defer to Rob for real answer, but part of me seems like this should behave similar to any other texture sampling we do in a shader. Like can we just not use the same snippit of code we do for normal textures?",
+      "parentUuid": "e1d68b6f_a9d44d01",
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dab81f56_5e77ea3e",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
         "patchSetId": 1
