@@ -12,7 +12,6 @@
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
-#include "include/private/SkSLString.h"
 #include "include/private/base/SkTArray.h"
 #include "include/sksl/SkSLOperator.h"
 #include "include/sksl/SkSLPosition.h"
@@ -113,11 +112,8 @@ public:
     int slotCount() const { return fSlotCount; }
 
 private:
-    std::string makeTempName() { return SkSL::String::printf("[temporary %d]", fTemporaryCount++); }
-
     SkTHashMap<const IRNode*, SlotRange> fSlotMap;
     int fSlotCount = 0;
-    int fTemporaryCount = 0;
     std::vector<SlotDebugInfo>* fSlotDebugInfo;
 };
 
@@ -352,6 +348,7 @@ private:
     const FunctionDefinition* fCurrentFunction = nullptr;
     SlotRange fCurrentFunctionResult;
     AutoContinueMask* fCurrentContinueMask = nullptr;
+    int fCurrentBreakTarget = -1;
     int fCurrentStack = 0;
     int fNextStackID = 0;
     SkTArray<int> fRecycledStacks;
@@ -500,6 +497,29 @@ private:
     std::optional<AutoStack> fContinueMaskStack;
     Generator* fGenerator = nullptr;
     AutoContinueMask* fPreviousContinueMask = nullptr;
+};
+
+class AutoLoopTarget {
+public:
+    AutoLoopTarget(Generator* gen, int* targetPtr) : fGenerator(gen), fLoopTargetPtr(targetPtr) {
+        fLabelID = fGenerator->builder()->nextLabelID();
+        fPreviousLoopTarget = *fLoopTargetPtr;
+        *fLoopTargetPtr = fLabelID;
+    }
+
+    ~AutoLoopTarget() {
+        *fLoopTargetPtr = fPreviousLoopTarget;
+    }
+
+    int labelID() {
+        return fLabelID;
+    }
+
+private:
+    Generator* fGenerator = nullptr;
+    int* fLoopTargetPtr = nullptr;
+    int fPreviousLoopTarget;
+    int fLabelID;
 };
 
 class LValue {
@@ -1224,6 +1244,9 @@ bool Generator::writeBlock(const Block& b) {
 }
 
 bool Generator::writeBreakStatement(const BreakStatement&) {
+    // If all lanes have reached this break, we can just branch straight to the break target instead
+    // of updating masks.
+    fBuilder.branch_if_all_lanes_active(fCurrentBreakTarget);
     fBuilder.mask_off_loop_mask();
     return true;
 }
@@ -1245,6 +1268,9 @@ bool Generator::writeContinueStatement(const ContinueStatement&) {
 }
 
 bool Generator::writeDoStatement(const DoStatement& d) {
+    // Set up a break target.
+    AutoLoopTarget breakTarget(this, &fCurrentBreakTarget);
+
     // Save off the original loop mask.
     fBuilder.enableExecutionMaskWrites();
     fBuilder.push_loop_mask();
@@ -1280,7 +1306,10 @@ bool Generator::writeDoStatement(const DoStatement& d) {
     this->discardExpression(/*slots=*/1);
 
     // If any lanes are still running, go back to the top and run the loop body again.
-    fBuilder.branch_if_any_active_lanes(labelID);
+    fBuilder.branch_if_any_lanes_active(labelID);
+
+    // If we hit a break statement on all lanes, we will branch here to escape from the loop.
+    fBuilder.label(breakTarget.labelID());
 
     // Restore the loop mask.
     fBuilder.pop_loop_mask();
@@ -1301,7 +1330,7 @@ bool Generator::writeMasklessForStatement(const ForStatement& f) {
     // we'd never make forward progress.
     int loopExitID = fBuilder.nextLabelID();
     int loopBodyID = fBuilder.nextLabelID();
-    fBuilder.branch_if_no_active_lanes(loopExitID);
+    fBuilder.branch_if_no_lanes_active(loopExitID);
 
     // Run the loop initializer.
     if (!this->writeStatement(*f.initializer())) {
@@ -1352,6 +1381,9 @@ bool Generator::writeForStatement(const ForStatement& f) {
     if (!loopInfo.fHasContinue && !loopInfo.fHasBreak && !loopInfo.fHasReturn && f.unrollInfo()) {
         return this->writeMasklessForStatement(f);
     }
+
+    // Set up a break target.
+    AutoLoopTarget breakTarget(this, &fCurrentBreakTarget);
 
     // Run the loop initializer.
     if (f.initializer() && !this->writeStatement(*f.initializer())) {
@@ -1406,7 +1438,10 @@ bool Generator::writeForStatement(const ForStatement& f) {
     }
 
     // If any lanes are still running, go back to the top and run the loop body again.
-    fBuilder.branch_if_any_active_lanes(loopBodyID);
+    fBuilder.branch_if_any_lanes_active(loopBodyID);
+
+    // If we hit a break statement on all lanes, we will branch here to escape from the loop.
+    fBuilder.label(breakTarget.labelID());
 
     // Restore the loop mask.
     fBuilder.pop_loop_mask();
@@ -1522,6 +1557,9 @@ bool Generator::writeSwitchStatement(const SwitchStatement& s) {
         return stmt->is<SwitchCase>();
     }));
 
+    // Set up a break target.
+    AutoLoopTarget breakTarget(this, &fCurrentBreakTarget);
+
     // Save off the original loop mask.
     fBuilder.enableExecutionMaskWrites();
     fBuilder.push_loop_mask();
@@ -1552,7 +1590,7 @@ bool Generator::writeSwitchStatement(const SwitchStatement& s) {
             // Keep whatever lanes are executing now, and also enable any lanes in the default mask.
             fBuilder.pop_and_reenable_loop_mask();
             // Execute the switch-case block, if any lanes are alive to see it.
-            fBuilder.branch_if_no_active_lanes(skipLabelID);
+            fBuilder.branch_if_no_lanes_active(skipLabelID);
             if (!this->writeStatement(*sc.statement())) {
                 return unsupported();
             }
@@ -1561,7 +1599,7 @@ bool Generator::writeSwitchStatement(const SwitchStatement& s) {
             // from the default-mask.
             fBuilder.case_op(sc.value());
             // Execute the switch-case block, if any lanes are alive to see it.
-            fBuilder.branch_if_no_active_lanes(skipLabelID);
+            fBuilder.branch_if_no_lanes_active(skipLabelID);
             if (!this->writeStatement(*sc.statement())) {
                 return unsupported();
             }
@@ -1571,6 +1609,9 @@ bool Generator::writeSwitchStatement(const SwitchStatement& s) {
 
     // Jettison the switch value, and the default case mask if it was never consumed above.
     this->discardExpression(/*slots=*/foundDefaultCase ? 1 : 2);
+
+    // If we hit a break statement on all lanes, we will branch here to escape from the switch.
+    fBuilder.label(breakTarget.labelID());
 
     // Restore the loop mask.
     fBuilder.pop_loop_mask();
@@ -2269,7 +2310,7 @@ bool Generator::pushFunctionCall(const FunctionCall& c) {
     // (If the function call was trivial, it would likely have been inlined in the frontend, so this
     // is likely to save a significant amount of work if the lanes are all dead.)
     int skipLabelID = fBuilder.nextLabelID();
-    fBuilder.branch_if_no_active_lanes(skipLabelID);
+    fBuilder.branch_if_no_lanes_active(skipLabelID);
 
     // Save off the return mask.
     if (this->needsReturnMask()) {
@@ -2529,6 +2570,31 @@ bool Generator::pushIntrinsic(IntrinsicKind intrinsic, const Expression& arg0) {
             }
             fBuilder.transpose(arg0.type().columns(), arg0.type().rows());
             return true;
+
+        case IntrinsicKind::k_fromLinearSrgb_IntrinsicKind:
+        case IntrinsicKind::k_toLinearSrgb_IntrinsicKind: {
+            // The argument must be a half3.
+            SkASSERT(arg0.type().matches(*fProgram.fContext->fTypes.fHalf3));
+            if (!this->pushExpression(arg0)) {
+                return unsupported();
+            }
+            // The intrinsics accept a three-component value; add alpha for the push/pop_src_rgba
+            fBuilder.push_literal_f(1.0f);
+            // Copy arguments from the stack into src
+            fBuilder.pop_src_rgba();
+
+            if (intrinsic == IntrinsicKind::k_fromLinearSrgb_IntrinsicKind) {
+                fBuilder.invoke_from_linear_srgb();
+            } else {
+                fBuilder.invoke_to_linear_srgb();
+            }
+
+            // The xform has left the result color in src.rgba; push it onto the stack
+            fBuilder.push_src_rgba();
+            // The intrinsic returns a three-component value; discard alpha
+            this->discardExpression(/*slots=*/1);
+            return true;
+        }
 
         default:
             break;
@@ -2990,7 +3056,7 @@ bool Generator::pushTernaryExpression(const Expression& test,
         // If no lanes are active, we can skip the true-expression entirely. This isn't super likely
         // to happen, so it's probably only a win for non-trivial true-expressions.
         if (!ifTrueIsTrivial) {
-            fBuilder.branch_if_no_active_lanes(cleanupLabelID);
+            fBuilder.branch_if_no_lanes_active(cleanupLabelID);
         }
 
         // Push the true-expression onto the primary stack, immediately after the false-expression.

@@ -353,7 +353,7 @@ GrColorFormatDesc GrMtlFormatDesc(GrMTLPixelFormat mtlFormat)  {
     }
 }
 
-SkImage::CompressionType GrMtlBackendFormatToCompressionType(const GrBackendFormat& format) {
+sk_image_factory::CompressionType GrMtlBackendFormatToCompressionType(const GrBackendFormat& format) {
     MTLPixelFormat mtlFormat = GrBackendFormatAsMTLPixelFormat(format);
     return GrMtlFormatToCompressionType(mtlFormat);
 }
@@ -371,13 +371,13 @@ bool GrMtlFormatIsCompressed(MTLPixelFormat mtlFormat) {
     }
 }
 
-SkImage::CompressionType GrMtlFormatToCompressionType(MTLPixelFormat mtlFormat) {
+sk_image_factory::CompressionType GrMtlFormatToCompressionType(MTLPixelFormat mtlFormat) {
     switch (mtlFormat) {
-        case MTLPixelFormatETC2_RGB8: return SkImage::CompressionType::kETC2_RGB8_UNORM;
+        case MTLPixelFormatETC2_RGB8: return sk_image_factory::CompressionType::kETC2_RGB8_UNORM;
 #ifdef SK_BUILD_FOR_MAC
-        case MTLPixelFormatBC1_RGBA:  return SkImage::CompressionType::kBC1_RGBA8_UNORM;
+        case MTLPixelFormatBC1_RGBA:  return sk_image_factory::CompressionType::kBC1_RGBA8_UNORM;
 #endif
-        default:                      return SkImage::CompressionType::kNone;
+        default:                      return sk_image_factory::CompressionType::kNone;
     }
 
     SkUNREACHABLE;

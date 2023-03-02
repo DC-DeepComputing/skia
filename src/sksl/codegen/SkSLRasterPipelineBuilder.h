@@ -48,10 +48,14 @@ enum class ProgramOp {
     // ... has branch targets...
     label,
 
-    // ... and can invoke child programs.
+    // ... can invoke child programs ...
     invoke_shader,
     invoke_color_filter,
     invoke_blender,
+
+    // ... and can invoke color space transforms.
+    invoke_to_linear_srgb,
+    invoke_from_linear_srgb,
 };
 
 // BuilderOps are a superset of ProgramOps. They are used by the RP::Builder, which works in terms
@@ -74,6 +78,10 @@ enum class BuilderOp {
     invoke_color_filter,
     invoke_blender,
 
+    // ... can invoke color space transforms ...
+    invoke_to_linear_srgb,
+    invoke_from_linear_srgb,
+
     // ... and also has Builder-specific ops. These ops generally interface with the stack, and are
     // converted into ProgramOps during `makeStages`.
     push_literal,
@@ -87,6 +95,7 @@ enum class BuilderOp {
     push_clone_indirect_from_stack,
     copy_stack_to_slots,
     copy_stack_to_slots_unmasked,
+    copy_stack_to_slots_indirect,
     swizzle_copy_stack_to_slots,
     discard_stack,
     select,
@@ -108,10 +117,12 @@ enum class BuilderOp {
 };
 
 // If the child-invocation enums are not in sync between enums, program creation will not work.
-static_assert((int)ProgramOp::label               == (int)BuilderOp::label);
-static_assert((int)ProgramOp::invoke_shader       == (int)BuilderOp::invoke_shader);
-static_assert((int)ProgramOp::invoke_color_filter == (int)BuilderOp::invoke_color_filter);
-static_assert((int)ProgramOp::invoke_blender      == (int)BuilderOp::invoke_blender);
+static_assert((int)ProgramOp::label                   == (int)BuilderOp::label);
+static_assert((int)ProgramOp::invoke_shader           == (int)BuilderOp::invoke_shader);
+static_assert((int)ProgramOp::invoke_color_filter     == (int)BuilderOp::invoke_color_filter);
+static_assert((int)ProgramOp::invoke_blender          == (int)BuilderOp::invoke_blender);
+static_assert((int)ProgramOp::invoke_to_linear_srgb   == (int)BuilderOp::invoke_to_linear_srgb);
+static_assert((int)ProgramOp::invoke_from_linear_srgb == (int)BuilderOp::invoke_from_linear_srgb);
 
 // Represents a single raster-pipeline SkSL instruction.
 struct Instruction {
@@ -254,7 +265,7 @@ public:
     /**
      * Peels off a label ID for use in the program. Set the label's position in the program with
      * the `label` instruction. Actually branch to the target with an instruction like
-     * `branch_if_any_active_lanes` or `jump`.
+     * `branch_if_any_lanes_active` or `jump`.
      */
     int nextLabelID() {
         return fNumLabels++;
@@ -323,11 +334,14 @@ public:
     // Unconditionally branches to a label.
     void jump(int labelID);
 
+    // Branches to a label if the execution mask is active in every lane.
+    void branch_if_all_lanes_active(int labelID);
+
     // Branches to a label if the execution mask is active in any lane.
-    void branch_if_any_active_lanes(int labelID);
+    void branch_if_any_lanes_active(int labelID);
 
     // Branches to a label if the execution mask is inactive across all lanes.
-    void branch_if_no_active_lanes(int labelID);
+    void branch_if_no_lanes_active(int labelID);
 
     // Branches to a label if the top value on the stack is _not_ equal to `value` in any lane.
     void branch_if_no_active_lanes_on_stack_top_equal(int value, int labelID);
@@ -398,6 +412,20 @@ public:
     }
 
     void copy_stack_to_slots_unmasked(SlotRange dst, int offsetFromStackTop);
+
+    // Translates into copy_to_indirect_masked (from temp stack into values) in Raster Pipeline.
+    // `fixedRange` denotes a fixed set of slots; this range is pushed forward by the value at the
+    // top of stack `dynamicStack`. Pass the slot range of the variable being indexed as
+    // `limitRange`; this is used as a hard cap, to avoid indexing outside of bounds.
+    void copy_stack_to_slots_indirect(SlotRange fixedRange,
+                                      int dynamicStackID,
+                                      SlotRange limitRange);
+
+    // Copies from temp stack to slots, including an indirect offset, then shrinks the temp stack.
+    void pop_slots_indirect(SlotRange fixedRange, int dynamicStackID, SlotRange limitRange) {
+        this->copy_stack_to_slots_indirect(fixedRange, dynamicStackID, limitRange);
+        this->discard_stack(fixedRange.count);
+    }
 
     // Performs a unary op (like `bitwise_not`), given a slot count of `slots`. The stack top is
     // replaced with the result.
@@ -573,6 +601,14 @@ public:
 
     void invoke_blender(int childIdx) {
         fInstructions.push_back({BuilderOp::invoke_blender, {}, childIdx});
+    }
+
+    void invoke_to_linear_srgb() {
+        fInstructions.push_back({BuilderOp::invoke_to_linear_srgb, {}});
+    }
+
+    void invoke_from_linear_srgb() {
+        fInstructions.push_back({BuilderOp::invoke_from_linear_srgb, {}});
     }
 
 private:

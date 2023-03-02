@@ -368,17 +368,19 @@ sk_sp<SkShader> SkImageShader::MakeSubset(sk_sp<SkImage> image,
 
 #include "src/gpu/ganesh/GrColorInfo.h"
 #include "src/gpu/ganesh/GrFPArgs.h"
+#include "src/gpu/ganesh/GrImageUtils.h"
 #include "src/gpu/ganesh/effects/GrBlendFragmentProcessor.h"
 
 std::unique_ptr<GrFragmentProcessor>
 SkImageShader::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
     SkTileMode tileModes[2] = {fTileModeX, fTileModeY};
     const SkRect* subset = needs_subset(fImage.get(), fSubset) ? &fSubset : nullptr;
-    auto fp = as_IB(fImage.get())->asFragmentProcessor(args.fContext,
-                                                       fSampling,
-                                                       tileModes,
-                                                       SkMatrix::I(),
-                                                       subset);
+    auto fp = skgpu::ganesh::AsFragmentProcessor(args.fContext,
+                                                 fImage,
+                                                 fSampling,
+                                                 tileModes,
+                                                 SkMatrix::I(),
+                                                 subset);
     if (!fp) {
         return nullptr;
     }
@@ -733,8 +735,7 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const MatrixRec& mRec) c
 
         // Color for alpha-only images comes from the paint.
         if (SkColorTypeIsAlphaOnly(upper.pm.colorType()) && !fRaw) {
-            SkColor4f rgb = rec.fPaint.getColor4f();
-            p->append_set_rgb(alloc, rgb);
+            p->append_set_rgb(alloc, rec.fPaintColor);
 
             cs = sk_srgb_singleton();
             at = kUnpremul_SkAlphaType;

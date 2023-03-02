@@ -204,8 +204,9 @@ void Builder::label(int labelID) {
         Instruction& lastInstruction = fInstructions.back();
         switch (lastInstruction.fOp) {
             case BuilderOp::jump:
-            case BuilderOp::branch_if_any_active_lanes:
-            case BuilderOp::branch_if_no_active_lanes:
+            case BuilderOp::branch_if_all_lanes_active:
+            case BuilderOp::branch_if_any_lanes_active:
+            case BuilderOp::branch_if_no_lanes_active:
             case BuilderOp::branch_if_no_active_lanes_on_stack_top_equal:
                 if (lastInstruction.fImmA == labelID) {
                     fInstructions.pop_back();
@@ -230,7 +231,7 @@ void Builder::jump(int labelID) {
     fInstructions.push_back({BuilderOp::jump, {}, labelID});
 }
 
-void Builder::branch_if_any_active_lanes(int labelID) {
+void Builder::branch_if_any_lanes_active(int labelID) {
     if (!this->executionMaskWritesAreEnabled()) {
         this->jump(labelID);
         return;
@@ -238,29 +239,46 @@ void Builder::branch_if_any_active_lanes(int labelID) {
 
     SkASSERT(labelID >= 0 && labelID < fNumLabels);
     if (!fInstructions.empty() &&
-        (fInstructions.back().fOp == BuilderOp::branch_if_any_active_lanes ||
+        (fInstructions.back().fOp == BuilderOp::branch_if_any_lanes_active ||
          fInstructions.back().fOp == BuilderOp::jump)) {
-        // The previous instruction was `jump` or `branch_if_any_active_lanes`, so this branch
+        // The previous instruction was `jump` or `branch_if_any_lanes_active`, so this branch
         // could never possibly occur.
         return;
     }
-    fInstructions.push_back({BuilderOp::branch_if_any_active_lanes, {}, labelID});
+    fInstructions.push_back({BuilderOp::branch_if_any_lanes_active, {}, labelID});
 }
 
-void Builder::branch_if_no_active_lanes(int labelID) {
+void Builder::branch_if_all_lanes_active(int labelID) {
+    if (!this->executionMaskWritesAreEnabled()) {
+        this->jump(labelID);
+        return;
+    }
+
+    SkASSERT(labelID >= 0 && labelID < fNumLabels);
+    if (!fInstructions.empty() &&
+        (fInstructions.back().fOp == BuilderOp::branch_if_all_lanes_active ||
+         fInstructions.back().fOp == BuilderOp::jump)) {
+        // The previous instruction was `jump` or `branch_if_all_lanes_active`, so this branch
+        // could never possibly occur.
+        return;
+    }
+    fInstructions.push_back({BuilderOp::branch_if_all_lanes_active, {}, labelID});
+}
+
+void Builder::branch_if_no_lanes_active(int labelID) {
     if (!this->executionMaskWritesAreEnabled()) {
         return;
     }
 
     SkASSERT(labelID >= 0 && labelID < fNumLabels);
     if (!fInstructions.empty() &&
-        (fInstructions.back().fOp == BuilderOp::branch_if_no_active_lanes ||
+        (fInstructions.back().fOp == BuilderOp::branch_if_no_lanes_active ||
          fInstructions.back().fOp == BuilderOp::jump)) {
-        // The previous instruction was `jump` or `branch_if_no_active_lanes`, so this branch
+        // The previous instruction was `jump` or `branch_if_no_lanes_active`, so this branch
         // could never possibly occur.
         return;
     }
-    fInstructions.push_back({BuilderOp::branch_if_no_active_lanes, {}, labelID});
+    fInstructions.push_back({BuilderOp::branch_if_no_lanes_active, {}, labelID});
 }
 
 void Builder::branch_if_no_active_lanes_on_stack_top_equal(int value, int labelID) {
@@ -544,6 +562,19 @@ void Builder::copy_stack_to_slots(SlotRange dst, int offsetFromStackTop) {
 
     fInstructions.push_back({BuilderOp::copy_stack_to_slots, {dst.index},
                              dst.count, offsetFromStackTop});
+}
+
+void Builder::copy_stack_to_slots_indirect(SlotRange fixedRange,
+                                           int dynamicStackID,
+                                           SlotRange limitRange) {
+    // SlotA: fixed-range start
+    // SlotB: limit-range end
+    // immA: number of slots
+    // immB: dynamic stack ID
+    fInstructions.push_back({BuilderOp::copy_stack_to_slots_indirect,
+                             {fixedRange.index, limitRange.index + limitRange.count},
+                             fixedRange.count,
+                             dynamicStackID});
 }
 
 static bool slot_ranges_overlap(SlotRange x, SlotRange y) {
@@ -1120,6 +1151,20 @@ bool Program::appendStages(SkRasterPipeline* pipeline,
                 }
                 break;
 
+            case ProgramOp::invoke_to_linear_srgb:
+                if (!callbacks) {
+                    return false;
+                }
+                callbacks->toLinearSrgb();
+                break;
+
+            case ProgramOp::invoke_from_linear_srgb:
+                if (!callbacks) {
+                    return false;
+                }
+                callbacks->fromLinearSrgb();
+                break;
+
             case ProgramOp::label: {
                 // Remember the absolute pipeline position of this label.
                 int labelID = sk_bit_cast<intptr_t>(stage.ctx);
@@ -1128,8 +1173,9 @@ bool Program::appendStages(SkRasterPipeline* pipeline,
                 break;
             }
             case ProgramOp::jump:
-            case ProgramOp::branch_if_any_active_lanes:
-            case ProgramOp::branch_if_no_active_lanes:
+            case ProgramOp::branch_if_all_lanes_active:
+            case ProgramOp::branch_if_any_lanes_active:
+            case ProgramOp::branch_if_no_lanes_active:
             case ProgramOp::branch_if_no_active_lanes_eq: {
                 // The branch context contain a valid label ID at this point.
                 auto* branchCtx = static_cast<SkRasterPipeline_BranchCtx*>(stage.ctx);
@@ -1219,8 +1265,9 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
                 break;
 
             case BuilderOp::jump:
-            case BuilderOp::branch_if_any_active_lanes:
-            case BuilderOp::branch_if_no_active_lanes: {
+            case BuilderOp::branch_if_all_lanes_active:
+            case BuilderOp::branch_if_any_lanes_active:
+            case BuilderOp::branch_if_no_lanes_active: {
                 SkASSERT(inst.fImmA >= 0 && inst.fImmA < fNumLabels);
                 EmitStackRewindForBackwardsBranch(inst.fImmA);
 
@@ -1361,18 +1408,18 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
                 break;
             }
             case BuilderOp::pop_src_rg: {
-                float* dst = tempStackPtr - (2 * N);
-                pipeline->push_back({ProgramOp::load_src_rg, dst});
+                float* src = tempStackPtr - (2 * N);
+                pipeline->push_back({ProgramOp::load_src_rg, src});
                 break;
             }
             case BuilderOp::pop_src_rgba: {
-                float* dst = tempStackPtr - (4 * N);
-                pipeline->push_back({ProgramOp::load_src, dst});
+                float* src = tempStackPtr - (4 * N);
+                pipeline->push_back({ProgramOp::load_src, src});
                 break;
             }
             case BuilderOp::pop_dst_rgba: {
-                float* dst = tempStackPtr - (4 * N);
-                pipeline->push_back({ProgramOp::load_dst, dst});
+                float* src = tempStackPtr - (4 * N);
+                pipeline->push_back({ProgramOp::load_dst, src});
                 break;
             }
             case BuilderOp::push_slots: {
@@ -1380,6 +1427,7 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
                 this->appendCopySlotsUnmasked(pipeline, alloc, dst, SlotA(), inst.fImmA);
                 break;
             }
+            case BuilderOp::copy_stack_to_slots_indirect:
             case BuilderOp::push_slots_indirect:
             case BuilderOp::push_uniform_indirect: {
                 // SlotA: fixed-range start
@@ -1388,7 +1436,6 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
                 //  immB: dynamic stack ID
                 ProgramOp op;
                 auto* ctx = alloc->make<SkRasterPipeline_CopyIndirectCtx>();
-                ctx->dst = tempStackPtr;
                 ctx->indirectOffset =
                         reinterpret_cast<const uint32_t*>(tempStackMap[inst.fImmB]) - (1 * N);
                 ctx->indirectLimit = inst.fSlotB - inst.fSlotA - inst.fImmA;
@@ -1396,9 +1443,15 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
                 if (inst.fOp == BuilderOp::push_slots_indirect) {
                     op = ProgramOp::copy_from_indirect_unmasked;
                     ctx->src = SlotA();
-                } else {
+                    ctx->dst = tempStackPtr;
+                } else if (inst.fOp == BuilderOp::push_uniform_indirect) {
                     op = ProgramOp::copy_from_indirect_uniform_unmasked;
                     ctx->src = UniformA();
+                    ctx->dst = tempStackPtr;
+                } else {
+                    op = ProgramOp::copy_to_indirect_masked;
+                    ctx->src = tempStackPtr - (ctx->slots * N);
+                    ctx->dst = SlotA();
                 }
                 pipeline->push_back({op, ctx});
                 break;
@@ -1555,6 +1608,11 @@ void Program::makeStages(SkTArray<Stage>* pipeline,
             case BuilderOp::invoke_color_filter:
             case BuilderOp::invoke_blender:
                 pipeline->push_back({(ProgramOp)inst.fOp, context_bit_pun(inst.fImmA)});
+                break;
+
+            case BuilderOp::invoke_to_linear_srgb:
+            case BuilderOp::invoke_from_linear_srgb:
+                pipeline->push_back({(ProgramOp)inst.fOp, nullptr});
                 break;
 
             default:
@@ -2062,7 +2120,8 @@ void Program::dump(SkWStream* out) const {
                 std::tie(opArg1, opArg2) = BinaryOpCtx(stage.ctx, 4);
                 break;
 
-            case POp::copy_from_indirect_unmasked: {
+            case POp::copy_from_indirect_unmasked:
+            case POp::copy_to_indirect_masked: {
                 const auto* ctx = static_cast<SkRasterPipeline_CopyIndirectCtx*>(stage.ctx);
                 // We don't incorporate the indirect-limit in the output
                 opArg1 = PtrCtx(ctx->dst, ctx->slots);
@@ -2181,8 +2240,9 @@ void Program::dump(SkWStream* out) const {
                 break;
 
             case POp::jump:
-            case POp::branch_if_any_active_lanes:
-            case POp::branch_if_no_active_lanes:
+            case POp::branch_if_all_lanes_active:
+            case POp::branch_if_any_lanes_active:
+            case POp::branch_if_no_lanes_active:
                 opArg1 = BranchOffset(static_cast<SkRasterPipeline_BranchCtx*>(stage.ctx));
                 break;
 
@@ -2202,10 +2262,12 @@ void Program::dump(SkWStream* out) const {
         #define M(x) case POp::x: opName = #x; break;
             SK_RASTER_PIPELINE_OPS_ALL(M)
         #undef M
-            case POp::label:               opName = "label";               break;
-            case POp::invoke_shader:       opName = "invoke_shader";       break;
-            case POp::invoke_color_filter: opName = "invoke_color_filter"; break;
-            case POp::invoke_blender:      opName = "invoke_blender";      break;
+            case POp::label:                   opName = "label";                   break;
+            case POp::invoke_shader:           opName = "invoke_shader";           break;
+            case POp::invoke_color_filter:     opName = "invoke_color_filter";     break;
+            case POp::invoke_blender:          opName = "invoke_blender";          break;
+            case POp::invoke_to_linear_srgb:   opName = "invoke_to_linear_srgb";   break;
+            case POp::invoke_from_linear_srgb: opName = "invoke_from_linear_srgb"; break;
         }
 
         std::string opText;
@@ -2367,6 +2429,10 @@ void Program::dump(SkWStream* out) const {
                 opText = opArg1 + " = Indirect(" + opArg2 + " + " + opArg3 + ")";
                 break;
 
+            case POp::copy_to_indirect_masked:
+                opText = "Indirect(" + opArg1 + " + " + opArg3 + ") = Mask(" + opArg2 + ")";
+                break;
+
             case POp::zero_slot_unmasked:    case POp::zero_2_slots_unmasked:
             case POp::zero_3_slots_unmasked: case POp::zero_4_slots_unmasked:
                 opText = opArg1 + " = 0";
@@ -2520,12 +2586,21 @@ void Program::dump(SkWStream* out) const {
                 break;
 
             case POp::jump:
-            case POp::branch_if_any_active_lanes:
-            case POp::branch_if_no_active_lanes:
+            case POp::branch_if_all_lanes_active:
+            case POp::branch_if_any_lanes_active:
+            case POp::branch_if_no_lanes_active:
             case POp::invoke_shader:
             case POp::invoke_color_filter:
             case POp::invoke_blender:
                 opText = std::string(opName) + " " + opArg1;
+                break;
+
+            case POp::invoke_to_linear_srgb:
+                opText = "src.rgba = toLinearSrgb(src.rgba)";
+                break;
+
+            case POp::invoke_from_linear_srgb:
+                opText = "src.rgba = fromLinearSrgb(src.rgba)";
                 break;
 
             case POp::branch_if_no_active_lanes_eq:

@@ -24,6 +24,7 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/GrYUVABackendTextures.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -257,12 +258,13 @@ std::unique_ptr<GrFragmentProcessor> SkImage_GpuYUVA::onAsFragmentProcessor(
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
+namespace sk_image_factory {
+sk_sp<SkImage> MakeFromYUVATextures(GrRecordingContext* context,
                                              const GrYUVABackendTextures& yuvaTextures) {
-    return SkImage::MakeFromYUVATextures(context, yuvaTextures, nullptr, nullptr, nullptr);
+    return MakeFromYUVATextures(context, yuvaTextures, nullptr, nullptr, nullptr);
 }
 
-sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
+sk_sp<SkImage> MakeFromYUVATextures(GrRecordingContext* context,
                                              const GrYUVABackendTextures& yuvaTextures,
                                              sk_sp<SkColorSpace> imageColorSpace,
                                              TextureReleaseProc textureReleaseProc,
@@ -296,15 +298,15 @@ sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
                                        imageColorSpace);
 }
 
-sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,
+sk_sp<SkImage> MakeFromYUVAPixmaps(GrRecordingContext* context,
                                             const SkYUVAPixmaps& pixmaps,
                                             GrMipmapped buildMips,
                                             bool limitToMaxTextureSize) {
-    return SkImage::MakeFromYUVAPixmaps(context, pixmaps, buildMips, limitToMaxTextureSize,
+    return MakeFromYUVAPixmaps(context, pixmaps, buildMips, limitToMaxTextureSize,
                                         nullptr);
 }
 
-sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,
+sk_sp<SkImage> MakeFromYUVAPixmaps(GrRecordingContext* context,
                                             const SkYUVAPixmaps& pixmaps,
                                             GrMipmapped buildMips,
                                             bool limitToMaxTextureSize,
@@ -377,7 +379,7 @@ sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage::MakePromiseYUVATexture(sk_sp<GrContextThreadSafeProxy> threadSafeProxy,
+sk_sp<SkImage> MakePromiseYUVATexture(sk_sp<GrContextThreadSafeProxy> threadSafeProxy,
                                                const GrYUVABackendTextureInfo& backendTextureInfo,
                                                sk_sp<SkColorSpace> imageColorSpace,
                                                PromiseImageTextureFulfillProc textureFulfillProc,
@@ -433,3 +435,4 @@ sk_sp<SkImage> SkImage::MakePromiseYUVATexture(sk_sp<GrContextThreadSafeProxy> t
                                        std::move(yuvaTextureProxies),
                                        std::move(imageColorSpace));
 }
+} // sk_image_factory
