@@ -55,6 +55,7 @@ enum class SnippetRequirementFlags : uint32_t {
     kLocalCoords = 0x1,
     kPriorStageOutput = 0x2,  // AKA the "input" color, or the "source" color for a blender
     kDestColor = 0x4,
+    kSurfaceColor = 0x8,
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags);
 
@@ -143,6 +144,9 @@ public:
     }
     bool needsLocalCoords() const {
         return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
+    }
+    bool needsSurfaceColor() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kSurfaceColor;
     }
     const PaintParamsKey::BlockReader& blockReader(int index) const {
         return fBlockReaders[index];
