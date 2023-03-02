@@ -51,7 +51,7 @@ DEF_TEST(MetaData, reporter) {
         { "false",  SkMetaData::kBool_Type,     1 }
     };
 
-    int                 loop = 0;
+    size_t loop = 0;
     int count;
     SkMetaData::Type    t;
     while ((name = iter.next(&t, &count)) != nullptr)
@@ -61,13 +61,13 @@ DEF_TEST(MetaData, reporter) {
         {
             if (!strcmp(name, gElems[i].fName))
             {
-                match += 1;
+                ++match;
                 REPORTER_ASSERT(reporter, gElems[i].fType == t);
                 REPORTER_ASSERT(reporter, gElems[i].fCount == count);
             }
         }
         REPORTER_ASSERT(reporter, match == 1);
-        loop += 1;
+        ++loop;
     }
     REPORTER_ASSERT(reporter, loop == std::size(gElems));
 

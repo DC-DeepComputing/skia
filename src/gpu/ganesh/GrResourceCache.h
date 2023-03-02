@@ -12,6 +12,7 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/base/SkTArray.h"
+#include "include/private/gpu/ganesh/GrClockPriv.h"
 #include "src/base/SkTDPQueue.h"
 #include "src/base/SkTInternalLList.h"
 #include "src/core/SkMessageBus.h"

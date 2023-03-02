@@ -8,6 +8,8 @@
 #ifndef GrDirectContext_DEFINED
 #define GrDirectContext_DEFINED
 
+#include <chrono>
+
 #include "include/gpu/GrRecordingContext.h"
 
 #include "include/gpu/GrBackendSurface.h"

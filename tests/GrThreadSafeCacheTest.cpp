@@ -34,6 +34,7 @@
 #include "include/private/SkColorData.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMalloc.h"
+#include "include/private/gpu/ganesh/GrClockPriv.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/base/SkRandom.h"
 #include "src/core/SkCanvasPriv.h"

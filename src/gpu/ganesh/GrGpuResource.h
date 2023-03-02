@@ -9,6 +9,7 @@
 #define GrGpuResource_DEFINED
 
 #include "include/private/base/SkNoncopyable.h"
+#include "include/private/gpu/ganesh/GrClockPriv.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ResourceKey.h"
 

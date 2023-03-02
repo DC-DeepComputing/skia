@@ -25,6 +25,7 @@ skia_filegroup(
 skia_filegroup(
     name = "private_hdrs",
     srcs = [
+        "GrClockPriv.h",
         "GrContext_Base.h",
         "GrImageContext.h",
         "GrMockTypesPriv.h",

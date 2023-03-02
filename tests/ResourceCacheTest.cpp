@@ -27,6 +27,7 @@
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTDArray.h"
 #include "include/private/base/SkTo.h"
+#include "include/private/gpu/ganesh/GrClockPriv.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/base/SkRandom.h"
 #include "src/core/SkMessageBus.h"
