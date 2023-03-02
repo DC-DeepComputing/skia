@@ -18,6 +18,7 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "tools/Resources.h"
 
 DEF_SIMPLE_GPU_GM_CAN_FAIL(cross_context_image, rContext, canvas, errorMsg,
@@ -35,15 +36,15 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(cross_context_image, rContext, canvas, errorMsg,
     }
 
     sk_sp<SkImage> images[3];
-    images[0] = SkImage::MakeFromEncoded(encodedData);
+    images[0] = sk_image_factory::MakeFromEncoded(encodedData);
 
     SkBitmap bmp;
     SkPixmap pixmap;
     SkAssertResult(images[0]->asLegacyBitmap(&bmp) &&
                    bmp.peekPixels(&pixmap));
 
-    images[1] = SkImage::MakeCrossContextFromPixmap(dContext, pixmap, false);
-    images[2] = SkImage::MakeCrossContextFromPixmap(dContext, pixmap, true);
+    images[1] = sk_image_factory::MakeCrossContextFromPixmap(dContext, pixmap, false);
+    images[2] = sk_image_factory::MakeCrossContextFromPixmap(dContext, pixmap, true);
 
     canvas->translate(10, 10);
 

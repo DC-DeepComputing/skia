@@ -107,13 +107,13 @@ public:
     GrBackendFormat defaultBackendFormat(SkColorType ct, GrRenderable renderable) const;
 
     /**
-     * Retrieve the GrBackendFormat for a given SkImage::CompressionType. This is
+     * Retrieve the GrBackendFormat for a given sk_image_factory::CompressionType. This is
      * guaranteed to match the backend format used by the following
      * createCompressedBackendTexture methods that take a CompressionType.
      *
      * The caller should check that the returned format is valid.
      */
-    GrBackendFormat compressedBackendFormat(SkImage::CompressionType c) const;
+    GrBackendFormat compressedBackendFormat(sk_image_factory::CompressionType c) const;
 
     /**
      * Gets the maximum supported sample count for a color type. 1 is returned if only non-MSAA

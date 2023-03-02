@@ -131,7 +131,7 @@ protected:
                 canvas->save();
                 for (const sk_sp<SkColorSpace>& colorSpace : colorSpaces) {
                     make(&bitmap, colorType, alphaType, colorSpace);
-                    auto image = SkImage::MakeFromEncoded(encode_data(bitmap, fEncodedFormat));
+                    auto image = sk_image_factory::MakeFromEncoded(encode_data(bitmap, fEncodedFormat));
                     canvas->drawImage(image.get(), 0.0f, 0.0f);
                     canvas->translate((float) imageWidth, 0.0f);
                 }

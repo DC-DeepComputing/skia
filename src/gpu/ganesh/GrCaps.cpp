@@ -8,6 +8,7 @@
 #include "src/gpu/ganesh/GrCaps.h"
 
 #include "include/core/SkColor.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/GpuTypes.h"
@@ -425,8 +426,8 @@ bool GrCaps::areColorTypeAndFormatCompatible(GrColorType grCT,
         return false;
     }
 
-    SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
-    if (compression != SkImage::CompressionType::kNone) {
+    sk_image_factory::CompressionType compression = GrBackendFormatToCompressionType(format);
+    if (compression != sk_image_factory::CompressionType::kNone) {
         return grCT == (SkCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
                                                                : GrColorType::kRGBA_8888);
     }
@@ -435,8 +436,8 @@ bool GrCaps::areColorTypeAndFormatCompatible(GrColorType grCT,
 }
 
 skgpu::Swizzle GrCaps::getReadSwizzle(const GrBackendFormat& format, GrColorType colorType) const {
-    SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
-    if (compression != SkImage::CompressionType::kNone) {
+    sk_image_factory::CompressionType compression = GrBackendFormatToCompressionType(format);
+    if (compression != sk_image_factory::CompressionType::kNone) {
         if (colorType == GrColorType::kRGB_888x || colorType == GrColorType::kRGBA_8888) {
             return skgpu::Swizzle::RGBA();
         }
@@ -449,7 +450,7 @@ skgpu::Swizzle GrCaps::getReadSwizzle(const GrBackendFormat& format, GrColorType
 }
 
 bool GrCaps::isFormatCompressed(const GrBackendFormat& format) const {
-    return GrBackendFormatToCompressionType(format) != SkImage::CompressionType::kNone;
+    return GrBackendFormatToCompressionType(format) != sk_image_factory::CompressionType::kNone;
 }
 
 GrDstSampleFlags GrCaps::getDstSampleFlagsForProxy(const GrRenderTargetProxy* rt,
