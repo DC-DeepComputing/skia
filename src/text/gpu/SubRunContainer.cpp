@@ -890,8 +890,7 @@ public:
         return true;
     }
     const AtlasSubRun* testingOnly_atlasSubRun() const override { return nullptr; }
-    static SubRunOwner MakeFromBuffer(const SkMatrix& initialPositionMatrix,
-                                      SkReadBuffer& buffer,
+    static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
                                       SubRunAllocator* alloc,
                                       const SkStrikeClient* client);
 
@@ -911,8 +910,7 @@ void PathSubRun::doFlatten(SkWriteBuffer& buffer) const {
     fPathDrawing.flatten(buffer);
 }
 
-SubRunOwner PathSubRun::MakeFromBuffer(const SkMatrix& initialPositionMatrix,
-                                       SkReadBuffer& buffer,
+SubRunOwner PathSubRun::MakeFromBuffer(SkReadBuffer& buffer,
                                        SubRunAllocator* alloc,
                                        const SkStrikeClient* client) {
     auto pathOpSubmitter = PathOpSubmitter::MakeFromBuffer(buffer, alloc, client);
@@ -1082,8 +1080,7 @@ public:
                                           alloc));
     }
 
-    static SubRunOwner MakeFromBuffer(const SkMatrix&,
-                                      SkReadBuffer& buffer,
+    static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
                                       SubRunAllocator* alloc,
                                       const SkStrikeClient* client);
 #if defined(SK_GANESH)
@@ -1129,8 +1126,7 @@ void DrawableSubRun::doFlatten(SkWriteBuffer& buffer) const {
     fDrawingDrawing.flatten(buffer);
 }
 
-SubRunOwner DrawableSubRun::MakeFromBuffer(const SkMatrix&,
-                                           SkReadBuffer& buffer,
+SubRunOwner DrawableSubRun::MakeFromBuffer(SkReadBuffer& buffer,
                                            SubRunAllocator* alloc,
                                            const SkStrikeClient* client) {
     auto drawableOpSubmitter = DrawableOpSubmitter::MakeFromBuffer(buffer, alloc, client);
@@ -1211,8 +1207,7 @@ public:
         return alloc->makeUnique<DirectMaskSubRun>(std::move(vertexFiller), std::move(glyphVector));
     }
 
-    static SubRunOwner MakeFromBuffer(const SkMatrix& creationMatrix,
-                                      SkReadBuffer& buffer,
+    static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
                                       SubRunAllocator* alloc,
                                       const SkStrikeClient* client) {
         auto vertexFiller = VertexFiller::MakeFromBuffer(buffer, alloc);
@@ -1447,8 +1442,7 @@ public:
                 std::move(glyphVector));
     }
 
-    static SubRunOwner MakeFromBuffer(const SkMatrix& initialPositionMatrix,
-                                      SkReadBuffer& buffer,
+    static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
                                       SubRunAllocator* alloc,
                                       const SkStrikeClient* client) {
         auto vertexFiller = VertexFiller::MakeFromBuffer(buffer, alloc);
@@ -1704,8 +1698,7 @@ public:
                 std::move(glyphVector));
     }
 
-    static SubRunOwner MakeFromBuffer(const SkMatrix&,
-                                      SkReadBuffer& buffer,
+    static SubRunOwner MakeFromBuffer(SkReadBuffer& buffer,
                                       SubRunAllocator* alloc,
                                       const SkStrikeClient* client) {
         int useLCD = buffer.readInt();
@@ -1926,12 +1919,10 @@ void SubRun::flatten(SkWriteBuffer& buffer) const {
     this->doFlatten(buffer);
 }
 
-SubRunOwner SubRun::MakeFromBuffer(const SkMatrix& initialPositionMatrix,
-                                   SkReadBuffer& buffer,
+SubRunOwner SubRun::MakeFromBuffer(SkReadBuffer& buffer,
                                    SubRunAllocator* alloc,
                                    const SkStrikeClient* client) {
-    using Maker = SubRunOwner (*)(const SkMatrix&,
-                                  SkReadBuffer&,
+    using Maker = SubRunOwner (*)(SkReadBuffer&,
                                   SubRunAllocator*,
                                   const SkStrikeClient*);
 
@@ -1952,7 +1943,7 @@ SubRunOwner SubRun::MakeFromBuffer(const SkMatrix& initialPositionMatrix,
     }
     auto maker = makers[subRunTypeInt];
     if (!buffer.validate(maker != nullptr)) { return nullptr; }
-    return maker(initialPositionMatrix, buffer, alloc, client);
+    return maker(buffer, alloc, client);
 }
 
 // -- SubRunContainer ------------------------------------------------------------------------------
@@ -2002,8 +1993,7 @@ SubRunContainerOwner SubRunContainer::MakeFromBufferInAlloc(SkReadBuffer& buffer
     SkASSERT(subRunCount > 0);
     if (!buffer.validate(subRunCount > 0)) { return nullptr; }
     for (int i = 0; i < subRunCount; ++i) {
-        auto subRunOwner = SubRun::MakeFromBuffer(
-                container->initialPosition(), buffer, alloc, client);
+        auto subRunOwner = SubRun::MakeFromBuffer(buffer, alloc, client);
         if (!buffer.validate(subRunOwner != nullptr)) { return nullptr; }
         if (subRunOwner != nullptr) {
             container->fSubRuns.append(std::move(subRunOwner));
