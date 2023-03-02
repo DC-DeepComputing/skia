@@ -241,7 +241,7 @@ public:
             JSObject trans_val = emscripten::val::object();
             const float anchor[] = {transform.fAnchorPoint.fX, transform.fAnchorPoint.fY};
             const float position[] = {transform.fPosition.fX, transform.fPosition.fY};
-            const float scale[] = {transform.fScale.fX, transform.fAnchorPoint.fY};
+            const float scale[] = {transform.fScale.fX, transform.fScale.fY};
             trans_val.set("anchor", MakeTypedArray(2, anchor));
             trans_val.set("position", MakeTypedArray(2, position));
             trans_val.set("scale", MakeTypedArray(2, scale));
