@@ -19,6 +19,7 @@ namespace skgpu::graphite {
 class KeyContext;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
+class TextureProxy;
 
 // TBD: If occlusion culling is eliminated as a phase, we can easily move the paint conversion
 // back to Device when the command is recorded (similar to SkPaint -> GrPaint), and then
@@ -33,9 +34,11 @@ public:
                 sk_sp<SkShader>,
                 sk_sp<SkColorFilter>,
                 sk_sp<SkBlender> primitiveBlender,
+                bool needsDstRead,
                 bool skipColorXform);
     explicit PaintParams(const SkPaint&,
                          sk_sp<SkBlender> primitiveBlender,
+                         bool needsDstRead,
                          bool skipColorXform);
 
     PaintParams(const PaintParams&);
@@ -58,6 +61,7 @@ public:
     SkBlender* primitiveBlender() const { return fPrimitiveBlender.get(); }
     sk_sp<SkBlender> refPrimitiveBlender() const;
 
+    bool needsDstRead() const { return fNeedsDstRead; }
     bool skipColorXform() const { return fSkipColorXform; }
 
     /** Converts an SkColor4f to the destination color space. */
@@ -65,7 +69,8 @@ public:
 
     void toKey(const KeyContext&,
                PaintParamsKeyBuilder*,
-               PipelineDataGatherer*) const;
+               PipelineDataGatherer*,
+               sk_sp<TextureProxy> target) const;
 
 private:
     SkColor4f            fColor;
@@ -76,6 +81,7 @@ private:
     // In the case where there is primitive blending, the primitive color is the source color and
     // the dest is the paint's color (or the paint's shader's computed color).
     sk_sp<SkBlender>     fPrimitiveBlender;
+    bool                 fNeedsDstRead;
     bool                 fSkipColorXform;
 
     // TODO: Will also store ColorFilter, dither, and any extra shader from an
