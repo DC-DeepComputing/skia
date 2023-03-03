@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52b8c3ad_910978b1",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-03T14:06:06Z",
+      "side": 1,
+      "message": "I think this CL makes sense now that you are adding support for true dst reads. In this case, I would want to wait for John\u0027s review before landing though.",
+      "range": {
+        "startLine": 983,
+        "startChar": 0,
+        "endLine": 986,
+        "endChar": 90
+      },
+      "revId": "366b3464a3bd0488dee5292c2c613b7a30c0ad29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
