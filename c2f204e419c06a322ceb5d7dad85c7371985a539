@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1d388e2_3a72e3ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-03T19:19:34Z",
+      "side": 1,
+      "message": "Tiny Cl which expands on read swizzle work. :)",
+      "revId": "c2f204e419c06a322ceb5d7dad85c7371985a539",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
