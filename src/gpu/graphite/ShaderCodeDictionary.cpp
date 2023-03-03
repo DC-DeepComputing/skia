@@ -297,7 +297,7 @@ static std::string append_default_snippet_arguments(const ShaderInfo& shaderInfo
     // Append destination color.
     if (entry->needsDestColor()) {
         code += separator;
-        code += args.fDestColor;
+        code += args.fRuntimeShaderDstColor;
         separator = ", ";
     }
 
@@ -399,11 +399,12 @@ std::string GenerateDefaultExpression(const ShaderInfo& shaderInfo,
     } else {
         // Return an expression which invokes the helper function from the preamble.
         std::string helperFnName = get_mangled_name(entry->fStaticFunctionName, entryIndex);
-        return SkSL::String::printf("%s(%.*s, %.*s, %.*s)",
-                                  helperFnName.c_str(),
-                                  (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
-                                  (int)args.fDestColor.size(),        args.fDestColor.data(),
-                                  (int)args.fFragCoord.size(),        args.fFragCoord.data());
+        return SkSL::String::printf(
+                "%s(%.*s, %.*s, %.*s)",
+                helperFnName.c_str(),
+                (int)args.fPriorStageOutput.size(),      args.fPriorStageOutput.data(),
+                (int)args.fRuntimeShaderDstColor.size(), args.fRuntimeShaderDstColor.data(),
+                (int)args.fFragCoord.size(),             args.fFragCoord.data());
     }
 }
 
@@ -818,12 +819,13 @@ std::string GenerateRuntimeShaderExpression(const ShaderInfo& shaderInfo,
                                             const PaintParamsKey::BlockReader& reader,
                                             const ShaderSnippet::Args& args) {
     const ShaderSnippet* entry = reader.entry();
-    return SkSL::String::printf("%s_%d(%.*s, %.*s, %.*s)",
-                                entry->fName,
-                                entryIndex,
-                                (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
-                                (int)args.fDestColor.size(),        args.fDestColor.data(),
-                                (int)args.fFragCoord.size(),        args.fFragCoord.data());
+    return SkSL::String::printf(
+            "%s_%d(%.*s, %.*s, %.*s)",
+            entry->fName,
+            entryIndex,
+            (int)args.fPriorStageOutput.size(),      args.fPriorStageOutput.data(),
+            (int)args.fRuntimeShaderDstColor.size(), args.fRuntimeShaderDstColor.data(),
+            (int)args.fFragCoord.size(),             args.fFragCoord.data());
 }
 
 //--------------------------------------------------------------------------------------------------
