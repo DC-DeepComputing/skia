@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98027422_e3cd0765",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-03-03T16:25:11Z",
+      "side": 1,
+      "message": "Cherrypicking to Skia\u0027s `android/u-release` to roll into Android\u0027s internal `udc-dev`",
+      "revId": "63d9c8b7bf6a8d1dc58ad71d735eef44b67f9436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
