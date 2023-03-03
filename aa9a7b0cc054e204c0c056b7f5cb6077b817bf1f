@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19429302_7c163c54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-03T14:20:01Z",
+      "side": 1,
+      "message": "Do you think we need unit tests for these guys\u0027 behavior?",
+      "revId": "aa9a7b0cc054e204c0c056b7f5cb6077b817bf1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a26f3f98_107c9e74",
+        "filename": "include/gpu/graphite/YUVABackendTextures.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-03T14:20:01Z",
+      "side": 1,
+      "message": "Do we also want this up in \u0027planeTextureInfo\u0027 ?",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 43
+      },
+      "revId": "aa9a7b0cc054e204c0c056b7f5cb6077b817bf1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e76f7e6f_12061229",
+        "filename": "src/gpu/graphite/YUVABackendTextures.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-03T14:20:01Z",
+      "side": 1,
+      "message": "Add a \"SkASSERT(!this-\u003eisValid());\" to match YUVABackendTextureInfo?",
+      "revId": "aa9a7b0cc054e204c0c056b7f5cb6077b817bf1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc981b6d_a012c2da",
+        "filename": "src/gpu/graphite/YUVABackendTextures.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-03T14:20:01Z",
+      "side": 1,
+      "message": "Add a \"SkASSERT(this-\u003eisValid());\" to match YUVABackendTextureInfo?",
+      "revId": "aa9a7b0cc054e204c0c056b7f5cb6077b817bf1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
