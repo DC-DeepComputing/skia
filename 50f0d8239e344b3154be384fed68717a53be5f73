@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a936d645_1c612d72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-03-03T10:58:49Z",
+      "side": 1,
+      "message": "There is a chance that Android will want these functions to be exposed publicly at some point in the U timeframe. Exposing them now (while the branches are in sync) so that they\u0027re available if they end up being needed.",
+      "revId": "50f0d8239e344b3154be384fed68717a53be5f73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
