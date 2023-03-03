@@ -26,22 +26,26 @@ PaintParams::PaintParams(const SkColor4f& color,
                          sk_sp<SkShader> shader,
                          sk_sp<SkColorFilter> colorFilter,
                          sk_sp<SkBlender> primitiveBlender,
+                         bool needsDstRead,
                          bool skipColorXform)
         : fColor(color)
         , fFinalBlender(std::move(finalBlender))
         , fShader(std::move(shader))
         , fColorFilter(std::move(colorFilter))
         , fPrimitiveBlender(std::move(primitiveBlender))
+        , fNeedsDstRead(needsDstRead)
         , fSkipColorXform(skipColorXform) {}
 
 PaintParams::PaintParams(const SkPaint& paint,
                          sk_sp<SkBlender> primitiveBlender,
+                         bool needsDstRead,
                          bool skipColorXform)
         : fColor(paint.getColor4f())
         , fFinalBlender(paint.refBlender())
         , fShader(paint.refShader())
         , fColorFilter(paint.refColorFilter())
         , fPrimitiveBlender(std::move(primitiveBlender))
+        , fNeedsDstRead(needsDstRead)
         , fSkipColorXform(skipColorXform) {}
 
 PaintParams::PaintParams(const PaintParams& other) = default;
@@ -73,11 +77,17 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
 
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
-                        PipelineDataGatherer* gatherer) const {
+                        PipelineDataGatherer* gatherer,
+                        sk_sp<TextureProxy> target) const {
 
     // TODO: figure out how we can omit this block when the Paint's color isn't used.
     SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, keyContext.paintColor());
     builder->endBlock();
+
+    if (target) {
+        DstReadBlock::BeginBlock(keyContext, builder, gatherer, std::move(target));
+        builder->endBlock();
+    }
 
     if (fShader) {
         as_SB(fShader)->addToKey(keyContext, builder, gatherer);

@@ -103,6 +103,39 @@ void add_gradient_postamble(const GradientShaderBlocks::GradientData& gradData,
     gatherer->write(static_cast<int>(inputPremul));
 }
 
+void add_dst_read_uniform_data(const ShaderCodeDictionary* dict,
+                               PipelineDataGatherer* gatherer,
+                               sk_sp<TextureProxy> dstTextureProxy) {
+    static const SkTileMode kTileModes[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
+    gatherer->add(SkSamplingOptions(), kTileModes, dstTextureProxy);
+
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kDstRead)
+
+    SkV4 dstReadCoords{0.0f,
+                       0.0f,
+                       1.0f / dstTextureProxy->dimensions().width(),
+                       1.0f / dstTextureProxy->dimensions().height()};
+    gatherer->write(dstReadCoords);
+
+    gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kDstRead));
+}
+
+} // anonymous namespace
+
+void DstReadBlock::BeginBlock(const KeyContext& keyContext,
+                              PaintParamsKeyBuilder* builder,
+                              PipelineDataGatherer* gatherer,
+                              sk_sp<TextureProxy> dst) {
+    if (gatherer) {
+        add_dst_read_uniform_data(keyContext.dict(), gatherer, std::move(dst));
+    }
+    builder->beginBlock(BuiltInCodeSnippetID::kDstRead);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+namespace {
+
 void add_linear_gradient_uniform_data(const ShaderCodeDictionary* dict,
                                       BuiltInCodeSnippetID codeSnippetID,
                                       const GradientShaderBlocks::GradientData& gradData,
