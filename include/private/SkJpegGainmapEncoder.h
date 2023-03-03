@@ -66,6 +66,18 @@ public:
      *  Write a Multi Picture Format containing the |imageCount| images specified by |images|.
      */
     static bool MakeMPF(SkWStream* dst, const SkData** images, size_t imageCount);
+
+    /**
+     *  Make XMP metadata with rendering parameters for the specified SkGainmapInfo. This data is
+     *  to be attached to the auxiliary image.
+     */
+    static sk_sp<SkData> MakeGainmapInfoXMP(const SkGainmapInfo& gainmapInfo);
+
+    /**
+     *  Make XMP metadata for a Container with two Items: the Primary, and a RecoveryMap of the
+     *  specified size. This data is to be attached to the primary image.
+     */
+    static sk_sp<SkData> MakeContainerRecoveryMapXMP(int32_t recoveryMapSize);
 };
 
 #endif

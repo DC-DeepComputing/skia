@@ -105,7 +105,7 @@ bool SkJpegGainmapEncoder::EncodeJpegR(SkWStream* dst,
 // HDRGM encoding
 
 // Generate the XMP metadata for an HDRGM file.
-sk_sp<SkData> get_hdrgm_xmp_data(const SkGainmapInfo& gainmapInfo) {
+sk_sp<SkData> SkJpegGainmapEncoder::MakeGainmapInfoXMP(const SkGainmapInfo& gainmapInfo) {
     const float kLog2 = sk_float_log(2.f);
     SkDynamicMemoryWStream s;
     s.writeText(
@@ -165,7 +165,7 @@ sk_sp<SkData> get_hdrgm_xmp_data(const SkGainmapInfo& gainmapInfo) {
 }
 
 // Generate the GContainer metadata for an image with a JPEG gainmap.
-static sk_sp<SkData> get_gcontainer_xmp_data(size_t gainmapItemLength) {
+sk_sp<SkData> SkJpegGainmapEncoder::MakeContainerRecoveryMapXMP(int32_t gainmapItemLength) {
     SkDynamicMemoryWStream s;
     s.writeText(
             "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.1.2\">\n"
@@ -195,69 +195,6 @@ static sk_sp<SkData> get_gcontainer_xmp_data(size_t gainmapItemLength) {
             "  </rdf:RDF>\n"
             "</x:xmpmeta>\n");
     return s.detachAsData();
-}
-
-// Split an SkData into segments.
-std::vector<sk_sp<SkData>> get_hdrgm_image_segments(sk_sp<SkData> image,
-                                                    size_t segmentMaxDataSize) {
-    // Compute the total size of the header to a gainmap image segment (not including the 2 bytes
-    // for the segment size, which the encoder is responsible for writing).
-    constexpr size_t kGainmapHeaderSize = sizeof(kGainmapSig) + 2 * kGainmapMarkerIndexSize;
-
-    // Compute the payload size for each segment.
-    const size_t kGainmapPayloadSize = segmentMaxDataSize - kGainmapHeaderSize;
-
-    // Compute the number of segments we'll need.
-    const size_t segmentCount = (image->size() + kGainmapPayloadSize - 1) / kGainmapPayloadSize;
-    std::vector<sk_sp<SkData>> result;
-    result.reserve(segmentCount);
-
-    // Move |imageData| through |image| until it hits |imageDataEnd|.
-    const uint8_t* imageData = image->bytes();
-    const uint8_t* imageDataEnd = image->bytes() + image->size();
-    while (imageData < imageDataEnd) {
-        SkDynamicMemoryWStream segmentStream;
-
-        // Write the signature.
-        segmentStream.write(kGainmapSig, sizeof(kGainmapSig));
-
-        // Write the segment index as big-endian.
-        size_t segmentIndex = result.size() + 1;
-        uint8_t segmentIndexBytes[2] = {
-                static_cast<uint8_t>(segmentIndex / 256u),
-                static_cast<uint8_t>(segmentIndex % 256u),
-        };
-        segmentStream.write(segmentIndexBytes, sizeof(segmentIndexBytes));
-
-        // Write the segment count as big-endian.
-        uint8_t segmentCountBytes[2] = {
-                static_cast<uint8_t>(segmentCount / 256u),
-                static_cast<uint8_t>(segmentCount % 256u),
-        };
-        segmentStream.write(segmentCountBytes, sizeof(segmentCountBytes));
-
-        // Verify that our header size math is correct.
-        SkASSERT(segmentStream.bytesWritten() == kGainmapHeaderSize);
-
-        // Write the rest of the segment.
-        size_t bytesToWrite =
-                std::min(imageDataEnd - imageData, static_cast<intptr_t>(kGainmapPayloadSize));
-        segmentStream.write(imageData, bytesToWrite);
-        imageData += bytesToWrite;
-
-        // Verify that our data size math is correct.
-        if (segmentIndex == segmentCount) {
-            SkASSERT(segmentStream.bytesWritten() <= segmentMaxDataSize);
-        } else {
-            SkASSERT(segmentStream.bytesWritten() == segmentMaxDataSize);
-        }
-        result.push_back(segmentStream.detachAsData());
-    }
-
-    // Verify that our segment count math was correct.
-    SkASSERT(imageData == imageDataEnd);
-    SkASSERT(result.size() == segmentCount);
-    return result;
 }
 
 static sk_sp<SkData> encode_to_data(const SkPixmap& pm,
@@ -295,7 +232,7 @@ bool SkJpegGainmapEncoder::EncodeHDRGM(SkWStream* dst,
     sk_sp<SkData> gainmapData;
     {
         // We will include the HDRGM XMP metadata in the gainmap image.
-        auto hdrgmXmp = get_hdrgm_xmp_data(gainmapInfo);
+        auto hdrgmXmp = MakeGainmapInfoXMP(gainmapInfo);
         gainmapData = encode_to_data(gainmap, gainmapOptions, hdrgmXmp.get());
         if (!gainmapData) {
             SkCodecPrintf("Failed to encode gainmap image.\n");
@@ -306,7 +243,7 @@ bool SkJpegGainmapEncoder::EncodeHDRGM(SkWStream* dst,
     // Encode the base image with the Container XMP metadata.
     sk_sp<SkData> baseData;
     {
-        auto containerXmp = get_gcontainer_xmp_data(static_cast<int32_t>(gainmapData->size()));
+        auto containerXmp = MakeContainerRecoveryMapXMP(static_cast<int32_t>(gainmapData->size()));
         baseData = encode_to_data(base, baseOptions, containerXmp.get());
         if (!baseData) {
             SkCodecPrintf("Failed to encode base image.\n");
