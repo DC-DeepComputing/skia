@@ -22,6 +22,30 @@
       },
       "revId": "366b3464a3bd0488dee5292c2c613b7a30c0ad29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e1f67e8_9a1664f3",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-03T18:54:35Z",
+      "side": 1,
+      "message": "Actually, he is out for a bit. \n\nAfter talking offline, I don\u0027t see a problem with this. Adding another snippet requirement flag doesn\u0027t force us to expand the data type used for the SnippetRequirementFlags data type, so I don\u0027t see the harm in having a separate one to indicate the need to blend against a dest color read versus a supplied primitive color. I\u0027m not sure how else we would make the distinction anyhow. +1",
+      "parentUuid": "52b8c3ad_910978b1",
+      "range": {
+        "startLine": 983,
+        "startChar": 0,
+        "endLine": 986,
+        "endChar": 90
+      },
+      "revId": "366b3464a3bd0488dee5292c2c613b7a30c0ad29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
