@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "42a5139d_cc5a12de",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-03-06T18:00:08Z",
+      "side": 1,
+      "message": "nit: GrDirectContext*",
+      "range": {
+        "startLine": 16,
+        "startChar": 38,
+        "endLine": 16,
+        "endChar": 53
+      },
+      "revId": "63d9c8b7bf6a8d1dc58ad71d735eef44b67f9436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "98027422_e3cd0765",
@@ -14,6 +37,46 @@
       "writtenOn": "2023-03-03T16:25:11Z",
       "side": 1,
       "message": "Cherrypicking to Skia\u0027s `android/u-release` to roll into Android\u0027s internal `udc-dev`",
+      "revId": "63d9c8b7bf6a8d1dc58ad71d735eef44b67f9436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea5c2672_a4719251",
+        "filename": "include/gpu/GrDirectContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 877,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-03-06T18:00:08Z",
+      "side": 1,
+      "message": "nit: GrDirectContext*\n\nThat said, you probably want to fix that upstream first (and maybe leave this one alone), or else you might end up with conflicts.",
+      "range": {
+        "startLine": 877,
+        "startChar": 67,
+        "endLine": 877,
+        "endChar": 82
+      },
+      "revId": "63d9c8b7bf6a8d1dc58ad71d735eef44b67f9436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c776d247_facab595",
+        "filename": "include/gpu/GrDirectContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-03-06T18:00:08Z",
+      "side": 1,
+      "message": "Why does this need to be in an `std::unique_ptr`? It seems like it could just be a direct member. You\u0027ll avoid the extra `new` and its destructor should be called at the same time as the `std::unique_ptr`\u0027s would\u0027ve been called.",
       "revId": "63d9c8b7bf6a8d1dc58ad71d735eef44b67f9436",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
