@@ -39,6 +39,30 @@
       },
       "revId": "2f248b0ff636377f85b5e14dbef27d7d86b31377",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f04c65d5_a5d600ca",
+        "filename": "tools/skdiff/skdiff_html.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-06T21:19:06Z",
+      "side": 1,
+      "message": "Ah yea, except for the strings I think since they\u0027re reassigned with +\u003d. Used `let` for those.",
+      "parentUuid": "1410f2c8_7e244ee1",
+      "range": {
+        "startLine": 271,
+        "startChar": 12,
+        "endLine": 271,
+        "endChar": 16
+      },
+      "revId": "2f248b0ff636377f85b5e14dbef27d7d86b31377",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
