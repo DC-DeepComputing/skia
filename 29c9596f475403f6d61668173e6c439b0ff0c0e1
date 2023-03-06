@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c03a6521_d7a4d185",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T21:08:59Z",
+      "side": 1,
+      "message": "We should have fBaseFrequency and fStitchData ordered first for better alignment, and then have the ints packed second.",
+      "range": {
+        "startLine": 453,
+        "startChar": 30,
+        "endLine": 453,
+        "endChar": 44
+      },
+      "revId": "29c9596f475403f6d61668173e6c439b0ff0c0e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54b51cce_71dd415c",
+        "filename": "src/shaders/SkPerlinNoiseShader.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T21:08:59Z",
+      "side": 1,
+      "message": "Is this some of the cleanup you mentioned offline, to move this logic to the factories instead?",
+      "range": {
+        "startLine": 1024,
+        "startChar": 0,
+        "endLine": 1041,
+        "endChar": 5
+      },
+      "revId": "29c9596f475403f6d61668173e6c439b0ff0c0e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de4a6580_baf9a5b5",
+        "filename": "src/shaders/SkPerlinNoiseShader.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1094,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T21:08:59Z",
+      "side": 1,
+      "message": "This is very unintuitive to me, since I would have thought the noise would be accessed by local coordinates. Can we not just subtract 1 from the coordinates passed into `sample()` in the sksl directly?",
+      "range": {
+        "startLine": 1094,
+        "startChar": 7,
+        "endLine": 1094,
+        "endChar": 82
+      },
+      "revId": "29c9596f475403f6d61668173e6c439b0ff0c0e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4335db1f_2ebf225a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 23
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T21:08:59Z",
+      "side": 1,
+      "message": "All of this could be pulled out of noise_function and shared by the 4 calls to it, right?",
+      "range": {
+        "startLine": 692,
+        "startChar": 4,
+        "endLine": 711,
+        "endChar": 47
+      },
+      "revId": "29c9596f475403f6d61668173e6c439b0ff0c0e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "affeb5be_24c388b0",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 23
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T21:08:59Z",
+      "side": 1,
+      "message": "update?",
+      "range": {
+        "startLine": 779,
+        "startChar": 14,
+        "endLine": 779,
+        "endChar": 31
+      },
+      "revId": "29c9596f475403f6d61668173e6c439b0ff0c0e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ade9bedd_351f6e83",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 23
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T21:08:59Z",
+      "side": 1,
+      "message": "This seems like it was copied and needs to update to refer to new variables or functions?",
+      "range": {
+        "startLine": 808,
+        "startChar": 8,
+        "endLine": 809,
+        "endChar": 72
+      },
+      "revId": "29c9596f475403f6d61668173e6c439b0ff0c0e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
