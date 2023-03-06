@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24dfa1d2_9a56cfe1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-03-06T20:16:52Z",
+      "side": 1,
+      "message": "This CL is ready for review.\n\nCanary-G3 is failing but I don\u0027t think it\u0027s related to this CL?",
+      "revId": "2ad40158808993ebb4644e1f5b60fc4c351a28c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
