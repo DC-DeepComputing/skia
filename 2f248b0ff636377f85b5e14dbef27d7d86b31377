@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc917c44_58f09416",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-06T21:13:00Z",
+      "side": 1,
+      "message": "Wow, yeah, looks like this was introduced in ed01f12d13d3a5d2943c36595bbc70308aac563f ( https://codereview.appspot.com/6497054 ) over ten years ago. Been a while.",
+      "revId": "2f248b0ff636377f85b5e14dbef27d7d86b31377",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1410f2c8_7e244ee1",
+        "filename": "tools/skdiff/skdiff_html.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-06T21:13:00Z",
+      "side": 1,
+      "message": "Pretty sure all these can be `const` now too. Not that I feel very strongly about that for this little snippet.",
+      "range": {
+        "startLine": 271,
+        "startChar": 12,
+        "endLine": 271,
+        "endChar": 16
+      },
+      "revId": "2f248b0ff636377f85b5e14dbef27d7d86b31377",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
