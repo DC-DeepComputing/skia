@@ -5,10 +5,12 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	"go.skia.org/infra/go/exec"
 	"go.skia.org/infra/go/skerr"
@@ -38,6 +40,12 @@ func main() {
 
 	// Run gn_to_bp.py
 	gnEnv := []string{fmt.Sprintf("PATH=%s/:%s", binPath, os.Getenv("PATH"))}
+	fmt.Printf("GN ENVIRONMENT: %+v", gnEnv)
+	td.Do(ctx, td.Props("sleeping for 600 seconds"), func(ctx context.Context) error {
+		time.Sleep(600 * time.Second)
+		return nil
+	})
+
 	if _, gnToBpErr := exec.RunCommand(ctx, &exec.Command{
 		Env:  gnEnv,
 		Dir:  skiaCheckoutAbsPath,
