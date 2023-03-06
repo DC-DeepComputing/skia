@@ -22,6 +22,30 @@
       },
       "revId": "69c45cfd5aaba924fca660d05f613d66ffa51b9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e70da211_248e12e7",
+        "filename": "src/core/SkRegion_path.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T21:56:09Z",
+      "side": 1,
+      "message": "I think the main limiting factor is SkScan::FillPath doesn\u0027t support that at the moment, so we\u0027d have to plumb the offset all the way there. I didn\u0027t love it either, but figured it wouldn\u0027t come up too often and at least is only in the interval of 16k.",
+      "parentUuid": "ba110a79_e88e952b",
+      "range": {
+        "startLine": 365,
+        "startChar": 29,
+        "endLine": 365,
+        "endChar": 80
+      },
+      "revId": "69c45cfd5aaba924fca660d05f613d66ffa51b9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
