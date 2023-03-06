@@ -16,6 +16,63 @@
       "message": "Tiny Cl which expands on read swizzle work. :)",
       "revId": "c2f204e419c06a322ceb5d7dad85c7371985a539",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51615052_0e6f7e71",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-06T16:11:51Z",
+      "side": 1,
+      "message": "Do we already have a unit test/GM that exercises this use case?",
+      "revId": "c2f204e419c06a322ceb5d7dad85c7371985a539",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3600e77d_0603650c",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-06T16:11:51Z",
+      "side": 1,
+      "message": "Do we want to LOG_W this?",
+      "revId": "c2f204e419c06a322ceb5d7dad85c7371985a539",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15104336_25b99c3f",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-06T16:11:51Z",
+      "side": 1,
+      "message": "Will \"imageToDraw-\u003eisAlphaOnly\" work here ?",
+      "range": {
+        "startLine": 432,
+        "startChar": 12,
+        "endLine": 432,
+        "endChar": 60
+      },
+      "revId": "c2f204e419c06a322ceb5d7dad85c7371985a539",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
