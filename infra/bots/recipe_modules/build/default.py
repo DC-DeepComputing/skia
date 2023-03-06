@@ -333,6 +333,10 @@ def compile_fn(api, checkout_root, out_dir):
         api.run(api.step, 'ccache stats-start', cmd=[ccache, '-s'])
       api.run(api.step, 'gn gen',
               cmd=[gn, 'gen', out_dir, '--args=' + gn_args])
+      
+      # api.run(api.step, 'print command', cmd=['echo', '****** ABOUT TO RUN: ninja -C %s ******' % out_dir])
+      # api.run(api.step, 'sleep for 20 minutes', cmd=['sleep', '1200'])
+
       api.run(api.step, 'ninja', cmd=['ninja', '-C', out_dir])
       if ccache:
         api.run(api.step, 'ccache stats-end', cmd=[ccache, '-s'])
