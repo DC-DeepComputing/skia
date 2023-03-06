@@ -189,6 +189,46 @@ struct CoordClampShaderBlock {
                            const CoordClampData*);
 };
 
+struct PerlinNoiseShaderBlock {
+
+    enum class Type {
+        kFractalNoise,
+        kTurbulence,
+    };
+
+    struct PerlinNoiseData {
+        PerlinNoiseData(Type type,
+                        SkVector baseFrequency,
+                        int numOctaves,
+                        SkISize stitchData,
+                        SkVector offset)
+            : fType(type)
+            , fBaseFrequency(baseFrequency)
+            , fNumOctaves(numOctaves)
+            , fStitchData{ SkIntToFloat(stitchData.fWidth), SkIntToFloat(stitchData.fHeight) }
+            , fOffset(offset) {
+        }
+
+        bool stitching() const { return !fStitchData.isZero(); }
+
+        Type fType;
+        SkVector fBaseFrequency;
+        int fNumOctaves;
+        SkVector fStitchData;
+        SkVector fOffset;
+
+        sk_sp<TextureProxy> fPermutationsProxy;
+        sk_sp<TextureProxy> fNoiseProxy;
+    };
+
+    // The gatherer and data should be null or non-null together
+    static void BeginBlock(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           PipelineDataGatherer*,
+                           const PerlinNoiseData*);
+};
+
+
 struct PorterDuffBlendShaderBlock {
     struct PorterDuffBlendShaderData {
         SkSpan<const float> fPorterDuffConstants;
