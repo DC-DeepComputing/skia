@@ -27467,7 +27467,8 @@
         "gpu:none",
         "machine_type:n1-highmem-2",
         "os:Debian-10.3",
-        "pool:Skia"
+        "pool:Skia",
+        "id:skia-e-gce-100"
       ],
       "environment": {
         "VPYTHON_LOG_TRACE": "1"
