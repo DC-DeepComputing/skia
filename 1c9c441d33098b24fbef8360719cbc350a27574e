@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09e34ad4_a11f1cb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T17:26:07Z",
+      "side": 1,
+      "message": "I think this should address the concerns brought up (at least until the fuzzer gets its hands on things...), but I\u0027ll wait for Jim\u0027s second pass to land it.",
+      "revId": "1c9c441d33098b24fbef8360719cbc350a27574e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad047411_088b42c3",
+        "filename": "tests/RectTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T17:26:07Z",
+      "side": 1,
+      "message": "I had accidentally swapped -1 and -1.1 in this rect so it was getting rejected by \u0027b\u0027 being empty. Once fixed, it was actually hitting the intended case of being inside the projected points so was returning `true`. To account for that I added the check for `all(maw \u003c 0)` to return `false`.",
+      "range": {
+        "startLine": 370,
+        "startChar": 71,
+        "endLine": 370,
+        "endChar": 96
+      },
+      "revId": "1c9c441d33098b24fbef8360719cbc350a27574e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

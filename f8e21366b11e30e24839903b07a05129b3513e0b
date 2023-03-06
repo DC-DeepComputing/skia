@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79541bcc_c47cd22e",
+        "filename": "src/core/SkRect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T17:26:07Z",
+      "side": 1,
+      "message": "That\u0027s true, it is valid even if \u0027b\u0027 is empty or unsorted. Since isEmpty() returns true for unsorted I thought that might lead to surprising results, but I\u0027ve reconsidered and I think it\u0027s better to have \u0027b\u0027 treated entirely on its coordinates instead of SkRect\u0027s notion of emptiness.",
+      "parentUuid": "3295db76_abd0002a",
+      "range": {
+        "startLine": 269,
+        "startChar": 23,
+        "endLine": 269,
+        "endChar": 34
+      },
+      "revId": "f8e21366b11e30e24839903b07a05129b3513e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "740cf81f_4e948baa",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "daf67ca1_f16d0654",
+        "filename": "src/core/SkRect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T17:26:07Z",
+      "side": 1,
+      "message": "I\u0027ll add an assert that \u0027m\u0027 is invertible. That is always checked higher up in image filter code and graphite, which are the two places this will end up being used right away. I don\u0027t think it\u0027s explicitly checked in ganesh or raster, but it\u0027d be nice to make that the case (alternatively, we may get that behavior always due to quick reject behavior for a degenerate canvas matrix, but I haven\u0027t tested that).",
+      "parentUuid": "740cf81f_4e948baa",
+      "range": {
+        "startLine": 281,
+        "startChar": 7,
+        "endLine": 281,
+        "endChar": 41
+      },
+      "revId": "f8e21366b11e30e24839903b07a05129b3513e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc808fb0_f16ebc7a",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-02-27T15:38:52Z",
       "side": 1,
       "message": "and \u0027b\u0027 by 1/2px in post-transform space ?",
+      "range": {
+        "startLine": 328,
+        "startChar": 73,
+        "endLine": 328,
+        "endChar": 83
+      },
+      "revId": "f8e21366b11e30e24839903b07a05129b3513e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ec8b50a_d4a0474d",
+        "filename": "tests/RectTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-06T17:26:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc808fb0_f16ebc7a",
       "range": {
         "startLine": 328,
         "startChar": 73,
