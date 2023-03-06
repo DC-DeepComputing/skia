@@ -1090,7 +1090,7 @@ func (b *jobBuilder) bundleRecipes() string {
 	b.addTask(BUNDLE_RECIPES_NAME, func(b *taskBuilder) {
 		b.cipd(specs.CIPD_PKGS_GIT_LINUX_AMD64...)
 		b.cmd("/bin/bash", "skia/infra/bots/bundle_recipes.sh", specs.PLACEHOLDER_ISOLATED_OUTDIR)
-		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+		b.linuxGceDimensions("n1-standard-32")
 		b.idempotent()
 		b.cas(CAS_RECIPES)
 		b.usesPython()
@@ -1413,7 +1413,7 @@ func (b *jobBuilder) checkGnToBp() {
 			"--task_id", specs.PLACEHOLDER_TASK_ID,
 			"--task_name", b.Name,
 		)
-		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+		b.linuxGceDimensions("n1-standard-32")
 		b.usesPython()
 		b.serviceAccount(b.cfg.ServiceAccountHousekeeper)
 	})
@@ -1425,7 +1425,7 @@ func (b *jobBuilder) housekeeper() {
 		b.recipeProps(EXTRA_PROPS)
 		b.kitchenTask("housekeeper", OUTPUT_NONE)
 		b.serviceAccount(b.cfg.ServiceAccountHousekeeper)
-		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+		b.linuxGceDimensions("n1-standard-32")
 		b.usesGit()
 		b.cache(CACHES_WORKDIR...)
 	})
@@ -1449,7 +1449,7 @@ func (b *jobBuilder) g3FrameworkCanary() {
 			"--patch_set", specs.PLACEHOLDER_PATCHSET,
 			"--patch_server", specs.PLACEHOLDER_CODEREVIEW_SERVER,
 		)
-		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+		b.linuxGceDimensions("n1-standard-32")
 		b.cipd(CIPD_PKG_LUCI_AUTH)
 		b.serviceAccount("skia-g3-framework-compile@skia-swarming-bots.iam.gserviceaccount.com")
 		b.timeout(3 * time.Hour)
@@ -1470,7 +1470,7 @@ func (b *jobBuilder) infra() {
 				fmt.Sprintf("pool:%s", b.cfg.Pool),
 			)
 		} else {
-			b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+			b.linuxGceDimensions("n1-standard-32")
 		}
 		b.recipeProp("repository", specs.PLACEHOLDER_REPO)
 		b.kitchenTask("infra", OUTPUT_NONE)
@@ -1511,7 +1511,7 @@ func (b *jobBuilder) buildstats() {
 			b.kitchenTask("upload_buildstats_results", OUTPUT_NONE)
 			b.Name = uploadName
 			b.serviceAccount(b.cfg.ServiceAccountUploadNano)
-			b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+			b.linuxGceDimensions("n1-standard-32")
 			b.usesGSUtil()
 			b.dep(depName)
 		})
@@ -1571,7 +1571,7 @@ func (b *jobBuilder) codesize() {
 			cmd = append(cmd, "--strip_binary", "binutils_linux_x64/strip")
 		}
 		b.cmd(cmd...)
-		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+		b.linuxGceDimensions("n1-standard-32")
 		b.cache(CACHES_WORKDIR...)
 		b.cipd(CIPD_PKG_LUCI_AUTH)
 		b.asset("bloaty")
@@ -1742,7 +1742,7 @@ func (b *jobBuilder) dm() {
 			b.recipeProps(EXTRA_PROPS)
 			b.kitchenTask("upload_dm_results", OUTPUT_NONE)
 			b.serviceAccount(b.cfg.ServiceAccountUploadGM)
-			b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+			b.linuxGceDimensions("n1-standard-32")
 			b.usesGSUtil()
 			b.dep(depName)
 		})
@@ -1818,7 +1818,7 @@ func (b *jobBuilder) canary(rollerName, canaryCQKeyword, targetProjectBaseURL st
 			"--patch_set", specs.PLACEHOLDER_PATCHSET,
 			"--patch_server", specs.PLACEHOLDER_CODEREVIEW_SERVER,
 		)
-		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+		b.linuxGceDimensions("n1-standard-32")
 		b.cipd(CIPD_PKG_LUCI_AUTH)
 		b.serviceAccount(b.cfg.ServiceAccountCanary)
 		b.timeout(3 * time.Hour)
@@ -1919,7 +1919,7 @@ func (b *jobBuilder) puppeteer() {
 		b.kitchenTask("upload_nano_results", OUTPUT_NONE)
 		b.Name = uploadName
 		b.serviceAccount(b.cfg.ServiceAccountUploadNano)
-		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+		b.linuxGceDimensions("n1-standard-32")
 		b.usesGSUtil()
 		b.dep(depName)
 	})
@@ -2018,7 +2018,7 @@ func (b *jobBuilder) perf() {
 			b.kitchenTask("upload_nano_results", OUTPUT_NONE)
 			b.Name = uploadName
 			b.serviceAccount(b.cfg.ServiceAccountUploadNano)
-			b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+			b.linuxGceDimensions("n1-standard-32")
 			b.usesGSUtil()
 			b.dep(depName)
 		})
