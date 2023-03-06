@@ -676,6 +676,22 @@ void GenerateCoordClampPreamble(const ShaderInfo& shaderInfo,
 }
 
 //--------------------------------------------------------------------------------------------------
+static constexpr Uniform kPerlinNoiseShaderUniforms[] = {
+        { "noiseType",     SkSLType::kInt },
+        { "baseFrequency", SkSLType::kFloat2 },
+        { "numOctaves",    SkSLType::kInt },
+        { "stitching",     SkSLType::kInt },
+        { "stitchData",    SkSLType::kFloat2 },
+};
+
+static constexpr TextureAndSampler kPerlinNoiseShaderTexturesAndSamplers[] = {
+        { "permutationsSampler" },
+        { "noiseSampler" },
+};
+
+static constexpr char kPerlinNoiseShaderName[] = "perlin_noise_shader";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr Uniform kPorterDuffBlendShaderUniforms[] = {
         { "blendConstants", SkSLType::kHalf4 },
 };
@@ -1323,6 +1339,17 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateCoordClampPreamble,
             kNumCoordClampShaderChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPerlinNoiseShader] = {
+            "PerlinNoiseShader",
+            SkSpan(kPerlinNoiseShaderUniforms),
+            SnippetRequirementFlags::kLocalCoords,
+            SkSpan(kPerlinNoiseShaderTexturesAndSamplers),
+            kPerlinNoiseShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
             { }      // no data payload
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPorterDuffBlendShader] = {
