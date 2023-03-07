@@ -423,20 +423,35 @@ TextAdapter::buildGlyphCompNodes(Shaper::Fragment& frag) const {
     std::vector<sk_sp<sksg::RenderNode>> draws;
 
     if (fCustomGlyphMapper) {
-        size_t offset = 0;
-        for (const auto& run : frag.fGlyphs.fRuns) {
+        size_t run_offset = 0;
+        for (auto& run : frag.fGlyphs.fRuns) {
             for (size_t i = 0; i < run.fSize; ++i) {
-                const SkGlyphID gid = frag.fGlyphs.fGlyphIDs[offset + i];
+                const size_t goffset = run_offset + i;
+                const SkGlyphID  gid = frag.fGlyphs.fGlyphIDs[goffset];
 
                 if (auto gcomp = fCustomGlyphMapper->getGlyphComp(run.fFont.getTypeface(), gid)) {
                     // Position and scale the "glyph".
-                    const auto m = SkMatrix::Translate(frag.fGlyphs.fGlyphPos[offset + i])
-                                 * SkMatrix::Scale(fText->fTextSize, fText->fTextSize);
+                    const auto m = SkMatrix::Translate(frag.fGlyphs.fGlyphPos[goffset])
+                                 * SkMatrix::Scale(fText->fTextSize*fTextShapingScale,
+                                                   fText->fTextSize*fTextShapingScale);
 
                     draws.push_back(sksg::TransformEffect::Make(std::move(gcomp), m));
+
+                    // Remove all related data from the fragment, so we don't attempt to render
+                    // this as a regular glyph.
+                    SkASSERT(frag.fGlyphs.fGlyphIDs.size() > goffset);
+                    frag.fGlyphs.fGlyphIDs.erase(frag.fGlyphs.fGlyphIDs.begin() + goffset);
+                    SkASSERT(frag.fGlyphs.fGlyphPos.size() > goffset);
+                    frag.fGlyphs.fGlyphPos.erase(frag.fGlyphs.fGlyphPos.begin() + goffset);
+                    if (!frag.fGlyphs.fClusters.empty()) {
+                        SkASSERT(frag.fGlyphs.fClusters.size() > goffset);
+                        frag.fGlyphs.fClusters.erase(frag.fGlyphs.fClusters.begin() + goffset);
+                    }
+                    i         -= 1;
+                    run.fSize -= 1;
                 }
             }
-            offset += run.fSize;
+            run_offset += run.fSize;
         }
     }
 
