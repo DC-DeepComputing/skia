@@ -194,6 +194,7 @@ const uint32_t sweep_varsweep[] = {
         0xf022d, 0xf022e, 0xf022f, 0xf0230, 0xf0231, 0xf0232, 0xf0233, 0xf0234, 0xf0235,
         0xf0236, 0xf0237, 0xf0238, 0xf0239, 0xf023a, 0xf023b, 0xf023c, 0xf023d, 0xf023e,
         0xf023f, 0xf0240, 0xf0241, 0xf0242, 0xf0243, 0xf0244, 0xf0245, 0xf0246, 0xf0247};
+};
 const uint32_t paint_scale[] = {0xf0300, 0xf0301, 0xf0302, 0xf0303, 0xf0304, 0xf0305};
 const uint32_t extend_mode[] = {
         0xf0500, 0xf0501, 0xf0502, 0xf0503, 0xf0504, 0xf0505, 0xf0506, 0xf0507, 0xf0508};
@@ -298,6 +299,15 @@ DEF_GM(return F(C(sweep_varsweep),
                  {"SWC2"_t, 0.083333333f},
                  {"SWC3"_t, 0.083333333f},
                  {"SWC4"_t, +0.25f}}))
+DEF_GM(return F(C(sweep_varsweep),
+                0.0f,
+                0.0f,
+                {{"SWPS"_t, 45.f},
+                 {"SWPE"_t, -45.f},
+                 {"SWC1"_t, -0.25f},
+                 {"SWC2"_t, -0.416687},
+                 {"SWC3"_t, -0.583313},
+                 {"SWC4"_t, -0.75f}}))
 DEF_GM(return F(C(variable_alpha),         0.0f,  0.0f, {}))
 DEF_GM(return F(C(variable_alpha),         0.0f,  0.0f, {{"APH1"_t, -0.7f}}))
 DEF_GM(return F(C(variable_alpha),         0.0f,  0.0f, {{"APH2"_t, -0.7f}, {"APH3"_t, -0.2f}}))
