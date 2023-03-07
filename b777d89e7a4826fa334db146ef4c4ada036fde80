@@ -16,6 +16,24 @@
       "message": "Should we drop the Java classes too?  Otherwise people may try to use them, and presumably get runtime exceptions?",
       "revId": "b777d89e7a4826fa334db146ef4c4ada036fde80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5ceb22d_e76959ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-03-07T19:00:32Z",
+      "side": 1,
+      "message": "Makes sense, better to kill it cleanly.",
+      "parentUuid": "cea4b1e8_8a05937b",
+      "revId": "b777d89e7a4826fa334db146ef4c4ada036fde80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
