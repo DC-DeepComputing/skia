@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8023b85_44d52fd6",
+        "filename": "include/private/chromium/SkChromeRemoteGlyphCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-07T20:28:29Z",
+      "side": 1,
+      "message": "Do we really need this include ?\nIf so we should remove the SkTypeface pre-declaration below",
+      "revId": "567ebf3aec09b2f4ac8dd8a91385bebf1fd934fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
