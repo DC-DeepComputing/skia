@@ -31,12 +31,10 @@ public:
     ~DawnWorkSubmission() override {}
 
     bool isFinished() override {
-        auto autoLock(fSharedContext->AcquireLock());
         return fAsyncWait.yieldAndCheck();
     }
 
     void waitUntilFinished() override {
-        auto autoLock(fSharedContext->AcquireLock());
         fAsyncWait.busyWait();
     }
 
@@ -61,7 +59,6 @@ std::unique_ptr<CommandBuffer> DawnQueueManager::getNewCommandBuffer(
 
 QueueManager::OutstandingSubmission DawnQueueManager::onSubmitToGpu() {
     SkASSERT(fCurrentCommandBuffer);
-    auto autoLock(dawnSharedContext()->AcquireLock());
     DawnCommandBuffer* dawnCmdBuffer = static_cast<DawnCommandBuffer*>(fCurrentCommandBuffer.get());
     auto wgpuCmdBuffer = dawnCmdBuffer->finishEncoding();
     if (!wgpuCmdBuffer) {

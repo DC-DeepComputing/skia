@@ -23,7 +23,6 @@ namespace skgpu::graphite {
 struct SK_API DawnBackendContext {
     wgpu::Device fDevice;
     wgpu::Queue fQueue;
-    std::mutex* fLock = nullptr;
 };
 
 } // namespace skgpu::graphite

@@ -42,7 +42,6 @@ bool DawnAsyncWait::yieldAndCheck() const {
 #ifdef __EMSCRIPTEN__
     asyncSleep();
 #else
-    fSharedContext->AssertLocked();
     fSharedContext->device().Tick();
 #endif  // __EMSCRIPTEN__
     return fSignaled.load();
