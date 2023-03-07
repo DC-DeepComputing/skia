@@ -16,6 +16,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTo.h"
+#include "include/utils/SkBase64.h"
 #include "include/utils/SkPaintFilterCanvas.h"
 #include "src/base/SkTSort.h"
 #include "src/core/SkAutoPixmapStorage.h"
@@ -62,6 +63,7 @@
 
 #include <cstdlib>
 #include <map>
+#include <regex>
 
 #include "imgui.h"
 #include "misc/cpp/imgui_stdlib.h"  // For ImGui support of std::string
@@ -190,6 +192,8 @@ static DEFINE_bool(jit, true, "JIT SkVM?");
 static DEFINE_bool(dylib, false, "JIT via dylib (much slower compile but easier to debug/profile)");
 static DEFINE_bool(stats, false, "Display stats overlay on startup.");
 static DEFINE_bool(binaryarchive, false, "Enable MTLBinaryArchive use (if available).");
+
+static DEFINE_bool(stdin, false, "Load slide contents from standard input.");
 
 #ifndef SK_GL
 static_assert(false, "viewer requires GL backend for raster.")
@@ -765,7 +769,66 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     this->setCurrentSlide(this->startupSlide());
 }
 
+static sk_sp<SkData> data_from_file(FILE* fp) {
+    SkDynamicMemoryWStream stream;
+    char buf[4096];
+    while (size_t bytesRead = fread(buf, 1, 4096, fp)) {
+        stream.write(buf, bytesRead);
+    }
+    return stream.detachAsData();
+}
+
+static sk_sp<SkData> base64_string_to_data(const std::string& s) {
+    size_t dataLen;
+    if (SkBase64::Decode(s.c_str(), s.size(), nullptr, &dataLen) != SkBase64::kNoError) {
+        return nullptr;
+    }
+
+    sk_sp<SkData> decodedData = SkData::MakeUninitialized(dataLen);
+    void* rawData = decodedData->writable_data();
+    if (SkBase64::Decode(s.c_str(), s.size(), rawData, &dataLen) != SkBase64::kNoError) {
+        return nullptr;
+    }
+
+    return decodedData;
+}
+
+static std::vector<sk_sp<SkData>> maybe_decode_datauri(sk_sp<SkData> data) {
+    std::string str(reinterpret_cast<const char*>(data->data()), data->size());
+    std::regex re("data:image/png;base64,([a-zA-Z0-9+/=]+)");
+    std::sregex_iterator images_begin(str.begin(), str.end(), re);
+    std::sregex_iterator images_end;
+    std::vector<sk_sp<SkData>> result;
+
+    for (auto iter = images_begin; iter != images_end; ++iter) {
+        std::smatch match = *iter;
+        auto decoded = base64_string_to_data(match[1].str());
+        if (decoded) {
+            result.push_back(std::move(decoded));
+        }
+    }
+
+    if (result.empty()) {
+        result.push_back(std::move(data));
+    }
+
+    return result;
+}
+
 void Viewer::initSlides() {
+    if (FLAGS_stdin) {
+        sk_sp<SkData> data = data_from_file(stdin);
+        std::vector<sk_sp<SkData>> blobs = maybe_decode_datauri(std::move(data));
+        for (auto blob : blobs) {
+            char imageID = 'A' + fSlides.size();
+            fSlides.push_back(
+                    sk_make_sp<ImageSlide>(SkStringPrintf("Image %c", imageID), std::move(blob)));
+        }
+        if (!fSlides.empty()) {
+            return;
+        }
+    }
+
     using SlideMaker = sk_sp<Slide> (*)(const SkString& name, const SkString& path);
     static const struct {
         const char*                            fExtension;
