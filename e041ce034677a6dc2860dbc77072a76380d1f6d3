@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88cd2065_bd3b785b",
+        "filename": "modules/jetski/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-03-07T18:23:14Z",
+      "side": 1,
+      "message": "Not sure why g3 needs these and I was able to build externally without it. Possibly worth investigating in the future.",
+      "revId": "e041ce034677a6dc2860dbc77072a76380d1f6d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
