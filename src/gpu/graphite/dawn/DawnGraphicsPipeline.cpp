@@ -217,6 +217,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                                        const RuntimeEffectDictionary* runtimeDict,
                                                        const GraphicsPipelineDesc& pipelineDesc,
                                                        const RenderPassDesc& renderPassDesc) {
+    auto autoLock(sharedContext->AcquireLock());
     const auto& device = sharedContext->device();
 
     SkSL::Program::Inputs vsInputs, fsInputs;
@@ -490,12 +491,12 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
             break;
         case PrimitiveType::kTriangleStrip:
             descriptor.primitive.topology = wgpu::PrimitiveTopology::TriangleStrip;
+            descriptor.primitive.stripIndexFormat = wgpu::IndexFormat::Uint16;
             break;
         case PrimitiveType::kPoints:
             descriptor.primitive.topology = wgpu::PrimitiveTopology::PointList;
             break;
     }
-    descriptor.primitive.stripIndexFormat = wgpu::IndexFormat::Uint16;
 
     descriptor.multisample.count = renderPassDesc.fColorAttachment.fTextureInfo.numSamples();
     descriptor.multisample.mask = 0xFFFFFFFF;
@@ -515,7 +516,12 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                      hasFragment));
 }
 
+const DawnSharedContext* DawnGraphicsPipeline::dawnSharedContext() const {
+    return static_cast<const DawnSharedContext*>(sharedContext());
+}
+
 void DawnGraphicsPipeline::freeGpuData() {
+    auto autoLock(dawnSharedContext()->AcquireLock());
     fRenderPipeline = nullptr;
 }
 

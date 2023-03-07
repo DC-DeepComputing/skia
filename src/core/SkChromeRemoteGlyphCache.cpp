@@ -710,20 +710,20 @@ protected:
         SkASSERT(container->isEmpty());
 
         // Use the glyph strike cache to get actual glyph information.
-        return skgpu::v1::MakeSlug(this->localToDevice(),
-                                   glyphRunList,
-                                   initialPaint,
-                                   drawingPaint,
-                                   this->strikeDeviceInfo(),
-                                   SkStrikeCache::GlobalStrikeCache());
+        return MakeSlug(this->localToDevice(),
+                        glyphRunList,
+                        initialPaint,
+                        drawingPaint,
+                        this->strikeDeviceInfo(),
+                        SkStrikeCache::GlobalStrikeCache());
 #else
         // Use the SkStrikeServer's strike cache to generate the Slug.
-        return skgpu::v1::MakeSlug(this->localToDevice(),
-                                   glyphRunList,
-                                   initialPaint,
-                                   drawingPaint,
-                                   this->strikeDeviceInfo(),
-                                   fStrikeServerImpl);
+        return MakeSlug(this->localToDevice(),
+                        glyphRunList,
+                        initialPaint,
+                        drawingPaint,
+                        this->strikeDeviceInfo(),
+                        fStrikeServerImpl);
 #endif
     }
 

@@ -54,6 +54,9 @@ public:
                                const std::vector<MipLevel>& levels,
                                const SkIRect& dstRect,
                                std::unique_ptr<ConditionalUploadContext>);
+    UploadInstance(UploadInstance&&);
+    UploadInstance& operator=(UploadInstance&&);
+    ~UploadInstance();
 
     bool isValid() const { return fBuffer != nullptr; }
 
@@ -63,7 +66,7 @@ public:
     void addCommand(Context*, CommandBuffer*) const;
 
 private:
-    UploadInstance() {}
+    UploadInstance();
     UploadInstance(const Buffer*, sk_sp<TextureProxy>, std::vector<BufferTextureCopyData>,
                    std::unique_ptr<ConditionalUploadContext>);
 

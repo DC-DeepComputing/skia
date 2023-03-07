@@ -24,6 +24,11 @@
 
 namespace skgpu::graphite {
 
+UploadInstance::UploadInstance() = default;
+UploadInstance::UploadInstance(UploadInstance&&) = default;
+UploadInstance& UploadInstance::operator=(UploadInstance&&) = default;
+UploadInstance::~UploadInstance() = default;
+
 UploadInstance::UploadInstance(const Buffer* buffer,
                                sk_sp<TextureProxy> textureProxy,
                                std::vector<BufferTextureCopyData> copyData,

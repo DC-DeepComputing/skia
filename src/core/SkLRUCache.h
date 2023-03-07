@@ -88,6 +88,15 @@ public:
         }
     }
 
+    template <typename Fn>  // f(const K*, const V*)
+    void foreach (Fn&& fn) const {
+        typename SkTInternalLList<Entry>::Iter iter;
+        for (Entry* e = iter.init(fLRU, SkTInternalLList<Entry>::Iter::kHead_IterStart); e;
+             e = iter.next()) {
+            fn(const_cast<const K*>(&e->fKey), const_cast<const V*>(&e->fValue));
+        }
+    }
+
     void reset() {
         fMap.reset();
         for (Entry* e = fLRU.head(); e; e = fLRU.head()) {

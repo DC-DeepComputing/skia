@@ -52,6 +52,7 @@ DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
         : skgpu::graphite::SharedContext(std::move(caps), BackendApi::kDawn)
         , fDevice(backendContext.fDevice)
         , fQueue(backendContext.fQueue)
+        , fLock(backendContext.fLock)
         , fNoopFragment(std::move(noopFragment)) {}
 
 DawnSharedContext::~DawnSharedContext() = default;
@@ -59,6 +60,19 @@ DawnSharedContext::~DawnSharedContext() = default;
 std::unique_ptr<ResourceProvider> DawnSharedContext::makeResourceProvider(
         SingleOwner* singleOwner) {
     return std::unique_ptr<ResourceProvider>(new DawnResourceProvider(this, singleOwner));
+}
+
+std::unique_ptr<std::scoped_lock<std::mutex>> DawnSharedContext::AcquireLock() const {
+    if (fLock) {
+        return std::make_unique<std::scoped_lock<std::mutex>>(*fLock);
+    }
+    return nullptr;
+}
+
+void DawnSharedContext::AssertLocked() const {
+    if (fLock) {
+        SkASSERT(!fLock->try_lock());
+    }
 }
 
 } // namespace skgpu::graphite
