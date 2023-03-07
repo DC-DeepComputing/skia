@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e14c989f_c727383c",
+        "filename": "modules/skparagraph/include/Paragraph.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-07T20:21:58Z",
+      "side": 1,
+      "message": "It\u0027s probably better to create get/set methods for this flag separately and avoid adding extra parameter everywhere.",
+      "range": {
+        "startLine": 43,
+        "startChar": 40,
+        "endLine": 43,
+        "endChar": 69
+      },
+      "revId": "44559a78b2ca06c2d8d26785e31f749e4ef572ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a965d2a9_0a3a0e22",
+        "filename": "modules/skparagraph/src/ParagraphImpl.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-07T20:21:58Z",
+      "side": 1,
+      "message": "Let\u0027s name it getApplyRoundingHack (and have setApplyRoundingHack, too)",
+      "range": {
+        "startLine": 227,
+        "startChar": 9,
+        "endLine": 227,
+        "endChar": 26
+      },
+      "revId": "44559a78b2ca06c2d8d26785e31f749e4ef572ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67e0b2f4_b00a7e7f",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 811,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-07T20:21:58Z",
+      "side": 1,
+      "message": "I am not sure that this nearlyEqual is related to rounding at all. I would keep it for both cases.",
+      "range": {
+        "startLine": 811,
+        "startChar": 47,
+        "endLine": 811,
+        "endChar": 58
+      },
+      "revId": "44559a78b2ca06c2d8d26785e31f749e4ef572ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53c9bd54_ef1ab46b",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1026,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-07T20:21:58Z",
+      "side": 1,
+      "message": "You can only reduce compareRound here. nearlyEqual should stay.",
+      "range": {
+        "startLine": 1026,
+        "startChar": 11,
+        "endLine": 1026,
+        "endChar": 22
+      },
+      "revId": "44559a78b2ca06c2d8d26785e31f749e4ef572ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a1b3042_cd009884",
+        "filename": "modules/skparagraph/src/TextWrapper.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-07T20:21:58Z",
+      "side": 1,
+      "message": "No need to add a parameter - you can get it from fMaster (the paragraph).\n(It\u0027s true for all TextWrapper methods)",
+      "revId": "44559a78b2ca06c2d8d26785e31f749e4ef572ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faeed1fa_56807c24",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-07T20:21:58Z",
+      "side": 1,
+      "message": "As I said noticed earlier - it would be nice to keep this call as is and set the flag before:\nparagraph-\u003esetApplyRoundingHack(true);",
+      "range": {
+        "startLine": 563,
+        "startChar": 39,
+        "endLine": 563,
+        "endChar": 44
+      },
+      "revId": "44559a78b2ca06c2d8d26785e31f749e4ef572ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
