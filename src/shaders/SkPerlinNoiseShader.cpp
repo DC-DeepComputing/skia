@@ -940,6 +940,7 @@ void GrPerlinNoise2Effect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilde
 std::unique_ptr<GrFragmentProcessor> SkPerlinNoiseShaderImpl::asFragmentProcessor(
         const GrFPArgs& args, const MatrixRec& mRec) const {
     SkASSERT(args.fContext);
+    SkASSERT(fNumOctaves);
 
     const SkMatrix& totalMatrix = mRec.totalMatrix();
 
@@ -956,20 +957,6 @@ std::unique_ptr<GrFragmentProcessor> SkPerlinNoiseShaderImpl::asFragmentProcesso
     // space effect.
 
     auto context = args.fContext;
-
-    if (0 == fNumOctaves) {
-        if (kFractalNoise_Type == fType) {
-            constexpr SkPMColor4f kTransparentGray = {0.25f, 0.25f, 0.25f, 0.5f};
-
-            // Incoming alpha is assumed to be 1. So emit rgba = (1/4, 1/4, 1/4, 1/2)
-            // TODO: Either treat the output of this shader as sRGB or allow client to specify a
-            // color space of the noise. Either way, this case (and the GLSL) need to convert to
-            // the destination.
-            return GrFragmentProcessor::MakeColor(kTransparentGray);
-        }
-        // Emit zero.
-        return GrFragmentProcessor::MakeColor(SK_PMColor4fTRANSPARENT);
-    }
 
     const SkBitmap& permutationsBitmap = paintingData->getPermutationsBitmap();
     const SkBitmap& noiseBitmap        = paintingData->getNoiseBitmap();
@@ -1016,26 +1003,7 @@ void SkPerlinNoiseShaderImpl::addToKey(const skgpu::graphite::KeyContext& keyCon
                                        skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;
 
-    // TODO: move this code (and the matching code in asFragmentProcessor) to MakeFractalNoise
-    // and MakeTurbulence
-    if (0 == fNumOctaves) {
-        if (kFractalNoise_Type == fType) {
-            constexpr SkPMColor4f kTransparentGray = {0.25f, 0.25f, 0.25f, 0.5f};
-
-            // Incoming alpha is assumed to be 1. So emit rgba = (1/4, 1/4, 1/4, 1/2)
-            // TODO: Either treat the output of this shader as sRGB or allow client to specify a
-            // color space of the noise. Either way, this case (and the GLSL) need to convert to
-            // the destination.
-            SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kTransparentGray);
-            builder->endBlock();
-            return;
-        }
-        // Emit zero.
-        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
-                                          SK_PMColor4fTRANSPARENT);
-        builder->endBlock();
-        return;
-    }
+    SkASSERT(fNumOctaves);
 
     SkMatrix totalMatrix = keyContext.local2Dev().asM33();
     if (keyContext.localMatrix()) {
@@ -1132,6 +1100,13 @@ sk_sp<SkShader> SkPerlinNoiseShader::MakeFractalNoise(SkScalar baseFrequencyX,
     if (!valid_input(baseFrequencyX, baseFrequencyY, numOctaves, tileSize, seed)) {
         return nullptr;
     }
+
+    if (0 == numOctaves) {
+        constexpr SkColor4f kTransparentGray = {0.5f, 0.5f, 0.5f, 0.5f};
+
+        return SkShaders::Color(kTransparentGray, /* colorSpace= */ nullptr);
+    }
+
     return sk_sp<SkShader>(new SkPerlinNoiseShaderImpl(SkPerlinNoiseShaderImpl::kFractalNoise_Type,
                                                        baseFrequencyX, baseFrequencyY, numOctaves,
                                                        seed, tileSize));
@@ -1144,6 +1119,11 @@ sk_sp<SkShader> SkPerlinNoiseShader::MakeTurbulence(SkScalar baseFrequencyX,
     if (!valid_input(baseFrequencyX, baseFrequencyY, numOctaves, tileSize, seed)) {
         return nullptr;
     }
+
+    if (0 == numOctaves) {
+        return SkShaders::Color(SkColors::kTransparent, /* colorSpace= */ nullptr);
+    }
+
     return sk_sp<SkShader>(new SkPerlinNoiseShaderImpl(SkPerlinNoiseShaderImpl::kTurbulence_Type,
                                                        baseFrequencyX, baseFrequencyY, numOctaves,
                                                        seed, tileSize));
