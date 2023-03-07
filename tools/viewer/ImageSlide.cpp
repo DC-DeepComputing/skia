@@ -15,6 +15,10 @@ ImageSlide::ImageSlide(const SkString& name, const SkString& path) : fPath(path)
     fName = name;
 }
 
+ImageSlide::ImageSlide(const SkString& name, sk_sp<SkData> data) : fData(std::move(data)) {
+    fName = name;
+}
+
 SkISize ImageSlide::getDimensions() const {
     return fImage ? fImage->dimensions() : SkISize::Make(0, 0);
 }
@@ -25,7 +29,7 @@ void ImageSlide::draw(SkCanvas* canvas) {
 }
 
 void ImageSlide::load(SkScalar, SkScalar) {
-    sk_sp<SkData> encoded = SkData::MakeFromFileName(fPath.c_str());
+    sk_sp<SkData> encoded = fData ? fData : SkData::MakeFromFileName(fPath.c_str());
     fImage = SkImage::MakeFromEncoded(encoded);
 }
 

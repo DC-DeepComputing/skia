@@ -12,9 +12,12 @@
 #include "include/core/SkPicture.h"
 #include "tools/viewer/Slide.h"
 
+class SkData;
+
 class ImageSlide : public Slide {
 public:
     ImageSlide(const SkString& name, const SkString& path);
+    ImageSlide(const SkString& name, sk_sp<SkData> data);
 
     SkISize getDimensions() const override;
 
@@ -25,6 +28,7 @@ public:
 private:
     SkString         fPath;
     sk_sp<SkImage>   fImage;
+    sk_sp<SkData>    fData;
 };
 
 #endif

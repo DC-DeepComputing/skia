@@ -191,6 +191,8 @@ static DEFINE_bool(dylib, false, "JIT via dylib (much slower compile but easier 
 static DEFINE_bool(stats, false, "Display stats overlay on startup.");
 static DEFINE_bool(binaryarchive, false, "Enable MTLBinaryArchive use (if available).");
 
+static DEFINE_bool(stdin, false, "Load slide contents from standard input.");
+
 #ifndef SK_GL
 static_assert(false, "viewer requires GL backend for raster.")
 #endif
@@ -766,6 +768,23 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
 }
 
 void Viewer::initSlides() {
+    if (FLAGS_stdin) {
+        SkDynamicMemoryWStream stream;
+        while (true) {
+            char buf[4096];
+            size_t bytesRead = fread(buf, 1, 4096, stdin);
+            if (bytesRead == 0) {
+                break;
+            }
+            stream.write(buf, bytesRead);
+        }
+        auto data = stream.detachAsData();
+        if (!data->isEmpty()) {
+            fSlides.push_back(sk_make_sp<ImageSlide>(SkString("stdin"), std::move(data)));
+            return;
+        }
+    }
+
     using SlideMaker = sk_sp<Slide> (*)(const SkString& name, const SkString& path);
     static const struct {
         const char*                            fExtension;
