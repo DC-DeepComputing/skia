@@ -260,6 +260,7 @@ DEF_TEST(SkGlyph_SendWithDrawable, reporter) {
 
     dstGlyph->addDrawableFromBuffer(badReadBuffer, &alloc);
     REPORTER_ASSERT(reporter, !badReadBuffer.isValid());
+    SkASSERT(!dstGlyph->setDrawableHasBeenCalled());
     REPORTER_ASSERT(reporter, !dstGlyph->setDrawableHasBeenCalled());
 }
 

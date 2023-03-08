@@ -39,8 +39,10 @@ std::optional<SkGlyph> SkGlyph::MakeFromBuffer(SkReadBuffer& buffer) {
     SkASSERT(buffer.isValid());
     const SkPackedGlyphID packedID{buffer.readUInt()};
     const SkVector advance = buffer.readPoint();
-    const uint32_t dimensions = buffer.readUInt();
-    const uint32_t leftTop = buffer.readUInt();
+    const uint32_t width = buffer.readUInt();
+    const uint32_t height = buffer.readUInt();
+    const int32_t left = buffer.readInt();
+    const int32_t top = buffer.readInt();
     const SkMask::Format format = SkTo<SkMask::Format>(buffer.readUInt());
 
     if (!buffer.validate(SkMask::IsValidFormat(format))) {
@@ -50,10 +52,10 @@ std::optional<SkGlyph> SkGlyph::MakeFromBuffer(SkReadBuffer& buffer) {
     SkGlyph glyph{packedID};
     glyph.fAdvanceX = advance.x();
     glyph.fAdvanceY = advance.y();
-    glyph.fWidth = dimensions >> 16;
-    glyph.fHeight = dimensions & 0xffff;
-    glyph.fLeft = leftTop >> 16;
-    glyph.fTop = leftTop & 0xffff;
+    glyph.fWidth = width;
+    glyph.fHeight = height;
+    glyph.fLeft = left;
+    glyph.fTop = top;
     glyph.fMaskFormat = format;
     SkDEBUGCODE(glyph.fAdvancesBoundsFormatAndInitialPathDone = true;)
     return std::move(glyph);
@@ -283,11 +285,10 @@ SkDrawable* SkGlyph::drawable() const {
 void SkGlyph::flattenMetrics(SkWriteBuffer& buffer) const {
     buffer.writeUInt(fID.value());
     buffer.writePoint({fAdvanceX, fAdvanceY});
-    buffer.writeUInt(fWidth << 16 | fHeight);
-    // Note: << has undefined behavior for negative values.
-    const uint32_t left = fLeft;
-    const uint32_t top = fTop;
-    buffer.writeUInt(left << 16 | top);
+    buffer.writeUInt(fWidth);
+    buffer.writeUInt(fHeight);
+    buffer.writeInt(fLeft);
+    buffer.writeInt(fTop);
     buffer.writeUInt(SkTo<uint32_t>(fMaskFormat));
 }
 
@@ -336,6 +337,9 @@ size_t SkGlyph::addPathFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc) {
 
     size_t memoryIncrease = 0;
     const bool hasPath = buffer.readBool();
+    if (!hasPath && !buffer.isValid()) {
+        return 0;
+    }
     if (hasPath) {
         const bool pathIsHairline = buffer.readBool();
         SkPath path;
@@ -392,6 +396,7 @@ size_t SkGlyph::addDrawableFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc)
 
     sk_sp<SkData> pictureData = buffer.readByteArrayAsData();
     if (!buffer.isValid()) {
+        SkDEBUGF("Bad byte array read\n");
         return 0;
     }
 
@@ -399,6 +404,8 @@ size_t SkGlyph::addDrawableFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc)
     if (pictureData->size() > 0) {
         sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get());
         if (!buffer.validate(picture != nullptr)) {
+            SkDEBUGF("Bad picture conversion\n");
+            this->setDrawable(alloc, sk_sp<SkDrawable>(nullptr));
             return 0;
         }
         sk_sp<SkDrawable> drawable = sk_make_sp<PictureBackedGlyphDrawable>(std::move(picture));
