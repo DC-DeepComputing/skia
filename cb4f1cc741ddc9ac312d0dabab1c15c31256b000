@@ -16,6 +16,24 @@
       "message": "Why put these aborts in Skia versus say just printing out debug errors? Then the aborts can stay in the client when the context ends up null? Like in some sense from Skias POV these failures aren\u0027t a shut everything down and break situation.",
       "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6223f466_95ecf443",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-03-08T15:10:09Z",
+      "side": 1,
+      "message": "Good point, I agree it would logically make more sense for these to be logs instead of aborts. But generally, we often just get stack traces without logs, and then even when we do get logs, messages from our current `SkDebugf` logging function may not be present even when they should be. I\u0027ll send you a doc with more info / proposal to add more logging capabilities. However, Leon was suggesting we might want to add (temporary?) aborts here to try and pinpoint the current linked issue in the meantime, since sorting out logging design amongst the larger team might take some time.",
+      "parentUuid": "0707c415_8ed64396",
+      "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
