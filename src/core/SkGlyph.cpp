@@ -12,13 +12,16 @@
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
+#include "src/core/SkReadBuffer.h"
 #include "src/core/SkScalerContext.h"
+#include "src/core/SkWriteBuffer.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsPoint.h"
 #include "src/pathops/SkPathOpsQuad.h"
 #include "src/text/StrikeForGPU.h"
 
 #include <cstring>
+#include <optional>
 #include <tuple>
 #include <utility>
 
@@ -26,6 +29,27 @@ using namespace skglyph;
 using namespace sktext;
 
 //-- SkGlyph ---------------------------------------------------------------------------------------
+std::optional<SkGlyph> SkGlyph::MakeFromBuffer(SkReadBuffer& buffer) {
+    SkASSERT(buffer.isValid());
+    const SkPackedGlyphID packedID{buffer.readUInt()};
+    const SkVector advance = buffer.readPoint();
+    const uint32_t dimensions = buffer.readUInt();
+    const uint32_t leftTop = buffer.readUInt();
+    const SkMask::Format format = SkTo<SkMask::Format>(buffer.readUInt());
+    if (buffer.isValid() && SkMask::IsValidFormat(format)) {
+        SkGlyph glyph{packedID};
+        glyph.fAdvanceX = advance.x();
+        glyph.fAdvanceY = advance.y();
+        glyph.fWidth = dimensions >> 16;
+        glyph.fHeight = dimensions & 0xffff;
+        glyph.fLeft = leftTop >> 16;
+        glyph.fTop = leftTop & 0xffff;
+        glyph.fMaskFormat = format;
+        return glyph;
+    }
+    return std::nullopt;
+}
+
 SkGlyph::SkGlyph(const SkGlyph&) = default;
 SkGlyph& SkGlyph::operator=(const SkGlyph&) = default;
 SkGlyph::SkGlyph(SkGlyph&&) = default;
@@ -246,6 +270,24 @@ SkDrawable* SkGlyph::drawable() const {
     }
     return nullptr;
 }
+
+void SkGlyph::flattenMetrics(SkWriteBuffer& buffer) const {
+    buffer.writeUInt(fID.value());
+    buffer.writePoint({fAdvanceX, fAdvanceY});
+    buffer.writeUInt(fWidth << 16 | fHeight);
+    buffer.writeUInt(fLeft << 16 | fTop);
+    buffer.writeUInt(SkTo<uint32_t>(fMaskFormat));
+}
+
+void SkGlyph::flattenImage(SkWriteBuffer&) const {}
+size_t SkGlyph::addImageFromBuffer(SkReadBuffer&, SkArenaAlloc*) { return 0; }
+void SkGlyph::flattenPath(SkWriteBuffer&) const {}
+size_t SkGlyph::addPathFromBuffer(SkReadBuffer&, SkArenaAlloc*) {
+
+    return 0;
+}
+void SkGlyph::flattenDrawable(SkWriteBuffer&) const {}
+size_t SkGlyph::addDrawableFromBuffer(SkReadBuffer&, SkArenaAlloc*) { return 0; }
 
 static std::tuple<SkScalar, SkScalar> calculate_path_gap(
         SkScalar topOffset, SkScalar bottomOffset, const SkPath& path) {
