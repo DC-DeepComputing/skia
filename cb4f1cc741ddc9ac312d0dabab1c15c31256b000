@@ -88,6 +88,24 @@
       "parentUuid": "30c9ce7e_a6fd7523",
       "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "127ef5fb_79401080",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-03-08T21:55:35Z",
+      "side": 1,
+      "message": "\u003e Having a macro that\u0027s intended for Android\u0027s use only is okay (though not great, and hopefully skia revamped logging can fix that)\n\nThat\u0027s this, right? Would you feel better about this if we had a bug with a `TODO` to clean up?\n\n@nscobie@google.com , another option we could consider - landing this directly in `udc-dev` with `DO NOT MERGE`. Not necessarily my first choice, but then if we get crashes from dogfooders we can find and fix the real issue. Normally I don\u0027t like letting Android diverge, but this would be small, and we\u0027re unlikely to cherry-pick lots of changes to `udc-dev`.",
+      "parentUuid": "3a6b808d_9b7720d0",
+      "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
