@@ -7,6 +7,13 @@
 
 #include "include/gpu/graphite/TextureInfo.h"
 
+#ifdef SK_VULKAN
+#include "src/gpu/vk/VulkanUtilsPriv.h"
+#endif
+#ifdef SK_METAL
+#include "src/gpu/mtl/MtlCppUtilsPriv.h"
+#endif
+
 namespace skgpu::graphite {
 
 TextureInfo& TextureInfo::operator=(const TextureInfo& that) {
@@ -77,6 +84,30 @@ bool TextureInfo::operator==(const TextureInfo& that) const {
 #endif
         default:
             return false;
+    }
+}
+
+uint32_t TextureInfo::channelMask() const {
+    if (!this->isValid()) {
+        return 0;
+    }
+    switch (fBackend) {
+#ifdef SK_VULKAN
+        case BackendApi::kVulkan:
+            return skgpu::VkFormatChannels(fVkSpec.fFormat);
+#endif
+#ifdef SK_METAL
+        case BackendApi::kMetal:
+            return skgpu::MtlFormatChannels(fMtlSpec.fFormat);
+#endif
+#ifdef SK_DAWN
+        case BackendApi::kDawn:
+            // TODO: Move GrDawnFormatChannels() to shared loc and use
+            return 0;
+#endif
+
+        default:
+            return 0;
     }
 }
 

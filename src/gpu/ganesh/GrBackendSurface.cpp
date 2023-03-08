@@ -28,6 +28,7 @@
 #ifdef SK_METAL
 #include "include/gpu/mtl/GrMtlTypes.h"
 #include "src/gpu/ganesh/mtl/GrMtlCppUtil.h"
+#include "src/gpu/mtl/MtlCppUtilsPriv.h"
 #endif
 #ifdef SK_DIRECT3D
 #include "include/gpu/d3d/GrD3DTypes.h"
@@ -238,7 +239,7 @@ uint32_t GrBackendFormat::channelMask() const {
 #endif
 #ifdef SK_METAL
         case GrBackendApi::kMetal:
-            return GrMtlFormatChannels(fMtlFormat);
+            return skgpu::MtlFormatChannels(fMtlFormat);
 #endif
 #ifdef SK_DAWN
         case GrBackendApi::kDawn:
