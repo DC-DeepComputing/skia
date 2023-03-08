@@ -16,6 +16,29 @@
       "message": "+Greg since Michael is going to be otherwise occupied",
       "revId": "98ad0f63d9bcb8d79a260552252bf0a7d8f80ed3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2021133_ed02db5a",
+        "filename": "src/shaders/SkPerlinNoiseShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1124,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-08T15:21:00Z",
+      "side": 1,
+      "message": "why is the kTransparent and the the fractal transparent gray?",
+      "range": {
+        "startLine": 1124,
+        "startChar": 42,
+        "endLine": 1124,
+        "endChar": 54
+      },
+      "revId": "98ad0f63d9bcb8d79a260552252bf0a7d8f80ed3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
