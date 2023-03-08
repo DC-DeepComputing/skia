@@ -8,16 +8,20 @@
 #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 
 #include "include/core/SkDrawable.h"
+#include "include/core/SkFont.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/private/SkChecksum.h"
 #include "src/base/SkTLazy.h"
+#include "src/core/SkDescriptor.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkDistanceFieldGen.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkEnumerate.h"
+#include "src/core/SkFontMetricsPriv.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkScalerContext.h"
 #include "src/core/SkStrike.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkTHash.h"
@@ -32,6 +36,7 @@
 #include <iterator>
 #include <memory>
 #include <new>
+#include <optional>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -50,7 +55,8 @@ using namespace sktext::gpu;
 using namespace skglyph;
 
 // TODO: remove when new serialization code is done.
-#define SK_SUPPORT_LEGACY_STRIKE_SERIALIZATION
+// DO SUBMIT
+//#define SK_SUPPORT_LEGACY_STRIKE_SERIALIZATION
 
 namespace {
 // -- Serializer -----------------------------------------------------------------------------------
@@ -193,6 +199,7 @@ public:
     }
 
     void writePendingGlyphs(Serializer* serializer);
+    void writePendingGlyphs(SkWriteBuffer& buffer);
     SkDiscardableHandleId discardableHandleId() const { return fDiscardableHandleId; }
 
     const SkDescriptor& getDescriptor() const override {
@@ -319,6 +326,62 @@ void RemoteStrike::writePendingGlyphs(Serializer* serializer) {
         write_glyph(glyph, serializer);
         writeGlyphDrawable(glyph, serializer);
     }
+    fDrawablesToSend.clear();
+    fAlloc.reset();
+}
+
+void RemoteStrike::writePendingGlyphs(SkWriteBuffer& buffer) {
+    SkASSERT(this->hasPendingGlyphs());
+
+    buffer.writeUInt(fContext->getTypeface()->uniqueID());
+    buffer.writeUInt(fDiscardableHandleId);
+    fDescriptor.getDesc()->flatten(buffer);
+
+    buffer.writeBool(fHaveSentFontMetrics);
+    if (!fHaveSentFontMetrics) {
+        // Write FontMetrics if not sent before.
+        SkFontMetrics fontMetrics;
+        fContext->getFontMetrics(&fontMetrics);
+        SkFontMetricsPriv::Flatten(buffer, fontMetrics);
+        fHaveSentFontMetrics = true;
+    }
+
+    // Write mask glyphs
+    SkASSERT_RELEASE(SkTFitsIn<int>(fMasksToSend.size()));
+    buffer.writeInt(fMasksToSend.size());
+    for (SkGlyph& glyph : fMasksToSend) {
+        SkASSERT(SkMask::IsValidFormat(glyph.maskFormat()));
+        glyph.flattenMetrics(buffer);
+        if (glyph.imageSize() > 0 && SkGlyphDigest::FitsInAtlas(glyph)) {
+            // Be sure to install the data for image to send.
+            this->prepareForImage(&glyph);
+            glyph.flattenImage(buffer);
+        }
+    }
+
+    // Write glyphs paths.
+    SkASSERT_RELEASE(SkTFitsIn<int>(fPathsToSend.size()));
+    buffer.writeInt(fPathsToSend.size());
+    for (SkGlyph& glyph : fPathsToSend) {
+        SkASSERT(SkMask::IsValidFormat(glyph.maskFormat()));
+        glyph.flattenMetrics(buffer);
+        this->prepareForPath(&glyph);
+        glyph.flattenPath(buffer);
+    }
+
+    // Write glyphs drawables.
+    SkASSERT_RELEASE(SkTFitsIn<int>(fDrawablesToSend.size()));
+    buffer.writeInt(fDrawablesToSend.size());
+    for (SkGlyph& glyph : fDrawablesToSend) {
+        SkASSERT(SkMask::IsValidFormat(glyph.maskFormat()));
+        glyph.flattenMetrics(buffer);
+        this->prepareForDrawable(&glyph);
+        glyph.flattenDrawable(buffer);
+    }
+
+    // Reset all the sending data.
+    fMasksToSend.clear();
+    fPathsToSend.clear();
     fDrawablesToSend.clear();
     fAlloc.reset();
 }
@@ -533,7 +596,51 @@ void SkStrikeServerImpl::writeStrikeData(std::vector<uint8_t>* memory) {
 }
 #else
 // New serialization code here.
-void SkStrikeServerImpl::writeStrikeData(std::vector<uint8_t>* memory) {}
+void SkStrikeServerImpl::writeStrikeData(std::vector<uint8_t>* memory) {
+    SkBinaryWriteBuffer buffer{nullptr, 0};
+
+    // Gather statistics about what needs to be sent.
+    size_t strikesToSend = 0;
+    fRemoteStrikesToSend.foreach ([&](RemoteStrike* strike) {
+        if (strike->hasPendingGlyphs()) {
+            strikesToSend++;
+        } else {
+            // This strike has nothing to send, so drop its scaler context to reduce memory.
+            strike->resetScalerContext();
+        }
+    });
+
+    // If there are no strikes or typefaces to send, then cleanup and return.
+    if (strikesToSend == 0 && fTypefacesToSend.empty()) {
+        fRemoteStrikesToSend.reset();
+        return;
+    }
+
+    // Send newly seen typefaces.
+    SkASSERT_RELEASE(SkTFitsIn<int>(fTypefacesToSend.size()));
+    buffer.writeInt(fTypefacesToSend.size());
+    for (const auto& typeface : fTypefacesToSend) {
+        SkTypefaceProxyPrototype proto{typeface};
+        proto.flatten(buffer);
+    }
+    fTypefacesToSend.clear();
+
+    // TODO: call prepareForImage before sending mask images.
+    buffer.writeInt(strikesToSend);
+    fRemoteStrikesToSend.foreach (
+            [&](RemoteStrike* strike) {
+                if (strike->hasPendingGlyphs()) {
+                    strike->writePendingGlyphs(buffer);
+                    strike->resetScalerContext();
+                }
+            }
+    );
+    fRemoteStrikesToSend.reset();
+
+    // Copy data into the vector.
+    auto data = buffer.snapshotAsData();
+    memory->assign(data->bytes(), data->bytes() + data->size());
+}
 #endif  // defined(SK_SUPPORT_LEGACY_STRIKE_SERIALIZATION)
 
 sk_sp<StrikeForGPU> SkStrikeServerImpl::findOrCreateScopedStrike(
@@ -755,7 +862,7 @@ public:
                                 bool isLogging = true,
                                 SkStrikeCache* strikeCache = nullptr);
 
-    bool readStrikeData(const volatile void* memory, size_t memorySize);
+    bool readStrikeData(const void* memory, size_t memorySize);
     bool translateTypefaceID(SkAutoDescriptor* descriptor) const;
     sk_sp<SkTypeface> retrieveTypefaceUsingServerID(SkTypefaceID) const;
 
@@ -822,7 +929,7 @@ bool SkStrikeClientImpl::ReadGlyph(SkTLazy<SkGlyph>& glyph, Deserializer* deseri
     }
 
 #if defined(SK_SUPPORT_LEGACY_STRIKE_SERIALIZATION)
-bool SkStrikeClientImpl::readStrikeData(const volatile void* memory, size_t memorySize) {
+bool SkStrikeClientImpl::readStrikeData(const void* memory, size_t memorySize) {
     SkASSERT(memorySize != 0u);
     Deserializer deserializer(static_cast<const volatile char*>(memory), memorySize);
 
@@ -979,8 +1086,116 @@ bool SkStrikeClientImpl::readStrikeData(const volatile void* memory, size_t memo
     return true;
 }
 #else
-bool SkStrikeClientImpl::readStrikeData(const volatile void* memory, size_t memorySize) {
-    return false;
+bool SkStrikeClientImpl::readStrikeData(const void* memory, size_t memorySize) {
+    SkASSERT(memorySize != 0);
+    SkASSERT(memory != nullptr);
+
+    SkReadBuffer buffer{memory, memorySize};
+
+    int typefacesSize = 0,
+        strikesSize = 0,
+        imagesSize = 0,
+        pathsSize = 0;
+
+    auto postError = [&]() {
+        SkStrikeClient::DiscardableHandleManager::ReadFailureData data{
+                memorySize,
+                buffer.offset(),
+                SkTo<uint64_t>(typefacesSize),
+                SkTo<uint64_t>(strikesSize),
+                SkTo<uint64_t>(imagesSize),
+                SkTo<uint64_t>(pathsSize)};
+        fDiscardableHandleManager->notifyReadFailure(data);
+        SK_ABORT("Oh no!");
+    };
+
+    // Read the number of typefaces sent.
+    const int typefaceCount = buffer.readInt();
+    for (typefacesSize = 0; typefacesSize < typefaceCount; ++typefacesSize) {
+        auto proto = SkTypefaceProxyPrototype::MakeFromBuffer(buffer);
+        if (proto) {
+            this->addTypeface(proto.value());
+        } else {
+            postError();
+            return false;
+        }
+    }
+
+    // Read the number of strikes sent.
+    const int stirkesCount = buffer.readInt();
+    for (strikesSize = 0; strikesSize < stirkesCount; ++strikesSize) {
+
+        const SkTypefaceID serverTypefaceID = buffer.readUInt();
+        if (serverTypefaceID == 0 && !buffer.isValid()) {
+            postError();
+            return false;
+        }
+
+        const SkDiscardableHandleId discardableHandleID = buffer.readUInt();
+        if (discardableHandleID == 0 && !buffer.isValid()) {
+            postError();
+            return false;
+        }
+
+        std::optional<SkAutoDescriptor> serverDescriptor = SkAutoDescriptor::MakeFromBuffer(buffer);
+        if (!buffer.validate(serverDescriptor.has_value())) {
+            postError();
+            return false;
+        }
+
+        const bool fontMetricsInitialized = buffer.readBool();
+        if (!fontMetricsInitialized && !buffer.isValid()) {
+            postError();
+            return false;
+        }
+
+        std::optional<SkFontMetrics> fontMetrics;
+        if (!fontMetricsInitialized) {
+            fontMetrics = SkFontMetricsPriv::MakeFromBuffer(buffer);
+            if (!fontMetrics || !buffer.isValid()) {
+                postError();
+                return false;
+            }
+        }
+
+        auto* clientTypeface = fServerTypefaceIdToTypeface.find(serverTypefaceID);
+        if (clientTypeface == nullptr) {
+            postError();
+            return false;
+        }
+
+        if (!this->translateTypefaceID(&serverDescriptor.value())) {
+            postError();
+            return false;
+        }
+
+        SkDescriptor* clientDescriptor = serverDescriptor->getDesc();
+        auto strike = fStrikeCache->findStrike(*clientDescriptor);
+
+        if (strike == nullptr) {
+            // Metrics are only sent the first time. If creating a new strike, then the metrix
+            // are not initialized.
+            if (fontMetricsInitialized) {
+                postError();
+                return false;
+            }
+            SkStrikeSpec strikeSpec{*clientDescriptor, *clientTypeface};
+            strike = fStrikeCache->createStrike(
+                    strikeSpec, &fontMetrics.value(),
+                    std::make_unique<DiscardableStrikePinner>(
+                            discardableHandleID, fDiscardableHandleManager));
+        }
+
+        // Make sure this strike is pinned on the GPU side.
+        strike->verifyPinnedStrike();
+
+        if (!strike->mergeFromBuffer(buffer)) {
+            postError();
+            return false;
+        }
+    }
+
+    return true;
 }
 #endif  // defined(SK_SUPPORT_LEGACY_STRIKE_SERIALIZATION)
 
@@ -1036,7 +1251,7 @@ SkStrikeClient::SkStrikeClient(sk_sp<DiscardableHandleManager> discardableManage
 
 SkStrikeClient::~SkStrikeClient() = default;
 
-bool SkStrikeClient::readStrikeData(const volatile void* memory, size_t memorySize) {
+bool SkStrikeClient::readStrikeData(const void* memory, size_t memorySize) {
     return fImpl->readStrikeData(memory, memorySize);
 }
 

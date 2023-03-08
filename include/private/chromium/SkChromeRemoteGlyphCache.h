@@ -15,6 +15,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypeface.h"
 #include "include/utils/SkNoDrawCanvas.h"
+#include "src/core/SkWriteBuffer.h"
 
 struct SkPackedGlyphID;
 class SkAutoDescriptor;
@@ -129,7 +130,7 @@ public:
     // from a server when serializing the ops must be deserialized before the op
     // is rasterized.
     // Returns false if the data is invalid.
-    SK_SPI bool readStrikeData(const volatile void* memory, size_t memorySize);
+    SK_SPI bool readStrikeData(const void* memory, size_t memorySize);
 
     // Given a descriptor re-write the Rec mapping the typefaceID from the renderer to the
     // corresponding typefaceID on the GPU.
