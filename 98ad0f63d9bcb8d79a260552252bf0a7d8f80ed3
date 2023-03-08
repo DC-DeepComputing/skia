@@ -63,6 +63,30 @@
       },
       "revId": "98ad0f63d9bcb8d79a260552252bf0a7d8f80ed3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e7dc025_2c4af9f0",
+        "filename": "src/shaders/SkPerlinNoiseShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1124,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:54:34Z",
+      "side": 1,
+      "message": "So, I actually think we could remove these optimizations and let the shader run (which is what Raster used to do).",
+      "parentUuid": "f1ae688f_2ca6b1dd",
+      "range": {
+        "startLine": 1124,
+        "startChar": 42,
+        "endLine": 1124,
+        "endChar": 54
+      },
+      "revId": "98ad0f63d9bcb8d79a260552252bf0a7d8f80ed3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
