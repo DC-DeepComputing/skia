@@ -384,6 +384,218 @@
       },
       "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcb251b3_2ec3d218",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "As discussed offline, maybe /* initialRequestedBounds\u003d */ ?",
+      "parentUuid": "e86d6f83_5240228e",
+      "range": {
+        "startLine": 706,
+        "startChar": 27,
+        "endLine": 706,
+        "endChar": 41
+      },
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "040b20c8_7ff7c45b",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "// This is testing all the combinations of how the src, crop and requested output can interact while still resulting in a deferred image\n\n?",
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5ecd410_5db81d61",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "// This tests all the combinations of src, crop and requested output that result in an empty image but with none of them being empty\n\n?",
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a092cd3_ac997bb5",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "Maybe a big line here ?\n//-----...",
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca152bf5_c0724ecf",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "Is perspective relevant here ?",
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1f042dc_557c82ab",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 906,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "/* expected\u003d */ \nhere and below ?",
+      "range": {
+        "startLine": 906,
+        "startChar": 28,
+        "endLine": 906,
+        "endChar": 45
+      },
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c6e34bf_990f2586",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1019,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "Add a \u0027\\n\u0027 ?",
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "706631ee_22ab85f3",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "Line this line up ?",
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e289a223_d1025a48",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "Another big line here ?",
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57773621_33d9abe0",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1037,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "Is there a better way to phrase this?",
+      "range": {
+        "startLine": 1037,
+        "startChar": 17,
+        "endLine": 1037,
+        "endChar": 38
+      },
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8262c959_7cc07465",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1044,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:36:52Z",
+      "side": 1,
+      "message": "outside of source ? offscreen seems a bit nebulous here.",
+      "range": {
+        "startLine": 1044,
+        "startChar": 38,
+        "endLine": 1044,
+        "endChar": 47
+      },
+      "revId": "9b3c4638e8a4cb25ba14b05b88dceb74017628eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
