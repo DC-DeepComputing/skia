@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/gpu/mtl/MtlCppUtilsPriv.h"
 #include "src/gpu/mtl/MtlUtilsPriv.h"
 
 #include "include/gpu/ShaderErrorHandler.h"
