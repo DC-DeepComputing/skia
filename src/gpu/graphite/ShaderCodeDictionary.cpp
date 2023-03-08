@@ -432,6 +432,47 @@ void GenerateDefaultPreamble(const ShaderInfo& shaderInfo,
 }
 
 //--------------------------------------------------------------------------------------------------
+static constexpr char kDstReadName[] = "sk_dst_read";
+
+static constexpr Uniform kDstReadUniforms[] = {
+        { "dstTextureCoords", SkSLType::kFloat4 },
+};
+
+static constexpr TextureAndSampler kDstReadTexturesAndSamplers[] = {
+        {"dstSampler"},
+};
+
+std::string GenerateDstReadExpression(const ShaderInfo& shaderInfo,
+                                      int entryIndex,
+                                      const PaintParamsKey::BlockReader& reader,
+                                      const ShaderSnippet::Args& args) {
+    const ShaderSnippet* entry = reader.entry();
+    SkASSERT(entry->fTexturesAndSamplers.size() == 1);
+    SkASSERT(entry->fUniforms.size() == 1);
+    std::string sampler = entry->getMangledSamplerName(0, entryIndex);
+    std::string coords = entry->getMangledUniformName(shaderInfo, 0, entryIndex);
+    return SkSL::String::printf(
+            "%s;"
+            "surfaceColor = sample(%s, (sk_FragCoord.xy - %s.xy) * %s.zw)",
+            args.fPriorStageOutput.data(),
+            sampler.c_str(),
+            coords.c_str(),
+            coords.c_str());
+}
+
+void GenerateDstReadPreamble(const ShaderInfo& shaderInfo,
+                             int* entryIndex,
+                             const PaintParamsKey::BlockReader& reader,
+                             std::string* preamble) {
+    const ShaderSnippet* entry = reader.entry();
+    SkASSERT(reader.numChildren() == 0 && entry->fNumChildren == 0);
+
+    *preamble += "half4 surfaceColor;";
+
+    *entryIndex += 1;
+}
+
+//--------------------------------------------------------------------------------------------------
 static constexpr int kFourStopGradient = 4;
 static constexpr int kEightStopGradient = 8;
 
@@ -818,14 +859,16 @@ std::string GenerateRuntimeShaderExpression(const ShaderInfo& shaderInfo,
                                             int entryIndex,
                                             const PaintParamsKey::BlockReader& reader,
                                             const ShaderSnippet::Args& args) {
+    std::string_view destColor =
+            reader.entry()->needsDstColor() ? "surfaceColor" : args.fRuntimeShaderDstColor;
+
     const ShaderSnippet* entry = reader.entry();
-    return SkSL::String::printf(
-            "%s_%d(%.*s, %.*s, %.*s)",
-            entry->fName,
-            entryIndex,
-            (int)args.fPriorStageOutput.size(),      args.fPriorStageOutput.data(),
-            (int)args.fRuntimeShaderDstColor.size(), args.fRuntimeShaderDstColor.data(),
-            (int)args.fFragCoord.size(),             args.fFragCoord.data());
+    return SkSL::String::printf("%s_%d(%.*s, %.*s, %.*s)",
+                                entry->fName,
+                                entryIndex,
+                                (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
+                                (int)destColor.size(),              destColor.data(),
+                                (int)args.fFragCoord.size(),        args.fFragCoord.data());
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -979,16 +1022,14 @@ std::string GenerateShaderBasedBlenderExpression(const ShaderInfo& shaderInfo,
                                                  const PaintParamsKey::BlockReader& reader,
                                                  const ShaderSnippet::Args& args) {
     const bool usePrimitiveColorAsDst = reader.entry()->blendAgainstPrimitiveColor();
+    SkASSERT(!(usePrimitiveColorAsDst && reader.entry()->needsDstColor()));
 
     SkASSERT(reader.entry()->fUniforms.size() == 1);
     SkASSERT(reader.numDataPayloadFields() == 0);
 
     std::string uniformName = reader.entry()->getMangledUniformName(shaderInfo, 0, entryIndex);
 
-    // TODO: emit function to perform dest read into preamble, and replace half4(1) with that call
-    // (The `args.destColor` variable might seem tempting here, but this is used for programmatic
-    // src+dest blends within the shader, not for blends against the destination surface.)
-    const char * destColor = usePrimitiveColorAsDst ? "primitiveColor" : "half4(1)";
+    const char* destColor = usePrimitiveColorAsDst ? "primitiveColor" : "surfaceColor";
 
     return SkSL::String::printf("%s(%s, %.*s, %s)",
                                 reader.entry()->fStaticFunctionName,
@@ -1122,13 +1163,26 @@ SkSpan<const Uniform> ShaderCodeDictionary::convertUniforms(const SkRuntimeEffec
     return SkSpan<const Uniform>(uniformArray, numUniforms);
 }
 
-int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect) {
-    // Use the combination of {SkSL program hash, uniform size} as our key.
+int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect,
+                                                           bool needsDstColor) {
+    SkEnumBitMask<SnippetRequirementFlags> snippetFlags = SnippetRequirementFlags::kNone;
+    if (effect->allowShader()) {
+        snippetFlags |= SnippetRequirementFlags::kLocalCoords;
+    }
+    if (effect->allowBlender()) {
+        snippetFlags |= SnippetRequirementFlags::kRuntimeShaderDstColor;
+    }
+    if (needsDstColor) {
+        snippetFlags |= SnippetRequirementFlags::kDstColor;
+    }
+
+    // Use the combination of {SkSL program hash, uniform size, snippet flags} as our key.
     // In the unfortunate event of a hash collision, at least we'll have the right amount of
     // uniform data available.
     RuntimeEffectKey key;
     key.fHash = SkRuntimeEffectPriv::Hash(*effect);
     key.fUniformSize = effect->uniformSize();
+    key.fSnippetFlags = snippetFlags;
 
     SkAutoSpinlock lock{fSpinLock};
 
@@ -1137,13 +1191,6 @@ int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect
         return *existingCodeSnippetID;
     }
 
-    SkEnumBitMask<SnippetRequirementFlags> snippetFlags = SnippetRequirementFlags::kNone;
-    if (effect->allowShader()) {
-        snippetFlags |= SnippetRequirementFlags::kLocalCoords;
-    }
-    if (effect->allowBlender()) {
-        snippetFlags |= SnippetRequirementFlags::kRuntimeShaderDstColor;
-    }
     int newCodeSnippetID = this->addUserDefinedSnippet("RuntimeEffect",
                                                        this->convertUniforms(effect),
                                                        snippetFlags,
@@ -1428,6 +1475,17 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             kColorSpaceTransformName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
+            kNoChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kDstRead] = {
+            "DstRead",
+            SkSpan(kDstReadUniforms),
+            SnippetRequirementFlags::kPriorStageOutput,
+            SkSpan(kDstReadTexturesAndSamplers),
+            kDstReadName,
+            GenerateDstReadExpression,
+            GenerateDstReadPreamble,
             kNoChildren,
             { }      // no data payload
     };

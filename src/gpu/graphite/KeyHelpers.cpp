@@ -103,6 +103,39 @@ void add_gradient_postamble(const GradientShaderBlocks::GradientData& gradData,
     gatherer->write(static_cast<int>(inputPremul));
 }
 
+void add_dst_read_uniform_data(const ShaderCodeDictionary* dict,
+                               PipelineDataGatherer* gatherer,
+                               sk_sp<TextureProxy> dstTextureProxy) {
+    static const SkTileMode kTileModes[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
+    gatherer->add(SkSamplingOptions(), kTileModes, dstTextureProxy);
+
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kDstRead)
+
+    SkV4 dstReadCoords{0.0f,
+                       0.0f,
+                       1.0f / dstTextureProxy->dimensions().width(),
+                       1.0f / dstTextureProxy->dimensions().height()};
+    gatherer->write(dstReadCoords);
+
+    gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kDstRead));
+}
+
+} // anonymous namespace
+
+void DstReadBlock::BeginBlock(const KeyContext& keyContext,
+                              PaintParamsKeyBuilder* builder,
+                              PipelineDataGatherer* gatherer,
+                              sk_sp<TextureProxy> dst) {
+    if (gatherer) {
+        add_dst_read_uniform_data(keyContext.dict(), gatherer, std::move(dst));
+    }
+    builder->beginBlock(BuiltInCodeSnippetID::kDstRead);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+namespace {
+
 void add_linear_gradient_uniform_data(const ShaderCodeDictionary* dict,
                                       BuiltInCodeSnippetID codeSnippetID,
                                       const GradientShaderBlocks::GradientData& gradData,
@@ -737,9 +770,11 @@ RuntimeEffectBlock::ShaderData::ShaderData(sk_sp<const SkRuntimeEffect> effect)
         : fEffect(std::move(effect)) {}
 
 RuntimeEffectBlock::ShaderData::ShaderData(sk_sp<const SkRuntimeEffect> effect,
-                                           sk_sp<const SkData> uniforms)
+                                           sk_sp<const SkData> uniforms,
+                                           bool needsDstColor)
         : fEffect(std::move(effect))
-        , fUniforms(std::move(uniforms)) {}
+        , fUniforms(std::move(uniforms))
+        , fNeedsDstColor(needsDstColor) {}
 
 static bool skdata_matches(const SkData* a, const SkData* b) {
     // Returns true if both SkData objects hold the same contents, or if they are both null.
@@ -771,7 +806,8 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
                                     PipelineDataGatherer* gatherer,
                                     const ShaderData& shaderData) {
     ShaderCodeDictionary* dict = keyContext.dict();
-    int codeSnippetID = dict->findOrCreateRuntimeEffectSnippet(shaderData.fEffect.get());
+    int codeSnippetID = dict->findOrCreateRuntimeEffectSnippet(shaderData.fEffect.get(),
+                                                               shaderData.fNeedsDstColor);
 
     keyContext.rtEffectDict()->set(codeSnippetID, shaderData.fEffect);
 

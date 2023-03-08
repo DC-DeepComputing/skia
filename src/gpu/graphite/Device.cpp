@@ -891,6 +891,14 @@ void Device::drawGeometry(const Transform& localToDevice,
         this->flushPendingWorkToRecorder();
     }
 
+    // If this paint needs a surface read, flush pending work.
+    const SkBlenderBase* blender = as_BB(paint.getBlender());
+    bool needsDstRead = blender && (blender->asRuntimeEffect() ||
+                                    *blender->asBlendMode() > SkBlendMode::kLastCoeffMode);
+    if (needsDstRead) {
+        this->flushPendingWorkToRecorder();
+    }
+
     DrawOrder order(fCurrentDepth.next());
     auto [clip, clipOrder] = fClip.applyClipToDraw(
             fColorDepthBoundsManager.get(), localToDevice, geometry, style, order.depth());
@@ -938,7 +946,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
     // also lets Device easily track whether or not there are any overlapping draws.
-    PaintParams shading{paint, std::move(primitiveBlender), skipColorXform};
+    PaintParams shading{paint, std::move(primitiveBlender), needsDstRead, skipColorXform};
     const bool dependsOnDst = renderer->emitsCoverage() || paint_depends_on_dst(shading);
     CompressedPaintersOrder prevDraw =
             fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());

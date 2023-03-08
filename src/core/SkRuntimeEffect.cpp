@@ -1245,8 +1245,10 @@ public:
                 keyContext.dstColorInfo().colorSpace());
         SkASSERT(uniforms);
 
-        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
-                                       { fEffect, std::move(uniforms) });
+        RuntimeEffectBlock::BeginBlock(keyContext,
+                                       builder,
+                                       gatherer,
+                                       {fEffect, std::move(uniforms), /*needsDstColor=*/false});
 
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
 
@@ -1451,8 +1453,10 @@ public:
                 keyContext.dstColorInfo().colorSpace());
         SkASSERT(uniforms);
 
-        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
-                                       { fEffect, std::move(uniforms) });
+        RuntimeEffectBlock::BeginBlock(keyContext,
+                                       builder,
+                                       gatherer,
+                                       {fEffect, std::move(uniforms), /*needsDstColor=*/false});
 
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
 
@@ -1694,10 +1698,9 @@ public:
                 keyContext.dstColorInfo().colorSpace());
         SkASSERT(uniforms);
 
-        // TODO(b/238757201): Pass into RuntimeEffectBlock::BeginBlock that this runtime effect
-        // needs a dst read, if dstColorType == kSurface.
-        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
-                                       { fEffect, std::move(uniforms) });
+        const bool needsDstColor = dstColorType == DstColorType::kSurface;
+        RuntimeEffectBlock::BeginBlock(
+                keyContext, builder, gatherer, {fEffect, std::move(uniforms), needsDstColor});
 
         add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
 
