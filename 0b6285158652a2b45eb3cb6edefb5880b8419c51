@@ -63,6 +63,30 @@
       },
       "revId": "0b6285158652a2b45eb3cb6edefb5880b8419c51",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e0168b0_77bd9454",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1006,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-08T15:21:44Z",
+      "side": 1,
+      "message": "`std::vector::back` (both const and non-const) has existed like forever, C++20 added `constexpr`, but that shouldn\u0027t matter here? In fact I think this is the spec definition of the semantics of `std::vector::back`? Where were you seeing the compiler error? If there is one we should clean that up.\n\nThat being said, it looks like there are already 5 instances of this in this file. We could try to clean this in a follow up.",
+      "parentUuid": "d25f71e7_f8f28e00",
+      "range": {
+        "startLine": 1006,
+        "startChar": 32,
+        "endLine": 1006,
+        "endChar": 50
+      },
+      "revId": "0b6285158652a2b45eb3cb6edefb5880b8419c51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
