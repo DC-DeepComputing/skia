@@ -12,6 +12,7 @@
 #include "include/core/SkDrawable.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkScalar.h"
+#include "include/private/base/SkDebug.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTemplates.h"
@@ -39,8 +40,10 @@ std::optional<SkGlyph> SkGlyph::MakeFromBuffer(SkReadBuffer& buffer) {
     SkASSERT(buffer.isValid());
     const SkPackedGlyphID packedID{buffer.readUInt()};
     const SkVector advance = buffer.readPoint();
-    const uint32_t dimensions = buffer.readUInt();
-    const uint32_t leftTop = buffer.readUInt();
+    const uint32_t width = buffer.readUInt();
+    const uint32_t height = buffer.readUInt();
+    const int32_t left = buffer.readInt();
+    const int32_t top = buffer.readInt();
     const SkMask::Format format = SkTo<SkMask::Format>(buffer.readUInt());
 
     if (!buffer.validate(SkMask::IsValidFormat(format))) {
@@ -50,24 +53,28 @@ std::optional<SkGlyph> SkGlyph::MakeFromBuffer(SkReadBuffer& buffer) {
     SkGlyph glyph{packedID};
     glyph.fAdvanceX = advance.x();
     glyph.fAdvanceY = advance.y();
-    glyph.fWidth = dimensions >> 16;
-    glyph.fHeight = dimensions & 0xffff;
-    glyph.fLeft = leftTop >> 16;
-    glyph.fTop = leftTop & 0xffff;
+    glyph.fWidth = width;
+    glyph.fHeight = height;
+    glyph.fLeft = left;
+    glyph.fTop = top;
     glyph.fMaskFormat = format;
     SkDEBUGCODE(glyph.fAdvancesBoundsFormatAndInitialPathDone = true;)
     return std::move(glyph);
 }
 
 SkGlyph::SkGlyph(const SkGlyph&) = default;
+
 SkGlyph& SkGlyph::operator=(const SkGlyph&) = default;
+
 SkGlyph::SkGlyph(SkGlyph&&) = default;
+
 SkGlyph& SkGlyph::operator=(SkGlyph&&) = default;
+
 SkGlyph::~SkGlyph() = default;
 
 SkMask SkGlyph::mask() const {
     SkMask mask;
-    mask.fImage = (uint8_t*)fImage;
+    mask.fImage = (uint8_t*) fImage;
     mask.fBounds.setXYWH(fLeft, fTop, fWidth, fHeight);
     mask.fRowBytes = this->rowBytes();
     mask.fFormat = fMaskFormat;
@@ -84,10 +91,10 @@ SkMask SkGlyph::mask(SkPoint position) const {
 void SkGlyph::zeroMetrics() {
     fAdvanceX = 0;
     fAdvanceY = 0;
-    fWidth    = 0;
-    fHeight   = 0;
-    fTop      = 0;
-    fLeft     = 0;
+    fWidth = 0;
+    fHeight = 0;
+    fTop = 0;
+    fLeft = 0;
 }
 
 static size_t bits_to_bytes(size_t bits) {
@@ -172,7 +179,8 @@ size_t SkGlyph::setMetricsAndImage(SkArenaAlloc* alloc, const SkGlyph& from) {
             return this->imageSize();
         }
 
-        SkDEBUGCODE(fAdvancesBoundsFormatAndInitialPathDone = from.fAdvancesBoundsFormatAndInitialPathDone;)
+        SkDEBUGCODE(
+                fAdvancesBoundsFormatAndInitialPathDone = from.fAdvancesBoundsFormatAndInitialPathDone;)
     }
     return 0;
 }
@@ -283,11 +291,10 @@ SkDrawable* SkGlyph::drawable() const {
 void SkGlyph::flattenMetrics(SkWriteBuffer& buffer) const {
     buffer.writeUInt(fID.value());
     buffer.writePoint({fAdvanceX, fAdvanceY});
-    buffer.writeUInt(fWidth << 16 | fHeight);
-    // Note: << has undefined behavior for negative values.
-    const uint32_t left = fLeft;
-    const uint32_t top = fTop;
-    buffer.writeUInt(left << 16 | top);
+    buffer.writeUInt(fWidth);
+    buffer.writeUInt(fHeight);
+    buffer.writeInt(fLeft);
+    buffer.writeInt(fTop);
     buffer.writeUInt(SkTo<uint32_t>(fMaskFormat));
 }
 
@@ -336,6 +343,9 @@ size_t SkGlyph::addPathFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc) {
 
     size_t memoryIncrease = 0;
     const bool hasPath = buffer.readBool();
+    if (!hasPath && !buffer.isValid()) {
+        return 0;
+    }
     if (hasPath) {
         const bool pathIsHairline = buffer.readBool();
         SkPath path;
@@ -392,13 +402,16 @@ size_t SkGlyph::addDrawableFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc)
 
     sk_sp<SkData> pictureData = buffer.readByteArrayAsData();
     if (!buffer.isValid()) {
+        SkDEBUGF("Bad byte array read\n");
         return 0;
     }
 
     // If the picture is too big, or there is no picture is indicated by an empty byte array.
     if (pictureData->size() > 0) {
         sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get());
-        if (buffer.validate(picture == nullptr)) {
+        if (!buffer.validate(picture != nullptr)) {
+            SkDEBUGF("Bad picture conversion\n");
+            this->setDrawable(alloc, sk_sp<SkDrawable>(nullptr));
             return 0;
         }
         sk_sp<SkDrawable> drawable = sk_make_sp<PictureBackedGlyphDrawable>(std::move(picture));
