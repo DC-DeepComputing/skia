@@ -27,6 +27,16 @@ struct SkColorSpaceXformSteps;
 
 class SkRuntimeEffectPriv {
 public:
+    struct UniformsCallbackContext {
+        const SkColorSpace* fDstColorSpace;
+    };
+
+    using UniformsCallback = std::function<sk_sp<const SkData>(const UniformsCallbackContext&)>;
+    static sk_sp<SkShader> MakeDeferredShader(const SkRuntimeEffect* effect,
+                                              UniformsCallback uniformsCallback,
+                                              SkSpan<SkRuntimeEffect::ChildPtr> children,
+                                              const SkMatrix* localMatrix = nullptr);
+
     // Helper function when creating an effect for a GrSkSLFP that verifies an effect will
     // implement the constant output for constant input optimization flag.
     static bool SupportsConstantOutputForConstantInput(const SkRuntimeEffect* effect) {
