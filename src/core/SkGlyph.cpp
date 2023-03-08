@@ -392,6 +392,8 @@ size_t SkGlyph::addDrawableFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc)
 
     sk_sp<SkData> pictureData = buffer.readByteArrayAsData();
     if (!buffer.isValid()) {
+        SkDEBUGF("Bad byte array read\n");
+        this->setDrawable(alloc, sk_sp<SkDrawable>(nullptr));
         return 0;
     }
 
@@ -399,6 +401,8 @@ size_t SkGlyph::addDrawableFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc)
     if (pictureData->size() > 0) {
         sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get());
         if (buffer.validate(picture == nullptr)) {
+            SkDEBUGF("Bad picture conversion\n");
+            this->setDrawable(alloc, sk_sp<SkDrawable>(nullptr));
             return 0;
         }
         sk_sp<SkDrawable> drawable = sk_make_sp<PictureBackedGlyphDrawable>(std::move(picture));
