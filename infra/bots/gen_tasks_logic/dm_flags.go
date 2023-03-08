@@ -996,6 +996,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	// skia:4769
 	skip("pic-8888", "gm", ALL, "drawfilter")
 
+	skip("pic-8888", "gm", ALL, "deferred_shader_rt")
+
 	// skia:4703
 	for _, test := range []string{"image-cacherator-from-picture",
 		"image-cacherator-from-raster",
