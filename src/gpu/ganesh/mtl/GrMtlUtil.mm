@@ -229,10 +229,7 @@ GrMTLPixelFormat GrGetMTLPixelFormatFromMtlTextureInfo(const GrMtlTextureInfo& i
     return static_cast<GrMTLPixelFormat>(mtlTexture.pixelFormat);
 }
 
-uint32_t GrMtlFormatChannels(GrMTLPixelFormat mtlFormat) {
-    return skgpu::MtlFormatChannels((MTLPixelFormat)mtlFormat);
-}
-
+        case MTLPixelFormatRG8Unorm:        return kRG_SkColorChannelFlags;
 GrColorFormatDesc GrMtlFormatDesc(GrMTLPixelFormat mtlFormat)  {
     switch (mtlFormat) {
         case MTLPixelFormatRGBA8Unorm:
