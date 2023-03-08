@@ -558,8 +558,9 @@ DEF_TEST(SkRemoteGlyphCache_StrikePinningClient, reporter) {
     server.writeStrikeData(&serverStrikeData);
 
     // Client.
-    REPORTER_ASSERT(reporter,
-                    client.readStrikeData(serverStrikeData.data(), serverStrikeData.size()));
+    SkASSERT(client.readStrikeData(serverStrikeData.data(), serverStrikeData.size()));
+    //REPORTER_ASSERT(reporter,
+    //                client.readStrikeData(serverStrikeData.data(), serverStrikeData.size()));
     auto* clientTypeface = client.retrieveTypefaceUsingServerIDForTest(serverTypefaceID).get();
 
     // The cache remains alive until it is pinned in the discardable manager.

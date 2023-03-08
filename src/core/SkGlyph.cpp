@@ -12,20 +12,45 @@
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
+#include "src/core/SkReadBuffer.h"
 #include "src/core/SkScalerContext.h"
+#include "src/core/SkWriteBuffer.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsPoint.h"
 #include "src/pathops/SkPathOpsQuad.h"
 #include "src/text/StrikeForGPU.h"
 
 #include <cstring>
+#include <optional>
 #include <tuple>
 #include <utility>
 
+using namespace skia_private;
 using namespace skglyph;
 using namespace sktext;
 
 //-- SkGlyph ---------------------------------------------------------------------------------------
+std::optional<SkGlyph> SkGlyph::MakeFromBuffer(SkReadBuffer& buffer) {
+    SkASSERT(buffer.isValid());
+    const SkPackedGlyphID packedID{buffer.readUInt()};
+    const SkVector advance = buffer.readPoint();
+    const uint32_t dimensions = buffer.readUInt();
+    const uint32_t leftTop = buffer.readUInt();
+    const SkMask::Format format = SkTo<SkMask::Format>(buffer.readUInt());
+    if (buffer.isValid() && SkMask::IsValidFormat(format)) {
+        SkGlyph glyph{packedID};
+        glyph.fAdvanceX = advance.x();
+        glyph.fAdvanceY = advance.y();
+        glyph.fWidth = dimensions >> 16;
+        glyph.fHeight = dimensions & 0xffff;
+        glyph.fLeft = leftTop >> 16;
+        glyph.fTop = leftTop & 0xffff;
+        glyph.fMaskFormat = format;
+        return glyph;
+    }
+    return std::nullopt;
+}
+
 SkGlyph::SkGlyph(const SkGlyph&) = default;
 SkGlyph& SkGlyph::operator=(const SkGlyph&) = default;
 SkGlyph::SkGlyph(SkGlyph&&) = default;
@@ -245,6 +270,115 @@ SkDrawable* SkGlyph::drawable() const {
         return fDrawableData->fDrawable.get();
     }
     return nullptr;
+}
+
+void SkGlyph::flattenMetrics(SkWriteBuffer& buffer) const {
+    buffer.writeUInt(fID.value());
+    buffer.writePoint({fAdvanceX, fAdvanceY});
+    buffer.writeUInt(fWidth << 16 | fHeight);
+    buffer.writeUInt(fLeft << 16 | fTop);
+    buffer.writeUInt(SkTo<uint32_t>(fMaskFormat));
+}
+
+void SkGlyph::flattenImage(SkWriteBuffer& buffer) const {
+    buffer.writeByteArray(this->image(), this->imageSize());
+}
+
+size_t SkGlyph::addImageFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc) {
+    SkASSERT(buffer.isValid());
+    size_t memoryIncrease = 0;
+
+    void* imageData = alloc->makeBytesAlignedTo(this->imageSize(), this->formatAlignment());
+    buffer.readByteArray(imageData, this->imageSize());
+    if (buffer.isValid()) {
+        this->setImage(imageData);
+        memoryIncrease += this->imageSize();
+    }
+
+    return memoryIncrease;
+}
+
+void SkGlyph::flattenPath(SkWriteBuffer& buffer) const {
+    const bool hasPath = this->path() != nullptr;
+    buffer.writeBool(hasPath);
+    if (hasPath) {
+        buffer.writeBool(this->pathIsHairline());
+        buffer.writePath(*this->path());
+    }
+}
+
+size_t SkGlyph::addPathFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc) {
+    SkASSERT(buffer.isValid());
+    size_t memoryIncrease = 0;
+    const bool hasPath = buffer.readBool();
+    if (hasPath) {
+        const bool pathIsHairline = buffer.readBool();
+        SkPath path;
+        buffer.readPath(&path);
+        if (buffer.isValid()) {
+            if (this->setPath(alloc, &path, pathIsHairline)) {
+                memoryIncrease += path.approximateBytesUsed();
+            }
+        }
+    } else {
+        this->setPath(alloc, nullptr, false);
+    }
+
+    return memoryIncrease;
+}
+
+void SkGlyph::flattenDrawable(SkWriteBuffer& buffer) const {
+    if (this->isEmpty() || this->drawable() == nullptr) {
+        buffer.writeByteArray(nullptr, 0);
+        return;
+    }
+
+    sk_sp<SkPicture> picture{this->drawable()->newPictureSnapshot()};
+    sk_sp<SkData> data = picture->serialize();
+    // If the picture is too big, or there is no picture, then drop it.
+    if (!SkTFitsIn<uint32_t>(data->size()) || data->size() == 0) {
+        buffer.writeByteArray(nullptr, 0);
+        return;
+    }
+
+    buffer.writeUInt(SkTo<uint32_t>(data->size()));
+    buffer.writeByteArray(data->data(), data->size());
+}
+
+size_t SkGlyph::addDrawableFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc) {
+    class PictureBackedGlyphDrawable final : public SkDrawable {
+    public:
+        PictureBackedGlyphDrawable(sk_sp<SkPicture> self) : fSelf(std::move(self)) {}
+    private:
+        sk_sp<SkPicture> fSelf;
+        SkRect onGetBounds() override { return fSelf->cullRect();  }
+        size_t onApproximateBytesUsed() override {
+            return sizeof(PictureBackedGlyphDrawable) + fSelf->approximateBytesUsed();
+        }
+        void onDraw(SkCanvas* canvas) override { canvas->drawPicture(fSelf); }
+    };
+
+    SkASSERT(buffer.isValid());
+    size_t memoryIncrease = 0;
+
+    sk_sp<SkData> data = buffer.readByteArrayAsData();
+    if (!buffer.isValid()) {
+        return 0;
+    }
+    if (data->size() > 0) {
+        sk_sp<SkPicture> picture = SkPicture::MakeFromData(data.get());
+        if (buffer.validate(picture == nullptr)) {
+            return 0;
+        }
+        sk_sp<SkDrawable> drawable = sk_make_sp<PictureBackedGlyphDrawable>(std::move(picture));
+        if (this->setDrawable(alloc, std::move(drawable))) {
+            memoryIncrease += this->drawable()->approximateBytesUsed();
+        }
+    } else {
+        this->setDrawable(alloc, sk_sp<SkDrawable>(nullptr));
+    }
+
+    return memoryIncrease;
 }
 
 static std::tuple<SkScalar, SkScalar> calculate_path_gap(
