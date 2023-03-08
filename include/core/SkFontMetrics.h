@@ -11,6 +11,10 @@
 #include "include/core/SkScalar.h"
 #include "include/private/base/SkTo.h"
 
+#include <optional>
+
+class SkReadBuffer;
+
 /** \class SkFontMetrics
     The metrics of an SkFont.
     The metric values are consistent with the Skia y-down coordinate system.
