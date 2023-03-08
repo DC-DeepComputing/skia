@@ -28,7 +28,8 @@ main() {
     mkdir -p platform_tools/android/apps/${APP}/src/main/assets
     cp -a resources platform_tools/android/apps/${APP}/src/main/assets/
 
-    for ARCH in arm arm64 x86 x64; do
+    for ARCH in arm64; do
+    #for ARCH in arm arm64 x86 x64; do
         BUILD=out/${APP}-$ARCH
         mkdir -p "$BUILD"
         make_gn > "${BUILD}/args.gn"
