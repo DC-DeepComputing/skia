@@ -37,6 +37,12 @@ public:
 
     bool didExceedMaxLines() { return fExceededMaxLines; }
 
+    bool getApplyRoundingHack() { return fApplyRoundingHack; }
+    void setApplyRoundingHack(bool applyRoundingHack) { fApplyRoundingHack = applyRoundingHack; }
+
+    // The applyRoundingHack argument is a temporary flag to keep the current
+    // rounding behavior when reporting text metrics and when breaking text into
+    // lines.
     virtual void layout(SkScalar width) = 0;
 
     virtual void paint(SkCanvas* canvas, SkScalar x, SkScalar y) = 0;
@@ -108,6 +114,7 @@ protected:
     SkScalar fMinIntrinsicWidth;
     SkScalar fLongestLine;
     bool fExceededMaxLines;
+    bool fApplyRoundingHack;
 };
 }  // namespace textlayout
 }  // namespace skia
