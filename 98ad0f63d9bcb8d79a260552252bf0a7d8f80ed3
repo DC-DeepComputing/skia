@@ -39,6 +39,30 @@
       },
       "revId": "98ad0f63d9bcb8d79a260552252bf0a7d8f80ed3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1ae688f_2ca6b1dd",
+        "filename": "src/shaders/SkPerlinNoiseShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1124,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T15:52:02Z",
+      "side": 1,
+      "message": "When numOctaves \u003d\u003d 0, fractal noise collapses to:\n  [0,0,0,0] * 0.5 + 0.5\nwhile turbulence collapses to:\n  [0,0,0,0]",
+      "parentUuid": "f2021133_ed02db5a",
+      "range": {
+        "startLine": 1124,
+        "startChar": 42,
+        "endLine": 1124,
+        "endChar": 54
+      },
+      "revId": "98ad0f63d9bcb8d79a260552252bf0a7d8f80ed3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
