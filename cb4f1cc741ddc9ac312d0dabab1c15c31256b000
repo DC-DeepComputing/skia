@@ -52,6 +52,24 @@
       "parentUuid": "6223f466_95ecf443",
       "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30c9ce7e_a6fd7523",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-03-08T15:48:01Z",
+      "side": 1,
+      "message": "FWIW, this is similar to what we did in b/206415266, including https://skia-review.googlesource.com/c/skia/+/491977.\n\nI\u0027d be fine with putting \"LOG\" in the name, but I still think it needs to be clear that the intent is for it to be fatal (on Android). Otherwise it would be quite dangerous - if the same logging macro is used elsewhere only for the purposes of logging, a log that was never intended to be fatal anywhere becomes fatal on Android.\n\nI\u0027m not convinced we should use Android\u0027s name, but they have a macro of `LOG_ALWAYS_FATAL`. I\u0027d be fine with naming this something like `SK_LOG_OPTIONALLY_FATAL` (??). Somewhere else we could toggle whether these are fatal or not.",
+      "parentUuid": "232e6a45_5603a061",
+      "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
