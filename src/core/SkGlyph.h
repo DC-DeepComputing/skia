@@ -9,6 +9,7 @@
 #define SkGlyph_DEFINED
 
 #include "include/core/SkDrawable.h"
+#include "include/core/SkFlattenable.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -28,9 +29,11 @@
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <optional>
 
 class SkArenaAlloc;
 class SkGlyph;
+class SkReadBuffer;
 class SkScalerContext;
 namespace sktext {
 class StrikeForGPU;
@@ -394,6 +397,7 @@ private:
 
 class SkGlyph {
 public:
+    static std::optional<SkGlyph> MakeFromBuffer(SkReadBuffer&);
     // SkGlyph() is used for testing.
     constexpr SkGlyph() : SkGlyph{SkPackedGlyphID()} { }
     SkGlyph(const SkGlyph&);
@@ -508,6 +512,14 @@ public:
                           SkScalar* array, int* count, SkArenaAlloc* alloc);
 
     void setImage(void* image) { fImage = image; }
+
+    // Serialize/deserialize functions.
+    void flattenImage(SkWriteBuffer&) const;
+    size_t addImageFromBuffer(SkReadBuffer&, SkArenaAlloc*);
+    void flattenPath(SkWriteBuffer&) const;
+    size_t addPathFromBuffer(SkReadBuffer&, SkArenaAlloc*);
+    void flattenDrawable(SkWriteBuffer&) const;
+    size_t addDrawableFromBuffer(SkReadBuffer&, SkArenaAlloc*);
 
 private:
     // There are two sides to an SkGlyph, the scaler side (things that create glyph data) have

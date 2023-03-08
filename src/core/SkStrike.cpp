@@ -6,6 +6,7 @@
  */
 
 #include "src/core/SkStrike.h"
+#include <optional>
 
 #include "include/core/SkDrawable.h"
 #include "include/core/SkGraphics.h"
@@ -15,8 +16,10 @@
 #include "src/core/SkDistanceFieldGen.h"
 #include "src/core/SkEnumerate.h"
 #include "src/core/SkGlyph.h"
+#include "src/core/SkReadBuffer.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkStrikeCache.h"
+#include "src/core/SkWriteBuffer.h"
 #include "src/text/StrikeForGPU.h"
 
 #if defined(SK_GANESH)
@@ -293,6 +296,47 @@ bool SkStrike::prepareForDrawable(SkGlyph* glyph) {
         fMemoryIncrease += increase;
     }
     return glyph->drawable() != nullptr;
+}
+
+SkGlyph* SkStrike::mergeGlyphFromBuffer(SkReadBuffer& buffer) {
+    std::optional<SkGlyph> prototypeGlyph = SkGlyph::MakeFromBuffer(buffer);
+    if (!prototypeGlyph) {
+        return nullptr;
+    }
+
+    SkGlyphDigest* digestPtr = fDigestForPackedGlyphID.find(prototypeGlyph->getPackedID());
+    if (digestPtr != nullptr) {
+        return fGlyphForIndex[digestPtr->index()];
+    }
+
+    SkGlyph* glyph = fAlloc.make<SkGlyph>(prototypeGlyph.value());
+    fMemoryIncrease += sizeof(SkGlyph);
+    this->addGlyphAndDigest(glyph);
+    return glyph;
+}
+
+bool SkStrike::mergeGlyphAndImageFromBuffer(SkReadBuffer& buffer) {
+    SkASSERT(buffer.isValid());
+    Monitor m{this};
+    SkGlyph* glyph = this->mergeGlyphFromBuffer(buffer);
+    fMemoryIncrease += glyph->addImageFromBuffer(buffer, &fAlloc);
+    return buffer.isValid();
+}
+
+bool SkStrike::mergeGlyphAndPathFromBuffer(SkReadBuffer& buffer) {
+    SkASSERT(buffer.isValid());
+    Monitor m{this};
+    SkGlyph* glyph = this->mergeGlyphFromBuffer(buffer);
+    fMemoryIncrease += glyph->addPathFromBuffer(buffer, &fAlloc);
+    return buffer.isValid();
+}
+
+bool SkStrike::mergeGlyphAndDrawableFromBuffer(SkReadBuffer& buffer) {
+    SkASSERT(buffer.isValid());
+    Monitor m{this};
+    SkGlyph* glyph = this->mergeGlyphFromBuffer(buffer);
+    fMemoryIncrease += glyph->addDrawableFromBuffer(buffer, &fAlloc);
+    return buffer.isValid();
 }
 
 SkSpan<const SkGlyph*> SkStrike::internalPrepare(

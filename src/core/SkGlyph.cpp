@@ -19,6 +19,7 @@
 #include "src/text/StrikeForGPU.h"
 
 #include <cstring>
+#include <optional>
 #include <tuple>
 #include <utility>
 
@@ -26,6 +27,10 @@ using namespace skglyph;
 using namespace sktext;
 
 //-- SkGlyph ---------------------------------------------------------------------------------------
+std::optional<SkGlyph> SkGlyph::MakeFromBuffer(SkReadBuffer&) {
+    return std::nullopt;
+}
+
 SkGlyph::SkGlyph(const SkGlyph&) = default;
 SkGlyph& SkGlyph::operator=(const SkGlyph&) = default;
 SkGlyph::SkGlyph(SkGlyph&&) = default;
@@ -246,6 +251,13 @@ SkDrawable* SkGlyph::drawable() const {
     }
     return nullptr;
 }
+
+void SkGlyph::flattenImage(SkWriteBuffer&) const {}
+size_t SkGlyph::addImageFromBuffer(SkReadBuffer&, SkArenaAlloc*) { return 0; }
+void SkGlyph::flattenPath(SkWriteBuffer&) const {}
+size_t SkGlyph::addPathFromBuffer(SkReadBuffer&, SkArenaAlloc*) { return 0; }
+void SkGlyph::flattenDrawable(SkWriteBuffer&) const {}
+size_t SkGlyph::addDrawableFromBuffer(SkReadBuffer&, SkArenaAlloc*) { return 0; }
 
 static std::tuple<SkScalar, SkScalar> calculate_path_gap(
         SkScalar topOffset, SkScalar bottomOffset, const SkPath& path) {
