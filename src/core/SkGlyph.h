@@ -371,7 +371,6 @@ public:
         return packedID.hash();
     }
 
-private:
     void setAction(skglyph::ActionType actionType, skglyph::GlyphAction action) {
         using namespace skglyph;
         SkASSERT(action != GlyphAction::kUnset);
@@ -381,6 +380,7 @@ private:
         fActions |= SkTo<uint64_t>(action) << actionType;
     }
 
+private:
     static_assert(SkPackedGlyphID::kEndData == 20);
     static_assert(SkMask::kCountMaskFormats <= 8);
     static_assert(SkTo<int>(skglyph::GlyphAction::kSize) <= 4);
