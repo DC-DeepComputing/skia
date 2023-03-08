@@ -50,6 +50,24 @@
       "message": "Just to confirm nothing is meant to be shared yet. And soon we will delete emitHelper and replace it with calls to noise_function?",
       "revId": "e52576467ca2999eb2e1d23e9cfa69a03c62fa7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f18f8ce9_a644bf82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-08T16:05:54Z",
+      "side": 1,
+      "message": "Right - the Ganesh code will need to morph a bit more before the noise_function can be shared. For example, Ganesh can currently emit two versions of the function (stitching and non-stitching variants).\n\nAdditionally the first half of the noise_function could be split out and called only once (rather than four times). That will take some more gyrations.",
+      "parentUuid": "d8223d33_1213d827",
+      "revId": "e52576467ca2999eb2e1d23e9cfa69a03c62fa7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
