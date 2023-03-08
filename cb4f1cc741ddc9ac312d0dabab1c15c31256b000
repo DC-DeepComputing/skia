@@ -34,6 +34,24 @@
       "parentUuid": "0707c415_8ed64396",
       "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "232e6a45_5603a061",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-08T15:17:37Z",
+      "side": 1,
+      "message": "So since we do want to end up with logging in the long term, what if we set this up with a name that\u0027s more of a \"log\" type name. But in the short term Android can override this macro in their own config file to add an abort in. That way the idea of aborting stays out of the Skia code, but Android can still get their short term desires?",
+      "parentUuid": "6223f466_95ecf443",
+      "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
