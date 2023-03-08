@@ -976,8 +976,6 @@ std::string GenerateShaderBasedBlenderExpression(const ShaderInfo& shaderInfo,
                                                  int entryIndex,
                                                  const PaintParamsKey::BlockReader& reader,
                                                  const ShaderSnippet::Args& args) {
-    const bool usePrimitiveColorAsDst = reader.entry()->needsDestColor();
-
     SkASSERT(reader.entry()->fUniforms.size() == 1);
     SkASSERT(reader.numDataPayloadFields() == 0);
 
@@ -986,7 +984,8 @@ std::string GenerateShaderBasedBlenderExpression(const ShaderInfo& shaderInfo,
     // TODO: emit function to perform dest read into preamble, and replace half4(1) with that call
     // (The `args.destColor` variable might seem tempting here, but this is used for programmatic
     // src+dest blends within the shader, not for blends against the destination surface.)
-    const char * destColor = usePrimitiveColorAsDst ? "primitiveColor" : "half4(1)";
+    const char* destColor =
+            reader.entry()->blendAgainstPrimitiveColor() ? "primitiveColor" : "half4(1)";
 
     return SkSL::String::printf("%s(%s, %.*s, %s)",
                                 reader.entry()->fStaticFunctionName,
@@ -1453,7 +1452,7 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPrimitiveColorShaderBasedBlender] = {
             "PrimitiveColorShaderBasedBlender",
             SkSpan(kShaderBasedBlenderUniforms),
-            SnippetRequirementFlags::kDestColor,
+            SnippetRequirementFlags::kBlendAgainstPrimitiveColor,
             { },     // no samplers
             kBlendHelperName,
             GenerateShaderBasedBlenderExpression,
