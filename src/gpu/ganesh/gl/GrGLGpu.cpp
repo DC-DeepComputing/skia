@@ -2292,6 +2292,7 @@ bool GrGLGpu::readOrTransferPixelsFrom(GrSurface* surface,
         return false;
     }
 
+    GrGLint previousFBOID;
     if (renderTarget) {
         // Always bind the single sample FBO since we can't read pixels from an MSAA framebuffer.
         constexpr bool useMultisampleFBO = false;
@@ -2300,6 +2301,7 @@ bool GrGLGpu::readOrTransferPixelsFrom(GrSurface* surface,
         }
         this->flushRenderTarget(renderTarget, useMultisampleFBO);
     } else {
+        GR_GL_CALL(this->glInterface(), GetIntegerv(GR_GL_FRAMEBUFFER_BINDING, &previousFBOID));
         // Use a temporary FBO.
         this->bindSurfaceFBOForPixelOps(surface, 0, GR_GL_FRAMEBUFFER, kSrc_TempFBOTarget);
         fHWBoundRenderTargetUniqueID.makeInvalid();
@@ -2327,6 +2329,7 @@ bool GrGLGpu::readOrTransferPixelsFrom(GrSurface* surface,
 
     if (!renderTarget) {
         this->unbindSurfaceFBOForPixelOps(surface, 0, GR_GL_FRAMEBUFFER);
+        this->bindFramebuffer(GR_GL_FRAMEBUFFER, previousFBOID);
     }
     return true;
 }
