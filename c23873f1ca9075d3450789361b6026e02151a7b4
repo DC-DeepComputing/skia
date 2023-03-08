@@ -33,6 +33,24 @@
       "message": "This all looks good to me for the immediate purposes, but given the example shown in `runtimeshader`, do you think it\u0027s good to make a note here about the behavior to expect/depend on for invoking the callback: ordering guarantees, once per draw to the SkCanvas, in the order executed? Or laxer, once per draw, possibly out of order, not within the SkCanvas call stack?",
       "revId": "c23873f1ca9075d3450789361b6026e02151a7b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c105787a_edfc82cd",
+        "filename": "src/core/SkRuntimeEffectPriv.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-08T22:45:19Z",
+      "side": 1,
+      "message": "I put a vague hand-wavy comment here. In general, things happen in order (because we eagerly convert paints to FPs in Ganesh), but there\u0027s no real guarantee.",
+      "parentUuid": "d9688d00_9a5c1745",
+      "revId": "c23873f1ca9075d3450789361b6026e02151a7b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
