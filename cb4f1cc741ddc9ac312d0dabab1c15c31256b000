@@ -70,6 +70,24 @@
       "parentUuid": "232e6a45_5603a061",
       "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a6b808d_9b7720d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-08T15:55:01Z",
+      "side": 1,
+      "message": "I guess the issue is there is nothing fatal or abort worthy for Skia here. I\u0027d prefer to avoid have Androids interpretation of things leaking into Skia too much. Having a macro that\u0027s intended for Android\u0027s use only is okay (though not great, and hopefully skia revamped logging can fix that), but I\u0027m not a huge fan of how to handle the failure case leaking into Skia.",
+      "parentUuid": "30c9ce7e_a6fd7523",
+      "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
