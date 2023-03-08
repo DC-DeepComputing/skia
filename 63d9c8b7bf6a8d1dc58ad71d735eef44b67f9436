@@ -41,6 +41,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "552ada30_fd070e64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-03-08T22:01:05Z",
+      "side": 1,
+      "message": "There doesn\u0027t seem to be any interest in fixing my nits, so we may as well land this and let HWUI use the callback.",
+      "revId": "63d9c8b7bf6a8d1dc58ad71d735eef44b67f9436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea5c2672_a4719251",
