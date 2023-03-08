@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "162aaf11_d2a706d9",
+        "filename": "include/gpu/graphite/YUVABackendTextures.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-08T19:58:47Z",
+      "side": 1,
+      "message": "I changed it to just \u003e\u003d0 in both places. std::array should catch values that are too big.",
+      "parentUuid": "a26f3f98_107c9e74",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 43
+      },
+      "revId": "aa9a7b0cc054e204c0c056b7f5cb6077b817bf1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e76f7e6f_12061229",
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13b7ab67_b64ba5e2",
+        "filename": "src/gpu/graphite/YUVABackendTextures.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-08T19:58:47Z",
+      "side": 1,
+      "message": "I did a lot of changes to make them consistent with each other.",
+      "parentUuid": "e76f7e6f_12061229",
+      "revId": "aa9a7b0cc054e204c0c056b7f5cb6077b817bf1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc981b6d_a012c2da",
@@ -71,6 +113,24 @@
       "writtenOn": "2023-03-03T14:20:01Z",
       "side": 1,
       "message": "Add a \"SkASSERT(this-\u003eisValid());\" to match YUVABackendTextureInfo?",
+      "revId": "aa9a7b0cc054e204c0c056b7f5cb6077b817bf1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8005c5bd_2ba0b804",
+        "filename": "src/gpu/graphite/YUVABackendTextures.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-08T19:58:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc981b6d_a012c2da",
       "revId": "aa9a7b0cc054e204c0c056b7f5cb6077b817bf1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
