@@ -20,6 +20,7 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "src/base/SkRandom.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkRuntimeEffectPriv.h"
 #include "tools/Resources.h"
 
 enum RT_Flags {
@@ -1086,6 +1087,34 @@ DEF_SIMPLE_GM(null_child_rt, canvas, 150, 150) {
         auto image = surface->makeImageSnapshot()->makeColorSpace(SkColorSpace::MakeSRGB(), direct);
 
         canvas->drawImage(image, 0, 0);
+        canvas->translate(50, 0);
+    }
+}
+
+DEF_SIMPLE_GM(deferred_shader_rt, canvas, 150, 50) {
+    const SkString kShader{R"(
+        uniform half4 color;
+        half4 main(float2 p) { return color; }
+    )"};
+    auto [effect, error] = SkRuntimeEffect::MakeForShader(kShader);
+    SkASSERT(effect);
+
+    SkColor4f color = SkColors::kRed;
+    auto makeUniforms = [color](const SkRuntimeEffectPriv::UniformsCallbackContext&) mutable {
+        auto result = SkData::MakeWithCopy(&color, sizeof(color));
+        color = {color.fB, color.fR, color.fG, color.fA};
+        return result;
+    };
+
+    auto shader =
+            SkRuntimeEffectPriv::MakeDeferredShader(effect.get(), makeUniforms, /*children=*/{});
+    SkASSERT(shader);
+
+    SkPaint paint;
+    paint.setShader(shader);
+
+    for (int i = 0; i < 3; ++i) {
+        canvas->drawRect({0, 0, 50, 50}, paint);
         canvas->translate(50, 0);
     }
 }
