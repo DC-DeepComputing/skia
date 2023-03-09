@@ -22,6 +22,30 @@
       },
       "revId": "af2cb7b4eddfa0e94449d57946f80e619bcc0d27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a17c5e06_55ab48f0",
+        "filename": "src/gpu/dawn/DawnUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-03-09T21:59:45Z",
+      "side": 1,
+      "message": "Yes. Based on the comment, dawn may use D23S8 or D32S8.\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/native/Toggles.cpp;l\u003d109;drc\u003d26d5a0721a1b21ded47b31a3fc0a5ef4928d5b80;bpv\u003d1;bpt\u003d1",
+      "parentUuid": "3d7d5b97_a459a185",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 27,
+        "endChar": 91
+      },
+      "revId": "af2cb7b4eddfa0e94449d57946f80e619bcc0d27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
