@@ -23,34 +23,25 @@
 #include <utility>
 #include <vector>
 
-#include <unicode/ubidi.h>
-#include <unicode/ubrk.h>
-#include <unicode/uchar.h>
-#include <unicode/uloc.h>
-#include <unicode/uscript.h>
-#include <unicode/ustring.h>
-#include <unicode/utext.h>
-#include <unicode/utypes.h>
-
-
 #ifndef SK_UNICODE_ICU_IMPLEMENTATION
+
 const char* SkUnicode_IcuBidi::errorName(UErrorCode status) {
-    return u_errorName(status);
+    return u_errorName_skia(status);
 }
 void SkUnicode_IcuBidi::bidi_close(UBiDi* bidi) {
-    ubidi_close(bidi);
+    ubidi_close_skia(bidi);
 }
 UBiDiDirection SkUnicode_IcuBidi::bidi_getDirection(const UBiDi* bidi) {
-    return ubidi_getDirection(bidi);
+    return ubidi_getDirection_skia(bidi);
 }
 SkBidiIterator::Position SkUnicode_IcuBidi::bidi_getLength(const UBiDi* bidi) {
-    return ubidi_getLength(bidi);
+    return ubidi_getLength_skia(bidi);
 }
 SkBidiIterator::Level SkUnicode_IcuBidi::bidi_getLevelAt(const UBiDi* bidi, int pos) {
-    return ubidi_getLevelAt(bidi, pos);
+    return ubidi_getLevelAt_skia(bidi, pos);
 }
 UBiDi* SkUnicode_IcuBidi::bidi_openSized(int32_t maxLength, int32_t maxRunCount, UErrorCode* pErrorCode) {
-    return ubidi_openSized(maxLength, maxRunCount, pErrorCode);
+    return ubidi_openSized_skia(maxLength, maxRunCount, pErrorCode);
 }
 void SkUnicode_IcuBidi::bidi_setPara(UBiDi* bidi,
                          const UChar* text,
@@ -58,12 +49,12 @@ void SkUnicode_IcuBidi::bidi_setPara(UBiDi* bidi,
                          UBiDiLevel paraLevel,
                          UBiDiLevel* embeddingLevels,
                          UErrorCode* status) {
-    return ubidi_setPara(bidi, text, length, paraLevel, embeddingLevels, status);
+    return ubidi_setPara_skia(bidi, text, length, paraLevel, embeddingLevels, status);
 }
 void SkUnicode_IcuBidi::bidi_reorderVisual(const SkUnicode::BidiLevel runLevels[],
                                int levelsCount,
                                int32_t logicalFromVisual[]) {
-    ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+    ubidi_reorderVisual_skia(runLevels, levelsCount, logicalFromVisual);
 }
 #endif
 
