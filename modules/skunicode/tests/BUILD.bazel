@@ -1,0 +1,10 @@
+load("//bazel:macros.bzl", "exports_files_legacy", "skia_filegroup")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+skia_filegroup(
+    name = "test_icu_srcs",
+    srcs = ["SkUnicode_test.cpp"],
+)
