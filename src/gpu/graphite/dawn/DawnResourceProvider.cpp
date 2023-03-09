@@ -112,6 +112,8 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
             }
         )";
 
+        auto autoLock(dawnSharedContext()->AcquireLock());
+
         auto vsModule = create_shader_module(dawnSharedContext()->device(), kVertexShaderText);
         auto fsModule = create_shader_module(dawnSharedContext()->device(), kFragmentShaderText);
 

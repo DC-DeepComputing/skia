@@ -804,8 +804,8 @@ public:
     void draw(SkCanvas* canvas,
               SkPoint drawOrigin,
               const SkPaint& paint,
-              sk_sp<SkRefCnt> subRunStorage,
-              Device* device) const override {
+              sk_sp<SkRefCnt>,
+              Device*) const override {
         fPathDrawing.submitDraws(canvas, drawOrigin, paint);
     }
 #endif  // SK_GRAPHITE_ENABLED

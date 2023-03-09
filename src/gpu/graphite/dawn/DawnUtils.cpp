@@ -142,6 +142,7 @@ wgpu::ShaderModule DawnCompileSPIRVShaderModule(const DawnSharedContext* sharedC
     desc.nextInChain = &spirvDesc;
     spirvDesc.nextInChain = &dawnSpirvOptions;
 
+    sharedContext->AssertLocked();
     return sharedContext->device().CreateShaderModule(&desc);
 }
 

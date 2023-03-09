@@ -16,10 +16,10 @@ namespace skgpu::graphite {
 namespace {
 class DawnWorkSubmission final : public GpuWorkSubmission {
 public:
-    DawnWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
-                       DawnQueueManager* queueManager,
-                       wgpu::Device device)
-            : GpuWorkSubmission(std::move(cmdBuffer), queueManager), fAsyncWait(std::move(device)) {
+    DawnWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer, DawnQueueManager* queueManager)
+            : GpuWorkSubmission(std::move(cmdBuffer), queueManager)
+            , fSharedContext(queueManager->dawnSharedContext())
+            , fAsyncWait(queueManager->dawnSharedContext()) {
         queueManager->dawnQueue().OnSubmittedWorkDone(
                 0,
                 [](WGPUQueueWorkDoneStatus, void* userData) {
@@ -30,10 +30,18 @@ public:
     }
     ~DawnWorkSubmission() override {}
 
-    bool isFinished() override { return fAsyncWait.yieldAndCheck(); }
-    void waitUntilFinished() override { fAsyncWait.busyWait(); }
+    bool isFinished() override {
+        auto autoLock(fSharedContext->AcquireLock());
+        return fAsyncWait.yieldAndCheck();
+    }
+
+    void waitUntilFinished() override {
+        auto autoLock(fSharedContext->AcquireLock());
+        fAsyncWait.busyWait();
+    }
 
 private:
+    const DawnSharedContext* const fSharedContext;
     DawnAsyncWait fAsyncWait;
 };
 } // namespace
@@ -53,6 +61,7 @@ std::unique_ptr<CommandBuffer> DawnQueueManager::getNewCommandBuffer(
 
 QueueManager::OutstandingSubmission DawnQueueManager::onSubmitToGpu() {
     SkASSERT(fCurrentCommandBuffer);
+    auto autoLock(dawnSharedContext()->AcquireLock());
     DawnCommandBuffer* dawnCmdBuffer = static_cast<DawnCommandBuffer*>(fCurrentCommandBuffer.get());
     auto wgpuCmdBuffer = dawnCmdBuffer->finishEncoding();
     if (!wgpuCmdBuffer) {
@@ -62,8 +71,8 @@ QueueManager::OutstandingSubmission DawnQueueManager::onSubmitToGpu() {
 
     fQueue.Submit(/*commandCount=*/1, &wgpuCmdBuffer);
 
-    std::unique_ptr<DawnWorkSubmission> submission(new DawnWorkSubmission(
-            std::move(fCurrentCommandBuffer), this, dawnSharedContext()->device()));
+    std::unique_ptr<DawnWorkSubmission> submission(
+            new DawnWorkSubmission(std::move(fCurrentCommandBuffer), this));
 
     return std::move(submission);
 }

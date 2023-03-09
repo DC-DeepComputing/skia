@@ -99,6 +99,7 @@ sk_sp<DawnSampler> DawnSampler::Make(const DawnSharedContext* sharedContext,
     desc.label = label.c_str();
 #endif
 
+    auto autoLock(sharedContext->AcquireLock());
     auto sampler = sharedContext->device().CreateSampler(&desc);
     if (!sampler) {
         return {};
@@ -107,6 +108,7 @@ sk_sp<DawnSampler> DawnSampler::Make(const DawnSharedContext* sharedContext,
 }
 
 void DawnSampler::freeGpuData() {
+    auto autoLock(static_cast<const DawnSharedContext*>(sharedContext())->AcquireLock());
     fSampler = nullptr;
 }
 

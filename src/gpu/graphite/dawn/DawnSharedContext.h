@@ -8,6 +8,9 @@
 #ifndef skgpu_graphite_DawnSharedContext_DEFINED
 #define skgpu_graphite_DawnSharedContext_DEFINED
 
+#include <memory>
+#include <mutex>
+
 #include "webgpu/webgpu_cpp.h"
 
 #include "src/gpu/graphite/SharedContext.h"
@@ -29,13 +32,18 @@ public:
     const wgpu::Device& device() const { return fDevice; }
     const wgpu::Queue& queue() const { return fQueue; }
     const wgpu::ShaderModule& noopFragment() const { return fNoopFragment; }
+
+    std::unique_ptr<std::scoped_lock<std::mutex>> AcquireLock() const;
+    void AssertLocked() const;
+
 private:
     DawnSharedContext(const DawnBackendContext&,
                       std::unique_ptr<const DawnCaps> caps,
                       wgpu::ShaderModule noopFragment);
 
-    wgpu::Device       fDevice;
-    wgpu::Queue        fQueue;
+    wgpu::Device fDevice;
+    wgpu::Queue fQueue;
+    mutable std::mutex* fLock;
     // A noop fragment shader, it is used to workaround dawn a validation error(dawn doesn't allow
     // a pipeline with a color attachment but without a fragment shader).
     wgpu::ShaderModule fNoopFragment;

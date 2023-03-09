@@ -91,6 +91,7 @@ wgpu::Texture DawnTexture::MakeDawnTexture(const DawnSharedContext* sharedContex
     desc.viewFormatCount            = 0;
     desc.viewFormats                = nullptr;
 
+    auto autoLock(sharedContext->AcquireLock());
     auto texture = sharedContext->device().CreateTexture(&desc);
     if (!texture) {
         return {};
@@ -118,6 +119,7 @@ sk_sp<Texture> DawnTexture::Make(const DawnSharedContext* sharedContext,
     if (!texture) {
         return {};
     }
+    auto autoLock(sharedContext->AcquireLock());
     auto textureView = texture.CreateView();
     return sk_sp<Texture>(new DawnTexture(sharedContext,
                                           dimensions,
@@ -136,6 +138,7 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
         SKGPU_LOG_E("No valid texture passed into MakeWrapped\n");
         return {};
     }
+    auto autoLock(sharedContext->AcquireLock());
     auto textureView = texture.CreateView();
     return sk_sp<Texture>(new DawnTexture(sharedContext,
                                           dimensions,
@@ -164,6 +167,7 @@ sk_sp<Texture> DawnTexture::MakeWrapped(const DawnSharedContext* sharedContext,
 }
 
 void DawnTexture::freeGpuData() {
+    auto autoLock(static_cast<const DawnSharedContext*>(sharedContext())->AcquireLock());
     fTexture = nullptr;
     fTextureView = nullptr;
 }

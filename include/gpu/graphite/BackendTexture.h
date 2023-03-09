@@ -32,7 +32,7 @@ class MutableTextureStateRef;
 
 namespace skgpu::graphite {
 
-class BackendTexture {
+class SK_API BackendTexture {
 public:
     BackendTexture();
 #ifdef SK_DAWN
@@ -112,7 +112,11 @@ private:
     sk_sp<MutableTextureStateRef> fMutableState;
 
 #ifdef SK_DAWN
+    void ReleaseDawn();
+
     struct Dawn {
+        Dawn() = default;
+        ~Dawn() = default;
         Dawn(wgpu::Texture texture) : fTexture(std::move(texture)) {}
         Dawn(wgpu::TextureView textureView) : fTextureView(std::move(textureView)) {}
 

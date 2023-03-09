@@ -57,14 +57,14 @@ DawnCommandBuffer::~DawnCommandBuffer() {}
 
 wgpu::CommandBuffer DawnCommandBuffer::finishEncoding() {
     SkASSERT(fCommandEncoder);
+    fSharedContext->AssertLocked();
     wgpu::CommandBuffer cmdBuffer = fCommandEncoder.Finish();
-
     fCommandEncoder = nullptr;
-
     return cmdBuffer;
 }
 
 void DawnCommandBuffer::onResetCommandBuffer() {
+    auto autoLock(fSharedContext->AcquireLock());
     fActiveGraphicsPipeline = nullptr;
     fActiveRenderPassEncoder = nullptr;
     fActiveComputePassEncoder = nullptr;
@@ -77,6 +77,7 @@ void DawnCommandBuffer::onResetCommandBuffer() {
 }
 
 bool DawnCommandBuffer::setNewCommandBufferResources() {
+    auto autoLock(fSharedContext->AcquireLock());
     SkASSERT(!fCommandEncoder);
     fCommandEncoder = fSharedContext->device().CreateCommandEncoder();
     SkASSERT(fCommandEncoder);
@@ -109,6 +110,7 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
 bool DawnCommandBuffer::onAddComputePass(const ComputePassDesc& computePassDesc,
                                          const ComputePipeline* pipeline,
                                          const std::vector<ResourceBinding>& bindings) {
+    auto autoLock(fSharedContext->AcquireLock());
     this->beginComputePass();
     this->bindComputePipeline(pipeline);
     for (const ResourceBinding& binding : bindings) {
@@ -320,7 +322,11 @@ bool DawnCommandBuffer::doBlitWithDraw(const RenderPassDesc& frontendRenderPassD
     desc.entryCount = 1;
     desc.entries = &entry;
 
-    auto bindGroup = fSharedContext->device().CreateBindGroup(&desc);
+    wgpu::BindGroup bindGroup;
+    {
+        auto autoLock(fSharedContext->AcquireLock());
+        bindGroup = fSharedContext->device().CreateBindGroup(&desc);
+    }
 
     fActiveRenderPassEncoder.SetBindGroup(0, bindGroup);
 
@@ -411,6 +417,7 @@ void DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
 void DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
     fActiveGraphicsPipeline = static_cast<const DawnGraphicsPipeline*>(graphicsPipeline);
     fActiveRenderPassEncoder.SetPipeline(fActiveGraphicsPipeline->dawnRenderPipeline());
+    fActiveRenderPassEncoder.SetStencilReference(fActiveGraphicsPipeline->stencilReferenceValue());
     fBoundUniformBuffersDirty = true;
 }
 
@@ -493,7 +500,11 @@ void DawnCommandBuffer::bindTextureAndSamplers(
     desc.entryCount = entries.size();
     desc.entries = entries.data();
 
-    auto bindGroup = fSharedContext->device().CreateBindGroup(&desc);
+    wgpu::BindGroup bindGroup;
+    {
+        auto autoLock(fSharedContext->AcquireLock());
+        bindGroup = fSharedContext->device().CreateBindGroup(&desc);
+    }
 
     fActiveRenderPassEncoder.SetBindGroup(DawnGraphicsPipeline::kTextureBindGroupIndex, bindGroup);
 }
@@ -549,7 +560,11 @@ void DawnCommandBuffer::syncUniformBuffers() {
         desc.entryCount = numBuffers;
         desc.entries = entries.data();
 
-        auto bindGroup = fSharedContext->device().CreateBindGroup(&desc);
+        wgpu::BindGroup bindGroup;
+        {
+            auto autoLock(fSharedContext->AcquireLock());
+            bindGroup = fSharedContext->device().CreateBindGroup(&desc);
+        }
 
         fActiveRenderPassEncoder.SetBindGroup(DawnGraphicsPipeline::kUniformBufferBindGroupIndex,
                                               bindGroup);
@@ -582,6 +597,7 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
         desc.usage = wgpu::BufferUsage::CopyDst | wgpu::BufferUsage::Uniform;
         desc.size = sizeof(IntrinsicConstant);
         desc.mappedAtCreation = false;
+        auto autoLock(fSharedContext->AcquireLock());
         fInstrinsicConstantBuffer = fSharedContext->device().CreateBuffer(&desc);
         SkASSERT(fInstrinsicConstantBuffer);
     }
@@ -698,6 +714,7 @@ bool DawnCommandBuffer::onCopyBufferToBuffer(const Buffer* srcBuffer,
     auto& wgpuBufferSrc = static_cast<const DawnBuffer*>(srcBuffer)->dawnBuffer();
     auto& wgpuBufferDst = static_cast<const DawnBuffer*>(dstBuffer)->dawnBuffer();
 
+    auto autoLock(fSharedContext->AcquireLock());
     fCommandEncoder.CopyBufferToBuffer(wgpuBufferSrc, srcOffset, wgpuBufferDst, dstOffset, size);
     return true;
 }
@@ -728,6 +745,7 @@ bool DawnCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
 
     wgpu::Extent3D copySize = {
             static_cast<uint32_t>(srcRect.width()), static_cast<uint32_t>(srcRect.height()), 1};
+    auto autoLock(fSharedContext->AcquireLock());
     fCommandEncoder.CopyTextureToBuffer(&src, &dst, &copySize);
 
     return true;
@@ -749,6 +767,7 @@ bool DawnCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
     wgpu::ImageCopyTexture dst;
     dst.texture = wgpuTexture;
 
+    auto autoLock(fSharedContext->AcquireLock());
     for (int i = 0; i < count; ++i) {
         src.layout.offset = copyData[i].fBufferOffset;
         // Dawn requires buffer's alignment to be multiples of 256.
@@ -791,6 +810,7 @@ bool DawnCommandBuffer::onCopyTextureToTexture(const Texture* src,
     wgpu::Extent3D copySize = {
             static_cast<uint32_t>(srcRect.width()), static_cast<uint32_t>(srcRect.height()), 1};
 
+    auto autoLock(fSharedContext->AcquireLock());
     fCommandEncoder.CopyTextureToTexture(&srcArgs, &dstArgs, &copySize);
 
     return true;
@@ -804,6 +824,7 @@ bool DawnCommandBuffer::onClearBuffer(const Buffer* buffer, size_t offset, size_
     SkASSERT(!fActiveRenderPassEncoder);
     SkASSERT(!fActiveComputePassEncoder);
 
+    auto autoLock(fSharedContext->AcquireLock());
     auto& wgpuBuffer = static_cast<const DawnBuffer*>(buffer)->dawnBuffer();
     fCommandEncoder.ClearBuffer(wgpuBuffer, offset, size);
 

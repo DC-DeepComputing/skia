@@ -9,7 +9,7 @@
 #define skgpu_graphite_PipelineDataCache_DEFINED
 
 #include "src/base/SkArenaAlloc.h"
-#include "src/core/SkTHash.h"
+#include "src/core/SkLRUCache.h"
 #include "src/gpu/graphite/PipelineData.h"
 
 
@@ -23,8 +23,7 @@ namespace skgpu::graphite {
 //
 // T must define a hash() function, an operator==, and a static Make(const T&, SkArenaAlloc*)
 // factory that's used to copy the data into an arena allocation owned by the PipelineDataCache.
-template<typename T>
-class PipelineDataCache {
+template <typename T, int N> class PipelineDataCache {
 public:
     PipelineDataCache() = default;
 
@@ -36,7 +35,7 @@ public:
         } else {
             // Need to make a copy of dataBlock into the arena
             T* copy = T::Make(dataBlock, &fArena);
-            fDataPointers.add(DataRef{copy});
+            fDataPointers.insert(DataRef{copy}, DataRef{copy});
             return copy;
         }
     }
@@ -47,11 +46,9 @@ public:
     }
 
     // Call fn on every item in the set.  You may not mutate anything.
-    template <typename Fn>  // f(T), f(const T&)
-    void foreach(Fn&& fn) const {
-        fDataPointers.foreach([fn](const DataRef& ref){
-            fn(ref.fPointer);
-        });
+    template <typename Fn>  // f(T), f(const T*, const T*)
+    void foreach (Fn&& fn) const {
+        fDataPointers.foreach ([fn](const DataRef* ref, const DataRef* _) { fn(ref->fPointer); });
     }
 
 private:
@@ -73,18 +70,18 @@ private:
         }
     };
 
-    SkTHashSet<DataRef, Hash> fDataPointers;
+    SkLRUCache<DataRef, DataRef, Hash> fDataPointers{N};
     // Holds the data that is pointed to by fDataPointers
     SkArenaAlloc fArena{0};
 };
 
 // A UniformDataCache lives for the entire duration of a Recorder.
-using UniformDataCache = PipelineDataCache<UniformDataBlock>;
+using UniformDataCache = PipelineDataCache<UniformDataBlock, 128>;
 
 // A TextureDataCache only lives for a single Recording. When a Recording is snapped it is pulled
 // off of the Recorder and goes with the Recording as a record of the required Textures and
 // Samplers.
-using TextureDataCache = PipelineDataCache<TextureDataBlock>;
+using TextureDataCache = PipelineDataCache<TextureDataBlock, INT_MAX>;
 
 } // namespace skgpu::graphite
 
