@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f02ead1_9243472b",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-09T16:15:27Z",
+      "side": 1,
+      "message": "Needs fUTF16IndexForUTF8Index.clear(), too",
+      "range": {
+        "startLine": 186,
+        "startChar": 4,
+        "endLine": 186,
+        "endChar": 27
+      },
+      "revId": "a194ad34b1e390c1c21731582dd382ba87a5767f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "441ee838_67cff082",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-09T16:15:27Z",
+      "side": 1,
+      "message": "Needs fUTF16IndexForUTF8Index.clear(), too",
+      "range": {
+        "startLine": 293,
+        "startChar": 4,
+        "endLine": 293,
+        "endChar": 27
+      },
+      "revId": "a194ad34b1e390c1c21731582dd382ba87a5767f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
