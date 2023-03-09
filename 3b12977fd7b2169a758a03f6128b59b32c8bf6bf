@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "624f8356_fe2567ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-09T22:01:41Z",
+      "side": 1,
+      "message": "LGTM assuming the Bazel issues are addressed -- not sure what\u0027s missing there.",
+      "revId": "3b12977fd7b2169a758a03f6128b59b32c8bf6bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
