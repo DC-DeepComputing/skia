@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "681da564_aa6f1f71",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-09T19:41:47Z",
+      "side": 1,
+      "message": "Reverse the order of these ?",
+      "revId": "51a67bde51d579e904d39638cddb4b445037fcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc0e5a24_328bf97b",
+        "filename": "src/core/SkFontMetricsPriv.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-09T19:41:47Z",
+      "side": 1,
+      "message": "Here too",
+      "revId": "51a67bde51d579e904d39638cddb4b445037fcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06dcd76f_7779bc99",
+        "filename": "src/core/SkFontMetricsPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-09T19:41:47Z",
+      "side": 1,
+      "message": "This seems non-standard:\n\n/*\n * Copyright 2023 Google LLC\n *\n * Use of this source code is governed by a BSD-style license that can be\n * found in the LICENSE file.\n */",
+      "revId": "51a67bde51d579e904d39638cddb4b445037fcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f1eafe4_61453d9d",
+        "filename": "src/core/SkFontMetricsPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-09T19:41:47Z",
+      "side": 1,
+      "message": "Do we actually need any of these headers ?",
+      "revId": "51a67bde51d579e904d39638cddb4b445037fcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e73c4515_5543f2cb",
+        "filename": "src/core/SkFontMetricsPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-09T19:41:47Z",
+      "side": 1,
+      "message": "Isn\u0027t this defined in \"SkWriteBuffer.h\" ?",
+      "revId": "51a67bde51d579e904d39638cddb4b445037fcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbaa09bb_28d7fe9c",
+        "filename": "tests/SkFontMetricsPrivTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-09T19:41:47Z",
+      "side": 1,
+      "message": "Same",
+      "revId": "51a67bde51d579e904d39638cddb4b445037fcde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
