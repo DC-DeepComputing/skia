@@ -23,6 +23,7 @@
 #include <utility>
 #include <vector>
 
+#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
 #include <unicode/ubidi.h>
 #include <unicode/ubrk.h>
 #include <unicode/uchar.h>
@@ -32,8 +33,6 @@
 #include <unicode/utext.h>
 #include <unicode/utypes.h>
 
-
-#ifndef SK_UNICODE_ICU_IMPLEMENTATION
 const char* SkUnicode_IcuBidi::errorName(UErrorCode status) {
     return u_errorName(status);
 }
