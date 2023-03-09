@@ -14,23 +14,8 @@
 using namespace skia_private;
 
 std::unique_ptr<SkUnicode> SkUnicode::Make() {
-#ifdef SK_UNICODE_ICU_IMPLEMENTATION
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
     std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeIcuBasedUnicode();
-    if (unicode) {
-        return unicode;
-    }
-#endif
-    return nullptr;
-}
-
-std::unique_ptr<SkUnicode> MakeClientBasedUnicode(
-        SkSpan<char> text,
-        std::vector<SkUnicode::Position> words,
-        std::vector<SkUnicode::Position> graphemeBreaks,
-        std::vector<SkUnicode::LineBreakBefore> lineBreaks) {
-#ifdef SK_UNICODE_CLIENT_IMPLEMENTATION
-    std::unique_ptr<SkUnicode> unicode =
-            SkUnicode::MakeClientBasedUnicode(text, words, graphemeBreaks, lineBreaks);
     if (unicode) {
         return unicode;
     }
