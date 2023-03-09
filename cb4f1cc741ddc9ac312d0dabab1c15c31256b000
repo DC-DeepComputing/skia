@@ -160,6 +160,24 @@
       "parentUuid": "45981334_bedf1720",
       "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ba79d08_36a94406",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-03-09T18:44:40Z",
+      "side": 1,
+      "message": "*Will* someone? I don\u0027t know. But if it looks like something that just prints something to a log, that is an excellent footgun. If I hadn\u0027t been a part of this conversation, and I was reviewing code that said something like:\n\n```\nSK_INNOCUOUS_LOG(\"Such and such happened.\");\n```\n\nI might just approve that. *Maybe* I would say, \"Hey, don\u0027t we have `SkDebugf` for that?\" But that doesn\u0027t seem like enough of a steel-toed boot to me.\n\nMore specifically, let\u0027s think of someone adding another `SK_INNOCUOUS_LOG` in a file where Nolan\u0027s already added a bunch of them. Someone on the GPU team is reviewing the changes, and it looks like all these other innocuous logs. There must be some good reason the other ones aren\u0027t using `SkDebugf`, so the new one should, too. Only this one wasn\u0027t intended to crash.",
+      "parentUuid": "22a549db_0ab78e39",
+      "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
