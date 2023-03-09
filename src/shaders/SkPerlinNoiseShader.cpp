@@ -754,6 +754,10 @@ SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
     SkString sampleY = this->invokeChild(0, "half4(1)", args, "half2(floorVal.z, 0.5)");
     noiseCode.appendf("half2 latticeIdx = half2(%s.a, %s.a);", sampleX.c_str(), sampleY.c_str());
 
+    // Aggressively round to the nearest exact (N / 255) floating point values.
+    // This prevents rounding errors on some platforms (e.g., Tegras)
+    noiseCode.append("latticeIdx = half2(floor(float2(latticeIdx) * 255.0 + 0.5) / 255.0);");
+
     // Get (x,y) coordinates with the permuted x
     noiseCode.append("half4 bcoords = 256*latticeIdx.xyxy + floorVal.yyww;");
 
