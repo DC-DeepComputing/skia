@@ -113,6 +113,24 @@
       "message": "Why does this need to be in an `std::unique_ptr`? It seems like it could just be a direct member. You\u0027ll avoid the extra `new` and its destructor should be called at the same time as the `std::unique_ptr`\u0027s would\u0027ve been called.",
       "revId": "63d9c8b7bf6a8d1dc58ad71d735eef44b67f9436",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc5fee20_2aa98219",
+        "filename": "include/gpu/GrDirectContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-09T14:37:24Z",
+      "side": 1,
+      "message": "Oh sorry just saw this and realized the comment was connected to this change. Yeah I was originally manually managing when I reset the callback so I had the unique_ptr but then removed that in final version but didn\u0027t get rid of the u_p. Happy to update this now in ToT or land this as is if its blocking things.",
+      "parentUuid": "c776d247_facab595",
+      "revId": "63d9c8b7bf6a8d1dc58ad71d735eef44b67f9436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
