@@ -75,6 +75,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6be1953d_d6690933",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-03-09T18:29:26Z",
+      "side": 1,
+      "message": "\u003e Removing from SkCQ because verifiers have failed:\n\u003e\n\u003e [TryJobsVerifier]: Housekeeper-PerCommit-RunGnToBp has failed twice in a row\n\n@rmistry@google.com, what does this mean? This CL shouldn\u0027t change the Android.bp file anyway.",
+      "revId": "63d9c8b7bf6a8d1dc58ad71d735eef44b67f9436",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea5c2672_a4719251",
