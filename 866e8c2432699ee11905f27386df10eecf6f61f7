@@ -16,6 +16,23 @@
       "message": "Blocking blink test disabled in https://chromium-review.googlesource.com/c/chromium/src/+/4323667",
       "revId": "866e8c2432699ee11905f27386df10eecf6f61f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b924f5fd_5d345e50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-03-09T14:38:57Z",
+      "side": 1,
+      "message": "Blocking blink test disabled in https://chromium-review.googlesource.com/c/chromium/src/+/4323667",
+      "revId": "866e8c2432699ee11905f27386df10eecf6f61f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
