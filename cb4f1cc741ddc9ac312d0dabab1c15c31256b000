@@ -124,6 +124,24 @@
       "parentUuid": "127ef5fb_79401080",
       "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45981334_bedf1720",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-03-09T17:52:40Z",
+      "side": 1,
+      "message": "Just to rehash for my understanding, it sounds like these concerns are in opposition:\n\n1. Greg\u0027s point: If the macro mentions \"abort\", then Android\u0027s interpretation leaks into Skia.\n2. Leon\u0027s point: But if the macro just does _not_ mention \"abort\", then someone might use it somewhere else without realizing they\u0027ll cause an unintended crash on Android.\n\nLanding this directly in `udc-dev` is an escape hatch if we can\u0027t resolve these competing concerns, but will create some divergence.\n\nSo I\u0027m wondering, does concern over this divergence outweigh either of the first two concerns, or are they deadlocked against each other and we should take the escape hatch?",
+      "parentUuid": "6f3bf32e_b9c0071f",
+      "revId": "cb4f1cc741ddc9ac312d0dabab1c15c31256b000",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
