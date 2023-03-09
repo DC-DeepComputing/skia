@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "540d1a0a_6e67578f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-09T17:16:22Z",
+      "side": 1,
+      "message": "First of two cherry-picks to enable gainmap BitmapShaders on U",
+      "revId": "e00291e27a5cb6ffd6d4bac162afaf2340c78d3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
