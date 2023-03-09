@@ -714,17 +714,13 @@ std::unique_ptr<GrFragmentProcessor> GrPerlinNoise2Effect::TestCreate(GrProcesso
 #endif
 
 SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
-    const GrPerlinNoise2Effect& pne = args.fFp.cast<GrPerlinNoise2Effect>();
-
     GrGLSLFPFragmentBuilder* fragBuilder = args.fFragBuilder;
 
     // Add noise function
-    const GrShaderVar gPerlinNoiseArgs[] = {{"chanCoord", SkSLType::kHalf },
-                                            {"noiseVec ", SkSLType::kHalf2}};
-
     const GrShaderVar gPerlinNoiseStitchArgs[] = {{"chanCoord" , SkSLType::kHalf },
                                                   {"noiseVec"  , SkSLType::kHalf2},
-                                                  {"stitchData", SkSLType::kHalf2}};
+                                                  {"stitchData", SkSLType::kHalf2},
+                                                  {"stitching",  SkSLType::kInt}};
 
     SkString noiseCode;
 
@@ -739,14 +735,14 @@ SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
     );
 
     // Adjust frequencies if we're stitching tiles
-    if (pne.stitchTiles()) {
-        noiseCode.append(
+    noiseCode.append(
+        "if (bool(stitching)) {"
             "if (floorVal.x >= stitchData.x) { floorVal.x -= stitchData.x; };"
             "if (floorVal.y >= stitchData.y) { floorVal.y -= stitchData.y; };"
             "if (floorVal.z >= stitchData.x) { floorVal.z -= stitchData.x; };"
             "if (floorVal.w >= stitchData.y) { floorVal.w -= stitchData.y; };"
-        );
-    }
+        "}"
+    );
 
     // NOTE: We need to explicitly pass half4(1) as input color here, because the helper function
     // can't see fInputColor (which is "_input" in the FP's outer function). skbug.com/10506
@@ -809,15 +805,9 @@ SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
     noiseCode.append("return mix(ab.x, ab.y, noiseSmooth.y);");
 
     SkString noiseFuncName = fragBuilder->getMangledFunctionName("noiseFuncName");
-    if (pne.stitchTiles()) {
-        fragBuilder->emitFunction(SkSLType::kHalf, noiseFuncName.c_str(),
-                                  {gPerlinNoiseStitchArgs, std::size(gPerlinNoiseStitchArgs)},
-                                  noiseCode.c_str());
-    } else {
-        fragBuilder->emitFunction(SkSLType::kHalf, noiseFuncName.c_str(),
-                                  {gPerlinNoiseArgs, std::size(gPerlinNoiseArgs)},
-                                  noiseCode.c_str());
-    }
+    fragBuilder->emitFunction(SkSLType::kHalf, noiseFuncName.c_str(),
+                              {gPerlinNoiseStitchArgs, std::size(gPerlinNoiseStitchArgs)},
+                              noiseCode.c_str());
 
     return noiseFuncName;
 }
@@ -835,12 +825,9 @@ void GrPerlinNoise2Effect::Impl::emitCode(EmitArgs& args) {
                                                    "baseFrequency");
     const char* baseFrequencyUni = uniformHandler->getUniformCStr(fBaseFrequencyUni);
 
-    const char* stitchDataUni = nullptr;
-    if (pne.stitchTiles()) {
-        fStitchDataUni = uniformHandler->addUniform(&pne, kFragment_GrShaderFlag, SkSLType::kHalf2,
-                                                    "stitchData");
-        stitchDataUni = uniformHandler->getUniformCStr(fStitchDataUni);
-    }
+    fStitchDataUni = uniformHandler->addUniform(&pne, kFragment_GrShaderFlag, SkSLType::kHalf2,
+                                                "stitchData");
+    const char* stitchDataUni = uniformHandler->getUniformCStr(fStitchDataUni);
 
     // There are rounding errors if the floor operation is not performed here
     fragBuilder->codeAppendf("half2 noiseVec = half2(floor(%s.xy) * %s);",
@@ -849,9 +836,7 @@ void GrPerlinNoise2Effect::Impl::emitCode(EmitArgs& args) {
     // Clear the color accumulator
     fragBuilder->codeAppendf("half4 color = half4(0);");
 
-    if (pne.stitchTiles()) {
-        fragBuilder->codeAppendf("half2 stitchData = %s;", stitchDataUni);
-    }
+    fragBuilder->codeAppendf("half2 stitchData = %s;", stitchDataUni);
 
     fragBuilder->codeAppendf("half ratio = 1.0;");
 
@@ -867,23 +852,13 @@ void GrPerlinNoise2Effect::Impl::emitCode(EmitArgs& args) {
     static constexpr const char* chanCoordG = "1.5";
     static constexpr const char* chanCoordB = "2.5";
     static constexpr const char* chanCoordA = "3.5";
-    if (pne.stitchTiles()) {
-        fragBuilder->codeAppendf(
-           "half4(%s(%s, noiseVec, stitchData), %s(%s, noiseVec, stitchData),"
-                 "%s(%s, noiseVec, stitchData), %s(%s, noiseVec, stitchData))",
-            noiseFuncName.c_str(), chanCoordR,
-            noiseFuncName.c_str(), chanCoordG,
-            noiseFuncName.c_str(), chanCoordB,
-            noiseFuncName.c_str(), chanCoordA);
-    } else {
-        fragBuilder->codeAppendf(
-            "half4(%s(%s, noiseVec), %s(%s, noiseVec),"
-                  "%s(%s, noiseVec), %s(%s, noiseVec))",
-            noiseFuncName.c_str(), chanCoordR,
-            noiseFuncName.c_str(), chanCoordG,
-            noiseFuncName.c_str(), chanCoordB,
-            noiseFuncName.c_str(), chanCoordA);
-    }
+    fragBuilder->codeAppendf(
+       "half4(%s(%s, noiseVec, stitchData, %d), %s(%s, noiseVec, stitchData, %d),"
+             "%s(%s, noiseVec, stitchData, %d), %s(%s, noiseVec, stitchData, %d))",
+        noiseFuncName.c_str(), chanCoordR, pne.stitchTiles(),
+        noiseFuncName.c_str(), chanCoordG, pne.stitchTiles(),
+        noiseFuncName.c_str(), chanCoordB, pne.stitchTiles(),
+        noiseFuncName.c_str(), chanCoordA, pne.stitchTiles());
     if (pne.type() != SkPerlinNoiseShaderImpl::kFractalNoise_Type) {
         fragBuilder->codeAppend(")");  // end of "abs("
     }
@@ -892,9 +867,7 @@ void GrPerlinNoise2Effect::Impl::emitCode(EmitArgs& args) {
     fragBuilder->codeAppend("noiseVec *= half2(2.0);"
                             "ratio *= 0.5;");
 
-    if (pne.stitchTiles()) {
-        fragBuilder->codeAppend("stitchData *= half2(2.0);");
-    }
+    fragBuilder->codeAppend("stitchData *= half2(2.0);");
     fragBuilder->codeAppend("}");  // end of the for loop on octaves
 
     if (pne.type() == SkPerlinNoiseShaderImpl::kFractalNoise_Type) {
@@ -917,12 +890,10 @@ void GrPerlinNoise2Effect::Impl::onSetData(const GrGLSLProgramDataManager& pdman
     const SkVector& baseFrequency = turbulence.baseFrequency();
     pdman.set2f(fBaseFrequencyUni, baseFrequency.fX, baseFrequency.fY);
 
-    if (turbulence.stitchTiles()) {
-        const SkPerlinNoiseShaderImpl::StitchData& stitchData = turbulence.stitchData();
-        pdman.set2f(fStitchDataUni,
-                    SkIntToScalar(stitchData.fWidth),
-                    SkIntToScalar(stitchData.fHeight));
-    }
+    const SkPerlinNoiseShaderImpl::StitchData& stitchData = turbulence.stitchData();
+    pdman.set2f(fStitchDataUni,
+                SkIntToScalar(stitchData.fWidth),
+                SkIntToScalar(stitchData.fHeight));
 }
 
 void GrPerlinNoise2Effect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
