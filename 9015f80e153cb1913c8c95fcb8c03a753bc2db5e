@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e494225c_59def70b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-10T19:52:16Z",
+      "side": 1,
+      "message": "I found this while re-implementing the remote glyph cache serialization code.",
+      "revId": "9015f80e153cb1913c8c95fcb8c03a753bc2db5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
