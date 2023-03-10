@@ -33,6 +33,23 @@
       "message": "I had no image diffs locally using dm.",
       "revId": "9015f80e153cb1913c8c95fcb8c03a753bc2db5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8000afc_07c0e7cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-10T21:05:18Z",
+      "side": 1,
+      "message": "Yeah, this is just a style bit answering the question \"Is this font intended to be suggested when one is looking for a \"monospaced\" font?\" It isn\u0027t actually used for anything in Skia. (Importantly, it does not mean that all glyphs have the same width.)",
+      "revId": "9015f80e153cb1913c8c95fcb8c03a753bc2db5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
