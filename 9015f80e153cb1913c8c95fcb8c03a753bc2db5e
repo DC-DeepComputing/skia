@@ -16,6 +16,23 @@
       "message": "I found this while re-implementing the remote glyph cache serialization code.",
       "revId": "9015f80e153cb1913c8c95fcb8c03a753bc2db5e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44c4b4bf_15c79207",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-10T19:53:00Z",
+      "side": 1,
+      "message": "I had no image diffs locally using dm.",
+      "revId": "9015f80e153cb1913c8c95fcb8c03a753bc2db5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
