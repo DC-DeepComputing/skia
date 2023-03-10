@@ -67,6 +67,7 @@ class BackendTexture;
 class Recorder;
 class TextureInfo;
 enum class Volatile : bool;
+class YUVABackendTextures;
 }
 #endif
 
@@ -1259,6 +1260,20 @@ public:
                                                          SkColorType colorType,
                                                          SkAlphaType alphaType,
                                                          sk_sp<SkColorSpace> colorSpace);
+
+    /** Creates an SkImage from YUV[A] planar textures associated with the recorder.
+
+        @param recorder           The recorder.
+        @param yuvaTextures       A set of textures containing YUVA data and a description of the
+                                  data and transformation to RGBA.
+        @param imageColorSpace    range of colors of the resulting image after conversion to RGB;
+                                  may be nullptr
+        @return                   created SkImage, or nullptr
+    */
+    static sk_sp<SkImage> MakeGraphiteFromYUVATextures(
+            skgpu::graphite::Recorder* recorder,
+            const skgpu::graphite::YUVABackendTextures& yuvaTextures,
+            sk_sp<SkColorSpace> imageColorSpace);
 
     struct RequiredImageProperties {
         skgpu::Mipmapped fMipmapped;

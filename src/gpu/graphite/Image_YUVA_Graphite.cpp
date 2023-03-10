@@ -13,6 +13,7 @@
 #include "include/core/SkYUVAPixmaps.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/YUVABackendTextures.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -47,6 +48,43 @@ Image_YUVA::Image_YUVA(uint32_t uniqueID,
 using namespace skgpu::graphite;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
+
+sk_sp<SkImage> SkImage::MakeGraphiteFromYUVATextures(Recorder* recorder,
+                                                     const YUVABackendTextures& yuvaTextures,
+                                                     sk_sp<SkColorSpace> imageColorSpace) {
+/*
+ auto releaseHelper = skgpu::RefCntedCallback::Make(textureReleaseProc, releaseContext);
+
+ GrProxyProvider* proxyProvider = context->priv().proxyProvider();
+ int numPlanes = yuvaTextures.yuvaInfo().numPlanes();
+ sk_sp<GrSurfaceProxy> proxies[SkYUVAInfo::kMaxPlanes];
+ for (int plane = 0; plane < numPlanes; ++plane) {
+     proxies[plane] = proxyProvider->wrapBackendTexture(yuvaTextures.texture(plane),
+                                                        kBorrow_GrWrapOwnership,
+                                                        GrWrapCacheable::kNo,
+                                                        kRead_GrIOType,
+                                                        releaseHelper);
+     if (!proxies[plane]) {
+         return {};
+     }
+ }
+ GrYUVATextureProxies yuvaProxies(yuvaTextures.yuvaInfo(),
+                                  proxies,
+                                  yuvaTextures.textureOrigin());
+
+ if (!yuvaProxies.isValid()) {
+     return nullptr;
+ }
+
+ return sk_make_sp<SkImage_GpuYUVA>(sk_ref_sp(context),
+                                    kNeedNewImageUniqueID,
+                                    yuvaProxies,
+                                    imageColorSpace);
+}
+
+ */
+    return nullptr;
+}
 
 sk_sp<SkImage> SkImage::MakeGraphiteFromYUVAPixmaps(Recorder* recorder,
                                                     const SkYUVAPixmaps& pixmaps,
