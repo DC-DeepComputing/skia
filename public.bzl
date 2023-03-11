@@ -438,6 +438,8 @@ BASE_SRCS_ALL = [
     "src/core/SkDocument.cpp",
     "src/core/SkDraw.cpp",
     "src/core/SkDraw.h",
+    "src/core/SkDrawBase.cpp",
+    "src/core/SkDrawBase.h",
     "src/core/SkDrawLooper.cpp",
     "src/core/SkDrawProcs.h",
     "src/core/SkDrawShadowInfo.cpp",

@@ -68,6 +68,14 @@ private:
     using INHERITED = SkRasterBlitter;
 };
 
+SkBlitter* SkA8Blitter_Choose(const SkPixmap& dst,
+                              const SkMatrix& ctm,
+                              const SkPaint& paint,
+                              SkArenaAlloc*,
+                              bool drawCoverage,
+                              sk_sp<SkShader> clipShader,
+                              const SkSurfaceProps&);
+
 ////////////////////////////////////////////////////////////////
 
 class SkARGB32_Blitter : public SkRasterBlitter {
