@@ -8,7 +8,9 @@
 #include "src/gpu/ganesh/GrSWMaskHelper.h"
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkColor.h"
 #include "include/gpu/GrRecordingContext.h"
+#include "src/core/SkBlitter_A8.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
@@ -140,6 +142,7 @@ bool GrSWMaskHelper::init(const SkIRect& resultBounds) {
     }
     fPixels->erase(0);
 
+    fDraw.fBlitterChooser = SkA8Blitter_Choose;
     fDraw.fDst      = *fPixels;
     fRasterClip.setRect(bounds);
     fDraw.fRC       = &fRasterClip;
