@@ -1133,6 +1133,8 @@ int Viewer::startupSlide() const {
     if (!FLAGS_slide.isEmpty()) {
         int count = fSlides.size();
         for (int i = 0; i < count; i++) {
+            auto name = fSlides[i]->getName();
+            printf("%s\n", name.c_str());
             if (fSlides[i]->getName().equals(FLAGS_slide[0])) {
                 return i;
             }

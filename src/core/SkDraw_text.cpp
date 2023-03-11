@@ -36,7 +36,7 @@ static bool check_glyph_position(SkPoint position) {
              lt(position.fY, INT_MIN - (INT16_MIN + 0 /*UINT16_MIN*/)));
 }
 
-void SkDraw::paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& paint) const {
+void SkDrawBase::paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& paint) const {
     // The size used for a typical blitter.
     SkSTArenaAlloc<3308> alloc;
     SkBlitter* blitter = SkBlitter::Choose(fDst,
@@ -108,7 +108,7 @@ void SkDraw::paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& 
     }
 }
 
-void SkDraw::drawGlyphRunList(SkCanvas* canvas,
+void SkDrawBase::drawGlyphRunList(SkCanvas* canvas,
                               SkGlyphRunListPainterCPU* glyphPainter,
                               const sktext::GlyphRunList& glyphRunList,
                               const SkPaint& paint) const {
