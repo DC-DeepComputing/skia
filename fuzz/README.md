@@ -59,8 +59,7 @@ Here are some example dashboards:
  - [Per Fuzzer summary for all Skia fuzzers driven by libFuzzer](https://oss-fuzz.com/fuzzer-stats?group_by=by-fuzzer&date_start=2021-08-16&date_end=2021-08-22&fuzzer=libFuzzer&job=libfuzzer_asan_skia&project=skia)
  - [Five day summary of sksl2glsl driven by afl-fuzz](https://oss-fuzz.com/fuzzer-stats?group_by=by-day&date_start=2021-08-16&date_end=2021-08-22&fuzzer=afl_skia_sksl2glsl&job=afl_asan_skia&project=skia)
 
-That dashboard also has a Coverage Report. Even though it appears the Coverage report is per fuzzer,
-the reports always show the aggregated coverage from all fuzzers.
+OSS-fuzz also offers [a combined Coverage Report from all Skia fuzzers](https://oss-fuzz.com/coverage-report/job/libfuzzer_asan_skia/latest).
 [Example coverage report from 2021 Aug 22](https://storage.googleapis.com/oss-fuzz-coverage/skia/reports/20210822/linux/report.html)
 
 ## See Also
