@@ -29,6 +29,7 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/gpu/ganesh/GrImageUtils.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrSamplerState.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
@@ -85,13 +86,13 @@ protected:
 
         SkMatrix matrix;
         matrix.setTranslate(-100, -100);
-        fImage0 = SkImage::MakeFromPicture(fPicture, size, &matrix, nullptr,
-                                           SkImage::BitDepth::kU8, srgbColorSpace);
+        fImage0 = sk_image_factory::MakeFromPicture(fPicture, size, &matrix, nullptr,
+                                           sk_image_factory::BitDepth::kU8, srgbColorSpace);
         matrix.postTranslate(-50, -50);
         matrix.postRotate(45);
         matrix.postTranslate(50, 50);
-        fImage1 = SkImage::MakeFromPicture(fPicture, size, &matrix, nullptr,
-                                           SkImage::BitDepth::kU8, srgbColorSpace);
+        fImage1 = sk_image_factory::MakeFromPicture(fPicture, size, &matrix, nullptr,
+                                           sk_image_factory::BitDepth::kU8, srgbColorSpace);
     }
 
     void drawSet(SkCanvas* canvas) const {
@@ -131,7 +132,7 @@ static std::unique_ptr<SkImageGenerator> make_pic_generator(SkCanvas*,
     SkMatrix matrix;
     matrix.setTranslate(-100, -100);
     return SkImageGenerator::MakeFromPicture({ 100, 100 }, std::move(pic), &matrix, nullptr,
-                                            SkImage::BitDepth::kU8,
+                                            sk_image_factory::BitDepth::kU8,
                                             SkColorSpace::MakeSRGB());
 }
 
@@ -195,9 +196,7 @@ protected:
         SkASSERT(rContext);
         SkASSERT(rContext->priv().matches(fRContext.get()));
 
-        GrSurfaceProxyView view;
-
-        std::tie(view, std::ignore) = as_IB(fImage)->asView(rContext, GrMipmapped::kNo);
+        auto [view, _] = skgpu::ganesh::AsView(rContext, fImage, GrMipmapped::kNo);
         if (!view) {
             return {};
         }
@@ -283,7 +282,7 @@ protected:
             if (!gen) {
                 return false;
             }
-            fImage = SkImage::MakeFromGenerator(std::move(gen));
+            fImage = sk_image_factory::MakeFromGenerator(std::move(gen));
             if (!fImage) {
                 return false;
             }
@@ -301,12 +300,12 @@ protected:
             }
 
             if (dContext) {
-                fImageSubset = SkImage::MakeFromGenerator(std::move(gen))->makeSubset(subset,
+                fImageSubset = sk_image_factory::MakeFromGenerator(std::move(gen))->makeSubset(subset,
                                                                                       dContext);
             } else {
 #if defined(SK_GRAPHITE)
                 auto recorder = canvas->recorder();
-                fImageSubset = SkImage::MakeFromGenerator(std::move(gen))->makeSubset(subset,
+                fImageSubset = sk_image_factory::MakeFromGenerator(std::move(gen))->makeSubset(subset,
                                                                                       recorder);
 #endif
             }
@@ -342,7 +341,8 @@ protected:
         if (as_IB(image)->isGaneshBacked()) {
             // The gpu-backed images are drawn in this manner bc the generator backed images
             // aren't considered texture-backed
-            auto [view, ct] = as_IB(image)->asView(canvas->recordingContext(), GrMipmapped::kNo);
+            auto [view, ct] = skgpu::ganesh::AsView(canvas->recordingContext(), image,
+                                                    GrMipmapped::kNo);
             if (!view) {
                 // show placeholder if we have no texture
                 draw_placeholder(canvas, x, y, image->width(), image->height());

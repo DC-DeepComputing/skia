@@ -313,7 +313,7 @@ private:
                            std::string_view label);
 
     GrGLuint createCompressedTexture2D(SkISize dimensions,
-                                       SkImage::CompressionType compression,
+                                       sk_image_factory::CompressionType compression,
                                        GrGLFormat,
                                        GrMipmapped,
                                        GrGLTextureParameters::SamplerOverriddenState*);
@@ -509,7 +509,7 @@ private:
 
     // Helper for onCreateCompressedTexture. Compressed textures are read-only so we only use this
     // to populate a new texture. Returns false if we failed to create and upload the texture.
-    bool uploadCompressedTexData(SkImage::CompressionType compressionType,
+    bool uploadCompressedTexData(sk_image_factory::CompressionType compressionType,
                                  GrGLFormat,
                                  SkISize dimensions,
                                  GrMipmapped,

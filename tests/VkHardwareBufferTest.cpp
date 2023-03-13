@@ -18,6 +18,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrBackendSemaphore.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/vk/GrVkBackendContext.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "src/base/SkAutoMalloc.h"
@@ -271,7 +272,7 @@ sk_sp<SkImage> EGLTestHelper::importHardwareBufferForRead(skiatest::Reporter* re
     GrBackendTexture backendTex(DEV_W, DEV_H, GrMipmapped::kNo, textureInfo);
     REPORTER_ASSERT(reporter, backendTex.isValid());
 
-    sk_sp<SkImage> image = SkImage::MakeFromTexture(fDirectContext,
+    sk_sp<SkImage> image = sk_image_factory::MakeFromTexture(fDirectContext,
                                                     backendTex,
                                                     kTopLeft_GrSurfaceOrigin,
                                                     kRGBA_8888_SkColorType,
@@ -816,7 +817,7 @@ sk_sp<SkImage> VulkanTestHelper::importHardwareBufferForRead(skiatest::Reporter*
 
     GrBackendTexture backendTex(DEV_W, DEV_H, imageInfo);
 
-    sk_sp<SkImage> wrappedImage = SkImage::MakeFromTexture(fDirectContext.get(),
+    sk_sp<SkImage> wrappedImage = sk_image_factory::MakeFromTexture(fDirectContext.get(),
                                                            backendTex,
                                                            kTopLeft_GrSurfaceOrigin,
                                                            kRGBA_8888_SkColorType,
@@ -1209,7 +1210,7 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
             return;
         }
 
-        sk_sp<SkImage> srcBmpImage = SkImage::MakeFromBitmap(srcBitmap);
+        sk_sp<SkImage> srcBmpImage = sk_image_factory::MakeFromBitmap(srcBitmap);
         surface->getCanvas()->drawImage(srcBmpImage, 0, 0);
 
         // If we are testing sharing of syncs, don't do a read here since it forces sychronization

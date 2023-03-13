@@ -34,8 +34,8 @@ size_t GrSurface::ComputeSize(const GrBackendFormat& format,
         dimensions = GrResourceProvider::MakeApprox(dimensions);
     }
 
-    SkImage::CompressionType compressionType = GrBackendFormatToCompressionType(format);
-    if (compressionType != SkImage::CompressionType::kNone) {
+    sk_image_factory::CompressionType compressionType = GrBackendFormatToCompressionType(format);
+    if (compressionType != sk_image_factory::CompressionType::kNone) {
         colorSize = SkCompressedFormatDataSize(compressionType, dimensions,
                                                mipmapped == GrMipmapped::kYes);
     } else {

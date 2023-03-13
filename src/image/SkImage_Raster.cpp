@@ -19,7 +19,6 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkMath.h"
@@ -31,25 +30,9 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <memory>
-#include <tuple>
 #include <utility>
 
 class GrDirectContext;
-class GrFragmentProcessor;
-class SkMatrix;
-enum class SkTileMode;
-
-#if defined(SK_GANESH)
-#include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrRecordingContext.h"
-#include "include/gpu/GrTypes.h"
-#include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/gpu/SkBackingFit.h"
-#include "src/gpu/ganesh/GrRecordingContextPriv.h"
-#include "src/gpu/ganesh/GrSurfaceProxyView.h"
-#include "src/gpu/ganesh/SkGr.h"
-#endif
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -61,6 +44,54 @@ enum class SkTileMode;
 #include "src/gpu/graphite/TextureUtils.h"
 #include "src/gpu/graphite/UploadTask.h"
 #endif
+
+// fixes https://bug.skia.org/5096
+static bool is_not_subset(const SkBitmap& bm) {
+    SkASSERT(bm.pixelRef());
+    SkISize dim = SkISize::Make(bm.pixelRef()->width(), bm.pixelRef()->height());
+    SkASSERT(dim != bm.dimensions() || bm.pixelRefOrigin().isZero());
+    return dim == bm.dimensions();
+}
+
+static bool valid_args(const SkImageInfo& info, size_t rowBytes, size_t* minSize) {
+    const int maxDimension = SK_MaxS32 >> 2;
+
+    // TODO(mtklein): eliminate anything here that setInfo() has already checked.
+    SkBitmap b;
+    if (!b.setInfo(info, rowBytes)) {
+        return false;
+    }
+
+    if (info.width() <= 0 || info.height() <= 0) {
+        return false;
+    }
+    if (info.width() > maxDimension || info.height() > maxDimension) {
+        return false;
+    }
+    if ((unsigned)info.colorType() > (unsigned)kLastEnum_SkColorType) {
+        return false;
+    }
+    if ((unsigned)info.alphaType() > (unsigned)kLastEnum_SkAlphaType) {
+        return false;
+    }
+
+    if (kUnknown_SkColorType == info.colorType()) {
+        return false;
+    }
+    if (!info.validRowBytes(rowBytes)) {
+        return false;
+    }
+
+    size_t size = info.computeByteSize(rowBytes);
+    if (SkImageInfo::ByteSizeOverflowed(size)) {
+        return false;
+    }
+
+    if (minSize) {
+        *minSize = size;
+    }
+    return true;
+}
 
 static void release_data(void* addr, void* context) {
     SkData* data = static_cast<SkData*>(context);
@@ -76,14 +107,6 @@ SkImage_Raster::SkImage_Raster(const SkImageInfo& info, sk_sp<SkData> data, size
     fBitmap.setImmutable();
 }
 
-// fixes https://bug.skia.org/5096
-static bool is_not_subset(const SkBitmap& bm) {
-    SkASSERT(bm.pixelRef());
-    SkISize dim = SkISize::Make(bm.pixelRef()->width(), bm.pixelRef()->height());
-    SkASSERT(dim != bm.dimensions() || bm.pixelRefOrigin().isZero());
-    return dim == bm.dimensions();
-}
-
 SkImage_Raster::SkImage_Raster(const SkBitmap& bm, bool bitmapMayBeMutable)
         : SkImage_Base(bm.info(),
                     is_not_subset(bm) ? bm.getGenerationID() : (uint32_t)kNeedNewImageUniqueID)
@@ -91,11 +114,7 @@ SkImage_Raster::SkImage_Raster(const SkBitmap& bm, bool bitmapMayBeMutable)
     SkASSERT(bitmapMayBeMutable || fBitmap.isImmutable());
 }
 
-SkImage_Raster::~SkImage_Raster() {
-#if defined(SK_GANESH) && !defined(SK_DISABLE_LEGACY_PIN_APIS)
-    SkASSERT(!fPinnedView);  // want the caller to have manually unpinned
-#endif
-}
+SkImage_Raster::~SkImage_Raster() {}
 
 bool SkImage_Raster::onReadPixels(GrDirectContext*,
                                   const SkImageInfo& dstInfo,
@@ -116,57 +135,6 @@ bool SkImage_Raster::getROPixels(GrDirectContext*, SkBitmap* dst, CachingHint) c
     *dst = fBitmap;
     return true;
 }
-
-#if defined(SK_GANESH) && !defined(SK_DISABLE_LEGACY_PIN_APIS)
-bool SkImage_Raster::onPinAsTexture(GrRecordingContext* rContext) const {
-    if (fPinnedView) {
-        SkASSERT(fPinnedCount > 0);
-        SkASSERT(fPinnedUniqueID != 0);
-        if (rContext->priv().contextID() != fPinnedContextID) {
-            return false;
-        }
-    } else {
-        SkASSERT(fPinnedCount == 0);
-        SkASSERT(fPinnedUniqueID == 0);
-        std::tie(fPinnedView, fPinnedColorType) =
-                GrMakeCachedBitmapProxyView(rContext,
-                                            fBitmap,
-                                            /*label=*/"SkImageRaster_PinAsTexture",
-                                            GrMipmapped::kNo);
-        if (!fPinnedView) {
-            fPinnedColorType = GrColorType::kUnknown;
-            return false;
-        }
-        fPinnedUniqueID = fBitmap.getGenerationID();
-        fPinnedContextID = rContext->priv().contextID();
-    }
-    // Note: we only increment if the texture was successfully pinned
-    ++fPinnedCount;
-    return true;
-}
-
-void SkImage_Raster::onUnpinAsTexture(GrRecordingContext* rContext) const {
-    // Note: we always decrement, even if fPinnedTexture is null
-    SkASSERT(fPinnedCount > 0);
-    SkASSERT(fPinnedUniqueID != 0);
-#if 0 // This would be better but Android currently calls with an already freed context ptr.
-    if (rContext->priv().contextID() != fPinnedContextID) {
-        return;
-    }
-#endif
-
-    if (0 == --fPinnedCount) {
-        fPinnedView = GrSurfaceProxyView();
-        fPinnedUniqueID = SK_InvalidUniqueID;
-        fPinnedContextID = SK_InvalidUniqueID;
-        fPinnedColorType = GrColorType::kUnknown;
-    }
-}
-
-bool SkImage_Raster::isPinnedOnContext(GrRecordingContext* rContext) const {
-    return fPinnedContextID == rContext->priv().contextID();
-}
-#endif
 
 static SkBitmap copy_bitmap_subset(const SkBitmap& orig, const SkIRect& subset) {
     SkImageInfo info = orig.info().makeDimensions(subset.size());
@@ -259,46 +227,6 @@ sk_sp<SkImage> SkImage_Raster::onMakeSubset(const SkIRect& subset,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool valid_args(const SkImageInfo& info, size_t rowBytes, size_t* minSize) {
-    const int maxDimension = SK_MaxS32 >> 2;
-
-    // TODO(mtklein): eliminate anything here that setInfo() has already checked.
-    SkBitmap b;
-    if (!b.setInfo(info, rowBytes)) {
-        return false;
-    }
-
-    if (info.width() <= 0 || info.height() <= 0) {
-        return false;
-    }
-    if (info.width() > maxDimension || info.height() > maxDimension) {
-        return false;
-    }
-    if ((unsigned)info.colorType() > (unsigned)kLastEnum_SkColorType) {
-        return false;
-    }
-    if ((unsigned)info.alphaType() > (unsigned)kLastEnum_SkAlphaType) {
-        return false;
-    }
-
-    if (kUnknown_SkColorType == info.colorType()) {
-        return false;
-    }
-    if (!info.validRowBytes(rowBytes)) {
-        return false;
-    }
-
-    size_t size = info.computeByteSize(rowBytes);
-    if (SkImageInfo::ByteSizeOverflowed(size)) {
-        return false;
-    }
-
-    if (minSize) {
-        *minSize = size;
-    }
-    return true;
-}
-
 sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id) {
     size_t size;
     if (!valid_args(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
@@ -308,69 +236,6 @@ sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id) {
     // Here we actually make a copy of the caller's pixel data
     sk_sp<SkData> data(SkData::MakeWithCopy(pmap.addr(), size));
     return sk_make_sp<SkImage_Raster>(pmap.info(), std::move(data), pmap.rowBytes(), id);
-}
-
-sk_sp<SkImage> SkImage::MakeRasterCopy(const SkPixmap& pmap) {
-    return MakeRasterCopyPriv(pmap, kNeedNewImageUniqueID);
-}
-
-sk_sp<SkImage> SkImage::MakeRasterData(const SkImageInfo& info, sk_sp<SkData> data,
-                                       size_t rowBytes) {
-    size_t size;
-    if (!valid_args(info, rowBytes, &size) || !data) {
-        return nullptr;
-    }
-
-    // did they give us enough data?
-    if (data->size() < size) {
-        return nullptr;
-    }
-
-    return sk_make_sp<SkImage_Raster>(info, std::move(data), rowBytes);
-}
-
-// TODO: this could be improved to decode and make use of the mipmap
-// levels potentially present in the compressed data. For now, any
-// mipmap levels are discarded.
-sk_sp<SkImage> SkImage::MakeRasterFromCompressed(sk_sp<SkData> data,
-                                                 int width, int height,
-                                                 CompressionType type) {
-    size_t expectedSize = SkCompressedFormatDataSize(type, { width, height }, false);
-    if (!data || data->size() < expectedSize) {
-        return nullptr;
-    }
-
-    SkAlphaType at = SkCompressionTypeIsOpaque(type) ? kOpaque_SkAlphaType
-                                                     : kPremul_SkAlphaType;
-
-    SkImageInfo ii = SkImageInfo::MakeN32(width, height, at);
-
-    if (!valid_args(ii, ii.minRowBytes(), nullptr)) {
-        return nullptr;
-    }
-
-    SkBitmap bitmap;
-    if (!bitmap.tryAllocPixels(ii)) {
-        return nullptr;
-    }
-
-    if (!SkDecompress(std::move(data), { width, height }, type, &bitmap)) {
-        return nullptr;
-    }
-
-    bitmap.setImmutable();
-    return MakeFromBitmap(bitmap);
-}
-
-sk_sp<SkImage> SkImage::MakeFromRaster(const SkPixmap& pmap, RasterReleaseProc proc,
-                                       ReleaseContext ctx) {
-    size_t size;
-    if (!valid_args(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
-        return nullptr;
-    }
-
-    sk_sp<SkData> data(SkData::MakeWithProc(pmap.addr(), size, proc, ctx));
-    return sk_make_sp<SkImage_Raster>(pmap.info(), std::move(data), pmap.rowBytes());
 }
 
 sk_sp<SkImage> SkMakeImageFromRasterBitmapPriv(const SkBitmap& bm, SkCopyPixelsMode cpm,
@@ -437,73 +302,8 @@ sk_sp<SkImage> SkImage_Raster::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS
     // gen ID from the bitmap, which gets it from the pixelRef.
     SkPixmap pixmap = fBitmap.pixmap();
     pixmap.setColorSpace(std::move(newCS));
-    return SkImage::MakeRasterCopy(pixmap);
+    return sk_image_factory::MakeRasterCopy(pixmap);
 }
-
-#if defined(SK_GANESH)
-std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Raster::onAsView(
-        GrRecordingContext* rContext,
-        GrMipmapped mipmapped,
-        GrImageTexGenPolicy policy) const {
-#if !defined(SK_DISABLE_LEGACY_PIN_APIS)
-    if (fPinnedView) {
-        // We ignore the mipmap request here. If the pinned view isn't mipmapped then we will
-        // fallback to bilinear. The pin API is used by Android Framework which does not expose
-        // mipmapping . Moreover, we're moving towards requiring that images be made with mip levels
-        // if mipmapping is desired (skbug.com/10411)
-        mipmapped = GrMipmapped::kNo;
-        if (policy != GrImageTexGenPolicy::kDraw) {
-            return {CopyView(rContext,
-                             fPinnedView,
-                             mipmapped,
-                             policy,
-                             /*label=*/"TextureForImageRasterWithPolicyNotEqualKDraw"),
-                    fPinnedColorType};
-        }
-        return {fPinnedView, fPinnedColorType};
-    }
-#endif
-    if (policy == GrImageTexGenPolicy::kDraw) {
-        // If the draw doesn't require mipmaps but this SkImage has them go ahead and make a
-        // mipmapped texture. There are three reasons for this:
-        // 1) Avoiding another texture creation if a later draw requires mipmaps.
-        // 2) Ensuring we upload the bitmap's levels instead of generating on the GPU from the base.
-        if (this->hasMipmaps()) {
-            mipmapped = GrMipmapped::kYes;
-        }
-        return GrMakeCachedBitmapProxyView(rContext,
-                                           fBitmap,
-                                           /*label=*/"TextureForImageRasterWithPolicyEqualKDraw",
-                                           mipmapped);
-    }
-    auto budgeted = (policy == GrImageTexGenPolicy::kNew_Uncached_Unbudgeted)
-                            ? skgpu::Budgeted::kNo
-                            : skgpu::Budgeted::kYes;
-    return GrMakeUncachedBitmapProxyView(rContext,
-                                         fBitmap,
-                                         mipmapped,
-                                         SkBackingFit::kExact,
-                                         budgeted);
-}
-
-std::unique_ptr<GrFragmentProcessor> SkImage_Raster::onAsFragmentProcessor(
-        GrRecordingContext* rContext,
-        SkSamplingOptions sampling,
-        const SkTileMode tileModes[2],
-        const SkMatrix& m,
-        const SkRect* subset,
-        const SkRect* domain) const {
-    auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
-    return MakeFragmentProcessorFromView(rContext,
-                                         std::get<0>(this->asView(rContext, mm)),
-                                         this->alphaType(),
-                                         sampling,
-                                         tileModes,
-                                         m,
-                                         subset,
-                                         domain);
-}
-#endif
 
 #if defined(SK_GRAPHITE)
 sk_sp<SkImage> SkImage_Raster::onMakeTextureImage(skgpu::graphite::Recorder* recorder,
@@ -541,3 +341,67 @@ sk_sp<SkImage> SkImage_Raster::onMakeColorTypeAndColorSpace(
 }
 
 #endif
+
+namespace sk_image_factory {
+
+sk_sp<SkImage> MakeRasterCopy(const SkPixmap& pmap) {
+    return MakeRasterCopyPriv(pmap, kNeedNewImageUniqueID);
+}
+
+sk_sp<SkImage> MakeRasterData(const SkImageInfo& info, sk_sp<SkData> data,
+                              size_t rowBytes) {
+    size_t size;
+    if (!valid_args(info, rowBytes, &size) || !data) {
+        return nullptr;
+    }
+
+    // did they give us enough data?
+    if (data->size() < size) {
+        return nullptr;
+    }
+
+    return sk_make_sp<SkImage_Raster>(info, std::move(data), rowBytes);
+}
+
+// TODO: this could be improved to decode and make use of the mipmap
+// levels potentially present in the compressed data. For now, any
+// mipmap levels are discarded.
+sk_sp<SkImage> MakeRasterFromCompressed(sk_sp<SkData> data, int width, int height,
+                                        CompressionType type) {
+    size_t expectedSize = SkCompressedFormatDataSize(type, { width, height }, false);
+    if (!data || data->size() < expectedSize) {
+        return nullptr;
+    }
+
+    SkAlphaType at = SkCompressionTypeIsOpaque(type) ? kOpaque_SkAlphaType
+                                                     : kPremul_SkAlphaType;
+
+    SkImageInfo ii = SkImageInfo::MakeN32(width, height, at);
+
+    if (!valid_args(ii, ii.minRowBytes(), nullptr)) {
+        return nullptr;
+    }
+
+    SkBitmap bitmap;
+    if (!bitmap.tryAllocPixels(ii)) {
+        return nullptr;
+    }
+
+    if (!SkDecompress(std::move(data), { width, height }, type, &bitmap)) {
+        return nullptr;
+    }
+
+    bitmap.setImmutable();
+    return MakeFromBitmap(bitmap);
+}
+
+sk_sp<SkImage> MakeFromRaster(const SkPixmap& pmap, RasterReleaseProc proc, ReleaseContext ctx) {
+    size_t size;
+    if (!valid_args(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
+        return nullptr;
+    }
+
+    sk_sp<SkData> data(SkData::MakeWithProc(pmap.addr(), size, proc, ctx));
+    return sk_make_sp<SkImage_Raster>(pmap.info(), std::move(data), pmap.rowBytes());
+}
+}
