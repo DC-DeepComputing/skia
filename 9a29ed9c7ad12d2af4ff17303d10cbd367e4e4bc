@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e5f5888_e2a25902",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-13T13:58:43Z",
+      "side": 1,
+      "message": "Creating a test implementation of SkUnicode to use for client icu.",
+      "revId": "9a29ed9c7ad12d2af4ff17303d10cbd367e4e4bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
