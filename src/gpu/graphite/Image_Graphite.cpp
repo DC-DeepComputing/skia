@@ -263,7 +263,9 @@ sk_sp<SkImage> SkImage::MakeGraphiteFromBackendTexture(Recorder* recorder,
                                                        const BackendTexture& backendTex,
                                                        SkColorType ct,
                                                        SkAlphaType at,
-                                                       sk_sp<SkColorSpace> cs) {
+                                                       sk_sp<SkColorSpace> cs,
+                                                       TextureReleaseProc releaseP,
+                                                       ReleaseContext releaseC) {
     if (!recorder) {
         return nullptr;
     }
@@ -278,8 +280,11 @@ sk_sp<SkImage> SkImage::MakeGraphiteFromBackendTexture(Recorder* recorder,
 
     sk_sp<Texture> texture = recorder->priv().resourceProvider()->createWrappedTexture(backendTex);
     if (!texture) {
+        SKGPU_LOG_W("Texture creation failed");
         return nullptr;
     }
+    auto releaseHelper = skgpu::RefCntedCallback::Make(releaseP, releaseC);
+    texture->setReleaseCallback(releaseHelper);
 
     sk_sp<TextureProxy> proxy(new TextureProxy(std::move(texture)));
 
