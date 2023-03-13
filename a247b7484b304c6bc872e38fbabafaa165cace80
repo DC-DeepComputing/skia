@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51f20c9e_11a2d787",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-13T13:48:39Z",
+      "side": 1,
+      "message": "This will make a unique shader for each write swizzle. Is that OK? Do we expect this will bloat the unique shader count?",
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
