@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4927d811_9fad1527",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-13T21:22:30Z",
+      "side": 1,
+      "message": "I\u0027m wondering if it makes sense to have this take the releaseHelper as an argument, like ProxyProvider::wrapBackendTexture().",
+      "range": {
+        "startLine": 281,
+        "startChar": 66,
+        "endLine": 281,
+        "endChar": 86
+      },
+      "revId": "6087e3f4f297f517089121f168b1b68eb92ab3ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
