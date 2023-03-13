@@ -34,6 +34,24 @@
       "parentUuid": "b2c3bfb5_739d9e85",
       "revId": "716a016da78c50aab195e65565390201354e3d0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48b90d3f_5b99b9cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-13T22:42:40Z",
+      "side": 1,
+      "message": "Opened https://github.com/harfbuzz/harfbuzz/issues/4166 about HarfBuzz maybe not using M_PI. For the moment just setting the define while building HarfBuzz, since M_PI isn\u0027t being used in any public headers.",
+      "parentUuid": "7d9627a3_85039fa2",
+      "revId": "716a016da78c50aab195e65565390201354e3d0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
