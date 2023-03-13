@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c8c5817_92ca69fd",
+        "filename": "fuzz/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-13T14:21:59Z",
+      "side": 1,
+      "message": "Fuzz (capital)",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 8
+      },
+      "revId": "6e9a1265611bb389bc5dfec2875d1de0cae4adf3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
