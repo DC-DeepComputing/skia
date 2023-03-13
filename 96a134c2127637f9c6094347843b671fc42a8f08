@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0949f0f7_6a8f7fac",
+        "filename": "gm/a8_blitter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-13T18:27:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e9703d1_f0a787b7",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "96a134c2127637f9c6094347843b671fc42a8f08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ebdd471_5a225dc3",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-03-13T16:09:18Z",
       "side": 1,
       "message": "We decided to no longer do the INHERITED trick.",
+      "revId": "96a134c2127637f9c6094347843b671fc42a8f08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "775a8644_f18a2422",
+        "filename": "src/core/SkBlitter_A8.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-13T18:27:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ebdd471_5a225dc3",
       "revId": "96a134c2127637f9c6094347843b671fc42a8f08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c376d6f_39364830",
+        "filename": "src/core/SkBlitter_A8.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-13T18:27:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e626f85f_abeeae53",
+      "revId": "96a134c2127637f9c6094347843b671fc42a8f08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcae013b_8c768824",
@@ -71,6 +131,30 @@
       "writtenOn": "2023-03-13T16:09:18Z",
       "side": 1,
       "message": "I would guess this would have to be:\n\n/*\n * Copyright 2023 Google LLC\n *\n * Use of this source code is governed by a BSD-style license that can be\n * found in the LICENSE file.\n */\n \n In the .cpp too",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 3
+      },
+      "revId": "96a134c2127637f9c6094347843b671fc42a8f08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee1f63c8_0b48a490",
+        "filename": "src/core/SkDrawBase.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-13T18:27:37Z",
+      "side": 1,
+      "message": "happy to, but wasn\u0027t sure, since both files were \u0027born\u0027 from previous files.",
+      "parentUuid": "dcae013b_8c768824",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -111,6 +195,24 @@
       "writtenOn": "2023-03-13T16:09:18Z",
       "side": 1,
       "message": "// SkDrawBase_DEFINED",
+      "revId": "96a134c2127637f9c6094347843b671fc42a8f08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2e328f3_821986ac",
+        "filename": "src/core/SkDrawBase.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-13T18:27:37Z",
+      "side": 1,
+      "message": "I didn\u0027t see that in SkDraw.h -- but I\u0027ll add it in the new file",
+      "parentUuid": "d788b608_386cb027",
       "revId": "96a134c2127637f9c6094347843b671fc42a8f08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
