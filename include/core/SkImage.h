@@ -279,6 +279,12 @@ public:
                                           const SkMatrix* matrix, const SkPaint* paint,
                                           BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace);
 
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+    /** User function called when supplied texture may be deleted.
+     */
+    typedef void (*TextureReleaseProc)(ReleaseContext releaseContext);
+#endif
+
 #if defined(SK_GANESH)
         /** Creates a GPU-backed SkImage from compressed data.
 
@@ -304,10 +310,6 @@ public:
                                                     CompressionType type,
                                                     GrMipmapped mipmapped = GrMipmapped::kNo,
                                                     GrProtected isProtected = GrProtected::kNo);
-
-    /** User function called when supplied texture may be deleted.
-    */
-    typedef void (*TextureReleaseProc)(ReleaseContext releaseContext);
 
     /** Creates SkImage from GPU texture associated with context. GPU texture must stay
         valid and unchanged until textureReleaseProc is called. textureReleaseProc is
@@ -1132,6 +1134,31 @@ public:
 #endif // defined(SK_GANESH)
 
 #if defined(SK_GRAPHITE)
+    /** Creates an SkImage from a GPU texture associated with the recorder.
+
+        SkImage is returned if the format of backendTexture is recognized and supported.
+        Recognized formats vary by GPU back-end.
+
+        @param recorder            The recorder
+        @param backendTexture      texture residing on GPU
+        @param colorSpace          This describes the color space of this image's contents, as
+                                   seen after sampling. In general, if the format of the backend
+                                   texture is SRGB, some linear colorSpace should be supplied
+                                   (e.g., SkColorSpace::MakeSRGBLinear()). If the format of the
+                                   backend texture is linear, then the colorSpace should include
+                                   a description of the transfer function as
+                                   well (e.g., SkColorSpace::MakeSRGB()).
+        @param TextureReleaseProc  function called when the backend texture can be released
+        @param ReleaseContext      state passed to textureReleaseProc
+        @return                    created SkImage, or nullptr
+    */
+    static sk_sp<SkImage> MakeGraphiteFromBackendTexture(skgpu::graphite::Recorder*,
+                                                         const skgpu::graphite::BackendTexture&,
+                                                         SkColorType colorType,
+                                                         SkAlphaType alphaType,
+                                                         sk_sp<SkColorSpace> colorSpace,
+                                                         TextureReleaseProc = nullptr,
+                                                         ReleaseContext = nullptr);
 
     // Passed to both fulfill and imageRelease
     using GraphitePromiseImageContext = void*;
@@ -1199,28 +1226,6 @@ public:
                                                      GraphitePromiseImageReleaseProc,
                                                      GraphitePromiseTextureReleaseProc,
                                                      GraphitePromiseImageContext);
-
-    /** Creates an SkImage from a GPU texture associated with the recorder.
-
-        SkImage is returned if the format of backendTexture is recognized and supported.
-        Recognized formats vary by GPU back-end.
-
-        @param recorder            The recorder
-        @param backendTexture      texture residing on GPU
-        @param colorSpace          This describes the color space of this image's contents, as
-                                   seen after sampling. In general, if the format of the backend
-                                   texture is SRGB, some linear colorSpace should be supplied
-                                   (e.g., SkColorSpace::MakeSRGBLinear()). If the format of the
-                                   backend texture is linear, then the colorSpace should include
-                                   a description of the transfer function as
-                                   well (e.g., SkColorSpace::MakeSRGB()).
-        @return                    created SkImage, or nullptr
-    */
-    static sk_sp<SkImage> MakeGraphiteFromBackendTexture(skgpu::graphite::Recorder*,
-                                                         const skgpu::graphite::BackendTexture&,
-                                                         SkColorType colorType,
-                                                         SkAlphaType alphaType,
-                                                         sk_sp<SkColorSpace> colorSpace);
 
     struct RequiredImageProperties {
         skgpu::Mipmapped fMipmapped;
