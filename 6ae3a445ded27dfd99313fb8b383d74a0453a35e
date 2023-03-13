@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f844b92_a5918f63",
+        "filename": "src/gpu/ganesh/GrPinnableImage.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-13T14:12:07Z",
+      "side": 1,
+      "message": "nit: ... are not of ...",
+      "range": {
+        "startLine": 106,
+        "startChar": 35,
+        "endLine": 106,
+        "endChar": 41
+      },
+      "revId": "6ae3a445ded27dfd99313fb8b383d74a0453a35e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d86f1f0d_d0b2f1b9",
+        "filename": "src/gpu/ganesh/GrPinnableImage.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-13T14:12:07Z",
+      "side": 1,
+      "message": "nit: ... are not of ...",
+      "range": {
+        "startLine": 138,
+        "startChar": 35,
+        "endLine": 138,
+        "endChar": 41
+      },
+      "revId": "6ae3a445ded27dfd99313fb8b383d74a0453a35e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
