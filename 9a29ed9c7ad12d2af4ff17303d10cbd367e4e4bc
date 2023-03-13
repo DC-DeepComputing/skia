@@ -16,6 +16,40 @@
       "message": "Creating a test implementation of SkUnicode to use for client icu.",
       "revId": "9a29ed9c7ad12d2af4ff17303d10cbd367e4e4bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6269eabc_7b4cce9f",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-13T15:16:26Z",
+      "side": 1,
+      "message": "I don\u0027t understand the logic of this. `SK_UNICODE_TEST_ICU_IMPLEMENTATION` is the same as `SK_UNICODE_ICU_IMPLEMENTATION \u0026\u0026 SK_UNICODE_CLIENT_IMPLEMENTATION`. It should always be built when the test targets are built (and both the ICU and CLIENT are available). It isn\u0027t really a thing that is in addition to the existing two, it\u0027s a thing that uses those two for testing. The test code itself looks like it should go in a separate test target and actually be run as a test?\n\nI also don\u0027t understand why these should be exclusive. The point of making SkUnicode an abstract base was that one could have multiple implementations (and test them all from one build if we wanted).",
+      "revId": "9a29ed9c7ad12d2af4ff17303d10cbd367e4e4bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e209120_e50c6bad",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-13T15:16:26Z",
+      "side": 1,
+      "message": "This doesn\u0027t belong here? The test sources should go into a (new) test target. It looks like maybe the intent is to move this out of `modules/skparagraph/tests/SkParagraphTest.cpp` and into a new `modules/skunicode/tests/SkUnicodeTest.cpp`?",
+      "revId": "9a29ed9c7ad12d2af4ff17303d10cbd367e4e4bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
