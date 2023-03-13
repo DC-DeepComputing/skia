@@ -16,6 +16,24 @@
       "message": "Hmmm... turns out M_PI is a Posix addition to math.h.",
       "revId": "716a016da78c50aab195e65565390201354e3d0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d9627a3_85039fa2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-13T21:49:00Z",
+      "side": 1,
+      "message": "Which Microsoft claims to provide should `_USE_MATH_DEFINES` be defined first, which HarfBuzz appears to be doing. Of course, this is very fragile, due to needing to be defined before any inclusion of math.h.",
+      "parentUuid": "b2c3bfb5_739d9e85",
+      "revId": "716a016da78c50aab195e65565390201354e3d0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
