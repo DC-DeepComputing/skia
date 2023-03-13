@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68c04bca_8244e0c1",
+        "filename": "src/core/SkDrawBase.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-03-13T15:34:03Z",
+      "side": 1,
+      "message": "Nit: can this be scoped to SkDrawBase instead of global namespace?",
+      "revId": "96a134c2127637f9c6094347843b671fc42a8f08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
