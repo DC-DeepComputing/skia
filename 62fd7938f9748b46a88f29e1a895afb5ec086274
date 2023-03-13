@@ -16,6 +16,24 @@
       "message": "LGTM to get it working. (Kevin is going to enjoy this CL)",
       "revId": "62fd7938f9748b46a88f29e1a895afb5ec086274",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bcf5bf1_614f9b2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-13T12:39:19Z",
+      "side": 1,
+      "message": "Why does the gn_to_bp.py script need Python 2? What needs to be updated?",
+      "parentUuid": "8bfb7d68_f5679c88",
+      "revId": "62fd7938f9748b46a88f29e1a895afb5ec086274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
