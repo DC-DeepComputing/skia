@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e2920ff_7857ad83",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-13T13:41:59Z",
+      "side": 1,
+      "message": "Super nit-picky, but something about this phrasing feels slightly off to me. The call `myBlender.eval(s, d)` blends s with d, but it doesn\u0027t blend _into_ anything. Same with `SkShaders::Blend`. These just evaluate the blend between s and d. There\u0027s no \"blending into\" anything unless it\u0027s the blend-step of a paint (or the primitive-color blend, a wacky special case).\n\nI think the only issue here is the comment; there\u0027s nothing wrong with the code itself. I\u0027m also wondering if `kChildOutput` just means \"no destination\" or if there\u0027s something else to it?\n\nAt any rate this nit-pick is just about comment phrasing... the code itself seems fine.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 67
+      },
+      "revId": "f18e6e83ede9db51e3f7ebc87f0bba8f173cfbfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
