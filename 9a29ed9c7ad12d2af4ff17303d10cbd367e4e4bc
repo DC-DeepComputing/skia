@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4b0b61b_d3081bd8",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-13T20:09:50Z",
+      "side": 1,
+      "message": "Tried to sort it out and make more clear.",
+      "parentUuid": "6269eabc_7b4cce9f",
+      "revId": "9a29ed9c7ad12d2af4ff17303d10cbd367e4e4bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e209120_e50c6bad",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-03-13T15:16:26Z",
       "side": 1,
       "message": "This doesn\u0027t belong here? The test sources should go into a (new) test target. It looks like maybe the intent is to move this out of `modules/skparagraph/tests/SkParagraphTest.cpp` and into a new `modules/skunicode/tests/SkUnicodeTest.cpp`?",
+      "revId": "9a29ed9c7ad12d2af4ff17303d10cbd367e4e4bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4521235e_6742a440",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-13T20:09:50Z",
+      "side": 1,
+      "message": "It\u0027s not a test code but rather an utility code. I keep it into the test folder mostly because it is created for testing.",
+      "parentUuid": "9e209120_e50c6bad",
       "revId": "9a29ed9c7ad12d2af4ff17303d10cbd367e4e4bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
