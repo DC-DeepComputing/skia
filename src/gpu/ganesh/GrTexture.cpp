@@ -58,7 +58,7 @@ GrTexture::GrTexture(GrGpu* gpu,
 
 bool GrTexture::StealBackendTexture(sk_sp<GrTexture> texture,
                                     GrBackendTexture* backendTexture,
-                                    SkImage::BackendTextureReleaseProc* releaseProc) {
+                                    sk_image_factory::BackendTextureReleaseProc* releaseProc) {
     if (!texture->unique()) {
         return false;
     }

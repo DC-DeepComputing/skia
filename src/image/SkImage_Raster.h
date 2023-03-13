@@ -5,14 +5,10 @@
  * found in the LICENSE file.
  */
 
-#ifndef SkImage_Raster_DEFINED
-#define SkImage_Raster_DEFINED
-
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPixelRef.h"
 #include "include/core/SkRefCnt.h"
-#include "include/core/SkSamplingOptions.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkImagePriv.h"
@@ -21,40 +17,17 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <memory>
-#include <tuple>
 #include <utility>
 
 class GrDirectContext;
-class GrFragmentProcessor;
 class GrRecordingContext;
 class SkColorSpace;
 class SkData;
-class SkMatrix;
 class SkPixmap;
 enum SkColorType : int;
-enum class GrImageTexGenPolicy : int;
-enum class SkTileMode;
+namespace skgpu { namespace ganesh { struct PinnedData; } }
 struct SkIRect;
 struct SkImageInfo;
-struct SkRect;
-
-#if defined(SK_GANESH)
-#include "include/gpu/GrTypes.h"
-#include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/gpu/ganesh/GrSurfaceProxyView.h"
-#endif
-
-#if defined(SK_GRAPHITE)
-#include "include/gpu/graphite/GraphiteTypes.h"
-#include "include/gpu/graphite/Recorder.h"
-#include "src/gpu/graphite/Buffer.h"
-#include "src/gpu/graphite/Caps.h"
-#include "src/gpu/graphite/CommandBuffer.h"
-#include "src/gpu/graphite/RecorderPriv.h"
-#include "src/gpu/graphite/TextureUtils.h"
-#include "src/gpu/graphite/UploadTask.h"
-#endif
 
 class SkImage_Raster : public SkImage_Base {
 public:
@@ -94,12 +67,6 @@ public:
         fBitmap.pixelRef()->notifyAddedToCache();
     }
 
-#if defined(SK_GANESH)
-    bool onPinAsTexture(GrRecordingContext*) const override;
-    void onUnpinAsTexture(GrRecordingContext*) const override;
-    bool isPinnedOnContext(GrRecordingContext*) const override;
-#endif
-
     bool onHasMipmaps() const override { return SkToBool(fBitmap.fMips); }
 
     SkMipmap* onPeekMips() const override { return fBitmap.fMips.get(); }
@@ -121,19 +88,16 @@ public:
         return img;
     }
 
-private:
-#if defined(SK_GANESH)
-    std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
-                                                         GrMipmapped,
-                                                         GrImageTexGenPolicy) const override;
+    ImageType type() const override { return ImageType::kRaster; }
 
-    std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,
-                                                               SkSamplingOptions,
-                                                               const SkTileMode[2],
-                                                               const SkMatrix&,
-                                                               const SkRect*,
-                                                               const SkRect*) const override;
-#endif
+    SkBitmap bitmap() const { return fBitmap; }
+
+    skgpu::ganesh::PinnedData* pinnedData() const { return fPinnedData; }
+    void setPinnedData(skgpu::ganesh::PinnedData* data) {
+        fPinnedData = data;
+    }
+
+private:
 #if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
                                       RequiredImageProperties) const override;
@@ -142,16 +106,6 @@ private:
                                                 skgpu::graphite::Recorder*,
                                                 RequiredImageProperties) const override;
 #endif
-
     SkBitmap fBitmap;
-
-#if defined(SK_GANESH)
-    mutable GrSurfaceProxyView fPinnedView;
-    mutable int32_t fPinnedCount = 0;
-    mutable uint32_t fPinnedUniqueID = SK_InvalidUniqueID;
-    mutable uint32_t fPinnedContextID = SK_InvalidUniqueID;
-    mutable GrColorType fPinnedColorType = GrColorType::kUnknown;
-#endif
+    skgpu::ganesh::PinnedData* fPinnedData = nullptr;
 };
-
-#endif // SkImage_Raster_DEFINED

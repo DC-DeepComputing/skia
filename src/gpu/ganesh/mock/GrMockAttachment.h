@@ -26,7 +26,7 @@ public:
     }
 
     GrBackendFormat backendFormat() const override {
-        return GrBackendFormat::MakeMock(GrColorType::kUnknown, SkImage::CompressionType::kNone,
+        return GrBackendFormat::MakeMock(GrColorType::kUnknown, sk_image_factory::CompressionType::kNone,
                                          /*isStencilFormat*/ true);
     }
 
