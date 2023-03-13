@@ -368,7 +368,42 @@ bool LazyYUVImage::ensureYUVImage(skgpu::graphite::Recorder* recorder, Type type
             break;
         }
         case Type::kFromTextures:
-            // TODO: implement this and MakeGraphiteFromYUVATextures()
+//            if (!recorder) {
+//                return false;
+//            }
+//            if (fMipmapped == GrMipmapped::kYes) {
+//                // If this becomes necessary we should invoke SkMipmapBuilder here to make mip
+//                // maps from our src data (and then pass a pixmaps array to initialize the planar
+//                // textures.
+//                return false;
+//            }
+//            sk_sp<sk_gpu_test::ManagedBackendTexture> mbets[SkYUVAInfo::kMaxPlanes];
+//            skgpu::graphite::BackendTexture textures[SkYUVAInfo::kMaxPlanes];
+//            for (int i = 0; i < fPixmaps.numPlanes(); ++i) {
+//                mbets[i] = sk_gpu_test::ManagedBackendTexture::MakeWithData(
+//                        recorder,
+//                        fPixmaps.plane(i),
+//                        kTopLeft_GrSurfaceOrigin,
+//                        GrRenderable::kNo,
+//                        GrProtected::kNo);
+//                if (mbets[i]) {
+//                    textures[i] = mbets[i]->texture();
+//                } else {
+//                    return false;
+//                }
+//            }
+//            skgpu::graphite::YUVABackendTextures yuvaTextures(recorder,
+//                                                              fPixmaps.yuvaInfo(),
+//                                                              textures);
+//            if (!yuvaTextures.isValid()) {
+//                return false;
+//            }
+//            void* planeRelContext =
+//                    sk_gpu_test::ManagedBackendTexture::MakeYUVAReleaseContext(mbets);
+//            fYUVImage[idx] = SkImage::MakeGraphiteFromYUVABackendTextures(
+//                    recorder,
+//                    yuvaTextures,
+//                    fColorSpace);
             return false;
     }
     return fYUVImage[idx] != nullptr;
