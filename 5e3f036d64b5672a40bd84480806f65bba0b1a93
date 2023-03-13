@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d820324_899ca452",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-13T20:21:54Z",
+      "side": 1,
+      "message": "PTAL.",
+      "revId": "5e3f036d64b5672a40bd84480806f65bba0b1a93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d40180c3_bfd41fbd",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1153,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-13T20:21:54Z",
+      "side": 1,
+      "message": "Moved this up here because the comments for MakeGraphitePromiseTexture refer to it.",
+      "range": {
+        "startLine": 1153,
+        "startChar": 26,
+        "endLine": 1153,
+        "endChar": 56
+      },
+      "revId": "5e3f036d64b5672a40bd84480806f65bba0b1a93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
