@@ -8,6 +8,7 @@
 #include "src/gpu/ganesh/GrProxyProvider.h"
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkCompressionType.h"
 #include "include/core/SkImage.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/base/SingleOwner.h"
@@ -522,7 +523,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createCompressedTextureProxy(
         skgpu::Budgeted budgeted,
         GrMipmapped mipmapped,
         GrProtected isProtected,
-        SkImage::CompressionType compressionType,
+        SkCompressionType compressionType,
         sk_sp<SkData> data) {
     ASSERT_SINGLE_OWNER
     if (this->isAbandoned()) {

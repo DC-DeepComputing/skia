@@ -10,8 +10,8 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkCompressionType.h"
 #include "include/core/SkData.h"
-#include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRect.h"
@@ -143,8 +143,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(GrSurfaceRenderability,
     auto createTexture = [](SkISize dimensions, GrColorType colorType,
                             const GrBackendFormat& format, GrRenderable renderable,
                             GrResourceProvider* rp) -> sk_sp<GrTexture> {
-        SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
-        if (compression != SkImage::CompressionType::kNone) {
+        SkCompressionType compression = GrBackendFormatToCompressionType(format);
+        if (compression != SkCompressionType::kNone) {
             if (renderable == GrRenderable::kYes) {
                 return nullptr;
             }
