@@ -22,6 +22,30 @@
       },
       "revId": "f18e6e83ede9db51e3f7ebc87f0bba8f173cfbfa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a683f98a_0cc76739",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-14T14:22:08Z",
+      "side": 1,
+      "message": "I totally agree about the comment. Do you think it would be sufficient to say \"that a blender might blend with\"?\n\nFor the name \"kChildOutput\", this refers to blenders that use the output of a child shader as \"dst\". For example, for the following approximated client code:\n\n    redShader \u003d MakeShader(\"(\n        half4 main(float2 coord) {\n            return half4(1, 0, 0, 1);\n        }\n    )\");\n    greenShader \u003d MakeShader\"(\n        half4 main(float2 coord) {\n            return half4(0, 1, 0, 1);\n        }         \n    )\");\n    blender \u003d MakeBlender(\"(\n        half4 main(half4 src, half4 dst) {\n            return (src + dst) * 0.5;\n        }       \n    )\");\n\n    paint.setShader(SkShaders::Blend(blender, /*dst\u003d*/greenShader, /*src\u003d*/redShader));\n\nwe would generate:\n\n    half4 RuntimeEffect_1(half4 inColor, half4 destColor, float2 coords)\n    {\n            float2 pos \u003d coords;\n            return half4((inColor + destColor) * 0.5);\n    }\n    half4 RuntimeEffect_2(half4 inColor, half4 destColor, float2 coords)\n    {\n            float2 pos \u003d coords;\n            return half4(half4(1.0, 0.0, 0.0, 1.0));\n    }\n    half4 RuntimeEffect_3(half4 inColor, half4 destColor, float2 coords)\n    {\n            float2 pos \u003d coords;\n            return half4(half4(0.0, 1.0, 0.0, 1.0));\n    }\n    half4 RuntimeEffect_4(half4 inColor, half4 destColor, float2 coords)\n    {\n            float2 pos \u003d coords;\n            return RuntimeEffect_1(RuntimeEffect_2(inColor, destColor, pos),\n                                   RuntimeEffect_3(inColor, destColor, pos),\n                                   coords));\n    }\n\nand here the output of \"greenShader\" is used as \"dst\" in the blender. I believe that, along with the surface color and primitive colors, this covers all of the possible uses for dst?",
+      "parentUuid": "8e2920ff_7857ad83",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 67
+      },
+      "revId": "f18e6e83ede9db51e3f7ebc87f0bba8f173cfbfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
