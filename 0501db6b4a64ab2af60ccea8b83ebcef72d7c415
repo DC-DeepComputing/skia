@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c6f049b_651bc61c",
+        "filename": "include/core/SkCompressionType.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-14T14:28:46Z",
+      "side": 1,
+      "message": "nit: Without the context of `SkImage::`, `SkCompressionType` seems somewhat vague? It was already vague, when it could have referred to image formats like JPEG or PNG, but now it might be referring to RLE, or zlib, or ... anything? Maybe `SkTextureCompressionType`, to be really accurate/specific?",
+      "range": {
+        "startLine": 20,
+        "startChar": 11,
+        "endLine": 20,
+        "endChar": 28
+      },
+      "revId": "0501db6b4a64ab2af60ccea8b83ebcef72d7c415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "996a4097_38b9f837",
+        "filename": "include/core/SkCompressionType.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-14T14:28:46Z",
+      "side": 1,
+      "message": "I realize this is pre-existing, so it\u0027s probably a question for Rob: Why are we aliasing ETC1 and ETC2? I guess if we only support devices that have ETC2, then it\u0027s okay? Otherwise, it feels strange -- ETC1 is a strict subset of ETC2, if my memory is correct.",
+      "revId": "0501db6b4a64ab2af60ccea8b83ebcef72d7c415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
