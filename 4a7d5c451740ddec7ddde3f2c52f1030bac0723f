@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "500f7a24_2b4f4f59",
+        "filename": "src/gpu/graphite/ComputeTask.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-14T21:33:43Z",
+      "side": 1,
+      "message": "Done. This is now inconsistent with the draw methods at the CommandBuffer level but I can change the `DrawPass`es to use a SkTArray too. I\u0027ll send that as a follow up.",
+      "parentUuid": "6731621f_59ed11dd",
+      "range": {
+        "startLine": 27,
+        "startChar": 30,
+        "endLine": 27,
+        "endChar": 41
+      },
+      "revId": "4a7d5c451740ddec7ddde3f2c52f1030bac0723f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e436d6f_bc037adf",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-27T21:28:29Z",
       "side": 1,
       "message": "Nit: formatting looks a little odd here.",
+      "range": {
+        "startLine": 251,
+        "startChar": 49,
+        "endLine": 251,
+        "endChar": 98
+      },
+      "revId": "4a7d5c451740ddec7ddde3f2c52f1030bac0723f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9dd0a2d_f4104a91",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-14T21:33:43Z",
+      "side": 1,
+      "message": "That is indeed odd. Done.",
+      "parentUuid": "6e436d6f_bc037adf",
       "range": {
         "startLine": 251,
         "startChar": 49,
