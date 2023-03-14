@@ -56,6 +56,7 @@ enum class SnippetRequirementFlags : uint32_t {
     kPriorStageOutput = 0x2,  // AKA the "input" color, or the "source" color for a blender
     kRuntimeShaderDstColor = 0x4,
     kBlendAgainstPrimitiveColor = 0x8,
+    kDstColor = 0x10,
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags);
 
@@ -112,6 +113,9 @@ struct ShaderSnippet {
     }
     bool blendAgainstPrimitiveColor() const {
         return fSnippetRequirementFlags & SnippetRequirementFlags::kBlendAgainstPrimitiveColor;
+    }
+    bool needsDstColor() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kDstColor;
     }
 
     const char* fName = nullptr;
@@ -237,7 +241,7 @@ public:
 
     void getShaderInfo(UniquePaintParamsID, ShaderInfo*) const;
 
-    int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect);
+    int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect, bool needsDstColor);
 
     int addUserDefinedSnippet(const char* name,
                               SkSpan<const PaintParamsKey::DataPayloadField> expectations);
@@ -291,6 +295,7 @@ private:
     struct RuntimeEffectKey {
         uint32_t fHash;
         uint32_t fUniformSize;
+        SkEnumBitMask<SnippetRequirementFlags> fSnippetFlags = SnippetRequirementFlags::kNone;
 
         bool operator==(RuntimeEffectKey rhs) const {
             return fHash == rhs.fHash && fUniformSize == rhs.fUniformSize;

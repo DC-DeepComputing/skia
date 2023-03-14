@@ -81,6 +81,39 @@ void SolidColorShaderBlock::BeginBlock(const KeyContext& keyContext,
 //--------------------------------------------------------------------------------------------------
 
 namespace {
+
+void add_dst_color_uniform_data(const ShaderCodeDictionary* dict,
+                                PipelineDataGatherer* gatherer,
+                                sk_sp<TextureProxy> dstTexture) {
+    static const SkTileMode kTileModes[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
+    gatherer->add(SkSamplingOptions(), kTileModes, dstTexture);
+
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kDstColor)
+
+    SkV4 coords{0.0f,
+                0.0f,
+                1.0f / dstTexture->dimensions().width(),
+                1.0f / dstTexture->dimensions().height()};
+    gatherer->write(coords);
+
+    gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kDstColor));
+}
+
+} // anonymous namespace
+
+void DstColorBlock::BeginBlock(const KeyContext& keyContext,
+                               PaintParamsKeyBuilder* builder,
+                               PipelineDataGatherer* gatherer,
+                               sk_sp<TextureProxy> dstTexture) {
+    if (gatherer) {
+        add_dst_color_uniform_data(keyContext.dict(), gatherer, std::move(dstTexture));
+    }
+    builder->beginBlock(BuiltInCodeSnippetID::kDstColor);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+namespace {
 // All the gradients share a common postamble of:
 //   tilemode
 //   colorSpace
@@ -777,9 +810,11 @@ RuntimeEffectBlock::ShaderData::ShaderData(sk_sp<const SkRuntimeEffect> effect)
         : fEffect(std::move(effect)) {}
 
 RuntimeEffectBlock::ShaderData::ShaderData(sk_sp<const SkRuntimeEffect> effect,
-                                           sk_sp<const SkData> uniforms)
+                                           sk_sp<const SkData> uniforms,
+                                           bool needsDstColor)
         : fEffect(std::move(effect))
-        , fUniforms(std::move(uniforms)) {}
+        , fUniforms(std::move(uniforms))
+        , fNeedsDstColor(needsDstColor) {}
 
 static bool skdata_matches(const SkData* a, const SkData* b) {
     // Returns true if both SkData objects hold the same contents, or if they are both null.
@@ -811,7 +846,8 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
                                     PipelineDataGatherer* gatherer,
                                     const ShaderData& shaderData) {
     ShaderCodeDictionary* dict = keyContext.dict();
-    int codeSnippetID = dict->findOrCreateRuntimeEffectSnippet(shaderData.fEffect.get());
+    int codeSnippetID = dict->findOrCreateRuntimeEffectSnippet(shaderData.fEffect.get(),
+                                                               shaderData.fNeedsDstColor);
 
     keyContext.rtEffectDict()->set(codeSnippetID, shaderData.fEffect);
 
