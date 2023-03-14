@@ -8,7 +8,6 @@
 #ifndef GrMockOptions_DEFINED
 #define GrMockOptions_DEFINED
 
-#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/GrTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 
@@ -17,17 +16,17 @@ class GrBackendFormat;
 struct GrMockTextureInfo {
     GrMockTextureInfo()
         : fColorType(GrColorType::kUnknown)
-        , fCompressionType(SkTextureCompressionType::kNone)
+        , fCompressionType(SkImage::CompressionType::kNone)
         , fID(0) {}
 
     GrMockTextureInfo(GrColorType colorType,
-                      SkTextureCompressionType compressionType,
+                      SkImage::CompressionType compressionType,
                       int id)
             : fColorType(colorType)
             , fCompressionType(compressionType)
             , fID(id) {
         SkASSERT(fID);
-        if (fCompressionType != SkTextureCompressionType::kNone) {
+        if (fCompressionType != SkImage::CompressionType::kNone) {
             SkASSERT(colorType == GrColorType::kUnknown);
         }
     }
@@ -40,10 +39,10 @@ struct GrMockTextureInfo {
 
     GrBackendFormat getBackendFormat() const;
 
-    SkTextureCompressionType compressionType() const { return fCompressionType; }
+    SkImage::CompressionType compressionType() const { return fCompressionType; }
 
     GrColorType colorType() const {
-        SkASSERT(fCompressionType == SkTextureCompressionType::kNone);
+        SkASSERT(fCompressionType == SkImage::CompressionType::kNone);
         return fColorType;
     }
 
@@ -51,7 +50,7 @@ struct GrMockTextureInfo {
 
 private:
     GrColorType              fColorType;
-    SkTextureCompressionType fCompressionType;
+    SkImage::CompressionType fCompressionType;
     int                      fID;
 };
 
@@ -86,10 +85,8 @@ struct GrMockSurfaceInfo {
     GrProtected fProtected = GrProtected::kNo;
 
     GrColorType fColorType = GrColorType::kUnknown;
-    SkTextureCompressionType fCompressionType = SkTextureCompressionType::kNone;
+    SkImage::CompressionType fCompressionType = SkImage::CompressionType::kNone;
 };
-
-static constexpr int kSkTextureCompressionTypeCount = static_cast<int>(SkTextureCompressionType::kLast) + 1;
 
 /**
  * A pointer to this type is used as the GrBackendContext when creating a Mock GrContext. It can be
@@ -108,9 +105,9 @@ struct GrMockOptions {
 
         fConfigOptions[(int)GrColorType::kBGRA_8888] = fConfigOptions[(int)GrColorType::kRGBA_8888];
 
-        fCompressedOptions[(int)SkTextureCompressionType::kETC2_RGB8_UNORM].fTexturable = true;
-        fCompressedOptions[(int)SkTextureCompressionType::kBC1_RGB8_UNORM].fTexturable = true;
-        fCompressedOptions[(int)SkTextureCompressionType::kBC1_RGBA8_UNORM].fTexturable = true;
+        fCompressedOptions[(int)SkImage::CompressionType::kETC2_RGB8_UNORM].fTexturable = true;
+        fCompressedOptions[(int)SkImage::CompressionType::kBC1_RGB8_UNORM].fTexturable = true;
+        fCompressedOptions[(int)SkImage::CompressionType::kBC1_RGBA8_UNORM].fTexturable = true;
     }
 
     struct ConfigOptions {
@@ -129,7 +126,7 @@ struct GrMockOptions {
     int fMaxWindowRectangles = 0;
     int fMaxVertexAttributes = 16;
     ConfigOptions fConfigOptions[kGrColorTypeCnt];
-    ConfigOptions fCompressedOptions[kSkTextureCompressionTypeCount];
+    ConfigOptions fCompressedOptions[SkImage::kCompressionTypeCount];
 
     // GrShaderCaps options.
     bool fIntegerSupport = false;

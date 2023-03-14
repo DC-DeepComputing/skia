@@ -8,19 +8,18 @@
 #ifndef GrMockTypesPriv_DEFINED
 #define GrMockTypesPriv_DEFINED
 
-#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/mock/GrMockTypes.h"
 
 struct GrMockTextureSpec {
     GrMockTextureSpec()
             : fColorType(GrColorType::kUnknown)
-             , fCompressionType(SkTextureCompressionType::kNone) {}
+             , fCompressionType(SkImage::CompressionType::kNone) {}
     GrMockTextureSpec(const GrMockSurfaceInfo& info)
             : fColorType(info.fColorType)
             , fCompressionType(info.fCompressionType) {}
 
     GrColorType fColorType = GrColorType::kUnknown;
-    SkTextureCompressionType fCompressionType = SkTextureCompressionType::kNone;
+    SkImage::CompressionType fCompressionType = SkImage::CompressionType::kNone;
 };
 
 GrMockSurfaceInfo GrMockTextureSpecToSurfaceInfo(const GrMockTextureSpec& mockSpec,

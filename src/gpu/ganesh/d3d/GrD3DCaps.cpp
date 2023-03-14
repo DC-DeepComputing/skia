@@ -6,7 +6,6 @@
  */
 #include "src/gpu/ganesh/d3d/GrD3DCaps.h"
 
-#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/d3d/GrD3DBackendContext.h"
@@ -974,9 +973,9 @@ GrBackendFormat GrD3DCaps::onGetDefaultBackendFormat(GrColorType ct) const {
 }
 
 GrBackendFormat GrD3DCaps::getBackendFormatFromCompressionType(
-    SkTextureCompressionType compressionType) const {
+    SkImage::CompressionType compressionType) const {
     switch (compressionType) {
-        case SkTextureCompressionType::kBC1_RGBA8_UNORM:
+        case SkImage::CompressionType::kBC1_RGBA8_UNORM:
             if (this->isFormatTexturable(DXGI_FORMAT_BC1_UNORM)) {
                 return GrBackendFormat::MakeDxgi(DXGI_FORMAT_BC1_UNORM);
             }
@@ -1035,9 +1034,9 @@ GrCaps::SupportedRead GrD3DCaps::onSupportedReadPixelsColorType(
         return { GrColorType::kUnknown, 0 };
     }
 
-    SkTextureCompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
-    if (compression != SkTextureCompressionType::kNone) {
-        return { SkTextureCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
+    SkImage::CompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
+    if (compression != SkImage::CompressionType::kNone) {
+        return { SkCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
                                                         : GrColorType::kRGBA_8888, 0 };
     }
 

@@ -18,7 +18,6 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
-#include "include/core/SkTextureCompressionType.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrBackendSurface.h"
@@ -216,8 +215,8 @@ static bool isBGRA8(const GrBackendFormat& format) {
 #endif
         }
         case GrBackendApi::kMock: {
-            SkTextureCompressionType compression = format.asMockCompressionType();
-            if (compression != SkTextureCompressionType::kNone) {
+            SkImage::CompressionType compression = format.asMockCompressionType();
+            if (compression != SkImage::CompressionType::kNone) {
                 return false; // No compressed formats are BGRA
             }
 

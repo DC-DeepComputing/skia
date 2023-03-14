@@ -14,10 +14,9 @@
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/ganesh/GrGpuResource.h"
 
-class GrBackendFormat;
-class GrDirectContext;
 class GrRenderTarget;
 class GrTexture;
+class GrBackendFormat;
 
 class GrSurface : public GrGpuResource {
 public:

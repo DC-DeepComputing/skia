@@ -21,7 +21,6 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
-#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkCompressedDataUtils.h"
@@ -104,7 +103,7 @@ static sk_sp<SkImage> make_compressed_image(GrDirectContext* dContext,
                                             const SkISize dimensions,
                                             SkColorType colorType,
                                             bool opaque,
-                                            SkTextureCompressionType compression) {
+                                            SkImage::CompressionType compression) {
     size_t totalSize = SkCompressedDataSize(compression, dimensions, nullptr, true);
 
     sk_sp<SkData> tmp = SkData::MakeUninitialized(totalSize);
@@ -130,7 +129,7 @@ static sk_sp<SkImage> make_compressed_image(GrDirectContext* dContext,
         size_t levelSize = SkCompressedDataSize(compression, levelDims, nullptr, false);
 
         SkBitmap bm = render_level(levelDims, kColors[i%7], colorType, opaque);
-        if (compression == SkTextureCompressionType::kETC2_RGB8_UNORM) {
+        if (compression == SkImage::CompressionType::kETC2_RGB8_UNORM) {
             SkASSERT(bm.colorType() == kRGB_565_SkColorType);
             SkASSERT(opaque);
 
@@ -232,15 +231,15 @@ protected:
 
         fOpaqueETC2Image = make_compressed_image(dContext, fImgDimensions,
                                                  kRGB_565_SkColorType, true,
-                                                 SkTextureCompressionType::kETC2_RGB8_UNORM);
+                                                 SkImage::CompressionType::kETC2_RGB8_UNORM);
 
         fOpaqueBC1Image = make_compressed_image(dContext, fImgDimensions,
                                                 kRGBA_8888_SkColorType, true,
-                                                SkTextureCompressionType::kBC1_RGB8_UNORM);
+                                                SkImage::CompressionType::kBC1_RGB8_UNORM);
 
         fTransparentBC1Image = make_compressed_image(dContext, fImgDimensions,
                                                      kRGBA_8888_SkColorType, false,
-                                                     SkTextureCompressionType::kBC1_RGBA8_UNORM);
+                                                     SkImage::CompressionType::kBC1_RGBA8_UNORM);
 
         if (!fOpaqueETC2Image || !fOpaqueBC1Image || !fTransparentBC1Image) {
             *errorMsg = "Failed to create compressed images.";

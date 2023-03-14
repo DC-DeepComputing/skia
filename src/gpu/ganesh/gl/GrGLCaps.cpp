@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <memory>
 
-#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/GrContextOptions.h"
 #include "src/base/SkMathPriv.h"
 #include "src/base/SkTSearch.h"
@@ -4674,9 +4673,9 @@ GrCaps::SupportedRead GrGLCaps::onSupportedReadPixelsColorType(
         GrColorType srcColorType, const GrBackendFormat& srcBackendFormat,
         GrColorType dstColorType) const {
 
-    SkTextureCompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
-    if (compression != SkTextureCompressionType::kNone) {
-        return {SkTextureCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
+    SkImage::CompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
+    if (compression != SkImage::CompressionType::kNone) {
+        return {SkCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
                                                        : GrColorType::kRGBA_8888,
                 0};
     }
@@ -4921,11 +4920,11 @@ GrBackendFormat GrGLCaps::onGetDefaultBackendFormat(GrColorType ct) const {
 }
 
 GrBackendFormat GrGLCaps::getBackendFormatFromCompressionType(
-        SkTextureCompressionType compressionType) const {
+        SkImage::CompressionType compressionType) const {
     switch (compressionType) {
-        case SkTextureCompressionType::kNone:
+        case SkImage::CompressionType::kNone:
             return {};
-        case SkTextureCompressionType::kETC2_RGB8_UNORM:
+        case SkImage::CompressionType::kETC2_RGB8_UNORM:
             // if ETC2 is available default to that format
             if (this->isFormatTexturable(GrGLFormat::kCOMPRESSED_RGB8_ETC2)) {
                 return GrBackendFormat::MakeGL(GR_GL_COMPRESSED_RGB8_ETC2, GR_GL_TEXTURE_2D);
@@ -4934,13 +4933,13 @@ GrBackendFormat GrGLCaps::getBackendFormatFromCompressionType(
                 return GrBackendFormat::MakeGL(GR_GL_COMPRESSED_ETC1_RGB8, GR_GL_TEXTURE_2D);
             }
             return {};
-        case SkTextureCompressionType::kBC1_RGB8_UNORM:
+        case SkImage::CompressionType::kBC1_RGB8_UNORM:
             if (this->isFormatTexturable(GrGLFormat::kCOMPRESSED_RGB8_BC1)) {
                 return GrBackendFormat::MakeGL(GR_GL_COMPRESSED_RGB_S3TC_DXT1_EXT,
                                                GR_GL_TEXTURE_2D);
             }
             return {};
-        case SkTextureCompressionType::kBC1_RGBA8_UNORM:
+        case SkImage::CompressionType::kBC1_RGBA8_UNORM:
             if (this->isFormatTexturable(GrGLFormat::kCOMPRESSED_RGBA8_BC1)) {
                 return GrBackendFormat::MakeGL(GR_GL_COMPRESSED_RGBA_S3TC_DXT1_EXT,
                                                GR_GL_TEXTURE_2D);

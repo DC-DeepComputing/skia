@@ -21,7 +21,6 @@
 
 class GrGLContextInfo;
 class GrGLRenderTarget;
-enum class SkTextureCompressionType;
 
 /**
  * Stores some capabilities of a GL context. Most are determined by the GL
@@ -486,7 +485,7 @@ public:
 
     bool clientCanDisableMultisample() const { return fClientCanDisableMultisample; }
 
-    GrBackendFormat getBackendFormatFromCompressionType(SkTextureCompressionType) const override;
+    GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const override;
 
     skgpu::Swizzle getWriteSwizzle(const GrBackendFormat&, GrColorType) const override;
 

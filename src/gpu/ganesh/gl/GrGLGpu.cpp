@@ -9,7 +9,6 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPixmap.h"
-#include "include/core/SkTextureCompressionType.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GrBackendSemaphore.h"
 #include "include/gpu/GrBackendSurface.h"
@@ -1180,7 +1179,7 @@ void GrGLGpu::uploadTexData(SkISize texDims,
     }
 }
 
-bool GrGLGpu::uploadCompressedTexData(SkTextureCompressionType compressionType,
+bool GrGLGpu::uploadCompressedTexData(SkImage::CompressionType compressionType,
                                       GrGLFormat format,
                                       SkISize dimensions,
                                       GrMipmapped mipmapped,
@@ -1195,7 +1194,7 @@ bool GrGLGpu::uploadCompressedTexData(SkTextureCompressionType compressionType,
         return false;
     }
 
-    SkASSERT(compressionType != SkTextureCompressionType::kNone);
+    SkASSERT(compressionType != SkImage::CompressionType::kNone);
 
     bool useTexStorage = caps.formatSupportsTexStorage(format);
 
@@ -1576,7 +1575,7 @@ sk_sp<GrTexture> GrGLGpu::onCreateCompressedTexture(SkISize dimensions,
     if (isProtected == GrProtected::kYes) {
         return nullptr;
     }
-    SkTextureCompressionType compression = GrBackendFormatToCompressionType(format);
+    SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
 
     GrGLTextureParameters::SamplerOverriddenState initialState;
     GrGLTexture::Desc desc;
@@ -1628,7 +1627,7 @@ GrBackendTexture GrGLGpu::onCreateCompressedBackendTexture(
         return {};
     }
 
-    SkTextureCompressionType compression = GrBackendFormatToCompressionType(format);
+    SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
 
     GrGLTextureInfo info;
     GrGLTextureParameters::SamplerOverriddenState initialState;
@@ -1665,7 +1664,7 @@ bool GrGLGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendTe
     if (glFormat == GrGLFormat::kUnknown) {
         return false;
     }
-    SkTextureCompressionType compression = GrBackendFormatToCompressionType(format);
+    SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
 
     GrMipmapped mipmapped = backendTexture.hasMipmaps() ? GrMipmapped::kYes : GrMipmapped::kNo;
 
@@ -1792,7 +1791,7 @@ static void set_khr_debug_label(GrGLGpu* gpu, const GrGLuint id, std::string_vie
 
 GrGLuint GrGLGpu::createCompressedTexture2D(
         SkISize dimensions,
-        SkTextureCompressionType compression,
+        SkImage::CompressionType compression,
         GrGLFormat format,
         GrMipmapped mipmapped,
         GrGLTextureParameters::SamplerOverriddenState* initialState) {

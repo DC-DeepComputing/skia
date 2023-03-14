@@ -34,13 +34,11 @@ class GrTextureProxy;
 struct GrVkBackendContext;
 
 class SkImage;
-class SkPixmap;
 class SkString;
 class SkSurfaceCharacterization;
 class SkSurfaceProps;
 class SkTaskGroup;
 class SkTraceMemoryDump;
-enum class SkTextureCompressionType;
 
 namespace skgpu {
 class Swizzle;
@@ -676,7 +674,7 @@ public:
     }
 
     /**
-     * Retrieve the GrBackendFormat for a given SkTextureCompressionType. This is
+     * Retrieve the GrBackendFormat for a given SkImage::CompressionType. This is
      * guaranteed to match the backend format used by the following
      * createCompressedBackendTexture methods that take a CompressionType.
      *
@@ -702,7 +700,7 @@ public:
                                                     GrGpuFinishedContext finishedContext = nullptr);
 
     GrBackendTexture createCompressedBackendTexture(int width, int height,
-                                                    SkTextureCompressionType,
+                                                    SkImage::CompressionType,
                                                     const SkColor4f& color,
                                                     GrMipmapped,
                                                     GrProtected = GrProtected::kNo,
@@ -730,7 +728,7 @@ public:
                                                     GrGpuFinishedContext finishedContext = nullptr);
 
     GrBackendTexture createCompressedBackendTexture(int width, int height,
-                                                    SkTextureCompressionType,
+                                                    SkImage::CompressionType,
                                                     const void* data, size_t dataSize,
                                                     GrMipmapped,
                                                     GrProtected = GrProtected::kNo,

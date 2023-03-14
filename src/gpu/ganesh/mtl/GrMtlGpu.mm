@@ -8,7 +8,6 @@
 #include "src/gpu/ganesh/mtl/GrMtlGpu.h"
 
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/base/SkMathPriv.h"
@@ -630,7 +629,7 @@ sk_sp<GrTexture> GrMtlGpu::onCreateCompressedTexture(SkISize dimensions,
     SkASSERT(mtlTexture);
 
     auto compressionType = GrBackendFormatToCompressionType(format);
-    SkASSERT(compressionType != SkTextureCompressionType::kNone);
+    SkASSERT(compressionType != SkImage::CompressionType::kNone);
 
     SkTArray<size_t> individualMipOffsets(numMipLevels);
     SkDEBUGCODE(size_t combinedBufferSize =) SkCompressedDataSize(compressionType, dimensions,
@@ -1039,9 +1038,9 @@ bool GrMtlGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendT
     int numMipLevels = mtlTexture.mipmapLevelCount;
     GrMipmapped mipmapped = numMipLevels > 1 ? GrMipmapped::kYes : GrMipmapped::kNo;
 
-    SkTextureCompressionType compression =
+    SkImage::CompressionType compression =
             GrBackendFormatToCompressionType(backendTexture.getBackendFormat());
-    SkASSERT(compression != SkTextureCompressionType::kNone);
+    SkASSERT(compression != SkImage::CompressionType::kNone);
 
     // Create a transfer buffer and fill with data.
     SkSTArray<16, size_t> individualMipOffsets;

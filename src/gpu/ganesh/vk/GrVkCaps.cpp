@@ -9,7 +9,6 @@
 
 #include <memory>
 
-#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/vk/GrVkBackendContext.h"
@@ -1702,21 +1701,21 @@ bool GrVkCaps::programInfoWillUseDiscardableMSAA(const GrProgramInfo& programInf
 }
 
 GrBackendFormat GrVkCaps::getBackendFormatFromCompressionType(
-        SkTextureCompressionType compressionType) const {
+        SkImage::CompressionType compressionType) const {
     switch (compressionType) {
-        case SkTextureCompressionType::kNone:
+        case SkImage::CompressionType::kNone:
             return {};
-        case SkTextureCompressionType::kETC2_RGB8_UNORM:
+        case SkImage::CompressionType::kETC2_RGB8_UNORM:
             if (this->isVkFormatTexturable(VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK)) {
                 return GrBackendFormat::MakeVk(VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK);
             }
             return {};
-        case SkTextureCompressionType::kBC1_RGB8_UNORM:
+        case SkImage::CompressionType::kBC1_RGB8_UNORM:
             if (this->isVkFormatTexturable(VK_FORMAT_BC1_RGB_UNORM_BLOCK)) {
                 return GrBackendFormat::MakeVk(VK_FORMAT_BC1_RGB_UNORM_BLOCK);
             }
             return {};
-        case SkTextureCompressionType::kBC1_RGBA8_UNORM:
+        case SkImage::CompressionType::kBC1_RGBA8_UNORM:
             if (this->isVkFormatTexturable(VK_FORMAT_BC1_RGBA_UNORM_BLOCK)) {
                 return GrBackendFormat::MakeVk(VK_FORMAT_BC1_RGBA_UNORM_BLOCK);
             }
@@ -1804,9 +1803,9 @@ GrCaps::SupportedRead GrVkCaps::onSupportedReadPixelsColorType(
         return {GrColorType::kUnknown, 0};
     }
 
-    SkTextureCompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
-    if (compression != SkTextureCompressionType::kNone) {
-        return { SkTextureCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
+    SkImage::CompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
+    if (compression != SkImage::CompressionType::kNone) {
+        return { SkCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
                                                         : GrColorType::kRGBA_8888, 0 };
     }
 

@@ -14,7 +14,6 @@
 #include "src/gpu/ganesh/GrCaps.h"
 
 class GrVkRenderTarget;
-enum class SkTextureCompressionType;
 
 namespace skgpu {
 class VulkanExtensions;
@@ -235,7 +234,7 @@ public:
                           int srcSamplecnt,
                           bool srcHasYcbcr) const;
 
-    GrBackendFormat getBackendFormatFromCompressionType(SkTextureCompressionType) const override;
+    GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const override;
 
     VkFormat getFormatFromColorType(GrColorType colorType) const {
         int idx = static_cast<int>(colorType);

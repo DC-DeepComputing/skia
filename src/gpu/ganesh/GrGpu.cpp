@@ -8,7 +8,6 @@
 
 #include "src/gpu/ganesh/GrGpu.h"
 
-#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/GrBackendSemaphore.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
@@ -276,8 +275,8 @@ sk_sp<GrTexture> GrGpu::createCompressedTexture(SkISize dimensions,
     }
 
     // TODO: expand CompressedDataIsCorrect to work here too
-    SkTextureCompressionType compressionType = GrBackendFormatToCompressionType(format);
-    if (compressionType == SkTextureCompressionType::kNone) {
+    SkImage::CompressionType compressionType = GrBackendFormatToCompressionType(format);
+    if (compressionType == SkImage::CompressionType::kNone) {
         return nullptr;
     }
 
@@ -855,7 +854,7 @@ void GrGpu::Stats::dumpKeyValuePairs(SkTArray<SkString>* keys, SkTArray<double>*
 #endif // GR_TEST_UTILS
 
 bool GrGpu::CompressedDataIsCorrect(SkISize dimensions,
-                                    SkTextureCompressionType compressionType,
+                                    SkImage::CompressionType compressionType,
                                     GrMipmapped mipmapped,
                                     const void* data,
                                     size_t length) {
@@ -920,8 +919,8 @@ GrBackendTexture GrGpu::createCompressedBackendTexture(SkISize dimensions,
         return {};
     }
 
-    SkTextureCompressionType compressionType = GrBackendFormatToCompressionType(format);
-    if (compressionType == SkTextureCompressionType::kNone) {
+    SkImage::CompressionType compressionType = GrBackendFormatToCompressionType(format);
+    if (compressionType == SkImage::CompressionType::kNone) {
         // Uncompressed formats must go through the createBackendTexture API
         return {};
     }
@@ -951,8 +950,8 @@ bool GrGpu::updateCompressedBackendTexture(const GrBackendTexture& backendTextur
 
     GrBackendFormat format = backendTexture.getBackendFormat();
 
-    SkTextureCompressionType compressionType = GrBackendFormatToCompressionType(format);
-    if (compressionType == SkTextureCompressionType::kNone) {
+    SkImage::CompressionType compressionType = GrBackendFormatToCompressionType(format);
+    if (compressionType == SkImage::CompressionType::kNone) {
         // Uncompressed formats must go through the createBackendTexture API
         return false;
     }

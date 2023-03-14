@@ -7,7 +7,6 @@
 
 #include "src/gpu/ganesh/dawn/GrDawnCaps.h"
 
-#include "include/core/SkTextureCompressionType.h"
 #include "src/gpu/KeyBuilder.h"
 #include "src/gpu/ganesh/GrProgramDesc.h"
 #include "src/gpu/ganesh/GrProgramInfo.h"
@@ -132,7 +131,7 @@ GrBackendFormat GrDawnCaps::onGetDefaultBackendFormat(GrColorType ct) const {
     return GrBackendFormat::MakeDawn(format);
 }
 
-GrBackendFormat GrDawnCaps::getBackendFormatFromCompressionType(SkTextureCompressionType type) const
+GrBackendFormat GrDawnCaps::getBackendFormatFromCompressionType(SkImage::CompressionType type) const
 {
     return GrBackendFormat();
 }

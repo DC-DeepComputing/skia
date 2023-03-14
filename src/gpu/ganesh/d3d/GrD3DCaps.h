@@ -14,8 +14,6 @@
 #include "include/gpu/d3d/GrD3DTypes.h"
 #include "src/gpu/ganesh/d3d/GrD3DAttachment.h"
 
-enum class SkTextureCompressionType;
-
 /**
  * Stores some capabilities of a D3D backend.
  */
@@ -85,7 +83,7 @@ public:
     bool canCopyAsResolve(DXGI_FORMAT dstFormat, int dstSampleCnt,
                           DXGI_FORMAT srcFormat, int srcSamplecnt) const;
 
-    GrBackendFormat getBackendFormatFromCompressionType(SkTextureCompressionType) const override;
+    GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const override;
 
     DXGI_FORMAT getFormatFromColorType(GrColorType colorType) const {
         int idx = static_cast<int>(colorType);

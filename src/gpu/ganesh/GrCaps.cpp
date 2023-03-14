@@ -10,7 +10,6 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
-#include "include/core/SkTextureCompressionType.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
@@ -426,9 +425,9 @@ bool GrCaps::areColorTypeAndFormatCompatible(GrColorType grCT,
         return false;
     }
 
-    SkTextureCompressionType compression = GrBackendFormatToCompressionType(format);
-    if (compression != SkTextureCompressionType::kNone) {
-        return grCT == (SkTextureCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
+    SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
+    if (compression != SkImage::CompressionType::kNone) {
+        return grCT == (SkCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
                                                                : GrColorType::kRGBA_8888);
     }
 
@@ -436,8 +435,8 @@ bool GrCaps::areColorTypeAndFormatCompatible(GrColorType grCT,
 }
 
 skgpu::Swizzle GrCaps::getReadSwizzle(const GrBackendFormat& format, GrColorType colorType) const {
-    SkTextureCompressionType compression = GrBackendFormatToCompressionType(format);
-    if (compression != SkTextureCompressionType::kNone) {
+    SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
+    if (compression != SkImage::CompressionType::kNone) {
         if (colorType == GrColorType::kRGB_888x || colorType == GrColorType::kRGBA_8888) {
             return skgpu::Swizzle::RGBA();
         }
@@ -450,7 +449,7 @@ skgpu::Swizzle GrCaps::getReadSwizzle(const GrBackendFormat& format, GrColorType
 }
 
 bool GrCaps::isFormatCompressed(const GrBackendFormat& format) const {
-    return GrBackendFormatToCompressionType(format) != SkTextureCompressionType::kNone;
+    return GrBackendFormatToCompressionType(format) != SkImage::CompressionType::kNone;
 }
 
 GrDstSampleFlags GrCaps::getDstSampleFlagsForProxy(const GrRenderTargetProxy* rt,

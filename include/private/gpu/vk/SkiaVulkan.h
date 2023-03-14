@@ -10,8 +10,6 @@
 
 #include "include/core/SkTypes.h"
 
-// IWYU pragma: begin_exports
-
 #if SKIA_IMPLEMENTATION || !defined(SK_VULKAN)
 #include "include/third_party/vulkan/vulkan/vulkan_core.h"
 #else
@@ -30,7 +28,5 @@
 #include <vulkan/vulkan_android.h>
 #endif
 #endif
-
-// IWYU pragma: end_exports
 
 #endif

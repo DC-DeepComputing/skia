@@ -25,7 +25,6 @@ class GrThreadSafeCache;
 class GrThreadSafePipelineBuilder;
 class SkSurfaceCharacterization;
 class SkSurfaceProps;
-enum class SkTextureCompressionType;
 
 namespace sktext::gpu { class TextBlobRedrawCoordinator; }
 
@@ -108,13 +107,13 @@ public:
     GrBackendFormat defaultBackendFormat(SkColorType ct, GrRenderable renderable) const;
 
     /**
-     * Retrieve the GrBackendFormat for a given SkTextureCompressionType. This is
+     * Retrieve the GrBackendFormat for a given SkImage::CompressionType. This is
      * guaranteed to match the backend format used by the following
      * createCompressedBackendTexture methods that take a CompressionType.
      *
      * The caller should check that the returned format is valid.
      */
-    GrBackendFormat compressedBackendFormat(SkTextureCompressionType c) const;
+    GrBackendFormat compressedBackendFormat(SkImage::CompressionType c) const;
 
     /**
      * Gets the maximum supported sample count for a color type. 1 is returned if only non-MSAA

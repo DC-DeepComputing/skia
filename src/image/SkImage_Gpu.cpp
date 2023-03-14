@@ -67,7 +67,6 @@
 
 class SkMatrix;
 enum SkColorType : int;
-enum class SkTextureCompressionType;
 enum class SkTileMode;
 
 inline SkImage_Gpu::ProxyChooser::ProxyChooser(sk_sp<GrSurfaceProxy> stableProxy)
@@ -463,7 +462,7 @@ sk_sp<SkImage> SkImage::MakeFromCompressedTexture(GrRecordingContext* rContext,
         return nullptr;
     }
 
-    SkTextureCompressionType type = GrBackendFormatToCompressionType(tex.getBackendFormat());
+    CompressionType type = GrBackendFormatToCompressionType(tex.getBackendFormat());
     SkColorType ct = GrCompressionTypeToSkColorType(type);
 
     GrSurfaceProxyView view(std::move(proxy), origin, skgpu::Swizzle::RGBA());
@@ -540,7 +539,7 @@ sk_sp<SkImage> SkImage::MakeFromAdoptedTexture(GrRecordingContext* rContext,
 }
 
 sk_sp<SkImage> SkImage::MakeTextureFromCompressed(GrDirectContext* direct, sk_sp<SkData> data,
-                                                  int width, int height, SkTextureCompressionType type,
+                                                  int width, int height, CompressionType type,
                                                   GrMipmapped mipmapped,
                                                   GrProtected isProtected) {
     if (!direct || !data) {

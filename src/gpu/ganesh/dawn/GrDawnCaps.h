@@ -13,8 +13,6 @@
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/dawn/GrDawnUtil.h"
 
-enum class SkTextureCompressionType;
-
 class GrDawnCaps : public GrCaps {
 public:
     GrDawnCaps(const GrContextOptions& contextOptions);
@@ -44,7 +42,7 @@ public:
 
     int maxRenderTargetSampleCount(const GrBackendFormat& format) const override;
 
-    GrBackendFormat getBackendFormatFromCompressionType(SkTextureCompressionType) const override;
+    GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const override;
 
     skgpu::Swizzle getWriteSwizzle(const GrBackendFormat&, GrColorType) const override;
 

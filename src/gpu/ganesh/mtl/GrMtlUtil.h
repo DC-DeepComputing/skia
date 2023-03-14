@@ -18,7 +18,6 @@
 
 class GrMtlGpu;
 class GrSurface;
-enum class SkTextureCompressionType;
 namespace SkSL {
     enum class ProgramKind : int8_t;
     struct ProgramSettings;
@@ -109,7 +108,7 @@ static inline MTLPixelFormat GrBackendFormatAsMTLPixelFormat(const GrBackendForm
 /**
  * Maps a MTLPixelFormat into the CompressionType enum if applicable.
  */
-SkTextureCompressionType GrMtlFormatToCompressionType(MTLPixelFormat mtlFormat);
+SkImage::CompressionType GrMtlFormatToCompressionType(MTLPixelFormat mtlFormat);
 
 size_t GrMtlFormatBytesPerBlock(MTLPixelFormat);
 

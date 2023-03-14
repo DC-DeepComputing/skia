@@ -28,7 +28,6 @@
 class GrGLBuffer;
 class GrGLOpsRenderPass;
 class GrPipeline;
-enum class SkTextureCompressionType;
 
 namespace skgpu {
 class Swizzle;
@@ -314,7 +313,7 @@ private:
                            std::string_view label);
 
     GrGLuint createCompressedTexture2D(SkISize dimensions,
-                                       SkTextureCompressionType compression,
+                                       SkImage::CompressionType compression,
                                        GrGLFormat,
                                        GrMipmapped,
                                        GrGLTextureParameters::SamplerOverriddenState*);
@@ -510,7 +509,7 @@ private:
 
     // Helper for onCreateCompressedTexture. Compressed textures are read-only so we only use this
     // to populate a new texture. Returns false if we failed to create and upload the texture.
-    bool uploadCompressedTexData(SkTextureCompressionType compressionType,
+    bool uploadCompressedTexData(SkImage::CompressionType compressionType,
                                  GrGLFormat,
                                  SkISize dimensions,
                                  GrMipmapped,

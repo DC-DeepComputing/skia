@@ -8,14 +8,13 @@
 #ifndef GrMockSurfaceProxy_DEFINED
 #define GrMockSurfaceProxy_DEFINED
 
-#include "include/core/SkTextureCompressionType.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 
 class GrMockSurfaceProxy : public GrSurfaceProxy {
 public:
     GrMockSurfaceProxy(SkString name, std::string_view label)
             : GrSurfaceProxy(GrBackendFormat::MakeMock(GrColorType::kRGBA_8888,
-                                                       SkTextureCompressionType::kNone),
+                                                       SkImage::CompressionType::kNone),
                              SkISize::Make(1, 1),
                              SkBackingFit::kExact,
                              skgpu::Budgeted::kNo,

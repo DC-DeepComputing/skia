@@ -15,7 +15,6 @@
 namespace skgpu {
     class RefCntedCallback;
 }
-class SkBitmap;
 struct SkImageInfo;
 
 namespace sk_gpu_test {
