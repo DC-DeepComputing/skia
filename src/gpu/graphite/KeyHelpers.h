@@ -75,6 +75,13 @@ struct SolidColorShaderBlock {
 
 };
 
+struct DstColorBlock {
+    static void BeginBlock(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           PipelineDataGatherer*,
+                           sk_sp<TextureProxy> dst);
+};
+
 struct GradientShaderBlocks {
 
     struct GradientData {
@@ -381,7 +388,8 @@ struct RuntimeEffectBlock {
 
         // This ctor is used when extracting information from PaintParams.
         ShaderData(sk_sp<const SkRuntimeEffect> effect,
-                   sk_sp<const SkData> uniforms);
+                   sk_sp<const SkData> uniforms,
+                   bool needsDstColor);
 
         bool operator==(const ShaderData& rhs) const;
         bool operator!=(const ShaderData& rhs) const { return !(*this == rhs); }
@@ -389,6 +397,7 @@ struct RuntimeEffectBlock {
         // Runtime shader data.
         sk_sp<const SkRuntimeEffect> fEffect;
         sk_sp<const SkData>          fUniforms;
+        bool                         fNeedsDstColor;
     };
 
     static void BeginBlock(const KeyContext&,

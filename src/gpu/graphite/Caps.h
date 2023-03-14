@@ -50,6 +50,13 @@ struct ResourceBindingRequirements {
     bool fDistinctIndexRanges = false;
 };
 
+enum class DstColorRequirement {
+    kNone,
+    kTextureCopy,
+    kTextureSample,
+    kFramebufferFetch,
+};
+
 class Caps {
 public:
     virtual ~Caps();
