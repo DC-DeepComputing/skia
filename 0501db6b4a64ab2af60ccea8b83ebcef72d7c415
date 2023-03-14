@@ -63,6 +63,24 @@
       "message": "I realize this is pre-existing, so it\u0027s probably a question for Rob: Why are we aliasing ETC1 and ETC2? I guess if we only support devices that have ETC2, then it\u0027s okay? Otherwise, it feels strange -- ETC1 is a strict subset of ETC2, if my memory is correct.",
       "revId": "0501db6b4a64ab2af60ccea8b83ebcef72d7c415",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "313125ab_204b497c",
+        "filename": "include/core/SkCompressionType.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-14T17:30:47Z",
+      "side": 1,
+      "message": "I believe the reasoning was that we support ETC2 but that is backwards compatible w/ ETC1 so, if the client wants to talk in terms of ETC1, we\u0027ll let them.\n\nWe could be stricter and force clients to only talk in ETC2 terms.",
+      "parentUuid": "996a4097_38b9f837",
+      "revId": "0501db6b4a64ab2af60ccea8b83ebcef72d7c415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
