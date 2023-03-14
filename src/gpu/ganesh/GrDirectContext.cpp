@@ -8,6 +8,7 @@
 
 #include "include/gpu/GrDirectContext.h"
 
+#include "include/core/SkCompressionType.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/gpu/GrBackendSemaphore.h"
 #include "include/gpu/GrContextThreadSafeProxy.h"
@@ -796,8 +797,8 @@ GrBackendTexture GrDirectContext::createCompressedBackendTexture(
         return {};
     }
 
-    SkImage::CompressionType compression = GrBackendFormatToCompressionType(backendFormat);
-    if (compression == SkImage::CompressionType::kNone) {
+    SkCompressionType compression = GrBackendFormatToCompressionType(backendFormat);
+    if (compression == SkCompressionType::kNone) {
         return {};
     }
 
@@ -819,7 +820,7 @@ GrBackendTexture GrDirectContext::createCompressedBackendTexture(
 
 GrBackendTexture GrDirectContext::createCompressedBackendTexture(
         int width, int height,
-        SkImage::CompressionType compression,
+        SkCompressionType compression,
         const SkColor4f& color,
         GrMipmapped mipmapped,
         GrProtected isProtected,
@@ -860,7 +861,7 @@ GrBackendTexture GrDirectContext::createCompressedBackendTexture(
 
 GrBackendTexture GrDirectContext::createCompressedBackendTexture(
         int width, int height,
-        SkImage::CompressionType compression,
+        SkCompressionType compression,
         const void* data, size_t dataSize,
         GrMipmapped mipmapped,
         GrProtected isProtected,
@@ -882,9 +883,9 @@ bool GrDirectContext::updateCompressedBackendTexture(const GrBackendTexture& bac
         return false;
     }
 
-    SkImage::CompressionType compression =
+    SkCompressionType compression =
             GrBackendFormatToCompressionType(backendTexture.getBackendFormat());
-    if (compression == SkImage::CompressionType::kNone) {
+    if (compression == SkCompressionType::kNone) {
         return {};
     }
     size_t size = SkCompressedDataSize(compression,

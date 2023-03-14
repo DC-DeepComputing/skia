@@ -6,6 +6,8 @@
  */
 
 #include "include/gpu/GrBackendSurface.h"
+
+#include "include/core/SkCompressionType.h"
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -34,8 +36,8 @@ size_t GrSurface::ComputeSize(const GrBackendFormat& format,
         dimensions = GrResourceProvider::MakeApprox(dimensions);
     }
 
-    SkImage::CompressionType compressionType = GrBackendFormatToCompressionType(format);
-    if (compressionType != SkImage::CompressionType::kNone) {
+    SkCompressionType compressionType = GrBackendFormatToCompressionType(format);
+    if (compressionType != SkCompressionType::kNone) {
         colorSize = SkCompressedFormatDataSize(compressionType, dimensions,
                                                mipmapped == GrMipmapped::kYes);
     } else {
