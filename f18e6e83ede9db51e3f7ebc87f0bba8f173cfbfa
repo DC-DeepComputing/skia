@@ -46,6 +46,30 @@
       },
       "revId": "f18e6e83ede9db51e3f7ebc87f0bba8f173cfbfa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09058add_9b694634",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-14T14:46:12Z",
+      "side": 1,
+      "message": "\u003e Do you think it would be sufficient to say \"that a blender might blend with\"?\n\nSGTM.\n\n\u003e here the output of \"greenShader\" is used as \"dst\" in the blender\n\nOK, SGTM, but that\u0027s where the original comment starts to become confusing--we\u0027re not blending \"into\" greenShader, we\u0027re just using it as an input color.",
+      "parentUuid": "a683f98a_0cc76739",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 67
+      },
+      "revId": "f18e6e83ede9db51e3f7ebc87f0bba8f173cfbfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
