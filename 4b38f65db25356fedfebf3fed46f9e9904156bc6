@@ -217,6 +217,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f321cdb4_1cb45b00",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-14T20:32:40Z",
+      "side": 1,
+      "message": "This now has a clearer structure as suggested by John. Still passing through the prior stage output and setting surfaceColor as a side effect, but at least it should be a valid expression anywhere in a generated shader.",
+      "parentUuid": "421af901_562727b9",
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dab81f56_5e77ea3e",

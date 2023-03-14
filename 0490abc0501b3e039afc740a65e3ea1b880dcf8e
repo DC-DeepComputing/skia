@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ae551f3_4cb15c5f",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1513,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-14T20:32:40Z",
+      "side": 1,
+      "message": "Is this string used for anything other than adding a comment in the generated sksl?\n\nI\u0027m wonder if it should be clearer from the generated sksl (e.g. by adding comments) that this snippet just initializes the dst color and doesn\u0027t actually evaluate to the dst color, at least for now. Maybe this string could have a different name to reflect that, or maybe we could add a comment somewhere else.",
+      "range": {
+        "startLine": 1513,
+        "startChar": 13,
+        "endLine": 1513,
+        "endChar": 21
+      },
+      "revId": "0490abc0501b3e039afc740a65e3ea1b880dcf8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
