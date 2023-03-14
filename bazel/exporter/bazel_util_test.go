@@ -19,7 +19,8 @@ func TestMakeCanonicalRuleName_ValidInput_Success(t *testing.T) {
 	test := func(name, input, expected string) {
 		t.Run(name, func(t *testing.T) {
 			actual, err := makeCanonicalRuleName(input)
-			require.NoError(t, err)
+			// Intentional test breakage.
+			require.Error(t, err)
 			assert.Equal(t, expected, actual)
 		})
 	}
