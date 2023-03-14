@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11f1cd9d_6c5e978f",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-14T13:03:42Z",
+      "side": 1,
+      "message": "Add \u0027colorType\u0027 and \u0027alphaType\u0027 ?",
+      "revId": "6087e3f4f297f517089121f168b1b68eb92ab3ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4927d811_9fad1527",
         "filename": "src/gpu/graphite/Image_Graphite.cpp",
         "patchSetId": 2
@@ -19,6 +36,53 @@
         "startChar": 66,
         "endLine": 281,
         "endChar": 86
+      },
+      "revId": "6087e3f4f297f517089121f168b1b68eb92ab3ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "994fd009_6e8f367d",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-14T13:03:42Z",
+      "side": 1,
+      "message": "I think we should probably just create the release helper earlier in the function. I don\u0027t know where we say it but, usually, we guarantee that the release proc is always called - even on failure to create the image.",
+      "parentUuid": "4927d811_9fad1527",
+      "range": {
+        "startLine": 281,
+        "startChar": 66,
+        "endLine": 281,
+        "endChar": 86
+      },
+      "revId": "6087e3f4f297f517089121f168b1b68eb92ab3ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70bc463a_13150070",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-14T13:03:42Z",
+      "side": 1,
+      "message": "Should this have a std::move ?",
+      "range": {
+        "startLine": 287,
+        "startChar": 32,
+        "endLine": 287,
+        "endChar": 45
       },
       "revId": "6087e3f4f297f517089121f168b1b68eb92ab3ab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
