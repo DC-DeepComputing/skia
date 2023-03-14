@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2efaf51d_749846c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-03-14T16:00:59Z",
+      "side": 1,
+      "message": "I\u0027m unclear on what broke, was it the Bazel build? But cherry picking this seems fine to me, thanks for handling it it.\n\nAlso IIUC `android/u-release` is mostly M112, should this be cherrypicked back to M112 as well, or is it only relevant for Android U and fine to diverge?",
+      "revId": "51753aa6a682f36daa4518f12e3f215873731860",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
