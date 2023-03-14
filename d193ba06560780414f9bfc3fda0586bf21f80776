@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98601de0_5cc342de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-03-14T14:55:17Z",
+      "side": 1,
+      "message": "The intent here is to make SkFontMgr_New_Custom_Data available to g3 WASM clients.\n\nSince we don\u0027t have any Skia-internal users to test (other than CanvasKit, which does its own thing), I haven\u0027t put much effort into splitting this up with gn \u0026 bazel.  For now it is bundled with custom_embedded.",
+      "revId": "d193ba06560780414f9bfc3fda0586bf21f80776",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

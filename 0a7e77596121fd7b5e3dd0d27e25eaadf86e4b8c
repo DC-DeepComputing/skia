@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7dbd0c6_15c6e800",
+        "filename": "src/ports/SkFontMgr_custom_embedded.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-03-14T14:55:17Z",
+      "side": 1,
+      "message": "Ideally this should live in a different compilation unit, but the implementation is somewhat entangled with custom_embedded.  Looks like the latter could be refactored to sit on top of custom_data?",
+      "revId": "0a7e77596121fd7b5e3dd0d27e25eaadf86e4b8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
