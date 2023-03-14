@@ -9,7 +9,6 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
-#include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPixmap.h"
@@ -18,12 +17,14 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkTextureCompressionType.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/SkColorData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkAutoPixmapStorage.h"
@@ -87,6 +88,8 @@
 #include <vulkan/vulkan_core.h>
 #endif
 
+class SkImage;
+
 using sk_gpu_test::ManagedBackendTexture;
 
 // Test wrapping of GrBackendObjects in SkSurfaces and SkImages (non-static since used in Mtl test)
@@ -148,7 +151,7 @@ void test_wrapping(GrDirectContext* dContext,
     }
 
     {
-        sk_sp<SkImage> img = SkImage::MakeFromTexture(dContext,
+        sk_sp<SkImage> img = sk_image_factory::MakeFromTexture(dContext,
                                                       mbet->texture(),
                                                       kTopLeft_GrSurfaceOrigin,
                                                       skColorType,
@@ -215,8 +218,8 @@ static bool isBGRA8(const GrBackendFormat& format) {
 #endif
         }
         case GrBackendApi::kMock: {
-            SkImage::CompressionType compression = format.asMockCompressionType();
-            if (compression != SkImage::CompressionType::kNone) {
+            SkTextureCompressionType compression = format.asMockCompressionType();
+            if (compression != SkTextureCompressionType::kNone) {
                 return false; // No compressed formats are BGRA
             }
 

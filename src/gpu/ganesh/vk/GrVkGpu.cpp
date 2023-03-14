@@ -888,11 +888,11 @@ static size_t fill_in_compressed_regions(GrStagingBufferManager* stagingBufferMa
                                          SkTArray<VkBufferImageCopy>* regions,
                                          SkTArray<size_t>* individualMipOffsets,
                                          GrStagingBufferManager::Slice* slice,
-                                         SkImage::CompressionType compression,
+                                         SkTextureCompressionType compression,
                                          VkFormat vkFormat,
                                          SkISize dimensions,
                                          GrMipmapped mipmapped) {
-    SkASSERT(compression != SkImage::CompressionType::kNone);
+    SkASSERT(compression != SkTextureCompressionType::kNone);
     int numMipLevels = 1;
     if (mipmapped == GrMipmapped::kYes) {
         numMipLevels = SkMipmap::ComputeLevelCount(dimensions.width(), dimensions.height()) + 1;
@@ -1056,7 +1056,7 @@ bool GrVkGpu::uploadTexDataOptimal(GrVkImage* texImage,
 // It's probably possible to roll this into uploadTexDataOptimal,
 // but for now it's easier to maintain as a separate entity.
 bool GrVkGpu::uploadTexDataCompressed(GrVkImage* uploadTexture,
-                                      SkImage::CompressionType compression, VkFormat vkFormat,
+                                      SkTextureCompressionType compression, VkFormat vkFormat,
                                       SkISize dimensions, GrMipmapped mipmapped,
                                       const void* data, size_t dataSize) {
     if (!this->currentCommandBuffer()) {
@@ -1219,7 +1219,7 @@ sk_sp<GrTexture> GrVkGpu::onCreateCompressedTexture(SkISize dimensions,
         return nullptr;
     }
 
-    SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
+    SkTextureCompressionType compression = GrBackendFormatToCompressionType(format);
     if (!this->uploadTexDataCompressed(tex->textureImage(), compression, pixelFormat,
                                        dimensions, mipmapped, data, dataSize)) {
         return nullptr;
@@ -1850,7 +1850,7 @@ bool GrVkGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendTe
                           VK_PIPELINE_STAGE_TRANSFER_BIT,
                           false);
 
-    SkImage::CompressionType compression =
+    SkTextureCompressionType compression =
             GrBackendFormatToCompressionType(backendTexture.getBackendFormat());
 
     SkTArray<VkBufferImageCopy> regions;

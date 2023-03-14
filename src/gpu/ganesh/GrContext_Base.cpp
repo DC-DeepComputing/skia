@@ -40,7 +40,7 @@ GrBackendFormat GrContext_Base::defaultBackendFormat(SkColorType skColorType,
     return fThreadSafeProxy->defaultBackendFormat(skColorType, renderable);
 }
 
-GrBackendFormat GrContext_Base::compressedBackendFormat(SkImage::CompressionType c) const {
+GrBackendFormat GrContext_Base::compressedBackendFormat(SkTextureCompressionType c) const {
     return fThreadSafeProxy->compressedBackendFormat(c);
 }
 

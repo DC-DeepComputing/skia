@@ -234,7 +234,7 @@ public:
                           int srcSamplecnt,
                           bool srcHasYcbcr) const;
 
-    GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const override;
+    GrBackendFormat getBackendFormatFromCompressionType(SkTextureCompressionType) const override;
 
     VkFormat getFormatFromColorType(GrColorType colorType) const {
         int idx = static_cast<int>(colorType);

@@ -973,9 +973,9 @@ GrBackendFormat GrD3DCaps::onGetDefaultBackendFormat(GrColorType ct) const {
 }
 
 GrBackendFormat GrD3DCaps::getBackendFormatFromCompressionType(
-    SkImage::CompressionType compressionType) const {
+    SkTextureCompressionType compressionType) const {
     switch (compressionType) {
-        case SkImage::CompressionType::kBC1_RGBA8_UNORM:
+        case SkTextureCompressionType::kBC1_RGBA8_UNORM:
             if (this->isFormatTexturable(DXGI_FORMAT_BC1_UNORM)) {
                 return GrBackendFormat::MakeDxgi(DXGI_FORMAT_BC1_UNORM);
             }
@@ -1034,8 +1034,8 @@ GrCaps::SupportedRead GrD3DCaps::onSupportedReadPixelsColorType(
         return { GrColorType::kUnknown, 0 };
     }
 
-    SkImage::CompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
-    if (compression != SkImage::CompressionType::kNone) {
+    SkTextureCompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
+    if (compression != SkTextureCompressionType::kNone) {
         return { SkCompressionTypeIsOpaque(compression) ? GrColorType::kRGB_888x
                                                         : GrColorType::kRGBA_8888, 0 };
     }

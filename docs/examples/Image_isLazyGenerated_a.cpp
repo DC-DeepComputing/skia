@@ -23,7 +23,7 @@ protected:
 
 void draw(SkCanvas* canvas) {
     auto gen = std::unique_ptr<TestImageGenerator>(new TestImageGenerator());
-    sk_sp<SkImage> image(SkImage::MakeFromGenerator(std::move(gen)));
+    sk_sp<SkImage> image(sk_image_factory::MakeFromGenerator(std::move(gen)));
     SkString lazy(image->isLazyGenerated() ? "is lazy" : "not lazy");
     canvas->scale(8, 8);
     canvas->drawImage(image, 0, 0, nullptr);

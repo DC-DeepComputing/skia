@@ -131,7 +131,7 @@ GrBackendFormat GrDawnCaps::onGetDefaultBackendFormat(GrColorType ct) const {
     return GrBackendFormat::MakeDawn(format);
 }
 
-GrBackendFormat GrDawnCaps::getBackendFormatFromCompressionType(SkImage::CompressionType type) const
+GrBackendFormat GrDawnCaps::getBackendFormatFromCompressionType(SkTextureCompressionType type) const
 {
     return GrBackendFormat();
 }

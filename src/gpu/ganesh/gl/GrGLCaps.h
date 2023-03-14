@@ -485,7 +485,7 @@ public:
 
     bool clientCanDisableMultisample() const { return fClientCanDisableMultisample; }
 
-    GrBackendFormat getBackendFormatFromCompressionType(SkImage::CompressionType) const override;
+    GrBackendFormat getBackendFormatFromCompressionType(SkTextureCompressionType) const override;
 
     skgpu::Swizzle getWriteSwizzle(const GrBackendFormat&, GrColorType) const override;
 

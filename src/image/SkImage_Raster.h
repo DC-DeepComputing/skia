@@ -12,7 +12,6 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkPixelRef.h"
 #include "include/core/SkRefCnt.h"
-#include "include/core/SkSamplingOptions.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
 #include "src/core/SkImagePriv.h"
@@ -21,29 +20,16 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <memory>
-#include <tuple>
 #include <utility>
 
 class GrDirectContext;
-class GrFragmentProcessor;
 class GrRecordingContext;
 class SkColorSpace;
 class SkData;
-class SkMatrix;
 class SkPixmap;
 enum SkColorType : int;
-enum class GrImageTexGenPolicy : int;
-enum class SkTileMode;
 struct SkIRect;
 struct SkImageInfo;
-struct SkRect;
-
-#if defined(SK_GANESH)
-#include "include/gpu/GrTypes.h"
-#include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/gpu/ganesh/GrSurfaceProxyView.h"
-#endif
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -94,14 +80,6 @@ public:
         fBitmap.pixelRef()->notifyAddedToCache();
     }
 
-    SkImage_Base::Type type() const override { return SkImage_Base::Type::kRaster; }
-
-#if defined(SK_GANESH) && !defined(SK_DISABLE_LEGACY_PIN_APIS)
-    bool onPinAsTexture(GrRecordingContext*) const override;
-    void onUnpinAsTexture(GrRecordingContext*) const override;
-    bool isPinnedOnContext(GrRecordingContext*) const override;
-#endif
-
     bool onHasMipmaps() const override { return SkToBool(fBitmap.fMips); }
 
     SkMipmap* onPeekMips() const override { return fBitmap.fMips.get(); }
@@ -123,22 +101,9 @@ public:
         return img;
     }
 
-protected:
-    SkBitmap fBitmap;
-
+    SkBitmap bitmap() const { return fBitmap; }
 private:
-#if defined(SK_GANESH)
-    std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
-                                                         GrMipmapped,
-                                                         GrImageTexGenPolicy) const override;
-
-    std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,
-                                                               SkSamplingOptions,
-                                                               const SkTileMode[2],
-                                                               const SkMatrix&,
-                                                               const SkRect*,
-                                                               const SkRect*) const override;
-#endif
+    SkBitmap fBitmap;
 #if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
                                       RequiredImageProperties) const override;
@@ -146,14 +111,6 @@ private:
                                                 sk_sp<SkColorSpace> targetCS,
                                                 skgpu::graphite::Recorder*,
                                                 RequiredImageProperties) const override;
-#endif
-
-#if defined(SK_GANESH) && !defined(SK_DISABLE_LEGACY_PIN_APIS)
-    mutable GrSurfaceProxyView fPinnedView;
-    mutable int32_t fPinnedCount = 0;
-    mutable uint32_t fPinnedUniqueID = SK_InvalidUniqueID;
-    mutable uint32_t fPinnedContextID = SK_InvalidUniqueID;
-    mutable GrColorType fPinnedColorType = GrColorType::kUnknown;
 #endif
 };
 

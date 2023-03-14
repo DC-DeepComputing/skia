@@ -629,7 +629,7 @@ sk_sp<GrTexture> GrMtlGpu::onCreateCompressedTexture(SkISize dimensions,
     SkASSERT(mtlTexture);
 
     auto compressionType = GrBackendFormatToCompressionType(format);
-    SkASSERT(compressionType != SkImage::CompressionType::kNone);
+    SkASSERT(compressionType != SkTextureCompressionType::kNone);
 
     SkTArray<size_t> individualMipOffsets(numMipLevels);
     SkDEBUGCODE(size_t combinedBufferSize =) SkCompressedDataSize(compressionType, dimensions,
@@ -1038,9 +1038,9 @@ bool GrMtlGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendT
     int numMipLevels = mtlTexture.mipmapLevelCount;
     GrMipmapped mipmapped = numMipLevels > 1 ? GrMipmapped::kYes : GrMipmapped::kNo;
 
-    SkImage::CompressionType compression =
+    SkTextureCompressionType compression =
             GrBackendFormatToCompressionType(backendTexture.getBackendFormat());
-    SkASSERT(compression != SkImage::CompressionType::kNone);
+    SkASSERT(compression != SkTextureCompressionType::kNone);
 
     // Create a transfer buffer and fill with data.
     SkSTArray<16, size_t> individualMipOffsets;

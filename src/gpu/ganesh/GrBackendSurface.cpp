@@ -212,7 +212,7 @@ bool GrBackendFormat::asDxgiFormat(DXGI_FORMAT* dxgiFormat) const {
 }
 #endif
 
-GrBackendFormat::GrBackendFormat(GrColorType colorType, SkImage::CompressionType compression,
+GrBackendFormat::GrBackendFormat(GrColorType colorType, SkTextureCompressionType compression,
                                  bool isStencilFormat)
         : fBackend(GrBackendApi::kMock)
         , fValid(true)
@@ -292,7 +292,7 @@ GrColorFormatDesc GrBackendFormat::desc() const {
 #ifdef SK_DEBUG
 bool GrBackendFormat::validateMock() const {
     int trueStates = 0;
-    if (fMock.fCompressionType != SkImage::CompressionType::kNone) {
+    if (fMock.fCompressionType != SkTextureCompressionType::kNone) {
         trueStates++;
     }
     if (fMock.fColorType != GrColorType::kUnknown) {
@@ -314,13 +314,13 @@ GrColorType GrBackendFormat::asMockColorType() const {
     return GrColorType::kUnknown;
 }
 
-SkImage::CompressionType GrBackendFormat::asMockCompressionType() const {
+SkTextureCompressionType GrBackendFormat::asMockCompressionType() const {
     if (this->isValid() && GrBackendApi::kMock == fBackend) {
         SkASSERT(this->validateMock());
         return fMock.fCompressionType;
     }
 
-    return SkImage::CompressionType::kNone;
+    return SkTextureCompressionType::kNone;
 }
 
 bool GrBackendFormat::isMockStencilFormat() const {
@@ -350,7 +350,7 @@ GrBackendFormat GrBackendFormat::makeTexture2D() const {
 }
 
 GrBackendFormat GrBackendFormat::MakeMock(GrColorType colorType,
-                                          SkImage::CompressionType compression,
+                                          SkTextureCompressionType compression,
                                           bool isStencilFormat) {
     return GrBackendFormat(colorType, compression, isStencilFormat);
 }

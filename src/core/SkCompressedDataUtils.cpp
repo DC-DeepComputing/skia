@@ -229,9 +229,9 @@ static bool decompress_bc1(SkISize dimensions, const uint8_t* srcData,
 
 bool SkDecompress(sk_sp<SkData> data,
                   SkISize dimensions,
-                  SkImage::CompressionType compressionType,
+                  SkTextureCompressionType compressionType,
                   SkBitmap* dst) {
-    using Type = SkImage::CompressionType;
+    using Type = SkTextureCompressionType;
 
     const uint8_t* bytes = data->bytes();
     switch (compressionType) {
@@ -244,8 +244,8 @@ bool SkDecompress(sk_sp<SkData> data,
     SkUNREACHABLE;
 }
 
-size_t SkCompressedDataSize(SkImage::CompressionType type, SkISize dimensions,
-                            TArray<size_t>* individualMipOffsets, bool mipmapped) {
+size_t SkCompressedDataSize(SkTextureCompressionType type, SkISize dimensions,
+                            SkTArray<size_t>* individualMipOffsets, bool mipmapped) {
     SkASSERT(!individualMipOffsets || !individualMipOffsets->size());
 
     int numMipLevels = 1;
@@ -255,11 +255,11 @@ size_t SkCompressedDataSize(SkImage::CompressionType type, SkISize dimensions,
 
     size_t totalSize = 0;
     switch (type) {
-        case SkImage::CompressionType::kNone:
+        case SkTextureCompressionType::kNone:
             break;
-        case SkImage::CompressionType::kETC2_RGB8_UNORM:
-        case SkImage::CompressionType::kBC1_RGB8_UNORM:
-        case SkImage::CompressionType::kBC1_RGBA8_UNORM: {
+        case SkTextureCompressionType::kETC2_RGB8_UNORM:
+        case SkTextureCompressionType::kBC1_RGB8_UNORM:
+        case SkTextureCompressionType::kBC1_RGBA8_UNORM: {
             for (int i = 0; i < numMipLevels; ++i) {
                 int numBlocks = num_4x4_blocks(dimensions.width()) *
                                 num_4x4_blocks(dimensions.height());
@@ -280,20 +280,20 @@ size_t SkCompressedDataSize(SkImage::CompressionType type, SkISize dimensions,
     return totalSize;
 }
 
-size_t SkCompressedBlockSize(SkImage::CompressionType type) {
+size_t SkCompressedBlockSize(SkTextureCompressionType type) {
     switch (type) {
-        case SkImage::CompressionType::kNone:
+        case SkTextureCompressionType::kNone:
             return 0;
-        case SkImage::CompressionType::kETC2_RGB8_UNORM:
+        case SkTextureCompressionType::kETC2_RGB8_UNORM:
             return sizeof(ETC1Block);
-        case SkImage::CompressionType::kBC1_RGB8_UNORM:
-        case SkImage::CompressionType::kBC1_RGBA8_UNORM:
+        case SkTextureCompressionType::kBC1_RGB8_UNORM:
+        case SkTextureCompressionType::kBC1_RGBA8_UNORM:
             return sizeof(BC1Block);
     }
     SkUNREACHABLE;
 }
 
-size_t SkCompressedFormatDataSize(SkImage::CompressionType compressionType,
+size_t SkCompressedFormatDataSize(SkTextureCompressionType compressionType,
                                   SkISize dimensions, bool mipmapped) {
     return SkCompressedDataSize(compressionType, dimensions, nullptr, mipmapped);
 }

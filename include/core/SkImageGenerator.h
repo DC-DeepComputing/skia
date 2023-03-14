@@ -9,7 +9,6 @@
 #define SkImageGenerator_DEFINED
 
 #include "include/core/SkData.h"
-#include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
@@ -35,6 +34,7 @@ class SkSurfaceProps;
 enum SkAlphaType : int;
 enum class GrImageTexGenPolicy : int;
 namespace skgpu { enum class Mipmapped : bool; }
+namespace sk_image_factory { enum class BitDepth; }
 struct SkISize;
 
 class SK_API SkImageGenerator {
@@ -173,12 +173,12 @@ public:
      */
     static std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize&, sk_sp<SkPicture>,
                                                              const SkMatrix*, const SkPaint*,
-                                                             SkImage::BitDepth,
+                                                             sk_image_factory::BitDepth,
                                                              sk_sp<SkColorSpace>,
                                                              SkSurfaceProps props);
     static std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize&, sk_sp<SkPicture>,
                                                              const SkMatrix*, const SkPaint*,
-                                                             SkImage::BitDepth,
+                                                             sk_image_factory::BitDepth,
                                                              sk_sp<SkColorSpace>);
 protected:
     static constexpr int kNeedNewImageUniqueID = 0;

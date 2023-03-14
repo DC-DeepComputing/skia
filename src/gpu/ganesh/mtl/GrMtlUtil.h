@@ -108,7 +108,7 @@ static inline MTLPixelFormat GrBackendFormatAsMTLPixelFormat(const GrBackendForm
 /**
  * Maps a MTLPixelFormat into the CompressionType enum if applicable.
  */
-SkImage::CompressionType GrMtlFormatToCompressionType(MTLPixelFormat mtlFormat);
+SkTextureCompressionType GrMtlFormatToCompressionType(MTLPixelFormat mtlFormat);
 
 size_t GrMtlFormatBytesPerBlock(MTLPixelFormat);
 

@@ -358,7 +358,7 @@ sk_sp<GrTexture> GrD3DGpu::onCreateCompressedTexture(SkISize dimensions,
     SkAssertResult(format.asDxgiFormat(&dxgiFormat));
     SkASSERT(GrDxgiFormatIsCompressed(dxgiFormat));
 
-    SkDEBUGCODE(SkImage::CompressionType compression = GrBackendFormatToCompressionType(format));
+    SkDEBUGCODE(SkTextureCompressionType compression = GrBackendFormatToCompressionType(format));
     SkASSERT(dataSize == SkCompressedFormatDataSize(compression, dimensions,
                                                     mipmapped == GrMipmapped::kYes));
 

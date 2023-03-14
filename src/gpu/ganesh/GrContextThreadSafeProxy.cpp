@@ -154,7 +154,7 @@ GrBackendFormat GrContextThreadSafeProxy::defaultBackendFormat(SkColorType skCol
     return format;
 }
 
-GrBackendFormat GrContextThreadSafeProxy::compressedBackendFormat(SkImage::CompressionType c) const {
+GrBackendFormat GrContextThreadSafeProxy::compressedBackendFormat(SkTextureCompressionType c) const {
     SkASSERT(fCaps);
 
     GrBackendFormat format = fCaps->getBackendFormatFromCompressionType(c);
