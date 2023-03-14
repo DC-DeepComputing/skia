@@ -16,6 +16,24 @@
       "message": "I would have liked to see more *why* documented in this commit message. Why was the location the flags were in *not* right and why is this new location correct? What errors did this fix?",
       "revId": "490899dc7b7cfaad1ea0e3b3aee92d71586494d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81ffab8a_28a64f2a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-03-14T15:36:04Z",
+      "side": 1,
+      "message": "I don\u0027t know what you mean about the location, they are different flags, it wasn\u0027t a move.\nThe removal of the X11, xcb, etc. flags was due to a copy-pasta from a unix platform target. The error was \"library not found\" which makes sense because we specified building for Android.\nThe addition of `androidjnigraphics`, `EGL`, and `GLESv2` was due to some linker errors about not being able to find functions such as `AndroidBitmap_LockPixels` and GL buffer functions.\nI\u0027ll make sure to add this context in the description next time.",
+      "parentUuid": "667965db_47d7068e",
+      "revId": "490899dc7b7cfaad1ea0e3b3aee92d71586494d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
