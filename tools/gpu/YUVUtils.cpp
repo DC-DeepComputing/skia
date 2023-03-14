@@ -298,46 +298,8 @@ bool LazyYUVImage::ensureYUVImage(GrRecordingContext* rContext, Type type) {
             break;
         }
         case Type::kFromTextures:
-            if (!rContext || rContext->abandoned()) {
-                return false;
-            }
-            if (fMipmapped == GrMipmapped::kYes) {
-                // If this becomes necessary we should invoke SkMipmapBuilder here to make mip
-                // maps from our src data (and then pass a pixmaps array to initialize the planar
-                // textures.
-                return false;
-            }
-            if (auto direct = rContext->asDirectContext()) {
-                sk_sp<sk_gpu_test::ManagedBackendTexture> mbets[SkYUVAInfo::kMaxPlanes];
-                GrBackendTexture textures[SkYUVAInfo::kMaxPlanes];
-                for (int i = 0; i < fPixmaps.numPlanes(); ++i) {
-                    mbets[i] = sk_gpu_test::ManagedBackendTexture::MakeWithData(
-                            direct,
-                            fPixmaps.plane(i),
-                            kTopLeft_GrSurfaceOrigin,
-                            GrRenderable::kNo,
-                            GrProtected::kNo);
-                    if (mbets[i]) {
-                        textures[i] = mbets[i]->texture();
-                    } else {
-                        return false;
-                    }
-                }
-                GrYUVABackendTextures yuvaTextures(fPixmaps.yuvaInfo(),
-                                                   textures,
-                                                   kTopLeft_GrSurfaceOrigin);
-                if (!yuvaTextures.isValid()) {
-                    return false;
-                }
-                void* planeRelContext =
-                        sk_gpu_test::ManagedBackendTexture::MakeYUVAReleaseContext(mbets);
-                fYUVImage[idx] = SkImage::MakeFromYUVATextures(
-                        direct,
-                        yuvaTextures,
-                        fColorSpace,
-                        sk_gpu_test::ManagedBackendTexture::ReleaseProc,
-                        planeRelContext);
-            }
+            // TODO: implement this and MakeGraphiteFromYUVATextures()
+            return false;
     }
     return fYUVImage[idx] != nullptr;
 }
@@ -368,7 +330,7 @@ bool LazyYUVImage::ensureYUVImage(skgpu::graphite::Recorder* recorder, Type type
             break;
         }
         case Type::kFromTextures:
-            // TODO: implement this and MakeGraphiteFromYUVATextures()
+            // TODO: implement this
             return false;
     }
     return fYUVImage[idx] != nullptr;
