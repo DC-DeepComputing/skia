@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8841a799_90f8d185",
+        "filename": "include/core/SkCompressionType.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-14T14:48:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c6f049b_651bc61c",
+      "range": {
+        "startLine": 20,
+        "startChar": 11,
+        "endLine": 20,
+        "endChar": 28
+      },
+      "revId": "0501db6b4a64ab2af60ccea8b83ebcef72d7c415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "996a4097_38b9f837",
