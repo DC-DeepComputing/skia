@@ -99,6 +99,24 @@
       "parentUuid": "313125ab_204b497c",
       "revId": "0501db6b4a64ab2af60ccea8b83ebcef72d7c415",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "440bedaa_4129117d",
+        "filename": "include/core/SkCompressionType.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-14T17:51:47Z",
+      "side": 1,
+      "message": "Looking more closely at the code I think the actual story is:\n\nGanesh supports both in the sense that, if the client gives us ETC1 or ETC2 data and there is HW support, everything will work out.\n\nThe Raster backend only really supports ETC1 though so, if the client gives us true ETC2 data, we can\u0027t decompress it so it is dropped. \n\nafaict no one actually gives us ETC2 data so we could just drop the ETC2 enum and everything should still work.",
+      "parentUuid": "4caadd80_0c36d25a",
+      "revId": "0501db6b4a64ab2af60ccea8b83ebcef72d7c415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
