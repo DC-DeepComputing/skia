@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ae12d5f_dc51ac30",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-14T15:07:23Z",
+      "side": 1,
+      "message": "Done. Also cleaned up some other methods\u0027 documentation.",
+      "parentUuid": "11f1cd9d_6c5e978f",
+      "revId": "6087e3f4f297f517089121f168b1b68eb92ab3ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4927d811_9fad1527",
@@ -65,6 +83,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e54c4514_20d16a79",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-14T15:07:23Z",
+      "side": 1,
+      "message": "I\u0027ve changed my mind on this -- createWrappedTexture is implemented by the backend version of each ResourceProvider so there\u0027d be a lot of repeated code regardless. Best to repeat it here and in MakeGraphiteFromYUVABackendTextures than try to remember to repeat it when we add new backends.",
+      "parentUuid": "994fd009_6e8f367d",
+      "range": {
+        "startLine": 281,
+        "startChar": 66,
+        "endLine": 281,
+        "endChar": 86
+      },
+      "revId": "6087e3f4f297f517089121f168b1b68eb92ab3ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70bc463a_13150070",
@@ -78,6 +120,30 @@
       "writtenOn": "2023-03-14T13:03:42Z",
       "side": 1,
       "message": "Should this have a std::move ?",
+      "range": {
+        "startLine": 287,
+        "startChar": 32,
+        "endLine": 287,
+        "endChar": 45
+      },
+      "revId": "6087e3f4f297f517089121f168b1b68eb92ab3ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42253c28_c30ce5cd",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-14T15:07:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70bc463a_13150070",
       "range": {
         "startLine": 287,
         "startChar": 32,
