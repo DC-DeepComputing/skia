@@ -45,6 +45,7 @@ class GrTexture;
 class GrThreadSafePipelineBuilder;
 struct GrVkDrawableInfo;
 class SkJSONWriter;
+enum class SkCompressionType;
 
 namespace SkSL {
     class Compiler;
@@ -680,7 +681,7 @@ public:
 
 protected:
     static bool CompressedDataIsCorrect(SkISize dimensions,
-                                        SkImage::CompressionType,
+                                        SkCompressionType,
                                         GrMipmapped,
                                         const void* data,
                                         size_t length);

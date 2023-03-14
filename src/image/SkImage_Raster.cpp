@@ -38,6 +38,7 @@
 class GrDirectContext;
 class GrFragmentProcessor;
 class SkMatrix;
+enum class SkCompressionType;
 enum class SkTileMode;
 
 #if defined(SK_GANESH)
@@ -334,7 +335,7 @@ sk_sp<SkImage> SkImage::MakeRasterData(const SkImageInfo& info, sk_sp<SkData> da
 // mipmap levels are discarded.
 sk_sp<SkImage> SkImage::MakeRasterFromCompressed(sk_sp<SkData> data,
                                                  int width, int height,
-                                                 CompressionType type) {
+                                                 SkCompressionType type) {
     size_t expectedSize = SkCompressedFormatDataSize(type, { width, height }, false);
     if (!data || data->size() < expectedSize) {
         return nullptr;

@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/mtl/GrMtlCaps.h"
 
+#include "include/core/SkCompressionType.h"
 #include "include/core/SkRect.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "src/core/SkCompressedDataUtils.h"
@@ -1052,11 +1053,11 @@ GrBackendFormat GrMtlCaps::onGetDefaultBackendFormat(GrColorType ct) const {
 }
 
 GrBackendFormat GrMtlCaps::getBackendFormatFromCompressionType(
-        SkImage::CompressionType compressionType) const {
+        SkCompressionType compressionType) const {
     switch (compressionType) {
-        case SkImage::CompressionType::kNone:
+        case SkCompressionType::kNone:
             return {};
-        case SkImage::CompressionType::kETC2_RGB8_UNORM:
+        case SkCompressionType::kETC2_RGB8_UNORM:
             if (@available(macOS 11.0, *)) {
                 if (this->isApple()) {
                     return GrBackendFormat::MakeMtl(MTLPixelFormatETC2_RGB8);
@@ -1066,10 +1067,10 @@ GrBackendFormat GrMtlCaps::getBackendFormatFromCompressionType(
             } else {
                 return {};
             }
-        case SkImage::CompressionType::kBC1_RGB8_UNORM:
+        case SkCompressionType::kBC1_RGB8_UNORM:
             // Metal only supports the RGBA BC1 variant (see following)
             return {};
-        case SkImage::CompressionType::kBC1_RGBA8_UNORM:
+        case SkCompressionType::kBC1_RGBA8_UNORM:
 #ifdef SK_BUILD_FOR_MAC
             if (this->isMac()) {
                 return GrBackendFormat::MakeMtl(MTLPixelFormatBC1_RGBA);
@@ -1146,8 +1147,8 @@ GrCaps::SupportedWrite GrMtlCaps::supportedWritePixelsColorType(
 GrCaps::SupportedRead GrMtlCaps::onSupportedReadPixelsColorType(
         GrColorType srcColorType, const GrBackendFormat& srcBackendFormat,
         GrColorType dstColorType) const {
-    SkImage::CompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
-    if (compression != SkImage::CompressionType::kNone) {
+    SkCompressionType compression = GrBackendFormatToCompressionType(srcBackendFormat);
+    if (compression != SkCompressionType::kNone) {
 #ifdef SK_BUILD_FOR_IOS
         // Reading back to kRGB_888x doesn't work on Metal/iOS (skbug.com/9839)
         return { GrColorType::kUnknown, 0 };

@@ -10,6 +10,7 @@
 #include "include/gpu/GrContextThreadSafeProxy.h"
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
 
+#include "include/core/SkCompressionType.h"
 #include "include/core/SkSurfaceCharacterization.h"
 #include "src/gpu/ganesh/GrBaseContextPriv.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -154,7 +155,7 @@ GrBackendFormat GrContextThreadSafeProxy::defaultBackendFormat(SkColorType skCol
     return format;
 }
 
-GrBackendFormat GrContextThreadSafeProxy::compressedBackendFormat(SkImage::CompressionType c) const {
+GrBackendFormat GrContextThreadSafeProxy::compressedBackendFormat(SkCompressionType c) const {
     SkASSERT(fCaps);
 
     GrBackendFormat format = fCaps->getBackendFormatFromCompressionType(c);

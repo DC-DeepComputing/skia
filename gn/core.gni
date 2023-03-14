@@ -40,6 +40,7 @@ skia_core_public = [
   "$_include/core/SkColorPriv.h",
   "$_include/core/SkColorSpace.h",
   "$_include/core/SkColorType.h",
+  "$_include/core/SkCompressionType.h",
   "$_include/core/SkContourMeasure.h",
   "$_include/core/SkCoverageMode.h",
   "$_include/core/SkCubicMap.h",
