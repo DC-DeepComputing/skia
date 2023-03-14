@@ -8,50 +8,46 @@
 #ifndef GrDirectContext_DEFINED
 #define GrDirectContext_DEFINED
 
-#include "include/gpu/GrRecordingContext.h"
-
+#include "include/core/SkColor.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkTypes.h"
 #include "include/gpu/GrBackendSurface.h"
+#include "include/gpu/GrContextOptions.h"
+#include "include/gpu/GrRecordingContext.h"
+#include "include/gpu/GrTypes.h"
 
-// We shouldn't need this but currently Android is relying on this being include transitively.
-#include "include/core/SkUnPreMultiply.h"
+#include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <memory>
+#include <string_view>
 
 class GrAtlasManager;
 class GrBackendSemaphore;
 class GrClientMappedBufferManager;
-class GrDirectContextPriv;
 class GrContextThreadSafeProxy;
-struct GrD3DBackendContext;
-class GrFragmentProcessor;
+class GrDirectContextPriv;
 class GrGpu;
-struct GrGLInterface;
-struct GrMtlBackendContext;
-struct GrMockOptions;
-class GrPath;
 class GrResourceCache;
 class GrResourceProvider;
-class GrSurfaceProxy;
-class GrTextureProxy;
-struct GrVkBackendContext;
-
-class SkImage;
-class SkPixmap;
-class SkString;
-class SkSurfaceCharacterization;
-class SkSurfaceProps;
+class SkData;
 class SkTaskGroup;
 class SkTraceMemoryDump;
+enum SkColorType : int;
 enum class SkTextureCompressionType;
+struct GrGLInterface;
+struct GrMockOptions;
+struct GrVkBackendContext;
+struct GrD3DBackendContext; // IWYU pragma: keep
+struct GrMtlBackendContext; // IWYU pragma: keep
 
 namespace skgpu {
-class Swizzle;
-#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
-namespace v1 { class SmallPathAtlasMgr; }
-#endif
+    class MutableTextureState;
+    namespace v1 { class SmallPathAtlasMgr; }
 }
-
-namespace sktext::gpu {
-class StrikeCache;
-}
+namespace sktext { namespace gpu { class StrikeCache; } }
+namespace wgpu { class Device; }
 
 class SK_API GrDirectContext : public GrRecordingContext {
 public:
@@ -927,8 +923,6 @@ private:
 #endif
 
     friend class GrDirectContextPriv;
-
-    using INHERITED = GrRecordingContext;
 };
 
 
