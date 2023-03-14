@@ -42,6 +42,7 @@ class FunctionDeclaration;
 class FunctionDefinition;
 class GlobalVarDeclaration;
 class IfStatement;
+class IndexExpression;
 class Literal;
 class MemoryLayout;
 class OutputStream;
@@ -50,15 +51,14 @@ class ProgramElement;
 class ReturnStatement;
 class Statement;
 class StructDefinition;
+class Swizzle;
 class TernaryExpression;
 class VarDeclaration;
 class Variable;
 class VariableReference;
 enum class OperatorPrecedence : uint8_t;
-struct IndexExpression;
 struct Modifiers;
 struct Program;
-struct Swizzle;
 
 /**
  * Convert a Program into WGSL code.
