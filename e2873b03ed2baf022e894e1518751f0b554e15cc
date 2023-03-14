@@ -33,6 +33,29 @@
       "message": "Bazel changes lgtm",
       "revId": "e2873b03ed2baf022e894e1518751f0b554e15cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03c0f0dc_1553e6a4",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-14T17:59:50Z",
+      "side": 1,
+      "message": "Can these just be fused ?",
+      "range": {
+        "startLine": 675,
+        "startChar": 0,
+        "endLine": 678,
+        "endChar": 55
+      },
+      "revId": "e2873b03ed2baf022e894e1518751f0b554e15cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
