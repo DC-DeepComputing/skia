@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9be2dcf9_56bf3201",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-14T19:22:12Z",
+      "side": 1,
+      "message": "Yep, dstTexture is a better name; this had been copied from DrawPass::Make.",
+      "parentUuid": "37f21625_6f58c8be",
+      "range": {
+        "startLine": 44,
+        "startChar": 37,
+        "endLine": 44,
+        "endChar": 43
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad29c68f_0ad33cf2",
@@ -89,6 +113,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c0e84ac_c7273608",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-14T19:22:12Z",
+      "side": 1,
+      "message": "I made an enum for the different requirements related to needing the dst color, but I\u0027m eager for feedback on naming -- I put the enum in Caps.h (weird since it\u0027s not actually used in Caps, but where else to put it?) and called it DstColorRequirement with values kNone, kTextureCopy, kTextureSample, and kFramebufferFetch.",
+      "parentUuid": "def148a7_e9e699bb",
+      "range": {
+        "startLine": 898,
+        "startChar": 4,
+        "endLine": 900,
+        "endChar": 5
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30057e72_f74f5c21",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 1
@@ -100,6 +148,30 @@
       "writtenOn": "2023-03-02T19:47:10Z",
       "side": 1,
       "message": "This should be :kYes as it is an internal texture.",
+      "range": {
+        "startLine": 410,
+        "startChar": 67,
+        "endLine": 410,
+        "endChar": 70
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f1d90bd_adf8a188",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-14T19:22:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30057e72_f74f5c21",
       "range": {
         "startLine": 410,
         "startChar": 67,
@@ -168,6 +240,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c39b97a1_6b1d0b3c",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-14T19:22:12Z",
+      "side": 1,
+      "message": "Discussed offline, other inputs are handled by args.fRuntimeShaderDstColor.",
+      "parentUuid": "dab81f56_5e77ea3e",
+      "range": {
+        "startLine": 861,
+        "startChar": 66,
+        "endLine": 861,
+        "endChar": 80
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b872125a_ea77a6c9",
@@ -181,6 +277,30 @@
       "writtenOn": "2023-03-02T18:24:08Z",
       "side": 1,
       "message": "Similar to the above question about using the surface color directly, is it possible that we\u0027d ever need to use a different value for the destColor input in this context (i.e. would we ever need to use the result of a previous computation)?",
+      "range": {
+        "startLine": 1029,
+        "startChar": 72,
+        "endLine": 1029,
+        "endChar": 86
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d49c6e24_e683f239",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-14T19:22:12Z",
+      "side": 1,
+      "message": "Discussed offline, this will always want either the primitive color or surface color.",
+      "parentUuid": "b872125a_ea77a6c9",
       "range": {
         "startLine": 1029,
         "startChar": 72,
