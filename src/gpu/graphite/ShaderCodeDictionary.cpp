@@ -454,6 +454,19 @@ static constexpr Uniform kLinearGradientUniforms8[7] = {
         { "doUnPremul",  SkSLType::kInt },
 };
 
+static constexpr Uniform kLinearGradientUniformsTexture[] = {
+        { "point0",      SkSLType::kFloat2 },
+        { "point1",      SkSLType::kFloat2 },
+        { "numStops",    SkSLType::kInt },
+        { "tilemode",    SkSLType::kInt },
+        { "colorSpace",  SkSLType::kInt },
+        { "doUnPremul",  SkSLType::kInt },
+};
+
+static constexpr TextureAndSampler kGradientTexturesAndSamplers[] = {
+        {"sampler"},
+};
+
 static constexpr Uniform kRadialGradientUniforms4[7] = {
         { "colors",      SkSLType::kFloat4, kFourStopGradient },
         { "offsets",     SkSLType::kFloat,  kFourStopGradient },
@@ -519,6 +532,7 @@ static constexpr Uniform kConicalGradientUniforms8[9] = {
 
 static constexpr char kLinearGradient4Name[] = "sk_linear_grad_4_shader";
 static constexpr char kLinearGradient8Name[] = "sk_linear_grad_8_shader";
+static constexpr char kLinearGradientTextureName[] = "sk_linear_grad_tex_shader";
 static constexpr char kRadialGradient4Name[] = "sk_radial_grad_4_shader";
 static constexpr char kRadialGradient8Name[] = "sk_radial_grad_8_shader";
 static constexpr char kSweepGradient4Name[] = "sk_sweep_grad_4_shader";
@@ -698,6 +712,35 @@ static constexpr Uniform kPorterDuffBlendShaderUniforms[] = {
 };
 
 static constexpr char kPorterDuffBlendShaderName[] = "porter_duff_blend_shader";
+
+
+#if 0
+std::string GenerateGradientTextureExpression(const ShaderInfo& shaderInfo,
+                                              int entryIndex,
+                                              const PaintParamsKey::BlockReader& reader,
+                                              const ShaderSnippet::Args& args) {
+    std::string samplerVarName = reader.entry()->getMangledSamplerName(0, entryIndex);
+    std::string numStopsVarName = reader.entry()->getMangledUniformName(shaderInfo, 1, entryIndex);
+
+    std::string result;
+    SkSL::String::appendf(&result,
+                          "$colorize_grad_tex(%s, %s, %s(%s, %s, ",
+                          samplerVarName.c_str(),
+                          numStopsVarName.c_str(),
+                          reader.entry()->fStaticFunctionName,
+                          args.fFragCoord.c_str(),
+                          currentPreLocalExpr.c_str());
+
+    for (size_t i = 2; i < reader.entry()->fUniforms.size(); ++i) {
+        result += reader.entry()->getMangledUniformName(shaderInfo, i, entryIndex);
+        if (i < reader.entry()->fUniforms.size() - 1) {
+            result += ", ";
+        }1
+    }
+    result += "))";
+    return result;
+}
+#endif
 
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kBlendShaderUniforms[] = {
@@ -1243,6 +1286,17 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultPreamble,
             kNoChildren,
             { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kLinearGradientShaderTexture] = {
+            "LinearGradientTexture",
+            SkSpan(kLinearGradientUniformsTexture),
+            SnippetRequirementFlags::kLocalCoords,
+            SkSpan(kGradientTexturesAndSamplers),
+            kLinearGradientTextureName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kRadialGradientShader4] = {
             "RadialGradient4",
