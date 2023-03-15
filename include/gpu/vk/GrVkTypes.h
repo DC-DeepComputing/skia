@@ -9,7 +9,7 @@
 #ifndef GrVkTypes_DEFINED
 #define GrVkTypes_DEFINED
 
-#include "include/gpu/GrTypes.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/vk/VulkanTypes.h"
 
 using GrVkBackendMemory = skgpu::VulkanBackendMemory;
@@ -137,7 +137,7 @@ struct GrVkDrawableInfo {
 struct GrVkSurfaceInfo {
     uint32_t fSampleCount = 1;
     uint32_t fLevelCount = 0;
-    GrProtected fProtected = GrProtected::kNo;
+    skgpu::Protected fProtected = skgpu::Protected::kNo;
 
     VkImageTiling fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     VkFormat fFormat = VK_FORMAT_UNDEFINED;
