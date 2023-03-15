@@ -4,11 +4,16 @@ vars = {
   # Three lines of non-changing comments so that
   # the commit queue can handle CLs rolling different
   # dependencies without interference from each other.
+  # https://chrome-infra-packages.appspot.com/p/skia/tools/sk/
   'sk_tool_revision': 'git_revision:56a7dbdc36082022c4673cb7707657e22bda0ce6',
 
   # ninja CIPD package version.
   # https://chrome-infra-packages.appspot.com/p/infra/3pp/tools/ninja
   'ninja_version': 'version:2@1.8.2.chromium.3',
+
+  # Android Rust toolchain package version.
+  # https://chrome-infra-packages.appspot.com/p/chromium/third_party/android_rust_toolchain
+  'android_rust_toolchain_version': 'version:2@1.65.0.cr2',
 }
 
 # If you modify this file, you will need to regenerate the Bazel version of this file (bazel/deps.bzl).
@@ -75,6 +80,16 @@ deps = {
         'package': 'infra/3pp/tools/ninja/${{platform}}',
         'version': Var('ninja_version'),
       }
+    ],
+    'dep_type': 'cipd',
+  },
+
+  'third_party/externals/android_rust_toolchain/toolchain': {
+    'packages': [
+      {
+        'package': 'chromium/third_party/android_rust_toolchain/linux-amd64',
+        'version': 'version:2@1.64.0.cr2',
+      },
     ],
     'dep_type': 'cipd',
   },
