@@ -389,6 +389,50 @@ $pure half4 $colorize_grad_8(float4 colorsParam[8], float offsetsParam[8], float
     }
 }
 
+half4 $colorize_grad_tex(sampler2D colorsAndOffsetsSampler, int numStops, float2 t) {
+    const float kColorCoord = 0.25;
+    const float kOffsetCoord = 0.75;
+
+    if (t.y < 0) {
+        return half4(0);
+    } else if (t.x == 0) {
+        return sample(colorsAndOffsetsSampler, float2(0, kColorCoord));
+    } else if (t.x == 1) {
+        return sample(colorsAndOffsetsSampler, float2(1, kColorCoord));
+    } else {
+        int low = 0;
+        int high = numStops;
+        for (int loop = 1; loop < numStops; loop <<= 1) {
+            int mid = (low + high) / 2;
+            float midFlt = (float(mid) + 0.5) / float(numStops);
+
+            float2 tmp = sample(colorsAndOffsetsSampler, float2(midFlt, kOffsetCoord)).xy;
+            float offset = ldexp(tmp.x, int(tmp.y));
+
+            if (t.x < offset) {
+                high = mid;
+            } else {
+                low = mid;
+            }
+        }
+
+        float lowFlt = (float(low) + 0.5) / float(numStops);
+        float highFlt = (float(low + 1) + 0.5) / float(numStops);
+        half4 color0 = sample(colorsAndOffsetsSampler, float2(lowFlt, kColorCoord));
+        half4 color1 = sample(colorsAndOffsetsSampler, float2(highFlt, kColorCoord));
+
+        float2 tmp = sample(colorsAndOffsetsSampler, float2(lowFlt, kOffsetCoord)).xy;
+        float offset0 = ldexp(tmp.x, int(tmp.y));
+
+        tmp = sample(colorsAndOffsetsSampler, float2(highFlt, kOffsetCoord)).xy;
+        float offset1 = ldexp(tmp.x, int(tmp.y));
+
+        return half4(mix(color0, color1,
+                         (t.x     - offset0) /
+                         (offset1 - offset0)));
+    }
+}
+
 $pure float2 $linear_grad_layout(float2 point0Param, float2 point1Param, float2 pos) {
     pos -= point0Param;
     float2 delta = point1Param - point0Param;
@@ -569,6 +613,20 @@ $pure half4 sk_linear_grad_8_shader(float2 coords,
     float2 t = $linear_grad_layout(point0Param, point1Param, coords);
     t = $tile_grad(tileMode, t);
     half4 color = $colorize_grad_8(colorsParam, offsetsParam, t);
+    return $interpolated_to_rgb_unpremul(color, colorSpace, doUnpremul);
+}
+
+$pure half4 sk_linear_grad_tex_shader(float2 coords,
+                                      float2 point0Param,
+                                      float2 point1Param,
+                                      int numStops,
+                                      int tileMode,
+                                      int colorSpace,
+                                      int doUnpremul,
+                                      sampler2D colorAndOffsetSampler) {
+    float2 t = $linear_grad_layout(point0Param, point1Param, coords);
+    t = $tile_grad(tileMode, t);
+    half4 color = $colorize_grad_tex(colorAndOffsetSampler, numStops, t);
     return $interpolated_to_rgb_unpremul(color, colorSpace, doUnpremul);
 }
 
