@@ -20,8 +20,7 @@ SkScalerContextProxy::SkScalerContextProxy(sk_sp<SkTypeface> tf,
                                            const SkScalerContextEffects& effects,
                                            const SkDescriptor* desc,
                                            sk_sp<SkStrikeClient::DiscardableHandleManager> manager)
-        : SkScalerContext{std::move(tf), effects, desc}
-        , fDiscardableManager{std::move(manager)} {}
+        : SkScalerContext{std::move(tf), effects, desc}, fDiscardableManager{std::move(manager)} {}
 
 bool SkScalerContextProxy::generateAdvance(SkGlyph* glyph) {
     return false;
@@ -98,7 +97,7 @@ SkTypefaceProxyPrototype::MakeFromBuffer(SkReadBuffer& buffer) {
 
     if (buffer.isValid()) {
         return SkTypefaceProxyPrototype{
-            typefaceID, glyphCount, styleValue, isFixedPitch, glyphMaskNeedsCurrentColor};
+                typefaceID, glyphCount, styleValue, isFixedPitch, glyphMaskNeedsCurrentColor};
     }
 
     return std::nullopt;
@@ -120,7 +119,7 @@ SkTypefaceProxyPrototype::SkTypefaceProxyPrototype(SkTypefaceID typefaceID, int 
         , fIsFixedPitch{isFixedPitch}
         , fGlyphMaskNeedsCurrentColor{glyphMaskNeedsCurrentColor} {}
 
-void SkTypefaceProxyPrototype::flatten(SkWriteBuffer& buffer) {
+void SkTypefaceProxyPrototype::flatten(SkWriteBuffer& buffer) const {
     buffer.writeUInt(fServerTypefaceID);
     buffer.writeInt(fGlyphCount);
     buffer.write32(fStyleValue);
