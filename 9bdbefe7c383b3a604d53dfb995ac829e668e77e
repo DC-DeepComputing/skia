@@ -164,6 +164,30 @@
       },
       "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "accd69f4_9741405d",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2232,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-15T19:05:05Z",
+      "side": 1,
+      "message": "Done. I added a note about this being primarily needed for pointer operations which SkSL does not support (I take it these were primarily introduced for OpenCL to allow more expressive pointers in storage and workgroup address spaces - see https://github.com/KhronosGroup/SPIRV-Registry/blob/main/extensions/KHR/SPV_KHR_variable_pointers.asciidoc and https://chromium.googlesource.com/chromiumos/third_party/clspv/+/HEAD/docs/OpenCLCOnVulkan.md).",
+      "parentUuid": "2b7e87d6_fbca56f7",
+      "range": {
+        "startLine": 2232,
+        "startChar": 35,
+        "endLine": 2232,
+        "endChar": 36
+      },
+      "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
