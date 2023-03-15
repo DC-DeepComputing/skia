@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0707ebb_dcf8cdc1",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-03-15T19:11:41Z",
+      "side": 1,
+      "message": "Thanks for the heads up. I had this backwards for some reason.",
+      "parentUuid": "f07a243a_a35ab559",
+      "revId": "71f0de6da083c24c8ef3017e07be7cf1ab2395fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37cf3f61_0c8857c9",
@@ -54,6 +72,48 @@
         "endLine": 578,
         "endChar": 13
       },
+      "revId": "71f0de6da083c24c8ef3017e07be7cf1ab2395fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "919e2450_f93039b0",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-03-15T19:11:41Z",
+      "side": 1,
+      "message": "Thanks, done!",
+      "parentUuid": "ed26d98c_52c6e7ac",
+      "range": {
+        "startLine": 578,
+        "startChar": 4,
+        "endLine": 578,
+        "endChar": 13
+      },
+      "revId": "71f0de6da083c24c8ef3017e07be7cf1ab2395fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de662fa1_296c3f72",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-03-15T19:11:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37cf3f61_0c8857c9",
       "revId": "71f0de6da083c24c8ef3017e07be7cf1ab2395fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
