@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58acc2f4_fdef30f6",
+        "filename": "tests/sksl/shared/StorageBuffer.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-15T16:39:50Z",
+      "side": 1,
+      "message": "Note that this isn\u0027t a well-formed GLSL program but the storage buffer and unsized array declarations look correct (and pass `glslang` after fixing the other issues).",
+      "revId": "b57bc174541c73d85f8ec0ab22ac994f7f762ace",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
