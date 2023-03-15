@@ -5,6 +5,26 @@ licenses(["notice"])
 exports_files_legacy()
 
 skia_filegroup(
-    name = "test_icu_srcs",
+    name = "tests",
+    srcs = ["SkUnicodeTest.cpp"],
+)
+
+skia_filegroup(
+    name = "icu_tests",
+    srcs = ["SkUnicodeTest_icu.cpp"],
+)
+
+skia_filegroup(
+    name = "icu4x_tests",
+    srcs = ["SkUnicodeTest_icu4x.cpp"],
+)
+
+skia_filegroup(
+    name = "client_tests",
+    srcs = ["SkUnicodeTest_client.cpp"],
+)
+
+skia_filegroup(
+    name = "test_srcs",
     srcs = ["SkUnicode_test.cpp"],
 )
