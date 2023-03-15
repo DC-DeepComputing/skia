@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f07a243a_a35ab559",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2023-03-15T19:01:51Z",
+      "side": 1,
+      "message": "Adding this puts it on the CQ.",
+      "revId": "71f0de6da083c24c8ef3017e07be7cf1ab2395fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37cf3f61_0c8857c9",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2023-03-15T19:01:51Z",
+      "side": 1,
+      "message": "I think you want to instead remove this line.",
+      "revId": "71f0de6da083c24c8ef3017e07be7cf1ab2395fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
