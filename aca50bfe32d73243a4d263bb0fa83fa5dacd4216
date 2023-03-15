@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ff396f4_0a8242e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-03-15T18:11:01Z",
+      "side": 1,
+      "message": "This is still WIP, but sending this as FYI. kjlubick@ and I discussed that a solution for fetching Rust would consist of 1) a manual fetch script that emulates understanding DEPS 2) bot tasks that read from DEPS and use CIPD to download.",
+      "revId": "aca50bfe32d73243a4d263bb0fa83fa5dacd4216",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
