@@ -94292,6 +94292,7 @@
     "Housekeeper-PerCommit-CheckGeneratedFiles": {},
     "Housekeeper-PerCommit-InfraTests_Linux": {},
     "Housekeeper-PerCommit-RunGnToBp": {},
+    "Perf-Android-Clang-Pixel7-GPU-MaliG710-arm64-Release-All-Android_Vulkan": {},
     "Perf-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Graphite_Metal": {
       "location_regexes": [
         "(tests|src/gpu)/graphite/.*"
@@ -94302,7 +94303,10 @@
         "(tests|src/gpu)/graphite/.*"
       ]
     },
+    "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Debug-All-Android": {},
     "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Debug-All-Android_Vulkan": {},
+    "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Release-All-Android": {},
+    "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Release-All-Android_Vulkan": {},
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All": {},
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-BonusConfigs": {},
     "Test-Debian10-EMCC-GCE-CPU-AVX2-asmjs-Release-All-PathKit": {},

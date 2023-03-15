@@ -392,7 +392,9 @@
   {"name": "Perf-Android12-Clang-Pixel5-GPU-Adreno620-arm64-Release-All-Android"},
   {"name": "Perf-Android12-Clang-Pixel5-GPU-Adreno620-arm64-Release-All-Android_Vulkan"},
   {"name": "Perf-Android-Clang-Pixel6-GPU-MaliG78-arm64-Release-All-Android_Vulkan"},
-  {"name": "Perf-Android-Clang-Pixel7-GPU-MaliG710-arm64-Release-All-Android_Vulkan"},
+  {"name": "Perf-Android-Clang-Pixel7-GPU-MaliG710-arm64-Release-All-Android_Vulkan",
+    "cq_config": {}
+  },
   {"name": "Perf-Android-Clang-Wembley-GPU-PowerVRGE8320-arm-Release-All-Android"},
   {"name": "Perf-ChromeOS-Clang-Kevin-GPU-MaliT860-arm-Release-All"},
   {"name": "Perf-ChromeOS-Clang-Sparky360-GPU-IntelUHDGraphics605-x86_64-Release-All"},
@@ -563,9 +565,15 @@
   {"name": "Test-Android-Clang-Pixel6-GPU-MaliG78-arm64-Release-All-Android"},
   {"name": "Test-Android-Clang-Pixel6-GPU-MaliG78-arm64-Debug-All-Android"},
   {"name": "Test-Android-Clang-Pixel6-GPU-MaliG78-arm64-Release-All-Android_Vulkan"},
-  {"name": "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Release-All-Android"},
-  {"name": "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Debug-All-Android"},
-  {"name": "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Release-All-Android_Vulkan"},
+  {"name": "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Release-All-Android",
+    "cq_config": {}
+  },
+  {"name": "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Debug-All-Android",
+    "cq_config": {}
+  },
+  {"name": "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Release-All-Android_Vulkan",
+    "cq_config": {}
+  },
   {"name": "Test-Android-Clang-Pixel7-GPU-MaliG710-arm64-Debug-All-Android_Vulkan",
    "cq_config": {}
   },
