@@ -212,6 +212,30 @@
       },
       "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e17fbb3c_eb864268",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2232,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-15T19:33:12Z",
+      "side": 1,
+      "message": "That\u0027s good to know. This is probably worth a revisit if/when a future Vulkan version requires SPIR-V 1.4.",
+      "parentUuid": "23b198b0_62ac46c4",
+      "range": {
+        "startLine": 2232,
+        "startChar": 35,
+        "endLine": 2232,
+        "endChar": 36
+      },
+      "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
