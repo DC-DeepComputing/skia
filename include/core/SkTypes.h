@@ -26,11 +26,14 @@
 #include <climits>
 #include <cstdint>
 
-#if !defined(SK_SUPPORT_GPU)
-#  define SK_SUPPORT_GPU 1
+// Legacy flag
+#if defined(SK_SUPPORT_GPU)
+#if SK_SUPPORT_GPU && !defined(SK_GANESH)
+#  define SK_GANESH
+#endif
 #endif
 
-#if SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
 #  if !defined(SK_ENABLE_SKSL)
 #    define SK_ENABLE_SKSL
 #  endif

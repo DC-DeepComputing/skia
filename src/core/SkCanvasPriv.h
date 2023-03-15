@@ -14,8 +14,7 @@
 class SkReadBuffer;
 class SkWriteBuffer;
 
-#if GR_TEST_UTILS
-#if SK_GPU_V1
+#if GR_TEST_UTILS && defined(SK_GANESH)
 namespace skgpu::v1 {
     class SurfaceDrawContext;
     class SurfaceFillContext;
@@ -24,11 +23,11 @@ namespace skgpu::v1 {
 #endif // GR_TEST_UTILS
 
 // This declaration must match the one in SkDeferredDisplayList.h
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH)
 class GrRenderTargetProxy;
 #else
 using GrRenderTargetProxy = SkRefCnt;
-#endif // SK_SUPPORT_GPU
+#endif // defined(SK_GANESH)
 
 #if GRAPHITE_TEST_UTILS
 namespace skgpu::graphite {
@@ -73,8 +72,7 @@ public:
         return canvas->topDevice();
     }
 
-#if GR_TEST_UTILS
-#if SK_GPU_V1
+#if GR_TEST_UTILS && defined(SK_GANESH)
     static skgpu::v1::SurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas*);
     static skgpu::v1::SurfaceFillContext* TopDeviceSurfaceFillContext(SkCanvas*);
 #endif

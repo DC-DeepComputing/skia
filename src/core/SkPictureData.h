@@ -144,7 +144,7 @@ public:
         return read_index_base_1_or_null(reader, fTextBlobs);
     }
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH)
     const sktext::gpu::Slug* getSlug(SkReadBuffer* reader) const {
         return read_index_base_1_or_null(reader, fSlugs);
     }
@@ -171,13 +171,13 @@ private:
     const SkPath    fEmptyPath;
     const SkBitmap  fEmptyBitmap;
 
-    SkTArray<sk_sp<const SkPicture>>   fPictures;
-    SkTArray<sk_sp<SkDrawable>>        fDrawables;
-    SkTArray<sk_sp<const SkTextBlob>>  fTextBlobs;
-    SkTArray<sk_sp<const SkVertices>>  fVertices;
-    SkTArray<sk_sp<const SkImage>>     fImages;
-#if SK_SUPPORT_GPU
-    SkTArray<sk_sp<const sktext::gpu::Slug>>      fSlugs;
+    skia_private::TArray<sk_sp<const SkPicture>>   fPictures;
+    skia_private::TArray<sk_sp<SkDrawable>>        fDrawables;
+    skia_private::TArray<sk_sp<const SkTextBlob>>  fTextBlobs;
+    skia_private::TArray<sk_sp<const SkVertices>>  fVertices;
+    skia_private::TArray<sk_sp<const SkImage>>     fImages;
+#if defined(SK_GANESH)
+    skia_private::TArray<sk_sp<const sktext::gpu::Slug>> fSlugs;
 #endif
 
 

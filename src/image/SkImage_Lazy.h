@@ -22,7 +22,7 @@
 #include <memory>
 #include <tuple>
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH)
 #include "include/core/SkYUVAPixmaps.h"
 class GrCaps;
 class GrDirectContext;
@@ -74,7 +74,7 @@ public:
                       CachingHint) const override;
     sk_sp<SkData> onRefEncoded() const override;
     sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const override;
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeSubset(const SkIRect&,
                                 skgpu::graphite::Recorder*,
                                 RequiredImageProperties) const override;
@@ -91,7 +91,7 @@ public:
 
     bool onIsValid(GrRecordingContext*) const override;
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH)
     // Returns the texture proxy. CachingHint refers to whether the generator's output should be
     // cached in CPU memory. We will always cache the generated texture on success.
     GrSurfaceProxyView lockTextureProxyView(GrRecordingContext*,
@@ -108,7 +108,7 @@ public:
 private:
     void addUniqueIDListener(sk_sp<SkIDChangeListener>) const;
     bool readPixelsProxy(GrDirectContext*, const SkPixmap&) const;
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH)
     std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
                                                          skgpu::Mipmapped,
                                                          GrImageTexGenPolicy) const override;
@@ -124,7 +124,7 @@ private:
                                   SkYUVAPixmaps* pixmaps) const;
 #endif
 
-#ifdef SK_GRAPHITE_ENABLED
+#if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
                                       RequiredImageProperties) const override;
 #endif
@@ -141,7 +141,7 @@ private:
     mutable SkMutex        fOnMakeColorTypeAndSpaceMutex;
     mutable sk_sp<SkImage> fOnMakeColorTypeAndSpaceResult;
 
-#if SK_SUPPORT_GPU
+#if defined(SK_GANESH)
     // When the SkImage_Lazy goes away, we will iterate over all the listeners to inform them
     // of the unique ID's demise. This is used to remove cached textures from GrContext.
     mutable SkIDChangeListener::List fUniqueIDListeners;
