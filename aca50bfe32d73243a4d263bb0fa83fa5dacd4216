@@ -16,6 +16,69 @@
       "message": "This is still WIP, but sending this as FYI. kjlubick@ and I discussed that a solution for fetching Rust would consist of 1) a manual fetch script that emulates understanding DEPS 2) bot tasks that read from DEPS and use CIPD to download.",
       "revId": "aca50bfe32d73243a4d263bb0fa83fa5dacd4216",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf59c646_b0c555d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-15T18:16:50Z",
+      "side": 1,
+      "message": "Seems like a fine direction to go.",
+      "revId": "aca50bfe32d73243a4d263bb0fa83fa5dacd4216",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6545bc58_39160197",
+        "filename": "bin/fetch-rust-toolchain",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-15T18:16:50Z",
+      "side": 1,
+      "message": "nit: 2023 Google LLC",
+      "range": {
+        "startLine": 3,
+        "startChar": 12,
+        "endLine": 3,
+        "endChar": 28
+      },
+      "revId": "aca50bfe32d73243a4d263bb0fa83fa5dacd4216",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "525ea8c1_5b6f5dc3",
+        "filename": "bin/fetch-rust-toolchain",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-15T18:16:50Z",
+      "side": 1,
+      "message": "This is fine to start, but be advised that many Skia engineers work on Macs (mostly M1s, but still a few Intel ones), so we would need to either not use the rust toolchain on Mac or fetch the right CIPD package for them.",
+      "range": {
+        "startLine": 98,
+        "startChar": 16,
+        "endLine": 98,
+        "endChar": 25
+      },
+      "revId": "aca50bfe32d73243a4d263bb0fa83fa5dacd4216",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
