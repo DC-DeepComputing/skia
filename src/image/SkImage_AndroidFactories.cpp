@@ -28,6 +28,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -72,14 +73,14 @@ namespace sk_image_factory {
 sk_sp<SkImage> MakeFromAHardwareBuffer(AHardwareBuffer* graphicBuffer, SkAlphaType at) {
     auto gen = GrAHardwareBufferImageGenerator::Make(graphicBuffer, at, nullptr,
                                                      kTopLeft_GrSurfaceOrigin);
-    return SkImage::MakeFromGenerator(std::move(gen));
+    return MakeFromGenerator(std::move(gen));
 }
 
 sk_sp<SkImage> MakeFromAHardwareBuffer(AHardwareBuffer* graphicBuffer, SkAlphaType at,
                                                 sk_sp<SkColorSpace> cs,
                                                 GrSurfaceOrigin surfaceOrigin) {
     auto gen = GrAHardwareBufferImageGenerator::Make(graphicBuffer, at, cs, surfaceOrigin);
-    return SkImage::MakeFromGenerator(std::move(gen));
+    return MakeFromGenerator(std::move(gen));
 }
 
 sk_sp<SkImage> MakeFromAHardwareBufferWithData(GrDirectContext* dContext,
@@ -170,13 +171,13 @@ sk_sp<SkImage> MakeFromAHardwareBufferWithData(GrDirectContext* dContext,
 
 #if !defined(SK_DISABLE_LEGACY_IMAGE_FACTORIES)
 
-sk_sp<SkImage> SkImage::MakeFromAHardwareBuffer(
+sk_sp<SkImage> MakeFromAHardwareBuffer(
         AHardwareBuffer* hardwareBuffer,
         SkAlphaType alphaType) {
     return sk_image_factory::MakeFromAHardwareBuffer(hardwareBuffer, alphaType);
 }
 
-sk_sp<SkImage> SkImage::MakeFromAHardwareBuffer(
+sk_sp<SkImage> MakeFromAHardwareBuffer(
         AHardwareBuffer* hardwareBuffer,
         SkAlphaType alphaType,
         sk_sp<SkColorSpace> colorSpace,
@@ -185,7 +186,7 @@ sk_sp<SkImage> SkImage::MakeFromAHardwareBuffer(
                                                      colorSpace, surfaceOrigin);
 }
 
-sk_sp<SkImage> SkImage::MakeFromAHardwareBufferWithData(
+sk_sp<SkImage> MakeFromAHardwareBufferWithData(
         GrDirectContext* context,
         const SkPixmap& pixmap,
         AHardwareBuffer* hardwareBuffer,

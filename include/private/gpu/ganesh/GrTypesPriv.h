@@ -931,7 +931,8 @@ static constexpr size_t GrColorTypeBytesPerPixel(GrColorType ct) {
 
 // In general we try to not mix CompressionType and ColorType, but currently SkImage still requires
 // an SkColorType even for CompressedTypes so we need some conversion.
-static constexpr SkColorType GrCompressionTypeToSkColorType(SkTextureCompressionType compression) {
+static constexpr SkColorType GrCompressionTypeToSkColorType(
+        SkTextureCompressionType compression) {
     switch (compression) {
         case SkTextureCompressionType::kNone:            return kUnknown_SkColorType;
         case SkTextureCompressionType::kETC2_RGB8_UNORM: return kRGB_888x_SkColorType;
