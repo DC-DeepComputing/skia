@@ -16,6 +16,24 @@
       "message": "I thought we were intentionally trying to use std::vector in place of SkTArray these days?",
       "revId": "1db51a29340b329e53d33c9c9d7430fbe494b2f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a71295d0_8181ab22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-15T14:43:12Z",
+      "side": 1,
+      "message": "Very originally in Graphite that was the goal, but then the codesize meetings found that std::vector was both slower and had much larger code size footprint, so we\u0027ve gone back to SkTArray and SkTHashMap, and are trying to consolidate the rest of our bespoke collections down to just those two.",
+      "parentUuid": "a20c276b_4c444d2a",
+      "revId": "1db51a29340b329e53d33c9c9d7430fbe494b2f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
