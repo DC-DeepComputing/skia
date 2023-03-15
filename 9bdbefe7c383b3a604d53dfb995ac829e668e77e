@@ -140,6 +140,30 @@
       },
       "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b7e87d6_fbca56f7",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2232,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-15T18:36:15Z",
+      "side": 1,
+      "message": "SGTM. As long as we emit 1.0 SPIR-V, it sounds like this is the only way to go, and furthermore it doesn\u0027t sound like there\u0027s any compelling reason to change over even if we did bump up our requirements. Might be worth mentioning this in the comment, but nbd.",
+      "parentUuid": "352c225c_1e2521e8",
+      "range": {
+        "startLine": 2232,
+        "startChar": 35,
+        "endLine": 2232,
+        "endChar": 36
+      },
+      "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
