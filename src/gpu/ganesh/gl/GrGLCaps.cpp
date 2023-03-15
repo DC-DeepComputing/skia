@@ -4102,13 +4102,6 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         shaderCaps->fMustObfuscateUniformColor = true;
     }
 
-    // On Mali G series GPUs, applying transfer functions in the fragment shader with half-floats
-    // produces answers that are much less accurate than expected/required. This forces full floats
-    // for some intermediate values to get acceptable results.
-    if (ctxInfo.renderer() == GrGLRenderer::kMaliG) {
-        fShaderCaps->fColorSpaceMathNeedsFloat = true;
-    }
-
     // On Mali 400 there is a bug using dFd* in the x direction. So we avoid using it when possible.
     if (ctxInfo.renderer() == GrGLRenderer::kMali4xx) {
         fShaderCaps->fAvoidDfDxForGradientsWhenPossible = true;
