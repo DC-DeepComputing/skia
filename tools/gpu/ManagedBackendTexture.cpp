@@ -9,10 +9,19 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImageInfo.h"
-#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/RefCntedCallback.h"
+#ifdef SK_GANESH
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#endif
+#ifdef SK_GRAPHITE
+#endif
 
+using Mipmapped = skgpu::Mipmapped;
+using Protected = skgpu::Protected;
+using Renderable = skgpu::Renderable;
+
+#ifdef SK_GANESH
 namespace {
 
 struct Context {
@@ -62,9 +71,9 @@ void ManagedBackendTexture::wasAdopted() { fTexture = {}; }
 
 sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromInfo(GrDirectContext* dContext,
                                                                  const SkImageInfo& ii,
-                                                                 GrMipmapped mipmapped,
-                                                                 GrRenderable renderable,
-                                                                 GrProtected isProtected) {
+                                                                 Mipmapped mipmapped,
+                                                                 Renderable renderable,
+                                                                 Protected isProtected) {
     return MakeWithoutData(dContext,
                            ii.width(),
                            ii.height(),
@@ -76,9 +85,9 @@ sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromInfo(GrDirectContext
 
 sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromBitmap(GrDirectContext* dContext,
                                                                    const SkBitmap& src,
-                                                                   GrMipmapped mipmapped,
-                                                                   GrRenderable renderable,
-                                                                   GrProtected isProtected) {
+                                                                   Mipmapped mipmapped,
+                                                                   Renderable renderable,
+                                                                   Protected isProtected) {
     SkPixmap srcPixmap;
     if (!src.peekPixels(&srcPixmap)) {
         return nullptr;
@@ -89,13 +98,13 @@ sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromBitmap(GrDirectConte
 
 sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromPixmap(GrDirectContext* dContext,
                                                                    const SkPixmap& src,
-                                                                   GrMipmapped mipmapped,
-                                                                   GrRenderable renderable,
-                                                                   GrProtected isProtected) {
+                                                                   Mipmapped mipmapped,
+                                                                   Renderable renderable,
+                                                                   Protected isProtected) {
     std::vector<SkPixmap> levels({src});
     std::unique_ptr<SkMipmap> mm;
 
-    if (mipmapped == GrMipmapped::kYes) {
+    if (mipmapped == Mipmapped::kYes) {
         mm.reset(SkMipmap::Build(src, nullptr));
         if (!mm) {
             return nullptr;
@@ -113,5 +122,92 @@ sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromPixmap(GrDirectConte
                         renderable,
                         isProtected);
 }
+#endif
+
+#ifdef SK_GRAPHITE
+using Recorder = skgpu::graphite::Recorder;
+
+namespace {
+
+struct TextureContext {
+    sk_sp<sk_gpu_test::ManagedBackendTexture> fMBETs[SkYUVAInfo::kMaxPlanes];
+};
+
+}  // anonymous namespace
+
+namespace sk_gpu_test {
+
+ManagedGraphiteTexture::~ManagedGraphiteTexture() {
+    if (fRecorder && fTexture.isValid()) {
+        fRecorder->deleteBackendTexture(fTexture);
+    }
+}
+
+void* ManagedGraphiteTexture::MakeYUVAReleaseContext(
+        const sk_sp<ManagedGraphiteTexture> mbets[SkYUVAInfo::kMaxPlanes]) {
+    auto context = new TextureContext;
+    for (int i = 0; i < SkYUVAInfo::kMaxPlanes; ++i) {
+        context->fMBETs[i] = mbets[i];
+    }
+    return context;
+}
+
+sk_sp<skgpu::RefCntedCallback> ManagedGraphiteTexture::refCountedCallback() const {
+    return skgpu::RefCntedCallback::Make(ReleaseProc, this->releaseContext());
+}
+
+sk_sp<ManagedGraphiteTexture> ManagedGraphiteTexture::MakeFromInfo(Recorder* recorder,
+                                                                   const SkImageInfo& ii,
+                                                                   Mipmapped mipmapped,
+                                                                   Renderable renderable,
+                                                                   Protected isProtected) {
+    return MakeWithoutData(recorder,
+                           ii.width(),
+                           ii.height(),
+                           ii.colorType(),
+                           mipmapped,
+                           renderable,
+                           isProtected);
+}
+
+sk_sp<ManagedGraphiteTexture> ManagedGraphiteTexture::MakeFromBitmap(Recorder* recorder,
+                                                                     const SkBitmap& src,
+                                                                     Mipmapped mipmapped,
+                                                                     Renderable renderable,
+                                                                     Protected isProtected) {
+    SkPixmap srcPixmap;
+    if (!src.peekPixels(&srcPixmap)) {
+        return nullptr;
+    }
+
+    return MakeFromPixmap(dContext, srcPixmap, mipmapped, renderable, isProtected);
+}
+
+sk_sp<ManagedGraphiteTexture> ManagedGraphiteTexture::MakeFromPixmap(Recorder* recorder,
+                                                                     const SkPixmap& src,
+                                                                     Mipmapped mipmapped,
+                                                                     Renderable renderable,
+                                                                     Protected isProtected) {
+    std::vector<SkPixmap> levels({src});
+    std::unique_ptr<SkMipmap> mm;
+
+    if (mipmapped == Mipmapped::kYes) {
+        mm.reset(SkMipmap::Build(src, nullptr));
+        if (!mm) {
+            return nullptr;
+        }
+        for (int i = 0; i < mm->countLevels(); ++i) {
+            SkMipmap::Level level;
+            SkAssertResult(mm->getLevel(i, &level));
+            levels.push_back(level.fPixmap);
+        }
+    }
+    return MakeWithData(dContext,
+                        levels.data(),
+                        static_cast<int>(levels.size()),
+                        renderable,
+                        isProtected);
+}
+#endif
 
 }  // namespace sk_gpu_test

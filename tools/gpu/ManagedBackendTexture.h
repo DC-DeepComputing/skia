@@ -10,16 +10,23 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkYUVAInfo.h"
+#ifdef SK_GANESH
 #include "include/gpu/GrDirectContext.h"
+#endif
+#ifdef SK_GRAPHITE
+#include "include/gpu/graphite/BackendTexture.h"
+#include "include/gpu/graphite/Recorder.h"
+#endif
 
 namespace skgpu {
-    class RefCntedCallback;
+class RefCntedCallback;
 }
 class SkBitmap;
 struct SkImageInfo;
 
 namespace sk_gpu_test {
 
+#ifdef SK_GANESH
 class ManagedBackendTexture : public SkNVRefCnt<ManagedBackendTexture> {
 public:
     /**
@@ -44,21 +51,21 @@ public:
 
     static sk_sp<ManagedBackendTexture> MakeFromInfo(GrDirectContext* dContext,
                                                      const SkImageInfo&,
-                                                     GrMipmapped = GrMipmapped::kNo,
-                                                     GrRenderable = GrRenderable::kNo,
-                                                     GrProtected = GrProtected::kNo);
+                                                     skgpu::Mipmapped = skgpu::Mipmapped::kNo,
+                                                     skgpu::Renderable = skgpu::Renderable::kNo,
+                                                     skgpu::Protected = skgpu::Protected::kNo);
 
     static sk_sp<ManagedBackendTexture> MakeFromBitmap(GrDirectContext*,
                                                        const SkBitmap&,
-                                                       GrMipmapped,
-                                                       GrRenderable,
-                                                       GrProtected = GrProtected::kNo);
+                                                       skgpu::Mipmapped,
+                                                       skgpu::Renderable,
+                                                       skgpu::Protected = skgpu::Protected::kNo);
 
     static sk_sp<ManagedBackendTexture> MakeFromPixmap(GrDirectContext*,
                                                        const SkPixmap&,
-                                                       GrMipmapped,
-                                                       GrRenderable,
-                                                       GrProtected = GrProtected::kNo);
+                                                       skgpu::Mipmapped,
+                                                       skgpu::Renderable,
+                                                       skgpu::Protected = skgpu::Protected::kNo);
 
     /** GrGpuFinishedProc or image/surface release proc. */
     static void ReleaseProc(void* context);
@@ -127,6 +134,114 @@ inline sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeWithoutData(
     mbet->fTexture = std::move(texture);
     return mbet;
 }
+#endif
+
+#ifdef SK_GRAPHITE
+/*
+ * Graphite version of ManagedBackendTexture
+ */
+class ManagedGraphiteTexture : public SkNVRefCnt<ManagedGraphiteTexture> {
+public:
+    /**
+     * Make a managed backend texture with initial pixmap/color data. The 'Args' are any valid set
+     * of arguments to GrDirectContext::createBackendTexture that takes data but with the release
+     * proc/context omitted as the ManagedBackendTexture will provide them.
+     */
+    template <typename... Args>
+    static sk_sp<ManagedGraphiteTexture> MakeWithData(skgpu::graphite::Recorder*, Args&&...);
+
+    /**
+     * Make a managed backend texture without initial data. The 'Args' are any valid set of
+     * arguments to GrDirectContext::createBackendTexture that does not take data. Because our
+     * createBackendTexture methods that *do* take data also use default args for the proc/context
+     * this can be used to make a texture with data but then the MBET won't be able to ensure that
+     * the upload has completed before the texture is deleted. Use the WithData variant instead to
+     * avoid this issue.
+     */
+    template <typename... Args>
+    static sk_sp<ManagedGraphiteTexture> MakeWithoutData(skgpu::graphite::Recorder*, Args&&...);
+
+
+    static sk_sp<ManagedGraphiteTexture> MakeFromInfo(skgpu::graphite::Recorder*,
+                                                      const SkImageInfo&,
+                                                      skgpu::Mipmapped = skgpu::Mipmapped::kNo,
+                                                      skgpu::Renderable = skgpu::Renderable::kNo,
+                                                      skgpu::Protected = skgpu::Protected::kNo);
+
+    static sk_sp<ManagedGraphiteTexture> MakeFromBitmap(skgpu::graphite::Recorder*,
+                                                        const SkBitmap&,
+                                                        skgpu::Mipmapped,
+                                                        skgpu::Renderable,
+                                                        skgpu::Protected = skgpu::Protected::kNo);
+
+    static sk_sp<ManagedGraphiteTexture> MakeFromPixmap(skgpu::graphite::Recorder*,
+                                                        const SkPixmap&,
+                                                        skgpu::Mipmapped,
+                                                        skgpu::Renderable,
+                                                        skgpu::Protected = skgpu::Protected::kNo);
+
+    /** image/surface release proc. */
+    static void ReleaseProc(void* context);
+
+    ~ManagedGraphiteTexture();
+
+    /**
+     * The context to use with ReleaseProc. This adds a ref so it *must* be balanced by a call to
+     * ReleaseProc.
+     */
+    void* releaseContext() const;
+
+    sk_sp<skgpu::RefCntedCallback> refCountedCallback() const;
+
+    /**
+     * SkImage::MakeGraphiteFromYUVABackendTextures takes a single release proc that is called once
+     * for all the textures. This makes a single release context for the group of textures. It's
+     * used with the standard ReleaseProc. Like releaseContext(), it must be balanced by a
+     * ReleaseProc call for proper ref counting.
+     */
+    static void* MakeYUVAReleaseContext(const sk_sp<ManagedGraphiteTexture>[SkYUVAInfo::kMaxPlanes]);
+
+    const skgpu::graphite::BackendTexture& texture() { return fTexture; }
+
+private:
+    ManagedGraphiteTexture() = default;
+    ManagedGraphiteTexture(const ManagedGraphiteTexture&) = delete;
+    ManagedGraphiteTexture(ManagedGraphiteTexture&&) = delete;
+
+    sk_sp<skgpu::graphite::Recorder> fRecorder;
+    skgpu::graphite::BackendTexture  fTexture;
+};
+
+template <typename... Args>
+inline sk_sp<ManagedGraphiteTexture> ManagedGraphiteTexture::MakeWithData(
+        skgpu::graphite::Recorder* recorder,
+        Args&&... args) {
+    sk_sp<ManagedGraphiteTexture> mget(new ManagedGraphiteTexture);
+    mget->fRecorder = sk_ref_sp(recorder);
+    mget->fTexture = recorder->createBackendTexture(std::forward<Args>(args)...,
+                                                    ReleaseProc,
+                                                    mget->releaseContext());
+    if (!mget->fTexture.isValid()) {
+        return nullptr;
+    }
+    return mget;
+}
+
+template <typename... Args>
+inline sk_sp<ManagedGraphiteTexture> ManagedGraphiteTexture::MakeWithoutData(
+        skgpu::graphite::Recorder* recorder,
+        Args&&... args) {
+    skgpu::graphite::BackendTexture texture =
+            recorder->createBackendTexture(std::forward<Args>(args)...);
+    if (!texture.isValid()) {
+        return nullptr;
+    }
+    sk_sp<ManagedGraphiteTexture> mget(new ManagedGraphiteTexture);
+    mget->fRecorder = sk_ref_sp(recorder);
+    mget->fTexture = std::move(texture);
+    return mget;
+}
+#endif
 
 }  // namespace sk_gpu_test
 
