@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea604edd_b0f7418f",
+        "filename": "src/sksl/codegen/SkSLGLSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-15T17:04:26Z",
+      "side": 1,
+      "message": "`!type.isUnsizedArray()`",
+      "range": {
+        "startLine": 171,
+        "startChar": 16,
+        "endLine": 171,
+        "endChar": 34
+      },
+      "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "230dc43f_a57c68e7",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-15T17:04:26Z",
+      "side": 1,
+      "message": "`!type-\u003eisUnsizedArray()`",
+      "range": {
+        "startLine": 1099,
+        "startChar": 16,
+        "endLine": 1099,
+        "endChar": 35
+      },
+      "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b451c6f6_4e530d7e",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2232,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-15T17:04:26Z",
+      "side": 1,
+      "message": "Any downsides to the older approach?",
+      "range": {
+        "startLine": 2232,
+        "startChar": 35,
+        "endLine": 2232,
+        "endChar": 36
+      },
+      "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
