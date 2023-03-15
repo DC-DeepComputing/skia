@@ -1,0 +1,33 @@
+### Compilation failed:
+
+error: 11: unsized arrays are not permitted here
+    SomeData[] inputData;
+            ^^
+error: 8: 'readonly' is not permitted here
+layout(set=0, binding=0) readonly buffer storageBuffer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+error: 8: 'buffer' is not permitted here
+layout(set=0, binding=0) readonly buffer storageBuffer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+error: 8: layout qualifier 'binding' is not permitted here
+layout(set=0, binding=0) readonly buffer storageBuffer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+error: 8: layout qualifier 'set' is not permitted here
+layout(set=0, binding=0) readonly buffer storageBuffer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+error: 8: interface blocks are not allowed in this kind of program
+layout(set=0, binding=0) readonly buffer storageBuffer
+                                         ^^^^^^^^^^^^^
+error: 15: unknown identifier 'inputData'
+    return half4(inputData[offset].a * inputData[offset].b.x);
+                 ^^^^^^^^^
+error: 15: unknown identifier 'offset'
+    return half4(inputData[offset].a * inputData[offset].b.x);
+                           ^^^^^^
+error: 15: unknown identifier 'inputData'
+    return half4(inputData[offset].a * inputData[offset].b.x);
+                                       ^^^^^^^^^
+error: 15: unknown identifier 'offset'
+    return half4(inputData[offset].a * inputData[offset].b.x);
+                                                 ^^^^^^
+10 errors

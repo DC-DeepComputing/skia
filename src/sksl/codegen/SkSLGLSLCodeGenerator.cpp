@@ -168,7 +168,10 @@ std::string GLSLCodeGenerator::getTypeName(const Type& raw) {
         }
         case Type::TypeKind::kArray: {
             std::string baseTypeName = this->getTypeName(type.componentType());
-            return String::printf("%s[%d]", baseTypeName.c_str(), type.columns());
+            if (type.columns() > 0) {
+                return String::printf("%s[%d]", baseTypeName.c_str(), type.columns());
+            }
+            return String::printf("%s[]", baseTypeName.c_str());
         }
         case Type::TypeKind::kScalar: {
             if (type.matches(*fContext.fTypes.fHalf)) {
