@@ -26,7 +26,7 @@ void ImageSlide::draw(SkCanvas* canvas) {
 
 void ImageSlide::load(SkScalar, SkScalar) {
     sk_sp<SkData> encoded = SkData::MakeFromFileName(fPath.c_str());
-    fImage = SkImage::MakeFromEncoded(encoded);
+    fImage = sk_image_factory::MakeFromEncoded(encoded);
 }
 
 void ImageSlide::unload() {
