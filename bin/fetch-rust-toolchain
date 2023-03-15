@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+
+# Copyright 2022 Google Inc.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import hashlib
+import json
+import os
+import platform
+import re
+import stat
+import sys
+import tempfile
+from zipfile import ZipFile, ZipInfo
+import shutil
+from urllib.request import urlopen
+
+CIPD_ANDROID_RUST_TOOLCHAIN_BASE_URL = "https://chrome-infra-packages.appspot.com/dl/chromium/third_party/android_rust_toolchain"
+TOOLCHAIN_VERSION_FILE_PATH = "bin/rust_toolchain.version"
+RUSTC_PATH = "buildtools/rust_toolchain/bin/rustc"
+
+
+class ZipFileWithPermissions(ZipFile):
+    def _extract_member(self, member, targetpath, pwd):
+        if not isinstance(member, ZipInfo):
+            member = self.getinfo(member)
+
+        targetpath = super()._extract_member(member, targetpath, pwd)
+
+        attr = member.external_attr >> 16
+        if attr != 0:
+            os.chmod(targetpath, attr)
+        return targetpath
+
+
+def sha256sum(path):
+    try:
+        with open(path, "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()
+    except OSError:
+        return ""
+
+
+def needs_download(desired_version):
+    current_version = {
+        "version": "",
+        "rustc_sha256": "",
+    }
+    try:
+        with open(TOOLCHAIN_VERSION_FILE_PATH, "r", encoding="utf8") as f:
+            current_version = json.load(f)
+    except OSError:
+        pass
+    current_sha256 = sha256sum(RUSTC_PATH)
+
+    if desired_version != current_version["version"]:
+        print(
+            'Version "%s" requested by DEPS differs from current version "%s"'
+            % (desired_version, current_version["version"])
+        )
+        return True
+
+    if current_sha256 != current_version["rustc_sha256"]:
+        print(
+            'rustc sha256 sum "%s" does not match last-downloaded version "%s"'
+            % (current_sha256, current_version["rustc_sha256"])
+        )
+        return True
+
+    return False
+
+
+def write_stamp_file(downloaded_version):
+    current_rust_sha256 = sha256sum(RUSTC_PATH)
+    if not len(current_rust_sha256):
+        return
+    current_version = {
+        "version": downloaded_version,
+        "rustc_sha256": current_rust_sha256,
+    }
+    with open(TOOLCHAIN_VERSION_FILE_PATH, "w", encoding="utf8") as f:
+        json.dump(current_version, f, sort_keys=True, indent=2)
+
+
+os.chdir(os.path.join(os.path.dirname(__file__), os.pardir))
+
+OS = {"darwin": "mac", "linux": "linux", "linux2": "linux", "win32": "windows"}[
+    sys.platform
+]
+cpu = {"aarch64": "arm64", "amd64": "amd64", "arm64": "arm64", "x86_64": "amd64"}[
+    platform.machine().lower()
+]
+platform = "%s-%s" % (OS, cpu)
+
+if platform != "linux-amd64":
+    print("Rust toolchain not available on platforms other than linux-amd64.")
+    exit(1)
+
+# Find the version of the rust toolchain requested by DEPS.
+with open("DEPS", "rb") as f:
+    deps = f.read().decode()
+found = re.findall(r"'android_rust_toolchain_version':\s*'(\S+)'", deps)
+if len(found) != 1:
+    print("Unable to find android_rust_toolchain_version in DEPS", file=sys.stderr)
+    exit(1)
+desired_version = found[0]
+
+if not needs_download(desired_version):
+    print("Already up-to-date!")
+    exit(0)
+
+print(
+    "Fetching Android rust toolchain at %s for platform %s"
+    % (desired_version, platform)
+)
+
+rust_zip = os.path.join(tempfile.mkdtemp(), "rust_toolchain.zip")
+url = CIPD_ANDROID_RUST_TOOLCHAIN_BASE_URL + "/%s/+/%s" % (platform, desired_version)
+with urlopen(url) as response, open(rust_zip, "wb") as f:
+    shutil.copyfileobj(response, f)
+downloaded_version = desired_version
+
+with ZipFileWithPermissions(rust_zip, "r") as f:
+    try:
+        output_path = "buildtools/rust_toolchain"
+        if os.path.exists(output_path):
+            shutil.rmtree(output_path)
+        f.extractall(path="buildtools/rust_toolchain")
+    except zipfile.BadZipFile as e:
+        print(f"Download failed, please try again {e}.")
+
+write_stamp_file(downloaded_version)
