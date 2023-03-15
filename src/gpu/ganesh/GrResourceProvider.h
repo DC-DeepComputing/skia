@@ -39,8 +39,6 @@ class GrSemaphore;
 class GrTexture;
 class SkData;
 
-enum class GrProtected : bool;
-enum class GrRenderable : bool;
 enum class SkBackingFit;
 struct GrVkDrawableInfo;
 struct SkImageInfo;
@@ -51,6 +49,8 @@ class SingleOwner;
 class UniqueKey;
 enum class Budgeted : bool;
 enum class Mipmapped : bool;
+enum class Protected : bool;
+enum class Renderable : bool;
 }
 
 /**
@@ -83,7 +83,7 @@ public:
     sk_sp<GrTexture> createApproxTexture(SkISize dimensions,
                                          const GrBackendFormat& format,
                                          GrTextureType textureType,
-                                         GrRenderable renderable,
+                                         skgpu::Renderable renderable,
                                          int renderTargetSampleCnt,
                                          GrProtected isProtected,
                                          std::string_view label);
@@ -92,7 +92,7 @@ public:
     sk_sp<GrTexture> createTexture(SkISize dimensions,
                                    const GrBackendFormat& format,
                                    GrTextureType textureType,
-                                   GrRenderable renderable,
+                                   skgpu::Renderable renderable,
                                    int renderTargetSampleCnt,
                                    skgpu::Mipmapped mipmapped,
                                    skgpu::Budgeted budgeted,
@@ -112,7 +112,7 @@ public:
                                    int renderTargetSampleCnt,
                                    skgpu::Budgeted budgeted,
                                    skgpu::Mipmapped mipmapped,
-                                   GrProtected isProtected,
+                                   skgpu::Protected isProtected,
                                    const GrMipLevel texels[],
                                    std::string_view label);
 
@@ -125,11 +125,11 @@ public:
                                    const GrBackendFormat&,
                                    GrTextureType textureType,
                                    GrColorType srcColorType,
-                                   GrRenderable,
+                                   skgpu::Renderable,
                                    int renderTargetSampleCnt,
                                    skgpu::Budgeted,
                                    SkBackingFit,
-                                   GrProtected,
+                                   skgpu::Protected,
                                    const GrMipLevel& mipLevel,
                                    std::string_view label);
 
@@ -141,10 +141,10 @@ public:
     sk_sp<GrTexture> findAndRefScratchTexture(SkISize dimensions,
                                               const GrBackendFormat&,
                                               GrTextureType textureType,
-                                              GrRenderable,
+                                              skgpu::Renderable,
                                               int renderTargetSampleCnt,
                                               skgpu::Mipmapped,
-                                              GrProtected,
+                                              skgpu::Protected,
                                               std::string_view label);
 
     /**
@@ -155,7 +155,7 @@ public:
                                              const GrBackendFormat&,
                                              skgpu::Budgeted,
                                              skgpu::Mipmapped,
-                                             GrProtected,
+                                             skgpu::Protected,
                                              SkData* data,
                                              std::string_view label);
 
@@ -329,7 +329,7 @@ public:
     sk_sp<GrAttachment> makeMSAAAttachment(SkISize dimensions,
                                            const GrBackendFormat& format,
                                            int sampleCnt,
-                                           GrProtected isProtected,
+                                           skgpu::Protected isProtected,
                                            GrMemoryless isMemoryless);
 
     /**
@@ -341,7 +341,7 @@ public:
     sk_sp<GrAttachment> getDiscardableMSAAAttachment(SkISize dimensions,
                                                      const GrBackendFormat& format,
                                                      int sampleCnt,
-                                                     GrProtected isProtected,
+                                                     skgpu::Protected isProtected,
                                                      GrMemoryless memoryless);
 
     /**
@@ -384,7 +384,7 @@ private:
                                      int renderTargetSampleCnt,
                                      skgpu::Budgeted,
                                      skgpu::Mipmapped,
-                                     GrProtected,
+                                     skgpu::Protected,
                                      std::string_view label);
 
     // Attempts to find a resource in the cache that exactly matches the SkISize. Failing that
@@ -392,7 +392,7 @@ private:
     sk_sp<GrAttachment> refScratchMSAAAttachment(SkISize dimensions,
                                                  const GrBackendFormat&,
                                                  int sampleCnt,
-                                                 GrProtected,
+                                                 skgpu::Protected,
                                                  GrMemoryless memoryless,
                                                  std::string_view label);
 
