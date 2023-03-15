@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a20c276b_4c444d2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-15T13:00:15Z",
+      "side": 1,
+      "message": "I thought we were intentionally trying to use std::vector in place of SkTArray these days?",
+      "revId": "1db51a29340b329e53d33c9c9d7430fbe494b2f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
