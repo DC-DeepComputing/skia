@@ -33,6 +33,29 @@
       "message": "I think you want to instead remove this line.",
       "revId": "71f0de6da083c24c8ef3017e07be7cf1ab2395fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed26d98c_52c6e7ac",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-15T19:02:00Z",
+      "side": 1,
+      "message": "You should remove this cq_config entry (and undo all the other ones).",
+      "range": {
+        "startLine": 578,
+        "startChar": 4,
+        "endLine": 578,
+        "endChar": 13
+      },
+      "revId": "71f0de6da083c24c8ef3017e07be7cf1ab2395fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
