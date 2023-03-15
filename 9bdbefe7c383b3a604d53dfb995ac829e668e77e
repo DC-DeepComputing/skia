@@ -188,6 +188,30 @@
       },
       "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23b198b0_62ac46c4",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2232,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-15T19:17:29Z",
+      "side": 1,
+      "message": "I skimmed the docs and I think they actually removed BufferBlock in 1.4.",
+      "parentUuid": "accd69f4_9741405d",
+      "range": {
+        "startLine": 2232,
+        "startChar": 35,
+        "endLine": 2232,
+        "endChar": 36
+      },
+      "revId": "9bdbefe7c383b3a604d53dfb995ac829e668e77e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
