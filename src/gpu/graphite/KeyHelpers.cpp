@@ -27,6 +27,10 @@
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/shaders/SkImageShader.h"
 
+#include "include/core/SkBitmap.h"
+#include "src/gpu/graphite/TextureProxyView.h"
+#include "src/image/SkImage_Base.h"
+
 constexpr SkPMColor4f kErrorColor = { 1, 0, 0, 1 };
 
 #define VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID) \
@@ -103,17 +107,46 @@ void add_gradient_postamble(const GradientShaderBlocks::GradientData& gradData,
     gatherer->write(static_cast<int>(inputPremul));
 }
 
-void add_linear_gradient_uniform_data(const ShaderCodeDictionary* dict,
+void add_linear_gradient_uniform_data(skgpu::graphite::Recorder* recorder,
+                                      const ShaderCodeDictionary* dict,
                                       BuiltInCodeSnippetID codeSnippetID,
                                       const GradientShaderBlocks::GradientData& gradData,
                                       PipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)
-    size_t stops = codeSnippetID == BuiltInCodeSnippetID::kLinearGradientShader4 ? 4 : 8;
 
-    gatherer->writeArray({gradData.fColors, stops});
-    gatherer->writeArray({gradData.fOffsets, stops});
+    const int kNumInternalStorageStops = GradientShaderBlocks::GradientData::kNumInternalStorageStops;
+
+    if (gradData.fNumStops <= kNumInternalStorageStops) {
+        int stops = gradData.fNumStops < 4 ? 4 : kNumInternalStorageStops;
+        gatherer->writeArray({gradData.fColors, stops});
+        gatherer->writeArray({gradData.fOffsets, stops});
+    } else {
+        sk_sp<SkImage> image = RecorderPriv::CreateCachedImage(recorder,
+                                                               gradData.fColorsAndOffsetsBitmap);
+        if (!image) {
+//            SKGPU_LOG_W("Couldn't create TableColorFilter's table");
+
+            // Return the input color as-is.
+//            PassthroughShaderBlock::BeginBlock(keyContext, builder, gatherer);
+//            builder->endBlock();
+            return;
+        }
+
+        auto [view, _] = as_IB(image)->asView(recorder, skgpu::Mipmapped::kNo);
+        sk_sp<skgpu::graphite::TextureProxy> textureProxy = view.refProxy();
+
+        SkSamplingOptions samplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone);
+        SkTileMode tileModes[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
+        gatherer->add(samplingOptions, tileModes, textureProxy);
+    }
+
     gatherer->write(gradData.fPoints[0]);
     gatherer->write(gradData.fPoints[1]);
+
+    if (gradData.fNumStops > kNumInternalStorageStops) {
+        gatherer->write(gradData.fNumStops);
+    }
+
     add_gradient_postamble(gradData, gatherer);
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(codeSnippetID));
@@ -197,7 +230,7 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
         , fBias(bias)
         , fScale(scale)
         , fTM(tm)
-        , fNumStops(std::min(numStops, kMaxStops))
+        , fNumStops(numStops) // kMaxStops))
         , fInterpolation(interp) {
     SkASSERT(fNumStops >= 1);
 
@@ -205,20 +238,57 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
     fPoints[1] = point1;
     fRadii[0] = radius0;
     fRadii[1] = radius1;
-    memcpy(fColors, colors, fNumStops * sizeof(SkColor4f));
-    if (offsets) {
-        memcpy(fOffsets, offsets, fNumStops * sizeof(float));
-    } else {
-        for (int i = 0; i < fNumStops; ++i) {
-            fOffsets[i] = SkIntToFloat(i) / (fNumStops-1);
-        }
-    }
 
-    // Extend the colors and offset, if necessary, to fill out the arrays
-    // TODO: this should be done later when the actual code snippet has been selected!!
-    for (int i = fNumStops ; i < kMaxStops; ++i) {
-        fColors[i] = fColors[fNumStops-1];
-        fOffsets[i] = fOffsets[fNumStops-1];
+    if (fNumStops <= kNumInternalStorageStops) {
+        memcpy(fColors, colors, fNumStops * sizeof(SkColor4f));
+        if (offsets) {
+            memcpy(fOffsets, offsets, fNumStops * sizeof(float));
+        } else {
+            for (int i = 0; i < fNumStops; ++i) {
+                fOffsets[i] = SkIntToFloat(i) / (fNumStops-1);
+            }
+        }
+
+        // Extend the colors and offset, if necessary, to fill out the arrays
+        // TODO: this should be done later when the actual code snippet has been selected!!
+        for (int i = fNumStops ; i < kNumInternalStorageStops; ++i) {
+            fColors[i] = fColors[fNumStops-1];
+            fOffsets[i] = fOffsets[fNumStops-1];
+        }
+    } else {
+        fColorsAndOffsetsBitmap.allocPixels(SkImageInfo::Make(fNumStops, 2,
+                                                              kRGBA_F16_SkColorType,
+                                                              kPremul_SkAlphaType));
+
+        for (int i = 0; i < fNumStops; i++) {
+            // TODO: there should be a way to directly set a premul pixel in a bitmap with
+            // a premul color.
+            SkColor4f unpremulColor = colors[i].unpremul();
+            fColorsAndOffsetsBitmap.erase(unpremulColor,
+                                          SkIRect::MakeXYWH(i, 0, 1, 1));
+
+            float offset = offsets ? offsets[i] : SkIntToFloat(i) / (fNumStops-1);
+            SkASSERT(offset >= 0.0f && offset <= 1.0f);
+
+            int intExp;
+            float16_t mantissa = frexp(offset, &intExp);
+            float16_t exponent = intExp;
+
+#if defined(SK_DEBUG)
+            // TODO: if we can't encode the exponent correctly we should mark the gradient as
+            // invalid and drop its draw.
+            SkASSERT((int)exponent == intExp);
+
+            float restored = ldexp(mantissa, (int) exponent);
+            float error = abs(restored - offset);
+            SkASSERT(error < 0.001f);
+#endif
+
+            // TODO: we're only using 2 of the f16s here. The encoding could be altered to better
+            // preserve precision. This encoding yields < 0.001f error for 2^20 evenly spaced stops.
+            fColorsAndOffsetsBitmap.erase(SkColor4f{mantissa, exponent, 0, 1},
+                                          SkIRect::MakeXYWH(i, 1, 1, 1));
+        }
     }
 }
 
@@ -231,10 +301,12 @@ void GradientShaderBlocks::BeginBlock(const KeyContext& keyContext,
     switch (gradData.fType) {
         case SkShaderBase::GradientType::kLinear:
             codeSnippetID = gradData.fNumStops <= 4
-                                    ? BuiltInCodeSnippetID::kLinearGradientShader4
-                                    : BuiltInCodeSnippetID::kLinearGradientShader8;
+                    ? BuiltInCodeSnippetID::kLinearGradientShader4
+                    : gradData.fNumStops <= 8 ? BuiltInCodeSnippetID::kLinearGradientShader8
+                                              : BuiltInCodeSnippetID::kLinearGradientShaderTexture;
             if (gatherer) {
-                add_linear_gradient_uniform_data(dict, codeSnippetID, gradData, gatherer);
+                add_linear_gradient_uniform_data(keyContext.recorder(), dict, codeSnippetID,
+                                                 gradData, gatherer);
             }
             break;
         case SkShaderBase::GradientType::kRadial:
