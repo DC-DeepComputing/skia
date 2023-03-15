@@ -214,35 +214,38 @@ void GrGLSLShaderBuilder::appendColorGamutXform(SkString* out,
 
     // Now define a wrapper function that applies all the intermediate steps
     {
-        // Some GPUs require full float to get results that are as accurate as expected/required.
-        // Most GPUs work just fine with half float. Strangely, the GPUs that have this bug
-        // (Mali G series) only require us to promote the type of a few temporaries here --
-        // the helper functions above can always be written to use half.
-        bool useFloat = fProgramBuilder->shaderCaps()->fColorSpaceMathNeedsFloat;
-
-        const GrShaderVar gColorXformArgs[] = {
-                GrShaderVar("color", useFloat ? SkSLType::kFloat4 : SkSLType::kHalf4)};
+        const GrShaderVar gColorXformArgs[] = {GrShaderVar("color", SkSLType::kHalf4)};
         SkString body;
         if (colorXformHelper->applyUnpremul()) {
-            body.append("color = unpremul(color);");
+            if (fProgramBuilder->shaderCaps()->fColorSpaceMathNeedsFloat) {
+                // Some GPUs require full float to get results that are as accurate as
+                // expected/required. Most GPUs work just fine with half float.
+                body.append("color = half4(unpremul(float4(color)));");
+            } else {
+                body.append("color = unpremul(color);");
+            }
         }
         if (colorXformHelper->applySrcTF()) {
-            body.appendf("color.r = %s(half(color.r));", srcTFFuncName.c_str());
-            body.appendf("color.g = %s(half(color.g));", srcTFFuncName.c_str());
-            body.appendf("color.b = %s(half(color.b));", srcTFFuncName.c_str());
+            body.appendf("color.r = %s(color.r);", srcTFFuncName.c_str());
+            body.appendf("color.g = %s(color.g);", srcTFFuncName.c_str());
+            body.appendf("color.b = %s(color.b);", srcTFFuncName.c_str());
         }
         if (colorXformHelper->applyGamutXform()) {
-            body.appendf("color = %s(half4(color));", gamutXformFuncName.c_str());
+            body.appendf("color = %s(color);", gamutXformFuncName.c_str());
         }
         if (colorXformHelper->applyDstTF()) {
-            body.appendf("color.r = %s(half(color.r));", dstTFFuncName.c_str());
-            body.appendf("color.g = %s(half(color.g));", dstTFFuncName.c_str());
-            body.appendf("color.b = %s(half(color.b));", dstTFFuncName.c_str());
+            body.appendf("color.r = %s(color.r);", dstTFFuncName.c_str());
+            body.appendf("color.g = %s(color.g);", dstTFFuncName.c_str());
+            body.appendf("color.b = %s(color.b);", dstTFFuncName.c_str());
         }
         if (colorXformHelper->applyPremul()) {
-            body.append("color.rgb *= color.a;");
+            if (fProgramBuilder->shaderCaps()->fColorSpaceMathNeedsFloat) {
+                body.append("color.rgb = half3(float3(color.rgb) * float3(color.a));");
+            } else {
+                body.append("color.rgb *= color.a;");
+            }
         }
-        body.append("return half4(color);");
+        body.append("return color;");
         SkString colorXformFuncName = this->getMangledFunctionName("color_xform");
         this->emitFunction(SkSLType::kHalf4, colorXformFuncName.c_str(),
                            {gColorXformArgs, std::size(gColorXformArgs)}, body.c_str());
