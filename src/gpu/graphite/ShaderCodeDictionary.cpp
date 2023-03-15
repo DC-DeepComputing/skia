@@ -435,7 +435,7 @@ void GenerateDefaultPreamble(const ShaderInfo& shaderInfo,
 static constexpr int kFourStopGradient = 4;
 static constexpr int kEightStopGradient = 8;
 
-static constexpr Uniform kLinearGradientUniforms4[7] = {
+static constexpr Uniform kLinearGradientUniforms4[] = {
         { "colors",      SkSLType::kFloat4, kFourStopGradient },
         { "offsets",     SkSLType::kFloat,  kFourStopGradient },
         { "point0",      SkSLType::kFloat2 },
@@ -444,17 +444,29 @@ static constexpr Uniform kLinearGradientUniforms4[7] = {
         { "colorSpace",  SkSLType::kInt },
         { "doUnPremul",  SkSLType::kInt },
 };
-static constexpr Uniform kLinearGradientUniforms8[7] = {
+static constexpr Uniform kLinearGradientUniforms8[] = {
         { "colors",      SkSLType::kFloat4, kEightStopGradient },
         { "offsets",     SkSLType::kFloat,  kEightStopGradient },
         { "point0",      SkSLType::kFloat2 },
         { "point1",      SkSLType::kFloat2 },
+        { "tilemode",    SkSLType::kInt },
+        { "colorSpace",  SkSLType::kInt },
+        { "doUnPremul",  SkSLType::kInt },
+};
+static constexpr Uniform kLinearGradientUniformsTexture[] = {
+        { "point0",      SkSLType::kFloat2 },
+        { "point1",      SkSLType::kFloat2 },
+        { "numStops",    SkSLType::kInt },
         { "tilemode",    SkSLType::kInt },
         { "colorSpace",  SkSLType::kInt },
         { "doUnPremul",  SkSLType::kInt },
 };
 
-static constexpr Uniform kRadialGradientUniforms4[7] = {
+static constexpr TextureAndSampler kTextureGradientTexturesAndSamplers[] = {
+        {"colorAndOffsetSampler"},
+};
+
+static constexpr Uniform kRadialGradientUniforms4[] = {
         { "colors",      SkSLType::kFloat4, kFourStopGradient },
         { "offsets",     SkSLType::kFloat,  kFourStopGradient },
         { "center",      SkSLType::kFloat2 },
@@ -463,11 +475,19 @@ static constexpr Uniform kRadialGradientUniforms4[7] = {
         { "colorSpace",  SkSLType::kInt },
         { "doUnPremul",  SkSLType::kInt },
 };
-static constexpr Uniform kRadialGradientUniforms8[7] = {
+static constexpr Uniform kRadialGradientUniforms8[] = {
         { "colors",      SkSLType::kFloat4, kEightStopGradient },
         { "offsets",     SkSLType::kFloat,  kEightStopGradient },
         { "center",      SkSLType::kFloat2 },
         { "radius",      SkSLType::kFloat },
+        { "tilemode",    SkSLType::kInt },
+        { "colorSpace",  SkSLType::kInt },
+        { "doUnPremul",  SkSLType::kInt },
+};
+static constexpr Uniform kRadialGradientUniformsTexture[] = {
+        { "center",      SkSLType::kFloat2 },
+        { "radius",      SkSLType::kFloat },
+        { "numStops",    SkSLType::kInt },
         { "tilemode",    SkSLType::kInt },
         { "colorSpace",  SkSLType::kInt },
         { "doUnPremul",  SkSLType::kInt },
@@ -519,8 +539,12 @@ static constexpr Uniform kConicalGradientUniforms8[9] = {
 
 static constexpr char kLinearGradient4Name[] = "sk_linear_grad_4_shader";
 static constexpr char kLinearGradient8Name[] = "sk_linear_grad_8_shader";
+static constexpr char kLinearGradientTextureName[] = "sk_linear_grad_tex_shader";
+
 static constexpr char kRadialGradient4Name[] = "sk_radial_grad_4_shader";
 static constexpr char kRadialGradient8Name[] = "sk_radial_grad_8_shader";
+static constexpr char kRadialGradientTextureName[] = "sk_radial_grad_tex_shader";
+
 static constexpr char kSweepGradient4Name[] = "sk_sweep_grad_4_shader";
 static constexpr char kSweepGradient8Name[] = "sk_sweep_grad_8_shader";
 static constexpr char kConicalGradient4Name[] = "sk_conical_grad_4_shader";
@@ -1244,6 +1268,17 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             kNoChildren,
             { }      // no data payload
     };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kLinearGradientShaderTexture] = {
+            "LinearGradientTexture",
+            SkSpan(kLinearGradientUniformsTexture),
+            SnippetRequirementFlags::kLocalCoords,
+            SkSpan(kTextureGradientTexturesAndSamplers),
+            kLinearGradientTextureName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }
+    };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kRadialGradientShader4] = {
             "RadialGradient4",
             SkSpan(kRadialGradientUniforms4),
@@ -1265,6 +1300,17 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultPreamble,
             kNoChildren,
             { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kRadialGradientShaderTexture] = {
+            "RadialGradientTexture",
+            SkSpan(kRadialGradientUniformsTexture),
+            SnippetRequirementFlags::kLocalCoords,
+            SkSpan(kTextureGradientTexturesAndSamplers),
+            kRadialGradientTextureName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kSweepGradientShader4] = {
             "SweepGradient4",
