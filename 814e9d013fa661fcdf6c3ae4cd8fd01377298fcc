@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06b4f709_89d324db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-03-16T14:33:21Z",
+      "side": 1,
+      "message": "@kjlubick@google.com: After receiving Dana\u0027s feedback, I\u0027ve changed this to download the fresh Chromium-side frequently built Rust toolchain. So, this no longer relies on the Android rust toolchain snapshots from CIPD that are no longer updated according to Dana.\nNow this is no longer a CIPD resource, but still in a GCS bucket - can the bot tasks handle such a resource as well, when we enable those to fetch this toolchain?  For such a bot task, where do you need the revision identifier to be stored - would it need to move to the DEPS file?\n\n@danakj@chromium.org: PTAL - I\u0027ve adapted and slightly stripped the update_rust.py from Chromium for Skia use here. Unfortunately, there is some redundancy for this script right now, but I am thinking we need to start somewhere. I\u0027ve considered a separate script that downloads Chromiums update_rust.py and update.py from the Clang directories, but that seems less reliable and fetches too much code.",
+      "revId": "814e9d013fa661fcdf6c3ae4cd8fd01377298fcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "586cb9d8_3fa8307d",
+        "filename": "bin/fetch-rust-toolchain",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-03-16T14:33:21Z",
+      "side": 1,
+      "message": "@danakj@chromium.org: Would it be possible for the Chromium side `build_rust.py` script to publish a text file with a last known-good revision identifier (similar to 6e0115778b0aedc90b59e035476c38e1b8c5c29b-2-llvmorg-17-init-3874-g93a2fecc-1) under a canonical URL in the CDS bucket? This would help implement a roll functionality in this script on the Skia side which pulls that last known good revision id and updates it here or in the DEPS file or somewhere.",
+      "revId": "814e9d013fa661fcdf6c3ae4cd8fd01377298fcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
