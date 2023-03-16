@@ -333,24 +333,24 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			if b.extraConfig("Metal") {
 				configs = []string{"grmtl"}
 			}
-                        if b.extraConfig("Dawn") {
+			if b.extraConfig("Dawn") {
 				configs = []string{"grdawn"}
-                                // Could not readback from surface
-                                // https://skbug/14105
+				// Could not readback from surface
+				// https://skbug/14105
 				skip(ALL, "gm", ALL, "tall_stretched_bitmaps")
 				// Shader doesn't compile
-                                // https://skbug/14105
+				// https://skbug/14105
 				skip(ALL, "gm", ALL, "runtime_intrinsics_matrix")
-                                // Crashes
-                                // https://skbug/14105
-                                skip(ALL, "test", ALL, "BackendTextureTest")
-                                skip(ALL, "test", ALL, "GraphitePromiseImageMultipleImgUses")
-                                skip(ALL, "test", ALL, "GraphitePromiseImageRecorderLoss")
+				// Crashes
+				// https://skbug/14105
+				skip(ALL, "test", ALL, "BackendTextureTest")
+				skip(ALL, "test", ALL, "GraphitePromiseImageMultipleImgUses")
+				skip(ALL, "test", ALL, "GraphitePromiseImageRecorderLoss")
 				skip(ALL, "test", ALL, "MutableImagesTest")
 				skip(ALL, "test", ALL, "PaintParamsKeyTest")
 				skip(ALL, "test", ALL, "VolatileGraphitePromiseImageTest")
-                                // Fails
-                                // https://skbug/14105
+				// Fails
+				// https://skbug/14105
 				skip(ALL, "test", ALL, "ImageAsyncReadPixelsGraphite")
 				skip(ALL, "test", ALL, "ImageProviderTest_Graphite_Default")
 				skip(ALL, "test", ALL, "ImageProviderTest_Graphite_Testing")
@@ -381,8 +381,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "gm", ALL, "simplerect")
 					skip(ALL, "gm", ALL, "wacky_yuv_formats_imggen")
 					skip(ALL, "gm", ALL, "xfermodes")
+					// skbug.com/14189 (Dawn D3D backend can baulk at loops)
+					skip(ALL, "gm", ALL, "hardstop_gradients_many")
 				}
-                        }
+			}
 		}
 
 		// ANGLE bot *only* runs the angle configs
