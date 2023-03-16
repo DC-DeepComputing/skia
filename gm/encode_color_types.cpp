@@ -130,7 +130,8 @@ protected:
 
         for (SkAlphaType alphaType : alphaTypes) {
             auto src = make_image(colorType, alphaType);
-            auto decoded = src ? SkImage::MakeFromEncoded(src->encodeToData(fFormat, fQuality))
+            auto decoded = src ? SkImages::FromEncodedData(src->encodeToData(fFormat,
+                                                                                     fQuality))
                                : nullptr;
             if (!src || !decoded) {
                 break;

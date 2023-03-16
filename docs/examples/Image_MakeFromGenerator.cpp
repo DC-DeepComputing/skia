@@ -8,8 +8,9 @@ void draw(SkCanvas* canvas) {
     recorder.beginRecording(100, 100)->drawColor(SK_ColorRED);
     auto picture = recorder.finishRecordingAsPicture();
     auto gen = SkImageGenerator::MakeFromPicture({100, 100}, picture, nullptr, nullptr,
-                                                 SkImage::BitDepth::kU8, SkColorSpace::MakeSRGB());
-    sk_sp<SkImage> image = SkImage::MakeFromGenerator(std::move(gen));
+                                                 SkImages::BitDepth::kU8,
+                                                 SkColorSpace::MakeSRGB());
+    sk_sp<SkImage> image = SkImages::FromGenerator(std::move(gen));
     canvas->drawImage(image, 0, 0);
 }
 }  // END FIDDLE

@@ -73,7 +73,7 @@ const MakerT makers[] = {
 
     // SkImage_Lazy
     [](SkCanvas*, const SkImageInfo& info) -> sk_sp<SkImage> {
-        return SkImage::MakeFromGenerator(std::make_unique<MaskGenerator>(info));
+        return SkImages::FromGenerator(std::make_unique<MaskGenerator>(info));
     },
 };
 

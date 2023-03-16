@@ -18,7 +18,7 @@ void draw(SkCanvas* canvas) {
         return;
     }
 
-    sk_sp<SkImage> imageFromBackend = SkImage::MakeFromAdoptedTexture(direct,
+    sk_sp<SkImage> imageFromBackend = SkImages::FromAdoptedTexture(direct,
                                                                       backEndTexture,
                                                                       kBottomLeft_GrSurfaceOrigin,
                                                                       kRGBA_8888_SkColorType,
@@ -27,7 +27,7 @@ void draw(SkCanvas* canvas) {
     if (!textureFromImage.isValid()) {
         return;
     }
-    sk_sp<SkImage> imageFromTexture = SkImage::MakeFromAdoptedTexture(direct,
+    sk_sp<SkImage> imageFromTexture = SkImages::FromAdoptedTexture(direct,
                                                                       textureFromImage,
                                                                       kTopLeft_GrSurfaceOrigin,
                                                                       kRGBA_8888_SkColorType,

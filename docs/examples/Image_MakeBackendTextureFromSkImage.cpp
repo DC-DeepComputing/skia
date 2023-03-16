@@ -22,13 +22,16 @@ void draw(SkCanvas* canvas) {
     sk_sp<SkImage> backEndImage = create_gpu_image(dContext);
     canvas->drawImage(backEndImage, 0, 0);
     GrBackendTexture texture;
-    SkImage::BackendTextureReleaseProc proc;
-    if (!SkImage::MakeBackendTextureFromSkImage(dContext, std::move(backEndImage),
-                                                &texture, &proc)) {
+    SkImages::BackendTextureReleaseProc proc;
+    if (!SkImages::BackendTextureFromImage(dContext, std::move(backEndImage),
+                                                         &texture, &proc)) {
         return;
     }
-    sk_sp<SkImage> i2 = SkImage::MakeFromTexture(dContext, texture, kTopLeft_GrSurfaceOrigin,
-                                                 kN32_SkColorType, kOpaque_SkAlphaType, nullptr);
+    sk_sp<SkImage> i2 = SkImages::FromBackendTexture(dContext, texture,
+                                                          kTopLeft_GrSurfaceOrigin,
+                                                          kN32_SkColorType,
+                                                          kOpaque_SkAlphaType,
+                                                          nullptr);
     canvas->drawImage(i2, 30, 30);
 }
 }  // END FIDDLE

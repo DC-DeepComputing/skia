@@ -14,6 +14,25 @@ Milestone 113
     return true from rectStaysRect(), consistent with rectStaysRect() implying a non-zero scale.
   * `SkImage::CompressionType` has been renamed to `SkTextureCompressionType` and moved to
     `include/core/SkTextureCompressionType.h`
+  * SkImage factory methods have been moved to the SkImages namespace. Many have been renamed to
+    be more succinct or self-consistent. Factory methods specific to the Ganesh GPU backend are
+    defined publicly in include/gpu/ganesh/SkImageGanesh.h.
+      * SkImage::MakeBackendTextureFromSkImage -> SkImages::BackendTextureFromImage
+      * SkImage::MakeCrossContextFromPixmap -> SkImages::FromPixmapCopy
+      * SkImage::MakeFromAdoptedTexture -> SkImages::FromAdoptedTexture
+      * SkImage::MakeFromBitmap -> SkImages::FromBitmap
+      * SkImage::MakeFromCompressedTexture -> SkImages::FromCompressedBackendTexture
+      * SkImage::MakeFromEncoded -> SkImages::FromEncodedData
+      * SkImage::MakeFromPicture -> SkImages::FromPicture
+      * SkImage::MakeFromRaster -> SkImages::FromPixmap
+      * SkImage::MakeFromTexture -> SkImages::FromBackendTexture
+      * SkImage::MakePromiseTexture -> SkImages::PromiseImageFromTexture
+      * SkImage::MakeRasterCopy -> SkImages::FromPixmapCopy
+      * SkImage::MakeRasterData -> SkImages::FromRasterData
+      * SkImage::MakeRasterFromCompressed -> SkImages::FromCompressedTextureData
+      * SkImage::MakeTextureFromCompressed -> SkImages::FromCompressedTextureData
+    To help in the transition, there is some temporary bridge code (e.g. aliases) which will
+    eventually be removed.
 
 * * *
 
