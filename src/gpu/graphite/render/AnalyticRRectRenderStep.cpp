@@ -518,6 +518,7 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
         bool bidirectionalCoverage = center.z <= 0.0;
         bool deviceSpaceDistances = false;
         float4 xs, ys; // ordered TL, TR, BR, BL
+        float4 edgeAA = float4(1.0); // ordered L,T,R,B. 1 = AA, 0 = no AA
         if (xRadiiOrFlags.x < -1.0) {
             // Stroked rect or round rect
             xs = ltrbOrQuadYs.LRRL;
@@ -556,6 +557,7 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
             // quad's edges.
             xs = radiiOrQuadXs;
             ys = ltrbOrQuadYs;
+            edgeAA = -xRadiiOrFlags; // AA flags needed to be < 0 on upload, so flip the sign.
 
             xRadii = float4(0.0);
             yRadii = float4(0.0);
@@ -610,11 +612,13 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
                 dx = mix(dx.yzwx, dx, emptyEdge);
                 dy = mix(dy.yzwx, dy, emptyEdge);
                 edgeLen = mix(edgeLen.yzwx, edgeLen, emptyEdge);
+                edgeAA = mix(edgeAA.yzwx, edgeAA, emptyEdge);
             } else {
                 // A line, so copy the left-hand normal of the vector into degenerate edges
                 dx = mix( dy.yzwx, dx, emptyEdge);
                 dy = mix(-dx.yzwx, dy, emptyEdge);
                 edgeLen = mix(edgeLen.yzwx, edgeLen, emptyEdge);
+                edgeAA = mix(edgeAA.yzwx, edgeAA, emptyEdge);
             }
             //FIXME consolidate these cases?
             // FIXME slop around count comparison?
@@ -687,16 +691,18 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
             // 1/w in the fragment shader. The same goes for the encoded coverage scale.
             edgeDistances *= inversesqrt(gx*gx + gy*gy);
 
+            // Bias non-AA edge distances by device W so its coverage contribution is >= 1.0
+            edgeDistances += (1 - edgeAA)*abs(devPos.z);
+
             // Mixed edge AA shapes do not use subpixel scale+bias for coverage, since they tile
             // to a large shape of unknown--but likely not subpixel--size. Triangles and quads do
             // not use subpixel coverage since the scale+bias is not constant over the shape, but
             // we can't evaluate per-fragment since we aren't passing down their arbitrary normals.
-            bool subpixelCoverage = dot(abs(dx*dx.yzwx + dy*dy.yzwx), float4(1.0)) < kEpsilon;
+            bool subpixelCoverage = edgeAA == float4(1.0) &&
+                                    dot(abs(dx*dx.yzwx + dy*dy.yzwx), float4(1.0)) < kEpsilon;
             if (subpixelCoverage) {
                 // Reconstructs the actual device-space width and height for all rectangle vertices.
                 float2 dim = edgeDistances.xy + edgeDistances.zw;
-                // TODO: Mixed AA flags should always use the (1,0.5) scale and bias since the set
-                // of tiled quads forms a larger shape that would not get subpixel treatment.
                 perPixelControl.y = 1.0 + min(min(dim.x, dim.y), abs(devPos.z));
             } else {
                 perPixelControl.y = 1.0 + abs(devPos.z); // standard 1px width pre W division.
@@ -710,10 +716,12 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
             // matrix (inverse transpose), but produces correct results when there's perspective
             // because it accounts for the position's influence on a line's projected direction.
             float2x2 J = float2x2(jacobian.xy, jacobian.zw);
-            float2 nx = cornerAspectRatio.x * normal.x * perp(-yAxis) * J;
-            float2 ny = cornerAspectRatio.y * normal.y * perp( xAxis) * J;
 
-            bool isMidVertex = normal.x != 0.0 && normal.y != 0.0;
+            float2 edgeAANormal = float2(edgeAA[cornerID], edgeAA.yzwx[cornerID]) * normal;
+            float2 nx = cornerAspectRatio.x * edgeAANormal.x * perp(-yAxis) * J;
+            float2 ny = cornerAspectRatio.y * edgeAANormal.y * perp( xAxis) * J;
+
+            bool isMidVertex = edgeAANormal.x != 0.0 && edgeAANormal.y != 0.0;
             if (joinScale == kMiterScale && isMidVertex) {
                 // Produce a bisecting vector in device space (ignoring 'normal' since that was
                 // previously corrected to match the mitered edge normals).
@@ -953,7 +961,7 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
             // The vertex shader expects points to be in clockwise order. EdgeAAQuad is the only
             // shape that *might* have counter-clockwise input.
             if (is_clockwise(quad)) {
-            vw << edgeSigns << quad.xs() << quad.ys();
+                vw << edgeSigns << quad.xs() << quad.ys();
             } else {
                 vw << skvx::shuffle<2,1,0,3>(edgeSigns)  // swap left and right AA bits
                    << skvx::shuffle<1,0,3,2>(quad.xs())  // swap TL with TR, and BL with BR
