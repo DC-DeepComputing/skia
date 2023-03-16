@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac7c372e_363a7311",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-16T16:11:19Z",
+      "side": 1,
+      "message": "stdin",
+      "range": {
+        "startLine": 872,
+        "startChar": 19,
+        "endLine": 872,
+        "endChar": 20
+      },
+      "revId": "e1136296a51b3d66bdc033a3430107ff370f6093",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
