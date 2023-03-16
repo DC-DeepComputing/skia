@@ -18,6 +18,7 @@
 struct SkSamplingOptions;
 
 namespace skgpu {
+class RefCntedCallback;
 class SingleOwner;
 }
 
