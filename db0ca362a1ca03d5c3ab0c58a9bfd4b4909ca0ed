@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0754999d_92c87b72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-16T19:07:00Z",
+      "side": 1,
+      "message": "I believe the gold diffs are mostly from an out-of-date parent CL that no longer produces them (but CQ isn\u0027t re-running them because the rebase was a \u0027no-op\u0027 on this CL). There might be some churn in the compositor GMs because triangle \"quads\" still aren\u0027t being checked for in the vertex shader.",
+      "revId": "db0ca362a1ca03d5c3ab0c58a9bfd4b4909ca0ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
