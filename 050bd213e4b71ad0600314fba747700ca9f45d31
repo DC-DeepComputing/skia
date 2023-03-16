@@ -34,6 +34,24 @@
       "parentUuid": "f50f96f5_45f0bcf1",
       "revId": "050bd213e4b71ad0600314fba747700ca9f45d31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82fba3c0_3cec41e7",
+        "filename": "bin/fetch-rust-toolchain",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-03-16T14:47:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61f5660b_dcc653f6",
+      "revId": "050bd213e4b71ad0600314fba747700ca9f45d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
