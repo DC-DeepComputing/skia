@@ -21,6 +21,7 @@ struct SkImageInfo;
 class SkPixmap;
 
 namespace skgpu {
+class RefCntedCallback;
 class TokenTracker;
 }
 
@@ -106,7 +107,8 @@ public:
      */
     bool updateBackendTexture(const BackendTexture&,
                               const SkPixmap srcData[],
-                              int numLevels);
+                              int numLevels,
+                              sk_sp<skgpu::RefCntedCallback> = nullptr);
 
     /**
      * Called to delete the passed in BackendTexture. This should only be called if the
