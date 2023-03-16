@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23e7d856_98b9ae56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-16T15:10:06Z",
+      "side": 1,
+      "message": "As a note to anyone here from the future, while it is interesting to keep everything valid premul (and that was possibly an issue at the time) allowing non-opaque subpixel rendering without per-channel alpha isn\u0027t very helpful. It looks fine for something that is like 90% opaque, but does not work well with blending onto a transparent black background to be composited onto another layer.\n\nThis is mostly because when the alpha picked for the whole pixel is larger than the coverage of the subpixel then the difference will be made up in black, making the subpixel too dark when blended into another layer (dark halo). If the alpha is less than the coverage of a subpixel then the coverage will essentially be clipped to the alpha when blended, leading to not enough coverage when blended into another layer (thin, blocky, not enough coverage).\n\nIf there is a reasonable guess at the color of the layer which will be blended into then one could do the dst blend against that color instead of the actual dst, hoping that works out. This is similar to just filling the current transparent layer with the guess at the destination color, but only on the pixels where subpixel antialiasing will happen. This can be made to kinda work, but looks bad when the guess isn\u0027t close.",
+      "revId": "6f9f2591c1a6a01f0c0fb06fcd77d1429e3ce260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
