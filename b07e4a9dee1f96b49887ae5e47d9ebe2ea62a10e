@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fd6257d_5337b93a",
+        "filename": "bin/clang_update.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-03-16T14:56:24Z",
+      "side": 1,
+      "message": "@kjlubick@google.com: This might actually be useful as a tool in the other fetch-* tools, as it has retries and progress bars - which is an improvement over what the other tools are doing.",
+      "revId": "b07e4a9dee1f96b49887ae5e47d9ebe2ea62a10e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
