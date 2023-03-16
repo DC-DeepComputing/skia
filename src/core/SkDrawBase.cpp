@@ -20,6 +20,7 @@
 #include "src/base/SkUtils.h"
 #include "src/core/SkAutoBlitterChoose.h"
 #include "src/core/SkBlendModePriv.h"
+#include "src/core/SkBlitter_A8.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkDrawProcs.h"
 #include "src/core/SkMaskFilterBase.h"
@@ -130,9 +131,9 @@ static SkPoint* rect_points(SkRect& r) {
     return reinterpret_cast<SkPoint*>(&r);
 }
 
-static void draw_rect_as_path(const SkDraw& orig, const SkRect& prePaintRect,
+static void draw_rect_as_path(const SkDrawBase& orig, const SkRect& prePaintRect,
                               const SkPaint& paint, const SkMatrixProvider* matrixProvider) {
-    SkDraw draw(orig);
+    SkDrawBase draw(orig);
     draw.fMatrixProvider = matrixProvider;
     SkPath  tmp;
     tmp.addRect(prePaintRect);
@@ -482,11 +483,6 @@ void SkDrawBase::validate() const {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "include/core/SkPath.h"
-#include "include/core/SkRegion.h"
-#include "src/core/SkBlitter.h"
-#include "src/core/SkDraw.h"
-
 bool SkDrawBase::ComputeMaskBounds(const SkRect& devPathBounds, const SkIRect& clipBounds,
                                const SkMaskFilter* filter, const SkMatrix* filterMatrix,
                                SkIRect* bounds) {
@@ -524,7 +520,8 @@ bool SkDrawBase::ComputeMaskBounds(const SkRect& devPathBounds, const SkIRect& c
 
 static void draw_into_mask(const SkMask& mask, const SkPath& devPath,
                            SkStrokeRec::InitStyle style) {
-    SkDraw draw;
+    SkDrawBase draw;
+    draw.fBlitterChooser = SkA8Blitter_Choose;
     if (!draw.fDst.reset(mask)) {
         return;
     }
