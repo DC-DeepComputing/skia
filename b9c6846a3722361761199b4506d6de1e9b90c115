@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6db1627c_756e0c55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-16T21:47:05Z",
+      "side": 1,
+      "message": "Nits",
+      "revId": "b9c6846a3722361761199b4506d6de1e9b90c115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02f236d2_e2620222",
+        "filename": "gm/gradients.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-16T21:47:05Z",
+      "side": 1,
+      "message": "Pretty subjective but in hindsight I would actually make this 450; I think it\u0027s easier to see if the lines of color are uniform width when they\u0027re perfectly diagonal.",
+      "range": {
+        "startLine": 882,
+        "startChar": 43,
+        "endLine": 882,
+        "endChar": 46
+      },
+      "revId": "b9c6846a3722361761199b4506d6de1e9b90c115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42d48377_2f4d1fcb",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-16T21:47:05Z",
+      "side": 1,
+      "message": "I saw that you\u0027d considered an \"add_gradient_preamble\" to share this between gradient types -- IMO that\u0027s worth doing now.",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 5
+      },
+      "revId": "b9c6846a3722361761199b4506d6de1e9b90c115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3a347b7_78413164",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-16T21:47:05Z",
+      "side": 1,
+      "message": "Any reason this is declared here instead of when textureProxy is assigned?",
+      "revId": "b9c6846a3722361761199b4506d6de1e9b90c115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
