@@ -875,18 +875,32 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
 
-    // TODO: Manually snap pixels for rects, rrects, and lines if paint is non-AA (ideally also
-    // consider snapping stroke width and/or adjusting geometry for hairlines). This pixel snapping
-    // math should be consistent with how non-AA clip [r]rects are handled.
-
     // If we got here, then path effects and mask filters should have been handled and the style
     // should be fill or stroke/hairline. Stroke-and-fill is not handled by DrawContext, but is
     // emulated here by drawing twice--one stroke and one fill--using the same depth value.
     SkASSERT(!SkToBool(paint.getPathEffect()) || (flags & DrawFlags::kIgnorePathEffect));
     SkASSERT(!SkToBool(paint.getMaskFilter()) || (flags & DrawFlags::kIgnoreMaskFilter));
 
-    // Check if we have room to record into the current list before determining clipping and order
+    // Possibly drop empty draws.
     SkStrokeRec::Style styleType = style.getStyle();
+    auto geomDim = geometry.bounds().size();
+    if (!std::isfinite(geomDim.x()) || !std::isfinite(geomDim.y())) {
+        // Discard non-finite shapes
+        return;
+    } else if (geomDim.x() <= 0.f || geomDim.y() <= 0.f) {
+        // Discard shapes that logically have zero coverage: any empty fill, or a zero-length stroke
+        // that has butt caps.
+        if (styleType == SkStrokeRec::kFill_Style ||
+            (style.getCap() == SkPaint::kButt_Cap && geomDim.x() <= 0.f && geomDim.y() <= 0.f)) {
+            return;
+        }
+        // Otherwise the stroke applies to a vertical/horizontal line, or it's effectively a zero
+        // length path segment and must produce round/square caps:
+        //     https://www.w3.org/TR/SVG11/implnote.html#PathElementImplementationNotes
+        // Device relies on each RenderStep implementation to correctly handle these cases.
+    }
+
+    // Check if we have room to record into the current list before determining clipping and order
     if (this->needsFlushBeforeDraw(styleType == SkStrokeRec::kStrokeAndFill_Style ? 2 : 1)) {
         this->flushPendingWorkToRecorder();
     }
