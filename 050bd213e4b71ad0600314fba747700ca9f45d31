@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f50f96f5_45f0bcf1",
+        "filename": "bin/fetch-rust-toolchain",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-03-16T14:41:06Z",
+      "side": 1,
+      "message": "The current one is\nac4379fea9e83465d814bb05005689f49bd2141e-1-llvmorg-17-init-3874-g93a2fecc-1\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:tools/rust/update_rust.py;l\u003d65?ss\u003dchromium%2Fchromium%2Fsrc\u0026q\u003dupdate_rust.py",
+      "revId": "050bd213e4b71ad0600314fba747700ca9f45d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
