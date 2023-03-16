@@ -2727,8 +2727,16 @@ bool Generator::pushIntrinsic(IntrinsicKind intrinsic,
             subexpressionStack.exit();
             return true;
         }
+        case IntrinsicKind::k_distance_IntrinsicKind: {
+            // Implement distance as `length(a - b)`.
+            std::unique_ptr<Expression> length = BinaryExpression::Make(fContext,
+                                                                        arg0.fPosition,
+                                                                        arg0.clone(),
+                                                                        OperatorKind::MINUS,
+                                                                        arg1.clone());
+            return this->pushIntrinsic(IntrinsicKind::k_length_IntrinsicKind, *length);
+        }
         case IntrinsicKind::k_dot_IntrinsicKind:
-            // Implement dot as `a*b`, followed by folding via addition.
             SkASSERT(arg0.type().matches(arg1.type()));
             if (!this->pushExpression(arg0) || !this->pushExpression(arg1)) {
                 return unsupported();
