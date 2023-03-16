@@ -52,6 +52,24 @@
       "parentUuid": "61f5660b_dcc653f6",
       "revId": "050bd213e4b71ad0600314fba747700ca9f45d31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36c66cb6_aa5e247a",
+        "filename": "bin/fetch-rust-toolchain",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-03-16T14:58:52Z",
+      "side": 1,
+      "message": "Thanks, Yeah I am building Rusts all the time while bringing this up, but this is one that exists for all 3 platforms, others may not..",
+      "parentUuid": "82fba3c0_3cec41e7",
+      "revId": "050bd213e4b71ad0600314fba747700ca9f45d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
