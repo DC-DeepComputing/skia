@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd7ee5d0_fdcea965",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-16T20:15:16Z",
+      "side": 1,
+      "message": "This comment isn\u0027t helping me. Is it hinting at something else?",
+      "revId": "dc8ea5dc689f87eb416f414ac672edf6e58464dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
