@@ -10,6 +10,7 @@
 #include "include/core/SkData.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "src/base/SkHalf.h"
+#include "src/core/SkBitmapPriv.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkDebugUtils.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -263,11 +264,7 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
                                                               kPremul_SkAlphaType));
 
         for (int i = 0; i < fNumStops; i++) {
-            // TODO: there should be a way to directly set a premul pixel in a bitmap with
-            // a premul color.
-            SkColor4f unpremulColor = colors[i].unpremul();
-            fColorsAndOffsetsBitmap.erase(unpremulColor,
-                                          SkIRect::MakeXYWH(i, 0, 1, 1));
+            SkBitmapPriv::setPMColor4f(&fColorsAndOffsetsBitmap, i, 0, colors[i]);
 
             float offset = offsets ? offsets[i] : SkIntToFloat(i) / (fNumStops-1);
             SkASSERT(offset >= 0.0f && offset <= 1.0f);
