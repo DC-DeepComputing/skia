@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a8fb727_f80b11d7",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 873,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-16T14:30:45Z",
+      "side": 1,
+      "message": "I wanted to make this `-`, to match many other tools, but our command line flag parsing interprets that as the start of another flag. 😞",
+      "range": {
+        "startLine": 873,
+        "startChar": 25,
+        "endLine": 873,
+        "endChar": 30
+      },
+      "revId": "867d3bcbfa3a75ad9810fee5e4ea2ff03571fae0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
