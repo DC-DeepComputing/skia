@@ -383,7 +383,7 @@ DEF_TEST(Codec_GifTruncated3, r) {
     }
 
     data = SkData::MakeSubset(data.get(), 0, 23);
-    sk_sp<SkImage> image(SkImage::MakeFromEncoded(data));
+    sk_sp<SkImage> image(sk_image_factory::MakeFromEncoded(data));
 
     if (!image) {
         ERRORF(r, "Missing image");

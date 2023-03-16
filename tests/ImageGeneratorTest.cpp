@@ -120,7 +120,7 @@ DEF_TEST(PictureImageGenerator, reporter) {
     auto colorspace = SkColorSpace::MakeSRGB();
     auto picture = make_picture();
     auto gen = SkImageGenerator::MakeFromPicture({100, 100}, picture, nullptr, nullptr,
-                                                 SkImage::BitDepth::kU8, colorspace);
+                                                 sk_image_factory::BitDepth::kU8, colorspace);
 
     // worst case for all requests
     SkAutoMalloc storage(100 * 100 * SkColorTypeBytesPerPixel(kRGBA_F32_SkColorType));

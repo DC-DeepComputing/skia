@@ -9,15 +9,15 @@ void draw(SkCanvas* canvas) {
        return;
     }
 
-    auto releaseCallback = [](SkImage::ReleaseContext releaseContext) -> void {
+    auto releaseCallback = [](sk_image_factory::ReleaseContext releaseContext) -> void {
        *((int *) releaseContext) += 128;
     };
     int x = 0, y = 0;
     for (auto origin : { kBottomLeft_GrSurfaceOrigin, kTopLeft_GrSurfaceOrigin } ) {
-        sk_sp<SkImage> image = SkImage::MakeFromTexture(dContext, backEndTexture,
-                                                        origin, kRGBA_8888_SkColorType,
-                                                        kOpaque_SkAlphaType, nullptr,
-                                                        releaseCallback, &x);
+        sk_sp<SkImage> image = sk_image_factory::MakeFromTexture(dContext, backEndTexture,
+                                                                 origin, kRGBA_8888_SkColorType,
+                                                                 kOpaque_SkAlphaType, nullptr,
+                                                                 releaseCallback, &x);
         canvas->drawImage(image, x, y);
         y += 128;
     }

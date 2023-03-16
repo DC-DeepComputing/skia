@@ -13,6 +13,7 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceCharacterization.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/base/SkRandom.h"
 #include "src/core/SkDeferredDisplayListPriv.h"
 #include "src/core/SkTaskGroup.h"
@@ -175,7 +176,7 @@ sk_sp<SkImage> DDLTileHelper::TileData::makePromiseImageForDst(
 
     // The promise image gets a ref on the promise callback context
     sk_sp<SkImage> promiseImage =
-                SkImage::MakePromiseTexture(std::move(threadSafeProxy),
+                sk_image_factory::MakePromiseTexture(std::move(threadSafeProxy),
                                             fCallbackContext->backendFormat(),
                                             this->paddedRectSize(),
                                             GrMipmapped::kNo,
