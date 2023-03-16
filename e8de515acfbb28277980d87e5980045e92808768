@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4927564a_50bd6205",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-16T19:26:49Z",
+      "side": 1,
+      "message": "The gold diffs I reviewed were either existing issues with `grdawn` that will need to be triaged, or is churn on GMs that are testing the per-edge AA APIs and drawing quads/tris with mixed flags.\n\nWhile this CL handles tris/quads with coincident points, the vertex shader still treats every edge as anti-aliased. The next CL implements that feature and fixes the churned GMs.",
+      "revId": "e8de515acfbb28277980d87e5980045e92808768",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
