@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e59fc978_c6f3ca5e",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-16T19:31:46Z",
+      "side": 1,
+      "message": "This might need to be guarded if `edgeAANormal \u003d\u003d 0`, then both `nx` and `ny` are 0. `isMidVertex` is already guarded and we won\u0027t try using them to calculate a bisecting vector in that case. In my testing, metal was either saying normalize(0,0) \u003d (0,0) which does what we want, or we were producing a vertex with NaN in it and it was killing the triangle (which also does what we want).",
+      "range": {
+        "startLine": 745,
+        "startChar": 36,
+        "endLine": 745,
+        "endChar": 45
+      },
+      "revId": "cc39df478352150ebc59415c0b83d1bef2970202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
