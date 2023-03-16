@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "969f426e_6430db2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-16T15:41:25Z",
+      "side": 1,
+      "message": "Yes, as long as the GCS bucket is world-readable, this should work.\n\nI\u0027m not quite sure where the best place to put the revision is. Let\u0027s land it as is and I can refactor things a bit as we figure that out.",
+      "parentUuid": "06b4f709_89d324db",
+      "revId": "814e9d013fa661fcdf6c3ae4cd8fd01377298fcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "586cb9d8_3fa8307d",
         "filename": "bin/fetch-rust-toolchain",
         "patchSetId": 7
