@@ -885,8 +885,27 @@ void Device::drawGeometry(const Transform& localToDevice,
     SkASSERT(!SkToBool(paint.getPathEffect()) || (flags & DrawFlags::kIgnorePathEffect));
     SkASSERT(!SkToBool(paint.getMaskFilter()) || (flags & DrawFlags::kIgnoreMaskFilter));
 
-    // Check if we have room to record into the current list before determining clipping and order
+    // Possibly drop empty draws.
     SkStrokeRec::Style styleType = style.getStyle();
+    auto geomDim = geometry.bounds().size();
+    if (!std::isfinite(geomDim.x()) || !std::isfinite(geomDim.y())) {
+        // Discard non-finite shapes
+        return;
+    } else if (geomDim.x() <= 0.f || geomDim.y() <= 0.f) {
+        // Discard shapes that logically have zero coverage: any empty fill, or a zero-length stroke
+        // that has butt caps.
+        const bool inverseFill = geometry.isShape() && geometry.shape().inverted();
+        if ((styleType == SkStrokeRec::kFill_Style && !inverseFill) ||
+            (style.getCap() == SkPaint::kButt_Cap && geomDim.x() <= 0.f && geomDim.y() <= 0.f)) {
+            return;
+        }
+        // Otherwise the stroke applies to a vertical/horizontal line, or it's effectively a zero
+        // length path segment and must produce round/square caps:
+        //     https://www.w3.org/TR/SVG11/implnote.html#PathElementImplementationNotes
+        // Device relies on each RenderStep implementation to correctly handle these cases.
+    }
+
+    // Check if we have room to record into the current list before determining clipping and order
     if (this->needsFlushBeforeDraw(styleType == SkStrokeRec::kStrokeAndFill_Style ? 2 : 1)) {
         this->flushPendingWorkToRecorder();
     }
