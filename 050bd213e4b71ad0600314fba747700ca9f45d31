@@ -16,6 +16,24 @@
       "message": "The current one is\nac4379fea9e83465d814bb05005689f49bd2141e-1-llvmorg-17-init-3874-g93a2fecc-1\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:tools/rust/update_rust.py;l\u003d65?ss\u003dchromium%2Fchromium%2Fsrc\u0026q\u003dupdate_rust.py",
       "revId": "050bd213e4b71ad0600314fba747700ca9f45d31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61f5660b_dcc653f6",
+        "filename": "bin/fetch-rust-toolchain",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-03-16T14:47:30Z",
+      "side": 1,
+      "message": "Ok, changed to the exact one there. When I was looking at the bucket, I thought I had found one with a newer time stamp, but I guess it\u0027s better to match exactly what\u0027s on the Chromium side.",
+      "parentUuid": "f50f96f5_45f0bcf1",
+      "revId": "050bd213e4b71ad0600314fba747700ca9f45d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
