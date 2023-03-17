@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c29131b_51a4aaa9",
+        "filename": "modules/canvaskit/paragraph.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-17T15:35:25Z",
+      "side": 1,
+      "message": "nit: wrap to 100 cols and remove extra space after \u003d",
+      "range": {
+        "startLine": 302,
+        "startChar": 73,
+        "endLine": 302,
+        "endChar": 87
+      },
+      "revId": "8765dc87f1c7da794be07bc3539d981c36270f0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bbedea1_c6f9c0f5",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-17T15:35:25Z",
+      "side": 1,
+      "message": "Did you want to register more than one font to make sure that\u0027s supported?",
+      "range": {
+        "startLine": 770,
+        "startChar": 16,
+        "endLine": 770,
+        "endChar": 28
+      },
+      "revId": "8765dc87f1c7da794be07bc3539d981c36270f0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f5aaa5b_90cc8bd3",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 784,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-17T15:35:25Z",
+      "side": 1,
+      "message": "nit: wrap to 100 cols",
+      "range": {
+        "startLine": 784,
+        "startChar": 85,
+        "endLine": 784,
+        "endChar": 99
+      },
+      "revId": "8765dc87f1c7da794be07bc3539d981c36270f0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76f3a190_ef173f8a",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-17T15:35:25Z",
+      "side": 1,
+      "message": "Did you want to put text after the newline to see the breaking worked?",
+      "range": {
+        "startLine": 785,
+        "startChar": 36,
+        "endLine": 785,
+        "endChar": 38
+      },
+      "revId": "8765dc87f1c7da794be07bc3539d981c36270f0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
