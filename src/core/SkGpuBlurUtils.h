@@ -16,7 +16,7 @@
 #include "src/gpu/SkBackingFit.h"
 
 class GrRecordingContext;
-namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
+namespace skgpu { namespace ganesh { class SurfaceDrawContext; }}
 class GrSurfaceProxyView;
 class GrTexture;
 
@@ -50,7 +50,7 @@ static constexpr float kMaxSigma = 4.f;
  * @param fit             backing fit for the returned render target context
  * @return                The surfaceDrawContext containing the blurred result.
  */
-std::unique_ptr<skgpu::v1::SurfaceDrawContext> GaussianBlur(
+std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(
         GrRecordingContext*,
         GrSurfaceProxyView srcView,
         GrColorType srcColorType,

@@ -54,9 +54,9 @@ static SkPath create_concave_path() {
 }
 
 static void draw_path(GrRecordingContext* rContext,
-                      skgpu::v1::SurfaceDrawContext* sdc,
+                      skgpu::ganesh::SurfaceDrawContext* sdc,
                       const SkPath& path,
-                      skgpu::v1::PathRenderer* pr,
+                      skgpu::ganesh::PathRenderer* pr,
                       GrAAType aaType,
                       const GrStyle& style,
                       float scaleX = 1.f) {
@@ -71,7 +71,7 @@ static void draw_path(GrRecordingContext* rContext,
     }
     SkMatrix matrix = SkMatrix::I();
     matrix.setScaleX(scaleX);
-    skgpu::v1::PathRenderer::DrawPathArgs args{rContext,
+    skgpu::ganesh::PathRenderer::DrawPathArgs args{rContext,
                                                std::move(paint),
                                                &GrUserStencilSettings::kUnused,
                                                sdc,
@@ -96,7 +96,7 @@ static bool cache_non_scratch_resources_equals(GrResourceCache* cache, int expec
 
 static void test_path(skiatest::Reporter* reporter,
                       std::function<SkPath(void)> createPath,
-                      std::function<skgpu::v1::PathRenderer*(GrRecordingContext*)> makePathRenderer,
+                      std::function<skgpu::ganesh::PathRenderer*(GrRecordingContext*)> makePathRenderer,
                       int expected,
                       bool checkListeners,
                       GrAAType aaType = GrAAType::kNone,
@@ -106,7 +106,7 @@ static void test_path(skiatest::Reporter* reporter,
     dContext->setResourceCacheLimit(8000000);
     GrResourceCache* cache = dContext->priv().getResourceCache();
 
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(
+    auto sdc = skgpu::ganesh::SurfaceDrawContext::Make(
             dContext.get(), GrColorType::kRGBA_8888, nullptr, SkBackingFit::kApprox, {800, 800},
             SkSurfaceProps(), /*label=*/{}, 1, GrMipmapped::kNo, GrProtected::kNo,
             kTopLeft_GrSurfaceOrigin);
@@ -114,7 +114,7 @@ static void test_path(skiatest::Reporter* reporter,
         return;
     }
 
-    sk_sp<skgpu::v1::PathRenderer> pathRenderer(makePathRenderer(dContext.get()));
+    sk_sp<skgpu::ganesh::PathRenderer> pathRenderer(makePathRenderer(dContext.get()));
     SkPath path = createPath();
 
     // Initially, cache only has the render target context
@@ -161,7 +161,7 @@ DEF_GANESH_TEST(TriangulatingPathRendererCacheTest,
                 /* options */,
                 CtsEnforcement::kNever) {
     auto createPR = [](GrRecordingContext*) {
-        return new skgpu::v1::TriangulatingPathRenderer();
+        return new skgpu::ganesh::TriangulatingPathRenderer();
     };
 
     // Triangulating path renderer creates a single vertex buffer for non-AA paths. No other
@@ -187,7 +187,7 @@ DEF_GANESH_TEST(SoftwarePathRendererCacheTest,
                 /* options */,
                 CtsEnforcement::kApiLevel_T) {
     auto createPR = [](GrRecordingContext* rContext) {
-        return new skgpu::v1::SoftwarePathRenderer(rContext->priv().proxyProvider(), true);
+        return new skgpu::ganesh::SoftwarePathRenderer(rContext->priv().proxyProvider(), true);
     };
 
     // Software path renderer creates a mask texture and renders with a non-AA rect, but the flush

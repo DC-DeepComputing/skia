@@ -206,7 +206,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(VertexAttributeCount,
     GrGpu* gpu = dContext->priv().getGpu();
 #endif
 
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext,
+    auto sdc = skgpu::ganesh::SurfaceDrawContext::Make(dContext,
                                                    GrColorType::kRGBA_8888,
                                                    nullptr,
                                                    SkBackingFit::kApprox,

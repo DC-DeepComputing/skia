@@ -262,7 +262,7 @@ DEF_GANESH_TEST(OpChainTest, reporter, /*ctxInfo*/, CtsEnforcement::kApiLevel_T)
                 GrOpFlushState flushState(dContext->priv().getGpu(),
                                           dContext->priv().resourceProvider(),
                                           &tracker);
-                skgpu::v1::OpsTask opsTask(drawingMgr,
+                skgpu::ganesh::OpsTask opsTask(drawingMgr,
                                            GrSurfaceProxyView(proxy, kOrigin, writeSwizzle),
                                            dContext->priv().auditTrail(),
                                            arenas);

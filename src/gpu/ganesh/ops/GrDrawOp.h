@@ -16,7 +16,7 @@
 #include "src/gpu/ganesh/ops/GrOp.h"
 
 class GrAppliedClip;
-namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
+namespace skgpu { namespace ganesh { class SurfaceDrawContext; }}
 class GrShape;
 
 /**
@@ -55,7 +55,7 @@ public:
      * to combine with other ops. If the op knows how to clip its own geometry then it will
      * generally be much faster than a generalized clip method.
      */
-    virtual ClipResult clipToShape(skgpu::v1::SurfaceDrawContext*,
+    virtual ClipResult clipToShape(skgpu::ganesh::SurfaceDrawContext*,
                                    SkClipOp,
                                    const SkMatrix& /* clipMatrix */,
                                    const GrShape&,

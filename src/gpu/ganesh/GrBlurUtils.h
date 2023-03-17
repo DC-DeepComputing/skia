@@ -23,7 +23,7 @@ class SkMatrix;
 class SkPaint;
 class SkPath;
 class SkPathEffect;
-namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
+namespace skgpu { namespace ganesh { class SurfaceDrawContext; }}
 
 /**
  *  Blur utilities.
@@ -33,7 +33,7 @@ namespace GrBlurUtils {
      * Draw a shape handling the mask filter if present.
      */
     void drawShapeWithMaskFilter(GrRecordingContext*,
-                                 skgpu::v1::SurfaceDrawContext*,
+                                 skgpu::ganesh::SurfaceDrawContext*,
                                  const GrClip*,
                                  const SkPaint&,
                                  const SkMatrixProvider&,
@@ -44,7 +44,7 @@ namespace GrBlurUtils {
      * The GrPaint will be modified after return.
      */
     void drawShapeWithMaskFilter(GrRecordingContext*,
-                                 skgpu::v1::SurfaceDrawContext*,
+                                 skgpu::ganesh::SurfaceDrawContext*,
                                  const GrClip*,
                                  const GrStyledShape&,
                                  GrPaint&&,

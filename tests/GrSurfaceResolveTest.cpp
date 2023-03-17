@@ -254,7 +254,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(NonmippedDrawBeforeMippedDraw,
         if (sampleCount > 1) {
             // Make sure MSAA surface needs a resolve by drawing to it. This also adds a last
             // render task to the proxy.
-            auto drawContext = skgpu::v1::SurfaceDrawContext::Make(dc,
+            auto drawContext = skgpu::ganesh::SurfaceDrawContext::Make(dc,
                                                                    GrColorType::kRGBA_8888,
                                                                    mmProxy,
                                                                    nullptr,
@@ -273,13 +273,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(NonmippedDrawBeforeMippedDraw,
                                                                skgpu::Budgeted::kYes,
                                                                GrProtected::kNo,
                                                                "testSrc");
-            skgpu::v1::SurfaceContext mmSC(dc,
+            skgpu::ganesh::SurfaceContext mmSC(dc,
                                            mmProxyView,
                                            {GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr});
             mmSC.testCopy(src);
         }
 
-        auto drawDst = skgpu::v1::SurfaceDrawContext::Make(dc,
+        auto drawDst = skgpu::ganesh::SurfaceDrawContext::Make(dc,
                                                            GrColorType::kRGBA_8888,
                                                            nullptr,
                                                            SkBackingFit::kExact,

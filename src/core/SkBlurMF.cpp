@@ -63,7 +63,7 @@ public:
                           const SkMatrix& ctm,
                           SkIRect* maskRect) const override;
     bool directFilterMaskGPU(GrRecordingContext*,
-                             skgpu::v1::SurfaceDrawContext*,
+                             skgpu::ganesh::SurfaceDrawContext*,
                              GrPaint&&,
                              const GrClip*,
                              const SkMatrix& viewMatrix,
@@ -1084,8 +1084,8 @@ static bool fillin_view_on_gpu(GrDirectContext* dContext,
     // regardless of the final dst surface.
     SkSurfaceProps defaultSurfaceProps;
 
-    std::unique_ptr<skgpu::v1::SurfaceDrawContext> sdc =
-            skgpu::v1::SurfaceDrawContext::MakeWithFallback(dContext,
+    std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> sdc =
+            skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(dContext,
                                                             GrColorType::kAlpha_8,
                                                             nullptr,
                                                             SkBackingFit::kExact,
@@ -1457,7 +1457,7 @@ static std::unique_ptr<GrFragmentProcessor> make_rrect_blur(GrRecordingContext* 
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SkBlurMaskFilterImpl::directFilterMaskGPU(GrRecordingContext* context,
-                                               skgpu::v1::SurfaceDrawContext* sdc,
+                                               skgpu::ganesh::SurfaceDrawContext* sdc,
                                                GrPaint&& paint,
                                                const GrClip* clip,
                                                const SkMatrix& viewMatrix,

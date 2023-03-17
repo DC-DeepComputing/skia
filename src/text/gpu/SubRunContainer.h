@@ -38,7 +38,7 @@ class GrAtlasManager;
 class GrDeferredUploadTarget;
 class GrMeshDrawTarget;
 class GrClip;
-namespace skgpu::v1 { class SurfaceDrawContext; }
+namespace skgpu::ganesh { class SurfaceDrawContext; }
 #endif
 
 #if defined(SK_GRAPHITE)
@@ -90,7 +90,7 @@ public:
             SkPoint drawOrigin,
             const SkPaint&,
             sk_sp<SkRefCnt>&& subRunStorage,
-            skgpu::v1::SurfaceDrawContext*) const = 0;
+            skgpu::ganesh::SurfaceDrawContext*) const = 0;
 
     virtual void fillVertexData(
             void* vertexDst, int offset, int count,
@@ -150,7 +150,7 @@ public:
                       SkPoint drawOrigin,
                       const SkPaint&,
                       sk_sp<SkRefCnt> subRunStorage,
-                      skgpu::v1::SurfaceDrawContext*) const = 0;
+                      skgpu::ganesh::SurfaceDrawContext*) const = 0;
 #endif
 #if defined(SK_GRAPHITE)
     // Produce uploads and draws for this subRun
@@ -270,7 +270,7 @@ public:
               SkPoint drawOrigin,
               const SkPaint& paint,
               const SkRefCnt* subRunStorage,
-              skgpu::v1::SurfaceDrawContext* sdc) const;
+              skgpu::ganesh::SurfaceDrawContext* sdc) const;
 #endif
 #if defined(SK_GRAPHITE)
     void draw(SkCanvas*,

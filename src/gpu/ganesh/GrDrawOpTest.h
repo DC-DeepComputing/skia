@@ -17,25 +17,25 @@ class GrContext_Base;
 class GrDrawOp;
 class GrPaint;
 class GrRecordingContext;
-namespace skgpu { namespace v1 { class SurfaceDrawContext; }}
+namespace skgpu { namespace ganesh { class SurfaceDrawContext; }}
 struct GrUserStencilSettings;
 class SkRandom;
 
 /**  This function draws a randomly configured GrDrawOp for testing purposes. */
-void GrDrawRandomOp(SkRandom*, skgpu::v1::SurfaceDrawContext*, GrPaint&&);
+void GrDrawRandomOp(SkRandom*, skgpu::ganesh::SurfaceDrawContext*, GrPaint&&);
 
 /** GrDrawOp subclasses should define test factory functions using this macro. */
 #define GR_DRAW_OP_TEST_DEFINE(Op)                                                              \
     GrOp::Owner Op##__Test(GrPaint&& paint,                                                     \
                            SkRandom* random,                                                    \
                            GrRecordingContext* context,                                         \
-                           skgpu::v1::SurfaceDrawContext* sdc,                                  \
+                           skgpu::ganesh::SurfaceDrawContext* sdc,                                  \
                            int numSamples)
 #define GR_DRAW_OP_TEST_FRIEND(Op)                                                              \
     friend GrOp::OpOwner Op##__Test(GrPaint&&,                                                  \
                                     SkRandom*,                                                  \
                                     GrRecordingContext*,                                        \
-                                    skgpu::v1::SurfaceDrawContext*,                             \
+                                    skgpu::ganesh::SurfaceDrawContext*,                             \
                                     int)
 
 /** Helper for op test factories to pick a random stencil state. */

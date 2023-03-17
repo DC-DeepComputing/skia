@@ -273,7 +273,7 @@ DrawResult ClockwiseGM::onDraw(GrRecordingContext* rContext, SkCanvas* canvas, S
 
     // Draw the test to an off-screen, top-down render target.
     GrColorType sdcColorType = sdc->colorInfo().colorType();
-    if (auto topLeftSDC = skgpu::v1::SurfaceDrawContext::Make(rContext,
+    if (auto topLeftSDC = skgpu::ganesh::SurfaceDrawContext::Make(rContext,
                                                               sdcColorType,
                                                               nullptr,
                                                               SkBackingFit::kExact,
@@ -304,7 +304,7 @@ DrawResult ClockwiseGM::onDraw(GrRecordingContext* rContext, SkCanvas* canvas, S
     }
 
     // Draw the test to an off-screen, bottom-up render target.
-    if (auto topLeftSDC = skgpu::v1::SurfaceDrawContext::Make(rContext,
+    if (auto topLeftSDC = skgpu::ganesh::SurfaceDrawContext::Make(rContext,
                                                               sdcColorType,
                                                               nullptr,
                                                               SkBackingFit::kExact,

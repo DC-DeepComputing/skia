@@ -832,12 +832,12 @@ create_linear_gradient_processor(GrRecordingContext* rContext, const SkMatrix& c
 }
 
 static void test_path(GrRecordingContext* rContext,
-                      skgpu::v1::SurfaceDrawContext* sdc,
+                      skgpu::ganesh::SurfaceDrawContext* sdc,
                       const SkPath& path,
                       const SkMatrix& matrix = SkMatrix::I(),
                       GrAAType aaType = GrAAType::kNone,
                       std::unique_ptr<GrFragmentProcessor> fp = nullptr) {
-    skgpu::v1::TriangulatingPathRenderer pr;
+    skgpu::ganesh::TriangulatingPathRenderer pr;
     pr.setMaxVerbCount(100);
 
     GrPaint paint;
@@ -849,7 +849,7 @@ static void test_path(GrRecordingContext* rContext,
     SkIRect clipConservativeBounds = SkIRect::MakeWH(sdc->width(), sdc->height());
     GrStyle style(SkStrokeRec::kFill_InitStyle);
     GrStyledShape shape(path, style);
-    skgpu::v1::PathRenderer::DrawPathArgs args{rContext,
+    skgpu::ganesh::PathRenderer::DrawPathArgs args{rContext,
                                                std::move(paint),
                                                &GrUserStencilSettings::kUnused,
                                                sdc,
@@ -867,7 +867,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(TriangulatingPathRendererTests,
                                  ctxInfo,
                                  CtsEnforcement::kNever) {
     auto ctx = ctxInfo.directContext();
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(
+    auto sdc = skgpu::ganesh::SurfaceDrawContext::Make(
             ctx, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kApprox, {800, 800},
             SkSurfaceProps(),/*label=*/{}, 1, GrMipmapped::kNo, GrProtected::kNo,
             kTopLeft_GrSurfaceOrigin);

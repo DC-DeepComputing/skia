@@ -37,7 +37,7 @@
     extern GrOp::Owner Op##__Test(GrPaint&&,                                                    \
                                   SkRandom*,                                                    \
                                   GrRecordingContext*,                                          \
-                                  skgpu::v1::SurfaceDrawContext*,                               \
+                                  skgpu::ganesh::SurfaceDrawContext*,                               \
                                   int)
 #define DRAW_OP_TEST_ENTRY(Op) Op##__Test
 
@@ -73,12 +73,12 @@ DRAW_OP_TEST_EXTERN(TextureOpImpl);
 DRAW_OP_TEST_EXTERN(TriangulatingPathOp);
 #endif
 
-void GrDrawRandomOp(SkRandom* random, skgpu::v1::SurfaceDrawContext* sdc, GrPaint&& paint) {
+void GrDrawRandomOp(SkRandom* random, skgpu::ganesh::SurfaceDrawContext* sdc, GrPaint&& paint) {
     auto rContext = sdc->recordingContext();
     using MakeDrawOpFn = GrOp::Owner (GrPaint&&,
                                       SkRandom*,
                                       GrRecordingContext*,
-                                      skgpu::v1::SurfaceDrawContext*,
+                                      skgpu::ganesh::SurfaceDrawContext*,
                                       int numSamples);
     static constexpr MakeDrawOpFn* gFactories[] = {
             DRAW_OP_TEST_ENTRY(AAConvexPathOp),

@@ -15,7 +15,7 @@ class SkReadBuffer;
 class SkWriteBuffer;
 
 #if GR_TEST_UTILS && defined(SK_GANESH)
-namespace skgpu::v1 {
+namespace skgpu::ganesh {
     class SurfaceDrawContext;
     class SurfaceFillContext;
 }
@@ -72,8 +72,8 @@ public:
     }
 
 #if GR_TEST_UTILS && defined(SK_GANESH)
-    static skgpu::v1::SurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas*);
-    static skgpu::v1::SurfaceFillContext* TopDeviceSurfaceFillContext(SkCanvas*);
+    static skgpu::ganesh::SurfaceDrawContext* TopDeviceSurfaceDrawContext(SkCanvas*);
+    static skgpu::ganesh::SurfaceFillContext* TopDeviceSurfaceFillContext(SkCanvas*);
 #endif
     static GrRenderTargetProxy* TopDeviceTargetProxy(SkCanvas*);
 

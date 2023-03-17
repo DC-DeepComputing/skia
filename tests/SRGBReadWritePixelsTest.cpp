@@ -146,7 +146,7 @@ typedef bool (*CheckFn) (uint32_t orig, uint32_t actual, float error);
 
 void read_and_check_pixels(skiatest::Reporter* reporter,
                            GrDirectContext* dContext,
-                           skgpu::v1::SurfaceContext* sc,
+                           skgpu::ganesh::SurfaceContext* sc,
                            uint32_t* origData,
                            const SkImageInfo& dstInfo, CheckFn checker, float error,
                            const char* subtestName) {
@@ -212,7 +212,7 @@ static std::unique_ptr<uint32_t[]> make_data() {
     return data;
 }
 
-static std::unique_ptr<skgpu::v1::SurfaceContext> make_surface_context(
+static std::unique_ptr<skgpu::ganesh::SurfaceContext> make_surface_context(
         Encoding contextEncoding,
         GrRecordingContext* rContext,
         skiatest::Reporter* reporter) {

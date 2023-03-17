@@ -107,7 +107,7 @@ public:
                      const GrClip* clip,
                      const SkMatrixProvider& viewMatrix,
                      const SkPaint& paint,
-                     skgpu::v1::SurfaceDrawContext* sdc) const;
+                     skgpu::ganesh::SurfaceDrawContext* sdc) const;
 #endif
 
     SkRect sourceBounds() const override { return fSourceBounds; }
@@ -146,7 +146,7 @@ SlugImpl::SlugImpl(SubRunAllocator&& alloc,
 
 #if defined(SK_GANESH)
 void SlugImpl::surfaceDraw(SkCanvas* canvas, const GrClip* clip, const SkMatrixProvider& viewMatrix,
-                           const SkPaint& drawingPaint, skgpu::v1::SurfaceDrawContext* sdc) const {
+                           const SkPaint& drawingPaint, skgpu::ganesh::SurfaceDrawContext* sdc) const {
     fSubRuns->draw(canvas, clip, viewMatrix, fOrigin, drawingPaint, this, sdc);
 }
 #endif
@@ -380,7 +380,7 @@ void TextBlob::draw(SkCanvas* canvas,
                     const SkMatrixProvider& viewMatrix,
                     SkPoint drawOrigin,
                     const SkPaint& paint,
-                    skgpu::v1::SurfaceDrawContext* sdc) {
+                    skgpu::ganesh::SurfaceDrawContext* sdc) {
     fSubRuns->draw(canvas, clip, viewMatrix, drawOrigin, paint, this, sdc);
 }
 #endif
@@ -428,7 +428,7 @@ sk_sp<Slug> SkMakeSlugFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* cli
 }  // namespace sktext::gpu
 
 #if defined(SK_GANESH)
-namespace skgpu::v1 {
+namespace skgpu::ganesh {
 sk_sp<Slug>
 Device::convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,
                                   const SkPaint& initialPaint,
@@ -468,5 +468,5 @@ sk_sp<Slug> MakeSlug(const SkMatrixProvider& drawMatrix,
     return SlugImpl::Make(
             drawMatrix, glyphRunList, initialPaint, drawingPaint, strikeDeviceInfo, strikeCache);
 }
-}  // namespace skgpu::v1
+}  // namespace skgpu::ganesh
 #endif

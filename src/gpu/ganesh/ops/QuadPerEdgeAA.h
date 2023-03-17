@@ -26,7 +26,7 @@ class GrMeshDrawTarget;
 struct GrShaderCaps;
 struct VertexWriter;
 
-namespace skgpu::v1::QuadPerEdgeAA {
+namespace skgpu::ganesh::QuadPerEdgeAA {
     using Saturate = skgpu::ganesh::TextureOp::Saturate;
 
     enum class CoverageMode { kNone, kWithPosition, kWithColor };
@@ -198,6 +198,6 @@ namespace skgpu::v1::QuadPerEdgeAA {
     void IssueDraw(const GrCaps&, GrOpsRenderPass*, const VertexSpec&, int runningQuadCount,
                    int quadCount, int maxVerts, int absVertBufferOffset);
 
-} // namespace skgpu::v1::QuadPerEdgeAA
+} // namespace skgpu::ganesh::QuadPerEdgeAA
 
 #endif // QuadPerEdgeAA_DEFINED

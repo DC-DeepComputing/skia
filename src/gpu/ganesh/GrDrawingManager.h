@@ -36,7 +36,7 @@ class GrSemaphore;
 class GrSurfaceProxyView;
 class GrTextureResolveRenderTask;
 class SkDeferredDisplayList;
-namespace skgpu { namespace v1 {
+namespace skgpu { namespace ganesh {
     class OpsTask;
     class SoftwarePathRenderer;
 }}
@@ -48,7 +48,7 @@ public:
     void freeGpuResources();
 
     // OpsTasks created at flush time are stored and handled different from the others.
-    sk_sp<skgpu::v1::OpsTask> newOpsTask(GrSurfaceProxyView,
+    sk_sp<skgpu::ganesh::OpsTask> newOpsTask(GrSurfaceProxyView,
                                          sk_sp<GrArenas> arenas);
 
     // Adds 'atlasTask' to the DAG and leaves it open.
@@ -133,8 +133,8 @@ public:
 
     GrRecordingContext* getContext() { return fContext; }
 
-    using PathRenderer = skgpu::v1::PathRenderer;
-    using PathRendererChain = skgpu::v1::PathRendererChain;
+    using PathRenderer = skgpu::ganesh::PathRenderer;
+    using PathRendererChain = skgpu::ganesh::PathRendererChain;
 
     PathRenderer* getPathRenderer(const PathRenderer::CanDrawPathArgs&,
                                   bool allowSW,
@@ -145,7 +145,7 @@ public:
 
     // Returns a direct pointer to the atlas path renderer, or null if it is not supported and
     // turned on.
-    skgpu::v1::AtlasPathRenderer* getAtlasPathRenderer();
+    skgpu::ganesh::AtlasPathRenderer* getAtlasPathRenderer();
 
     // Returns a direct pointer to the tessellation path renderer, or null if it is not supported
     // and turned on.
@@ -170,7 +170,7 @@ public:
 #endif
 
     GrRenderTask* getLastRenderTask(const GrSurfaceProxy*) const;
-    skgpu::v1::OpsTask* getLastOpsTask(const GrSurfaceProxy*) const;
+    skgpu::ganesh::OpsTask* getLastOpsTask(const GrSurfaceProxy*) const;
     void setLastRenderTask(const GrSurfaceProxy*, GrRenderTask*);
 
     void moveRenderTasksToDDL(SkDeferredDisplayList* ddl);
@@ -230,11 +230,11 @@ private:
 
     SkTArray<sk_sp<GrRenderTask>>            fDAG;
     std::vector<int>                         fReorderBlockerTaskIndices;
-    skgpu::v1::OpsTask*                      fActiveOpsTask = nullptr;
+    skgpu::ganesh::OpsTask*                      fActiveOpsTask = nullptr;
 
     PathRendererChain::Options               fOptionsForPathRendererChain;
     std::unique_ptr<PathRendererChain>       fPathRendererChain;
-    sk_sp<skgpu::v1::SoftwarePathRenderer>   fSoftwarePathRenderer;
+    sk_sp<skgpu::ganesh::SoftwarePathRenderer>   fSoftwarePathRenderer;
 
     skgpu::TokenTracker                      fTokenTracker;
     bool                                     fFlushing = false;

@@ -17,7 +17,7 @@ class GrRecordingContext;
 class SkMatrix;
 struct SkRect;
 
-namespace skgpu::v1::FillRRectOp {
+namespace skgpu::ganesh::FillRRectOp {
 
     GrOp::Owner Make(GrRecordingContext*,
                      SkArenaAlloc*,
@@ -35,6 +35,6 @@ namespace skgpu::v1::FillRRectOp {
                      const SkMatrix& localMatrix,
                      GrAA);
 
-}  // namespace skgpu::v1::FillRRectOp
+}  // namespace skgpu::ganesh::FillRRectOp
 
 #endif // FillRRectOp_DEFINED

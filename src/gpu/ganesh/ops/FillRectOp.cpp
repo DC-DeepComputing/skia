@@ -27,9 +27,9 @@
 
 namespace {
 
-using VertexSpec = skgpu::v1::QuadPerEdgeAA::VertexSpec;
-using ColorType = skgpu::v1::QuadPerEdgeAA::ColorType;
-using Subset = skgpu::v1::QuadPerEdgeAA::Subset;
+using VertexSpec = skgpu::ganesh::QuadPerEdgeAA::VertexSpec;
+using ColorType = skgpu::ganesh::QuadPerEdgeAA::ColorType;
+using Subset = skgpu::ganesh::QuadPerEdgeAA::Subset;
 
 #if GR_TEST_UTILS
 SkString dump_quad_info(int index, const GrQuad* deviceQuad,
@@ -148,7 +148,7 @@ public:
         iter = fQuads.metadata();
         SkPMColor4f colorOverride;
         if (quadColors.isConstant(&colorOverride)) {
-            fColorType = skgpu::v1::QuadPerEdgeAA::MinColorType(colorOverride);
+            fColorType = skgpu::ganesh::QuadPerEdgeAA::MinColorType(colorOverride);
             while(iter.next()) {
                 iter->fColor = colorOverride;
             }
@@ -157,7 +157,7 @@ public:
             fColorType = ColorType::kNone;
             while(iter.next()) {
                 fColorType = std::max(fColorType,
-                                      skgpu::v1::QuadPerEdgeAA::MinColorType(iter->fColor));
+                                      skgpu::ganesh::QuadPerEdgeAA::MinColorType(iter->fColor));
             }
         }
         // Most SkShaders' FPs multiply their calculated color by the paint color or alpha. We want
@@ -181,14 +181,14 @@ public:
     DEFINE_OP_CLASS_ID
 
 private:
-    friend class skgpu::v1::FillRectOp; // for access to addQuad
+    friend class skgpu::ganesh::FillRectOp; // for access to addQuad
 
 #if GR_TEST_UTILS
     int numQuads() const final { return fQuads.count(); }
 #endif
 
     VertexSpec vertexSpec() const {
-        auto indexBufferOption = skgpu::v1::QuadPerEdgeAA::CalcIndexBufferOption(fHelper.aaType(),
+        auto indexBufferOption = skgpu::ganesh::QuadPerEdgeAA::CalcIndexBufferOption(fHelper.aaType(),
                                                                                  fQuads.count());
 
         return VertexSpec(fQuads.deviceQuadType(), fColorType, fQuads.localQuadType(),
@@ -210,7 +210,7 @@ private:
                              GrLoadOp colorLoadOp) override {
         const VertexSpec vertexSpec = this->vertexSpec();
 
-        GrGeometryProcessor* gp = skgpu::v1::QuadPerEdgeAA::MakeProcessor(arena, vertexSpec);
+        GrGeometryProcessor* gp = skgpu::ganesh::QuadPerEdgeAA::MakeProcessor(arena, vertexSpec);
         SkASSERT(gp->vertexStride() == vertexSpec.vertexSize());
 
         fProgramInfo = fHelper.createProgramInfoWithStencil(caps, arena, writeView, usesMSAASurface,
@@ -248,7 +248,7 @@ private:
     void tessellate(const VertexSpec& vertexSpec, char* dst) const {
         static constexpr SkRect kEmptyDomain = SkRect::MakeEmpty();
 
-        skgpu::v1::QuadPerEdgeAA::Tessellator tessellator(vertexSpec, dst);
+        skgpu::ganesh::QuadPerEdgeAA::Tessellator tessellator(vertexSpec, dst);
         auto iter = fQuads.iterator();
         while (iter.next()) {
             // All entries should have local coords, or no entries should have local coords,
@@ -288,7 +288,7 @@ private:
         }
 
         if (vertexSpec.needsIndexBuffer()) {
-            fIndexBuffer = skgpu::v1::QuadPerEdgeAA::GetIndexBuffer(target,
+            fIndexBuffer = skgpu::ganesh::QuadPerEdgeAA::GetIndexBuffer(target,
                                                                     vertexSpec.indexBufferOption());
             if (!fIndexBuffer) {
                 SkDebugf("Could not allocate indices\n");
@@ -317,7 +317,7 @@ private:
         flushState->bindPipelineAndScissorClip(*fProgramInfo, chainBounds);
         flushState->bindBuffers(std::move(fIndexBuffer), nullptr, std::move(fVertexBuffer));
         flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
-        skgpu::v1::QuadPerEdgeAA::IssueDraw(flushState->caps(), flushState->opsRenderPass(),
+        skgpu::ganesh::QuadPerEdgeAA::IssueDraw(flushState->caps(), flushState->opsRenderPass(),
                                             vertexSpec, 0, fQuads.count(), totalNumVertices,
                                             fBaseVertex);
     }
@@ -388,9 +388,9 @@ private:
         // be lifted to back to the requested type.
         int quadCount = fQuads.count() + numQuads;
         if (aaType != fHelper.aaType() && aaType != GrAAType::kNone) {
-            auto indexBufferOption = skgpu::v1::QuadPerEdgeAA::CalcIndexBufferOption(aaType,
+            auto indexBufferOption = skgpu::ganesh::QuadPerEdgeAA::CalcIndexBufferOption(aaType,
                                                                                      quadCount);
-            if (quadCount > skgpu::v1::QuadPerEdgeAA::QuadLimit(indexBufferOption)) {
+            if (quadCount > skgpu::ganesh::QuadPerEdgeAA::QuadLimit(indexBufferOption)) {
                 // Promoting to the new aaType would've caused an overflow of the indexBuffer
                 // limit
                 return false;
@@ -400,9 +400,9 @@ private:
             SkASSERT(fHelper.aaType() == GrAAType::kNone);
             fHelper.setAAType(aaType);
         } else {
-            auto indexBufferOption = skgpu::v1::QuadPerEdgeAA::CalcIndexBufferOption(
+            auto indexBufferOption = skgpu::ganesh::QuadPerEdgeAA::CalcIndexBufferOption(
                     fHelper.aaType(), quadCount);
-            if (quadCount > skgpu::v1::QuadPerEdgeAA::QuadLimit(indexBufferOption)) {
+            if (quadCount > skgpu::ganesh::QuadPerEdgeAA::QuadLimit(indexBufferOption)) {
                 return false; // This op can't grow any more
             }
         }
@@ -461,7 +461,7 @@ private:
 
 } // anonymous namespace
 
-namespace skgpu::v1 {
+namespace skgpu::ganesh {
 
 GrOp::Owner FillRectOp::Make(GrRecordingContext* context,
                              GrPaint&& paint,
@@ -523,7 +523,7 @@ GrOp::Owner FillRectOp::MakeOp(GrRecordingContext* context,
     return op;
 }
 
-void FillRectOp::AddFillRectOps(skgpu::v1::SurfaceDrawContext* sdc,
+void FillRectOp::AddFillRectOps(skgpu::ganesh::SurfaceDrawContext* sdc,
                                 const GrClip* clip,
                                 GrRecordingContext* context,
                                 GrPaint&& paint,
@@ -551,11 +551,11 @@ void FillRectOp::AddFillRectOps(skgpu::v1::SurfaceDrawContext* sdc,
     SkASSERT(offset == cnt);
 }
 
-} // namespace skgpu::v1
+} // namespace skgpu::ganesh
 
 #if GR_TEST_UTILS
 
-uint32_t skgpu::v1::FillRectOp::ClassID() {
+uint32_t skgpu::ganesh::FillRectOp::ClassID() {
     return FillRectOpImpl::ClassID();
 }
 
@@ -585,18 +585,18 @@ GR_DRAW_OP_TEST_DEFINE(FillRectOp) {
             SkMatrix localMatrix = GrTest::TestMatrixInvertible(random);
             DrawQuad quad = {GrQuad::MakeFromRect(rect, viewMatrix),
                              GrQuad::MakeFromRect(rect, localMatrix), aaFlags};
-            return skgpu::v1::FillRectOp::Make(context, std::move(paint), aaType, &quad, stencil);
+            return skgpu::ganesh::FillRectOp::Make(context, std::move(paint), aaType, &quad, stencil);
         } else {
             // Pass local rect directly
             SkRect localRect = GrTest::TestRect(random);
             DrawQuad quad = {GrQuad::MakeFromRect(rect, viewMatrix),
                              GrQuad(localRect), aaFlags};
-            return skgpu::v1::FillRectOp::Make(context, std::move(paint), aaType, &quad, stencil);
+            return skgpu::ganesh::FillRectOp::Make(context, std::move(paint), aaType, &quad, stencil);
         }
     } else {
         // The simplest constructor
         DrawQuad quad = {GrQuad::MakeFromRect(rect, viewMatrix), GrQuad(rect), aaFlags};
-        return skgpu::v1::FillRectOp::Make(context, std::move(paint), aaType, &quad, stencil);
+        return skgpu::ganesh::FillRectOp::Make(context, std::move(paint), aaType, &quad, stencil);
     }
 }
 

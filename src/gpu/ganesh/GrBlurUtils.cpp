@@ -40,7 +40,7 @@ static constexpr auto kMaskOrigin = kTopLeft_GrSurfaceOrigin;
 // Draw a mask using the supplied paint. Since the coverage/geometry
 // is already burnt into the mask this boils down to a rect draw.
 // Return true if the mask was successfully drawn.
-static bool draw_mask(skgpu::v1::SurfaceDrawContext* sdc,
+static bool draw_mask(skgpu::ganesh::SurfaceDrawContext* sdc,
                       const GrClip* clip,
                       const SkMatrix& viewMatrix,
                       const SkIRect& maskBounds,
@@ -183,7 +183,7 @@ static GrSurfaceProxyView sw_create_filtered_mask(GrRecordingContext* rContext,
 }
 
 // Create a mask of 'shape' and return the resulting surfaceDrawContext
-static std::unique_ptr<skgpu::v1::SurfaceDrawContext> create_mask_GPU(
+static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> create_mask_GPU(
         GrRecordingContext* rContext,
         const SkIRect& maskRect,
         const SkMatrix& origViewMatrix,
@@ -203,7 +203,7 @@ static std::unique_ptr<skgpu::v1::SurfaceDrawContext> create_mask_GPU(
     // the same. We should offset our filter within the render target and expand the size as needed
     // to guarantee at least 1px of padding on all sides.
     auto approxSize = GrResourceProvider::MakeApprox(maskRect.size());
-    auto sdc = skgpu::v1::SurfaceDrawContext::MakeWithFallback(rContext,
+    auto sdc = skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(rContext,
                                                                GrColorType::kAlpha_8,
                                                                nullptr,
                                                                SkBackingFit::kExact,
@@ -265,7 +265,7 @@ static bool get_unclipped_shape_dev_bounds(const GrStyledShape& shape, const SkM
 
 // Gets the shape bounds, the clip bounds, and the intersection (if any). Returns false if there
 // is no intersection.
-static bool get_shape_and_clip_bounds(skgpu::v1::SurfaceDrawContext* sdc,
+static bool get_shape_and_clip_bounds(skgpu::ganesh::SurfaceDrawContext* sdc,
                                       const GrClip* clip,
                                       const GrStyledShape& shape,
                                       const SkMatrix& matrix,
@@ -371,7 +371,7 @@ static bool compute_key_and_clip_bounds(skgpu::UniqueKey* maskKey,
 }
 
 static GrSurfaceProxyView hw_create_filtered_mask(GrDirectContext* dContext,
-                                                  skgpu::v1::SurfaceDrawContext* sdc,
+                                                  skgpu::ganesh::SurfaceDrawContext* sdc,
                                                   const SkMatrix& viewMatrix,
                                                   const GrStyledShape& shape,
                                                   const SkMaskFilterBase* filter,
@@ -420,7 +420,7 @@ static GrSurfaceProxyView hw_create_filtered_mask(GrDirectContext* dContext,
         }
     }
 
-    std::unique_ptr<skgpu::v1::SurfaceDrawContext> maskSDC(create_mask_GPU(dContext,
+    std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> maskSDC(create_mask_GPU(dContext,
                                                                            *maskRect,
                                                                            viewMatrix,
                                                                            shape,
@@ -465,7 +465,7 @@ static GrSurfaceProxyView hw_create_filtered_mask(GrDirectContext* dContext,
 }
 
 static void draw_shape_with_mask_filter(GrRecordingContext* rContext,
-                                        skgpu::v1::SurfaceDrawContext* sdc,
+                                        skgpu::ganesh::SurfaceDrawContext* sdc,
                                         const GrClip* clip,
                                         GrPaint&& paint,
                                         const SkMatrix& viewMatrix,
@@ -555,7 +555,7 @@ static void draw_shape_with_mask_filter(GrRecordingContext* rContext,
 }
 
 void GrBlurUtils::drawShapeWithMaskFilter(GrRecordingContext* rContext,
-                                          skgpu::v1::SurfaceDrawContext* sdc,
+                                          skgpu::ganesh::SurfaceDrawContext* sdc,
                                           const GrClip* clip,
                                           const GrStyledShape& shape,
                                           GrPaint&& paint,
@@ -566,7 +566,7 @@ void GrBlurUtils::drawShapeWithMaskFilter(GrRecordingContext* rContext,
 }
 
 void GrBlurUtils::drawShapeWithMaskFilter(GrRecordingContext* rContext,
-                                          skgpu::v1::SurfaceDrawContext* sdc,
+                                          skgpu::ganesh::SurfaceDrawContext* sdc,
                                           const GrClip* clip,
                                           const SkPaint& paint,
                                           const SkMatrixProvider& matrixProvider,

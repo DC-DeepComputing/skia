@@ -16,7 +16,7 @@ class GrAtlasManager;
 class GrThreadSafeCache;
 
 namespace skgpu {
-    namespace v1 { class SmallPathAtlasMgr; }
+    namespace ganesh { class SmallPathAtlasMgr; }
 
     struct IndexWriter;
     struct VertexWriter;
@@ -146,7 +146,7 @@ public:
     virtual sktext::gpu::StrikeCache* strikeCache() const = 0;
     virtual GrAtlasManager* atlasManager() const = 0;
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
-    virtual skgpu::v1::SmallPathAtlasMgr* smallPathAtlasManager() const = 0;
+    virtual skgpu::ganesh::SmallPathAtlasMgr* smallPathAtlasManager() const = 0;
 #endif
 
     // This should be called during onPrepare of a GrOp. The caller should add any proxies to the

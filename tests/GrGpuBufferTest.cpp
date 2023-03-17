@@ -301,7 +301,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrGpuBufferTransferTest,
         return vb;
     };
 
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dc,
+    auto sdc = skgpu::ganesh::SurfaceDrawContext::Make(dc,
                                                    GrColorType::kRGBA_8888,
                                                    nullptr,
                                                    SkBackingFit::kExact,
@@ -380,7 +380,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrGpuBufferUpdateDataTest,
     static constexpr SkPoint kUnitQuad[] {{0, 0}, {0, 1}, {1, 0},
                                           {1, 0}, {0, 1}, {1, 1}};
 
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(dc,
+    auto sdc = skgpu::ganesh::SurfaceDrawContext::Make(dc,
                                                    GrColorType::kRGBA_8888,
                                                    nullptr,
                                                    SkBackingFit::kExact,

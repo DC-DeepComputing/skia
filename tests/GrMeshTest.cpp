@@ -139,7 +139,7 @@ struct Box {
  */
 
 static void run_test(GrDirectContext*, const char* testName, skiatest::Reporter*,
-                     const std::unique_ptr<skgpu::v1::SurfaceDrawContext>&, const SkBitmap& gold,
+                     const std::unique_ptr<skgpu::ganesh::SurfaceDrawContext>&, const SkBitmap& gold,
                      std::function<void(DrawMeshHelper*)> prepareFn,
                      std::function<void(DrawMeshHelper*)> executeFn);
 
@@ -153,7 +153,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
 #endif
     auto dContext = ctxInfo.directContext();
 
-    auto sdc = skgpu::v1::SurfaceDrawContext::Make(
+    auto sdc = skgpu::ganesh::SurfaceDrawContext::Make(
             dContext, GrColorType::kRGBA_8888, nullptr, SkBackingFit::kExact,
             {kImageWidth, kImageHeight}, SkSurfaceProps(), /*label=*/{});
     if (!sdc) {
@@ -629,7 +629,7 @@ GrOpsRenderPass* DrawMeshHelper::bindPipeline(GrPrimitiveType primitiveType, boo
 static void run_test(GrDirectContext* dContext,
                      const char* testName,
                      skiatest::Reporter* reporter,
-                     const std::unique_ptr<skgpu::v1::SurfaceDrawContext>& sdc,
+                     const std::unique_ptr<skgpu::ganesh::SurfaceDrawContext>& sdc,
                      const SkBitmap& gold,
                      std::function<void(DrawMeshHelper*)> prepareFn,
                      std::function<void(DrawMeshHelper*)> executeFn) {
