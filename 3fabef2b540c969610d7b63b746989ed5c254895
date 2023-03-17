@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98275661_8bdea022",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-17T16:08:09Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "3fabef2b540c969610d7b63b746989ed5c254895",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "562f386a_527bd27f",
+        "filename": "tools/gpu/ManagedBackendTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-17T16:08:09Z",
+      "side": 1,
+      "message": "This is needed -- it actually does the release.",
+      "range": {
+        "startLine": 148,
+        "startChar": 4,
+        "endLine": 148,
+        "endChar": 73
+      },
+      "revId": "3fabef2b540c969610d7b63b746989ed5c254895",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
