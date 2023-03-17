@@ -63,6 +63,30 @@
       },
       "revId": "c12db306a627092204a200713ed101fc7594c14b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68c13401_752803d1",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-17T19:58:44Z",
+      "side": 1,
+      "message": "I\u0027m torn about adding this callback here. On one had it is convenient for the client to add the callback here where they are making the API call. On the other hand, we already have a FinishedProc on Recording insertion which the client can use.",
+      "parentUuid": "e381ce6b_b643a21b",
+      "range": {
+        "startLine": 110,
+        "startChar": 30,
+        "endLine": 110,
+        "endChar": 45
+      },
+      "revId": "c12db306a627092204a200713ed101fc7594c14b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
