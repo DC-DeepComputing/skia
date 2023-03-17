@@ -147,7 +147,7 @@ sk_sp<SkSpecialImage> SkSpecialImage::MakeGraphite(skgpu::graphite::Recorder* re
         return nullptr;
     }
 
-    SkASSERT(RectFits(subset, view.width(), view.height()));
+    SkASSERT(view.proxy()->isFullyLazy() || RectFits(subset, view.width(), view.height()));
     return sk_make_sp<skgpu::graphite::SkSpecialImage_Graphite>(recorder, subset, uniqueID,
                                                                 std::move(view), colorInfo, props);
 }
