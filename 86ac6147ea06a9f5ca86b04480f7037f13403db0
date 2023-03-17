@@ -16,6 +16,23 @@
       "message": "If the diffs are real (but tiny), I suggest we may want to keep them. I suspect they\u0027d be due to tiny diffs in the way way diff_by_255 between the multitude of different raster techniques. The one I coded in SkBlitter_A8 is \u0027perfect\u0027 for 16bit products...",
       "revId": "86ac6147ea06a9f5ca86b04480f7037f13403db0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ae09fe8_729667b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-03-17T14:55:04Z",
+      "side": 1,
+      "message": "Second Chrome canary run passed, and I think the bad gold diffs are flakes.",
+      "revId": "86ac6147ea06a9f5ca86b04480f7037f13403db0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
