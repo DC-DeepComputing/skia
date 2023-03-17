@@ -39,6 +39,30 @@
       },
       "revId": "c12db306a627092204a200713ed101fc7594c14b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e381ce6b_b643a21b",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-17T16:07:02Z",
+      "side": 1,
+      "message": "The end result of using this signature is that ManagedGraphiteTexture needs two separate release procs, one for the Texture and one for the Image (see https://skia-review.googlesource.com/c/skia/+/658036), but I\u0027m not sure if we\u0027ll need the CallbackResult for other invocations of this.",
+      "parentUuid": "7805e4ce_600d14b5",
+      "range": {
+        "startLine": 110,
+        "startChar": 30,
+        "endLine": 110,
+        "endChar": 45
+      },
+      "revId": "c12db306a627092204a200713ed101fc7594c14b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
