@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "444b7961_bfa443e8",
+        "filename": "modules/canvaskit/paragraph.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2023-03-17T18:29:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c29131b_51a4aaa9",
+      "range": {
+        "startLine": 302,
+        "startChar": 73,
+        "endLine": 302,
+        "endChar": 87
+      },
+      "revId": "8765dc87f1c7da794be07bc3539d981c36270f0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bbedea1_c6f9c0f5",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-17T15:35:25Z",
       "side": 1,
       "message": "Did you want to register more than one font to make sure that\u0027s supported?",
+      "range": {
+        "startLine": 770,
+        "startChar": 16,
+        "endLine": 770,
+        "endChar": 28
+      },
+      "revId": "8765dc87f1c7da794be07bc3539d981c36270f0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "605f7818_ae635e5e",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2023-03-17T18:29:45Z",
+      "side": 1,
+      "message": "This is intended as a minimal test that exercises the MakeFromFontCollection API and confirms that it wraps the TypefaceFontProvider.  The TypefaceFontProvider itself is tested elsewhere.",
+      "parentUuid": "7bbedea1_c6f9c0f5",
       "range": {
         "startLine": 770,
         "startChar": 16,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "075cc65e_933f963e",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 784,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2023-03-17T18:29:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f5aaa5b_90cc8bd3",
+      "range": {
+        "startLine": 784,
+        "startChar": 85,
+        "endLine": 784,
+        "endChar": 99
+      },
+      "revId": "8765dc87f1c7da794be07bc3539d981c36270f0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76f3a190_ef173f8a",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-03-17T15:35:25Z",
       "side": 1,
       "message": "Did you want to put text after the newline to see the breaking worked?",
+      "range": {
+        "startLine": 785,
+        "startChar": 36,
+        "endLine": 785,
+        "endChar": 38
+      },
+      "revId": "8765dc87f1c7da794be07bc3539d981c36270f0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "865d0e4c_dc7a7f26",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2023-03-17T18:29:45Z",
+      "side": 1,
+      "message": "Removed the newline",
+      "parentUuid": "76f3a190_ef173f8a",
       "range": {
         "startLine": 785,
         "startChar": 36,
