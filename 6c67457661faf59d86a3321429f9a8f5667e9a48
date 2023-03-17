@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ee5d5e4_1d3e6273",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-17T16:01:58Z",
+      "side": 1,
+      "message": "Gotta love upstream being like \"yeah, we like our hard to understand code\".",
+      "revId": "6c67457661faf59d86a3321429f9a8f5667e9a48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
