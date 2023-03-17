@@ -39,6 +39,47 @@
       },
       "revId": "3fabef2b540c969610d7b63b746989ed5c254895",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "399100ed_3a84ba43",
+        "filename": "tools/gpu/ManagedBackendTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-17T17:16:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "562f386a_527bd27f",
+      "range": {
+        "startLine": 148,
+        "startChar": 4,
+        "endLine": 148,
+        "endChar": 73
+      },
+      "revId": "3fabef2b540c969610d7b63b746989ed5c254895",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "536b5a01_6d829431",
+        "filename": "tools/gpu/YUVUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-17T17:16:51Z",
+      "side": 1,
+      "message": "Should this be imageRelContext ?",
+      "revId": "3fabef2b540c969610d7b63b746989ed5c254895",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
