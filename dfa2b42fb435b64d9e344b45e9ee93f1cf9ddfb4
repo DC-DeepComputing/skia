@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae258ccd_fb88e781",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-17T19:32:14Z",
+      "side": 1,
+      "message": "I had made a bug in the entry set implementation that was repeatedly composing the alpha image shader with the prior entry\u0027s shader, so we kept getting a larger and larger paint key. At some point, the dstIn blend block would exceed 255 bytes and mark the key as invalid, replacing it with the error code ID.\n\nWe were never checking for this here or higher up (which was only checking for the invalid paint unique ID). Since we weren\u0027t checking validity of the builder, we were assigning a valid ID to it. Every new shader config that had an even deeper nesting level still had the same error code key, so we were returning the same valid ID. But they all had increasing amounts of uniform data (as expected), but DrawPass was grouping them together thinking they had the same pipeline. This eventually triggered an assert during uniform upload.\n\nFigured I\u0027d fix it now since it was pretty straight forward, although just fixing the edge AA entry set implementation would have avoided it as well.",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 212,
+        "endChar": 30
+      },
+      "revId": "dfa2b42fb435b64d9e344b45e9ee93f1cf9ddfb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
