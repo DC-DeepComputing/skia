@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4326f75c_de9fdbcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-17T19:59:17Z",
+      "side": 1,
+      "message": "I ran `git clang-format origin/main` and it looks reasonable.",
+      "revId": "ccf49fc920a4ffd4aa4b9c5b7c0af60dd48d19db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
