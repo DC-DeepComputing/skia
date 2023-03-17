@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6efeca02_ce845ba0",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-17T20:12:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2557a4f_b2fb5350",
+      "range": {
+        "startLine": 53,
+        "startChar": 11,
+        "endLine": 53,
+        "endChar": 30
+      },
+      "revId": "0490abc0501b3e039afc740a65e3ea1b880dcf8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ae551f3_4cb15c5f",
