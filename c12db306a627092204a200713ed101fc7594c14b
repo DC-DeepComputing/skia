@@ -87,6 +87,30 @@
       },
       "revId": "c12db306a627092204a200713ed101fc7594c14b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c8cb814_5a833b0d",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-17T20:09:06Z",
+      "side": 1,
+      "message": "I\u0027m not sure where ManagedGraphiteTexture::MakeFromPixmap would insert the texture release callback then, since there\u0027s no sign of a Recording there.",
+      "parentUuid": "68c13401_752803d1",
+      "range": {
+        "startLine": 110,
+        "startChar": 30,
+        "endLine": 110,
+        "endChar": 45
+      },
+      "revId": "c12db306a627092204a200713ed101fc7594c14b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
