@@ -707,7 +707,9 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                                 recorder.get(), &gatherer, &builder, Layout::kMetal, {},
                                 PaintParams(paint,
                                             std::move(primitiveBlender),
+                                            /* dstReadReq= */ DstReadRequirement::kNone,
                                             /* skipColorXform= */ false),
+                                nullptr,
                                 extractPaintKeyContext.dstColorInfo());
 
                         std::vector<UniquePaintParamsID> precompileIDs;

@@ -26,7 +26,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(Shader_FindOrCreateSnippetForRuntimeEffect, r
     ));
 
     // Create a new runtime-effect snippet.
-    int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get());
+    int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get(), false);
     REPORTER_ASSERT(reporter, snippetID >= kBuiltInCodeSnippetIDCount);
 
     // Verify that it can be looked up and its name is 'RuntimeEffect'. (The name isn't meaningful,
@@ -36,7 +36,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(Shader_FindOrCreateSnippetForRuntimeEffect, r
     REPORTER_ASSERT(reporter, std::string_view(snippet->fName) == "RuntimeEffect");
 
     // If we pass the same effect again, we should get the same snippet ID as before.
-    int foundSnippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get());
+    int foundSnippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get(), false);
     REPORTER_ASSERT(reporter, foundSnippetID == snippetID);
 }
 
@@ -53,7 +53,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilter_FindOrCreateSnippetForRuntimeEffe
             ));
 
     // Create a new runtime-effect snippet.
-    int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get());
+    int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get(), false);
     REPORTER_ASSERT(reporter, snippetID >= kBuiltInCodeSnippetIDCount);
 
     // Verify that it can be looked up and its name is 'RuntimeEffect'. (The name isn't meaningful,
@@ -63,7 +63,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilter_FindOrCreateSnippetForRuntimeEffe
     REPORTER_ASSERT(reporter, std::string_view(snippet->fName) == "RuntimeEffect");
 
     // If we pass the same effect again, we should get the same snippet ID as before.
-    int foundSnippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get());
+    int foundSnippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get(), false);
     REPORTER_ASSERT(reporter, foundSnippetID == snippetID);
 }
 
@@ -81,7 +81,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderUniforms_FindOrCreateSnippetForRuntimeE
     ));
 
     // Create a new runtime-effect snippet.
-    int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get());
+    int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get(), false);
     REPORTER_ASSERT(reporter, snippetID >= kBuiltInCodeSnippetIDCount);
 
     // Delete the test effect.
@@ -125,7 +125,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilterUniforms_FindOrCreateSnippetForRun
             ));
 
     // Create a new runtime-effect snippet.
-    int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get());
+    int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect.get(), false);
     REPORTER_ASSERT(reporter, snippetID >= kBuiltInCodeSnippetIDCount);
 
     // Delete the test effect.
