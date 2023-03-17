@@ -16,6 +16,24 @@
       "message": "You can\u0027t left shift signed values! You will regret this!",
       "revId": "562cc981238bb8d3ddbb5a97100844d3751476f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c893d3f3_49aaddac",
+        "filename": "src/core/SkGlyph.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-17T13:27:44Z",
+      "side": 1,
+      "message": "Done - fixed in 657996",
+      "parentUuid": "304d0451_83e4a6b6",
+      "revId": "562cc981238bb8d3ddbb5a97100844d3751476f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
