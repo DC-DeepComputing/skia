@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf9a3b24_efac8a2e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1196,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-17T18:55:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bbf7d16_b3824627",
+      "range": {
+        "startLine": 1196,
+        "startChar": 28,
+        "endLine": 1196,
+        "endChar": 43
+      },
+      "revId": "4c2b80c3eb92c05b5570f1236305e3894f64afd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "585f9572_3a676cf8",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-17T17:13:34Z",
       "side": 1,
       "message": "I think this is a good short term fix to get past the crash. If the fully lazy proxy ends up being instantiated with something that is texturable, it would be nice to avoid the copy task. I think that would require some form of contract when the deferred canvas was created, or that every surface is always texturable (something we\u0027ve considered in the past).\n\nThe other requirement would need to be that the Graphite SkSpecialImage subclass has to support fully lazy images and remember the subset that would be accessed after instantiation. Can you add a task in taskflow for this update under http://b/238755231?",
+      "range": {
+        "startLine": 1200,
+        "startChar": 8,
+        "endLine": 1200,
+        "endChar": 57
+      },
+      "revId": "4c2b80c3eb92c05b5570f1236305e3894f64afd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ffde12f_13217468",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1200,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-17T18:55:52Z",
+      "side": 1,
+      "message": "Filed b/274141435",
+      "parentUuid": "585f9572_3a676cf8",
       "range": {
         "startLine": 1200,
         "startChar": 8,
