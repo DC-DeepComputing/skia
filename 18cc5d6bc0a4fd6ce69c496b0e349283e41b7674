@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b221809_0aaa7086",
+        "filename": "tools/gpu/ManagedBackendTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-17T13:44:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "020eac27_dbd55c9f",
+      "revId": "18cc5d6bc0a4fd6ce69c496b0e349283e41b7674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4b22c9c_97259dbc",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-03-16T19:15:44Z",
       "side": 1,
       "message": "// SK_GANESH ?",
+      "revId": "18cc5d6bc0a4fd6ce69c496b0e349283e41b7674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b38354c_9aaf289a",
+        "filename": "tools/gpu/ManagedBackendTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-17T13:44:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4b22c9c_97259dbc",
       "revId": "18cc5d6bc0a4fd6ce69c496b0e349283e41b7674",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee01f1de_2f1f09ed",
+        "filename": "tools/gpu/ManagedBackendTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-17T13:44:09Z",
+      "side": 1,
+      "message": "Doesn\u0027t like that. Only works if I explicitly list each element, e.g.,     \nauto context \u003d new MBETContext{mbets[0], mbets[1], mbets[2], mbets[3]};",
+      "parentUuid": "dbb957f4_55a89e48",
+      "revId": "18cc5d6bc0a4fd6ce69c496b0e349283e41b7674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "52bc8133_00f3aa14",
         "filename": "tools/gpu/ManagedBackendTexture.cpp",
         "patchSetId": 3
@@ -65,6 +119,24 @@
       "writtenOn": "2023-03-16T19:15:44Z",
       "side": 1,
       "message": "// SK_GRAPHITE ?",
+      "revId": "18cc5d6bc0a4fd6ce69c496b0e349283e41b7674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52716e4a_bcf1d6f3",
+        "filename": "tools/gpu/ManagedBackendTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-17T13:44:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52bc8133_00f3aa14",
       "revId": "18cc5d6bc0a4fd6ce69c496b0e349283e41b7674",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -82,6 +154,30 @@
       "writtenOn": "2023-03-16T19:15:44Z",
       "side": 1,
       "message": "extra \u0027 \u0027 ?",
+      "range": {
+        "startLine": 182,
+        "startChar": 36,
+        "endLine": 182,
+        "endChar": 37
+      },
+      "revId": "18cc5d6bc0a4fd6ce69c496b0e349283e41b7674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84e8378d_28faff1b",
+        "filename": "tools/gpu/ManagedBackendTexture.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-17T13:44:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e20bac63_07329db2",
       "range": {
         "startLine": 182,
         "startChar": 36,
