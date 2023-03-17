@@ -137,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50a00f5e_6ed17307",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-17T19:33:28Z",
+      "side": 1,
+      "message": "Well it will eventually be used in caps. I imagine we\u0027ll have a call on caps that is like virtual DstReadRequirements getDstReadRequirements(Texture*) which each backend will implement.",
+      "parentUuid": "2c0e84ac_c7273608",
+      "range": {
+        "startLine": 898,
+        "startChar": 4,
+        "endLine": 900,
+        "endChar": 5
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30057e72_f74f5c21",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 1
