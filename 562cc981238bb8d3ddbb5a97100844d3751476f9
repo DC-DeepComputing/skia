@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "304d0451_83e4a6b6",
+        "filename": "src/core/SkGlyph.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-17T03:11:24Z",
+      "side": 1,
+      "message": "You can\u0027t left shift signed values! You will regret this!",
+      "revId": "562cc981238bb8d3ddbb5a97100844d3751476f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
