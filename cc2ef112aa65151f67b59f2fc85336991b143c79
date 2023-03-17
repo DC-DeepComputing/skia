@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "796170ee_6c294867",
+        "filename": "tools/gpu/ManagedBackendTexture.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-17T17:44:13Z",
+      "side": 1,
+      "message": "Should Greg say that we shouldn\u0027t be using GpuFinishedProc in updateWrappedTexture, then these will turn back into one method that just takes void*.",
+      "range": {
+        "startLine": 153,
+        "startChar": 8,
+        "endLine": 153,
+        "endChar": 47
+      },
+      "revId": "cc2ef112aa65151f67b59f2fc85336991b143c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
