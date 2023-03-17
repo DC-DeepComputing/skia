@@ -16,6 +16,24 @@
       "message": "In G3 this (`SK_ENABLE_SKSL`) is no longer being set because G3 did (currently does) define `SK_SUPPORT_GPU` (in one target), which defined `SK_GANESH`, which then defined `SK_ENABLE_SKSL` here.",
       "revId": "89fd0386af44dc21dadb35677c504cc39ae1e447",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "055cca14_e49ff6e6",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-17T12:09:27Z",
+      "side": 0,
+      "message": "See http://cl/517386570",
+      "parentUuid": "aec67e9e_737b7758",
+      "revId": "89fd0386af44dc21dadb35677c504cc39ae1e447",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
