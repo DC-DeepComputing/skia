@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afcc23ad_d7d35509",
+        "filename": "tools/gpu/ManagedBackendTexture.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-17T17:48:29Z",
+      "side": 1,
+      "message": "overlength",
+      "revId": "e389c23a6d357ec8d68700d70f6ed4de577eeeb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
