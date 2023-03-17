@@ -1844,15 +1844,14 @@ static void aaa_walk_edges(SkAnalyticEdge*  prevHead,
     }
 }
 
-static SK_ALWAYS_INLINE void aaa_fill_path(
-        const SkPath&    path,
-        const SkIRect&   clipRect,
-        AdditiveBlitter* blitter,
-        int              start_y,
-        int              stop_y,
-        bool             pathContainedInClip,
-        bool             isUsingMask,
-        bool             forceRLE) {  // forceRLE implies that SkAAClip is calling us
+static void aaa_fill_path(const SkPath& path,
+                          const SkIRect& clipRect,
+                          AdditiveBlitter* blitter,
+                          int start_y,
+                          int stop_y,
+                          bool pathContainedInClip,
+                          bool isUsingMask,
+                          bool forceRLE) {  // forceRLE implies that SkAAClip is calling us
     SkASSERT(blitter);
 
     SkAnalyticEdgeBuilder builder;
