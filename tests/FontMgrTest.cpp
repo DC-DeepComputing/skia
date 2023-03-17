@@ -114,15 +114,33 @@ DEF_TEST(FontMgr_Iter, reporter) {
             SkString sname;
             SkFontStyle fs;
             set->getStyle(j, &fs, &sname);
-//            REPORTER_ASSERT(reporter, sname.size() > 0);
-
-            sk_sp<SkTypeface> face(set->createTypeface(j));
-//            REPORTER_ASSERT(reporter, face.get());
 
             if (FLAGS_verboseFontMgr) {
                 SkDebugf("\t[%d] %s [%3d %d %d]\n", j, sname.c_str(),
                          fs.weight(), fs.width(), fs.slant());
             }
+
+            sk_sp<SkTypeface> face(set->createTypeface(j));
+            if (!face) {
+                REPORTER_ASSERT(reporter, face.get());
+                continue;
+            }
+
+            sk_sp<SkTypeface> face2(fm->matchFamilyStyle(fname.c_str(), fs));
+            if (!face2) {
+                REPORTER_ASSERT(reporter, face2.get());
+                continue;
+            }
+            SkString mname;
+            face2->getFamilyName(&mname);
+
+            REPORTER_ASSERT(reporter, fname == mname, "%s == %s", fname.c_str(), mname.c_str());
+
+            // This should work, but Mac matches the wrong font sometimes.
+//            SkFontStyle ms = face2->fontStyle();
+//            REPORTER_ASSERT(reporter, fs == ms, "%s [%3d %d %d] != %s [%3d %d %d]",
+//                            fname.c_str(), fs.weight(), fs.width(), fs.slant(),
+//                            mname.c_str(), ms.weight(), ms.width(), ms.slant());
         }
     }
 }
@@ -131,6 +149,21 @@ DEF_TEST(FontMgr_Match, reporter) {
     sk_sp<SkFontMgr> fm(SkFontMgr::RefDefault());
     sk_sp<SkFontStyleSet> styleSet(fm->matchFamily(nullptr));
     REPORTER_ASSERT(reporter, styleSet);
+}
+
+DEF_TEST(FontMgr_MatchFamilyStyle, reporter) {
+    sk_sp<SkFontMgr> fm(SkFontMgr::RefDefault());
+
+    sk_sp<SkFontStyleSet> styleSet(fm->matchFamily("Non Existing Family Name"));
+    REPORTER_ASSERT(reporter, styleSet);
+    REPORTER_ASSERT(reporter, styleSet->count() == 0);
+
+    using FS = SkFontStyle;
+    sk_sp<SkTypeface> typeface(fm->matchFamilyStyle("Non Existing Family Name", FS::Normal()));
+    REPORTER_ASSERT(reporter, !typeface);
+    
+    sk_sp<SkTypeface> def(fm->matchFamilyStyle(nullptr, FS::Normal()));
+    REPORTER_ASSERT(reporter, def);
 }
 
 DEF_TEST(FontMgr_MatchStyleCSS3, reporter) {
