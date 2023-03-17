@@ -33,6 +33,24 @@
       "message": "I like short-circuiting erase, because it lets us avoid sucking in the whole CPU backend via the linker. Wondering about using RP directly, so we don\u0027t need to reinvent too much code here, though?",
       "revId": "26a847c3af2ba8ac61cebc01027229c8e91f39e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49f9447b_9e7d52f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-17T18:17:59Z",
+      "side": 1,
+      "message": "Looking at SkPixmap::getColor4f I don\u0027t think doing it all manually would add that much code but I would probably have to do it and see.",
+      "parentUuid": "2faf0b1e_12879a5d",
+      "revId": "26a847c3af2ba8ac61cebc01027229c8e91f39e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
