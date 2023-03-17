@@ -853,7 +853,7 @@ DEF_SIMPLE_GM(gradients_dup_color_stops, canvas, 704, 564) {
 
 static void draw_many_stops(SkCanvas* canvas) {
     const unsigned kStopCount = 200;
-    const SkPoint pts[] = { {50, 50}, {450, 450}};
+    const SkPoint pts[] = { {50, 50}, {450, 465}};
 
     SkColor colors[kStopCount];
     for (unsigned i = 0; i < kStopCount; i++) {
@@ -879,7 +879,7 @@ DEF_SIMPLE_GM(gradient_many_stops, canvas, 500, 500) {
 
 static void draw_many_hard_stops(SkCanvas* canvas) {
     const unsigned kStopCount = 300;
-    const SkPoint pts[] = {{50, 50}, {450, 450}};
+    const SkPoint pts[] = {{50, 50}, {450, 465}};
 
     SkColor colors[kStopCount];
     SkScalar pos[kStopCount];

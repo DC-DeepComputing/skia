@@ -22,6 +22,7 @@
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkRandom.h"
+#include "src/core/SkBitmapPriv.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
 
@@ -192,6 +193,93 @@ DEF_TEST(Bitmap_getColor_Swizzle, r) {
             continue;
         }
         REPORTER_ASSERT(r, source.getColor(0, 0) == copy.getColor(0, 0));
+    }
+}
+
+static std::pair<int, float> max_diff(const float a[4], const float b[4]) {
+    float maxDiff = 0.0f;
+    int channel = 0;
+    for (int i = 0; i < 4; ++i) {
+        float diff = abs(a[i] - b[i]);
+        if (maxDiff < diff) {
+            maxDiff = diff;
+            channel = i;
+        }
+    }
+
+    return std::pair(channel, maxDiff);
+}
+
+/*
+ * This tests that the setColor* entry points WAI.
+ */
+DEF_TEST(Bitmap_setColor, reporter) {
+
+    for (SkColorType ct : { kRGBA_F16_SkColorType, kRGBA_F16Norm_SkColorType }) {
+        for (SkAlphaType at : { kPremul_SkAlphaType, kUnpremul_SkAlphaType }) {
+            int i = 0;
+            for (sk_sp<SkColorSpace> bitmapCS : {
+                    sk_sp<SkColorSpace>(nullptr),
+                    SkColorSpace::MakeSRGB(),
+                    SkColorSpace::MakeSRGB()->makeColorSpin(),
+                    SkColorSpace::MakeSRGBLinear(),
+                    SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020, SkNamedGamut::kSRGB),
+                    SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020, SkNamedGamut::kRec2020),
+                    SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kDisplayP3),
+                    SkColorSpace::MakeRGB(SkNamedTransferFn::k2Dot2, SkNamedGamut::kAdobeRGB) }) {
+                SkImageInfo ii = SkImageInfo::Make(2, 2, ct, at, bitmapCS);
+
+                SkBitmap bm;
+                bm.allocPixels(ii);
+
+                bm.eraseColor(SK_ColorBLACK);
+
+                // TODO: pick some interesting colors
+                SkColor4f c{1.0, 0.0, 0.0, 1.0};
+
+                int j = 0;
+                for (sk_sp<SkColorSpace> colorCS : {
+                        sk_sp<SkColorSpace>(nullptr),
+                        SkColorSpace::MakeSRGB(),
+                        SkColorSpace::MakeSRGB()->makeColorSpin(),
+                        SkColorSpace::MakeSRGBLinear(),
+                        SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020, SkNamedGamut::kSRGB),
+                        SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020, SkNamedGamut::kRec2020),
+                        SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kDisplayP3),
+                        SkColorSpace::MakeRGB(SkNamedTransferFn::k2Dot2, SkNamedGamut::kAdobeRGB) }) {
+                    bm.erase(c, colorCS.get(), {0, 0, 1, 1});
+
+                    SkBitmapPriv::setColor4f(&bm, 1, 1, c, colorCS.get());
+
+                    SkColor4f eraseC = bm.getColor4f(0, 0);
+                    SkColor4f setC = bm.getColor4f(1, 1);
+                    if (auto [channel, diff] = max_diff(eraseC.vec(), setC.vec()); diff > 0.0003f) {
+                        ERRORF(reporter, "%s %s %d %d: erase (%.2f %.2f %.2f %.2f) - set (%.2f %.2f %.2f %.2f) channel %d diff %f",
+                               ct == kRGBA_F16_SkColorType ? "f16" : "f16norm",
+                               at == kPremul_SkAlphaType ? "premul" : "unpremul",
+                               i, j,
+                               eraseC.fR, eraseC.fG, eraseC.fB, eraseC.fA,
+                               setC.fR, setC.fG, setC.fB, setC.fA,
+                               channel, diff);
+                    }
+
+                    SkBitmapPriv::setPMColor4f(&bm, 1, 1, c.premul(), colorCS.get());
+
+                    setC = bm.getColor4f(1, 1);
+                    if (auto [channel, diff] = max_diff(eraseC.vec(), setC.vec()); diff > 0.0003f) {
+                        ERRORF(reporter, "%s %s %d %d: erase (%.2f %.2f %.2f %.2f) - setPM (%.2f %.2f %.2f %.2f) channel %d diff %f",
+                               ct == kRGBA_F16_SkColorType ? "f16" : "f16norm",
+                               at == kPremul_SkAlphaType ? "premul" : "unpremul",
+                               i, j,
+                               eraseC.fR, eraseC.fG, eraseC.fB, eraseC.fA,
+                               setC.fR, setC.fG, setC.fB, setC.fA,
+                               channel, diff);
+                    }
+                    ++j;
+                }
+                ++i;
+            }
+        }
     }
 }
 
