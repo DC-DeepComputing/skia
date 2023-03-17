@@ -51,6 +51,24 @@
       "parentUuid": "2faf0b1e_12879a5d",
       "revId": "26a847c3af2ba8ac61cebc01027229c8e91f39e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75df3e9b_8dd98425",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-17T19:57:48Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s probably not terrible - I just dislike adding more places that need custom code whenever a new SkColorType comes along. I\u0027d be fine with it either way.",
+      "parentUuid": "49f9447b_9e7d52f8",
+      "revId": "26a847c3af2ba8ac61cebc01027229c8e91f39e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
