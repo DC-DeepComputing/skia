@@ -8,6 +8,7 @@
 #ifndef SkDrawBase_DEFINED
 #define SkDrawBase_DEFINED
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
@@ -19,6 +20,7 @@
 #include "src/core/SkMask.h"
 
 class SkArenaAlloc;
+class SkBaseDevice;
 class SkBitmap;
 class SkBlitter;
 class SkGlyph;
@@ -71,6 +73,9 @@ public:
                           paint.getStrokeWidth() > 0;
         this->drawPath(src, paint, nullptr, false, !isHairline, customBlitter);
     }
+
+    void drawDevicePoints(SkCanvas::PointMode, size_t count, const SkPoint[], const SkPaint&,
+                          SkBaseDevice*) const;
 
     static bool ComputeMaskBounds(const SkRect& devPathBounds, const SkIRect& clipBounds,
                                   const SkMaskFilter* filter, const SkMatrix* filterMatrix,

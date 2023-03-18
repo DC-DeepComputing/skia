@@ -498,11 +498,12 @@ void Device::drawPoints(SkCanvas::PointMode mode,
         paint.getMaskFilter() ||
         fSurfaceDrawContext->chooseAAType(aa) == GrAAType::kCoverage) {
         SkRasterClip rc(this->devClipBounds());
-        SkDraw draw;
+        SkDrawBase draw;
+        // don't need to set fBlitterChoose, as it should never get used
         draw.fDst = SkPixmap(SkImageInfo::MakeUnknown(this->width(), this->height()), nullptr, 0);
         draw.fMatrixProvider = this;
         draw.fRC = &rc;
-        draw.drawPoints(mode, count, pts, paint, this);
+        draw.drawDevicePoints(mode, count, pts, paint, this);
         return;
     }
 

@@ -10,7 +10,6 @@
 #ifndef SkDraw_DEFINED
 #define SkDraw_DEFINED
 
-#include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
