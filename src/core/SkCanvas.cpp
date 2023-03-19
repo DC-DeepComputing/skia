@@ -41,7 +41,6 @@
 #include "include/private/base/SkTo.h"
 #include "include/utils/SkNoDrawCanvas.h"
 #include "src/base/SkMSAN.h"
-#include "src/core/SkBitmapDevice.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkDevice.h"
@@ -480,41 +479,6 @@ SkCanvas::SkCanvas(sk_sp<SkBaseDevice> device)
 
     this->init(device);
 }
-
-SkCanvas::SkCanvas(const SkBitmap& bitmap, const SkSurfaceProps& props)
-        : fMCStack(sizeof(MCRec), fMCRecStorage, sizeof(fMCRecStorage)), fProps(props) {
-    inc_canvas();
-
-    sk_sp<SkBaseDevice> device(new SkBitmapDevice(bitmap, fProps));
-    this->init(device);
-}
-
-SkCanvas::SkCanvas(const SkBitmap& bitmap,
-                   std::unique_ptr<SkRasterHandleAllocator> alloc,
-                   SkRasterHandleAllocator::Handle hndl,
-                   const SkSurfaceProps* props)
-        : fMCStack(sizeof(MCRec), fMCRecStorage, sizeof(fMCRecStorage))
-        , fProps(SkSurfacePropsCopyOrDefault(props))
-        , fAllocator(std::move(alloc)) {
-    inc_canvas();
-
-    sk_sp<SkBaseDevice> device(new SkBitmapDevice(bitmap, fProps, hndl));
-    this->init(device);
-}
-
-SkCanvas::SkCanvas(const SkBitmap& bitmap) : SkCanvas(bitmap, nullptr, nullptr, nullptr) {}
-
-#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
-SkCanvas::SkCanvas(const SkBitmap& bitmap, ColorBehavior)
-        : fMCStack(sizeof(MCRec), fMCRecStorage, sizeof(fMCRecStorage)) {
-    inc_canvas();
-
-    SkBitmap tmp(bitmap);
-    *const_cast<SkImageInfo*>(&tmp.info()) = tmp.info().makeColorSpace(nullptr);
-    sk_sp<SkBaseDevice> device(new SkBitmapDevice(tmp, fProps));
-    this->init(device);
-}
-#endif
 
 SkCanvas::~SkCanvas() {
     // Mark all pending layers to be discarded during restore (rather than drawn)
