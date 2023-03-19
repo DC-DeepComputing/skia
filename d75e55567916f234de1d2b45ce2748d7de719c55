@@ -16,6 +16,23 @@
       "message": "another bot run?\n\nI failed to repro the iwyu warnings/errors locally, but tried to manually make the files as verbose as possible.",
       "revId": "d75e55567916f234de1d2b45ce2748d7de719c55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f1970a7_d1a56180",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-19T16:38:09Z",
+      "side": 1,
+      "message": "The bot says this:\n\nsrc/gpu/ganesh/Device.cpp should remove these lines:\n- #include \"include/private/chromium/Slug.h\"\n\nbut the file says this:\n\n#include \"include/private/chromium/Slug.h\"  // IWYU pragma: keep\n\nWhat should I do?",
+      "revId": "d75e55567916f234de1d2b45ce2748d7de719c55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
