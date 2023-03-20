@@ -16,6 +16,24 @@
       "message": "Sorry to be late here. I believe this should be structured:\n\nif (forceCopy) {\n  // do the copy\n}\n\nif (!view) {\n  return nullptr;\n}",
       "revId": "30b3e50ace052fa0d015c6593b55ee00e942ce78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ab073bb_02c494dd",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-20T15:25:30Z",
+      "side": 1,
+      "message": "Resolved offline -- this CL is fine for now.",
+      "parentUuid": "bfffb976_8e116c12",
+      "revId": "30b3e50ace052fa0d015c6593b55ee00e942ce78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
