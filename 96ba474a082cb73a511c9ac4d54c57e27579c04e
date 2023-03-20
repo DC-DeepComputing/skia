@@ -16,6 +16,57 @@
       "message": "ptal -- used SkConvertPixels to do all the hard work\n\n... still can\u0027t seem to test F32 config",
       "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ec1b9f7_a6a02749",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-20T18:54:13Z",
+      "side": 1,
+      "message": "Yes, using SkConvertPixels is even better than directly pulling in RP.",
+      "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a7c4024_49b3b173",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-20T18:54:13Z",
+      "side": 1,
+      "message": "I can\u0027t imagine we\u0027re ever going to be adding anything bigger than F32x4, but I\u0027d still throw in an `SkASSERT(dst.bytesPerPixel() \u003c\u003d sizeof(dstPixel));`",
+      "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8feaa67_1f700b68",
+        "filename": "tests/BitmapTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-20T18:54:13Z",
+      "side": 1,
+      "message": "We want to check storage0[0] vs. storage1[0] too, right?",
+      "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
