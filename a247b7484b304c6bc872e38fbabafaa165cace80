@@ -16,6 +16,24 @@
       "message": "This will make a unique shader for each write swizzle. Is that OK? Do we expect this will bloat the unique shader count?",
       "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3033302_be13d741",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-20T16:07:59Z",
+      "side": 1,
+      "message": "Based on past conversations with you and Greg, the write swizzle is dependent upon the format of the image, which is pipeline-dependent. So I would at least expect unique pipelines for each write swizzle. \n\nAs far as shaders go, I do think a unique one per each different write swizzle is appropriate (there aren\u0027t many variations). We currently get unique shaders for, say, different output coverages, right? In `SkShaderCodeDictionary::toSkSL(...)`, where we apply the coverage value? I imagine it would be similar to how we handle that. Checking my understanding there.",
+      "parentUuid": "51f20c9e_11a2d787",
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
