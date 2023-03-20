@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3888cf9_255d9dc1",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-20T21:52:02Z",
+      "side": 1,
+      "message": "Did the compiler warn on this comparison without a cast? This seems like it really ought to be unnecessary, but I assume it\u0027s here for a reason...",
+      "range": {
+        "startLine": 289,
+        "startChar": 38,
+        "endLine": 289,
+        "endChar": 54
+      },
+      "revId": "40cb951701324c6355185a2726a196e4bb08377d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
