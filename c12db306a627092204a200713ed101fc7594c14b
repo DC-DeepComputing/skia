@@ -135,6 +135,30 @@
       },
       "revId": "c12db306a627092204a200713ed101fc7594c14b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a32055d0_d657847b",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-20T14:03:50Z",
+      "side": 1,
+      "message": "But its not a texture release proc in the sense that we\u0027re not actually creating an internal Skia texture (or public image or surface) it connects to. So I think in this case finish proc is the right thing since the client has to wait for this specific operation to finish on the GPU.",
+      "parentUuid": "d69bb47c_738bdb29",
+      "range": {
+        "startLine": 110,
+        "startChar": 30,
+        "endLine": 110,
+        "endChar": 45
+      },
+      "revId": "c12db306a627092204a200713ed101fc7594c14b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
