@@ -52,6 +52,24 @@
       "parentUuid": "b3033302_be13d741",
       "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fb504a4_f038d345",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-20T18:01:29Z",
+      "side": 1,
+      "message": "I see, this is a pretty small change in terms of the actual SkSL, but can result in very different colored image outputs (as you can probably imagine). I guess I\u0027m not entirely clear on how one would capture different write swizzles within the scope of one unique shader. I would also like to avoid that Ganesh trap if we can avoid it. :) \n\nIs there an example you could point me to of different behavior being captured within one unique shader? I\u0027m not positive if we *do* already emit a totally different shader for different image types.",
+      "parentUuid": "b72efd92_c873f521",
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
