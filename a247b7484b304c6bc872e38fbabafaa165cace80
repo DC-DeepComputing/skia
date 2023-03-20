@@ -34,6 +34,24 @@
       "parentUuid": "51f20c9e_11a2d787",
       "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b72efd92_c873f521",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-20T17:10:20Z",
+      "side": 1,
+      "message": "Fragment coverage is pretty fundamentally complex for and can vary a whole lot for \ndifferent geometry (e.g. see\nhttps://osscs.corp.google.com/skia/skia/+/main:src/gpu/graphite/render/AnalyticRRectRenderStep.cpp;l\u003d781;drc\u003d94d454a12e68f867d0d883900e74f8ffa5a1f6f0 vs https://osscs.corp.google.com/skia/skia/+/main:src/gpu/graphite/render/BitmapTextRenderStep.cpp;l\u003d85;drc\u003d15a8ebfde20a034433101582a919e8c530a7a97b) \n\nI\u0027m not sure it\u0027s really comparable to a write swizzle?\n\nIf we already emit a totally different shader for different image types, then I guess it\u0027s fine (that would make this 1:1 on shader count). I just want to avoid going back to the Ganesh mindset where any minute change to a paint would emit new shaders.",
+      "parentUuid": "b3033302_be13d741",
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
