@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "920dadd1_b9fa6b49",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-20T20:27:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a7c4024_49b3b173",
+      "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8feaa67_1f700b68",
@@ -65,6 +83,24 @@
       "writtenOn": "2023-03-20T18:54:13Z",
       "side": 1,
       "message": "We want to check storage0[0] vs. storage1[0] too, right?",
+      "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6cd5fb2_e044a312",
+        "filename": "tests/BitmapTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-20T20:27:54Z",
+      "side": 1,
+      "message": "Doh!",
+      "parentUuid": "f8feaa67_1f700b68",
       "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
