@@ -16,6 +16,57 @@
       "message": "According to the Intel source for the fix this should work, but I\u0027m having difficulty verifying because of bot issues. At the very least it appears to do no harm.",
       "revId": "8e0641ea672065b6b09dd16b6f7fd68759783a29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17cc2ea8_dd4eb55b",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-20T18:10:39Z",
+      "side": 1,
+      "message": "Actually remove these ?",
+      "revId": "8e0641ea672065b6b09dd16b6f7fd68759783a29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd9a28c1_1026dcea",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-20T18:10:39Z",
+      "side": 1,
+      "message": "This one was also from the bug - we should try reallowing it",
+      "revId": "8e0641ea672065b6b09dd16b6f7fd68759783a29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7261fe1c_af47fe8c",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-20T18:10:39Z",
+      "side": 1,
+      "message": "We should also be able to reallow this one too",
+      "revId": "8e0641ea672065b6b09dd16b6f7fd68759783a29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
