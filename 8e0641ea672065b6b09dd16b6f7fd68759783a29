@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f54c5ed_a75d281d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-20T17:48:13Z",
+      "side": 1,
+      "message": "According to the Intel source for the fix this should work, but I\u0027m having difficulty verifying because of bot issues. At the very least it appears to do no harm.",
+      "revId": "8e0641ea672065b6b09dd16b6f7fd68759783a29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
