@@ -33,6 +33,29 @@
       "message": "needs review...",
       "revId": "40d37120dc04e17c0403f8f83a18a8f59f2cd962",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d542352_80492538",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-03-20T19:26:50Z",
+      "side": 1,
+      "message": "nit: maybe move to ganesh/drawPoints and assert here, so we don\u0027t check twice when called from SkDevice?",
+      "range": {
+        "startLine": 616,
+        "startChar": 0,
+        "endLine": 620,
+        "endChar": 0
+      },
+      "revId": "40d37120dc04e17c0403f8f83a18a8f59f2cd962",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
