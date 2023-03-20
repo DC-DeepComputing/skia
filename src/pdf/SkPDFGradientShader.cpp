@@ -282,7 +282,7 @@ static void gradient_function_code(const SkShaderBase::GradientInfo& info,
     SkPDFUtils::AppendColorComponent(SkColorGetB(info.fColors[info.fColorCount - 1]), result);
     result->writeText("} if\n");
 }
-
+/*
 static std::unique_ptr<SkPDFDict> createInterpolationFunction(const ColorTuple& color1,
                                                     const ColorTuple& color2) {
     auto retval = SkPDFMakeDict();
@@ -378,7 +378,7 @@ static std::unique_ptr<SkPDFDict> gradientStitchCode(const SkShaderBase::Gradien
 
     return retval;
 }
-
+*/
 /* Map a value of t on the stack into [0, 1) for Repeat or Mirror tile mode. */
 static void tileModeCode(SkTileMode mode, SkDynamicMemoryWStream* result) {
     if (mode == SkTileMode::kRepeat) {
@@ -696,7 +696,17 @@ static SkPDFIndirectReference make_function_shader(SkPDFDocument* doc,
     // in translating from x, y coordinates to the t parameter. So, we have
     // to transform the points and radii according to the calculated matrix.
     if (doStitchFunctions) {
-        pdfShader->insertObject("Function", gradientStitchCode(info));
+        //pdfShader->insertObject("Function", gradientStitchCode(info));
+        SkDynamicMemoryWStream functionCode;
+        functionCode.writeText("{");
+        gradient_function_code(info, &functionCode);
+        functionCode.writeText("}");
+        auto domain = SkPDFMakeArray(0, 1);
+        auto range = SkPDFMakeArray(0, 1, 0, 1, 0, 1);
+        auto function = make_ps_function(functionCode.detachAsStream(),
+                                         std::move(domain), std::move(range), doc);
+        pdfShader->insertRef("Function", std::move(function));
+
         shadingType = (state.fType == SkShaderBase::GradientType::kLinear) ? 2 : 3;
 
         auto extend = SkPDFMakeArray();
