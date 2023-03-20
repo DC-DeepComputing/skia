@@ -46,6 +46,30 @@
       },
       "revId": "372c79bbcd95719888ecb1d7ac64768edcba0940",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18e15f76_4bf6e62b",
+        "filename": "src/gpu/graphite/ReadSwizzle.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-20T22:28:13Z",
+      "side": 0,
+      "message": "Ah, OK, that\u0027s fine.",
+      "parentUuid": "49a4baec_c3830b57",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 10
+      },
+      "revId": "372c79bbcd95719888ecb1d7ac64768edcba0940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

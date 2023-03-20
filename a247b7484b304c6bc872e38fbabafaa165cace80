@@ -106,6 +106,24 @@
       "parentUuid": "4f2d8994_1f37f586",
       "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96c87ae2_08395b9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-20T22:28:13Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure I won\u0027t be able to come in tomorrow, but we can GVC chat if you like.\n\nI think I\u0027d want to know Rob/Greg/James\u0027s take on it. My understanding is that one of Graphite\u0027s major tentpole features is fewer shaders; that\u0027s pretty much the biggest feature that Impeller brings to the table, for instance, and it was enough to convince Flutter to develop and fund it. So we need to be very cognizant of the combinatoric burden of every new shader tweak, particularly for simple things like write-swizzles where the cost of being generic in the shader is not high. I would have expected the burden of the uniform to be near zero in these cases; GPUs are AIUI very good at optimizing for uniform control flow, and it\u0027s 4 bytes of uniform data, not enough to matter.\n\nOn the other hand, if we expect that there\u0027s no overlap here--if we know somehow that due to the write swizzle, this shader won\u0027t ever be able to match an existing one regardless--then it\u0027d be fine to bake in the swizzle directly, and it would generate simpler output.",
+      "parentUuid": "db79568d_1a862be5",
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
