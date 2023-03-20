@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c967adc_7c65c35d",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 3910,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-20T17:02:49Z",
+      "side": 1,
+      "message": "Consider providing a reference for the Snell\u0027s Law formulation (The last few paragraphs of PBRT 3rd Edition, Section 8.2.3 has a derivation for this particular version)",
+      "revId": "dfdbde81e78c3241812f3919071a4e5d529b176b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
