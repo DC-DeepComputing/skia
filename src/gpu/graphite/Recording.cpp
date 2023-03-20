@@ -7,6 +7,7 @@
 
 #include "include/gpu/graphite/Recording.h"
 
+#include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Log.h"
@@ -25,11 +26,13 @@ namespace skgpu::graphite {
 Recording::Recording(std::unique_ptr<TaskGraph> graph,
                      std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& nonVolatileLazyProxies,
                      std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& volatileLazyProxies,
-                     std::unique_ptr<LazyProxyData> targetProxyData)
+                     std::unique_ptr<LazyProxyData> targetProxyData,
+                     SkTArray<sk_sp<RefCntedCallback>>&& finishedProcs)
         : fGraph(std::move(graph))
         , fNonVolatileLazyProxies(std::move(nonVolatileLazyProxies))
         , fVolatileLazyProxies(std::move(volatileLazyProxies))
-        , fTargetProxyData(std::move(targetProxyData)) {}
+        , fTargetProxyData(std::move(targetProxyData))
+        , fFinishedProcs(std::move(finishedProcs)) {}
 
 Recording::~Recording() {}
 
@@ -104,6 +107,11 @@ bool RecordingPriv::addCommands(Context* context,
                                 SkIVector replayTranslation) {
     AutoDeinstantiateTextureProxy autoDeinstantiateTargetProxy(
             fRecording->fTargetProxyData ? fRecording->fTargetProxyData->lazyProxy() : nullptr);
+
+    for (int i = 0; i < fRecording->fFinishedProcs.size(); ++i) {
+        commandBuffer->addFinishedProc(std::move(fRecording->fFinishedProcs[i]));
+    }
+    fRecording->fFinishedProcs.clear();
 
     const Texture* replayTarget = nullptr;
     SkASSERT(SkToBool(fRecording->fTargetProxyData) == SkToBool(replaySurface));
