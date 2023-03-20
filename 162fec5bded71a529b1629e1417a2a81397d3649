@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c09dae6_f18bbda2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-20T13:51:58Z",
+      "side": 1,
+      "message": "The two utility functions (convert_color, convert_to_pixel) could be exported as sharable ...",
+      "revId": "162fec5bded71a529b1629e1417a2a81397d3649",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
