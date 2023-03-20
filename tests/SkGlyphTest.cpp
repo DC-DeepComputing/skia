@@ -262,4 +262,63 @@ DEF_TEST(SkGlyph_SendWithDrawable, reporter) {
     REPORTER_ASSERT(reporter, !dstGlyph->setDrawableHasBeenCalled());
 }
 
+DEF_TEST(SkGlyph_SendWithEmptyDrawable, reporter) {
+    SkArenaAlloc alloc{256};
+    SkGlyph srcGlyph{SkPackedGlyphID{(SkGlyphID)12}};
+    SkGlyphTestPeer::SetGlyph(&srcGlyph);
+
+    class TestDrawable final : public SkDrawable {
+    public:
+        TestDrawable(SkRect rect) : fRect(rect) {}
+    private:
+        const SkRect fRect;
+        SkRect onGetBounds() override { return fRect;  }
+        size_t onApproximateBytesUsed() override {
+            return 0;
+        }
+        void onDraw(SkCanvas* canvas) override {}
+    };
+
+    sk_sp<SkDrawable> srcDrawable = sk_make_sp<TestDrawable>(srcGlyph.rect());
+    srcGlyph.setDrawable(&alloc, srcDrawable);
+    REPORTER_ASSERT(reporter, srcGlyph.setDrawableHasBeenCalled());
+
+    SkBinaryWriteBuffer writeBuffer;
+    srcGlyph.flattenMetrics(writeBuffer);
+    srcGlyph.flattenDrawable(writeBuffer);
+
+    sk_sp<SkData> data = writeBuffer.snapshotAsData();
+
+    SkReadBuffer readBuffer{data->data(), data->size()};
+    std::optional<SkGlyph> dstGlyph = SkGlyph::MakeFromBuffer(readBuffer);
+    REPORTER_ASSERT(reporter, dstGlyph.has_value());
+    REPORTER_ASSERT(reporter, srcGlyph.advanceVector() == dstGlyph->advanceVector());
+    REPORTER_ASSERT(reporter, srcGlyph.rect() == dstGlyph->rect());
+    REPORTER_ASSERT(reporter, srcGlyph.maskFormat() == dstGlyph->maskFormat());
+
+    dstGlyph->addDrawableFromBuffer(readBuffer, &alloc);
+    REPORTER_ASSERT(reporter, dstGlyph->setDrawableHasBeenCalled());
+    SkDrawable* dstDrawable = dstGlyph->drawable();
+    REPORTER_ASSERT(reporter, dstDrawable->getBounds() == srcDrawable->getBounds());
+
+    // Add good metrics, but mess up drawable data
+    SkBinaryWriteBuffer badWriteBuffer;
+    srcGlyph.flattenMetrics(badWriteBuffer);
+    badWriteBuffer.writeInt(7);
+    badWriteBuffer.writeInt(8);
+
+    data = badWriteBuffer.snapshotAsData();
+
+    SkReadBuffer badReadBuffer{data->data(), data->size()};
+    dstGlyph = SkGlyph::MakeFromBuffer(badReadBuffer);
+    REPORTER_ASSERT(reporter, dstGlyph.has_value());
+    REPORTER_ASSERT(reporter, srcGlyph.advanceVector() == dstGlyph->advanceVector());
+    REPORTER_ASSERT(reporter, srcGlyph.rect() == dstGlyph->rect());
+    REPORTER_ASSERT(reporter, srcGlyph.maskFormat() == dstGlyph->maskFormat());
+
+    dstGlyph->addDrawableFromBuffer(badReadBuffer, &alloc);
+    REPORTER_ASSERT(reporter, !badReadBuffer.isValid());
+    REPORTER_ASSERT(reporter, !dstGlyph->setDrawableHasBeenCalled());
+}
+
 
