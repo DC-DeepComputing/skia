@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkCanvas.h"
+#include "include/core/SkColorSpace.h" // IWYU pragma: keep
 #include "include/core/SkRasterHandleAllocator.h"
 #include "include/core/SkRefCnt.h"
 #include "src/core/SkBitmapDevice.h"
