@@ -12,7 +12,7 @@
 #include "include/gpu/GpuTypes.h"
 
 namespace skgpu {
-/**
+/**
  * Ref-counted object that calls a callback from its destructor.
  */
 class RefCntedCallback : public SkNVRefCnt<RefCntedCallback> {
