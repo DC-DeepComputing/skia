@@ -22,6 +22,30 @@
       },
       "revId": "372c79bbcd95719888ecb1d7ac64768edcba0940",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49a4baec_c3830b57",
+        "filename": "src/gpu/graphite/ReadSwizzle.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-20T21:46:57Z",
+      "side": 0,
+      "message": "For writing, it should end up looking like:\n`dst \u003d color.a000;`, \nnot \n`dst.a000 \u003d color;`. Does that help? My understanding is that a write swizzle explicates a final swizzle operation on an output color right before it gets drawn on to a texture/surface.",
+      "parentUuid": "39ec01bc_27b0d6dd",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 10
+      },
+      "revId": "372c79bbcd95719888ecb1d7ac64768edcba0940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

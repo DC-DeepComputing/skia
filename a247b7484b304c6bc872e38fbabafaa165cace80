@@ -88,6 +88,24 @@
       "parentUuid": "2fb504a4_f038d345",
       "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db79568d_1a862be5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-20T21:46:57Z",
+      "side": 1,
+      "message": "Well, your concern is potential shader count bloating from each write swizzle, and I am unsure how we would reduce the unique shader count while still supporting all the write swizzles that we need to given that they will be handled by SkSL (as opposed to handled with backend-specific functionalities that use hardware, since not all of our backends can support that. Looking at you, OpenGL ES 2...). Your proposal seems to be storing the write swizzle as a uniform.\n\nFirst, I decided against using a permutation matrix because storing it in that way seemed like overkill for representing just a few possible swizzle options.\n\nNow, as for why I didn\u0027t store the write swizzle as a uniform at all like I had done for read swizzles:\nUniforms in graphite, at least, seem to be organized into render step uniforms (like local matrices, depth which the render step assigns) or shader uniforms (like color for a solid color shader, blend mode for blend shaders,...). Write swizzles are not cleanly associated with a render step (since it\u0027s not dependent upon geometry, but on the destination color type and surface format). \n\nRead swizzles I decided to store as uniforms partially because they are only needed for and associated with a few select shaders that perform sampling. So shaders that need read swizzles can simply have a uniform for that information.\n\nHowever, since a write swizzle is basically the last step to computing the final output color, I (maybe incorrectly!) thought that every shader would need to have access to a write swizzle uniform, which felt like overkill. \n\nWe had talked about jamming the write swizzle into a shader \"footer\" at the end as the final operation or step, but I\u0027m not sure if that would solve the problem of limiting the number of unique shaders generated? LMKWYT.\n\nMaybe we can meet up tomorrow (I\u0027m planning to be in the office) to align on what would be the best path forward. Just wanted to get some thoughts down while they were in my brain. :)",
+      "parentUuid": "4f2d8994_1f37f586",
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
