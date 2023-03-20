@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "594c9c90_c0468dfb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-20T18:51:42Z",
+      "side": 1,
+      "message": "I\u0027m not sure if this is culprit for the Build-Debian10-Clang-x86_64-Release-CMake failure but giving it a try.",
+      "revId": "886307971ab5948870f47f5fef18d9a8c396d2ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
