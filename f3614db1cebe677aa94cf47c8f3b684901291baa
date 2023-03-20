@@ -37,6 +37,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ae17d101_35d0c990",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-20T18:35:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "882a8df4_8eecf858",
+      "revId": "f3614db1cebe677aa94cf47c8f3b684901291baa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "16502ead_b152bd51",
         "filename": "src/core/SkPixmap.cpp",
         "patchSetId": 2
@@ -75,6 +93,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a6f407c_f539f8d4",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-20T18:35:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a781866_cc36bdda",
+      "range": {
+        "startLine": 735,
+        "startChar": 21,
+        "endLine": 735,
+        "endChar": 42
+      },
+      "revId": "f3614db1cebe677aa94cf47c8f3b684901291baa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "187bcc0a_8253eabf",
@@ -98,6 +140,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62fe3bf7_df10f345",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-20T18:35:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "187bcc0a_8253eabf",
+      "range": {
+        "startLine": 736,
+        "startChar": 21,
+        "endLine": 736,
+        "endChar": 44
+      },
+      "revId": "f3614db1cebe677aa94cf47c8f3b684901291baa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71ed7df1_3ace67c0",
@@ -111,6 +177,30 @@
       "writtenOn": "2023-03-20T14:48:18Z",
       "side": 1,
       "message": "Ditto on the alpha being forced opaque.",
+      "range": {
+        "startLine": 755,
+        "startChar": 21,
+        "endLine": 755,
+        "endChar": 45
+      },
+      "revId": "f3614db1cebe677aa94cf47c8f3b684901291baa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a29bf253_70f0dcfd",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-20T18:35:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71ed7df1_3ace67c0",
       "range": {
         "startLine": 755,
         "startChar": 21,
