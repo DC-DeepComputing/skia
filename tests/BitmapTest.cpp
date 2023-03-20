@@ -451,3 +451,92 @@ DEF_TEST(bitmap_zerowidth_crbug_1103827, reporter) {
         sk_bzero(bm.getPixels(), size);
     }
 }
+
+/////////////
+
+#include "include/core/SkCanvas.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkSurface.h"
+#include "src/core/SkColorSpacePriv.h"
+
+static void draw_color(const SkPixmap& pm, SkColor4f c, SkColorSpace* cs) {
+    SkPaint paint;
+    paint.setColor4f(c, cs);
+    paint.setBlendMode(SkBlendMode::kSrc);
+    SkSurface::MakeRasterDirect(pm)->getCanvas()->drawPaint(paint);
+}
+
+DEF_TEST(pixmap_erase, reporter) {
+    // need enough for 1 pixel of our largest type (float32 x 4 components)
+    uint64_t storage0[2], storage1[2];
+    const size_t rowBytes = 16; // largest needed for 1 pixel
+
+    auto trample = [](uint64_t storage[]) {
+        storage[0] = 0x1234'5678'8765'4321;
+        storage[1] = ~storage[0];
+    };
+
+    const sk_sp<SkColorSpace> spaces[] = {
+        nullptr,
+        sk_ref_sp(sk_srgb_singleton()),
+        sk_ref_sp(sk_srgb_linear_singleton()),
+        // add more spaces here ...
+    };
+
+    const SkColor4f colors[] {
+        {0, 0, 0, 0},
+
+        {0, 0, 0, 0.5f},
+        {1, 0, 0, 0.5f},
+        {0, 1, 0, 0.5f},
+        {0, 0, 1, 0.5f},
+        {1, 1, 1, 0.5f},
+
+        {0, 0, 0, 1},
+        {1, 0, 0, 1},
+        {0, 1, 0, 1},
+        {0, 0, 1, 1},
+        {1, 1, 1, 1},
+    };
+
+    for (int ct = 0; ct <= SkColorType::kLastEnum_SkColorType; ++ct) {
+        if (ct == kUnknown_SkColorType) {
+            continue;
+        }
+        if (ct == kRGBA_F32_SkColorType) {
+            continue;
+        }
+        for (int at = 0; at <= SkAlphaType::kLastEnum_SkAlphaType; ++at) {
+            if (at == kUnknown_SkAlphaType) {
+                continue;
+            }
+            for (auto dcs : spaces) {
+                auto info = SkImageInfo::Make(1, 1, SkColorType(ct), SkAlphaType(at), dcs);
+                auto pm0 = SkPixmap(info, storage0, rowBytes);
+                auto pm1 = SkPixmap(info, storage1, rowBytes);
+
+                for (auto scs : spaces) {
+                    for (auto c : colors) {
+                        trample(storage0);
+                        if (!pm0.erase(c, scs.get(), nullptr)) {
+                            printf("can't draw to colortype:%d alphatype:%d\n", ct, at);
+                            continue;
+                        }
+
+                        trample(storage1);
+                        draw_color(pm1, c, scs.get());
+
+                        uint64_t tmp[2];
+                        trample(tmp);
+                        REPORTER_ASSERT(reporter, storage0[0] != tmp[0]);
+
+                        if (storage0[1] != storage1[1]) {
+                            REPORTER_ASSERT(reporter, storage0[1] == storage1[1]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

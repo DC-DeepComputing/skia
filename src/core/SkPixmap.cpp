@@ -16,11 +16,14 @@
 #include "include/private/base/SkTPin.h"
 #include "src/base/SkHalf.h"
 #include "src/base/SkVx.h"
+#include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkReadPixelsRec.h"
 #include "src/core/SkSwizzlePriv.h"
+#include "src/opts/SkUtils_opts.h"
 
 #include <cstring>
 #include <utility>
@@ -672,4 +675,172 @@ bool SkPixmap::computeIsOpaque() const {
             break;
     }
     return false;
+}
+
+//////////////////////
+
+static float compute_gray(SkColor4f c) {
+    return (c.fR + c.fG + c.fB) * (1.f/3);
+}
+
+static SkColor4f convert_color(SkColor4f c,
+                               SkAlphaType srcAT, const SkColorSpace* srcCS,
+                               SkAlphaType dstAT, const SkColorSpace* dstCS) {
+    SkASSERT(srcAT != kUnknown_SkAlphaType);
+    SkASSERT(dstAT != kUnknown_SkAlphaType);
+
+    if (!dstCS) {
+        dstCS = sk_srgb_singleton();
+    }
+
+    SkColorSpaceXformSteps{srcCS, srcAT, dstCS, dstAT}.apply(c.vec());
+    return c;
+}
+
+static uint64_t convert_to_pixel(SkColor4f c, SkColorType ct) {
+    if (SkColorTypeIsNormalized(ct)) {
+        c.fR = std::clamp(c.fR, 0.0f, 1.0f);
+        c.fG = std::clamp(c.fG, 0.0f, 1.0f);
+        c.fB = std::clamp(c.fB, 0.0f, 1.0f);
+        c.fA = std::clamp(c.fA, 0.0f, 1.0f);
+    }
+
+    auto rnd = [](float x, int shift = 0) { return sk_float_round2int_no_saturate(x) << shift; };
+
+    switch (ct) {
+        case kUnknown_SkColorType:
+        case kRGBA_F32_SkColorType: return 0;
+
+        case kAlpha_8_SkColorType: return rnd(c.fA * 255);
+        case kGray_8_SkColorType:  return rnd(compute_gray(c) * 255);
+
+        case kRGB_565_SkColorType: return rnd(c.fR * 31, 11) | rnd(c.fG * 63, 5) | rnd(c.fB * 31);
+        case kARGB_4444_SkColorType:
+            return rnd(c.fA * 15, 12) | rnd(c.fR * 15, 8) |
+                   rnd(c.fG * 15,  4) | rnd(c.fB * 15);
+
+        case kRGBA_8888_SkColorType:  [[fallthrough]];
+        case kRGB_888x_SkColorType:   [[fallthrough]];
+        case kSRGBA_8888_SkColorType: [[fallthrough]];
+        case kR8_unorm_SkColorType:   [[fallthrough]];
+        case kR8G8_unorm_SkColorType: [[fallthrough]];
+        case kBGRA_8888_SkColorType: {
+            unsigned r = rnd(c.fR * 255);
+            unsigned g = rnd(c.fG * 255);
+            unsigned b = rnd(c.fB * 255);
+            unsigned a = rnd(c.fA * 255);
+            switch (ct) {
+                default: SkASSERT(false); break;
+                case kRGBA_8888_SkColorType:  [[fallthrough]];
+                case kRGB_888x_SkColorType:   [[fallthrough]];
+                case kSRGBA_8888_SkColorType: return r | (g << 8) | (b << 16) | (a << 24);
+                case kBGRA_8888_SkColorType:  return b | (g << 8) | (r << 16) | (a << 24);
+                case kR8_unorm_SkColorType:   return r;
+                case kR8G8_unorm_SkColorType: return r | (g << 8);
+            }
+        } break;
+
+        case kRGBA_1010102_SkColorType: [[fallthrough]];
+        case kBGRA_1010102_SkColorType: [[fallthrough]];
+        case kRGB_101010x_SkColorType:  [[fallthrough]];
+        case kBGR_101010x_SkColorType:  [[fallthrough]];
+        case kBGR_101010x_XR_SkColorType: {
+            unsigned r = rnd(c.fR * 1023);
+            unsigned g = rnd(c.fG * 1023);
+            unsigned b = rnd(c.fB * 1023);
+            unsigned a = rnd(c.fA * 3);
+            switch (ct) {
+                default: SkASSERT(false); break;
+                case kRGBA_1010102_SkColorType:   [[fallthrough]];
+                case kRGB_101010x_SkColorType:    return r | (g << 10) | (b << 20) | (a << 30);
+
+                case kBGRA_1010102_SkColorType:   [[fallthrough]];
+                case kBGR_101010x_SkColorType:    [[fallthrough]];
+                case kBGR_101010x_XR_SkColorType: return b | (g << 10) | (r << 20) | (a << 30);
+            }
+        } break;
+
+        case kA16_unorm_SkColorType:    [[fallthrough]];
+        case kR16G16_unorm_SkColorType: [[fallthrough]];
+        case kR16G16B16A16_unorm_SkColorType: {
+            uint64_t r = rnd(c.fR * 65535);
+            uint64_t g = rnd(c.fG * 65535);
+            uint64_t b = rnd(c.fB * 65535);
+            uint64_t a = rnd(c.fA * 65535);
+            switch (ct) {
+                default: SkASSERT(false); break;
+                case kA16_unorm_SkColorType:    return a;
+                case kR16G16_unorm_SkColorType: return r | (g << 16);
+                case kR16G16B16A16_unorm_SkColorType:
+                    return r | (g << 16) | (b << 32) | (a << 48);
+            }
+        } break;
+
+        case kA16_float_SkColorType:    return SkFloatToHalf(c.fA);
+        case kR16G16_float_SkColorType: return (SkFloatToHalf(c.fR) << 16) | SkFloatToHalf(c.fG);
+        case kRGBA_F16Norm_SkColorType: [[fallthrough]];
+        case kRGBA_F16_SkColorType: {
+            uint64_t dst;
+            SkFloatToHalf_finite_ftz(skvx::float4::Load(c.vec())).store(&dst);
+            return dst;
+        }
+    }
+    SkASSERT(false);
+    return 0;
+}
+
+bool SkPixmap::erase(SkColor color, const SkIRect& subset) const {
+    return this->erase(SkColor4f::FromColor(color), &subset);
+}
+
+bool SkPixmap::erase(const SkColor4f& color, SkColorSpace* srcCS, const SkIRect* subset) const {
+    if (this->colorType() == kUnknown_SkColorType) {
+        return false;
+    }
+
+    SkIRect clip = this->bounds();
+    if (subset && !clip.intersect(*subset)) {
+        return false;   // is this check really needed (i.e. to return false in this case?)
+    }
+
+    const int width = clip.width();
+    auto dstColor = convert_color(color,
+                                  kUnpremul_SkAlphaType, srcCS,
+                                  this->alphaType(), this->colorSpace());
+
+    if (this->colorType() == kRGBA_F32_SkColorType) {
+        for (int y = clip.fTop; y < clip.fBottom; ++y) {
+            SkColor4f* addr = (SkColor4f*)this->writable_addr(clip.fLeft, y);
+            SK_OPTS_NS::memsetT(addr, dstColor, width);
+        }
+    } else {
+        using MemSet = void(*)(void*, uint64_t c, int count);
+        const MemSet procs[] = {
+            [](void* addr, uint64_t c, int count) {
+                SkASSERT(c == (uint8_t)c);
+                SK_OPTS_NS::memsetT((uint8_t*)addr, (uint8_t)c, count);
+            },
+            [](void* addr, uint64_t c, int count) {
+                SkASSERT(c == (uint16_t)c);
+                SK_OPTS_NS::memsetT((uint16_t*)addr, (uint16_t)c, count);
+            },
+            [](void* addr, uint64_t c, int count) {
+                SkASSERT(c == (uint32_t)c);
+                SK_OPTS_NS::memsetT((uint32_t*)addr, (uint32_t)c, count);
+            },
+            [](void* addr, uint64_t c, int count) {
+                SK_OPTS_NS::memsetT((uint64_t*)addr, c, count);
+            },
+        };
+
+        unsigned shift = SkColorTypeShiftPerPixel(this->colorType());
+        SkASSERT(shift < std::size(procs));
+        auto proc = procs[shift];
+
+        auto dstPx = convert_to_pixel(dstColor, this->colorType());
+        for (int y = clip.fTop; y < clip.fBottom; ++y) {
+            proc(this->writable_addr(clip.fLeft, y), dstPx, clip.width());
+        }
+    }
+    return true;
 }
