@@ -22,11 +22,14 @@
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkRandom.h"
+#include "src/core/SkBitmapPriv.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
 
+#include <cmath>
 #include <cstddef>
 #include <initializer_list>
+#include <utility>
 
 static void test_peekpixels(skiatest::Reporter* reporter) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(10, 10);
@@ -192,6 +195,101 @@ DEF_TEST(Bitmap_getColor_Swizzle, r) {
             continue;
         }
         REPORTER_ASSERT(r, source.getColor(0, 0) == copy.getColor(0, 0));
+    }
+}
+
+static std::pair<int, float> max_diff(const float a[4], const float b[4]) {
+    float maxDiff = 0.0f;
+    int channel = 0;
+    for (int i = 0; i < 4; ++i) {
+        float diff = std::abs(a[i] - b[i]);
+        if (maxDiff < diff) {
+            maxDiff = diff;
+            channel = i;
+        }
+    }
+
+    return std::pair(channel, maxDiff);
+}
+
+/*
+ * This tests that the set*Color4f entry points WAI.
+ */
+DEF_TEST(Bitmap_setColor, reporter) {
+    const SkColorType colorTypes[] = { kRGBA_F16_SkColorType, kRGBA_F16Norm_SkColorType };
+
+    const struct {
+        sk_sp<SkColorSpace> fCS;
+        const char*         fName;
+    } colorSpaces[] = {
+        { sk_sp<SkColorSpace>(nullptr),                                                 "null"    },
+        { SkColorSpace::MakeSRGB(),                                                     "srgb"    },
+        { SkColorSpace::MakeSRGB()->makeColorSpin(),                                  "srgb-spin" },
+        { SkColorSpace::MakeSRGBLinear(),                                            "srgb-linear"},
+        { SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020, SkNamedGamut::kSRGB),      "bt709"   },
+        { SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020, SkNamedGamut::kRec2020),   "rec2020" },
+        { SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,    SkNamedGamut::kDisplayP3), "p3"      },
+        { SkColorSpace::MakeRGB(SkNamedTransferFn::k2Dot2,   SkNamedGamut::kAdobeRGB),  "adobeRGB"},
+    };
+
+    const struct {
+        SkColor4f fColor;
+        const char* fName;
+    } colors[] {
+        { SkColors::kRed,                 "red" },
+        { SkColors::kTransparent,         "transparent" },
+        { { 0.25f,  0.5f, 0.75f, 1.0f  }, "opaque" },
+        { {  1.0f, 0.75f,  0.5f, 0.25f }, "partial"},
+    };
+
+    static constexpr float kTol = 0.001f;
+
+    for (SkColorType ct : colorTypes) {
+        for (SkAlphaType at : { kPremul_SkAlphaType, kUnpremul_SkAlphaType }) {
+            for (const auto& bitmapCS : colorSpaces) {
+                SkImageInfo ii = SkImageInfo::Make(2, 2, ct, at, bitmapCS.fCS);
+
+                SkBitmap bm;
+                bm.allocPixels(ii);
+
+                bm.eraseColor(SK_ColorBLACK);
+
+                for (const auto& colorCS : colorSpaces) {
+                    for (auto c : colors) {
+                        bm.erase(c.fColor, colorCS.fCS.get(), {0, 0, 1, 1});
+
+                        SkBitmapPriv::setColor4f(&bm, 1, 1, c.fColor, colorCS.fCS.get());
+
+                        SkColor4f eraseC = bm.getColor4f(0, 0);
+                        SkColor4f setC = bm.getColor4f(1, 1);
+                        if (auto [chan, diff] = max_diff(eraseC.vec(), setC.vec()); diff > kTol) {
+                            ERRORF(reporter, "%s %s %s %s %s: erase (%.2f %.2f %.2f %.2f) - "
+                                             "set (%.2f %.2f %.2f %.2f) channel %d diff %f",
+                                   ToolUtils::colortype_name(ct),
+                                   ToolUtils::alphatype_name(at),
+                                   bitmapCS.fName, colorCS.fName, c.fName,
+                                   eraseC.fR, eraseC.fG, eraseC.fB, eraseC.fA,
+                                   setC.fR, setC.fG, setC.fB, setC.fA,
+                                   chan, diff);
+                        }
+
+                        SkBitmapPriv::setPMColor4f(&bm, 1, 1, c.fColor.premul(), colorCS.fCS.get());
+
+                        setC = bm.getColor4f(1, 1);
+                        if (auto [chan, diff] = max_diff(eraseC.vec(), setC.vec()); diff > kTol) {
+                            ERRORF(reporter, "%s %s %s %s %s: erase (%.2f %.2f %.2f %.2f) - "
+                                             "setPM (%.2f %.2f %.2f %.2f) channel %d diff %f",
+                                   ToolUtils::colortype_name(ct),
+                                   ToolUtils::alphatype_name(at),
+                                   bitmapCS.fName, colorCS.fName, c.fName,
+                                   eraseC.fR, eraseC.fG, eraseC.fB, eraseC.fA,
+                                   setC.fR, setC.fG, setC.fB, setC.fA,
+                                   chan, diff);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
