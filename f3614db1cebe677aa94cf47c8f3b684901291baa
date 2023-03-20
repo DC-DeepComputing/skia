@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "449d6072_9693319f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-20T14:48:18Z",
+      "side": 1,
+      "message": "Hmm, rather than try to keep this code perfectly in sync with the blitters, I think it\u0027s best to just have it use RP directly. I realize that pulls in RP as a dependency, but that\u0027s going to exist regardless - GPU already leans on it heavily for pixel conversions.\n\nIf we do that, we get correct behavior for all color types, and this code probably gets much simpler. Something like:\n\n```\nSkSTArenaAlloc\u003c256\u003e arena;\nSkRasterPipeline p(\u0026arena);\np.append_constant_color(\u0026arena, dstColor);\nuint64_t memsetColor;\nSkRasterPipeline_MemoryCtx ctx{\u0026memsetColor, 0};\np.append_store(ct, \u0026ctx);\np.run(0, 0, 1, 1);\n```",
+      "revId": "f3614db1cebe677aa94cf47c8f3b684901291baa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "882a8df4_8eecf858",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-20T14:48:18Z",
+      "side": 1,
+      "message": "This is different from what the blitters do (they apply sRGB luma calculation): https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/opts/SkRasterPipeline_opts.h;l\u003d2892;drc\u003d8d363988efebcbe62b2c8e364e833cd98df3aa83",
+      "revId": "f3614db1cebe677aa94cf47c8f3b684901291baa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16502ead_b152bd51",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-20T14:48:18Z",
+      "side": 1,
+      "message": "This (using sRGB as a destination default) is somewhat nonstandard, but I realize that it\u0027s actually necessary to match the old behavior (which was also nonstandard and surprising, now that I look at it).",
+      "revId": "f3614db1cebe677aa94cf47c8f3b684901291baa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a781866_cc36bdda",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-20T14:48:18Z",
+      "side": 1,
+      "message": "The blitters are careful to actually set alpha to 0xFF in this case, so I\u0027d suggest we do the same.",
+      "range": {
+        "startLine": 735,
+        "startChar": 21,
+        "endLine": 735,
+        "endChar": 42
+      },
+      "revId": "f3614db1cebe677aa94cf47c8f3b684901291baa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "187bcc0a_8253eabf",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-20T14:48:18Z",
+      "side": 1,
+      "message": "This color type requires sRGB encoding or RGB (separate from the color space conversion that was already applied). You could do it with another SkColorSpaceXformSteps (the blitters do something sort-of like that), or just copy a dedicated utility function: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tests/SRGBReadWritePixelsTest.cpp;l\u003d55;drc\u003dd8d3341dfb3fb6bf6fdd0ca1623dc6a196158309",
+      "range": {
+        "startLine": 736,
+        "startChar": 21,
+        "endLine": 736,
+        "endChar": 44
+      },
+      "revId": "f3614db1cebe677aa94cf47c8f3b684901291baa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71ed7df1_3ace67c0",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-20T14:48:18Z",
+      "side": 1,
+      "message": "Ditto on the alpha being forced opaque.",
+      "range": {
+        "startLine": 755,
+        "startChar": 21,
+        "endLine": 755,
+        "endChar": 45
+      },
+      "revId": "f3614db1cebe677aa94cf47c8f3b684901291baa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
