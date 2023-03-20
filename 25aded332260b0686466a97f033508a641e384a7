@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e8771b5_32af721a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-03-20T17:08:19Z",
+      "side": 1,
+      "message": "Ravi:\n\nI\u0027m landing this early because the `sk release-branch` tool that I\u0027m modifying is trying to list (1) the contents of the //relnotes directory in Skia, which doesn\u0027t yet exist. It is creating a 404 error. I was about to change the implementation to clone the repo and make local changes, but this is really a special case and the code to use `gerrit.CreateCLWithChanges` is way simpler, so I\u0027d like to stick with using it.\n\n(1) https://skia-review.googlesource.com/c/buildbot/+/658836/1/sk/go/release-branch/release-branch.go#276",
+      "revId": "25aded332260b0686466a97f033508a641e384a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
