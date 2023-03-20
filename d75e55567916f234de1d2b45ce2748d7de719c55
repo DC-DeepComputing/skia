@@ -33,6 +33,24 @@
       "message": "The bot says this:\n\nsrc/gpu/ganesh/Device.cpp should remove these lines:\n- #include \"include/private/chromium/Slug.h\"\n\nbut the file says this:\n\n#include \"include/private/chromium/Slug.h\"  // IWYU pragma: keep\n\nWhat should I do?",
       "revId": "d75e55567916f234de1d2b45ce2748d7de719c55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "807c447d_59992b27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-20T13:04:22Z",
+      "side": 1,
+      "message": "I think you need to put the IWYU pragma back? (It\u0027s been removed, so IWYU thinks the include needs to go. I\u0027m assuming that actually removing the include breaks things, but IWYU doesn\u0027t know that).",
+      "parentUuid": "1f1970a7_d1a56180",
+      "revId": "d75e55567916f234de1d2b45ce2748d7de719c55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
