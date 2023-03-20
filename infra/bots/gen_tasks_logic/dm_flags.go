@@ -284,10 +284,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			skip("gltestthreading", "gm", ALL, "draw_image_set")
 
 			// Fail on Iris Xe.
-			skip("gltestthreading", "gm", ALL, "anisotropic_image_scale_mip")
+			//skip("gltestthreading", "gm", ALL, "anisotropic_image_scale_mip")
 			skip("gltestthreading", "gm", ALL, "bleed_downscale")
 			skip("gltestthreading", "gm", ALL, "degeneratesegments")
-			skip("gltestthreading", "gm", ALL, "mipmap_srgb")
+			//skip("gltestthreading", "gm", ALL, "mipmap_srgb")
 			skip("gltestthreading", "gm", ALL, "mipmap")
 			skip("gltestthreading", "gm", ALL, "ovals")
 			skip("gltestthreading", "gm", ALL, "persp_images")
