@@ -16,6 +16,23 @@
       "message": "impulse power restored -- bot time?",
       "revId": "40d37120dc04e17c0403f8f83a18a8f59f2cd962",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c868c1d_5d4ec953",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-20T18:38:12Z",
+      "side": 1,
+      "message": "needs review...",
+      "revId": "40d37120dc04e17c0403f8f83a18a8f59f2cd962",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
