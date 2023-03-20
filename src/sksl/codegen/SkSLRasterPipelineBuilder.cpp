@@ -76,6 +76,7 @@ namespace RP {
     case BuilderOp::bitwise_and_n_ints: \
     case BuilderOp::bitwise_or_n_ints:  \
     case BuilderOp::bitwise_xor_n_ints: \
+    case BuilderOp::mod_n_floats:       \
     case BuilderOp::min_n_floats:       \
     case BuilderOp::min_n_ints:         \
     case BuilderOp::min_n_uints:        \
@@ -2231,6 +2232,7 @@ void Program::dump(SkWStream* out) const {
                                    case POp::bitwise_and_int:
                                    case POp::bitwise_or_int:
                                    case POp::bitwise_xor_int:
+            case POp::mod_float:
             case POp::min_float:   case POp::min_int:   case POp::min_uint:
             case POp::max_float:   case POp::max_int:   case POp::max_uint:
             case POp::cmplt_float: case POp::cmplt_int: case POp::cmplt_uint:
@@ -2251,6 +2253,7 @@ void Program::dump(SkWStream* out) const {
                                       case POp::bitwise_and_2_ints:
                                       case POp::bitwise_or_2_ints:
                                       case POp::bitwise_xor_2_ints:
+            case POp::mod_2_floats:
             case POp::min_2_floats:   case POp::min_2_ints:   case POp::min_2_uints:
             case POp::max_2_floats:   case POp::max_2_ints:   case POp::max_2_uints:
             case POp::cmplt_2_floats: case POp::cmplt_2_ints: case POp::cmplt_2_uints:
@@ -2271,6 +2274,7 @@ void Program::dump(SkWStream* out) const {
                                       case POp::bitwise_and_3_ints:
                                       case POp::bitwise_or_3_ints:
                                       case POp::bitwise_xor_3_ints:
+            case POp::mod_3_floats:
             case POp::min_3_floats:   case POp::min_3_ints:   case POp::min_3_uints:
             case POp::max_3_floats:   case POp::max_3_ints:   case POp::max_3_uints:
             case POp::cmplt_3_floats: case POp::cmplt_3_ints: case POp::cmplt_3_uints:
@@ -2291,6 +2295,7 @@ void Program::dump(SkWStream* out) const {
                                       case POp::bitwise_and_4_ints:
                                       case POp::bitwise_or_4_ints:
                                       case POp::bitwise_xor_4_ints:
+            case POp::mod_4_floats:
             case POp::min_4_floats:   case POp::min_4_ints:   case POp::min_4_uints:
             case POp::max_4_floats:   case POp::max_4_ints:   case POp::max_4_uints:
             case POp::cmplt_4_floats: case POp::cmplt_4_ints: case POp::cmplt_4_uints:
@@ -2311,6 +2316,7 @@ void Program::dump(SkWStream* out) const {
                                       case POp::bitwise_and_n_ints:
                                       case POp::bitwise_or_n_ints:
                                       case POp::bitwise_xor_n_ints:
+            case POp::mod_n_floats:
             case POp::min_n_floats:   case POp::min_n_ints:   case POp::min_n_uints:
             case POp::max_n_floats:   case POp::max_n_ints:   case POp::max_n_uints:
             case POp::cmplt_n_floats: case POp::cmplt_n_ints: case POp::cmplt_n_uints:
@@ -2635,6 +2641,14 @@ void Program::dump(SkWStream* out) const {
             case POp::div_4_floats: case POp::div_4_ints: case POp::div_4_uints:
             case POp::div_n_floats: case POp::div_n_ints: case POp::div_n_uints:
                 opText = opArg1 + " /= " + opArg2;
+                break;
+
+            case POp::mod_float:
+            case POp::mod_2_floats:
+            case POp::mod_3_floats:
+            case POp::mod_4_floats:
+            case POp::mod_n_floats:
+                opText = opArg1 + " = mod(" + opArg1 + ", " + opArg2 + ")";
                 break;
 
             case POp::min_float:    case POp::min_int:    case POp::min_uint:
