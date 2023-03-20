@@ -111,6 +111,30 @@
       },
       "revId": "c12db306a627092204a200713ed101fc7594c14b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d69bb47c_738bdb29",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-20T13:54:36Z",
+      "side": 1,
+      "message": "I was more concerned that we\u0027re using a GpuFinishedProc -- it sounds like that should only be used when adding the recording. I could create a TextureReleaseProc alias, which would be `void (void*)`",
+      "parentUuid": "3c8cb814_5a833b0d",
+      "range": {
+        "startLine": 110,
+        "startChar": 30,
+        "endLine": 110,
+        "endChar": 45
+      },
+      "revId": "c12db306a627092204a200713ed101fc7594c14b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
