@@ -16,6 +16,24 @@
       "message": "This file needs to include SkColorSpace.h to correctly compile the android-framework constructor.",
       "revId": "b4d622c97c702c2e3751b906d056883f5400f01c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "543db3d8_3299ed25",
+        "filename": "src/core/SkCanvas_Raster.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-20T22:59:15Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/658579",
+      "parentUuid": "f687488f_63d89ea1",
+      "revId": "b4d622c97c702c2e3751b906d056883f5400f01c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
