@@ -80,6 +80,30 @@
       },
       "revId": "40d37120dc04e17c0403f8f83a18a8f59f2cd962",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7abb4fdd_9fe85402",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-20T20:57:50Z",
+      "side": 1,
+      "message": "actually, the count check is needed for at least one of the switch/cases, and notice that we can subtract 1 from count to keep it even. I\u0027m not sure I can remove it cleanly. Will that be a problem?",
+      "parentUuid": "14678185_92fe1f59",
+      "range": {
+        "startLine": 616,
+        "startChar": 0,
+        "endLine": 620,
+        "endChar": 0
+      },
+      "revId": "40d37120dc04e17c0403f8f83a18a8f59f2cd962",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
