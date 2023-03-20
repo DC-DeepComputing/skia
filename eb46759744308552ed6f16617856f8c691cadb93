@@ -16,6 +16,75 @@
       "message": "PTAL",
       "revId": "eb46759744308552ed6f16617856f8c691cadb93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0125a598_9f90e318",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-20T21:16:45Z",
+      "side": 1,
+      "message": "If Recorder is deleted while there are still fFinishedProcs in this list, we should call setFailureResult on each proc",
+      "range": {
+        "startLine": 200,
+        "startChar": 38,
+        "endLine": 200,
+        "endChar": 52
+      },
+      "revId": "eb46759744308552ed6f16617856f8c691cadb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84055037_b588f047",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-20T21:16:45Z",
+      "side": 1,
+      "message": "does std::move on an SkTArray actually move all the members off the one array on onto the other?",
+      "range": {
+        "startLine": 175,
+        "startChar": 65,
+        "endLine": 175,
+        "endChar": 79
+      },
+      "revId": "eb46759744308552ed6f16617856f8c691cadb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "823f5eea_adc0a7c9",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-20T21:16:45Z",
+      "side": 1,
+      "message": "I\u0027m trying to think of what contract we want to have when calling these. Like should these behave the same as if you passed in a finish callback to the insertRecording call (i.e. the Recording::addFinishInfo is just a convenience call that allows to client to store the callback earlier.\n\nIn that case we have early failure results in QueueManager::addRecording where we call the callback. So I feel like these should also be checked there.",
+      "range": {
+        "startLine": 112,
+        "startChar": 23,
+        "endLine": 112,
+        "endChar": 38
+      },
+      "revId": "eb46759744308552ed6f16617856f8c691cadb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
