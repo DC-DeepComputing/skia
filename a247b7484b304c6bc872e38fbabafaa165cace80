@@ -70,6 +70,24 @@
       "parentUuid": "b72efd92_c873f521",
       "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f2d8994_1f37f586",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-20T20:01:21Z",
+      "side": 1,
+      "message": "\u003e I guess I\u0027m not entirely clear on how one would capture different write swizzles within the scope of one unique shader\n\nI\u0027m not entirely sure what you mean, but I would guess it would be something like\n\n```\nuniform int uWriteSwizzle;\n\n//....\n  switch (uWriteSwizzle) {\n    case kRGBA: dest.rgba \u003d color;\n    case kBGRA: dest.bgra \u003d color;\n  }\n  \n```\n\nIf you\u0027re always writing every channel, you can do the write swizzle as a permutation matrix as well: `dest \u003d color * uMatWriteSwizzle;`",
+      "parentUuid": "2fb504a4_f038d345",
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

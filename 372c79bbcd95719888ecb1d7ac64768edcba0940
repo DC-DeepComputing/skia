@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39ec01bc_27b0d6dd",
+        "filename": "src/gpu/graphite/ReadSwizzle.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-20T20:01:21Z",
+      "side": 0,
+      "message": "How does this one work? You couldn\u0027t write to it directly. `dst.a000 \u003d color;` is a compile error.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 10
+      },
+      "revId": "372c79bbcd95719888ecb1d7ac64768edcba0940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
