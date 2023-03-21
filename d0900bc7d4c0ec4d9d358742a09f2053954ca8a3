@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89bd3f4f_6482183d",
+        "filename": "src/gpu/ganesh/SurfaceDrawContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1887,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-21T21:18:38Z",
+      "side": 1,
+      "message": "Since we assume the SW renderer can render any path, his check is now unnecessary. Would we be ok with taking it out?",
+      "range": {
+        "startLine": 1882,
+        "startChar": 0,
+        "endLine": 1887,
+        "endChar": 5
+      },
+      "revId": "d0900bc7d4c0ec4d9d358742a09f2053954ca8a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
