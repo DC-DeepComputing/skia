@@ -430,6 +430,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{"//modules/skunicode/include:hdrs"}},
 		{Var: "skia_unicode_sources",
 			Rules: []string{"//modules/skunicode/src:srcs"}},
+		{Var: "skia_unicode_bidi_icu_sources",
+			Rules: []string{"//modules/skunicode/src:icu_bidi_srcs"}},
 		{Var: "skia_unicode_icu_sources",
 			Rules: []string{"//modules/skunicode/src:icu_srcs"}},
 		{Var: "skia_unicode_client_icu_sources",
@@ -438,6 +440,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{"//modules/skunicode/src:builtin_srcs"}},
 		{Var: "skia_unicode_runtime_icu_sources",
 			Rules: []string{"//modules/skunicode/src:runtime_srcs"}},
+		{Var: "skia_unicode_tests",
+			Rules: []string{"//modules/skunicode/tests:tests"}},
 	}},
 	{GNI: "modules/sksg/sksg.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_sksg_sources",
