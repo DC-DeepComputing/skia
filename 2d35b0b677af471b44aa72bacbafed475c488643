@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50a8f8f4_f426a57d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-21T19:44:11Z",
+      "side": 1,
+      "message": "important: drawing always converts its input to premul, so erase() needs to do the same...",
+      "revId": "2d35b0b677af471b44aa72bacbafed475c488643",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
