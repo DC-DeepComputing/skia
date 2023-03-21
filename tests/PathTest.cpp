@@ -6012,3 +6012,19 @@ DEF_TEST(path_walk_simple_edges_1154864, r) {
     paint.setAntiAlias(true);
     surface->getCanvas()->drawPath(path, paint);
 }
+
+// crbug.com/1425618
+DEF_TEST(path_aaa_overflow, r) {
+    SkPath path;
+    path.setFillType(SkPathFillType::kWinding);
+    path.moveTo(0, 0);
+    path.cubicTo(191.250977f, 3.00392103f, 2.35129334e-38f, 3.01164293f, 191.250977f, 3.00392103f);
+    path.lineTo(0, 0);
+    path.close();
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    auto surface = SkSurface::MakeRasterN32Premul(256, 256);
+    surface->getCanvas()->drawPath(path, paint);
+}
