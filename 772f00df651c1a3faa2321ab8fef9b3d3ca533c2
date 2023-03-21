@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d540639_b446371b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-21T14:42:52Z",
+      "side": 1,
+      "message": "Ok. Let\u0027s drop this whole thing and go without testing it on SkParagraph. I will add some tests to SkUnicode itself. \nAbandoning this CL...",
+      "revId": "772f00df651c1a3faa2321ab8fef9b3d3ca533c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14e18592_3a6e029f",
