@@ -737,6 +737,9 @@ public:
         @param subset  bounding integer SkRect of pixels to write; may be nullptr
         @return        true if pixels are changed
     */
+private:
+    friend class SkBitmap;
+
     bool erase(const SkColor4f& color, SkColorSpace* cs, const SkIRect* subset = nullptr) const;
 
 private:

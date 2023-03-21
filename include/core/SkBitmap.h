@@ -778,7 +778,14 @@ public:
 
         example: https://fiddle.skia.org/c/@Bitmap_eraseColor
     */
-    void eraseColor(SkColor4f c, SkColorSpace* colorSpace = nullptr) const;
+    void eraseColor(SkColor4f c) const {
+        this->eraseColor(c, nullptr);
+    }
+
+private:
+    void eraseColor(SkColor4f c, SkColorSpace* colorSpace) const;
+    void erase(SkColor4f c, SkColorSpace* colorSpace, const SkIRect& area) const;
+public:
 
     /** Replaces pixel values with c, interpreted as being in the sRGB SkColorSpace.
         All pixels contained by bounds() are affected. If the colorType() is
@@ -822,7 +829,6 @@ public:
 
         example: https://fiddle.skia.org/c/@Bitmap_erase
     */
-    void erase(SkColor4f c, SkColorSpace* colorSpace, const SkIRect& area) const;
     void erase(SkColor4f c, const SkIRect& area) const;
 
     /** Replaces pixel values inside area with c. interpreted as being in the sRGB

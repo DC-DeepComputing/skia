@@ -156,9 +156,12 @@ sk_sp<const SkCapabilities> SkSurface_Raster::onCapabilities() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+//#define SK_SUPPORT_RASTER_BACKEND
+
 sk_sp<SkSurface> SkSurface::MakeRasterDirectReleaseProc(const SkImageInfo& info, void* pixels,
         size_t rb, void (*releaseProc)(void* pixels, void* context), void* context,
         const SkSurfaceProps* props) {
+#ifdef SK_SUPPORT_RASTER_BACKEND
     if (nullptr == releaseProc) {
         context = nullptr;
     }
@@ -170,6 +173,9 @@ sk_sp<SkSurface> SkSurface::MakeRasterDirectReleaseProc(const SkImageInfo& info,
     }
 
     return sk_make_sp<SkSurface_Raster>(info, pixels, rb, releaseProc, context, props);
+#else
+    return nullptr;
+#endif
 }
 
 sk_sp<SkSurface> SkSurface::MakeRasterDirect(const SkImageInfo& info, void* pixels, size_t rowBytes,
@@ -179,6 +185,7 @@ sk_sp<SkSurface> SkSurface::MakeRasterDirect(const SkImageInfo& info, void* pixe
 
 sk_sp<SkSurface> SkSurface::MakeRaster(const SkImageInfo& info, size_t rowBytes,
                                        const SkSurfaceProps* props) {
+#ifdef SK_SUPPORT_RASTER_BACKEND
     if (!SkSurfaceValidateRasterInfo(info)) {
         return nullptr;
     }
@@ -191,6 +198,9 @@ sk_sp<SkSurface> SkSurface::MakeRaster(const SkImageInfo& info, size_t rowBytes,
         SkASSERT(pr->rowBytes() == rowBytes);
     }
     return sk_make_sp<SkSurface_Raster>(info, std::move(pr), props);
+#else
+    return nullptr;
+#endif
 }
 
 sk_sp<SkSurface> SkSurface::MakeRasterN32Premul(int width, int height,

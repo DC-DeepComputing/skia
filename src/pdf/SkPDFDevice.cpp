@@ -220,12 +220,14 @@ SkBaseDevice* SkPDFDevice::onCreateDevice(const CreateInfo& cinfo, const SkPaint
     // Note that this rendering is done at "screen" resolution (100dpi), not
     // printer resolution.
 
+#ifdef SK_SUPPORT_RASTER_BACKEND
     // TODO: It may be possible to express some filters natively using PDF
     // to improve quality and file size (https://bug.skia.org/3043)
     if (layerPaint && (layerPaint->getImageFilter() || layerPaint->getColorFilter())) {
         // need to return a raster device, which we will detect in drawDevice()
         return SkBitmapDevice::Create(cinfo.fInfo, SkSurfaceProps(0, kUnknown_SkPixelGeometry));
     }
+#endif
     return new SkPDFDevice(cinfo.fInfo.dimensions(), fDocument);
 }
 

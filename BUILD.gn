@@ -2159,7 +2159,7 @@ if (skia_enable_tools) {
       "tools/fonts/TestEmptyTypeface.h",
       "tools/fonts/TestFontMgr.cpp",
       "tools/fonts/TestFontMgr.h",
-      "tools/fonts/TestSVGTypeface.cpp",
+#      "tools/fonts/TestSVGTypeface.cpp",
       "tools/fonts/TestSVGTypeface.h",
       "tools/fonts/TestTypeface.cpp",
       "tools/fonts/TestTypeface.h",
