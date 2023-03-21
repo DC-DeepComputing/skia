@@ -48,6 +48,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd3c933b_a300b287",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-21T21:06:26Z",
+      "side": 1,
+      "message": "lgtm modulo assert comment",
+      "revId": "21b67407e45028e8b75b2ca4d152bdff4c3629d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48b9b5fc_beee6fc5",
