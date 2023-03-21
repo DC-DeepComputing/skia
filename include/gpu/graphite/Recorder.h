@@ -22,7 +22,6 @@ struct SkImageInfo;
 class SkPixmap;
 
 namespace skgpu {
-class RefCntedCallback;
 class TokenTracker;
 }
 
