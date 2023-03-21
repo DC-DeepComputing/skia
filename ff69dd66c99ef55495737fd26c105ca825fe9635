@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb35db17_4bca1ec1",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-21T14:00:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c36f94c_a48acaaa",
+      "range": {
+        "startLine": 715,
+        "startChar": 24,
+        "endLine": 715,
+        "endChar": 27
+      },
+      "revId": "ff69dd66c99ef55495737fd26c105ca825fe9635",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c297be40_c1264484",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-03-21T13:53:57Z",
       "side": 1,
       "message": "Add a \u0027 \u0027 ?",
+      "revId": "ff69dd66c99ef55495737fd26c105ca825fe9635",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf99e4a2_cc9df7d1",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-21T14:00:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c297be40_c1264484",
       "revId": "ff69dd66c99ef55495737fd26c105ca825fe9635",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
