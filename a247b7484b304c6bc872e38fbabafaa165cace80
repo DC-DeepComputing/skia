@@ -142,6 +142,24 @@
       "parentUuid": "96c87ae2_08395b9b",
       "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cc9de34_8bd865b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-21T19:01:53Z",
+      "side": 1,
+      "message": "If using a different write swizzle is always accompanied by a separate pipeline, then yes, there\u0027s no savings to be had.",
+      "parentUuid": "103d26e9_d69584b0",
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
