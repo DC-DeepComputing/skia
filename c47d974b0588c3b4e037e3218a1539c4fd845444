@@ -16,6 +16,24 @@
       "message": "I suppose the more robust version of this would just read the entire file into a string and split it on the first `: ` and then set `gn_deps_string` to the right part. Using `OFFSET` here is a bit of a hack but at the time the string handling in CMake was even worse than it is now, so it might be possible to do this more easily now.\n\nI think something like reading the whole file into `gn_deps_file_content` and then\n```\nstring(REGEX REPLACE \"^[^:]*: \" \"\" gn_deps_string ${gn_deps_file_content})\n```\nmight work. Then this should work both with and without the new `gn`.",
       "revId": "c47d974b0588c3b4e037e3218a1539c4fd845444",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da581d18_28249f8d",
+        "filename": "gn/gn_to_cmake.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 701,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-03-21T14:11:59Z",
+      "side": 1,
+      "message": "Yes, thanks for the suggestion, I was wondering about doing that on the Python side first, but this CMake side solution is probably more consistent with the rest of what the script is doing. \n\nSeems to at least proceed to building:\nhttps://logs.chromium.org/logs/skia/611d5107b037bd11/+/steps/Build_Skia_using_CMake_in_Docker/0/stdout",
+      "parentUuid": "92e933a9_f051e16c",
+      "revId": "c47d974b0588c3b4e037e3218a1539c4fd845444",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
