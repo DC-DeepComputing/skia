@@ -31,31 +31,6 @@
 class SkColorSpace;
 struct SkSamplingOptions;
 
-bool SkPixmap::erase(SkColor color, const SkIRect& subset) const {
-    return this->erase(SkColor4f::FromColor(color), &subset);
-}
-
-bool SkPixmap::erase(const SkColor4f& color, SkColorSpace* cs, const SkIRect* subset) const {
-    SkPaint paint;
-    paint.setBlendMode(SkBlendMode::kSrc);
-    paint.setColor4f(color, cs);
-
-    SkIRect clip = this->bounds();
-    if (subset && !clip.intersect(*subset)) {
-        return false;
-    }
-    SkRasterClip rc{clip};
-
-    SkDraw draw;
-    SkMatrixProvider matrixProvider(SkMatrix::I());
-    draw.fDst            = *this;
-    draw.fMatrixProvider = &matrixProvider;
-    draw.fRC             = &rc;
-
-    draw.drawPaint(paint);
-    return true;
-}
-
 bool SkPixmap::scalePixels(const SkPixmap& actualDst, const SkSamplingOptions& sampling) const {
     // We may need to tweak how we interpret these just a little below, so we make copies.
     SkPixmap src = *this,
