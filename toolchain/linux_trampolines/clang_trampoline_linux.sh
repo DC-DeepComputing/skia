@@ -77,6 +77,7 @@ supported_files_or_dirs=(
   "src/gpu/ganesh/Device.cpp"
   "src/gpu/ganesh/GrBackendUtils.cpp"
   "src/gpu/ganesh/GrCaps.cpp"
+  "src/gpu/ganesh/GrDirectContext.cpp"
   "src/gpu/ganesh/GrImagePin.cpp"
   "src/gpu/ganesh/GrImageUtils.cpp"
   "src/gpu/ganesh/GrMemoryPool.cpp"
