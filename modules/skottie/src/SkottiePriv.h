@@ -178,6 +178,8 @@ public:
 
     sk_sp<ExpressionManager> expression_manager() const;
 
+    const skjson::ObjectValue* fSlotsRoot;
+
 private:
     friend class CompositionBuilder;
     friend class CustomFont;
