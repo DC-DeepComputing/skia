@@ -75,3 +75,13 @@ skia_filegroup(
     }),
     visibility = ["//src:__pkg__"],
 )
+
+skia_filegroup(
+    name = "buffet_raster_srcs",
+    srcs = [
+        "SkImage_Raster.cpp",
+        "SkImage_Raster.h",
+        "SkImage_Base.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)

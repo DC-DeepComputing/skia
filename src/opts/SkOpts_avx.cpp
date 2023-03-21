@@ -10,7 +10,7 @@
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 #define SK_OPTS_NS avx
-#include "src/opts/SkUtils_opts.h"
+#include "src/opts/Memset_opts_impl.h"
 
 namespace SkOpts {
     void Init_avx() {

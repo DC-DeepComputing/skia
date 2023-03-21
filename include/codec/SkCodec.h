@@ -22,6 +22,7 @@
 
 #include <cstddef>
 #include <functional>
+#include <cstdint>
 #include <memory>
 #include <tuple>
 #include <vector>
@@ -63,6 +64,11 @@ public:
      *  after reading this many bytes.
      */
     static constexpr size_t MinBufferedBytesNeeded() { return 32; }
+    /**
+     * Read MinBufferedBytesNeeded() bytes into the provided buffer from the stream
+     * and return how many were successfully read.
+     */
+    static size_t ReadHeader(std::unique_ptr<SkStream>, uint8_t* buffer);
 
     /**
      *  Error codes for various SkCodec methods.
