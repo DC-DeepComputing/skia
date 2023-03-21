@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0b7c26d_fe7015d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-03-21T17:16:46Z",
+      "side": 1,
+      "message": "Nice, this is more contained than I expected.",
+      "revId": "4cd7035bc96b1581af8e308704cf3fde731d1264",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fc78963_6f56143c",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-03-21T17:16:46Z",
+      "side": 1,
+      "message": "Move this to the private section below and add a public getter `slots()` if needed.",
+      "revId": "4cd7035bc96b1581af8e308704cf3fde731d1264",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6df9de23_0e1837f3",
+        "filename": "modules/skottie/src/animator/Animator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-03-21T17:16:46Z",
+      "side": 1,
+      "message": "I think we can overwrite the original `jprop` argument as needed -- no need for a separate variable or renaming.",
+      "revId": "4cd7035bc96b1581af8e308704cf3fde731d1264",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
