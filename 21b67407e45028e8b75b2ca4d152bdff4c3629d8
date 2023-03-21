@@ -22,6 +22,30 @@
       },
       "revId": "21b67407e45028e8b75b2ca4d152bdff4c3629d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "289eb14f_e232e481",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-21T13:57:58Z",
+      "side": 1,
+      "message": "Ah, this is a little confusing. What I mean is that we never call `SoftwarePathRenderer::drawPath()` with `args.fAAType \u003d\u003d kMSAA`. Instead, when checking whether we can use the SW renderer, if fAAType is MSAA we just change it to coverage.\n\nPreviously, when trying to draw with MSAA, getPathRenderer() would never return the SW renderer. But also, since one code path bypasses getPathRenderer() entirely we could get into a situation where we try to use the SW renderer with `fAAType \u003d\u003d kMSAA`, which would fail an assert. This currently never seems to happen in practice, but does happen with the changes in http://review.skia.org/631156.\n\nSo this CL allows us to use the SW renderer when we would otherwise be trying to draw with MSAA, by switching to non-MSAA drawing. Which as you say is basically the whole point. I could be more explicit in the CL description.",
+      "parentUuid": "b1b2f989_c3d6048c",
+      "range": {
+        "startLine": 13,
+        "startChar": 3,
+        "endLine": 13,
+        "endChar": 53
+      },
+      "revId": "21b67407e45028e8b75b2ca4d152bdff4c3629d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
