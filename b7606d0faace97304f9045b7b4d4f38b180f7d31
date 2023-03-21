@@ -33,6 +33,24 @@
       "message": "I patched this CL into a clean client, and cmake works correctly.",
       "revId": "b7606d0faace97304f9045b7b4d4f38b180f7d31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf89898a_e8058f6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-03-21T14:18:35Z",
+      "side": 1,
+      "message": "Thanks for checking!",
+      "parentUuid": "520746ec_1bfcc816",
+      "revId": "b7606d0faace97304f9045b7b4d4f38b180f7d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
