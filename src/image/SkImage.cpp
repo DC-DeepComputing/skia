@@ -506,7 +506,7 @@ sk_sp<SkImage> SkImage::withDefaultMipmaps() const {
 #include "include/core/SkPicture.h"
 
 sk_sp<SkImage> SkImage::MakeRasterData(const SkImageInfo& i, sk_sp<SkData> d, size_t rb) {
-    return SkImages::RasterFromData(i, d, rb);
+    return SkImages::RasterFromData(i, std::move(d), rb);
 }
 
 sk_sp<SkImage> SkImage::MakeFromGenerator(std::unique_ptr<SkImageGenerator> ig) {
@@ -514,14 +514,14 @@ sk_sp<SkImage> SkImage::MakeFromGenerator(std::unique_ptr<SkImageGenerator> ig) 
 }
 
 sk_sp<SkImage> SkImage::MakeFromEncoded(sk_sp<SkData> e, std::optional<SkAlphaType> at) {
-    return SkImages::DeferredFromEncodedData(e, at);
+    return SkImages::DeferredFromEncodedData(std::move(e), at);
 }
 
 sk_sp<SkImage> SkImage::MakeRasterFromCompressed(sk_sp<SkData> d,
                                                  int w,
                                                  int h,
                                                  SkTextureCompressionType t) {
-    return SkImages::RasterFromCompressedTextureData(d, w, h, t);
+    return SkImages::RasterFromCompressedTextureData(std::move(d), w, h, t);
 }
 
 sk_sp<SkImage> SkImage::MakeFromPicture(sk_sp<SkPicture> p,
@@ -531,7 +531,8 @@ sk_sp<SkImage> SkImage::MakeFromPicture(sk_sp<SkPicture> p,
                                         BitDepth bitDepth,
                                         sk_sp<SkColorSpace> colorSpace,
                                         SkSurfaceProps props) {
-    return SkImages::DeferredFromPicture(p, dimensions, matrix, paint, bitDepth, colorSpace, props);
+    return SkImages::DeferredFromPicture(std::move(p), dimensions, matrix, paint, bitDepth,
+                                         std::move(colorSpace), props);
 }
 
 sk_sp<SkImage> SkImage::MakeFromPicture(sk_sp<SkPicture> p,
@@ -540,7 +541,8 @@ sk_sp<SkImage> SkImage::MakeFromPicture(sk_sp<SkPicture> p,
                                         const SkPaint* paint,
                                         BitDepth bitDepth,
                                         sk_sp<SkColorSpace> colorSpace) {
-    return SkImages::DeferredFromPicture(p, dimensions, matrix, paint, bitDepth, colorSpace);
+    return SkImages::DeferredFromPicture(std::move(p), dimensions, matrix, paint, bitDepth,
+                                         std::move(colorSpace));
 }
 #endif  // !SK_DISABLE_LEGACY_IMAGE_FACTORIES
 
@@ -578,7 +580,8 @@ sk_sp<SkImage> SkImage::MakeFromAdoptedTexture(GrRecordingContext* context,
                                                SkAlphaType alphaType,
                                                sk_sp<SkColorSpace> colorSpace) {
     return SkImages::AdoptTextureFrom(
-            context, backendTexture, textureOrigin, colorType, alphaType, colorSpace);
+            context, backendTexture, textureOrigin, colorType, alphaType,
+            std::move(colorSpace));
 }
 
 sk_sp<SkImage> SkImage::MakeFromCompressedTexture(GrRecordingContext* context,
@@ -592,7 +595,7 @@ sk_sp<SkImage> SkImage::MakeFromCompressedTexture(GrRecordingContext* context,
                                                   backendTexture,
                                                   origin,
                                                   alphaType,
-                                                  colorSpace,
+                                                  std::move(colorSpace),
                                                   textureReleaseProc,
                                                   releaseContext);
 }
@@ -618,7 +621,7 @@ sk_sp<SkImage> SkImage::MakeFromTexture(GrRecordingContext* context,
                                        origin,
                                        colorType,
                                        alphaType,
-                                       colorSpace,
+                                       std::move(colorSpace),
                                        textureReleaseProc,
                                        rContext);
 }
@@ -634,14 +637,14 @@ sk_sp<SkImage> SkImage::MakePromiseTexture(sk_sp<GrContextThreadSafeProxy> gpuCo
                                            PromiseImageTextureFulfillProc textureFulfillProc,
                                            PromiseImageTextureReleaseProc textureReleaseProc,
                                            PromiseImageTextureContext textureContext) {
-    return SkImages::PromiseTextureFrom(gpuContextProxy,
+    return SkImages::PromiseTextureFrom(std::move(gpuContextProxy),
                                         backendFormat,
                                         dimensions,
                                         mipmapped,
                                         origin,
                                         colorType,
                                         alphaType,
-                                        colorSpace,
+                                        std::move(colorSpace),
                                         textureFulfillProc,
                                         textureReleaseProc,
                                         textureContext);
@@ -653,9 +656,9 @@ sk_sp<SkImage> SkImage::MakePromiseYUVATexture(sk_sp<GrContextThreadSafeProxy> g
                                                PromiseImageTextureFulfillProc textureFulfillProc,
                                                PromiseImageTextureReleaseProc textureReleaseProc,
                                                PromiseImageTextureContext textureContexts[]) {
-    return SkImages::PromiseTextureFromYUVA(gpuContextProxy,
+    return SkImages::PromiseTextureFromYUVA(std::move(gpuContextProxy),
                                             backendTextureInfo,
-                                            imageColorSpace,
+                                            std::move(imageColorSpace),
                                             textureFulfillProc,
                                             textureReleaseProc,
                                             textureContexts);
@@ -669,7 +672,7 @@ sk_sp<SkImage> SkImage::MakeTextureFromCompressed(GrDirectContext* direct,
                                                   GrMipmapped mipmapped,
                                                   GrProtected isProtected) {
     return SkImages::TextureFromCompressedTextureData(
-            direct, data, width, height, type, mipmapped, isProtected);
+            direct, std::move(data), width, height, type, mipmapped, isProtected);
 }
 
 sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
@@ -678,7 +681,7 @@ sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
                                              TextureReleaseProc textureReleaseProc,
                                              ReleaseContext releaseContext) {
     return SkImages::TextureFromYUVATextures(
-            context, yuvaTextures, imageColorSpace, textureReleaseProc, releaseContext);
+            context, yuvaTextures, std::move(imageColorSpace), textureReleaseProc, releaseContext);
 }
 
 sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
@@ -692,7 +695,7 @@ sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,
                                             bool limitToMaxTextureSize,
                                             sk_sp<SkColorSpace> imageColorSpace) {
     return SkImages::TextureFromYUVAPixmaps(
-            context, pixmaps, buildMips, limitToMaxTextureSize, imageColorSpace);
+            context, pixmaps, buildMips, limitToMaxTextureSize, std::move(imageColorSpace));
 }
 
 sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,
@@ -720,7 +723,7 @@ sk_sp<SkImage> SkImage::MakeFromAHardwareBuffer(
             SkAlphaType alphaType,
             sk_sp<SkColorSpace> colorSpace,
             GrSurfaceOrigin surfaceOrigin) {
-    return SkImages::DeferredFromAHardwareBuffer(hardwareBuffer, alphaType, colorSpace,
+    return SkImages::DeferredFromAHardwareBuffer(hardwareBuffer, alphaType, std::move(colorSpace),
                                                  surfaceOrigin);
 }
 
