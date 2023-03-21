@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ac9066e_4babafac",
+        "filename": "resources/sksl/intrinsics/Inverse.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-21T15:44:45Z",
+      "side": 0,
+      "message": "`mat2x2` is a keyword in ES3 which was causing the test to fail to compile in SkRP.",
+      "range": {
+        "startLine": 4,
+        "startChar": 18,
+        "endLine": 4,
+        "endChar": 24
+      },
+      "revId": "f03b8fe595bd655c8787af00869caa0f5f61d375",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
