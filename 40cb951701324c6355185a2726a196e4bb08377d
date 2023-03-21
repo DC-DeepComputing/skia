@@ -22,6 +22,30 @@
       },
       "revId": "40cb951701324c6355185a2726a196e4bb08377d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "149cac52_8875af5a",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-21T12:40:25Z",
+      "side": 1,
+      "message": "Yes, due to signed/unsigned. (bytesPerPixel returns int)",
+      "parentUuid": "e3888cf9_255d9dc1",
+      "range": {
+        "startLine": 289,
+        "startChar": 38,
+        "endLine": 289,
+        "endChar": 54
+      },
+      "revId": "40cb951701324c6355185a2726a196e4bb08377d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
