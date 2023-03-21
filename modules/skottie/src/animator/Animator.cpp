@@ -48,10 +48,26 @@ void AnimatablePropertyContainer::shrink_to_fit() {
 }
 
 bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder& abuilder,
-                                           const skjson::ObjectValue* jprop,
+                                           const skjson::ObjectValue* defaultProp,
                                            AnimatorBuilder& builder) {
-    if (!jprop) {
+    if (!defaultProp) {
         return false;
+    }
+
+    const skjson::ObjectValue* jprop = defaultProp;
+    if (const skjson::StringValue* jpropSlotID = (*jprop)["sid"] ) {
+        if (!abuilder.fSlotsRoot) {
+            abuilder.log(Logger::Level::kWarning, jprop,
+                         "Slotid found but no slots were found in the json. Using default values.");
+        } else {
+            const skjson::ObjectValue* slot = (*(abuilder.fSlotsRoot))[jpropSlotID->begin()];
+            if (!slot) {
+                abuilder.log(Logger::Level::kWarning, jprop,
+                             "Specified slotID not found in 'slots'. Using default values.");
+            } else {
+                jprop = (*slot)["p"];
+            }
+        }
     }
 
     const auto& jpropA = (*jprop)["a"];
