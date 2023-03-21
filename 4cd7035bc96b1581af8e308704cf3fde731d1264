@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ad74302_8c656a75",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-03-21T17:49:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fc78963_6f56143c",
+      "revId": "4cd7035bc96b1581af8e308704cf3fde731d1264",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6df9de23_0e1837f3",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-03-21T17:16:46Z",
       "side": 1,
       "message": "I think we can overwrite the original `jprop` argument as needed -- no need for a separate variable or renaming.",
+      "revId": "4cd7035bc96b1581af8e308704cf3fde731d1264",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5cce07f_60e38031",
+        "filename": "modules/skottie/src/animator/Animator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-03-21T17:49:58Z",
+      "side": 1,
+      "message": "Sounds good. Done.",
+      "parentUuid": "6df9de23_0e1837f3",
       "revId": "4cd7035bc96b1581af8e308704cf3fde731d1264",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
