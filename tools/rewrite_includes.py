@@ -46,6 +46,8 @@ ignorelist = [
   # Some node_modules/ files (used by CanvasKit et al) have c++ code which we should ignore.
   'node_modules',
   'include/third_party/skcms',
+  # Shims for most clients
+  'SkEncodedImageFormat.h',
 ]
 
 assert '/' in [os.sep, os.altsep]
