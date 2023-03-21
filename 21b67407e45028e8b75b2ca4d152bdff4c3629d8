@@ -46,6 +46,29 @@
       },
       "revId": "21b67407e45028e8b75b2ca4d152bdff4c3629d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48b9b5fc_beee6fc5",
+        "filename": "src/gpu/ganesh/SurfaceDrawContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1874,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-21T20:38:37Z",
+      "side": 1,
+      "message": "Can this fail? Should we just be asserting instead?\n\nLike looking at the check we just require the style has all been applied (i.e. line 1858), we have a proxyProvider (can we not have one?????), and that the AAType is kCoverage or kNone (line 1871). So seems like we\u0027ll always be valid here unless there is something weird about have an fProxyProvider or not.",
+      "range": {
+        "startLine": 1874,
+        "startChar": 8,
+        "endLine": 1874,
+        "endChar": 76
+      },
+      "revId": "21b67407e45028e8b75b2ca4d152bdff4c3629d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
