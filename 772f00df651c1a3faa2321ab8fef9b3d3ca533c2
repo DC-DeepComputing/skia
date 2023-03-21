@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed7def10_aeba5353",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-21T14:39:48Z",
+      "side": 1,
+      "message": "This mess is for testing the client implementation. It borrows data from icu implementation instead of getting in from a user (which is very hard to run on all existing SkParagraph tests).\nIt\u0027s not a real API use. Just for testing.",
+      "parentUuid": "14e18592_3a6e029f",
+      "revId": "772f00df651c1a3faa2321ab8fef9b3d3ca533c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4326aa9_95887910",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25500cf3_a97cb301",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-21T14:39:48Z",
+      "side": 1,
+      "message": "It does - in case we have both we treat is as a \"test\" implementation that gets data from icu and passes it to the client.",
+      "parentUuid": "f4326aa9_95887910",
+      "revId": "772f00df651c1a3faa2321ab8fef9b3d3ca533c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93913451_c18d5d78",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-03-21T14:27:45Z",
       "side": 1,
       "message": "Why is this building test code directly into `:skunicode` instead of into a test target?",
+      "revId": "772f00df651c1a3faa2321ab8fef9b3d3ca533c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c6a07fa_66a1a779",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-21T14:39:48Z",
+      "side": 1,
+      "message": "It\u0027s only a bit of test code in skunicode to be able to run it from SkParagraph in a way you called a \"mess\" (and I agree with it). \nThis is the case when the test code becomes another SkUnicode implementation and I truly don\u0027t know how to deal with it otherwise. All I want is to be able to run all SkParagraph tests with the client implementation but without supplying all this icu info myself.",
+      "parentUuid": "93913451_c18d5d78",
       "revId": "772f00df651c1a3faa2321ab8fef9b3d3ca533c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
