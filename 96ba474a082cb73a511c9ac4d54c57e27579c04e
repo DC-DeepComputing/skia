@@ -103,6 +103,24 @@
       "parentUuid": "f8feaa67_1f700b68",
       "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59467065_68d9cf33",
+        "filename": "tests/BitmapTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-21T12:48:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6cd5fb2_e044a312",
+      "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
