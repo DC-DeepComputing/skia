@@ -7,6 +7,7 @@
 
 #include "include/gpu/graphite/Recording.h"
 
+#include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Log.h"
@@ -25,13 +26,25 @@ namespace skgpu::graphite {
 Recording::Recording(std::unique_ptr<TaskGraph> graph,
                      std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& nonVolatileLazyProxies,
                      std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& volatileLazyProxies,
-                     std::unique_ptr<LazyProxyData> targetProxyData)
+                     std::unique_ptr<LazyProxyData> targetProxyData,
+                     SkTArray<sk_sp<RefCntedCallback>>&& finishedProcs)
         : fGraph(std::move(graph))
         , fNonVolatileLazyProxies(std::move(nonVolatileLazyProxies))
         , fVolatileLazyProxies(std::move(volatileLazyProxies))
-        , fTargetProxyData(std::move(targetProxyData)) {}
+        , fTargetProxyData(std::move(targetProxyData))
+        , fFinishedProcs(std::move(finishedProcs)) {}
 
-Recording::~Recording() {}
+Recording::~Recording() {
+    // Any finished procs that haven't been passed to a CommandBuffer fail
+    this->setFailureResultForFinishedProcs();
+}
+
+void Recording::setFailureResultForFinishedProcs() {
+    for (int i = 0; i < fFinishedProcs.size(); ++i) {
+        fFinishedProcs[i]->setFailureResult();
+    }
+    fFinishedProcs.clear();
+}
 
 #if GRAPHITE_TEST_UTILS
 bool Recording::isTargetProxyInstantiated() const {
@@ -111,16 +124,19 @@ bool RecordingPriv::addCommands(Context* context,
     if (fRecording->fTargetProxyData) {
         if (!replaySurface) {
             SKGPU_LOG_E("No surface provided to instantiate target texture proxy.");
+            fRecording->setFailureResultForFinishedProcs();
             return false;
         }
         TextureProxy* surfaceTexture = replaySurface->backingTextureProxy();
         if (!surfaceTexture->instantiate(resourceProvider)) {
             SKGPU_LOG_E("Could not instantiate target texture proxy.");
+            fRecording->setFailureResultForFinishedProcs();
             return false;
         }
         if (!fRecording->fTargetProxyData->lazyInstantiate(resourceProvider,
                                                            surfaceTexture->refTexture())) {
             SKGPU_LOG_E("Could not instantiate deferred texture proxy.");
+            fRecording->setFailureResultForFinishedProcs();
             return false;
         }
         replayTarget = surfaceTexture->texture();
@@ -128,11 +144,17 @@ bool RecordingPriv::addCommands(Context* context,
 
     if (!fRecording->fGraph->addCommands(
                 context, commandBuffer, {replayTarget, replayTranslation})) {
+        fRecording->setFailureResultForFinishedProcs();
         return false;
     }
     for (size_t i = 0; i < fRecording->fExtraResourceRefs.size(); ++i) {
         commandBuffer->trackResource(fRecording->fExtraResourceRefs[i]);
     }
+    for (int i = 0; i < fRecording->fFinishedProcs.size(); ++i) {
+        commandBuffer->addFinishedProc(std::move(fRecording->fFinishedProcs[i]));
+    }
+    fRecording->fFinishedProcs.clear();
+
     return true;
 }
 

@@ -10,10 +10,15 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkChecksum.h"
+#include "include/private/base/SkTArray.h"
 
 #include <memory>
 #include <unordered_set>
 #include <vector>
+
+namespace skgpu {
+class RefCntedCallback;
+}
 
 namespace skgpu::graphite {
 
@@ -65,10 +70,12 @@ private:
     Recording(std::unique_ptr<TaskGraph>,
               std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& nonVolatileLazyProxies,
               std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& volatileLazyProxies,
-              std::unique_ptr<LazyProxyData> targetProxyData);
+              std::unique_ptr<LazyProxyData> targetProxyData,
+              SkTArray<sk_sp<RefCntedCallback>>&& finishedProcs);
 
     bool addCommands(CommandBuffer*, ResourceProvider*);
     void addResourceRef(sk_sp<Resource>);
+    void setFailureResultForFinishedProcs();
 
     std::unique_ptr<TaskGraph> fGraph;
     // We don't always take refs to all resources used by specific Tasks (e.g. a common buffer used
@@ -81,6 +88,8 @@ private:
     std::unordered_set<sk_sp<TextureProxy>, ProxyHash> fVolatileLazyProxies;
 
     std::unique_ptr<LazyProxyData> fTargetProxyData;
+
+    SkTArray<sk_sp<RefCntedCallback>> fFinishedProcs;
 };
 
 } // namespace skgpu::graphite
