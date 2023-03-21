@@ -19,6 +19,10 @@
 
 namespace skgpu::graphite {
 
+const VulkanSharedContext* VulkanResourceProvider::vulkanSharedContext() {
+    return static_cast<const VulkanSharedContext*>(fSharedContext);
+}
+
 VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                SingleOwner* singleOwner)
         : ResourceProvider(sharedContext, singleOwner) {}

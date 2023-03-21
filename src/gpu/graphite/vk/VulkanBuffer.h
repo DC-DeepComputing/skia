@@ -14,12 +14,19 @@
 
 namespace skgpu::graphite {
 
+class VulkanDescriptorSet;
+class VulkanResourceProvider;
+class VulkanSharedContext;
+
 class VulkanBuffer final : public Buffer {
 public:
     static sk_sp<Buffer> Make(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads);
     void freeGpuData() override;
     VkBuffer vkBuffer() const { return fBuffer; }
     VkBufferUsageFlags bufferUsageFlags() const { return fBufferUsageFlags; }
+
+    // Return the uniform descriptor set. Only valid on uniform buffers.
+    const VkDescriptorSet* uniformDescriptorSet() const;
 
 private:
     VulkanBuffer(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads, VkBuffer,
@@ -48,6 +55,8 @@ private:
      *    the memory may not be cached).
      */
     bool fBufferUsedForCPURead = false;
+    const VulkanDescriptorSet* fUniformDescriptorSet;
+
 };
 
 } // namespace skgpu::graphite

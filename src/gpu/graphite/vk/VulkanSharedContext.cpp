@@ -129,7 +129,7 @@ std::unique_ptr<ResourceProvider> VulkanSharedContext::makeResourceProvider(
     return std::unique_ptr<ResourceProvider>(new VulkanResourceProvider(this, singleOwner));
 }
 
-bool VulkanSharedContext::checkVkResult(VkResult result) const {
+bool VulkanSharedContext::checkVkResult(VkResult result) {
     switch (result) {
     case VK_SUCCESS:
         return true;
