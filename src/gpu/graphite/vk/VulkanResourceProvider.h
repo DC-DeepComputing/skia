@@ -11,6 +11,8 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/vk/VulkanBuffer.h"
+#include "src/gpu/graphite/vk/VulkanDescriptorSetManager.h"
 
 namespace skgpu::graphite {
 
@@ -41,6 +43,8 @@ private:
 
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
     void onDeleteBackendTexture(BackendTexture&) override {}
+
+    std::vector<VulkanDescriptorSetManager> fDescriptorSetManagers;
 };
 
 } // namespace skgpu::graphite
