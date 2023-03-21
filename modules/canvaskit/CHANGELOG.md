@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
  - Skottie TransformValue accessors for dynamic layer transforms.
+ - `Paint.setDither` is exposed.
 
 ### Changed
  - `Image.encodeToData` now makes use of the GPU context more consistently.
