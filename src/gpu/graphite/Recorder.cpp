@@ -242,7 +242,8 @@ bool Recorder::deviceIsRegistered(Device* device) {
 }
 #endif
 
-BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
+BackendTexture Recorder::createBackendTexture(SkISize dimensions,
+                                              const TextureInfo& info) {
     ASSERT_SINGLE_OWNER
 
     if (!info.isValid() || info.backend() != this->backend()) {
@@ -253,8 +254,12 @@ BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureI
 
 bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
                                     const SkPixmap srcData[],
-                                    int numLevels) {
+                                    int numLevels,
+                                    GpuFinishedProc finishedProc,
+                                    GpuFinishedContext finishedContext) {
     ASSERT_SINGLE_OWNER
+
+    auto finishedCallback = skgpu::RefCntedCallback::Make(finishedProc, finishedContext);
 
     if (!backendTex.isValid() || backendTex.backend() != this->backend()) {
         return false;
@@ -280,9 +285,12 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
         return false;
     }
 
-    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(backendTex);
+    sk_sp<Texture> texture = fResourceProvider->createWrappedTexture(backendTex);
     if (!texture) {
         return false;
+    }
+    if (finishedCallback) {
+        texture->setReleaseCallback(std::move(finishedCallback));
     }
 
     sk_sp<TextureProxy> proxy(new TextureProxy(std::move(texture)));
