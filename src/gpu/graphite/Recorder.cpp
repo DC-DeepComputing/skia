@@ -242,7 +242,8 @@ bool Recorder::deviceIsRegistered(Device* device) {
 }
 #endif
 
-BackendTexture Recorder::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
+BackendTexture Recorder::createBackendTexture(SkISize dimensions,
+                                              const TextureInfo& info) {
     ASSERT_SINGLE_OWNER
 
     if (!info.isValid() || info.backend() != this->backend()) {
@@ -280,7 +281,7 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
         return false;
     }
 
-    sk_sp<Texture> texture = this->priv().resourceProvider()->createWrappedTexture(backendTex);
+    sk_sp<Texture> texture = fResourceProvider->createWrappedTexture(backendTex);
     if (!texture) {
         return false;
     }

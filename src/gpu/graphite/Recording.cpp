@@ -43,7 +43,7 @@ void Recording::setFailureResultForFinishedProcs() {
     for (int i = 0; i < fFinishedProcs.size(); ++i) {
         fFinishedProcs[i]->setFailureResult();
     }
-    fFinishedProcs().clear();
+    fFinishedProcs.clear();
 }
 
 #if GRAPHITE_TEST_UTILS
