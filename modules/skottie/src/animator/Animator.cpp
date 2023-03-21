@@ -54,13 +54,23 @@ bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder& abuilder,
         return false;
     }
 
-    const auto& jpropA = (*jprop)["a"];
-    const auto& jpropK = (*jprop)["k"];
+    const skjson::ObjectValue* prop;
+    if (const skjson::StringValue* jpropSlotID = (*jprop)["sid"]) {
+        // if there is a slotId, use the property values in slots instead
+        const skjson::ObjectValue* slot = (*(abuilder.fSlotsRoot))[jpropSlotID->begin()];
+        prop = (*slot)["p"];
+    } else {
+        // else, use the values passed into the function
+        prop = jprop;
+    }
+
+    const auto& jpropA = (*prop)["a"];
+    const auto& jpropK = (*prop)["k"];
 
     // Handle expressions on the property.
-    if (const skjson::StringValue* expr = (*jprop)["x"]) {
+    if (const skjson::StringValue* expr = (*prop)["x"]) {
         if (!abuilder.expression_manager()) {
-            abuilder.log(Logger::Level::kWarning, jprop,
+            abuilder.log(Logger::Level::kWarning, prop,
                          "Expression encountered but ExpressionManager not provided.");
         } else {
             builder.parseValue(abuilder, jpropK);
