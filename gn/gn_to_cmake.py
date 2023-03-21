@@ -698,7 +698,7 @@ def WriteProject(project):
   gn_deps_file = posixpath.join(project.build_path, 'build.ninja.d')
   out.write(CMakeStringEscape(gn_deps_file))
   out.write('" "gn_deps_string" OFFSET ')
-  out.write(str(len('build.ninja: ')))
+  out.write(str(len('build.ninja.stamp: ')))
   out.write(')\n')
   # One would think this would need to worry about escaped spaces
   # but gn doesn't escape spaces here (it generates invalid .d files).
