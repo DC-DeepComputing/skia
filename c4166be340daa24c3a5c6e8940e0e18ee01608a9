@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64bfc00a_c3d336dd",
+        "filename": "src/core/SkStrike.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-21T21:34:04Z",
+      "side": 1,
+      "message": "I would expect imagesSize, pathsSize and drawablesSize to be more like curImage, curPath, etc.",
+      "range": {
+        "startLine": 125,
+        "startChar": 17,
+        "endLine": 125,
+        "endChar": 27
+      },
+      "revId": "c4166be340daa24c3a5c6e8940e0e18ee01608a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ceab114_06f957b3",
+        "filename": "src/core/SkStrike.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-21T21:34:04Z",
+      "side": 1,
+      "message": "rm ?",
+      "revId": "c4166be340daa24c3a5c6e8940e0e18ee01608a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
