@@ -5,9 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkTypes.h"
-
-#ifdef SK_ENCODE_PNG
+#include "include/encode/SkPngEncoder.h"
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
@@ -19,8 +17,8 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/core/SkTypes.h"
 #include "include/encode/SkEncoder.h"
-#include "include/encode/SkPngEncoder.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTemplates.h"
@@ -490,4 +488,3 @@ bool SkPngEncoder::Encode(SkWStream* dst, const SkPixmap& src, const Options& op
     return encoder.get() && encoder->encodeRows(src.height());
 }
 
-#endif
