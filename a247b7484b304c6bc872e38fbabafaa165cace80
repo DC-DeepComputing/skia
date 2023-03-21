@@ -160,6 +160,75 @@
       "parentUuid": "103d26e9_d69584b0",
       "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "520448db_6b0cb22b",
+        "filename": "src/gpu/graphite/AttachmentTypes.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-21T19:08:15Z",
+      "side": 1,
+      "message": "It looks like a Swizzle only contains a uint16_t (2 bytes long)... it might be simpler to pass by value? (Here and below)",
+      "range": {
+        "startLine": 60,
+        "startChar": 31,
+        "endLine": 60,
+        "endChar": 58
+      },
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc7d4a34_f902a477",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-21T19:08:15Z",
+      "side": 1,
+      "message": "Just `Swizzle`, no `const\u0026`. This is taking a reference to a temporary. You\u0027ll get lifetime extension because the compiler is forgiving (a surprising gift from the usually-stingy C++), but this function\u0027s not returning a reference.",
+      "range": {
+        "startLine": 225,
+        "startChar": 4,
+        "endLine": 225,
+        "endChar": 15
+      },
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbe529ae_65ee397c",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-21T19:08:15Z",
+      "side": 1,
+      "message": "Consider `Swizzle::RGBA()` (although it looks like that just does the same thing anyway)",
+      "range": {
+        "startLine": 182,
+        "startChar": 24,
+        "endLine": 182,
+        "endChar": 39
+      },
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
