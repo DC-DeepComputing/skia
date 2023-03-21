@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14e18592_3a6e029f",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-21T14:27:45Z",
+      "side": 1,
+      "message": "I imagine this mess is just to keep existing user code exactly the same, but this really goes against the entire idea of having multiple SkUnicode implementations. If this is the way it is going to be used then there is no need for SkUnicode to be an interface and not a concrete implementation (the implementation selected at build time).",
+      "revId": "772f00df651c1a3faa2321ab8fef9b3d3ca533c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4326aa9_95887910",
+        "filename": "modules/skparagraph/src/ParagraphBuilderImpl.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-21T14:27:45Z",
+      "side": 1,
+      "message": "Isn\u0027t this just `defined(SK_UNICODE_CLIENT_IMPLEMENTATION)` so that when there is a client implementation they can set this information? It doesn\u0027t seem to matter if there is an ICU implementation of SkUnicode?",
+      "revId": "772f00df651c1a3faa2321ab8fef9b3d3ca533c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93913451_c18d5d78",
+        "filename": "modules/skunicode/BUILD.gn",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-21T14:27:45Z",
+      "side": 1,
+      "message": "Why is this building test code directly into `:skunicode` instead of into a test target?",
+      "revId": "772f00df651c1a3faa2321ab8fef9b3d3ca533c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
