@@ -124,6 +124,24 @@
       "parentUuid": "db79568d_1a862be5",
       "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "103d26e9_d69584b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-21T17:25:07Z",
+      "side": 1,
+      "message": "Okay, I have spoken with Rob \u0026 Greg and will summarize that discussion output here. I\u0027m happy to set up a brief call with all 4 of us if this requires more discussion after this. As always, thank you for your help, expertise, and patience. :)\n\nRob was supportive of the idea of having the write swizzle be a uniform to cut down on the number of unique shaders *if* that was a plausible option - as in, if storing a write uniform for shaders *could* cut down on the number of unique shaders that would need to be generated.\n\nHowever, Greg was better able to nail down why the uniform approach wouldn’t be helpful in the way we want it to. He assured me that unique shaders created for different write swizzles is to be expected, as we do in Ganesh, and can’t really be avoided. Pipeline creation, not shader creation, is the more expensive operation. The different color attachment formats between pipelines already necessitates different shaders, so we aren’t really altering the number of unique shaders generated one way or another in order to perform this correctly. He even started to question whether read swizzles should be handled in the same way (unique shaders created for each different read swizzle, as opposed to having an enum lookup every time something is sampled with a read swizzle).\n\nLet me know if that makes sense. With that context, I’m inclined to say this approach is what we’d expect.",
+      "parentUuid": "96c87ae2_08395b9b",
+      "revId": "a247b7484b304c6bc872e38fbabafaa165cace80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
