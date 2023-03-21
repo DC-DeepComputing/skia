@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9cbdf703_e0ffe7c0",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-21T13:58:48Z",
+      "side": 1,
+      "message": "Can we add a sentence that the finish procs are moved to the Recording and don\u0027t remain on the Recorder for subsequent Recordings? I could see that assumption/mistake being made down the road.",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 68
+      },
+      "revId": "eb46759744308552ed6f16617856f8c691cadb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0125a598_9f90e318",
         "filename": "include/gpu/graphite/Recorder.h",
         "patchSetId": 3
@@ -66,6 +89,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c7325ac_93dbde1d",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-21T13:58:48Z",
+      "side": 1,
+      "message": "I think if it just moves ownership of the underlying allocation that holds the members, so they don\u0027t need to move themselves?",
+      "parentUuid": "84055037_b588f047",
+      "range": {
+        "startLine": 175,
+        "startChar": 65,
+        "endLine": 175,
+        "endChar": 79
+      },
+      "revId": "eb46759744308552ed6f16617856f8c691cadb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "823f5eea_adc0a7c9",
         "filename": "src/gpu/graphite/Recording.cpp",
         "patchSetId": 3
@@ -77,6 +124,30 @@
       "writtenOn": "2023-03-20T21:16:45Z",
       "side": 1,
       "message": "I\u0027m trying to think of what contract we want to have when calling these. Like should these behave the same as if you passed in a finish callback to the insertRecording call (i.e. the Recording::addFinishInfo is just a convenience call that allows to client to store the callback earlier.\n\nIn that case we have early failure results in QueueManager::addRecording where we call the callback. So I feel like these should also be checked there.",
+      "range": {
+        "startLine": 112,
+        "startChar": 23,
+        "endLine": 112,
+        "endChar": 38
+      },
+      "revId": "eb46759744308552ed6f16617856f8c691cadb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5fb0c79_da8b5f48",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-21T13:58:48Z",
+      "side": 1,
+      "message": "+1 for consistency and having one place finish procs are handled.",
+      "parentUuid": "823f5eea_adc0a7c9",
       "range": {
         "startLine": 112,
         "startChar": 23,
