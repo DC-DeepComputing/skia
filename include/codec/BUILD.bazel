@@ -11,6 +11,7 @@ skia_filegroup(
         "SkCodec.h",
         "SkCodecAnimation.h",
         "SkEncodedOrigin.h",
+        "SkPngChunkReader.h",
     ],
     visibility = ["//include:__pkg__"],
 )
