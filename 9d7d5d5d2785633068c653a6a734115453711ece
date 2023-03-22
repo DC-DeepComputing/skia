@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72ecab41_55f1845e",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-22T20:22:52Z",
+      "side": 1,
+      "message": "Probably worth naming this?\n\n`/*dstPoint\u003d*/`",
+      "range": {
+        "startLine": 416,
+        "startChar": 80,
+        "endLine": 416,
+        "endChar": 86
+      },
+      "revId": "9d7d5d5d2785633068c653a6a734115453711ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63b6f5c4_b5416b18",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-22T20:22:52Z",
+      "side": 1,
+      "message": "This is likely to be used rarely, so maybe we should optimize for the common case of not have a value here?\n\n\n```\n   TextureProxy* curDst \u003d nullptr;\n   //.... \n   \n       curDst \u003d dst.get();\n   //....\n   \n                   curDst ? sk_ref_sp(curDst) : nullptr\n```",
+      "range": {
+        "startLine": 503,
+        "startChar": 32,
+        "endLine": 503,
+        "endChar": 38
+      },
+      "revId": "9d7d5d5d2785633068c653a6a734115453711ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "240391c9_dfd6349b",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-22T20:22:52Z",
+      "side": 1,
+      "message": "tiny nit: `SkToBool` feels quirky to me. I\u0027d have expected `dst` or `dst !\u003d nullptr` here.",
+      "range": {
+        "startLine": 507,
+        "startChar": 29,
+        "endLine": 507,
+        "endChar": 42
+      },
+      "revId": "9d7d5d5d2785633068c653a6a734115453711ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f21c4187_62aee89a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-22T20:22:52Z",
+      "side": 1,
+      "message": "This will always be zero, right?",
+      "range": {
+        "startLine": 484,
+        "startChar": 66,
+        "endLine": 484,
+        "endChar": 75
+      },
+      "revId": "9d7d5d5d2785633068c653a6a734115453711ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
