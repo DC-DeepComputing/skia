@@ -37,8 +37,18 @@ skia_filegroup(
     srcs = [
         "SkRPDebugTrace.h",
         "SkSLDebugInfo.h",
+        "SkSLTraceHook.h",
         "SkVMDebugTrace.h",
         ":enabled_hdrs",
     ],
     visibility = ["//src/sksl:__pkg__"],
+)
+
+skia_filegroup(
+    name = "skopts_hdrs",
+    srcs = [
+        "SkSLTraceHook.h",
+        ":enabled_hdrs",
+    ],
+    visibility = ["//src/opts:__pkg__"],
 )
