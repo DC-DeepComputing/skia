@@ -276,6 +276,30 @@
       },
       "revId": "eb46759744308552ed6f16617856f8c691cadb93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cd496df_0c649b66",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-22T19:02:55Z",
+      "side": 1,
+      "message": "Maybe I misunderstood then -- do you want these checks only in QueueManager::addRecording(), and in the places it fails now and sets the failureResult for info.fFinishedProc I would also call info.fRecording-\u003esetFailureResultForFinishedProcs()?",
+      "parentUuid": "7e098369_41619d24",
+      "range": {
+        "startLine": 112,
+        "startChar": 23,
+        "endLine": 112,
+        "endChar": 38
+      },
+      "revId": "eb46759744308552ed6f16617856f8c691cadb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
