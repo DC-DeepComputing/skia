@@ -6,6 +6,7 @@ load("//bazel:extra_defines.bzl", "EXTRA_DEFINES")
 load("//bazel:skia_rules.bzl", "select_multi")
 
 GENERAL_DEFINES = [
+    "SK_USER_CONFIG_HEADER=\\\"SkUserConfig.h\\\"",
     "SK_GAMMA_APPLY_TO_A8",
 ] + select({
     "//bazel/common_config_settings:debug_build": [
