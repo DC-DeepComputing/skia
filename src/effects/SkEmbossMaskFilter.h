@@ -42,8 +42,8 @@ public:
     //  This method is not exported to java.
     SkMask::Format getFormat() const override;
     //  This method is not exported to java.
-    bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
-                    SkIPoint* margin) const override;
+    bool onFilterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
+                      SkIPoint* margin) const override;
 
 protected:
     SkEmbossMaskFilter(SkScalar blurSigma, const Light& light);

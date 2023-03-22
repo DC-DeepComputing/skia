@@ -42,8 +42,8 @@ public:
 
     SkMask::Format getFormat() const override { return SkMask::kA8_Format; }
 
-    bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
-                    SkIPoint* margin) const override;
+    bool onFilterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
+                      SkIPoint* margin) const override;
 
     void computeFastBounds(const SkRect& src, SkRect* dst) const override {
         *dst = src;
@@ -88,8 +88,8 @@ static void rect_memcpy(void* dst, size_t dstRB, const void* src, size_t srcRB,
     }
 }
 
-bool SkShaderMF::filterMask(SkMask* dst, const SkMask& src, const SkMatrix& ctm,
-                            SkIPoint* margin) const {
+bool SkShaderMF::onFilterMask(SkMask* dst, const SkMask& src, const SkMatrix& ctm,
+                              SkIPoint* margin) const {
     if (src.fFormat != SkMask::kA8_Format) {
         return false;
     }

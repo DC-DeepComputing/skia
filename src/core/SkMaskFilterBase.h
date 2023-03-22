@@ -66,8 +66,12 @@ public:
                         applying the filter. If returning false, ignore this parameter.
         @return true if the dst mask was correctly created.
     */
-    virtual bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
-                            SkIPoint* margin) const = 0;
+    bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix& mx, SkIPoint* margin) const {
+        return this->onFilterMask(dst, src, mx, margin);
+    }
+
+    virtual bool onFilterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
+                              SkIPoint* margin) const = 0;
 
 #if defined(SK_GANESH)
     /**

@@ -78,8 +78,8 @@ SkMask::Format SkEmbossMaskFilter::getFormat() const {
     return SkMask::k3D_Format;
 }
 
-bool SkEmbossMaskFilter::filterMask(SkMask* dst, const SkMask& src,
-                                    const SkMatrix& matrix, SkIPoint* margin) const {
+bool SkEmbossMaskFilter::onFilterMask(SkMask* dst, const SkMask& src,
+                                      const SkMatrix& matrix, SkIPoint* margin) const {
     if (src.fFormat != SkMask::kA8_Format) {
         return false;
     }

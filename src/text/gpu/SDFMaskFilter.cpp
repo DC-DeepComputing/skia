@@ -25,8 +25,8 @@ public:
     //  This method is not exported to java.
     SkMask::Format getFormat() const override;
     //  This method is not exported to java.
-    bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
-                    SkIPoint* margin) const override;
+    bool onFilterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
+                      SkIPoint* margin) const override;
 
     void computeFastBounds(const SkRect&, SkRect*) const override;
 
@@ -47,7 +47,7 @@ SkMask::Format SDFMaskFilterImpl::getFormat() const {
     return SkMask::kSDF_Format;
 }
 
-bool SDFMaskFilterImpl::filterMask(SkMask* dst, const SkMask& src,
+bool SDFMaskFilterImpl::onFilterMask(SkMask* dst, const SkMask& src,
                                      const SkMatrix& matrix, SkIPoint* margin) const {
     if (src.fFormat != SkMask::kA8_Format
         && src.fFormat != SkMask::kBW_Format

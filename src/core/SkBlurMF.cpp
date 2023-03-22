@@ -56,8 +56,8 @@ public:
 
     // overrides from SkMaskFilter
     SkMask::Format getFormat() const override;
-    bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
-                    SkIPoint* margin) const override;
+    bool onFilterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
+                      SkIPoint* margin) const override;
 
 #if defined(SK_GANESH)
     bool canFilterMaskGPU(const GrStyledShape& shape,
@@ -152,9 +152,9 @@ bool SkBlurMaskFilterImpl::asABlur(BlurRec* rec) const {
     return true;
 }
 
-bool SkBlurMaskFilterImpl::filterMask(SkMask* dst, const SkMask& src,
-                                      const SkMatrix& matrix,
-                                      SkIPoint* margin) const {
+bool SkBlurMaskFilterImpl::onFilterMask(SkMask* dst, const SkMask& src,
+                                        const SkMatrix& matrix,
+                                        SkIPoint* margin) const {
     SkScalar sigma = this->computeXformedSigma(matrix);
     return SkBlurMask::BoxBlur(dst, src, sigma, fBlurStyle, margin);
 }
