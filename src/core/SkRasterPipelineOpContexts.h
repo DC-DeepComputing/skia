@@ -194,12 +194,33 @@ struct SkRasterPipeline_BranchCtx {
 
 struct SkRasterPipeline_BranchIfEqualCtx : public SkRasterPipeline_BranchCtx {
     int value;
-    const int *ptr;
+    const int* ptr;
 };
 
 struct SkRasterPipeline_CaseOpCtx {
     int expectedValue;
     int* ptr;  // points to a pair of adjacent I32s: {I32 actualValue, I32 defaultMask}
+};
+
+struct SkRasterPipeline_TraceFuncCtx {
+    int traceHookID;
+    int funcIdx;
+};
+
+struct SkRasterPipeline_TraceScopeCtx {
+    int traceHookID;
+    int delta;
+};
+
+struct SkRasterPipeline_TraceLineCtx {
+    int traceHookID;
+    int lineNumber;
+};
+
+struct SkRasterPipeline_TraceVarCtx {
+    int traceHookID;
+    int slotIdx;
+    const float* ptr;
 };
 
 #endif  // SkRasterPipelineOpContexts_DEFINED
