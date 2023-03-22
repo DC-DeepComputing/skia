@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ac848ce_294fb2f7",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-22T16:44:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81196f04_883955b3",
+      "range": {
+        "startLine": 357,
+        "startChar": 23,
+        "endLine": 357,
+        "endChar": 45
+      },
+      "revId": "c12dce578b1d766ca0aba9fb0506d3f82f7efbed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c87ca16_cb31a77d",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed166669_257845e5",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-22T16:44:38Z",
+      "side": 1,
+      "message": "Missed this one. Beans.",
+      "parentUuid": "4c87ca16_cb31a77d",
+      "range": {
+        "startLine": 69,
+        "startChar": 23,
+        "endLine": 69,
+        "endChar": 45
+      },
+      "revId": "c12dce578b1d766ca0aba9fb0506d3f82f7efbed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16c183a0_8a6e4c20",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-03-22T15:45:50Z",
       "side": 1,
       "message": "Please consider `c_str()` for less surprise. (This would be subtly wrong if `asString` returned a `string_view`--it doesn\u0027t, but there\u0027s no way to know this at the call site. `c_str()` does the same work and is unambiguously safe.)",
+      "range": {
+        "startLine": 185,
+        "startChar": 80,
+        "endLine": 185,
+        "endChar": 86
+      },
+      "revId": "c12dce578b1d766ca0aba9fb0506d3f82f7efbed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "699a8307_1aab83c2",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-03-22T16:44:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16c183a0_8a6e4c20",
       "range": {
         "startLine": 185,
         "startChar": 80,
