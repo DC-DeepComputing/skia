@@ -4,7 +4,7 @@
 #include "tools/HashAndEncode.h"
 
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkICC.h"
+#include "include/encode/SkICC.h"
 #include "include/core/SkString.h"
 #include "modules/skcms/skcms.h"
 
