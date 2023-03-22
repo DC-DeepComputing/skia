@@ -61,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7cb8c19e_ebe6951d",
+        "filename": "include/config/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-22T15:36:52Z",
+      "side": 1,
+      "message": "I saw this `SK_USER_CONFIG_HEADER` but not an example of how it would be used, mostly wanted to note that it won\u0027t work (be able to be used as `#include SK_USER_CONFIG_HEADER`) in G3 and maybe other picky build systems.\n\nI suppose normally when we do something like this we just add another include directory and make sure the file itself is in some unlikely to collide directory name to make things obvious. Like how our FreeType build sticks its custom includes in directories with long explanatory names.",
+      "parentUuid": "4540d664_b205125b",
+      "range": {
+        "startLine": 15,
+        "startChar": 9,
+        "endLine": 15,
+        "endChar": 30
+      },
+      "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7186e58e_eaaf840f",
         "filename": "include/config/copts.bzl",
         "patchSetId": 4
