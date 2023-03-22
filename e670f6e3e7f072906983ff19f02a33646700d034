@@ -16,6 +16,23 @@
       "message": "Just makes it easier to focus on virtuals and not call-sites",
       "revId": "e670f6e3e7f072906983ff19f02a33646700d034",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf24722a_9a7b04ef",
+        "filename": "src/core/SkMaskFilterBase.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-03-22T19:47:47Z",
+      "side": 1,
+      "message": "Can we make this + overrides protected now?",
+      "revId": "e670f6e3e7f072906983ff19f02a33646700d034",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
