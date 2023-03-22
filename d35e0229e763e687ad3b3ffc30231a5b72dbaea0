@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c3fc188_f377b2bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-22T22:04:14Z",
+      "side": 1,
+      "message": "I wrote this with the following Graphite code in mind:\nhttps://source.chromium.org/chromium/chromium/src/+/adf594f3:third_party/skia/src/gpu/graphite/mtl/MtlCaps.mm;l\u003d281\nthough perhaps edited to be:\n\n```\n    shaderCaps-\u003efFBFetchSupport \u003d true;\n    shaderCaps-\u003efFBFetchColorName \u003d \"sk_LastFragColor\";\n```",
+      "revId": "d35e0229e763e687ad3b3ffc30231a5b72dbaea0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
