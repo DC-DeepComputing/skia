@@ -34,6 +34,24 @@
       "parentUuid": "fd74a3f7_258e5592",
       "revId": "36d38353e7f06ffc1aa733f78880fecf5570647d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91987357_c54fb187",
+        "filename": "src/sksl/tracing/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-22T20:42:15Z",
+      "side": 1,
+      "message": "Instead of listing the file in two seperate filegroups, you can refer to :skopts_hdrs",
+      "parentUuid": "fd74a3f7_258e5592",
+      "revId": "36d38353e7f06ffc1aa733f78880fecf5570647d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

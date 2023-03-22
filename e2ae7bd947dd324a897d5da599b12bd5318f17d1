@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c4fc07f0_9d4a4f83",
+        "filename": "src/sksl/tracing/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-22T20:42:15Z",
+      "side": 1,
+      "message": "I think you will need to add this filegroup to https://github.com/google/skia/blob/4f1cae66791c60dc6584f6cecbd58c533965a7ac/bazel/exporter_tool/main.go#L146 so the generator includes it.",
+      "range": {
+        "startLine": 48,
+        "startChar": 12,
+        "endLine": 48,
+        "endChar": 23
+      },
+      "revId": "e2ae7bd947dd324a897d5da599b12bd5318f17d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "93d3f529_bf232599",
         "filename": "src/sksl/tracing/BUILD.bazel",
         "patchSetId": 3
@@ -19,6 +42,29 @@
         "startChar": 8,
         "endLine": 51,
         "endChar": 24
+      },
+      "revId": "e2ae7bd947dd324a897d5da599b12bd5318f17d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "866b1429_c11046ee",
+        "filename": "src/sksl/tracing/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-22T20:42:15Z",
+      "side": 1,
+      "message": "I doubt enabled_hdrs is needed for SkOpts, right?",
+      "range": {
+        "startLine": 51,
+        "startChar": 10,
+        "endLine": 51,
+        "endChar": 22
       },
       "revId": "e2ae7bd947dd324a897d5da599b12bd5318f17d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
