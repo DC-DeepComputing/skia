@@ -31,13 +31,14 @@ ExtractPaintData(Recorder* recorder,
                  const Layout layout,
                  const SkM44& local2Dev,
                  const PaintParams& p,
+                 sk_sp<TextureProxy> dstTexture,
                  const SkColorInfo& targetColorInfo) {
     SkDEBUGCODE(builder->checkReset());
 
     gatherer->resetWithNewLayout(layout);
 
     KeyContext keyContext(recorder, local2Dev, targetColorInfo, p.color());
-    p.toKey(keyContext, builder, gatherer);
+    p.toKey(keyContext, builder, gatherer, std::move(dstTexture));
 
     auto entry = recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
     if (!entry) {
