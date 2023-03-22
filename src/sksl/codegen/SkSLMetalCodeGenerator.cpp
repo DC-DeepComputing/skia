@@ -1520,6 +1520,13 @@ void MetalCodeGenerator::writeVariableReference(const VariableReference& ref) {
                 this->write("_frontFacing");
             }
             break;
+        case SK_LASTFRAGCOLOR_BUILTIN:
+            if (fContext.fCaps->fFBFetchSupport) {
+                this->write(fContext.fCaps->fFBFetchColorName);
+            } else {
+                fContext.fErrors->error(ref.fPosition, "framebuffer fetch not supported");
+            }
+            break;
         default:
             const Variable& var = *ref.variable();
             if (var.storage() == Variable::Storage::kGlobal) {
@@ -2191,6 +2198,10 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
             this->write(separator);
             this->write("bool _frontFacing [[front_facing]]");
             this->write(", float4 _fragCoord [[position]]");
+            if (fProgram.fInputs.fUseLastFragColor) {
+                this->write(", half4 " + std::string(fContext.fCaps->fFBFetchColorName) +
+                            " [[color(0)]]\n");
+            }
             separator = ", ";
         } else if (ProgramConfig::IsVertex(fProgram.fConfig->fKind)) {
             this->write(separator);
