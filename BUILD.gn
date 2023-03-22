@@ -7,6 +7,7 @@ import("gn/flutter_defines.gni")
 import("gn/fuchsia_defines.gni")
 import("gn/shared_sources.gni")
 import("gn/skia.gni")
+import("gn/toolchain/rust.gni")
 import("gn/toolchain/wasm.gni")
 
 if (is_fuchsia) {
@@ -3579,5 +3580,31 @@ if (is_ios && skia_use_metal && skia_enable_ganesh &&
 if (is_ios && skia_enable_skottie && !skia_enable_flutter_defines) {
   group("skottie_ios") {
     deps = [ "tools/skottie_ios_app" ]
+  }
+}
+
+if (toolchain_has_rust) {
+  rust_library("font_types") {
+    rustenv = [ "OUT_DIR=" + rebase_path(target_out_dir) ]
+    output_dir = rebase_path(target_out_dir)
+    rustflags = [ "--edition=2021" ]
+    sources = [ "third_party/externals/fontations/font-types/src/lib.rs" ]
+  }
+
+  rust_library("read_fonts") {
+    rustenv = [ "OUT_DIR=" + rebase_path(target_out_dir) ]
+
+    public_deps = [ ":font_types" ]
+    output_dir = rebase_path(target_out_dir)
+    rustflags = [ "--edition=2021" ]
+    sources = [ "third_party/externals/fontations/read-fonts/src/lib.rs" ]
+  }
+
+  rust_library("skrifa") {
+    rustenv = [ "OUT_DIR=" + rebase_path(target_out_dir) ]
+    deps = [ ":read_fonts" ]
+    output_dir = rebase_path(target_out_dir)
+    rustflags = [ "--edition=2021" ]
+    sources = [ "third_party/externals/fontations/skrifa/src/lib.rs" ]
   }
 }
