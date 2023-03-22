@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5afd1a20_f8dd8deb",
+        "filename": "defines.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-22T14:24:40Z",
+      "side": 1,
+      "message": "What would this define be used for? Mostly want to point point out that using defines for includes doesn\u0027t fly in G3 (it kinda works for FreeType, but only because there is an internal hack for it). It\u0027s why we have the really ugly GOOGLE3 hack where SK_REF_CNT_MIXIN_INCLUDE is used.",
+      "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7186e58e_eaaf840f",
+        "filename": "include/config/copts.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-22T14:24:40Z",
+      "side": 1,
+      "message": "Interesting to move just these two files? I suppose it makes a bit of sense, but in some ways it looks like almost all of what\u0027s in `bazel/` is this sort of thing? I suppose most of the rest of it doesn\u0027t matter as much since Bazel doesn\u0027t look in there for any actual rules when Skia is being built as part of another project (as silly as I find that).",
+      "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
