@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c168aa33_e0ce11ac",
+        "filename": "src/sksl/tracing/SkSLDebugInfo.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-22T20:11:24Z",
+      "side": 1,
+      "message": "nit: We\u0027re in the namespace, so maybe just `TraceInfo` ?",
+      "revId": "728b4061c80c208e338e9b97741c7de454836422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
