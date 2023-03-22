@@ -106,14 +106,6 @@ protected:
     }
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
-        if (!canvas->recordingContext()) {
-            *errorMsg = "Active context required to create SkSurface";
-            return DrawResult::kSkip;
-        }
-
-        auto dContext = GrAsDirectContext(canvas->recordingContext());
-
-        // This GM exists to test a specific feature of the GPU backend.
         // This GM uses ToolUtils::makeSurface which doesn't work well with vias.
         // This GM uses SkRandomTypeface which doesn't work well with serialization.
         canvas->drawColor(SK_ColorWHITE);
@@ -152,6 +144,7 @@ protected:
         surface->draw(canvas, 0, 0);
         yOffset += stride;
 
+        auto dContext = GrAsDirectContext(canvas->recordingContext());
         if (dContext) {
             // free gpu resources and verify
             dContext->freeGpuResources();
