@@ -94,6 +94,11 @@
 #  define GR_TEST_UTILS 0
 #endif
 
+#if !SK_SUPPORT_GPU
+   #define SK_GPU_V1 0 // always false if Ganesh is disabled
+#elif !defined(SK_GPU_V1)
+#  define SK_GPU_V1 1   // otherwise default to v1 enabled
+#endif
 
 #if defined(SK_HISTOGRAM_ENUMERATION)  || \
     defined(SK_HISTOGRAM_BOOLEAN)      || \

@@ -21,7 +21,7 @@
 #include "src/core/SkMask.h"
 #include "src/core/SkReadPixelsRec.h"
 #include "src/core/SkSwizzlePriv.h"
-#include "src/opts/SkUtils_opts.h"
+#include "src/opts/Memset_opts.h"
 
 #include <cstring>
 #include <iterator>
@@ -680,6 +680,18 @@ bool SkPixmap::erase(SkColor color, const SkIRect& subset) const {
     return this->erase(SkColor4f::FromColor(color), &subset);
 }
 
+static void memset128(SkColor4f buffer[], SkColor4f value, int count) {
+    constexpr int N = 32 / sizeof(SkColor4f);
+    while (count >= N) {
+        skvx::Vec<N,SkColor4f>(value).store(buffer);
+        buffer += N;
+        count  -= N;
+    }
+    while (count --> 0) {
+        *buffer++ = value;
+    }
+}
+
 bool SkPixmap::erase(const SkColor4f& color, SkColorSpace* srcCS, const SkIRect* subset) const {
     if (this->colorType() == kUnknown_SkColorType) {
         return false;
@@ -711,25 +723,25 @@ bool SkPixmap::erase(const SkColor4f& color, SkColorSpace* srcCS, const SkIRect*
         memcpy(&dstColor, dstPixel, sizeof(dstColor));
         for (int y = clip.fTop; y < clip.fBottom; ++y) {
             SkColor4f* addr = (SkColor4f*)this->writable_addr(clip.fLeft, y);
-            SK_OPTS_NS::memsetT(addr, dstColor, clip.width());
+            memset128(addr, dstColor, clip.width());
         }
     } else {
         using MemSet = void(*)(void*, uint64_t c, int count);
         const MemSet procs[] = {
             [](void* addr, uint64_t c, int count) {
                 SkASSERT(c == (uint8_t)c);
-                SK_OPTS_NS::memsetT((uint8_t*)addr, (uint8_t)c, count);
+                SkOpts::memset8((uint8_t*)addr, (uint8_t)c, count);
             },
             [](void* addr, uint64_t c, int count) {
                 SkASSERT(c == (uint16_t)c);
-                SK_OPTS_NS::memsetT((uint16_t*)addr, (uint16_t)c, count);
+                SkOpts::memset16((uint16_t*)addr, (uint16_t)c, count);
             },
             [](void* addr, uint64_t c, int count) {
                 SkASSERT(c == (uint32_t)c);
-                SK_OPTS_NS::memsetT((uint32_t*)addr, (uint32_t)c, count);
+                SkOpts::memset32((uint32_t*)addr, (uint32_t)c, count);
             },
             [](void* addr, uint64_t c, int count) {
-                SK_OPTS_NS::memsetT((uint64_t*)addr, c, count);
+                SkOpts::memset64((uint64_t*)addr, c, count);
             },
         };
 

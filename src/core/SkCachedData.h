@@ -8,9 +8,10 @@
 #ifndef SkCachedData_DEFINED
 #define SkCachedData_DEFINED
 
-#include "include/core/SkTypes.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkNoncopyable.h"
+
+#include <cstddef>
 
 class SkDiscardableMemory;
 
