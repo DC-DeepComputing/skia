@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9843a69f_f14bd75a",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-22T21:56:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72ecab41_55f1845e",
+      "range": {
+        "startLine": 416,
+        "startChar": 80,
+        "endLine": 416,
+        "endChar": 86
+      },
+      "revId": "9d7d5d5d2785633068c653a6a734115453711ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63b6f5c4_b5416b18",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-22T20:22:52Z",
       "side": 1,
       "message": "This is likely to be used rarely, so maybe we should optimize for the common case of not have a value here?\n\n\n```\n   TextureProxy* curDst \u003d nullptr;\n   //.... \n   \n       curDst \u003d dst.get();\n   //....\n   \n                   curDst ? sk_ref_sp(curDst) : nullptr\n```",
+      "range": {
+        "startLine": 503,
+        "startChar": 32,
+        "endLine": 503,
+        "endChar": 38
+      },
+      "revId": "9d7d5d5d2785633068c653a6a734115453711ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ce27d5c_e5c716a6",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-22T21:56:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63b6f5c4_b5416b18",
       "range": {
         "startLine": 503,
         "startChar": 32,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e3c5326_ad9dd14d",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-22T21:56:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "240391c9_dfd6349b",
+      "range": {
+        "startLine": 507,
+        "startChar": 29,
+        "endLine": 507,
+        "endChar": 42
+      },
+      "revId": "9d7d5d5d2785633068c653a6a734115453711ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f21c4187_62aee89a",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-03-22T20:22:52Z",
       "side": 1,
       "message": "This will always be zero, right?",
+      "range": {
+        "startLine": 484,
+        "startChar": 66,
+        "endLine": 484,
+        "endChar": 75
+      },
+      "revId": "9d7d5d5d2785633068c653a6a734115453711ece",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17f9261a_0de56177",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-22T21:56:11Z",
+      "side": 1,
+      "message": "I created a bug and added a todo to actually use this.",
+      "parentUuid": "f21c4187_62aee89a",
       "range": {
         "startLine": 484,
         "startChar": 66,
