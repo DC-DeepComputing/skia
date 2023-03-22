@@ -18,6 +18,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dc191b9_42c7defe",
+        "filename": "defines.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-22T14:33:25Z",
+      "side": 1,
+      "message": "Good catch. I didn\u0027t mean to leave this one in.",
+      "parentUuid": "5afd1a20_f8dd8deb",
+      "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4540d664_b205125b",
+        "filename": "include/config/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-22T14:33:25Z",
+      "side": 1,
+      "message": "I *did* mean to leave this one in, only because the include search path starts here (and no longer at the Skia root). I don\u0027t think I can reasonably use \"..\" in the includes section of cc_library.\n\nI guess we could set a different define that chooses where to look for SkUserConfig.h",
+      "range": {
+        "startLine": 15,
+        "startChar": 9,
+        "endLine": 15,
+        "endChar": 30
+      },
+      "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7186e58e_eaaf840f",
@@ -31,6 +72,24 @@
       "writtenOn": "2023-03-22T14:24:40Z",
       "side": 1,
       "message": "Interesting to move just these two files? I suppose it makes a bit of sense, but in some ways it looks like almost all of what\u0027s in `bazel/` is this sort of thing? I suppose most of the rest of it doesn\u0027t matter as much since Bazel doesn\u0027t look in there for any actual rules when Skia is being built as part of another project (as silly as I find that).",
+      "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e4e6209_a7667279",
+        "filename": "include/config/copts.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-22T14:33:25Z",
+      "side": 1,
+      "message": "I think the copts and linkopts are the only part that users *should* reasonably change based on their own toolchain. I don\u0027t think they should be messing with our other Bazel macros.",
+      "parentUuid": "7186e58e_eaaf840f",
       "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
