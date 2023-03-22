@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea30cba2_857a5842",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-22T17:33:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c752fffa_bab874ce",
+      "range": {
+        "startLine": 359,
+        "startChar": 55,
+        "endLine": 359,
+        "endChar": 60
+      },
+      "revId": "cbe74f401cbfe1154e741f6e7786a4fbb3d75920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "efaa5e98_c3b79b61",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-22T17:14:42Z",
       "side": 1,
       "message": "Should these be something more like curTypeface and curStrike?",
+      "range": {
+        "startLine": 1097,
+        "startChar": 8,
+        "endLine": 1097,
+        "endChar": 21
+      },
+      "revId": "cbe74f401cbfe1154e741f6e7786a4fbb3d75920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0d69f7f_690d1d0a",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1097,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-22T17:33:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efaa5e98_c3b79b61",
       "range": {
         "startLine": 1097,
         "startChar": 8,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d128870b_e63517a4",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-22T17:33:05Z",
+      "side": 1,
+      "message": "Yes. This is only for humans, and not part of the chrome infrastructure.",
+      "parentUuid": "a8a589be_58633d39",
+      "revId": "cbe74f401cbfe1154e741f6e7786a4fbb3d75920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59c6fa6f_aba16385",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "978762cf_c88d093d",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1125,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-22T17:33:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59c6fa6f_aba16385",
+      "range": {
+        "startLine": 1125,
+        "startChar": 14,
+        "endLine": 1125,
+        "endChar": 26
+      },
+      "revId": "cbe74f401cbfe1154e741f6e7786a4fbb3d75920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4827ed79_b1dbc801",
@@ -100,6 +190,30 @@
       "writtenOn": "2023-03-22T17:14:42Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 1176,
+        "startChar": 88,
+        "endLine": 1176,
+        "endChar": 94
+      },
+      "revId": "cbe74f401cbfe1154e741f6e7786a4fbb3d75920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8c6e6a7_f20989e7",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-22T17:33:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4827ed79_b1dbc801",
       "range": {
         "startLine": 1176,
         "startChar": 88,
