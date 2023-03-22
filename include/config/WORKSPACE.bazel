@@ -1,0 +1,2 @@
+# This empty workspace file lets the Skia user config be defined seperately from Skia itself.
+# Clients can more easily define their own
