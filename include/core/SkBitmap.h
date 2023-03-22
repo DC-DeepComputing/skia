@@ -24,7 +24,6 @@
 #include <cstddef>
 #include <cstdint>
 
-class SkColorSpace;
 class SkImage;
 class SkMatrix;
 class SkMipmap;
@@ -774,11 +773,10 @@ public:
         treated as opaque. If colorType() is kAlpha_8_SkColorType, then RGB is ignored.
 
         @param c            unpremultiplied color
-        @param colorSpace   SkColorSpace of c
 
         example: https://fiddle.skia.org/c/@Bitmap_eraseColor
     */
-    void eraseColor(SkColor4f c, SkColorSpace* colorSpace = nullptr) const;
+    void eraseColor(SkColor4f) const;
 
     /** Replaces pixel values with c, interpreted as being in the sRGB SkColorSpace.
         All pixels contained by bounds() are affected. If the colorType() is
@@ -818,11 +816,9 @@ public:
 
         @param c            unpremultiplied color
         @param area         rectangle to fill
-        @param colorSpace   SkColorSpace of c
 
         example: https://fiddle.skia.org/c/@Bitmap_erase
     */
-    void erase(SkColor4f c, SkColorSpace* colorSpace, const SkIRect& area) const;
     void erase(SkColor4f c, const SkIRect& area) const;
 
     /** Replaces pixel values inside area with c. interpreted as being in the sRGB
