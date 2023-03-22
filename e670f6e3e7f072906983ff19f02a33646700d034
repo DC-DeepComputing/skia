@@ -33,6 +33,24 @@
       "message": "Can we make this + overrides protected now?",
       "revId": "e670f6e3e7f072906983ff19f02a33646700d034",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f20c5b7_0a0ea0d8",
+        "filename": "src/core/SkMaskFilterBase.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-22T20:08:58Z",
+      "side": 1,
+      "message": "Sure -- its only seen internally, but I\u0027ll make it protected",
+      "parentUuid": "bf24722a_9a7b04ef",
+      "revId": "e670f6e3e7f072906983ff19f02a33646700d034",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
