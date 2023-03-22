@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a5cdec8_cc15015e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-03-22T19:45:05Z",
+      "side": 1,
+      "message": "Just makes it easier to focus on virtuals and not call-sites",
+      "revId": "e670f6e3e7f072906983ff19f02a33646700d034",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
