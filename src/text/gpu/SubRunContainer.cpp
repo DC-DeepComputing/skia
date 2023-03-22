@@ -2278,6 +2278,9 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
     const auto rejectedBuffer = SkMakeZip(rejectedGlyphIDs, rejectedPositions);
 
     const SkPoint glyphRunListLocation = glyphRunList.sourceBounds().center();
+    bool matrixNearAffine = SkMatrixPriv::NearlyAffine(positionMatrix,
+                                                       glyphRunList.sourceBounds(),
+                                                       0.5f);
 
     // Handle all the runs in the glyphRunList
     for (auto& glyphRun : glyphRunList) {
@@ -2297,7 +2300,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
 
 #if !defined(SK_DISABLE_SDF_TEXT)
             // SDFT case
-            if (SDFTControl.isSDFT(approximateDeviceTextSize, runPaint, positionMatrix)) {
+            if (SDFTControl.isSDFT(approximateDeviceTextSize, runPaint, matrixNearAffine)) {
                 // Process SDFT - This should be the .009% case.
                 const auto& [strikeSpec, strikeToSourceScale, matrixRange] =
                         SkStrikeSpec::MakeSDFT(
@@ -2401,7 +2404,7 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
 
         // Path case
         // Handle path subruns. Mainly, large or large perspective glyphs with no color.
-        if (!source.empty()) {
+        if (!source.empty() && positionMatrix.hasPerspective() != matrixNearAffine) {
             auto [strikeSpec, strikeToSourceScale] =
                     SkStrikeSpec::MakePath(runFont, runPaint, deviceProps, scalerContextFlags);
 

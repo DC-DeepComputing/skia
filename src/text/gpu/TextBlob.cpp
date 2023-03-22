@@ -269,7 +269,7 @@ auto TextBlob::Key::Make(const GlyphRunList& glyphRunList,
                                                                glyphRunListLocation);
             key.fHasSomeDirectSubRuns |=
                     strikeDevice.fSDFTControl->isDirect(approximateDeviceTextSize, paint,
-                                                        drawMatrix);
+                                                        !drawMatrix.hasPerspective());
         }
 
         if (key.fHasSomeDirectSubRuns) {

@@ -835,7 +835,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_DrawTextAsDFT,
             direct->priv().asRecordingContext()->priv().getSDFTControl(true);
     SkScalar approximateDeviceTextSize = SkFontPriv::ApproximateTransformedTextSize(font, matrix,
                                                                                     {0, 0});
-    REPORTER_ASSERT(reporter, control.isSDFT(approximateDeviceTextSize, paint, matrix));
+    REPORTER_ASSERT(reporter, control.isSDFT(approximateDeviceTextSize,
+                                             paint,
+                                             !matrix.hasPerspective()));
 
     // Server.
     auto serverTypeface = SkTypeface::MakeFromName("monospace", SkFontStyle());
