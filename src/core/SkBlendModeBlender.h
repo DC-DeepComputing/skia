@@ -30,7 +30,7 @@ private:
 
     void flatten(SkWriteBuffer& buffer) const override;
 
-    bool appendStages(const SkStageRec& rec) const override;
+    bool onAppendStages(const SkStageRec& rec) const override;
 
     skvm::Color onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
                           const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
