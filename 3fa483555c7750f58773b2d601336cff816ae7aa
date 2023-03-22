@@ -33,6 +33,24 @@
       "message": "This might be a bit pedantic, but should we add a comment explaining why we\u0027re using int64_t here?",
       "revId": "3fa483555c7750f58773b2d601336cff816ae7aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46c2adfc_2fe288a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-22T13:45:12Z",
+      "side": 1,
+      "message": "Not pedantic at all -- done.",
+      "parentUuid": "872e1b1d_76caa628",
+      "revId": "3fa483555c7750f58773b2d601336cff816ae7aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
