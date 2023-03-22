@@ -252,6 +252,30 @@
       },
       "revId": "eb46759744308552ed6f16617856f8c691cadb93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e098369_41619d24",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-22T18:09:09Z",
+      "side": 1,
+      "message": "I don\u0027t know what the right contract here is so just opening for discussion, but like insert recording on the queueManager can fail for multiple reason before we ever call Recording::addCommands. In all those cases we call the finishedProc that was passed into insert recording. So if the finished procs stored on the recording are meant to be purely the same then I think they should be called as well (maybe pull them off the recording early and just pass the array of finished procs combined with passed in one around as a unit).\n\nBut at the same time I can see arguments for the finishedProc on the recording to be a little special and more tied to the recording itself. So maybe they shouldn\u0027t be called for other failures?\n\nIf I had to pick I think I\u0027d lean towards first option, but don\u0027t have a strong opinion either way.",
+      "parentUuid": "49a342e3_426b1c1d",
+      "range": {
+        "startLine": 112,
+        "startChar": 23,
+        "endLine": 112,
+        "endChar": 38
+      },
+      "revId": "eb46759744308552ed6f16617856f8c691cadb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
