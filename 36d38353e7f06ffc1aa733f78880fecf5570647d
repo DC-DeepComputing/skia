@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd74a3f7_258e5592",
+        "filename": "src/sksl/tracing/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-22T20:32:40Z",
+      "side": 1,
+      "message": "Just to make sure we don\u0027t bring in a bunch of headers into opts, put SkSLTraceHook in its own filegroup (maybe opts_hdrs) and have //src/opts include just that file group",
+      "revId": "36d38353e7f06ffc1aa733f78880fecf5570647d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
