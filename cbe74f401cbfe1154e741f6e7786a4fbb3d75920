@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c752fffa_bab874ce",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-22T17:14:42Z",
+      "side": 1,
+      "message": "glyphs ? Here and the two below ?",
+      "range": {
+        "startLine": 359,
+        "startChar": 55,
+        "endLine": 359,
+        "endChar": 60
+      },
+      "revId": "cbe74f401cbfe1154e741f6e7786a4fbb3d75920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efaa5e98_c3b79b61",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1097,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-22T17:14:42Z",
+      "side": 1,
+      "message": "Should these be something more like curTypeface and curStrike?",
+      "range": {
+        "startLine": 1097,
+        "startChar": 8,
+        "endLine": 1097,
+        "endChar": 21
+      },
+      "revId": "cbe74f401cbfe1154e741f6e7786a4fbb3d75920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8a589be_58633d39",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-22T17:14:42Z",
+      "side": 1,
+      "message": "Will this hook into Chrome\u0027s logging code correctly ?",
+      "revId": "cbe74f401cbfe1154e741f6e7786a4fbb3d75920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c6fa6f_aba16385",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1125,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-22T17:14:42Z",
+      "side": 1,
+      "message": "typo and maybe \u0027strikeCount\u0027 ?",
+      "range": {
+        "startLine": 1125,
+        "startChar": 14,
+        "endLine": 1125,
+        "endChar": 26
+      },
+      "revId": "cbe74f401cbfe1154e741f6e7786a4fbb3d75920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4827ed79_b1dbc801",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-22T17:14:42Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 1176,
+        "startChar": 88,
+        "endLine": 1176,
+        "endChar": 94
+      },
+      "revId": "cbe74f401cbfe1154e741f6e7786a4fbb3d75920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
