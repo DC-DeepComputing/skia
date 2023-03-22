@@ -916,6 +916,21 @@ void Device::drawGeometry(const Transform& localToDevice,
         this->flushPendingWorkToRecorder();
     }
 
+    // Figure out what dst color requirements we have, if any.
+    // TODO(b/238757201): Currently this only supports dst reads by texture copy, for a limited set
+    // of needed cases.
+    DstReadRequirement dstReadReq = DstReadRequirement::kNone;
+    const SkBlenderBase* blender = as_BB(paint.getBlender());
+    if (blender &&
+        (blender->asRuntimeEffect() || *blender->asBlendMode() > SkBlendMode::kLastCoeffMode)) {
+        dstReadReq = DstReadRequirement::kTextureCopy;
+    }
+
+    // If this paint needs to copy the dst surface for reading, flush pending work.
+    if (dstReadReq == DstReadRequirement::kTextureCopy) {
+        this->flushPendingWorkToRecorder();
+    }
+
     DrawOrder order(fCurrentDepth.next());
     auto [clip, clipOrder] = fClip.applyClipToDraw(
             fColorDepthBoundsManager.get(), localToDevice, geometry, style, order.depth());
@@ -963,7 +978,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
     // also lets Device easily track whether or not there are any overlapping draws.
-    PaintParams shading{paint, std::move(primitiveBlender), skipColorXform};
+    PaintParams shading{paint, std::move(primitiveBlender), dstReadReq, skipColorXform};
     const bool dependsOnDst = renderer->emitsCoverage() || paint_depends_on_dst(shading);
     CompressedPaintersOrder prevDraw =
             fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
