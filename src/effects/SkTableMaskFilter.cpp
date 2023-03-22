@@ -34,7 +34,7 @@ public:
     explicit SkTableMaskFilterImpl(const uint8_t table[256]);
 
     SkMask::Format getFormat() const override;
-    bool filterMask(SkMask*, const SkMask&, const SkMatrix&, SkIPoint*) const override;
+    bool onFilterMask(SkMask*, const SkMask&, const SkMatrix&, SkIPoint*) const override;
 
 protected:
     ~SkTableMaskFilterImpl() override;
@@ -63,8 +63,8 @@ SkTableMaskFilterImpl::SkTableMaskFilterImpl(const uint8_t table[256]) {
 
 SkTableMaskFilterImpl::~SkTableMaskFilterImpl() {}
 
-bool SkTableMaskFilterImpl::filterMask(SkMask* dst, const SkMask& src,
-                                 const SkMatrix&, SkIPoint* margin) const {
+bool SkTableMaskFilterImpl::onFilterMask(SkMask* dst, const SkMask& src,
+                                         const SkMatrix&, SkIPoint* margin) const {
     if (src.fFormat != SkMask::kA8_Format) {
         return false;
     }
