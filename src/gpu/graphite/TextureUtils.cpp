@@ -43,12 +43,15 @@ std::tuple<TextureProxyView, SkColorType> MakeBitmapProxyView(Recorder* recorder
 
     auto textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, Protected::kNo,
                                                           Renderable::kNo);
+//    if (!textureInfo.isValid()) {
+//        ct = kRGBA_8888_SkColorType;
+//        textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, Protected::kNo,
+//                                                         Renderable::kNo);
+//    }
+//    SkASSERT(textureInfo.isValid());
     if (!textureInfo.isValid()) {
-        ct = kRGBA_8888_SkColorType;
-        textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, Protected::kNo,
-                                                         Renderable::kNo);
+        return {};
     }
-    SkASSERT(textureInfo.isValid());
 
     // Convert bitmap to texture colortype if necessary
     SkBitmap bmpToUpload;
