@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4bcf35d_68b078ae",
+        "filename": "site/docs/dev/contrib/bazel.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-22T12:55:27Z",
+      "side": 1,
+      "message": "I feel like this could be restructured a bit to make it clear that this line goes in `~/.bazelrc` (this file is mentioned in the previous paragraph but in a different unrelated context).",
+      "range": {
+        "startLine": 95,
+        "startChar": 120,
+        "endLine": 95,
+        "endChar": 121
+      },
+      "revId": "ab93bfecfed553eb132dbd5e7a9f296efc5297ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
