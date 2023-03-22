@@ -57,6 +57,7 @@ YUVATextureProxies::YUVATextureProxies(const Recorder* recorder,
                 case 'g': fYUVALocations[i].fChannel = SkColorChannel::kG; break;
                 case 'b': fYUVALocations[i].fChannel = SkColorChannel::kB; break;
                 case 'a': fYUVALocations[i].fChannel = SkColorChannel::kA; break;
+                case '0': fYUVALocations[i].fChannel = SkColorChannel::kR; break;
 
                 default:
                     SkDEBUGFAILF("Unexpected swizzle value: %c", views[i].swizzle()[chanAsIdx]);
