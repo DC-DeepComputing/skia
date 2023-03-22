@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkICC.h"
+#include "include/encode/SkICC.h"
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"

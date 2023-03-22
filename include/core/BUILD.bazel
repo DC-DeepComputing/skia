@@ -54,7 +54,7 @@ skia_filegroup(
         "SkFontStyle.h",
         "SkFontTypes.h",
         "SkGraphics.h",
-        "SkICC.h",
+        "SkICC.h",  # Remove shim
         "SkImage.h",
         "SkImageEncoder.h",
         "SkImageFilter.h",
