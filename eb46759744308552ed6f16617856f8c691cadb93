@@ -300,6 +300,30 @@
       },
       "revId": "eb46759744308552ed6f16617856f8c691cadb93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d533308_ead66d24",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-22T20:12:03Z",
+      "side": 1,
+      "message": "Re-reading, that sounds equivalent to your first option. I think that seems reasonable. Let me work that up.",
+      "parentUuid": "8cd496df_0c649b66",
+      "range": {
+        "startLine": 112,
+        "startChar": 23,
+        "endLine": 112,
+        "endChar": 38
+      },
+      "revId": "eb46759744308552ed6f16617856f8c691cadb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
