@@ -33,6 +33,9 @@ public:
     std::vector<SlotDebugInfo> fSlotInfo;
     std::vector<FunctionDebugInfo> fFuncInfo;
 
+    /** The SkSL debug trace. */
+    std::vector<SkSLTraceInfo> fTraceInfo;
+
     /** SkVM uniforms live in fSlotInfo; SkRP has dedicated a uniform slot map in fUniformInfo. */
     std::vector<SlotDebugInfo> fUniformInfo;
 
