@@ -459,17 +459,9 @@ void GrResourceCache::purgeAsNeeded() {
     this->processFreedGpuResources();
 
     bool stillOverbudget = this->overBudget();
-    while (stillOverbudget && fPurgeableQueue.count()) {
-        GrGpuResource* resource = fPurgeableQueue.peek();
-        SkASSERT(resource->resourcePriv().isPurgeable());
-        resource->cacheAccess().release();
-        stillOverbudget = this->overBudget();
-    }
-
     if (stillOverbudget) {
         fThreadSafeCache->dropUniqueRefs(this);
 
-        stillOverbudget = this->overBudget();
         while (stillOverbudget && fPurgeableQueue.count()) {
             GrGpuResource* resource = fPurgeableQueue.peek();
             SkASSERT(resource->resourcePriv().isPurgeable());
