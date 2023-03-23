@@ -20631,9 +20631,7 @@
         "Housekeeper-PerCommit-IsolateWinToolchain"
       ],
       "dimensions": [
-        "cpu:x86-64-Haswell_GCE",
-        "gpu:none",
-        "machine_type:n1-highcpu-64",
+        "id:skia-e-gce-500",
         "os:Windows-Server-17763",
         "pool:Skia"
       ],
