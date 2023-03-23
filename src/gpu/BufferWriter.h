@@ -9,6 +9,7 @@
 #define skgpu_BufferWriter_DEFINED
 
 #include <type_traits>
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkColorData.h"
 #include "include/private/base/SkTemplates.h"

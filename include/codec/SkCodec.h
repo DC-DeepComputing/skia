@@ -22,6 +22,7 @@
 
 #include <cstddef>
 #include <functional>
+#include <cstdint>
 #include <memory>
 #include <tuple>
 #include <vector>
@@ -51,19 +52,6 @@ class CodecSrc;
  */
 class SK_API SkCodec : SkNoncopyable {
 public:
-    /**
-     *  Minimum number of bytes that must be buffered in SkStream input.
-     *
-     *  An SkStream passed to NewFromStream must be able to use this many
-     *  bytes to determine the image type. Then the same SkStream must be
-     *  passed to the correct decoder to read from the beginning.
-     *
-     *  This can be accomplished by implementing peek() to support peeking
-     *  this many bytes, or by implementing rewind() to be able to rewind()
-     *  after reading this many bytes.
-     */
-    static constexpr size_t MinBufferedBytesNeeded() { return 32; }
-
     /**
      *  Error codes for various SkCodec methods.
      */
@@ -116,6 +104,26 @@ public:
          */
         kUnimplemented,
     };
+
+    /**
+     *  Minimum number of bytes that must be buffered in SkStream input.
+     *
+     *  An SkStream passed to NewFromStream must be able to use this many
+     *  bytes to determine the image type. Then the same SkStream must be
+     *  passed to the correct decoder to read from the beginning.
+     *
+     *  This can be accomplished by implementing peek() to support peeking
+     *  this many bytes, or by implementing rewind() to be able to rewind()
+     *  after reading this many bytes.
+     */
+    static constexpr size_t MinBufferedBytesNeeded() { return 32; }
+
+    /**
+     * Read MinBufferedBytesNeeded() bytes into the provided buffer from the stream
+     * and return how many were successfully read. If there is an issue, the result will
+     * be set to a non-success value.
+     */
+    static size_t ReadHeader(std::unique_ptr<SkStream>, uint8_t* buffer, SkCodec::Result*);
 
     /**
      *  Readable string representing the error code.

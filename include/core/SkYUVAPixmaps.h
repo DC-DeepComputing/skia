@@ -8,16 +8,23 @@
 #ifndef SkYUVAPixmaps_DEFINED
 #define SkYUVAPixmaps_DEFINED
 
-#include "include/core/SkData.h"
+#include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkYUVAInfo.h"
+#include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTo.h"
 
 #include <array>
 #include <bitset>
+#include <cstddef>
+#include <tuple>
 
 class GrImageContext;
+class SkData;
 
 /**
  * SkYUVAInfo combined with per-plane SkColorTypes and row bytes. Fully specifies the SkPixmaps
@@ -206,13 +213,13 @@ public:
     static SkYUVAPixmaps FromExternalPixmaps(const SkYUVAInfo&, const SkPixmap[kMaxPlanes]);
 
     /** Default SkYUVAPixmaps is invalid. */
-    SkYUVAPixmaps() = default;
-    ~SkYUVAPixmaps() = default;
+    SkYUVAPixmaps();
+    ~SkYUVAPixmaps();
 
-    SkYUVAPixmaps(SkYUVAPixmaps&& that) = default;
-    SkYUVAPixmaps& operator=(SkYUVAPixmaps&& that) = default;
-    SkYUVAPixmaps(const SkYUVAPixmaps&) = default;
-    SkYUVAPixmaps& operator=(const SkYUVAPixmaps& that) = default;
+    SkYUVAPixmaps(SkYUVAPixmaps&& that);
+    SkYUVAPixmaps& operator=(SkYUVAPixmaps&& that);
+    SkYUVAPixmaps(const SkYUVAPixmaps&);
+    SkYUVAPixmaps& operator=(const SkYUVAPixmaps& that);
 
     /** Does have initialized pixmaps compatible with its SkYUVAInfo. */
     bool isValid() const { return !fYUVAInfo.dimensions().isEmpty(); }

@@ -8,10 +8,12 @@
 #ifndef SkConvertPixels_DEFINED
 #define SkConvertPixels_DEFINED
 
-#include "include/core/SkImageInfo.h"
+#include "include/core/SkTypes.h"
 #include "include/private/base/SkTemplates.h"
 
-class SkColorTable;
+#include <cstring>
+
+struct SkImageInfo;
 
 bool SK_WARN_UNUSED_RESULT SkConvertPixels(
         const SkImageInfo& dstInfo,       void* dstPixels, size_t dstRowBytes,

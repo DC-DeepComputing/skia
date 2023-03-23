@@ -8,10 +8,22 @@
 #ifndef SkOpts_DEFINED
 #define SkOpts_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "include/core/SkColor.h"
 #include "include/private/SkOpts_spi.h"
+#include "include/private/base/SkCPUTypes.h"
 #include "src/core/SkRasterPipelineOpList.h"
-#include "src/core/SkXfermodePriv.h"
+
+#include <cstddef>
+#include <cstdint>
+
+class SkXfermode;
+enum class SkBlendMode;
+namespace skvm {
+    class TraceHook;
+    struct InterpreterInstruction; // IWYU pragma: keep
+}
+struct SkBitmapProcState;
+struct SkRasterPipelineStage;
 
 /**
  * SkOpts (short for SkOptimizations) is a mechanism where we can ship with multiple implementations
@@ -57,14 +69,6 @@
  * supports specializations for (e.g. Init_sse42, Init_ssse3). Note multiple Init functions can
  * be called as CPU instruction sets are typically super sets of older instruction sets
  */
-
-struct SkBitmapProcState;
-struct SkRasterPipelineStage;
-namespace skvm {
-struct InterpreterInstruction;
-class TraceHook;
-}
-
 namespace SkOpts {
     // Call to replace pointers to portable functions with pointers to CPU-specific functions.
     // Thread-safe and idempotent.
@@ -95,6 +99,7 @@ namespace SkOpts {
                            grayA_to_RGBA,   // i.e. expand to color channels
                            grayA_to_rgbA;   // i.e. expand to color channels and premultiply
 
+    extern void (*memset8)(uint8_t[], uint8_t, int);
     extern void (*memset16)(uint16_t[], uint16_t, int);
     extern void (*memset32)(uint32_t[], uint32_t, int);
     extern void (*memset64)(uint64_t[], uint64_t, int);

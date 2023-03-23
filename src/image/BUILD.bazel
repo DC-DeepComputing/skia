@@ -6,6 +6,7 @@ exports_files_legacy()
 
 CORE_FILES = [
     "SkImage.cpp",
+    "SkImage_encoded.cpp",
     "SkImage_Base.cpp",
     "SkImage_Base.h",
     "SkImage_Lazy.cpp",
@@ -70,5 +71,19 @@ skia_filegroup(
         "//src/gpu:has_gpu_backend": [":gpu_hdrs"],
         "//conditions:default": [],
     }),
+    visibility = ["//src:__pkg__"],
+)
+
+skia_filegroup(
+    name = "buffet_raster_srcs",
+    srcs = [
+        "SkImage.cpp",
+        "SkImage_Base.cpp",
+        "SkImage_Base.h",
+        "SkImage_Raster.cpp",
+        "SkImage_Raster.h",
+        "SkRescaleAndReadPixels.cpp",
+        "SkRescaleAndReadPixels.h",
+    ],
     visibility = ["//src:__pkg__"],
 )

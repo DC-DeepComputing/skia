@@ -11,8 +11,6 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
-#include "include/core/SkEncodedImageFormat.h"
-#include "include/core/SkImageEncoder.h"
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPicture.h"
@@ -201,48 +199,6 @@ sk_sp<SkShader> SkImage::makeRawShader(SkTileMode tmx, SkTileMode tmy,
                                        const SkMatrix* localMatrix) const {
     return SkImageShader::MakeRaw(sk_ref_sp(const_cast<SkImage*>(this)), tmx, tmy,
                                   sampling, localMatrix);
-}
-
-sk_sp<SkData> SkImage::encodeToData(GrDirectContext* context, SkEncodedImageFormat type,
-                                    int quality) const {
-    SkBitmap bm;
-    if (as_IB(this)->getROPixels(context, &bm)) {
-        return SkEncodeBitmap(bm, type, quality);
-    }
-    return nullptr;
-}
-
-sk_sp<SkData> SkImage::encodeToData(GrDirectContext* context) const {
-    if (auto encoded = this->refEncodedData()) {
-        return encoded;
-    }
-
-    return this->encodeToData(context, SkEncodedImageFormat::kPNG, 100);
-}
-
-#ifndef SK_IMAGE_READ_PIXELS_DISABLE_LEGACY_API
-sk_sp<SkData> SkImage::encodeToData(SkEncodedImageFormat type, int quality) const {
-    auto dContext = as_IB(this)->directContext();
-    return this->encodeToData(dContext, type, quality);
-}
-
-sk_sp<SkData> SkImage::encodeToData() const {
-    auto dContext = as_IB(this)->directContext();
-    return this->encodeToData(dContext);
-}
-#endif
-
-sk_sp<SkData> SkImage::refEncodedData() const {
-    return sk_sp<SkData>(as_IB(this)->onRefEncoded());
-}
-
-sk_sp<SkImage> SkImage::MakeFromEncoded(sk_sp<SkData> encoded,
-                                        std::optional<SkAlphaType> alphaType) {
-    if (nullptr == encoded || 0 == encoded->size()) {
-        return nullptr;
-    }
-    return SkImage::MakeFromGenerator(
-            SkImageGenerator::MakeFromEncoded(std::move(encoded), alphaType));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

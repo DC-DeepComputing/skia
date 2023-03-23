@@ -10,10 +10,11 @@
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 #define SK_OPTS_NS avx
-#include "src/opts/SkUtils_opts.h"
+#include "src/opts/Memset_opts_impl.h"
 
 namespace SkOpts {
     void Init_avx() {
+        memset8 = SK_OPTS_NS::memset8;
         memset16 = SK_OPTS_NS::memset16;
         memset32 = SK_OPTS_NS::memset32;
         memset64 = SK_OPTS_NS::memset64;
