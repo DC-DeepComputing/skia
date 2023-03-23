@@ -20,10 +20,8 @@
 
 #include <cstdio>
 #include <cstring>
-#include <sstream>
 #include <string>
 #include <string_view>
-#include <utility>
 
 static constexpr char kTraceVersion[] = "20220209";
 
@@ -88,19 +86,6 @@ std::string SkVMDebugTrace::slotValueToString(int slotIndex, double value) const
 
 std::string SkVMDebugTrace::getSlotValue(int slotIndex, int32_t valueBits) const {
     return this->slotValueToString(slotIndex, this->interpretValueBits(slotIndex, valueBits));
-}
-
-void SkVMDebugTrace::setTraceCoord(const SkIPoint& coord) {
-    fTraceCoord = coord;
-}
-
-void SkVMDebugTrace::setSource(std::string source) {
-    fSource.clear();
-    std::stringstream stream{std::move(source)};
-    while (stream.good()) {
-        fSource.push_back({});
-        std::getline(stream, fSource.back(), '\n');
-    }
 }
 
 void SkVMDebugTrace::dump(SkWStream* o) const {
@@ -396,10 +381,6 @@ bool SkVMDebugTrace::readTrace(SkStream* r) {
 #include <string>
 
 namespace SkSL {
-    void SkVMDebugTrace::setTraceCoord(const SkIPoint &coord) {}
-
-    void SkVMDebugTrace::setSource(std::string source) {}
-
     bool SkVMDebugTrace::readTrace(SkStream *r) { return false; }
 
     void SkVMDebugTrace::writeTrace(SkWStream *w) const {}
