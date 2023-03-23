@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aba42a32_5f911ed1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-23T13:20:36Z",
+      "side": 1,
+      "message": "At the moment, no, but it\u0027s at least possible. The first version that Mike started writing had a bunch of dedicated conversion code, and I suggested changing it to use RP. That was motivated by two things:\n\n1) It really reduces duplication, particularly because the handling of many of our color-types is tricky, and having that code in multiple places is just more potential for bugs.\n\n2) We\u0027re already using RP throughout the code, including in the GPU backend (which has a corresponding GrConvertPixels, implemented similarly).\n\nRegardless, having this code use SkConvertPixels (rather than RP directly) feels right - if we ever want to fully sever the connection, we can add exactly one more copy of \"how to encode/decode each color type\" to that function.\n\nMore likely, I anticipate finding a way to isolate just the parts of RP needed for pixel conversions, while removing all the pieces that are only needed for actual CPU rendering.",
+      "parentUuid": "09b4d204_2f522bbe",
+      "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8a7c4024_49b3b173",
         "filename": "src/core/SkPixmap.cpp",
         "patchSetId": 5
