@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09b4d204_2f522bbe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-23T13:06:08Z",
+      "side": 1,
+      "message": "Is the plan to have an implementation of SkConvertPixels that does not use Raster pipeline? As of now, this means that to link code that uses SkBitmap and SkPixmap (at least), raster pipeline is also needed to be compiled and linked (as per my buffet build experiments).",
+      "parentUuid": "6ec1b9f7_a6a02749",
+      "revId": "96ba474a082cb73a511c9ac4d54c57e27579c04e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8a7c4024_49b3b173",
         "filename": "src/core/SkPixmap.cpp",
         "patchSetId": 5
