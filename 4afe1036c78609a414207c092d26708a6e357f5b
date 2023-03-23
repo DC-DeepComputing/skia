@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3281c028_9fda2875",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-23T17:21:24Z",
+      "side": 1,
+      "message": "Are you planning to expand the interface? I just peeked to remind myself what\u0027s in there, and it\u0027s pretty slim today. In theory someone could use it directly to get a trace (although decoding that without internal knowledge is obviously tricky).",
+      "revId": "4afe1036c78609a414207c092d26708a6e357f5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
