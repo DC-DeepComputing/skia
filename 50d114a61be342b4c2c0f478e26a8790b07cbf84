@@ -16,6 +16,24 @@
       "message": "Do we still want `SK_USER_CONFIG_HEADER`? I suppose it might be easier for some to use?",
       "revId": "50d114a61be342b4c2c0f478e26a8790b07cbf84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8e90ea1_6418ad19",
+        "filename": "include/private/base/SkLoadUserConfig.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-23T14:02:24Z",
+      "side": 1,
+      "message": ":shrug: I don\u0027t have strong feelings one way or another. Not deleting it is less disruptive at this point though.",
+      "parentUuid": "6ee81a44_ff1aed71",
+      "revId": "50d114a61be342b4c2c0f478e26a8790b07cbf84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
