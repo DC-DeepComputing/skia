@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0441100a_4c5f0391",
+        "filename": "include/config/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-23T12:39:19Z",
+      "side": 1,
+      "message": "I tried a different approach with SK_USE_BAZEL_CONFIG_HEADER. WDYT?",
+      "parentUuid": "7cb8c19e_ebe6951d",
+      "range": {
+        "startLine": 15,
+        "startChar": 9,
+        "endLine": 15,
+        "endChar": 30
+      },
+      "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7186e58e_eaaf840f",
         "filename": "include/config/copts.bzl",
         "patchSetId": 4
