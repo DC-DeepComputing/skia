@@ -22,6 +22,30 @@
       },
       "revId": "cc2ef112aa65151f67b59f2fc85336991b143c79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b44f8c7a_fe6fc939",
+        "filename": "tools/gpu/ManagedBackendTexture.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-23T16:28:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "796170ee_6c294867",
+      "range": {
+        "startLine": 153,
+        "startChar": 8,
+        "endLine": 153,
+        "endChar": 47
+      },
+      "revId": "cc2ef112aa65151f67b59f2fc85336991b143c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
