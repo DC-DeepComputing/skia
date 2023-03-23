@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d74124b2_6fb6b5e9",
+        "filename": "third_party/vello/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-23T17:24:00Z",
+      "side": 1,
+      "message": "This is the hypothetical Chrome-style GN rule that one would invoke.",
+      "revId": "8a109835d445b61f9c68b06e962e9f21dff93906",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98ba872e_fdabb458",
         "filename": "third_party/vello/Cargo.toml",
         "patchSetId": 1
