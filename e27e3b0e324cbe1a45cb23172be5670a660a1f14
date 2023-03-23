@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24788335_a6a2d19c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-23T15:58:55Z",
+      "side": 1,
+      "message": "Enlighten the reader by explaining the situation, and how the\nchange improves performance.\n\nHow is it a hot spot? Not enough memory?\n\n... improves performance by ....",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 52
+      },
+      "revId": "e27e3b0e324cbe1a45cb23172be5670a660a1f14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
