@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98ba872e_fdabb458",
+        "filename": "third_party/vello/Cargo.toml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-23T17:11:34Z",
+      "side": 1,
+      "message": "This would be the actual third-party Rust dependency, assuming a `third_party/externals/vello` exists (e.g. pulled in via DEPS). The line below points to my own development fork of vello.",
+      "revId": "8a109835d445b61f9c68b06e962e9f21dff93906",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa25723a_a6fb7af7",
+        "filename": "third_party/vello/src/lib.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-23T17:11:34Z",
+      "side": 1,
+      "message": "This mod defines the Rust-\u003eC++ bridging types. The generated C++ can be found under `target/\u003cbuild\u003e/cxxbridge/`",
+      "revId": "8a109835d445b61f9c68b06e962e9f21dff93906",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
