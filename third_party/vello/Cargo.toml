@@ -1,0 +1,22 @@
+[package]
+name = "vello_shaders_cpp"
+version = "0.0.1"
+authors = ["Arman Uguray <armansito@google.com>"]
+description = "C++ bindings for https://github.com/linebender/vello/vello_shaders"
+edition = "2021"
+license = "BSD"
+publish = false
+
+[lib]
+crate-type = ["staticlib"]
+
+[profile.release]
+panic = "abort"
+
+[dependencies]
+cxx = "1.0"
+#vello_shaders = { path = "../externals/vello/vello_shaders", features = ["compile", "msl", "wgsl"] }
+vello_shaders = { path = "/Users/armansito/work/vello/vello_shaders", features = ["compile", "msl", "wgsl"] }
+
+[build-dependencies]
+cxx-build = "1.0"

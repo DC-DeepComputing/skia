@@ -1,0 +1,40 @@
+# Copyright 2023 Google Inc.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# TODO: define a rust_static_library here 
+# import("//build/rust/rust_static_library.gni")
+#
+#rust_static_library("shaders") {
+#  crate_root = "lib.rs"
+#  sources = [
+#    "lib.rs",
+#  ]
+#}
+
+import("../third_party.gni")
+
+_build_root = ""
+if (is_mac && target_cpu == "arm64") {
+  _build_root = "./target/aarch64-apple-darwin"
+} else {
+  _build_root = "./target"
+}
+
+third_party("shaders") {
+  public_include_dirs = [
+    "include/",
+    "$_build_root/cxxbridge",
+  ]
+
+  sources = [
+    "$_build_root/cxxbridge/vello_shaders_cpp/src/lib.rs.cc",
+  ]
+
+  if (is_debug) {
+    libs = [ "$_build_root/debug/libvello_shaders_cpp.a" ]
+  } else {
+    libs = [ "$_build_root/release/libvello_shaders_cpp.a" ]
+  }
+}
