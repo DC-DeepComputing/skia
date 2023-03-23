@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe98243c_c039d166",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-23T13:25:09Z",
+      "side": 1,
+      "message": "There appears to be exactly one caller (if my searches/canaries are right), and they\u0027re explicitly passing nullptr: https://source.chromium.org/chromium/chromium/src/+/main:components/viz/service/display/copy_output_scaling_pixeltest.cc;l\u003d218;drc\u003d12be03159fe22cd4ef291e9561762531c2589539",
+      "revId": "2ccf0ffeef6747162310afaac8d19ebf29cc01a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
