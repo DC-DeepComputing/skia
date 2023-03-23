@@ -94142,6 +94142,7 @@
         "skia/WORKSPACE.bazel",
         "skia/bazel",
         "skia/go_repositories.bzl",
+        "skia/include/config",
         "skia/requirements.txt",
         "skia/toolchain",
         "skia/infra/bots/BUILD.bazel",
