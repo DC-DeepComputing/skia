@@ -12,8 +12,8 @@
 #include "include/core/SkStream.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkPerlinNoiseShader.h"
-#include "include/sksl/SkSLDebugTrace.h"
 #include "src/core/SkEnumerate.h"
+#include "src/sksl/tracing/SkSLDebugTrace.h"
 #include "tools/Resources.h"
 #include "tools/viewer/Viewer.h"
 

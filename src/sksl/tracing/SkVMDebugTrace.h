@@ -8,10 +8,10 @@
 #ifndef SKVMDEBUGTRACE
 #define SKVMDEBUGTRACE
 
-#include "include/sksl/SkSLDebugTrace.h"
 
 #include "include/core/SkPoint.h"
 #include "src/sksl/tracing/SkSLDebugInfo.h"
+#include "src/sksl/tracing/SkSLDebugTrace.h"
 #include "src/sksl/tracing/SkSLTraceHook.h"
 
 #include <cstdint>
