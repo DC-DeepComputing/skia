@@ -6,8 +6,10 @@ SKIA_PUBLIC_HDRS = [
     "include/android/SkAnimatedImage.h",
     "include/codec/SkAndroidCodec.h",
     "include/codec/SkCodecAnimation.h",
+    "include/codec/SkEncodedImageFormat.h",
     "include/codec/SkCodec.h",
     "include/codec/SkEncodedOrigin.h",
+    "include/codec/SkPngChunkReader.h",
     "include/config/SkUserConfig.h",
     "include/core/SkAlphaType.h",
     "include/core/SkAnnotation.h",
@@ -48,7 +50,6 @@ SKIA_PUBLIC_HDRS = [
     "include/core/SkFontStyle.h",
     "include/core/SkFontTypes.h",
     "include/core/SkGraphics.h",
-    "include/core/SkICC.h",
     "include/core/SkImageEncoder.h",
     "include/core/SkImageFilter.h",
     "include/core/SkImageGenerator.h",
@@ -71,7 +72,6 @@ SKIA_PUBLIC_HDRS = [
     "include/core/SkPictureRecorder.h",
     "include/core/SkPixelRef.h",
     "include/core/SkPixmap.h",
-    "include/core/SkPngChunkReader.h",
     "include/core/SkPoint3.h",
     "include/core/SkPoint.h",
     "include/core/SkPromiseImageTexture.h",
@@ -130,6 +130,7 @@ SKIA_PUBLIC_HDRS = [
     "include/effects/SkTableColorFilter.h",
     "include/effects/SkTableMaskFilter.h",
     "include/effects/SkTrimPathEffect.h",
+    "include/encode/SkICC.h",
     "include/encode/SkEncoder.h",
     "include/encode/SkJpegEncoder.h",
     "include/encode/SkPngEncoder.h",
@@ -443,8 +444,6 @@ BASE_SRCS_ALL = [
     "src/core/SkDocument.cpp",
     "src/core/SkDraw.cpp",
     "src/core/SkDraw.h",
-    "src/core/SkDrawBase.cpp",
-    "src/core/SkDrawBase.h",
     "src/core/SkDrawLooper.cpp",
     "src/core/SkDrawProcs.h",
     "src/core/SkDrawShadowInfo.cpp",
@@ -468,8 +467,6 @@ BASE_SRCS_ALL = [
     "src/core/SkFont.cpp",
     "src/core/SkFontDescriptor.cpp",
     "src/core/SkFontDescriptor.h",
-    "src/core/SkFontMetricsPriv.cpp",
-    "src/core/SkFontMetricsPriv.h",
     "src/core/SkFontMgr.cpp",
     "src/core/SkFontMgrPriv.h",
     "src/core/SkFontPriv.h",
@@ -484,13 +481,13 @@ BASE_SRCS_ALL = [
     "src/core/SkGlobalInitialization_core.cpp",
     "src/core/SkGlyph.cpp",
     "src/core/SkGlyph.h",
+    "src/core/SkGlyphBuffer.cpp",
+    "src/core/SkGlyphBuffer.h",
     "src/core/SkGlyphRunPainter.cpp",
     "src/core/SkGlyphRunPainter.h",
     "src/core/SkGpuBlurUtils.cpp",
     "src/core/SkGpuBlurUtils.h",
     "src/core/SkGraphics.cpp",
-    "src/core/SkICC.cpp",
-    "src/core/SkICCPriv.h",
     "src/core/SkIDChangeListener.cpp",
     "src/core/SkIPoint16.h",
     "src/core/SkImageFilter.cpp",
@@ -537,7 +534,6 @@ BASE_SRCS_ALL = [
     "src/core/SkMipmap.h",
     "src/core/SkMipmapAccessor.cpp",
     "src/core/SkMipmapAccessor.h",
-    "src/core/SkMipmapBuilder.cpp",
     "src/core/SkMipmapBuilder.h",
     "src/core/SkModeColorFilter.cpp",
     "src/core/SkNextID.h",
@@ -641,7 +637,6 @@ BASE_SRCS_ALL = [
     "src/core/SkScan_Antihair.cpp",
     "src/core/SkScan_Hairline.cpp",
     "src/core/SkScan_Path.cpp",
-    "src/core/SkScan_SAAPath.cpp",
     "src/core/SkSharedMutex.cpp",
     "src/core/SkSharedMutex.h",
     "src/core/SkSpecialImage.cpp",
@@ -780,8 +775,6 @@ BASE_SRCS_ALL = [
     "src/gpu/Blend.cpp",
     "src/gpu/Blend.h",
     "src/gpu/BufferWriter.h",
-    "src/gpu/DitherUtils.cpp",
-    "src/gpu/DitherUtils.h",
     "src/gpu/GrAHardwareBufferUtils.h",
     "src/gpu/GrRectanizer.h",
     "src/gpu/KeyBuilder.h",
@@ -1238,7 +1231,6 @@ BASE_SRCS_ALL = [
     "src/gpu/tessellate/Tessellation.h",
     "src/gpu/tessellate/WangsFormula.h",
     "src/image/SkImage.cpp",
-    "src/image/SkImage_Base.cpp",
     "src/image/SkImage_Base.h",
     "src/image/SkImage_Gpu.cpp",
     "src/image/SkImage_Gpu.h",
@@ -1249,26 +1241,22 @@ BASE_SRCS_ALL = [
     "src/image/SkImage_Lazy.cpp",
     "src/image/SkImage_Lazy.h",
     "src/image/SkImage_Raster.cpp",
-    "src/image/SkImage_Raster.h",
     "src/image/SkRescaleAndReadPixels.cpp",
     "src/image/SkRescaleAndReadPixels.h",
     "src/image/SkSurface.cpp",
-    "src/image/SkSurface_Base.cpp",
     "src/image/SkSurface_Base.h",
     "src/image/SkSurface_Gpu.cpp",
     "src/image/SkSurface_Gpu.h",
-    "src/image/SkSurface_Null.cpp",
     "src/image/SkSurface_Raster.cpp",
-    "src/image/SkSurface_Raster.h",
+    "src/opts/Hash_opts.h",
+    "src/opts/Memset_opts.h",
     "src/opts/SkBitmapProcState_opts.h",
     "src/opts/SkBlitMask_opts.h",
     "src/opts/SkBlitRow_opts.h",
-    "src/opts/SkChecksum_opts.h",
     "src/opts/SkRasterPipeline_opts.h",
-    "src/opts/SkSwizzler_opts.h",
-    "src/opts/SkUtils_opts.h",
     "src/opts/SkVM_opts.h",
     "src/opts/SkXfermode_opts.h",
+    "src/opts/Swizzle_opts.h",
     "src/pathops/SkAddIntersections.cpp",
     "src/pathops/SkAddIntersections.h",
     "src/pathops/SkDConicLineIntersection.cpp",
@@ -1559,6 +1547,9 @@ BASE_SRCS_ALL = [
     "src/sksl/ir/SkSLExpressionStatement.cpp",
     "src/sksl/ir/SkSLExpressionStatement.h",
     "src/sksl/ir/SkSLExtension.h",
+    "src/sksl/ir/SkSLExternalFunction.h",
+    "src/sksl/ir/SkSLExternalFunctionCall.h",
+    "src/sksl/ir/SkSLExternalFunctionReference.h",
     "src/sksl/ir/SkSLField.h",
     "src/sksl/ir/SkSLFieldAccess.cpp",
     "src/sksl/ir/SkSLFieldAccess.h",
@@ -1635,7 +1626,6 @@ BASE_SRCS_ALL = [
     "src/sksl/transform/SkSLProgramWriter.h",
     "src/sksl/transform/SkSLRenamePrivateSymbols.cpp",
     "src/sksl/transform/SkSLReplaceConstVarsWithLiterals.cpp",
-    "src/sksl/transform/SkSLRewriteIndexedSwizzle.cpp",
     "src/sksl/transform/SkSLTransform.h",
     "src/text/GlyphRun.cpp",
     "src/text/GlyphRun.h",
@@ -1930,7 +1920,6 @@ PORTS_SRCS_WASM = [
     "src/ports/SkFontHost_FreeType.cpp",
     "src/ports/SkFontMgr_custom.cpp",
     "src/ports/SkFontMgr_custom.h",
-    "src/ports/SkFontMgr_custom_embedded.cpp",
     "src/ports/SkFontMgr_empty_factory.cpp",
     "src/ports/SkGlobalInitialization_default.cpp",
     "src/ports/SkImageGenerator_skia.cpp",
@@ -1994,8 +1983,6 @@ MTL_SRCS = [
     "src/gpu/ganesh/mtl/GrMtlUtil.mm",
     "src/gpu/ganesh/mtl/GrMtlVaryingHandler.mm",
     "src/gpu/mtl/MtlMemoryAllocatorImpl.mm",
-    "src/gpu/mtl/MtlUtils.mm",
-    "src/gpu/mtl/MtlUtilsPriv.h",
     "src/image/SkSurface_GpuMtl.mm",
 ]
 
@@ -2073,8 +2060,6 @@ VULKAN_SRCS = [
 ################################################################################
 
 BASE_DEFINES = [
-    # Our legacy G3 rule *always* has the ganesh backend enabled.
-    "SK_GANESH",
     # Chrome DEFINES.
     "SK_USE_FREETYPE_EMBOLDEN",
     # Turn on a few Google3-specific build fixes.
@@ -2099,6 +2084,7 @@ UNIX_DEFINES = [
     "SK_GL",
     "SK_CODEC_DECODES_JPEG",
     "SK_ENCODE_JPEG",
+    "SK_HAS_ANDROID_CODEC",
 ]
 ANDROID_DEFINES = [
     "SK_BUILD_FOR_ANDROID",
@@ -2109,23 +2095,27 @@ ANDROID_DEFINES = [
     "SK_GL",
     "SK_CODEC_DECODES_JPEG",
     "SK_ENCODE_JPEG",
+    "SK_HAS_ANDROID_CODEC",
 ]
 IOS_DEFINES = [
     "SK_BUILD_FOR_IOS",
     "SK_GL",
     "SK_CODEC_DECODES_JPEG",
     "SK_ENCODE_JPEG",
+    "SK_HAS_ANDROID_CODEC",
 ]
 WASM_DEFINES = [
     "SK_DISABLE_LEGACY_SHADERCONTEXT",
     "SK_DISABLE_TRACING",
     "SK_GL",
+    "SK_SUPPORT_GPU=1",
     "SK_DISABLE_AAA",
     "SK_DISABLE_EFFECT_DESERIALIZATION",
     "SK_FORCE_8_BYTE_ALIGNMENT",
     "SKNX_NO_SIMD",
     "SK_CODEC_DECODES_JPEG",
     "SK_ENCODE_JPEG",
+    "SK_HAS_ANDROID_CODEC",
 ]
 FUCHSIA_DEFINES = [
     "SK_BUILD_FOR_UNIX",
@@ -2137,12 +2127,14 @@ FUCHSIA_DEFINES = [
     "SK_VULKAN",
     "SK_CODEC_DECODES_JPEG",
     "SK_ENCODE_JPEG",
+    "SK_HAS_ANDROID_CODEC",
 ]
 MACOS_DEFINES = [
     "SK_BUILD_FOR_MAC",
     "SK_GL",
     "SK_CODEC_DECODES_JPEG",
     "SK_ENCODE_JPEG",
+    "SK_HAS_ANDROID_CODEC",
 ]
 ANDROID_NO_CODECS_DEFINES = [
     "SK_BUILD_FOR_ANDROID",
@@ -2399,8 +2391,6 @@ SKUNICODE_ICU_BUILTIN_SRCS = [
     "modules/skunicode/src/SkUnicode.cpp",
     "modules/skunicode/src/SkUnicode_icu.cpp",
     "modules/skunicode/src/SkUnicode_icu.h",
-    "modules/skunicode/src/SkUnicode_icu_bidi.cpp",
-    "modules/skunicode/src/SkUnicode_icu_bidi.h",
     "modules/skunicode/src/SkUnicode_icu_builtin.cpp",
 ]
 
@@ -2408,16 +2398,12 @@ SKUNICODE_ICU_RUNTIME_SRCS = [
     "modules/skunicode/src/SkUnicode.cpp",
     "modules/skunicode/src/SkUnicode_icu.cpp",
     "modules/skunicode/src/SkUnicode_icu.h",
-    "modules/skunicode/src/SkUnicode_icu_bidi.cpp",
-    "modules/skunicode/src/SkUnicode_icu_bidi.h",
     "modules/skunicode/src/SkUnicode_icu_runtime.cpp",
 ]
 
 SKUNICODE_CLIENT_SRCS = [
     "modules/skunicode/src/SkUnicode.cpp",
     "modules/skunicode/src/SkUnicode_client.cpp",
-    "modules/skunicode/src/SkUnicode_icu_bidi.cpp",
-    "modules/skunicode/src/SkUnicode_icu_bidi.h",
 ]
 
 SKUNICODE_HDRS = [
@@ -2431,12 +2417,6 @@ SKSHAPER_HDRS = [
 SKSHAPER_HARFBUZZ_SRCS = [
     "modules/skshaper/src/SkShaper.cpp",
     "modules/skshaper/src/SkShaper_harfbuzz.cpp",
-    "modules/skshaper/src/SkShaper_primitive.cpp",
-]
-
-SKSHAPER_CORETEXT_SRCS = [
-    "modules/skshaper/src/SkShaper.cpp",
-    "modules/skshaper/src/SkShaper_coretext.cpp",
     "modules/skshaper/src/SkShaper_primitive.cpp",
 ]
 

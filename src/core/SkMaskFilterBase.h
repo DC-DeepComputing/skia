@@ -8,43 +8,40 @@
 #ifndef SkMaskFilterBase_DEFINED
 #define SkMaskFilterBase_DEFINED
 
-#include "include/core/SkBlurTypes.h"
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkMaskFilter.h"
-#include "include/core/SkPaint.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "src/core/SkMask.h"
 
+#include <memory>
+
 #if defined(SK_GANESH)
-#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/shaders/SkShaderBase.h"
 #endif
 
 class GrClip;
-struct GrFPArgs;
 class GrFragmentProcessor;
 class GrPaint;
 class GrRecordingContext;
-class GrRenderTarget;
-namespace skgpu {
-namespace ganesh {
-class SurfaceDrawContext;
-}
-}  // namespace skgpu
-class GrResourceProvider;
 class GrStyledShape;
 class GrSurfaceProxyView;
-class GrTexture;
-class GrTextureProxy;
-
-class SkBitmap;
 class SkBlitter;
 class SkCachedData;
 class SkMatrix;
 class SkPath;
-class SkRasterClip;
 class SkRRect;
+class SkRasterClip;
+enum SkAlphaType : int;
+enum SkBlurStyle : int;
+enum class GrColorType;
+namespace skgpu { namespace ganesh { class SurfaceDrawContext; } }
+struct GrFPArgs;
+
 
 class SkMaskFilterBase : public SkMaskFilter {
 public:
