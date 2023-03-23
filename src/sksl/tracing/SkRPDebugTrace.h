@@ -11,7 +11,6 @@
 #include "include/sksl/SkSLDebugTrace.h"
 #include "src/sksl/tracing/SkSLDebugInfo.h"
 
-#include <string>
 #include <vector>
 
 class SkWStream;
@@ -26,9 +25,6 @@ public:
     /** Generates a human-readable dump of the debug trace. */
     void dump(SkWStream* o) const override;
 
-    /** Attaches the SkSL source to be debugged. */
-    void setSource(std::string source);
-
     /** A 1:1 mapping of slot numbers to debug information. */
     std::vector<SlotDebugInfo> fSlotInfo;
     std::vector<FunctionDebugInfo> fFuncInfo;
@@ -38,9 +34,6 @@ public:
 
     /** SkVM uniforms live in fSlotInfo; SkRP has dedicated a uniform slot map in fUniformInfo. */
     std::vector<SlotDebugInfo> fUniformInfo;
-
-    /** The SkSL code, split line-by-line. */
-    std::vector<std::string> fSource;
 };
 
 }  // namespace SkSL
