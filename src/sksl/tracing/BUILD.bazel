@@ -49,7 +49,6 @@ skia_filegroup(
     srcs = [
         "SkRPDebugTrace.h",
         "SkSLDebugTrace.h",
-        "SkSLDebugInfo.h",
         "SkVMDebugTrace.h",
         ":enabled_hdrs",
         ":skopts_hdrs",

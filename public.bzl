@@ -1620,7 +1620,6 @@ BASE_SRCS_ALL = [
     "src/sksl/spirv.h",
     "src/sksl/tracing/SkRPDebugTrace.cpp",
     "src/sksl/tracing/SkRPDebugTrace.h",
-    "src/sksl/tracing/SkSLDebugInfo.h",
     "src/sksl/tracing/SkSLDebugTrace.h",
     "src/sksl/tracing/SkSLTraceHook.cpp",
     "src/sksl/tracing/SkSLTraceHook.h",

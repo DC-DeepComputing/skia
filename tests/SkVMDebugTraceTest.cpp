@@ -10,7 +10,6 @@
 #include "include/core/SkStream.h"
 #include "include/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLType.h"
-#include "src/sksl/tracing/SkSLDebugInfo.h"
 #include "src/sksl/tracing/SkVMDebugTrace.h"
 #include "tests/Test.h"
 

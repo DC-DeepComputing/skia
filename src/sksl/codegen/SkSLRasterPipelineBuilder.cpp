@@ -16,7 +16,7 @@
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 #include "src/sksl/tracing/SkRPDebugTrace.h"
-#include "src/sksl/tracing/SkSLDebugInfo.h"
+#include "src/sksl/tracing/SkSLDebugTrace.h"
 #include "src/utils/SkBitSet.h"
 
 #if !defined(SKSL_STANDALONE)

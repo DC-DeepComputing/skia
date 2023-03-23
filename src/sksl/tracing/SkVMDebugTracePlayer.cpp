@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/sksl/tracing/SkSLDebugInfo.h"
+#include "src/sksl/tracing/SkSLDebugTrace.h"
 #include "src/sksl/tracing/SkVMDebugTracePlayer.h"
 
 #include <limits.h>

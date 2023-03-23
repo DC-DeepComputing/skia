@@ -60,7 +60,7 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
-#include "src/sksl/tracing/SkSLDebugInfo.h"
+#include "src/sksl/tracing/SkSLDebugTrace.h"
 #include "src/sksl/tracing/SkSLTraceHook.h"
 #include "src/sksl/tracing/SkVMDebugTrace.h"
 
