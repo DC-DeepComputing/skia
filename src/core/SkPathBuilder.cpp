@@ -12,6 +12,7 @@
 #include "include/private/SkPathRef.h"
 #include "include/private/base/SkPathEnums.h"
 #include "include/private/base/SkSafe32.h"
+#include "src/base/SkBuffer.h"
 #include "src/base/SkVx.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPathPriv.h"

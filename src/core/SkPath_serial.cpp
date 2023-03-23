@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkData.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkPathEnums.h"
@@ -143,23 +144,35 @@ sk_sp<SkData> SkPath::serialize() const {
 // reading
 
 size_t SkPath::readFromMemory(const void* storage, size_t length) {
-    SkRBuffer buffer(storage, length);
-    uint32_t packed;
-    if (!buffer.readU32(&packed)) {
-        return 0;
-    }
-    unsigned version = extract_version(packed);
-    if (version < kMin_Version || version > kCurrent_Version) {
-        return 0;
-    }
-
-    if (version == kJustPublicData_Version || version == kVerbsAreStoredForward_Version) {
-        return this->readFromMemory_EQ4Or5(storage, length);
-    }
+  SkPathBuilder builder;
+  const size_t bytesRead = builder.readFromMemory(storage, length);
+  if (bytesRead == 0) {
     return 0;
+  }
+  *this = builder.detach();
+  return bytesRead;
 }
 
-size_t SkPath::readAsRRect(const void* storage, size_t length) {
+size_t SkPathBuilder::readFromMemory(const void* storage, size_t length) {
+  reset();
+
+  SkRBuffer buffer(storage, length);
+  uint32_t packed;
+  if (!buffer.readU32(&packed)) {
+    return 0;
+  }
+  unsigned version = extract_version(packed);
+  if (version < kMin_Version || version > kCurrent_Version) {
+    return 0;
+  }
+
+  if (version == kJustPublicData_Version || version == kVerbsAreStoredForward_Version) {
+    return this->readFromMemory_EQ4Or5(storage, length);
+  }
+  return 0;
+}
+
+size_t SkPathBuilder::readAsRRect(const void* storage, size_t length) {
     SkRBuffer buffer(storage, length);
     uint32_t packed;
     if (!buffer.readU32(&packed)) {
@@ -190,14 +203,13 @@ size_t SkPath::readAsRRect(const void* storage, size_t length) {
     if (!buffer.readS32(&start) || start != SkTPin(start, 0, 7)) {
         return 0;
     }
-    this->reset();
     this->addRRect(rrect, rrectDir, SkToUInt(start));
     this->setFillType(fillType);
     buffer.skipToAlign4();
     return buffer.pos();
 }
 
-size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
+size_t SkPathBuilder::readFromMemory_EQ4Or5(const void* storage, size_t length) {
     SkRBuffer buffer(storage, length);
     uint32_t packed;
     if (!buffer.readU32(&packed)) {
@@ -248,36 +260,35 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
         verbsStep = -1;
     }
 
-    SkPath tmp;
-    tmp.setFillType(extract_filltype(packed));
-    tmp.incReserve(pts);
+    setFillType(extract_filltype(packed));
+    incReserve(pts, vbs);
     for (int i = 0; i < vbs; ++i) {
         switch (*verbs) {
-            case kMove_Verb:
+          case SkPath::kMove_Verb:
                 CHECK_POINTS_CONICS(1, 0);
-                tmp.moveTo(*points++);
+                moveTo(*points++);
                 break;
-            case kLine_Verb:
+            case SkPath::kLine_Verb:
                 CHECK_POINTS_CONICS(1, 0);
-                tmp.lineTo(*points++);
+                lineTo(*points++);
                 break;
-            case kQuad_Verb:
+            case SkPath::kQuad_Verb:
                 CHECK_POINTS_CONICS(2, 0);
-                tmp.quadTo(points[0], points[1]);
+                quadTo(points[0], points[1]);
                 points += 2;
                 break;
-            case kConic_Verb:
+            case SkPath::kConic_Verb:
                 CHECK_POINTS_CONICS(2, 1);
-                tmp.conicTo(points[0], points[1], *conics++);
+                conicTo(points[0], points[1], *conics++);
                 points += 2;
                 break;
-            case kCubic_Verb:
+            case SkPath::kCubic_Verb:
                 CHECK_POINTS_CONICS(3, 0);
-                tmp.cubicTo(points[0], points[1], points[2]);
+                cubicTo(points[0], points[1], points[2]);
                 points += 3;
                 break;
-            case kClose_Verb:
-                tmp.close();
+            case SkPath::kClose_Verb:
+                close();
                 break;
             default:
                 return 0;   // bad verb
@@ -289,6 +300,5 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
         return 0;   // leftover points and/or conics
     }
 
-    *this = std::move(tmp);
     return buffer.pos();
 }
