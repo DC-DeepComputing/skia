@@ -67,7 +67,7 @@ public:
     {
         fBoundsIsDirty = true;    // this also invalidates fIsFinite
         fGenerationID = 0;        // recompute
-        fSegmentMask = segmentMask;
+        fSegmentMask = static_cast<uint8_t>(segmentMask);
         fIsOval = false;
         fIsRRect = false;
         // The next two values don't matter unless fIsOval or fIsRRect are true.

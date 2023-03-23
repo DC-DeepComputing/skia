@@ -227,6 +227,9 @@ public:
         return *this;
     }
 
+    size_t readFromMemory(const void* buffer, size_t length);
+
+
 private:
     SkPathRef::PointsArray fPts;
     SkPathRef::VerbsArray fVerbs;
@@ -264,7 +267,10 @@ private:
 
     SkPathBuilder& privateReverseAddPath(const SkPath&);
 
-    friend class SkPathPriv;
+size_t readAsRRect(const void* storage, size_t length);
+size_t readFromMemory_EQ4Or5(const void* storage, size_t length);
+
+  friend class SkPathPriv;
 };
 
 #endif
