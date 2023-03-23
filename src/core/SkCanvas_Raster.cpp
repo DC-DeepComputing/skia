@@ -52,3 +52,18 @@ SkCanvas::SkCanvas(const SkBitmap& bitmap, ColorBehavior)
 }
 #endif
 
+std::unique_ptr<SkCanvas> SkCanvas::MakeRasterDirect(const SkImageInfo& info, void* pixels,
+                                                     size_t rowBytes, const SkSurfaceProps* props) {
+    if (!SkSurfaceValidateRasterInfo(info, rowBytes)) {
+        return nullptr;
+    }
+
+    SkBitmap bitmap;
+    if (!bitmap.installPixels(info, pixels, rowBytes)) {
+        return nullptr;
+    }
+
+    return props ?
+        std::make_unique<SkCanvas>(bitmap, *props) :
+        std::make_unique<SkCanvas>(bitmap);
+}

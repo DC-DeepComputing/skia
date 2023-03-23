@@ -167,7 +167,9 @@ namespace {
     std::vector<DecoderProc>* decoders() {
         static auto* decoders = new std::vector<DecoderProc> {
             { SkEmptyTypeface::FactoryId, SkEmptyTypeface::MakeFromStream },
+#if 0
             { SkCustomTypefaceBuilder::FactoryId, SkCustomTypefaceBuilder::MakeFromStream },
+#endif
 #ifdef SK_TYPEFACE_FACTORY_CORETEXT
             { SkTypeface_Mac::FactoryId, SkTypeface_Mac::MakeFromStream },
 #endif
