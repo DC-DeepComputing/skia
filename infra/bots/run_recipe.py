@@ -11,6 +11,8 @@ import os
 import subprocess
 import sys
 
+print('failing immediately') # DO NOT SUBMIT
+print(1 / 0)
 
 kitchen = os.path.join(os.getcwd(), 'kitchen')
 logdog_url = 'logdog://logs.chromium.org/%s/%s/+/annotations' % (
