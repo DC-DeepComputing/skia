@@ -60,7 +60,6 @@ bool QueueManager::addRecording(const InsertRecordingInfo& info, Context* contex
         callback = RefCntedCallback::Make(info.fFinishedProc, info.fFinishedContext);
     }
 
-    SkASSERT(info.fRecording);
     if (!info.fRecording) {
         if (callback) {
             callback->setFailureResult();

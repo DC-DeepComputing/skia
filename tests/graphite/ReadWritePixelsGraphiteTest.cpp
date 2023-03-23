@@ -636,7 +636,9 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixelsGraphite,
             std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
             skgpu::graphite::InsertRecordingInfo recordingInfo;
             recordingInfo.fRecording = recording.get();
-            context->insertRecording(recordingInfo);
+            if (!context->insertRecording(recordingInfo)) {
+                return Surface(nullptr);
+            }
         }
 
         return surface;
