@@ -11,6 +11,16 @@ import os
 import subprocess
 import sys
 
+print('current username:', os.getlogin())
+print('contents of userprofile env var:', os.path.expandvars("%userprofile%"))
+
+shutdown_cmd = ['shutdown', '-r', '-f', '-t', '1']
+print('running command: %s' % ' '.join(shutdown_cmd))
+subprocess.check_call(shutdown_cmd)
+
+
+print('failing immediately') # DO NOT SUBMIT
+print(1 / 0)
 
 kitchen = os.path.join(os.getcwd(), 'kitchen')
 logdog_url = 'logdog://logs.chromium.org/%s/%s/+/annotations' % (
