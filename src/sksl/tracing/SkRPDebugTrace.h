@@ -8,8 +8,8 @@
 #ifndef SKRPDEBUGTRACE
 #define SKRPDEBUGTRACE
 
-#include "include/sksl/SkSLDebugTrace.h"
 #include "src/sksl/tracing/SkSLDebugInfo.h"
+#include "src/sksl/tracing/SkSLDebugTrace.h"
 
 #include <string>
 #include <vector>
