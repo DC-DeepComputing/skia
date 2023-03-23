@@ -27,14 +27,16 @@ sk_sp<skgpu::ganesh::Device> GrRecordingContextPriv::createDevice(
         sk_sp<SkColorSpace> colorSpace,
         GrSurfaceOrigin origin,
         const SkSurfaceProps& props,
-        skgpu::ganesh::Device::InitContents init) {
+        skgpu::ganesh::Device::InitContents init,
+        SkAlphaType alphaType) {
     return skgpu::ganesh::Device::Make(this->context(),
                                        colorType,
                                        std::move(proxy),
                                        std::move(colorSpace),
                                        origin,
                                        props,
-                                       init);
+                                       init,
+                                       alphaType);
 }
 
 sk_sp<skgpu::ganesh::Device> GrRecordingContextPriv::createDevice(

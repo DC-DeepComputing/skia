@@ -240,10 +240,12 @@ public:
     */
     static sk_sp<SkSurface> MakeFromBackendTexture(GrRecordingContext* context,
                                                    const GrBackendTexture& backendTexture,
-                                                   GrSurfaceOrigin origin, int sampleCnt,
+                                                   GrSurfaceOrigin origin,
+                                                   int sampleCnt,
                                                    SkColorType colorType,
                                                    sk_sp<SkColorSpace> colorSpace,
                                                    const SkSurfaceProps* surfaceProps,
+                                                   SkAlphaType alphaType = kPremul_SkAlphaType,
                                                    TextureReleaseProc textureReleaseProc = nullptr,
                                                    ReleaseContext releaseContext = nullptr);
 

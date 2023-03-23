@@ -173,7 +173,8 @@ sk_sp<Device> Device::Make(GrRecordingContext* rContext,
                            sk_sp<SkColorSpace> colorSpace,
                            GrSurfaceOrigin origin,
                            const SkSurfaceProps& surfaceProps,
-                           InitContents init) {
+                           InitContents init,
+                           SkAlphaType alphaType) {
     auto sdc = SurfaceDrawContext::Make(rContext,
                                         colorType,
                                         std::move(proxy),
@@ -181,7 +182,7 @@ sk_sp<Device> Device::Make(GrRecordingContext* rContext,
                                         origin,
                                         surfaceProps);
 
-    return Device::Make(std::move(sdc), kPremul_SkAlphaType, init);
+    return Device::Make(std::move(sdc), alphaType, init);
 }
 
 SkImageInfo Device::MakeInfo(SurfaceContext* sc, DeviceFlags flags) {

@@ -123,7 +123,8 @@ public:
                                               sk_sp<SkColorSpace>,
                                               GrSurfaceOrigin,
                                               const SkSurfaceProps&,
-                                              skgpu::ganesh::Device::InitContents);
+                                              skgpu::ganesh::Device::InitContents,
+                                              SkAlphaType alphaType = kPremul_SkAlphaType);
     sk_sp<skgpu::ganesh::Device> createDevice(skgpu::Budgeted,
                                               const SkImageInfo&,
                                               SkBackingFit,

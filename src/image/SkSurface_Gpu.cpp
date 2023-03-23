@@ -554,6 +554,7 @@ sk_sp<SkSurface> SkSurface::MakeFromBackendTexture(GrRecordingContext* rContext,
                                                    SkColorType colorType,
                                                    sk_sp<SkColorSpace> colorSpace,
                                                    const SkSurfaceProps* props,
+                                                   SkAlphaType alphaType,
                                                    SkSurface::TextureReleaseProc textureReleaseProc,
                                                    SkSurface::ReleaseContext releaseContext) {
     auto releaseHelper = skgpu::RefCntedCallback::Make(textureReleaseProc, releaseContext);
