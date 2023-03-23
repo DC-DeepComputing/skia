@@ -108,7 +108,7 @@
 #endif
 
 #if defined(CK_INCLUDE_RUNTIME_EFFECT) && defined(SKSL_ENABLE_TRACING)
-#include "include/sksl/SkSLDebugTrace.h"
+#include "src/sksl/tracing/SkSLDebugTrace.h"
 #endif
 
 #ifndef CK_NO_FONTS

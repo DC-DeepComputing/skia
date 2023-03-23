@@ -18,7 +18,6 @@ skia_filegroup(
         "DSLStatement.h",
         "DSLType.h",
         "DSLVar.h",
-        "SkSLDebugTrace.h",
         "SkSLErrorReporter.h",
         "SkSLOperator.h",
         "SkSLPosition.h",
