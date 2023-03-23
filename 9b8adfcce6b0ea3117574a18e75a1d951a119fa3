@@ -107,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4641205_dbb9b720",
+        "filename": "include/config/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-23T13:59:09Z",
+      "side": 1,
+      "message": "I still feel like it is silly to be bending over so far for a (well, multiple) build system (who is serving who here) but this at least should work.",
+      "parentUuid": "0441100a_4c5f0391",
+      "range": {
+        "startLine": 15,
+        "startChar": 9,
+        "endLine": 15,
+        "endChar": 30
+      },
+      "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7186e58e_eaaf840f",
@@ -138,6 +162,24 @@
       "side": 1,
       "message": "I think the copts and linkopts are the only part that users *should* reasonably change based on their own toolchain. I don\u0027t think they should be messing with our other Bazel macros.",
       "parentUuid": "7186e58e_eaaf840f",
+      "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "442821f0_cbd248a4",
+        "filename": "include/config/copts.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-23T13:59:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9e4e6209_a7667279",
       "revId": "9b8adfcce6b0ea3117574a18e75a1d951a119fa3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

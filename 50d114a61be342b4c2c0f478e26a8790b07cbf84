@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ee81a44_ff1aed71",
+        "filename": "include/private/base/SkLoadUserConfig.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-23T13:59:09Z",
+      "side": 1,
+      "message": "Do we still want `SK_USER_CONFIG_HEADER`? I suppose it might be easier for some to use?",
+      "revId": "50d114a61be342b4c2c0f478e26a8790b07cbf84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
