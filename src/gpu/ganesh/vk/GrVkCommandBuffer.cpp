@@ -563,8 +563,8 @@ static bool submit_to_queue(GrVkGpu* gpu,
 bool GrVkPrimaryCommandBuffer::submitToQueue(
         GrVkGpu* gpu,
         VkQueue queue,
-        SkTArray<GrVkSemaphore::Resource*>& signalSemaphores,
-        SkTArray<GrVkSemaphore::Resource*>& waitSemaphores) {
+        TArray<GrVkSemaphore::Resource*>& signalSemaphores,
+        TArray<GrVkSemaphore::Resource*>& waitSemaphores) {
     SkASSERT(!fIsActive);
 
     VkResult err;
@@ -596,7 +596,7 @@ bool GrVkPrimaryCommandBuffer::submitToQueue(
                 gpu, queue, fSubmitFence, 0, nullptr, nullptr, 1, &fCmdBuffer, 0, nullptr,
                 gpu->protectedContext() ? GrProtected::kYes : GrProtected::kNo);
     } else {
-        SkTArray<VkSemaphore> vkSignalSems(signalCount);
+        TArray<VkSemaphore> vkSignalSems(signalCount);
         for (int i = 0; i < signalCount; ++i) {
             if (signalSemaphores[i]->shouldSignal()) {
                 this->addResource(signalSemaphores[i]);
@@ -604,8 +604,8 @@ bool GrVkPrimaryCommandBuffer::submitToQueue(
             }
         }
 
-        SkTArray<VkSemaphore> vkWaitSems(waitCount);
-        SkTArray<VkPipelineStageFlags> vkWaitStages(waitCount);
+        TArray<VkSemaphore> vkWaitSems(waitCount);
+        TArray<VkPipelineStageFlags> vkWaitStages(waitCount);
         for (int i = 0; i < waitCount; ++i) {
             if (waitSemaphores[i]->shouldWait()) {
                 this->addResource(waitSemaphores[i]);

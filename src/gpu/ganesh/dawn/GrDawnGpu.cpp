@@ -174,7 +174,7 @@ GrOpsRenderPass* GrDawnGpu::onGetOpsRenderPass(
         const SkIRect& bounds,
         const GrOpsRenderPass::LoadAndStoreInfo& colorInfo,
         const GrOpsRenderPass::StencilLoadAndStoreInfo& stencilInfo,
-        const SkTArray<GrSurfaceProxy*, true>& sampledProxies,
+        const TArray<GrSurfaceProxy*, true>& sampledProxies,
         GrXferBarrierFlags renderPassXferBarriers) {
     fOpsRenderPass.reset(new GrDawnOpsRenderPass(this, rt, origin, colorInfo, stencilInfo));
     return fOpsRenderPass.get();

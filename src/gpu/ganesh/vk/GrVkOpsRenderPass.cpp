@@ -348,7 +348,7 @@ bool GrVkOpsRenderPass::set(GrRenderTarget* rt,
                             const GrOpsRenderPass::LoadAndStoreInfo& resolveInfo,
                             GrVkRenderPass::SelfDependencyFlags selfDepFlags,
                             GrVkRenderPass::LoadFromResolve loadFromResolve,
-                            const SkTArray<GrSurfaceProxy*, true>& sampledProxies) {
+                            const TArray<GrSurfaceProxy*, true>& sampledProxies) {
     SkASSERT(!fRenderTarget);
     SkASSERT(fGpu == rt->getContext()->priv().getGpu());
 

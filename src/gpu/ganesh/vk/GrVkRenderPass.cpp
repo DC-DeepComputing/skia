@@ -124,7 +124,7 @@ GrVkRenderPass* GrVkRenderPass::Create(GrVkGpu* gpu,
 
     uint32_t numAttachments = attachmentsDescriptor->fAttachmentCount;
     // Attachment descriptions to be set on the render pass
-    SkTArray<VkAttachmentDescription> attachments(numAttachments);
+    TArray<VkAttachmentDescription> attachments(numAttachments);
     attachments.reset(numAttachments);
     memset(attachments.begin(), 0, numAttachments * sizeof(VkAttachmentDescription));
 
