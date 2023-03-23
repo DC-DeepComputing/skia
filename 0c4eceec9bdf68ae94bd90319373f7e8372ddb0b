@@ -16,6 +16,23 @@
       "message": "PTAL, thanks",
       "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79dd8866_ece4b1bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-23T13:43:57Z",
+      "side": 1,
+      "message": "So Skia does not support rendering to an unpremul surface, so this change will not work. I\u0027ve tried to scan through the bug to understand where the issue is coming from, but I\u0027m still not 100% clear.\n\nIs this flow correct:\n\n1) Start with some unpremul image\n2) Upload 1) into some intermediate surface (which currently is set in Skia to think it is premul\n3) Do some rendering to intermediate surface???\n4) Read back (to CPU?) data from surface as unpremul data and then upload to WebGPU texture\n\nIf the above is correct, can you don\u0027t covert the data to premul in step 2)? Also what sort of rendering is happing in 3) that needs a surface?\n\nMaybe it would be best if we could set up a meeting to understand your specific use case and see how we can support that workflow in Skia",
+      "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
