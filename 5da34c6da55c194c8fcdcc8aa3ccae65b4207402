@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56b4b741_9bcaf8ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-03-23T14:43:51Z",
+      "side": 1,
+      "message": "Greg, how do you feel about landing this in `android/u-release`? This will give us the information we need in Android U and hopefully help us fix going forward.\n\nIt won\u0027t be merged to Android\u0027s `master` branch, so it would only cause conflicts if we need to cherry-pick other changes to U. We can also revert this once we get the crash data.",
+      "revId": "5da34c6da55c194c8fcdcc8aa3ccae65b4207402",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
