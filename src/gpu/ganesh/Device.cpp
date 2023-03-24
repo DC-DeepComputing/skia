@@ -5,6 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include <atomic>
+#include <cstddef>
+#include <cstdint>
+#include <memory>
+#include <tuple>
+#include <utility>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -72,7 +78,6 @@
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
-#include "src/gpu/ganesh/GrImageUtils.h"
 #include "src/gpu/ganesh/GrPaint.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
@@ -92,13 +97,8 @@
 #include "src/gpu/ganesh/effects/GrRRectEffect.h"
 #include "src/gpu/ganesh/geometry/GrShape.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
+#include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/text/GlyphRun.h"
-#include <atomic>
-#include <cstddef>
-#include <cstdint>
-#include <memory>
-#include <tuple>
-#include <utility>
 
 class GrBackendSemaphore;
 enum class SkFilterMode;
@@ -1241,7 +1241,7 @@ bool Device::replaceBackingProxy(SkSurface::ContentChangeMode mode) {
     }
 
     GrProxyProvider* proxyProvider = fContext->priv().proxyProvider();
-    // This entry point is used by SkSurface_Gpu::onCopyOnWrite so it must create a
+    // This entry point is used by SkSurface_Ganesh::onCopyOnWrite so it must create a
     // kExact-backed render target proxy
     sk_sp<GrTextureProxy> proxy =
             proxyProvider->createProxy(format,
