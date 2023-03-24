@@ -114,7 +114,15 @@ bool DawnCommandBuffer::onAddComputePass(const DispatchGroupList& groups) {
         for (const auto& dispatch : group->dispatches()) {
             this->bindComputePipeline(group->getPipeline(dispatch.fPipelineIndex));
             for (const ResourceBinding& binding : dispatch.fBindings) {
-                this->bindBuffer(binding.fBuffer.fBuffer, binding.fBuffer.fOffset, binding.fIndex);
+                if (const BindBufferInfo* buffer =
+                            std::get_if<BindBufferInfo>(&binding.fResource)) {
+                    this->bindBuffer(buffer->fBuffer, buffer->fOffset, binding.fIndex);
+                } else if (const TextureIndex* texIdx =
+                                   std::get_if<TextureIndex>(&binding.fResource)) {
+                    this->bindTexture(group->getTexture(*texIdx), binding.fIndex);
+                } else {
+                    SK_ABORT("unexpected compute resource type");
+                }
             }
             this->dispatchThreadgroups(dispatch.fParams.fGlobalDispatchSize,
                                        dispatch.fParams.fLocalDispatchSize);
@@ -716,6 +724,11 @@ void DawnCommandBuffer::bindComputePipeline(const ComputePipeline* computePipeli
 }
 
 void DawnCommandBuffer::bindBuffer(const Buffer* buffer, unsigned int offset, unsigned int index) {
+    // TODO: https://b.corp.google.com/issues/260341543
+    SkASSERT(false);
+}
+
+void DawnCommandBuffer::bindTexture(const Texture* texture, unsigned int index) {
     // TODO: https://b.corp.google.com/issues/260341543
     SkASSERT(false);
 }
