@@ -29,13 +29,13 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/gpu/ganesh/GrImageUtils.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrSamplerState.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
 #include "src/gpu/ganesh/SurfaceContext.h"
+#include "src/gpu/ganesh/image/GrImageUtils.h"
+#include "src/gpu/ganesh/image/SkImage_Ganesh.h"
 #include "src/image/SkImage_Base.h"
-#include "src/image/SkImage_Gpu.h"
 
 #include <memory>
 #include <utility>
@@ -355,7 +355,7 @@ protected:
                                   image->alphaType(),
                                   image->refColorSpace());
             // No API to draw a GrTexture directly, so we cheat and create a private image subclass
-            sk_sp<SkImage> texImage(new SkImage_Gpu(sk_ref_sp(canvas->recordingContext()),
+            sk_sp<SkImage> texImage(new SkImage_Ganesh(sk_ref_sp(canvas->recordingContext()),
                                                     image->uniqueID(),
                                                     std::move(view),
                                                     std::move(colorInfo)));

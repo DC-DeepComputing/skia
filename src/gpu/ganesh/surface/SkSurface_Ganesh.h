@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef SkSurface_Gpu_DEFINED
-#define SkSurface_Gpu_DEFINED
+#ifndef SkSurface_Ganesh_DEFINED
+#define SkSurface_Ganesh_DEFINED
 
 #include "include/core/SkTypes.h"
 
@@ -42,10 +42,10 @@ struct SkIPoint;
 struct SkIRect;
 struct SkISize;
 
-class SkSurface_Gpu : public SkSurface_Base {
+class SkSurface_Ganesh : public SkSurface_Base {
 public:
-    SkSurface_Gpu(sk_sp<skgpu::ganesh::Device>);
-    ~SkSurface_Gpu() override;
+    SkSurface_Ganesh(sk_sp<skgpu::ganesh::Device>);
+    ~SkSurface_Ganesh() override;
 
     SkImageInfo imageInfo() const override;
 
@@ -96,4 +96,4 @@ private:
 
 #endif // defined(SK_GANESH)
 
-#endif // SkSurface_Gpu_DEFINED
+#endif // SkSurface_Ganesh_DEFINED
