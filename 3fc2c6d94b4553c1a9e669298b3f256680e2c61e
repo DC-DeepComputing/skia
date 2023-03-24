@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92c81acf_c1948f17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-24T15:07:27Z",
+      "side": 1,
+      "message": "This is a sketch for providing text drawing that does not use direct mask caching.",
+      "revId": "3fc2c6d94b4553c1a9e669298b3f256680e2c61e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
