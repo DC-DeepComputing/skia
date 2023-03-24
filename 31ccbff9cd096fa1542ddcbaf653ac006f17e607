@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04431964_ea928e47",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-24T13:51:21Z",
+      "side": 1,
+      "message": "If we wanted we could pass in a flag to this call whether we want the texture to be sampleable or not.",
+      "range": {
+        "startLine": 799,
+        "startChar": 4,
+        "endLine": 799,
+        "endChar": 69
+      },
+      "revId": "31ccbff9cd096fa1542ddcbaf653ac006f17e607",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "255f4e20_c3e6b9b3",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-24T13:51:21Z",
+      "side": 1,
+      "message": "Do we need an additional check here? My guess is this is mostly going to be checking if the format features flags support being sampled or not. Are there different feature flags for supporting storage? Like for example a YUV planar format would say it can be sampled, but maybe not generically used for storage?",
+      "range": {
+        "startLine": 225,
+        "startChar": 20,
+        "endLine": 225,
+        "endChar": 32
+      },
+      "revId": "31ccbff9cd096fa1542ddcbaf653ac006f17e607",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
