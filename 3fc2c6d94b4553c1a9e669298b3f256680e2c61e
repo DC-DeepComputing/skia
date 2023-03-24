@@ -16,6 +16,40 @@
       "message": "This is a sketch for providing text drawing that does not use direct mask caching.",
       "revId": "3fc2c6d94b4553c1a9e669298b3f256680e2c61e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e97b3972_1face1e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-03-24T15:27:09Z",
+      "side": 1,
+      "message": "Sweet!",
+      "revId": "3fc2c6d94b4553c1a9e669298b3f256680e2c61e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0386ec7e_aedc3ea5",
+        "filename": "src/text/GlyphRun.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-03-24T15:27:09Z",
+      "side": 1,
+      "message": "Is this being preserved in serialization/deserialization?",
+      "revId": "3fc2c6d94b4553c1a9e669298b3f256680e2c61e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
