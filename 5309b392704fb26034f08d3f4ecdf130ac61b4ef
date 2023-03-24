@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e576244_0d23ee9d",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3396,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-24T19:02:25Z",
+      "side": 1,
+      "message": "I was going to say that putting this here bakes it into the program, so that we can\u0027t change the trace coord without re-making the program, but I think that\u0027s okay - because of how MakeTraced works?",
+      "revId": "5309b392704fb26034f08d3f4ecdf130ac61b4ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
