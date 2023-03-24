@@ -795,6 +795,25 @@ TextureInfo MtlCaps::getDefaultDepthStencilTextureInfo(
     return info;
 }
 
+TextureInfo MtlCaps::getDefaultStorageTextureInfo(SkColorType colorType) const {
+    // Storage texture are currently always sampleable from a shader.
+    MTLTextureUsage usage = MTLTextureUsageShaderWrite | MTLTextureUsageShaderRead;
+    MtlPixelFormat format = this->getFormatFromColorType(colorType);
+    if (format == MTLPixelFormatInvalid) {
+        return {};
+    }
+
+    MtlTextureInfo info;
+    info.fSampleCount = 1;
+    info.fMipmapped = Mipmapped::kNo;
+    info.fFormat = format;
+    info.fUsage = usage;
+    info.fStorageMode = MTLStorageModePrivate;
+    info.fFramebufferOnly = false;
+
+    return info;
+}
+
 const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
         SkColorType ct, const TextureInfo& textureInfo) const {
     MTLPixelFormat mtlFormat = static_cast<MTLPixelFormat>(textureInfo.mtlTextureSpec().fFormat);

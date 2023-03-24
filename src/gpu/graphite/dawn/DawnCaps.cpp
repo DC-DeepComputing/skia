@@ -138,6 +138,24 @@ TextureInfo DawnCaps::getDefaultDepthStencilTextureInfo(
     return info;
 }
 
+TextureInfo DawnCaps::getDefaultStorageTextureInfo(SkColorType colorType) const {
+    wgpu::TextureUsage usage = wgpu::TextureUsage::StorageBinding |
+                               wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopySrc;
+    wgpu::TextureFormat format = this->getFormatFromColorType(colorType);
+    if (format == wgpu::TextureFormat::Undefined) {
+        SkDebugf("colorType=%d is not supported\n", static_cast<int>(colorType));
+        return {};
+    }
+
+    DawnTextureInfo info;
+    info.fSampleCount = 1;
+    info.fMipmapped = Mipmapped::kNo;
+    info.fFormat = format;
+    info.fUsage = usage;
+
+    return info;
+}
+
 const Caps::ColorTypeInfo* DawnCaps::getColorTypeInfo(SkColorType colorType,
                                                       const TextureInfo& textureInfo) const {
     auto dawnFormat = textureInfo.dawnTextureSpec().fFormat;

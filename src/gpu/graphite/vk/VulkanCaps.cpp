@@ -219,6 +219,27 @@ TextureInfo VulkanCaps::getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthSte
     return info;
 }
 
+TextureInfo VulkanCaps::getDefaultStorageTextureInfo(SkColorType colorType) const {
+    VkFormat format = this->getFormatFromColorType(ct);
+    const FormatInfo& formatInfo = this->getFormatInfo(format);
+    if (!formatInfo.isTexturable(VK_IMAGE_TILING_OPTIMAL)) {
+        return {};
+    }
+
+    VulkanTextureInfo info;
+    info.fSampleCount = 1;
+    info.fMipmapped = Mipmapped::kNo;
+    info.fFlags = 0;
+    info.fFormat = format;
+    info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    info.fImageUsageFlags = VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_SAMPLED_BIT |
+                            VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+    info.fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    info.fAspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+
+    return info;
+}
+
 uint32_t VulkanCaps::channelMask(const TextureInfo& textureInfo) const {
     return skgpu::VkFormatChannels(textureInfo.vulkanTextureSpec().fFormat);
 }
