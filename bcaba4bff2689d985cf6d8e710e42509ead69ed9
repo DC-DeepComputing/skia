@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81f38b77_b51eeec4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-24T01:18:13Z",
+      "side": 1,
+      "message": "This should be ready now. PS1-\u003ePS2 shows the very small fuzziness around the transparent expected region. Android bots that had failed now pass successfully.",
+      "revId": "bcaba4bff2689d985cf6d8e710e42509ead69ed9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
