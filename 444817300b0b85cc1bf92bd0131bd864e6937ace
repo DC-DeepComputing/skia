@@ -34,6 +34,24 @@
       "parentUuid": "e70fc736_d72c7b33",
       "revId": "444817300b0b85cc1bf92bd0131bd864e6937ace",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "836888ef_da805135",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-03-24T19:36:05Z",
+      "side": 1,
+      "message": "My opinion is to prefer consistency with the other backends. If the other backends use raw pointers then we should use that (like in this CL).\n\nIf we wrap a BackendTexture into SkSurface/SkImage we would take a ref on the texture by storing it internally as a wgpu::Texture (we already do that - this CL doesn\u0027t change anything about this aspect). This CL only removes the extra ref on teh Dawn texture taken by BackendTexture which was unnecessary at best and prone to initialization errors as we\u0027ve seen.",
+      "parentUuid": "e70fc736_d72c7b33",
+      "revId": "444817300b0b85cc1bf92bd0131bd864e6937ace",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

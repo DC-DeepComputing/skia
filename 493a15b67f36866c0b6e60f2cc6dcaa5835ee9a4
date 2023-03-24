@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "91681b0a_e9925a23",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-03-24T19:36:05Z",
+      "side": 1,
+      "message": "These are the right types - they will increment the ref count in the Dawn object on creation and decrement it on destruction. So these are like sk_ref_sp(T* obj) which increments the ref count and not like SkRefCnt(T* obj) which doesn\u0027t increment the ref count. Aside: wgpu::Texture::Acquire() is what you want if you don\u0027t want to increment the ref count.\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:out/mac-Debug/gen/third_party/dawn/include/dawn/webgpu_cpp.h;l\u003d693?q\u003dObjectBase::ObjectBase\u0026ss\u003dchromium%2Fchromium%2Fsrc",
+      "parentUuid": "681b0e44_bf4f0e20",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 141,
+        "endChar": 17
+      },
+      "revId": "493a15b67f36866c0b6e60f2cc6dcaa5835ee9a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "546720d8_a6d674ff",
         "filename": "tools/sk_app/GraphiteDawnWindowContext.cpp",
         "patchSetId": 1
