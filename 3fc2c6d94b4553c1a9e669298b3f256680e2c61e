@@ -68,6 +68,24 @@
       "parentUuid": "0386ec7e_aedc3ea5",
       "revId": "3fc2c6d94b4553c1a9e669298b3f256680e2c61e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d478a1cb_e0142ed9",
+        "filename": "src/text/GlyphRun.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-03-24T16:08:51Z",
+      "side": 1,
+      "message": "Not explicitly, but discarding information from SKPs could be a challenge for someone trying to debug/repro.\n\nAlso, this doesn\u0027t seem limited to serialization: SkRecorder converts to a blob, which would also discard the bit, right?  That seems to break the SkPicture contract (draws the same).",
+      "parentUuid": "013565ea_cf7ec0ba",
+      "revId": "3fc2c6d94b4553c1a9e669298b3f256680e2c61e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
