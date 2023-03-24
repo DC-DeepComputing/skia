@@ -30,7 +30,7 @@ class SkPixmap;
 class SkSurface;
 class SkSurfaceCharacterization;
 enum GrSurfaceOrigin : int;
-enum class GrSemaphoresSubmitted : bool;
+enum class SkSemaphoresSubmitted : bool;
 namespace skgpu {
 class MutableTextureState;
 }
@@ -82,7 +82,7 @@ public:
     bool onCopyOnWrite(ContentChangeMode) override;
     void onDiscard() override;
     void onResolveMSAA() override;
-    GrSemaphoresSubmitted onFlush(BackendSurfaceAccess access,
+    SkSemaphoresSubmitted onFlush(BackendSurfaceAccess access,
                                   const GrFlushInfo& info,
                                   const skgpu::MutableTextureState*) override;
     bool onWait(int numSemaphores,

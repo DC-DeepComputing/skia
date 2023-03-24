@@ -952,7 +952,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SkImage_NewFromTextureRelease,
             mbet->releaseContext(TextureReleaseChecker::Release, &releaseChecker));
 
     GrSurfaceOrigin readBackOrigin;
-    GrBackendTexture readBackBackendTex = refImg->getBackendTexture(false, &readBackOrigin);
+    GrBackendTexture readBackBackendTex = refImg->getBackendTexture(false, &readBackOrigin).value();
     if (!GrBackendTexture::TestingOnly_Equals(readBackBackendTex, mbet->texture())) {
         ERRORF(reporter, "backend mismatch\n");
     }
@@ -1225,7 +1225,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(makeBackendTexture,
             continue;
         }
 
-        GrBackendTexture origBackend = image->getBackendTexture(true);
+        GrBackendTexture origBackend = image->getBackendTexture(true).value();
         if (testCase.fCanTakeDirectly) {
             SkASSERT(origBackend.isValid());
         }
@@ -1265,14 +1265,15 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageBackendAccessAbandoned_Gpu,
         return;
     }
 
-    GrBackendTexture beTex = image->getBackendTexture(true);
-    REPORTER_ASSERT(reporter, beTex.isValid());
+    std::optional<GrBackendTexture> beTex = image->getBackendTexture(true);
+    REPORTER_ASSERT(reporter, beTex);
+    REPORTER_ASSERT(reporter, beTex.value().isValid());
 
     dContext->abandonContext();
 
     // After abandoning the context the backend texture should not be valid.
     beTex = image->getBackendTexture(true);
-    REPORTER_ASSERT(reporter, !beTex.isValid());
+    REPORTER_ASSERT(reporter, !beTex);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

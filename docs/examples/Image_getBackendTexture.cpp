@@ -23,7 +23,7 @@ void draw(SkCanvas* canvas) {
                                                                  kBottomLeft_GrSurfaceOrigin,
                                                                  kRGBA_8888_SkColorType,
                                                                  kOpaque_SkAlphaType);
-    GrBackendTexture textureFromImage = imageFromBackend->getBackendTexture(false);
+    GrBackendTexture textureFromImage = imageFromBackend->getBackendTexture(false).value();
     if (!textureFromImage.isValid()) {
         return;
     }

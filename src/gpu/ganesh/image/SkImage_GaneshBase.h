@@ -41,6 +41,13 @@ class SkImage_GaneshBase : public SkImage_Base {
 public:
     GrImageContext* context() const final { return fContext.get(); }
 
+    // From SkImage.h
+    virtual GrSemaphoresSubmitted flush(GrDirectContext*, const GrFlushInfo&) const override = 0;
+    void flush(GrDirectContext* context) const override { this->flush(context, {}); }
+    void flushAndSubmit(GrDirectContext* dContext) const final;
+    bool isValid(GrRecordingContext*) const final;
+
+
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const final;
     sk_sp<SkImage> onMakeSubset(const SkIRect& subset, GrDirectContext*) const final;
 
@@ -51,8 +58,6 @@ public:
                       int srcX,
                       int srcY,
                       CachingHint) const override;
-
-    bool onIsValid(GrRecordingContext*) const final;
 
     static bool ValidateBackendTexture(const GrCaps*,
                                        const GrBackendTexture& tex,

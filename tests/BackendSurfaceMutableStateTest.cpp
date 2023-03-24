@@ -101,7 +101,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
     REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == info.fImageLayout);
     REPORTER_ASSERT(reporter, initQueue == info.fCurrentQueueFamily);
 
-    GrBackendTexture backendTexImage = wrappedImage->getBackendTexture(false);
+    GrBackendTexture backendTexImage = wrappedImage->getBackendTexture(false).value();
     REPORTER_ASSERT(reporter, backendTexImage.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == info.fImageLayout);
     REPORTER_ASSERT(reporter, initQueue == info.fCurrentQueueFamily);
