@@ -70,20 +70,21 @@ void GraphiteDawnWindowContext::destroyContext() {
     fGraphiteRecorder = nullptr;
     fGraphiteContext = nullptr;
     fSwapChain = nullptr;
+    fSwapChainCurrentTextureView = nullptr;
     fSurface = nullptr;
     fDevice = nullptr;
     fInstance = nullptr;
 }
 
 sk_sp<SkSurface> GraphiteDawnWindowContext::getBackbufferSurface() {
-    auto textureView = fSwapChain.GetCurrentTextureView();
+    fSwapChainCurrentTextureView = fSwapChain.GetCurrentTextureView();
     skgpu::graphite::DawnTextureInfo info(/*sampleCount=*/1,
                                           skgpu::Mipmapped::kNo,
                                           fSwapChainFormat,
                                           kTextureUsage);
     skgpu::graphite::BackendTexture backendTex(this->dimensions(),
                                                info,
-                                               std::move(textureView));
+                                               fSwapChainCurrentTextureView.Get());
     SkASSERT(this->graphiteRecorder());
     auto surface = SkSurface::MakeGraphiteFromBackendTexture(
         this->graphiteRecorder(),
@@ -108,6 +109,8 @@ void GraphiteDawnWindowContext::swapBuffers() {
 
     fSwapChain.Present();
     this->onSwapBuffers();
+
+    fSwapChainCurrentTextureView = nullptr;
 }
 
 void GraphiteDawnWindowContext::setDisplayParams(const DisplayParams& params) {

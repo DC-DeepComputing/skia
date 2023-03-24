@@ -138,8 +138,8 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
 }
 
 sk_sp<Texture> DawnResourceProvider::createWrappedTexture(const BackendTexture& texture) {
-    wgpu::Texture dawnTexture         = texture.getDawnTexture();
-    wgpu::TextureView dawnTextureView = texture.getDawnTextureView();
+    wgpu::Texture dawnTexture         = texture.getDawnTexturePtr();
+    wgpu::TextureView dawnTextureView = texture.getDawnTextureViewPtr();
     SkASSERT(!dawnTexture || !dawnTextureView);
 
     if (!dawnTexture && !dawnTextureView) {
@@ -216,15 +216,22 @@ BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
         return {};
     }
 
-    return BackendTexture(std::move(texture));
+    return BackendTexture(texture.Release());
 }
 
 void DawnResourceProvider::onDeleteBackendTexture(BackendTexture& texture) {
     SkASSERT(texture.isValid());
     SkASSERT(texture.backend() == BackendApi::kDawn);
 
-    // Nothing to be done here as all the the cleanup of Dawn's resources will be done inside
-    // BackendTexture::~BackendTexture().
+    WGPUTexture dawnTexturePtr = texture.getDawnTexturePtr();
+    WGPUTextureView dawnTextureViewPtr = texture.getDawnTextureViewPtr();
+
+    if (dawnTextureViewPtr) {
+        wgpuTextureViewRelease(dawnTextureViewPtr);
+    }
+    if (dawnTexturePtr) {
+        wgpuTextureRelease(dawnTexturePtr);
+    }
 }
 
 const DawnSharedContext* DawnResourceProvider::dawnSharedContext() const {

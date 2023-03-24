@@ -42,6 +42,7 @@ protected:
     wgpu::Queue                             fQueue;
     wgpu::Surface                           fSurface;
     wgpu::SwapChain                         fSwapChain;
+    wgpu::TextureView                       fSwapChainCurrentTextureView;
 };
 
 }   // namespace sk_app
