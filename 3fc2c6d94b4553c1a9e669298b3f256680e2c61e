@@ -50,6 +50,24 @@
       "message": "Is this being preserved in serialization/deserialization?",
       "revId": "3fc2c6d94b4553c1a9e669298b3f256680e2c61e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "013565ea_cf7ec0ba",
+        "filename": "src/text/GlyphRun.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-03-24T15:38:05Z",
+      "side": 1,
+      "message": "It is not being preserved. Are you serializing the drawGlyphs call?",
+      "parentUuid": "0386ec7e_aedc3ea5",
+      "revId": "3fc2c6d94b4553c1a9e669298b3f256680e2c61e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
