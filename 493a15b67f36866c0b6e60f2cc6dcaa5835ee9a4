@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c79a57e_0d3c53fb",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-03-24T20:04:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d74dfc6_287f7d9a",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 141,
+        "endChar": 17
+      },
+      "revId": "493a15b67f36866c0b6e60f2cc6dcaa5835ee9a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "546720d8_a6d674ff",
@@ -109,6 +133,30 @@
       "writtenOn": "2023-03-24T19:14:42Z",
       "side": 1,
       "message": "IIUC the SkSurface will hold on to a strong reference to the texture view (internally via a graphite::DawnTexture) so we don\u0027t need to keep it alive.",
+      "range": {
+        "startLine": 87,
+        "startChar": 47,
+        "endLine": 87,
+        "endChar": 75
+      },
+      "revId": "493a15b67f36866c0b6e60f2cc6dcaa5835ee9a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b1076e4_03ce7581",
+        "filename": "tools/sk_app/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-03-24T20:04:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "546720d8_a6d674ff",
       "range": {
         "startLine": 87,
         "startChar": 47,
