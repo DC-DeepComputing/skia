@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d74dfc6_287f7d9a",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-24T19:38:37Z",
+      "side": 1,
+      "message": "Can we add a comment that these are ref cnted and ctor will increment them. Like with sk_cfp it\u0027s a little more obvious we are now wrapping the pointer in a ref cnt thing. Here, unless you\u0027re very familiar with Dawn, that isn\u0027t obvious. But a comment would clarify it well.",
+      "parentUuid": "91681b0a_e9925a23",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 141,
+        "endChar": 17
+      },
+      "revId": "493a15b67f36866c0b6e60f2cc6dcaa5835ee9a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "546720d8_a6d674ff",
         "filename": "tools/sk_app/GraphiteDawnWindowContext.cpp",
         "patchSetId": 1

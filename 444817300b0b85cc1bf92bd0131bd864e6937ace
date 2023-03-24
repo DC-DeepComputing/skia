@@ -52,6 +52,24 @@
       "parentUuid": "e70fc736_d72c7b33",
       "revId": "444817300b0b85cc1bf92bd0131bd864e6937ace",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffd375c7_5d17f552",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-24T19:38:37Z",
+      "side": 1,
+      "message": "sounds good, to leave it as is for now.",
+      "parentUuid": "836888ef_da805135",
+      "revId": "444817300b0b85cc1bf92bd0131bd864e6937ace",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
