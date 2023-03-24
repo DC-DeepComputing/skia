@@ -12,10 +12,10 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/gpu/SkBackingFit.h"
-#include "src/gpu/ganesh/GrImageUtils.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 #include "src/gpu/ganesh/SkGr.h"
+#include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Raster.h"
 
