@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5eac4178_fd1f4667",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-03-24T19:34:46Z",
+      "side": 1,
+      "message": "The intention is using smart pointers here. Default `wgpu::Texture*` ctor will retain the reference. Because `DawnTexture` will want to retain the references and utilize automatic ref counts. Furthermore the code in dawn backend will continue using smart pointers to pass Dawn\u0027s references around, hence we need to convert.\n\nI also follow what metal backend is doing: It converts raw pointer to `sk_cfp` smart pointer + retain: https://skia.googlesource.com/skia/+/refs/heads/main/src/gpu/graphite/mtl/MtlResourceProvider.mm#212",
+      "parentUuid": "681b0e44_bf4f0e20",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 141,
+        "endChar": 17
+      },
+      "revId": "493a15b67f36866c0b6e60f2cc6dcaa5835ee9a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "546720d8_a6d674ff",
         "filename": "tools/sk_app/GraphiteDawnWindowContext.cpp",
         "patchSetId": 1
