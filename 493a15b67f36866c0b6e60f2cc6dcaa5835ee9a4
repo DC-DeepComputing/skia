@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "681b0e44_bf4f0e20",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-24T19:15:23Z",
+      "side": 1,
+      "message": "are these the right types now? Should they bet WGPUTextures instead?",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 141,
+        "endChar": 17
+      },
+      "revId": "493a15b67f36866c0b6e60f2cc6dcaa5835ee9a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "546720d8_a6d674ff",
         "filename": "tools/sk_app/GraphiteDawnWindowContext.cpp",
         "patchSetId": 1

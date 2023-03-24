@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e70fc736_d72c7b33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-24T19:15:23Z",
+      "side": 1,
+      "message": "So say we didn\u0027t have the union we have now (which is definitely going away at some point). In that world would we want the wgpu::Texture or the ptrs you changed to here? If we\u0027d prefer using wgpu::Texture then I may propose we just move the Dawn thing off of the union for now if that makes things easier.\n\nSo when we now wrap a BackendTexture into an SkSurface or SkImage do end up refing the texture when we store it internally as a wgpu::Texture on DawnTexture?",
+      "revId": "444817300b0b85cc1bf92bd0131bd864e6937ace",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
