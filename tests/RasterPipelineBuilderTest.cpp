@@ -807,3 +807,23 @@ DEF_TEST(RasterPipelineBuilderAutomaticStackRewinding, r) {
     REPORTER_ASSERT(r, skstd::contains(as_string_view(dump), "stack_rewind"));
 #endif
 }
+
+DEF_TEST(RasterPipelineBuilderTraceOps, r) {
+    SkSL::RP::Builder builder;
+    builder.trace_enter(123, 5);
+    builder.trace_scope(123, +1);
+    builder.trace_line(123, 500);
+    builder.trace_var(123, ten_slots_at(5));
+    builder.trace_scope(123, -1);
+    builder.trace_exit(123, 5);
+    std::unique_ptr<SkSL::RP::Program> program = builder.finish(/*numValueSlots=*/20,
+                                                                /*numUniformSlots=*/0);
+    check(r, *program,
+R"(    1. trace_enter
+    2. trace_scope
+    3. trace_line
+    4. trace_var
+    5. trace_scope
+    6. trace_exit
+)");
+}

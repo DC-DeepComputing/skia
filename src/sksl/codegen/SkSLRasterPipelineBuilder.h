@@ -36,26 +36,37 @@ struct SlotRange {
     int count = 0;
 };
 
+#define SKRP_EXTENDED_OPS(M)     \
+    /* branch targets */         \
+    M(label)                     \
+                                 \
+    /* child programs */         \
+    M(invoke_shader)             \
+    M(invoke_color_filter)       \
+    M(invoke_blender)            \
+                                 \
+    /* color space transforms */ \
+    M(invoke_to_linear_srgb)     \
+    M(invoke_from_linear_srgb)   \
+                                 \
+    /* debug traces */           \
+    M(trace_line)                \
+    M(trace_var)                 \
+    M(trace_enter)               \
+    M(trace_exit)                \
+    M(trace_scope)
+
 // An RP::Program will consist entirely of ProgramOps. The ProgramOps list is a superset of the
 // native SkRasterPipelineOps op-list. It also has a few extra ops to indicate child-effect
 // invocation, and a `label` op to indicate branch targets.
 enum class ProgramOp {
-    // A finished program can contain any native Raster Pipeline op...
     #define M(stage) stage,
+        // A finished program can contain any native Raster Pipeline op...
         SK_RASTER_PIPELINE_OPS_ALL(M)
+
+        // ... as well as our extended ops.
+        SKRP_EXTENDED_OPS(M)
     #undef M
-
-    // ... has branch targets...
-    label,
-
-    // ... can invoke child programs ...
-    invoke_shader,
-    invoke_color_filter,
-    invoke_blender,
-
-    // ... and can invoke color space transforms.
-    invoke_to_linear_srgb,
-    invoke_from_linear_srgb,
 };
 
 // BuilderOps are a superset of ProgramOps. They are used by the RP::Builder, which works in terms
@@ -65,22 +76,13 @@ enum class ProgramOp {
 // RP::Program::Stages, which will contain only native SkRasterPipelineOps and (optionally)
 // child-effect invocations.
 enum class BuilderOp {
-    // An in-flight program can contain all the native Raster Pipeline ops...
     #define M(stage) stage,
+        // An in-flight program can contain all the native Raster Pipeline ops...
         SK_RASTER_PIPELINE_OPS_ALL(M)
+
+        // ... and our extended ops...
+        SKRP_EXTENDED_OPS(M)
     #undef M
-
-    // ... has branch targets...
-    label,
-
-    // ... can invoke child programs...
-    invoke_shader,
-    invoke_color_filter,
-    invoke_blender,
-
-    // ... can invoke color space transforms ...
-    invoke_to_linear_srgb,
-    invoke_from_linear_srgb,
 
     // ... and also has Builder-specific ops. These ops generally interface with the stack, and are
     // converted into ProgramOps during `makeStages`.
@@ -117,13 +119,8 @@ enum class BuilderOp {
     unsupported
 };
 
-// If the child-invocation enums are not in sync between enums, program creation will not work.
-static_assert((int)ProgramOp::label                   == (int)BuilderOp::label);
-static_assert((int)ProgramOp::invoke_shader           == (int)BuilderOp::invoke_shader);
-static_assert((int)ProgramOp::invoke_color_filter     == (int)BuilderOp::invoke_color_filter);
-static_assert((int)ProgramOp::invoke_blender          == (int)BuilderOp::invoke_blender);
-static_assert((int)ProgramOp::invoke_to_linear_srgb   == (int)BuilderOp::invoke_to_linear_srgb);
-static_assert((int)ProgramOp::invoke_from_linear_srgb == (int)BuilderOp::invoke_from_linear_srgb);
+// If the extended ops are not in sync between enums, program creation will not work.
+static_assert((int)ProgramOp::label == (int)BuilderOp::label);
 
 // Represents a single raster-pipeline SkSL instruction.
 struct Instruction {
@@ -636,6 +633,26 @@ public:
 
     void invoke_from_linear_srgb() {
         fInstructions.push_back({BuilderOp::invoke_from_linear_srgb, {}});
+    }
+
+    void trace_line(int traceMaskStackID, int line) {
+        fInstructions.push_back({BuilderOp::trace_line, {}, traceMaskStackID, line});
+    }
+
+    void trace_var(int traceMaskStackID, SlotRange s) {
+        fInstructions.push_back({BuilderOp::trace_var, {s.index}, traceMaskStackID, s.count});
+    }
+
+    void trace_enter(int traceMaskStackID, int funcID) {
+        fInstructions.push_back({BuilderOp::trace_enter, {}, traceMaskStackID, funcID});
+    }
+
+    void trace_exit(int traceMaskStackID, int funcID) {
+        fInstructions.push_back({BuilderOp::trace_exit, {}, traceMaskStackID, funcID});
+    }
+
+    void trace_scope(int traceMaskStackID, int delta) {
+        fInstructions.push_back({BuilderOp::trace_scope, {}, traceMaskStackID, delta});
     }
 
 private:
