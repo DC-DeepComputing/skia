@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ff97e8d_9871cb1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-24T12:25:23Z",
+      "side": 1,
+      "message": "The std::moves are not part of the solution (but probably good to do anyway).\n\nThe main issue was in GrImageUtils.cpp and SkImage_Base.h (look at the diff between PS 1 and 9 to see it most clearly.",
+      "revId": "6449609cc8ae4010a96f6ef6009adfbe4515e4eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
