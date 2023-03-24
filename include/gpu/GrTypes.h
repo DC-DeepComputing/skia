@@ -8,6 +8,7 @@
 #ifndef GrTypes_DEFINED
 #define GrTypes_DEFINED
 
+#include "include/core/SkSemaphoresSubmitted.h" // IWYU pragma: keep
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h" // IWYU pragma: keep
 
@@ -142,6 +143,12 @@ using GrRenderable = skgpu::Renderable;
  */
 using GrProtected = skgpu::Protected;
 
+/**
+ * Enum used as return value when flush with semaphores so the client knows whether the valid
+ * semaphores will be submitted on the next GrContext::submit call.
+ */
+using GrSemaphoresSubmitted = SkSemaphoresSubmitted;
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -230,15 +237,6 @@ struct GrFlushInfo {
     GrGpuFinishedContext fFinishedContext = nullptr;
     GrGpuSubmittedProc fSubmittedProc = nullptr;
     GrGpuSubmittedContext fSubmittedContext = nullptr;
-};
-
-/**
- * Enum used as return value when flush with semaphores so the client knows whether the valid
- * semaphores will be submitted on the next GrContext::submit call.
- */
-enum class GrSemaphoresSubmitted : bool {
-    kNo = false,
-    kYes = true
 };
 
 #endif

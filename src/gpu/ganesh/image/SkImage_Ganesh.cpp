@@ -233,8 +233,8 @@ bool SkImage_Ganesh::surfaceMustCopyOnWrite(GrSurfaceProxy* surfaceProxy) const 
 
 bool SkImage_Ganesh::onHasMipmaps() const { return fChooser.mipmapped() == GrMipmapped::kYes; }
 
-GrSemaphoresSubmitted SkImage_Ganesh::onFlush(GrDirectContext* dContext,
-                                           const GrFlushInfo& info) const {
+SkSemaphoresSubmitted SkImage_Ganesh::flush(GrDirectContext* dContext,
+                                            const GrFlushInfo& info) const {
     if (!fContext->priv().matches(dContext) || dContext->abandoned()) {
         if (info.fSubmittedProc) {
             info.fSubmittedProc(info.fSubmittedContext, false);
@@ -242,7 +242,7 @@ GrSemaphoresSubmitted SkImage_Ganesh::onFlush(GrDirectContext* dContext,
         if (info.fFinishedProc) {
             info.fFinishedProc(info.fFinishedContext);
         }
-        return GrSemaphoresSubmitted::kNo;
+        return SkSemaphoresSubmitted::kNo;
     }
 
     sk_sp<GrSurfaceProxy> proxy = fChooser.chooseProxy(dContext);
@@ -251,15 +251,15 @@ GrSemaphoresSubmitted SkImage_Ganesh::onFlush(GrDirectContext* dContext,
                                          info);
 }
 
-GrBackendTexture SkImage_Ganesh::onGetBackendTexture(bool flushPendingGrContextIO,
-                                                  GrSurfaceOrigin* origin) const {
+std::optional<GrBackendTexture> SkImage_Ganesh::getBackendTexture(
+        bool flushPendingGrContextIO, GrSurfaceOrigin* origin) const {
     auto direct = fContext->asDirectContext();
     if (!direct) {
         // This image was created with a DDL context and cannot be instantiated.
-        return GrBackendTexture();  // invalid
+        return std::nullopt;
     }
     if (direct->abandoned()) {
-        return GrBackendTexture();  // invalid;
+        return std::nullopt;
     }
 
     // We don't know how client's use of the texture will be ordered WRT Skia's. Ensure the
@@ -270,7 +270,7 @@ GrBackendTexture SkImage_Ganesh::onGetBackendTexture(bool flushPendingGrContextI
         auto resourceProvider = direct->priv().resourceProvider();
 
         if (!proxy->instantiate(resourceProvider)) {
-            return GrBackendTexture();  // invalid
+            return std::nullopt;
         }
     }
 
@@ -284,10 +284,10 @@ GrBackendTexture SkImage_Ganesh::onGetBackendTexture(bool flushPendingGrContextI
         }
         return texture->getBackendTexture();
     }
-    return GrBackendTexture();  // invalid
+    return std::nullopt;
 }
 
-size_t SkImage_Ganesh::onTextureSize() const { return fChooser.gpuMemorySize(); }
+size_t SkImage_Ganesh::textureSize() const { return fChooser.gpuMemorySize(); }
 
 sk_sp<SkImage> SkImage_Ganesh::onMakeColorTypeAndColorSpace(SkColorType targetCT,
                                                          sk_sp<SkColorSpace> targetCS,
@@ -429,50 +429,4 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Ganesh::onAsFragmentProcessor(
 
 GrSurfaceProxyView SkImage_Ganesh::makeView(GrRecordingContext* rContext) const {
     return {fChooser.chooseProxy(rContext), fOrigin, fSwizzle};
-}
-
-sk_sp<SkImage> SkImage::makeTextureImage(GrDirectContext* dContext) const {
-    return this->makeTextureImage(dContext, skgpu::Mipmapped::kNo, skgpu::Budgeted::kYes);
-}
-
-sk_sp<SkImage> SkImage::makeTextureImage(GrDirectContext* dContext,
-                                         skgpu::Mipmapped mipmapped) const {
-    return this->makeTextureImage(dContext, mipmapped, skgpu::Budgeted::kYes);
-}
-
-sk_sp<SkImage> SkImage::makeTextureImage(GrDirectContext* dContext,
-                                         skgpu::Mipmapped mipmapped,
-                                         skgpu::Budgeted budgeted) const {
-    if (!dContext) {
-        return nullptr;
-    }
-    if (!dContext->priv().caps()->mipmapSupport() || this->dimensions().area() <= 1) {
-        mipmapped = GrMipmapped::kNo;
-    }
-
-    if (as_IB(this)->isGaneshBacked()) {
-        if (!as_IB(this)->context()->priv().matches(dContext)) {
-            return nullptr;
-        }
-
-        if (mipmapped == GrMipmapped::kNo || this->hasMipmaps()) {
-            return sk_ref_sp(const_cast<SkImage*>(this));
-        }
-    }
-    GrImageTexGenPolicy policy = budgeted == skgpu::Budgeted::kYes
-                                         ? GrImageTexGenPolicy::kNew_Uncached_Budgeted
-                                         : GrImageTexGenPolicy::kNew_Uncached_Unbudgeted;
-    // TODO: Don't flatten YUVA images here. Add mips to the planes instead.
-    auto [view, ct] = skgpu::ganesh::AsView(dContext, this, mipmapped, policy);
-    if (!view) {
-        return nullptr;
-    }
-    SkASSERT(view.asTextureProxy());
-    SkASSERT(mipmapped == GrMipmapped::kNo ||
-             view.asTextureProxy()->mipmapped() == GrMipmapped::kYes);
-    SkColorInfo colorInfo(GrColorTypeToSkColorType(ct), this->alphaType(), this->refColorSpace());
-    return sk_make_sp<SkImage_Ganesh>(sk_ref_sp(dContext),
-                                   this->uniqueID(),
-                                   std::move(view),
-                                   std::move(colorInfo));
 }

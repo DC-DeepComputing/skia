@@ -636,11 +636,15 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfacepeekTexture_Gpu,
         sk_sp<SkImage> image(surface->makeImageSnapshot());
 
         REPORTER_ASSERT(reporter, as_IB(image)->isTextureBacked());
-        GrBackendTexture backendTex = image->getBackendTexture(false);
+        auto bt = image->getBackendTexture(false);
+        REPORTER_ASSERT(reporter, bt);
+        GrBackendTexture backendTex = bt.value();
         REPORTER_ASSERT(reporter, backendTex.isValid());
         surface->notifyContentWillChange(SkSurface::kDiscard_ContentChangeMode);
         REPORTER_ASSERT(reporter, as_IB(image)->isTextureBacked());
-        GrBackendTexture backendTex2 = image->getBackendTexture(false);
+        auto bt2 = image->getBackendTexture(false);
+        REPORTER_ASSERT(reporter, bt2);
+        GrBackendTexture backendTex2 = bt2.value();
         REPORTER_ASSERT(reporter, GrBackendTexture::TestingOnly_Equals(backendTex, backendTex2));
     }
 }

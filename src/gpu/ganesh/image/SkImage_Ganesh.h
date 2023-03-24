@@ -38,7 +38,7 @@ enum SkColorType : int;
 enum SkYUVColorSpace : int;
 enum class GrColorType;
 enum class GrImageTexGenPolicy : int;
-enum class GrSemaphoresSubmitted : bool;
+enum class SkSemaphoresSubmitted : bool;
 enum class SkTileMode;
 struct GrFlushInfo;
 struct SkIRect;
@@ -63,21 +63,22 @@ public:
 
     ~SkImage_Ganesh() override;
 
+    // From SkImage.h
+    GrSemaphoresSubmitted flush(GrDirectContext*, const GrFlushInfo&) const override;
+
+    std::optional<GrBackendTexture> getBackendTexture(bool flushPendingGrContextIO,
+                                                      GrSurfaceOrigin* origin) const override;
+    size_t textureSize() const override;
+
+    // From SkImage_Base.h
+    SkImage_Base::Type type() const override { return SkImage_Base::Type::kGanesh; }
+    bool onHasMipmaps() const override;
+
     // If this is image is a cached SkSurface snapshot then this method is called by the SkSurface
     // before a write to check if the surface must make a copy to avoid modifying the image's
     // contents.
     bool surfaceMustCopyOnWrite(GrSurfaceProxy* surfaceProxy) const;
 
-    bool onHasMipmaps() const override;
-
-    GrSemaphoresSubmitted onFlush(GrDirectContext*, const GrFlushInfo&) const override;
-
-    GrBackendTexture onGetBackendTexture(bool flushPendingGrContextIO,
-                                         GrSurfaceOrigin* origin) const final;
-
-    SkImage_Base::Type type() const override { return SkImage_Base::Type::kGanesh; }
-
-    size_t onTextureSize() const override;
 
     using SkImage_GaneshBase::onMakeColorTypeAndColorSpace;
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,

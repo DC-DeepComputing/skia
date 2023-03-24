@@ -88,6 +88,7 @@ skia_filegroup(
         "SkRegion.h",
         "SkSamplingOptions.h",
         "SkScalar.h",
+        "SkSemaphoresSubmitted.h",
         "SkSerialProcs.h",
         "SkShader.h",
         "SkSize.h",
