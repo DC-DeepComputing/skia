@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1cfd574_1d326998",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-24T19:03:28Z",
+      "side": 1,
+      "message": "If you\u0027d like to land this, want to make a slightly more descriptive commit message?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 28
+      },
+      "revId": "b3d526aba29524d346f8d582b76f18734723a085",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
