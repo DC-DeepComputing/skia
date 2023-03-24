@@ -2451,7 +2451,7 @@ void SkCanvas::drawGlyphs(int count, const SkGlyphID* glyphs, const SkPoint* pos
     };
 
     sktext::GlyphRunList glyphRunList = fScratchGlyphRunBuilder->makeGlyphRunList(
-            glyphRun, paint, origin);
+            glyphRun, paint, origin, /*isDisplay=*/false);
     this->onDrawGlyphRunList(glyphRunList, paint);
 }
 
@@ -2469,9 +2469,28 @@ void SkCanvas::drawGlyphs(int count, const SkGlyphID glyphs[], const SkPoint pos
     };
 
     sktext::GlyphRunList glyphRunList = fScratchGlyphRunBuilder->makeGlyphRunList(
-            glyphRun, paint, origin);
+            glyphRun, paint, origin, /*isDisplay=*/false);
     this->onDrawGlyphRunList(glyphRunList, paint);
 }
+
+void SkCanvas::drawDisplayGlyphs(int count, const SkGlyphID glyphs[], const SkPoint positions[],
+                                 SkPoint origin, const SkFont& font, const SkPaint& paint) {
+    if (count <= 0) { return; }
+
+    sktext::GlyphRun glyphRun {
+            font,
+            SkSpan(positions, count),
+            SkSpan(glyphs, count),
+            SkSpan<const char>(),
+            SkSpan<const uint32_t>(),
+            SkSpan<SkVector>()
+    };
+
+    sktext::GlyphRunList glyphRunList = fScratchGlyphRunBuilder->makeGlyphRunList(
+            glyphRun, paint, origin, /*isDisplay=*/true);
+    this->onDrawGlyphRunList(glyphRunList, paint);
+}
+
 
 void SkCanvas::drawGlyphs(int count, const SkGlyphID glyphs[], const SkRSXform xforms[],
                           SkPoint origin, const SkFont& font, const SkPaint& paint) {
@@ -2489,7 +2508,7 @@ void SkCanvas::drawGlyphs(int count, const SkGlyphID glyphs[], const SkRSXform x
             rotateScales
     };
     sktext::GlyphRunList glyphRunList = fScratchGlyphRunBuilder->makeGlyphRunList(
-            glyphRun, paint, origin);
+            glyphRun, paint, origin, /*isDisplay=*/false);
     this->onDrawGlyphRunList(glyphRunList, paint);
 }
 

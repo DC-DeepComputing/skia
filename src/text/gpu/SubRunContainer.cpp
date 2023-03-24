@@ -2338,8 +2338,9 @@ SubRunContainerOwner SubRunContainer::MakeInAlloc(
 #endif  // !defined(SK_DISABLE_SDF_TEXT)
 
             // Direct Mask case
-            // Handle all the directly mapped mask subruns.
-            if (!source.empty() && !positionMatrix.hasPerspective()) {
+            // Handle all the directly mapped mask subruns. If this draw is display text, then
+            // don't bother with direct masks.
+            if (!source.empty() && !positionMatrix.hasPerspective() && !glyphRunList.isDisplay()) {
                 // Process masks including ARGB - this should be the 99.99% case.
                 // This will handle medium size emoji that are sharing the run with SDFT drawn text.
                 // If things are too big they will be passed along to the drawing of last resort

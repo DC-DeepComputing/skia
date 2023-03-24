@@ -1825,6 +1825,9 @@ public:
     void drawGlyphs(int count, const SkGlyphID glyphs[], const SkPoint positions[],
                     SkPoint origin, const SkFont& font, const SkPaint& paint);
 
+    void drawDisplayGlyphs(int count, const SkGlyphID glyphs[], const SkPoint positions[],
+                    SkPoint origin, const SkFont& font, const SkPaint& paint);
+
     /** Draws count glyphs, at positions relative to origin styled with font and paint.
 
         This function draw glyphs using the given scaling and rotations. They are positioned

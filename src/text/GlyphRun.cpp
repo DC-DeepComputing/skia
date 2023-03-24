@@ -43,22 +43,26 @@ GlyphRun::GlyphRun(const GlyphRun& that, const SkFont& font)
 GlyphRunList::GlyphRunList(const SkTextBlob* blob,
                            SkRect bounds,
                            SkPoint origin,
+                           bool isDisplay,
                            SkSpan<const GlyphRun> glyphRunList,
                            GlyphRunBuilder* builder)
         : fGlyphRuns{glyphRunList}
         , fOriginalTextBlob{blob}
         , fSourceBounds{bounds}
         , fOrigin{origin}
+        , fIsDisplay{isDisplay}
         , fBuilder{builder} {}
 
 GlyphRunList::GlyphRunList(const GlyphRun& glyphRun,
                            const SkRect& bounds,
                            SkPoint origin,
+                           bool isDisplay,
                            GlyphRunBuilder* builder)
         : fGlyphRuns{SkSpan<const GlyphRun>{&glyphRun, 1}}
         , fOriginalTextBlob{nullptr}
         , fSourceBounds{bounds}
         , fOrigin{origin}
+        , fIsDisplay{isDisplay}
         , fBuilder{builder} {}
 
 uint64_t GlyphRunList::uniqueID() const {
@@ -182,10 +186,10 @@ static SkRect glyphrun_source_bounds(
 }
 
 GlyphRunList GlyphRunBuilder::makeGlyphRunList(
-        const GlyphRun& run, const SkPaint& paint, SkPoint origin) {
+        const GlyphRun& run, const SkPaint& paint, SkPoint origin, bool isDisplay) {
     const SkRect bounds =
             glyphrun_source_bounds(run.font(), paint, run.source(), run.scaledRotations());
-    return GlyphRunList{run, bounds, origin, this};
+    return GlyphRunList{run, bounds, origin, isDisplay, this};
 }
 
 static SkSpan<const SkPoint> draw_text_positions(
@@ -366,7 +370,8 @@ void GlyphRunBuilder::makeGlyphRun(
 
 const GlyphRunList& sktext::GlyphRunBuilder::setGlyphRunList(
         const SkTextBlob* blob, const SkRect& bounds, SkPoint origin) {
-    fGlyphRunList.emplace(blob, bounds, origin, SkSpan(fGlyphRunListStorage), this);
+    fGlyphRunList.emplace(
+            blob, bounds, origin, /*isDisplay=*/false, SkSpan(fGlyphRunListStorage), this);
     return fGlyphRunList.value();
 }
 }  // namespace sktext
