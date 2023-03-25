@@ -431,15 +431,25 @@ protected:
     }
 
     sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override {
-        if (!familyName) {
-            return nullptr;
+        if (familyName) {
+            SkUniqueCFRef<CFStringRef> cfName = make_CFString(familyName);
+            return CreateSet(cfName.get());
         }
-        SkUniqueCFRef<CFStringRef> cfName = make_CFString(familyName);
-        return CreateSet(cfName.get());
+        SkUniqueCFRef<CTFontDescriptorRef> desc = create_descriptor(nullptr, SkFontStyle());
+        SkUniqueCFRef<CFTypeRef> cfName(
+                CTFontDescriptorCopyAttribute(desc.get(), kCTFontFamilyNameAttribute));
+        if (cfName && CFGetTypeID(cfName.get()) == CFStringGetTypeID()) {
+            sk_sp<SkFontStyleSet> sset = CreateSet(static_cast<CFStringRef>(cfName.get()));
+            if (sset->count() > 0) {
+                return sset;
+            }
+        }
+        return sk_sp<SkFontStyleSet>(new SkFontStyleSet_Mac(desc.get()));
+
     }
 
     sk_sp<SkTypeface> onMatchFamilyStyle(const char familyName[],
-                                   const SkFontStyle& style) const override {
+                                         const SkFontStyle& style) const override {
         SkUniqueCFRef<CTFontDescriptorRef> reqDesc = create_descriptor(familyName, style);
         if (!familyName) {
             return create_from_desc(reqDesc.get());
