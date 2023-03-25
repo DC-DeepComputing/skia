@@ -329,22 +329,48 @@ sk_sp<SkFontStyleSet> SkFontMgr_DirectWrite::onCreateStyleSet(int index) const {
 }
 
 sk_sp<SkFontStyleSet> SkFontMgr_DirectWrite::onMatchFamily(const char familyName[]) const {
+    WCHAR* dwFamilyName;
+    SkSMallocWCHAR dwFamilyNameStorage;
     if (!familyName) {
-        return nullptr;
+        dwFamilyName = fDefaultFamilyName.get();
+SkDebugf("DW default family name: %ls", dwFamilyName);
+    } else {
+        HRN(sk_cstring_to_wchar(familyName, &dwFamilyNameStorage));
+        dwFamilyName = dwFamilyNameStorage.get();
     }
-
-    SkSMallocWCHAR dwFamilyName;
-    HRN(sk_cstring_to_wchar(familyName, &dwFamilyName));
 
     UINT32 index;
     BOOL exists;
-    HRNM(fFontCollection->FindFamilyName(dwFamilyName.get(), &index, &exists),
+    HRNM(fFontCollection->FindFamilyName(dwFamilyName, &index, &exists),
             "Failed while finding family by name.");
-    if (!exists) {
+    if (exists) {
+        return this->onCreateStyleSet(index);
+    }
+    if (familyName) {
         return nullptr;
     }
 
-    return this->onCreateStyleSet(index);
+    if (fFontFallback) {
+        sk_sp<SkTypeface> fallbackFace = this->fallback(nullptr, DWriteStyle(SkFontStyle::Normal()), fLocaleName.get(), 32);
+        if (fallbackFace) {
+SkString fallbackFamilyName;
+fallbackFace->getFamilyName(&fallbackFamilyName);
+SkDebugf("DW returning fallback-default: %s", fallbackFamilyName.c_str());
+
+            DWriteFontTypeface* fallbackDWFace = static_cast<DWriteFontTypeface*>(fallbackFace.get());
+            return sk_sp<SkFontStyleSet>(new SkFontStyleSet_DirectWrite(this, fallbackDWFace->fDWriteFontFamily.get()));
+        }
+    }
+
+SkTScopedComPtr<IDWriteFontFamily> fontFamily;
+HRNM(fFontCollection->GetFontFamily(0, &fontFamily), "Could not get requested family.");
+SkTScopedComPtr<IDWriteLocalizedStrings> familyNames;
+HRNM(fontFamily->GetFamilyNames(&familyNames), "Could not get family names.");
+SkString defaultFamilyName;
+sk_get_locale_string(familyNames.get(), fLocaleName.get(), &defaultFamilyName);
+SkDebugf("DW returning default-default: %s", defaultFamilyName.c_str());
+
+    return this->onCreateStyleSet(0);
 }
 
 sk_sp<SkTypeface> SkFontMgr_DirectWrite::onMatchFamilyStyle(const char familyName[],

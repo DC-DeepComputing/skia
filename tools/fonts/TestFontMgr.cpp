@@ -100,6 +100,9 @@ public:
     }
 
     sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override {
+        if (familyName == nullptr) {
+            return fDefaultFamily;
+        }
         if (familyName) {
             if (strstr(familyName, "ono")) {
                 return this->createStyleSet(0);
