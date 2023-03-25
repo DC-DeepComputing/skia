@@ -16,6 +16,24 @@
       "message": "I was going to say that putting this here bakes it into the program, so that we can\u0027t change the trace coord without re-making the program, but I think that\u0027s okay - because of how MakeTraced works?",
       "revId": "5309b392704fb26034f08d3f4ecdf130ac61b4ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "205a5403_caa1197f",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3396,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-25T15:32:22Z",
+      "side": 1,
+      "message": "Good catch; after mulling it over, I think I\u0027m OK with baking in the coords. As you noticed, MakeTraced already rebuilds everything from scratch, but even if it didn\u0027t, there isn\u0027t any case where we need to rapidly re-debug the same shader over and over again but with new trace coordinates. You _could_ put the coordinates in a fake uniform or something, but I just don\u0027t see a need for it.",
+      "parentUuid": "0e576244_0d23ee9d",
+      "revId": "5309b392704fb26034f08d3f4ecdf130ac61b4ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
