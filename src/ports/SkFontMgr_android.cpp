@@ -308,7 +308,7 @@ protected:
 
     sk_sp<SkFontStyleSet> onMatchFamily(const char familyName[]) const override {
         if (!familyName) {
-            return nullptr;
+            return fDefaultStyleSet;
         }
         SkAutoAsciiToLC tolc(familyName);
         for (int i = 0; i < fNameToFamilyMap.size(); ++i) {

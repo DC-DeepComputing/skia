@@ -170,6 +170,9 @@ sk_sp<SkFontStyleSet> SkFontMgr_Custom::onCreateStyleSet(int index) const {
 }
 
 sk_sp<SkFontStyleSet> SkFontMgr_Custom::onMatchFamily(const char familyName[]) const {
+    if (!familyName) {
+        return fDefaultFamily;
+    }
     for (int i = 0; i < fFamilies.size(); ++i) {
         if (fFamilies[i]->getFamilyName().equals(familyName)) {
             return fFamilies[i];
