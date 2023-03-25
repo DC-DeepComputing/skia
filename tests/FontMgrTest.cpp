@@ -139,6 +139,10 @@ DEF_TEST(FontMgr_Iter, reporter) {
             SkString name2;
             face2->getFamilyName(&name2);
 
+            // On Debian it is possible to have both Karla and Karmilla installed.
+            // There will be a style set for both (they will both show up in family lists).
+            // However, any request for "Karla" will result in "Karmilla" instead due to
+            // /etc/fonts/conf.d/90-use-karmilla-for-karla.conf
             REPORTER_ASSERT(reporter, name1 == name2, "%s == %s", name1.c_str(), name2.c_str());
 
             // TODO: This should work, but Mac matches the wrong font sometimes.
@@ -152,28 +156,27 @@ DEF_TEST(FontMgr_Iter, reporter) {
     }
 }
 
-DEF_TEST(FontMgr_Match, reporter) {
+DEF_TEST(FontMgr_MatchDefault, reporter) {
     sk_sp<SkFontMgr> fm(SkFontMgr::RefDefault());
-    sk_sp<SkFontStyleSet> styleSet(fm->matchFamily(nullptr));
+
+    sk_sp<SkFontStyleSet> styleSet = fm->matchFamily(nullptr);
     REPORTER_ASSERT(reporter, styleSet);
+    REPORTER_ASSERT(reporter, styleSet->count() > 0);
+
+    sk_sp<SkTypeface> typeface = fm->matchFamilyStyle(nullptr, SkFontStyle::Normal());
+    REPORTER_ASSERT(reporter, typeface);
 }
 
-DEF_TEST(FontMgr_MatchFamilyStyle, reporter) {
+DEF_TEST(FontMgr_MatchNonExisting, reporter) {
     sk_sp<SkFontMgr> fm(SkFontMgr::RefDefault());
 
-    sk_sp<SkFontStyleSet> styleSet(fm->matchFamily("Non Existing Family Name"));
+    sk_sp<SkFontStyleSet> styleSet = fm->matchFamily("Non Existing Family Name");
     REPORTER_ASSERT(reporter, styleSet);
     REPORTER_ASSERT(reporter, styleSet->count() == 0);
 
     using FS = SkFontStyle;
     sk_sp<SkTypeface> typeface(fm->matchFamilyStyle("Non Existing Family Name", FS::Normal()));
     REPORTER_ASSERT(reporter, !typeface);
-
-    // TODO: enable after determining if a default font should be required.
-    if ((false)) {
-        sk_sp<SkTypeface> def(fm->matchFamilyStyle(nullptr, FS::Normal()));
-        REPORTER_ASSERT(reporter, def);
-    }
 }
 
 DEF_TEST(FontMgr_MatchStyleCSS3, reporter) {

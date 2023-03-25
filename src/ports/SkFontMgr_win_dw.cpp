@@ -329,22 +329,26 @@ sk_sp<SkFontStyleSet> SkFontMgr_DirectWrite::onCreateStyleSet(int index) const {
 }
 
 sk_sp<SkFontStyleSet> SkFontMgr_DirectWrite::onMatchFamily(const char familyName[]) const {
+    WCHAR* dwFamilyName;
+    SkSMallocWCHAR dwFamilyNameStorage;
     if (!familyName) {
-        return nullptr;
+        dwFamilyName = fDefaultFamilyName.get();
+    } else {
+        HRN(sk_cstring_to_wchar(familyName, &dwFamilyNameStorage));
+        dwFamilyName = dwFamilyNameStorage.get();
     }
-
-    SkSMallocWCHAR dwFamilyName;
-    HRN(sk_cstring_to_wchar(familyName, &dwFamilyName));
 
     UINT32 index;
     BOOL exists;
-    HRNM(fFontCollection->FindFamilyName(dwFamilyName.get(), &index, &exists),
+    HRNM(fFontCollection->FindFamilyName(dwFamilyName, &index, &exists),
             "Failed while finding family by name.");
-    if (!exists) {
-        return nullptr;
+    if (exists) {
+        return this->onCreateStyleSet(index);
     }
-
-    return this->onCreateStyleSet(index);
+    if (!familyName) {
+        return this->onCreateStyleSet(0);
+    }
+    return nullptr;
 }
 
 sk_sp<SkTypeface> SkFontMgr_DirectWrite::onMatchFamilyStyle(const char familyName[],
