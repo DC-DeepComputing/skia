@@ -14,6 +14,7 @@
 #include "modules/skcms/skcms.h"
 #include "src/base/SkUtils.h"  // unaligned_{load,store}
 #include "src/core/SkRasterPipeline.h"
+#include "src/sksl/tracing/SkSLTraceHook.h"
 #include <cstdint>
 
 // Every function in this file should be marked static and inline using SI.
@@ -3393,6 +3394,48 @@ STAGE_BRANCH(branch_if_no_active_lanes_eq, SkRasterPipeline_BranchIfEqualCtx* ct
     match &= execution_mask();
     // If any lanes matched, don't take the branch.
     return any(match) ? 1 : ctx->offset;
+}
+
+STAGE_TAIL(trace_line, SkRasterPipeline_TraceLineCtx* ctx) {
+    I32* traceMask = (I32*)ctx->traceMask;
+    if (any(execution_mask() & *traceMask)) {
+        ctx->traceHook->line(ctx->lineNumber);
+    }
+}
+
+STAGE_TAIL(trace_enter, SkRasterPipeline_TraceFuncCtx* ctx) {
+    I32* traceMask = (I32*)ctx->traceMask;
+    if (any(execution_mask() & *traceMask)) {
+        ctx->traceHook->enter(ctx->funcIdx);
+    }
+}
+
+STAGE_TAIL(trace_exit, SkRasterPipeline_TraceFuncCtx* ctx) {
+    I32* traceMask = (I32*)ctx->traceMask;
+    if (any(execution_mask() & *traceMask)) {
+        ctx->traceHook->exit(ctx->funcIdx);
+    }
+}
+
+STAGE_TAIL(trace_scope, SkRasterPipeline_TraceScopeCtx* ctx) {
+    I32* traceMask = (I32*)ctx->traceMask;
+    if (any(execution_mask() & *traceMask)) {
+        ctx->traceHook->scope(ctx->delta);
+    }
+}
+
+STAGE_TAIL(trace_var, SkRasterPipeline_TraceVarCtx* ctx) {
+    I32* traceMask = (I32*)ctx->traceMask;
+    I32 mask = execution_mask() & *traceMask;
+    if (any(mask)) {
+        for (size_t lane = 0; lane < N; ++lane) {
+            if (mask[lane]) {
+                I32 data = *(I32*)ctx->data;
+                ctx->traceHook->var(ctx->slotIdx, data[lane]);
+                break;
+            }
+        }
+    }
 }
 
 STAGE_TAIL(zero_slot_unmasked, F* dst) {
