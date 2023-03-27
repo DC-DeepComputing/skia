@@ -16,6 +16,23 @@
       "message": "This is still WIP, but from your perspective, Ben - does that go in the right direction?",
       "revId": "bbb939a11f615d8307c3a6aadc4565d2d836b1cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1695e76_16d20732",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-27T19:08:48Z",
+      "side": 1,
+      "message": "At Patch Set 3 this all seems vaguely right (at least I find nothing new to complain about).",
+      "revId": "bbb939a11f615d8307c3a6aadc4565d2d836b1cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
