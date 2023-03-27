@@ -22,6 +22,30 @@
       },
       "revId": "d0900bc7d4c0ec4d9d358742a09f2053954ca8a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8633592_9548ff09",
+        "filename": "src/gpu/ganesh/SurfaceDrawContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1887,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-27T15:36:49Z",
+      "side": 1,
+      "message": "Yeah I think we can remove it, and the assert above should already cover us in terms of knowing the pr is valid.",
+      "parentUuid": "89bd3f4f_6482183d",
+      "range": {
+        "startLine": 1882,
+        "startChar": 0,
+        "endLine": 1887,
+        "endChar": 5
+      },
+      "revId": "d0900bc7d4c0ec4d9d358742a09f2053954ca8a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
