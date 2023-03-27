@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eafec92_6d24132d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-03-27T16:32:44Z",
+      "side": 1,
+      "message": "Opening this for review now, but I think we should let http://review.skia.org/658797 settle before we think about submitting this.",
+      "revId": "14ddb3861ce47ec63dde26516e5434b664abc597",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
