@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ec86913_f882dc61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17734
+      },
+      "writtenOn": "2023-03-27T17:34:55Z",
+      "side": 1,
+      "message": "Hi @jlavrova@google.com could take another look at this? The golden changes can be found here: https://drive.google.com/drive/folders/1VkWVMcVh2OD7bTvvJoAc_E9EmBhv_xWI?resourcekey\u003d0-uTwJTpPsNeTLYSZlcG2WBA\u0026usp\u003dshare_link",
+      "revId": "13b927fb27ad98be58f243e5d6429699a32f0de3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
