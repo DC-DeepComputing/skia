@@ -424,6 +424,8 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
         fPreferDiscardableMSAAAttachment = true;
         fSupportsMemorylessAttachments = true;
     }
+    fPreferDiscardableMSAAAttachment = true;
+    fSupportsMemorylessAttachments = true;
 
     this->initGrCaps(vkInterface, physDev, properties, memoryProperties, features, extensions);
     this->initShaderCaps(properties, features);
