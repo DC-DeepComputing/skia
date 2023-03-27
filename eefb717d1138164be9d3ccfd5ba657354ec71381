@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c85aefb8_fa5dd1a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-27T18:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e35e48d0_d34b31e9",
+      "range": {
+        "startLine": 7,
+        "startChar": 26,
+        "endLine": 7,
+        "endChar": 54
+      },
+      "revId": "eefb717d1138164be9d3ccfd5ba657354ec71381",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc44188a_d64a20eb",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cb68ae6_4abddc66",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-27T18:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc44188a_d64a20eb",
+      "range": {
+        "startLine": 146,
+        "startChar": 4,
+        "endLine": 146,
+        "endChar": 8
+      },
+      "revId": "eefb717d1138164be9d3ccfd5ba657354ec71381",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c67c2c14_a55ad713",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-03-27T18:27:55Z",
       "side": 1,
       "message": "up to you: this could just be a ternary",
+      "range": {
+        "startLine": 160,
+        "startChar": 8,
+        "endLine": 160,
+        "endChar": 40
+      },
+      "revId": "eefb717d1138164be9d3ccfd5ba657354ec71381",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7b8a059_27c9ebee",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-27T18:47:58Z",
+      "side": 1,
+      "message": "I\u0027ve gone w/ the ternary",
+      "parentUuid": "c67c2c14_a55ad713",
       "range": {
         "startLine": 160,
         "startChar": 8,
