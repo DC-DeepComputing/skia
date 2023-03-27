@@ -210,7 +210,7 @@ private:
     int getLine(Position pos);
 
     /**
-     * Emits an trace_line opcode. writeStatement does this, and statements that alter control flow
+     * Emits a trace_line opcode. writeStatement does this, and statements that alter control flow
      * may need to explicitly add additional traces.
      */
     void emitTraceLine(int line);
