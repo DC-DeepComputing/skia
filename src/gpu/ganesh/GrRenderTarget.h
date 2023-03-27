@@ -53,6 +53,8 @@ public:
     // Checked when this object is asked to attach a stencil buffer.
     virtual bool canAttemptStencilAttachment(bool useMSAASurface) const = 0;
 
+    virtual bool msaaStencilShouldBeMemoryless() const { return false; }
+
     void attachStencilAttachment(sk_sp<GrAttachment> stencil, bool useMSAASurface);
 
     int numStencilBits(bool useMSAASurface) const;

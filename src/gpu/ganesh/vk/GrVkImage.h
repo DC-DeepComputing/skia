@@ -33,7 +33,8 @@ public:
     static sk_sp<GrVkImage> MakeStencil(GrVkGpu* gpu,
                                         SkISize dimensions,
                                         int sampleCnt,
-                                        VkFormat format);
+                                        VkFormat format,
+                                        GrMemoryless memoryless);
 
     static sk_sp<GrVkImage> MakeMSAA(GrVkGpu* gpu,
                                      SkISize dimensions,

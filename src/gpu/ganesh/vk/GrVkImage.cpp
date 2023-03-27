@@ -19,9 +19,13 @@
 sk_sp<GrVkImage> GrVkImage::MakeStencil(GrVkGpu* gpu,
                                         SkISize dimensions,
                                         int sampleCnt,
-                                        VkFormat format) {
+                                        VkFormat format,
+                                        GrMemoryless memoryless) {
     VkImageUsageFlags vkUsageFlags =
             VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+    if (memoryless == GrMemoryless::kYes) {
+        vkUsageFlags |= VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT;
+    }
     return GrVkImage::Make(gpu,
                            dimensions,
                            UsageFlags::kStencilAttachment,

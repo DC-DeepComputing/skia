@@ -62,7 +62,8 @@ public:
 #endif
 
     sk_sp<GrAttachment> makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,
-                                              SkISize dimensions, int numStencilSamples) override;
+                                              SkISize dimensions, int numStencilSamples,
+                                              GrMemoryless memoryless) override;
 
     GrBackendFormat getPreferredStencilFormat(const GrBackendFormat&) override {
         return GrBackendFormat::MakeDawn(wgpu::TextureFormat::Depth24PlusStencil8);

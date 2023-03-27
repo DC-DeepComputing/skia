@@ -106,6 +106,8 @@ public:
                                   bool withResolve,
                                   bool withStencil);
 
+    bool msaaStencilShouldBeMemoryless() const override;
+
     // Reconstruct the render target attachment information from the programInfo. This includes
     // which attachments the render target will have (color, stencil) and the attachments' formats
     // and sample counts - cf. getAttachmentsDescriptor.

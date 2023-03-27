@@ -1304,7 +1304,7 @@ sk_sp<GrGpuBuffer> GrD3DGpu::onCreateBuffer(size_t sizeInBytes,
 }
 
 sk_sp<GrAttachment> GrD3DGpu::makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,
-                                                    SkISize dimensions, int numStencilSamples) {
+                                                    SkISize dimensions, int numStencilSamples, GrMemoryless) {
     DXGI_FORMAT sFmt = this->d3dCaps().preferredStencilFormat();
 
     fStats.incStencilAttachmentCreates();

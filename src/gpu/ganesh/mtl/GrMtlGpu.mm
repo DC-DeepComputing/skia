@@ -520,7 +520,8 @@ bool GrMtlGpu::clearTexture(GrMtlTexture* tex, size_t bpp, uint32_t levelMask) {
 }
 
 sk_sp<GrAttachment> GrMtlGpu::makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,
-                                                    SkISize dimensions, int numStencilSamples) {
+                                                    SkISize dimensions, int numStencilSamples,
+                                                    GrMemoryless memoryless) {
     MTLPixelFormat sFmt = this->mtlCaps().preferredStencilFormat();
 
     fStats.incStencilAttachmentCreates();

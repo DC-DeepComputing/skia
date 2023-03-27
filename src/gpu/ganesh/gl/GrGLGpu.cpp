@@ -1895,7 +1895,8 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
 }
 
 sk_sp<GrAttachment> GrGLGpu::makeStencilAttachment(const GrBackendFormat& colorFormat,
-                                                   SkISize dimensions, int numStencilSamples) {
+                                                   SkISize dimensions, int numStencilSamples,
+                                                   GrMemoryless memoryless) {
     int sIdx = this->getCompatibleStencilIndex(colorFormat.asGLFormat());
     if (sIdx < 0) {
         return nullptr;

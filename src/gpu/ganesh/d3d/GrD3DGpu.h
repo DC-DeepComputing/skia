@@ -77,7 +77,7 @@ public:
 #endif
 
     sk_sp<GrAttachment> makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,
-                                              SkISize dimensions, int numStencilSamples) override;
+                                              SkISize dimensions, int numStencilSamples, GrMemoryless) override;
 
     GrBackendFormat getPreferredStencilFormat(const GrBackendFormat&) override {
         return GrBackendFormat::MakeDxgi(this->d3dCaps().preferredStencilFormat());

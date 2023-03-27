@@ -267,6 +267,11 @@ GrVkImage* GrVkRenderTarget::msaaAttachment() {
                                                       : this->colorAttachment();
 }
 
+bool GrVkRenderTarget::msaaStencilShouldBeMemoryless() const {
+    GrVkGpu* gpu = this->getVkGpu();
+    return this->numSamples() == 1 && gpu->vkCaps().supportsMemorylessAttachments();
+}
+
 bool GrVkRenderTarget::canAttemptStencilAttachment(bool useMSAASurface) const {
     SkASSERT(!useMSAASurface || this->numSamples() > 1 ||
              this->getVkGpu()->vkCaps().supportsDiscardableMSAAForDMSAA());

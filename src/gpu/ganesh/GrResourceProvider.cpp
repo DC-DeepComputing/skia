@@ -700,15 +700,18 @@ bool GrResourceProvider::attachStencilAttachment(GrRenderTarget* rt, bool useMSA
         }
         GrProtected isProtected = rt->isProtected() ? GrProtected::kYes : GrProtected::kNo;
         int numStencilSamples = num_stencil_samples(rt, useMSAASurface, *this->caps());
+        GrMemoryless memoryless =
+                useMSAASurface && rt->msaaStencilShouldBeMemoryless() ? GrMemoryless::kYes
+                                                                      : GrMemoryless::kNo;
         GrAttachment::ComputeSharedAttachmentUniqueKey(
                 *this->caps(), stencilFormat, rt->dimensions(),
                 GrAttachment::UsageFlags::kStencilAttachment, numStencilSamples, GrMipmapped::kNo,
-                isProtected, GrMemoryless::kNo, &sbKey);
+                isProtected, memoryless, &sbKey);
         auto keyedStencil = this->findByUniqueKey<GrAttachment>(sbKey);
         if (!keyedStencil) {
             // Need to try and create a new stencil
             keyedStencil = this->gpu()->makeStencilAttachment(rt->backendFormat(), rt->dimensions(),
-                                                              numStencilSamples);
+                                                              numStencilSamples, memoryless);
             if (!keyedStencil) {
                 return false;
             }
