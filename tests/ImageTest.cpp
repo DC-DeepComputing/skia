@@ -472,7 +472,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkImage_makeTextureImage,
                 origIsMippedTexture = image->hasMipmaps();
             }
             for (auto budgeted : {skgpu::Budgeted::kNo, skgpu::Budgeted::kYes}) {
-                auto texImage = image->makeTextureImage(dContext, mipmapped, budgeted);
+                auto texImage = SkImages::TextureFromImage(dContext, image, mipmapped, budgeted);
                 if (!texImage) {
                     auto imageContext = as_IB(image)->context();
                     // We expect to fail if image comes from a different context
@@ -539,7 +539,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkImage_makeNonTextureImage,
         sk_sp<SkImage> image = factory();
         if (!image->isTextureBacked()) {
             REPORTER_ASSERT(reporter, image->makeNonTextureImage().get() == image.get());
-            if (!(image = image->makeTextureImage(dContext))) {
+            if (!(image = SkImages::TextureFromImage(dContext, image))) {
                 continue;
             }
         }
@@ -595,7 +595,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(UnpremulTextureImage,
         }
     }
     auto dContext = ctxInfo.directContext();
-    auto texImage = bmp.asImage()->makeTextureImage(dContext);
+    auto texImage = SkImages::TextureFromImage(dContext, bmp.asImage());
     if (!texImage || texImage->alphaType() != kUnpremul_SkAlphaType) {
         ERRORF(reporter, "Failed to make unpremul texture image.");
         return;
@@ -952,7 +952,10 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SkImage_NewFromTextureRelease,
             mbet->releaseContext(TextureReleaseChecker::Release, &releaseChecker));
 
     GrSurfaceOrigin readBackOrigin;
-    GrBackendTexture readBackBackendTex = refImg->getBackendTexture(false, &readBackOrigin);
+    GrBackendTexture readBackBackendTex;
+    REPORTER_ASSERT(reporter, SkImages::GetExistingBackendTexture(
+                        refImg, &readBackBackendTex, false, &readBackOrigin),
+                    "Did not get backend texture");
     if (!GrBackendTexture::TestingOnly_Equals(readBackBackendTex, mbet->texture())) {
         ERRORF(reporter, "backend mismatch\n");
     }
@@ -1225,7 +1228,9 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(makeBackendTexture,
             continue;
         }
 
-        GrBackendTexture origBackend = image->getBackendTexture(true);
+        GrBackendTexture origBackend;
+        bool ok = SkImages::GetExistingBackendTexture(image, &origBackend, true);
+        SkASSERT(ok == testCase.fCanTakeDirectly);
         if (testCase.fCanTakeDirectly) {
             SkASSERT(origBackend.isValid());
         }
@@ -1265,14 +1270,16 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageBackendAccessAbandoned_Gpu,
         return;
     }
 
-    GrBackendTexture beTex = image->getBackendTexture(true);
+    GrBackendTexture beTex;
+    bool ok = SkImages::GetExistingBackendTexture(image, &beTex, true);
+    REPORTER_ASSERT(reporter, ok);
     REPORTER_ASSERT(reporter, beTex.isValid());
 
     dContext->abandonContext();
 
     // After abandoning the context the backend texture should not be valid.
-    beTex = image->getBackendTexture(true);
-    REPORTER_ASSERT(reporter, !beTex.isValid());
+    ok = SkImages::GetExistingBackendTexture(image, &beTex, true);
+    REPORTER_ASSERT(reporter, !ok);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1564,55 +1571,55 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageFlush, reporter, ctxInfo, CtsEnforcement::
     };
 
     // Images aren't used therefore flush is ignored, but submit is still called.
-    i0->flushAndSubmit(dContext);
-    i1->flushAndSubmit(dContext);
-    i2->flushAndSubmit(dContext);
+    skgpu::ganesh::FlushAndSubmit(dContext, i0);
+    skgpu::ganesh::FlushAndSubmit(dContext, i1);
+    skgpu::ganesh::FlushAndSubmit(dContext, i2);
     REPORTER_ASSERT(reporter, numSubmits() == 3);
 
     // Syncing forces the flush to happen even if the images aren't used.
-    i0->flush(dContext);
+    skgpu::ganesh::Flush(dContext, i0);
     dContext->submit(true);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
-    i1->flush(dContext);
+    skgpu::ganesh::Flush(dContext, i1);
     dContext->submit(true);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
-    i2->flush(dContext);
+    skgpu::ganesh::Flush(dContext, i2);
     dContext->submit(true);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
 
     // Use image 1
     s->getCanvas()->drawImage(i1, 0, 0);
     // Flushing image 0 should do nothing, but submit is still called.
-    i0->flushAndSubmit(dContext);
+    skgpu::ganesh::FlushAndSubmit(dContext, i0);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 1 should flush.
-    i1->flushAndSubmit(dContext);
+    skgpu::ganesh::FlushAndSubmit(dContext, i1);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 2 should do nothing, but submit is still called.
-    i2->flushAndSubmit(dContext);
+    skgpu::ganesh::FlushAndSubmit(dContext, i2);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
 
     // Use image 2
     s->getCanvas()->drawImage(i2, 0, 0);
     // Flushing image 0 should do nothing, but submit is still called.
-    i0->flushAndSubmit(dContext);
+    skgpu::ganesh::FlushAndSubmit(dContext, i0);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 1 do nothing, but submit is still called.
-    i1->flushAndSubmit(dContext);
+    skgpu::ganesh::FlushAndSubmit(dContext, i1);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 2 should flush.
-    i2->flushAndSubmit(dContext);
+    skgpu::ganesh::FlushAndSubmit(dContext, i2);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     REPORTER_ASSERT(reporter, static_cast<SkImage_GaneshYUVA*>(as_IB(i2.get()))->isTextureBacked());
     s->getCanvas()->drawImage(i2, 0, 0);
     // Flushing image 0 should do nothing, but submit is still called.
-    i0->flushAndSubmit(dContext);
+    skgpu::ganesh::FlushAndSubmit(dContext, i0);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 1 do nothing, but submit is still called.
-    i1->flushAndSubmit(dContext);
+    skgpu::ganesh::FlushAndSubmit(dContext, i1);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
     // Flushing image 2 should flush.
-    i2->flushAndSubmit(dContext);
+    skgpu::ganesh::FlushAndSubmit(dContext, i2);
     REPORTER_ASSERT(reporter, numSubmits() == 1);
 }
 
