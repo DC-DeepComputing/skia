@@ -143,6 +143,7 @@ struct ShaderCaps {
     bool fRewriteMatrixComparisons = false;
     // Strips const from function parameters in the GLSL code generator. (skia:13858)
     bool fRemoveConstFromFunctionParameters = false;
+    bool fColorSpaceMathNeedsFloat = false;
 
     const char* fVersionDeclString = "";
 
