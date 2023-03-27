@@ -472,7 +472,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkImage_makeTextureImage,
                 origIsMippedTexture = image->hasMipmaps();
             }
             for (auto budgeted : {skgpu::Budgeted::kNo, skgpu::Budgeted::kYes}) {
-                auto texImage = image->makeTextureImage(dContext, mipmapped, budgeted);
+                auto texImage = SkImages::TextureFromImage(dContext, image, mipmapped, budgeted);
                 if (!texImage) {
                     auto imageContext = as_IB(image)->context();
                     // We expect to fail if image comes from a different context
@@ -539,7 +539,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkImage_makeNonTextureImage,
         sk_sp<SkImage> image = factory();
         if (!image->isTextureBacked()) {
             REPORTER_ASSERT(reporter, image->makeNonTextureImage().get() == image.get());
-            if (!(image = image->makeTextureImage(dContext))) {
+            if (!(image = SkImages::TextureFromImage(dContext, image))) {
                 continue;
             }
         }
@@ -595,7 +595,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(UnpremulTextureImage,
         }
     }
     auto dContext = ctxInfo.directContext();
-    auto texImage = bmp.asImage()->makeTextureImage(dContext);
+    auto texImage = SkImages::TextureFromImage(dContext, bmp.asImage());
     if (!texImage || texImage->alphaType() != kUnpremul_SkAlphaType) {
         ERRORF(reporter, "Failed to make unpremul texture image.");
         return;
@@ -952,7 +952,10 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SkImage_NewFromTextureRelease,
             mbet->releaseContext(TextureReleaseChecker::Release, &releaseChecker));
 
     GrSurfaceOrigin readBackOrigin;
-    GrBackendTexture readBackBackendTex = refImg->getBackendTexture(false, &readBackOrigin);
+    GrBackendTexture readBackBackendTex;
+    REPORTER_ASSERT(reporter, SkImages::GetExistingBackendTexture(
+                        refImg.get(), &readBackBackendTex, false, &readBackOrigin),
+                    "Did not get backend texture");
     if (!GrBackendTexture::TestingOnly_Equals(readBackBackendTex, mbet->texture())) {
         ERRORF(reporter, "backend mismatch\n");
     }
@@ -1225,7 +1228,9 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(makeBackendTexture,
             continue;
         }
 
-        GrBackendTexture origBackend = image->getBackendTexture(true);
+        GrBackendTexture origBackend;
+        bool ok = SkImages::GetExistingBackendTexture(image.get(), &origBackend, true);
+        SkASSERT(ok == testCase.fCanTakeDirectly);
         if (testCase.fCanTakeDirectly) {
             SkASSERT(origBackend.isValid());
         }
@@ -1265,14 +1270,16 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageBackendAccessAbandoned_Gpu,
         return;
     }
 
-    GrBackendTexture beTex = image->getBackendTexture(true);
+    GrBackendTexture beTex;
+    bool ok = SkImages::GetExistingBackendTexture(image.get(), &beTex, true);
+    REPORTER_ASSERT(reporter, ok);
     REPORTER_ASSERT(reporter, beTex.isValid());
 
     dContext->abandonContext();
 
     // After abandoning the context the backend texture should not be valid.
-    beTex = image->getBackendTexture(true);
-    REPORTER_ASSERT(reporter, !beTex.isValid());
+    ok = SkImages::GetExistingBackendTexture(image.get(), &beTex, true);
+    REPORTER_ASSERT(reporter, !ok);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

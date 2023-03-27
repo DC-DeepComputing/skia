@@ -10,6 +10,7 @@
 
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkSemaphoresSubmitted.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextureCompressionType.h"

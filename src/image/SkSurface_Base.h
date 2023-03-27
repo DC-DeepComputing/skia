@@ -15,6 +15,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSemaphoresSubmitted.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 
