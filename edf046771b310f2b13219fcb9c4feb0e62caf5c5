@@ -140,6 +140,30 @@
       },
       "revId": "edf046771b310f2b13219fcb9c4feb0e62caf5c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10b5b5fc_99c5c7a6",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-27T18:30:15Z",
+      "side": 1,
+      "message": "It\u0027s actually a pretty recent transformation for us, but hopefully most drivers would do this even if we didn\u0027t!",
+      "parentUuid": "d7a8ebaf_14b135e3",
+      "range": {
+        "startLine": 292,
+        "startChar": 28,
+        "endLine": 292,
+        "endChar": 64
+      },
+      "revId": "edf046771b310f2b13219fcb9c4feb0e62caf5c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
