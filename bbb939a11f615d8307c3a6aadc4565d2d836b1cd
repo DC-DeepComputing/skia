@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c99fd615_83806f98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-03-27T15:55:25Z",
+      "side": 1,
+      "message": "This is still WIP, but from your perspective, Ben - does that go in the right direction?",
+      "revId": "bbb939a11f615d8307c3a6aadc4565d2d836b1cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
