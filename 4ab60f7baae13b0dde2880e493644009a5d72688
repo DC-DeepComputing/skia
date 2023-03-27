@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51158722_b1223d75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-27T17:45:43Z",
+      "side": 1,
+      "message": "Yes, seems to work. (The .natvis doesn\u0027t actually work properly in linux+vscode, because the unique_ptr internals are wrong, but the type-matching is fixed with this CL).",
+      "revId": "4ab60f7baae13b0dde2880e493644009a5d72688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
