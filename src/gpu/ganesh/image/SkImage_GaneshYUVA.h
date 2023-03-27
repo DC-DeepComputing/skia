@@ -30,7 +30,7 @@ class SkMatrix;
 enum SkColorType : int;
 enum class GrColorType;
 enum class GrImageTexGenPolicy : int;
-enum class GrSemaphoresSubmitted : bool;
+enum class SkSemaphoresSubmitted : bool;
 enum class SkTileMode;
 struct GrFlushInfo;
 struct SkRect;
@@ -50,13 +50,13 @@ public:
                        GrYUVATextureProxies proxies,
                        sk_sp<SkColorSpace>);
 
-    bool onHasMipmaps() const override;
+    // From SkImage.h
+    size_t textureSize() const override;
+    SkSemaphoresSubmitted flush(GrDirectContext*, const GrFlushInfo&) const override;
 
-    GrSemaphoresSubmitted onFlush(GrDirectContext*, const GrFlushInfo&) const override;
-
+    // From SkImage_Base.h
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kGaneshYUVA; }
-
-    size_t onTextureSize() const override;
+    bool onHasMipmaps() const override;
 
     using SkImage_GaneshBase::onMakeColorTypeAndColorSpace;
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,

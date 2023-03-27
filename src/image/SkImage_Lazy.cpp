@@ -253,7 +253,7 @@ sk_sp<SkData> SkImage_Lazy::onRefEncoded() const {
     return nullptr;
 }
 
-bool SkImage_Lazy::onIsValid(GrRecordingContext* context) const {
+bool SkImage_Lazy::isValid(GrRecordingContext* context) const {
     ScopedGenerator generator(fSharedGenerator);
     return generator->isValid(context);
 }

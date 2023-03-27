@@ -320,4 +320,19 @@ SK_API bool GetBackendTextureFromImage(GrDirectContext* context,
 
 }  // namespace SkImages
 
+namespace skgpu::ganesh {
+/** Retrieves the existing backend texture. If SkImage is not a Ganesh-backend texture image
+    or otherwise does not have such a texture, false is returned. Otherwise, outTexture will
+    be set to the image's texture.
+
+    If flushPendingGrContextIO is true, completes deferred I/O operations.
+    If origin in not nullptr, copies location of content drawn into SkImage.
+    @param outTexture               Will be set to the underlying texture of the image.
+    @param flushPendingGrContextIO  flag to flush outstanding requests
+    @return                         back-end API texture handle; invalid on failure
+*/
+bool GetExistingBackendTexture(const SkImage*, GrBackendTexture* outTexture,
+                               bool flushPendingGrContextIO, GrSurfaceOrigin* origin = nullptr);
+}
+
 #endif

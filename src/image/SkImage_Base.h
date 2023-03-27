@@ -12,6 +12,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSemaphoresSubmitted.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkMipmap.h"
 
@@ -36,7 +37,6 @@ class TextureProxyView;
 }
 #endif
 
-class GrBackendTexture;
 class GrDirectContext;
 class GrImageContext;
 class GrRecordingContext;
@@ -53,6 +53,10 @@ struct SkIRect;
 struct SkISize;
 struct SkImageInfo;
 struct SkRect;
+namespace skgpu {
+enum class Budgeted : bool;
+enum class Mipmapped : bool;
+}
 
 enum {
     kNeedNewImageUniqueID = 0
@@ -62,6 +66,30 @@ class SkImage_Base : public SkImage {
 public:
     ~SkImage_Base() override;
 
+    // From SkImage.h
+    void flushAndSubmit(GrDirectContext* dContext) const override {}
+    void flush(GrDirectContext* context) const override {}
+    SkSemaphoresSubmitted flush(GrDirectContext* dContext,
+                                const GrFlushInfo& flushInfo) const override {
+        return SkSemaphoresSubmitted::kNo;
+    }
+
+    bool isValid(GrRecordingContext* rContext) const override { return false; }
+    sk_sp<SkImage> makeTextureImage(GrDirectContext* dContext) const override;
+    sk_sp<SkImage> makeTextureImage(GrDirectContext* dContext,
+                                    skgpu::Mipmapped mipmapped) const override;
+    sk_sp<SkImage> makeTextureImage(GrDirectContext* dContext,
+                                    skgpu::Mipmapped mipmapped,
+                                    skgpu::Budgeted budgeted) const override;
+    size_t textureSize() const override { return 0; }
+#if defined(SK_GRAPHITE)
+    sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
+                                    RequiredImageProperties) const override;
+#endif
+
+
+
+    // Methods that we want to use elsewhere in Skia, but not be a part of the public API.
     virtual bool onPeekPixels(SkPixmap*) const { return false; }
 
     virtual const SkBitmap* onPeekBitmap() const { return nullptr; }
@@ -109,10 +137,6 @@ public:
     GrDirectContext* directContext() const;
 
 #if defined(SK_GANESH)
-    virtual GrSemaphoresSubmitted onFlush(GrDirectContext*, const GrFlushInfo&) const {
-        return GrSemaphoresSubmitted::kNo;
-    }
-
     // TODO(kjlubick) move the implementations of this out into GrImageUtils.cpp
     virtual std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
                                                                  GrMipmapped,
@@ -135,9 +159,6 @@ public:
     // If this image is the current cached image snapshot of a surface then this is called when the
     // surface is destroyed to indicate no further writes may happen to surface backing store.
     virtual void generatingSurfaceIsDeleted() {}
-
-    virtual GrBackendTexture onGetBackendTexture(bool flushPendingGrContextIO,
-                                                 GrSurfaceOrigin* origin) const;
 #endif
 #if defined(SK_GRAPHITE)
     // Returns a TextureProxyView representation of the image, if possible. This also returns
@@ -190,16 +211,15 @@ public:
         return this->type() == Type::kGaneshYUVA || this->type() == Type::kGraphiteYUVA;
     }
 
-    // Amount of texture memory used by texture-backed images.
-    virtual size_t onTextureSize() const { return 0; }
+     bool isTextureBacked() const override {
+        return this->type() == Type::kGaneshYUVA || this->type() == Type::kGraphiteYUVA;
+    }
 
     // Call when this image is part of the key to a resourcecache entry. This allows the cache
     // to know automatically those entries can be purged when this SkImage deleted.
     virtual void notifyAddedToRasterCache() const {
         fAddedToRasterCache.store(true);
     }
-
-    virtual bool onIsValid(GrRecordingContext*) const = 0;
 
     virtual sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
                                                         GrDirectContext*) const = 0;

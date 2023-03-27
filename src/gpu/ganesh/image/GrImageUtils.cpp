@@ -23,6 +23,7 @@
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/effects/GrBicubicEffect.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
+#include "src/gpu/ganesh/image/SkImage_Ganesh.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Raster.h"
 
@@ -224,6 +225,19 @@ std::unique_ptr<GrFragmentProcessor> AsFragmentProcessor(GrRecordingContext* rCo
             return ib->onAsFragmentProcessor(rContext, sampling, tileModes, m, subset, domain);
     }
     SkUNREACHABLE;
+}
+
+bool GetExistingBackendTexture(const SkImage* img, GrBackendTexture* outTexture,
+                               bool flushPendingGrContextIO, GrSurfaceOrigin* origin) {
+    if (img == nullptr) {
+        return false;
+    }
+    auto ib = static_cast<const SkImage_Base*>(img);
+    if (ib->type() != SkImage_Base::Type::kGanesh) {
+        return false;
+    }
+    auto ig = static_cast<const SkImage_Ganesh*>(img);
+    return ig->getExistingBackendTexture(outTexture, flushPendingGrContextIO, origin);
 }
 
 }  // namespace skgpu::ganesh

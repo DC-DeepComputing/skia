@@ -78,8 +78,9 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo, CtsEnfo
                                                           nullptr);
     REPORTER_ASSERT(reporter, drmImage);
 
+    GrBackendTexture actual = drmImage->getBackendTexture(false).value();
     REPORTER_ASSERT(reporter,
-            GrBackendTexture::TestingOnly_Equals(drmImage->getBackendTexture(false), drmBETex));
+            GrBackendTexture::TestingOnly_Equals(actual, drmBETex));
 
     auto [view, _] = skgpu::ganesh::AsView(dContext, drmImage, GrMipmapped::kNo);
     REPORTER_ASSERT(reporter, view);
@@ -152,7 +153,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkImageLayoutTest, reporter, ctxInfo, CtsEnfo
     REPORTER_ASSERT(reporter, backendTex1.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == info.fImageLayout);
 
-    GrBackendTexture backendTexImage = wrappedImage->getBackendTexture(false);
+    GrBackendTexture backendTexImage = wrappedImage->getBackendTexture(false).value();
     REPORTER_ASSERT(reporter, backendTexImage.getVkImageInfo(&info));
     REPORTER_ASSERT(reporter, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == info.fImageLayout);
 

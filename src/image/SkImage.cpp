@@ -31,7 +31,6 @@
 #include "src/shaders/SkImageShader.h"
 
 #if defined(SK_GANESH)
-#include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
@@ -260,60 +259,6 @@ sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset, GrDirectContext* direc
 
     return as_IB(this)->onMakeSubset(subset, direct);
 }
-
-#if defined(SK_GANESH)
-
-bool SkImage::isTextureBacked() const {
-    return as_IB(this)->isGaneshBacked() || as_IB(this)->isGraphiteBacked();
-}
-
-size_t SkImage::textureSize() const { return as_IB(this)->onTextureSize(); }
-
-GrBackendTexture SkImage::getBackendTexture(bool flushPendingGrContextIO,
-                                            GrSurfaceOrigin* origin) const {
-    return as_IB(this)->onGetBackendTexture(flushPendingGrContextIO, origin);
-}
-
-bool SkImage::isValid(GrRecordingContext* rContext) const {
-    if (rContext && rContext->abandoned()) {
-        return false;
-    }
-    return as_IB(this)->onIsValid(rContext);
-}
-
-void SkImage::flush(GrDirectContext* context) const { this->flush(context, {}); }
-
-GrSemaphoresSubmitted SkImage::flush(GrDirectContext* dContext,
-                                     const GrFlushInfo& flushInfo) const {
-    return as_IB(this)->onFlush(dContext, flushInfo);
-}
-
-void SkImage::flushAndSubmit(GrDirectContext* dContext) const {
-    this->flush(dContext, {});
-    dContext->submit();
-}
-
-#else
-
-bool SkImage::isTextureBacked() const { return false; }
-
-bool SkImage::isValid(GrRecordingContext* rContext) const {
-    if (rContext) {
-        return false;
-    }
-    return as_IB(this)->onIsValid(nullptr);
-}
-
-void SkImage::flush(GrDirectContext* context) const {}
-
-GrSemaphoresSubmitted SkImage::flush(GrDirectContext* dContext,
-                                     const GrFlushInfo& flushInfo) const {
-    return {};
-}
-
-void SkImage::flushAndSubmit(GrDirectContext* dContext) const {}
-
-#endif
 
 bool SkImage::readPixels(GrDirectContext* dContext, const SkPixmap& pmap, int srcX, int srcY,
                          CachingHint chint) const {
@@ -736,3 +681,17 @@ sk_sp<SkImage> SkImage::MakeFromAHardwareBufferWithData(
 }
 
 #endif
+
+#if !defined(SK_DISABLE_LEGACY_GET_BACKEND_TEXTURE) && defined(SK_GANESH)
+#include "include/gpu/GrBackendSurface.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
+
+GrBackendTexture SkImage::getBackendTexture(bool flushPendingGrContextIO,
+                                            GrSurfaceOrigin* origin) const {
+    GrBackendTexture rv;
+    skgpu::ganesh::GetExistingBackendTexture(this, &rv, flushPendingGrContextIO, origin);
+    return rv;
+}
+#endif
+
+

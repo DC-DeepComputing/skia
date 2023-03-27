@@ -24,13 +24,17 @@
 
 #if defined(SK_GANESH)
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrBackendSurface.h"
+#include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/private/base/SkDebug.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
+#include "src/gpu/ganesh/GrImageContextPriv.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrSamplerState.h"
@@ -40,6 +44,8 @@
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/effects/GrBicubicEffect.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
+#include "src/gpu/ganesh/image/GrImageUtils.h"
+#include "src/gpu/ganesh/image/SkImage_Ganesh.h"
 #endif
 
 #if defined(SK_GRAPHITE)
@@ -236,12 +242,70 @@ GrSurfaceProxyView SkImage_Base::FindOrMakeCachedMipmappedView(GrRecordingContex
     return copy;
 }
 
-GrBackendTexture SkImage_Base::onGetBackendTexture(bool flushPendingGrContextIO,
-                                                   GrSurfaceOrigin* origin) const {
-    return GrBackendTexture(); // invalid
+sk_sp<SkImage> SkImage_Base::makeTextureImage(GrDirectContext* dContext) const {
+    return this->makeTextureImage(dContext, skgpu::Mipmapped::kNo, skgpu::Budgeted::kYes);
+}
+
+sk_sp<SkImage> SkImage_Base::makeTextureImage(GrDirectContext* dContext,
+                                         skgpu::Mipmapped mipmapped) const {
+    return this->makeTextureImage(dContext, mipmapped, skgpu::Budgeted::kYes);
+}
+
+sk_sp<SkImage> SkImage_Base::makeTextureImage(GrDirectContext* dContext,
+                                         skgpu::Mipmapped mipmapped,
+                                         skgpu::Budgeted budgeted) const {
+    if (!dContext) {
+        return nullptr;
+    }
+    if (!dContext->priv().caps()->mipmapSupport() || this->dimensions().area() <= 1) {
+        mipmapped = GrMipmapped::kNo;
+    }
+
+    if (this->isGaneshBacked()) {
+        if (!this->context()->priv().matches(dContext)) {
+            return nullptr;
+        }
+
+        if (mipmapped == GrMipmapped::kNo || this->hasMipmaps()) {
+            return sk_ref_sp(const_cast<SkImage_Base*>(this));
+        }
+    }
+    GrImageTexGenPolicy policy = budgeted == skgpu::Budgeted::kYes
+                                         ? GrImageTexGenPolicy::kNew_Uncached_Budgeted
+                                         : GrImageTexGenPolicy::kNew_Uncached_Unbudgeted;
+    // TODO: Don't flatten YUVA images here. Add mips to the planes instead.
+    auto [view, ct] = skgpu::ganesh::AsView(dContext, this, mipmapped, policy);
+    if (!view) {
+        return nullptr;
+    }
+    SkASSERT(view.asTextureProxy());
+    SkASSERT(mipmapped == GrMipmapped::kNo ||
+             view.asTextureProxy()->mipmapped() == GrMipmapped::kYes);
+    SkColorInfo colorInfo(GrColorTypeToSkColorType(ct), this->alphaType(), this->refColorSpace());
+    return sk_make_sp<SkImage_Ganesh>(sk_ref_sp(dContext),
+                                      this->uniqueID(),
+                                      std::move(view),
+                                      std::move(colorInfo));
 }
 
 #endif // defined(SK_GANESH)
+
+#if !defined(SK_GANESH)
+sk_sp<SkImage> SkImage_Base::makeTextureImage(GrDirectContext* dContext) const {
+    return nullptr;
+}
+
+sk_sp<SkImage> SkImage_Base::makeTextureImage(GrDirectContext* dContext,
+                                         skgpu::Mipmapped mipmapped) const {
+    return nullptr;
+}
+
+sk_sp<SkImage> SkImage_Base::makeTextureImage(GrDirectContext* dContext,
+                                         skgpu::Mipmapped mipmapped,
+                                         skgpu::Budgeted budgeted) const {
+    return nullptr;
+}
+#endif
 
 #if defined(SK_GRAPHITE)
 std::tuple<skgpu::graphite::TextureProxyView, SkColorType> SkImage_Base::asView(
@@ -304,6 +368,18 @@ sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
                                                      std::move(targetColorSpace),
                                                      recorder,
                                                      requiredProps);
+}
+
+sk_sp<SkImage> SkImage_Base::makeTextureImage(skgpu::graphite::Recorder* recorder,
+                                              RequiredImageProperties requiredProps) const {
+    if (!recorder) {
+        return nullptr;
+    }
+    if (this->dimensions().area() <= 1) {
+        requiredProps.fMipmapped = skgpu::Mipmapped::kNo;
+    }
+
+    return as_IB(this)->onMakeTextureImage(recorder, requiredProps);
 }
 
 #endif // SK_GRAPHITE

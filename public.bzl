@@ -82,6 +82,7 @@ SKIA_PUBLIC_HDRS = [
     "include/core/SkRegion.h",
     "include/core/SkSamplingOptions.h",
     "include/core/SkScalar.h",
+    "include/core/SkSemaphoresSubmitted.h",
     "include/core/SkSerialProcs.h",
     "include/core/SkShader.h",
     "include/core/SkSize.h",

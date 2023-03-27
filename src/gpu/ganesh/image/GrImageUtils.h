@@ -84,5 +84,6 @@ inline std::unique_ptr<GrFragmentProcessor> AsFragmentProcessor(GrRecordingConte
                                                                 const SkRect* domain = nullptr) {
     return AsFragmentProcessor(ctx, img.get(), opt, tm, m, subset, domain);
 }
+
 }  // namespace skgpu::ganesh
 #endif
