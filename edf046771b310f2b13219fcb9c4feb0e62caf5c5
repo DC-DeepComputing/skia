@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21be9fab_f4ebc87b",
+        "filename": "src/sksl/generated/sksl_graphite_frag.unoptimized.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-27T18:28:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e7676ec_af20bfba",
+      "range": {
+        "startLine": 79,
+        "startChar": 33,
+        "endLine": 79,
+        "endChar": 39
+      },
+      "revId": "edf046771b310f2b13219fcb9c4feb0e62caf5c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6139b7bd_c7b03883",
@@ -65,6 +89,54 @@
         "startChar": 28,
         "endLine": 292,
         "endChar": 64
+      },
+      "revId": "edf046771b310f2b13219fcb9c4feb0e62caf5c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7a8ebaf_14b135e3",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-27T18:28:56Z",
+      "side": 1,
+      "message": "I went with \"coords / kImageSize\". I had figured our code gen would transform it into a multiply.",
+      "parentUuid": "d42696f7_698a296b",
+      "range": {
+        "startLine": 292,
+        "startChar": 28,
+        "endLine": 292,
+        "endChar": 64
+      },
+      "revId": "edf046771b310f2b13219fcb9c4feb0e62caf5c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdd9a1dc_e124b481",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-27T18:28:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6139b7bd_c7b03883",
+      "range": {
+        "startLine": 292,
+        "startChar": 4,
+        "endLine": 292,
+        "endChar": 9
       },
       "revId": "edf046771b310f2b13219fcb9c4feb0e62caf5c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
