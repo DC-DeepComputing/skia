@@ -22,6 +22,30 @@
       },
       "revId": "de11e9aa63b8cac3d4f8cad645c33b1bf26a580f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "815184db_ded7dcc5",
+        "filename": "platform_tools/debugging/lldb/skia.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-27T16:44:41Z",
+      "side": 1,
+      "message": "Probably. It looks like the .natvis is slightly out of date (and I use lldb within VSCode, so I haven\u0027t really kept up with it).",
+      "parentUuid": "d7af90a1_62a7428f",
+      "range": {
+        "startLine": 220,
+        "startChar": 66,
+        "endLine": 220,
+        "endChar": 78
+      },
+      "revId": "de11e9aa63b8cac3d4f8cad645c33b1bf26a580f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
