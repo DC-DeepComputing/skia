@@ -285,7 +285,7 @@ $pure half4 sk_image_shader(float2 coords,
 
 $pure half4 sk_dither_shader(half4 colorIn,
                              float2 coords,
-                             float range,
+                             half range,
                              sampler2D lut) {
     const float kImgSize = 8;
 
