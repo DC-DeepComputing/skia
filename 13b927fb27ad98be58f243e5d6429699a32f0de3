@@ -16,6 +16,52 @@
       "message": "Hi @jlavrova@google.com could take another look at this? The golden changes can be found here: https://drive.google.com/drive/folders/1VkWVMcVh2OD7bTvvJoAc_E9EmBhv_xWI?resourcekey\u003d0-uTwJTpPsNeTLYSZlcG2WBA\u0026usp\u003dshare_link",
       "revId": "13b927fb27ad98be58f243e5d6429699a32f0de3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2b4d0c8_cc6e7884",
+        "filename": "modules/skparagraph/src/TextWrapper.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-27T17:50:33Z",
+      "side": 1,
+      "message": "I don\u0027think you should leave the method here. We do it not because we round positions here but because we want the text to fit the line properly.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 9
+      },
+      "revId": "13b927fb27ad98be58f243e5d6429699a32f0de3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0484cc34_d8e0bde7",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-03-27T17:50:33Z",
+      "side": 1,
+      "message": "So you keep the current testing without your variable.\nThe tests will pass but then you will not be testing your change, not really.\nAt some point you will have to update all the tests (the sooner, the better).",
+      "range": {
+        "startLine": 454,
+        "startChar": 4,
+        "endLine": 454,
+        "endChar": 43
+      },
+      "revId": "13b927fb27ad98be58f243e5d6429699a32f0de3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
