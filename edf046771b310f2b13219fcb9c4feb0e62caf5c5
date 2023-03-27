@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e7676ec_af20bfba",
+        "filename": "src/sksl/generated/sksl_graphite_frag.unoptimized.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-27T16:08:21Z",
+      "side": 1,
+      "message": "^ promoting back to float",
+      "range": {
+        "startLine": 79,
+        "startChar": 33,
+        "endLine": 79,
+        "endChar": 39
+      },
+      "revId": "edf046771b310f2b13219fcb9c4feb0e62caf5c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6139b7bd_c7b03883",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-27T16:08:21Z",
+      "side": 1,
+      "message": "The input variable is float, and `sample` takes float coordinates; do we actually want `half` coords here? We just end up casting back and forth to do one multiply, which feels like a net loss.",
+      "range": {
+        "startLine": 292,
+        "startChar": 4,
+        "endLine": 292,
+        "endChar": 9
+      },
+      "revId": "edf046771b310f2b13219fcb9c4feb0e62caf5c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d42696f7_698a296b",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-27T16:08:21Z",
+      "side": 1,
+      "message": "I think this could be simplified to `coords / kImgSize`\n\n(Better still `kImgSize` could be `1.0/8.0` and we could use a multiply. However, our codegen optimization actually does this for us anyway, so it\u0027s nbd either way)",
+      "range": {
+        "startLine": 292,
+        "startChar": 28,
+        "endLine": 292,
+        "endChar": 64
+      },
+      "revId": "edf046771b310f2b13219fcb9c4feb0e62caf5c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
