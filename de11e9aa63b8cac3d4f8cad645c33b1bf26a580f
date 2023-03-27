@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7af90a1_62a7428f",
+        "filename": "platform_tools/debugging/lldb/skia.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-27T16:32:30Z",
+      "side": 1,
+      "message": "@brianosman@google.com Do we need a similar fix for Dev Studio?",
+      "range": {
+        "startLine": 220,
+        "startChar": 66,
+        "endLine": 220,
+        "endChar": 78
+      },
+      "revId": "de11e9aa63b8cac3d4f8cad645c33b1bf26a580f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
