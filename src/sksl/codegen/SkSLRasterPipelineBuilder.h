@@ -23,6 +23,7 @@ class SkWStream;
 namespace SkSL {
 
 class DebugTracePriv;
+class TraceHook;
 
 namespace RP {
 
@@ -248,6 +249,9 @@ private:
     // Appends a stack_rewind op on platforms where it is needed (when SK_HAS_MUSTTAIL is not set).
     void appendStackRewind(skia_private::TArray<Stage>* pipeline) const;
 
+    // Instantiates a TraceHook; called whenever a program contains trace ops.
+    SkSL::TraceHook* makeTraceHook();
+
     skia_private::TArray<Instruction> fInstructions;
     int fNumValueSlots = 0;
     int fNumUniformSlots = 0;
@@ -255,6 +259,7 @@ private:
     int fNumLabels = 0;
     SkTHashMap<int, int> fTempStackMaxDepths;
     DebugTracePriv* fDebugTrace = nullptr;
+    std::unique_ptr<SkSL::TraceHook> fTraceHook;
 };
 
 class Builder {

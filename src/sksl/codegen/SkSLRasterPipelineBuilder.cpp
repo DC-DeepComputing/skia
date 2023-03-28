@@ -1012,6 +1012,10 @@ Program::Program(TArray<Instruction> instrs,
         (void)stackIdx;
         fNumTempStackSlots += depth;
     }
+
+    if (fDebugTrace) {
+        fTraceHook = SkSL::Tracer::Make(&fDebugTrace->fTraceInfo);
+    }
 }
 
 void Program::appendCopy(TArray<Stage>* pipeline,
@@ -1341,7 +1345,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
             using ContextType = typename std::remove_reference<decltype(*ctx)>::type;
             ctx = alloc->make<ContextType>();
             ctx->traceMask = reinterpret_cast<int*>(tempStackMap[inst.fImmA] - N);
-            ctx->traceHook = nullptr; // TODO(johnstiles): set the trace hook when one is available
+            ctx->traceHook = fTraceHook.get();
             return ctx;
         };
         float*& tempStackPtr = tempStackMap[currentStack];
