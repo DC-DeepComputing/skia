@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14a36133_cb6d200d",
+        "filename": "include/core/SkBitmap.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 796,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-28T13:57:40Z",
+      "side": 1,
+      "message": "These should be able to go away now.",
+      "range": {
+        "startLine": 796,
+        "startChar": 36,
+        "endLine": 796,
+        "endChar": 45
+      },
+      "revId": "2f07dcaf67d4a07eead8a19e5276a5d3fa215cce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
