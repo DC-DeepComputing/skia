@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91b91f60_7e812fbc",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-28T17:25:06Z",
+      "side": 1,
+      "message": "I don\u0027t think this is a great name in that we\u0027re still ending up with an Image in the end. The original makeTextureImage was implying it is an SkImage that backend by a gpu texture.",
+      "range": {
+        "startLine": 204,
+        "startChar": 22,
+        "endLine": 204,
+        "endChar": 38
+      },
+      "revId": "c25402f7c9acd9a34c72c550c9691f1231adee03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2505d674_85e27cfb",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-28T17:25:06Z",
+      "side": 1,
+      "message": "I kind of feel like I like this name better for GetExisitingBackendTexture below. I wonder if this call should be more GetBackendTextureCopyFromImage or MakeBackendTextureImage since we are always making a new backend texture (except in the one special case where we can steal it).",
+      "range": {
+        "startLine": 344,
+        "startChar": 12,
+        "endLine": 344,
+        "endChar": 38
+      },
+      "revId": "c25402f7c9acd9a34c72c550c9691f1231adee03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21cb6c73_7c413225",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-28T17:25:06Z",
+      "side": 1,
+      "message": "Instead of statics living here what if we just made these member functions on GrDirectContext? Or use the current functions there are figure out a clean way to pass in an image.",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 1
+      },
+      "revId": "c25402f7c9acd9a34c72c550c9691f1231adee03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
