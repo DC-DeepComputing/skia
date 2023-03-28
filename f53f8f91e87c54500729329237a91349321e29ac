@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f230df0_2fed5d5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2023-03-28T02:08:22Z",
+      "side": 1,
+      "message": "Hi James, I notice that CL-655436 rebases SkDrawBase from SkDraw, which misses your fix in isHairline check. Here I make up it in SkDrawBase. PTAL!\nThanks!",
+      "revId": "f53f8f91e87c54500729329237a91349321e29ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
