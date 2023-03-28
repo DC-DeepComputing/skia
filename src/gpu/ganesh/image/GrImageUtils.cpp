@@ -12,8 +12,10 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/core/SkSamplingPriv.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -23,6 +25,7 @@
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/effects/GrBicubicEffect.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
+#include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Raster.h"
 
@@ -225,5 +228,29 @@ std::unique_ptr<GrFragmentProcessor> AsFragmentProcessor(GrRecordingContext* rCo
     }
     SkUNREACHABLE;
 }
+
+GrSemaphoresSubmitted Flush(GrDirectContext* context, sk_sp<const SkImage> image,
+                            const GrFlushInfo& flushInfo) {
+    if (!context) {
+        return GrSemaphoresSubmitted::kNo;
+    }
+    auto ib = as_IB(image);
+    if (!ib->isGaneshBacked()) {
+        return GrSemaphoresSubmitted::kNo;
+    }
+    auto igb = static_cast<const SkImage_GaneshBase*>(image.get());
+    return igb->flush(context, flushInfo);
+}
+
+
+void Flush(GrDirectContext* context, sk_sp<const SkImage> image) {
+    Flush(context, image, {});
+}
+
+void FlushAndSubmit(GrDirectContext* context, sk_sp<const SkImage> image) {
+    Flush(context, image, {});
+    context->submit();
+}
+
 
 }  // namespace skgpu::ganesh

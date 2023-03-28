@@ -19,6 +19,7 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tests/CtsEnforcement.h"
@@ -107,7 +108,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
 
     // Test flushing via the SkImage
     canvas->drawImage(image, 0, 0);
-    image->flush(dContext, flushInfoFinishedProc);
+    skgpu::ganesh::Flush(dContext, image, flushInfoFinishedProc);
     dContext->submit();
     if (expectAsyncCallback) {
         // On Vulkan the command buffer we just submitted may or may not have finished immediately
