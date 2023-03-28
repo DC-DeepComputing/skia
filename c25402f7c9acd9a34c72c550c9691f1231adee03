@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "daf4e362_bd2ef43a",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-28T17:33:07Z",
+      "side": 1,
+      "message": "That rename should be ok - only one place to change in Chrome.",
+      "parentUuid": "2505d674_85e27cfb",
+      "range": {
+        "startLine": 344,
+        "startChar": 12,
+        "endLine": 344,
+        "endChar": 38
+      },
+      "revId": "c25402f7c9acd9a34c72c550c9691f1231adee03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21cb6c73_7c413225",
         "filename": "include/gpu/ganesh/SkImageGanesh.h",
         "patchSetId": 19
@@ -84,6 +108,30 @@
       "writtenOn": "2023-03-28T17:25:06Z",
       "side": 1,
       "message": "Instead of statics living here what if we just made these member functions on GrDirectContext? Or use the current functions there are figure out a clean way to pass in an image.",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 1
+      },
+      "revId": "c25402f7c9acd9a34c72c550c9691f1231adee03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78871dae_89a1678c",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-28T17:33:07Z",
+      "side": 1,
+      "message": "That seems reasonable to me - are we ok expanding the public API of that class?",
+      "parentUuid": "21cb6c73_7c413225",
       "range": {
         "startLine": 375,
         "startChar": 0,
