@@ -30,7 +30,6 @@ class SkPixmap;
 class SkSurface;
 class SkSurfaceCharacterization;
 enum GrSurfaceOrigin : int;
-enum class GrSemaphoresSubmitted : bool;
 namespace skgpu {
 class MutableTextureState;
 }
