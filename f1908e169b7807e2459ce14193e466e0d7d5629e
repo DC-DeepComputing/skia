@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af18bccd_0f691245",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-03-28T15:24:00Z",
+      "side": 1,
+      "message": "This is related to b/274972560 and should probably fix the issues with their tests. I do wish there was less reliance on all these globals.",
+      "revId": "f1908e169b7807e2459ce14193e466e0d7d5629e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
