@@ -464,6 +464,7 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
         .function("_getRectsForRange", &GetRectsForRange)
         .function("getShapedLines", &GetShapedLines)
         .function("getWordBoundary", &para::Paragraph::getWordBoundary)
+        .function("setApplyRoundingHack", &para::Paragraph::setApplyRoundingHack)
         .function("layout", &para::Paragraph::layout);
 
     class_<para::ParagraphBuilderImpl>("ParagraphBuilder")
