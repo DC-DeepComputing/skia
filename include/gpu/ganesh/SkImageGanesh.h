@@ -182,6 +182,34 @@ SK_API sk_sp<SkImage> TextureFromCompressedTextureData(GrDirectContext* direct,
                                                        GrMipmapped mipmapped = GrMipmapped::kNo,
                                                        GrProtected isProtected = GrProtected::kNo);
 
+/** Returns SkImage backed by GPU texture associated with context. Returned SkImage is
+    compatible with SkSurface created with dstColorSpace. The returned SkImage respects
+    mipmapped setting; if mipmapped equals skgpu::Mipmapped::kYes, the backing texture
+    allocates mip map levels.
+    The mipmapped parameter is effectively treated as kNo if MIP maps are not supported by the
+    GPU.
+    Returns original SkImage if the image is already texture-backed, the context matches, and
+    mipmapped is compatible with the backing GPU texture. skgpu::Budgeted is ignored in this
+   case.
+    Returns nullptr if context is nullptr, or if SkImage was created with another
+    GrDirectContext.
+    @param GrDirectContext the GrDirectContext in play, if it exists
+    @param SkImage          a non-null pointer to an SkImage.
+    @param skgpu::Mipmapped Whether created SkImage texture must allocate mip map levels.
+                            Defaults to no.
+    @param skgpu::Budgeted Whether to count a newly created texture for the returned image
+                           counts against the context's budget. Defaults to yes.
+    @return                created SkImage, or nullptr
+*/
+SK_API sk_sp<SkImage> TextureFromImage(GrDirectContext*, const SkImage*,
+                                       skgpu::Mipmapped = skgpu::Mipmapped::kNo,
+                                       skgpu::Budgeted = skgpu::Budgeted::kYes);
+inline sk_sp<SkImage> TextureFromImage(GrDirectContext* ctx, sk_sp<const SkImage> img,
+                                       skgpu::Mipmapped m = skgpu::Mipmapped::kNo,
+                                       skgpu::Budgeted b = skgpu::Budgeted::kYes) {
+    return TextureFromImage(ctx, img.get(), m, b);
+}
+
 /** Creates a GPU-backed SkImage from SkYUVAPixmaps.
     The image will remain planar with each plane converted to a texture using the passed
     GrRecordingContext.
@@ -318,6 +346,39 @@ SK_API bool GetBackendTextureFromImage(GrDirectContext* context,
                                        GrBackendTexture* backendTexture,
                                        BackendTextureReleaseProc* backendTextureReleaseProc);
 
+/** Retrieves the existing backend texture. If SkImage is not a Ganesh-backend texture image
+    or otherwise does not have such a texture, false is returned. Otherwise, outTexture will
+    be set to the image's texture.
+
+    If flushPendingGrContextIO is true, completes deferred I/O operations.
+    If origin in not nullptr, copies location of content drawn into SkImage.
+    @param outTexture               Will be set to the underlying texture of the image.
+    @param flushPendingGrContextIO  flag to flush outstanding requests
+    @return                         back-end API texture handle; invalid on failure
+*/
+SK_API bool GetExistingBackendTexture(sk_sp<const SkImage> img, GrBackendTexture* outTexture,
+                                      bool flushPendingGrContextIO,
+                                      GrSurfaceOrigin* origin = nullptr);
 }  // namespace SkImages
+
+namespace skgpu::ganesh {
+/** Flushes any pending uses of texture-backed images in the GPU backend. If the image is not
+   texture-backed (including promise texture images) or if the GrDirectContext does not
+   have the same context ID as the context backing the image then this is a no-op.
+   If the image was not used in any non-culled draws in the current queue of work for the
+   passed GrDirectContext then this is a no-op unless the GrFlushInfo contains semaphores or
+   a finish proc. Those are respected even when the image has not been used.
+   @param context  the context on which to flush pending usages of the image.
+   @param image    the non-null image to flush.
+   @param info     flush options
+*/
+GrSemaphoresSubmitted Flush(GrDirectContext* context, sk_sp<const SkImage> image,
+                            const GrFlushInfo& flushInfo);
+void Flush(GrDirectContext* context, sk_sp<const SkImage> image);
+/** Version of flush() that uses a default GrFlushInfo. Also submits the flushed work to the
+    GPU.
+*/
+void FlushAndSubmit(GrDirectContext* context, sk_sp<const SkImage> image);
+}
 
 #endif
