@@ -186,7 +186,7 @@ void surface_semaphore_test(skiatest::Reporter* reporter,
             mainSurface->flush(SkSurface::BackendSurfaceAccess::kNoAccess, info);
             break;
         case FlushType::kImage:
-            blueImage->flush(mainCtx, info);
+            skgpu::ganesh::Flush(mainCtx, blueImage, info);
             break;
         case FlushType::kContext:
             mainCtx->flush(info);
