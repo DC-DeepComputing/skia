@@ -235,7 +235,7 @@ bool SkImage_GaneshBase::onReadPixels(GrDirectContext* dContext,
     return sContext->readPixels(dContext, {dstInfo, dstPixels, dstRB}, {srcX, srcY});
 }
 
-bool SkImage_GaneshBase::onIsValid(GrRecordingContext* context) const {
+bool SkImage_GaneshBase::isValid(GrRecordingContext* context) const {
     // The base class has already checked that 'context' isn't abandoned (if it's not nullptr)
     if (fContext->priv().abandoned()) {
         return false;
