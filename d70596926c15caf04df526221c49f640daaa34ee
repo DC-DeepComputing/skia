@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ca79bd6_3c230a33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T17:51:01Z",
+      "side": 1,
+      "message": "overall I like this, comments are mostly nits, will lgtm once bot issues are fixed.",
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22fbd1ca_a513e6f2",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T17:51:01Z",
+      "side": 1,
+      "message": "What about having `kTexture` be marked with SkUNREACHABLE and remove the `default` case entirely. The compiler will then warn about additional types that are added later?\n\nAlthough I suppose we aren\u0027t handling the uniform buffer type right now, but IIUC, its use case fits very closely with the kTexture being populated externally, right?",
+      "range": {
+        "startLine": 283,
+        "startChar": 12,
+        "endLine": 286,
+        "endChar": 18
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f747ab74_35540283",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T17:51:01Z",
+      "side": 1,
+      "message": "oooh we can use variant now!",
+      "range": {
+        "startLine": 30,
+        "startChar": 30,
+        "endLine": 30,
+        "endChar": 37
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32d84ef4_8cb506b2",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T17:51:01Z",
+      "side": 1,
+      "message": "Really minor nit: any way to shorten the comment so \"any.\" isn\u0027t dangling? (and below)",
+      "range": {
+        "startLine": 140,
+        "startChar": 7,
+        "endLine": 140,
+        "endChar": 10
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2137b02_09b1e2eb",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T17:51:01Z",
+      "side": 1,
+      "message": "SkUNREACHABLE? or have an SkASSERT that the else{} is a TextureIndex?",
+      "range": {
+        "startLine": 124,
+        "startChar": 20,
+        "endLine": 124,
+        "endChar": 28
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a89191d_eeefaa23",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T17:51:01Z",
+      "side": 1,
+      "message": "Consistent with the DawnCommandBuffer case, however we settle that.",
+      "range": {
+        "startLine": 140,
+        "startChar": 20,
+        "endLine": 140,
+        "endChar": 32
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0555152e_08a3a255",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T17:51:01Z",
+      "side": 1,
+      "message": "nit: \u0027S\u0027",
+      "range": {
+        "startLine": 476,
+        "startChar": 26,
+        "endLine": 476,
+        "endChar": 27
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b9f10d2_ae2a01ad",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T17:51:01Z",
+      "side": 1,
+      "message": "WDYT about SkColorSetARGB(255, x*16, y*16, 0)?\n\nOtherwise, SkBitmap has an `eraseColor()` that would hide a lot of this logic.",
+      "range": {
+        "startLine": 587,
+        "startChar": 47,
+        "endLine": 587,
+        "endChar": 60
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
