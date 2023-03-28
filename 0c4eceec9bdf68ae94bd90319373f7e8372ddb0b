@@ -121,6 +121,24 @@
       "parentUuid": "e4f1d931_d29a7517",
       "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c5dbab5_38d420e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9563
+      },
+      "writtenOn": "2023-03-28T15:24:54Z",
+      "side": 1,
+      "message": "\u003e Why is Skia involved here at all?\n\nCopying into a WebGPU texture from a StaticBitmapImage that is not created with WebGPU-compatible shared image flags.\n\nChrome makes an intermediate SharedImage that is shareable with both Skia and Dawn.\n\nThen, we use Skia to do source -\u003e intermediate, and Dawn to do intermediate - destination.",
+      "parentUuid": "b92929c8_2cddf50f",
+      "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
