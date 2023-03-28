@@ -157,6 +157,24 @@
       "parentUuid": "6c5dbab5_38d420e3",
       "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dd5129e_589c7306",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9563
+      },
+      "writtenOn": "2023-03-28T16:39:03Z",
+      "side": 1,
+      "message": "hm ok so to clarify my understanding:\n - Skia doesn\u0027t want to allow creating textures that are unpremultiplied because doing that in the general case makes rendering not make sense\n - this CL works because we make an unpremultiplied textures and writePixels unpremultiplied data - so it dumps the data there with no conversion or interpretation. Then, Dawn picks it up and handles the conversion\n \nWe can do the equivalent of no conversion in Skia by making the texture premultiplied, and writing data that is \"premultiplied\". But if it really should be unpremultiplied, we need to then tell Dawn that it\u0027s unpremultiplied so that the downstream conversion happens correctly.\nI guess that would work though a bit unfortunate we need to lie.\nShaobo, what do you think?\n\nclarification question:\n - does this only happen with UnaccleratedStaticBitmapImage? because AcceleratedStaticBitmapImage is texture-backed, does that mean the alpha type from Skia is always premultiplied?\n - then, since it\u0027s unaccelerated, Shaobo, could we instead directly upload the data using Dawn to keep Skia out of the loop entirely?",
+      "parentUuid": "2edd740b_c062f86f",
+      "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
