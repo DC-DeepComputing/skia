@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee1d076d_332a8f95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-03-28T18:23:43Z",
+      "side": 1,
+      "message": "Looks like the raw pointer CL fixed this, PTAL.",
+      "revId": "c898cee68e16fc360338b4c1801cd52438742daf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
