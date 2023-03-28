@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32de1e94_cb02a996",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-28T17:02:51Z",
+      "side": 0,
+      "message": "sgtm. Part of me wonders if these two assignments could happen as part of the conditionals above which already conditionally assign to `joinScale` and I _think_ there are only two branches after which `xRadii` and `yRadii` will possibly hold a positive value (but I haven\u0027t thought this through rigorously).",
+      "parentUuid": "01b362b8_cc18d103",
+      "range": {
+        "startLine": 594,
+        "startChar": 12,
+        "endLine": 596,
+        "endChar": 36
+      },
+      "revId": "d10098c2218854086f3c667b71eec1553876213a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "71dc2ff4_6e28c4f1",
         "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-28T15:32:23Z",
       "side": 0,
       "message": "For some reason, I had thought float2x2(float4) was an unsupported constructor so I was splitting it out into the column version here and several other places. I\u0027ve cleaned those up in this CL.",
+      "range": {
+        "startLine": 803,
+        "startChar": 42,
+        "endLine": 803,
+        "endChar": 58
+      },
+      "revId": "d10098c2218854086f3c667b71eec1553876213a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6b3474c_3ab0feae",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-03-28T17:02:51Z",
+      "side": 0,
+      "message": "Yep, this is supported. Not all backend languages actually support this type of construction though and the SkSL codegen may rewrite the call to effectively do what you had here before.",
+      "parentUuid": "71dc2ff4_6e28c4f1",
       "range": {
         "startLine": 803,
         "startChar": 42,
