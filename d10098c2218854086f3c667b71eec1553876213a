@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01b362b8_cc18d103",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T15:32:23Z",
+      "side": 0,
+      "message": "This last case got trickier to reason about when considering a butt cap vs. a small bevel. This case and the one prior were put in defensively, but upon further reflection, the vertex math should be fairly robust to small values.\n\nI decided to rip it out and if we run into issues we can evaluate solutions then.",
+      "range": {
+        "startLine": 594,
+        "startChar": 12,
+        "endLine": 596,
+        "endChar": 36
+      },
+      "revId": "d10098c2218854086f3c667b71eec1553876213a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71dc2ff4_6e28c4f1",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T15:32:23Z",
+      "side": 0,
+      "message": "For some reason, I had thought float2x2(float4) was an unsupported constructor so I was splitting it out into the column version here and several other places. I\u0027ve cleaned those up in this CL.",
+      "range": {
+        "startLine": 803,
+        "startChar": 42,
+        "endLine": 803,
+        "endChar": 58
+      },
+      "revId": "d10098c2218854086f3c667b71eec1553876213a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1547e228_b2eb6ff5",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 924,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-28T15:32:23Z",
+      "side": 0,
+      "message": "While working on adapting this code to the line case (insetting along the \"length\" axis), I realized it was flawed when the base shape had a length less than stroke radius. Currently this renders okay but produces triangles that flip over each other; depth-testing hides this issue. The more problematic case would be when the dimension exactly equaled the stroke radius. Insetting converts the shape to a point and we\u0027d lose all orientation information from the base line/empty rect.\n\nFor this reason I switched to supporting the butt cap outset along only 1 axis in the vertex shader, but it has the nice benefit of consolidating the vertex writing a bit and not having to modify the source geometry at all.",
+      "range": {
+        "startLine": 920,
+        "startChar": 16,
+        "endLine": 924,
+        "endChar": 44
+      },
+      "revId": "d10098c2218854086f3c667b71eec1553876213a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
