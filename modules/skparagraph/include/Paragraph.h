@@ -37,6 +37,9 @@ public:
 
     bool didExceedMaxLines() { return fExceededMaxLines; }
 
+    // The applyRoundingHack argument is a temporary flag to keep the current
+    // rounding behavior when reporting text metrics and when breaking text into
+    // lines.
     virtual void layout(SkScalar width) = 0;
 
     virtual void paint(SkCanvas* canvas, SkScalar x, SkScalar y) = 0;
