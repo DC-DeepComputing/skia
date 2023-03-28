@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebc4aa19_d1a89227",
+        "filename": "modules/skparagraph/src/TextWrapper.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 17734
+      },
+      "writtenOn": "2023-03-28T05:40:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2b4d0c8_cc6e7884",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 9
+      },
+      "revId": "13b927fb27ad98be58f243e5d6429699a32f0de3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0484cc34_d8e0bde7",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-03-27T17:50:33Z",
       "side": 1,
       "message": "So you keep the current testing without your variable.\nThe tests will pass but then you will not be testing your change, not really.\nAt some point you will have to update all the tests (the sooner, the better).",
+      "range": {
+        "startLine": 454,
+        "startChar": 4,
+        "endLine": 454,
+        "endChar": 43
+      },
+      "revId": "13b927fb27ad98be58f243e5d6429699a32f0de3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "239fb09f_5ef9301c",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 17734
+      },
+      "writtenOn": "2023-03-28T05:40:20Z",
+      "side": 1,
+      "message": "```\nparagraph-\u003esetApplyRoundingHack(false);\n```\nturns the rounding hack off, so it is testing with the change.",
+      "parentUuid": "0484cc34_d8e0bde7",
       "range": {
         "startLine": 454,
         "startChar": 4,
