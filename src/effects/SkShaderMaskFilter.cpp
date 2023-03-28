@@ -125,11 +125,12 @@ bool SkShaderMF::filterMask(SkMask* dst, const SkMask& src, const SkMatrix& ctm,
     paint.setShader(fShader);
     // this blendmode is the trick: we only draw the shader where the mask is
     paint.setBlendMode(SkBlendMode::kSrcIn);
-
+#if 0
     SkCanvas canvas(bitmap);
     canvas.translate(-SkIntToScalar(dst->fBounds.fLeft), -SkIntToScalar(dst->fBounds.fTop));
     canvas.concat(ctm);
     canvas.drawPaint(paint);
+#endif
     return true;
 }
 

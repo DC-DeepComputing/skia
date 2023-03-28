@@ -12,7 +12,7 @@
 #include "src/core/Sk4px.h"
 #include "src/core/SkXfermodePriv.h"
 
-#ifdef SK_FORCE_RASTER_PIPELINE_BLITTER
+#if 1 //def SK_FORCE_RASTER_PIPELINE_BLITTER
 
 namespace SK_OPTS_NS {
     /*not static*/ inline SkXfermode* create_xfermode(SkBlendMode) { return nullptr; }

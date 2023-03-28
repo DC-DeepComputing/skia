@@ -58,7 +58,7 @@
 #include "src/codec/SkWebpCodec.h"
 #endif
 
-#ifdef SK_HAS_WUFFS_LIBRARY
+#ifdef SK_HAS_WUFFS_LIBRARYx
 #include "src/codec/SkWuffsCodec.h"
 #endif
 
@@ -77,7 +77,7 @@ std::vector<DecoderProc>* decoders() {
     #ifdef SK_CODEC_DECODES_WEBP
         { SkWebpCodec::IsWebp, SkWebpCodec::MakeFromStream },
     #endif
-    #ifdef SK_HAS_WUFFS_LIBRARY
+    #ifdef SK_HAS_WUFFS_LIBRARYx
         { SkWuffsCodec_IsFormat, SkWuffsCodec_MakeFromStream },
     #endif
     #ifdef SK_CODEC_DECODES_PNG

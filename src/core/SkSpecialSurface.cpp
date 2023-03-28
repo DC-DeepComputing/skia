@@ -48,6 +48,7 @@ sk_sp<SkSpecialImage> SkSpecialSurface::makeImageSnapshot() {
 ///////////////////////////////////////////////////////////////////////////////
 sk_sp<SkSpecialSurface> SkSpecialSurface::MakeRaster(const SkImageInfo& info,
                                                      const SkSurfaceProps& props) {
+#ifdef SK_SUPPORT_RASTER_BACKEND
     if (!SkSurfaceValidateRasterInfo(info)) {
         return nullptr;
     }
@@ -70,6 +71,9 @@ sk_sp<SkSpecialSurface> SkSpecialSurface::MakeRaster(const SkImageInfo& info,
     const SkIRect subset = SkIRect::MakeSize(info.dimensions());
 
     return sk_make_sp<SkSpecialSurface>(std::move(device), subset);
+#else
+    return nullptr;
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////
