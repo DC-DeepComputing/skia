@@ -394,6 +394,18 @@ public:
 
     void flush() { this->flush({}); }
 
+    /** Flushes any pending uses of texture-backed images in the GPU backend. If the image is not
+       texture-backed (including promise texture images) or if the GrDirectContext does not
+       have the same context ID as the context backing the image then this is a no-op.
+       If the image was not used in any non-culled draws in the current queue of work for the
+       passed GrDirectContext then this is a no-op unless the GrFlushInfo contains semaphores or
+       a finish proc. Those are respected even when the image has not been used.
+       @param image    the non-null image to flush.
+       @param info     flush options
+    */
+    GrSemaphoresSubmitted flush(sk_sp<const SkImage> image, const GrFlushInfo& info);
+    void flush(sk_sp<const SkImage> image) { this->flush(image, {}); }
+
     /**
      * Submit outstanding work to the gpu from all previously un-submitted flushes. The return
      * value of the submit will indicate whether or not the submission to the GPU was successful.
