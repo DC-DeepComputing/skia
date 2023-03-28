@@ -84,8 +84,6 @@ supported_files_or_dirs=(
   "src/gpu/ganesh/GrBackendUtils.cpp"
   "src/gpu/ganesh/GrCaps.cpp"
   "src/gpu/ganesh/GrDirectContext.cpp"
-  "src/gpu/ganesh/GrImagePin.cpp"
-  "src/gpu/ganesh/GrImageUtils.cpp"
   "src/gpu/ganesh/GrMemoryPool.cpp"
   "src/gpu/ganesh/GrProcessor.cpp"
   "src/gpu/ganesh/GrRenderTargetProxy.cpp"
@@ -93,6 +91,8 @@ supported_files_or_dirs=(
   "src/gpu/ganesh/GrSurfaceProxy.cpp"
   "src/gpu/ganesh/GrSurfaceProxyView.cpp"
   "src/gpu/ganesh/GrTextureProxy.cpp"
+  "src/gpu/ganesh/image/GrImagePin.cpp"
+  "src/gpu/ganesh/image/GrImageUtils.cpp"
   "src/gpu/ganesh/SkGr.cpp"
 
   # See //bazel/generate_cpp_files_for_headers.bzl and //include/BUILD.bazel for more.
