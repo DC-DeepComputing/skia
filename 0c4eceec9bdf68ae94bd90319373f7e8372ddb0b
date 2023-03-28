@@ -103,6 +103,24 @@
       "message": "Include more WebGPU folks",
       "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b92929c8_2cddf50f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-28T13:29:08Z",
+      "side": 1,
+      "message": "This \"works\" because you\u0027re only using one (very specific) code path that does nothing interesting. In all other cases, Greg is right - we can\u0027t possibly render to an unpremultiplied surface. Alpha blending doesn\u0027t work.\n\nTherefore: I really don\u0027t want to offer an option for \"unpremultiplied surfaces\" on the GPU, when it\u0027s just going to produce incorrect results for anyone else that uses it.\n\nI\u0027m also confused (like Greg): Why is Skia involved here at all? It sounds like you\u0027re simply uploading a texture to be used in WebGPU? Is it flowing through Canvas2D? Is there any chance that someone can render to this between the writePixels and the upload to WebGPU?",
+      "parentUuid": "e4f1d931_d29a7517",
+      "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
