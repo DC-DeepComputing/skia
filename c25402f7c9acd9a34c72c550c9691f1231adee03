@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8369209b_b08bb820",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-29T15:16:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "daf4e362_bd2ef43a",
+      "range": {
+        "startLine": 344,
+        "startChar": 12,
+        "endLine": 344,
+        "endChar": 38
+      },
+      "revId": "c25402f7c9acd9a34c72c550c9691f1231adee03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21cb6c73_7c413225",
@@ -156,6 +180,30 @@
       "side": 1,
       "message": "Yup!",
       "parentUuid": "78871dae_89a1678c",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 382,
+        "endChar": 1
+      },
+      "revId": "c25402f7c9acd9a34c72c550c9691f1231adee03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f093edb_e8a1f366",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-29T15:16:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0e79d23_52f3ca31",
       "range": {
         "startLine": 375,
         "startChar": 0,
