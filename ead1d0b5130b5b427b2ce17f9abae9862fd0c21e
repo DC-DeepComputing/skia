@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dff8dbf4_fa93e108",
+        "filename": "src/gpu/graphite/ImageCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-29T18:08:03Z",
+      "side": 1,
+      "message": "As discussed offline, the pixelRef has the uniqueID while (possibly multiple) Bitmaps have the subset. We need to also store the subset to be able to differentiate the different Bitmaps.",
+      "parentUuid": "46b404eb_8c4808a8",
+      "range": {
+        "startLine": 22,
+        "startChar": 12,
+        "endLine": 22,
+        "endChar": 18
+      },
+      "revId": "ead1d0b5130b5b427b2ce17f9abae9862fd0c21e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46a7599e_55563450",
