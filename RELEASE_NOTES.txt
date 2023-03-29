@@ -2,6 +2,18 @@ Skia Graphics Release Notes
 
 This file includes a list of high level updates for each milestone release.
 
+Milestone 114
+-------------
+  * `SkImages::GetBackendTextureFromImage` has been renamed `SkImages::MakeBackendTextureFromImage`.
+  * `SkImage::getBackendTexture()` has been moved to `SkImages::GetBackendTextureFromImage()` in
+    `SkImageGanesh.h`.
+  * `SkImage::makeTextureImage()` has been moved to `SkImages::TextureFromImage()` in
+    `SkImageGanesh.h`.
+  * `SkImage::flush()` and `SkImage::flushAndSubmit()` has been moved to
+    `GrDirectContext::flush()` and `GrDirectContext::flushAndSubmit()` in `SkImageGanesh.h`.
+
+***
+
 Milestone 113
 -------------
   * The define SK_SUPPORT_GPU is now SK_GANESH. It is no longer detected as a 0 or 1, but
