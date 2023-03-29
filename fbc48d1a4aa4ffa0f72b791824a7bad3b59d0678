@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a9786a5_313bb946",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-03-29T18:55:32Z",
+      "side": 1,
+      "message": "Brian PTAL. cc\u0027ing John for FYI.\n\nThis change currently links to skia/main/RELEASE_NOTES.md - which has pre-branch release notes. I plan on landing a CL very soon to switch to using the new //relnotes direction for new release notes. As part of that CL I will update this page to mention that one should go there to read tip-of-tree change notes.",
+      "revId": "fbc48d1a4aa4ffa0f72b791824a7bad3b59d0678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
