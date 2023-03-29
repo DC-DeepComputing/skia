@@ -7,7 +7,9 @@
 
 #include "include/gpu/graphite/Recorder.h"
 
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkPixelRef.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -72,6 +74,58 @@ RecorderOptions::RecorderOptions() = default;
 RecorderOptions::RecorderOptions(const RecorderOptions&) = default;
 RecorderOptions::~RecorderOptions() = default;
 
+ImageCache::~ImageCache() {}
+
+static void make_bitmap_key(skgpu::UniqueKey* key, const SkBitmap& bm, Mipmapped mipmapped) {
+    SkASSERT(key);
+
+    SkIPoint origin = bm.pixelRefOrigin();
+    SkIRect subset = SkIRect::MakePtSize(origin, bm.dimensions());
+
+    static const skgpu::UniqueKey::Domain kImageIDDomain = skgpu::UniqueKey::GenerateDomain();
+    skgpu::UniqueKey::Builder builder(key, kImageIDDomain, 6, "Image");
+    builder[0] = bm.pixelRef()->getGenerationID();
+    builder[1] = subset.fLeft;
+    builder[2] = subset.fTop;
+    builder[3] = subset.fRight;
+    builder[4] = subset.fBottom;
+    builder[5] = SkToBool(mipmapped);
+}
+
+uint32_t ImageCache::UniqueKeyHash::operator()(const skgpu::UniqueKey& key) const {
+    return key.hash();
+}
+
+sk_sp<SkImage> ImageCache::findOrCreateCachedImage(Recorder* recorder,
+                                                   const SkBitmap& bitmap,
+                                                   Mipmapped mipmapped) {
+#if 0
+    sk_sp<SkImage> image = SkImages::RasterFromBitmap(bitmap);
+    return image->makeTextureImage(recorder, { mipmapped });
+#else
+    skgpu::UniqueKey key;
+
+    if (mipmapped == Mipmapped::kNo) {
+        make_bitmap_key(&key, bitmap, Mipmapped::kYes);
+
+        if (sk_sp<SkImage>* cached = fCache.find(key)) {
+            return *cached;
+        }
+    }
+
+    make_bitmap_key(&key, bitmap, mipmapped);
+
+    if (sk_sp<SkImage>* cached = fCache.find(key)) {
+        return *cached;
+    }
+
+    sk_sp<SkImage> image = SkImages::RasterFromBitmap(bitmap);
+    image = image->makeTextureImage(recorder, { mipmapped });
+    fCache.set(key, image);
+    return image;
+#endif
+}
+
 /**************************************************************************************************/
 static int32_t next_id() {
     static std::atomic<int32_t> nextID{1};
@@ -93,7 +147,8 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fAtlasManager(std::make_unique<AtlasManager>(this))
         , fTokenTracker(std::make_unique<TokenTracker>())
         , fStrikeCache(std::make_unique<sktext::gpu::StrikeCache>())
-        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fRecorderID)) {
+        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fRecorderID))
+        , fImageCache(std::make_unique<ImageCache>()){
 
     fClientImageProvider = options.fImageProvider;
     if (!fClientImageProvider) {
@@ -353,10 +408,7 @@ void RecorderPriv::flushTrackedDevices() {
 sk_sp<SkImage> RecorderPriv::CreateCachedImage(Recorder* recorder,
                                                const SkBitmap& bitmap,
                                                Mipmapped mipmapped) {
-    // TODO(b/239604347): remove this hack. This is just here until we determine what Graphite's
-    // Recorder-level caching story is going to be.
-    sk_sp<SkImage> temp = SkImages::RasterFromBitmap(bitmap);
-    return temp->makeTextureImage(recorder, { mipmapped });
+    return recorder->fImageCache->findOrCreateCachedImage(recorder, bitmap, mipmapped);
 }
 
 

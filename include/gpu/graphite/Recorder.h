@@ -14,16 +14,20 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/private/base/SingleOwner.h"
 #include "include/private/base/SkTArray.h"
+#include "src/core/SkTHash.h"
 
 #include <vector>
 
+class SkBitmap;
 class SkCanvas;
+class SkImage;
 struct SkImageInfo;
 class SkPixmap;
 
 namespace skgpu {
 class RefCntedCallback;
 class TokenTracker;
+class UniqueKey;
 }
 
 namespace sktext::gpu {
@@ -62,6 +66,24 @@ struct SK_API RecorderOptions final {
     ~RecorderOptions();
 
     sk_sp<ImageProvider> fImageProvider;
+};
+
+class Recorder;
+
+class ImageCache {
+public:
+    ~ImageCache();
+
+    sk_sp<SkImage> findOrCreateCachedImage(Recorder*, const SkBitmap&, Mipmapped);
+
+private:
+
+    struct UniqueKeyHash {
+        uint32_t operator()(const skgpu::UniqueKey& key) const;
+    };
+    typedef SkTHashMap<skgpu::UniqueKey, sk_sp<SkImage>, UniqueKeyHash> UniqueKeyImageHash;
+
+    UniqueKeyImageHash fCache;
 };
 
 class SK_API Recorder final {
@@ -188,6 +210,7 @@ private:
     std::unique_ptr<TokenTracker> fTokenTracker;
     std::unique_ptr<sktext::gpu::StrikeCache> fStrikeCache;
     std::unique_ptr<sktext::gpu::TextBlobRedrawCoordinator> fTextBlobCache;
+    std::unique_ptr<ImageCache> fImageCache;
     sk_sp<ImageProvider> fClientImageProvider;
 
     // In debug builds we guard against improper thread handling

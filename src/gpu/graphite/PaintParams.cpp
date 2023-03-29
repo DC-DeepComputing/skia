@@ -26,6 +26,9 @@ namespace {
 
 // This should be kept in sync w/ SkPaintPriv::ShouldDither
 bool should_dither(const PaintParams& p, SkColorType dstCT) {
+#if 0
+    return false;
+#else
     // The paint dither flag can veto.
     if (!p.dither()) {
         return false;
@@ -42,6 +45,7 @@ bool should_dither(const PaintParams& p, SkColorType dstCT) {
 
     // Otherwise, dither is only needed for non-const paints.
     return p.shader() && !as_SB(p.shader())->isConstant();
+#endif
 }
 
 } // anonymous namespace
