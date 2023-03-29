@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "879b0cef_18f7ab10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-03-29T19:41:12Z",
+      "side": 1,
+      "message": "Update: this has successfully rolled into Android\u0027s `udc-dev` on http://ag/22338867.",
+      "revId": "d715164e6d66ccb4e3c88893632f9c1a70ae3393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
