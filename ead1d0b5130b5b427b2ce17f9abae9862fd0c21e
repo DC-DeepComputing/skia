@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46b404eb_8c4808a8",
+        "filename": "src/gpu/graphite/ImageCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-29T17:46:26Z",
+      "side": 1,
+      "message": "Why is this needed to be part of the key? From the looks of it, both origin and bm.dimensions just depend on the bitmap. So why is the bitmaps gnerationID not sufficient here?",
+      "range": {
+        "startLine": 22,
+        "startChar": 12,
+        "endLine": 22,
+        "endChar": 18
+      },
+      "revId": "ead1d0b5130b5b427b2ce17f9abae9862fd0c21e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46a7599e_55563450",
+        "filename": "src/gpu/graphite/ImageCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-29T17:46:26Z",
+      "side": 1,
+      "message": "Wait this is going to cause us to store a ref on texture image in this internal cache here. That means we\u0027ll never be able to free that texture from our ResourceCache as long as the effect is alive. If we do that, we might as well just have the effect hold onto the proxy.\n\nAlso gpu textures held in SkImages will not count against our internal budget. So this model is undercounts our internal memory usage. In general we should avoid creating our own texture backed SkImages internally.",
+      "range": {
+        "startLine": 64,
+        "startChar": 19,
+        "endLine": 64,
+        "endChar": 35
+      },
+      "revId": "ead1d0b5130b5b427b2ce17f9abae9862fd0c21e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
