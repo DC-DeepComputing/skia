@@ -553,6 +553,10 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
         fShaderCaps->fColorSpaceMathNeedsFloat = true;
     }
 
+#if defined(SK_BUILD_FOR_ANDROID)
+    fShaderCaps->fPerlinNoiseRoundingFix = true;
+#endif
+
     // On various devices, when calling vkCmdClearAttachments on a primary command buffer, it
     // corrupts the bound buffers on the command buffer. As a workaround we invalidate our knowledge
     // of bound buffers so that we will rebind them on the next draw.
