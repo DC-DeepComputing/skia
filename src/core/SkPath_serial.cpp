@@ -104,12 +104,13 @@ size_t SkPath::writeToMemory(void* storage) const {
     int32_t pts = fPathRef->countPoints();
     int32_t cnx = fPathRef->countWeights();
     int32_t vbs = fPathRef->countVerbs();
+    int32_t vbsByteSize = vbs / 2 + (vbs % 2);
 
     SkSafeMath safe;
     size_t size = 4 * sizeof(int32_t);
     size = safe.add(size, safe.mul(pts, sizeof(SkPoint)));
     size = safe.add(size, safe.mul(cnx, sizeof(SkScalar)));
-    size = safe.add(size, safe.mul(vbs, sizeof(uint8_t)));
+    size = safe.add(size, safe.mul(vbsByteSize, sizeof(uint8_t)));
     size = safe.alignUp(size, 4);
     if (!safe) {
         return 0;
@@ -125,7 +126,19 @@ size_t SkPath::writeToMemory(void* storage) const {
     buffer.write32(vbs);
     buffer.write(fPathRef->points(), pts * sizeof(SkPoint));
     buffer.write(fPathRef->conicWeights(), cnx * sizeof(SkScalar));
-    buffer.write(fPathRef->verbsBegin(), vbs * sizeof(uint8_t));
+    if (vbs > 0) {
+      const uint8_t* verbsPtr = fPathRef->verbsBegin();
+      const uint8_t* verbsPtrEndEven = fPathRef->verbsEnd() - (vbs % 2);
+      while (verbsPtr != verbsPtrEndEven) {
+        buffer.write8(verbsPtr[0] | (verbsPtr[1] << 4));
+        verbsPtr += 2;
+      }
+      if (vbs % 2 == 1) {
+        buffer.write8(*verbsPtr);
+        SkASSERT(verbsPtr != fPathRef->verbsEnd());
+      }
+      SkASSERT(verbsPtr == fPathRef->verbsEnd());
+    }
     buffer.padToAlign4();
 
     SkASSERT(buffer.pos() == size);
@@ -204,9 +217,8 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
         return 0;
     }
 
-    bool verbsAreReversed = true;
-    if (extract_version(packed) == kVerbsAreStoredForward_Version) {
-        verbsAreReversed = false;
+    if (extract_version(packed) != kVerbsAreStoredForward_Version) {
+      printf("NOT HANDLED!\n");
     }
 
     switch (extract_serializationtype(packed)) {
@@ -225,7 +237,7 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
 
     const SkPoint* points = buffer.skipCount<SkPoint>(pts);
     const SkScalar* conics = buffer.skipCount<SkScalar>(cnx);
-    const uint8_t* verbs = buffer.skipCount<uint8_t>(vbs);
+    const uint8_t* verbs = buffer.skipCount<uint8_t>(vbs / 2 + vbs % 2);
     buffer.skipToAlign4();
     if (!buffer.isValid()) {
         return 0;
@@ -242,11 +254,12 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
         }                               \
     } while (0)
 
-    int verbsStep = 1;
+    /*
+      int verbsStep = 1;
     if (verbsAreReversed) {
         verbs += vbs - 1;
         verbsStep = -1;
-    }
+        }*/
 
     SkPath tmp;
     tmp.setFillType(extract_filltype(packed));
@@ -255,7 +268,7 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
       SkPathRef::Editor(&tmp.fPathRef, vbs, pts);
     }
     for (int i = 0; i < vbs; ++i) {
-        switch (*verbs) {
+      switch ((verbs[i / 2] >> (i % 2 == 0 ? 0 : 4)) & 0xF) {
             case kMove_Verb:
                 CHECK_POINTS_CONICS(1, 0);
                 tmp.moveTo(*points++);
@@ -285,7 +298,7 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
             default:
                 return 0;   // bad verb
         }
-        verbs += verbsStep;
+      // verbs += verbsStep;
     }
 #undef CHECK_POINTS_CONICS
     if (pts || cnx) {
