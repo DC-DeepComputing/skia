@@ -175,6 +175,24 @@
       "parentUuid": "2edd740b_c062f86f",
       "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66a7058d_b8d9ded7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8459
+      },
+      "writtenOn": "2023-03-29T01:18:59Z",
+      "side": 1,
+      "message": "Before replying to this. I still have a small question, why CanvasOOpRasterization could get the correct result? (see the issue description here https://bugs.chromium.org/p/chromium/issues/detail?id\u003d1426666, we need --disable-features\u003dCanvasOopRasterization to get the wrong result). Is there any difference?\n\n\u003eShaobo, could we instead directly upload the data using Dawn to keep Skia out of the loop entirely?\n\nI think this is similar to the current path after adding workaround. The uploading now goes like unaccelerated_static_bimap_image ---\u003e copy to mapped buffer ---\u003e issue copy buffer to texture with a temp intermediate texture ---\u003e issuing Dawn::CopyTextureForBrowser.\nCompared to recyclable canvas resource provider solution, the diff is that we lose chance to reuse the intermediate texture. But that might be Ok for most cases (except for HTMLVideoElement)\n\n\u003eI guess that would work though a bit unfortunate we need to lie.\n\u003eShaobo, what do you think?\n\nI think another option is that we could assume the intermediate result is \"kPremul\" and tell it to Dawn::CopyTextureForBrowser and get the correct result.\nThe impact is that even we want to copy from Unpremul content to Unpremul dst, we will suffer Unpremul ---\u003e Premul Op(In Skia) ---\u003e Unpremul Op(In Dawn).",
+      "parentUuid": "6dd5129e_589c7306",
+      "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
