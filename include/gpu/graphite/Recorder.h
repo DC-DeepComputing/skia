@@ -14,6 +14,7 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/private/base/SingleOwner.h"
 #include "include/private/base/SkTArray.h"
+#include "src/core/SkTHash.h"
 
 #include <vector>
 
@@ -40,6 +41,7 @@ class Context;
 class Device;
 class DrawBufferManager;
 class GlobalCache;
+class ImageCache;
 class ImageProvider;
 class RecorderPriv;
 class ResourceProvider;
@@ -188,6 +190,7 @@ private:
     std::unique_ptr<TokenTracker> fTokenTracker;
     std::unique_ptr<sktext::gpu::StrikeCache> fStrikeCache;
     std::unique_ptr<sktext::gpu::TextBlobRedrawCoordinator> fTextBlobCache;
+    std::unique_ptr<ImageCache> fImageCache;
     sk_sp<ImageProvider> fClientImageProvider;
 
     // In debug builds we guard against improper thread handling
