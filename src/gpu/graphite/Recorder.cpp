@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/CopyTask.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/GlobalCache.h"
+#include "src/gpu/graphite/ImageCache.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/PipelineDataCache.h"
@@ -93,7 +94,8 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fAtlasManager(std::make_unique<AtlasManager>(this))
         , fTokenTracker(std::make_unique<TokenTracker>())
         , fStrikeCache(std::make_unique<sktext::gpu::StrikeCache>())
-        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fRecorderID)) {
+        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fRecorderID))
+        , fImageCache(std::make_unique<ImageCache>()){
 
     fClientImageProvider = options.fImageProvider;
     if (!fClientImageProvider) {
@@ -353,10 +355,7 @@ void RecorderPriv::flushTrackedDevices() {
 sk_sp<SkImage> RecorderPriv::CreateCachedImage(Recorder* recorder,
                                                const SkBitmap& bitmap,
                                                Mipmapped mipmapped) {
-    // TODO(b/239604347): remove this hack. This is just here until we determine what Graphite's
-    // Recorder-level caching story is going to be.
-    sk_sp<SkImage> temp = SkImages::RasterFromBitmap(bitmap);
-    return temp->makeTextureImage(recorder, { mipmapped });
+    return recorder->fImageCache->findOrCreateCachedImage(recorder, bitmap, mipmapped);
 }
 
 
