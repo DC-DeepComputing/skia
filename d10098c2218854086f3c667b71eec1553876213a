@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd07c880_199bcc8e",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 596,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-29T01:28:47Z",
+      "side": 0,
+      "message": "Agreed, I\u0027d like to do some consolidation and optimization at some point and can hopefully address this sort of thing. At some point I want to extract out as much into module functions and it could happen then. I think when we start deciding to pair this one renderer back into specialized forms it will make sense to do the modularization so that we can piece together each from the same parts.",
+      "parentUuid": "32de1e94_cb02a996",
+      "range": {
+        "startLine": 594,
+        "startChar": 12,
+        "endLine": 596,
+        "endChar": 36
+      },
+      "revId": "d10098c2218854086f3c667b71eec1553876213a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71dc2ff4_6e28c4f1",
@@ -95,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f75d1d8c_8976f6f6",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-29T01:28:47Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "a6b3474c_3ab0feae",
+      "range": {
+        "startLine": 803,
+        "startChar": 42,
+        "endLine": 803,
+        "endChar": 58
+      },
+      "revId": "d10098c2218854086f3c667b71eec1553876213a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1547e228_b2eb6ff5",
@@ -108,6 +156,30 @@
       "writtenOn": "2023-03-28T15:32:23Z",
       "side": 0,
       "message": "While working on adapting this code to the line case (insetting along the \"length\" axis), I realized it was flawed when the base shape had a length less than stroke radius. Currently this renders okay but produces triangles that flip over each other; depth-testing hides this issue. The more problematic case would be when the dimension exactly equaled the stroke radius. Insetting converts the shape to a point and we\u0027d lose all orientation information from the base line/empty rect.\n\nFor this reason I switched to supporting the butt cap outset along only 1 axis in the vertex shader, but it has the nice benefit of consolidating the vertex writing a bit and not having to modify the source geometry at all.",
+      "range": {
+        "startLine": 920,
+        "startChar": 16,
+        "endLine": 924,
+        "endChar": 44
+      },
+      "revId": "d10098c2218854086f3c667b71eec1553876213a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b545c47_ae46a219",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 924,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-29T01:28:47Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "1547e228_b2eb6ff5",
       "range": {
         "startLine": 920,
         "startChar": 16,
