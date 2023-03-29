@@ -16,6 +16,23 @@
       "message": "Switched John to CC. Brian added for //include (comment only) change. Renaming this file as discussed previously.",
       "revId": "222f098c4b5282e296f69cb1c20b391be49a42f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29f2314e_79be4520",
+        "filename": "include/effects/SkGradientShader.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-29T15:59:36Z",
+      "side": 1,
+      "message": "Oh hey - I should probably remove this comment. Oops.",
+      "revId": "222f098c4b5282e296f69cb1c20b391be49a42f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
