@@ -1,9 +1,15 @@
 load("//bazel:skia_rules.bzl", "exports_files_legacy", "select_multi", "skia_cc_deps", "skia_cc_library", "skia_objc_library")
+load("//bazel:flags.bzl", "bool_flag")
 load("//bazel:copts.bzl", "DEFAULT_OBJC_COPTS")
 
 licenses(["notice"])
 
 exports_files_legacy()
+
+bool_flag(
+    name = "enable_sdl2",
+    default = True,
+)
 
 skia_cc_library(
     name = "sk_app",
@@ -29,6 +35,7 @@ skia_cc_library(
         },
     ) + select({
         "@platforms//os:linux": ["//tools/sk_app/unix:srcs"],
+        ":enable_sdl2_true": ["//tools/sk_app/sdl2:srcs"],
         "//conditions:default": [],
         # TODO(kjlubick) add Windows/Mac support
     }),
@@ -43,6 +50,8 @@ skia_cc_library(
         "//:skia_internal",
         "//tools/skui",
         "//tools/timer",
+        "@libsdl",
+
     ] + select({
         "@platforms//os:linux": ["//tools/sk_app/unix:deps"],
         "//conditions:default": [],

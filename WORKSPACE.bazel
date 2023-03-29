@@ -303,6 +303,13 @@ local_repository(
     path = "bazel/external/expat/config",
 )
 
+new_local_repository(
+    name = "libsdl",
+    build_file = "bazel/external/SDL2/BUILD.bazel",
+    path = "third_party/externals/SDL2",
+    workspace_file_content = "",
+)
+
 load("//bazel:cipd_install.bzl", "cipd_install")
 
 cipd_install(

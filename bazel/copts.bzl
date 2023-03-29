@@ -34,7 +34,7 @@ CORE_COPTS = [
     "-fstrict-aliasing",
     "-fPIC",
     "-fvisibility=hidden",
-    "-fno-rtti",  # Reduces code size
+    "-fno-rtti",  # Reduces code size  
 ] + select({
     # SkRawCodec catches any exceptions thrown by dng_sdk, insulating the rest of Skia.
     "//src/codec:raw_decode_codec": [],

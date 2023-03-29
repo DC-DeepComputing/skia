@@ -38,9 +38,6 @@ skia_cc_deps(
     testonly = True,
     linkopts = [
         "-lX11",
-        "-lxcb",  # dep of X11
-        "-lXau",  # dep of xcb
-        "-lXdmcp",  # dep of xcb
     ] + select({
         ":dawn_or_vulkan": ["-lX11-xcb"],
         "//conditions:default": [],
