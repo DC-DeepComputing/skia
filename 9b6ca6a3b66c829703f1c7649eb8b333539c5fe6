@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ecb9341_08424f05",
+        "filename": "resources/sksl/shared/MatrixIndexStore.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-29T20:05:43Z",
+      "side": 1,
+      "message": "This has the side effect of inhibiting optimizations, so the Metal/GLSL/SPIR-V codegen is also affected somewhat.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 31
+      },
+      "revId": "9b6ca6a3b66c829703f1c7649eb8b333539c5fe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
