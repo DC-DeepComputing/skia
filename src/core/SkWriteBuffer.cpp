@@ -14,7 +14,9 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
+#include "include/encode/SkPngEncoder.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTo.h"
@@ -29,9 +31,8 @@
 
 class SkMatrix;
 class SkPaint;
+class SkPixmap;
 class SkRegion;
-class SkStream;
-class SkWStream;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -160,6 +161,36 @@ bool SkBinaryWriteBuffer::writeToStream(SkWStream* stream) const {
     return fWriter.writeToStream(stream);
 }
 
+static sk_sp<SkData> encode_to_data(const SkPixmap& pm) {
+    SkDynamicMemoryWStream stream;
+    if (SkPngEncoder::Encode(&stream, pm, SkPngEncoder::Options())) {
+        return stream.detachAsData();
+    }
+    return nullptr;
+}
+
+static sk_sp<SkData> serialize_mipmap(const SkMipmap* mipmap) {
+    /*  Format
+        count_levels:32
+        for each level, starting with the biggest (index 0 in our iterator)
+            encoded_size:32
+            encoded_data (padded)
+    */
+    const int count = mipmap->countLevels();
+
+    SkBinaryWriteBuffer buffer;
+    buffer.write32(count);
+    for (int i = 0; i < count; ++i) {
+        SkMipmap::Level level;
+        if (mipmap->getLevel(i, &level)) {
+            buffer.writeDataAsByteArray(encode_to_data(level.fPixmap).get());
+        } else {
+            return nullptr;
+        }
+    }
+    return buffer.snapshotAsData();
+}
+
 /*  Format:
  *      flags: U32
  *      encoded : size_32 + data[]
@@ -188,7 +219,14 @@ void SkBinaryWriteBuffer::writeImage(const SkImage* image) {
     this->writeDataAsByteArray(data.get());
 
     if (flags & SkWriteBufferImageFlags::kHasMipmap) {
-        this->writeDataAsByteArray(mips->serialize().get());
+        sk_sp<SkData> mipData;
+        if (fProcs.fMipmapProc) {
+            data = fProcs.fMipmapProc(const_cast<SkMipmap*>(mips), fProcs.fMipmapCtx);
+        }
+        if (!data) {
+            data = serialize_mipmap(mips);
+        }
+        this->writeDataAsByteArray(data.get());
     }
 }
 

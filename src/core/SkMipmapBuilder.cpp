@@ -6,7 +6,6 @@
  */
 #include "src/core/SkMipmapBuilder.h"
 
-#include "include/core/SkImage.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkMipmap.h"
