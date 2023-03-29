@@ -58,6 +58,7 @@ public:
     sktext::gpu::TextBlobRedrawCoordinator* textBlobCache() {
         return fRecorder->fTextBlobCache.get();
     }
+    ImageCache* imageCache() { return fRecorder->fImageCache.get(); }
 
     static sk_sp<SkImage> CreateCachedImage(Recorder*,
                                             const SkBitmap&,
