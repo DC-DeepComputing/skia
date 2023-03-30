@@ -1,0 +1,26 @@
+[package]
+name = "vello_cpp"
+version = "0.0.1"
+authors = ["Arman Uguray <armansito@google.com>"]
+description = "C++ bindings for https://github.com/linebender/vello"
+edition = "2021"
+license = "BSD"
+publish = false
+
+[lib]
+crate-type = ["staticlib"]
+
+[profile.release]
+panic = "abort"
+
+[dependencies]
+cxx = "1.0"
+peniko = { git = "https://github.com/linebender/peniko", rev = "cafdac9a211a0fb2fec5656bd663d1ac770bcc81" }
+#vello_shaders = { path = "../externals/vello/vello_shaders", features = ["compile", "msl", "wgsl"]
+#}
+vello_encoding = { path = "/Users/armansito/work/vello/crates/encoding" }
+vello_shaders = { path = "/Users/armansito/work/vello/crates/shaders", features = ["compile", "msl",
+"wgsl"] }
+
+[build-dependencies]
+cxx-build = "1.0"
