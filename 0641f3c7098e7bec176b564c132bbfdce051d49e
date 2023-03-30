@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b723d64d_e66efa3f",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-30T14:07:09Z",
+      "side": 1,
+      "message": "The affected devices are very old/pre-Vulkan. Do we need this in VkCaps? I would have thought it would only matter for GLSL.",
+      "range": {
+        "startLine": 556,
+        "startChar": 0,
+        "endLine": 558,
+        "endChar": 6
+      },
+      "revId": "0641f3c7098e7bec176b564c132bbfdce051d49e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
