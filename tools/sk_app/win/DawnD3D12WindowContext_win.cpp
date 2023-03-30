@@ -8,7 +8,6 @@
 #include "tools/sk_app/DawnWindowContext.h"
 #include "tools/sk_app/win/WindowContextFactory_win.h"
 #include "webgpu/webgpu_cpp.h"
-#include "dawn/dawn_wsi.h"
 #include "dawn/native/DawnNative.h"
 #include "dawn/native/D3D12Backend.h"
 
@@ -20,8 +19,7 @@ public:
     ~DawnD3D12WindowContext() override;
     wgpu::Device onInitializeContext() override;
     void onDestroyContext() override;
-    DawnSwapChainImplementation createSwapChainImplementation(
-            int width, int height, const DisplayParams& params) override;
+    wgpu::Surface createDawnSurface() override;
     void onSwapBuffers() override;
 private:
     HWND                 fWindow;
@@ -40,9 +38,16 @@ DawnD3D12WindowContext::~DawnD3D12WindowContext() {
     this->destroyContext();
 }
 
-DawnSwapChainImplementation DawnD3D12WindowContext::createSwapChainImplementation(
-        int width, int height, const DisplayParams& params) {
-    return dawn::native::d3d12::CreateNativeSwapChainImpl(fDevice.Get(), fWindow);
+wgpu::Surface DawnD3D12WindowContext::createDawnSurface() {
+    wgpu::SurfaceDescriptorFromWindowsHWND hwndDesc;
+    hwndDesc.hwnd = window;
+    hwndDesc.hinstance = GetModuleHandle(nullptr);
+
+    wgpu::SurfaceDescriptor surfaceDesc;
+    surfaceDesc.nextInChain = &hwndDesc;
+
+    wgpu::Instance instance = wgpu::Instance(fInstance->Get());
+    return instance.CreateSurface(&surfaceDesc);
 }
 
 wgpu::Device DawnD3D12WindowContext::onInitializeContext() {
