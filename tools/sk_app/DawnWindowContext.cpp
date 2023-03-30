@@ -41,15 +41,20 @@ void DawnWindowContext::initializeContext(int width, int height) {
     if (!fContext) {
         return;
     }
-    fSwapChainImplementation = this->createSwapChainImplementation(width, height, fDisplayParams);
+
     wgpu::SwapChainDescriptor swapChainDesc;
-    swapChainDesc.implementation = reinterpret_cast<int64_t>(&fSwapChainImplementation);
-    fSwapChain = fDevice.CreateSwapChain(nullptr, &swapChainDesc);
+    swapChainDesc.usage = wgpu::TextureUsage::RenderAttachment;
+    swapChainDesc.format = fSwapChainFormat;
+    swapChainDesc.usage = kUsage;
+    swapChainDesc.width = width;
+    swapChainDesc.height = height;
+    swapChainDesc.presentMode = wgpu::PresentMode::Mailbox;
+    fSwapChain = fDevice.CreateSwapChain(fDawnSurface, &swapChainDesc);
     if (!fSwapChain) {
         fContext.reset();
         return;
     }
-    fSwapChain.Configure(fSwapChainFormat, kUsage, width, height);
+
     fDevice.SetUncapturedErrorCallback(PrintDeviceError, 0);
 }
 
@@ -91,12 +96,14 @@ void DawnWindowContext::swapBuffers() {
 void DawnWindowContext::resize(int w, int h) {
     fWidth = w;
     fHeight = h;
-    fSwapChainImplementation = this->createSwapChainImplementation(w, h, fDisplayParams);
     wgpu::SwapChainDescriptor swapChainDesc;
+    swapChainDesc.usage = wgpu::TextureUsage::RenderAttachment;
+    swapChainDesc.format = fSwapChainFormat;
+    swapChainDesc.usage = kUsage;
     swapChainDesc.width = w;
     swapChainDesc.height = h;
-    swapChainDesc.implementation = reinterpret_cast<int64_t>(&fSwapChainImplementation);
-    fSwapChain = fDevice.CreateSwapChain(nullptr, &swapChainDesc);
+    swapChainDesc.presentMode = wgpu::PresentMode::Mailbox;
+    fSwapChain = fDevice.CreateSwapChain(fDawnSurface, &swapChainDesc);
     if (!fSwapChain) {
         fContext.reset();
         return;
