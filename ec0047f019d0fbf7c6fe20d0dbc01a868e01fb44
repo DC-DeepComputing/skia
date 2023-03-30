@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c59eef3_d5f043e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7871
+      },
+      "writtenOn": "2023-03-30T18:47:19Z",
+      "side": 1,
+      "message": "Hey guys ! Managed to rebase and build it locally, after cloning sdl2 in third_party/. Still trying to unwind what was done here a bit.\nPlease take a look, and suggest how to best proceed with this, probably with some tests to verify the sdl2/ backend for sk_app.\n\nThe external/SDL2/BUILD.bazel certainly needs special attention, of what are the files we want to build and expose.\nThanks.",
+      "revId": "ec0047f019d0fbf7c6fe20d0dbc01a868e01fb44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
