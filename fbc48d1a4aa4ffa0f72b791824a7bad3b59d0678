@@ -39,6 +39,30 @@
       },
       "revId": "fbc48d1a4aa4ffa0f72b791824a7bad3b59d0678",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "117eaf3c_99dbb975",
+        "filename": "site/docs/user/release/_index.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-03-30T14:58:47Z",
+      "side": 1,
+      "message": "1) Reworded.\n2) That\u0027s a cut-and-paste from https://chromium.googlesource.com/chromium/src/+/master/docs/process/release_cycle.md. I believe the stabilization is six weeks.\n3) I removed the reference to \"beta\". My goal here was to give a general description of a release pipeline, and to link to the Chrome docs for more detail. I\u0027m trying to avoid being too specific and needing to change the docs if/when Chromium changes. LMK if you\u0027d rather have an accurate summary - happy to do that if you\u0027d prefer.",
+      "parentUuid": "2c808ea2_a15dba47",
+      "range": {
+        "startLine": 21,
+        "startChar": 51,
+        "endLine": 22,
+        "endChar": 31
+      },
+      "revId": "fbc48d1a4aa4ffa0f72b791824a7bad3b59d0678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
