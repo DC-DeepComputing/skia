@@ -20,6 +20,63 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a6c77c3_8788446a",
+        "filename": "gm/makecolorspace.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-30T13:25:07Z",
+      "side": 1,
+      "message": "Are we going to change the pattern for all of the \"turn an image into a different kind of image\" APIs? I know it seems unnecessary in some cases (because we only need core code, etc), but otherwise, we end up with this odd-looking asymmetry.",
+      "range": {
+        "startLine": 173,
+        "startChar": 32,
+        "endLine": 173,
+        "endChar": 56
+      },
+      "revId": "03d49d8ae39960b887e3025edc709614a46b05b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7cebadf_58f1c8eb",
+        "filename": "include/gpu/GrDirectContext.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-30T13:25:07Z",
+      "side": 1,
+      "message": "nit: The other function comments here use the style of `*` on each line.",
+      "revId": "03d49d8ae39960b887e3025edc709614a46b05b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "651d870a_a00da70f",
+        "filename": "src/gpu/ganesh/GrDirectContext.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-30T13:25:07Z",
+      "side": 1,
+      "message": "I\u0027d suggest something defensive here: Either check for `!image` and return, or at least an `SkASSERT(image)`",
+      "revId": "03d49d8ae39960b887e3025edc709614a46b05b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b2d1b885_dedfe837",
         "filename": "src/gpu/graphite/Image_Base_Graphite.h",
         "patchSetId": 25
