@@ -232,6 +232,31 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
     }
     SkASSERT(buffer.pos() <= length);
 
+    if (vbs == 0 && pts == 0 && cnx == 0) {
+      SkPath tmp;
+      tmp.setFillType(extract_filltype(packed));
+      *this = std::move(tmp);
+      return buffer.pos();
+    }
+
+    if (!verbsAreReversed) {
+      // This is pretty much the same as SkPath::Make(), figure out way so share.
+      SkPathVerbAnalysis analysis = sk_path_analyze_verbs(verbs, vbs);
+      if (!analysis.valid || analysis.points != pts || analysis.weights != cnx) {
+        return 0;
+      }
+      *this = SkPath(sk_sp<SkPathRef>(new SkPathRef(
+                                       SkPathRef::PointsArray(points, pts),
+                                       SkPathRef::VerbsArray(verbs, vbs),
+                                       SkPathRef::ConicWeightsArray(conics, cnx),
+                                                 analysis.segmentMask)),
+                    extract_filltype(packed), false, SkPathConvexity::kUnknown, SkPathFirstDirection::kUnknown);
+      return buffer.pos();
+    }
+
+    SkPath tmp;
+    tmp.setFillType(extract_filltype(packed));
+
 #define CHECK_POINTS_CONICS(p, c)       \
     do {                                \
         if (p && ((pts -= p) < 0)) {    \
@@ -248,8 +273,6 @@ size_t SkPath::readFromMemory_EQ4Or5(const void* storage, size_t length) {
         verbsStep = -1;
     }
 
-    SkPath tmp;
-    tmp.setFillType(extract_filltype(packed));
     {
       // Reserve the exact number of verbs and points needed.
       SkPathRef::Editor(&tmp.fPathRef, vbs, pts);

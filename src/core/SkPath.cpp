@@ -3420,7 +3420,7 @@ bool SkPath::IsCubicDegenerate(const SkPoint& p1, const SkPoint& p2,
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 SkPathVerbAnalysis sk_path_analyze_verbs(const uint8_t vbs[], int verbCount) {
-    SkPathVerbAnalysis info = {false, 0, 0, 0};
+  SkPathVerbAnalysis info = {false, 0, 0, 0};
 
     bool needMove = true;
     bool invalid = false;
