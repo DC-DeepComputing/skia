@@ -766,6 +766,17 @@ static std::pair<skif::Mapping, skif::LayerSpace<SkIRect>> get_layer_mapping_and
         }
     }
 
+    // Keep the layer wider than it is tall, to improve reuse of cached textures in GPU devices.
+    if (layerBounds.width() < layerBounds.height()) {
+        static const SkMatrix kTranspose = SkMatrix::MakeAll(0, 1, 0,
+                                                             1, 0, 0,
+                                                             0, 0, 1);
+        if (!mapping.adjustLayerSpace(kTranspose)) {
+            return failedMapping();
+        }
+        layerBounds = skif::LayerSpace<SkIRect>({layerBounds.top(), layerBounds.left(),
+                                                 layerBounds.bottom(), layerBounds.right()});
+    }
     return {mapping, layerBounds};
 }
 
