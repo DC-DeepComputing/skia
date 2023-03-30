@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86c33062_6c315231",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-30T14:42:48Z",
+      "side": 1,
+      "message": "It looks like this is required to be the very last in the enum (otherwise, e.g. `add_block_to_shader_info` will fail). We should probably call that out in the comment and/or static-assert somehow that this is the case.",
+      "range": {
+        "startLine": 62,
+        "startChar": 7,
+        "endLine": 62,
+        "endChar": 12
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aba86a40_86033b4c",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 846,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-30T14:42:48Z",
+      "side": 1,
+      "message": "up to you: upon first glance this name looked like a member variable to me. Consider `fixedFunctionID` or `fixedFuncBlendModeID` or something instead?",
+      "range": {
+        "startLine": 846,
+        "startChar": 29,
+        "endLine": 846,
+        "endChar": 42
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc2a4888_436a1a79",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-30T14:42:48Z",
+      "side": 1,
+      "message": "Try `SkTDArray::append(int count, const T* src)` instead.\nIn fact, looking at how we use `fData` now, I wonder if we would be better served by using a `SkTDStorage` instead?",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 75
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35306e6b_62ab4b97",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-30T14:42:48Z",
+      "side": 1,
+      "message": "Does it work to say `fArena.make\u003cEntry\u003e(newKey, newID)`?",
+      "range": {
+        "startLine": 227,
+        "startChar": 21,
+        "endLine": 227,
+        "endChar": 92
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "421a6632_8fdf04cc",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1569,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-30T14:42:48Z",
+      "side": 1,
+      "message": "are",
+      "range": {
+        "startLine": 1569,
+        "startChar": 65,
+        "endLine": 1569,
+        "endChar": 67
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1035803_7f671249",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-30T14:42:48Z",
+      "side": 1,
+      "message": "nit: indent",
+      "range": {
+        "startLine": 20,
+        "startChar": 3,
+        "endLine": 20,
+        "endChar": 8
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
