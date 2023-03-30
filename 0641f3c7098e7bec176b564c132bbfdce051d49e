@@ -22,6 +22,52 @@
       },
       "revId": "0641f3c7098e7bec176b564c132bbfdce051d49e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "252722b8_3b2795df",
+        "filename": "src/sksl/ir/SkSLSetting.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-30T14:13:12Z",
+      "side": 1,
+      "message": "tiny nit: usually caps names start with a lowercase.",
+      "range": {
+        "startLine": 46,
+        "startChar": 31,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "0641f3c7098e7bec176b564c132bbfdce051d49e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8fa2ade_2a990066",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-30T14:13:12Z",
+      "side": 1,
+      "message": "You can just put this: `const half kInv255 \u003d 1.0 / 255.0;`\n\nI\u0027ll compile to the same thing. (In fact the minified version eliminates the variable entirely.)",
+      "range": {
+        "startLine": 874,
+        "startChar": 29,
+        "endLine": 874,
+        "endChar": 58
+      },
+      "revId": "0641f3c7098e7bec176b564c132bbfdce051d49e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
