@@ -74,8 +74,8 @@ public:
 
     bool validForRootLevel(const SkImageInfo&) const;
 
-    sk_sp<SkData> serialize() const;
-    static bool Deserialize(SkMipmapBuilder*, const void* data, size_t size);
+    // sk_sp<SkData> serialize() const;
+    //static bool Deserialize(SkMipmapBuilder*, const void* data, size_t size);
 
 protected:
     void onDataChange(void* oldData, void* newData) override {
