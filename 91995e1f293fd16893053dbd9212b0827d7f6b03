@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d3ca814_35d63f8b",
+        "filename": "src/core/SkWriteBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-30T20:04:50Z",
+      "side": 1,
+      "message": "This is missing an important case in the old code. `encodeToData(GrDirectContext*)` would first try calling `refEncodedData`, and return that, if any. That handled the case where the image was a lazy, codec-backed image that could directly return the original PNG/JPG/etc.",
+      "revId": "91995e1f293fd16893053dbd9212b0827d7f6b03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
