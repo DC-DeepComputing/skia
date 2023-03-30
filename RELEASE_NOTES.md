@@ -16,6 +16,8 @@ Milestone 114
     `SkImageGanesh.h`.
   * `SkImage::flush()` and `SkImage::flushAndSubmit()` has been moved to
     `GrDirectContext::flush()` and `GrDirectContext::flushAndSubmit()` in `SkImageGanesh.h`.
+  * `SkSerialImageProc` and `SkDeserialImageProc` are now also used to encode/decode the SkMipmap
+    layers of certain SkImages.
 
 * * *
 
