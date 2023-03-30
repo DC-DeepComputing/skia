@@ -16,6 +16,29 @@
       "message": "Brian PTAL. cc\u0027ing John for FYI.\n\nThis change currently links to skia/main/RELEASE_NOTES.md - which has pre-branch release notes. I plan on landing a CL very soon to switch to using the new //relnotes direction for new release notes. As part of that CL I will update this page to mention that one should go there to read tip-of-tree change notes.",
       "revId": "fbc48d1a4aa4ffa0f72b791824a7bad3b59d0678",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c808ea2_a15dba47",
+        "filename": "site/docs/user/release/_index.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-30T13:01:10Z",
+      "side": 1,
+      "message": "Three things:\n1) I think you\u0027re missing an `and` (or similar) at the start of this clause.\n2) It still says `six` here, should probably be `four` (or `eight`, because...)\n3) Technically the branch cut creates `dev`, then it\u0027s shipped to `beta` after four weeks, and then to `stable` four weeks after that.",
+      "range": {
+        "startLine": 21,
+        "startChar": 51,
+        "endLine": 22,
+        "endChar": 31
+      },
+      "revId": "fbc48d1a4aa4ffa0f72b791824a7bad3b59d0678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
