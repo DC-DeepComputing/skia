@@ -16,6 +16,29 @@
       "message": "Friendly ping on this CL",
       "revId": "03d49d8ae39960b887e3025edc709614a46b05b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2d1b885_dedfe837",
+        "filename": "src/gpu/graphite/Image_Base_Graphite.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-03-30T13:18:05Z",
+      "side": 1,
+      "message": "Maybe this isn\u0027t part of this CL, but this seems wrong for Graphite. Like in Ganesh we are verifying all the passing in GrRecordingContext is valid with this image. I wonder if for Graphite we need to passing in a Recorder or Context, and then check things like abandoned here.\n\nAnyways at a minimum can you can a TODO here that we need to figure out what the right check to do is? Annoyingly it will require updating the public signature, but at least we can just use a default value there.",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 69
+      },
+      "revId": "03d49d8ae39960b887e3025edc709614a46b05b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
