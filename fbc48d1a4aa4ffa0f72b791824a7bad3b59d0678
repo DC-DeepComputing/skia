@@ -63,6 +63,30 @@
       },
       "revId": "fbc48d1a4aa4ffa0f72b791824a7bad3b59d0678",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bda2037c_524bee39",
+        "filename": "site/docs/user/release/_index.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-03-30T16:04:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "117eaf3c_99dbb975",
+      "range": {
+        "startLine": 21,
+        "startChar": 51,
+        "endLine": 22,
+        "endChar": 31
+      },
+      "revId": "fbc48d1a4aa4ffa0f72b791824a7bad3b59d0678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
