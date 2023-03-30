@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62152d5b_03f2b70d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-03-30T14:46:24Z",
+      "side": 1,
+      "message": "It looks like the delta is ~80 bytes. Not sure if there is a tangible benefit to making any change here?",
+      "revId": "79f097ca7c57b77d96135aa89761c41dfb2a3bb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
