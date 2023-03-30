@@ -8,9 +8,9 @@
 #ifndef SkMipmapBuilder_DEFINED
 #define SkMipmapBuilder_DEFINED
 
+#include "include/core/SkImage.h"  // IWYU pragma: keep
 #include "include/core/SkRefCnt.h"
 
-class SkImage;
 class SkMipmap;
 class SkPixmap;
 struct SkImageInfo;
