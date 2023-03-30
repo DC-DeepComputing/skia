@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ade38f78_035f4637",
+        "filename": "gm/makecolorspace.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-30T15:07:53Z",
+      "side": 1,
+      "message": "Looks like there\u0027s about 6 non-graphite \"sk_sp\u003cSkImage\u003e make*\" methods. We could certainly move those to SkImages for name-symmetry, but that\u0027s probably a task for another time.",
+      "parentUuid": "3a6c77c3_8788446a",
+      "range": {
+        "startLine": 173,
+        "startChar": 32,
+        "endLine": 173,
+        "endChar": 56
+      },
+      "revId": "03d49d8ae39960b887e3025edc709614a46b05b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7cebadf_58f1c8eb",
@@ -54,6 +78,24 @@
       "writtenOn": "2023-03-30T13:25:07Z",
       "side": 1,
       "message": "nit: The other function comments here use the style of `*` on each line.",
+      "revId": "03d49d8ae39960b887e3025edc709614a46b05b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1077e1df_6f734d52",
+        "filename": "include/gpu/GrDirectContext.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-30T15:07:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7cebadf_58f1c8eb",
       "revId": "03d49d8ae39960b887e3025edc709614a46b05b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -75,6 +117,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1581adb1_ece3d09a",
+        "filename": "src/gpu/ganesh/GrDirectContext.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-30T15:07:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "651d870a_a00da70f",
+      "revId": "03d49d8ae39960b887e3025edc709614a46b05b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2d1b885_dedfe837",
@@ -88,6 +148,30 @@
       "writtenOn": "2023-03-30T13:18:05Z",
       "side": 1,
       "message": "Maybe this isn\u0027t part of this CL, but this seems wrong for Graphite. Like in Ganesh we are verifying all the passing in GrRecordingContext is valid with this image. I wonder if for Graphite we need to passing in a Recorder or Context, and then check things like abandoned here.\n\nAnyways at a minimum can you can a TODO here that we need to figure out what the right check to do is? Annoyingly it will require updating the public signature, but at least we can just use a default value there.",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 69
+      },
+      "revId": "03d49d8ae39960b887e3025edc709614a46b05b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4578dfe_73c85024",
+        "filename": "src/gpu/graphite/Image_Base_Graphite.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-30T15:07:53Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "b2d1b885_dedfe837",
       "range": {
         "startLine": 32,
         "startChar": 4,
