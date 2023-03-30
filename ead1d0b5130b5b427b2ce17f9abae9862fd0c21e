@@ -69,6 +69,30 @@
       },
       "revId": "ead1d0b5130b5b427b2ce17f9abae9862fd0c21e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "124b20fa_c1444622",
+        "filename": "src/gpu/graphite/ImageCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-30T20:24:18Z",
+      "side": 1,
+      "message": "I believe https://skia-review.googlesource.com/c/skia/+/663283 addressed part of this and we have a plan for the other part.\n\nPTAL.",
+      "parentUuid": "46a7599e_55563450",
+      "range": {
+        "startLine": 64,
+        "startChar": 19,
+        "endLine": 64,
+        "endChar": 35
+      },
+      "revId": "ead1d0b5130b5b427b2ce17f9abae9862fd0c21e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
