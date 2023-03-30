@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30de0f72_af3ea7ba",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-30T17:29:02Z",
+      "side": 1,
+      "message": "The MaliG76 does have Vulkan drivers but that device doesn\u0027t seem as badly affected as the other three (which are GL only). Let\u0027s give it a try.",
+      "parentUuid": "b723d64d_e66efa3f",
+      "range": {
+        "startLine": 556,
+        "startChar": 0,
+        "endLine": 558,
+        "endChar": 6
+      },
+      "revId": "0641f3c7098e7bec176b564c132bbfdce051d49e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "252722b8_3b2795df",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc3cd4c3_1eb99d5d",
+        "filename": "src/sksl/ir/SkSLSetting.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-30T17:29:02Z",
+      "side": 1,
+      "message": "I guess I\u0027ll leave it capitalized since it\u0027s a proper noun.",
+      "parentUuid": "252722b8_3b2795df",
+      "range": {
+        "startLine": 46,
+        "startChar": 31,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "0641f3c7098e7bec176b564c132bbfdce051d49e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8fa2ade_2a990066",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-03-30T14:13:12Z",
       "side": 1,
       "message": "You can just put this: `const half kInv255 \u003d 1.0 / 255.0;`\n\nI\u0027ll compile to the same thing. (In fact the minified version eliminates the variable entirely.)",
+      "range": {
+        "startLine": 874,
+        "startChar": 29,
+        "endLine": 874,
+        "endChar": 58
+      },
+      "revId": "0641f3c7098e7bec176b564c132bbfdce051d49e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4b14b1a_7c38cb35",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-03-30T17:29:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8fa2ade_2a990066",
       "range": {
         "startLine": 874,
         "startChar": 29,
