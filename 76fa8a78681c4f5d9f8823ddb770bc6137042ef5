@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8db8b85d_4657e018",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-31T14:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86c33062_6c315231",
+      "range": {
+        "startLine": 62,
+        "startChar": 7,
+        "endLine": 62,
+        "endChar": 12
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aba86a40_86033b4c",
@@ -71,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0188cdc7_8b470148",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 846,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-31T14:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29c1fa09_1b6afcc0",
+      "range": {
+        "startLine": 846,
+        "startChar": 29,
+        "endLine": 846,
+        "endChar": 42
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc2a4888_436a1a79",
@@ -84,6 +132,30 @@
       "writtenOn": "2023-03-30T14:42:48Z",
       "side": 1,
       "message": "Try `SkTDArray::append(int count, const T* src)` instead.\nIn fact, looking at how we use `fData` now, I wonder if we would be better served by using a `SkTDStorage` instead?",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 75
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acac0f26_6915c77e",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-31T14:31:56Z",
+      "side": 1,
+      "message": "I am leaving this as-is purely because in my next CL it goes away entirely, `fData` switches to storing `int32_t` and all it does is push back the code snippet ID.\n\nThat said, I agree that SkTDStorage looks like the appropriate type to use. I believe it was added/extracted from SkTDArray after we had this initially written. I will update it in a follow-up CL.",
+      "parentUuid": "bc2a4888_436a1a79",
       "range": {
         "startLine": 67,
         "startChar": 4,
@@ -117,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b37984f1_2e54dbff",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-31T14:31:56Z",
+      "side": 1,
+      "message": "Nope, removed to avoid future misleadings.",
+      "parentUuid": "be462a76_60989b7f",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 42
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35306e6b_62ab4b97",
@@ -130,6 +226,30 @@
       "writtenOn": "2023-03-30T14:42:48Z",
       "side": 1,
       "message": "Does it work to say `fArena.make\u003cEntry\u003e(newKey, newID)`?",
+      "range": {
+        "startLine": 227,
+        "startChar": 21,
+        "endLine": 227,
+        "endChar": 92
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69573380_ed443247",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-31T14:31:56Z",
+      "side": 1,
+      "message": "No because Entry is a private class. The make(lambda) is the accepted pattern for in-place creating private types to avoid having to friend SkArenaAlloc.",
+      "parentUuid": "35306e6b_62ab4b97",
       "range": {
         "startLine": 227,
         "startChar": 21,
@@ -163,6 +283,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d264b80_c9cf8a12",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1569,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-31T14:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "421a6632_8fdf04cc",
+      "range": {
+        "startLine": 1569,
+        "startChar": 65,
+        "endLine": 1569,
+        "endChar": 67
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1035803_7f671249",
@@ -176,6 +320,30 @@
       "writtenOn": "2023-03-30T14:42:48Z",
       "side": 1,
       "message": "nit: indent",
+      "range": {
+        "startLine": 20,
+        "startChar": 3,
+        "endLine": 20,
+        "endChar": 8
+      },
+      "revId": "76fa8a78681c4f5d9f8823ddb770bc6137042ef5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3fff19e_9d560fac",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-03-31T14:31:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1035803_7f671249",
       "range": {
         "startLine": 20,
         "startChar": 3,
