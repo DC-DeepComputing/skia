@@ -122,7 +122,11 @@ def _get_default_link_flags(cpu):
             "-no-canonical-prefixes",
             "-Wl,-z,relro",
             "-Wl,--gc-sections",
-            "-std=c++17",
+            "-ldl",
+            "-lm",
+            "-lEGL",
+            "-lGLESv2",
+            "-llog",  # Provides __android_log_print
         ]
     fail("Unknown CPU: " + cpu)
 
