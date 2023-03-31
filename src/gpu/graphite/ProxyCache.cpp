@@ -74,4 +74,10 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
     return view.refProxy();
 }
 
+#if GRAPHITE_TEST_UTILS
+int ProxyCache::numCached() const {
+    return fCache.count();
+}
+#endif // GRAPHITE_TEST_UTILS
+
 } // namespace skgpu::graphite
