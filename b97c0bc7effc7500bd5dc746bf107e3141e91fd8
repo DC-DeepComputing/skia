@@ -16,6 +16,40 @@
       "message": "Stephen PTAL!",
       "revId": "b97c0bc7effc7500bd5dc746bf107e3141e91fd8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c9b68cc_852a5261",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2023-03-31T14:46:05Z",
+      "side": 1,
+      "message": "LGTM!",
+      "revId": "b97c0bc7effc7500bd5dc746bf107e3141e91fd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0da2563_339a9222",
+        "filename": "tools/sk_app/DawnWindowContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2023-03-31T14:46:05Z",
+      "side": 1,
+      "message": "uNit: maybe factor this into a \"CreateSwapChainDesc\" helper fn, taking width \u0026 height, refactor with intialiizeContext().",
+      "revId": "b97c0bc7effc7500bd5dc746bf107e3141e91fd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
