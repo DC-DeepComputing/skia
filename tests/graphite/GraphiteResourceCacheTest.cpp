@@ -95,7 +95,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest, reporter, cont
     REPORTER_ASSERT(reporter, resource->budgeted() == skgpu::Budgeted::kNo);
     resourceCache->insertResource(resourcePtr);
     REPORTER_ASSERT(reporter, resourceCache->getResourceCount() == 1);
-    // Resource is not shareable and we have a ref on it. Thus it shouldn't ben findable in the
+    // Resource is not shareable and we have a ref on it. Thus it shouldn't be findable in the
     // cache.
     REPORTER_ASSERT(reporter, resourceCache->numFindableResources() == 0);
 
