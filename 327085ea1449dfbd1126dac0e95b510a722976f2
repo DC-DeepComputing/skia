@@ -16,6 +16,24 @@
       "message": "This lgtm, but looks like there are issues, at least in chromium",
       "revId": "327085ea1449dfbd1126dac0e95b510a722976f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e027191_8ef77513",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-03-31T18:59:27Z",
+      "side": 1,
+      "message": "Chromium issues hopefully resolved in https://chromium-review.googlesource.com/c/chromium/src/+/4387338",
+      "parentUuid": "9313f4cc_48691467",
+      "revId": "327085ea1449dfbd1126dac0e95b510a722976f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
