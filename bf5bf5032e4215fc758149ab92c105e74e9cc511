@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05844342_a1da9fe0",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 19824
+      },
+      "writtenOn": "2023-03-31T14:11:41Z",
+      "side": 0,
+      "message": "I\u0027d prefer we keep this in to avoid defaults, but update the name to \"BaseRenditionIsHDR\" and value to a Boolean, as spec\u0027d.\n\nThe read name should definitely be updated regardless IMO.",
+      "revId": "bf5bf5032e4215fc758149ab92c105e74e9cc511",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

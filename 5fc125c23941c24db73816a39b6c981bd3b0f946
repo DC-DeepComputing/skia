@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9b1de8d_2794e178",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 19824
+      },
+      "writtenOn": "2023-03-31T14:11:41Z",
+      "side": 1,
+      "message": "LGTM, thank you!",
+      "range": {
+        "startLine": 177,
+        "startChar": 42,
+        "endLine": 177,
+        "endChar": 49
+      },
+      "revId": "5fc125c23941c24db73816a39b6c981bd3b0f946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
