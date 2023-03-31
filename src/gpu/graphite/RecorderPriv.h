@@ -58,6 +58,7 @@ public:
     sktext::gpu::TextBlobRedrawCoordinator* textBlobCache() {
         return fRecorder->fTextBlobCache.get();
     }
+    ProxyCache* proxyCache() { return fRecorder->fProxyCache.get(); }
 
     static sk_sp<TextureProxy> CreateCachedProxy(Recorder*,
                                                  const SkBitmap&,
