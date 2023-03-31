@@ -94,6 +94,8 @@ def _get_default_compile_flags(cpu):
             "-Werror=int-to-pointer-cast",
             "-Werror=pointer-to-int-cast",
             "-Werror=implicit-function-declaration",
+            "-static-libstdc++",
+            "-stdlib=libc++",
         ]
     fail("Unknown CPU: " + cpu)
 
@@ -123,6 +125,19 @@ def _get_default_link_flags(cpu):
             "-Wl,-z,relro",
             "-Wl,--gc-sections",
             "-std=c++17",
+            "-stdlib=libc++",
+            "-v",
+            "-static-libstdc++",
+            NDK_PATH + "/sources/cxx-stl/llvm-libc++/libs/arm64-v8a/libc++.a.29",
+            # NDK_PATH + "/sources/cxx-stl/llvm-libc++/libs/arm64-v8a/libc++_static.a",
+            NDK_PATH + "/sources/cxx-stl/llvm-libc++/libs/arm64-v8a/libc++abi.a",
+            "-L",
+            NDK_PATH + "/platforms/android-29/arch-arm64/usr/lib",
+            "-ldl",
+            "-lm",
+            "-lEGL",
+            "-lGLESv2",
+            "-llog",  # Provides __android_log_print
         ]
     fail("Unknown CPU: " + cpu)
 

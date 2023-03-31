@@ -1,5 +1,6 @@
 load("//bazel:skia_rules.bzl", "skia_cc_library")
 load("//bazel:flags.bzl", "bool_flag", "selects")
+load("//bazel:cc_test_with_flags.bzl", "cc_test_with_flags")
 load(":tests.bzl", "skia_cpu_tests", "skia_ganesh_tests")
 
 CODEC_TESTS = [
@@ -673,4 +674,216 @@ selects.config_setting_group(
         "//src/gpu:has_gpu_backend",
         ":force_cpu_tests_false",
     ],
+)
+
+# Based on :cpu_only_tests.
+cc_test_with_flags(
+    name = "pixel5_cpu_only_test",
+    srcs = [
+        "BazelTestRunner.cpp",
+    ] + CPU_ONLY_TESTS,
+    data = ["//resources"],
+    set_flags = {
+        "fontmgr_factory": ["custom_directory_fontmgr_factory"],
+        "enable_sksl": ["True"],
+        "enable_sksl_tracing": ["True"],
+        "include_decoder": [
+            "jpeg_decode_codec",
+            "png_decode_codec",
+        ],
+        "include_encoder": [
+            "png_encode_codec",
+        ],
+    },
+    deps = [
+        ":tests_base",
+        "//:skia_internal",
+    ],
+)
+
+# Based on: ganesh_tests.
+cc_test_with_flags(
+    name = "pixel5_ganesh_test",
+    srcs = [
+        "BazelTestRunner.cpp",
+    ] + GANESH_TESTS,
+    data = ["//resources"],
+    deps = [
+        ":tests_base",
+        "//:skia_internal",
+    ],
+)
+
+# Based on: codec_tests.
+# bazel build //tests:pixel5_codec_test --config=cpu_only --config=for_android_arm32  --test_output=streamed --gpu_backend=gl_backend --enable_gpu_test_utils=true
+cc_test_with_flags(
+    name = "pixel5_codec_test",
+    srcs = [
+        "BazelTestRunner.cpp",
+    ] + CODEC_TESTS,
+    data = ["//resources"],
+    set_flags = {
+        "include_decoder": [
+            "avif_decode_codec",
+            "gif_decode_codec",
+            "jpeg_decode_codec",
+            "jxl_decode_codec",
+            "png_decode_codec",
+            "raw_decode_codec",
+            "webp_decode_codec",
+        ],
+        "include_encoder": [
+            "jpeg_encode_codec",
+            "png_encode_codec",
+            "webp_encode_codec",
+        ],
+        "gpu_backend": ["gl_backend"],
+    },
+    deps = [
+        ":tests_base",
+        "//:skia_internal",
+    ],
+)
+
+# This works, but nothing compiles, apparently.
+# bazel build //tests:StringTest --config=cpu_only --config=for_linux_x64
+# bazel build //tests:StringTest --config=cpu_only --config=for_android_arm32 --gpu_backend=gl_backend
+
+# skia_cpu_tests(
+#     name = "string_tests",
+#     harness = ":tests_base",
+#     limit_to = ["@platforms//os:macos"],
+#     tests = ["StringTest.cpp"],
+# )
+
+# skia_ganesh_tests(
+#     name = "text_blob_cache_test",
+#     extra_deps = ["//tools/fonts:random_scaler_context"],
+#     harness = ":tests_base",
+#     resources = ["//resources"],
+#     tests = ["TextBlobCacheTest.cpp"],
+# )
+
+# Equivalent to ":text_blob_cache_test", copied below:
+#
+#   skia_ganesh_tests(
+#       name = "text_blob_cache_test",
+#       extra_deps = ["//tools/fonts:random_scaler_context"],
+#       harness = ":tests_base",
+#       resources = ["//resources"],
+#       tests = ["TextBlobCacheTest.cpp"],
+#   )
+#
+# The original target can be compiled with:
+# bazel build //tests:TextBlobCacheTest  --config=for_linux_x64 --gpu_backend=gl_backend --enable_gpu_test_utils
+#
+# This works:
+# bazel build //tests:pixel5_some_test  --config=for_linux_x64 --gpu_backend=gl_backend --enable_gpu_test_utils
+#
+# This fails. C++ files are compiled but linking fails:
+# bazel build //tests:pixel5_some_test  --config=for_android_arm64 --gpu_backend=gl_backend --enable_gpu_test_utils
+# cc_test_with_flags(
+#     name = "pixel5_some_test",
+#     srcs = select({
+#         "//src/gpu:has_gpu_backend": [
+#             "BazelTestRunner.cpp",
+#             "TextBlobCacheTest.cpp",
+#         ],
+#         # Make this a no-op test if not compiling with a Ganesh GPU backend.
+#         "//conditions:default": ["BazelNoopRunner.cpp"],
+#     }),
+#     deps = select({
+#         # Only build and apply deps if we have a no-op test.
+#         "//src/gpu:has_gpu_backend": [
+#             "//:skia_internal",
+#             ":tests_base",
+#         ] + ["//tools/fonts:random_scaler_context"],
+#         "//conditions:default": [],
+#     }),
+#     data = ["//resources"],
+# )
+
+# Builds with:
+# bazel build //tests:pixel5_some_test_native_test --config=for_android_arm64_with_rbe --gpu_backend=gl_backend --enable_gpu_test_utils --nocheck_visibility
+cc_test_with_flags(
+    name = "pixel5_some_test",
+    srcs = select({
+        "//src/gpu:has_gpu_backend": [
+            "BazelTestRunner.cpp",
+            "TextBlobCacheTest.cpp",
+        ],
+        # Make this a no-op test if not compiling with a Ganesh GPU backend.
+        "//conditions:default": ["BazelNoopRunner.cpp"],
+    }) +
+    # //:skia_internal
+    [
+        "//src:srcs",
+        "//include:public_hdrs",
+    ] +
+    # :tests_base
+    [
+        "CanvasStateHelpers.cpp",
+        "CtsEnforcement.cpp",
+        "Test.cpp",
+        "TestHarness.cpp",
+        "//tools/flags",
+    ] + select({
+        "//src/gpu:has_gpu_backend": ["TestUtils.cpp"],
+        "//conditions:default": [],
+    }) + [
+        "CanvasStateHelpers.h",
+        "CodecPriv.h",
+        "CtsEnforcement.h",
+        "FakeStreams.h",
+        "RecordTestUtils.h",
+        "Test.h",
+        "TestHarness.h",
+        "//tools/fonts:test_empty_typeface",
+    ] + select({
+        "//src/gpu:has_gpu_backend": ["TestUtils.h"],
+        "//conditions:default": [],
+    }) +
+    # Manually added
+    [
+        "//modules/skcms:skcms.cc",
+        "//modules/skcms:skcms.h",
+        "//include/gpu:GrContextOptions.h",
+        "//include/gpu:GrDirectContext.h",
+        "//include/gpu:GrTypes.h",
+        "//include/private/gpu/ganesh:GrTypesPriv.h",
+        "//tools/gpu:TestContext.cpp",
+        "//tools/gpu:TestContext.h",
+        "//tools/gpu:GrContextFactory.cpp",
+        "//tools/gpu/gl:GLTestContext.cpp",
+        "//tools/gpu/gl/egl:CreatePlatformGLTestContext_egl.cpp",
+        "//tools/fonts:RandomScalerContext.cpp",
+        "//src/opts:SkOpts_crc32.cpp",
+        "//include/android:SkImageAndroid.h",
+        "//src/image:SkImage_AndroidFactories.cpp",
+        "//tools/gpu:FlushFinishTracker.cpp",
+        "//tools/gpu/mock:MockTestContext.cpp",
+        "//tools/gpu/mock:MockTestContext.h",
+    ],
+    copts = [
+        "-DSK_BUILD_FOR_ANDROID",
+    ],
+    data = ["//resources"],
+    deps = select({
+        # Only build and apply deps if we have a no-op test.
+        "//src/gpu:has_gpu_backend": [
+            # ":tests_base",
+        ] + ["//tools/fonts:random_scaler_context"],
+        "//conditions:default": [],
+    }) + ["//modules/skcms"] +
+    # :tests_base
+    [
+        "//tools:registry",
+        "//tools:tool_utils",
+    ] + select({
+        "//src/gpu:has_gpu_backend": ["//tools/gpu:utils"],
+        "//conditions:default": [],
+    }) + select({
+        "//src/sksl:needs_sksl": ["//tools:runtime_blend_utils"],
+        "//conditions:default": [],
+    }),
 )

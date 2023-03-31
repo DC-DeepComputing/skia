@@ -35,7 +35,10 @@ filegroup(
 
 filegroup(
     name = "arm64_v8a_static_runtime_libraries",
-    srcs = glob(["sources/cxx-stl/llvm-libc++/libs/arm64-v8a/*.a"]),
+    srcs = glob([
+        "sources/cxx-stl/llvm-libc++/libs/arm64-v8a/*.a",
+        "sources/cxx-stl/llvm-libc++/libs/arm64-v8a/*.a.*",
+    ]),
     visibility = ["//visibility:public"],
 )
 
