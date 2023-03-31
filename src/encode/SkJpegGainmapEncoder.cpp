@@ -149,14 +149,6 @@ sk_sp<SkData> get_hdrgm_xmp_data(const SkGainmapInfo& gainmapInfo) {
             s, hdrgmPrefix, "HDRCapacityMin", sk_float_log(gainmapInfo.fDisplayRatioSdr) / kLog2);
     xmp_write_scalar_attr(
             s, hdrgmPrefix, "HDRCapacityMax", sk_float_log(gainmapInfo.fDisplayRatioHdr) / kLog2);
-    switch (gainmapInfo.fBaseImageType) {
-        case SkGainmapInfo::BaseImageType::kSDR:
-            xmp_write_string_attr(s, hdrgmPrefix, "BaseRendition", "SDR", /*newLine=*/false);
-            break;
-        case SkGainmapInfo::BaseImageType::kHDR:
-            xmp_write_string_attr(s, hdrgmPrefix, "BaseRendition", "HDR", /*newLine=*/false);
-            break;
-    }
     s.writeText(
             "/>\n"
             "  </rdf:RDF>\n"
@@ -175,14 +167,14 @@ static sk_sp<SkData> get_gcontainer_xmp_data(size_t gainmapItemLength) {
             "     xmlns:Item=\"http://ns.google.com/photos/1.0/container/item/\">\n"
             "      <Container:Directory>\n"
             "        <rdf:Seq>\n"
-            "          <rdf:li>\n"
+            "          <rdf:li rdf:parseType=\"Resource\">\n"
             "            <Container:Item\n"
             "             Item:Semantic=\"Primary\"\n"
             "             Item:Mime=\"image/jpeg\"/>\n"
             "          </rdf:li>\n"
-            "          <rdf:li>\n"
+            "          <rdf:li rdf:parseType=\"Resource\">\n"
             "            <Container:Item\n"
-            "             Item:Semantic=\"RecoveryMap\"\n"
+            "             Item:Semantic=\"GainMap\"\n"
             "             Item:Mime=\"image/jpeg\"\n"
             "             ");
     xmp_write_decimal_attr(s, "Item", "Length", gainmapItemLength, /*newLine=*/false);
