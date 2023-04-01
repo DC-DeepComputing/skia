@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04241138_14e1f441",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-01T06:11:24Z",
+      "side": 1,
+      "message": "Correct. For now I decided to make these be always sampleable (or rather ShaderRead) since I don\u0027t imagine many situations in which a storage texture is not eventually read by a shader.\n\nThe one situation I can think of is a storage texture that is rendered to in a compute shader which then only gets used for CPU-readback (so is never read from a subsequent compute or render pass). That feels like a very specific situation, so I wanted to keep the API simple for now.\n\nThough if you strongly feel that we add an additional flag now, I wouldn\u0027t be opposed to it and I can happily add that.",
+      "parentUuid": "04431964_ea928e47",
+      "range": {
+        "startLine": 799,
+        "startChar": 4,
+        "endLine": 799,
+        "endChar": 69
+      },
+      "revId": "31ccbff9cd096fa1542ddcbaf653ac006f17e607",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "255f4e20_c3e6b9b3",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-24T13:51:21Z",
       "side": 1,
       "message": "Do we need an additional check here? My guess is this is mostly going to be checking if the format features flags support being sampled or not. Are there different feature flags for supporting storage? Like for example a YUV planar format would say it can be sampled, but maybe not generically used for storage?",
+      "range": {
+        "startLine": 225,
+        "startChar": 20,
+        "endLine": 225,
+        "endChar": 32
+      },
+      "revId": "31ccbff9cd096fa1542ddcbaf653ac006f17e607",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79d52731_3f13da62",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-01T06:11:24Z",
+      "side": 1,
+      "message": "Done. I only added a check for `VK_FORMAT_FEATURE_STORAGE_IMAGE_BIT`. Depending on the usage, I think `VK_FORMAT_FEATURE_STORAGE_IMAGE_ATOMIC_BIT` alone might also be satisfactory but it\u0027s hard to know without having designed the API for an atomic image view.\n\nI think we can iterate on this when we get to enabling compute on Vulkan.",
+      "parentUuid": "255f4e20_c3e6b9b3",
       "range": {
         "startLine": 225,
         "startChar": 20,

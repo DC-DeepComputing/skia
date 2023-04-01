@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80d4c2f5_4390cd4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-01T06:11:24Z",
+      "side": 1,
+      "message": "I expanded the checks for storage textures on all backends. I haven\u0027t actually tested them on Dawn and Vulkan; Vulkan especially needs some more work but we can tackle it when we enable compute on these backends.",
+      "revId": "20f231039bc363b3eebaa6f4eb4e439333d5d725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
