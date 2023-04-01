@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e400510e_dde24257",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-01T06:12:12Z",
+      "side": 1,
+      "message": "\u003e What about having `kTexture` be marked with SkUNREACHABLE and remove the `default` case entirely. The compiler will then warn about additional types that are added later?\n\u003e \n\nDone. I kept the `SK_ABORT` for the texture case to display an error message.\n\n\u003e Although I suppose we aren\u0027t handling the uniform buffer type right now, but IIUC, its use case fits very closely with the kTexture being populated externally, right?\n\nCorrect, though I think I want to support uniform bindings with the internal mechanism as well, perhaps with a `ComputeStep::prepareUniformBuffer` method that is passed a `UniformWriter`. Currently I wanted to support both internal and external resource allocation as that provides more flexibility.\n\nFWIW, while implementing the vello renderer I found external allocation and explicit assignment of all resources generally convenient (so the same vello render function can allocate and assign resources in one place). I expect the internal allocation mechanism via methods might prove more useful with geometry processing in the existing path renderers. For that use case in particular, I would like to rethink the state machine to better enable batching of geometry data across draws.",
+      "parentUuid": "22fbd1ca_a513e6f2",
+      "range": {
+        "startLine": 283,
+        "startChar": 12,
+        "endLine": 286,
+        "endChar": 18
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "f747ab74_35540283",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-03-28T17:51:01Z",
       "side": 1,
       "message": "oooh we can use variant now!",
+      "range": {
+        "startLine": 30,
+        "startChar": 30,
+        "endLine": 30,
+        "endChar": 37
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afdc725b_7082a385",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-01T06:12:12Z",
+      "side": 1,
+      "message": "Ack. It\u0027s certainly nice although a little annoying to interact with. I found the `std::get_if\u003c\u003e` and `std::holds_alternative\u003c\u003e` patterns the most convenient for checking the contents of a variant.",
+      "parentUuid": "f747ab74_35540283",
       "range": {
         "startLine": 30,
         "startChar": 30,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "788a17f1_b4e07af6",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-01T06:12:12Z",
+      "side": 1,
+      "message": "Done 🙂",
+      "parentUuid": "32d84ef4_8cb506b2",
+      "range": {
+        "startLine": 140,
+        "startChar": 7,
+        "endLine": 140,
+        "endChar": 10
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2137b02_09b1e2eb",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-03-28T17:51:01Z",
       "side": 1,
       "message": "SkUNREACHABLE? or have an SkASSERT that the else{} is a TextureIndex?",
+      "range": {
+        "startLine": 124,
+        "startChar": 20,
+        "endLine": 124,
+        "endChar": 28
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba9b71a6_29322a06",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-01T06:12:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2137b02_09b1e2eb",
       "range": {
         "startLine": 124,
         "startChar": 20,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d82e192_75e77269",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-01T06:12:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a89191d_eeefaa23",
+      "range": {
+        "startLine": 140,
+        "startChar": 20,
+        "endLine": 140,
+        "endChar": 32
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0555152e_08a3a255",
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47929e6d_e78f7d0d",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-01T06:12:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0555152e_08a3a255",
+      "range": {
+        "startLine": 476,
+        "startChar": 26,
+        "endLine": 476,
+        "endChar": 27
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b9f10d2_ae2a01ad",
@@ -169,6 +313,30 @@
       "writtenOn": "2023-03-28T17:51:01Z",
       "side": 1,
       "message": "WDYT about SkColorSetARGB(255, x*16, y*16, 0)?\n\nOtherwise, SkBitmap has an `eraseColor()` that would hide a lot of this logic.",
+      "range": {
+        "startLine": 587,
+        "startChar": 47,
+        "endLine": 587,
+        "endChar": 60
+      },
+      "revId": "d70596926c15caf04df526221c49f640daaa34ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8be5a439_3016e0d7",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-01T06:12:12Z",
+      "side": 1,
+      "message": "Done. I went with the SetARGB approach.",
+      "parentUuid": "5b9f10d2_ae2a01ad",
       "range": {
         "startLine": 587,
         "startChar": 47,
