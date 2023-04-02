@@ -1543,6 +1543,10 @@ skia_component("skia") {
       defines += [ "SKSL_ENABLE_TRACING" ]
       sources += skia_sksl_tracing_sources
     }
+
+    if (skia_enable_sksl_in_raster_pipeline) {
+      defines += [ "SK_ENABLE_SKSL_IN_RASTER_PIPELINE" ]
+    }
   }
 
   if (skia_build_for_debugger) {
