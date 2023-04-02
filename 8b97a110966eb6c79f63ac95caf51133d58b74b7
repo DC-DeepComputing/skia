@@ -16,6 +16,23 @@
       "message": "The canary had a lot of unrelated/temporary failures that hid the consistent cc_unittest failures that have been present more obviously in the chrome rolls: https://luci-milo.appspot.com/ui/inv/build-8785082681634098369/test-results?q\u003dAll%2FImageTransferCacheEntryTest.HardwareDecodedNoMipsAtCreation%2FY_U_V\u0026sortby\u003d\u0026groupby\u003d",
       "revId": "8b97a110966eb6c79f63ac95caf51133d58b74b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "780ffd6d_b584a567",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-02T00:41:19Z",
+      "side": 1,
+      "message": "\u003e 24 hours and public includes means it will need an OWNERS +1 :/",
+      "revId": "8b97a110966eb6c79f63ac95caf51133d58b74b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
