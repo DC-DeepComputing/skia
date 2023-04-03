@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9046fc6_e1224450",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-03T23:26:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba588558_f5335505",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 150,
+        "endChar": 67
+      },
+      "revId": "20f231039bc363b3eebaa6f4eb4e439333d5d725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7c936b1_7c200076",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-04-03T15:47:41Z",
       "side": 1,
       "message": "Nit: my personal preference would be to line this up with the other flags. If you disagree feel free to ignore.",
+      "range": {
+        "startLine": 151,
+        "startChar": 68,
+        "endLine": 151,
+        "endChar": 95
+      },
+      "revId": "20f231039bc363b3eebaa6f4eb4e439333d5d725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0518bbe_0859909d",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-03T23:26:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7c936b1_7c200076",
       "range": {
         "startLine": 151,
         "startChar": 68,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ef0b513_4a6d3f2c",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-03T23:26:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afa423d2_089b22ba",
+      "range": {
+        "startLine": 799,
+        "startChar": 15,
+        "endLine": 799,
+        "endChar": 22
+      },
+      "revId": "20f231039bc363b3eebaa6f4eb4e439333d5d725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f87825e0_0ef9e237",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-04-03T15:47:41Z",
       "side": 1,
       "message": "Add comment: \"// Storage textures are currently always sampleable from a shader.\" ?",
+      "range": {
+        "startLine": 236,
+        "startChar": 4,
+        "endLine": 236,
+        "endChar": 85
+      },
+      "revId": "20f231039bc363b3eebaa6f4eb4e439333d5d725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5926b07_63e0db97",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-03T23:26:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f87825e0_0ef9e237",
       "range": {
         "startLine": 236,
         "startChar": 4,

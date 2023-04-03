@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9ff9eb3_c8a179d9",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-03T23:26:45Z",
+      "side": 1,
+      "message": "sgtm!",
+      "parentUuid": "b1f77f55_10aa2acd",
+      "range": {
+        "startLine": 799,
+        "startChar": 4,
+        "endLine": 799,
+        "endChar": 69
+      },
+      "revId": "31ccbff9cd096fa1542ddcbaf653ac006f17e607",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "255f4e20_c3e6b9b3",
