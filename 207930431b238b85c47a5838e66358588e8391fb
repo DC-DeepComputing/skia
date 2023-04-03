@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e67f21ec_7cecd2f6",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-03T18:32:27Z",
+      "side": 1,
+      "message": "Callout: I would like some feedback on whether I am setting up this resource correctly. I believe this memory size calculation should be close to right - do we need to include `sizeof(VkDescriptorPool)` to capture the memory taken up by the pool\u0027s metadata?\n\nThe formula to calculate memory size may need to change once we support multiple descriptor types within sets, which may cascade into us wanting to have \u003e1 descriptor type in any one pool. Let me know if you have thoughts on that.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 58
+      },
+      "revId": "207930431b238b85c47a5838e66358588e8391fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
