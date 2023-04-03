@@ -52,6 +52,24 @@
       "parentUuid": "275e72d8_08255b26",
       "revId": "06a46c83dbc8b1261f1a37b871fd530ede212f5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40d92184_10d16548",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-03T19:57:47Z",
+      "side": 1,
+      "message": "It does run in nanobench (see `runAsBench`). I don\u0027t know what controls perf alerts.\nI agree that this is not important to triage in gold. Visually it is uninteresting.\nI do think it\u0027s important that we can run it in viewer and see the live FPS, and I also think it\u0027s important for it to work in nanobench.\nWhat\u0027s the best way to set it up?",
+      "parentUuid": "1134bda7_b9231abe",
+      "revId": "06a46c83dbc8b1261f1a37b871fd530ede212f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
