@@ -279,6 +279,18 @@ DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
             }
             break;
         }
+        case Type::kUniformBuffer: {
+            size_t bufferSize = step->calculateBufferSize(params, resourceIdx, resource);
+            SkASSERT(bufferSize);
+            SkASSERT(resource.fPolicy == ResourcePolicy::kMapped);
+            auto [ptr, bufInfo] = bufferMgr->getMappedUniform(bufferSize);
+            // Allocation failures are handled below.
+            if (ptr) {
+                step->prepareBuffer(params, ssboIdx, resourceIdx, resource, ptr, bufferSize);
+                result = bufInfo;
+            }
+            break;
+        }
         case Type::kStorageTexture: {
             auto [size, colorType] =
                     step->calculateTextureParameters(params, resourceIdx, resource);
@@ -301,10 +313,6 @@ DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
             // Instead of using internal allocation, this texture must be assigned explicitly to a
             // slot by calling the Builder::assignSharedTexture() method.
             SK_ABORT("a sampled texture must be externally assigned to a ComputeStep");
-            break;
-        case Type::kUniformBuffer:
-            // TODO(b/259564970): Support uniform buffers
-            SkUNREACHABLE;
             break;
     }
     return result;
