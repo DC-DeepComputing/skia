@@ -679,7 +679,6 @@ bool SkJpegXmp::getGainmapInfoHDRGM(SkGainmapInfo* outGainmapInfo) const {
     SkScalar hdrCapacityMax = 2.f;
 
     // Read all parameters that are present.
-    const char* baseRendition = get_attr(dom, node, hdrgmPrefix, "BaseRendition");
     get_attr_float3(dom, node, hdrgmPrefix, "GainMapMin", &gainMapMin);
     get_attr_float3(dom, node, hdrgmPrefix, "GainMapMax", &gainMapMax);
     get_attr_float3(dom, node, hdrgmPrefix, "Gamma", &gamma);
@@ -703,11 +702,7 @@ bool SkJpegXmp::getGainmapInfoHDRGM(SkGainmapInfo* outGainmapInfo) const {
     outGainmapInfo->fEpsilonHdr = offsetHdr;
     outGainmapInfo->fDisplayRatioSdr = sk_float_exp(hdrCapacityMin * kLog2);
     outGainmapInfo->fDisplayRatioHdr = sk_float_exp(hdrCapacityMax * kLog2);
-    if (baseRendition && !strcmp(baseRendition, "HDR")) {
-        outGainmapInfo->fBaseImageType = SkGainmapInfo::BaseImageType::kHDR;
-    } else {
-        outGainmapInfo->fBaseImageType = SkGainmapInfo::BaseImageType::kSDR;
-    }
+    outGainmapInfo->fBaseImageType = SkGainmapInfo::BaseImageType::kSDR;
     outGainmapInfo->fType = SkGainmapInfo::Type::kHDRGM;
     return true;
 }
