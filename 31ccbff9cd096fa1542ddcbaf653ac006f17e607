@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b1f77f55_10aa2acd",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-03T15:47:41Z",
+      "side": 1,
+      "message": "IMO we can add this flag later if needed.",
+      "parentUuid": "04241138_14e1f441",
+      "range": {
+        "startLine": 799,
+        "startChar": 4,
+        "endLine": 799,
+        "endChar": 69
+      },
+      "revId": "31ccbff9cd096fa1542ddcbaf653ac006f17e607",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "255f4e20_c3e6b9b3",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 1
