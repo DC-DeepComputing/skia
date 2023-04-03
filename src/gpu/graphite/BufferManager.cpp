@@ -277,6 +277,7 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
     SkASSERT(info);
     SkASSERT(requiredBytes);
 
+    // A transfer buffer is not necessary if the caller does not intend to map the buffer.
     bool useTransferBuffer = mappable && !fCaps->drawBufferCanBeMapped();
 
     if (info->fBuffer &&
@@ -286,11 +287,15 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
     }
 
     if (!info->fBuffer) {
+        // GPU reads should be prioritized if
+        //     a) a transfer buffer will be used and fBuffer won't be mapped
+        //     b) the caller does not intend to map the buffer (i.e. `mappable` == false).
+        PrioritizeGpuReads prioritizeGpuReads = (useTransferBuffer || !mappable)
+                                                        ? PrioritizeGpuReads::kYes
+                                                        : PrioritizeGpuReads::kNo;
         size_t bufferSize = sufficient_block_size(requiredBytes, info->fBlockSize);
-        info->fBuffer = fResourceProvider->findOrCreateBuffer(
-                bufferSize,
-                info->fType,
-                useTransferBuffer ? PrioritizeGpuReads::kYes : PrioritizeGpuReads::kNo);
+        info->fBuffer =
+                fResourceProvider->findOrCreateBuffer(bufferSize, info->fType, prioritizeGpuReads);
         info->fOffset = 0;
         if (!info->fBuffer) {
             return {};
