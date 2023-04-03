@@ -34,6 +34,24 @@
       "parentUuid": "fb5d2536_d74df3e2",
       "revId": "06a46c83dbc8b1261f1a37b871fd530ede212f5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1134bda7_b9231abe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-03T19:55:15Z",
+      "side": 1,
+      "message": "Sure I get this adds an exact repro of the one test they did, but is it adding anything specific to the Skia test sets? Like especially since this is just a GM we won\u0027t be alerting on anything if this regresses or gets better. So in that world is this adding something more than what we\u0027re already measuring with the various bulk rect perf tests Michael added a while ago. Maybe its the drawing the 32k stroked rects that\u0027s different?\n\nAlso this is going in as a GM, do we need this to be a GM that we now have to triage in gold? Is it adding something of value for correctness testing? Maybe this is better off just being a pure microbench? If we want to see the animated-ness of it can we set this up as a Slide in viewer instead of a correctness gm?",
+      "parentUuid": "275e72d8_08255b26",
+      "revId": "06a46c83dbc8b1261f1a37b871fd530ede212f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
