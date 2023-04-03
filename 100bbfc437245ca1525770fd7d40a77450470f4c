@@ -16,6 +16,23 @@
       "message": "Note that the numbers I mention are for non-pgo build. The pgo build is not showing an improvement. I\u0027m not sure whether that is because the pgo build doesn\u0027t really benefit from this, or that once a new pgo profile is generated it will show a benefit. We don\u0027t actually have a bot that will generate a new profile, so it\u0027s really hard to know for sure which one it is.",
       "revId": "100bbfc437245ca1525770fd7d40a77450470f4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7fab90b_e69754dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-03T13:57:29Z",
+      "side": 1,
+      "message": "I\u0027m okay with this, but if PGO builds don\u0027t actually improve, I\u0027d like to revert it (given the code-size increase).",
+      "revId": "100bbfc437245ca1525770fd7d40a77450470f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
