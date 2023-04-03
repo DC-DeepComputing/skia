@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d09a03a6_92090c7c",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-03T20:37:00Z",
+      "side": 1,
+      "message": "Let\u0027s avoid globs unless absolutely necessary. Let\u0027s add a BUILD.bazel to the android_trampolines folder and list them all",
+      "range": {
+        "startLine": 194,
+        "startChar": 38,
+        "endLine": 194,
+        "endChar": 39
+      },
+      "revId": "bb54b4e2cc8405f1b924f4d835fa21a0543e94b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ba2cee0_721eeab0",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-03T20:37:00Z",
+      "side": 1,
+      "message": "Fill this out. I lost a lot of time because the rust toolchain tried to use this and it was empty.",
+      "range": {
+        "startLine": 206,
+        "startChar": 18,
+        "endLine": 206,
+        "endChar": 33
+      },
+      "revId": "bb54b4e2cc8405f1b924f4d835fa21a0543e94b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03ff5fd6_5889da71",
+        "filename": "toolchain/android_trampolines/gen_trampolines/gen_trampolines.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-03T20:37:00Z",
+      "side": 1,
+      "message": "Shouldn\u0027t there be a BUILD.bazel and associated rules for this file?",
+      "range": {
+        "startLine": 1,
+        "startChar": 16,
+        "endLine": 1,
+        "endChar": 22
+      },
+      "revId": "bb54b4e2cc8405f1b924f4d835fa21a0543e94b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
