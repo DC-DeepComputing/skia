@@ -16,6 +16,24 @@
       "message": "out of curiosity is this GM added just to be tracking perf tests? If so does it show us anything different than our microbenches that draw tons of rectangles?",
       "revId": "06a46c83dbc8b1261f1a37b871fd530ede212f5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "275e72d8_08255b26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-03T19:43:40Z",
+      "side": 1,
+      "message": "In this case, it\u0027s material, because PMs are using this benchmark suite as an example that Skia/CanvasKit are not competitive with other canvas libs. Matching the benchmark exactly matters.",
+      "parentUuid": "fb5d2536_d74df3e2",
+      "revId": "06a46c83dbc8b1261f1a37b871fd530ede212f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
