@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bd7289d_b4a92dd4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-03T15:54:27Z",
+      "side": 1,
+      "message": "LGTM but I\u0027ll defer to Michael.",
+      "revId": "9c69f142ce6e216e46824effeade85aa88695e3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bec27306_5a81dd7b",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-03T15:54:27Z",
+      "side": 1,
+      "message": "Nit: resource",
+      "range": {
+        "startLine": 128,
+        "startChar": 21,
+        "endLine": 128,
+        "endChar": 28
+      },
+      "revId": "9c69f142ce6e216e46824effeade85aa88695e3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
