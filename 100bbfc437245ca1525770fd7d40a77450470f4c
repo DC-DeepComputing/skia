@@ -51,6 +51,24 @@
       "parentUuid": "b7fab90b_e69754dc",
       "revId": "100bbfc437245ca1525770fd7d40a77450470f4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3463cc08_8809bf33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-03T14:05:52Z",
+      "side": 1,
+      "message": "That would actually be nice - converging back on a single code path for both formats would also give us some confidence in testing (particularly as the older reversed format isn\u0027t likely to be hit much during normal testing with any recent corpus).",
+      "parentUuid": "aa69af85_34e94835",
+      "revId": "100bbfc437245ca1525770fd7d40a77450470f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
