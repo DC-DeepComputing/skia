@@ -9,11 +9,14 @@
 
 #include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/graphite/BufferManager.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/UniformManager.h"
 
 namespace skgpu::graphite {
 
@@ -265,7 +268,8 @@ DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
                 auto [ptr, bufInfo] = bufferMgr->getMappedStorage(bufferSize);
                 // Allocation failures are handled below.
                 if (ptr) {
-                    step->prepareBuffer(params, ssboIdx, resourceIdx, resource, ptr, bufferSize);
+                    step->prepareStorageBuffer(
+                            params, ssboIdx, resourceIdx, resource, ptr, bufferSize);
                     result = bufInfo;
                 }
             } else {
@@ -276,6 +280,24 @@ DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
                 if (bufInfo) {
                     result = bufInfo;
                 }
+            }
+            break;
+        }
+        case Type::kUniformBuffer: {
+            SkASSERT(resource.fPolicy == ResourcePolicy::kMapped);
+
+            const auto& resourceReqs = fRecorder->priv().caps()->resourceBindingRequirements();
+            UniformManager uboMgr(resourceReqs.fUniformBufferLayout);
+            step->prepareUniformBuffer(params, resourceIdx, resource, &uboMgr);
+
+            auto dataBlock = uboMgr.finishUniformDataBlock();
+            SkASSERT(dataBlock.size());
+
+            auto [writer, bufInfo] = bufferMgr->getUniformWriter(dataBlock.size());
+            // Allocation failures are handled below.
+            if (bufInfo) {
+                writer.write(dataBlock.data(), dataBlock.size());
+                result = bufInfo;
             }
             break;
         }
@@ -301,10 +323,6 @@ DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
             // Instead of using internal allocation, this texture must be assigned explicitly to a
             // slot by calling the Builder::assignSharedTexture() method.
             SK_ABORT("a sampled texture must be externally assigned to a ComputeStep");
-            break;
-        case Type::kUniformBuffer:
-            // TODO(b/259564970): Support uniform buffers
-            SkUNREACHABLE;
             break;
     }
     return result;
