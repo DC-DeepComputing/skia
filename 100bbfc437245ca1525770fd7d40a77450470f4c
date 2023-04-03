@@ -33,6 +33,24 @@
       "message": "I\u0027m okay with this, but if PGO builds don\u0027t actually improve, I\u0027d like to revert it (given the code-size increase).",
       "revId": "100bbfc437245ca1525770fd7d40a77450470f4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa69af85_34e94835",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19319
+      },
+      "writtenOn": "2023-04-03T14:01:05Z",
+      "side": 1,
+      "message": "Ack. I think I could likely reduce the code side if I change the reverse path to allocate and then swap the indices. WDYT?",
+      "parentUuid": "b7fab90b_e69754dc",
+      "revId": "100bbfc437245ca1525770fd7d40a77450470f4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
