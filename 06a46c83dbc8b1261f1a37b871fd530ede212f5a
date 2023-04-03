@@ -88,6 +88,24 @@
       "parentUuid": "40d92184_10d16548",
       "revId": "06a46c83dbc8b1261f1a37b871fd530ede212f5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10ffe21a_43b01492",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-03T20:05:28Z",
+      "side": 1,
+      "message": "But I\u0027m still wondering is this test adding something specific that is not already covered by our microbenches? Like Chrome has tons of benches it uses in its own testing but we haven\u0027t imported into Skia because we have enough coverage from other things.\n\nThis doesn\u0027t seem to add anything we want tested for correctness purposes, so that\u0027s why I\u0027m hesitant to add it in as a GM. If we truly feel like this test is over importance enough (e.g. some of the motion mark demos), I would suggest converting it to an SKP so that it does go through our perf testing on every commit. Also won\u0027t force us to triage it in gold (modulo ddl gold test which uses skps).\n\nOtherwise I think you can just move this to be a slide in Viewer, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tools/viewer/Slide.h. That then doesn\u0027t go through any tools expect viewer so you can do manual fps checks there.",
+      "parentUuid": "a73b3fe3_1720dbee",
+      "revId": "06a46c83dbc8b1261f1a37b871fd530ede212f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
