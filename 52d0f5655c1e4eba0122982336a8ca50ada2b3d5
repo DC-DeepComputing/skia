@@ -16,6 +16,24 @@
       "message": "I\u0027m not sure this is visible to SkSLTest.cpp (\"tests\" has :skia in deps, but not public_deps, and this is defines, not public_defines). I\u0027m a little shaky on this stuff, but I don\u0027t think the defines will be exported to the dependent targets.",
       "revId": "52d0f5655c1e4eba0122982336a8ca50ada2b3d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "590ff68e_90c26ef8",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 1548,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-03T13:18:17Z",
+      "side": 1,
+      "message": "You\u0027re right, this wasn\u0027t visible in SkSLTest.",
+      "parentUuid": "8e884dc1_e2629145",
+      "revId": "52d0f5655c1e4eba0122982336a8ca50ada2b3d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
