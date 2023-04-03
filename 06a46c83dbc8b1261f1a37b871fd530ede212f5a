@@ -178,6 +178,24 @@
       "parentUuid": "a3d7d873_9e25e190",
       "revId": "06a46c83dbc8b1261f1a37b871fd530ede212f5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8214fd67_266047c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-03T20:20:15Z",
+      "side": 1,
+      "message": "Adding things as microbenches are black holes that are almost never monitored or looked at. We don\u0027t really pay too much attention to things changing there since they are meaningless to real content. Usually we add them if someone is actively working on a feature and needs this low level of a microbench to see what their changes are doing.\n\nBut what I am asking is how does this microbench differ from the other rect ones we have. I know we have microbenches that draw thousands of rects. Do we not have any that do thousands of stroked rects? Because if we do then we already have valid representations of this test and can just use those.\n\nNow if we decide this specific test is very key to chromes priorities and has specific goals to improve this specific tests, then like I said before you should add it as an skp so that we are monitoring it on every commit. Better yet would be to actually capture the SKP from chrome to make sure we\u0027re emitting draws in the same way that chrome does. Do you know if we\u0027ve received such a mandate yet to super optimize this one test? I have my own opinions about whether being hyper focused on these sort of unrealistic benchmarks (which includes motion mark) is of any real value, but if we\u0027re being told to use resources to optimize it then we\u0027ll have to.",
+      "parentUuid": "e65fe669_abf7a288",
+      "revId": "06a46c83dbc8b1261f1a37b871fd530ede212f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
