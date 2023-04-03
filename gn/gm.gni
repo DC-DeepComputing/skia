@@ -21,6 +21,7 @@ gm_sources = [
   "$_gm/animated_gif.cpp",
   "$_gm/animated_image_orientation.cpp",
   "$_gm/animatedimageblurs.cpp",
+  "$_gm/animatedrects.cpp",
   "$_gm/anisotropic.cpp",
   "$_gm/annotated_text.cpp",
   "$_gm/arcofzorro.cpp",
