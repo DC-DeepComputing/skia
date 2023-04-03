@@ -9,6 +9,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
+#include "include/core/SkGraphics.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkSize.h"
@@ -1135,3 +1136,192 @@ DEF_SIMPLE_GM_CAN_FAIL(deferred_shader_rt, canvas, errorMsg, 150, 50) {
 
     return skiagm::DrawResult::kOk;
 }
+
+struct PackedAtlas {
+    sk_sp<SkImage> fCoarse;
+    sk_sp<SkImage> fTiles;  // TODO: Base-class atlas, for multi-level?
+    SkISize        fTileSize;
+};
+
+static PackedAtlas make_packed_atlas(const SkPath& path) {
+    SkIRect bounds = path.getBounds().roundOut();
+    SkISize pathSize = bounds.size();
+
+    // We need to reserve two values for empty/full, so we can only handle 254
+    // tile indices. (If we want to use A8. Try just using A16?)
+    SkISize tileSize = { 16, 16 };
+
+    int tilesX = (pathSize.width() + 15) / 16;
+    int tilesY = (pathSize.height() + 15) / 16;
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    SkBitmap miniBitmap;
+    {
+        auto miniInfo =
+                SkImageInfo::Make(tilesX, tilesY, kAlpha_8_SkColorType, kPremul_SkAlphaType);
+        miniBitmap.allocPixels(miniInfo);
+        SkCanvas miniCanvas(miniBitmap);
+        miniCanvas.clear(SK_ColorTRANSPARENT);
+        miniCanvas.scale(1.0f / 16, 1.0f / 16);
+        miniCanvas.translate(-bounds.fLeft, -bounds.fTop);
+        miniCanvas.drawPath(path, paint);
+    }
+
+    // How many tiles do we need? Count up the pixels that aren't 0/1, renumbering as we go
+    int miniPixelCount = tilesX * tilesY;
+    int tilesNeeded = 0;
+    uint8_t* miniPixels = miniBitmap.getAddr8(0, 0);
+    for (int i = 0; i < miniPixelCount; i++) {
+        if (miniPixels[i] != 0 && miniPixels[i] != 255) {
+            miniPixels[i] = ++tilesNeeded;
+        }
+    }
+    SkASSERT(tilesNeeded <= 254);
+
+    // Allocate buffer for the tiles themselves
+    // TODO: Use a multi-row scheme, to avoid texture limits
+    SkBitmap tileBitmap;
+    auto tileInfo =
+            SkImageInfo::Make(tilesNeeded * 16, 16, kAlpha_8_SkColorType, kPremul_SkAlphaType);
+    tileBitmap.allocPixels(tileInfo);
+    SkCanvas tileCanvas(tileBitmap);
+    tileCanvas.clear(SK_ColorTRANSPARENT);
+    for (int y = 0; y < tilesY; ++y) {
+        for (int x = 0; x < tilesX; ++x) {
+            uint8_t miniVal = *miniBitmap.getAddr8(x, y);
+            if (miniVal == 0 || miniVal == 255) {
+                continue;
+            }
+
+            tileCanvas.save();
+
+            // Clip to the current tile
+            tileCanvas.clipIRect({0, 0, 16, 16});
+
+            // Translate this tile's portion of the path to line up with the origin
+            tileCanvas.translate(-16 * x - bounds.fLeft, -16 * y - bounds.fTop);
+
+            // Draw this tile
+            tileCanvas.drawPath(path, paint);
+
+            // Undo the clip, etc.
+            tileCanvas.restore();
+
+            // Advance to the next tile slot in our atlas
+            tileCanvas.translate(16, 0);
+        }
+    }
+
+    PackedAtlas pa;
+    pa.fCoarse = miniBitmap.asImage();
+    pa.fTiles = tileBitmap.asImage();
+    pa.fTileSize = tileSize;
+
+    return pa;
+}
+
+sk_sp<SkRuntimeEffect> make_path_decoder() {
+    const SkString kShader{R"(
+        uniform shader coarse;
+        uniform shader tiles;
+        half4 main(float2 p) {
+            float2 coarse_coords = p / 16;
+            half a = coarse.eval(coarse_coords).a;
+            if (a == 0) { return half4(0, 0, 0, 0); }
+            if (a == 1) { return half4(0, 0, 0, 1); }
+
+            int tile_x = int(a * 255) - 1;
+            float2 coords_in_tile = p - (floor(coarse_coords) * 16);
+            float2 atlas_coords = coords_in_tile + float2(tile_x * 16, 0);
+            return tiles.eval(atlas_coords);
+        }
+    )"};
+
+    auto [effect, error] = SkRuntimeEffect::MakeForShader(kShader);
+    SkASSERT(effect);
+    return effect;
+}
+
+static sk_sp<SkRuntimeEffect> make_tile_vis() {
+    const SkString kShader{R"(
+        uniform shader coarse;
+        half4 main(float2 p) {
+            half a = coarse.eval(p).a;
+            if (a == 0) { return half4(0.25, 0.25, 0.25, 0.5); }
+            if (a == 1) { return half4(0.5, 0.5, 0.5, 0.5); }
+            return half4(0.5, 0.5, 0, 0.5);
+        }
+    )"};
+    auto [effect, error] = SkRuntimeEffect::MakeForShader(kShader);
+    SkASSERT(effect);
+    return effect;
+}
+
+class PackedPathAtlasGM : public skiagm::GM {
+public:
+    float fR = 0.0f;
+    int fMode = 0;
+
+    SkISize onISize() override { return {512, 512}; }
+    SkString onShortName() override { return SkString("packed_path_atlas"); }
+
+    DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
+        SkGraphics::SetForceAnalyticAA(true);
+
+        SkPath path;
+        path.setFillType(SkPathFillType::kEvenOdd);
+        if (fMode == 0) {
+            path.addCircle(128, 128, 128);
+            path.addCircle(128, 128, fR);
+        } else if (fMode == 1) {
+            path.addRect({64, 0, 256 - 64, 256});
+            path.transform(SkMatrix::RotateDeg(fR * 2, {128, 128}));
+        }
+
+        SkPaint paint;
+        paint.setAntiAlias(true);
+
+        // Reference image:
+        canvas->drawPath(path, paint);
+
+        PackedAtlas pa = make_packed_atlas(path);
+        auto coarseShader = pa.fCoarse->makeShader(SkSamplingOptions{});
+
+        auto effect = make_tile_vis();
+        auto visShader = effect->makeShader(nullptr, &coarseShader, 1);
+
+        SkPaint visPaint;
+        visPaint.setShader(visShader);
+
+        canvas->save();
+        canvas->scale(16, 16);
+        canvas->drawRect(SkRect::Make(pa.fCoarse->dimensions()), visPaint);
+        canvas->restore();
+        canvas->drawImage(pa.fTiles, 0, 256);
+
+        canvas->translate(256, 0);
+
+        auto decodeEffect = make_path_decoder();
+        SkRuntimeShaderBuilder builder(decodeEffect);
+        builder.child("coarse") = coarseShader;
+        builder.child("tiles") = pa.fTiles ? pa.fTiles->makeShader(SkSamplingOptions{}) : nullptr;
+        SkPaint decodePaint;
+        decodePaint.setShader(builder.makeShader());
+        canvas->drawRect({0, 0, 256, 256}, decodePaint);
+
+        return DrawResult::kOk;
+    }
+
+    bool onChar(SkUnichar uni) override {
+        switch (uni) {
+            case 'i': fR += 2.0f; return true;
+            case 'k': fR -= 2.0f; return true;
+            case 'm': fMode = (fMode + 1) % 2; return true;
+        }
+        return false;
+    }
+};
+
+DEF_GM(return new PackedPathAtlasGM;)
