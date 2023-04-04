@@ -111,6 +111,30 @@
       },
       "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3376ae6b_a556067d",
+        "filename": "src/gpu/graphite/UploadTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-04-04T18:47:44Z",
+      "side": 1,
+      "message": "I think the paper mentioned in the link talks about being able to declare containers of the same type as the parent class/struct e.g. in \n\n```\nclass A {\n  std::vector\u003cA\u003e someAs;\n}\n```\n\nThe type A contains a vector of A, which wasn\u0027t previously allowed before C++17. This makes sense because we know the type\u0027s storage is going to be fully defined in the same translation unit since the vector is in the body of that type.\n\nThe error this CL aims to resolve is due to using a vector of an incomplete type that\u0027s not the same type as the containing type. And the type is not defined in the same translation unit. Intuitively this makes sense because std::vector destructor needs to know how to calculate the size of its storage which means it needs to know the size of the contained type (BufferTextureCopyData).\n\nHere\u0027s the compile error for reference:\n\n```\n../../buildtools/third_party/libc++/trunk/include/vector:552:52: error: arithmetic on a pointer to an incomplete type \u0027skgpu::graphite::BufferTextureCopyData\u0027\n        {return static_cast\u003csize_type\u003e(__end_cap() - this-\u003e__begin_);}\n                                       ~~~~~~~~~~~ ^\n../../buildtools/third_party/libc++/trunk/include/vector:766:56: note: in instantiation of member function \u0027std::vector\u003cskgpu::graphite::BufferTextureCopyData\u003e::capacity\u0027 requested here\n      __annotate_contiguous_container(data(), data() + capacity(),\n                                                       ^\n../../buildtools/third_party/libc++/trunk/include/vector:445:18: note: in instantiation of member function \u0027std::vector\u003cskgpu::graphite::BufferTextureCopyData\u003e::__annotate_delete\u0027 requested here\n          __vec_.__annotate_delete();\n                 ^\n../../buildtools/third_party/libc++/trunk/include/vector:459:67: note: in instantiation of member function \u0027std::vector\u003cskgpu::graphite::BufferTextureCopyData\u003e::__destroy_vector::operator()\u0027 requested here\n  _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_HIDE_FROM_ABI ~vector() { __destroy_vector(*this)(); }\n                                                                  ^\n../../third_party/skia/src/gpu/graphite/UploadTask.h:89:5: note: in instantiation of member function \u0027std::vector\u003cskgpu::graphite::BufferTextureCopyData\u003e::~vector\u0027 requested here\n    UploadInstance() {}\n    ^\n../../third_party/skia/src/gpu/graphite/UploadTask.h:23:8: note: forward declaration of \u0027skgpu::graphite::BufferTextureCopyData\u0027\nstruct BufferTextureCopyData;\n```",
+      "parentUuid": "ec3a1184_f006b329",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 22
+      },
+      "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
