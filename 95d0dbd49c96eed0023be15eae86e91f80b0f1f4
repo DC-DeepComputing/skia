@@ -135,6 +135,30 @@
       },
       "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "000de4a4_3d1aef0a",
+        "filename": "src/gpu/graphite/UploadTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-04T18:49:35Z",
+      "side": 1,
+      "message": "Right you need the destructor to be moved to the cpp file (which is the error you\u0027re seeing). But you don\u0027t need to do all the other things I believe.",
+      "parentUuid": "3376ae6b_a556067d",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 22
+      },
+      "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
