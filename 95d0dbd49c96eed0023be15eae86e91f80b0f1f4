@@ -63,6 +63,30 @@
       },
       "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9260a2d2_a0674801",
+        "filename": "src/gpu/graphite/UploadTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-04T17:05:59Z",
+      "side": 1,
+      "message": "Oh sorry I was looking at the members of this class and mixed up the sk_sp on TextureProxy above the BufferTextureCopyData. sk_sp does all instantiation of incomplete types (only need a complete type for the destructor). But you\u0027re right that stl containers are spec\u0027d to only work on complete types.",
+      "parentUuid": "0d311a95_722deb24",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 22
+      },
+      "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
