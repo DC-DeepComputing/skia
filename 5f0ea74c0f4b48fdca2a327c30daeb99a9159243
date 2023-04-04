@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e572d8ff_c0b8f8f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2023-04-04T17:45:46Z",
+      "side": 1,
+      "message": "cherry pick of XMP fix",
+      "revId": "5f0ea74c0f4b48fdca2a327c30daeb99a9159243",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
