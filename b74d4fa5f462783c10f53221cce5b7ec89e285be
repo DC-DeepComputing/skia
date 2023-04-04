@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "224e61ec_e92c805c",
+        "filename": "src/sksl/analysis/SkSLReturnsInputAlpha.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-04T14:16:35Z",
+      "side": 1,
+      "message": "I think this needs to be conservative to handle early returns, right? eg:\n```\nif (!returnsInputAlpha(...)) { return true; }\n```\n\n```\nif (color.r \u003e 0.5) { return color; }\nreturn half4(0);\n```",
+      "revId": "b74d4fa5f462783c10f53221cce5b7ec89e285be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
