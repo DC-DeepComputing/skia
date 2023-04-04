@@ -34,6 +34,24 @@
       "parentUuid": "01121991_a703d45b",
       "revId": "c95cf4613e6aa7bd6b554d2f1457cdffb81d978a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69ad61f2_d2f271f7",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-04T13:20:25Z",
+      "side": 1,
+      "message": "Yeah, I just happened to find the XMP spec, so I think I\u0027d be okay with either ignoring it entirely, or leaving the parsing as-is.",
+      "parentUuid": "6130bce5_94d783dd",
+      "revId": "c95cf4613e6aa7bd6b554d2f1457cdffb81d978a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
