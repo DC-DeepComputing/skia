@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01121991_a703d45b",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-04T12:55:09Z",
+      "side": 1,
+      "message": "I know that the spec document says `\"False\"` and `\"True\"`, but every other resource I\u0027ve found suggests that XML boolean attributes can be `0, 1, false, true`. We have to assume that someone is going to write these out using integers, and probably with different case, right?",
+      "revId": "c95cf4613e6aa7bd6b554d2f1457cdffb81d978a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
