@@ -227,6 +227,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f008cbdf_5cff826b",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-04T20:40:21Z",
+      "side": 1,
+      "message": "I would not really even think to try to optimize this. I believe we shouldn\u0027t really ever need a copy for any of the modern APIs once we get things all implemented. So really in the end this might be an optimization for old GL desktops (as most mobile gles have fb fetch). Not worth adding extra logic/complexity for that IMO",
+      "parentUuid": "5719c56e_18a2dd0b",
+      "range": {
+        "startLine": 506,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 94
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6920c9a2_93067553",
         "filename": "src/gpu/graphite/PaintParams.h",
         "patchSetId": 11
