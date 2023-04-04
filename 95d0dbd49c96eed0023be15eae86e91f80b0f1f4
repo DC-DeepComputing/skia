@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "440adaec_b3cc79d8",
+        "filename": "src/gpu/graphite/UploadTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-04T13:33:21Z",
+      "side": 1,
+      "message": "I would have thought this would be the only one needed here. The default ctor should be fine as sk_sp should be defined and has a non templated default ctor. Sample for move and \u003d.",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 22
+      },
+      "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
