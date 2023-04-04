@@ -94215,6 +94215,13 @@
     "Build-Debian10-Clang-arm-Debug-Android": {},
     "Build-Debian10-Clang-arm-Release-Android_API26": {},
     "Build-Debian10-Clang-arm64-Debug-Android": {},
+    "Build-Debian10-Clang-arm64-Debug-Android_Graphite_Dawn": {
+      "location_regexes": [
+        "(tests|src/gpu)/graphite/.*",
+        "bazel/external/dawn/*",
+        "DEPS"
+      ]
+    },
     "Build-Debian10-Clang-x86_64-Debug": {},
     "Build-Debian10-Clang-x86_64-Debug-Graphite_Vulkan": {
       "location_regexes": [
