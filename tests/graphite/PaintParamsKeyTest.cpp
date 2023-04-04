@@ -643,7 +643,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
     KeyContext extractPaintKeyContext(recorder.get(), {}, ci, SkColors::kBlack);
 
     std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
-    KeyContext precompileKeyContext(dict, rtDict.get(), ci);
+    KeyContext precompileKeyContext(recorder->priv().caps(), dict, rtDict.get(), ci);
 
     SkFont font(ToolUtils::create_portable_typeface(), 16);
     const char text[] = "hambur";
@@ -703,11 +703,23 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                             primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
                         }
 
+                        DstReadRequirement dstReadReq =
+                                recorder->priv().caps()->getDstReadRequirement(paint);
+                        sk_sp<TextureProxy> fakeDstTexture =
+                                TextureProxy::Make(recorder->priv().caps(),
+                                                   SkISize::Make(1, 1),
+                                                   kRGBA_8888_SkColorType,
+                                                   skgpu::Mipmapped::kNo,
+                                                   skgpu::Protected::kNo,
+                                                   skgpu::Renderable::kYes,
+                                                   skgpu::Budgeted::kNo);
                         auto [paintID, uData, tData] = ExtractPaintData(
                                 recorder.get(), &gatherer, &builder, Layout::kMetal, {},
                                 PaintParams(paint,
                                             std::move(primitiveBlender),
+                                            dstReadReq,
                                             /* skipColorXform= */ false),
+                                fakeDstTexture,
                                 extractPaintKeyContext.dstColorInfo());
 
                         std::vector<UniquePaintParamsID> precompileIDs;

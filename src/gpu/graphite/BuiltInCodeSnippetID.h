@@ -53,6 +53,9 @@ enum class BuiltInCodeSnippetID : int32_t {
     kGaussianColorFilter,
     kColorSpaceXformColorFilter,
 
+    kFinalBlend,
+    kDstColor,
+
     // SkBlender code snippets (evaluating a blend as part of the shader graph)
     kPassthroughBlender,
 

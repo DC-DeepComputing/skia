@@ -51,6 +51,7 @@ PaintParams::PaintParams(const SkColor4f& color,
                          sk_sp<SkShader> shader,
                          sk_sp<SkColorFilter> colorFilter,
                          sk_sp<SkBlender> primitiveBlender,
+                         DstReadRequirement dstReadReq,
                          bool skipColorXform,
                          bool dither)
         : fColor(color)
@@ -58,17 +59,20 @@ PaintParams::PaintParams(const SkColor4f& color,
         , fShader(std::move(shader))
         , fColorFilter(std::move(colorFilter))
         , fPrimitiveBlender(std::move(primitiveBlender))
+        , fDstReadReq(dstReadReq)
         , fSkipColorXform(skipColorXform)
         , fDither(dither) {}
 
 PaintParams::PaintParams(const SkPaint& paint,
                          sk_sp<SkBlender> primitiveBlender,
+                         DstReadRequirement dstReadReq,
                          bool skipColorXform)
         : fColor(paint.getColor4f())
         , fFinalBlender(paint.refBlender())
         , fShader(paint.refShader())
         , fColorFilter(paint.refColorFilter())
         , fPrimitiveBlender(std::move(primitiveBlender))
+        , fDstReadReq(dstReadReq)
         , fSkipColorXform(skipColorXform)
         , fDither(paint.isDither()) {}
 
@@ -101,7 +105,9 @@ SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& 
 
 void PaintParams::toKey(const KeyContext& keyContext,
                         PaintParamsKeyBuilder* builder,
-                        PipelineDataGatherer* gatherer) const {
+                        PipelineDataGatherer* gatherer,
+                        DstReadRequirement dstReadReq,
+                        sk_sp<TextureProxy> dstTexture) const {
 
     // TODO: figure out how we can omit this block when the Paint's color isn't used.
     SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, keyContext.paintColor());
@@ -137,12 +143,26 @@ void PaintParams::toKey(const KeyContext& keyContext,
     }
 #endif
 
+    // TODO better name?
+    FinalBlendBlock::BeginBlock(keyContext, builder, gatherer);
+
+    if (dstReadReq != DstReadRequirement::kNone) {
+        DstColorBlock::BeginBlock(keyContext, builder, gatherer, std::move(dstTexture));
+        builder->endBlock();
+    } else {
+        // Dst color should be unused, but FinalBlendBlock still expects it.
+        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, {1, 0, 0, 1});
+        builder->endBlock();
+    }
+
     if (fFinalBlender) {
         as_BB(fFinalBlender)->addToKey(keyContext, builder, gatherer, DstColorType::kSurface);
     } else {
         BlendModeBlock::BeginBlock(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
         builder->endBlock();
     }
+
+    builder->endBlock();  // FinalBlendBlock
 
     SkASSERT(builder->sizeInBytes() > 0);
 }

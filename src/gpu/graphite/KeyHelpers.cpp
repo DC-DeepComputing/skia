@@ -85,6 +85,53 @@ void SolidColorShaderBlock::BeginBlock(const KeyContext& keyContext,
 
 //--------------------------------------------------------------------------------------------------
 
+void FinalBlendBlock::BeginBlock(const KeyContext& keyContext,
+                                 PaintParamsKeyBuilder* builder,
+                                 PipelineDataGatherer* gatherer) {
+    if (gatherer) {
+        ShaderCodeDictionary* dict = keyContext.dict();
+        VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kFinalBlend)
+        gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kFinalBlend));
+    }
+
+    builder->beginBlock(BuiltInCodeSnippetID::kFinalBlend);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+namespace {
+
+void add_dst_color_uniform_data(const ShaderCodeDictionary* dict,
+                                PipelineDataGatherer* gatherer,
+                                sk_sp<TextureProxy> dstTexture) {
+    static const SkTileMode kTileModes[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
+    gatherer->add(SkSamplingOptions(), kTileModes, dstTexture);
+
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kDstColor)
+
+    SkV4 coords{0.0f,
+                0.0f,
+                1.0f / dstTexture->dimensions().width(),
+                1.0f / dstTexture->dimensions().height()};
+    gatherer->write(coords);
+
+    gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kDstColor));
+}
+
+} // anonymous namespace
+
+void DstColorBlock::BeginBlock(const KeyContext& keyContext,
+                               PaintParamsKeyBuilder* builder,
+                               PipelineDataGatherer* gatherer,
+                               sk_sp<TextureProxy> dstTexture) {
+    if (gatherer) {
+        add_dst_color_uniform_data(keyContext.dict(), gatherer, std::move(dstTexture));
+    }
+    builder->beginBlock(BuiltInCodeSnippetID::kDstColor);
+}
+
+//--------------------------------------------------------------------------------------------------
+
 namespace {
 
 void add_gradient_preamble(const GradientShaderBlocks::GradientData& gradData,
@@ -98,7 +145,6 @@ void add_gradient_preamble(const GradientShaderBlocks::GradientData& gradData,
         gatherer->writeArray({gradData.fOffsets, stops});
     }
 }
-
 
 // All the gradients share a common postamble of:
 //   numStops - for texture-based gradients
