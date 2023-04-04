@@ -181,6 +181,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b9ce292_2b29dda4",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:32:35Z",
+      "side": 1,
+      "message": "If we allowed DrawPass::Make() to return a list of tasks (which we\u0027ve considered so that it has more flexibility around mixing compute and render tasks), we would not need to flush in the Device, we would just return a list of alternating copy and render tasks broken up as needed based on the recorded draws that required a texture copy.",
+      "range": {
+        "startLine": 423,
+        "startChar": 0,
+        "endLine": 423,
+        "endChar": 46
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5719c56e_18a2dd0b",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:32:35Z",
+      "side": 1,
+      "message": "Right now this does a copy for every draw and (once the copy is restricted to the draw\u0027s bounds) it is equivalent to logic in Ganesh. However, the CompressedPaintersOrder value stored on each draw tells us something that might be useful in reducing the number of copies. If two draws have the same CompressedPaintersOrder it is guaranteed that they do not overlap or they do not depend on the dst buffer at all and the depth test will sort it out correctly. This means theoretically we only have to insert dst copies when the CompressedPainterOrder value changes between SortKeys.\n\nThis would mean fewer copies but most likely larger copies, so I can\u0027t predict which is necessarily better but something to keep in mind. The property also applies for the dst readback requirements that only need texture barriers inserted.",
+      "range": {
+        "startLine": 506,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 94
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6920c9a2_93067553",
         "filename": "src/gpu/graphite/PaintParams.h",
         "patchSetId": 11
