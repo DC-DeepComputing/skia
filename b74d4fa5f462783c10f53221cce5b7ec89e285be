@@ -16,6 +16,24 @@
       "message": "I think this needs to be conservative to handle early returns, right? eg:\n```\nif (!returnsInputAlpha(...)) { return true; }\n```\n\n```\nif (color.r \u003e 0.5) { return color; }\nreturn half4(0);\n```",
       "revId": "b74d4fa5f462783c10f53221cce5b7ec89e285be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9707dce1_7e43516f",
+        "filename": "src/sksl/analysis/SkSLReturnsInputAlpha.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-04T14:22:17Z",
+      "side": 1,
+      "message": "I think this works? If we return `true`, that\u0027s failure, and we stop processing. If we return `false`, we keep processing and the next statement in the block gets visited.\n\nI added some unit tests and they seem to pass.",
+      "parentUuid": "224e61ec_e92c805c",
+      "revId": "b74d4fa5f462783c10f53221cce5b7ec89e285be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
