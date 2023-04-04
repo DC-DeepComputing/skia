@@ -531,7 +531,7 @@ bool SkJpegXmp::getContainerGainmapLocation(size_t* outOffset, size_t* outSize) 
     }
 
     // Iterate through the items in the Container:Directory's sequence. Keep a running sum of the
-    // Item:Length of all items that appear before the RecoveryMap.
+    // Item:Length of all items that appear before the GainMap.
     bool isFirstItem = true;
     size_t offset = 0;
     for (const auto* li = dom->getFirstChild(seq, "rdf:li"); li;
@@ -590,13 +590,13 @@ bool SkJpegXmp::getContainerGainmapLocation(size_t* outOffset, size_t* outSize) 
                 return false;
             }
             // If this is not the recovery map, then read past it.
-            if (strcmp(itemSemantic, "RecoveryMap") != 0) {
+            if (strcmp(itemSemantic, "GainMap") != 0) {
                 offset += length;
                 continue;
             }
             // The recovery map must have mime type image/jpeg in this implementation.
             if (strcmp(itemMime, "image/jpeg") != 0) {
-                SkCodecPrintf("RecoveryMap does not report that it is image/jpeg.\n");
+                SkCodecPrintf("GainMap does not report that it is image/jpeg.\n");
                 return false;
             }
 
@@ -679,7 +679,6 @@ bool SkJpegXmp::getGainmapInfoHDRGM(SkGainmapInfo* outGainmapInfo) const {
     SkScalar hdrCapacityMax = 2.f;
 
     // Read all parameters that are present.
-    const char* baseRendition = get_attr(dom, node, hdrgmPrefix, "BaseRendition");
     get_attr_float3(dom, node, hdrgmPrefix, "GainMapMin", &gainMapMin);
     get_attr_float3(dom, node, hdrgmPrefix, "GainMapMax", &gainMapMax);
     get_attr_float3(dom, node, hdrgmPrefix, "Gamma", &gamma);
@@ -703,11 +702,7 @@ bool SkJpegXmp::getGainmapInfoHDRGM(SkGainmapInfo* outGainmapInfo) const {
     outGainmapInfo->fEpsilonHdr = offsetHdr;
     outGainmapInfo->fDisplayRatioSdr = sk_float_exp(hdrCapacityMin * kLog2);
     outGainmapInfo->fDisplayRatioHdr = sk_float_exp(hdrCapacityMax * kLog2);
-    if (baseRendition && !strcmp(baseRendition, "HDR")) {
-        outGainmapInfo->fBaseImageType = SkGainmapInfo::BaseImageType::kHDR;
-    } else {
-        outGainmapInfo->fBaseImageType = SkGainmapInfo::BaseImageType::kSDR;
-    }
+    outGainmapInfo->fBaseImageType = SkGainmapInfo::BaseImageType::kSDR;
     outGainmapInfo->fType = SkGainmapInfo::Type::kHDRGM;
     return true;
 }
