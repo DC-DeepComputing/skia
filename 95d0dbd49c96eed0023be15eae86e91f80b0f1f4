@@ -159,6 +159,30 @@
       },
       "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1ded703_66922e09",
+        "filename": "src/gpu/graphite/UploadTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-04-04T18:59:10Z",
+      "side": 1,
+      "message": "Note that the compile error is about the instantiation in the `UploadInstance() {}` constructor, so we need at least that part of the change in addition to the destructor.\n\nAnd IIRC from the exploration, we also need the move constructors since they\u0027re implicitly defined and also cause the std::vector\u003cBufferTextureCopyData\u003e to be instantiated.\n\nAn alternative to defining move constructors would be to delete the copy constructors[1]. I don\u0027t think we can do that here since the move constructor is already being used[2].\n\n[1] From https://abseil.io/tips/143: \"Note: by explicitly defining the copy operations as deleted we also suppress the move operations (having user-declared copy operations inhibits the implicit declaration of the move operations).\"\n\n[2] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tests/graphite/ComputeTest.cpp;l\u003d613?q\u003dUploadInstance%20filepath:graphite\u0026ss\u003dchromium%2Fchromium%2Fsrc",
+      "parentUuid": "000de4a4_3d1aef0a",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 22
+      },
+      "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
