@@ -22,6 +22,30 @@
       },
       "revId": "bb2b6c01578f60bd3dc0bc2d3372965d181a6d20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46527d58_4f285b81",
+        "filename": "src/effects/SkHighContrastFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-04T16:42:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c483bf26_f9c53246",
+      "range": {
+        "startLine": 58,
+        "startChar": 17,
+        "endLine": 58,
+        "endChar": 39
+      },
+      "revId": "bb2b6c01578f60bd3dc0bc2d3372965d181a6d20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
