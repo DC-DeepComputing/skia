@@ -39,6 +39,30 @@
       },
       "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d311a95_722deb24",
+        "filename": "src/gpu/graphite/UploadTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-04-04T16:04:13Z",
+      "side": 1,
+      "message": "Maybe you\u0027re thinking of UploadTask which is ref-counted. This class is UploadInstance which is not ref-counted so it would get implicit move constructors since all its members are moveable.",
+      "parentUuid": "440adaec_b3cc79d8",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 22
+      },
+      "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
