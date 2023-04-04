@@ -19,7 +19,8 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
         : fRecorder(recorder)
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)
-        , fDstColorInfo(dstColorInfo) {
+        , fDstColorInfo(dstColorInfo)
+        , fCaps(recorder->priv().caps()) {
     fDictionary = fRecorder->priv().shaderCodeDictionary();
     fRTEffectDict = fRecorder->priv().runtimeEffectDictionary();
     fPaintColor = PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul();

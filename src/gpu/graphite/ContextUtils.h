@@ -45,6 +45,7 @@ ExtractPaintData(Recorder*,
                  const Layout layout,
                  const SkM44& local2Dev,
                  const PaintParams&,
+                 sk_sp<TextureProxy> dstTexture,
                  const SkColorInfo& targetColorInfo);
 
 std::tuple<const UniformDataBlock*, const TextureDataBlock*> ExtractRenderStepData(

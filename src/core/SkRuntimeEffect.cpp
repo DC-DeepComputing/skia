@@ -1733,8 +1733,6 @@ public:
                 keyContext.dstColorInfo().colorSpace());
         SkASSERT(uniforms);
 
-        // TODO(b/238757201): Pass into RuntimeEffectBlock::BeginBlock that this runtime effect
-        // needs a dst read, if dstColorType == kSurface.
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
                                        { fEffect, std::move(uniforms) });
 

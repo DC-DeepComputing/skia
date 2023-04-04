@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/FactoryFunctions.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
@@ -92,6 +93,18 @@ int PaintOptions::numCombinations() const {
            this->numBlendModeCombinations();
 }
 
+DstReadRequirement get_dst_read_req(const Caps* caps,
+                                    SkSpan<const sk_sp<PrecompileBlender>> options,
+                                    int desiredOption) {
+    for (const sk_sp<PrecompileBlender>& option : options) {
+        if (desiredOption < option->numCombinations()) {
+            return caps->getDstReadRequirement(option->asBlendMode());
+        }
+        desiredOption -= option->numCombinations();
+    }
+    return DstReadRequirement::kNone;
+}
+
 void PaintOptions::createKey(const KeyContext& keyContext,
                              int desiredCombination,
                              PaintParamsKeyBuilder* keyBuilder,
@@ -135,6 +148,20 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
                              desiredColorFilterCombination);
 
+    FinalBlendBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
+
+    DstReadRequirement dstReadReq =
+            get_dst_read_req(keyContext.caps(), fBlenderOptions, desiredBlendCombination);
+    if (dstReadReq != DstReadRequirement::kNone) {
+        DstColorBlock::BeginBlock(
+                keyContext, keyBuilder, /* gatherer= */ nullptr, /* dstTexture= */ nullptr);
+        keyBuilder->endBlock();
+    } else {
+        SolidColorShaderBlock::BeginBlock(
+                keyContext, keyBuilder, /* gatherer= */ nullptr, {1, 0, 0, 1});
+        keyBuilder->endBlock();
+    }
+
     if (fBlenderOptions.empty()) {
         BlendModeBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
                                    SkBlendMode::kSrcOver);
@@ -142,6 +169,8 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     } else {
         PrecompileBase::AddToKey(keyContext, keyBuilder, fBlenderOptions, desiredBlendCombination);
     }
+
+    keyBuilder->endBlock();  // FinalBlendBlock
 }
 
 void PaintOptions::buildCombinations(

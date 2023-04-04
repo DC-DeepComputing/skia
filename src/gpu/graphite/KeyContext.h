@@ -15,6 +15,7 @@
 
 namespace skgpu::graphite {
 
+class Caps;
 class Recorder;
 class RuntimeEffectDictionary;
 class ShaderCodeDictionary;
@@ -25,13 +26,14 @@ class ShaderCodeDictionary;
 class KeyContext {
 public:
     // Constructor for the pre-compile code path (i.e., no Recorder)
-    KeyContext(ShaderCodeDictionary* dict,
+    KeyContext(const Caps* caps,
+               ShaderCodeDictionary* dict,
                RuntimeEffectDictionary* rtEffectDict,
                const SkColorInfo& dstColorInfo)
             : fDictionary(dict)
             , fRTEffectDict(rtEffectDict)
-            , fDstColorInfo(dstColorInfo) {
-    }
+            , fDstColorInfo(dstColorInfo)
+            , fCaps(caps) {}
 
     // Constructor for the ExtractPaintData code path (i.e., with a Recorder)
     KeyContext(Recorder*, const SkM44& local2Dev, const SkColorInfo&, const SkColor4f& paintColor);
@@ -39,6 +41,8 @@ public:
     KeyContext(const KeyContext&);
 
     Recorder* recorder() const { return fRecorder; }
+
+    const Caps* caps() const { return fCaps; }
 
     const SkM44& local2Dev() const { return fLocal2Dev; }
     const SkMatrix* localMatrix() const { return fLocalMatrix; }
@@ -58,6 +62,9 @@ protected:
     RuntimeEffectDictionary* fRTEffectDict;
     SkColorInfo fDstColorInfo;
     SkPMColor4f fPaintColor = SK_PMColor4fBLACK;
+
+private:
+    const Caps* fCaps = nullptr;
 };
 
 class KeyContextWithLocalMatrix : public KeyContext {

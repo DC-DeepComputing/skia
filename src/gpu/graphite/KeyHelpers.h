@@ -76,6 +76,17 @@ struct SolidColorShaderBlock {
 
 };
 
+struct DstColorBlock {
+    static void BeginBlock(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           PipelineDataGatherer*,
+                           sk_sp<TextureProxy> dst);
+};
+
+struct FinalBlendBlock {
+    static void BeginBlock(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*);
+};
+
 struct GradientShaderBlocks {
 
     struct GradientData {

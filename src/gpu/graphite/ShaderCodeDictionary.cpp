@@ -430,6 +430,85 @@ void GenerateDefaultPreamble(const ShaderInfo& shaderInfo,
 }
 
 //--------------------------------------------------------------------------------------------------
+static constexpr int kNumFinalBlendChildren = 2;
+
+std::string GenerateFinalBlendExpression(const ShaderInfo& shaderInfo,
+                                         int entryIndex,
+                                         const PaintParamsKey::BlockReader& reader,
+                                         const ShaderSnippet::Args& args) {
+    return SkSL::String::printf("FinalBlend_%d(%.*s)",
+                                entryIndex,
+                                (int)args.fPriorStageOutput.size(),
+                                args.fPriorStageOutput.data());
+}
+
+void GenerateFinalBlendPreamble(const ShaderInfo& shaderInfo,
+                                int* entryIndex,
+                                const PaintParamsKey::BlockReader& reader,
+                                std::string* preamble) {
+    SkASSERT(reader.numChildren() == 2);
+
+    int curEntryIndex = *entryIndex;
+    *entryIndex += 1;
+
+    std::string helperFn = SkSL::String::printf(
+        "half4 FinalBlend_%d(half4 priorStageOutput) {",
+        curEntryIndex);
+
+    // Get surface color.
+    std::string surfaceColorVar = emit_glue_code_for_entry(shaderInfo, *entryIndex, {}, &helperFn);
+    emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+
+    // Do the blend.
+    static constexpr char kUnusedLocalCoords[] = "float2(0)";
+    std::string blendOutputVar =
+            emit_glue_code_for_entry(shaderInfo,
+                                     *entryIndex,
+                                     {"priorStageOutput", surfaceColorVar, kUnusedLocalCoords},
+                                     &helperFn);
+    emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+
+    // TODO: Apply coverage via a third child entry.
+    // std::string coverageOutputVar =
+    //         emit_glue_code_for_entry(shaderInfo,
+    //                                  *entryIndex,
+    //                                  {blendOutputVar, "", ""},
+    //                                  &helperFn);
+    // emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+
+    SkSL::String::appendf(&helperFn,
+                              "return %s;"
+                          "}",
+                          blendOutputVar.c_str());
+
+    *preamble += helperFn;
+}
+
+//--------------------------------------------------------------------------------------------------
+static constexpr Uniform kDstColorUniforms[] = {
+        { "dstTextureCoords", SkSLType::kFloat4 },
+};
+
+static constexpr TextureAndSampler kDstColorTexturesAndSamplers[] = {
+        {"dstSampler"},
+};
+
+std::string GenerateDstColorExpression(const ShaderInfo& shaderInfo,
+                                       int entryIndex,
+                                       const PaintParamsKey::BlockReader& reader,
+                                       const ShaderSnippet::Args& args) {
+    const ShaderSnippet* entry = reader.entry();
+    SkASSERT(entry->fTexturesAndSamplers.size() == 1);
+    SkASSERT(entry->fUniforms.size() == 1);
+    std::string sampler = entry->getMangledSamplerName(0, entryIndex);
+    std::string coords = entry->getMangledUniformName(shaderInfo, 0, entryIndex);
+    return SkSL::String::printf("sample(%s, (sk_FragCoord.xy - %s.xy) * %s.zw)",
+                                sampler.c_str(),
+                                coords.c_str(),
+                                coords.c_str());
+}
+
+//--------------------------------------------------------------------------------------------------
 static constexpr int kFourStopGradient = 4;
 static constexpr int kEightStopGradient = 8;
 
@@ -1052,16 +1131,14 @@ std::string GenerateShaderBasedBlenderExpression(const ShaderInfo& shaderInfo,
 
     std::string uniformName = reader.entry()->getMangledUniformName(shaderInfo, 0, entryIndex);
 
-    // TODO: emit function to perform dest read into preamble, and replace half4(1) with that call
-    // (The `args.destColor` variable might seem tempting here, but this is used for programmatic
-    // src+dest blends within the shader, not for blends against the destination surface.)
-    const char * destColor = usePrimitiveColorAsDst ? "primitiveColor" : "half4(1)";
+    std::string_view dstColor =
+            usePrimitiveColorAsDst ? "primitiveColor" : args.fRuntimeShaderDstColor;
 
-    return SkSL::String::printf("%s(%s, %.*s, %s)",
+    return SkSL::String::printf("%s(%s, %.*s, %.*s)",
                                 reader.entry()->fStaticFunctionName,
                                 uniformName.c_str(),
                                 (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
-                                destColor);
+                                (int)dstColor.size(), dstColor.data());
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1528,6 +1605,28 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultPreamble,
             kNoChildren
     };
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kFinalBlend] = {
+            "FinalBlend",
+            { },            // no uniforms
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },            // no samplers
+            "Final blend",  // doesn't use static SkSL
+            GenerateFinalBlendExpression,
+            GenerateFinalBlendPreamble,
+            kNumFinalBlendChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kDstColor] = {
+            "DstColor",
+            SkSpan(kDstColorUniforms),
+            SnippetRequirementFlags::kNone,
+            SkSpan(kDstColorTexturesAndSamplers),
+            "dst color",  // doesn't use static SkSL
+            GenerateDstColorExpression,
+            GenerateDefaultPreamble,
+            kNoChildren
+    };
+
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kShaderBasedBlender] = {
             "ShaderBasedBlender",
             SkSpan(kShaderBasedBlenderUniforms),
