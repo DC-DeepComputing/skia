@@ -34,6 +34,24 @@
       "parentUuid": "3d6e419a_5f5a84c9",
       "revId": "b214d4ad7e3adb7a84bd10a4ae84861381e2f3f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "293bb840_5279a68f",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-04T21:36:09Z",
+      "side": 1,
+      "message": "Yeah, this is going to be a lot slower than just linearly searching a static std::array. This is going to chase pointers all over the place. You\u0027d need to have real numbers to show this is faster, because there is almost no way it can be.",
+      "parentUuid": "c37e780a_c876c7f9",
+      "revId": "b214d4ad7e3adb7a84bd10a4ae84861381e2f3f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
