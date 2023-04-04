@@ -87,6 +87,30 @@
       },
       "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec3a1184_f006b329",
+        "filename": "src/gpu/graphite/UploadTask.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-04T17:08:41Z",
+      "side": 1,
+      "message": "Though interestingly, in c++17 if you\u0027re using the default allocator, you should be able to instantiate a std::vector with an incomplete type, https://stackoverflow.com/questions/41913578/how-can-i-declare-a-member-vector-of-the-same-class/41913654#41913654. So are we hitting a compile issue in chrome where maybe we\u0027re not using the default allocator? Because normally we do hit this types of errors and warnings when building in Skia.",
+      "parentUuid": "9260a2d2_a0674801",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 22
+      },
+      "revId": "95d0dbd49c96eed0023be15eae86e91f80b0f1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
