@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b459624_41bd2222",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-04-04T08:28:21Z",
+      "side": 1,
+      "message": "Updated to parse BaseRenditionIsXMP",
+      "revId": "ec2a536e918dfd80286fbf6f5e7675683f1f1179",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
