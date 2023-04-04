@@ -86,6 +86,30 @@
       },
       "revId": "0490abc0501b3e039afc740a65e3ea1b880dcf8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "312dcc99_816717f1",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1513,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-04T16:34:16Z",
+      "side": 1,
+      "message": "No longer relevant since the DstColor snippet does actually evaluate to the dst color.",
+      "parentUuid": "7ae551f3_4cb15c5f",
+      "range": {
+        "startLine": 1513,
+        "startChar": 13,
+        "endLine": 1513,
+        "endChar": 21
+      },
+      "revId": "0490abc0501b3e039afc740a65e3ea1b880dcf8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

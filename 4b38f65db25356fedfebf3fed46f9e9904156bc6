@@ -159,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3ff4dfa_52a89eac",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-04T16:34:16Z",
+      "side": 1,
+      "message": "CL now includes Caps::getDstReadRequirements.",
+      "parentUuid": "50a00f5e_6ed17307",
+      "range": {
+        "startLine": 898,
+        "startChar": 4,
+        "endLine": 900,
+        "endChar": 5
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30057e72_f74f5c21",
