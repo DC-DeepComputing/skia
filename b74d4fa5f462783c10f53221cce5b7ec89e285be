@@ -34,6 +34,24 @@
       "parentUuid": "224e61ec_e92c805c",
       "revId": "b74d4fa5f462783c10f53221cce5b7ec89e285be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1ed735c_b6e5b442",
+        "filename": "src/sksl/analysis/SkSLReturnsInputAlpha.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-04T14:26:07Z",
+      "side": 1,
+      "message": "Oh right, nevermind. I was thinking that we ended the recursion, but there are no relevant children of the statement, and returning false does continue to process following statements. Ignore me.",
+      "parentUuid": "9707dce1_7e43516f",
+      "revId": "b74d4fa5f462783c10f53221cce5b7ec89e285be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
