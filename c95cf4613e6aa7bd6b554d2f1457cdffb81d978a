@@ -16,6 +16,24 @@
       "message": "I know that the spec document says `\"False\"` and `\"True\"`, but every other resource I\u0027ve found suggests that XML boolean attributes can be `0, 1, false, true`. We have to assume that someone is going to write these out using integers, and probably with different case, right?",
       "revId": "c95cf4613e6aa7bd6b554d2f1457cdffb81d978a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6130bce5_94d783dd",
+        "filename": "src/codec/SkJpegXmp.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-04-04T13:14:06Z",
+      "side": 1,
+      "message": "The XMP spec is very clear that \"False\" and \"True\" are the expected values, and that\u0027s consistent with what\u0027s listed in the FlexDR spec.\n\nThe implementation of XMP toolkit says:\n```\n// Formally the string value should be \"True\" or \"False\", but we should be more flexible here. Map\n// the string to lower case. Allow any of \"true\", \"false\", \"t\", \"f\", \"1\", or \"0\".\n```\nhttps://github.com/adobe/XMP-Toolkit-SDK/blob/f2340cff26eff425ccd2dbf082378dfc62816feb/XMPCore/source/XMPUtils.cpp#L2327\n\nI\u0027m hesitant to put too much into this particular area, because we don\u0027t actually support HDR-base-image gainmap images.\n\nThe spec itself is vague on how to interpret PQ and HLG (PQ is probably 203-nits-white, but HLG could be anything), and I don\u0027t think that Android supports decoding JPEG and HLG or PQ (at least yet ... maybe they will before U releases).\n\nAndroid\u0027s Gainmap APIs don\u0027t support this option, either.\nhttps://developer.android.com/reference/android/graphics/Gainmap\n\nThat was why I preferred keeping it out entirely.",
+      "parentUuid": "01121991_a703d45b",
+      "revId": "c95cf4613e6aa7bd6b554d2f1457cdffb81d978a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
