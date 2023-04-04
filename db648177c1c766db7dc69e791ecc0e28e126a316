@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c250df46_a59cd34e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:18:15Z",
+      "side": 1,
+      "message": "I put a lot down in the comments, I would be happy to VC about it and go over my key/ShaderNode clean up as well.",
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee25042b_3ce1ef58",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:18:15Z",
+      "side": 1,
+      "message": "This comment is going to cover some broader design thoughts around these snippets, and how they intersect the refactor I\u0027d been working on:\n\nHaving a block/snippet that provides the dst color is something that I had been thinking would useful for detangling the many different blend snippet IDs whose primary difference is how to wire up the src and dst children. If a blender is used as the last blend on the PaintParams, its dst can be the kDstColor block.\n\nHowever, I think it would be better to keep the DstColor block uniform-less and sampler-less so that it can be used independently of how the dst readback is implemented. It would also mean we can build the key and extract the rest of the paint uniforms up front (even within Device) and then later stick on the required values for dst readback. I think this could be handled in the DstColor snippet entry by leveraging the ShaderSnippet::Args object and making sure its dst variable referred to the value that would be set up by the outer SkSL template.\n\nRelated to this SkSL template, I don\u0027t know if having a kFinalBlend block is necessary. I can see that it acts as a single root to combine the paint\u0027s final blend and any coverage modulation that has to happen, but I don\u0027t see any reason why that specific logic can\u0027t just be part of the template SkSL that\u0027s directly appended in `ShaderInfo::toSkSL`.  This would shorten the PaintParamsKey and its root would just be the final blend block. It also helps keep the PaintParamsKey more independent from the RenderStep/Renderer.\n\nThe snippet generation system was set up to glue together SkSL sources from all the various `SkFoo` objects, but I don\u0027t think this final shader logic needs that level of indirection.",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 56,
+        "endChar": 14
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ee837da_8a92db35",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:18:15Z",
+      "side": 1,
+      "message": "Right now all of these snippets directly modify the skgpu::BlendInfo that\u0027s associated with a ShaderInfo instead of generating additional SkSL. They also only really make sense as the root node since they should only come up as the final blend (or at least root in my proposed modification where the node that combines the blend output and coverage is not represented in the paint\u0027s tree).\n\nI\u0027m not exactly sure how this will need to change but it may just mean that the recorded skgpu::BlendInfo is set once by these snippets and then modified to account for coverage-as-alpha, etc.",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 32
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6bab7f0_6d4e95bf",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:18:15Z",
+      "side": 1,
+      "message": "I don\u0027t have a strong opinion, but this could belong in ResourceTypes or DrawTypes?",
+      "range": {
+        "startLine": 56,
+        "startChar": 11,
+        "endLine": 56,
+        "endChar": 29
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c30af00e_37e4e714",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:18:15Z",
+      "side": 1,
+      "message": "IMO this doesn\u0027t fit my mental model for Caps. The DstReadRequirement is primarily defining *how* the dst value is available, which does seem like a relevant piece of info for Caps to provide.  But deciding whether or not a given paint needs the dst seems like it should be handled with the rest of the rendering logic.\n\nIn particular, Device has a static function `paint_depends_on_dst` that has very similar series of if-statements to the current impl of `getDstReadRequirement`.  Currently they have nuanced differences because `paint_depends_on_dst` returns true if the final color is affected by the dst color which is a broader mode than whether or not the shader needs access to the dst color in order to compute the final color. Device is also responsible for picking the Renderer, which determines if the coverage modulation has to happen, and that can modify or tweak any fixed-function blend or actually require the dst color in shader.",
+      "range": {
+        "startLine": 187,
+        "startChar": 5,
+        "endLine": 188,
+        "endChar": 67
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fbd069c_869e2a3c",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:18:15Z",
+      "side": 1,
+      "message": "I could imagine this function being modified to take whether or not the Renderer uses analytic AA, and then return whether or not final color is affected by the dst, and how the dst color is provided to the shader.",
+      "range": {
+        "startLine": 70,
+        "startChar": 5,
+        "endLine": 70,
+        "endChar": 25
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e3bceb5_a611aa27",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:18:15Z",
+      "side": 1,
+      "message": "This comment is the only reason `chooseRenderer()` isn\u0027t called earlier. I had actually wanted to fix it up so that the Renderer was known before `applyClipToDraw()` was called so that we could account for the analytic AA outset in the draw bounds.\n\nWe should also have the Renderer chosen before we do the DstReadRequirement so that we know whether or not analytic AA or MSAA is being used, which will impact things. That should be a relatively easy CL to put together that I can try and do this week.",
+      "range": {
+        "startLine": 931,
+        "startChar": 4,
+        "endLine": 933,
+        "endChar": 48
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "967b91b4_6531cd1e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 972,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:18:15Z",
+      "side": 1,
+      "message": "Other than needing the Renderer here, there\u0027s no reason this couldn\u0027t get moved up to the start of the logic to determine a flush or not.",
+      "range": {
+        "startLine": 972,
+        "startChar": 0,
+        "endLine": 972,
+        "endChar": 89
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6920c9a2_93067553",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:18:15Z",
+      "side": 1,
+      "message": "These maybe belong on the KeyContext.",
+      "range": {
+        "startLine": 76,
+        "startChar": 15,
+        "endLine": 77,
+        "endChar": 45
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc36074c_20b7c3ee",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-04T20:18:15Z",
+      "side": 1,
+      "message": "A big part of my refactor is that the preamble generation happens once up front and tracking of the `entryIndex` across children pretty much completely goes away, so it will mostly just clean up this code, assuming it stays as a snippet.\n\nI think I there are \"final blend\"s that we would need to handle, and maybe they are explicitly written out in the `toSkSL` function, or maybe we provide enough info to the PaintParams.toKey() function that we can record the final blend type in the key, even if some of its parameters (e.g. the dst color or the coverage value) are passed in explicitly from another source. I think we have:\n\n1. HW fixed-function blend based solely on the SkPaint\u0027s coefficient-based SkBlendMode, and there\u0027s no analytic coverage to fold in.\n2. As #1, but we have to fold an analytic coverage value into the shader\u0027s output color and possibly tweak the blend functions to produce the coverage-modulated blend result (e.g. dual-source blending).\n3. The dst color is available in shader *somehow* and we just need to call the blend functions and coverage modulation in SkSL",
+      "range": {
+        "startLine": 460,
+        "startChar": 0,
+        "endLine": 460,
+        "endChar": 62
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
