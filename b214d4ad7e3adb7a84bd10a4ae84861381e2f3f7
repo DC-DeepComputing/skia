@@ -16,6 +16,24 @@
       "message": "Why aren\u0027t these `static`? It looks like the set (and the string before) is being re-created each time? For this low number of lookups, I would expect the string version to be faster since everything is local and std::unordered_set is very non-local (forced to alloc for each node/entry).\n\nIt would be helpful to state in the commit message what the issue was and how this fixes it. Was the issue looking for a SkUnichar (int32_t) in a u16string? It looks like you might be better off with a std::array here?",
       "revId": "b214d4ad7e3adb7a84bd10a4ae84861381e2f3f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c37e780a_c876c7f9",
+        "filename": "modules/skunicode/src/SkUnicode_client.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-04-04T20:36:09Z",
+      "side": 1,
+      "message": "Technically I need a set of unique elements, not an array.\nMaking it faster.\nI will explain the reason for this change in the commit message.",
+      "parentUuid": "3d6e419a_5f5a84c9",
+      "revId": "b214d4ad7e3adb7a84bd10a4ae84861381e2f3f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
