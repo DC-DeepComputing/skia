@@ -229,6 +229,24 @@
       "parentUuid": "c68a0e0a_c3048a6e",
       "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "355c8c90_547d8a05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9563
+      },
+      "writtenOn": "2023-04-04T15:02:45Z",
+      "side": 1,
+      "message": "I\u0027m not sure what\u0027s best. Most of the solutions feel hacky to lie. Or involve unnecessary conversion.\n\nApparently CanvasOOPR is now enabled by default on Mac/Windows, so perhaps we can do nothing about this bug and let it get fixed when canvas oopr is enabled everywhere.\nhttps://bugs.chromium.org/p/chromium/issues/detail?id\u003d1426666#c17",
+      "parentUuid": "3c28e3ba_8f98838e",
+      "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
