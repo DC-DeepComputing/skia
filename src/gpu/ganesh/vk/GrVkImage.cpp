@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/vk/GrVkImage.h"
 
+#include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/gpu/ganesh/vk/GrVkImageView.h"
 #include "src/gpu/ganesh/vk/GrVkTexture.h"
@@ -150,7 +151,7 @@ sk_sp<GrVkImage> GrVkImage::Make(GrVkGpu* gpu,
     imageDesc.fIsProtected = isProtected;
 
     GrVkImageInfo info;
-    if (!GrVkImage::InitImageInfo(gpu, imageDesc, &info)) {
+    if (!GrVkImage::InitImageInfo(gpu, imageDesc, nullptr, &info)) {
         return nullptr;
     }
 
@@ -172,6 +173,26 @@ sk_sp<GrVkImage> GrVkImage::Make(GrVkGpu* gpu,
                                           std::move(textureView),
                                           budgeted,
                                           /*label=*/"MakeVkImage"));
+}
+
+void GrVkImage::rebindAfterDefrag(skgpu::VulkanBackendMemory new_address) {
+    GrVkImage::ImageDesc imageDesc;
+    imageDesc.fImageType = VK_IMAGE_TYPE_2D;
+    imageDesc.fFormat = fInfo.fFormat;
+    imageDesc.fWidth = width();
+    imageDesc.fHeight = height();
+    imageDesc.fLevels = mipLevels();
+    imageDesc.fSamples = numSamples();
+    imageDesc.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    imageDesc.fUsageFlags = fInfo.fImageUsageFlags;
+    imageDesc.fIsProtected = fInfo.fProtected;
+    skgpu::VulkanAlloc new_alloc;
+    getVkGpu()->memoryAllocator()->getAllocInfo(new_address, &new_alloc);
+    if (!GrVkImage::InitImageInfo(getVkGpu(), imageDesc, &new_alloc, &fInfo)) {
+        printf("RAMY: Oops. Could not recreate image info.\n");
+        return;
+    }
+    make_views(getVkGpu(), fInfo, supportedUsages(), &fFramebufferView, &fTextureView);
 }
 
 sk_sp<GrVkImage> GrVkImage::MakeWrapped(GrVkGpu* gpu,
@@ -303,7 +324,8 @@ void GrVkImage::init(GrVkGpu* gpu, bool forSecondaryCB) {
         fResource = new BorrowedResource(gpu, fInfo.fImage, fInfo.fAlloc, fInfo.fImageTiling);
     } else {
         SkASSERT(VK_NULL_HANDLE != fInfo.fAlloc.fMemory);
-        fResource = new Resource(gpu, fInfo.fImage, fInfo.fAlloc, fInfo.fImageTiling);
+        gpu->memoryAllocator()->addImageToDefragList(this, fInfo.fAlloc.fBackendMemory);
+        fResource = new Resource(gpu, this, fInfo.fImage, fInfo.fAlloc, fInfo.fImageTiling);
     }
 }
 
@@ -466,7 +488,10 @@ void GrVkImage::setImageLayoutAndQueueIndex(const GrVkGpu* gpu,
     this->setQueueFamilyIndex(newQueueFamilyIndex);
 }
 
-bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImageInfo* info) {
+bool GrVkImage::InitImageInfo(GrVkGpu* gpu,
+                              const ImageDesc& imageDesc,
+                              skgpu::VulkanAlloc* fAlloc,
+                              GrVkImageInfo* info) {
     if (0 == imageDesc.fWidth || 0 == imageDesc.fHeight) {
         return false;
     }
@@ -475,8 +500,8 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
     }
 
     bool isLinear = VK_IMAGE_TILING_LINEAR == imageDesc.fImageTiling;
-    VkImageLayout initialLayout = isLinear ? VK_IMAGE_LAYOUT_PREINITIALIZED
-                                           : VK_IMAGE_LAYOUT_UNDEFINED;
+    VkImageLayout initialLayout =
+            isLinear ? VK_IMAGE_LAYOUT_PREINITIALIZED : VK_IMAGE_LAYOUT_UNDEFINED;
 
     // Create Image
     VkSampleCountFlagBits vkSamples;
@@ -492,21 +517,21 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
         createflags |= VK_IMAGE_CREATE_PROTECTED_BIT;
     }
     const VkImageCreateInfo imageCreateInfo = {
-        VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,         // sType
-        nullptr,                                     // pNext
-        createflags,                                 // VkImageCreateFlags
-        imageDesc.fImageType,                        // VkImageType
-        imageDesc.fFormat,                           // VkFormat
-        { imageDesc.fWidth, imageDesc.fHeight, 1 },  // VkExtent3D
-        imageDesc.fLevels,                           // mipLevels
-        1,                                           // arrayLayers
-        vkSamples,                                   // samples
-        imageDesc.fImageTiling,                      // VkImageTiling
-        imageDesc.fUsageFlags,                       // VkImageUsageFlags
-        VK_SHARING_MODE_EXCLUSIVE,                   // VkSharingMode
-        0,                                           // queueFamilyCount
-        nullptr,                                     // pQueueFamilyIndices
-        initialLayout                                // initialLayout
+            VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,       // sType
+            nullptr,                                   // pNext
+            createflags,                               // VkImageCreateFlags
+            imageDesc.fImageType,                      // VkImageType
+            imageDesc.fFormat,                         // VkFormat
+            {imageDesc.fWidth, imageDesc.fHeight, 1},  // VkExtent3D
+            imageDesc.fLevels,                         // mipLevels
+            1,                                         // arrayLayers
+            vkSamples,                                 // samples
+            imageDesc.fImageTiling,                    // VkImageTiling
+            imageDesc.fUsageFlags,                     // VkImageUsageFlags
+            VK_SHARING_MODE_EXCLUSIVE,                 // VkSharingMode
+            0,                                         // queueFamilyCount
+            nullptr,                                   // pQueueFamilyIndices
+            initialLayout                              // initialLayout
     };
 
     VkImage image = VK_NULL_HANDLE;
@@ -516,35 +541,33 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
         return false;
     }
 
-    skgpu::Protected isProtected = gpu->protectedContext() ? skgpu::Protected::kYes
-                                                           : skgpu::Protected::kNo;
+    skgpu::Protected isProtected =
+            gpu->protectedContext() ? skgpu::Protected::kYes : skgpu::Protected::kNo;
     bool forceDedicatedMemory = gpu->vkCaps().shouldAlwaysUseDedicatedImageMemory();
     bool useLazyAllocation =
             SkToBool(imageDesc.fUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT);
 
-    auto checkResult = [gpu](VkResult result) {
-        return gpu->checkVkResult(result);
-    };
+    auto checkResult = [gpu](VkResult result) { return gpu->checkVkResult(result); };
     auto allocator = gpu->memoryAllocator();
     skgpu::VulkanAlloc alloc;
-    if (!skgpu::VulkanMemory::AllocImageMemory(allocator,
-                                               image,
-                                               isProtected,
-                                               forceDedicatedMemory,
-                                               useLazyAllocation,
-                                               checkResult,
-                                               &alloc) ||
-        (useLazyAllocation &&
-         !SkToBool(alloc.fFlags & skgpu::VulkanAlloc::kLazilyAllocated_Flag))) {
+    if (fAlloc) {
+        alloc = *fAlloc;
+    } else if (!skgpu::VulkanMemory::AllocImageMemory(allocator,
+                                                      image,
+                                                      isProtected,
+                                                      forceDedicatedMemory,
+                                                      useLazyAllocation,
+                                                      checkResult,
+                                                      &alloc) ||
+               (useLazyAllocation &&
+                !SkToBool(alloc.fFlags & skgpu::VulkanAlloc::kLazilyAllocated_Flag))) {
         VK_CALL(gpu, DestroyImage(gpu->device(), image, nullptr));
         return false;
     }
 
     // Bind buffer
-    GR_VK_CALL_RESULT(gpu, result, BindImageMemory(gpu->device(),
-                                                   image,
-                                                   alloc.fMemory,
-                                                   alloc.fOffset));
+    GR_VK_CALL_RESULT(
+            gpu, result, BindImageMemory(gpu->device(), image, alloc.fMemory, alloc.fOffset));
     if (result) {
         skgpu::VulkanMemory::FreeImageMemory(allocator, alloc);
         VK_CALL(gpu, DestroyImage(gpu->device(), image, nullptr));
@@ -625,6 +648,7 @@ void GrVkImage::setResourceRelease(sk_sp<RefCntedReleaseProc> releaseHelper) {
 
 void GrVkImage::Resource::freeGPUData() const {
     this->invokeReleaseProc();
+    fGpu->memoryAllocator()->removeImageFromDefragList(fGrImage);
     VK_CALL(fGpu, DestroyImage(fGpu->device(), fImage, nullptr));
     skgpu::VulkanMemory::FreeImageMemory(fGpu->memoryAllocator(), fAlloc);
 }
@@ -711,4 +735,3 @@ void GrVkImage::setCurrentQueueFamilyToGraphicsQueue(GrVkGpu* gpu) {
     fMutableState->setQueueFamilyIndex(gpu->queueIndex());
 }
 #endif
-

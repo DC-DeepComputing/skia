@@ -8,9 +8,14 @@
 #ifndef skgpu_VulkanMemoryAllocator_DEFINED
 #define skgpu_VulkanMemoryAllocator_DEFINED
 
+#include <unordered_map>
+
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/vk/VulkanTypes.h"
+
+class GrVkImage;
+typedef struct VmaAllocator_T* VmaAllocator;
 
 namespace skgpu {
 
@@ -61,6 +66,12 @@ public:
                                           uint32_t allocationPropertyFlags,
                                           skgpu::VulkanBackendMemory* memory) = 0;
 
+    void addImageToDefragList(GrVkImage* gr_image, VulkanBackendMemory memory);
+    void removeImageFromDefragList(GrVkImage* gr_image_);
+
+    // TODO: Rename me.
+    virtual void DoDefragPass(VkCommandBuffer vk_command_buffer) = 0;
+
     // Fills out the passed in skgpu::VulkanAlloc struct for the passed in
     // skgpu::VulkanBackendMemory.
     virtual void getAllocInfo(const skgpu::VulkanBackendMemory&, skgpu::VulkanAlloc*) const = 0;
@@ -107,6 +118,11 @@ public:
     // amount of memory in use by an allocation from this allocator.
     // Return 1st param is total allocated memory, 2nd is total used memory.
     virtual std::pair<uint64_t, uint64_t> totalAllocatedAndUsedMemory() const = 0;
+
+protected:
+    std::unordered_map<GrVkImage*, skgpu::VulkanBackendMemory> defrag_resource_map_;
+
+    virtual VmaAllocator allocator() const = 0;
 };
 
 } // namespace skgpu

@@ -141,6 +141,8 @@ public:
 
     bool hasWork() const { return fHasWork; }
 
+    VkCommandBuffer vkCommandBuffer() { return fCmdBuffer; }
+
 protected:
     GrVkCommandBuffer(VkCommandBuffer cmdBuffer, bool isWrapped = false)
             : fIsActive(isWrapped) // All wrapped command buffers start as active

@@ -5,6 +5,7 @@ licenses(["notice"])
 exports_files_legacy()
 
 VK_FILES = [
+    "VulkanMemoryAllocator.cpp",
     "VulkanAMDMemoryAllocator.cpp",
     "VulkanAMDMemoryAllocator.h",
     "VulkanExtensions.cpp",

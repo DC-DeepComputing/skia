@@ -11,6 +11,7 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/vk/GrVkTypes.h"
+#include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "include/private/gpu/ganesh/GrVkTypesPriv.h"
 #include "src/gpu/MutableTextureStateRef.h"
@@ -25,7 +26,7 @@
 class GrVkGpu;
 class GrVkImageView;
 
-class GrVkImage : public GrAttachment {
+class SK_API GrVkImage : public GrAttachment {
 private:
     class Resource;
 
@@ -192,7 +193,10 @@ public:
                 , fIsProtected(GrProtected::kNo) {}
     };
 
-    static bool InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImageInfo*);
+    static bool InitImageInfo(GrVkGpu* gpu,
+                              const ImageDesc& imageDesc,
+                              skgpu::VulkanAlloc* alloc,
+                              GrVkImageInfo*);
     // Destroys the internal VkImage and VkDeviceMemory in the GrVkImageInfo
     static void DestroyImageInfo(const GrVkGpu* gpu, GrVkImageInfo*);
 
@@ -205,6 +209,8 @@ public:
     // Helpers to use for setting the layout of the VkImage
     static VkPipelineStageFlags LayoutToPipelineSrcStageFlags(const VkImageLayout layout);
     static VkAccessFlags LayoutToSrcAccessMask(const VkImageLayout layout);
+
+    void rebindAfterDefrag(skgpu::VulkanBackendMemory new_address);
 
 #if GR_TEST_UTILS
     void setCurrentQueueFamilyToGraphicsQueue(GrVkGpu* gpu);
@@ -278,12 +284,11 @@ private:
         }
 
         Resource(const GrVkGpu* gpu,
+                 GrVkImage* grImage,
                  VkImage image,
                  const skgpu::VulkanAlloc& alloc,
                  VkImageTiling tiling)
-            : fGpu(gpu)
-            , fImage(image)
-            , fAlloc(alloc) {}
+                : fGpu(gpu), fImage(image), fGrImage(grImage), fAlloc(alloc) {}
 
         ~Resource() override {}
 
@@ -302,6 +307,7 @@ private:
 
         const GrVkGpu*     fGpu;
         VkImage            fImage;
+        GrVkImage* fGrImage;
         skgpu::VulkanAlloc fAlloc;
 
         using INHERITED = GrTextureResource;
@@ -310,10 +316,12 @@ private:
     // for wrapped textures
     class BorrowedResource : public Resource {
     public:
-        BorrowedResource(const GrVkGpu* gpu, VkImage image, const skgpu::VulkanAlloc& alloc,
+        BorrowedResource(const GrVkGpu* gpu,
+                         VkImage image,
+                         const skgpu::VulkanAlloc& alloc,
                          VkImageTiling tiling)
-            : Resource(gpu, image, alloc, tiling) {
-        }
+                : Resource(gpu, nullptr, image, alloc, tiling) {}
+
     private:
         void freeGPUData() const override;
     };

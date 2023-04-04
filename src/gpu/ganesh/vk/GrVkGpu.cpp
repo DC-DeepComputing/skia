@@ -182,6 +182,8 @@ sk_sp<GrGpu> GrVkGpu::Make(const GrVkBackendContext& backendContext,
 
     sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator = backendContext.fMemoryAllocator;
     if (!memoryAllocator) {
+        fprintf(stderr, "RAMY: We were not given an allocator, so I'm creating one now.\n");
+
         // We were not given a memory allocator at creation
         bool mustUseCoherentHostVisibleMemory = caps->mustUseCoherentHostVisibleMemory();
         memoryAllocator = skgpu::VulkanAMDMemoryAllocator::Make(backendContext.fInstance,
@@ -1707,7 +1709,7 @@ bool GrVkGpu::createVkImageForBackendSurface(VkFormat vkFormat,
     imageDesc.fMemProps = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
     imageDesc.fIsProtected = fProtectedContext;
 
-    if (!GrVkImage::InitImageInfo(this, imageDesc, info)) {
+    if (!GrVkImage::InitImageInfo(this, imageDesc, nullptr, info)) {
         SkDebugf("Failed to init image info\n");
         return false;
     }
@@ -2229,6 +2231,9 @@ void GrVkGpu::takeOwnershipOfBuffer(sk_sp<GrGpuBuffer> buffer) {
 }
 
 bool GrVkGpu::onSubmitToGpu(bool syncCpu) {
+    this->submitCommandBuffer(kForce_SyncQueue);
+    syncCpu = true;
+    memoryAllocator()->DoDefragPass(currentCommandBuffer()->vkCommandBuffer());
     if (syncCpu) {
         return this->submitCommandBuffer(kForce_SyncQueue);
     } else {
