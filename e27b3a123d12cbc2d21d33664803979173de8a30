@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "683cffdf_6bdea795",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-04-05T15:35:00Z",
+      "side": 1,
+      "message": "Change in skia:main landed in android:master with http://ag/22462092",
+      "revId": "e27b3a123d12cbc2d21d33664803979173de8a30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
