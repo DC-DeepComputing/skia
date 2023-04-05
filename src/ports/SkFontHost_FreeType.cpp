@@ -2028,7 +2028,7 @@ FT_Face SkTypeface_FreeType::Scanner::openFace(SkStreamAsset* stream, int ttcInd
     return face;
 }
 
-bool SkTypeface_FreeType::Scanner::recognizedFont(SkStreamAsset* stream, int* numFaces) const {
+bool SkTypeface_FreeType::Scanner::scanFont(SkStreamAsset* stream, int* numFaces) const {
     SkAutoMutexExclusive libraryLock(fLibraryMutex);
 
     FT_StreamRec streamRec;
@@ -2041,14 +2041,28 @@ bool SkTypeface_FreeType::Scanner::recognizedFont(SkStreamAsset* stream, int* nu
     return true;
 }
 
-bool SkTypeface_FreeType::Scanner::scanFont(
-    SkStreamAsset* stream, int ttcIndex,
+bool SkTypeface_FreeType::Scanner::scanFace(SkStreamAsset* stream, int faceIndex,
+                                            int* numInstances) const {
+    SkAutoMutexExclusive libraryLock(fLibraryMutex);
+
+    FT_StreamRec streamRec;
+    SkUniqueFTFace face(this->openFace(stream, -(faceIndex + 1), &streamRec));
+    if (!face) {
+        return false;
+    }
+
+    *numInstances = face->style_flags >> 16;
+    return true;
+}
+
+bool SkTypeface_FreeType::Scanner::scanInstance(
+    SkStreamAsset* stream, int faceIndex, int instanceIndex,
     SkString* name, SkFontStyle* style, bool* isFixedPitch, AxisDefinitions* axes) const
 {
     SkAutoMutexExclusive libraryLock(fLibraryMutex);
 
     FT_StreamRec streamRec;
-    SkUniqueFTFace face(this->openFace(stream, ttcIndex, &streamRec));
+    SkUniqueFTFace face(this->openFace(stream, (instanceIndex << 16) + faceIndex, &streamRec));
     if (!face) {
         return false;
     }
@@ -2348,8 +2362,8 @@ sk_sp<SkTypeface> SkTypeface_FreeType::MakeFromStream(std::unique_ptr<SkStreamAs
     SkFontStyle style;
     SkString name;
     Scanner::AxisDefinitions axisDefinitions;
-    if (!scanner.scanFont(stream.get(), args.getCollectionIndex(),
-                          &name, &style, &isFixedPitch, &axisDefinitions)) {
+    if (!scanner.scanInstance(stream.get(), args.getCollectionIndex(), 0,
+                              &name, &style, &isFixedPitch, &axisDefinitions)) {
         return nullptr;
     }
 

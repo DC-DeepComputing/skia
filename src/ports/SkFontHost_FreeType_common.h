@@ -95,10 +95,12 @@ public:
             SkFixed fMaximum;
         };
         using AxisDefinitions = SkSTArray<4, AxisDefinition, true>;
-        bool recognizedFont(SkStreamAsset* stream, int* numFonts) const;
-        bool scanFont(SkStreamAsset* stream, int ttcIndex,
-                      SkString* name, SkFontStyle* style, bool* isFixedPitch,
-                      AxisDefinitions* axes) const;
+        bool scanFont(SkStreamAsset* stream, int* numFaces) const;
+        bool scanFace(SkStreamAsset* stream, int faceIndex, int* numInstances) const;
+        /* instanceIndex 0 is the default instance, 1 to numInstances are the named instances. */
+        bool scanInstance(SkStreamAsset* stream, int faceIndex, int instanceIndex,
+                          SkString* name, SkFontStyle* style, bool* isFixedPitch,
+                          AxisDefinitions* axes) const;
         static void computeAxisValues(
             AxisDefinitions axisDefinitions,
             const SkFontArguments::VariationPosition position,
