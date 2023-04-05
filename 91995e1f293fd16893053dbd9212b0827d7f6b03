@@ -52,6 +52,24 @@
       "parentUuid": "91c65e1b_f146f564",
       "revId": "91995e1f293fd16893053dbd9212b0827d7f6b03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93b4092e_97042125",
+        "filename": "src/core/SkWriteBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-05T18:51:08Z",
+      "side": 1,
+      "message": "2) Our tools would need to not rely on the default (only reads as PNG) and set fImageProc, but sure, that should work.",
+      "parentUuid": "bf1da4de_cc1523b8",
+      "revId": "91995e1f293fd16893053dbd9212b0827d7f6b03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
