@@ -148,6 +148,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a30cac0a_d5f6e74c",
+        "filename": "experimental/rust_cxx/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-05T15:53:45Z",
+      "side": 1,
+      "message": "This doesn\u0027t need to block this CL (I\u0027m also not currently blocked on toolchain support) though some confirmation that Bazel can support this would be helpful.",
+      "parentUuid": "d008b86e_3c6bbf86",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "317efcd9_b124d313",
         "filename": "experimental/rust_cxx/hype-bridge.rs",
         "patchSetId": 13
