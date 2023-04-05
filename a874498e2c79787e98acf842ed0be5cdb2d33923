@@ -16,6 +16,23 @@
       "message": "This works with the Android test case anyway",
       "revId": "a874498e2c79787e98acf842ed0be5cdb2d33923",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6985be97_e2eda9d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-05T16:45:23Z",
+      "side": 1,
+      "message": "I\u0027m okay with this, although we should at least add a comment that this only impacts the GPU backend (for now). Things aren\u0027t quite as centralized in the CPU backend, so leaving that as a follow-up is probably ok?",
+      "revId": "a874498e2c79787e98acf842ed0be5cdb2d33923",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
