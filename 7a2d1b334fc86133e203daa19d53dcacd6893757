@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86a87c3b_ac056300",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-05T18:01:24Z",
+      "side": 1,
+      "message": "It was changed to make it consistent with MakeBackendTextureFromImage. The invalid GrTextureBackend ended up being a bit awkward to \"stub out\" if necessary, since you need to include the header to do so.",
+      "parentUuid": "b0f4856c_a1b78fa5",
+      "range": {
+        "startLine": 337,
+        "startChar": 47,
+        "endLine": 337,
+        "endChar": 64
+      },
+      "revId": "7a2d1b334fc86133e203daa19d53dcacd6893757",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3745dfc_8c48d97f",
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af07b65f_c08b8b12",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-05T18:01:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e3745dfc_8c48d97f",
+      "revId": "7a2d1b334fc86133e203daa19d53dcacd6893757",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8163cfc7_0f7b454c",
@@ -71,6 +113,24 @@
       "writtenOn": "2023-04-05T16:04:30Z",
       "side": 1,
       "message": "This is stale.",
+      "revId": "7a2d1b334fc86133e203daa19d53dcacd6893757",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "484ef692_8bc422ae",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-05T18:01:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8163cfc7_0f7b454c",
       "revId": "7a2d1b334fc86133e203daa19d53dcacd6893757",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
