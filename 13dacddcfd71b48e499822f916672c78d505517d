@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e5ed612_1261ad20",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-04-05T14:29:58Z",
+      "side": 1,
+      "message": "Since these are always tried together, would it make sense to just extend the existing `parseRGBColorToken` to parse an optional alpha?\n\nE.g. I think you could add this right before `return true` for equivalent behavior:\n\n    // optional alpha\n    int32_t a;\n    if (this-\u003eparseSepToken() \u0026\u0026\n        this-\u003eparseColorComponentScalarToken(\u0026a)) {\n        *c \u003d SkColorSetA(*c, static_cast\u003cuint8_t\u003e(a));\n    }\n\nThen you can keep `parseColorComponentToken` unchanged and just need to add `parseColorComponentScalarToken`.",
+      "range": {
+        "startLine": 379,
+        "startChar": 0,
+        "endLine": 380,
+        "endChar": 39
+      },
+      "revId": "13dacddcfd71b48e499822f916672c78d505517d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
