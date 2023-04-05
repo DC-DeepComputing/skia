@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff14edea_1fbc80bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-04-05T16:04:30Z",
+      "side": 1,
+      "message": "Some comments, having seen the new APIs used in practice.",
+      "revId": "7a2d1b334fc86133e203daa19d53dcacd6893757",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0f4856c_a1b78fa5",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-04-05T16:04:30Z",
+      "side": 1,
+      "message": "Why are we changing to bool return + out-param instead of GrTextureBackend return value?\n\nCan this function return true plus an invalid GrTextureBackend?",
+      "range": {
+        "startLine": 337,
+        "startChar": 47,
+        "endLine": 337,
+        "endChar": 64
+      },
+      "revId": "7a2d1b334fc86133e203daa19d53dcacd6893757",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3745dfc_8c48d97f",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-04-05T16:04:30Z",
+      "side": 1,
+      "message": "I see this being passed null, which is usually a no-no for out-params.  We should at least document that use case.",
+      "revId": "7a2d1b334fc86133e203daa19d53dcacd6893757",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8163cfc7_0f7b454c",
+        "filename": "include/gpu/ganesh/SkImageGanesh.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-04-05T16:04:30Z",
+      "side": 1,
+      "message": "This is stale.",
+      "revId": "7a2d1b334fc86133e203daa19d53dcacd6893757",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
