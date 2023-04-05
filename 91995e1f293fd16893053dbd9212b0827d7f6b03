@@ -70,6 +70,24 @@
       "parentUuid": "bf1da4de_cc1523b8",
       "revId": "91995e1f293fd16893053dbd9212b0827d7f6b03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34c50698_b175336f",
+        "filename": "src/core/SkWriteBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-05T18:56:32Z",
+      "side": 1,
+      "message": "That\u0027s only true if we change the SkReadBuffer code (where you have the TODO). If we explicitly leave that function the way that it\u0027s written, then everything just works, right?",
+      "parentUuid": "93b4092e_97042125",
+      "revId": "91995e1f293fd16893053dbd9212b0827d7f6b03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
