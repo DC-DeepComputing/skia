@@ -34,6 +34,24 @@
       "parentUuid": "0d3ca814_35d63f8b",
       "revId": "91995e1f293fd16893053dbd9212b0827d7f6b03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf1da4de_cc1523b8",
+        "filename": "src/core/SkWriteBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-05T16:50:20Z",
+      "side": 1,
+      "message": "I feel like it\u0027s pretty valuable - it saves considerable CPU work and memory allocation, etc... In terms of not having the right codec, I think there\u0027s really two situations where we\u0027re deserializing:\n\n1) Client has code that runs on both ends. In this case, if they were able to load/use a particular format when they initially created the image and serialized it, then we can assume they still have support for it when they re-decode the picture?\n2) Client spits out an SKP and hands it to us for debugging purposes. In that case, I think we\u0027re fine -- our tools are going to include all the codecs, right?",
+      "parentUuid": "91c65e1b_f146f564",
+      "revId": "91995e1f293fd16893053dbd9212b0827d7f6b03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
