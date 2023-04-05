@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0b3bf67_142724a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-05T02:04:22Z",
+      "side": 1,
+      "message": "I think this is OK and it is consistent with Chromium. IWBN to not strictly tie Skia to one particular FFI bridge (e.g. `cbindgen` may be preferable in some cases) but that\u0027s mainly food for thought.",
+      "range": {
+        "startLine": 9,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 24
+      },
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "395f5a1e_461f2afe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-05T02:04:22Z",
+      "side": 1,
+      "message": "Thank you for working on this, Kevin! Just a couple questions.",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eb5d8d2_283432e3",
+        "filename": "bazel/external/cxx/BUILD.bazel.skia",
+        "patchSetId": 13
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-05T02:04:22Z",
+      "side": 1,
+      "message": "Does this need to list the `c++17` feature here? It mainly seems to enable additional features on `cxxbridge`: https://github.com/dtolnay/cxx/blob/master/Cargo.toml#LL20-L20C8",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91a9b607_53a45103",
+        "filename": "bazel/external/cxx/Cargo.lock",
+        "patchSetId": 13
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-05T02:04:22Z",
+      "side": 1,
+      "message": "Is there guidance on whether to check in Cargo.lock files in a Bazel build? The general convention for cargo builds is to _not_ check in Cargo.lock files in library code (see https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html and https://doc.rust-lang.org/cargo/faq.html#why-do-binaries-have-cargolock-in-version-control-but-not-libraries)",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "317efcd9_b124d313",
+        "filename": "experimental/rust_cxx/hype-bridge.rs",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-05T02:04:22Z",
+      "side": 1,
+      "message": "IWBN to have an example for the reverse direction too, i.e. `extern \"C++\"`. In my vello FFI crate I have both generated and hand-coded C++ headers. The hand-coded C++ header defines an interface to be implemented by the client and the rust code calls out to it:\n\n   * The C++ header: https://skia-review.googlesource.com/c/skia/+/665656/3/third_party/vello/include/vello_cpp/path_iterator.h\n   * The FFI bridge: https://skia-review.googlesource.com/c/skia/+/665656/3/third_party/vello/src/lib.rs#126\n\nCurrently I keep this header in an `include/` directory that I explicitly set up in the GN rule https://skia-review.googlesource.com/c/skia/+/665656/4/third_party/vello/BUILD.gn#27 so it\u0027s visible to the client and my custom `build.rs` (https://skia-review.googlesource.com/c/skia/+/665656/4/third_party/vello/build.rs#9) configures cxxbuild to look for it when compiling Rust.\n\nHow should I structure this in the Bazel world?",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
