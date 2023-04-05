@@ -155,6 +155,14 @@ bool Builder::appendStep(const ComputeStep* step,
         dispatch.fBindings.push_back({static_cast<BindingIndex>(bindingIndex), dispatchResource});
     }
 
+    auto wgBufferDescs = step->workgroupBuffers();
+    if (!wgBufferDescs.empty()) {
+        dispatch.fWorkgroupBuffers.reserve(wgBufferDescs.size());
+        for (const auto& wgBufferDesc : wgBufferDescs) {
+            dispatch.fWorkgroupBuffers.push_back(wgBufferDesc);
+        }
+    }
+
     // We need to switch pipelines if this step uses a different pipeline from the previous step.
     if (fObj->fPipelineDescs.empty() ||
         fObj->fPipelineDescs.back().uniqueID() != step->uniqueID()) {
