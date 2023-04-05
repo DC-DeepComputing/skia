@@ -94142,6 +94142,7 @@
         "skia/WORKSPACE.bazel",
         "skia/bazel",
         "skia/go_repositories.bzl",
+        "skia/include/config",
         "skia/requirements.txt",
         "skia/toolchain",
         "skia/infra/bots/BUILD.bazel",
@@ -94286,8 +94287,6 @@
         "modules/canvaskit/.*"
       ]
     },
-    "CodeSize-skottie_tool-Debian10-Clang-x86_64-OptimizeForSize": {},
-    "CodeSize-skottie_tool_gpu-Debian10-Clang-arm-OptimizeForSize-Android": {},
     "Housekeeper-OnDemand-Presubmit": {},
     "Housekeeper-PerCommit-CheckGeneratedFiles": {},
     "Housekeeper-PerCommit-InfraTests_Linux": {},
