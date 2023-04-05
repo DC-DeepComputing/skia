@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bf5e748_864e1a12",
+        "filename": "bench/ColorFilterBench.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-05T20:07:02Z",
+      "side": 1,
+      "message": "Strangely, this might actually change the performance characteristics. Matrix color filter looks at the matrix to decide is alpha is unchanged, and uses that to possibly omit a stage.",
+      "revId": "d0f1df287047b799922a9721fe2e965274d1268a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
