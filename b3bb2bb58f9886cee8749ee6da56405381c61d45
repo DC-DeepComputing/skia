@@ -113,6 +113,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1375df8d_e508ba55",
+        "filename": "experimental/rust_cxx/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-05T15:43:07Z",
+      "side": 1,
+      "message": "One other requirement from my end is supporting a `build.rs` script that uses cargo features in a dependent project. I suspect Bazel has support for this but it would be great to have an example that actually does this.\n\nTo give you a more concrete example, our `vello_shaders` crate has a build.rs file that compiles shaders (authored in WGSL) to a backend API native shader language based on Cargo feature flags: https://github.com/linebender/vello/blob/main/crates/shaders/build.rs. For example, the `msl` feature triggers compilation to the Metal shading language (see the `if cfg!(feature \u003d \"msl\")` and `if cfg!(feature \u003d \"wgsl\")` statements in that file).\n\nThe script generates a Rust file that it places into `OUT_DIR` (the Rust-y environment variable that refers to the build directory). This file is then embedded into the library Rust using the `include!` macro: https://github.com/linebender/vello/blob/main/crates/shaders/src/lib.rs#L34 (also see https://doc.rust-lang.org/std/macro.include.html).\n\nTo make this even more fun, our build.rs file depends on types that are defined in the actual library itself: https://github.com/linebender/vello/blob/main/crates/shaders/build.rs#L4. I think we may be able to untangle this dependency on the vello side but we currently rely on it and this is supported by cargo.\n\nAlso see the Cargo.toml file: https://github.com/linebender/vello/blob/main/crates/shaders/Cargo.toml#L16",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "317efcd9_b124d313",
         "filename": "experimental/rust_cxx/hype-bridge.rs",
         "patchSetId": 13
