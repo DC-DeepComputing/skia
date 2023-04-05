@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b56cef4_1a67d5ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-04-05T16:30:22Z",
+      "side": 1,
+      "message": "This works with the Android test case anyway",
+      "revId": "a874498e2c79787e98acf842ed0be5cdb2d33923",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
