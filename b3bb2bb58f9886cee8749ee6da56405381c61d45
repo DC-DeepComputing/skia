@@ -41,6 +41,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a8ee99d_dad46b12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-04-05T08:21:16Z",
+      "side": 1,
+      "message": "+💯 - Thanks for putting this together so quickly.",
+      "parentUuid": "395f5a1e_461f2afe",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4eb5d8d2_283432e3",
@@ -54,6 +72,24 @@
       "writtenOn": "2023-04-05T02:04:22Z",
       "side": 1,
       "message": "Does this need to list the `c++17` feature here? It mainly seems to enable additional features on `cxxbridge`: https://github.com/dtolnay/cxx/blob/master/Cargo.toml#LL20-L20C8",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c571e7f_dabdd227",
+        "filename": "bazel/external/cxx/BUILD.bazel.skia",
+        "patchSetId": 13
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-04-05T08:21:16Z",
+      "side": 1,
+      "message": "I am not 100% sure but the way I understand this, this feature controls with what `-std\u003dc++\u003cnumber\u003e` flag cxx compiles the C++ code when cxx takes care of the build in a cargo environment and thus controls what\u0027s allowed on the C++ side of the bridge declarations and definitions. \n\nI could not find any other references to `#[cfg(feature \u003d \"c++17\")]` and `#[cfg(feature \u003d \"c++21\")]` in the cxx code.\n\nI suspect we may not need this if we have our own bazel steps for compilation of the bridge code.\n\nhttps://github.com/dtolnay/cxx/blob/master/flags/src/impl.rs",
+      "parentUuid": "4eb5d8d2_283432e3",
       "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -88,6 +124,58 @@
       "writtenOn": "2023-04-05T02:04:22Z",
       "side": 1,
       "message": "IWBN to have an example for the reverse direction too, i.e. `extern \"C++\"`. In my vello FFI crate I have both generated and hand-coded C++ headers. The hand-coded C++ header defines an interface to be implemented by the client and the rust code calls out to it:\n\n   * The C++ header: https://skia-review.googlesource.com/c/skia/+/665656/3/third_party/vello/include/vello_cpp/path_iterator.h\n   * The FFI bridge: https://skia-review.googlesource.com/c/skia/+/665656/3/third_party/vello/src/lib.rs#126\n\nCurrently I keep this header in an `include/` directory that I explicitly set up in the GN rule https://skia-review.googlesource.com/c/skia/+/665656/4/third_party/vello/BUILD.gn#27 so it\u0027s visible to the client and my custom `build.rs` (https://skia-review.googlesource.com/c/skia/+/665656/4/third_party/vello/build.rs#9) configures cxxbuild to look for it when compiling Rust.\n\nHow should I structure this in the Bazel world?",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c94b8d2_60177b3d",
+        "filename": "experimental/rust_cxx/hype-bridge.rs",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-04-05T08:21:16Z",
+      "side": 1,
+      "message": "+1, I need the reverse direction, too, and would benefit from an example using the `unsafe extern \"C++\". One example: Calling skrifa (from Fontantions code) for generating a path from a glyph in a font, providing a Rust callback interface which in turn calls the `SkPath::` C++ side function.",
+      "parentUuid": "317efcd9_b124d313",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdab0276_ec5e3d2e",
+        "filename": "experimental/rust_cxx/rust_cxx_bridge.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-04-05T08:21:16Z",
+      "side": 1,
+      "message": "Nice to have this as part of the build chain and not needing to make this a manual step and checking in the generated parts. Thanks!",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38809fc8_7c5e6a00",
+        "filename": "toolchain/mac_toolchain_config.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-04-05T08:21:16Z",
+      "side": 1,
+      "message": "Nit: I\u0027ll leave this up to the Skia reviewers, but it seems like these changes could be factored out into a separate CL as they could stand on their own and bring a benefit independent of the Rust toolchain additions?",
       "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
