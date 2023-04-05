@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f06380a_e8e1800c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-04-05T17:58:39Z",
+      "side": 1,
+      "message": "And now the u-release cherry-pick",
+      "revId": "5416624bf7c3520947886f1f1d75f88d1775e0c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
