@@ -319,6 +319,16 @@ load("@cxx_deps//:defs.bzl", cxx_deps = "crate_repositories")
 # ... and adds them to the workspace.
 cxx_deps()
 
+crates_repository(
+    name = "fontations_backend_deps",
+    cargo_lockfile = "//bazel/external/fontations:Cargo.lock",
+    manifests = ["//bazel/external/fontations:Cargo.toml"],
+)
+
+load("@fontations_backend_deps//:defs.bzl", fontations_backend_deps = "crate_repositories")
+
+fontations_backend_deps()
+
 ###############################################################
 
 # Bazel will look for env variables ANDROID_HOME and ANDROID_NDK_HOME.
