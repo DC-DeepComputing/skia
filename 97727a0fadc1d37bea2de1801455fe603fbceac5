@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4425e8a1_adfa6d52",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-04-06T14:45:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9320765c_5e017298",
+      "range": {
+        "startLine": 322,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 17
+      },
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dedbc36c_c57bbf69",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-04-06T14:24:07Z",
       "side": 1,
       "message": "Would just the name \"fontations\" make sense here? Then the labels would look like\n@fontations//:font-types",
+      "range": {
+        "startLine": 323,
+        "startChar": 12,
+        "endLine": 323,
+        "endChar": 35
+      },
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47a3d7e4_5b910d0a",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-04-06T14:45:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dedbc36c_c57bbf69",
       "range": {
         "startLine": 323,
         "startChar": 12,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1469737_cb450ae4",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-04-06T14:45:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36f5944b_4d100a9b",
+      "range": {
+        "startLine": 328,
+        "startChar": 44,
+        "endLine": 328,
+        "endChar": 67
+      },
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "976e6d81_91c2ade2",
@@ -100,6 +172,24 @@
       "writtenOn": "2023-04-06T14:24:07Z",
       "side": 1,
       "message": "Add a comment \"intentionally blank BUILD.bazel file to make Bazel package\"",
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5f0add1_85abf14b",
+        "filename": "bazel/external/fontations/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-04-06T14:45:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "976e6d81_91c2ade2",
       "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
