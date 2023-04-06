@@ -58,6 +58,9 @@ public:
     bool operator==(const SkFontStyle& rhs) const {
         return fValue == rhs.fValue;
     }
+    bool operator!=(const SkFontStyle& rhs) const {
+        return !(*this == rhs);
+    }
 
     int weight() const { return fValue & 0xFFFF; }
     int width() const { return (fValue >> 16) & 0xFF; }
