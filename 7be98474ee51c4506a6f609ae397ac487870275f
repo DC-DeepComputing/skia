@@ -16,6 +16,24 @@
       "message": "There are quite a few other users of `SkAutoConicToQuads`, I\u0027d suggest we push this fix down into `computeQuads`",
       "revId": "7be98474ee51c4506a6f609ae397ac487870275f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1097aa27_5c9b2a99",
+        "filename": "src/core/SkEdgeBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-06T16:07:50Z",
+      "side": 1,
+      "message": "Moved to SkConic. It\u0027s more central.",
+      "parentUuid": "08b9747e_32cfec65",
+      "revId": "7be98474ee51c4506a6f609ae397ac487870275f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
