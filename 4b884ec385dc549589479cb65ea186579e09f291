@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fa8afc5_35ef4348",
+        "filename": "site/docs/user/api/skpaint_overview.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-06T18:36:41Z",
+      "side": 1,
+      "message": "Updating this documentation to explain SkBlender would also be good, but is more involved than this simple purge of \"xfermode\"",
+      "revId": "4b884ec385dc549589479cb65ea186579e09f291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
