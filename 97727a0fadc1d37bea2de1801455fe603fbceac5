@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "686f8fc1_73b35b00",
+        "filename": "src/ports/fontations/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-04-06T14:15:30Z",
+      "side": 1,
+      "message": "We could also name this directory `src/port/fontations-backend`, but that seemed getting a bit long.",
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
