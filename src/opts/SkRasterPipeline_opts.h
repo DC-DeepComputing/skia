@@ -1148,12 +1148,13 @@ static constexpr size_t N = sizeof(F) / sizeof(float);
 #if JUMPER_NARROW_STAGES
     struct Params {
         size_t dx, dy, tail;
+        F* base;
         F dr,dg,db,da;
     };
     using Stage = void(ABI*)(Params*, SkRasterPipelineStage* program, F r, F g, F b, F a);
 #else
     using Stage = void(ABI*)(size_t tail, SkRasterPipelineStage* program, size_t dx, size_t dy,
-                             F,F,F,F, F,F,F,F);
+                             F* base, F,F,F,F, F,F,F,F);
 #endif
 
 static void start_pipeline(size_t dx, size_t dy,
@@ -1161,9 +1162,10 @@ static void start_pipeline(size_t dx, size_t dy,
                            SkRasterPipelineStage* program) {
     auto start = (Stage)program->fn;
     const size_t x0 = dx;
+    F* const base = nullptr;
     for (; dy < ylimit; dy++) {
     #if JUMPER_NARROW_STAGES
-        Params params = { x0,dy,0, 0,0,0,0 };
+        Params params = { x0,dy,0,base, 0,0,0,0 };
         while (params.dx + N <= xlimit) {
             start(&params,program, 0,0,0,0);
             params.dx += N;
@@ -1175,11 +1177,11 @@ static void start_pipeline(size_t dx, size_t dy,
     #else
         dx = x0;
         while (dx + N <= xlimit) {
-            start(0,program,dx,dy,    0,0,0,0, 0,0,0,0);
+            start(0,program,dx,dy,base,    0,0,0,0, 0,0,0,0);
             dx += N;
         }
         if (size_t tail = xlimit - dx) {
-            start(tail,program,dx,dy, 0,0,0,0, 0,0,0,0);
+            start(tail,program,dx,dy,base, 0,0,0,0, 0,0,0,0);
         }
     #endif
     }
@@ -1192,31 +1194,31 @@ static void start_pipeline(size_t dx, size_t dy,
 #endif
 
 #if JUMPER_NARROW_STAGES
-    #define DECLARE_STAGE(name, ARG, STAGE_RET, INC, OFFSET, MUSTTAIL)               \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail,                \
-                              F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);   \
-        static void ABI name(Params* params, SkRasterPipelineStage* program,         \
-                             F r, F g, F b, F a) {                                   \
-            OFFSET name##_k(Ctx{program},params->dx,params->dy,params->tail, r,g,b,a,\
-                            params->dr, params->dg, params->db, params->da);         \
-            INC;                                                                     \
-            auto fn = (Stage)program->fn;                                            \
-            MUSTTAIL return fn(params, program, r,g,b,a);                            \
-        }                                                                            \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail,                \
+    #define DECLARE_STAGE(name, ARG, STAGE_RET, INC, OFFSET, MUSTTAIL)                     \
+        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail, F*& base,            \
+                              F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);         \
+        static void ABI name(Params* params, SkRasterPipelineStage* program, F* base,      \
+                             F r, F g, F b, F a) {                                         \
+            OFFSET name##_k(Ctx{program}, params->dx,params->dy,params->tail,params->base, \
+                            r,g,b,a, params->dr, params->dg, params->db, params->da);      \
+            INC;                                                                           \
+            auto fn = (Stage)program->fn;                                                  \
+            MUSTTAIL return fn(params, program, r,g,b,a);                                  \
+        }                                                                                  \
+        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail, F*& base,            \
                               F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
 #else
-    #define DECLARE_STAGE(name, ARG, STAGE_RET, INC, OFFSET, MUSTTAIL)                          \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail,                           \
-                              F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);              \
-        static void ABI name(size_t tail, SkRasterPipelineStage* program, size_t dx, size_t dy, \
-                             F r, F g, F b, F a, F dr, F dg, F db, F da) {                      \
-            OFFSET name##_k(Ctx{program},dx,dy,tail, r,g,b,a, dr,dg,db,da);                     \
-            INC;                                                                                \
-            auto fn = (Stage)program->fn;                                                       \
-            MUSTTAIL return fn(tail, program, dx,dy, r,g,b,a, dr,dg,db,da);                     \
-        }                                                                                       \
-        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail,                           \
+    #define DECLARE_STAGE(name, ARG, STAGE_RET, INC, OFFSET, MUSTTAIL)                           \
+        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail, F*& base,                  \
+                              F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da);               \
+        static void ABI name(size_t tail, SkRasterPipelineStage* program, size_t dx, size_t dy,  \
+                             F* base, F r, F g, F b, F a, F dr, F dg, F db, F da) {              \
+            OFFSET name##_k(Ctx{program}, dx,dy,tail,base, r,g,b,a, dr,dg,db,da);                \
+            INC;                                                                                 \
+            auto fn = (Stage)program->fn;                                                        \
+            MUSTTAIL return fn(tail, program, dx,dy,base, r,g,b,a, dr,dg,db,da);                 \
+        }                                                                                        \
+        SI STAGE_RET name##_k(ARG, size_t dx, size_t dy, size_t tail, F*& base,                  \
                               F& r, F& g, F& b, F& a, F& dr, F& dg, F& db, F& da)
 #endif
 
@@ -1240,7 +1242,7 @@ static void start_pipeline(size_t dx, size_t dy,
 #if JUMPER_NARROW_STAGES
     static void ABI just_return(Params*, SkRasterPipelineStage*, F,F,F,F) {}
 #else
-    static void ABI just_return(size_t, SkRasterPipelineStage*, size_t,size_t, F,F,F,F, F,F,F,F) {}
+    static void ABI just_return(size_t,SkRasterPipelineStage*,size_t,size_t,F*, F,F,F,F, F,F,F,F) {}
 #endif
 
 // Note that in release builds, most stages consume no stack (thanks to tail call optimization).
@@ -1269,7 +1271,7 @@ static void start_pipeline(size_t dx, size_t dy,
 // context), and continues the linear execution of stages, but has reclaimed all of the stack frames
 // pushed before the stack_rewind before doing so.
 #if JUMPER_NARROW_STAGES
-    static void ABI stack_checkpoint(Params* params, SkRasterPipelineStage* program,
+    static void ABI stack_checkpoint(Params* params, SkRasterPipelineStage* program, F* base,
                                      F r, F g, F b, F a) {
         SkRasterPipeline_RewindCtx* ctx = Ctx{program};
         while (program) {
@@ -1280,14 +1282,15 @@ static void start_pipeline(size_t dx, size_t dy,
             program = ctx->stage;
 
             if (program) {
-                r          = sk_unaligned_load<F>(ctx->r );
-                g          = sk_unaligned_load<F>(ctx->g );
-                b          = sk_unaligned_load<F>(ctx->b );
-                a          = sk_unaligned_load<F>(ctx->a );
-                params->dr = sk_unaligned_load<F>(ctx->dr);
-                params->dg = sk_unaligned_load<F>(ctx->dg);
-                params->db = sk_unaligned_load<F>(ctx->db);
-                params->da = sk_unaligned_load<F>(ctx->da);
+                r            = sk_unaligned_load<F>(ctx->r );
+                g            = sk_unaligned_load<F>(ctx->g );
+                b            = sk_unaligned_load<F>(ctx->b );
+                a            = sk_unaligned_load<F>(ctx->a );
+                params->dr   = sk_unaligned_load<F>(ctx->dr);
+                params->dg   = sk_unaligned_load<F>(ctx->dg);
+                params->db   = sk_unaligned_load<F>(ctx->db);
+                params->da   = sk_unaligned_load<F>(ctx->da);
+                params->base = (F*)ctx->base;
             }
         }
     }
@@ -1302,34 +1305,36 @@ static void start_pipeline(size_t dx, size_t dy,
         sk_unaligned_store(ctx->dg, params->dg);
         sk_unaligned_store(ctx->db, params->db);
         sk_unaligned_store(ctx->da, params->da);
+        ctx->base  = (float*)params->base;
         ctx->stage = program;
     }
 #else
     static void ABI stack_checkpoint(size_t tail, SkRasterPipelineStage* program,
-                                     size_t dx, size_t dy,
+                                     size_t dx, size_t dy, F* base,
                                      F r, F g, F b, F a, F dr, F dg, F db, F da) {
         SkRasterPipeline_RewindCtx* ctx = Ctx{program};
         while (program) {
             auto next = (Stage)(++program)->fn;
 
             ctx->stage = nullptr;
-            next(tail, program, dx, dy, r, g, b, a, dr, dg, db, da);
+            next(tail, program, dx, dy, base, r, g, b, a, dr, dg, db, da);
             program = ctx->stage;
 
             if (program) {
-                r  = sk_unaligned_load<F>(ctx->r );
-                g  = sk_unaligned_load<F>(ctx->g );
-                b  = sk_unaligned_load<F>(ctx->b );
-                a  = sk_unaligned_load<F>(ctx->a );
-                dr = sk_unaligned_load<F>(ctx->dr);
-                dg = sk_unaligned_load<F>(ctx->dg);
-                db = sk_unaligned_load<F>(ctx->db);
-                da = sk_unaligned_load<F>(ctx->da);
+                r    = sk_unaligned_load<F>(ctx->r );
+                g    = sk_unaligned_load<F>(ctx->g );
+                b    = sk_unaligned_load<F>(ctx->b );
+                a    = sk_unaligned_load<F>(ctx->a );
+                dr   = sk_unaligned_load<F>(ctx->dr);
+                dg   = sk_unaligned_load<F>(ctx->dg);
+                db   = sk_unaligned_load<F>(ctx->db);
+                da   = sk_unaligned_load<F>(ctx->da);
+                base = (F*)ctx->base;
             }
         }
     }
     static void ABI stack_rewind(size_t tail, SkRasterPipelineStage* program,
-                                 size_t dx, size_t dy,
+                                 size_t dx, size_t dy, F* base,
                                  F r, F g, F b, F a, F dr, F dg, F db, F da) {
         SkRasterPipeline_RewindCtx* ctx = Ctx{program};
         sk_unaligned_store(ctx->r , r );
@@ -1340,6 +1345,7 @@ static void start_pipeline(size_t dx, size_t dy,
         sk_unaligned_store(ctx->dg, dg);
         sk_unaligned_store(ctx->db, db);
         sk_unaligned_store(ctx->da, da);
+        ctx->base = (float*)ctx->base;
         ctx->stage = program;
     }
 #endif
