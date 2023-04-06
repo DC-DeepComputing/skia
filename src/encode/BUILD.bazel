@@ -32,8 +32,13 @@ skia_filegroup(
 )
 
 skia_filegroup(
+    name = "png_encode_hdrs",
+    srcs = ["SkPngEncoderImpl.h"],
+)
+
+skia_filegroup(
     name = "png_encode_srcs",
-    srcs = ["SkPngEncoder.cpp"],
+    srcs = ["SkPngEncoderImpl.cpp"],
 )
 
 skia_filegroup(
@@ -61,9 +66,9 @@ skia_filegroup(
         "SkImageEncoderFns.h",
         "SkImageEncoderPriv.h",
         "SkICCPriv.h",
-    ] + select({
+    ] + select_multi({
+        ":png_encode_codec": [":png_encode_hdrs"],
         ":jpeg_encode_codec": [":jpeg_encode_hdrs"],
-        "//conditions:default": [],
     }),
     visibility = ["//src:__pkg__"],
 )
