@@ -1,6 +1,132 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bbfd154_570587f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-06T14:24:07Z",
+      "side": 1,
+      "message": "Just some naming suggestions, but otherwise LGTM.",
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9320765c_5e017298",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-06T14:24:07Z",
+      "side": 1,
+      "message": "Let\u0027s add a comment that fontations is made up of several subcrates and we download them as a group using the checked in Cargo.toml and Cargo.lock file. This helps call out how these are slightly different then the cxx and above ones.",
+      "range": {
+        "startLine": 322,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 17
+      },
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dedbc36c_c57bbf69",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-06T14:24:07Z",
+      "side": 1,
+      "message": "Would just the name \"fontations\" make sense here? Then the labels would look like\n@fontations//:font-types",
+      "range": {
+        "startLine": 323,
+        "startChar": 12,
+        "endLine": 323,
+        "endChar": 35
+      },
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36f5944b_4d100a9b",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-06T14:24:07Z",
+      "side": 1,
+      "message": "If we go with the above \"fontations\" name, then this could be fontations_crates or something like that.",
+      "range": {
+        "startLine": 328,
+        "startChar": 44,
+        "endLine": 328,
+        "endChar": 67
+      },
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "976e6d81_91c2ade2",
+        "filename": "bazel/external/fontations/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-06T14:24:07Z",
+      "side": 1,
+      "message": "Add a comment \"intentionally blank BUILD.bazel file to make Bazel package\"",
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc593c87_be0ce4f0",
+        "filename": "bazel/external/fontations/Cargo.toml",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-06T14:24:07Z",
+      "side": 1,
+      "message": "nit: trailing space",
+      "range": {
+        "startLine": 1,
+        "startChar": 76,
+        "endLine": 1,
+        "endChar": 79
+      },
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "686f8fc1_73b35b00",
@@ -14,6 +140,24 @@
       "writtenOn": "2023-04-06T14:15:30Z",
       "side": 1,
       "message": "We could also name this directory `src/port/fontations-backend`, but that seemed getting a bit long.",
+      "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5aeed612_859a4197",
+        "filename": "src/ports/fontations/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-06T14:24:07Z",
+      "side": 1,
+      "message": "It\u0027s fine as is.",
+      "parentUuid": "686f8fc1_73b35b00",
       "revId": "97727a0fadc1d37bea2de1801455fe603fbceac5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
