@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4026255a_e71a2d1b",
+        "filename": "src/core/SkPaintPriv.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-06T18:49:52Z",
+      "side": 1,
+      "message": "Good point. Not real worried, so I removed the namespace.",
+      "parentUuid": "ffa5f5aa_1a00876b",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 0
+      },
+      "revId": "4b884ec385dc549589479cb65ea186579e09f291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da551a24_9187b2b0",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2ff2242_f1575bd2",
+        "filename": "src/core/SkPaintPriv.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-06T18:49:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da551a24_9187b2b0",
+      "range": {
+        "startLine": 65,
+        "startChar": 11,
+        "endLine": 65,
+        "endChar": 12
+      },
+      "revId": "4b884ec385dc549589479cb65ea186579e09f291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf89a260_c7f6dc74",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-04-06T18:43:15Z",
       "side": 1,
       "message": "If this doesn\u0027t compile for some reason, should we just remove it?",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 54
+      },
+      "revId": "4b884ec385dc549589479cb65ea186579e09f291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f47d4552_886fc837",
+        "filename": "src/gpu/ganesh/SkGr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-06T18:49:52Z",
+      "side": 1,
+      "message": "It should compile, so I went ahead and enabled it. Tracing back, it got commented out long ago, but I can\u0027t see why.",
+      "parentUuid": "cf89a260_c7f6dc74",
       "range": {
         "startLine": 133,
         "startChar": 0,
