@@ -297,6 +297,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf261fd0_8e25915e",
+        "filename": "experimental/rust_cxx/hype-bridge.rs",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-06T05:59:23Z",
+      "side": 1,
+      "message": "That sounds good to me. I recently went through the exercise of dealing with `include!` from inside an `unsafe extern \"C++\"` block using `cxx_build`. I\u0027m happy to meet any time and collaborate with you on this.",
+      "parentUuid": "ae01f170_f071a388",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bdab0276_ec5e3d2e",
         "filename": "experimental/rust_cxx/rust_cxx_bridge.bzl",
         "patchSetId": 13
