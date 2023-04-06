@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be219127_cdff2ec3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-06T16:28:37Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "21c3ad6d62abc060ee156b6a29438c22b19d7704",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17c0ea73_dc42e83b",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-04-06T16:13:54Z",
       "side": 1,
       "message": "Actually, do we want this in the assert, too? eg: `SkASSERT(SkScalarIsFinite(w) \u0026\u0026 w \u003e 0);` ?",
+      "range": {
+        "startLine": 351,
+        "startChar": 12,
+        "endLine": 351,
+        "endChar": 28
+      },
+      "revId": "21c3ad6d62abc060ee156b6a29438c22b19d7704",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fa770c9_0d5d37bb",
+        "filename": "src/core/SkGeometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-06T16:28:37Z",
+      "side": 1,
+      "message": "Actually we can\u0027t. There is a test that passes in NaN. Because of that test, I assume that NaN is handled lower in the stack.",
+      "parentUuid": "17c0ea73_dc42e83b",
       "range": {
         "startLine": 351,
         "startChar": 12,
