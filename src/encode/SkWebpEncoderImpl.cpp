@@ -7,8 +7,6 @@
 
 #include "include/core/SkTypes.h"
 
-#ifdef SK_ENCODE_WEBP
-
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
@@ -125,6 +123,8 @@ static bool preprocess_webp_picture(WebPPicture* pic,
     return true;
 }
 
+namespace SkWebpEncoder {
+
 bool SkWebpEncoder::Encode(SkWStream* stream, const SkPixmap& pixmap, const Options& opts) {
     if (!stream) {
         return false;
@@ -182,9 +182,7 @@ bool SkWebpEncoder::Encode(SkWStream* stream, const SkPixmap& pixmap, const Opti
     return true;
 }
 
-bool SkWebpEncoder::EncodeAnimated(SkWStream* stream,
-                                   SkSpan<const SkEncoder::Frame> frames,
-                                   const Options& opts) {
+bool EncodeAnimated(SkWStream* stream, SkSpan<const SkEncoder::Frame> frames, const Options& opts) {
     if (!stream || !frames.size()) {
         return false;
     }
@@ -246,4 +244,4 @@ bool SkWebpEncoder::EncodeAnimated(SkWStream* stream,
     return stream->write(assembled.bytes, assembled.size);
 }
 
-#endif
+} // namespace SkWebpEncoder
