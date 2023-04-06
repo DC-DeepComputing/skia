@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88194527_c568a58e",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-06T14:32:33Z",
+      "side": 1,
+      "message": "I considered putting this in Plot::prepareForUpload but Plot is a shared class and that conflicts with how GrDrawOpAtlas sets the uploadToken.",
+      "range": {
+        "startLine": 195,
+        "startChar": 20,
+        "endLine": 195,
+        "endChar": 76
+      },
+      "revId": "a984b344881896f5ca581dd42f8a10084e22dd9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
