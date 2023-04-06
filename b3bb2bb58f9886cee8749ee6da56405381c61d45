@@ -313,6 +313,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ef5e6ca_135d09b1",
+        "filename": "experimental/rust_cxx/hype-bridge.rs",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-06T13:28:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cf261fd0_8e25915e",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bdab0276_ec5e3d2e",
@@ -361,6 +379,24 @@
       "writtenOn": "2023-04-05T08:21:16Z",
       "side": 1,
       "message": "Nit: I\u0027ll leave this up to the Skia reviewers, but it seems like these changes could be factored out into a separate CL as they could stand on their own and bring a benefit independent of the Rust toolchain additions?",
+      "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc4d0a71_6ec88d7d",
+        "filename": "toolchain/mac_toolchain_config.bzl",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-06T13:28:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "38809fc8_7c5e6a00",
       "revId": "b3bb2bb58f9886cee8749ee6da56405381c61d45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
