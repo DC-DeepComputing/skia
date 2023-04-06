@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "676a4b25_1fc700ee",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-06T19:32:09Z",
+      "side": 1,
+      "message": "Consider passing by `SkSpan`, this gives the caller more flexibility and doesn\u0027t really have any downside if you are going to copy the buffer anyway",
+      "range": {
+        "startLine": 266,
+        "startChar": 16,
+        "endLine": 266,
+        "endChar": 64
+      },
+      "revId": "4d089804176c2d43394776e16fb5623f4e509457",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "67367ca3_aea73889",
         "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
         "patchSetId": 3
@@ -36,6 +59,53 @@
         "startChar": 8,
         "endLine": 163,
         "endChar": 9
+      },
+      "revId": "4d089804176c2d43394776e16fb5623f4e509457",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cab5a61_f8f7c962",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-06T19:32:09Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "67367ca3_aea73889",
+      "range": {
+        "startLine": 160,
+        "startChar": 8,
+        "endLine": 163,
+        "endChar": 9
+      },
+      "revId": "4d089804176c2d43394776e16fb5623f4e509457",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7d30974_79ee7a7d",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-06T19:32:09Z",
+      "side": 1,
+      "message": "Is there a reason that this is inside the loop instead of outside?",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 55
       },
       "revId": "4d089804176c2d43394776e16fb5623f4e509457",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
