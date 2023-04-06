@@ -123,7 +123,7 @@ private:
     }
 
     int                             fMaxCount;
-    SkTHashTable<Entry*, K, Traits> fMap;
+    skia_private::THashTable<Entry*, K, Traits> fMap;
     SkTInternalLList<Entry>         fLRU;
 };
 

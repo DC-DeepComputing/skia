@@ -1009,7 +1009,7 @@ namespace skvm {
         // If the passed in ID is a bit-not, return the value being bit-notted. Otherwise, NA.
         Val holdsBitNot(Val id);
 
-        SkTHashMap<Instruction, Val, InstructionHash> fIndex;
+        skia_private::THashMap<Instruction, Val, InstructionHash> fIndex;
         std::vector<Instruction>                      fProgram;
         std::vector<SkSL::TraceHook*>                 fTraceHooks;
         std::vector<int>                              fStrides;
