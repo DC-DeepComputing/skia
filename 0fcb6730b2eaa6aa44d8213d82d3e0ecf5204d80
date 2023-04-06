@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8abb8719_7dd2c5f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-06T13:13:14Z",
+      "side": 1,
+      "message": "There are way too many tests in Chromium that don\u0027t control the fonts being used but make really hard assumptions about the content of the default font.",
+      "revId": "0fcb6730b2eaa6aa44d8213d82d3e0ecf5204d80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
