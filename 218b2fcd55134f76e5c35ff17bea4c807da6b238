@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77598e09_965f6520",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-06T19:10:31Z",
+      "side": 1,
+      "message": "Nit: after",
+      "range": {
+        "startLine": 188,
+        "startChar": 7,
+        "endLine": 188,
+        "endChar": 13
+      },
+      "revId": "218b2fcd55134f76e5c35ff17bea4c807da6b238",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2af30b95_24e19f4e",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-06T19:10:31Z",
+      "side": 1,
+      "message": "Does this mean the following conditional block?",
+      "range": {
+        "startLine": 297,
+        "startChar": 15,
+        "endLine": 297,
+        "endChar": 53
+      },
+      "revId": "218b2fcd55134f76e5c35ff17bea4c807da6b238",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
