@@ -247,6 +247,24 @@
       "parentUuid": "3c28e3ba_8f98838e",
       "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c02cc994_5529d39d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8459
+      },
+      "writtenOn": "2023-04-06T00:54:49Z",
+      "side": 1,
+      "message": "Agree. And non OOPR path should be ok with current workaround. I\u0027ll abandon this CL.",
+      "parentUuid": "355c8c90_547d8a05",
+      "revId": "0c4eceec9bdf68ae94bd90319373f7e8372ddb0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
