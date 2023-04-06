@@ -352,7 +352,7 @@ int SkEdgeBuilder::build(const SkPath& path, const SkIRect* iclip, bool canCullT
                 }
                 case SkPathEdgeIter::Edge::kConic: {
                     const SkPoint* quadPts = quadder.computeQuads(
-                                          e.fPts, iter.conicWeight(), conicTol);
+                            e.fPts, iter.conicWeight(), conicTol);
                     for (int i = 0; i < quadder.countQuads(); ++i) {
                         handle_quad(quadPts);
                         quadPts += 2;
