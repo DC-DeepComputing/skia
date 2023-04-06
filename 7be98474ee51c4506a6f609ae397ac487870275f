@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08b9747e_32cfec65",
+        "filename": "src/core/SkEdgeBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-06T15:27:32Z",
+      "side": 1,
+      "message": "There are quite a few other users of `SkAutoConicToQuads`, I\u0027d suggest we push this fix down into `computeQuads`",
+      "revId": "7be98474ee51c4506a6f609ae397ac487870275f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
