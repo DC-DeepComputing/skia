@@ -16,6 +16,75 @@
       "message": "Updating this documentation to explain SkBlender would also be good, but is more involved than this simple purge of \"xfermode\"",
       "revId": "4b884ec385dc549589479cb65ea186579e09f291",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffa5f5aa_1a00876b",
+        "filename": "src/core/SkPaintPriv.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-06T18:43:15Z",
+      "side": 1,
+      "message": "enums don\u0027t have linkage; not sure if there is value in wrapping in an anonymous namespace here (if you want to disambiguate against a possible hypothetical enum named `SrcColorOpacity` at the global namespace, I guess you could give the namespace a name)",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 0
+      },
+      "revId": "4b884ec385dc549589479cb65ea186579e09f291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da551a24_9187b2b0",
+        "filename": "src/core/SkPaintPriv.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-06T18:43:15Z",
+      "side": 1,
+      "message": "nit: indent",
+      "range": {
+        "startLine": 65,
+        "startChar": 11,
+        "endLine": 65,
+        "endChar": 12
+      },
+      "revId": "4b884ec385dc549589479cb65ea186579e09f291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf89a260_c7f6dc74",
+        "filename": "src/gpu/ganesh/SkGr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-06T18:43:15Z",
+      "side": 1,
+      "message": "If this doesn\u0027t compile for some reason, should we just remove it?",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 54
+      },
+      "revId": "4b884ec385dc549589479cb65ea186579e09f291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
