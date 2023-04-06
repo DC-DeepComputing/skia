@@ -150,40 +150,42 @@ struct SkRasterPipeline_TablesCtx {
     const uint8_t *r, *g, *b, *a;
 };
 
+using SkRPOffset = uintptr_t;
+
 struct SkRasterPipeline_BinaryOpCtx {
-    float *dst;
-    const float *src;
+    SkRPOffset dst;
+    SkRPOffset src;
 };
 
 struct SkRasterPipeline_TernaryOpCtx {
-    float *dst;
-    const float *src0;
-    const float *src1;
+    SkRPOffset dst;
+    SkRPOffset src0;
+    SkRPOffset src1;
 };
 
 struct SkRasterPipeline_SwizzleCtx {
-    float *ptr;
+    SkRPOffset ptr;
     uint16_t offsets[4];  // values must be byte offsets (4 * highp-stride * component-index)
 };
 
 struct SkRasterPipeline_ShuffleCtx {
-    float *ptr;
+    SkRPOffset ptr;
     int count;
     uint16_t offsets[16];  // values must be byte offsets (4 * highp-stride * component-index)
 };
 
 struct SkRasterPipeline_SwizzleCopyCtx {
-    float *dst;
-    float *src;           // src values must _not_ overlap dst values
+    SkRPOffset dst;
+    SkRPOffset src;       // src values must _not_ overlap dst values
     uint16_t offsets[4];  // values must be byte offsets (4 * highp-stride * component-index)
 };
 
 struct SkRasterPipeline_CopyIndirectCtx {
-    float *dst;
-    const float *src;
-    const uint32_t *indirectOffset;  // this applies to `src` or `dst` based on the op
-    uint32_t indirectLimit;          // the indirect offset is clamped to this upper bound
-    uint32_t slots;                  // the number of slots to copy
+    SkRPOffset dst;
+    SkRPOffset src;
+    SkRPOffset indirectOffset;  // this applies to `src` or `dst` based on the op
+    uint32_t indirectLimit;     // the indirect offset is clamped to this upper bound
+    uint32_t slots;             // the number of slots to copy
 };
 
 struct SkRasterPipeline_SwizzleCopyIndirectCtx : public SkRasterPipeline_CopyIndirectCtx {
@@ -196,39 +198,39 @@ struct SkRasterPipeline_BranchCtx {
 
 struct SkRasterPipeline_BranchIfEqualCtx : public SkRasterPipeline_BranchCtx {
     int value;
-    const int* ptr;
+    SkRPOffset ptr;
 };
 
 struct SkRasterPipeline_CaseOpCtx {
     int expectedValue;
-    int* ptr;  // points to a pair of adjacent I32s: {I32 actualValue, I32 defaultMask}
+    SkRPOffset ptr;  // points to a pair of adjacent I32s: {I32 actualValue, I32 defaultMask}
 };
 
 struct SkRasterPipeline_TraceFuncCtx {
-    const int* traceMask;
+    SkRPOffset traceMask;
     SkSL::TraceHook* traceHook;
     int funcIdx;
 };
 
 struct SkRasterPipeline_TraceScopeCtx {
-    const int* traceMask;
+    SkRPOffset traceMask;
     SkSL::TraceHook* traceHook;
     int delta;
 };
 
 struct SkRasterPipeline_TraceLineCtx {
-    const int* traceMask;
+    SkRPOffset traceMask;
     SkSL::TraceHook* traceHook;
     int lineNumber;
 };
 
 struct SkRasterPipeline_TraceVarCtx {
-    const int* traceMask;
+    SkRPOffset traceMask;
     SkSL::TraceHook* traceHook;
     int slotIdx, numSlots;
-    const int* data;
-    const uint32_t *indirectOffset;  // can be null; if set, an offset applied to `data`
-    uint32_t indirectLimit;          // the indirect offset is clamped to this upper bound
+    SkRPOffset data;
+    SkRPOffset indirectOffset;  // if non-zero, an offset applied to `data`
+    uint32_t indirectLimit;     // the indirect offset is clamped to this upper bound
 };
 
 #endif  // SkRasterPipelineOpContexts_DEFINED

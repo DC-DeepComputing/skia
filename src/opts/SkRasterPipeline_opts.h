@@ -3445,7 +3445,7 @@ STAGE_TAIL(trace_var, SkRasterPipeline_TraceVarCtx* ctx) {
             if (select_lane(mask, lane)) {
                 I32* data = (I32*)ctx->data;
                 int slotIdx = ctx->slotIdx, numSlots = ctx->numSlots;
-                if (ctx->indirectOffset) {
+                if (ctx->indirectOffset != 0) {
                     // If this was an indirect store, apply the indirect-offset to the data pointer.
                     uint32_t indirectOffset = select_lane(*(U32*)ctx->indirectOffset, lane);
                     indirectOffset = std::min<uint32_t>(indirectOffset, ctx->indirectLimit);
@@ -3478,25 +3478,25 @@ STAGE_TAIL(zero_4_slots_unmasked, F* dst) {
 }
 
 STAGE_TAIL(copy_constant, SkRasterPipeline_BinaryOpCtx* ctx) {
-    const float* src = ctx->src;
+    const float* src = (const float*)ctx->src;
     F* dst = (F*)ctx->dst;
     dst[0] = src[0];
 }
 STAGE_TAIL(copy_2_constants, SkRasterPipeline_BinaryOpCtx* ctx) {
-    const float* src = ctx->src;
+    const float* src = (const float*)ctx->src;
     F* dst = (F*)ctx->dst;
     dst[0] = src[0];
     dst[1] = src[1];
 }
 STAGE_TAIL(copy_3_constants, SkRasterPipeline_BinaryOpCtx* ctx) {
-    const float* src = ctx->src;
+    const float* src = (const float*)ctx->src;
     F* dst = (F*)ctx->dst;
     dst[0] = src[0];
     dst[1] = src[1];
     dst[2] = src[2];
 }
 STAGE_TAIL(copy_4_constants, SkRasterPipeline_BinaryOpCtx* ctx) {
-    const float* src = ctx->src;
+    const float* src = (const float*)ctx->src;
     F* dst = (F*)ctx->dst;
     dst[0] = src[0];
     dst[1] = src[1];
@@ -3505,17 +3505,17 @@ STAGE_TAIL(copy_4_constants, SkRasterPipeline_BinaryOpCtx* ctx) {
 }
 
 STAGE_TAIL(copy_slot_unmasked, SkRasterPipeline_BinaryOpCtx* ctx) {
-    // We don't even bother masking off the tail; we're filling slots, not the destination surface.
-    memcpy(ctx->dst, ctx->src, sizeof(F) * 1);
+    // We don't need to mask off the tail; we're filling slots, not the destination surface.
+    memcpy((F*)ctx->dst, (const F*)ctx->src, sizeof(F) * 1);
 }
 STAGE_TAIL(copy_2_slots_unmasked, SkRasterPipeline_BinaryOpCtx* ctx) {
-    memcpy(ctx->dst, ctx->src, sizeof(F) * 2);
+    memcpy((F*)ctx->dst, (const F*)ctx->src, sizeof(F) * 2);
 }
 STAGE_TAIL(copy_3_slots_unmasked, SkRasterPipeline_BinaryOpCtx* ctx) {
-    memcpy(ctx->dst, ctx->src, sizeof(F) * 3);
+    memcpy((F*)ctx->dst, (const F*)ctx->src, sizeof(F) * 3);
 }
 STAGE_TAIL(copy_4_slots_unmasked, SkRasterPipeline_BinaryOpCtx* ctx) {
-    memcpy(ctx->dst, ctx->src, sizeof(F) * 4);
+    memcpy((F*)ctx->dst, (const F*)ctx->src, sizeof(F) * 4);
 }
 
 template <int NumSlots>
@@ -3632,7 +3632,7 @@ STAGE_TAIL(copy_from_indirect_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
     offsets += sk_unaligned_load<I32>(iota);
 
     // Use gather to perform indirect lookups; write the results into `dst`.
-    const float* src = ctx->src;
+    const float* src = (const float*)ctx->src;
     F*           dst = (F*)ctx->dst;
     F*           end = dst + ctx->slots;
     do {
@@ -3648,7 +3648,7 @@ STAGE_TAIL(copy_from_indirect_uniform_unmasked, SkRasterPipeline_CopyIndirectCtx
     offsets = min(offsets, ctx->indirectLimit);
 
     // Use gather to perform indirect lookups; write the results into `dst`.
-    const float* src = ctx->src;
+    const float* src = (const float*)ctx->src;
     F*           dst = (F*)ctx->dst;
     F*           end = dst + ctx->slots;
     do {
@@ -3673,7 +3673,7 @@ STAGE_TAIL(copy_to_indirect_masked, SkRasterPipeline_CopyIndirectCtx* ctx) {
     // Perform indirect, masked writes into `dst`.
     const F* src = (F*)ctx->src;
     const F* end = src + ctx->slots;
-    float*   dst = ctx->dst;
+    float*   dst = (float*)ctx->dst;
     I32      mask = execution_mask();
     do {
         scatter_masked(*src, dst, offsets, mask);

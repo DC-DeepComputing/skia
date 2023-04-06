@@ -282,7 +282,7 @@ DEF_TEST(SkRasterPipeline_CaseOp, r) {
     }
 
     SkRasterPipeline_CaseOpCtx ctx;
-    ctx.ptr = caseOpData;
+    ctx.ptr = (SkRPOffset)&caseOpData[0];
     ctx.expectedValue = 2;
 
     SkRasterPipeline_<256> p;
@@ -447,9 +447,9 @@ DEF_TEST(SkRasterPipeline_CopyFromIndirectUnmasked, r) {
             SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
             SkRasterPipeline p(&alloc);
             auto* ctx = alloc.make<SkRasterPipeline_CopyIndirectCtx>();
-            ctx->dst = &dst[0];
-            ctx->src = &src[0];
-            ctx->indirectOffset = offsets;
+            ctx->dst = (SkRPOffset)&dst[0];
+            ctx->src = (SkRPOffset)&src[0];
+            ctx->indirectOffset = (SkRPOffset)&offsets[0];
             ctx->indirectLimit = 5 - copySize;
             ctx->slots = copySize;
 
@@ -520,9 +520,9 @@ DEF_TEST(SkRasterPipeline_CopyFromIndirectUniformUnmasked, r) {
             SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
             SkRasterPipeline p(&alloc);
             auto* ctx = alloc.make<SkRasterPipeline_CopyIndirectCtx>();
-            ctx->dst = &dst[0];
-            ctx->src = &src[0];
-            ctx->indirectOffset = offsets;
+            ctx->dst = (SkRPOffset)&dst[0];
+            ctx->src = (SkRPOffset)&src[0];
+            ctx->indirectOffset = (SkRPOffset)&offsets[0];
             ctx->indirectLimit = 5 - copySize;
             ctx->slots = copySize;
 
@@ -598,9 +598,9 @@ DEF_TEST(SkRasterPipeline_CopyToIndirectMasked, r) {
                 SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
                 SkRasterPipeline p(&alloc);
                 auto* ctx = alloc.make<SkRasterPipeline_CopyIndirectCtx>();
-                ctx->dst = &dst[0];
-                ctx->src = &src[0];
-                ctx->indirectOffset = offsets;
+                ctx->dst = (SkRPOffset)&dst[0];
+                ctx->src = (SkRPOffset)&src[0];
+                ctx->indirectOffset = (SkRPOffset)&offsets[0];
                 ctx->indirectLimit = 5 - copySize;
                 ctx->slots = copySize;
 
@@ -723,9 +723,9 @@ DEF_TEST(SkRasterPipeline_SwizzleCopyToIndirectMasked, r) {
                 SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
                 SkRasterPipeline p(&alloc);
                 auto* ctx = alloc.make<SkRasterPipeline_SwizzleCopyIndirectCtx>();
-                ctx->dst = &dst[0];
-                ctx->src = &src[0];
-                ctx->indirectOffset = offsets;
+                ctx->dst = (SkRPOffset)&dst[0];
+                ctx->src = (SkRPOffset)&src[0];
+                ctx->indirectOffset = (SkRPOffset)&offsets[0];
                 ctx->indirectLimit = 5 - pattern.swizzleUpperBound;
                 ctx->slots = pattern.swizzleSize;
                 ctx->offsets[0] = pattern.swizzle[0] * N * sizeof(float);
@@ -833,33 +833,33 @@ DEF_TEST(SkRasterPipeline_TraceVar, r) {
     SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
     SkRasterPipeline p(&alloc);
     p.append(SkRasterPipelineOp::init_lane_masks);
-    const SkRasterPipeline_TraceVarCtx kTraceVar1 = {/*traceMask=*/kMaskOff,
-                                                     &trace, 2, 1, kData333,
-                                                     /*indirectOffset=*/nullptr,
+    const SkRasterPipeline_TraceVarCtx kTraceVar1 = {/*traceMask=*/(SkRPOffset)&kMaskOff[0],
+                                                     &trace, 2, 1, (SkRPOffset)&kData333[0],
+                                                     /*indirectOffset=*/0,
                                                      /*indirectLimit=*/0};
-    const SkRasterPipeline_TraceVarCtx kTraceVar2 = {/*traceMask=*/kMaskOn,
-                                                     &trace, 4, 1, kData555,
-                                                     /*indirectOffset=*/nullptr,
+    const SkRasterPipeline_TraceVarCtx kTraceVar2 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                     &trace, 4, 1, (SkRPOffset)&kData555[0],
+                                                     /*indirectOffset=*/0,
                                                      /*indirectLimit=*/0};
-    const SkRasterPipeline_TraceVarCtx kTraceVar3 = {/*traceMask=*/kMaskOff,
-                                                     &trace, 5, 1, kData666,
-                                                     /*indirectOffset=*/nullptr,
+    const SkRasterPipeline_TraceVarCtx kTraceVar3 = {/*traceMask=*/(SkRPOffset)&kMaskOff[0],
+                                                     &trace, 5, 1, (SkRPOffset)&kData666[0],
+                                                     /*indirectOffset=*/0,
                                                      /*indirectLimit=*/0};
-    const SkRasterPipeline_TraceVarCtx kTraceVar4 = {/*traceMask=*/kMaskOn,
-                                                     &trace, 6, 2, kData777,
-                                                     /*indirectOffset=*/nullptr,
+    const SkRasterPipeline_TraceVarCtx kTraceVar4 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                     &trace, 6, 2, (SkRPOffset)&kData777[0],
+                                                     /*indirectOffset=*/0,
                                                      /*indirectLimit=*/0};
-    const SkRasterPipeline_TraceVarCtx kTraceVar5 = {/*traceMask=*/kMaskOn,
-                                                     &trace, 8, 2, kData999,
-                                                     /*indirectOffset=*/nullptr,
+    const SkRasterPipeline_TraceVarCtx kTraceVar5 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                     &trace, 8, 2, (SkRPOffset)&kData999[0],
+                                                     /*indirectOffset=*/0,
                                                      /*indirectLimit=*/0};
-    const SkRasterPipeline_TraceVarCtx kTraceVar6 = {/*traceMask=*/kMaskOn,
-                                                     &trace, 9, 1, kData999,
-                                                     /*indirectOffset=*/kIndirect0,
+    const SkRasterPipeline_TraceVarCtx kTraceVar6 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                     &trace, 9, 1, (SkRPOffset)&kData999[0],
+                                                     /*indirectOffset=*/(SkRPOffset)&kIndirect0[0],
                                                      /*indirectLimit=*/1};
-    const SkRasterPipeline_TraceVarCtx kTraceVar7 = {/*traceMask=*/kMaskOn,
-                                                     &trace, 9, 1, kData999,
-                                                     /*indirectOffset=*/kIndirect1,
+    const SkRasterPipeline_TraceVarCtx kTraceVar7 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                     &trace, 9, 1, (SkRPOffset)&kData999[0],
+                                                     /*indirectOffset=*/(SkRPOffset)&kIndirect1[0],
                                                      /*indirectLimit=*/1};
 
     p.append(SkRasterPipelineOp::load_condition_mask, kMaskOn);
@@ -903,11 +903,16 @@ DEF_TEST(SkRasterPipeline_TraceLine, r) {
     SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
     SkRasterPipeline p(&alloc);
     p.append(SkRasterPipelineOp::init_lane_masks);
-    const SkRasterPipeline_TraceLineCtx kTraceLine1 = {/*traceMask=*/kMaskOn,  &trace, 123};
-    const SkRasterPipeline_TraceLineCtx kTraceLine2 = {/*traceMask=*/kMaskOff, &trace, 456};
-    const SkRasterPipeline_TraceLineCtx kTraceLine3 = {/*traceMask=*/kMaskOn,  &trace, 567};
-    const SkRasterPipeline_TraceLineCtx kTraceLine4 = {/*traceMask=*/kMaskOff, &trace, 678};
-    const SkRasterPipeline_TraceLineCtx kTraceLine5 = {/*traceMask=*/kMaskOn,  &trace, 789};
+    const SkRasterPipeline_TraceLineCtx kTraceLine1 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                       &trace, 123};
+    const SkRasterPipeline_TraceLineCtx kTraceLine2 = {/*traceMask=*/(SkRPOffset)&kMaskOff[0],
+                                                       &trace, 456};
+    const SkRasterPipeline_TraceLineCtx kTraceLine3 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                       &trace, 567};
+    const SkRasterPipeline_TraceLineCtx kTraceLine4 = {/*traceMask=*/(SkRPOffset)&kMaskOff[0],
+                                                       &trace, 678};
+    const SkRasterPipeline_TraceLineCtx kTraceLine5 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                       &trace, 789};
 
     p.append(SkRasterPipelineOp::load_condition_mask, kMaskOn);
     p.append(SkRasterPipelineOp::trace_line, &kTraceLine1);
@@ -952,12 +957,18 @@ DEF_TEST(SkRasterPipeline_TraceEnterExit, r) {
     SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
     SkRasterPipeline p(&alloc);
     p.append(SkRasterPipelineOp::init_lane_masks);
-    const SkRasterPipeline_TraceFuncCtx kTraceFunc1 = {/*traceMask=*/kMaskOff, &trace, 99};
-    const SkRasterPipeline_TraceFuncCtx kTraceFunc2 = {/*traceMask=*/kMaskOn,  &trace, 12};
-    const SkRasterPipeline_TraceFuncCtx kTraceFunc3 = {/*traceMask=*/kMaskOff, &trace, 34};
-    const SkRasterPipeline_TraceFuncCtx kTraceFunc4 = {/*traceMask=*/kMaskOn,  &trace, 56};
-    const SkRasterPipeline_TraceFuncCtx kTraceFunc5 = {/*traceMask=*/kMaskOn,  &trace, 78};
-    const SkRasterPipeline_TraceFuncCtx kTraceFunc6 = {/*traceMask=*/kMaskOff, &trace, 90};
+    const SkRasterPipeline_TraceFuncCtx kTraceFunc1 = {/*traceMask=*/(SkRPOffset)&kMaskOff[0],
+                                                       &trace, 99};
+    const SkRasterPipeline_TraceFuncCtx kTraceFunc2 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                       &trace, 12};
+    const SkRasterPipeline_TraceFuncCtx kTraceFunc3 = {/*traceMask=*/(SkRPOffset)&kMaskOff[0],
+                                                       &trace, 34};
+    const SkRasterPipeline_TraceFuncCtx kTraceFunc4 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                       &trace, 56};
+    const SkRasterPipeline_TraceFuncCtx kTraceFunc5 = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                       &trace, 78};
+    const SkRasterPipeline_TraceFuncCtx kTraceFunc6 = {/*traceMask=*/(SkRPOffset)&kMaskOff[0],
+                                                       &trace, 90};
 
     p.append(SkRasterPipelineOp::load_condition_mask, kMaskOff);
     p.append(SkRasterPipelineOp::trace_enter, &kTraceFunc1);
@@ -995,11 +1006,16 @@ DEF_TEST(SkRasterPipeline_TraceScope, r) {
     SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
     SkRasterPipeline p(&alloc);
     p.append(SkRasterPipelineOp::init_lane_masks);
-    const SkRasterPipeline_TraceScopeCtx kTraceScope1  = {/*traceMask=*/kMaskOn,  &trace, +1};
-    const SkRasterPipeline_TraceScopeCtx kTraceScope2  = {/*traceMask=*/kMaskOff, &trace, -2};
-    const SkRasterPipeline_TraceScopeCtx kTraceScope3  = {/*traceMask=*/kMaskOff, &trace, +3};
-    const SkRasterPipeline_TraceScopeCtx kTraceScope4  = {/*traceMask=*/kMaskOn,  &trace, +4};
-    const SkRasterPipeline_TraceScopeCtx kTraceScope5  = {/*traceMask=*/kMaskOn,  &trace, -5};
+    const SkRasterPipeline_TraceScopeCtx kTraceScope1  = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                          &trace, +1};
+    const SkRasterPipeline_TraceScopeCtx kTraceScope2  = {/*traceMask=*/(SkRPOffset)&kMaskOff[0],
+                                                          &trace, -2};
+    const SkRasterPipeline_TraceScopeCtx kTraceScope3  = {/*traceMask=*/(SkRPOffset)&kMaskOff[0],
+                                                          &trace, +3};
+    const SkRasterPipeline_TraceScopeCtx kTraceScope4  = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                          &trace, +4};
+    const SkRasterPipeline_TraceScopeCtx kTraceScope5  = {/*traceMask=*/(SkRPOffset)&kMaskOn[0],
+                                                          &trace, -5};
 
     p.append(SkRasterPipelineOp::load_condition_mask, kMaskOn);
     p.append(SkRasterPipelineOp::trace_scope, &kTraceScope1);
@@ -1049,8 +1065,8 @@ DEF_TEST(SkRasterPipeline_CopySlotsMasked, r) {
             SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
             SkRasterPipeline p(&alloc);
             auto* ctx = alloc.make<SkRasterPipeline_BinaryOpCtx>();
-            ctx->dst = &slots[N * dstIndex];
-            ctx->src = &slots[N * srcIndex];
+            ctx->dst = (SkRPOffset)&slots[N * dstIndex];
+            ctx->src = (SkRPOffset)&slots[N * srcIndex];
 
             p.append(SkRasterPipelineOp::init_lane_masks);
             p.append(SkRasterPipelineOp::load_condition_mask, mask);
@@ -1105,8 +1121,8 @@ DEF_TEST(SkRasterPipeline_CopySlotsUnmasked, r) {
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
         auto* ctx = alloc.make<SkRasterPipeline_BinaryOpCtx>();
-        ctx->dst = &slots[N * dstIndex];
-        ctx->src = &slots[N * srcIndex];
+        ctx->dst = (SkRPOffset)&slots[N * dstIndex];
+        ctx->src = (SkRPOffset)&slots[N * srcIndex];
         p.append(op.stage, ctx);
         p.run(0,0,1,1);
 
@@ -1202,8 +1218,8 @@ DEF_TEST(SkRasterPipeline_CopyConstants, r) {
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
         auto* ctx = alloc.make<SkRasterPipeline_BinaryOpCtx>();
-        ctx->dst = slots;
-        ctx->src = constants;
+        ctx->dst = (SkRPOffset)&slots[0];
+        ctx->src = (SkRPOffset)&constants[0];
         p.append(op.stage, ctx);
         p.run(0,0,1,1);
 
@@ -1253,7 +1269,7 @@ DEF_TEST(SkRasterPipeline_Swizzle, r) {
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
         SkRasterPipeline_SwizzleCtx ctx;
-        ctx.ptr = slots;
+        ctx.ptr = (SkRPOffset)&slots[0];
         for (size_t index = 0; index < std::size(ctx.offsets); ++index) {
             ctx.offsets[index] = pattern.swizzle[index] * N * sizeof(float);
         }
@@ -1303,8 +1319,8 @@ DEF_TEST(SkRasterPipeline_SwizzleCopy, r) {
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
         SkRasterPipeline_SwizzleCopyCtx ctx = {};
-        ctx.src = source;
-        ctx.dst = dest;
+        ctx.src = (SkRPOffset)&source[0];
+        ctx.dst = (SkRPOffset)&dest[0];
         for (size_t index = 0; index < std::size(ctx.offsets); ++index) {
             if (pattern.swizzle[index] != _) {
                 ctx.offsets[index] = pattern.swizzle[index] * N * sizeof(float);
@@ -1367,7 +1383,7 @@ DEF_TEST(SkRasterPipeline_Shuffle, r) {
         SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
         SkRasterPipeline p(&alloc);
         SkRasterPipeline_ShuffleCtx ctx;
-        ctx.ptr = slots;
+        ctx.ptr = (SkRPOffset)&slots[0];
         ctx.count = pattern.count;
         for (size_t index = 0; index < std::size(ctx.offsets); ++index) {
             ctx.offsets[index] = pattern.shuffle[index] * N * sizeof(float);
@@ -1415,8 +1431,8 @@ DEF_TEST(SkRasterPipeline_FloatArithmeticWithNSlots, r) {
             SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
             SkRasterPipeline p(&alloc);
             auto* ctx = alloc.make<SkRasterPipeline_BinaryOpCtx>();
-            ctx->dst = &slots[0];
-            ctx->src = &slots[numSlotsAffected * N];
+            ctx->dst = (SkRPOffset)&slots[0];
+            ctx->src = (SkRPOffset)&slots[numSlotsAffected * N];
             p.append(op.stage, ctx);
             p.run(0,0,1,1);
 
@@ -1544,8 +1560,8 @@ DEF_TEST(SkRasterPipeline_IntArithmeticWithNSlots, r) {
             SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
             SkRasterPipeline p(&alloc);
             auto* ctx = alloc.make<SkRasterPipeline_BinaryOpCtx>();
-            ctx->dst = (float*)&slots[0];
-            ctx->src = (float*)&slots[numSlotsAffected * N];
+            ctx->dst = (SkRPOffset)&slots[0];
+            ctx->src = (SkRPOffset)&slots[numSlotsAffected * N];
             p.append(op.stage, ctx);
             p.run(0,0,1,1);
 
@@ -1694,8 +1710,8 @@ DEF_TEST(SkRasterPipeline_CompareFloatsWithNSlots, r) {
             SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
             SkRasterPipeline p(&alloc);
             auto* ctx = alloc.make<SkRasterPipeline_BinaryOpCtx>();
-            ctx->dst = &slots[0];
-            ctx->src = &slots[numSlotsAffected * N];
+            ctx->dst = (SkRPOffset)&slots[0];
+            ctx->src = (SkRPOffset)&slots[numSlotsAffected * N];
             p.append(op.stage, ctx);
             p.run(0, 0, 1, 1);
 
@@ -1822,8 +1838,8 @@ DEF_TEST(SkRasterPipeline_CompareIntsWithNSlots, r) {
             SkArenaAlloc alloc(/*firstHeapAllocation=*/256);
             SkRasterPipeline p(&alloc);
             auto* ctx = alloc.make<SkRasterPipeline_BinaryOpCtx>();
-            ctx->dst = (float*)&slots[0];
-            ctx->src = (float*)&slots[numSlotsAffected * N];
+            ctx->dst = (SkRPOffset)&slots[0];
+            ctx->src = (SkRPOffset)&slots[numSlotsAffected * N];
             p.append(op.stage, ctx);
             p.run(0, 0, 1, 1);
 
@@ -2103,9 +2119,9 @@ DEF_TEST(SkRasterPipeline_MixTest, r) {
             }},
         {5, [&](SkRasterPipeline* p, SkArenaAlloc* alloc) {
                 auto* ctx = alloc->make<SkRasterPipeline_TernaryOpCtx>();
-                ctx->dst = &slots[0];
-                ctx->src0 = &slots[5 * N];
-                ctx->src1 = &slots[10 * N];
+                ctx->dst = (SkRPOffset)&slots[0];
+                ctx->src0 = (SkRPOffset)&slots[5 * N];
+                ctx->src1 = (SkRPOffset)&slots[10 * N];
                 p->append(SkRasterPipelineOp::mix_n_floats, ctx);
             }},
     };
@@ -2330,12 +2346,12 @@ DEF_TEST(SkRasterPipeline_BranchIfActiveLanesEqual, r) {
     SkRasterPipeline_BranchIfEqualCtx matching; // comparing all-six vs five will match
     matching.offset = 2;
     matching.value = 5;
-    matching.ptr = allSixes;
+    matching.ptr = (SkRPOffset)&allSixes[0];
 
     SkRasterPipeline_BranchIfEqualCtx nonmatching;  // comparing mostly-six vs five won't match
     nonmatching.offset = 2;
     nonmatching.value = 5;
-    nonmatching.ptr = mostlySixesWithOneFive;
+    nonmatching.ptr = (SkRPOffset)&mostlySixesWithOneFive[0];
 
     // Make a program which conditionally branches past a swap_rb op.
     SkArenaAlloc alloc(/*firstHeapAllocation=*/256);

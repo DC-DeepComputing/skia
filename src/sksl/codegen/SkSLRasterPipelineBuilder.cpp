@@ -1113,8 +1113,8 @@ void Program::appendCopy(TArray<Stage>* pipeline,
         SkASSERT(numSlots <= 4);
         auto stage = (ProgramOp)((int)baseStage + numSlots - 1);
         auto* ctx = alloc->make<SkRasterPipeline_BinaryOpCtx>();
-        ctx->dst = dst;
-        ctx->src = src;
+        ctx->dst = (SkRPOffset)dst;
+        ctx->src = (SkRPOffset)src;
         pipeline->push_back({stage, ctx});
     }
 }
@@ -1187,8 +1187,8 @@ void Program::appendAdjacentNWayBinaryOp(TArray<Stage>* pipeline, SkArenaAlloc* 
 
     if (numSlots > 0) {
         auto ctx = alloc->make<SkRasterPipeline_BinaryOpCtx>();
-        ctx->dst = dst;
-        ctx->src = src;
+        ctx->dst = (SkRPOffset)dst;
+        ctx->src = (SkRPOffset)src;
         pipeline->push_back({stage, ctx});
     }
 }
@@ -1220,9 +1220,9 @@ void Program::appendAdjacentNWayTernaryOp(TArray<Stage>* pipeline, SkArenaAlloc*
 
     if (numSlots > 0) {
         auto ctx = alloc->make<SkRasterPipeline_TernaryOpCtx>();
-        ctx->dst = dst;
-        ctx->src0 = src0;
-        ctx->src1 = src1;
+        ctx->dst = (SkRPOffset)dst;
+        ctx->src0 = (SkRPOffset)src0;
+        ctx->src1 = (SkRPOffset)src1;
         pipeline->push_back({stage, ctx});
     }
 }
@@ -1422,7 +1422,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
             // We pass `ctx` solely for its type; the value is unused.
             using ContextType = typename std::remove_reference<decltype(*ctx)>::type;
             ctx = alloc->make<ContextType>();
-            ctx->traceMask = reinterpret_cast<int*>(tempStackMap[inst.fImmA] - N);
+            ctx->traceMask = (SkRPOffset)(tempStackMap[inst.fImmA] - N);
             ctx->traceHook = fTraceHook.get();
             return ctx;
         };
@@ -1454,7 +1454,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 auto* ctx = alloc->make<SkRasterPipeline_BranchIfEqualCtx>();
                 ctx->offset = inst.fImmA;
                 ctx->value = inst.fImmB;
-                ctx->ptr = reinterpret_cast<int*>(tempStackPtr - N);
+                ctx->ptr = (SkRPOffset)(tempStackPtr - N);
                 pipeline->push_back({ProgramOp::branch_if_no_active_lanes_eq, ctx});
                 break;
             }
@@ -1569,7 +1569,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
             case BuilderOp::swizzle_3:
             case BuilderOp::swizzle_4: {
                 auto* ctx = alloc->make<SkRasterPipeline_SwizzleCtx>();
-                ctx->ptr = tempStackPtr - (N * inst.fImmA);
+                ctx->ptr = (SkRPOffset)(tempStackPtr - (N * inst.fImmA));
                 // Unpack component nybbles into byte-offsets pointing at stack slots.
                 unpack_nybbles_to_offsets(inst.fImmB, SkSpan(ctx->offsets));
                 pipeline->push_back({(ProgramOp)inst.fOp, ctx});
@@ -1580,7 +1580,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 int generated = inst.fImmA & 0xFFFF;
 
                 auto* ctx = alloc->make<SkRasterPipeline_ShuffleCtx>();
-                ctx->ptr = tempStackPtr - (N * consumed);
+                ctx->ptr = (SkRPOffset)(tempStackPtr - (N * consumed));
                 ctx->count = generated;
                 // Unpack immB and immC from nybble form into the offset array.
                 unpack_nybbles_to_offsets(inst.fImmB, SkSpan(&ctx->offsets[0], 8));
@@ -1632,22 +1632,21 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 //  immB: dynamic stack ID
                 ProgramOp op;
                 auto* ctx = alloc->make<SkRasterPipeline_CopyIndirectCtx>();
-                ctx->indirectOffset =
-                        reinterpret_cast<const uint32_t*>(tempStackMap[inst.fImmB]) - (1 * N);
+                ctx->indirectOffset = (SkRPOffset)(tempStackMap[inst.fImmB] - (1 * N));
                 ctx->indirectLimit = inst.fSlotB - inst.fSlotA - inst.fImmA;
                 ctx->slots = inst.fImmA;
                 if (inst.fOp == BuilderOp::push_slots_indirect) {
                     op = ProgramOp::copy_from_indirect_unmasked;
-                    ctx->src = SlotA();
-                    ctx->dst = tempStackPtr;
+                    ctx->src = (SkRPOffset)SlotA();
+                    ctx->dst = (SkRPOffset)tempStackPtr;
                 } else if (inst.fOp == BuilderOp::push_uniform_indirect) {
                     op = ProgramOp::copy_from_indirect_uniform_unmasked;
-                    ctx->src = UniformA();
-                    ctx->dst = tempStackPtr;
+                    ctx->src = (SkRPOffset)UniformA();
+                    ctx->dst = (SkRPOffset)tempStackPtr;
                 } else {
                     op = ProgramOp::copy_to_indirect_masked;
-                    ctx->src = tempStackPtr - (ctx->slots * N);
-                    ctx->dst = SlotA();
+                    ctx->src = (SkRPOffset)(tempStackPtr - (ctx->slots * N));
+                    ctx->dst = (SkRPOffset)SlotA();
                 }
                 pipeline->push_back({op, ctx});
                 break;
@@ -1755,8 +1754,8 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 // immC: offset from stack top
                 auto stage = (ProgramOp)((int)ProgramOp::swizzle_copy_slot_masked + inst.fImmA - 1);
                 auto* ctx = alloc->make<SkRasterPipeline_SwizzleCopyCtx>();
-                ctx->src = tempStackPtr - (inst.fImmC * N);
-                ctx->dst = SlotA();
+                ctx->src = (SkRPOffset)(tempStackPtr - (inst.fImmC * N));
+                ctx->dst = (SkRPOffset)SlotA();
                 unpack_nybbles_to_offsets(inst.fImmB, SkSpan(ctx->offsets));
                 pipeline->push_back({stage, ctx});
                 break;
@@ -1785,10 +1784,9 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 float* sourceStackPtr = tempStackMap[inst.fImmB];
 
                 auto* ctx = alloc->make<SkRasterPipeline_CopyIndirectCtx>();
-                ctx->dst = tempStackPtr;
-                ctx->src = sourceStackPtr - (inst.fImmC * N);
-                ctx->indirectOffset =
-                        reinterpret_cast<const uint32_t*>(tempStackMap[inst.fImmD]) - (1 * N);
+                ctx->dst = (SkRPOffset)tempStackPtr;
+                ctx->src = (SkRPOffset)(sourceStackPtr - (inst.fImmC * N));
+                ctx->indirectOffset = (SkRPOffset)(tempStackMap[inst.fImmD] - (1 * N));
                 ctx->indirectLimit = inst.fImmC - inst.fImmA;
                 ctx->slots = inst.fImmA;
                 pipeline->push_back({ProgramOp::copy_from_indirect_unmasked, ctx});
@@ -1802,10 +1800,9 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 // immC: offset from stack top
                 // immD: dynamic stack ID
                 auto* ctx = alloc->make<SkRasterPipeline_SwizzleCopyIndirectCtx>();
-                ctx->src = tempStackPtr - (inst.fImmC * N);
-                ctx->dst = SlotA();
-                ctx->indirectOffset =
-                        reinterpret_cast<const uint32_t*>(tempStackMap[inst.fImmD]) - (1 * N);
+                ctx->src = (SkRPOffset)(tempStackPtr - (inst.fImmC * N));
+                ctx->dst = (SkRPOffset)SlotA();
+                ctx->indirectOffset = (SkRPOffset)(tempStackMap[inst.fImmD] - (1 * N));
                 ctx->indirectLimit =
                         inst.fSlotB - inst.fSlotA - (max_packed_nybble(inst.fImmB, inst.fImmA) + 1);
                 ctx->slots = inst.fImmA;
@@ -1815,7 +1812,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
             }
             case BuilderOp::case_op: {
                 auto* ctx = alloc->make<SkRasterPipeline_CaseOpCtx>();
-                ctx->ptr = reinterpret_cast<int*>(tempStackPtr - 2 * N);
+                ctx->ptr = (SkRPOffset)(tempStackPtr - 2 * N);
                 ctx->expectedValue = inst.fImmA;
                 pipeline->push_back({ProgramOp::case_op, ctx});
                 break;
@@ -1867,13 +1864,12 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 auto* ctx = AllocTraceContext((SkRasterPipeline_TraceVarCtx*)nullptr);
                 ctx->slotIdx = inst.fSlotA;
                 ctx->numSlots = inst.fImmB;
-                ctx->data = reinterpret_cast<int*>(SlotA());
+                ctx->data = (SkRPOffset)SlotA();
                 if (inst.fOp == BuilderOp::trace_var_indirect) {
-                    ctx->indirectOffset =
-                            reinterpret_cast<const uint32_t*>(tempStackMap[inst.fImmC]) - (1 * N);
+                    ctx->indirectOffset = (SkRPOffset)(tempStackMap[inst.fImmC] - (1 * N));
                     ctx->indirectLimit = inst.fSlotB - inst.fSlotA - inst.fImmB;
                 } else {
-                    ctx->indirectOffset = nullptr;
+                    ctx->indirectOffset = 0;
                     ctx->indirectLimit = 0;
                 }
                 pipeline->push_back({ProgramOp::trace_var, ctx});
@@ -2149,8 +2145,8 @@ void Program::dump(SkWStream* out) const {
         auto BinaryOpCtx = [&](const void* v,
                                int numSlots) -> std::tuple<std::string, std::string> {
             const auto *ctx = static_cast<const SkRasterPipeline_BinaryOpCtx*>(v);
-            return std::make_tuple(PtrCtx(ctx->dst, numSlots),
-                                   PtrCtx(ctx->src, numSlots));
+            return std::make_tuple(PtrCtx((const float*)ctx->dst, numSlots),
+                                   PtrCtx((const float*)ctx->src, numSlots));
         };
 
         // Interpret the context value as a BinaryOp structure for copy_n_constants (numSlots is
@@ -2158,16 +2154,16 @@ void Program::dump(SkWStream* out) const {
         auto CopyConstantCtx = [&](const void* v,
                                    int numSlots) -> std::tuple<std::string, std::string> {
             const auto *ctx = static_cast<const SkRasterPipeline_BinaryOpCtx*>(v);
-            return std::make_tuple(PtrCtx(ctx->dst, numSlots),
-                                   MultiImmCtx(ctx->src, numSlots));
+            return std::make_tuple(PtrCtx((const float*)ctx->dst, numSlots),
+                                   MultiImmCtx((const float*)ctx->src, numSlots));
         };
 
         // Interpret the context value as a BinaryOp structure (numSlots is inferred from the
         // distance between pointers).
         auto AdjacentBinaryOpCtx = [&](const void* v) -> std::tuple<std::string, std::string> {
             const auto *ctx = static_cast<const SkRasterPipeline_BinaryOpCtx*>(v);
-            int numSlots = (ctx->src - ctx->dst) / N;
-            return AdjacentPtrCtx(ctx->dst, numSlots);
+            int numSlots = ((const float*)ctx->src - (const float*)ctx->dst) / N;
+            return AdjacentPtrCtx((const float*)ctx->dst, numSlots);
         };
 
         // Interpret the context value as a TernaryOp structure (numSlots is inferred from the
@@ -2175,8 +2171,8 @@ void Program::dump(SkWStream* out) const {
         auto AdjacentTernaryOpCtx = [&](const void* v) ->
                                        std::tuple<std::string, std::string, std::string> {
             const auto* ctx = static_cast<const SkRasterPipeline_TernaryOpCtx*>(v);
-            int numSlots = (ctx->src0 - ctx->dst) / N;
-            return Adjacent3PtrCtx(ctx->dst, numSlots);
+            int numSlots = ((const float*)ctx->src0 - (const float*)ctx->dst) / N;
+            return Adjacent3PtrCtx((const float*)ctx->dst, numSlots);
         };
 
         // Stringize a span of swizzle offsets to the textual equivalent (`xyzw`).
@@ -2218,8 +2214,9 @@ void Program::dump(SkWStream* out) const {
             const auto* ctx = static_cast<const SkRasterPipeline_SwizzleCtx*>(v);
             int destSlots = (int)op - (int)BuilderOp::swizzle_1 + 1;
 
-            return std::make_tuple(PtrCtx(ctx->ptr, destSlots),
-                                   SwizzlePtr(ctx->ptr, SkSpan(ctx->offsets, destSlots)));
+            return std::make_tuple(
+                    PtrCtx((const float*)ctx->ptr, destSlots),
+                    SwizzlePtr((const float*)ctx->ptr, SkSpan(ctx->offsets, destSlots)));
         };
 
         // Interpret the context value as a SwizzleCopy structure.
@@ -2228,15 +2225,16 @@ void Program::dump(SkWStream* out) const {
             const auto* ctx = static_cast<const SkRasterPipeline_SwizzleCopyCtx*>(v);
             int destSlots = (int)op - (int)BuilderOp::swizzle_copy_slot_masked + 1;
 
-            return std::make_tuple(SwizzlePtr(ctx->dst, SkSpan(ctx->offsets, destSlots)),
-                                   PtrCtx(ctx->src, destSlots));
+            return std::make_tuple(
+                    SwizzlePtr((const float*)ctx->dst, SkSpan(ctx->offsets, destSlots)),
+                    PtrCtx((const float*)ctx->src, destSlots));
         };
 
         // Interpret the context value as a Shuffle structure.
         auto ShuffleCtx = [&](const void* v) -> std::tuple<std::string, std::string> {
             const auto* ctx = static_cast<const SkRasterPipeline_ShuffleCtx*>(v);
 
-            std::string dst = PtrCtx(ctx->ptr, ctx->count);
+            std::string dst = PtrCtx((const float*)ctx->ptr, ctx->count);
             std::string src = "(" + dst + ")[";
             for (int index = 0; index < ctx->count; ++index) {
                 if (ctx->offsets[index] % (N * sizeof(float))) {
@@ -2262,8 +2260,8 @@ void Program::dump(SkWStream* out) const {
 
             case POp::case_op: {
                 const auto* ctx = static_cast<SkRasterPipeline_CaseOpCtx*>(stage.ctx);
-                opArg1 = PtrCtx(ctx->ptr, 1);
-                opArg2 = PtrCtx(ctx->ptr + N, 1);
+                opArg1 = PtrCtx((const float*)(ctx->ptr), 1);
+                opArg2 = PtrCtx((const float*)(ctx->ptr) + N, 1);
                 opArg3 = Imm(sk_bit_cast<float>(ctx->expectedValue), /*showAsFloat=*/false);
                 break;
             }
@@ -2424,23 +2422,23 @@ void Program::dump(SkWStream* out) const {
             case POp::copy_to_indirect_masked: {
                 const auto* ctx = static_cast<SkRasterPipeline_CopyIndirectCtx*>(stage.ctx);
                 // We don't incorporate the indirect-limit in the output
-                opArg1 = PtrCtx(ctx->dst, ctx->slots);
-                opArg2 = PtrCtx(ctx->src, ctx->slots);
-                opArg3 = PtrCtx(ctx->indirectOffset, 1);
+                opArg1 = PtrCtx((const float*)ctx->dst, ctx->slots);
+                opArg2 = PtrCtx((const float*)ctx->src, ctx->slots);
+                opArg3 = PtrCtx((const uint32_t*)ctx->indirectOffset, 1);
                 break;
             }
             case POp::copy_from_indirect_uniform_unmasked: {
                 const auto* ctx = static_cast<SkRasterPipeline_CopyIndirectCtx*>(stage.ctx);
-                opArg1 = PtrCtx(ctx->dst, ctx->slots);
-                opArg2 = UniformPtrCtx(ctx->src, ctx->slots);
-                opArg3 = PtrCtx(ctx->indirectOffset, 1);
+                opArg1 = PtrCtx((const float*)ctx->dst, ctx->slots);
+                opArg2 = UniformPtrCtx((const float*)ctx->src, ctx->slots);
+                opArg3 = PtrCtx((const uint32_t*)ctx->indirectOffset, 1);
                 break;
             }
             case POp::swizzle_copy_to_indirect_masked: {
                 const auto* ctx = static_cast<SkRasterPipeline_SwizzleCopyIndirectCtx*>(stage.ctx);
-                opArg1 = PtrCtx(ctx->dst, SwizzleWidth(SkSpan(ctx->offsets, ctx->slots)));
-                opArg2 = PtrCtx(ctx->src, ctx->slots);
-                opArg3 = PtrCtx(ctx->indirectOffset, 1);
+                opArg1 = PtrCtx((const float*)ctx->dst, SwizzleWidth(SkSpan(ctx->offsets, ctx->slots)));
+                opArg2 = PtrCtx((const float*)ctx->src, ctx->slots);
+                opArg3 = PtrCtx((const uint32_t*)ctx->indirectOffset, 1);
                 opSwizzle = SwizzleOffsetSpan(SkSpan(ctx->offsets, ctx->slots));
                 break;
             }
@@ -2563,29 +2561,29 @@ void Program::dump(SkWStream* out) const {
             case POp::branch_if_no_active_lanes_eq: {
                 const auto* ctx = static_cast<SkRasterPipeline_BranchIfEqualCtx*>(stage.ctx);
                 opArg1 = BranchOffset(ctx);
-                opArg2 = PtrCtx(ctx->ptr, 1);
+                opArg2 = PtrCtx((const float*)ctx->ptr, 1);
                 opArg3 = Imm(sk_bit_cast<float>(ctx->value));
                 break;
             }
             case POp::trace_var: {
                 const auto* ctx = static_cast<SkRasterPipeline_TraceVarCtx*>(stage.ctx);
-                opArg1 = PtrCtx(ctx->traceMask, 1);
-                opArg2 = PtrCtx(ctx->data, ctx->numSlots);
-                if (ctx->indirectOffset != nullptr) {
-                    opArg3 = " + " + PtrCtx(ctx->indirectOffset, 1);
+                opArg1 = PtrCtx((const float*)ctx->traceMask, 1);
+                opArg2 = PtrCtx((const float*)ctx->data, ctx->numSlots);
+                if (ctx->indirectOffset != 0) {
+                    opArg3 = " + " + PtrCtx((const uint32_t*)ctx->indirectOffset, 1);
                 }
                 break;
             }
             case POp::trace_line: {
                 const auto* ctx = static_cast<SkRasterPipeline_TraceLineCtx*>(stage.ctx);
-                opArg1 = PtrCtx(ctx->traceMask, 1);
+                opArg1 = PtrCtx((const float*)ctx->traceMask, 1);
                 opArg2 = std::to_string(ctx->lineNumber);
                 break;
             }
             case POp::trace_enter:
             case POp::trace_exit: {
                 const auto* ctx = static_cast<SkRasterPipeline_TraceFuncCtx*>(stage.ctx);
-                opArg1 = PtrCtx(ctx->traceMask, 1);
+                opArg1 = PtrCtx((const float*)ctx->traceMask, 1);
                 opArg2 = (fDebugTrace &&
                           ctx->funcIdx >= 0 &&
                           ctx->funcIdx < (int)fDebugTrace->fFuncInfo.size())
@@ -2595,7 +2593,7 @@ void Program::dump(SkWStream* out) const {
             }
             case POp::trace_scope: {
                 const auto* ctx = static_cast<SkRasterPipeline_TraceScopeCtx*>(stage.ctx);
-                opArg1 = PtrCtx(ctx->traceMask, 1);
+                opArg1 = PtrCtx((const float*)ctx->traceMask, 1);
                 opArg2 = SkSL::String::printf("%+d", ctx->delta);
                 break;
             }
