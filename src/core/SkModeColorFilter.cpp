@@ -185,10 +185,7 @@ void SkModeColorFilter::addToKey(const skgpu::graphite::KeyContext& keyContext,
 
     SkPMColor4f color = map_color(fColor, sk_srgb_singleton(),
                                   keyContext.dstColorInfo().colorSpace());
-    BlendColorFilterBlock::BlendColorFilterData data(fMode, color);
-
-    BlendColorFilterBlock::BeginBlock(keyContext, builder, gatherer, &data);
-    builder->endBlock();
+    AddColorFilterBlendBlock(keyContext, builder, gatherer, fMode, color);
 }
 
 #endif

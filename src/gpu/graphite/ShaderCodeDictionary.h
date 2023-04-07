@@ -59,7 +59,6 @@ enum class SnippetRequirementFlags : uint32_t {
     kLocalCoords = 0x1,
     kPriorStageOutput = 0x2,  // AKA the "input" color, or the "source" color for a blender
     kRuntimeShaderDstColor = 0x4,
-    kBlendAgainstPrimitiveColor = 0x8,
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags);
 
@@ -111,9 +110,6 @@ struct ShaderSnippet {
     }
     bool needsRuntimeShaderDstColor() const {
         return fSnippetRequirementFlags & SnippetRequirementFlags::kRuntimeShaderDstColor;
-    }
-    bool blendAgainstPrimitiveColor() const {
-        return fSnippetRequirementFlags & SnippetRequirementFlags::kBlendAgainstPrimitiveColor;
     }
 
     const char* fName = nullptr;

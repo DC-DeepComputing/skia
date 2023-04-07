@@ -78,12 +78,10 @@ void SkBlenderBase::addToKey(const skgpu::graphite::KeyContext& keyContext,
     const bool primitiveColorBlender = dstColorType == DstColorType::kPrimitive;
     std::optional<SkBlendMode> bm = as_BB(this)->asBlendMode();
     if (primitiveColorBlender && bm.has_value()) {
-        PrimitiveBlendModeBlock::BeginBlock(keyContext, builder, gatherer, bm.value());
-        builder->endBlock();
+        AddPrimitiveBlendBlock(keyContext, builder, gatherer, bm.value());
+
     } else if (!primitiveColorBlender) {
-        BlendModeBlock::BeginBlock(keyContext, builder, gatherer,
-                                   bm.value_or(SkBlendMode::kSrcOver));
-        builder->endBlock();
+        AddDstBlendBlock(keyContext, builder, gatherer, bm.value_or(SkBlendMode::kSrcOver));
     }
 }
 #endif

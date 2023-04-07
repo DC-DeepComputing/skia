@@ -47,12 +47,10 @@ void PassthroughShaderBlock::BeginBlock(const KeyContext& keyContext,
     builder->beginBlock(BuiltInCodeSnippetID::kPassthroughShader);
 }
 
-//--------------------------------------------------------------------------------------------------
-
-void PassthroughBlenderBlock::BeginBlock(const KeyContext& keyContext,
-                                         PaintParamsKeyBuilder* builder,
-                                         PipelineDataGatherer* gatherer) {
-    builder->beginBlock(BuiltInCodeSnippetID::kPassthroughBlender);
+void PriorOutputBlock::BeginBlock(const KeyContext& keyContext,
+                                  PaintParamsKeyBuilder* builder,
+                                  PipelineDataGatherer* gatherer) {
+    PassthroughShaderBlock::BeginBlock(keyContext, builder, gatherer);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -614,43 +612,64 @@ void PerlinNoiseShaderBlock::BeginBlock(const KeyContext& keyContext,
 
 //--------------------------------------------------------------------------------------------------
 
-void PorterDuffBlendShaderBlock::BeginBlock(const KeyContext& keyContext,
-                                            PaintParamsKeyBuilder* builder,
-                                            PipelineDataGatherer* gatherer,
-                                            const PorterDuffBlendShaderData& blendData) {
-    auto dict = keyContext.dict();
-    // When extracted into ShaderInfo::SnippetEntries the children will appear after their
-    // parent. Thus, the parent's uniform data must appear in the uniform block before the
-    // uniform data of the children.
-    if (gatherer) {
-        VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kPorterDuffBlendShader)
-        SkASSERT(blendData.fPorterDuffConstants.size() == 4);
-        gatherer->write(SkSLType::kHalf4, blendData.fPorterDuffConstants.data());
-        gatherer->addFlags(
-                dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kPorterDuffBlendShader));
-    }
-
-    builder->beginBlock(BuiltInCodeSnippetID::kPorterDuffBlendShader);
-}
-
-//--------------------------------------------------------------------------------------------------
-
 void BlendShaderBlock::BeginBlock(const KeyContext& keyContext,
                                   PaintParamsKeyBuilder* builder,
-                                  PipelineDataGatherer* gatherer,
-                                  const BlendShaderData& blendData) {
-    auto dict = keyContext.dict();
-    // When extracted into ShaderInfo::SnippetEntries the children will appear after their
-    // parent. Thus, the parent's uniform data must appear in the uniform block before the
-    // uniform data of the children.
+                                  PipelineDataGatherer* gatherer) {
     if (gatherer) {
+        auto dict = keyContext.dict();
         VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kBlendShader)
-        gatherer->write(SkTo<int>(blendData.fBM));
-
         gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kBlendShader));
     }
 
     builder->beginBlock(BuiltInCodeSnippetID::kBlendShader);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+void BlendModeBlenderBlock::BeginBlock(const KeyContext& keyContext,
+                                       PaintParamsKeyBuilder* builder,
+                                       PipelineDataGatherer* gatherer,
+                                       SkBlendMode blendMode) {
+    if (gatherer) {
+        auto dict = keyContext.dict();
+        VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kBlendModeBlender)
+        gatherer->write(SkTo<int>(blendMode));
+        gatherer->addFlags(
+                dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kBlendModeBlender));
+    }
+
+    builder->beginBlock(BuiltInCodeSnippetID::kBlendModeBlender);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+void CoeffBlenderBlock::BeginBlock(const KeyContext& keyContext,
+                                   PaintParamsKeyBuilder* builder,
+                                   PipelineDataGatherer* gatherer,
+                                   SkSpan<const float> coeffs) {
+    if (gatherer) {
+        auto dict = keyContext.dict();
+        VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kCoeffBlender)
+        SkASSERT(coeffs.size() == 4);
+        gatherer->write(SkSLType::kHalf4, coeffs.data());
+        gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kCoeffBlender));
+    }
+
+    builder->beginBlock(BuiltInCodeSnippetID::kCoeffBlender);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+void PrimitiveColorBlock::BeginBlock(const KeyContext& keyContext,
+                                     PaintParamsKeyBuilder* builder,
+                                     PipelineDataGatherer* gatherer) {
+    if (gatherer) {
+        auto dict = keyContext.dict();
+        VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kPrimitiveColor)
+        gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kPrimitiveColor));
+    }
+
+    builder->beginBlock(BuiltInCodeSnippetID::kPrimitiveColor);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -699,35 +718,6 @@ void MatrixColorFilterBlock::BeginBlock(const KeyContext& keyContext,
     }
 
     builder->beginBlock(BuiltInCodeSnippetID::kMatrixColorFilter);
-}
-
-//--------------------------------------------------------------------------------------------------
-
-namespace {
-
-void add_blend_colorfilter_uniform_data(const ShaderCodeDictionary* dict,
-                                        const BlendColorFilterBlock::BlendColorFilterData& data,
-                                        PipelineDataGatherer* gatherer) {
-    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kBlendColorFilter)
-    gatherer->write(SkTo<int>(data.fBlendMode));
-    gatherer->write(data.fSrcColor);
-
-    gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kBlendColorFilter));
-}
-
-} // anonymous namespace
-
-void BlendColorFilterBlock::BeginBlock(const KeyContext& keyContext,
-                                       PaintParamsKeyBuilder* builder,
-                                       PipelineDataGatherer* gatherer,
-                                       const BlendColorFilterData* data) {
-    auto dict = keyContext.dict();
-
-    if (gatherer) {
-        add_blend_colorfilter_uniform_data(dict, *data, gatherer);
-    }
-
-    builder->beginBlock(BuiltInCodeSnippetID::kBlendColorFilter);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -814,51 +804,73 @@ void ColorSpaceTransformBlock::BeginBlock(const KeyContext& keyContext,
 }
 
 //--------------------------------------------------------------------------------------------------
-namespace {
 
-void add_shaderbasedblender_uniform_data(const ShaderCodeDictionary* dict,
-                                         SkBlendMode bm,
-                                         PipelineDataGatherer* gatherer) {
-    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kShaderBasedBlender)
-    gatherer->write(SkTo<int>(bm));
-
-    gatherer->addFlags(
-            dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kShaderBasedBlender));
-}
-
-} // anonymous namespace
-
-void BlendModeBlock::BeginBlock(const KeyContext& keyContext,
-                                PaintParamsKeyBuilder *builder,
-                                PipelineDataGatherer* gatherer,
-                                SkBlendMode bm) {
-
-    auto dict = keyContext.dict();
+void AddDstBlendBlock(const KeyContext& keyContext,
+                      PaintParamsKeyBuilder* builder,
+                      PipelineDataGatherer* gatherer,
+                      SkBlendMode bm) {
 
     if (bm <= SkBlendMode::kLastCoeffMode) {
         BuiltInCodeSnippetID fixedFuncBlendModeID = static_cast<BuiltInCodeSnippetID>(
                 kFixedFunctionBlendModeIDOffset + (int) bm);
         builder->beginBlock(fixedFuncBlendModeID);
-    } else {
-        if (gatherer) {
-            add_shaderbasedblender_uniform_data(dict, bm, gatherer);
-        }
+        builder->endBlock();
 
-        builder->beginBlock(BuiltInCodeSnippetID::kShaderBasedBlender);
+    } else {
+        BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+        // src -- prior output
+        PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+        builder->endBlock();
+        // TODO(b/238757201): Use the surface color as the destination by replacing
+        // SolidColorShaderBlock with a DstColorBlock
+        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, {1, 1, 1, 1});
+        builder->endBlock();
+        // blender -- shader based blending
+        BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, bm);
+        builder->endBlock();
+
+        builder->endBlock();  // BlendShaderBlock
     }
 }
 
-void PrimitiveBlendModeBlock::BeginBlock(const KeyContext& keyContext,
-                                         PaintParamsKeyBuilder *builder,
-                                         PipelineDataGatherer* gatherer,
-                                         SkBlendMode bm) {
-    auto dict = keyContext.dict();
-    // Unlike in the usual blendmode case, the primitive blend mode will always be implemented
-    // via shader-based blending.
-    if (gatherer) {
-        add_shaderbasedblender_uniform_data(dict, bm, gatherer);
-    }
-    builder->beginBlock(BuiltInCodeSnippetID::kPrimitiveColorShaderBasedBlender);
+void AddPrimitiveBlendBlock(const KeyContext& keyContext,
+                            PaintParamsKeyBuilder* builder,
+                            PipelineDataGatherer* gatherer,
+                            SkBlendMode bm) {
+    BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+    // src -- prior output
+    PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+    builder->endBlock();
+    // dst -- primitive color
+    PrimitiveColorBlock::BeginBlock(keyContext, builder, gatherer);
+    builder->endBlock();
+    // blender -- shader based blending
+    BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, bm);
+    builder->endBlock();
+
+    builder->endBlock();  // BlendShaderBlock
+}
+
+void AddColorFilterBlendBlock(const KeyContext& keyContext,
+                              PaintParamsKeyBuilder* builder,
+                              PipelineDataGatherer* gatherer,
+                              SkBlendMode bm,
+                              const SkPMColor4f& srcColor) {
+    BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+    // src -- solid color
+    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, srcColor);
+    builder->endBlock();
+    // dst -- prior output
+    PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+    builder->endBlock();
+    // blender -- shader based blending
+    BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, bm);
+    builder->endBlock();
+
+    builder->endBlock();  // BlendShaderBlock
 }
 
 RuntimeEffectBlock::ShaderData::ShaderData(sk_sp<const SkRuntimeEffect> effect)
