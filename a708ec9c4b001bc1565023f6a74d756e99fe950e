@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27e75637_60088090",
+        "filename": "src/gpu/graphite/compute/ComputeStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T19:37:23Z",
+      "side": 1,
+      "message": "This formatting is odd given that we are already wrapping the string. Maybe:\n \n     SK_ABORT(\"ComputeSteps must override calculateGlobalDispatchSize() if it participates \"\n              \"in resource creation\");",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 33
+      },
+      "revId": "a708ec9c4b001bc1565023f6a74d756e99fe950e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
