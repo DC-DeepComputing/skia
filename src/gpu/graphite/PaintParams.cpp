@@ -140,8 +140,7 @@ void PaintParams::toKey(const KeyContext& keyContext,
     if (fFinalBlender) {
         as_BB(fFinalBlender)->addToKey(keyContext, builder, gatherer, DstColorType::kSurface);
     } else {
-        BlendModeBlock::BeginBlock(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
-        builder->endBlock();
+        AddDstBlendBlock(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
     }
 
     SkASSERT(builder->sizeInBytes() > 0);

@@ -125,9 +125,8 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     }
 
     if (addPrimitiveBlender) {
-        PrimitiveBlendModeBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
-                                            SkBlendMode::kSrcOver);
-        keyBuilder->endBlock();
+        AddPrimitiveBlendBlock(
+                keyContext, keyBuilder, /* gatherer= */ nullptr, SkBlendMode::kSrcOver);
     }
 
     PrecompileBase::AddToKey(keyContext, keyBuilder, fMaskFilterOptions,
@@ -135,12 +134,35 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     PrecompileBase::AddToKey(keyContext, keyBuilder, fColorFilterOptions,
                              desiredColorFilterCombination);
 
-    if (fBlenderOptions.empty()) {
-        BlendModeBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr,
-                                   SkBlendMode::kSrcOver);
-        keyBuilder->endBlock();
+    sk_sp<PrecompileBlender> blender =
+            PrecompileBase::SelectOption(fBlenderOptions, desiredBlendCombination);
+    if (blender) {
+        if (blender->asBlendMode()) {
+            // Blend mode blender, add normally
+            PrecompileBase::AddToKey(
+                    keyContext, keyBuilder, fBlenderOptions, desiredBlendCombination);
+
+        } else {
+            // Runtime effect blender, add blend block manually
+            BlendShaderBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
+
+            // src -- prior output
+            PriorOutputBlock::BeginBlock(keyContext, keyBuilder, /* gatherer= */ nullptr);
+            keyBuilder->endBlock();
+            // TODO(b/238757201): Use the surface color as the destination by replacing
+            // SolidColorShaderBlock with a DstColorBlock
+            SolidColorShaderBlock::BeginBlock(
+                    keyContext, keyBuilder, /* gatherer= */ nullptr, {1, 1, 1, 1});
+            keyBuilder->endBlock();
+            // blender -- runtime effect
+            PrecompileBase::AddToKey(
+                    keyContext, keyBuilder, fBlenderOptions, desiredBlendCombination);
+
+            keyBuilder->endBlock();  // BlendShaderBlock
+        }
+
     } else {
-        PrecompileBase::AddToKey(keyContext, keyBuilder, fBlenderOptions, desiredBlendCombination);
+        AddDstBlendBlock(keyContext, keyBuilder, /* gatherer= */ nullptr, SkBlendMode::kSrcOver);
     }
 }
 

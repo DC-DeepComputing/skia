@@ -1120,7 +1120,8 @@ static void add_children_to_key(SkSpan<const SkRuntimeEffect::ChildPtr> children
 
                 case ChildType::kBlender:
                     // A "passthrough" blender performs `blend_src_over(src, dest)`.
-                    PassthroughBlenderBlock::BeginBlock(keyContext, builder, gatherer);
+                    BlendModeBlenderBlock::BeginBlock(
+                            keyContext, builder, gatherer, SkBlendMode::kSrcOver);
                     builder->endBlock();
                     break;
             }
@@ -1733,14 +1734,36 @@ public:
                 keyContext.dstColorInfo().colorSpace());
         SkASSERT(uniforms);
 
-        // TODO(b/238757201): Pass into RuntimeEffectBlock::BeginBlock that this runtime effect
-        // needs a dst read, if dstColorType == kSurface.
-        RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
-                                       { fEffect, std::move(uniforms) });
+        if (dstColorType == DstColorType::kSurface) {
+            // Invoke the runtime blender using the surface color as dst.
+            BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
-        add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
+            // src -- prior output
+            PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
+            builder->endBlock();
+            // TODO(b/238757201): Use the surface color as the destination by replacing
+            // SolidColorShaderBlock with a DstColorBlock
+            SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, {1, 1, 1, 1});
+            builder->endBlock();
 
-        builder->endBlock();
+            // blender -- runtime effect
+            RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
+                                           { fEffect, std::move(uniforms) });
+
+            add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
+
+            builder->endBlock();  // RuntimeEffectBlock
+            builder->endBlock();  // BlendShaderBlock
+
+        } else {
+            // Invoke the runtime blender directly.
+            RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
+                                           { fEffect, std::move(uniforms) });
+
+            add_children_to_key(fChildren, fEffect->children(), keyContext, builder, gatherer);
+
+            builder->endBlock();
+        }
     }
 #endif
 
