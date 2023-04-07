@@ -8,6 +8,7 @@
 #ifndef SkChecksum_DEFINED
 #define SkChecksum_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkOpts_spi.h"
@@ -54,14 +55,34 @@ public:
 
 // SkGoodHash should usually be your first choice in hashing data.
 // It should be both reasonably fast and high quality.
-struct SkGoodHash {
+class SkGoodHash {
+    // A type K that declares a `span_view` class will be converted to SkSpan<K::span_view> before
+    // hashing, as if it matched the dedicated SkSpan<K::span_view> directly.
+    template< class, class = void>
+    struct has_span_view : std::false_type {};
+    template< class T >
+    struct has_span_view<T, std::void_t<typename T::span_view>> : std::true_type {};
+
+public:
     template <typename K>
-    std::enable_if_t<sizeof(K) == 4, uint32_t> operator()(const K& k) const {
+    uint32_t operator()(SkSpan<K> k) const {
+        return SkOpts::hash_fn(k.data(), k.size_bytes(), 0);
+    }
+
+    template <typename K>
+    std::enable_if_t<has_span_view<K>::value, uint32_t> operator()(const K& k) const {
+        return (*this)(SkSpan<typename K::span_view>{k});
+    }
+
+    template <typename K>
+    std::enable_if_t<sizeof(K) == 4 && !has_span_view<K>::value, uint32_t>
+    operator()(const K& k) const {
         return SkChecksum::Mix(*(const uint32_t*)&k);
     }
 
     template <typename K>
-    std::enable_if_t<sizeof(K) != 4, uint32_t> operator()(const K& k) const {
+    std::enable_if_t<sizeof(K) != 4 && !has_span_view<K>::value, uint32_t>
+    operator()(const K& k) const {
         return SkOpts::hash_fn(&k, sizeof(K), 0);
     }
 
