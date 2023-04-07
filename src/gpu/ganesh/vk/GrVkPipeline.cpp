@@ -83,7 +83,7 @@ static void setup_vertex_input_state(
         const GrGeometryProcessor::AttributeSet& vertexAttribs,
         const GrGeometryProcessor::AttributeSet& instanceAttribs,
         VkPipelineVertexInputStateCreateInfo* vertexInputInfo,
-        SkSTArray<2, VkVertexInputBindingDescription, true>* bindingDescs,
+        STArray<2, VkVertexInputBindingDescription, true>* bindingDescs,
         VkVertexInputAttributeDescription* attributeDesc) {
     int vaCount = vertexAttribs.count();
     int iaCount = instanceAttribs.count();
@@ -479,8 +479,8 @@ sk_sp<GrVkPipeline> GrVkPipeline::Make(GrVkGpu* gpu,
                                    bool ownsLayout,
                                    VkPipelineCache cache) {
     VkPipelineVertexInputStateCreateInfo vertexInputInfo;
-    SkSTArray<2, VkVertexInputBindingDescription, true> bindingDescs;
-    SkSTArray<16, VkVertexInputAttributeDescription> attributeDesc;
+    STArray<2, VkVertexInputBindingDescription, true> bindingDescs;
+    STArray<16, VkVertexInputAttributeDescription> attributeDesc;
     int totalAttributeCnt = vertexAttribs.count() + instanceAttribs.count();
     SkASSERT(totalAttributeCnt <= gpu->vkCaps().maxVertexAttributes());
     VkVertexInputAttributeDescription* pAttribs = attributeDesc.push_back_n(totalAttributeCnt);
