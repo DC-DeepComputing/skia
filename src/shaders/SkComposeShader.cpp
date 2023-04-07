@@ -180,18 +180,21 @@ void SkShader_Blend::addToKey(const skgpu::graphite::KeyContext& keyContext,
                               skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;
 
+    BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+    as_SB(fSrc)->addToKey(keyContext, builder, gatherer);
+    as_SB(fDst)->addToKey(keyContext, builder, gatherer);
+
     SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(fMode);
     if (!porterDuffConstants.empty()) {
-        PorterDuffBlendShaderBlock::BeginBlock(keyContext, builder, gatherer,
-                                               {porterDuffConstants});
+        CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, porterDuffConstants);
+        builder->endBlock();
     } else {
-        BlendShaderBlock::BeginBlock(keyContext, builder, gatherer, {fMode});
+        BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, fMode);
+        builder->endBlock();
     }
 
-    as_SB(fDst)->addToKey(keyContext, builder, gatherer);
-    as_SB(fSrc)->addToKey(keyContext, builder, gatherer);
-
-    builder->endBlock();
+    builder->endBlock();  // BlendShaderBlock
 }
 #endif
 
