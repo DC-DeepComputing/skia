@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "214ea43b_e1d9b964",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-07T19:51:31Z",
+      "side": 1,
+      "message": "Is there a reason not to put in comment now?",
+      "range": {
+        "startLine": 1011,
+        "startChar": 5,
+        "endLine": 1011,
+        "endChar": 40
+      },
+      "revId": "bfee9c272affba1af968cceea580cd769de4a9e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
