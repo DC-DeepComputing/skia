@@ -22,6 +22,53 @@
       },
       "revId": "151ca77b9c5ea9769d937fb87c5fcf31bb6a5313",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8b386bd_d996a023",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T19:42:02Z",
+      "side": 1,
+      "message": "I assume that for SPIR-V it will be uint8_t directly?",
+      "parentUuid": "946d5650_dad6b4dc",
+      "range": {
+        "startLine": 151,
+        "startChar": 21,
+        "endLine": 151,
+        "endChar": 28
+      },
+      "revId": "151ca77b9c5ea9769d937fb87c5fcf31bb6a5313",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41e2f275_275bc361",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T19:42:02Z",
+      "side": 1,
+      "message": "Will we need to provide the native shader format to this function if the ComputeStep uses native source? Or can we require that their uniforms be generally the same (same order, ignoring the alignment handled by the manager)? \n\nIt would get tricky if the WGSL compiler that exports these from Vello produces actual different uniform declarations that we\u0027d have to account for.",
+      "range": {
+        "startLine": 215,
+        "startChar": 17,
+        "endLine": 215,
+        "endChar": 37
+      },
+      "revId": "151ca77b9c5ea9769d937fb87c5fcf31bb6a5313",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
