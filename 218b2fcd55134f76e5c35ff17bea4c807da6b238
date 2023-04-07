@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "068de86c_1c0fdf18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T19:33:36Z",
+      "side": 1,
+      "message": "barring nits, lgtm",
+      "revId": "218b2fcd55134f76e5c35ff17bea4c807da6b238",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77598e09_965f6520",
@@ -42,6 +59,29 @@
         "startChar": 15,
         "endLine": 297,
         "endChar": 53
+      },
+      "revId": "218b2fcd55134f76e5c35ff17bea4c807da6b238",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97a16731_5d8ee35d",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T19:33:36Z",
+      "side": 1,
+      "message": "One of the reasons for having RenderSteps declaring the Uniforms in C++ was so that the declarations could be automatically generated.\n\nDo you think in a follow-up that that would be a reasonable direction to go towards? Or does the fact that it returns a complete SkSL program (or an externally defined program) make that not a very important convenience to have?",
+      "range": {
+        "startLine": 524,
+        "startChar": 50,
+        "endLine": 524,
+        "endChar": 78
       },
       "revId": "218b2fcd55134f76e5c35ff17bea4c807da6b238",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
