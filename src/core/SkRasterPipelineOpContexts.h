@@ -115,6 +115,7 @@ struct SkRasterPipeline_RewindCtx {
     float dg[SkRasterPipeline_kMaxStride_highp];
     float db[SkRasterPipeline_kMaxStride_highp];
     float da[SkRasterPipeline_kMaxStride_highp];
+    float* base;
     SkRasterPipelineStage* stage;
 };
 
