@@ -7,8 +7,6 @@
 
 #include "include/core/SkTypes.h"
 
-#ifdef SK_ENCODE_PNG
-
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -29,6 +27,7 @@
 #include "src/codec/SkPngPriv.h"
 #include "src/encode/SkImageEncoderFns.h"
 #include "src/encode/SkImageEncoderPriv.h"
+#include "src/encode/SkPngEncoderImpl.h"
 
 #include <algorithm>
 #include <csetjmp>
@@ -423,42 +422,14 @@ void SkPngEncoderMgr::chooseProc(const SkImageInfo& srcInfo) {
     fProc = choose_proc(srcInfo);
 }
 
-std::unique_ptr<SkEncoder> SkPngEncoder::Make(SkWStream* dst, const SkPixmap& src,
-                                              const Options& options) {
-    if (!SkPixmapIsValid(src)) {
-        return nullptr;
-    }
-
-    std::unique_ptr<SkPngEncoderMgr> encoderMgr = SkPngEncoderMgr::Make(dst);
-    if (!encoderMgr) {
-        return nullptr;
-    }
-
-    if (!encoderMgr->setHeader(src.info(), options)) {
-        return nullptr;
-    }
-
-    if (!encoderMgr->setColorSpace(src.info(), options)) {
-        return nullptr;
-    }
-
-    if (!encoderMgr->writeInfo(src.info())) {
-        return nullptr;
-    }
-
-    encoderMgr->chooseProc(src.info());
-
-    return std::unique_ptr<SkPngEncoder>(new SkPngEncoder(std::move(encoderMgr), src));
-}
-
-SkPngEncoder::SkPngEncoder(std::unique_ptr<SkPngEncoderMgr> encoderMgr, const SkPixmap& src)
-    : INHERITED(src, encoderMgr->pngBytesPerPixel() * src.width())
+SkPngEncoderImpl::SkPngEncoderImpl(std::unique_ptr<SkPngEncoderMgr> encoderMgr, const SkPixmap& src)
+    : SkEncoder(src, encoderMgr->pngBytesPerPixel() * src.width())
     , fEncoderMgr(std::move(encoderMgr))
 {}
 
-SkPngEncoder::~SkPngEncoder() {}
+SkPngEncoderImpl::~SkPngEncoderImpl() {}
 
-bool SkPngEncoder::onEncodeRows(int numRows) {
+bool SkPngEncoderImpl::onEncodeRows(int numRows) {
     if (setjmp(png_jmpbuf(fEncoderMgr->pngPtr()))) {
         return false;
     }
@@ -485,9 +456,38 @@ bool SkPngEncoder::onEncodeRows(int numRows) {
     return true;
 }
 
-bool SkPngEncoder::Encode(SkWStream* dst, const SkPixmap& src, const Options& options) {
-    auto encoder = SkPngEncoder::Make(dst, src, options);
+namespace SkPngEncoder {
+std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src,
+                                const Options& options) {
+    if (!SkPixmapIsValid(src)) {
+        return nullptr;
+    }
+
+    std::unique_ptr<SkPngEncoderMgr> encoderMgr = SkPngEncoderMgr::Make(dst);
+    if (!encoderMgr) {
+        return nullptr;
+    }
+
+    if (!encoderMgr->setHeader(src.info(), options)) {
+        return nullptr;
+    }
+
+    if (!encoderMgr->setColorSpace(src.info(), options)) {
+        return nullptr;
+    }
+
+    if (!encoderMgr->writeInfo(src.info())) {
+        return nullptr;
+    }
+
+    encoderMgr->chooseProc(src.info());
+
+    return std::unique_ptr<SkPngEncoderImpl>(new SkPngEncoderImpl(std::move(encoderMgr), src));
+}
+
+bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options) {
+    auto encoder = Make(dst, src, options);
     return encoder.get() && encoder->encodeRows(src.height());
 }
 
-#endif
+}  // namespace SkPngEncoder

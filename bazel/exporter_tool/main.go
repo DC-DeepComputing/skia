@@ -88,7 +88,10 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_encode_jpeg_srcs",
 			Rules: []string{"//src/encode:jpeg_encode_srcs", "//src/encode:jpeg_encode_hdrs"}},
 		{Var: "skia_encode_png_srcs",
-			Rules: []string{"//src/encode:png_encode_srcs"}},
+			Rules: []string{
+				"//src/encode:png_encode_srcs",
+"//src/encode:png_encode_hdrs",
+		}},
 		{Var: "skia_encode_webp_srcs",
 			Rules: []string{"//src/encode:webp_encode_srcs"}},
 		{Var: "skia_discardable_memory_chromium",
