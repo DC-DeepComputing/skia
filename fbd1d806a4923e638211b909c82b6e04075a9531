@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e729a952_8d1ea16e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T20:16:27Z",
+      "side": 1,
+      "message": "I guess this should have happened in http://review.skia.org/548417. Personally I\u0027m strongly in favor of this because I like to use clang-format and it will remove this whitespace, I don\u0027t want to have to re-add the whitespace for consistency\u0027s sake.",
+      "revId": "fbd1d806a4923e638211b909c82b6e04075a9531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
