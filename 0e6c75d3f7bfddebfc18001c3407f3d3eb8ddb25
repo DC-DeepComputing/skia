@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17294faa_cd811632",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1744,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T17:05:57Z",
+      "side": 1,
+      "message": "Good call, I\u0027d actually taken out a bug reference that was here previously.",
+      "parentUuid": "c214eff2_db7ab1d4",
+      "range": {
+        "startLine": 1744,
+        "startChar": 12,
+        "endLine": 1744,
+        "endChar": 63
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d08559b_e514c5b1",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2142f00_af8da903",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T17:05:57Z",
+      "side": 1,
+      "message": "Yep this is where kDstColor would go, and be almost identical to kPrimitiveColor except that its block\u0027s expression would be something like \"dstColor\" instead of \"primitiveColor\".",
+      "parentUuid": "3d08559b_e514c5b1",
+      "range": {
+        "startLine": 57,
+        "startChar": 3,
+        "endLine": 57,
+        "endChar": 52
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edb6b2e5_b14a2946",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-04-07T16:21:56Z",
       "side": 1,
       "message": "Same question here - Do we have a bug ID for this work that you could add after the TODO?\nAlso, clarification suggestion:\n`TODO(b/########): Use the surface color as the destination by replacing SolidColorShaderBlock with a DstColorBlock`",
+      "range": {
+        "startLine": 825,
+        "startChar": 0,
+        "endLine": 825,
+        "endChar": 59
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "284ad259_3c3499ea",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T17:05:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edb6b2e5_b14a2946",
       "range": {
         "startLine": 825,
         "startChar": 0,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "871ef720_bf9f1b5f",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T17:05:57Z",
+      "side": 1,
+      "message": "Now that I think about it, I think it\u0027s a little confusing either way. But basically the use case in this CL is in a shader structure like this:\n\n```\nBlendShaderBlock(PriorOutputBlock(), DstColorBlock(), BlendModeBlenderBlock())\n```\n\nwhich I do think is a little clearer than:\n\n```\nBlendShaderBlock(PassthroughShaderBlock(), DstColorBlock(), BlendModeBlenderBlock())\n```\n\nHowever, that structure isn\u0027t super obvious from the way we have to actually set up these blocks, which looks more like:\n\n```\nBlendShaderBlock()\n\nPriorOutputBlock()       // src\nDstColorBlock()          // dst\nBlendModeBlenderBlock()  // blender\n\nendBlock()  // BlendShaderBlock()\n```\n\nAnd things get more confusing if we wanted to use prior stage output as the dst -- would a PriorOutputBlock/PassthroughShaderBlock use the src color block\u0027s output, or the output of whatever came before the BlendShaderBlock?? (The answer is: it uses whatever came before BlendShaderBlock, which is probably what we\u0027d always want, but not necessarily what I\u0027d expect from these examples.)\n\nAnyways, all that said, I do still think PriorOutputBlock is a little clearer than PassthroughShaderBlock.",
+      "parentUuid": "5b8fe92d_dbde69ba",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 36
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91930e74_d6a93de9",
         "filename": "src/gpu/graphite/KeyHelpers.h",
         "patchSetId": 3
@@ -123,6 +219,24 @@
       "writtenOn": "2023-04-07T16:21:56Z",
       "side": 1,
       "message": "nit: Some of these structs have new lines before and after the BeginBlock declaration and others do not. The way you have it for your changes (no extraneous newlines) seems to align with the style guide examples at https://skia.org/docs/dev/contrib/style/. Although the structs with them were not as a result of your change, maybe clean those up either within this CL or a new one so they are consistent?",
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f02b14e_8eaa22cc",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T17:05:57Z",
+      "side": 1,
+      "message": "I\u0027m definitely into making these more consistent \u0026 in line with the style guide! But I would prefer to do that in a separate CL.",
+      "parentUuid": "91930e74_d6a93de9",
       "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -140,6 +254,30 @@
       "writtenOn": "2023-04-07T16:21:56Z",
       "side": 1,
       "message": "Do we have a bug ID for this work that you could add after the TODO?\nAlso, clarification suggestion:\n`TODO(b/########): Use the surface color as the destination by replacing SolidColorShaderBlock with a DstColorBlock`",
+      "range": {
+        "startLine": 152,
+        "startChar": 12,
+        "endLine": 152,
+        "endChar": 63
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18fdb3a0_f06a7def",
+        "filename": "src/gpu/graphite/Precompile.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T17:05:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36c5a6ec_d20e9e55",
       "range": {
         "startLine": 152,
         "startChar": 12,
