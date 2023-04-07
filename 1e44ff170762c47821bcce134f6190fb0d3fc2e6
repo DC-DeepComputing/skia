@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5e097ea_845e1c1d",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1737,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T17:48:14Z",
+      "side": 1,
+      "message": "A runtime blender doesn\u0027t know where its dst came from. When we add the RuntimeEffectBlock here, we\u0027ve set up an appropriate dst if necessary and the RuntimeEffectBlock itself doesn\u0027t know about that.\n\nI\u0027m not sure if it\u0027s possible for Blender objects in general to not know what their dst is. A BlendModeBlender might want to use fixed-function blending, but it can only decide to do that if it knows it\u0027s blending with the surface.",
+      "parentUuid": "ce3bd29a_cc86a2e1",
+      "range": {
+        "startLine": 1737,
+        "startChar": 7,
+        "endLine": 1737,
+        "endChar": 53
+      },
+      "revId": "1e44ff170762c47821bcce134f6190fb0d3fc2e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "901ae8f9_7430f366",
         "filename": "src/gpu/graphite/KeyHelpers.h",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-07T17:15:41Z",
       "side": 1,
       "message": "Why do we call out \"Filter\" here. From the comment this seems to be saying its a shader as src and some const color as dst.",
+      "range": {
+        "startLine": 375,
+        "startChar": 13,
+        "endLine": 375,
+        "endChar": 19
+      },
+      "revId": "1e44ff170762c47821bcce134f6190fb0d3fc2e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "614cd1a9_cb4c0c21",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T17:48:14Z",
+      "side": 1,
+      "message": "Just because it was only being used for color filters. Changed the name and the comment (and comments for other Add* functions for consistency).",
+      "parentUuid": "901ae8f9_7430f366",
       "range": {
         "startLine": 375,
         "startChar": 13,
