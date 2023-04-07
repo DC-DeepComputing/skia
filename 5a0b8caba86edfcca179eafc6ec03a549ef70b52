@@ -98,6 +98,30 @@
       },
       "revId": "5a0b8caba86edfcca179eafc6ec03a549ef70b52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98bbec9a_124f242f",
+        "filename": "src/gpu/graphite/vk/VulkanSampler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-07T16:48:07Z",
+      "side": 1,
+      "message": "Yeah, I figured that was the reason. If you think it is apparent enough as to why those values would be chosen even without GL as the primary API, then as-is is fine with me.",
+      "parentUuid": "7f71b021_18729dbc",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 27
+      },
+      "revId": "5a0b8caba86edfcca179eafc6ec03a549ef70b52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
