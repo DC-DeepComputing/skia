@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "671d0747_7e6731f0",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1737,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T18:09:25Z",
+      "side": 1,
+      "message": "I could see that working. If I\u0027m understanding correctly, this would basically mean that we don\u0027t need SkBlenderBase::addToKey at all?",
+      "parentUuid": "c230a098_92c8d37a",
+      "range": {
+        "startLine": 1737,
+        "startChar": 7,
+        "endLine": 1737,
+        "endChar": 53
+      },
+      "revId": "1e44ff170762c47821bcce134f6190fb0d3fc2e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "901ae8f9_7430f366",
         "filename": "src/gpu/graphite/KeyHelpers.h",
         "patchSetId": 4
@@ -132,6 +156,30 @@
       "writtenOn": "2023-04-07T17:52:17Z",
       "side": 1,
       "message": "Up to you--consider:\n\n```\nstd::string srcVar, dstVar;\nfor (std::string\u0026 var : {srcVar, dstVar}) {\n    var \u003d emit_glue_code...\n```",
+      "range": {
+        "startLine": 787,
+        "startChar": 0,
+        "endLine": 789,
+        "endChar": 0
+      },
+      "revId": "1e44ff170762c47821bcce134f6190fb0d3fc2e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b0010f1_c3e16e4e",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T18:09:25Z",
+      "side": 1,
+      "message": "I like this a lot, but having tried it it looks like initializer list elements are always const 😕",
+      "parentUuid": "aa98ec2b_cd20536a",
       "range": {
         "startLine": 787,
         "startChar": 0,
