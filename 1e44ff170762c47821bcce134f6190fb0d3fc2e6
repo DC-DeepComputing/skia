@@ -117,6 +117,29 @@
       },
       "revId": "1e44ff170762c47821bcce134f6190fb0d3fc2e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa98ec2b_cd20536a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-07T17:52:17Z",
+      "side": 1,
+      "message": "Up to you--consider:\n\n```\nstd::string srcVar, dstVar;\nfor (std::string\u0026 var : {srcVar, dstVar}) {\n    var \u003d emit_glue_code...\n```",
+      "range": {
+        "startLine": 787,
+        "startChar": 0,
+        "endLine": 789,
+        "endChar": 0
+      },
+      "revId": "1e44ff170762c47821bcce134f6190fb0d3fc2e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
