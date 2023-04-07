@@ -15,6 +15,9 @@
 
 #include <memory>
 
+class GrDirectContext;
+class SkData;
+class SkImage;
 class SkPixmap;
 class SkPngEncoderMgr;
 class SkWStream;
@@ -84,6 +87,8 @@ public:
      *  Returns true on success.  Returns false on an invalid or unsupported |src|.
      */
     static bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options);
+
+    static sk_sp<SkData> Encode(GrDirectContext* ctx, SkImage* img, const Options& options);
 
     /**
      *  Create a png encoder that will encode the |src| pixels to the |dst| stream.

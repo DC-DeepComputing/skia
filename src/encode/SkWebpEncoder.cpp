@@ -24,6 +24,7 @@
 #include "src/core/SkImageInfoPriv.h"
 #include "src/encode/SkImageEncoderFns.h"
 #include "src/encode/SkImageEncoderPriv.h"
+#include "src/image/SkImage_Base.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -244,6 +245,18 @@ bool SkWebpEncoder::EncodeAnimated(SkWStream* stream,
     enc.reset();
 
     return stream->write(assembled.bytes, assembled.size);
+}
+
+sk_sp<SkData> SkWebpEncoder::Encode(GrDirectContext* ctx, SkImage* img, const Options& options) {
+    SkBitmap bm;
+    if (!as_IB(img)->getROPixels(ctx, &bm)) {
+        return nullptr;
+    }
+    SkDynamicMemoryWStream stream;
+    if (Encode(&stream, bm.pixmap(), options)) {
+        return stream.detachAsData();
+    }
+    return nullptr;
 }
 
 #endif

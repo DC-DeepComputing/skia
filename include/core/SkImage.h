@@ -695,55 +695,55 @@ public:
     */
     bool scalePixels(const SkPixmap& dst, const SkSamplingOptions&,
                      CachingHint cachingHint = kAllow_CachingHint) const;
-
-    /** Encodes SkImage pixels, returning result as SkData.
-
-        Returns nullptr if encoding fails, or if encodedImageFormat is not supported.
-
-        SkImage encoding in a format requires both building with one or more of:
-        SK_ENCODE_JPEG, SK_ENCODE_PNG, SK_ENCODE_WEBP; and platform support
-        for the encoded format.
-
-        If SK_BUILD_FOR_MAC or SK_BUILD_FOR_IOS is defined, encodedImageFormat can
-        additionally be one of: SkEncodedImageFormat::kICO, SkEncodedImageFormat::kBMP,
-        SkEncodedImageFormat::kGIF.
-
-        quality is a platform and format specific metric trading off size and encoding
-        error. When used, quality equaling 100 encodes with the least error. quality may
-        be ignored by the encoder.
-
-        @param context             the GrDirectContext in play, if it exists; can be nullptr
-        @param encodedImageFormat  one of: SkEncodedImageFormat::kJPEG, SkEncodedImageFormat::kPNG,
-                                   SkEncodedImageFormat::kWEBP
-        @param quality             encoder specific metric with 100 equaling best
-        @return                    encoded SkImage, or nullptr
-
-        example: https://fiddle.skia.org/c/@Image_encodeToData
-    */
-    sk_sp<SkData> encodeToData(GrDirectContext* context,
-                               SkEncodedImageFormat encodedImageFormat,
-                               int quality) const;
-#ifndef SK_IMAGE_READ_PIXELS_DISABLE_LEGACY_API
-    // Deprecated, use above version instead
-    sk_sp<SkData> encodeToData(SkEncodedImageFormat encodedImageFormat, int quality) const;
-#endif
-
-    /** Encodes SkImage pixels, returning result as SkData. Returns existing encoded data
-        if present; otherwise, SkImage is encoded with SkEncodedImageFormat::kPNG. Skia
-        must be built with SK_ENCODE_PNG to encode SkImage.
-
-        Returns nullptr if existing encoded data is missing or invalid, and
-        encoding fails.
-
-        @return  encoded SkImage, or nullptr
-
-        example: https://fiddle.skia.org/c/@Image_encodeToData_2
-    */
-    sk_sp<SkData> encodeToData(GrDirectContext* context) const;
-#ifndef SK_IMAGE_READ_PIXELS_DISABLE_LEGACY_API
-    // Deprecated, use above version instead
-    sk_sp<SkData> encodeToData() const;
-#endif
+//
+//    /** Encodes SkImage pixels, returning result as SkData.
+//
+//        Returns nullptr if encoding fails, or if encodedImageFormat is not supported.
+//
+//        SkImage encoding in a format requires both building with one or more of:
+//        SK_ENCODE_JPEG, SK_ENCODE_PNG, SK_ENCODE_WEBP; and platform support
+//        for the encoded format.
+//
+//        If SK_BUILD_FOR_MAC or SK_BUILD_FOR_IOS is defined, encodedImageFormat can
+//        additionally be one of: SkEncodedImageFormat::kICO, SkEncodedImageFormat::kBMP,
+//        SkEncodedImageFormat::kGIF.
+//
+//        quality is a platform and format specific metric trading off size and encoding
+//        error. When used, quality equaling 100 encodes with the least error. quality may
+//        be ignored by the encoder.
+//
+//        @param context             the GrDirectContext in play, if it exists; can be nullptr
+//        @param encodedImageFormat  one of: SkEncodedImageFormat::kJPEG, SkEncodedImageFormat::kPNG,
+//                                   SkEncodedImageFormat::kWEBP
+//        @param quality             encoder specific metric with 100 equaling best
+//        @return                    encoded SkImage, or nullptr
+//
+//        example: https://fiddle.skia.org/c/@Image_encodeToData
+//    */
+//    sk_sp<SkData> encodeToData(GrDirectContext* context,
+//                               SkEncodedImageFormat encodedImageFormat,
+//                               int quality) const;
+//#ifndef SK_IMAGE_READ_PIXELS_DISABLE_LEGACY_API
+//    // Deprecated, use above version instead
+//    sk_sp<SkData> encodeToData(SkEncodedImageFormat encodedImageFormat, int quality) const;
+//#endif
+//
+//    /** Encodes SkImage pixels, returning result as SkData. Returns existing encoded data
+//        if present; otherwise, SkImage is encoded with SkEncodedImageFormat::kPNG. Skia
+//        must be built with SK_ENCODE_PNG to encode SkImage.
+//
+//        Returns nullptr if existing encoded data is missing or invalid, and
+//        encoding fails.
+//
+//        @return  encoded SkImage, or nullptr
+//
+//        example: https://fiddle.skia.org/c/@Image_encodeToData_2
+//    */
+//    sk_sp<SkData> encodeToData(GrDirectContext* context) const;
+//#ifndef SK_IMAGE_READ_PIXELS_DISABLE_LEGACY_API
+//    // Deprecated, use above version instead
+//    sk_sp<SkData> encodeToData() const;
+//#endif
 
     /** Returns encoded SkImage pixels as SkData, if SkImage was created from supported
         encoded stream format. Platform support for formats vary and may require building

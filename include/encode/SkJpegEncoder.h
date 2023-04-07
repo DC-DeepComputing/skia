@@ -18,6 +18,8 @@ class SkData;
 class SkJpegEncoderMgr;
 class SkPixmap;
 class SkWStream;
+class SkImage;
+class GrDirectContext;
 class SkYUVAPixmaps;
 struct skcms_ICCProfile;
 
@@ -98,6 +100,8 @@ public:
                        const SkYUVAPixmaps& src,
                        const SkColorSpace* srcColorSpace,
                        const Options& options);
+
+    static sk_sp<SkData> Encode(GrDirectContext* ctx, SkImage* img, const Options& options);
 
     /**
      *  Create a jpeg encoder that will encode the |src| pixels to the |dst| stream.

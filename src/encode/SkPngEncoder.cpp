@@ -12,6 +12,7 @@
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDataTable.h"
 #include "include/core/SkImageInfo.h"
@@ -29,6 +30,7 @@
 #include "src/codec/SkPngPriv.h"
 #include "src/encode/SkImageEncoderFns.h"
 #include "src/encode/SkImageEncoderPriv.h"
+#include "src/image/SkImage_Base.h"
 
 #include <algorithm>
 #include <csetjmp>
@@ -488,6 +490,18 @@ bool SkPngEncoder::onEncodeRows(int numRows) {
 bool SkPngEncoder::Encode(SkWStream* dst, const SkPixmap& src, const Options& options) {
     auto encoder = SkPngEncoder::Make(dst, src, options);
     return encoder.get() && encoder->encodeRows(src.height());
+}
+
+sk_sp<SkData> SkPngEncoder::Encode(GrDirectContext* ctx, SkImage* img, const Options& options) {
+    SkBitmap bm;
+    if (!as_IB(img)->getROPixels(ctx, &bm)) {
+        return nullptr;
+    }
+    SkDynamicMemoryWStream stream;
+    if (Encode(&stream, bm.pixmap(), options)) {
+        return stream.detachAsData();
+    }
+    return nullptr;
 }
 
 #endif

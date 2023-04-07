@@ -25,6 +25,7 @@
 #include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
+#include "include/encode/SkPngEncoder.h"
 
 #include <algorithm>
 #include <cstring>
@@ -49,7 +50,7 @@ DEF_TEST(serial_procs_image, reporter) {
 
     const SkSerialImageProc sprocs[] = {
         [](SkImage* img, void* ctx) -> sk_sp<SkData> { return nullptr; },
-        [](SkImage* img, void* ctx) { return img->encodeToData(); },
+        [](SkImage* img, void* ctx) { return SkPngEncoder::Encode(nullptr, img, {}); },
         [](SkImage* img, void* ctx) { return SkData::MakeWithCString(((State*)ctx)->fStr); },
     };
     const SkDeserialImageProc dprocs[] = {

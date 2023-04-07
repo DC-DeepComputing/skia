@@ -14,6 +14,9 @@
 
 class SkPixmap;
 class SkWStream;
+class SkData;
+class GrDirectContext;
+class SkImage;
 struct skcms_ICCProfile;
 
 namespace SkWebpEncoder {
@@ -57,6 +60,8 @@ namespace SkWebpEncoder {
      *  Returns true on success.  Returns false on an invalid or unsupported |src|.
      */
     SK_API bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options);
+
+    SK_API sk_sp<SkData> Encode(GrDirectContext* ctx, SkImage* img, const Options& options);
 
     /**
      *  Encode the |src| frames to the |dst| stream.

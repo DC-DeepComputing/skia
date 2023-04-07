@@ -36,6 +36,7 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "tools/ToolUtils.h"
+#include "include/encode/SkPngEncoder.h"
 
 #include <functional>
 #include <utility>
@@ -252,7 +253,7 @@ static sk_sp<SkImage> make_codec(const SkImageInfo& info,
                                  GrRecordingContext*,
                                  void (*draw)(SkCanvas*)) {
     sk_sp<SkImage> image(make_raster(info, nullptr, draw));
-    return SkImages::DeferredFromEncodedData(image->encodeToData());
+    return SkImages::DeferredFromEncodedData(SkPngEncoder::Encode(nullptr, image.get(), {}));
 }
 
 static sk_sp<SkImage> make_gpu(const SkImageInfo& info,

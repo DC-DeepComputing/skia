@@ -30,6 +30,7 @@
 #include "include/utils/SkCanvasStateUtils.h"
 #include "src/base/SkTLazy.h"
 #include "tests/Test.h"
+#include "include/encode/SkPngEncoder.h"
 
 #include <array>
 #include <cstdint>
@@ -91,7 +92,7 @@ private:
 #endif
 
 static void write_image(const SkImage* img, const char path[]) {
-    auto data = img->encodeToData();
+    auto data = SkPngEncoder::Encode(nullptr, img.get(), {});
     SkFILEWStream(path).write(data->data(), data->size());
 }
 

@@ -21,6 +21,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathEffect.h"
+#include "include/encode/SkPngEncoder.h"
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRRect.h"
@@ -864,7 +865,7 @@ void TestSVGTypeface::exportTtxCbdt(SkWStream* out, SkSpan<unsigned> strikeSizes
                                    paint);
             surface->flushAndSubmit();
             sk_sp<SkImage> image = surface->makeImageSnapshot();
-            sk_sp<SkData>  data  = image->encodeToData(SkEncodedImageFormat::kPNG, 100);
+            sk_sp<SkData>  data  = SkPngEncoder::Encode(nullptr, image.get(), {});
 
             out->writeText("      <cbdt_bitmap_format_17 name=\"glyf");
             out->writeHexAsText(i, 4);
@@ -1086,7 +1087,7 @@ void TestSVGTypeface::exportTtxSbix(SkWStream* out, SkSpan<unsigned> strikeSizes
                                    paint);
             surface->flushAndSubmit();
             sk_sp<SkImage> image = surface->makeImageSnapshot();
-            sk_sp<SkData>  data  = image->encodeToData(SkEncodedImageFormat::kPNG, 100);
+            sk_sp<SkData>  data  = SkPngEncoder::Encode(nullptr, image.get(), {});
 
             // The originOffset values are difficult to use as DirectWrite and FreeType interpret
             // the origin to be the initial glyph position on the baseline, but CoreGraphics
