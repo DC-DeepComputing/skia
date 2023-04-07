@@ -22,6 +22,30 @@
       },
       "revId": "b82050d67893be0c5c8f88ab4be75296cb55a5dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "733a54ee_78e6216d",
+        "filename": "modules/svg/include/SkSVGTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-04-07T19:09:49Z",
+      "side": 1,
+      "message": "Ack, we should change it to a public type.  I can do that in a separate CL.",
+      "parentUuid": "14ce4577_bd41bbc2",
+      "range": {
+        "startLine": 184,
+        "startChar": 10,
+        "endLine": 184,
+        "endChar": 14
+      },
+      "revId": "b82050d67893be0c5c8f88ab4be75296cb55a5dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
