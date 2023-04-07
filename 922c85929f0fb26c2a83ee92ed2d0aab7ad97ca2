@@ -16,6 +16,29 @@
       "message": "Hey Jim,\n\nAre you comfortable taking a look at this change while Brian is gone?",
       "revId": "922c85929f0fb26c2a83ee92ed2d0aab7ad97ca2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7501bed2_5d671796",
+        "filename": "src/core/SkGeometry.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-07T20:27:49Z",
+      "side": 1,
+      "message": "Nit: be smaller",
+      "range": {
+        "startLine": 1430,
+        "startChar": 38,
+        "endLine": 1430,
+        "endChar": 45
+      },
+      "revId": "922c85929f0fb26c2a83ee92ed2d0aab7ad97ca2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
