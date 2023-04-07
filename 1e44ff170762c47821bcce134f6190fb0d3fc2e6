@@ -188,6 +188,30 @@
       },
       "revId": "1e44ff170762c47821bcce134f6190fb0d3fc2e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7ff4cb4_ab77ec34",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-07T18:43:28Z",
+      "side": 1,
+      "message": "Oops--tested this time:\n```\nstd::string srcVar, dstVar;\nfor (std::string* var : {\u0026srcVar, \u0026dstVar}) {\n    *var \u003d emit_glue_code...\n```",
+      "parentUuid": "0b0010f1_c3e16e4e",
+      "range": {
+        "startLine": 787,
+        "startChar": 0,
+        "endLine": 789,
+        "endChar": 0
+      },
+      "revId": "1e44ff170762c47821bcce134f6190fb0d3fc2e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
