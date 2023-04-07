@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a8d78781_f9c5231d",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-07T23:37:02Z",
+      "side": 1,
+      "message": "We use `K` here and further below, but `T` in `has_span_view`.",
+      "range": {
+        "startLine": 59,
+        "startChar": 14,
+        "endLine": 59,
+        "endChar": 15
+      },
+      "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e505da0a_ebcb909c",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-07T23:37:02Z",
+      "side": 1,
+      "message": "tiny nit: Formatting is inconsistent with nearby lines/what clang-format would do.",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 19
+      },
+      "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f04e19c_4381509c",
         "filename": "include/private/SkChecksum.h",
         "patchSetId": 1
@@ -14,6 +60,30 @@
       "writtenOn": "2023-04-07T21:13:30Z",
       "side": 1,
       "message": "My main use case for hashing spans was to have types used as keys to hash maps, but they are very often a struct that wraps the span. This was a fairly light weight way of using the span hashing behavior without requiring a custom Hash struct and additional template arg to SkTHashMap.\n\nA reasonable alternative would be if we declared a hash wrapper template:\n\n    template\u003cE\u003e\n    struct AsSpan {\n        template \u003ctypename K\u003e\n        uint32_t operator()(const K\u0026 k) const {\n            return SkGoodHash()(SkSpan\u003cE\u003e{k});\n        }\n    };\n    \nThe `span_view` declaration lets the wrapping type control its hash, whereas the `Hash` trait wrapper requires users of the span-wrapper know to adjust their maps.",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 84
+      },
+      "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cc45dd1_0105bba2",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-07T23:37:02Z",
+      "side": 1,
+      "message": "I think the alternative might be better. The `has_span_view` impl is pretty intimidating. It looks like the example on the cppreference page on `std::void_t`, and I think it\u0027s correct, but at first glance it\u0027s very hard to reason about unless you have seen something similar before. I don\u0027t know if it is worth the complexity vs just having an `AsSpan` class which makes the behavior explicit at the call site. \n\n(Caveat: we need clean, visible failure if you forget `AsSpan`... if it\u0027ll silently do the wrong thing, that\u0027s worse)",
+      "parentUuid": "1f04e19c_4381509c",
       "range": {
         "startLine": 59,
         "startChar": 0,
