@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18fdfff6_99a80ea9",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1151,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-07T19:00:33Z",
+      "side": 0,
+      "message": "(I can\u0027t use `appendCopy` anymore since it allocs BinaryOpCtx structs.)",
+      "range": {
+        "startLine": 1151,
+        "startChar": 10,
+        "endLine": 1151,
+        "endChar": 20
+      },
+      "revId": "9db8e3460cb8aa89e48e25c2f9704c65a6becda1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
