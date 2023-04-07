@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "efbfa994_4a2d4474",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1737,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T18:48:57Z",
+      "side": 1,
+      "message": "It would be a little annoying to take out SkBlenderBase::addToKey completely, because of how runtime effects add their children to keys here:\nhttps://crsrc.org/c/third_party/skia/src/core/SkRuntimeEffect.cpp;drc\u003d37ddbdb9;l\u003d1110\nbut PTAL at the latest changes here which don\u0027t use addToKey for blend mode blenders and don\u0027t pass in any information about the dst to addToKey.",
+      "parentUuid": "671d0747_7e6731f0",
+      "range": {
+        "startLine": 1737,
+        "startChar": 7,
+        "endLine": 1737,
+        "endChar": 53
+      },
+      "revId": "1e44ff170762c47821bcce134f6190fb0d3fc2e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "901ae8f9_7430f366",
         "filename": "src/gpu/graphite/KeyHelpers.h",
         "patchSetId": 4
@@ -204,6 +228,30 @@
       "side": 1,
       "message": "Oops--tested this time:\n```\nstd::string srcVar, dstVar;\nfor (std::string* var : {\u0026srcVar, \u0026dstVar}) {\n    *var \u003d emit_glue_code...\n```",
       "parentUuid": "0b0010f1_c3e16e4e",
+      "range": {
+        "startLine": 787,
+        "startChar": 0,
+        "endLine": 789,
+        "endChar": 0
+      },
+      "revId": "1e44ff170762c47821bcce134f6190fb0d3fc2e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "921dee0a_bb6d1359",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-07T18:48:57Z",
+      "side": 1,
+      "message": "Cool, done.",
+      "parentUuid": "a7ff4cb4_ab77ec34",
       "range": {
         "startLine": 787,
         "startChar": 0,
