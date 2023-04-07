@@ -157,7 +157,7 @@ std::string ShaderInfo::toSkSL(const ResourceBindingRequirements& bindingReqs,
     mainBody += "half4 initialColor = half4(0);";
 
     if (step->emitsPrimitiveColor()) {
-        mainBody += "half4 primitiveColor;";
+        preamble += "half4 primitiveColor;";
         mainBody += step->fragmentColorSkSL();
     }
 
@@ -749,20 +749,61 @@ static constexpr TextureAndSampler kPerlinNoiseShaderTexturesAndSamplers[] = {
 static constexpr char kPerlinNoiseShaderName[] = "perlin_noise_shader";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr Uniform kPorterDuffBlendShaderUniforms[] = {
-        { "blendConstants", SkSLType::kHalf4 },
+static constexpr Uniform CoeffBlendderUniforms[] = {
+        { "coeffs", SkSLType::kHalf4 },
 };
 
-static constexpr char kPorterDuffBlendShaderName[] = "porter_duff_blend_shader";
+static constexpr char kCoeffBlenderName[] = "blend_porter_duff";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr Uniform kBlendShaderUniforms[] = {
+static constexpr Uniform kBlendModeBlenderUniforms[] = {
         { "blendMode", SkSLType::kInt },
 };
 
-static constexpr char kBlendShaderName[] = "sk_blend_shader";
+static constexpr char kBlendModeBlenderName[] = "sk_blend";
 
-static constexpr int kNumBlendShaderChildren = 2;
+//--------------------------------------------------------------------------------------------------
+static constexpr int kNumBlendShaderChildren = 3;
+
+void GenerateBlendShaderPreamble(const ShaderInfo& shaderInfo,
+                                 int* entryIndex,
+                                 const PaintParamsKey::BlockReader& reader,
+                                 std::string* preamble) {
+    const ShaderSnippet* entry = reader.entry();
+    SkASSERT(reader.numChildren() == 3);
+
+    int curEntryIndex = *entryIndex;
+    *entryIndex += 1;
+
+    // Create a helper function that invokes the src and dst children, then calls the blend child
+    // with the src and dst results.
+    std::string helperFnName = get_mangled_name(entry->fStaticFunctionName, curEntryIndex);
+    std::string helperFn = SkSL::String::printf(
+            "half4 %s(half4 inColor, half4 destColor, float2 pos) {",
+            helperFnName.c_str());
+
+    // Get src and dst colors.
+    const ShaderSnippet::Args args = {"inColor", "destColor", "pos"};
+    std::string srcVar;
+    std::string dstVar;
+    for (std::string* var : {&srcVar, &dstVar}) {
+        *var = emit_glue_code_for_entry(shaderInfo, *entryIndex, args, &helperFn);
+        emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+    }
+
+    // Do the blend.
+    static constexpr char kUnusedLocalCoords[] = "float2(0)";
+    std::string blendResultVar = emit_glue_code_for_entry(
+            shaderInfo, *entryIndex, {srcVar, dstVar, kUnusedLocalCoords}, &helperFn);
+    emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+
+    SkSL::String::appendf(&helperFn,
+                              "return %s;"
+                          "}",
+                          blendResultVar.c_str());
+
+    *preamble += helperFn;
+}
 
 //--------------------------------------------------------------------------------------------------
 static constexpr char kColorFilterShaderName[] = "ColorFilterShader";
@@ -912,14 +953,6 @@ static constexpr Uniform kMatrixColorFilterUniforms[] = {
 static constexpr char kMatrixColorFilterName[] = "sk_matrix_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr Uniform kBlendColorFilterUniforms[] = {
-        { "blendMode", SkSLType::kInt },
-        { "color",     SkSLType::kFloat4 }
-};
-
-static constexpr char kBlendColorFilterName[] = "sk_blend_colorfilter";
-
-//--------------------------------------------------------------------------------------------------
 static constexpr char kComposeColorFilterName[] = "ComposeColorFilter";
 
 static constexpr int kNumComposeColorFilterChildren = 2;
@@ -1014,9 +1047,6 @@ static constexpr char kErrorName[] = "sk_error";
 static constexpr char kPassthroughShaderName[] = "sk_passthrough";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr char kPassthroughBlenderName[] = "blend_src_over";
-
-//--------------------------------------------------------------------------------------------------
 
 // This method generates the glue code for the case where the SkBlendMode-based blending is
 // handled with fixed function blending.
@@ -1032,36 +1062,28 @@ std::string GenerateFixedFunctionBlenderExpression(const ShaderInfo&,
 }
 
 //--------------------------------------------------------------------------------------------------
-static constexpr Uniform kShaderBasedBlenderUniforms[] = {
-        { "blendMode", SkSLType::kInt },
-};
-
-static constexpr char kBlendHelperName[] = "sk_blend";
-
-// This method generates the glue code for the case where the SkBlendMode-based blending must occur
-// in the shader (i.e., fixed function blending isn't possible).
-// It exists as custom glue code so that we can deal with the dest reads. If that can be
-// standardized (e.g., via a snippets requirement flag) this could be removed.
 std::string GenerateShaderBasedBlenderExpression(const ShaderInfo& shaderInfo,
                                                  int entryIndex,
                                                  const PaintParamsKey::BlockReader& reader,
                                                  const ShaderSnippet::Args& args) {
-    const bool usePrimitiveColorAsDst = reader.entry()->blendAgainstPrimitiveColor();
-
     SkASSERT(reader.entry()->fUniforms.size() == 1);
-
     std::string uniformName = reader.entry()->getMangledUniformName(shaderInfo, 0, entryIndex);
 
-    // TODO: emit function to perform dest read into preamble, and replace half4(1) with that call
-    // (The `args.destColor` variable might seem tempting here, but this is used for programmatic
-    // src+dest blends within the shader, not for blends against the destination surface.)
-    const char * destColor = usePrimitiveColorAsDst ? "primitiveColor" : "half4(1)";
+    std::string_view src = args.fPriorStageOutput;
+    std::string_view dst = args.fRuntimeShaderDstColor;
 
-    return SkSL::String::printf("%s(%s, %.*s, %s)",
+    return SkSL::String::printf("%s(%s, %.*s, %.*s)",
                                 reader.entry()->fStaticFunctionName,
                                 uniformName.c_str(),
-                                (int)args.fPriorStageOutput.size(), args.fPriorStageOutput.data(),
-                                destColor);
+                                (int)src.size(), src.data(),
+                                (int)dst.size(), dst.data());
+}
+
+std::string GeneratePrimitiveColorExpression(const ShaderInfo&,
+                                             int entryIndex,
+                                             const PaintParamsKey::BlockReader&,
+                                             const ShaderSnippet::Args&) {
+    return "primitiveColor";
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1238,17 +1260,6 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
             kPassthroughShaderName,
-            GenerateDefaultExpression,
-            GenerateDefaultPreamble,
-            kNoChildren
-    };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPassthroughBlender] = {
-            "PassthroughBlender",
-            {},      // no uniforms
-            SnippetRequirementFlags::kPriorStageOutput |
-                    SnippetRequirementFlags::kRuntimeShaderDstColor,
-            {},      // no samplers
-            kPassthroughBlenderName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren
@@ -1434,27 +1445,6 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultPreamble,
             kNoChildren
     };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPorterDuffBlendShader] = {
-            "PorterDuffBlendShader",
-            SkSpan(kPorterDuffBlendShaderUniforms),
-            SnippetRequirementFlags::kNone,
-            { },     // no samplers
-            kPorterDuffBlendShaderName,
-            GenerateDefaultExpression,
-            GenerateDefaultPreamble,
-            kNumBlendShaderChildren
-    };
-
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kBlendShader] = {
-            "BlendShader",
-            SkSpan(kBlendShaderUniforms),
-            SnippetRequirementFlags::kNone,
-            { },     // no samplers
-            kBlendShaderName,
-            GenerateDefaultExpression,
-            GenerateDefaultPreamble,
-            kNumBlendShaderChildren
-    };
 
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kColorFilterShader] = {
             "ColorFilterShader",
@@ -1474,16 +1464,6 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
             kMatrixColorFilterName,
-            GenerateDefaultExpression,
-            GenerateDefaultPreamble,
-            kNoChildren
-    };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kBlendColorFilter] = {
-            "BlendColorFilter",
-            SkSpan(kBlendColorFilterUniforms),
-            SnippetRequirementFlags::kPriorStageOutput,
-            { },     // no samplers
-            kBlendColorFilterName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren
@@ -1528,23 +1508,45 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultPreamble,
             kNoChildren
     };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kShaderBasedBlender] = {
-            "ShaderBasedBlender",
-            SkSpan(kShaderBasedBlenderUniforms),
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kBlendShader] = {
+            "BlendShader",
+            { },     // no uniforms
             SnippetRequirementFlags::kNone,
             { },     // no samplers
-            kBlendHelperName,
+            "BlendShader",
+            GenerateDefaultExpression,
+            GenerateBlendShaderPreamble,
+            kNumBlendShaderChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCoeffBlender] = {
+            "CoeffBlender",
+            SkSpan(CoeffBlendderUniforms),
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kCoeffBlenderName,
             GenerateShaderBasedBlenderExpression,
             GenerateDefaultPreamble,
             kNoChildren
     };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPrimitiveColorShaderBasedBlender] = {
-            "PrimitiveColorShaderBasedBlender",
-            SkSpan(kShaderBasedBlenderUniforms),
-            SnippetRequirementFlags::kBlendAgainstPrimitiveColor,
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kBlendModeBlender] = {
+            "BlendModeBlender",
+            SkSpan(kBlendModeBlenderUniforms),
+            SnippetRequirementFlags::kNone,
             { },     // no samplers
-            kBlendHelperName,
+            kBlendModeBlenderName,
             GenerateShaderBasedBlenderExpression,
+            GenerateDefaultPreamble,
+            kNoChildren
+    };
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPrimitiveColor] = {
+            "PrimitiveColor",
+            { },                // no uniforms
+            SnippetRequirementFlags::kNone,
+            { },                // no samplers
+            "primitive color",  // no static sksl
+            GeneratePrimitiveColorExpression,
             GenerateDefaultPreamble,
             kNoChildren
     };

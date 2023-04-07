@@ -112,7 +112,10 @@ void PaintParams::toKey(const KeyContext& keyContext,
     }
 
     if (fPrimitiveBlender) {
-        as_BB(fPrimitiveBlender)->addToKey(keyContext, builder, gatherer, DstColorType::kPrimitive);
+        std::optional<SkBlendMode> bm = as_BB(fPrimitiveBlender)->asBlendMode();
+        if (bm) {
+            AddPrimitiveBlendBlock(keyContext, builder, gatherer, *bm);
+        }
     }
 
     // Apply the paint's alpha value.
@@ -137,11 +140,26 @@ void PaintParams::toKey(const KeyContext& keyContext,
     }
 #endif
 
-    if (fFinalBlender) {
-        as_BB(fFinalBlender)->addToKey(keyContext, builder, gatherer, DstColorType::kSurface);
+    std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
+    if (finalBlendMode) {
+        // Blend mode blender, add normally
+        AddDstBlendBlock(keyContext, builder, gatherer, *finalBlendMode);
+
     } else {
-        BlendModeBlock::BeginBlock(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
+        // Runtime effect blender, add blend block manually
+        BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+        // src -- prior output
+        PriorOutputBlock::BeginBlock(keyContext, builder, gatherer);
         builder->endBlock();
+        // TODO(b/238757201): Use the surface color as the destination by replacing
+        // SolidColorShaderBlock with a DstColorBlock
+        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, {1, 1, 1, 1});
+        builder->endBlock();
+        // blender -- runtime effect
+        as_BB(fFinalBlender)->addToKey(keyContext, builder, gatherer);
+
+        builder->endBlock();  // BlendShaderBlock
     }
 
     SkASSERT(builder->sizeInBytes() > 0);
