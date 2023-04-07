@@ -70,15 +70,14 @@ public:
 
 #if defined(SK_GRAPHITE)
     /**
-     * TODO: Make pure virtual.
-     * dstColorType = kPrimitive when blending the result of the paint evaluation with a primitive
-     * color (which is supplied by certain geometries). dstColorType = kSurface when blending the
-     * result of the paint evaluation with the back buffer.
+     * Unimplemented by default. Should only be called when the caller knows they're working with
+     * a derived class that implements addToKey().
      */
     virtual void addToKey(const skgpu::graphite::KeyContext&,
                           skgpu::graphite::PaintParamsKeyBuilder*,
-                          skgpu::graphite::PipelineDataGatherer*,
-                          skgpu::graphite::DstColorType dstColorType) const;
+                          skgpu::graphite::PipelineDataGatherer*) const {
+        SkASSERT(false);
+    }
 #endif
 
     static SkFlattenable::Type GetFlattenableType() { return kSkBlender_Type; }

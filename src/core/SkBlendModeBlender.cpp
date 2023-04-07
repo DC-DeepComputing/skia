@@ -67,27 +67,6 @@ sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 #undef RETURN_SINGLETON_BLENDER
 }
 
-#if defined(SK_GRAPHITE)
-void SkBlenderBase::addToKey(const skgpu::graphite::KeyContext& keyContext,
-                             skgpu::graphite::PaintParamsKeyBuilder* builder,
-                             skgpu::graphite::PipelineDataGatherer* gatherer,
-                             skgpu::graphite::DstColorType dstColorType) const {
-    using namespace skgpu::graphite;
-    SkASSERT(dstColorType == DstColorType::kSurface || dstColorType == DstColorType::kPrimitive);
-
-    const bool primitiveColorBlender = dstColorType == DstColorType::kPrimitive;
-    std::optional<SkBlendMode> bm = as_BB(this)->asBlendMode();
-    if (primitiveColorBlender && bm.has_value()) {
-        PrimitiveBlendModeBlock::BeginBlock(keyContext, builder, gatherer, bm.value());
-        builder->endBlock();
-    } else if (!primitiveColorBlender) {
-        BlendModeBlock::BeginBlock(keyContext, builder, gatherer,
-                                   bm.value_or(SkBlendMode::kSrcOver));
-        builder->endBlock();
-    }
-}
-#endif
-
 sk_sp<SkFlattenable> SkBlendModeBlender::CreateProc(SkReadBuffer& buffer) {
     SkBlendMode mode = buffer.read32LE(SkBlendMode::kLastMode);
     return SkBlender::Mode(mode);
