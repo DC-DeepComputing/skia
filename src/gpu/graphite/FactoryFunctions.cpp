@@ -30,10 +30,9 @@ private:
                   PaintParamsKeyBuilder* builder) const override {
         SkASSERT(desiredCombination == 0); // The blend mode blender only ever has one combination
 
-        // The blend mode is used in this BeginBlock! It is used to choose between fixed function
-        // and shader-based blending
-        BlendModeBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr, fBlendMode);
-        builder->endBlock();
+        // The blend mode is used in this block! It is used to choose between fixed function and
+        // shader-based blending
+        AddDstBlendBlock(keyContext, builder, /* gatherer= */ nullptr, fBlendMode);
     }
 
 
@@ -144,12 +143,25 @@ private:
         int desiredBlendCombination = remainingCombinations;
         SkASSERT(desiredBlendCombination < fNumBlenderCombos);
 
-        if (desiredBlendCombination == fPorterDuffIndex) {
-            PorterDuffBlendShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
-                                                   {}); // Porter/Duff coeffs aren't used
-        } else if (desiredBlendCombination == fSeparableModeIndex) {
-            BlendShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
-                                         { SkBlendMode::kOverlay }); // the blendmode is unused
+        if (desiredBlendCombination == fPorterDuffIndex ||
+            desiredBlendCombination == fSeparableModeIndex) {
+            BlendShaderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr);
+
+            AddToKey<PrecompileShader>(keyContext, builder, fSrcOptions, desiredSrcCombination);
+            AddToKey<PrecompileShader>(keyContext, builder, fDstOptions, desiredDstCombination);
+
+            if (desiredBlendCombination == fPorterDuffIndex) {
+                CoeffBlenderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
+                                              {}); // coeffs aren't used
+                builder->endBlock();
+            } else if (desiredBlendCombination == fSeparableModeIndex) {
+                BlendModeBlenderBlock::BeginBlock(keyContext, builder, /* gatherer= */ nullptr,
+                                                  SkBlendMode::kOverlay); // the blendmode is unused
+                builder->endBlock();
+            }
+
+            builder->endBlock();  // BlendShaderBlock
+
         } else {
             // TODO: share this with the copy over in SkComposeShader.cpp. For now, the block ID is
             // determined by a hash of the code so both copies will generate the same key and
@@ -172,12 +184,11 @@ private:
 
             AddToKey<PrecompileBlender>(keyContext, builder, fRuntimeBlendEffects,
                                         desiredBlendCombination);
+            AddToKey<PrecompileShader>(keyContext, builder, fDstOptions, desiredDstCombination);
+            AddToKey<PrecompileShader>(keyContext, builder, fSrcOptions, desiredSrcCombination);
+
+            builder->endBlock();
         }
-
-        AddToKey<PrecompileShader>(keyContext, builder, fDstOptions, desiredDstCombination);
-        AddToKey<PrecompileShader>(keyContext, builder, fSrcOptions, desiredSrcCombination);
-
-        builder->endBlock();
     }
 
     std::vector<sk_sp<PrecompileBlender>> fRuntimeBlendEffects;
@@ -441,11 +452,8 @@ private:
                   PaintParamsKeyBuilder* builder) const override {
         SkASSERT(desiredCombination == 0);
 
-        BlendColorFilterBlock::BeginBlock(keyContext,
-                                          builder,
-                                          /* gatherer= */ nullptr,
-                                          /* blendCFData= */ nullptr);
-        builder->endBlock();
+        AddColorFilterBlendBlock(
+                keyContext, builder, /* gatherer= */ nullptr, SkBlendMode::kSrcOver, {});
     }
 };
 
@@ -615,8 +623,8 @@ void add_children_to_key(const KeyContext& keyContext,
 
                 case ChildType::kBlender:
                     // A "passthrough" blender performs `blend_src_over(src, dest)`.
-                    PassthroughBlenderBlock::BeginBlock(keyContext, builder,
-                                                        /* gatherer= */ nullptr);
+                    BlendModeBlenderBlock::BeginBlock(
+                            keyContext, builder, /* gatherer= */ nullptr, SkBlendMode::kSrcOver);
                     builder->endBlock();
                     break;
             }
