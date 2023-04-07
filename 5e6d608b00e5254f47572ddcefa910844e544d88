@@ -16,6 +16,24 @@
       "message": "A slight caveat with this test is that Metal seems to be already zeroing out MTLBuffer contents at creation so I couldn\u0027t get this test to fail when the `kClear` policy is not set. I have confirmed through Metal capture that this is inserting the clear task as expected but the test\u0027s behavior doesn\u0027t seem to actual verify that it worked.",
       "revId": "5e6d608b00e5254f47572ddcefa910844e544d88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c252990a_e5723189",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-07T14:46:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "699556b7_0c137bdd",
+      "revId": "5e6d608b00e5254f47572ddcefa910844e544d88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
