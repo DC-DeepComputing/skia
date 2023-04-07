@@ -16,6 +16,138 @@
       "message": "CC\u0027ing people I know of who\u0027ve worked on blending in Graphite. Take a look if you feel so inspired!",
       "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c214eff2_db7ab1d4",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1744,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-07T16:21:56Z",
+      "side": 1,
+      "message": "Same question here - Do we have a bug ID for this work that you could add after the TODO?\nAlso, clarification suggestion:\n`TODO(b/########): Use the surface color as the destination by replacing SolidColorShaderBlock with a DstColorBlock`",
+      "range": {
+        "startLine": 1744,
+        "startChar": 12,
+        "endLine": 1744,
+        "endChar": 63
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d08559b_e514c5b1",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-07T16:21:56Z",
+      "side": 1,
+      "message": "For my understanding, would there be other values here? Is this where `kDstColor` might go, or would that (a DstColorBlock) be considered the default dst value to use as blender children?",
+      "range": {
+        "startLine": 57,
+        "startChar": 3,
+        "endLine": 57,
+        "endChar": 52
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb6b2e5_b14a2946",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-07T16:21:56Z",
+      "side": 1,
+      "message": "Same question here - Do we have a bug ID for this work that you could add after the TODO?\nAlso, clarification suggestion:\n`TODO(b/########): Use the surface color as the destination by replacing SolidColorShaderBlock with a DstColorBlock`",
+      "range": {
+        "startLine": 825,
+        "startChar": 0,
+        "endLine": 825,
+        "endChar": 59
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b8fe92d_dbde69ba",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-07T16:21:56Z",
+      "side": 1,
+      "message": "I\u0027m not clear on why we would have this alias at all - clarity? It seems more confusing to have two names to accomplish a similar thing.",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 36
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91930e74_d6a93de9",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-07T16:21:56Z",
+      "side": 1,
+      "message": "nit: Some of these structs have new lines before and after the BeginBlock declaration and others do not. The way you have it for your changes (no extraneous newlines) seems to align with the style guide examples at https://skia.org/docs/dev/contrib/style/. Although the structs with them were not as a result of your change, maybe clean those up either within this CL or a new one so they are consistent?",
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36c5a6ec_d20e9e55",
+        "filename": "src/gpu/graphite/Precompile.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-07T16:21:56Z",
+      "side": 1,
+      "message": "Do we have a bug ID for this work that you could add after the TODO?\nAlso, clarification suggestion:\n`TODO(b/########): Use the surface color as the destination by replacing SolidColorShaderBlock with a DstColorBlock`",
+      "range": {
+        "startLine": 152,
+        "startChar": 12,
+        "endLine": 152,
+        "endChar": 63
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
