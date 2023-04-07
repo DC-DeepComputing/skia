@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "5a0b8caba86edfcca179eafc6ec03a549ef70b52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac148fe9_1fa5f9e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-07T16:33:19Z",
+      "side": 1,
+      "message": "Mostly looking ahead comment, when we add the ycbcr stuff we\u0027ll have to figure out how we want to hey that information. Right now we add a key in ResourceProvider based off the passed in sampling options and tilemode. With ycbcr somehow need the ResourceProvider to be able to generate the extra key data on its own.",
+      "revId": "5a0b8caba86edfcca179eafc6ec03a549ef70b52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
