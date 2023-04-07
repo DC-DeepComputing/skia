@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36c31b84_52402bb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-07T12:35:49Z",
+      "side": 1,
+      "message": "Added the chromium canary. (There are quite a few gold diffs, so I suspect this may break some layout tests).",
+      "revId": "2192ea7516cd1bdccb5f9fc6824d3e0be311650e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
