@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c35a4f99_dc2a9f09",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "Just making an extra note, I think we will add a kDstColor block and potentially a kPaintColor block that references a special variable. The PaintColor one can be useful since different pass-through options and image/alpha folding all reference the same paint color and that will let us de-duplicate its uniform.",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 19
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e608619c_d27034ed",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "WDYT about making `b` the last child, and swapping `d` and `s` here and in `SkShaders::Blend` factory? This would have the RuntimeEffectBlock\u0027s children be identical to that required for `BlendShaderBlock`.\n\nIt would also mean we could structure this precompile factory like:\n\n    if (desiredBlendCombination \u003e fSeparableModeIndex) {\n       RuntimeEffectBlock // hopefully to be consolidated into the else branch\n    } else {\n       BlendShaderBlock \n    }\n    \n    AddToKey(fSrcOptions)\n    AddToKey(fDstOptions)\n    \n    // here the first if and else-if match the precompile equivalent to the \n    // proposed SkBlendModeBlender::addToKey\n    if (combo \u003d\u003d porterDuff)\n        CoeffBlenderBlock\n    else if (combo \u003d\u003d separable)\n        BlendModeBlenderBlock\n    else\n        AddToKey\u003cPrecompileBlender\u003e(fRuntimeBlendEffects)",
+      "range": {
+        "startLine": 172,
+        "startChar": 20,
+        "endLine": 172,
+        "endChar": 40
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d0bc2d5_e8306e4d",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "I think this needs to be \n\n    BlendShaderBlock\n        PriorOutputBlock\n        PrimitiveCOlorBlock\n        fPrimitiveBlender-\u003eaddToKey()\n    end\n    \nThis should be ok if we move the blend mode and coeff logic back to SkBlendModeBlender::addToKey.",
+      "range": {
+        "startLine": 115,
+        "startChar": 8,
+        "endLine": 118,
+        "endChar": 9
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "161ce80a_41f4404a",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "This can be replaced with \n\n    if (fColor.fA !\u003d 1.0) { \n        AddColorBlendBlock(keyContext, builder, gatherer, SkBlendMode::kDstIn, {0, 0, 0, fColor.fA});\n    }\n    \nWhether or not we replace this, I realize we are making one pipeline for a paint with no extra alpha multiply and another pipeline for the same paint and the alpha multiply. We also have to add a blend mode uniform that will always be set to kDstIn (there\u0027s a similar issue with the `BlendModeShader` use for passthrough blenders that always uploads kSrcOver). The snippets aren\u0027t set up for it but it would be nice if these specific cases could use `kFixedFunctionSrcOverBlendMode` etc.\n\nAs-is, though, just adding the block directly is equivalent to what we currently do but avoids creating an SkColorFilter on the heap and a virtual call.",
+      "range": {
+        "startLine": 122,
+        "startChar": 3,
+        "endLine": 127,
+        "endChar": 5
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dc51a91_f4e4c59c",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "Assuming we update SkBlendModeBlender::addToKey, the else branch below does everything the same in `AddDstBlendBlock` except for the `FixedFunctionBlendMode` case. \n\nWDYT about deleting `AddDstBlendBlock` and changing the if condition here to `if (finalBlendMode \u0026\u0026 *finalBlendMode \u003c\u003d SkBlendMode::kLastCoeffMode)` and then just push the fixed function block if true?",
+      "range": {
+        "startLine": 146,
+        "startChar": 8,
+        "endLine": 146,
+        "endChar": 73
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45ee92b1_73591440",
+        "filename": "src/gpu/graphite/Precompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "The original code wasn\u0027t really right, since it was locked to just coefficient blend modes instead of taking an SkBlender (which we have to since that is what drawMesh() allows).\n\nIn that world where we have precompile-blender options here, and a virtual call to SkBlenderBase::addToKey() in the regular params, I think we would get rid of AddPrimitiveBlendBlock.",
+      "range": {
+        "startLine": 128,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 88
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b1baee4_d54700bd",
+        "filename": "src/gpu/graphite/Precompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "Maybe have `// dst - surface color` above the TODO to help spot this middle child of the BlendShaderBlock?",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 87
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e0fb212_0af68094",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "We should rename this to `kBlenderDstColor` because any blend snippet takes a src and dst color, whether or not it was a runtime blender or a built-in blender.",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 26
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f26b632_c4c744d9",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "nit: out of order now",
+      "range": {
+        "startLine": 445,
+        "startChar": 23,
+        "endLine": 445,
+        "endChar": 31
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e60aa76_cc073590",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "If we use kSrcIn instead, this logic can be replaced with `AddColorBlendBlock`.",
+      "range": {
+        "startLine": 446,
+        "startChar": 12,
+        "endLine": 460,
+        "endChar": 32
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

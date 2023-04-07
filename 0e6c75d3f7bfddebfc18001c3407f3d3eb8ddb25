@@ -280,6 +280,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "812d9bf8_affe6203",
+        "filename": "src/gpu/graphite/KeyHelpers.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 1,
+      "message": "WDYT about just renaming PassthroughShaderBlock and kPassthroughShaderID to kPriorStageOutput, etc.?\n\nThe notion of \"passthrough\" is tied mostly to the binding handling in runtime effects, so that could be easily captured there as `// null children pass through to prior stage output` or similar?",
+      "parentUuid": "c1067c8c_0820ddc4",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 36
+      },
+      "revId": "0e6c75d3f7bfddebfc18001c3407f3d3eb8ddb25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91930e74_d6a93de9",
         "filename": "src/gpu/graphite/KeyHelpers.h",
         "patchSetId": 3

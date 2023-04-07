@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3947c45_cf1fc9b4",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-07T21:07:06Z",
+      "side": 0,
+      "message": "I think we can have SkBlenderBase::addToKey() be pure virtual. Then we have SkBlendModeBlender implement addToKey() to basically choose between adding a `kBlendMOdeBlender` or the `kCoeffBlender`.  It doesn\u0027t need the `dstColorType` or need to know where the src or dst are coming from.\n\nSkShader_Blend would just call blender-\u003eaddToKey() and theoretically means we could have the SkBlender version of `SkShaders::Blend` factory use SkShader_Blend instead of creating a new runtime shader (I think the main blocker there is the ganesh effects and having RP wire it up correctly, but those are tractable).",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 28
+      },
+      "revId": "af74b728c155f55155ea113718f71057582c2266",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
