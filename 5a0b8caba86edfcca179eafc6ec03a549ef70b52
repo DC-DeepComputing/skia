@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "145a6fd0_21d6c5f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-07T16:38:30Z",
+      "side": 1,
+      "message": "I\u0027ll add a comment in there to that effect.",
+      "parentUuid": "ac148fe9_1fa5f9e7",
+      "revId": "5a0b8caba86edfcca179eafc6ec03a549ef70b52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d636301a_dc182c51",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-04-07T16:35:05Z",
       "side": 1,
       "message": "Do we want to maintain the comment block we had in ganesh explaining why set min/maxLod the way we do? I think it adds value. We could edit/shorten it.\n```\n    // Vulkan doesn\u0027t have a direct mapping of GL\u0027s nearest or linear filters for minFilter since\n    // there is always a mipmapMode. To get the same effect as GL we can set minLod \u003d maxLod \u003d 0.0.\n    // This works since our min and mag filters are the same (this forces us to use mag on the 0\n    // level mip). If the filters weren\u0027t the same we could set min \u003d 0 and max \u003d 0.25 to force\n    // the minFilter on mip level 0.\n```",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 27
+      },
+      "revId": "5a0b8caba86edfcca179eafc6ec03a549ef70b52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f71b021_18729dbc",
+        "filename": "src/gpu/graphite/vk/VulkanSampler.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-07T16:38:30Z",
+      "side": 1,
+      "message": "I didn\u0027t include it because GL is no longer the primary API. I could modify it to take out the references to GL.",
+      "parentUuid": "d636301a_dc182c51",
       "range": {
         "startLine": 76,
         "startChar": 0,
