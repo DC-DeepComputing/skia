@@ -3,6 +3,7 @@ This file contains macros that generate multiple test targets, one per file.
 """
 
 load("//bazel:cc_test_with_flags.bzl", "cc_test_with_flags")
+load("//bazel:cc_binary_with_flags.bzl", "cc_binary_with_flags")
 
 def skia_cpu_tests(
         name,
@@ -52,9 +53,12 @@ def skia_cpu_tests(
     for filename in tests:
         new_target = filename[:-4]  # trim .cpp
         test_targets.append(new_target)
-        cc_test_with_flags(
+
+        # cc_test_with_flags(
+        cc_binary_with_flags(
             name = new_target,
-            size = "small",
+            # size = "small",
+            testonly = True,
             srcs = select({
                 # Make this a no-op test if compiling with a GPU backend.
                 ":skip_cpu_tests": ["BazelNoopRunner.cpp"],
