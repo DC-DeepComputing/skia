@@ -26,6 +26,16 @@
 #include <climits>
 #include <cstdint>
 
+// Helper macro to define no_sanitize attributes only with clang.
+#if defined(__clang__) && defined(__has_attribute)
+#if __has_attribute(no_sanitize)
+#define SK_CLANG_NO_SANITIZE(what) SK_ATTRIBUTE(no_sanitize(what))
+#endif
+#endif
+#if !defined(SK_CLANG_NO_SANITIZE)
+#define SK_CLANG_NO_SANITIZE(what)
+#endif
+
 #if defined(SK_GANESH) || defined(SK_GRAPHITE)
 #  if !defined(SK_ENABLE_SKSL)
 #    define SK_ENABLE_SKSL
