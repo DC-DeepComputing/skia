@@ -47,8 +47,8 @@ DEF_TEST(Checksum, r) {
 
 DEF_TEST(GoodHash, r) {
     // 4 bytes --> hits SkChecksum::Mix fast path.
-    REPORTER_ASSERT(r, SkGoodHash()(( int32_t)4) ==  614249093);
-    REPORTER_ASSERT(r, SkGoodHash()((uint32_t)4) ==  614249093);
+    REPORTER_ASSERT(r, SkGoodHash< int32_t>()(4) ==  614249093);
+    REPORTER_ASSERT(r, SkGoodHash<uint32_t>()(4) ==  614249093);
 }
 
 DEF_TEST(ChecksumCollisions, r) {
@@ -100,7 +100,7 @@ DEF_TEST(ChecksumStrings, r) {
     constexpr char kMessage[] = "Checksums are supported for SkString, string, and string_view.";
     const uint32_t expectedHash = SkOpts::hash(kMessage, strlen(kMessage));
 
-    REPORTER_ASSERT(r, expectedHash == SkGoodHash()(SkString(kMessage)));
-    REPORTER_ASSERT(r, expectedHash == SkGoodHash()(std::string(kMessage)));
-    REPORTER_ASSERT(r, expectedHash == SkGoodHash()(std::string_view(kMessage)));
+    REPORTER_ASSERT(r, expectedHash == SkGoodHash<SkString>()(SkString(kMessage)));
+    REPORTER_ASSERT(r, expectedHash == SkGoodHash<std::string>()(std::string(kMessage)));
+    REPORTER_ASSERT(r, expectedHash == SkGoodHash<std::string_view>()(std::string_view(kMessage)));
 }

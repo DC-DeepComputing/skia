@@ -416,7 +416,7 @@ private:
 
 // Maps K->V.  A more user-friendly wrapper around SkTHashTable, suitable for most use cases.
 // K and V are treated as ordinary copyable C++ types, with no assumed relationship between the two.
-template <typename K, typename V, typename HashK = SkGoodHash>
+template <typename K, typename V, typename HashK = SkGoodHash<K>>
 class SkTHashMap {
 public:
     // Allow default construction and assignment.
@@ -513,7 +513,7 @@ private:
 };
 
 // A set of T.  T is treated as an ordinary copyable C++ type.
-template <typename T, typename HashT = SkGoodHash>
+template <typename T, typename HashT = SkGoodHash<T>>
 class SkTHashSet {
 public:
     // Allow default construction and assignment.

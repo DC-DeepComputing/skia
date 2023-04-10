@@ -26,7 +26,7 @@ struct GrCheapHash {
     KeyTraits must have:
       - static K GetInvalidKey()
 */
-template <typename K, typename V, typename KeyTraits, typename HashT = SkGoodHash>
+template <typename K, typename V, typename KeyTraits, typename HashT = SkGoodHash<K>>
 class GrHashMapWithCache : public SkNoncopyable {
 public:
     // How many key/value pairs are in the table?

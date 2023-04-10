@@ -15,7 +15,7 @@
 /**
  * A generic LRU cache.
  */
-template <typename K, typename V, typename HashK = SkGoodHash>
+template <typename K, typename V, typename HashK = SkGoodHash<K>>
 class SkLRUCache {
 private:
     struct Entry {

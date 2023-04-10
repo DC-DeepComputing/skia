@@ -417,13 +417,13 @@ struct Gold : public SkString {
         this->append(name);
         this->append(md5);
     }
-    struct Hash {
-        uint32_t operator()(const Gold& g) const {
-            return SkGoodHash()((const SkString&)g);
-        }
-    };
 };
-static SkTHashSet<Gold, Gold::Hash>* gGold = new SkTHashSet<Gold, Gold::Hash>;
+template<>
+struct SkGoodHash<Gold> {
+    uint32_t operator()(const Gold& g) const { return SkGoodHash<SkString>()(g); }
+};
+
+static SkTHashSet<Gold>* gGold = new SkTHashSet<Gold>;
 
 static void add_gold(JsonWriter::BitmapResult r) {
     gGold->add(Gold(r.config, r.sourceType, r.sourceOptions, r.name, r.md5));

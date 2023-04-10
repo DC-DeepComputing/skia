@@ -46,11 +46,7 @@ public:
 
     static const int kMaxEntries = 128;
 
-    struct KeyHash {
-        uint32_t operator()(const ParagraphCacheKey& key) const;
-    };
-
-    SkLRUCache<ParagraphCacheKey, std::unique_ptr<Entry>, KeyHash> fLRUCacheMap;
+    SkLRUCache<ParagraphCacheKey, std::unique_ptr<Entry>> fLRUCacheMap;
     bool fCacheIsOn;
     ParagraphCacheValue* fLastCachedValue;
 
@@ -63,5 +59,10 @@ public:
 
 }  // namespace textlayout
 }  // namespace skia
+
+template <>
+struct SkGoodHash<skia::textlayout::ParagraphCacheKey> {
+    uint32_t operator()(const skia::textlayout::ParagraphCacheKey&) const;
+};
 
 #endif  // ParagraphCache_DEFINED

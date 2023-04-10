@@ -8,11 +8,13 @@
 #ifndef SkChecksum_DEFINED
 #define SkChecksum_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkOpts_spi.h"
 #include "include/private/base/SkTLogic.h"
 
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -54,27 +56,49 @@ public:
 
 // SkGoodHash should usually be your first choice in hashing data.
 // It should be both reasonably fast and high quality.
+template <typename K>
 struct SkGoodHash {
-    template <typename K>
-    std::enable_if_t<sizeof(K) == 4, uint32_t> operator()(const K& k) const {
-        return SkChecksum::Mix(*(const uint32_t*)&k);
+    uint32_t operator()(const K& k) const {
+        if constexpr(sizeof(K) == 4) {
+            return SkChecksum::Mix(*(const uint32_t*)&k);
+        } else {
+            return SkOpts::hash_fn(&k, sizeof(K), 0);
+        }
     }
+};
 
-    template <typename K>
-    std::enable_if_t<sizeof(K) != 4, uint32_t> operator()(const K& k) const {
-        return SkOpts::hash_fn(&k, sizeof(K), 0);
+template <typename K>
+struct SkGoodHash<SkSpan<K>> {
+    uint32_t operator()(SkSpan<K> k) const {
+        return SkOpts::hash_fn(k.data(), k.size_bytes(), 0);
     }
+};
 
+template <typename K>
+struct SkGoodHash<std::optional<K>> {
+    uint32_t operator()(const std::optional<K>& k) const {
+        return k.has_value() ? SkGoodHash<K>()(*k) : 0;
+    }
+};
+
+template <>
+struct SkGoodHash<std::string_view> {
+    uint32_t operator()(std::string_view k) const {
+        return SkOpts::hash_fn(k.data(), k.size(), 0);
+    }
+};
+
+template <>
+struct SkGoodHash<SkString> {
     uint32_t operator()(const SkString& k) const {
         return SkOpts::hash_fn(k.c_str(), k.size(), 0);
     }
+};
 
+template <>
+struct SkGoodHash<std::string> {
     uint32_t operator()(const std::string& k) const {
         return SkOpts::hash_fn(k.c_str(), k.size(), 0);
-    }
-
-    uint32_t operator()(std::string_view k) const {
-        return SkOpts::hash_fn(k.data(), k.size(), 0);
     }
 };
 

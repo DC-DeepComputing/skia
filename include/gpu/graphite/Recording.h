@@ -63,7 +63,7 @@ private:
 
     struct ProxyHash {
         std::size_t operator()(const sk_sp<TextureProxy>& proxy) const {
-            return SkGoodHash()(proxy.get());
+            return SkGoodHash<const TextureProxy*>()(proxy.get());
         }
     };
 
