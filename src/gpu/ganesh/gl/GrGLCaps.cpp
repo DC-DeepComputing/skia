@@ -1788,7 +1788,10 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
         info.fDefaultColorType = GrColorType::kGray_8;
         bool lum8Supported = false;
         bool lum8SizedFormatSupported = false;
-        if (GR_IS_GR_GL(standard) && !fIsCoreProfile) {
+        if (GR_IS_GR_GL(standard) && version <= GR_GL_VER(3,0) && !fIsCoreProfile) {
+            // Luminance format support was deprecated in OpenGL 3.0 and removed entirely in
+            // subsequent versions.
+            // https://www.khronos.org/opengl/wiki/Image_Format#Legacy_Image_Formats
             lum8Supported = true;
             lum8SizedFormatSupported = true;
         } else if (GR_IS_GR_GL_ES(standard)) {
