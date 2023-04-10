@@ -24,6 +24,15 @@ namespace {
     bool exactlyEqual(SkScalar x, SkScalar y) {
         return x == y || (x != x && y != y);
     }
+
+    template <typename K>
+    uint32_t mixHash(uint32_t hash, const K& k) {
+        hash +=  SkGoodHash<K>()(k);
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+        return hash;
+    }
+
 }  // namespace
 
 class ParagraphCacheKey {
@@ -54,7 +63,6 @@ public:
     const SkString& text() const { return fText; }
 
 private:
-    static uint32_t mix(uint32_t hash, uint32_t data);
     uint32_t computeHash() const;
 
     SkString fText;
@@ -94,27 +102,19 @@ public:
     TextIndex fTrailingSpaces;
 };
 
-uint32_t ParagraphCacheKey::mix(uint32_t hash, uint32_t data) {
-    hash += data;
-    hash += (hash << 10);
-    hash ^= (hash >> 6);
-    return hash;
-}
-
 uint32_t ParagraphCacheKey::computeHash() const {
     uint32_t hash = 0;
     for (auto& ph : fPlaceholders) {
         if (ph.fRange.width() == 0) {
             continue;
         }
-        hash = mix(hash, SkGoodHash()(ph.fRange.start));
-        hash = mix(hash, SkGoodHash()(ph.fRange.end));
-        hash = mix(hash, SkGoodHash()(relax(ph.fStyle.fHeight)));
-        hash = mix(hash, SkGoodHash()(relax(ph.fStyle.fWidth)));
-        hash = mix(hash, SkGoodHash()(ph.fStyle.fAlignment));
-        hash = mix(hash, SkGoodHash()(ph.fStyle.fBaseline));
+        hash = mixHash(hash, ph.fRange);
+        hash = mixHash(hash, relax(ph.fStyle.fHeight));
+        hash = mixHash(hash, relax(ph.fStyle.fWidth));
+        hash = mixHash(hash, ph.fStyle.fAlignment);
+        hash = mixHash(hash, ph.fStyle.fBaseline);
         if (ph.fStyle.fAlignment == PlaceholderAlignment::kBaseline) {
-            hash = mix(hash, SkGoodHash()(relax(ph.fStyle.fBaselineOffset)));
+            hash = mixHash(hash, relax(ph.fStyle.fBaselineOffset));
         }
     }
 
@@ -122,47 +122,43 @@ uint32_t ParagraphCacheKey::computeHash() const {
         if (ts.fStyle.isPlaceholder()) {
             continue;
         }
-        hash = mix(hash, SkGoodHash()(relax(ts.fStyle.getLetterSpacing())));
-        hash = mix(hash, SkGoodHash()(relax(ts.fStyle.getWordSpacing())));
-        hash = mix(hash, SkGoodHash()(ts.fStyle.getLocale()));
-        hash = mix(hash, SkGoodHash()(relax(ts.fStyle.getHeight())));
-        hash = mix(hash, SkGoodHash()(relax(ts.fStyle.getBaselineShift())));
+        hash = mixHash(hash, relax(ts.fStyle.getLetterSpacing()));
+        hash = mixHash(hash, relax(ts.fStyle.getWordSpacing()));
+        hash = mixHash(hash, ts.fStyle.getLocale());
+        hash = mixHash(hash, relax(ts.fStyle.getHeight()));
+        hash = mixHash(hash, relax(ts.fStyle.getBaselineShift()));
         for (auto& ff : ts.fStyle.getFontFamilies()) {
-            hash = mix(hash, SkGoodHash()(ff));
+            hash = mixHash(hash, ff);
         }
         for (auto& ff : ts.fStyle.getFontFeatures()) {
-            hash = mix(hash, SkGoodHash()(ff.fValue));
-            hash = mix(hash, SkGoodHash()(ff.fName));
+            hash = mixHash(hash, ff.fValue);
+            hash = mixHash(hash, ff.fName);
         }
-        hash = mix(hash, std::hash<std::optional<FontArguments>>()(ts.fStyle.getFontArguments()));
-        hash = mix(hash, SkGoodHash()(ts.fStyle.getFontStyle()));
-        hash = mix(hash, SkGoodHash()(relax(ts.fStyle.getFontSize())));
-        hash = mix(hash, SkGoodHash()(ts.fRange));
+        hash = mixHash(hash, ts.fStyle.getFontArguments());
+        hash = mixHash(hash, ts.fStyle.getFontStyle());
+        hash = mixHash(hash, relax(ts.fStyle.getFontSize()));
+        hash = mixHash(hash, ts.fRange);
     }
 
-    hash = mix(hash, SkGoodHash()(relax(fParagraphStyle.getHeight())));
-    hash = mix(hash, SkGoodHash()(fParagraphStyle.getTextDirection()));
-    hash = mix(hash, SkGoodHash()(fParagraphStyle.getReplaceTabCharacters() ? 1 : 0));
+    hash = mixHash(hash, relax(fParagraphStyle.getHeight()));
+    hash = mixHash(hash, fParagraphStyle.getTextDirection());
+    hash = mixHash(hash, fParagraphStyle.getReplaceTabCharacters() ? 1 : 0);
 
     auto& strutStyle = fParagraphStyle.getStrutStyle();
     if (strutStyle.getStrutEnabled()) {
-        hash = mix(hash, SkGoodHash()(relax(strutStyle.getHeight())));
-        hash = mix(hash, SkGoodHash()(relax(strutStyle.getLeading())));
-        hash = mix(hash, SkGoodHash()(relax(strutStyle.getFontSize())));
-        hash = mix(hash, SkGoodHash()(strutStyle.getHeightOverride()));
-        hash = mix(hash, SkGoodHash()(strutStyle.getFontStyle()));
-        hash = mix(hash, SkGoodHash()(strutStyle.getForceStrutHeight()));
+        hash = mixHash(hash, relax(strutStyle.getHeight()));
+        hash = mixHash(hash, relax(strutStyle.getLeading()));
+        hash = mixHash(hash, relax(strutStyle.getFontSize()));
+        hash = mixHash(hash, strutStyle.getHeightOverride());
+        hash = mixHash(hash, strutStyle.getFontStyle());
+        hash = mixHash(hash, strutStyle.getForceStrutHeight());
         for (auto& ff : strutStyle.getFontFamilies()) {
-            hash = mix(hash, SkGoodHash()(ff));
+            hash = mixHash(hash, ff);
         }
     }
 
-    hash = mix(hash, SkGoodHash()(fText));
+    hash = mixHash(hash, fText);
     return hash;
-}
-
-uint32_t ParagraphCache::KeyHash::operator()(const ParagraphCacheKey& key) const {
-    return key.hash();
 }
 
 bool ParagraphCacheKey::operator==(const ParagraphCacheKey& other) const {
@@ -378,3 +374,8 @@ bool ParagraphCache::isPossiblyTextEditing(ParagraphImpl* paragraph) {
 }
 }  // namespace textlayout
 }  // namespace skia
+
+uint32_t SkGoodHash<skia::textlayout::ParagraphCacheKey>::operator()(
+        const skia::textlayout::ParagraphCacheKey& k) const {
+    return k.hash();
+}
