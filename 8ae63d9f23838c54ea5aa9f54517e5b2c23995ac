@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca0fbe8e_75ddb6cd",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-10T17:38:46Z",
+      "side": 1,
+      "message": "N/A",
+      "parentUuid": "a8d78781_f9c5231d",
+      "range": {
+        "startLine": 59,
+        "startChar": 14,
+        "endLine": 59,
+        "endChar": 15
+      },
+      "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e505da0a_ebcb909c",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-07T23:37:02Z",
       "side": 1,
       "message": "tiny nit: Formatting is inconsistent with nearby lines/what clang-format would do.",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 19
+      },
+      "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b87ea73_e511f408",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-10T17:38:46Z",
+      "side": 1,
+      "message": "N/A",
+      "parentUuid": "e505da0a_ebcb909c",
       "range": {
         "startLine": 61,
         "startChar": 4,
@@ -132,6 +180,30 @@
       "side": 1,
       "message": "I\u0027m not sure how I feel about this; doesn\u0027t this make it so that we need to #include SkGoodHash just about everywhere we declare a type?",
       "parentUuid": "b0929883_a05fc575",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 84
+      },
+      "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d743dec_24b8c8e0",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-10T17:38:46Z",
+      "side": 1,
+      "message": "I don\u0027t think you have to include it. It\u0027s an explicit specialization, so you can just forward declare the primary template I believe. Ben can correct me if I\u0027m wrong.",
+      "parentUuid": "a63e4d02_b7532057",
       "range": {
         "startLine": 59,
         "startChar": 0,

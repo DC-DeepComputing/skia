@@ -88,6 +88,24 @@
       "parentUuid": "aaf1ad96_31c47583",
       "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bbed7be_bdccf809",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-10T17:38:46Z",
+      "side": 1,
+      "message": "That makes sense. So no explicit specialization for `SkSpan\u003cK\u003e`. For correctness, we should have the existing templates for single key values still use `std::has_unique_object_representations`.\n\nThe question that remains is for classes that define a custom hash function (such as for the wrapper around a span that knows it\u0027s immutable, or where it needs the flexibility), do we just keep it as-is? The class exposes a Hash struct that users need to include in maps? Or do we switch to a more `std::hash` function object approach?",
+      "parentUuid": "5bf709e3_a2d97e0c",
+      "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
