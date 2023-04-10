@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f29ca54e_c08607af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2023-04-10T20:19:57Z",
+      "side": 1,
+      "message": "Very naive post-submit drive-by.  It\u0027s likely the logic here assures we don\u0027t have an issue, but I figured I\u0027d make a comment just in case.  Thanks!",
+      "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78b14d0c_fda87980",
+        "filename": "src/sksl/analysis/SkSLReturnsInputAlpha.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2023-04-10T20:19:57Z",
+      "side": 1,
+      "message": "We don\u0027t set `fInputVar` in the constructor...",
+      "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10fd34d8_67a4946f",
+        "filename": "src/sksl/analysis/SkSLReturnsInputAlpha.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2023-04-10T20:19:57Z",
+      "side": 1,
+      "message": "...and it looks like we have non-error paths out of this function prior to giving `fInputVar` a value...",
+      "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5551bb9d_1b4a4f5f",
+        "filename": "src/sksl/analysis/SkSLReturnsInputAlpha.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2023-04-10T20:19:57Z",
+      "side": 1,
+      "message": "...Does that risk us ever using an uninitialized `fInputVar` value here?",
+      "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
