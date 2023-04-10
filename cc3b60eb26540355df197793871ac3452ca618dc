@@ -108,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5daaf8d6_44c8f32e",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-10T17:07:08Z",
+      "side": 1,
+      "message": "Do you want me to add the asserts now?",
+      "parentUuid": "5296ef74_6ff6b62f",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 38
+      },
+      "revId": "cc3b60eb26540355df197793871ac3452ca618dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c0d650e_9cc2710a",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 3
@@ -119,6 +143,30 @@
       "writtenOn": "2023-04-10T16:35:32Z",
       "side": 1,
       "message": "In theory we shouldn\u0027t need this line. From the spec\n`When a pool is destroyed, all command buffers allocated from the pool are freed`\n\nI\u0027m not 100% sure why we did both calls in Ganesh. I could be purely since we had separate classes for VkCommandBuffers and VkCommandPools we wanted each to have their own freeGpuData call. Or maybe there was a bug in some driver that required it?\n\nRegardless I think we sould be fine just removing this line.",
+      "range": {
+        "startLine": 93,
+        "startChar": 3,
+        "endLine": 94,
+        "endChar": 92
+      },
+      "revId": "cc3b60eb26540355df197793871ac3452ca618dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "def733aa_daf5faca",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-10T17:07:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9c0d650e_9cc2710a",
       "range": {
         "startLine": 93,
         "startChar": 3,
