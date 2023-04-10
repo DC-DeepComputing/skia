@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00f4825d_4d16e560",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-10T18:09:01Z",
+      "side": 1,
+      "message": "Adding you on to this CL spurred by bug https://crbug.com/skia/14247 due to your past relevant contribution (https://skia-review.googlesource.com/c/skia/+/224959) on determining luminance format support in GrGlCaps.",
+      "revId": "3c7d901a8c3cea53632801aeb82eae4fcc3e368b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
