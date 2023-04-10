@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c238eb8_49189e08",
+        "filename": "modules/svg/src/SkSVGFeColorMatrix.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-04-10T17:07:37Z",
+      "side": 0,
+      "message": "No longer needed, we already have a specialization for std::vector\u003cfloat\u003e.",
+      "revId": "7635aa1d11c238dbb641242c2667ce64d1bf0d60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
