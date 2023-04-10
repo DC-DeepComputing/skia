@@ -22,6 +22,30 @@
       },
       "revId": "af74b728c155f55155ea113718f71057582c2266",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3867a03_6192db95",
+        "filename": "src/core/SkBlendModeBlender.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-10T18:00:09Z",
+      "side": 0,
+      "message": "Added back addToKey method, waiting to update SkShaders::Blend.",
+      "parentUuid": "c3947c45_cf1fc9b4",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 28
+      },
+      "revId": "af74b728c155f55155ea113718f71057582c2266",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
