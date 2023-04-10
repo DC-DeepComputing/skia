@@ -8,6 +8,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
+#include "include/core/SkDataTable.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPaint.h"
@@ -21,6 +22,7 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
+#include "include/encode/SkPngEncoder.h"
 #include "include/private/base/SkTDArray.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
@@ -49,7 +51,7 @@ DEF_TEST(serial_procs_image, reporter) {
 
     const SkSerialImageProc sprocs[] = {
         [](SkImage* img, void* ctx) -> sk_sp<SkData> { return nullptr; },
-        [](SkImage* img, void* ctx) { return img->encodeToData(); },
+        [](SkImage* img, void* ctx) { return SkPngEncoder::Encode(nullptr, img, {}); },
         [](SkImage* img, void* ctx) { return SkData::MakeWithCString(((State*)ctx)->fStr); },
     };
     const SkDeserialImageProc dprocs[] = {
