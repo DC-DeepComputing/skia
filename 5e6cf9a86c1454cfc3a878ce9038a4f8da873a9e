@@ -106,6 +106,24 @@
       "parentUuid": "5bf709e3_a2d97e0c",
       "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b006ca14_0b1a954e",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-10T18:47:29Z",
+      "side": 1,
+      "message": "I think if we wanted to change hashing behavior, it would have a pretty big blast radius so we\u0027d want to get a larger consensus than just a +1 on a code review.\n\ne.g. I would advocate for something structured more like AbslHashValue if we are going to the trouble of changing everything. https://g3doc.corp.google.com/third_party/absl/g3doc/docs/cpp/guides/hash.md#making-hashable-types",
+      "parentUuid": "1bbed7be_bdccf809",
+      "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
