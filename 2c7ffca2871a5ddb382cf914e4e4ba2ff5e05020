@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5983bd86_70be0348",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-10T12:14:22Z",
+      "side": 1,
+      "message": "Presubmit added as a warning - LMK if you prefer an error. The merge tool (`sk release-branch`) can still do the merge if RELEASE_NOTES.md was edited, so I felt warning is more appropriate.",
+      "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
