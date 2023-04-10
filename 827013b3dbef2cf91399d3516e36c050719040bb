@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22f09898_4d9f590b",
+        "filename": "src/sksl/analysis/SkSLReturnsInputAlpha.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-10T20:52:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "78b14d0c_fda87980",
+      "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10fd34d8_67a4946f",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-04-10T20:19:57Z",
       "side": 1,
       "message": "...and it looks like we have non-error paths out of this function prior to giving `fInputVar` a value...",
+      "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27864fad_4c5c6904",
+        "filename": "src/sksl/analysis/SkSLReturnsInputAlpha.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-10T20:52:56Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "10fd34d8_67a4946f",
       "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -83,6 +119,24 @@
       "side": 1,
       "message": "No, there\u0027s no way to reach `visitStatement` without passing through L49, which assigns `fInputVar`.\nThat being said, I like the way you think, and I will null-initialize the member.",
       "parentUuid": "5551bb9d_1b4a4f5f",
+      "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5009c662_bad2b92e",
+        "filename": "src/sksl/analysis/SkSLReturnsInputAlpha.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-10T20:52:56Z",
+      "side": 1,
+      "message": "http://review.skia.org/667960",
+      "parentUuid": "95d2ee3d_d00d979e",
       "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
