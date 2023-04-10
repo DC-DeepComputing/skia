@@ -67,6 +67,24 @@
       "message": "...Does that risk us ever using an uninitialized `fInputVar` value here?",
       "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95d2ee3d_d00d979e",
+        "filename": "src/sksl/analysis/SkSLReturnsInputAlpha.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-10T20:22:12Z",
+      "side": 1,
+      "message": "No, there\u0027s no way to reach `visitStatement` without passing through L49, which assigns `fInputVar`.\nThat being said, I like the way you think, and I will null-initialize the member.",
+      "parentUuid": "5551bb9d_1b4a4f5f",
+      "revId": "827013b3dbef2cf91399d3516e36c050719040bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
