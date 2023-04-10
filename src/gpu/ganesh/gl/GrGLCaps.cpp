@@ -1788,7 +1788,8 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
         info.fDefaultColorType = GrColorType::kGray_8;
         bool lum8Supported = false;
         bool lum8SizedFormatSupported = false;
-        if (GR_IS_GR_GL(standard) && !fIsCoreProfile) {
+        if (GR_IS_GR_GL(standard) && version < GR_GL_VER(3,0) && !fIsCoreProfile) {
+            // lum8 formats only supported in GL2.0; depreciated in versions 3.0+.
             lum8Supported = true;
             lum8SizedFormatSupported = true;
         } else if (GR_IS_GR_GL_ES(standard)) {
