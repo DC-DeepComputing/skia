@@ -116,6 +116,30 @@
       },
       "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a63e4d02_b7532057",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-10T16:10:03Z",
+      "side": 1,
+      "message": "I\u0027m not sure how I feel about this; doesn\u0027t this make it so that we need to #include SkGoodHash just about everywhere we declare a type?",
+      "parentUuid": "b0929883_a05fc575",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 84
+      },
+      "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
