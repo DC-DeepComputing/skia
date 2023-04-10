@@ -32,6 +32,8 @@ Milestone 114
     in or not. Clients which need this are expected to make sure `src/encode/SkPngEncoderImpl.cpp`
     is compiled into skia (in GN, this is the `skia_use_libpng_encode` setting). The same is true
     for `SK_ENCODE_JPEG` and `SK_ENCODE_WEBP`.
+  * `SkImageEncoder` has been deprecated. Clients should use one of `SkPngEncoder::Encode`,
+    `SkJpegEncoder::Encode` or `SkWebpEncoder::Encode` directly.
 
 * * *
 
