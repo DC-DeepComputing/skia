@@ -174,9 +174,9 @@ void TextWrapper::moveForward(bool hasEllipsis) {
     // If nothing fits we show the clipping.
     if (!fWords.empty()) {
         fEndLine.extend(fWords);
-        if (!fTooLongWord || hasEllipsis) {
-            return;
-        }
+        //if (!fTooLongWord || hasEllipsis) {
+        //    return;
+        //}
     }
     if (!fClusters.empty()) {
         fEndLine.extend(fClusters);
