@@ -6,14 +6,13 @@
  */
 
 #include "include/codec/SkCodec.h"
-#include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
-#include "include/core/SkImageEncoder.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkStream.h"
+#include "include/encode/SkPngEncoder.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
@@ -30,10 +29,11 @@ DEF_TEST(AlphaEncodedInfo, r) {
     auto result = codec->getPixels(codec->getInfo(), bm.getPixels(), bm.rowBytes());
     REPORTER_ASSERT(r, result == SkCodec::kSuccess);
 
-    auto data = SkEncodeBitmap(bm, SkEncodedImageFormat::kPNG, 100);
-    REPORTER_ASSERT(r, data);
+    SkDynamicMemoryWStream stream;
+    SkASSERT_RELEASE(SkPngEncoder::Encode(&stream, bm.pixmap(), {}));
+    REPORTER_ASSERT(r, stream.bytesWritten() > 0);
 
-    codec = SkCodec::MakeFromData(std::move(data));
+    codec = SkCodec::MakeFromData(stream.detachAsData());
     REPORTER_ASSERT(r, codec);
     // TODO: Make SkEncodedInfo public and compare to its version of kAlpha_8.
     REPORTER_ASSERT(r, codec->getInfo().colorType() == kAlpha_8_SkColorType);
