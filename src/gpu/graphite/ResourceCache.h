@@ -113,6 +113,14 @@ private:
 
     ResourceMap fResourceMap;
 
+    // Default maximum number of bytes of gpu memory of budgeted resources in the cache.
+    static const size_t kDefaultMaxSize = 256 * (1 << 20);
+
+    // Our budget
+    size_t fMaxBytes = kDefaultMaxSize;
+
+    size_t fBudgetedBytes = 0;
+
     SingleOwner* fSingleOwner = nullptr;
 
     bool fIsShutdown = false;
