@@ -16,7 +16,6 @@
 #include "include/core/SkData.h"
 #include "include/core/SkDataTable.h"
 #include "include/core/SkImage.h"
-#include "include/core/SkImageEncoder.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
@@ -350,8 +349,16 @@ DEF_TEST(Encode_WebpQuality, r) {
     bm.allocN32Pixels(100, 100);
     bm.eraseColor(SK_ColorBLUE);
 
-    auto dataLossy    = SkEncodeBitmap(bm, SkEncodedImageFormat::kWEBP, 99);
-    auto dataLossLess = SkEncodeBitmap(bm, SkEncodedImageFormat::kWEBP, 100);
+    SkWebpEncoder::Options opts;
+    opts.fQuality = 100; // This is the default, but making it explicit for this test.
+    SkDynamicMemoryWStream stream;
+    SkASSERT_RELEASE(SkWebpEncoder::Encode(&stream, bm.pixmap(), opts));
+    auto dataLossLess = stream.detachAsData();
+
+    opts.fQuality = 99;
+    stream.reset();
+    SkASSERT_RELEASE(SkWebpEncoder::Encode(&stream, bm.pixmap(), opts));
+    auto dataLossy = stream.detachAsData();
 
     enum Format {
         kMixed    = 0,
@@ -530,13 +537,21 @@ DEF_TEST(Encode_Alpha, r) {
             SkBitmap bm;
             bm.allocPixels(SkImageInfo::Make(10, 10, ct, kPremul_SkAlphaType));
             sk_bzero(bm.getPixels(), bm.computeByteSize());
-            auto data = SkEncodeBitmap(bm, format, 100);
+            SkDynamicMemoryWStream stream;
+            if (format == SkEncodedImageFormat::kJPEG) {
+                REPORTER_ASSERT(r, SkJpegEncoder::Encode(&stream, bm.pixmap(), {}));
+            } else if (format == SkEncodedImageFormat::kPNG) {
+                REPORTER_ASSERT(r, SkPngEncoder::Encode(&stream, bm.pixmap(), {}));
+            } else {
+                REPORTER_ASSERT(r, SkWebpEncoder::Encode(&stream, bm.pixmap(), {}));
+            }
+
             if ((format == SkEncodedImageFormat::kJPEG || format == SkEncodedImageFormat::kPNG) &&
                 ct == kAlpha_8_SkColorType) {
                 // We support encoding alpha8 to png and jpeg with our own private meaning.
-                REPORTER_ASSERT(r, data != nullptr);
+                REPORTER_ASSERT(r, stream.bytesWritten() > 0);
             } else {
-                REPORTER_ASSERT(r, data == nullptr);
+                REPORTER_ASSERT(r, stream.bytesWritten() == 0);
             }
         }
     }
