@@ -20,6 +20,14 @@ GlobalCache::GlobalCache()
 
 GlobalCache::~GlobalCache() = default;
 
+void GlobalCache::deleteResources() {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    fGraphicsPipelineCache.reset();
+    fComputePipelineCache.reset();
+    fStaticResource.clear();
+}
+
 sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(const UniqueKey& key) {
     SkAutoSpinlock lock{fSpinLock};
 
