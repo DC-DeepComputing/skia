@@ -34,7 +34,7 @@ template <typename T>
         *ptr = ctx;
         return ptr;
     }
-};
+}
 
 /**
  * SkRPCtxUtils::Unpack performs the reverse operation: either un-bitcasting the object back to its
