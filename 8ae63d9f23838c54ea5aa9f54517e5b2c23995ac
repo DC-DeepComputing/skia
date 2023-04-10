@@ -92,6 +92,30 @@
       },
       "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0929883_a05fc575",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-10T15:01:38Z",
+      "side": 1,
+      "message": "With `has_span_view`, we do the right thing but we need that clunky template magic to be able to disable the generic unrestricted `K` template or we get ambiguous matches for the `template \u003cV, K\u003dV::span_view\u003e` variant. We don\u0027t have problems with non-span-view types because they fail substitution and only see the `template K` version.\n\nGoing back to the `AsSpan` case, that will silently do the wrong thing if the map-specifier forgets to use it, because the span-wrapper will then just use the plain template.\n\nThere are a number of key types in use that are not trivial that depend on the generic template option, so we can\u0027t restrict that by some means like `std::is_trivial\u003cK\u003e::value`.\n\nIn the next PS, I updated SkGoodHash to be templated itself, instead of having template operators. This lets key classes provide a specialization if it makes sense. The SkTHashSet, etc. then just default to `SkGoodHash\u003cK\u003e`. Some textlayout code called SkGoodHash directly so those call sites needed updating but for the most part it was a drop-in. Instead of `span_view` or custom inner `Hash` functions that the map has to reference, components just specialize SkGoodHash in the same vein as `std::hash`. WDYT?",
+      "parentUuid": "1cc45dd1_0105bba2",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 84
+      },
+      "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
