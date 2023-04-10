@@ -39,6 +39,29 @@
       "message": "Presubmit added as a warning - LMK if you prefer an error. The merge tool (`sk release-branch`) can still do the merge if RELEASE_NOTES.md was edited, so I felt warning is more appropriate.",
       "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4ca3053_a32bea5d",
+        "filename": "relnotes/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-10T13:39:16Z",
+      "side": 1,
+      "message": "Phrasing seems overly strict (there may be some context where a HR still makes sense). Maybe something more like \"Horizontal rules will automatically be inserted between milestones when the release notes are generated.\"",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 73
+      },
+      "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
