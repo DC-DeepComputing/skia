@@ -9,9 +9,6 @@
 
 #include "include/encode/SkPngEncoder.h"
 
-class SkPixmap;
-class SkWStream;
-
 namespace SkPngEncoder {
 
 bool Encode(SkWStream*, const SkPixmap&, const Options&) {

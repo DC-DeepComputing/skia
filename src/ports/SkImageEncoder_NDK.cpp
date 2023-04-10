@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkBitmap.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkStream.h"
 #include "include/encode/SkJpegEncoder.h"
@@ -14,7 +13,6 @@
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTo.h"
 #include "src/encode/SkImageEncoderPriv.h"
-#include "src/image/SkImage_Base.h"
 #include "src/ports/SkNDKConversions.h"
 
 static AndroidBitmapInfo info_for_pixmap(const SkPixmap& pmap) {
@@ -69,21 +67,6 @@ std::unique_ptr<SkEncoder> Make(SkWStream*, const SkPixmap&, const Options&) {
 bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options) {
     return write_image_to_stream(dst, src, ANDROID_BITMAP_COMPRESS_FORMAT_PNG, 100);
 }
-
-sk_sp<SkData> Encode(GrDirectContext* ctx, const SkImage* img, const Options& options) {
-    if (!img) {
-        return nullptr;
-    }
-    SkBitmap bm;
-    if (!as_IB(img)->getROPixels(ctx, &bm)) {
-        return nullptr;
-    }
-    SkDynamicMemoryWStream stream;
-    if (Encode(&stream, bm.pixmap(), options)) {
-        return stream.detachAsData();
-    }
-    return nullptr;
-}
 }  // namespace SkPngEncoder
 
 namespace SkJpegEncoder {
@@ -95,21 +78,6 @@ bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options) {
 bool Encode(SkWStream*, const SkYUVAPixmaps&, const SkColorSpace*, const Options&) {
     SkDEBUGFAIL("encoding a YUVA pixmap is not supported via the NDK");
     return false;
-}
-
-sk_sp<SkData> Encode(GrDirectContext* ctx, const SkImage* img, const Options& options) {
-    if (!img) {
-        return nullptr;
-    }
-    SkBitmap bm;
-    if (!as_IB(img)->getROPixels(ctx, &bm)) {
-        return nullptr;
-    }
-    SkDynamicMemoryWStream stream;
-    if (Encode(&stream, bm.pixmap(), options)) {
-        return stream.detachAsData();
-    }
-    return nullptr;
 }
 
 std::unique_ptr<SkEncoder> Make(SkWStream*, const SkPixmap&, const Options&) {
@@ -136,21 +104,6 @@ bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options) {
     }
     return write_image_to_stream(
             dst, src, ANDROID_BITMAP_COMPRESS_FORMAT_WEBP_LOSSY, options.fQuality);
-}
-
-sk_sp<SkData> Encode(GrDirectContext* ctx, const SkImage* img, const Options& options) {
-    if (!img) {
-        return nullptr;
-    }
-    SkBitmap bm;
-    if (!as_IB(img)->getROPixels(ctx, &bm)) {
-        return nullptr;
-    }
-    SkDynamicMemoryWStream stream;
-    if (Encode(&stream, bm.pixmap(), options)) {
-        return stream.detachAsData();
-    }
-    return nullptr;
 }
 
 bool EncodeAnimated(SkWStream*, SkSpan<const SkEncoder::Frame>, const Options&) {

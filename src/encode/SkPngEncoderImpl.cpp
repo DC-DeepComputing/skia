@@ -485,7 +485,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Optio
 
     encoderMgr->chooseProc(src.info());
 
-    return std::make_unique<SkPngEncoderImpl>(std::move(encoderMgr), src);
+    return std::unique_ptr<SkPngEncoderImpl>(new SkPngEncoderImpl(std::move(encoderMgr), src));
 }
 
 bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options) {
