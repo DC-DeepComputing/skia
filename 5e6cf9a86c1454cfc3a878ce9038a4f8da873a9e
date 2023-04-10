@@ -16,6 +16,24 @@
       "message": "This seems like a dangerous operation in general, since K is not necessarily densely packed. There are no guarantees about what happens to the padding, even if you allocate and zero the memory, the padding is up for grabs and writes are allowed to it (which would of course upset the hash). The most common case of this is on little endian machines if there is a \"small\" last field but known \"large\" padding where writes may be to the \"large\" to avoid a masking operation.\n\nEven if you do a loop here and allow each K to hash itself and write a \"hash combine\" (which would at least create deterministic hash, assuming K has a deterministic hash) this is awkward as a general utility because the SkSpan doesn\u0027t own or control any of the K it is referencing so wouldn\u0027t know when its own hash changed.\n\nGenerally having a hash of a container isn\u0027t something one wants as general utility. If any of the content changes then the overall hash is changed. Since the meaning is so heavily tied to whatever the implementation using this needs then how the span is hashed really should be a one off, or at least non-generic with a heavy name. For more arguments along these lines look up \"why is there no std::hash\u003cstd::vector\u003cT\u003e\u003e\".",
       "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "995c6a6b_ceefbf14",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-10T15:46:07Z",
+      "side": 1,
+      "message": "That makes sense. It really does only make sense for types that don\u0027t have padding, which is then pretty coupled back to the wrapper around the span knowing what it\u0027s doing. I can get rid of the span overloads.\n\nWDYT about the other restructuring though? This lets types define their hash specializations more conveniently IMO, but maybe it\u0027s better to be explicit about declaring a type as `Map\u003cK, V, K::Hash\u003e` vs. there being a specialization for `SkGoodHash\u003cK\u003e` floating around and the user declaring `Map\u003cK, V\u003e`?",
+      "parentUuid": "7c5d641c_0003fae3",
+      "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
