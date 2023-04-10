@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1a1378c_f84f17ed",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-10T14:40:51Z",
+      "side": 1,
+      "message": "woops, guess who accidentally was only building locally in release....fixed",
+      "parentUuid": "8e36c984_2a6662ee",
+      "range": {
+        "startLine": 436,
+        "startChar": 55,
+        "endLine": 436,
+        "endChar": 60
+      },
+      "revId": "46e418cdb33f895fee12a4bfb61742ec95766c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cdca91c_91e6ca48",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-07T20:37:15Z",
       "side": 1,
       "message": "It\u0027s not clear to me why this wouldn\u0027t end up overcounting every time you call update().",
+      "range": {
+        "startLine": 437,
+        "startChar": 16,
+        "endLine": 437,
+        "endChar": 60
+      },
+      "revId": "46e418cdb33f895fee12a4bfb61742ec95766c66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e19a6c3a_c7f6b923",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-10T14:40:51Z",
+      "side": 1,
+      "message": "This is just in our Stats collection used for validation. We loop over ever resource once and call update on that resource. See line 463, we make a new Stat object each validate() call, then loop over the queues.",
+      "parentUuid": "0cdca91c_91e6ca48",
       "range": {
         "startLine": 437,
         "startChar": 16,
