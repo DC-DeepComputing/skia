@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64585969_76918673",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-10T16:35:32Z",
+      "side": 1,
+      "message": "lgtm with small nits mentioned in comments",
+      "revId": "cc3b60eb26540355df197793871ac3452ca618dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22328156_10598954",
@@ -36,6 +53,53 @@
         "startChar": 0,
         "endLine": 21,
         "endChar": 38
+      },
+      "revId": "cc3b60eb26540355df197793871ac3452ca618dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bef3ce65_3e9d6f98",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-10T16:35:32Z",
+      "side": 1,
+      "message": "The idea is other classes should make sure to call deleteResources. The global cache is owned by SharedContext. VulkanSharedContext owns the VulkanMemoryAllocator. So if we just deleted SharedContext, the VulkanSharedContext objects would get deleted before the base class. Thus VulkanMemoryAllocator would get deleted before the GlobalCache. This is an issue since we need to release all our backend objects in the GlobalCache before we delete the VulkanMemoryAllocator. Thus the need for SharedContext to explicitly call deleteResources.\n\nGiven all that, it is probably work adding some asserts in the ~GlobalCache that all the things we get rid of in deleteResources are nullptr.",
+      "parentUuid": "22328156_10598954",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 38
+      },
+      "revId": "cc3b60eb26540355df197793871ac3452ca618dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c0d650e_9cc2710a",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-10T16:35:32Z",
+      "side": 1,
+      "message": "In theory we shouldn\u0027t need this line. From the spec\n`When a pool is destroyed, all command buffers allocated from the pool are freed`\n\nI\u0027m not 100% sure why we did both calls in Ganesh. I could be purely since we had separate classes for VkCommandBuffers and VkCommandPools we wanted each to have their own freeGpuData call. Or maybe there was a bug in some driver that required it?\n\nRegardless I think we sould be fine just removing this line.",
+      "range": {
+        "startLine": 93,
+        "startChar": 3,
+        "endLine": 94,
+        "endChar": 92
       },
       "revId": "cc3b60eb26540355df197793871ac3452ca618dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
