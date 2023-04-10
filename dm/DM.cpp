@@ -1544,6 +1544,7 @@ TestHarness CurrentTestHarness() {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 int main(int argc, char** argv) {
+    printf("wtf??\n");
 #if defined(__MSVC_RUNTIME_CHECKS)
     _RTC_SetErrorFunc(RuntimeCheckErrorFunc);
 #endif
