@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "cc3b60eb26540355df197793871ac3452ca618dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22328156_10598954",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-10T15:50:57Z",
+      "side": 1,
+      "message": "Just for my understanding, would we want to delete resources in this destructor? Or would we rely upon other classes to make sure that they call deleteResources() when needed? I see we have a TODO in the SharedContext destructor to consider performing a manual destruction of resources...",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 38
+      },
+      "revId": "cc3b60eb26540355df197793871ac3452ca618dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb8a44fc_def1bb72",
+        "filename": "src/gpu/graphite/vk/VulkanSharedContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-10T15:50:57Z",
+      "side": 1,
+      "message": "Ah, this is where I got hung up in my own endeavors to get dm running. Nice :D",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 43
+      },
+      "revId": "cc3b60eb26540355df197793871ac3452ca618dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
