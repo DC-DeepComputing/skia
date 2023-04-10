@@ -70,6 +70,24 @@
       "parentUuid": "258d57e6_eb9fc91b",
       "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bf709e3_a2d97e0c",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-10T16:01:05Z",
+      "side": 1,
+      "message": "That\u0027s true, but also ignores the larger issue that this should not be a generally available thing called \"SkGoodHash\" since it isn\u0027t a generally good hash since the object being hashed (the SkSpan) does not own the bits in the Ks and force them to be immutable. In other words, this is only a \"good hash\" if the caller can also guarantee that whatever owns the thing pointed to by the SkSpan is going to be immutable for as long as the hash is going to be interesting. Strings can get away with this since they are generally immutable (COW is disallowed on std:string, SkString is actually a bit iffy to be hashed).",
+      "parentUuid": "aaf1ad96_31c47583",
+      "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
