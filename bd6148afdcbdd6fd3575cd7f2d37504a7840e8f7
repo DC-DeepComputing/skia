@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11fe900a_a7b644ef",
+        "filename": "modules/skottie/src/layers/FootageLayer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-04-10T14:27:33Z",
+      "side": 1,
+      "message": "nit: this happens to work because we offer convert-to-pointer operators for all skjson values, but I think it\u0027d be cleaner to not rely on that:\n\n    const skjson::ObjectValue* jimage \u003d \u0026defaultJImage;",
+      "range": {
+        "startLine": 80,
+        "startChar": 40,
+        "endLine": 80,
+        "endChar": 53
+      },
+      "revId": "bd6148afdcbdd6fd3575cd7f2d37504a7840e8f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
