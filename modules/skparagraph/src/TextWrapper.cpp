@@ -174,7 +174,11 @@ void TextWrapper::moveForward(bool hasEllipsis) {
     // If nothing fits we show the clipping.
     if (!fWords.empty()) {
         fEndLine.extend(fWords);
+#ifdef SK_SKPARAGRAPH_ELLIPSIS_BEHAVIOR
+        if (!fTooLongWord && !hasEllipsis) {
+#else
         if (!fTooLongWord || hasEllipsis) {
+#endif
             return;
         }
     }
