@@ -34,6 +34,24 @@
       "parentUuid": "7c5d641c_0003fae3",
       "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "258d57e6_eb9fc91b",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-10T15:48:31Z",
+      "side": 1,
+      "message": "Although thinking about the padding more, we have this issue for the generic `K` implementation as well since a single non-dense key could have dirty padding bits.",
+      "parentUuid": "995c6a6b_ceefbf14",
+      "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
