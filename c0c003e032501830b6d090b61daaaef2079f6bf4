@@ -16,6 +16,52 @@
       "message": "I don\u0027t have access to dry runs etc.",
       "revId": "c0c003e032501830b6d090b61daaaef2079f6bf4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc6b09dd_1de74bf5",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-10T14:29:24Z",
+      "side": 1,
+      "message": "Please define this in #include \"include/private/base/SkAttributes.h\"",
+      "range": {
+        "startLine": 30,
+        "startChar": 34,
+        "endLine": 30,
+        "endChar": 49
+      },
+      "revId": "c0c003e032501830b6d090b61daaaef2079f6bf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c27c3a2_b26f6fb8",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-10T14:29:24Z",
+      "side": 1,
+      "message": "base files should *not* include files from core",
+      "range": {
+        "startLine": 11,
+        "startChar": 18,
+        "endLine": 11,
+        "endChar": 22
+      },
+      "revId": "c0c003e032501830b6d090b61daaaef2079f6bf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
