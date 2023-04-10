@@ -11,6 +11,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkImageEncoder.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRect.h"
@@ -23,11 +24,6 @@
 #include "include/encode/SkPngEncoder.h"
 #include "include/encode/SkWebpEncoder.h"
 #include "tools/Resources.h"
-
-#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS) || defined(SK_BUILD_FOR_WIN) \
- || defined(SK_ENABLE_NDK_IMAGES)
-#include "src/encode/SkImageEncoderPriv.h"
-#endif
 
 namespace {
 
@@ -52,8 +48,8 @@ static sk_sp<SkData> encode_data(SkEncodedImageFormat type, const SkBitmap& bitm
     }
     SkDynamicMemoryWStream buf;
     #if defined(SK_ENABLE_NDK_IMAGES)
-        return SkEncodeImageWithNDK(&buf, src, type, quality) ? buf.detachAsData() : nullptr;
-    #else
+    return SkEncodeImage(&buf, src, type, quality) ? buf.detachAsData() : nullptr;
+#else
         switch (type) {
             case SkEncodedImageFormat::kPNG: {
                 bool success = SkPngEncoder::Encode(&buf, src, SkPngEncoder::Options());
