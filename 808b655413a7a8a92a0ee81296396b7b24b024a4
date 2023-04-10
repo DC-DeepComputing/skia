@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e93630c_42ad9176",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-10T19:41:36Z",
+      "side": 1,
+      "message": "This is almost verbatim what is in onLegacyMakeTypeface and is motivated in an attempt to see if it affects https://bugs.chromium.org/p/chromium/issues/detail?id\u003d1431096 .",
+      "revId": "808b655413a7a8a92a0ee81296396b7b24b024a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
