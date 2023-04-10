@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c125bcc_8e5e9b9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-10T21:26:28Z",
+      "side": 1,
+      "message": "Ping me when you have clean builds. My connectivity is intermittent so a ping will help me get back to this more quickly.",
+      "revId": "fd0a602bb49abac6e69d6d7bdb540eac474df03c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
