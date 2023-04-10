@@ -130,6 +130,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ff04387_f47ee657",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-10T17:11:27Z",
+      "side": 1,
+      "message": "Personally, I am fine with adding it later since it\u0027s a small addition to `~GlobalCache` which isn\u0027t touched by this CL, but @egdaniel may disagree. He +1\u0027d though so I think you\u0027re good to go.",
+      "parentUuid": "5daaf8d6_44c8f32e",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 38
+      },
+      "revId": "cc3b60eb26540355df197793871ac3452ca618dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c0d650e_9cc2710a",
