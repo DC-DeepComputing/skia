@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ace7005_145fbdb3",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 12704
+      },
+      "writtenOn": "2023-04-10T15:16:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc6b09dd_1de74bf5",
+      "range": {
+        "startLine": 30,
+        "startChar": 34,
+        "endLine": 30,
+        "endChar": 49
+      },
+      "revId": "c0c003e032501830b6d090b61daaaef2079f6bf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c27c3a2_b26f6fb8",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-04-10T14:29:24Z",
       "side": 1,
       "message": "base files should *not* include files from core",
+      "range": {
+        "startLine": 11,
+        "startChar": 18,
+        "endLine": 11,
+        "endChar": 22
+      },
+      "revId": "c0c003e032501830b6d090b61daaaef2079f6bf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "508e88d1_3c84e2cf",
+        "filename": "include/private/base/SkTArray.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 12704
+      },
+      "writtenOn": "2023-04-10T15:16:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c27c3a2_b26f6fb8",
       "range": {
         "startLine": 11,
         "startChar": 18,
