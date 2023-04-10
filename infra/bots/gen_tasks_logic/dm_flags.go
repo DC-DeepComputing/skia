@@ -337,11 +337,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				// Crashes
 				// https://skbug/14105
 				skip(ALL, "test", ALL, "BackendTextureTest")
-				skip(ALL, "test", ALL, "GraphitePromiseImageMultipleImgUses")
-				skip(ALL, "test", ALL, "GraphitePromiseImageRecorderLoss")
 				skip(ALL, "test", ALL, "MutableImagesTest")
 				skip(ALL, "test", ALL, "PaintParamsKeyTest")
-				skip(ALL, "test", ALL, "VolatileGraphitePromiseImageTest")
 				// Fails
 				// https://skbug/14105
 				skip(ALL, "test", ALL, "ImageAsyncReadPixelsGraphite")
@@ -358,21 +355,14 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					// Crashes
 					skip(ALL, "gm", ALL, "blurrect")
 					skip(ALL, "gm", ALL, "circular_arcs_fill")
-					skip(ALL, "gm", ALL, "circular_arcs_hairline")
-					skip(ALL, "gm", ALL, "circular_arcs_stroke_butt")
-					skip(ALL, "gm", ALL, "circular_arcs_stroke_square")
-					skip(ALL, "gm", ALL, "circular_arcs_stroke_round")
 					skip(ALL, "gm", ALL, "circular_arcs_stroke_and_fill_butt")
 					skip(ALL, "gm", ALL, "circular_arcs_stroke_and_fill_square")
 					skip(ALL, "gm", ALL, "circular_arcs_stroke_and_fill_round")
 					skip(ALL, "gm", ALL, "circular_arcs")
-					skip(ALL, "gm", ALL, "manycircles")
 					skip(ALL, "gm", ALL, "nested_aa")
 					skip(ALL, "gm", ALL, "nested_bw")
 					skip(ALL, "gm", ALL, "nested_flipY_aa")
 					skip(ALL, "gm", ALL, "nested_flipY_bw")
-					skip(ALL, "gm", ALL, "simplerect")
-					skip(ALL, "gm", ALL, "wacky_yuv_formats_imggen")
 					skip(ALL, "gm", ALL, "xfermodes")
 				}
 			}
