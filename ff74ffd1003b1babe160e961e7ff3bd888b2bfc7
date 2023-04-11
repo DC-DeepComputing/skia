@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88aa530d_4d4cd78c",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-11T17:24:46Z",
+      "side": 1,
+      "message": "I thought a map made sense to use here (enforcing only one entry per requested type with its cumulative requested quantity), but I am open to other suggestions.",
+      "range": {
+        "startLine": 48,
+        "startChar": 40,
+        "endLine": 48,
+        "endChar": 89
+      },
+      "revId": "ff74ffd1003b1babe160e961e7ff3bd888b2bfc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

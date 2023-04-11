@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "431e7dbb_a362090c",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-11T17:24:46Z",
+      "side": 1,
+      "message": "Callout: We used the count of requested descriptors in GrVkDescriptorPool so I emulated that here. Let me know if there are other thoughts on how we\u0027d want to handle that.",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 38
+      },
+      "revId": "3473debe28d70f55cad84d8add614b43fa42a320",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

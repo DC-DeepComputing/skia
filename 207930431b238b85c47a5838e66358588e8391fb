@@ -22,6 +22,30 @@
       },
       "revId": "207930431b238b85c47a5838e66358588e8391fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fbb5b86_ac77e960",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-11T17:24:46Z",
+      "side": 1,
+      "message": "After discussing with Greg, the pool memory likely lives in both GPU and CPU memory, so we should not budget for this resource at all.",
+      "parentUuid": "e67f21ec_7cecd2f6",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 58
+      },
+      "revId": "207930431b238b85c47a5838e66358588e8391fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
