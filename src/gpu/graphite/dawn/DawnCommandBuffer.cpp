@@ -591,17 +591,31 @@ void DawnCommandBuffer::setScissor(unsigned int left,
                                    unsigned int width,
                                    unsigned int height) {
     SkASSERT(fActiveRenderPassEncoder);
-    fActiveRenderPassEncoder.SetScissorRect(left, top, width, height);
+    SkIRect scissor = SkIRect::MakeXYWH(
+            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height);
+    if (!scissor.intersect(SkIRect::MakeSize(fRenderPassSize))) {
+        scissor.setEmpty();
+    }
+    fActiveRenderPassEncoder.SetScissorRect(
+            scissor.x(), scissor.y(), scissor.width(), scissor.height());
 }
 
 void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
+    // Because we trim the viewport to fit the render target dimensions, we have to account for a
+    // possibly-updated width and height in rtAdjust.
+    SkRect croppedViewport = SkRect::MakeXYWH(viewport.x() - fReplayTranslation.x(),
+                                              viewport.y() - fReplayTranslation.y(),
+                                              viewport.width(),
+                                              viewport.height());
+    croppedViewport.intersect(SkRect::Make(fRenderPassSize));
+    const float x = croppedViewport.x();
+    const float y = croppedViewport.y();
+    const float invTwoW = 2.f / croppedViewport.width();
+    const float invTwoH = 2.f / croppedViewport.height();
+
     // Dawn's framebuffer space has (0, 0) at the top left. This agrees with Skia's device coords.
     // However, in NDC (-1, -1) is the bottom left. So we flip the origin here (assuming all
     // surfaces we have are TopLeft origin).
-    const float x = viewport.x();
-    const float y = viewport.y();
-    const float invTwoW = 2.f / viewport.width();
-    const float invTwoH = 2.f / viewport.height();
     const IntrinsicConstant rtAdjust = {invTwoW, -invTwoH, -1.f - x * invTwoW, 1.f + y * invTwoH};
 
     if (!fInstrinsicConstantBuffer) {
@@ -632,8 +646,16 @@ void DawnCommandBuffer::preprocessViewport(const SkRect& viewport) {
 
 void DawnCommandBuffer::setViewport(const SkRect& viewport) {
     SkASSERT(fActiveRenderPassEncoder);
-    fActiveRenderPassEncoder.SetViewport(
-            viewport.x(), viewport.y(), viewport.width(), viewport.height(), 0, 1);
+    SkRect croppedViewport = SkRect::MakeXYWH(viewport.x() + fReplayTranslation.x(),
+                                              viewport.y() + fReplayTranslation.y(),
+                                              viewport.width(),
+                                              viewport.height());
+    croppedViewport.intersect(SkRect::Make(fRenderPassSize));
+    fActiveRenderPassEncoder.SetViewport(croppedViewport.x(),
+                                         croppedViewport.y(),
+                                         croppedViewport.width(),
+                                         croppedViewport.height(),
+                                         0, 1);
 }
 
 void DawnCommandBuffer::setBlendConstants(float* blendConstants) {
