@@ -18,7 +18,7 @@ public:
     GraphiteDawnWindowContext(const DisplayParams&, wgpu::TextureFormat swapChainFormat);
     ~GraphiteDawnWindowContext() override;
     sk_sp<SkSurface> getBackbufferSurface() override;
-    void swapBuffers() override;
+    void onSwapBuffers() override;
     bool isValid() override { return SkToBool(fDevice.Get()); }
     void setDisplayParams(const DisplayParams& params) override;
 

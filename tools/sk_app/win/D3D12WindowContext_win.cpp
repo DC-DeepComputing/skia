@@ -44,7 +44,7 @@ public:
     }
 
     sk_sp<SkSurface> getBackbufferSurface() override;
-    void swapBuffers() override;
+    void onSwapBuffers() override;
 
     void resize(int width, int height) override;
     void setDisplayParams(const DisplayParams& params) override;
@@ -195,7 +195,7 @@ sk_sp<SkSurface> D3D12WindowContext::getBackbufferSurface() {
     return fSurfaces[fBufferIndex];
 }
 
-void D3D12WindowContext::swapBuffers() {
+void D3D12WindowContext::onSwapBuffers() {
     SkSurface* surface = fSurfaces[fBufferIndex].get();
 
     GrFlushInfo info;

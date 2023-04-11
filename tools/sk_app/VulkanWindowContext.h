@@ -27,7 +27,7 @@ public:
     ~VulkanWindowContext() override;
 
     sk_sp<SkSurface> getBackbufferSurface() override;
-    void swapBuffers() override;
+    void onSwapBuffers() override;
 
     bool isValid() override { return fDevice != VK_NULL_HANDLE; }
 
