@@ -94242,17 +94242,7 @@
     },
     "Build-Mac-Clang-arm64-Debug-Graphite_Metal": {},
     "Build-Mac-Clang-arm64-Debug-Graphite_Metal_NoGpu": {},
-    "Build-Mac-Clang-arm64-Debug-iOS_Graphite_Metal": {
-      "location_regexes": [
-        "(tests|src/gpu)/graphite/.*"
-      ]
-    },
     "Build-Mac-Clang-arm64-Release-Graphite_Metal": {
-      "location_regexes": [
-        "(tests|src/gpu)/graphite/.*"
-      ]
-    },
-    "Build-Mac-Clang-arm64-Release-iOS_Graphite_Metal": {
       "location_regexes": [
         "(tests|src/gpu)/graphite/.*"
       ]
