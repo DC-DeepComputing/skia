@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d9c151e_6a71cd62",
+        "filename": "RELEASE_NOTES.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T14:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b68a37af_5312319f",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 46
+      },
+      "revId": "168b08811d0ea64642cf11fa0952c8e7f411b6ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b4e52c6_8eaa2028",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-10T21:22:38Z",
       "side": 1,
       "message": "Is this formatted correctly?",
+      "range": {
+        "startLine": 93,
+        "startChar": 1,
+        "endLine": 93,
+        "endChar": 30
+      },
+      "revId": "168b08811d0ea64642cf11fa0952c8e7f411b6ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a7269c4_65632c92",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 11
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T14:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b4e52c6_8eaa2028",
       "range": {
         "startLine": 93,
         "startChar": 1,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81890110_3a4acd4d",
+        "filename": "gm/encode_platform.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T14:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2219f33b_ae5e442b",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 5
+      },
+      "revId": "168b08811d0ea64642cf11fa0952c8e7f411b6ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c2667a4_3bfca2d0",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-04-10T21:22:38Z",
       "side": 1,
       "message": "SkDEBUGFAIL",
+      "range": {
+        "startLine": 359,
+        "startChar": 12,
+        "endLine": 359,
+        "endChar": 28
+      },
+      "revId": "168b08811d0ea64642cf11fa0952c8e7f411b6ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7860712e_630927e9",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T14:19:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c2667a4_3bfca2d0",
       "range": {
         "startLine": 359,
         "startChar": 12,
