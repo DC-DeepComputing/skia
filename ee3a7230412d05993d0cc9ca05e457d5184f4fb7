@@ -33,6 +33,23 @@
       "message": "LGTM if there are no other changes :^)",
       "revId": "ee3a7230412d05993d0cc9ca05e457d5184f4fb7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeddacf7_2f1c538a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-04-11T19:13:59Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "ee3a7230412d05993d0cc9ca05e457d5184f4fb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
