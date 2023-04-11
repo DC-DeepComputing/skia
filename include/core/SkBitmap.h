@@ -32,7 +32,7 @@ class SkPaint;
 class SkPixelRef;
 class SkShader;
 enum SkColorType : int;
-enum class SkTileMode;
+enum class SkTileMode : int;
 struct SkMask;
 
 /** \class SkBitmap
