@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20285d80_4a1ac1b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T16:22:47Z",
+      "side": 1,
+      "message": "It was a bug I introduced. In reconstructing the `SkSamplingOptions` from the packed int, I was shifting the wrong way for mipmap mode...",
+      "parentUuid": "9d26aabd_4dfc199b",
+      "revId": "de468977e386e36c92a42f41fcf12f32a996dcf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "909d4a8f_463f8a3e",
@@ -49,6 +67,30 @@
       "writtenOn": "2023-04-11T15:36:07Z",
       "side": 1,
       "message": "tiny nit: wrapping (here and L154/156)",
+      "range": {
+        "startLine": 145,
+        "startChar": 98,
+        "endLine": 145,
+        "endChar": 105
+      },
+      "revId": "de468977e386e36c92a42f41fcf12f32a996dcf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26957eb9_f2151944",
+        "filename": "src/pdf/SkPDFDocumentPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T16:22:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "909d4a8f_463f8a3e",
       "range": {
         "startLine": 145,
         "startChar": 98,
