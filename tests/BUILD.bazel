@@ -1,6 +1,6 @@
 load("//bazel:skia_rules.bzl", "skia_cc_library")
 load("//bazel:flags.bzl", "bool_flag", "selects")
-load(":tests.bzl", "skia_cpu_tests", "skia_ganesh_tests")
+load(":tests.bzl", "skia_cpu_tests", "skia_ganesh_test", "skia_ganesh_tests")
 
 CODEC_TESTS = [
     "AndroidCodecTest.cpp",
@@ -695,4 +695,41 @@ selects.config_setting_group(
 alias(
     name = "known_good_android_ganesh_test",
     actual = ":TextBlobCacheTest",
+)
+
+# This target was tested on a Pixel 5. Instructions:
+#
+# 1. Port-forward the ADB server from a Raspberry Pi that is connected to a Pixel 5:
+#
+#     $ ssh -L 5037:localhost:5037 skia-rpi2-rack1-shelf1-036
+#
+# 2. Invoke Bazel as follows:
+#
+#     $ bazel test //tests:ganesh_test_via_adb \
+#         --config=for_android_arm64_with_rbe \
+#         --gpu_backend=gl_backend \
+#         --enable_gpu_test_utils \
+#         --test_output=streamed
+skia_ganesh_test(
+    name = "ganesh_test",
+    flags = {
+        "include_decoder": [
+            "jpeg_decode_codec",
+            "png_decode_codec",
+            "webp_decode_codec",
+        ],
+        "include_encoder": [
+            "jpeg_encode_codec",
+            "png_encode_codec",
+            "webp_encode_codec",
+        ],
+    },
+    harness = ":tests_base",
+    requires_resources_dir = True,
+    tests = [
+        "BlendTest.cpp",
+        "BlurTest.cpp",
+        "GradientTest.cpp",
+        "ImageTest.cpp",  # Needs JPEG, PNG and WEBP encoders/decoders.
+    ],
 )
