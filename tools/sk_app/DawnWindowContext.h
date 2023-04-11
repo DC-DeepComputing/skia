@@ -21,12 +21,13 @@ public:
     DawnWindowContext(const DisplayParams&, wgpu::TextureFormat swapChainFormat);
     ~DawnWindowContext() override;
     sk_sp<SkSurface> getBackbufferSurface() override;
-    void swapBuffers() override;
     bool isValid() override { return SkToBool(fDevice.Get()); }
 
     void resize(int w, int h) override;
 
     void setDisplayParams(const DisplayParams& params) override;
+
+    void onSwapBuffers() override;
 
 protected:
     bool isGpuContext() override { return true; }
@@ -34,7 +35,6 @@ protected:
     wgpu::Device createDevice(wgpu::BackendType type);
     virtual wgpu::Device onInitializeContext() = 0;
     virtual void onDestroyContext() = 0;
-    virtual void onSwapBuffers() = 0;
     virtual GrSurfaceOrigin getRTOrigin() const { return kTopLeft_GrSurfaceOrigin; }
     void destroyContext();
 

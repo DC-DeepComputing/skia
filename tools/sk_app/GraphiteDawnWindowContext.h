@@ -18,7 +18,7 @@ public:
     GraphiteDawnWindowContext(const DisplayParams&, wgpu::TextureFormat swapChainFormat);
     ~GraphiteDawnWindowContext() override;
     sk_sp<SkSurface> getBackbufferSurface() override;
-    void swapBuffers() override;
+    void onSwapBuffers() override;
     bool isValid() override { return SkToBool(fDevice.Get()); }
     void setDisplayParams(const DisplayParams& params) override;
 
@@ -31,7 +31,6 @@ protected:
 
     virtual bool onInitializeContext() = 0;
     virtual void onDestroyContext() = 0;
-    virtual void onSwapBuffers() = 0;
     virtual GrSurfaceOrigin getRTOrigin() const { return kTopLeft_GrSurfaceOrigin; }
 
     static constexpr wgpu::TextureUsage kTextureUsage = wgpu::TextureUsage::RenderAttachment;
