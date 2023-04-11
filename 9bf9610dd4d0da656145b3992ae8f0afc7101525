@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dc62678_2ebf72f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-04-11T14:54:23Z",
+      "side": 1,
+      "message": "We change SkParagraph behavior so the ellipsis is attached not to the last word but to the last grapheme (and so the ellipsized text is not too short). \nIt\u0027s going to create a large number of image differences in Google3 clients (I already checked).",
+      "revId": "9bf9610dd4d0da656145b3992ae8f0afc7101525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
