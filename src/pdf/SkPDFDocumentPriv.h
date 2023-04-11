@@ -12,7 +12,9 @@
 #include "include/docs/SkPDFDocument.h"
 #include "include/private/base/SkMutex.h"
 #include "src/core/SkTHash.h"
+#include "src/pdf/SkPDFGraphicState.h"
 #include "src/pdf/SkPDFMetadata.h"
+#include "src/pdf/SkPDFShader.h"
 #include "src/pdf/SkPDFTag.h"
 
 #include <atomic>
@@ -24,9 +26,6 @@ class SkPDFDevice;
 class SkPDFFont;
 struct SkAdvancedTypefaceMetrics;
 struct SkBitmapKey;
-struct SkPDFFillGraphicState;
-struct SkPDFImageShaderKey;
-struct SkPDFStrokeGraphicState;
 
 namespace SkPDFGradientShader {
 struct Key;
@@ -141,7 +140,8 @@ public:
     const SkMatrix& currentPageTransform() const;
 
     // Canonicalized objects
-    SkTHashMap<SkPDFImageShaderKey, SkPDFIndirectReference> fImageShaderMap;
+    SkTHashMap<SkPDFImageShaderKey, SkPDFIndirectReference, SkPDFImageShaderKey::Hash>
+        fImageShaderMap;
     SkTHashMap<SkPDFGradientShader::Key, SkPDFIndirectReference, SkPDFGradientShader::KeyHash>
         fGradientPatternMap;
     SkTHashMap<SkBitmapKey, SkPDFIndirectReference> fPDFBitmapMap;
@@ -151,8 +151,10 @@ public:
     SkTHashMap<uint32_t, SkPDFIndirectReference> fFontDescriptors;
     SkTHashMap<uint32_t, SkPDFIndirectReference> fType3FontDescriptors;
     SkTHashMap<uint64_t, SkPDFFont> fFontMap;
-    SkTHashMap<SkPDFStrokeGraphicState, SkPDFIndirectReference> fStrokeGSMap;
-    SkTHashMap<SkPDFFillGraphicState, SkPDFIndirectReference> fFillGSMap;
+    SkTHashMap<SkPDFStrokeGraphicState, SkPDFIndirectReference, SkPDFStrokeGraphicState::Hash>
+        fStrokeGSMap;
+    SkTHashMap<SkPDFFillGraphicState, SkPDFIndirectReference, SkPDFFillGraphicState::Hash>
+        fFillGSMap;
     SkPDFIndirectReference fInvertFunction;
     SkPDFIndirectReference fNoSmaskGraphicState;
     std::vector<std::unique_ptr<SkPDFLink>> fCurrentPageLinks;
