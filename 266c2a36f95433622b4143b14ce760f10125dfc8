@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eda2915_d7c69cc6",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-11T20:58:08Z",
+      "side": 1,
+      "message": "Much better, thanks for the cleanup!",
+      "parentUuid": "a4e287af_cf8afbda",
+      "range": {
+        "startLine": 56,
+        "startChar": 56,
+        "endLine": 56,
+        "endChar": 60
+      },
+      "revId": "266c2a36f95433622b4143b14ce760f10125dfc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adf1913f_e868cf3f",
