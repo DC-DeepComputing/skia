@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4206e5f1_081d2da8",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-11T18:36:53Z",
+      "side": 1,
+      "message": "Ah, oops - looks like you also removed it in https://skia-review.googlesource.com/c/skia/+/668696",
+      "parentUuid": "1525a314_2dd113de",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 8
+      },
+      "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e2868c7_9142fbc8",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "I prefer this because it means the SVG backend is not necessarily dependent on the png and jpeg decode logic.",
       "parentUuid": "9e2868c7_9142fbc8",
+      "range": {
+        "startLine": 507,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 1
+      },
+      "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd00dbca_338b667a",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-11T18:36:53Z",
+      "side": 1,
+      "message": "Sorry, I wasn\u0027t clear! The only changes I see in this block are\n- namespace -\u003e static methods\n- formatting changes\n- the signature is now static\n\nIt doesn\u0027t look like this block relates to whether SVG depends on png or not.\n\nThe rest of the changes to this file LGTM!",
+      "parentUuid": "d5e46674_ea1d223c",
       "range": {
         "startLine": 507,
         "startChar": 0,
