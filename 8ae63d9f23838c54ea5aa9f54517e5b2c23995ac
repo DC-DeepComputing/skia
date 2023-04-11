@@ -212,6 +212,30 @@
       },
       "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f39b8c5_93238b02",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-11T15:37:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2d743dec_24b8c8e0",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 84
+      },
+      "revId": "8ae63d9f23838c54ea5aa9f54517e5b2c23995ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
