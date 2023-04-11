@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2a5b380_70bd7169",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-11T18:29:47Z",
+      "side": 1,
+      "message": "Oh yeah, I didn\u0027t look too closely at the build files, but the encoding changes lgtm.",
+      "revId": "82d2053941a073cc0d19360fb45eb80441eada81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4406ca42_dbc4c46a",
