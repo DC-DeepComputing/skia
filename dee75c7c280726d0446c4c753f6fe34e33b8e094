@@ -22,6 +22,30 @@
       },
       "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63ae4b12_02ed491d",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T18:37:10Z",
+      "side": 0,
+      "message": "For big refactors like this, I just go with what `git clang-format origin/main` tells me after a big find and replace. Sometimes it does things like this.",
+      "parentUuid": "87bf33cc_38266b2a",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 36
+      },
+      "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

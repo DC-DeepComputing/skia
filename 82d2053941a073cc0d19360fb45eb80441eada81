@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e333f7ee_30a47bde",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T18:37:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4406ca42_dbc4c46a",
+      "revId": "82d2053941a073cc0d19360fb45eb80441eada81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43a89919_6d9326eb",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-04-11T18:28:22Z",
       "side": 1,
       "message": "I think this is a color type?",
+      "range": {
+        "startLine": 373,
+        "startChar": 29,
+        "endLine": 373,
+        "endChar": 34
+      },
+      "revId": "82d2053941a073cc0d19360fb45eb80441eada81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cbbe976_19935f54",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T18:37:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43a89919_6d9326eb",
       "range": {
         "startLine": 373,
         "startChar": 29,
