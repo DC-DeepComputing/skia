@@ -132,7 +132,6 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
                 /*const VkAllocationCallbacks*=*/nullptr));
         return nullptr;
     }
-
     // TODO: If this is a uniform buffer, we must set up a descriptor set.
     // const GrVkDescriptorSet* uniformDescSet = nullptr;
     // if (bufferType == kUniform::kUniform) {
