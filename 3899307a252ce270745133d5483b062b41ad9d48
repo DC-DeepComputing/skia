@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "125acbf7_39684794",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:45:36Z",
+      "side": 1,
+      "message": "One the one hand, I feel like if it\u0027s only used in one place (`toKey()`), it\u0027s nice to just have it inline there so toKey highlights the overarching paint tree structure we\u0027re building. The same could be said for AddDstBlendBlock.\n\nThat said, the tree AddFooBlendBlocks all follow a very consistent structure so it\u0027s nice having the three of them defined together. I\u0027m fine leaving AddPrimitiveBlendBlock defined.",
+      "parentUuid": "504c7565_ac0dd924",
+      "range": {
+        "startLine": 115,
+        "startChar": 8,
+        "endLine": 118,
+        "endChar": 9
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "161ce80a_41f4404a",
@@ -273,6 +297,30 @@
       "side": 1,
       "message": "So is the idea that we eventually want to support runtime blenders for primitive blending? Is there / should there be a bug for that?",
       "parentUuid": "45ee92b1_73591440",
+      "range": {
+        "startLine": 128,
+        "startChar": 8,
+        "endLine": 129,
+        "endChar": 88
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5de4c993_b1a58b00",
+        "filename": "src/gpu/graphite/Precompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:45:36Z",
+      "side": 1,
+      "message": "Yes, I think we will want to have runtime blenders for primitive blending in the precompile API (I think with this change, they will work for regular compiling/drawing). I don\u0027t know if we have a bug specifically for expanding the precompile API, though.",
+      "parentUuid": "8be39511_c18fd300",
       "range": {
         "startLine": 128,
         "startChar": 8,
@@ -461,6 +509,30 @@
       "side": 1,
       "message": "This is using an ImageShaderBlock rather than a PriorOutputBlock.",
       "parentUuid": "4e60aa76_cc073590",
+      "range": {
+        "startLine": 446,
+        "startChar": 12,
+        "endLine": 460,
+        "endChar": 32
+      },
+      "revId": "3899307a252ce270745133d5483b062b41ad9d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dfb29f0_de43ae50",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:45:36Z",
+      "side": 1,
+      "message": "Oh right, it\u0027s able to do the tree structure directly, nevermind.",
+      "parentUuid": "bd522c09_f72268a8",
       "range": {
         "startLine": 446,
         "startChar": 12,

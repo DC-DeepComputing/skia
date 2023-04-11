@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d92d8975_ba956046",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:45:36Z",
+      "side": 1,
+      "message": "Should this still be mainBody? I\u0027m guessing no for the time being because we need to have access to `primitiveColor` for the PrimitiveColorBlock\u0027s expression.\n\nThe long term solution is we need to automate/fix up the SnippetRequirementsFlags and the Args. Then a special snippet (e.g. primitive color or dst color) would add it to its flags and it would propagate up the tree. Every generated preamble function above it in the tree would automatically append a parameter to take in these special values and pass them down through the tree branches based on the requirement flags so that they would be available to the special blocks in the right spot. That way the main function body can just have a local primitiveColor that it passes into the root node\u0027s function to get started.\n\nThat will be a bit easier with the ShaderNode replacement for BlockReaders that I\u0027ve got pending since the flags get tracked per node. If this works for the time being, I think we mark it with a big TODO warning",
+      "range": {
+        "startLine": 160,
+        "startChar": 8,
+        "endLine": 160,
+        "endChar": 16
+      },
+      "revId": "57efc3a1acab1e55c19891b5aad4da3d5e23932a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "676455a0_49405430",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:45:36Z",
+      "side": 1,
+      "message": "If we add a 1-liner in the graphite module called `sk_coeff_blend` that has inputs as `(src, dst, coeff)` and then re-orderes them to call into the more broadly used `blend_porter_duff` we can use the default expression generator.",
+      "range": {
+        "startLine": 756,
+        "startChar": 45,
+        "endLine": 756,
+        "endChar": 62
+      },
+      "revId": "57efc3a1acab1e55c19891b5aad4da3d5e23932a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb79da78_5355199a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:45:36Z",
+      "side": 1,
+      "message": "AFAICT `sk_blend` is only used for the BlendModeBlender, so we can easily re-order its arguments to be `(src, dst, blendMode)` and then the snippet is compatible with the default expression generator.",
+      "range": {
+        "startLine": 763,
+        "startChar": 49,
+        "endLine": 763,
+        "endChar": 57
+      },
+      "revId": "57efc3a1acab1e55c19891b5aad4da3d5e23932a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14081640_8d7665cc",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:45:36Z",
+      "side": 1,
+      "message": "If we update both blendmode and coeff blenders, I think this whole function can go away.",
+      "range": {
+        "startLine": 1065,
+        "startChar": 12,
+        "endLine": 1065,
+        "endChar": 48
+      },
+      "revId": "57efc3a1acab1e55c19891b5aad4da3d5e23932a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
