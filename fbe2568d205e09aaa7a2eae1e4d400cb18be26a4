@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26c8a5ba_45f8c544",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-04-11T18:36:39Z",
+      "side": 1,
+      "message": "LGTM (also tested locally it worked). I think I don\u0027t have permission to +1. So delegate to other reviewers.",
+      "revId": "fbe2568d205e09aaa7a2eae1e4d400cb18be26a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
