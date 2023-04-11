@@ -33,6 +33,11 @@ sk_sp<Texture> VulkanResourceProvider::createWrappedTexture(const BackendTexture
     return nullptr;
 }
 
+VulkanDescriptorPool* VulkanResourceProvider::findOrCreateCompatibleDescriptorPool(
+        std::map<VulkanDescriptorPool::DescriptorSetType, int> DsTypesAndCounts) {
+    return VulkanDescriptorPool::Create(this->vulkanSharedContext(), DsTypesAndCounts);
+}
+
 sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary*,
         const GraphicsPipelineDesc&,

@@ -11,6 +11,8 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
+#include <map>
 
 namespace skgpu::graphite {
 
@@ -23,6 +25,15 @@ public:
     ~VulkanResourceProvider() override;
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;
+
+    // Finds or creates a compatible VulkanDescriptorPool for the requested types and counts.
+    // The refcount is incremented and a pointer returned.
+    // TODO: Currently this will just create a descriptor pool without holding onto a ref itself
+    //       so we currently do not reuse them. Requires knowing if another draw is currently using
+    //       the VkDescriptorPool, the ability to reset pools, and the ability to purge pools out
+    //       of our cache of VkDescriptorPools.
+    VulkanDescriptorPool* findOrCreateCompatibleDescriptorPool(
+            std::map<VulkanDescriptorPool::DescriptorSetType, int> DsTypesAndCounts);
 
 private:
     const VulkanSharedContext* vulkanSharedContext();
