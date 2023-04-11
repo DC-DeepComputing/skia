@@ -124,6 +124,24 @@
       "parentUuid": "1bbed7be_bdccf809",
       "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06c44ec6_7ded49a0",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T14:57:33Z",
+      "side": 1,
+      "message": "For `AbslHashValue` are you referring to it being a friend function? or the hash combining functionality?\n\nI don\u0027t think the blast radius would actually be so bad to do such an update. The current CL shows the blast radius of switching to a templated struct, which isn\u0027t so bad. It looks like there are 8 other uses of SkTHashMap that have an explicit hash parameter. Every other type uses the default SkGoodHash, so presumably they would continue to use the default.\n\nBut that is more than I want to bite off at this point, so I\u0027m going to walk back this CL and leave it at just requiring unique object representations for the hash function in `SkGoodHash` and I think there\u0027s one bug in `OneLineCache` since it had been hashing a `const char*` instead of the local string itself.",
+      "parentUuid": "b006ca14_0b1a954e",
+      "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

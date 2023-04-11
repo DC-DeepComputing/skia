@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a07406_b0a8822b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T14:57:33Z",
+      "side": 1,
+      "message": "PTAL. Same CL but revamped based on discussion.",
+      "revId": "d2a71f7df64dd74d78409a40c1465c14c86ce520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
