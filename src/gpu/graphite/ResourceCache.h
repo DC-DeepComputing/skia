@@ -62,6 +62,14 @@ public:
     // Returns the numbers of Resources that can currently be found in the cache. This includes all
     // shared Resources and all non-shareable resources that have been returned to the cache.
     int numFindableResources() const;
+
+    int numPurgeableResources() const {
+        return fPurgeableQueue.count();
+    }
+
+    int numNonPurgeableResources() const {
+        return fNonpurgeableResources.size();
+    }
 #endif
 
 private:

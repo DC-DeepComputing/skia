@@ -35,6 +35,10 @@ public:
 
     sk_sp<TextureProxy> findOrCreateCachedProxy(Recorder*, const SkBitmap&, Mipmapped);
 
+#if GRAPHITE_TEST_UTILS
+    int numCached() const;
+#endif
+
 private:
 
     struct UniqueKeyHash {
