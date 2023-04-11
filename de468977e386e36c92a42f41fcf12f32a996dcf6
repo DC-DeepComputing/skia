@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d26aabd_4dfc199b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T15:42:10Z",
+      "side": 1,
+      "message": "Initially unexpected, but actually I think it\u0027s expected. They are all graphite configs with tests involving different samplers, and this fixed an incorrect hash on `SamplerDesc` so maybe we had been getting buggy behavior around cache hits/misses before? I will also test locally and make sure I didn\u0027t actually just completely break SamplerDesc hashing with this CL.",
+      "parentUuid": "3d8f4389_039af054",
+      "revId": "de468977e386e36c92a42f41fcf12f32a996dcf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "909d4a8f_463f8a3e",
         "filename": "src/pdf/SkPDFDocumentPriv.h",
         "patchSetId": 7
