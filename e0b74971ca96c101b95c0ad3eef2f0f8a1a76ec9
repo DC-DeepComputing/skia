@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da4d281b_c0222ac7",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-11T17:26:27Z",
+      "side": 1,
+      "message": "Do we have real plans to support pool reuse in graphite? If so, I can make a bug for that; otherwise we should remove this comment and rename the method accordingly.\n\nI know we intend to continue supporting descriptor set reuse like we had in ganesh, sure, but I am unsure about pools.",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 47
+      },
+      "revId": "e0b74971ca96c101b95c0ad3eef2f0f8a1a76ec9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
