@@ -39,6 +39,30 @@
       },
       "revId": "fbe2568d205e09aaa7a2eae1e4d400cb18be26a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a9d6220_39583872",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-11T22:42:53Z",
+      "side": 1,
+      "message": "In this case I think it\u0027s simpler to just apply the translation to rtAdjust and leave the viewport alone. From what I recall for Metal the decision between apply the translation to rtAdjust vs. the viewport was pretty arbitrary. Maybe we could apply it to rtAdjust in both cases for consistency.",
+      "parentUuid": "5b86b397_010ef1e4",
+      "range": {
+        "startLine": 606,
+        "startChar": 0,
+        "endLine": 607,
+        "endChar": 84
+      },
+      "revId": "fbe2568d205e09aaa7a2eae1e4d400cb18be26a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
