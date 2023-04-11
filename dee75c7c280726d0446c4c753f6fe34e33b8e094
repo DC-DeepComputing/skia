@@ -188,6 +188,30 @@
       },
       "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6faad6cb_1248ef8f",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T18:41:45Z",
+      "side": 1,
+      "message": "I personally prefer static signature over namespace (less typing) and since I had to add in the is_jpeg, I changed png to match how I was going to do that.\n\nThe formatting was done by `git clang-format`\n\nI\u0027ve been asked in other CLs to make constants with static constexpr and noticed this didn\u0027t have static, so again, fixing it to match the is_jpeg I was adding.",
+      "parentUuid": "fd00dbca_338b667a",
+      "range": {
+        "startLine": 507,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 1
+      },
+      "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
