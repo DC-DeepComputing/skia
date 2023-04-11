@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c144235c_6d7b2f56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:46:48Z",
+      "side": 1,
+      "message": "Adding Nicolette as a CC since this optimization/cleanup is adjacent to the broader key rework.",
+      "revId": "266c2a36f95433622b4143b14ce760f10125dfc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebad01a4_5f615c00",
