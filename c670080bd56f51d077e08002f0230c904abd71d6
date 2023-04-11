@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19389c38_37427940",
+        "filename": "modules/skparagraph/src/TextWrapper.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-11T19:44:49Z",
+      "side": 1,
+      "message": "You may want to reconsider the name and ensure it is the new behavior which is behind a flag, not the old (otherwise there will be extra steps when removing the flag). The issue here is that when `SK_SKPARAGRAPH_ELLIPSIS_BEHAVIOR` is defined you will get the new behavior (and get the old behavior if it is not set). This is the opposite of what is intended.\n\nI would recommend a flag name like `SK_IGNORE_SKPARAGRAPH_ELLIPSIS_FIX` to make it obvious that using this flag disables a fix in behavior. Then this looks like\n\n```\n#ifdef SK_IGNORE_SKPARAGRAPH_ELLIPSIS_FIX\n    if (!fTooLongWord || hasEllipsis) {  // Old, avoided grapheme ellipsis\n#else\n    if (!fTooLongWord \u0026\u0026 !hasEllipsis) {  // New, allows grapheme ellipsis\n#endif\n```\n\nThat way Skia is testing the new behavior and when no user is setting `SK_IGNORE_SKPARAGRAPH_ELLIPSIS_FIX` the ifdef (and any comments) here can be removed.",
+      "revId": "c670080bd56f51d077e08002f0230c904abd71d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
