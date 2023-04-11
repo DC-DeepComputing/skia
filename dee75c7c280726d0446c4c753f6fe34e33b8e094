@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9337d8c3_337b1e2a",
+        "filename": "include/encode/SkJpegEncoder.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-11T17:45:53Z",
+      "side": 1,
+      "message": "nit: It seems a little weird to me that we don\u0027t have a version without this parameter, given that the client might not be using the GPU, but I don\u0027t want to stall this if the API approvers are fine with it.",
+      "range": {
+        "startLine": 113,
+        "startChar": 32,
+        "endLine": 113,
+        "endChar": 53
+      },
+      "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bc9e9fa_f27248fa",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-11T17:45:53Z",
+      "side": 1,
+      "message": "Can this be removed?",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 8
+      },
+      "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e2868c7_9142fbc8",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-11T17:45:53Z",
+      "side": 1,
+      "message": "nit: Is this preferred? I have no preference here, and I\u0027d hate to flip back and forth without a good reason.",
+      "range": {
+        "startLine": 507,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 1
+      },
+      "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
