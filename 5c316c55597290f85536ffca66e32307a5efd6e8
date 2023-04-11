@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aa654bf_0f23120b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-11T14:15:31Z",
+      "side": 1,
+      "message": "You may wish to communicate with hcm about possibly supporting riscv.",
+      "revId": "5c316c55597290f85536ffca66e32307a5efd6e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ce69e7a_2dbebad6",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-11T14:15:31Z",
+      "side": 1,
+      "message": "This doesn\u0027t appear to do anything. It just says if `target_cpu` is already `riscv64` then set it to `riscv64`. The other tests of `target_cpu` here are to modify `target_cpu` from its current value.\n\nAlso, while this is interesting, Skia cannot really claim support for an architecture for which it doesn\u0027t have test bots.",
+      "revId": "5c316c55597290f85536ffca66e32307a5efd6e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
