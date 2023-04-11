@@ -142,6 +142,24 @@
       "parentUuid": "b006ca14_0b1a954e",
       "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fb0fe28_0a9ab54e",
+        "filename": "include/private/SkChecksum.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-11T15:36:07Z",
+      "side": 1,
+      "message": "Ack.\n(It\u0027s possible that the `OneLineCache` impl was hitting the `std::string_view` overload, maybe? I would hope it wasn\u0027t just nonsense all this time.)",
+      "parentUuid": "06c44ec6_7ded49a0",
+      "revId": "5e6cf9a86c1454cfc3a878ce9038a4f8da873a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
