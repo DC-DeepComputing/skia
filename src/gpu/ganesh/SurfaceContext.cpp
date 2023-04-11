@@ -683,7 +683,7 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
     auto finishCallback = [](GrGpuFinishedContext c) {
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         auto manager = context->fMappedBufferManager;
-        auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
+        auto result = std::make_unique<AsyncReadResult>(manager->ownerID1());
         size_t rowBytes =
                 SkAlignTo(context->fSize.width() * SkColorTypeBytesPerPixel(context->fColorType),
                           context->fBufferAlignment);
@@ -922,7 +922,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     auto finishCallback = [](GrGpuFinishedContext c) {
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         auto manager = context->fMappedBufferManager;
-        auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
+        auto result = std::make_unique<AsyncReadResult>(manager->ownerID1());
         size_t rowBytes = SkToSizeT(context->fSize.width());
         rowBytes = SkAlignTo(rowBytes, context->fBufferAlignment);
         if (!result->addTransferResult(context->fYTransfer, context->fSize, rowBytes, manager)) {

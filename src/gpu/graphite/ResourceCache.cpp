@@ -78,7 +78,7 @@ void ResourceCache::insertResource(Resource* resource) {
 
     // We must set the timestamp before adding to the array in case the timestamp wraps and we wind
     // up iterating over all the resources that already have timestamps.
-    resource->setTimestamp(this->getNextTimestamp());
+    resource->setTimestamp1(this->getNextTimestamp());
 
     this->addToNonpurgeableArray(resource);
 
@@ -134,7 +134,7 @@ void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
     }
     resource->initialUsageRef();
 
-    resource->setTimestamp(this->getNextTimestamp());
+    resource->setTimestamp1(this->getNextTimestamp());
     this->validate();
 }
 
@@ -259,7 +259,7 @@ void ResourceCache::returnResourceToCache(Resource* resource, LastRemovedRef rem
         return;
     }
 
-    resource->setTimestamp(this->getNextTimestamp());
+    resource->setTimestamp1(this->getNextTimestamp());
 
     this->removeFromNonpurgeableArray(resource);
     fPurgeableQueue.insert(resource);
@@ -327,25 +327,25 @@ uint32_t ResourceCache::getNextTimestamp() {
             int currNP = 0;
             while (currP < sortedPurgeableResources.size() &&
                    currNP < fNonpurgeableResources.size()) {
-                uint32_t tsP = sortedPurgeableResources[currP]->timestamp();
-                uint32_t tsNP = fNonpurgeableResources[currNP]->timestamp();
+                uint32_t tsP = sortedPurgeableResources[currP]->timestamp1();
+                uint32_t tsNP = fNonpurgeableResources[currNP]->timestamp1();
                 SkASSERT(tsP != tsNP);
                 if (tsP < tsNP) {
-                    sortedPurgeableResources[currP++]->setTimestamp(fTimestamp++);
+                    sortedPurgeableResources[currP++]->setTimestamp1(fTimestamp++);
                 } else {
                     // Correct the index in the nonpurgeable array stored on the resource post-sort.
                     *fNonpurgeableResources[currNP]->accessCacheIndex() = currNP;
-                    fNonpurgeableResources[currNP++]->setTimestamp(fTimestamp++);
+                    fNonpurgeableResources[currNP++]->setTimestamp1(fTimestamp++);
                 }
             }
 
             // The above loop ended when we hit the end of one array. Finish the other one.
             while (currP < sortedPurgeableResources.size()) {
-                sortedPurgeableResources[currP++]->setTimestamp(fTimestamp++);
+                sortedPurgeableResources[currP++]->setTimestamp1(fTimestamp++);
             }
             while (currNP < fNonpurgeableResources.size()) {
                 *fNonpurgeableResources[currNP]->accessCacheIndex() = currNP;
-                fNonpurgeableResources[currNP++]->setTimestamp(fTimestamp++);
+                fNonpurgeableResources[currNP++]->setTimestamp1(fTimestamp++);
             }
 
             // Rebuild the queue.
@@ -374,7 +374,7 @@ uint32_t ResourceCache::MapTraits::Hash(const GraphiteResourceKey& key) {
 }
 
 bool ResourceCache::CompareTimestamp(Resource* const& a, Resource* const& b) {
-    return a->timestamp() < b->timestamp();
+    return a->timestamp1() < b->timestamp1();
 }
 
 int* ResourceCache::AccessResourceIndex(Resource* const& res) {

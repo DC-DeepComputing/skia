@@ -235,7 +235,7 @@ void Context::asyncReadPixels(const TextureProxy* proxy,
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         if (status == CallbackResult::kSuccess) {
             ClientMappedBufferManager* manager = context->fMappedBufferManager;
-            auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
+            auto result = std::make_unique<AsyncReadResult>(manager->ownerID1());
             if (!result->addTransferResult(context->fTransferResult, context->fSize,
                                         context->fRowBytes, manager)) {
                 result.reset();

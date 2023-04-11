@@ -9,7 +9,9 @@
 #define skgpu_graphite_ProxyCache_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "src/core/SkMessageBus.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/ResourceKey.h"
 
 class SkBitmap;
 
@@ -31,11 +33,21 @@ class TextureProxy;
 //       Unit test all that
 class ProxyCache {
 public:
+    ProxyCache(uint32_t recorderID);
     ~ProxyCache();
 
     sk_sp<TextureProxy> findOrCreateCachedProxy(Recorder*, const SkBitmap&, Mipmapped);
 
+#if GRAPHITE_TEST_UTILS
+    int numCached() const;
+#endif
+
 private:
+    void processInvalidKeyMsgs();
+
+    typedef SkMessageBus<skgpu::UniqueKeyInvalidatedMessage_Graphite, uint32_t>::Inbox InvalidUniqueKeyInbox;
+
+    InvalidUniqueKeyInbox fInvalidUniqueKeyInbox;
 
     struct UniqueKeyHash {
         uint32_t operator()(const skgpu::UniqueKey& key) const;
