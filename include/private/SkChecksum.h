@@ -55,7 +55,8 @@ public:
 
 // SkGoodHash should usually be your first choice in hashing data.
 // It should be both reasonably fast and high quality.
-struct SkGoodHash {
+class SkGoodHash {
+public:
     template <typename K>
     std::enable_if_t<std::has_unique_object_representations<K>::value && sizeof(K) == 4, uint32_t>
     operator()(const K& k) const {
