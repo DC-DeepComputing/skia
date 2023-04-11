@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "662be948_0c693c19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-11T20:54:00Z",
+      "side": 1,
+      "message": "Small nit suggestion but otherwise LGTM",
+      "revId": "7fd9157211007d782908347a09797dfcd83311ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d6b5218_6cd8a88b",
+        "filename": "src/sksl/tracing/SkSLDebugTracePlayer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-11T20:54:00Z",
+      "side": 1,
+      "message": "nit: In Graphite at least, I see a trend towards putting the header file for this class first, a newline, and then any other included headers. I\u0027m fine if you overrule that though.\n\nIE:\n```\n#include \"src/sksl/tracing/SkSLDebugTracePlayer.h\"\n\n#include \"src/sksl/tracing/SkSLDebugTracePriv.h\"\n```",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 48
+      },
+      "revId": "7fd9157211007d782908347a09797dfcd83311ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
