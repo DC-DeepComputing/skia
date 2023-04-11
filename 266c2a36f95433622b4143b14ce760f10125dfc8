@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4e287af_cf8afbda",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:57:11Z",
+      "side": 1,
+      "message": "I rewrote it, since the \"this\" I was referring to never actually made it into the comment... but I had meant \"adding an invalid code ID to a builder\" triggers an assert.",
+      "parentUuid": "ebad01a4_5f615c00",
+      "range": {
+        "startLine": 56,
+        "startChar": 56,
+        "endLine": 56,
+        "endChar": 60
+      },
+      "revId": "266c2a36f95433622b4143b14ce760f10125dfc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adf1913f_e868cf3f",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3f02e98_bc7ff203",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:57:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adf1913f_e868cf3f",
+      "range": {
+        "startLine": 57,
+        "startChar": 69,
+        "endLine": 57,
+        "endChar": 71
+      },
+      "revId": "266c2a36f95433622b4143b14ce760f10125dfc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee3618c5_8c9235f4",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-04-11T20:27:22Z",
       "side": 1,
       "message": "?",
+      "range": {
+        "startLine": 59,
+        "startChar": 23,
+        "endLine": 59,
+        "endChar": 27
+      },
+      "revId": "266c2a36f95433622b4143b14ce760f10125dfc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf637dc2_cbed8609",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-11T20:57:11Z",
+      "side": 1,
+      "message": "Also updated to clarify, but \"this\" was referring to the comments below it about the simulated, corrupt PaintParamsKey test that needs to be added.",
+      "parentUuid": "ee3618c5_8c9235f4",
       "range": {
         "startLine": 59,
         "startChar": 23,
