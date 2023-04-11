@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a113cc6a_2e4234d5",
+        "filename": "include/encode/SkJpegEncoder.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T17:53:24Z",
+      "side": 1,
+      "message": "In SkImage.h, there are readPixels functions without this that are deprecated.\n\nIf we had two versions (of this function), clients could pass a GPU-backed image to the the one without the context parameter and be puzzled why we fail silently (because we cannot read the pixels out of their image for encoding). \n\nThus, I think it\u0027s best that users intentionally set nullptr if they are dealing with raster images. A good API is hard to be used wrong.",
+      "parentUuid": "9337d8c3_337b1e2a",
+      "range": {
+        "startLine": 113,
+        "startChar": 32,
+        "endLine": 113,
+        "endChar": 53
+      },
+      "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bc9e9fa_f27248fa",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1525a314_2dd113de",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T17:53:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bc9e9fa_f27248fa",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 8
+      },
+      "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e2868c7_9142fbc8",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-04-11T17:45:53Z",
       "side": 1,
       "message": "nit: Is this preferred? I have no preference here, and I\u0027d hate to flip back and forth without a good reason.",
+      "range": {
+        "startLine": 507,
+        "startChar": 0,
+        "endLine": 510,
+        "endChar": 1
+      },
+      "revId": "dee75c7c280726d0446c4c753f6fe34e33b8e094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5e46674_ea1d223c",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-11T17:53:24Z",
+      "side": 1,
+      "message": "I prefer this because it means the SVG backend is not necessarily dependent on the png and jpeg decode logic.",
+      "parentUuid": "9e2868c7_9142fbc8",
       "range": {
         "startLine": 507,
         "startChar": 0,
