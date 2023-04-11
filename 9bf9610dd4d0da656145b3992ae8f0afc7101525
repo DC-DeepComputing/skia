@@ -33,6 +33,24 @@
       "message": "Since this is going to change at least one g3 image, this change should probably be put behind a flag and that flag added to g3 before landing this in Skia. See cl/521887364 for a recent example.",
       "revId": "9bf9610dd4d0da656145b3992ae8f0afc7101525",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0af0b067_3cd4f970",
+        "filename": "modules/skparagraph/src/TextWrapper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-04-11T18:06:26Z",
+      "side": 1,
+      "message": "Done.\nI thought that all the changes appear in Flutter so I don\u0027t have to worry about it - but no, there are few direct Google3 tests that are failing because of this change.",
+      "parentUuid": "5bf606ae_7ff6557a",
+      "revId": "9bf9610dd4d0da656145b3992ae8f0afc7101525",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
