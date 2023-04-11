@@ -8,6 +8,7 @@
 #include "tests/Test.h"
 
 
+#include "src/base/SkArenaAlloc.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
@@ -16,13 +17,17 @@ using namespace skgpu::graphite;
 
 namespace {
 
-PaintParamsKey create_key(PaintParamsKeyBuilder* builder, int snippetID) {
-    SkDEBUGCODE(builder->checkReset());
-
+void add_block(PaintParamsKeyBuilder* builder, int snippetID) {
     builder->beginBlock(snippetID);
     builder->endBlock();
+}
 
-    return builder->lockAsKey();
+PaintParamsKey create_key(const ShaderCodeDictionary* dict, int snippetID, SkArenaAlloc* arena) {
+    PaintParamsKeyBuilder builder{dict};
+    add_block(&builder, snippetID);
+
+    AutoLockBuilderAsKey keyView{&builder};
+    return keyView->clone(arena);
 }
 
 bool coeff_equal(SkBlendModeCoeff skCoeff, skgpu::BlendCoeff gpuCoeff) {
@@ -46,25 +51,32 @@ bool coeff_equal(SkBlendModeCoeff skCoeff, skgpu::BlendCoeff gpuCoeff) {
 // These are intended to be unit tests of the PaintParamsKeyBuilder and PaintParamsKey.
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyWithInvalidCodeSnippetIDTest, reporter, context) {
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
-    PaintParamsKeyBuilder builder(dict);
 
-    // Invalid code snippet ID, key creation fails.
-    PaintParamsKey key = create_key(&builder, kBuiltInCodeSnippetIDCount);
-    REPORTER_ASSERT(reporter, key.isErrorKey());
+    // A builder without any data is invalid. The builder and the paint params keys can include
+    // invalid IDs without themselves becoming invalid. This triggers asserts in debug builds at the
+    // point of insertion so it can only happen in release builds in an malformed program state.
+
+    // TODO: Implement this in follow-up CL that replaces BlockReaders with ShaderNodes.
+    // In that case, the invalid snippet IDs are not caught until walking the key's ShaderNode tree.
+    // To simulate that case, we construct an invalid span directly to avoid the assert in the
+    // builder.
+
+    PaintParamsKeyBuilder builder(dict);
+    AutoLockBuilderAsKey keyView{&builder};
+    REPORTER_ASSERT(reporter, !keyView->isValid());
+    REPORTER_ASSERT(reporter, !PaintParamsKey::Invalid().isValid());
 }
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyEqualityChecksSnippetID, reporter, context) {
+    SkArenaAlloc arena{256};
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
     int userSnippetID1 = dict->addUserDefinedSnippet("key1");
     int userSnippetID2 = dict->addUserDefinedSnippet("key2");
 
-    PaintParamsKeyBuilder builderA(dict);
-    PaintParamsKeyBuilder builderB(dict);
-    PaintParamsKeyBuilder builderC(dict);
-    PaintParamsKey keyA = create_key(&builderA, userSnippetID1);
-    PaintParamsKey keyB = create_key(&builderB, userSnippetID1);
-    PaintParamsKey keyC = create_key(&builderC, userSnippetID2);
+    PaintParamsKey keyA = create_key(dict, userSnippetID1, &arena);
+    PaintParamsKey keyB = create_key(dict, userSnippetID1, &arena);
+    PaintParamsKey keyC = create_key(dict, userSnippetID2, &arena);
 
     // Verify that keyA matches keyB, and that it does not match keyC.
     REPORTER_ASSERT(reporter, keyA == keyB);
@@ -78,10 +90,12 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeySetsBlendInfoOnShaderInfo, reporter, conte
 
     for (int bm = 0; bm <= (int) SkBlendMode::kLastCoeffMode; ++bm) {
         PaintParamsKeyBuilder builder(dict);
-        PaintParamsKey key = create_key(&builder, bm + kFixedFunctionBlendModeIDOffset);
+        add_block(&builder, bm + kFixedFunctionBlendModeIDOffset);
+
+        AutoLockBuilderAsKey keyView{&builder};
 
         ShaderInfo shaderInfo;
-        key.toShaderInfo(dict, &shaderInfo);
+        keyView->toShaderInfo(dict, &shaderInfo);
 
         SkBlendModeCoeff expectedSrc, expectedDst;
         REPORTER_ASSERT(reporter, SkBlendMode_AsCoeff(static_cast<SkBlendMode>(bm),
