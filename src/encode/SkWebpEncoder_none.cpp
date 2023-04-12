@@ -9,6 +9,8 @@
 
 #include "include/encode/SkWebpEncoder.h"
 
+class GrDirectContext;
+class SkImage;
 class SkPixmap;
 class SkWStream;
 
@@ -16,6 +18,10 @@ namespace SkWebpEncoder {
 
 bool Encode(SkWStream*, const SkPixmap&, const Options&) {
     return false;
+}
+
+sk_sp<SkData> Encode(GrDirectContext*, const SkImage*, const Options&) {
+    return nullptr;
 }
 
 }  // namespace SkWebpEncoder
