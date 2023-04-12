@@ -1521,9 +1521,10 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
         // Format: RGBA8, Surface: kRGB_888x
         {
             auto& ctInfo = info.fColorTypeInfos[ctIdx++];
-            ctInfo.fColorType = GrColorType::kRGB_888x;
+            ctInfo.fColorType = GrColorType::kRGB_888x | ColorTypeInfo::kRenderable_Flag;
             ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
             ctInfo.fReadSwizzle = skgpu::Swizzle::RGB1();
+            ctInfo.fWriteSwizzle = skgpu::Swizzle::RGB1();
 
             // External IO ColorTypes:
             ctInfo.fExternalIOFormatCount = 1;
