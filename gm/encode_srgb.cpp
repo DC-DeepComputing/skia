@@ -69,19 +69,34 @@ static sk_sp<SkData> encode_data(const SkBitmap& bitmap, SkEncodedImageFormat fo
     }
     SkDynamicMemoryWStream buf;
 
+
+    bool ok = false;
     switch (format) {
         case SkEncodedImageFormat::kPNG:
-            SkAssertResult(SkPngEncoder::Encode(&buf, src, SkPngEncoder::Options()));
+            ok = SkPngEncoder::Encode(&buf, src, SkPngEncoder::Options());
             break;
         case SkEncodedImageFormat::kWEBP:
-            SkAssertResult(SkWebpEncoder::Encode(&buf, src, SkWebpEncoder::Options()));
+            ok = SkWebpEncoder::Encode(&buf, src, SkWebpEncoder::Options());
             break;
         case SkEncodedImageFormat::kJPEG:
-            SkAssertResult(SkJpegEncoder::Encode(&buf, src, SkJpegEncoder::Options()));
+            ok = SkJpegEncoder::Encode(&buf, src, SkJpegEncoder::Options());
             break;
         default:
+            SK_ABORT("Unsupported format %d", (int)format);
             break;
     }
+
+    if (!ok) {
+        // The NDK codec doesn't support sRGB for all output codecs.
+#if defined(SK_ENABLE_NDK_IMAGES)
+        SkDebugf("Could not encode image with sRGB colorspace using codec %d", (int)format);
+#else
+        // The built-in codecs (e.g. based on libpng) should always though, so fail the
+        // test if it doesn't.
+        SK_ABORT("Could not encode image with sRGB colorspace using codec %d", (int)format);
+#endif
+    }
+
     return buf.detachAsData();
 }
 
