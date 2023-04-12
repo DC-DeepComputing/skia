@@ -47,7 +47,7 @@ public:
         Inbox(IDType uniqueID);
         ~Inbox();
 
-        IDType uniqueID() const { return fUniqueID; }
+        IDType uniqueID1() const { return fUniqueID1; }
 
         // Overwrite out with all the messages we've received since the last call.  Threadsafe.
         void poll(skia_private::TArray<Message>* out);
@@ -55,7 +55,7 @@ public:
     private:
         skia_private::TArray<Message> fMessages;
         SkMutex                       fMessagesMutex;
-        const IDType                  fUniqueID;
+        const IDType                  fUniqueID1;
 
         friend class SkMessageBus;
         void receive(Message m);  // SkMessageBus is a friend only to call this.
@@ -63,7 +63,7 @@ public:
 
 private:
     SkMessageBus();
-    static SkMessageBus* Get();
+    static SkMessageBus* Get1();
 
     SkTDArray<Inbox*> fInboxes;
     SkMutex           fInboxesMutex;
@@ -74,7 +74,7 @@ private:
 #define DECLARE_SKMESSAGEBUS_MESSAGE(Message, IDType, AllowCopyableMessage)            \
     template <>                                                                        \
     SkMessageBus<Message, IDType, AllowCopyableMessage>*                               \
-    SkMessageBus<Message, IDType, AllowCopyableMessage>::Get() {                       \
+    SkMessageBus<Message, IDType, AllowCopyableMessage>::Get1() {                       \
         static SkOnce once;                                                            \
         static SkMessageBus<Message, IDType, AllowCopyableMessage>* bus;               \
         once([] { bus = new SkMessageBus<Message, IDType, AllowCopyableMessage>(); }); \
@@ -85,9 +85,9 @@ private:
 
 template <typename Message, typename IDType, bool AllowCopyableMessage>
 SkMessageBus<Message, IDType, AllowCopyableMessage>::Inbox::Inbox(IDType uniqueID)
-        : fUniqueID(uniqueID) {
+        : fUniqueID1(uniqueID) {
     // Register ourselves with the corresponding message bus.
-    auto* bus = SkMessageBus<Message, IDType, AllowCopyableMessage>::Get();
+    auto* bus = SkMessageBus<Message, IDType, AllowCopyableMessage>::Get1();
     SkAutoMutexExclusive lock(bus->fInboxesMutex);
     bus->fInboxes.push_back(this);
 }
@@ -95,7 +95,7 @@ SkMessageBus<Message, IDType, AllowCopyableMessage>::Inbox::Inbox(IDType uniqueI
 template <typename Message, typename IDType, bool AllowCopyableMessage>
 SkMessageBus<Message, IDType, AllowCopyableMessage>::Inbox::~Inbox() {
     // Remove ourselves from the corresponding message bus.
-    auto* bus = SkMessageBus<Message, IDType, AllowCopyableMessage>::Get();
+    auto* bus = SkMessageBus<Message, IDType, AllowCopyableMessage>::Get1();
     SkAutoMutexExclusive lock(bus->fInboxesMutex);
     // This is a cheaper fInboxes.remove(fInboxes.find(this)) when order doesn't matter.
     for (int i = 0; i < bus->fInboxes.size(); i++) {
@@ -128,10 +128,10 @@ SkMessageBus<Message, IDType, AllowCopyableMessage>::SkMessageBus() = default;
 
 template <typename Message, typename IDType, bool AllowCopyableMessage>
 /*static*/ void SkMessageBus<Message, IDType, AllowCopyableMessage>::Post(Message m) {
-    auto* bus = SkMessageBus<Message, IDType, AllowCopyableMessage>::Get();
+    auto* bus = SkMessageBus<Message, IDType, AllowCopyableMessage>::Get1();
     SkAutoMutexExclusive lock(bus->fInboxesMutex);
     for (int i = 0; i < bus->fInboxes.size(); i++) {
-        if (SkShouldPostMessageToBus(m, bus->fInboxes[i]->fUniqueID)) {
+        if (SkShouldPostMessageToBus(m, bus->fInboxes[i]->fUniqueID1)) {
             if constexpr (AllowCopyableMessage) {
                 bus->fInboxes[i]->receive(m);
             } else {
