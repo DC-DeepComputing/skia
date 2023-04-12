@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce4d523c_165f3040",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-12T18:19:50Z",
+      "side": 1,
+      "message": "Once the bug reporter confirms this fix works, then this CL LGTM.",
+      "revId": "a0a913f640ac84fe42941b4cf150ef7fe1512ae0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
