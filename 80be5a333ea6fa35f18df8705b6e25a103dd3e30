@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25987bf6_2d3c9b58",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 3573,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-12T19:12:14Z",
+      "side": 1,
+      "message": "It\u0027s not clear to me why you changed the argument list here. Is it because you don\u0027t have access to \u0027base\u0027 and so have to do src/dst lookup in the macro below?",
+      "range": {
+        "startLine": 3573,
+        "startChar": 31,
+        "endLine": 3573,
+        "endChar": 47
+      },
+      "revId": "80be5a333ea6fa35f18df8705b6e25a103dd3e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67318539_3ba0c601",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 3584,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-12T19:12:14Z",
+      "side": 1,
+      "message": "Maybe create a macro for this pattern? Then you could use it for these stages and the three below.",
+      "range": {
+        "startLine": 3582,
+        "startChar": 4,
+        "endLine": 3584,
+        "endChar": 34
+      },
+      "revId": "80be5a333ea6fa35f18df8705b6e25a103dd3e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4543aada_a6a0f508",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-12T19:12:14Z",
+      "side": 1,
+      "message": "size_t?",
+      "range": {
+        "startLine": 22,
+        "startChar": 19,
+        "endLine": 22,
+        "endChar": 27
+      },
+      "revId": "80be5a333ea6fa35f18df8705b6e25a103dd3e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
