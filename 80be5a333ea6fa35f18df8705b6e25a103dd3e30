@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5bcf99f_4cb09ba1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 3573,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-12T19:25:14Z",
+      "side": 1,
+      "message": "Not having access to `base` was the original issue, but I think you\u0027re right that repeating the three-line \"unpack-dest-source\" setup in each stage was overwrought. I\u0027ve moved it into the helper function and it\u0027s more compact now.",
+      "parentUuid": "25987bf6_2d3c9b58",
+      "range": {
+        "startLine": 3573,
+        "startChar": 31,
+        "endLine": 3573,
+        "endChar": 47
+      },
+      "revId": "80be5a333ea6fa35f18df8705b6e25a103dd3e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67318539_3ba0c601",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-12T19:12:14Z",
       "side": 1,
       "message": "Maybe create a macro for this pattern? Then you could use it for these stages and the three below.",
+      "range": {
+        "startLine": 3582,
+        "startChar": 4,
+        "endLine": 3584,
+        "endChar": 34
+      },
+      "revId": "80be5a333ea6fa35f18df8705b6e25a103dd3e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a720cfc_08025fc6",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 3584,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-12T19:25:14Z",
+      "side": 1,
+      "message": "Updated code to be less repetitive",
+      "parentUuid": "67318539_3ba0c601",
       "range": {
         "startLine": 3582,
         "startChar": 4,
