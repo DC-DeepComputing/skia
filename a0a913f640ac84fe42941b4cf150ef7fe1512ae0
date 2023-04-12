@@ -16,6 +16,46 @@
       "message": "Once the bug reporter confirms this fix works, then this CL LGTM.",
       "revId": "a0a913f640ac84fe42941b4cf150ef7fe1512ae0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42bbe829_8b7c04b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19889
+      },
+      "writtenOn": "2023-04-12T19:00:37Z",
+      "side": 1,
+      "message": "Thanks for providing the fix. One comment below.",
+      "revId": "a0a913f640ac84fe42941b4cf150ef7fe1512ae0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fefe2374_256b9543",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1881,
+      "author": {
+        "id": 19889
+      },
+      "writtenOn": "2023-04-12T19:00:37Z",
+      "side": 1,
+      "message": "We need the same fix for the LUMINANCE8_ALPHA8 format here.",
+      "range": {
+        "startLine": 1881,
+        "startChar": 12,
+        "endLine": 1881,
+        "endChar": 85
+      },
+      "revId": "a0a913f640ac84fe42941b4cf150ef7fe1512ae0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
