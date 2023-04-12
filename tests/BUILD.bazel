@@ -15,6 +15,7 @@ CODEC_TESTS = [
     "EncodedInfoTest.cpp",
     "ExifTest.cpp",
     "GifTest.cpp",
+    "ImageTest.cpp",
     "IndexedPngOverflowTest.cpp",
     "WebpTest.cpp",
     "YUVTest.cpp",
@@ -267,7 +268,6 @@ GANESH_TESTS = [
     "ImageFilterTest.cpp",
     "ImageIsOpaqueTest.cpp",
     "ImageNewShaderTest.cpp",
-    "ImageTest.cpp",
     "LazyProxyTest.cpp",
     "LazyStencilAttachmentTest.cpp",
     "MatrixColorFilterTest.cpp",
@@ -542,6 +542,11 @@ skia_cpu_tests(
 skia_ganesh_tests(
     name = "debugger_tests",
     extra_deps = ["//tools/debugger"],
+    flags = {
+        "include_encoder": [
+            "png_encode_codec",
+        ],
+    },
     harness = ":tests_base",
     tests = DEBUGGER_TESTS,
 )
