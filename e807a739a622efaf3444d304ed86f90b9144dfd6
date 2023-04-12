@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "506a78b3_453713bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-04-12T22:17:00Z",
+      "side": 1,
+      "message": "Seems logical! This is just a rubber stamp though of course.",
+      "revId": "e807a739a622efaf3444d304ed86f90b9144dfd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
