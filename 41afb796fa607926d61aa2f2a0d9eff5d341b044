@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8c78909_1eec6ee2",
+        "filename": "src/encode/SkJpegEncoder_none.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-12T19:14:26Z",
+      "side": 1,
+      "message": "Is it a logical error to call Encode when using *_none.cpp? If so then you might want to add SkDEBUGFAIL(\"Using encoder stub.\")",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 19
+      },
+      "revId": "41afb796fa607926d61aa2f2a0d9eff5d341b044",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
