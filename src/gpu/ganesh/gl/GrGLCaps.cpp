@@ -1793,8 +1793,12 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
             lum8SizedFormatSupported = true;
         } else if (GR_IS_GR_GL_ES(standard)) {
             lum8Supported = true;
-            // Even on ES3 this extension is required to define LUMINANCE8.
-            lum8SizedFormatSupported = ctxInfo.hasExtension("GL_EXT_texture_storage");
+            // Even on ES3 this extension is required to define LUMINANCE8. GL_LUMINANCE8 is not a
+            // valid internal format for TexImage2D so we need to be using texture storage to use
+            // it. Even though we check the extension for texture storage here, we also check to see
+            // if texStorageSupported may have been disabled for a workaround.
+            lum8SizedFormatSupported =
+                    texStorageSupported && ctxInfo.hasExtension("GL_EXT_texture_storage");
         } else if (GR_IS_GR_WEBGL(standard)) {
             lum8Supported = true;
         }
