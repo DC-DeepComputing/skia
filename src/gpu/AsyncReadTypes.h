@@ -223,4 +223,3 @@ private:
 }  // namespace skgpu
 
 #endif  // skgpu_AsyncReadTypes_DEFINED
-
