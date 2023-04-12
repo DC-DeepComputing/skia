@@ -1,6 +1,6 @@
 load("//bazel:skia_rules.bzl", "skia_cc_library")
 load("//bazel:flags.bzl", "bool_flag", "selects")
-load(":tests.bzl", "skia_cpu_tests", "skia_ganesh_tests")
+load(":tests.bzl", "skia_android_test", "skia_cpu_tests", "skia_ganesh_test", "skia_ganesh_tests")
 
 CODEC_TESTS = [
     "AndroidCodecTest.cpp",
@@ -705,4 +705,94 @@ selects.config_setting_group(
 alias(
     name = "known_good_android_ganesh_test",
     actual = ":TextBlobCacheTest",
+)
+
+# This target was tested on a Pixel 5. Instructions:
+#
+# 1. Port-forward the ADB server from a Raspberry Pi that is connected to a Pixel 5:
+#
+#     $ ssh -L 5037:localhost:5037 skia-rpi2-rack1-shelf1-036
+#
+# 2. Invoke Bazel as follows:
+#
+#     $ bazel test //tests:some_test_via_adb \
+#         --config=for_android_arm64_with_rbe \
+#         --gpu_backend=gl_backend \
+#         --enable_gpu_test_utils \
+#         --test_output=streamed
+skia_ganesh_test(
+    name = "some_test",
+    flags = {
+        "include_decoder": [
+            "jpeg_decode_codec",
+            "png_decode_codec",
+            "webp_decode_codec",
+        ],
+        "include_encoder": [
+            "jpeg_encode_codec",
+            "png_encode_codec",
+            "webp_encode_codec",
+        ],
+        "platforms": [
+            "//bazel/platform:android_arm64",
+        ],
+    },
+    harness = ":tests_base",
+    requires_resources_dir = True,
+    # tests = [
+    #     "BlendTest.cpp",
+    #     "BlurTest.cpp",
+    #     "GradientTest.cpp",
+    #     "ImageTest.cpp",  # Needs JPEG, PNG and WEBP encoders/decoders.
+    # ],
+    tests = GANESH_TESTS,
+)
+
+skia_ganesh_test(
+    name = "ganesh_test",
+    harness = ":tests_base",
+    requires_resources_dir = True,
+    tests = GANESH_TESTS,
+)
+
+# Tentative approach for tests generated from gen_tasks_logic.go.
+
+GANESH = "ganesh"
+
+CODECS = "codecs"
+
+TEST_GROUPS = [
+    GANESH,
+    CODECS,
+]
+
+PIXEL_5 = "pixel_5"
+
+PIXEL_7 = "pixel_7"
+
+ANDROID_DEVICES = [
+    PIXEL_5,
+    PIXEL_7,
+]
+
+GANESH_TESTS_FLAGS = {
+    PIXEL_5: {
+        "include_decoder": [
+            "jpeg_decode_codec",
+            "png_decode_codec",
+            "webp_decode_codec",
+        ],
+        "include_encoder": [
+            "jpeg_encode_codec",
+            "png_encode_codec",
+            "webp_encode_codec",
+        ],
+    },
+}
+
+skia_android_test(
+    name = "pixel5_ganesh_test",
+    # TODO(lovisolo): Idea: Assert that "adb devices" reports the expected device type.
+    device_type = PIXEL_5,
+    test_group = GANESH,
 )
