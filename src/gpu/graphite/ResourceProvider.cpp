@@ -28,9 +28,10 @@
 namespace skgpu::graphite {
 
 ResourceProvider::ResourceProvider(SharedContext* sharedContext,
-                                   SingleOwner* singleOwner)
+                                   SingleOwner* singleOwner,
+                                   ProxyCache* proxyCache)
         : fSharedContext(sharedContext)
-        , fResourceCache(ResourceCache::Make(singleOwner))
+        , fResourceCache(ResourceCache::Make(singleOwner, proxyCache))
         , fCompiler(std::make_unique<SkSL::Compiler>(fSharedContext->caps()->shaderCaps())) {}
 
 ResourceProvider::~ResourceProvider() {

@@ -23,6 +23,7 @@ class MtlMemoryAllocator;
 
 namespace skgpu::graphite {
 struct ContextOptions;
+class ProxyCache;
 
 class MtlSharedContext final : public SharedContext {
 public:
@@ -35,7 +36,7 @@ public:
 
     const MtlCaps& mtlCaps() const { return static_cast<const MtlCaps&>(*this->caps()); }
 
-    std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*) override;
+    std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*, ProxyCache* proxyCache) override;
 
 private:
 

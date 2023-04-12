@@ -17,11 +17,13 @@ namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fSingleOwner)
 
-sk_sp<ResourceCache> ResourceCache::Make(SingleOwner* singleOwner) {
-    return sk_sp<ResourceCache>(new ResourceCache(singleOwner));
+sk_sp<ResourceCache> ResourceCache::Make(SingleOwner* singleOwner, ProxyCache* proxyCache) {
+    return sk_sp<ResourceCache>(new ResourceCache(singleOwner, proxyCache));
 }
 
-ResourceCache::ResourceCache(SingleOwner* singleOwner) : fSingleOwner(singleOwner) {
+ResourceCache::ResourceCache(SingleOwner* singleOwner, ProxyCache* proxyCache)
+        : fSingleOwner(singleOwner)
+        , fProxyCache(proxyCache) {
     // TODO: Maybe when things start using ResourceCache, then like Ganesh the compiler won't
     // complain about not using fSingleOwner in Release builds and we can delete this.
 #ifndef SK_DEBUG

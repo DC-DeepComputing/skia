@@ -25,11 +25,12 @@ class SingleOwner;
 namespace skgpu::graphite {
 
 class GraphiteResourceKey;
+class ProxyCache;
 class Resource;
 
 class ResourceCache : public SkRefCnt {
 public:
-    static sk_sp<ResourceCache> Make(SingleOwner*);
+    static sk_sp<ResourceCache> Make(SingleOwner*, ProxyCache*);
     ~ResourceCache() override;
 
     ResourceCache(const ResourceCache&) = delete;
@@ -65,7 +66,7 @@ public:
 #endif
 
 private:
-    ResourceCache(SingleOwner*);
+    ResourceCache(SingleOwner*, ProxyCache*);
 
     // All these private functions are not meant to be thread safe. We don't check for is single
     // owner in them as we assume that has already been checked by the public api calls.
@@ -108,6 +109,7 @@ private:
     uint32_t fTimestamp = 0;
     PurgeableQueue fPurgeableQueue;
     ResourceArray fNonpurgeableResources;
+    ProxyCache* fProxyCache;
 
     SkDEBUGCODE(int fCount = 0;)
 

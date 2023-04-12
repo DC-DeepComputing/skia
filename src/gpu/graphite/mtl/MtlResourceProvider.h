@@ -22,7 +22,7 @@ class MtlSharedContext;
 
 class MtlResourceProvider final : public ResourceProvider {
 public:
-    MtlResourceProvider(SharedContext* sharedContext, SingleOwner*);
+    MtlResourceProvider(SharedContext* sharedContext, SingleOwner*, ProxyCache*);
     ~MtlResourceProvider() override {}
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;

@@ -121,8 +121,8 @@ void ProxyCache::freeUniquelyHeld() {
 
     std::vector<skgpu::UniqueKey> toRemove;
 
-    fCache.foreach([&](const skgpu::UniqueKey& key, const sk_sp<TextureProxy>& proxy) {
-        if (proxy->unique()) {
+    fCache.foreach([&](const skgpu::UniqueKey& key, sk_sp<TextureProxy>* proxy) {
+        if ((*proxy)->unique()) {
             toRemove.push_back(key);
         }
     });
