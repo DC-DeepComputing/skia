@@ -68,6 +68,30 @@
       },
       "revId": "80be5a333ea6fa35f18df8705b6e25a103dd3e30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfc22416_5d37c1c3",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-12T19:14:02Z",
+      "side": 1,
+      "message": "Can\u0027t; `size_t` is 64 bit, and we need to pack two offsets.",
+      "parentUuid": "4543aada_a6a0f508",
+      "range": {
+        "startLine": 22,
+        "startChar": 19,
+        "endLine": 22,
+        "endChar": 27
+      },
+      "revId": "80be5a333ea6fa35f18df8705b6e25a103dd3e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
