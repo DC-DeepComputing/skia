@@ -12,8 +12,13 @@
 #include "include/gpu/GpuTypes.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureUtils.h"
+
+using namespace skia_private;
+
+DECLARE_SKMESSAGEBUS_MESSAGE(skgpu::UniqueKeyInvalidatedMessage_Graphite, uint32_t, true)
 
 namespace {
 
@@ -33,9 +38,29 @@ void make_bitmap_key(skgpu::UniqueKey* key, const SkBitmap& bm, skgpu::Mipmapped
     builder[5] = SkToBool(mipmapped);
 }
 
+sk_sp<SkIDChangeListener> MakeUniqueKeyInvalidationListener(const skgpu::UniqueKey& key,
+                                                            uint32_t recorderID) {
+    class Listener : public SkIDChangeListener {
+    public:
+        Listener(const skgpu::UniqueKey& key, uint32_t recorderUniqueID)
+                : fMsg(key, recorderUniqueID) {}
+
+        void changed() override {
+            SkMessageBus<skgpu::UniqueKeyInvalidatedMessage_Graphite, uint32_t>::Post(fMsg);
+        }
+
+    private:
+        skgpu::UniqueKeyInvalidatedMessage_Graphite fMsg;
+    };
+
+    return sk_make_sp<Listener>(key, recorderID);
+}
+
 } // anonymous namespace
 
 namespace skgpu::graphite {
+
+ProxyCache::ProxyCache(uint32_t recorderID) : fInvalidUniqueKeyInbox(recorderID) {}
 
 ProxyCache::~ProxyCache() {}
 
@@ -69,9 +94,36 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
     auto [ view, ct ] = MakeBitmapProxyView(recorder, bitmap, nullptr,
                                             mipmapped, skgpu::Budgeted::kYes);
     if (view) {
+        // TODO: make sure the key's contents are being copied correctly
+        sk_sp<SkIDChangeListener> listener = MakeUniqueKeyInvalidationListener(key,
+                                                                               recorder->priv().recorderID());
+        bitmap.pixelRef()->addGenIDChangeListener(std::move(listener));
+
         fCache.set(key, view.refProxy());
     }
-    return view.refProxy();
+    return view.detachProxy();
 }
+
+void ProxyCache::processInvalidKeyMsgs() {
+    TArray<skgpu::UniqueKeyInvalidatedMessage_Graphite> invalidKeyMsgs;
+    fInvalidUniqueKeyInbox.poll(&invalidKeyMsgs);
+
+    if (!invalidKeyMsgs.empty()) {
+        for (int i = 0; i < invalidKeyMsgs.size(); ++i) {
+            fCache.remove(invalidKeyMsgs[i].key());
+        }
+    }
+}
+
+#if GRAPHITE_TEST_UTILS
+int ProxyCache::numCached() const {
+    return fCache.count();
+}
+
+void ProxyCache::forceProcessInvalidKeyMsgs() {
+    this->processInvalidKeyMsgs();
+}
+
+#endif // GRAPHITE_TEST_UTILS
 
 } // namespace skgpu::graphite
