@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "133ff220_4a6e11e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-12T17:42:38Z",
+      "side": 1,
+      "message": "Hey. Instead of expanding the API for testing, I have a different suggestion.\n\nYou should add:\n\"friend class SkArenaAllocTestingPeer\" to SkArenaAlloc\n\"friend class SkArenaAllocWithRestTestPeer\" to SkArenaAllocWithReset\n\nIn your test you can then define classes that reach into the private parts of\nSkArenaAlloc* and do what ever you want. I have done this with a few other classes,\nand it keeps the API small, and allows simple flexibility with out having to change existing implementation.\n\nWhat do you think?",
+      "revId": "53247e6c2a88be3f64bc1100e3c875eab488327d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
