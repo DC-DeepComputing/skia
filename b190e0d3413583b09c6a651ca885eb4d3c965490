@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f7d13f6_74276de7",
+        "filename": "gn/skia.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-12T15:57:43Z",
+      "side": 1,
+      "message": "I guess this should be a three-way state: no encoder, lib* encoder, ndk encoder.\n\nWe can clean that up in GN if we want, or (eventually) add NDK support to the Bazel build.",
+      "parentUuid": "1ec47780_01e6427b",
+      "revId": "b190e0d3413583b09c6a651ca885eb4d3c965490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11eb0b10_7f084b06",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7352dbbf_a3accfc3",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-12T15:57:43Z",
+      "side": 1,
+      "message": "I hadn\u0027t come across that error checking in my cleanups.",
+      "parentUuid": "11eb0b10_7f084b06",
+      "range": {
+        "startLine": 937,
+        "startChar": 12,
+        "endLine": 937,
+        "endChar": 26
+      },
+      "revId": "b190e0d3413583b09c6a651ca885eb4d3c965490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca01b206_d52cd78c",
@@ -54,6 +96,30 @@
       "writtenOn": "2023-04-12T15:50:34Z",
       "side": 1,
       "message": "nit: I think in `SkImageEncoder.cpp` we used `75`, which I think I got from Chrome or some other use case.",
+      "range": {
+        "startLine": 939,
+        "startChar": 28,
+        "endLine": 939,
+        "endChar": 30
+      },
+      "revId": "b190e0d3413583b09c6a651ca885eb4d3c965490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57ab029e_4375ef9f",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-12T15:57:43Z",
+      "side": 1,
+      "message": "You are right: https://github.com/google/skia/blob/60777d3aad426e27d5739dadd72d895b757425dc/src/encode/SkImageEncoder.cpp#L55",
+      "parentUuid": "ca01b206_d52cd78c",
       "range": {
         "startLine": 939,
         "startChar": 28,
