@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3952316d_13b90ad2",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-12T11:58:13Z",
+      "side": 1,
+      "message": "Please add the tracking bug for these test disables.",
+      "range": {
+        "startLine": 228,
+        "startChar": 70,
+        "endLine": 228,
+        "endChar": 76
+      },
+      "revId": "87a72d8db824363ea22f0af0814bd1520409930d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
