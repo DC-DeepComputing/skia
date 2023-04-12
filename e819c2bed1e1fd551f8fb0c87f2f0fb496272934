@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b41dbe06_65205bb4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-12T19:56:20Z",
+      "side": 1,
+      "message": "Not sure how much this affects things, but chrome still ships on android as 32 bit.",
+      "range": {
+        "startLine": 11,
+        "startChar": 42,
+        "endLine": 12,
+        "endChar": 15
+      },
+      "revId": "e819c2bed1e1fd551f8fb0c87f2f0fb496272934",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
