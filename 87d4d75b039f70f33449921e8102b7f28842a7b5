@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "81857f48_74a0ec8d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-12T15:59:03Z",
+      "side": 1,
+      "message": "Can you help me understand what\u0027s going on? It didn\u0027t look to me like you modified `encode_srgb.cpp`. You\u0027re saying that it explicitly tried to test the normal encoders, which passed, but now that the only option is the NDK encoders, it fails? Which images fail? Is it just based on the format? Any idea what version of Android device?\n\nThe NDK encoders just call through some wrapper code on Android, that calls the (potentially older version of) the normal encoders. If they\u0027re failing, this sounds like a real bug.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 36
+      },
+      "revId": "87d4d75b039f70f33449921e8102b7f28842a7b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90611992_816d2bac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-12T15:59:03Z",
+      "side": 1,
+      "message": "an*",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 3
+      },
+      "revId": "87d4d75b039f70f33449921e8102b7f28842a7b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e577410b_f3bbec49",
@@ -14,6 +60,23 @@
       "writtenOn": "2023-04-12T13:09:47Z",
       "side": 1,
       "message": "We could also stop doing that GM when NDK images are enabled, if you prefer.",
+      "revId": "87d4d75b039f70f33449921e8102b7f28842a7b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8a6b3d9_9b62f876",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-12T15:59:03Z",
+      "side": 1,
+      "message": "I\u0027m con",
       "revId": "87d4d75b039f70f33449921e8102b7f28842a7b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
