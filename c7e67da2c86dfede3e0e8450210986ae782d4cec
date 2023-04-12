@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f460efe5_150cadf8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-12T13:16:42Z",
+      "side": 1,
+      "message": "lgtm modulo comment",
+      "revId": "c7e67da2c86dfede3e0e8450210986ae782d4cec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0722c6ff_e2df016b",
+        "filename": "src/core/SkRasterPipelineContextUtils.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-12T13:16:42Z",
+      "side": 1,
+      "message": "Can this just be `return alloc-\u003emake\u003cT\u003e(ctx);`? That should hit the copy constructor of T.",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 19
+      },
+      "revId": "c7e67da2c86dfede3e0e8450210986ae782d4cec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
