@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fd8cb707_0584f532",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-12T16:19:40Z",
+      "side": 1,
+      "message": "\u003e You\u0027re saying that it explicitly tried to test the normal encoders, which passed, but now that the only option is the NDK encoders, it fails?\n\nYes.\n\nI\u0027m not entirely sure which images fail. The logging I added seems to indicate that 6 images fail when trying to encode as PNG, JPEG, and WebP. There are 12 (4 color types times 3 alpha types), so it appears some succeed and some fail.\n\nMaybe my change broke something in the NDK port?\n\nI\u0027ll add a bit more logging to see if we can spot a pattern with the colortype/alphatype.",
+      "parentUuid": "81857f48_74a0ec8d",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 36
+      },
+      "revId": "87d4d75b039f70f33449921e8102b7f28842a7b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "90611992_816d2bac",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-12T15:59:03Z",
       "side": 1,
       "message": "an*",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 3
+      },
+      "revId": "87d4d75b039f70f33449921e8102b7f28842a7b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64c50051_5c94c566",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-12T16:19:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90611992_816d2bac",
       "range": {
         "startLine": 18,
         "startChar": 0,
