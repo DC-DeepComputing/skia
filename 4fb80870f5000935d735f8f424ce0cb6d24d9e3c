@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de71f283_19e7cebc",
+        "filename": "resources/sksl/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-12T11:57:16Z",
+      "side": 1,
+      "message": "Avoid globs. //resources probably shouldn\u0027t be a glob either. There are plenty of existing filegroups - use those.",
+      "range": {
+        "startLine": 6,
+        "startChar": 11,
+        "endLine": 6,
+        "endChar": 23
+      },
+      "revId": "4fb80870f5000935d735f8f424ce0cb6d24d9e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
