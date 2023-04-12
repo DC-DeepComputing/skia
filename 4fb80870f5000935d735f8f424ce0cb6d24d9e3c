@@ -22,6 +22,30 @@
       },
       "revId": "4fb80870f5000935d735f8f424ce0cb6d24d9e3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdb0a6cc_bac35172",
+        "filename": "resources/sksl/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-04-12T21:33:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de71f283_19e7cebc",
+      "range": {
+        "startLine": 6,
+        "startChar": 11,
+        "endLine": 6,
+        "endChar": 23
+      },
+      "revId": "4fb80870f5000935d735f8f424ce0cb6d24d9e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
