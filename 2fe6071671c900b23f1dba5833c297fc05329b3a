@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a20360bd_b1fb24c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-12T17:52:11Z",
+      "side": 1,
+      "message": "Not for submission yet: parent CLs were reverted and are in the process of being relanded. But this CL should be unaffected.",
+      "revId": "2fe6071671c900b23f1dba5833c297fc05329b3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
