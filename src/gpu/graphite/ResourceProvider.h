@@ -36,6 +36,7 @@ class GlobalCache;
 class GraphicsPipeline;
 class GraphicsPipelineDesc;
 class GraphiteResourceKey;
+class ProxyCache;
 class ResourceCache;
 class RuntimeEffectDictionary;
 class ShaderCodeDictionary;
@@ -83,7 +84,8 @@ public:
 
 protected:
     ResourceProvider(SharedContext* sharedContext,
-                     SingleOwner* singleOwner);
+                     SingleOwner* singleOwner,
+                     uint32_t recorderID);
 
     SharedContext* fSharedContext;
 
