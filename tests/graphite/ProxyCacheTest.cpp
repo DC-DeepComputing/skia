@@ -1,0 +1,184 @@
+/*
+ * Copyright 2023 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "tests/Test.h"
+
+#include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
+#include "include/core/SkSurface.h"
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/ProxyCache.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/ResourceCache.h"
+#include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/TextureProxy.h"
+#include "tools/Resources.h"
+
+namespace skgpu::graphite {
+
+namespace {
+
+sk_sp<SkImage> create_image(Recorder* recorder, const SkBitmap& bitmap) {
+    sk_sp<SkImage> img = bitmap.asImage();
+
+    return img->makeTextureImage(recorder, { skgpu::Mipmapped::kNo });
+}
+
+// Create a Recording that just contains a draw of the provided image
+std::unique_ptr<skgpu::graphite::Recording> create_recording(Recorder* recorder, SkImage* image) {
+
+    SkImageInfo ii = SkImageInfo::Make(image->width(), image->height(),
+                                       kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurface::MakeGraphite(recorder, ii);
+    if (!surface) {
+        return nullptr;
+    }
+
+    SkCanvas* canvas = surface->getCanvas();
+
+    canvas->drawImage(image, 0, 0);
+
+    return recorder->snap();
+}
+
+} // anonymous namespace
+
+
+// Tests
+//   mipmap lookup
+
+
+
+// This test exercises the basic MessageBus behavior of the ProxyCache by manually inserting an
+// SkBitmap into the proxy cache and then changing its contents. This simple test should create
+// an IDChangeListener that will remove the entry in the cache when the bitmap is changed and
+// the resulting message processed.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ProxyCacheTest1, r, context) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    ProxyCache* proxyCache = recorder->priv().proxyCache();
+
+    SkBitmap bitmap;
+    bool success = GetResourceAsBitmap("images/mandrill_128.png", &bitmap);
+    REPORTER_ASSERT(r, success);
+    if (!success) {
+        return;
+    }
+
+    REPORTER_ASSERT(r, proxyCache->numCached() == 0);
+
+    sk_sp<TextureProxy> proxy = proxyCache->findOrCreateCachedProxy(recorder.get(), bitmap,
+                                                                    Mipmapped::kNo);
+    REPORTER_ASSERT(r, proxy);
+    if (!proxy) {
+        return;
+    }
+
+    REPORTER_ASSERT(r, proxyCache->numCached() == 1);
+
+    bitmap.eraseColor(SK_ColorBLACK);
+
+    proxyCache->forceProcessInvalidKeyMsgs();
+
+    REPORTER_ASSERT(r, proxyCache->numCached() == 0);
+}
+
+// This test checks that, if the same bitmap is added to two separate ProxyCaches, when it is
+// changed, both of the ProxyCaches will receive the message.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ProxyCacheTest2, r, context) {
+    std::unique_ptr<Recorder> recorder1 = context->makeRecorder();
+    ProxyCache* proxyCache1 = recorder1->priv().proxyCache();
+    std::unique_ptr<Recorder> recorder2 = context->makeRecorder();
+    ProxyCache* proxyCache2 = recorder2->priv().proxyCache();
+
+    SkBitmap bitmap;
+    bool success = GetResourceAsBitmap("images/mandrill_128.png", &bitmap);
+    REPORTER_ASSERT(r, success);
+    if (!success) {
+        return;
+    }
+
+    REPORTER_ASSERT(r, proxyCache1->numCached() == 0);
+    REPORTER_ASSERT(r, proxyCache2->numCached() == 0);
+
+    sk_sp<TextureProxy> proxy1 = proxyCache1->findOrCreateCachedProxy(recorder1.get(), bitmap,
+                                                                      Mipmapped::kNo);
+    sk_sp<TextureProxy> proxy2 = proxyCache2->findOrCreateCachedProxy(recorder2.get(), bitmap,
+                                                                      Mipmapped::kNo);
+    REPORTER_ASSERT(r, proxy1 && proxy2);
+    if (!proxy1 || !proxy2) {
+        return;
+    }
+
+    REPORTER_ASSERT(r, proxyCache1->numCached() == 1);
+    REPORTER_ASSERT(r, proxyCache2->numCached() == 1);
+
+    bitmap.eraseColor(SK_ColorBLACK);
+
+    proxyCache1->forceProcessInvalidKeyMsgs();
+    proxyCache2->forceProcessInvalidKeyMsgs();
+
+    REPORTER_ASSERT(r, proxyCache1->numCached() == 0);
+    REPORTER_ASSERT(r, proxyCache2->numCached() == 0);
+}
+
+// In this test we:
+//    1) manually insert an SkBitmap into the proxy cache
+//          ProxyCache: contains proxy    ResourceCache: contains texture    Proxy: 1 ref
+//    2) create a Recording that uses that proxy
+//          ProxyCache: same              ResourceCache: same                Proxy: 2 refs
+//    3) invalidate the proxy cache entry
+//          ProxyCache: no proxy          ResourceCache: same                Proxy: 1 ref
+//    4) delete the recording
+//          ProxyCache: no proxy          ResourceCache: no texture          Proxy: deleted
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ProxyCacheTest7, reporter, context) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    ProxyCache* proxyCache = recorder->priv().proxyCache();
+    std::unique_ptr<Recording> recording;
+
+    SkBitmap bitmap;
+    bool success = GetResourceAsBitmap("images/mandrill_128.png", &bitmap);
+    REPORTER_ASSERT(reporter, success);
+    if (!success) {
+        return;
+    }
+
+    REPORTER_ASSERT(reporter, proxyCache->numCached() == 0);
+
+    sk_sp<TextureProxy> proxy = proxyCache->findOrCreateCachedProxy(recorder.get(), bitmap,
+                                                                    Mipmapped::kNo);
+    REPORTER_ASSERT(reporter, proxy);
+    if (!proxy) {
+        return;
+    }
+
+    REPORTER_ASSERT(reporter, proxyCache->numCached() == 1);
+
+    sk_sp<SkImage> img = create_image(recorder.get(), bitmap);
+
+    recording = create_recording(recorder.get(), img.get());
+
+    img.reset();
+
+    REPORTER_ASSERT(reporter, proxyCache->numCached() == 1);
+
+    bitmap.eraseColor(SK_ColorBLACK);
+
+    proxyCache->forceProcessInvalidKeyMsgs();
+
+    REPORTER_ASSERT(reporter, proxyCache->numCached() == 0);
+
+    proxyCache = nullptr;
+    recorder.reset();
+    recording.reset();
+
+    REPORTER_ASSERT(reporter, proxyCache->numCached() == 0);
+}
+
+}  // namespace skgpu::graphite

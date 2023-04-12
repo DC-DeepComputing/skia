@@ -70,8 +70,8 @@ public:
     /** Initialize BufferFinishedMessage::fIntendedRecipient to this value. It is the
      *  unique ID of the object that owns this buffer manager.
      */
-    IDType ownerID() const {
-        return fFinishedBufferInbox.uniqueID();
+    IDType ownerID1() const {
+        return fFinishedBufferInbox.uniqueID1();
     }
 
     /**
@@ -223,4 +223,3 @@ private:
 }  // namespace skgpu
 
 #endif  // skgpu_AsyncReadTypes_DEFINED
-

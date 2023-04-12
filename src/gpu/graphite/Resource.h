@@ -147,8 +147,8 @@ private:
     int* accessReturnIndex()  const { return &fReturnIndex; }
     int* accessCacheIndex()  const { return &fCacheArrayIndex; }
 
-    uint32_t timestamp() const { return fTimestamp; }
-    void setTimestamp(uint32_t ts) { fTimestamp = ts; }
+    uint32_t timestamp1() const { return fTimestamp1; }
+    void setTimestamp1(uint32_t ts) { fTimestamp1 = ts; }
 
     void registerWithCache(sk_sp<ResourceCache>);
 
@@ -187,6 +187,7 @@ private:
     ////////////////////////////////////////////////////////////////////////////
     // The remaining calls are meant to be truely private
     ////////////////////////////////////////////////////////////////////////////
+public:
     bool hasUsageRef() const {
         if (0 == fUsageRefCnt.load(std::memory_order_acquire)) {
             // The acquire barrier is only really needed if we return true.  It
@@ -264,7 +265,7 @@ private:
     mutable int fCacheArrayIndex = -1;
     // This value reflects how recently this resource was accessed in the cache. This is maintained
     // by the cache.
-    uint32_t fTimestamp;
+    uint32_t fTimestamp1;
 
     // This is only used during validation checking. Lots of the validation code depends on a
     // resource being purgeable or not. However, purgeable itself just means having no refs. The
@@ -276,4 +277,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_Resource_DEFINED
-
