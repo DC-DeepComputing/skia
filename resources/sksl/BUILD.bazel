@@ -1,5 +1,12 @@
 load("//bazel:skia_rules.bzl", "skia_filegroup")
 
+# Necessary to give the //resources:resources skia_filegroup visibility to files in this directory.
+skia_filegroup(
+    name = "sksl",
+    srcs = glob(["**"]),
+    visibility = ["//resources:__pkg__"],
+)
+
 ## Tests in sksl_minify_tests_sources will be compiled with sksl-minify, and are expected to
 ## generate a .minified.sksl file.
 skia_filegroup(
