@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f756c65_7076191c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19869
+      },
+      "writtenOn": "2023-04-12T01:52:14Z",
+      "side": 1,
+      "message": "We are working on enabling this browser for RISCV platform, mainly driven by Vision Five 2. We understand that there are pushback, but this is a long journey and a tip of iceberg, there are a lot of components within the browser required a proper port, but at this stage, we managed to compile the browser (with this change in place) and launch the browser with slight issue on performance. So we would like to start to make our local changes to be available upstream to ease future enhancement on the component and browser in overall. Thanks.",
+      "parentUuid": "2a4495fe_e03b2232",
+      "revId": "5c316c55597290f85536ffca66e32307a5efd6e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ce69e7a_2dbebad6",
