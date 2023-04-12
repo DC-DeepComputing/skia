@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66254816_b8cdfcb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19889
+      },
+      "writtenOn": "2023-04-12T21:24:12Z",
+      "side": 1,
+      "message": "Verified the patchset 2 fixed the failure and it LGTM.\nThanks!",
+      "revId": "88632276c6a7324a5efd0b0950d52d8b1605791e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
