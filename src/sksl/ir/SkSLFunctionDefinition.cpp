@@ -21,6 +21,11 @@
 #include "src/sksl/transform/SkSLProgramWriter.h"
 
 #include <forward_list>
+<<<<<<< HEAD   (22659b [infra] Fix Windows OS dimension to match main branch)
+=======
+#include <string_view>
+#include <vector>
+>>>>>>> CHANGE (4dc748 Enforce program stack limits on function parameters.)
 
 namespace SkSL {
 
@@ -76,11 +81,39 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                                                                 bool builtin) {
     class Finalizer : public ProgramWriter {
     public:
+<<<<<<< HEAD   (22659b [infra] Fix Windows OS dimension to match main branch)
         Finalizer(const Context& context, const FunctionDeclaration& function,
                   FunctionSet* referencedBuiltinFunctions)
+=======
+        Finalizer(const Context& context, const FunctionDeclaration& function, Position pos)
+>>>>>>> CHANGE (4dc748 Enforce program stack limits on function parameters.)
             : fContext(context)
+<<<<<<< HEAD   (22659b [infra] Fix Windows OS dimension to match main branch)
             , fFunction(function)
             , fReferencedBuiltinFunctions(referencedBuiltinFunctions) {}
+=======
+            , fFunction(function) {
+            // Function parameters count as local variables.
+            for (const Variable* var : function.parameters()) {
+                this->addLocalVariable(var, pos);
+            }
+        }
+
+        void addLocalVariable(const Variable* var, Position pos) {
+            // We count the number of slots used, but don't consider the precision of the base type.
+            // In practice, this reflects what GPUs actually do pretty well. (i.e., RelaxedPrecision
+            // math doesn't mean your variable takes less space.) We also don't attempt to reclaim
+            // slots at the end of a Block.
+            size_t prevSlotsUsed = fSlotsUsed;
+            fSlotsUsed = SkSafeMath::Add(fSlotsUsed, var->type().slotCount());
+            // To avoid overzealous error reporting, only trigger the error at the first
+            // place where the stack limit is exceeded.
+            if (prevSlotsUsed < kVariableSlotLimit && fSlotsUsed >= kVariableSlotLimit) {
+                fContext.fErrors->error(pos, "variable '" + std::string(var->name()) +
+                                             "' exceeds the stack size limit");
+            }
+        }
+>>>>>>> CHANGE (4dc748 Enforce program stack limits on function parameters.)
 
         ~Finalizer() override {
             SkASSERT(fBreakableLevel == 0);
@@ -144,6 +177,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         bool visitStatement(Statement& stmt) override {
             switch (stmt.kind()) {
                 case Statement::Kind::kVarDeclaration: {
+<<<<<<< HEAD   (22659b [infra] Fix Windows OS dimension to match main branch)
                     // We count the number of slots used, but don't consider the precision of the
                     // base type. In practice, this reflects what GPUs really do pretty well.
                     // (i.e., RelaxedPrecision math doesn't mean your variable takes less space.)
@@ -158,6 +192,14 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                                 stmt.fLine,
                                 "variable '" + std::string(stmt.as<VarDeclaration>().var().name()) +
                                 "' exceeds the stack size limit");
+=======
+                    const Variable* var = stmt.as<VarDeclaration>().var();
+                    if (var->type().isOrContainsUnsizedArray()) {
+                        fContext.fErrors->error(stmt.fPosition,
+                                                "unsized arrays are not permitted here");
+                    } else {
+                        this->addLocalVariable(var, stmt.fPosition);
+>>>>>>> CHANGE (4dc748 Enforce program stack limits on function parameters.)
                     }
                     break;
                 }
@@ -252,9 +294,14 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         using INHERITED = ProgramWriter;
     };
 
+<<<<<<< HEAD   (22659b [infra] Fix Windows OS dimension to match main branch)
     FunctionSet referencedBuiltinFunctions;
     Finalizer(context, function, &referencedBuiltinFunctions).visitStatement(*body);
     if (function.isMain() && context.fConfig->fKind == ProgramKind::kVertex) {
+=======
+    Finalizer(context, function, pos).visitStatement(*body);
+    if (function.isMain() && ProgramConfig::IsVertex(context.fConfig->fKind)) {
+>>>>>>> CHANGE (4dc748 Enforce program stack limits on function parameters.)
         append_rtadjust_fixup_to_vertex_main(context, function, body->as<Block>());
     }
 
