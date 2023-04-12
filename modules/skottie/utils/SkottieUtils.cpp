@@ -285,10 +285,14 @@ public:
 
     void onColorProperty(const char node_name[],
                          const LazyHandle<skottie::ColorPropertyHandle>& c) override {
+        SkDebugf("onColorProperty: %s\n", node_name);
         const auto it = fColorMap.find(node_name);
         if (it != fColorMap.end()) {
+            SkDebugf("found sid in SlotManager-setting slot: %s to: %x\n", node_name, (it->second));
             c()->set(it->second);
         }
+        // TEST to prove that orange nodes wont change no matter what
+        c()->set(SK_ColorCYAN);
     }
 
     void onTextProperty(const char node_name[],
