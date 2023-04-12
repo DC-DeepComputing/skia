@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "833f2fff_504527d3",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-12T17:19:04Z",
+      "side": 1,
+      "message": "Added TODO, which also compares this with how we pass the local coords varying through snippets per snippet requirement flags.",
+      "parentUuid": "d92d8975_ba956046",
+      "range": {
+        "startLine": 160,
+        "startChar": 8,
+        "endLine": 160,
+        "endChar": 16
+      },
+      "revId": "57efc3a1acab1e55c19891b5aad4da3d5e23932a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "676455a0_49405430",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-11T20:45:36Z",
       "side": 1,
       "message": "If we add a 1-liner in the graphite module called `sk_coeff_blend` that has inputs as `(src, dst, coeff)` and then re-orderes them to call into the more broadly used `blend_porter_duff` we can use the default expression generator.",
+      "range": {
+        "startLine": 756,
+        "startChar": 45,
+        "endLine": 756,
+        "endChar": 62
+      },
+      "revId": "57efc3a1acab1e55c19891b5aad4da3d5e23932a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e35ec8b_404e45ed",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-12T17:19:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "676455a0_49405430",
       "range": {
         "startLine": 756,
         "startChar": 45,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c49da72_02c8663b",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-12T17:19:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb79da78_5355199a",
+      "range": {
+        "startLine": 763,
+        "startChar": 49,
+        "endLine": 763,
+        "endChar": 57
+      },
+      "revId": "57efc3a1acab1e55c19891b5aad4da3d5e23932a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14081640_8d7665cc",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-04-11T20:45:36Z",
       "side": 1,
       "message": "If we update both blendmode and coeff blenders, I think this whole function can go away.",
+      "range": {
+        "startLine": 1065,
+        "startChar": 12,
+        "endLine": 1065,
+        "endChar": 48
+      },
+      "revId": "57efc3a1acab1e55c19891b5aad4da3d5e23932a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32aceeed_c2389fda",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-12T17:19:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14081640_8d7665cc",
       "range": {
         "startLine": 1065,
         "startChar": 12,
