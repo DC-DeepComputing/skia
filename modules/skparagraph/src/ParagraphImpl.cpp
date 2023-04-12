@@ -8,6 +8,7 @@
 #include "include/core/SkTypeface.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTo.h"
+#include "include/core/SkPath.h"
 #include "modules/skparagraph/include/Metrics.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/ParagraphPainter.h"
@@ -1161,6 +1162,89 @@ void ParagraphImpl::visit(const Visitor& visitor) {
         visitor(lineNumber, nullptr);   // signal end of line
         lineNumber += 1;
     }
+}
+
+void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
+    int lineNumber = 0;
+    for (auto& line : fLines) {
+        line.iterateThroughVisualRuns(false,
+            [&](const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
+                *runWidthInLine = line.iterateThroughSingleRunByStyles(
+                TextLine::TextAdjustment::GlyphCluster, run, runOffsetInLine, textRange, StyleType::kNone,
+                [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+                    SkScalar correctedBaseline = SkScalarFloorToScalar(line.baseline() + style.getBaselineShift() +  0.5);
+                    SkPoint offset = SkPoint::Make(line.offset().fX + context.fTextShift,
+                                                   line.offset().fY + correctedBaseline);
+                    SkRect rect = context.clip.makeOffset(line.offset());
+                    AutoSTArray<16, SkRect> glyphBounds;
+                    glyphBounds.reset(SkToInt(run->size()));
+                    run->font().getBounds(run->glyphs().data(),
+                                          SkToInt(run->size()),
+                                          glyphBounds.data(),
+                                          nullptr);
+                    STArray<128, uint32_t> clusterStorage;
+                    const uint32_t* clusterPtr = run->clusterIndexes().data();
+                    if (run->fClusterStart > 0) {
+                        clusterStorage.reset(context.size);
+                        for (size_t i = 0; i < context.size; ++i) {
+                            clusterStorage[i] = run->fClusterStart + run->fClusterIndexes[i];
+                        }
+                        clusterPtr = &clusterStorage[0];
+                    }
+                    const Paragraph::ExtendedVisitorInfo info = {
+                        run->font(),
+                        offset,
+                        SkSize::Make(rect.width(), rect.height()),
+                        SkToS16(run->size()),
+                        run->glyphs().data(),
+                        run->fPositions.data(),
+                        glyphBounds.data(),
+                        clusterPtr,
+                        0,  // flags
+                    };
+                    visitor(lineNumber, &info);
+                });
+            return true;
+            });
+        visitor(lineNumber, nullptr);   // signal end of line
+        lineNumber += 1;
+    }
+}
+
+SkPath ParagraphImpl::getPaths(int lineNumber) {
+    SkPath path;
+    auto& line = fLines[lineNumber];
+    line.iterateThroughVisualRuns(false,
+        [&](const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
+            *runWidthInLine = line.iterateThroughSingleRunByStyles(
+            TextLine::TextAdjustment::GlyphCluster, run, runOffsetInLine, textRange, StyleType::kNone,
+            [&](TextRange textRange, const TextStyle& style, const TextLine::ClipContext& context) {
+                const SkFont& font = run->font();
+                SkScalar correctedBaseline = SkScalarFloorToScalar(line.baseline() + style.getBaselineShift() +  0.5);
+                SkPoint offset = SkPoint::Make(line.offset().fX + context.fTextShift,
+                                               line.offset().fY + correctedBaseline);
+                SkRect rect = context.clip.makeOffset(offset);
+                struct Rec {
+                    SkPath* fPath;
+                    SkPoint fOffset;
+                    const SkPoint* fPos;
+                } rec = {&path, SkPoint::Make(rect.left(), rect.top()), &run->positions()[context.pos]};
+                font.getPaths(&run->glyphs()[context.pos], context.size,
+                              [](const SkPath* path, const SkMatrix& mx, void* ctx) {
+                                  Rec* rec = reinterpret_cast<Rec*>(ctx);
+                                  if (path) {
+                                      SkMatrix total = mx;
+                                      total.postTranslate(rec->fPos->fX + rec->fOffset.fX,
+                                                          rec->fPos->fY + rec->fOffset.fY);
+                                      rec->fPath->addPath(*path, total);
+                                  }
+                                  rec->fPos += 1; // move to the next glyph's position
+                              }, &rec);
+            });
+        return true;
+    });
+
+    return path;
 }
 
 int ParagraphImpl::getLineNumberAt(TextIndex codeUnitIndex) const {

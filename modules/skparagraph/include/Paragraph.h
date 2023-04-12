@@ -95,6 +95,22 @@ public:
     using Visitor = std::function<void(int lineNumber, const VisitorInfo*)>;
     virtual void visit(const Visitor&) = 0;
 
+    struct ExtendedVisitorInfo {
+        const SkFont&   font;
+        SkPoint         origin;
+        SkSize          advance;
+        int             count;
+        const uint16_t* glyphs;     // count values
+        SkPoint*        positions;  // count values
+        const SkRect*   bounds;     // count values
+        const uint32_t* utf8Starts; // count+1 values
+        unsigned        flags;
+    };
+    using ExtendedVisitor = std::function<void(int lineNumber, const ExtendedVisitorInfo*)>;
+    virtual void extendedVisit(const ExtendedVisitor&) = 0;
+
+    virtual SkPath getPaths(int lineNumber) = 0;
+
     // Editing API
     virtual int getLineNumberAt(TextIndex codeUnitIndex) const = 0;
 
