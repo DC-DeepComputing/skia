@@ -259,9 +259,13 @@ sk_sp<ExpressionManager> AnimationBuilder::expression_manager() const {
 void AnimationBuilder::AutoPropertyTracker::updateContext(PropertyObserver* observer,
                                                           const skjson::ObjectValue& obj) {
 
-    const skjson::StringValue* name = obj["nm"];
-
-    fBuilder->fPropertyObserverContext = name ? name->begin() : nullptr;
+    if (const skjson::StringValue* slotID = obj["sid"]) {
+        SkDebugf("setting to sid %s\n", slotID->begin());
+        fBuilder->fPropertyObserverContext = slotID->begin();
+    } else {
+        const skjson::StringValue* name = obj["nm"];
+        fBuilder->fPropertyObserverContext = name ? name->begin() : nullptr;
+    }
 }
 
 } // namespace internal
