@@ -1294,16 +1294,16 @@ static void test_time_purge(skiatest::Reporter* reporter) {
     auto nowish = []() {
         // We sleep so that we ensure we get a value that is greater than the last call to
         // GrStdSteadyClock::now().
-        std::this_thread::sleep_for(GrStdSteadyClock::duration(5));
-        auto result = GrStdSteadyClock::now();
+        std::this_thread::sleep_for(skgpu::StdSteadyClock::duration(5));
+        auto result = skgpu::StdSteadyClock::now();
         // Also sleep afterwards so we don't get this value again.
-        std::this_thread::sleep_for(GrStdSteadyClock::duration(5));
+        std::this_thread::sleep_for(skgpu::StdSteadyClock::duration(5));
         return result;
     };
 
     for (int cnt : kCnts) {
-        std::unique_ptr<GrStdSteadyClock::time_point[]> timeStamps(
-                new GrStdSteadyClock::time_point[cnt]);
+        std::unique_ptr<skgpu::StdSteadyClock::time_point[]> timeStamps(
+                new skgpu::StdSteadyClock::time_point[cnt]);
         {
             // Insert resources and get time points between each addition.
             for (int i = 0; i < cnt; ++i) {
