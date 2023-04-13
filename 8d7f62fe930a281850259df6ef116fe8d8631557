@@ -16,6 +16,24 @@
       "message": "Do we still use this ?",
       "revId": "8d7f62fe930a281850259df6ef116fe8d8631557",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "820ade2f_37305a06",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-13T01:06:05Z",
+      "side": 1,
+      "message": "It\u0027s not but I didn\u0027t want to get rid of it. I\u0027m hoping that we can restructure the KeyHelper blocks to be RAII objects, which will make it easy to pass in the codesnippetID to both begin and end, and then validate that the pops match the pushes exactly (vs. just counts right now).",
+      "parentUuid": "99fcd5bd_dd079dae",
+      "revId": "8d7f62fe930a281850259df6ef116fe8d8631557",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
