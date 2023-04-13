@@ -8,10 +8,18 @@
 #include "src/sksl/ir/SkSLType.h"
 
 #include "include/private/SkSLString.h"
+<<<<<<< HEAD   (73073b Remove CQ for unsupported branch chrome/m108)
 #include "include/private/SkStringView.h"
 #include "include/private/SkTFitsIn.h"
+=======
+>>>>>>> CHANGE (1cbd33 Enforce size limits on struct and array declarations.)
 #include "include/sksl/SkSLErrorReporter.h"
+<<<<<<< HEAD   (73073b Remove CQ for unsupported branch chrome/m108)
 #include "src/core/SkMathPriv.h"
+=======
+#include "src/base/SkMathPriv.h"
+#include "src/base/SkSafeMath.h"
+>>>>>>> CHANGE (1cbd33 Enforce size limits on struct and array declarations.)
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
@@ -646,8 +654,77 @@ std::unique_ptr<Type> Type::MakeScalarType(std::string_view name, const char* ab
 
 }
 
+<<<<<<< HEAD   (73073b Remove CQ for unsupported branch chrome/m108)
 std::unique_ptr<Type> Type::MakeStructType(Position pos, std::string_view name,
                                            std::vector<Field> fields, bool interfaceBlock) {
+=======
+std::unique_ptr<Type> Type::MakeAtomicType(std::string_view name, const char* abbrev) {
+    return std::make_unique<AtomicType>(name, abbrev);
+}
+
+static bool is_too_deeply_nested(const Type* t, int limit) {
+    if (limit <= 0) {
+        return true;
+    }
+
+    if (t->isStruct()) {
+        for (const Type::Field& f : t->fields()) {
+            if (is_too_deeply_nested(f.fType, limit - 1)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+std::unique_ptr<Type> Type::MakeStructType(const Context& context,
+                                           Position pos,
+                                           std::string_view name,
+                                           std::vector<Field> fields,
+                                           bool interfaceBlock) {
+    for (const Field& field : fields) {
+        if (field.fModifiers.fFlags != Modifiers::kNo_Flag) {
+            std::string desc = field.fModifiers.description();
+            desc.pop_back();  // remove trailing space
+            context.fErrors->error(field.fPosition,
+                                   "modifier '" + desc + "' is not permitted on a struct field");
+        }
+        if (field.fModifiers.fLayout.fFlags & Layout::kBinding_Flag) {
+            context.fErrors->error(field.fPosition,
+                                   "layout qualifier 'binding' is not permitted on a struct field");
+        }
+        if (field.fModifiers.fLayout.fFlags & Layout::kSet_Flag) {
+            context.fErrors->error(field.fPosition,
+                                   "layout qualifier 'set' is not permitted on a struct field");
+        }
+
+        if (field.fType->isVoid()) {
+            context.fErrors->error(field.fPosition, "type 'void' is not permitted in a struct");
+        }
+        if (field.fType->isOpaque() && !field.fType->isAtomic()) {
+            context.fErrors->error(field.fPosition, "opaque type '" + field.fType->displayName() +
+                                                    "' is not permitted in a struct");
+        }
+    }
+    for (const Field& field : fields) {
+        if (is_too_deeply_nested(field.fType, kMaxStructDepth)) {
+            context.fErrors->error(pos, "struct '" + std::string(name) + "' is too deeply nested");
+            break;
+        }
+    }
+    size_t slots = 0;
+    for (const Field& field : fields) {
+        if (field.fType->isUnsizedArray()) {
+            continue;
+        }
+        slots = SkSafeMath::Add(slots, field.fType->slotCount());
+        if (slots >= kVariableSlotLimit) {
+            context.fErrors->error(pos, "struct is too large");
+            break;
+        }
+    }
+>>>>>>> CHANGE (1cbd33 Enforce size limits on struct and array declarations.)
     return std::make_unique<StructType>(pos, name, std::move(fields), interfaceBlock);
 }
 
@@ -1120,8 +1197,9 @@ bool Type::checkIfUsableInArray(const Context& context, Position arrayPos) const
     return true;
 }
 
-SKSL_INT Type::convertArraySize(const Context& context, Position arrayPos,
-        std::unique_ptr<Expression> size) const {
+SKSL_INT Type::convertArraySize(const Context& context,
+                                Position arrayPos,
+                                std::unique_ptr<Expression> size) const {
     size = context.fTypes.fInt->coerceExpression(std::move(size), context);
     if (!size) {
         return 0;
@@ -1138,7 +1216,7 @@ SKSL_INT Type::convertArraySize(const Context& context, Position arrayPos,
         context.fErrors->error(size->fPosition, "array size must be positive");
         return 0;
     }
-    if (!SkTFitsIn<int32_t>(count)) {
+    if (SkSafeMath::Mul(this->slotCount(), count) > kVariableSlotLimit) {
         context.fErrors->error(size->fPosition, "array size is too large");
         return 0;
     }
