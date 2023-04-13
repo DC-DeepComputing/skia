@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1695510e_5e396431",
+        "filename": "src/gpu/graphite/ProxyCache.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-13T17:27:00Z",
+      "side": 1,
+      "message": "Is the plan to make this public or friend the ResourceCache so it has access?",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 28
+      },
+      "revId": "2296131a1ee7302c10fa3dc3037c0323d48eaf4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
