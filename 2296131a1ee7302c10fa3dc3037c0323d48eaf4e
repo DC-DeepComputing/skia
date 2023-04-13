@@ -22,6 +22,30 @@
       },
       "revId": "2296131a1ee7302c10fa3dc3037c0323d48eaf4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8b35076_094ac3e6",
+        "filename": "src/gpu/graphite/ProxyCache.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-13T18:18:59Z",
+      "side": 1,
+      "message": "I was going to leave that until we can actually call it from ResourceCache but I had intended to make ResourceCache and ProxyCache mutual friends. So ProxyCache could call touchResource as a friend and ResourceCache could call freeUniquelyHeld and purgeProxiesNotUsedSince as a friend.",
+      "parentUuid": "1695510e_5e396431",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 28
+      },
+      "revId": "2296131a1ee7302c10fa3dc3037c0323d48eaf4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
