@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f658194_bd56361c",
+        "filename": "resources/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-13T00:04:55Z",
+      "side": 1,
+      "message": "I don\u0027t think we want the README used in tests",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 15
+      },
+      "revId": "28635c98b37b8f1223df502900356ee99de3dd12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
