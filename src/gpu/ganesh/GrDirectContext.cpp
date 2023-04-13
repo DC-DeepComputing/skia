@@ -384,7 +384,7 @@ void GrDirectContext::performDeferredCleanup(std::chrono::milliseconds msNotUsed
 
     this->checkAsyncWorkCompletion();
     fMappedBufferManager->process();
-    auto purgeTime = GrStdSteadyClock::now() - msNotUsed;
+    auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
 
     fResourceCache->purgeAsNeeded();
     fResourceCache->purgeResourcesNotUsedSince(purgeTime, scratchResourcesOnly);
