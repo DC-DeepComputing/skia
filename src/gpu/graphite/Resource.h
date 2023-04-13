@@ -84,6 +84,14 @@ public:
 
     skgpu::Budgeted budgeted() const { return fBudgeted; }
 
+    enum class DeleteASAP : bool {
+        kNo = false,
+        kYes = true,
+    };
+
+    DeleteASAP deleteASAP() const { return fDeleteASAP; }
+    void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
+
     // Retrieves the amount of GPU memory used by this resource in bytes. It is approximate since we
     // aren't aware of additional padding or copies made by the driver.
     size_t gpuMemorySize() const { return fGpuMemorySize; }
@@ -259,6 +267,13 @@ private:
     // cache limits.
     skgpu::Budgeted fBudgeted;
 
+    // This is only used by ProxyCache::purgeProxiesNotUsedSince which is called from
+    // ResourceCache::purgeResourcesNotUsedSince. When kYes, this signals that the Resource
+    // should've been purged based on its timestamp at some point regardless of what its
+    // current timestamp may indicate (since the timestamp will be updated when the Resource
+    // is returned to the ResourceCache.
+    DeleteASAP fDeleteASAP = DeleteASAP::kNo;
+
     // An index into a heap when this resource is purgeable or an array when not. This is maintained
     // by the cache.
     mutable int fCacheArrayIndex = -1;
@@ -276,4 +291,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_Resource_DEFINED
-
