@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68b075e5_178f22db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-13T20:08:04Z",
+      "side": 1,
+      "message": "Any differences from the `main` version? I support merging this 😊",
+      "revId": "337cc94fc3e635274c9fcf47827296f8b857f0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
