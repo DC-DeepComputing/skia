@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1510cc8b_f05701cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:40:31Z",
+      "side": 1,
+      "message": "Looks like this broke ComposeShader based on the Gold diffs",
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f4a55cb4_2e4d4bf9",
         "filename": "src/gpu/graphite/PaintParamsKey.cpp",
         "patchSetId": 4
@@ -111,6 +128,144 @@
         "startChar": 68,
         "endLine": 83,
         "endChar": 54
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47964a98_d8bf839c",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:40:31Z",
+      "side": 1,
+      "message": "up to you: this function is now a pure pass-through; seems like you could just remove it?",
+      "range": {
+        "startLine": 55,
+        "startChar": 12,
+        "endLine": 55,
+        "endChar": 37
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f7ea4c5_b30cd347",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:40:31Z",
+      "side": 1,
+      "message": "up to you: if you need a counting index, IMO it feels more natural to go back to an old-school for loop.\n\n```\nfor (size_t index\u003d0; index\u003cnodes.size(); ++index) {\n  const ShaderNode* node \u003d nodes[index];\n```",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 0
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "316928ba_67862400",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:40:31Z",
+      "side": 1,
+      "message": "`/*treeLabel\u003d*/\"\"`",
+      "range": {
+        "startLine": 230,
+        "startChar": 38,
+        "endLine": 230,
+        "endChar": 40
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "924b1abc_b8d60f10",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:40:31Z",
+      "side": 1,
+      "message": "Why?\nIt adds complexity in lots of places, and AFAICS it really doesn\u0027t matter.",
+      "range": {
+        "startLine": 392,
+        "startChar": 7,
+        "endLine": 392,
+        "endChar": 83
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35f6ff35_b45b8a67",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:40:31Z",
+      "side": 1,
+      "message": "In a cpp, put `using namespace skia_private;` up top instead.",
+      "range": {
+        "startLine": 396,
+        "startChar": 4,
+        "endLine": 396,
+        "endChar": 16
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71c98db4_a66de568",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:40:31Z",
+      "side": 1,
+      "message": "Copy-paste error",
+      "range": {
+        "startLine": 703,
+        "startChar": 11,
+        "endLine": 703,
+        "endChar": 40
       },
       "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
