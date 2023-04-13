@@ -125,6 +125,16 @@ protected:
 #endif
 
 private:
+    friend class ProxyCache; // for setDeleteASAP
+
+    enum class DeleteASAP : bool {
+        kNo = false,
+        kYes = true,
+    };
+
+    DeleteASAP shouldDeleteASAP() const { return fDeleteASAP; }
+    void setDeleteASAP() { fDeleteASAP = DeleteASAP::kYes; }
+
     ////////////////////////////////////////////////////////////////////////////
     // The following set of functions are only meant to be called by the ResourceCache. We don't
     // want them public general users of a Resource, but they also aren't purely internal calls.
@@ -259,6 +269,13 @@ private:
     // cache limits.
     skgpu::Budgeted fBudgeted;
 
+    // This is only used by ProxyCache::purgeProxiesNotUsedSince which is called from
+    // ResourceCache::purgeResourcesNotUsedSince. When kYes, this signals that the Resource
+    // should've been purged based on its timestamp at some point regardless of what its
+    // current timestamp may indicate (since the timestamp will be updated when the Resource
+    // is returned to the ResourceCache.
+    DeleteASAP fDeleteASAP = DeleteASAP::kNo;
+
     // An index into a heap when this resource is purgeable or an array when not. This is maintained
     // by the cache.
     mutable int fCacheArrayIndex = -1;
@@ -276,4 +293,3 @@ private:
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_Resource_DEFINED
-

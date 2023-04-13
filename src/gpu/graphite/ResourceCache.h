@@ -68,7 +68,11 @@ public:
     ProxyCache* proxyCache() { return fProxyCache.get(); }
 
 private:
+    friend class ProxyCache; // for touchResource
+
     ResourceCache(SingleOwner*, uint32_t recorderID);
+
+    void touchResource(Resource*);
 
     // All these private functions are not meant to be thread safe. We don't check for is single
     // owner in them as we assume that has already been checked by the public api calls.
