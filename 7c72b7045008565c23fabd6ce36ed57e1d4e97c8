@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75b2dbb4_4e03a47f",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-13T23:30:31Z",
+      "side": 1,
+      "message": "Alternately, passing `Cols` here instead of `Uniform::kNonArray` should give the same result without the call to `align_up` in the next line but the current approach makes this a bit more explicit.",
+      "range": {
+        "startLine": 86,
+        "startChar": 74,
+        "endLine": 86,
+        "endChar": 92
+      },
+      "revId": "7c72b7045008565c23fabd6ce36ed57e1d4e97c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
