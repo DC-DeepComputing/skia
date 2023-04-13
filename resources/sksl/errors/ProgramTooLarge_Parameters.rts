@@ -1,3 +1,25 @@
+<<<<<<< PATCH SET (e46bea Enforce size limits on struct and array declarations.)
+<<<<<<< HEAD   (f57153 Revert "Enforce program stack limits on function parameters.)
+=======
+struct S {
+    half4 ah4[1];
+    half ah[99990];
+    half4 h4;
+    half h;
+};
+
+void func(int small,
+          int parameters,
+          int are,
+          int allowed,
+          S big_chungus,
+          S no_report /*we don't need to report overflows past the first*/) {}
+
+/*%%*
+variable 'big_chungus' exceeds the stack size limit
+*%%*/
+>>>>>>> CHANGE (1cbd33 Enforce size limits on struct and array declarations.)
+=======
 struct S {
     half4 ah4[1];
     half ah[99999];
@@ -12,3 +34,4 @@ void func(int small,
 /*%%*
 variable 'big_chungus' exceeds the stack size limit
 *%%*/
+>>>>>>> BASE      (8421a9 Reland "Enforce program stack limits on function parameters.)
