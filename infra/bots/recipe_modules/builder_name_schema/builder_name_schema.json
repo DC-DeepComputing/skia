@@ -10,6 +10,12 @@
         "cross"
       ]
     },
+    "BazelBuildGeneratedTarget": {
+      "keys": [
+        "kind",
+        "label"
+      ]
+    },
     "BazelTest": {
       "keys": [
         "task_driver",
