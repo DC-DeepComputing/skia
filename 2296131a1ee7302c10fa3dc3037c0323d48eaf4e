@@ -87,6 +87,30 @@
       },
       "revId": "2296131a1ee7302c10fa3dc3037c0323d48eaf4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5464036_8ad64394",
+        "filename": "src/gpu/graphite/ProxyCache.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-13T18:41:23Z",
+      "side": 1,
+      "message": "I have added the friending.",
+      "parentUuid": "d9246d19_c49a2be5",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 28
+      },
+      "revId": "2296131a1ee7302c10fa3dc3037c0323d48eaf4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
