@@ -70,6 +70,11 @@
         "BazelBuild-tests-vulkan_ganesh-linux_x64"
       ]
     },
+    "BazelBuildGeneratedTarget-AndroidTest-pixel5_codec_test": {
+      "tasks": [
+        "BazelBuildGeneratedTarget-AndroidTest-pixel5_codec_test"
+      ]
+    },
     "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
       "tasks": [
         "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64"
@@ -4247,6 +4252,47 @@
         "--config=vulkan_ganesh",
         "--workdir=.",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
+        "--bazel_arg=--jobs=100",
+        "--bazel_arg=--remote_download_minimal"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelBuildGeneratedTarget-AndroidTest-pixel5_codec_test": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazel_build_task_driver",
+          "path": "bazel_build_task_driver",
+          "version": "version:1"
+        },
+        {
+          "name": "skia/bots/bazelisk",
+          "path": "bazelisk",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "bazel_build_task_driver/bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuildGeneratedTarget-AndroidTest-pixel5_codec_test",
+        "--label=//tests:pixel5_codec_test",
+        "--config=linux_rbe",
+        "--workdir=.",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
       ],
@@ -94196,6 +94242,9 @@
     "BazelBuild-skia_public-release-linux_x64": {},
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {},
     "BazelBuild-tests-enforce_iwyu-linux_x64": {},
+    "BazelBuildGeneratedTarget-AndroidTest-pixel5_codec_test": {
+      "experimental": true
+    },
     "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
       "location_regexes": [
         "modules/canvaskit/.*"

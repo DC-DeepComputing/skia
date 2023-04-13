@@ -2266,3 +2266,43 @@ func (b *jobBuilder) bazelTest() {
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
 	})
 }
+
+// bazelBuildGeneratedTarget builds the specified generated target.
+func (b *jobBuilder) bazelBuildGeneratedTarget() {
+	kind, label := b.parts.bazelBuildGeneratedTargetParts()
+	if kind != "AndroidTest" {
+		panic("Unknown kind: " + kind)
+	}
+	label = fmt.Sprintf("//tests:%s", label)
+
+	b.addTask(b.Name, func(b *taskBuilder) {
+		cmd := []string{"bazel_build_task_driver/bazel_build",
+			"--project_id=skia-swarming-bots",
+			"--task_id=" + specs.PLACEHOLDER_TASK_ID,
+			"--task_name=" + b.Name,
+			"--label=" + label,
+			"--config=linux_rbe",
+			"--workdir=.",
+			"--bazel_arg=--jobs=100",
+			"--bazel_arg=--remote_download_minimal",
+		}
+		b.cmd(cmd...)
+		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+		// Use a built task_driver from CIPD instead of building it from scratch. The
+		// task_driver should not need to change often, so using a CIPD version should reduce
+		// build latency.
+		// TODO(kjlubick) For now, this only has the linux version. We could build the task
+		//   driver for all hosts that we support running Bazel from in this CIPD package
+		//   if/when needed.
+		b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
+
+		// TODO(kjlubick) I believe this bazelisk package is just the Linux one. To support
+		//   more hosts, we need to have platform-specific bazelisk binaries.
+		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
+		b.addToPATH("bazelisk")
+		b.idempotent()
+		b.cas(CAS_BAZEL)
+		b.attempts(1)
+		b.serviceAccount(b.cfg.ServiceAccountCompile)
+	})
+}
