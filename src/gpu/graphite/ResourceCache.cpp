@@ -65,6 +65,10 @@ void ResourceCache::shutdown() {
     }
 }
 
+void ResourceCache::touchResource(Resource* resource) {
+    resource->setTimestamp(this->getNextTimestamp());
+}
+
 void ResourceCache::insertResource(Resource* resource) {
     ASSERT_SINGLE_OWNER
     SkASSERT(resource);
