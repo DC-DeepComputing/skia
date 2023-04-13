@@ -87,6 +87,15 @@ struct SkGainmapInfo {
         kHDRGM,
     };
     Type fType = Type::kUnknown;
+
+    inline bool operator==(const SkGainmapInfo& other) {
+        return fGainmapRatioMin == other.fGainmapRatioMin &&
+               fGainmapRatioMax == other.fGainmapRatioMax && fGainmapGamma == other.fGainmapGamma &&
+               fEpsilonSdr == other.fEpsilonSdr && fEpsilonHdr == other.fEpsilonHdr &&
+               fDisplayRatioSdr == other.fDisplayRatioSdr &&
+               fDisplayRatioHdr == other.fDisplayRatioHdr && fBaseImageType == other.fBaseImageType;
+    }
+    inline bool operator!=(const SkGainmapInfo& other) { return !(*this == other); }
 };
 
 #endif
