@@ -22,6 +22,10 @@
 #include "src/core/SkImagePriv.h"
 #include "tools/Resources.h"
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Image.h"
+#endif
+
 #include <initializer_list>
 #include <memory>
 
@@ -163,7 +167,7 @@ DEF_SIMPLE_GM_BG(makecolortypeandspace, canvas, 128 * 3, 128 * 4, SK_ColorWHITE)
 
 #if defined(SK_GRAPHITE)
             if (auto recorder = canvas->recorder()) {
-                images[j] = image->makeTextureImage(recorder);
+                images[j] = SkImages::TextureFromImage(recorder, image);
             } else
 #endif
             {

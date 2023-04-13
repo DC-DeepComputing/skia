@@ -273,11 +273,9 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset, GrDirectContext
     return pixels ? pixels->makeSubset(subset, direct) : nullptr;
 }
 
-#if defined(SK_GRAPHITE)
-
 sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset,
                                           skgpu::graphite::Recorder* recorder,
-                                          RequiredImageProperties requiredProperties) const {
+                                          RequiredProperties requiredProperties) const {
     // TODO: can we do this more efficiently, by telling the generator we want to
     //       "realize" a subset?
 
@@ -286,8 +284,6 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset,
 
     return nonLazyImg ? nonLazyImg->makeSubset(subset, recorder, requiredProperties) : nullptr;
 }
-
-#endif // SK_GRAPHITE
 
 sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(SkColorType targetCT,
                                                           sk_sp<SkColorSpace> targetCS,
@@ -304,6 +300,13 @@ sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(SkColorType targetCT,
         fOnMakeColorTypeAndSpaceResult = result;
     }
     return result;
+}
+
+sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(SkColorType targetCT,
+                                                          sk_sp<SkColorSpace> targetCS,
+                                                          skgpu::graphite::Recorder* recorder,
+                                                          RequiredProperties requiredProps) const {
+    return onMakeColorTypeAndColorSpace(targetCT, targetCS, nullptr);
 }
 
 sk_sp<SkImage> SkImage_Lazy::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {
@@ -624,7 +627,7 @@ void SkImage_Lazy::addUniqueIDListener(sk_sp<SkIDChangeListener> listener) const
  *  2. Ask the generator to return RGB(A) data, which the GPU can convert
  */
 sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder* recorder,
-                                                RequiredImageProperties requiredProps) const {
+                                                RequiredProperties requiredProps) const {
     using namespace skgpu::graphite;
 
     // 1. Ask the generator to natively create one.
@@ -655,30 +658,6 @@ sk_sp<SkImage> SkImage_Lazy::onMakeTextureImage(skgpu::graphite::Recorder* recor
     }
 
     return nullptr;
-}
-
-sk_sp<SkImage> SkImage_Lazy::onMakeColorTypeAndColorSpace(
-        SkColorType targetCT,
-        sk_sp<SkColorSpace> targetCS,
-        skgpu::graphite::Recorder* recorder,
-        RequiredImageProperties requiredProps) const {
-    SkAutoMutexExclusive autoAquire(fOnMakeColorTypeAndSpaceMutex);
-    if (fOnMakeColorTypeAndSpaceResult &&
-        targetCT == fOnMakeColorTypeAndSpaceResult->colorType() &&
-        SkColorSpace::Equals(targetCS.get(), fOnMakeColorTypeAndSpaceResult->colorSpace())) {
-        return fOnMakeColorTypeAndSpaceResult;
-    }
-    Validator validator(fSharedGenerator, &targetCT, targetCS);
-    sk_sp<SkImage> result = validator ? sk_sp<SkImage>(new SkImage_Lazy(&validator)) : nullptr;
-    if (result) {
-        fOnMakeColorTypeAndSpaceResult = result;
-    }
-
-    if (recorder) {
-        return result->makeTextureImage(recorder, requiredProps);
-    } else {
-        return result;
-    }
 }
 
 #endif

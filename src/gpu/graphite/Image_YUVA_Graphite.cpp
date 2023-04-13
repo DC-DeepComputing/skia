@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "include/gpu/graphite/Image.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureProxyView.h"
@@ -55,7 +56,7 @@ using namespace skgpu::graphite;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage::MakeGraphiteFromYUVABackendTextures(Recorder* recorder,
+sk_sp<SkImage> SkImages::TextureFromYUVATextures(Recorder* recorder,
                                                             const YUVABackendTextures& yuvaTextures,
                                                             sk_sp<SkColorSpace> imageColorSpace,
                                                             TextureReleaseProc releaseP,
@@ -88,9 +89,9 @@ sk_sp<SkImage> SkImage::MakeGraphiteFromYUVABackendTextures(Recorder* recorder,
                                   std::move(imageColorSpace));
 }
 
-sk_sp<SkImage> SkImage::MakeGraphiteFromYUVAPixmaps(Recorder* recorder,
+sk_sp<SkImage> SkImages::TextureFromYUVAPixmaps(Recorder* recorder,
                                                     const SkYUVAPixmaps& pixmaps,
-                                                    RequiredImageProperties required,
+                                                    RequiredProperties required,
                                                     bool limitToMaxTextureSize,
                                                     sk_sp<SkColorSpace> imageColorSpace) {
     if (!recorder) {

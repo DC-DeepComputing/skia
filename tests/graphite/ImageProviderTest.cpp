@@ -16,6 +16,7 @@
 #include "src/core/SkMipmapBuilder.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "include/gpu/graphite/Image.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "tests/TestUtils.h"
 #include "tools/ToolUtils.h"
@@ -89,13 +90,13 @@ sk_sp<SkImage> create_raster_backed_image_with_mipmaps(Recorder*) {
 /* 2 */
 sk_sp<SkImage> create_gpu_backed_image_no_mipmaps(Recorder* recorder) {
     sk_sp<SkImage> raster = create_raster(Mipmapped::kNo);
-    return raster->makeTextureImage(recorder, { Mipmapped::kNo });
+    return SkImages::TextureFromImage(recorder, raster, { Mipmapped::kNo });
 }
 
 /* 3 */
 sk_sp<SkImage> create_gpu_backed_image_with_mipmaps(Recorder* recorder) {
     sk_sp<SkImage> raster = create_raster(Mipmapped::kYes);
-    return raster->makeTextureImage(recorder, { Mipmapped::kYes });
+    return SkImages::TextureFromImage(recorder, raster, { Mipmapped::kYes });
 }
 
 /* 4 */
@@ -324,11 +325,11 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageProviderTest_Graphite_Testing, rep
     run_test(reporter, context, recorder.get(), testcases);
 }
 
-// Here we're testing that the RequiredProperties parameter to makeTextureImage and makeSubset
+// Here we're testing that the RequiredProperties parameter to TextureFromImage and makeSubset
 // works as expected.
 DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Make_TextureImage_Subset_Test, reporter, context) {
     static const struct {
-        // Some of the factories don't correctly create mipmaps through makeTextureImage
+        // Some of the factories don't correctly create mipmaps through TextureFromImage
         // bc Graphite's mipmap regeneration isn't implemented yet (b/238754357).
         bool     fMipmapsBlockedByBug;
         FactoryT fFactory;
@@ -350,9 +351,9 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Make_TextureImage_Subset_Test, reporter
         sk_sp<SkImage> orig = test.fFactory(recorder.get());
 
         for (Mipmapped mm : { Mipmapped::kNo, Mipmapped::kYes }) {
-            sk_sp<SkImage> i = orig->makeTextureImage(recorder.get(), { mm });
+            sk_sp<SkImage> i = SkImages::TextureFromImage(recorder.get(), orig, { mm });
 
-            // makeTextureImage has an optimization which allows Mipmaps on an Image if it
+            // TextureFromImage has an optimization which allows Mipmaps on an Image if it
             // would take extra work to remove them.
             bool mipmapOptAllowed = orig->hasMipmaps() && mm == Mipmapped::kNo;
 
@@ -374,7 +375,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(Make_TextureImage_Subset_Test, reporter
                                       (i->hasMipmaps() && mipmapOptAllowed));
 
             if (!orig->isTextureBacked()) {
-                i = orig->makeTextureImage(nullptr, { mm });
+                i = SkImages::TextureFromImage(nullptr, orig, { mm });
                 REPORTER_ASSERT(reporter, !i);
 
                 // Make sure makeSubset w/o a recorder works as expected
@@ -422,7 +423,7 @@ SkColorType pick_colortype(const Caps* caps, Mipmapped mipmapped) {
 // works as expected.
 DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(MakeColorSpace_Test, reporter, context) {
     static const struct {
-        // Some of the factories don't correctly create mipmaps through makeTextureImage
+        // Some of the factories don't correctly create mipmaps through TextureFromImage
         // bc Graphite's mipmap regeneration isn't implemented yet (b/238754357).
         bool     fMipmapsBlockedByBug;
         FactoryT fFactory;

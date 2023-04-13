@@ -693,7 +693,7 @@ public:
 
     sk_sp<SkImage> findOrCreate(skgpu::graphite::Recorder* recorder,
                                 const SkImage* image,
-                                SkImage::RequiredImageProperties requiredProps) override {
+                                SkImage::RequiredProperties requiredProps) override {
         if (requiredProps.fMipmapped == skgpu::Mipmapped::kNo) {
             // If no mipmaps are required, check to see if we have a mipmapped version anyway -
             // since it can be used in that case.

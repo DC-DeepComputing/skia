@@ -133,7 +133,7 @@ sk_sp<SkImage> MakeFromBitmap(Recorder* recorder,
                               const SkBitmap& bitmap,
                               sk_sp<SkMipmap> mipmaps,
                               skgpu::Budgeted budgeted,
-                              SkImage::RequiredImageProperties requiredProps) {
+                              SkImage::RequiredProperties requiredProps) {
     auto [ view, ct ] = MakeBitmapProxyView(recorder, bitmap, std::move(mipmaps),
                                             requiredProps.fMipmapped, budgeted);
     if (!view) {

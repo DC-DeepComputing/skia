@@ -10,6 +10,7 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkTypes.h"
@@ -40,7 +41,6 @@ class GrDirectContext;
 class GrImageContext;
 class GrRecordingContext;
 class SkBitmap;
-class SkColorSpace;
 class SkMatrix;
 class SkPixmap;
 enum SkAlphaType : int;
@@ -62,11 +62,24 @@ public:
     ~SkImage_Base() override;
 
     // From SkImage.h
+    sk_sp<SkImage> makeColorSpace(sk_sp<SkColorSpace>,
+                                  skgpu::graphite::Recorder*,
+                                  RequiredProperties) const override { return nullptr; }
+    sk_sp<SkImage> makeColorTypeAndColorSpace(SkColorType targetColorType,
+                                              sk_sp<SkColorSpace> targetColorSpace,
+                                              GrDirectContext* dContext) const override;
+    sk_sp<SkImage> makeColorTypeAndColorSpace(SkColorType,
+                                              sk_sp<SkColorSpace>,
+                                              skgpu::graphite::Recorder*,
+                                              RequiredProperties) const override {
+        return nullptr;
+    }
+    sk_sp<SkImage> makeSubset(const SkIRect& subset,
+                              GrDirectContext* direct) const override;
+    sk_sp<SkImage> makeSubset(const SkIRect&,
+                              skgpu::graphite::Recorder*,
+                              RequiredProperties) const override { return nullptr; }
     size_t textureSize() const override { return 0; }
-#if defined(SK_GRAPHITE)
-    sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
-                                    RequiredImageProperties) const override;
-#endif
 
     // Methods that we want to use elsewhere in Skia, but not be a part of the public API.
     virtual bool onPeekPixels(SkPixmap*) const { return false; }
@@ -174,7 +187,7 @@ public:
     virtual Type type() const = 0;
 
     // True for picture-backed and codec-backed
-    bool onIsLazyGenerated() const { return this->type() == Type::kLazy; }
+    bool isLazyGenerated() const final { return this->type() == Type::kLazy; }
 
     // True for images instantiated by Ganesh in GPU memory
     bool isGaneshBacked() const {
@@ -202,25 +215,16 @@ public:
 
     virtual sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
                                                         GrDirectContext*) const = 0;
-
+    virtual sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType targetColorType,
+                                                        sk_sp<SkColorSpace> targetColorSpace,
+                                                        skgpu::graphite::Recorder* recorder,
+                                                        RequiredProperties requiredProps) const = 0;
     virtual sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const = 0;
 
     // on failure, returns nullptr
     virtual sk_sp<SkImage> onMakeWithMipmaps(sk_sp<SkMipmap>) const {
         return nullptr;
     }
-
-#if defined(SK_GRAPHITE)
-    virtual sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
-                                              RequiredImageProperties) const = 0;
-    virtual sk_sp<SkImage> onMakeSubset(const SkIRect&,
-                                        skgpu::graphite::Recorder*,
-                                        RequiredImageProperties) const = 0;
-    virtual sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,
-                                                        sk_sp<SkColorSpace>,
-                                                        skgpu::graphite::Recorder*,
-                                                        RequiredImageProperties) const = 0;
-#endif
 
 protected:
     SkImage_Base(const SkImageInfo& info, uint32_t uniqueID);

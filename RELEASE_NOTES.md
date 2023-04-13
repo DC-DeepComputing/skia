@@ -37,6 +37,12 @@ Milestone 114
     included in the build.
   * `SkImageEncoder` has been deprecated. Clients should use one of `SkPngEncoder::Encode`,
     `SkJpegEncoder::Encode` or `SkWebpEncoder::Encode` directly.
+  * Graphite SkImage...
+    * `SkImage::MakeGraphiteFromBackendTexture` -> `SkImages::AdoptTextureFrom`
+    * `SkImage::MakeGraphiteFromYUVABackendTextures` -> `SkImages::TextureFromYUVATextures`
+    * `SkImage::MakeGraphiteFromYUVAPixmaps` -> `SkImages::TextureFromYUVAPixmaps`
+    * `SkImage::MakeGraphitePromiseTexture` -> `SkImages::PromiseTextureFrom`
+    * `SkImage::makeTextureImage` -> `SkImages::TextureFromImage`
 
 * * *
 

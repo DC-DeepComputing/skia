@@ -52,7 +52,7 @@ using namespace skgpu::graphite;
 
 sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset,
                                    skgpu::graphite::Recorder* recorder,
-                                   RequiredImageProperties requiredProps) const {
+                                   RequiredProperties requiredProps) const {
     if (subset.isEmpty()) {
         return nullptr;
     }

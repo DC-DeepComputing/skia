@@ -24,6 +24,7 @@
 #include "src/image/SkImage_Base.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 #ifdef SK_GRAPHITE
+#include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/YUVABackendTextures.h"
 #endif
 
@@ -363,7 +364,7 @@ bool LazyYUVImage::ensureYUVImage(Recorder* recorder, Type type) {
             if (!recorder) {
                 return false;
             }
-            fYUVImage[idx] = SkImage::MakeGraphiteFromYUVAPixmaps(recorder,
+            fYUVImage[idx] = SkImages::TextureFromYUVAPixmaps(recorder,
                                                                   fPixmaps,
                                                                   { fMipmapped },
                                                                   /*limitToMaxTextureSize=*/false,
@@ -408,7 +409,7 @@ bool LazyYUVImage::ensureYUVImage(Recorder* recorder, Type type) {
             }
             void* imageRelContext =
                     sk_gpu_test::ManagedGraphiteTexture::MakeYUVAReleaseContext(mbets);
-            fYUVImage[idx] = SkImage::MakeGraphiteFromYUVABackendTextures(
+            fYUVImage[idx] = SkImages::TextureFromYUVATextures(
                     recorder,
                     yuvaTextures,
                     fColorSpace,

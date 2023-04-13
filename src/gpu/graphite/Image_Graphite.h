@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/Image_Base_Graphite.h"
 
 #include "src/gpu/graphite/TextureProxyView.h"
+#include "include/gpu/graphite/Image.h"
 
 namespace skgpu {
     class RefCntedCallback;
@@ -42,19 +43,19 @@ public:
     static sk_sp<TextureProxy> MakePromiseImageLazyProxy(SkISize dimensions,
                                                          TextureInfo,
                                                          Volatile,
-                                                         GraphitePromiseImageFulfillProc,
+                                                         SkImages::GraphitePromiseImageFulfillProc,
                                                          sk_sp<RefCntedCallback>,
-                                                         GraphitePromiseTextureReleaseProc);
+                                                         SkImages::GraphitePromiseTextureReleaseProc);
 
 private:
-    sk_sp<SkImage> onMakeTextureImage(Recorder*, RequiredImageProperties) const override;
-    sk_sp<SkImage> copyImage(const SkIRect& subset, Recorder*, RequiredImageProperties) const;
-    sk_sp<SkImage> onMakeSubset(const SkIRect&, Recorder*, RequiredImageProperties) const override;
+    sk_sp<SkImage> onMakeTextureImage(Recorder*, RequiredProperties) const override;
+    sk_sp<SkImage> copyImage(const SkIRect& subset, Recorder*, RequiredProperties) const;
+    sk_sp<SkImage> onMakeSubset(const SkIRect&, Recorder*, RequiredProperties) const;
     using Image_Base::onMakeColorTypeAndColorSpace;
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType targetCT,
                                                 sk_sp<SkColorSpace> targetCS,
                                                 Recorder*,
-                                                RequiredImageProperties) const override;
+                                                RequiredProperties) const;
 
     TextureProxyView fTextureProxyView;
 };

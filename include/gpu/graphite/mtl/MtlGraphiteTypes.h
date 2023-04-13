@@ -39,7 +39,7 @@ using MtlHandle = const void*;
 
 struct MtlTextureInfo {
     uint32_t fSampleCount = 1;
-    skgpu::Mipmapped fMipmapped = skgpu::Mipmapped::kNo;
+    ::skgpu::Mipmapped fMipmapped = skgpu::Mipmapped::kNo;
 
     // Since we aren't in an Obj-C header we can't directly use Mtl types here. Each of these can
     // cast to their mapped Mtl types list below.
@@ -51,7 +51,7 @@ struct MtlTextureInfo {
     MtlTextureInfo() = default;
     MtlTextureInfo(MtlHandle mtlTexture);
     MtlTextureInfo(uint32_t sampleCount,
-                   skgpu::Mipmapped mipmapped,
+                   ::skgpu::Mipmapped mipmapped,
                    MtlPixelFormat format,
                    MtlTextureUsage usage,
                    MtlStorageMode storageMode,

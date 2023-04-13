@@ -78,15 +78,13 @@ public:
                       CachingHint) const override;
     sk_sp<SkData> onRefEncoded() const override;
     sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const override;
-#if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeSubset(const SkIRect&,
                                 skgpu::graphite::Recorder*,
-                                RequiredImageProperties) const override;
+                                RequiredProperties) const override;
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType targetCT,
                                                 sk_sp<SkColorSpace> targetCS,
                                                 skgpu::graphite::Recorder*,
-                                                RequiredImageProperties) const override;
-#endif
+                                                RequiredProperties) const override;
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kLazy; }
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
@@ -124,11 +122,6 @@ private:
     GrSurfaceProxyView textureProxyViewFromPlanes(GrRecordingContext*, skgpu::Budgeted) const;
     sk_sp<SkCachedData> getPlanes(const SkYUVAPixmapInfo::SupportedDataTypes& supportedDataTypes,
                                   SkYUVAPixmaps* pixmaps) const;
-#endif
-
-#if defined(SK_GRAPHITE)
-    sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
-                                      RequiredImageProperties) const override;
 #endif
 
     class ScopedGenerator;

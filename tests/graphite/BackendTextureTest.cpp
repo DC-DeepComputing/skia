@@ -10,6 +10,7 @@
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/Image.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -168,7 +169,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest, reporter, context) {
             BackendTexture texture = recorder->createBackendTexture(kSize, info);
             REPORTER_ASSERT(reporter, texture.isValid());
 
-            sk_sp<SkImage> image = SkImage::MakeGraphiteFromBackendTexture(recorder.get(),
+            sk_sp<SkImage> image = SkImages::AdoptTextureFrom(recorder.get(),
                                                                            texture,
                                                                            kRGBA_8888_SkColorType,
                                                                            kPremul_SkAlphaType,
@@ -180,7 +181,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest, reporter, context) {
 
             // We should fail when trying to wrap the same texture in an image with a non-compatible
             // color type.
-            image = SkImage::MakeGraphiteFromBackendTexture(recorder.get(),
+            image = SkImages::AdoptTextureFrom(recorder.get(),
                                                             texture,
                                                             kAlpha_8_SkColorType,
                                                             kPremul_SkAlphaType,

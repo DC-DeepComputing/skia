@@ -16,7 +16,7 @@ namespace {
 
 bool valid_client_provided_image(const SkImage* clientProvided,
                                  const SkImage* original,
-                                 SkImage::RequiredImageProperties requiredProps) {
+                                 SkImage::RequiredProperties requiredProps) {
     if (!clientProvided ||
         !as_IB(clientProvided)->isGraphiteBacked() ||
         original->dimensions() != clientProvided->dimensions() ||

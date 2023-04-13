@@ -45,6 +45,18 @@ public:
 
     // From SkImage.h
     bool isValid(GrRecordingContext*) const final;
+    sk_sp<SkImage> makeColorTypeAndColorSpace(SkColorType targetColorType,
+                                              sk_sp<SkColorSpace> targetColorSpace,
+                                              GrDirectContext* dContext) const final;
+    sk_sp<SkImage> makeSubset(const SkIRect& subset, GrDirectContext* direct) const final;
+    // These graphite impls just have extra logging to make sure we don't cross our wires.
+    sk_sp<SkImage> makeSubset(const SkIRect& subset,
+                              skgpu::graphite::Recorder*,
+                              RequiredProperties) const final;
+    sk_sp<SkImage> makeColorTypeAndColorSpace(SkColorType,
+                                              sk_sp<SkColorSpace>,
+                                              skgpu::graphite::Recorder*,
+                                              RequiredProperties) const final;
 
     // From SkImage_Base.h
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const final;
@@ -86,18 +98,6 @@ protected:
     SkImage_GaneshBase(sk_sp<GrImageContext>, SkImageInfo, uint32_t uniqueID);
 
     sk_sp<GrImageContext> fContext;
-
-#if defined(SK_GRAPHITE)
-    sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
-                                      RequiredImageProperties) const final;
-    sk_sp<SkImage> onMakeSubset(const SkIRect& subset,
-                                skgpu::graphite::Recorder*,
-                                RequiredImageProperties) const final;
-    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,
-                                                sk_sp<SkColorSpace>,
-                                                skgpu::graphite::Recorder*,
-                                                RequiredImageProperties) const final;
-#endif
 };
 
 #endif

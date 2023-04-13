@@ -103,6 +103,45 @@ bool SkImage_Base::onAsLegacyBitmap(GrDirectContext* dContext, SkBitmap* bitmap)
     return true;
 }
 
+sk_sp<SkImage> SkImage_Base::makeSubset(const SkIRect& subset, GrDirectContext* direct) const {
+    if (subset.isEmpty()) {
+        return nullptr;
+    }
+
+    const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
+    if (!bounds.contains(subset)) {
+        return nullptr;
+    }
+
+    // optimization : return self if the subset == our bounds
+    if (bounds == subset) {
+        return sk_ref_sp(const_cast<SkImage_Base*>(this));
+    }
+
+    return this->onMakeSubset(subset, direct);
+}
+
+sk_sp<SkImage> SkImage_Base::makeColorTypeAndColorSpace(SkColorType targetColorType,
+                                                        sk_sp<SkColorSpace> targetColorSpace,
+                                                        GrDirectContext* dContext) const {
+    if (kUnknown_SkColorType == targetColorType || !targetColorSpace) {
+        return nullptr;
+    }
+
+    SkColorType colorType = this->colorType();
+    SkColorSpace* colorSpace = this->colorSpace();
+    if (!colorSpace) {
+        colorSpace = sk_srgb_singleton();
+    }
+    if (colorType == targetColorType &&
+        (SkColorSpace::Equals(colorSpace, targetColorSpace.get()) || this->isAlphaOnly())) {
+        return sk_ref_sp(const_cast<SkImage_Base*>(this));
+    }
+
+    return this->onMakeColorTypeAndColorSpace(targetColorType,
+                                              std::move(targetColorSpace), dContext);
+}
+
 void SkImage_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
                                                      sk_sp<SkColorSpace> dstColorSpace,
                                                      SkIRect srcRect,
@@ -114,6 +153,30 @@ void SkImage_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
     // TODO: Call non-YUV asyncRescaleAndReadPixels and then make our callback convert to YUV and
     // call client's callback.
     callback(context, nullptr);
+}
+
+sk_sp<SkImage> SkImage_Base::makeColorTypeAndColorSpace(SkColorType targetColorType,
+                                                        sk_sp<SkColorSpace> targetColorSpace,
+                                                        skgpu::graphite::Recorder* recorder,
+                                                        RequiredProperties requiredProps) const {
+    if (kUnknown_SkColorType == targetColorType || !targetColorSpace) {
+        return nullptr;
+    }
+
+    SkColorType colorType = this->colorType();
+    SkColorSpace* colorSpace = this->colorSpace();
+    if (!colorSpace) {
+        colorSpace = sk_srgb_singleton();
+    }
+    if (colorType == targetColorType &&
+        (SkColorSpace::Equals(colorSpace, targetColorSpace.get()) || this->isAlphaOnly())) {
+        return sk_ref_sp(const_cast<SkImage_Base*>(this));
+    }
+
+    return as_IB(this)->onMakeColorTypeAndColorSpace(targetColorType,
+                                                     std::move(targetColorSpace),
+                                                     recorder,
+                                                     requiredProps);
 }
 
 #if defined(SK_GANESH)
@@ -267,49 +330,6 @@ std::tuple<skgpu::graphite::TextureProxyView, SkColorType> SkImage_Base::asView(
 
     SkColorType ct = this->colorType();
     return { image->textureProxyView(), ct };
-}
-
-sk_sp<SkImage> SkImage::makeColorSpace(sk_sp<SkColorSpace> targetColorSpace,
-                                       skgpu::graphite::Recorder* recorder,
-                                       RequiredImageProperties requiredProps) const {
-    return this->makeColorTypeAndColorSpace(this->colorType(), std::move(targetColorSpace),
-                                            recorder, requiredProps);
-}
-
-sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
-                                                   sk_sp<SkColorSpace> targetColorSpace,
-                                                   skgpu::graphite::Recorder* recorder,
-                                                   RequiredImageProperties requiredProps) const {
-    if (kUnknown_SkColorType == targetColorType || !targetColorSpace) {
-        return nullptr;
-    }
-
-    SkColorType colorType = this->colorType();
-    SkColorSpace* colorSpace = this->colorSpace();
-    if (!colorSpace) {
-        colorSpace = sk_srgb_singleton();
-    }
-    if (colorType == targetColorType &&
-        (SkColorSpace::Equals(colorSpace, targetColorSpace.get()) || this->isAlphaOnly())) {
-        return sk_ref_sp(const_cast<SkImage*>(this));
-    }
-
-    return as_IB(this)->onMakeColorTypeAndColorSpace(targetColorType,
-                                                     std::move(targetColorSpace),
-                                                     recorder,
-                                                     requiredProps);
-}
-
-sk_sp<SkImage> SkImage_Base::makeTextureImage(skgpu::graphite::Recorder* recorder,
-                                              RequiredImageProperties requiredProps) const {
-    if (!recorder) {
-        return nullptr;
-    }
-    if (this->dimensions().area() <= 1) {
-        requiredProps.fMipmapped = skgpu::Mipmapped::kNo;
-    }
-
-    return as_IB(this)->onMakeTextureImage(recorder, requiredProps);
 }
 
 #endif // SK_GRAPHITE
