@@ -23,73 +23,6 @@
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// XMP helpers
-
-void xmp_write_prefix(SkDynamicMemoryWStream& s, const std::string& ns, const std::string& attrib) {
-    s.writeText(ns.c_str());
-    s.writeText(":");
-    s.writeText(attrib.c_str());
-    s.writeText("=\"");
-}
-
-void xmp_write_suffix(SkDynamicMemoryWStream& s, bool newLine) {
-    s.writeText("\"");
-    if (newLine) {
-        s.writeText("\n");
-    }
-}
-
-void xmp_write_per_channel_attr(SkDynamicMemoryWStream& s,
-                                const std::string& ns,
-                                const std::string& attrib,
-                                SkScalar r,
-                                SkScalar g,
-                                SkScalar b,
-                                bool newLine = true) {
-    xmp_write_prefix(s, ns, attrib);
-    if (r == g && r == b) {
-        s.writeScalarAsText(r);
-    } else {
-        s.writeScalarAsText(r);
-        s.writeText(",");
-        s.writeScalarAsText(g);
-        s.writeText(",");
-        s.writeScalarAsText(b);
-    }
-    xmp_write_suffix(s, newLine);
-}
-
-void xmp_write_scalar_attr(SkDynamicMemoryWStream& s,
-                           const std::string& ns,
-                           const std::string& attrib,
-                           SkScalar value,
-                           bool newLine = true) {
-    xmp_write_prefix(s, ns, attrib);
-    s.writeScalarAsText(value);
-    xmp_write_suffix(s, newLine);
-}
-
-void xmp_write_decimal_attr(SkDynamicMemoryWStream& s,
-                            const std::string& ns,
-                            const std::string& attrib,
-                            int32_t value,
-                            bool newLine = true) {
-    xmp_write_prefix(s, ns, attrib);
-    s.writeDecAsText(value);
-    xmp_write_suffix(s, newLine);
-}
-
-void xmp_write_string_attr(SkDynamicMemoryWStream& s,
-                           const std::string& ns,
-                           const std::string& attrib,
-                           const std::string& value,
-                           bool newLine = true) {
-    xmp_write_prefix(s, ns, attrib);
-    s.writeText(value.c_str());
-    xmp_write_suffix(s, newLine);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 // JpegR encoding
 
 bool SkJpegGainmapEncoder::EncodeJpegR(SkWStream* dst,
@@ -106,52 +39,95 @@ bool SkJpegGainmapEncoder::EncodeJpegR(SkWStream* dst,
 
 // Generate the XMP metadata for an HDRGM file.
 sk_sp<SkData> get_hdrgm_xmp_data(const SkGainmapInfo& gainmapInfo) {
-    const float kLog2 = sk_float_log(2.f);
     SkDynamicMemoryWStream s;
+    const float kLog2 = sk_float_log(2.f);
+    const SkColor4f gainMapMin = {sk_float_log(gainmapInfo.fGainmapRatioMin.fR) / kLog2,
+                                  sk_float_log(gainmapInfo.fGainmapRatioMin.fG) / kLog2,
+                                  sk_float_log(gainmapInfo.fGainmapRatioMin.fB) / kLog2,
+                                  1.f};
+    const SkColor4f gainMapMax = {sk_float_log(gainmapInfo.fGainmapRatioMax.fR) / kLog2,
+                                  sk_float_log(gainmapInfo.fGainmapRatioMax.fG) / kLog2,
+                                  sk_float_log(gainmapInfo.fGainmapRatioMax.fB) / kLog2,
+                                  1.f};
+    auto write_scalar_attr = [&s](const char* attrib, SkScalar value, bool newLine = true) {
+        s.writeText("      ");
+        s.writeText(attrib);
+        s.writeText("=\"");
+        s.writeScalarAsText(value);
+        s.writeText("\"");
+        if (newLine) {
+            s.writeText("\n");
+        }
+    };
+    auto write_float3_attr = [&s](const char* attrib, SkColor4f value) {
+        s.writeText("      <");
+        s.writeText(attrib);
+        s.writeText(">\n");
+        s.writeText("        <rdf:Seq>\n");
+        s.writeText("          <rdf:li>");
+        s.writeScalarAsText(value.fR);
+        s.writeText("</rdf:li>\n");
+        s.writeText("          <rdf:li>");
+        s.writeScalarAsText(value.fG);
+        s.writeText("</rdf:li>\n");
+        s.writeText("          <rdf:li>");
+        s.writeScalarAsText(value.fB);
+        s.writeText("</rdf:li>\n");
+        s.writeText("        </rdf:Seq>\n");
+        s.writeText("      </");
+        s.writeText(attrib);
+        s.writeText(">\n");
+    };
+    auto is_single_channel = [](SkColor4f c) { return c.fR == c.fG && c.fG == c.fB; };
+
     s.writeText(
             "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"XMP Core 5.5.0\">\n"
             "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             "    <rdf:Description rdf:about=\"\"\n"
-            "     xmlns:hdrgm=\"http://ns.adobe.com/hdr-gain-map/1.0/\"\n");
-    const std::string hdrgmPrefix = "     hdrgm";
-    xmp_write_string_attr(s, hdrgmPrefix, "Version", "1.0");
-    xmp_write_per_channel_attr(s,
-                               hdrgmPrefix,
-                               "GainMapMin",
-                               sk_float_log(gainmapInfo.fGainmapRatioMin.fR) / kLog2,
-                               sk_float_log(gainmapInfo.fGainmapRatioMin.fG) / kLog2,
-                               sk_float_log(gainmapInfo.fGainmapRatioMin.fB) / kLog2);
-    xmp_write_per_channel_attr(s,
-                               hdrgmPrefix,
-                               "GainMapMax",
-                               sk_float_log(gainmapInfo.fGainmapRatioMax.fR) / kLog2,
-                               sk_float_log(gainmapInfo.fGainmapRatioMax.fG) / kLog2,
-                               sk_float_log(gainmapInfo.fGainmapRatioMax.fB) / kLog2);
-    xmp_write_per_channel_attr(s,
-                               hdrgmPrefix,
-                               "Gamma",
-                               gainmapInfo.fGainmapGamma.fR,
-                               gainmapInfo.fGainmapGamma.fG,
-                               gainmapInfo.fGainmapGamma.fB);
-    xmp_write_per_channel_attr(s,
-                               hdrgmPrefix,
-                               "OffsetSDR",
-                               gainmapInfo.fEpsilonSdr.fR,
-                               gainmapInfo.fEpsilonSdr.fG,
-                               gainmapInfo.fEpsilonSdr.fB);
-    xmp_write_per_channel_attr(s,
-                               hdrgmPrefix,
-                               "OffsetHDR",
-                               gainmapInfo.fEpsilonHdr.fR,
-                               gainmapInfo.fEpsilonHdr.fG,
-                               gainmapInfo.fEpsilonHdr.fB);
-    xmp_write_scalar_attr(
-            s, hdrgmPrefix, "HDRCapacityMin", sk_float_log(gainmapInfo.fDisplayRatioSdr) / kLog2);
-    xmp_write_scalar_attr(
-            s, hdrgmPrefix, "HDRCapacityMax", sk_float_log(gainmapInfo.fDisplayRatioHdr) / kLog2);
-    xmp_write_string_attr(s, hdrgmPrefix, "BaseRenditionIsHDR", "False", /*newLine=*/false);
+            "        xmlns:hdrgm=\"http://ns.adobe.com/hdr-gain-map/1.0/\"\n"
+            "      hdrgm:Version=\"1.0\"\n"
+            "      hdrgm:BaseRenditionIsHDR=\"False\"\n");
+
+    if (is_single_channel(gainMapMin)) {
+        write_scalar_attr("hdrgm:GainMapMin", gainMapMin.fR);
+    }
+    if (is_single_channel(gainMapMax)) {
+        write_scalar_attr("hdrgm:GainMapMax", gainMapMax.fR);
+    }
+    if (is_single_channel(gainmapInfo.fGainmapGamma)) {
+        write_scalar_attr("hdrgm:Gamma", gainmapInfo.fGainmapGamma.fR);
+    }
+    if (is_single_channel(gainmapInfo.fEpsilonSdr)) {
+        write_scalar_attr("hdrgm:OffsetSDR", gainmapInfo.fEpsilonSdr.fR);
+    }
+    if (is_single_channel(gainmapInfo.fEpsilonHdr)) {
+        write_scalar_attr("hdrgm:OffsetHDR", gainmapInfo.fEpsilonHdr.fR);
+    }
+    write_scalar_attr("hdrgm:HDRCapacityMin",
+                      sk_float_log(gainmapInfo.fDisplayRatioSdr) / kLog2,
+                      /*newLine=*/true);
+    write_scalar_attr("hdrgm:HDRCapacityMax",
+                      sk_float_log(gainmapInfo.fDisplayRatioHdr) / kLog2,
+                      /*newLine=*/false);
+    s.writeText(">\n");
+
+    if (!is_single_channel(gainMapMin)) {
+        write_float3_attr("hdrgm:GainMapMin", gainMapMin);
+    }
+    if (!is_single_channel(gainMapMax)) {
+        write_float3_attr("hdrgm:GainMapMax", gainMapMax);
+    }
+    if (!is_single_channel(gainmapInfo.fGainmapGamma)) {
+        write_float3_attr("hdrgm:Gamma", gainmapInfo.fGainmapGamma);
+    }
+    if (!is_single_channel(gainmapInfo.fEpsilonSdr)) {
+        write_float3_attr("hdrgm:OffsetSDR", gainmapInfo.fEpsilonSdr);
+    }
+    if (!is_single_channel(gainmapInfo.fEpsilonHdr)) {
+        write_float3_attr("hdrgm:OffsetHDR", gainmapInfo.fEpsilonHdr);
+    }
     s.writeText(
-            "/>\n"
+            "    </rdf:Description>\n"
             "  </rdf:RDF>\n"
             "</x:xmpmeta>");
     return s.detachAsData();
@@ -164,8 +140,10 @@ static sk_sp<SkData> get_gcontainer_xmp_data(size_t gainmapItemLength) {
             "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 5.1.2\">\n"
             "  <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
             "    <rdf:Description\n"
-            "     xmlns:Container=\"http://ns.google.com/photos/1.0/container/\"\n"
-            "     xmlns:Item=\"http://ns.google.com/photos/1.0/container/item/\">\n"
+            "        xmlns:Container=\"http://ns.google.com/photos/1.0/container/\"\n"
+            "        xmlns:Item=\"http://ns.google.com/photos/1.0/container/item/\"\n"
+            "        xmlns:hdrgm=\"http://ns.adobe.com/hdr-gain-map/1.0/\"\n"
+            "        hdrgm:Version=\"1.0\">\n"
             "      <Container:Directory>\n"
             "        <rdf:Seq>\n"
             "          <rdf:li rdf:parseType=\"Resource\">\n"
@@ -177,8 +155,9 @@ static sk_sp<SkData> get_gcontainer_xmp_data(size_t gainmapItemLength) {
             "            <Container:Item\n"
             "             Item:Semantic=\"GainMap\"\n"
             "             Item:Mime=\"image/jpeg\"\n"
-            "             ");
-    xmp_write_decimal_attr(s, "Item", "Length", gainmapItemLength, /*newLine=*/false);
+            "             Item:Length=\"");
+    s.writeDecAsText(gainmapItemLength);
+    s.writeText("\"\n");
     s.writeText(
             "/>\n"
             "          </rdf:li>\n"
