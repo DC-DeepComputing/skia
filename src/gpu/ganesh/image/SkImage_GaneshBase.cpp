@@ -188,28 +188,44 @@ sk_sp<SkImage> SkImage_GaneshBase::onMakeSubset(const SkIRect& subset,
                                       this->imageInfo().colorInfo());
 }
 
-#if defined(SK_GRAPHITE)
-sk_sp<SkImage> SkImage_GaneshBase::onMakeTextureImage(skgpu::graphite::Recorder*,
-                                                      SkImage::RequiredImageProperties) const {
+sk_sp<SkImage> SkImage_GaneshBase::makeSubset(const SkIRect&,
+                                              skgpu::graphite::Recorder*,
+                                              RequiredProperties) const {
     SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
     return nullptr;
 }
 
-sk_sp<SkImage> SkImage_GaneshBase::onMakeSubset(const SkIRect&,
-                                                skgpu::graphite::Recorder*,
-                                                RequiredImageProperties) const {
+sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(SkColorType,
+                                                              sk_sp<SkColorSpace>,
+                                                              skgpu::graphite::Recorder*,
+                                                              RequiredImageProperties) const {
     SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
     return nullptr;
 }
 
-sk_sp<SkImage> SkImage_GaneshBase::onMakeColorTypeAndColorSpace(SkColorType,
-                                                                sk_sp<SkColorSpace>,
-                                                                skgpu::graphite::Recorder*,
-                                                                RequiredImageProperties) const {
-    SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
-    return nullptr;
+sk_sp<SkImage> SkImage_GaneshBase::makeSubset(const SkIRect& subset, GrDirectContext* direct) const {
+    if (subset.isEmpty()) {
+        return nullptr;
+    }
+
+    const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
+    if (!bounds.contains(subset)) {
+        return nullptr;
+    }
+
+    auto myContext = this->context();
+    // short circuit check of the context
+    if (myContext && !myContext->priv().matches(direct)) {
+        return nullptr;
+    }
+
+    // optimization : return self if the subset == our bounds
+    if (bounds == subset) {
+        return sk_ref_sp(const_cast<SkImage*>(this));
+    }
+
+    return this->onMakeSubset(subset, direct);
 }
-#endif
 
 bool SkImage_GaneshBase::onReadPixels(GrDirectContext* dContext,
                                       const SkImageInfo& dstInfo,

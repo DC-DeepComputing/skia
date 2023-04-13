@@ -63,10 +63,12 @@ public:
 
     // From SkImage.h
     size_t textureSize() const override { return 0; }
-#if defined(SK_GRAPHITE)
-    sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
-                                    RequiredImageProperties) const override;
-#endif
+    sk_sp<SkImage> makeSubset(const SkIRect& subset,
+                              GrDirectContext* direct) const override;
+    sk_sp<SkImage> makeSubset(const SkIRect& subset,
+                              skgpu::graphite::Recorder*,
+                              RequiredProperties) const override { return nullptr; };
+
 
     // Methods that we want to use elsewhere in Skia, but not be a part of the public API.
     virtual bool onPeekPixels(SkPixmap*) const { return false; }
