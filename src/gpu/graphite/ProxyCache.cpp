@@ -13,6 +13,7 @@
 #include "src/core/SkMipmap.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureUtils.h"
 
@@ -74,6 +75,8 @@ uint32_t ProxyCache::UniqueKeyHash::operator()(const skgpu::UniqueKey& key) cons
 sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
                                                         const SkBitmap& bitmap,
                                                         Mipmapped mipmapped) {
+    ResourceCache* resourceCache = recorder->priv().resourceCache();
+
     this->processInvalidKeyMsgs();
 
     if (bitmap.dimensions().area() <= 1) {
@@ -86,6 +89,7 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
         make_bitmap_key(&key, bitmap, Mipmapped::kYes);
 
         if (sk_sp<TextureProxy>* cached = fCache.find(key)) {
+            resourceCache->touchResource((*cached)->texture());
             return *cached;
         }
     }
@@ -93,6 +97,7 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
     make_bitmap_key(&key, bitmap, mipmapped);
 
     if (sk_sp<TextureProxy>* cached = fCache.find(key)) {
+        resourceCache->touchResource((*cached)->texture());
         return *cached;
     }
 
