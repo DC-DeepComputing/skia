@@ -35,6 +35,7 @@ _string_list_flags = [
     "//src/codec:include_decoder",
     "//src/encode:include_encoder",
     "//bazel/common_config_settings:include_fontmgr",
+    "//command_line_option:platforms",
 ]
 
 # These are the flags that we support setting via set_flags
