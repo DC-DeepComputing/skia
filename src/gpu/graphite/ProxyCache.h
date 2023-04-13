@@ -41,11 +41,13 @@ public:
     int numCached() const;
     void forceProcessInvalidKeyMsgs();
     void forceFreeUniquelyHeld();
+    void forcePurgeProxiesNotUsedSince();
 #endif
 
 private:
     void processInvalidKeyMsgs();
     void freeUniquelyHeld();
+    void purgeProxiesNotUsedSince();
 
     typedef SkMessageBus<skgpu::UniqueKeyInvalidatedMsg_Graphite, uint32_t>::Inbox InvalidKeyInbox;
 
