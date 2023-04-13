@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0799608f_239982b7",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-04-13T20:33:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "591716bc_ec32e29c",
+      "range": {
+        "startLine": 265,
+        "startChar": 68,
+        "endLine": 265,
+        "endChar": 75
+      },
+      "revId": "748852a58136adfa96e75ce01854196dc46797a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3e1dd26_2f721b1f",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-13T19:06:50Z",
       "side": 1,
       "message": "jcolor could be null.  Let\u0027s update AutoPropertyTracker to take a pointer and test for null in the constructor:\n\n    if (fBuilder-\u003efPropertyObserver \u0026\u0026 obj) {\n    ...",
+      "range": {
+        "startLine": 157,
+        "startChar": 57,
+        "endLine": 157,
+        "endChar": 63
+      },
+      "revId": "748852a58136adfa96e75ce01854196dc46797a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eb13331_3df8fa57",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-04-13T20:33:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3e1dd26_2f721b1f",
       "range": {
         "startLine": 157,
         "startChar": 57,
