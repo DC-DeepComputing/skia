@@ -13,7 +13,9 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"os"
 	"path/filepath"
+	"time"
 
 	"go.skia.org/infra/go/common"
 	sk_exec "go.skia.org/infra/go/exec"
@@ -24,15 +26,17 @@ import (
 
 var (
 	// Required properties for this task.
-	bazelArgs    = common.NewMultiStringFlag("bazel_arg", nil, "Additional arguments that should be forwarded directly to the Bazel invocation.")
-	cross        = flag.String("cross", "", "An identifier specifying the target platform that Bazel should build for. If empty, Bazel builds for the host platform (the machine on which this executable is run).")
-	config       = flag.String("config", "", "A custom configuration specified in //bazel/buildrc. This configuration potentially encapsulates many features and options.")
-	expungeCache = flag.Bool("expunge_cache", false, "If set, the Bazel cache will be cleaned with --expunge before execution. We should only have to set this rarely, if something gets messed up.")
-	projectId    = flag.String("project_id", "", "ID of the Google Cloud project.")
-	label        = flag.String("label", "", "An absolute label to the target that should be built.")
-	taskId       = flag.String("task_id", "", "ID of this task.")
-	taskName     = flag.String("task_name", "", "Name of the task.")
-	workdir      = flag.String("workdir", ".", "Working directory, the root directory of a full Skia checkout")
+	bazelArgs      = common.NewMultiStringFlag("bazel_arg", nil, "Additional arguments that should be forwarded directly to the Bazel invocation.")
+	cross          = flag.String("cross", "", "An identifier specifying the target platform that Bazel should build for. If empty, Bazel builds for the host platform (the machine on which this executable is run).")
+	config         = flag.String("config", "", "A custom configuration specified in //bazel/buildrc. This configuration potentially encapsulates many features and options.")
+	expungeCache   = flag.Bool("expunge_cache", false, "If set, the Bazel cache will be cleaned with --expunge before execution. We should only have to set this rarely, if something gets messed up.")
+	projectId      = flag.String("project_id", "", "ID of the Google Cloud project.")
+	label          = flag.String("label", "", "An absolute label to the target that should be built.")
+	taskId         = flag.String("task_id", "", "ID of this task.")
+	taskName       = flag.String("task_name", "", "Name of the task.")
+	workdir        = flag.String("workdir", ".", "Working directory, the root directory of a full Skia checkout")
+	outPath        = flag.String("out_path", "", "Directory into which to copy the //bazel-bin subdirectories provided via --bazel_bin_subdir. If unset, nothing will be copied.")
+	bazelBinSubdir = common.NewMultiStringFlag("bazel_bin_subdir", nil, `//bazel-bin subdirectories to copy into the path provided via --out_path (e.g. "tests" will copy the contents of //bazel-bin/tests).`)
 	// Optional flags.
 	local  = flag.Bool("local", false, "True if running locally (as opposed to on the CI/CQ)")
 	output = flag.String("o", "", "If provided, dump a JSON blob of step data to the given file. Prints to stdout if '-' is given.")
@@ -45,6 +49,10 @@ func main() {
 
 	if *label == "" || *config == "" {
 		td.Fatal(ctx, fmt.Errorf("--label and --config are required"))
+	}
+
+	if *outPath != "" && len(*bazelBinSubdir) == 0 {
+		td.Fatal(ctx, fmt.Errorf("at least one --bazel_bin_subdir is required if --out_path is set"))
 	}
 
 	wd, err := os_steps.Abs(ctx, *workdir)
@@ -76,6 +84,12 @@ func main() {
 
 	if err := bazelBuild(ctx, skiaDir, *label, *config, *bazelArgs...); err != nil {
 		td.Fatal(ctx, err)
+	}
+
+	if *outPath != "" {
+		if err := copyBazelBinSubdirs(ctx, skiaDir, *bazelBinSubdir, filepath.Join(wd, *outPath)); err != nil {
+			td.Fatal(ctx, err)
+		}
 	}
 }
 
@@ -120,6 +134,37 @@ func bazelClean(ctx context.Context, checkoutDir string) error {
 		if err != nil {
 			return err
 		}
+		return nil
+	})
+}
+
+// copyBazelBinSubdirs copies the contents of the bazel-bin directory into the given path.
+func copyBazelBinSubdirs(ctx context.Context, checkoutDir string, bazelBinSubdirs []string, destinationDir string) error {
+	return td.Do(ctx, td.Props(fmt.Sprintf("Copying bazel-bin subdirectories %+v into %s", bazelBinSubdirs, destinationDir)), func(ctx context.Context) error {
+		time.Sleep(10 * time.Minute)
+
+		for _, subdir := range bazelBinSubdirs {
+			src := filepath.Join(checkoutDir, "bazel-bin", subdir)
+			dst := filepath.Join(destinationDir, subdir)
+
+			// Make destination directory.
+			if err := os.MkdirAll(dst, os.ModePerm); err != nil {
+				return err
+			}
+
+			// Copy subdirectory contents.
+			_, err := sk_exec.RunCommand(ctx, &sk_exec.Command{
+				Name:      "cp",
+				Args:      []string{"--recursive", "--dereference", src + "/*", dst},
+				Dir:       checkoutDir,
+				LogStdout: true,
+				LogStderr: true,
+			})
+			if err != nil {
+				return err
+			}
+		}
+
 		return nil
 	})
 }
