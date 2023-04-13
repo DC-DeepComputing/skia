@@ -255,6 +255,12 @@ func (p parts) bazelBuildParts() (label string, config string, host string, cros
 	return p["label"], p["config"], p["host"], p["cross"]
 }
 
+// bazelBuildGeneratedTargetParts returns all parts from the BazelBuildGeneratedTarget schema. All
+// parts are required.
+func (p parts) bazelBuildGeneratedTargetParts() (kind, label string) {
+	return p["kind"], p["label"]
+}
+
 // bazelTestParts returns all parts from the BazelTest schema. task_driver, config, and host are
 // required; cross is optional.
 func (p parts) bazelTestParts() (taskDriver string, config string, host string, cross string) {

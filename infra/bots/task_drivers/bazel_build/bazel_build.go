@@ -14,6 +14,7 @@ import (
 	"flag"
 	"fmt"
 	"path/filepath"
+	"time"
 
 	"go.skia.org/infra/go/common"
 	sk_exec "go.skia.org/infra/go/exec"
@@ -33,6 +34,7 @@ var (
 	taskId       = flag.String("task_id", "", "ID of this task.")
 	taskName     = flag.String("task_name", "", "Name of the task.")
 	workdir      = flag.String("workdir", ".", "Working directory, the root directory of a full Skia checkout")
+	outPath      = flag.String("out_path", "", "If set, copy the contents of the bazel-bin directory into this path.")
 	// Optional flags.
 	local  = flag.Bool("local", false, "True if running locally (as opposed to on the CI/CQ)")
 	output = flag.String("o", "", "If provided, dump a JSON blob of step data to the given file. Prints to stdout if '-' is given.")
@@ -77,6 +79,12 @@ func main() {
 	if err := bazelBuild(ctx, skiaDir, *label, *config, *bazelArgs...); err != nil {
 		td.Fatal(ctx, err)
 	}
+
+	if *outPath != "" {
+		if err := copyBazelBinDirectory(ctx, skiaDir, *outPath); err != nil {
+			td.Fatal(ctx, err)
+		}
+	}
 }
 
 // bazelBuild builds the target referenced by the given absolute label passing the provided
@@ -120,6 +128,14 @@ func bazelClean(ctx context.Context, checkoutDir string) error {
 		if err != nil {
 			return err
 		}
+		return nil
+	})
+}
+
+// copyBazelBinDirectory copies the contents of the bazel-bin directory into the given path.
+func copyBazelBinDirectory(ctx context.Context, checkoutDir, destinationDir string) error {
+	return td.Do(ctx, td.Props("Copying bazel-bin directory into "+destinationDir), func(ctx context.Context) error {
+		time.Sleep(20 * time.Minute)
 		return nil
 	})
 }
