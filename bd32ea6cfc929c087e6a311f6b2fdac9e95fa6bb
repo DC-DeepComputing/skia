@@ -22,6 +22,30 @@
       },
       "revId": "bd32ea6cfc929c087e6a311f6b2fdac9e95fa6bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12fbe857_3eebe5b3",
+        "filename": "gm/fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-13T15:40:47Z",
+      "side": 1,
+      "message": "This is fine for now.\n\nA number of the SkFontMgr implementations that just work with font file data (FontConfig and DirectWrite) could in theory work with any SkTypeface implementation that can create from file data (e.g. Lookup fonts with DirectWrite font collection but instantiate as FreeType or Fontations). CoreText is generally written antagonistically to such an arrangement, but could be made to work, maybe. In any event, it\u0027s a good excuse to start separating SkFontMgr into SkFontCollection and the typeface factories, and allowing the SkFontCollections to optionally take a typeface factory.\n\nThe only real difficulty with splitting the collection from its preferred typeface factory (like using FontConfig with something other than FreeType) is that the collection may contain fonts that don\u0027t work with other factories, but in theory that can also be somewhat worked around.",
+      "parentUuid": "1785431f_f2fe4079",
+      "range": {
+        "startLine": 26,
+        "startChar": 73,
+        "endLine": 26,
+        "endChar": 96
+      },
+      "revId": "bd32ea6cfc929c087e6a311f6b2fdac9e95fa6bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
