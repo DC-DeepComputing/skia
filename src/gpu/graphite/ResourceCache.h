@@ -67,6 +67,8 @@ public:
 
     ProxyCache* proxyCache() { return fProxyCache.get(); }
 
+    void touchResource(Resource*);
+
 private:
     ResourceCache(SingleOwner*, uint32_t recorderID);
 
