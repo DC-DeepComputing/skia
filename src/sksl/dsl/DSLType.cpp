@@ -250,17 +250,38 @@ DSLPossibleExpression DSLType::Construct(DSLType type, SkSpan<DSLExpression> arg
             std::move(skslArgs));
 }
 
+<<<<<<< HEAD   (6db50f Enforce program stack limits on function parameters.)
 DSLType Array(const DSLType& base, int count, PositionInfo pos) {
     count = base.skslType().convertArraySize(ThreadContext::Context(),
             DSLExpression(count, pos).release());
     ThreadContext::ReportErrors(pos);
+=======
+DSLType Array(const DSLType& base, int count, Position pos) {
+    count = base.skslType().convertArraySize(ThreadContext::Context(), pos,
+                                             DSLExpression(count, pos).release());
+>>>>>>> CHANGE (1cbd33 Enforce size limits on struct and array declarations.)
     if (!count) {
         return DSLType(kPoison_Type);
     }
     return ThreadContext::SymbolTable()->addArrayDimension(&base.skslType(), count);
 }
 
+<<<<<<< HEAD   (6db50f Enforce program stack limits on function parameters.)
 DSLType Struct(std::string_view name, SkSpan<DSLField> fields, PositionInfo pos) {
+=======
+DSLType UnsizedArray(const DSLType& base, Position pos) {
+    if (!base.skslType().checkIfUsableInArray(ThreadContext::Context(), pos)) {
+        return DSLType(kPoison_Type);
+    }
+    return ThreadContext::SymbolTable()->addArrayDimension(&base.skslType(),
+                                                           SkSL::Type::kUnsizedArray);
+}
+
+DSLType StructType(std::string_view name,
+                   SkSpan<DSLField> fields,
+                   bool interfaceBlock,
+                   Position pos) {
+>>>>>>> CHANGE (1cbd33 Enforce size limits on struct and array declarations.)
     std::vector<SkSL::Type::Field> skslFields;
     skslFields.reserve(fields.size());
     for (const DSLField& field : fields) {
