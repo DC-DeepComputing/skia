@@ -16,6 +16,24 @@
       "message": "responded in bug, but I believe our current implementation may be correct.",
       "revId": "2dffba4d80286123a9ebf216a02b7defa6afe73f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84f95c98_e3d4f669",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-13T15:24:39Z",
+      "side": 1,
+      "message": "Based on your comment there \"So my reading of that is that the compatibility profile is meant to continue supporting the removed features.\"; then wouldn\u0027t want to set lum8 as supported only we\u0027re using OpenGL and not the core profile",
+      "parentUuid": "2cdd1f70_5ab72053",
+      "revId": "2dffba4d80286123a9ebf216a02b7defa6afe73f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
