@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4a55cb4_2e4d4bf9",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:25:55Z",
+      "side": 1,
+      "message": "tiny nit: array",
+      "range": {
+        "startLine": 87,
+        "startChar": 85,
+        "endLine": 87,
+        "endChar": 91
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fffbc84_e64d0055",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:25:55Z",
+      "side": 1,
+      "message": "Curious: Why `SkTDArray` and not `SkSTArray`?",
+      "range": {
+        "startLine": 90,
+        "startChar": 4,
+        "endLine": 90,
+        "endChar": 13
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66e689b6_8b48f938",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:25:55Z",
+      "side": 1,
+      "message": "\"have an invalid snippet ID\"?\n\nWhen I first read this, I was curious how a child could be invalid, and needed to read the implementation to answer it.",
+      "range": {
+        "startLine": 82,
+        "startChar": 55,
+        "endLine": 82,
+        "endChar": 66
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2f017a9_57207225",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:25:55Z",
+      "side": 1,
+      "message": "\"Recursively creates a node and all of its children.\"",
+      "range": {
+        "startLine": 82,
+        "startChar": 6,
+        "endLine": 82,
+        "endChar": 7
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87e2e3d1_963ae100",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-13T17:25:55Z",
+      "side": 1,
+      "message": "Does the order of creation matter to a caller?\n\n\"Increments `currentIndex` by the total number of nodes created.\"?",
+      "range": {
+        "startLine": 82,
+        "startChar": 68,
+        "endLine": 83,
+        "endChar": 54
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
