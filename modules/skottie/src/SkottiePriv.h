@@ -147,12 +147,12 @@ public:
 
     class AutoPropertyTracker {
     public:
-        AutoPropertyTracker(const AnimationBuilder* builder, const skjson::ObjectValue& obj, const PropertyObserver::NodeType node_type)
+        AutoPropertyTracker(const AnimationBuilder* builder, const skjson::ObjectValue* obj, const PropertyObserver::NodeType node_type)
             : fBuilder(builder)
             , fPrevContext(builder->fPropertyObserverContext), fNodeType(node_type) {
-            if (fBuilder->fPropertyObserver) {
+            if (fBuilder->fPropertyObserver && obj) {
                 auto observer = builder->fPropertyObserver.get();
-                this->updateContext(observer, obj);
+                this->updateContext(observer, *obj);
                 observer->onEnterNode(fBuilder->fPropertyObserverContext, fNodeType);
             }
         }
