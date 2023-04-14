@@ -141,6 +141,10 @@ void ProxyCache::freeUniquelyHeld() {
     }
 }
 
+void ProxyCache::purgeProxiesNotUsedSince() {
+    this->processInvalidKeyMsgs();
+}
+
 #if GRAPHITE_TEST_UTILS
 int ProxyCache::numCached() const {
     return fCache.count();
@@ -152,6 +156,10 @@ void ProxyCache::forceProcessInvalidKeyMsgs() {
 
 void ProxyCache::forceFreeUniquelyHeld() {
     this->freeUniquelyHeld();
+}
+
+void ProxyCache::forcePurgeProxiesNotUsedSince() {
+    this->purgeProxiesNotUsedSince();
 }
 
 #endif // GRAPHITE_TEST_UTILS
