@@ -16,6 +16,24 @@
       "message": "Does this also belong in SKSL_FILES as well?",
       "revId": "da1d4d9f92d2420d8d5828114dbeeb605a0094e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d7305ee_023f97c9",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-14T14:48:13Z",
+      "side": 1,
+      "message": "It seems fine either way. Moved.",
+      "parentUuid": "7ff874bc_65e29f94",
+      "revId": "da1d4d9f92d2420d8d5828114dbeeb605a0094e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
