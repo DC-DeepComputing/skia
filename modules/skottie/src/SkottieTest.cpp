@@ -266,6 +266,7 @@ DEF_TEST(Skottie_Properties, reporter) {
 
     const auto& colorsWithFullKeypath = observer->colorsWithFullKeypath();
     REPORTER_ASSERT(reporter, colorsWithFullKeypath.size() == 2);
+    SkDebugf("%s", colorsWithFullKeypath[0].node_name.c_str());
     REPORTER_ASSERT(reporter, colorsWithFullKeypath[0].node_name.equals("layer_0.fill_0"));
     REPORTER_ASSERT(reporter, colorsWithFullKeypath[0].handle->get() == 0xffff0000);
     REPORTER_ASSERT(reporter, colorsWithFullKeypath[1].node_name.equals("layer_0.fill_effect_0"));
