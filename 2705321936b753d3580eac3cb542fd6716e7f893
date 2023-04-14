@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6bb3dd7_1f3aeb06",
+        "filename": "src/gpu/GpuTypesPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-14T13:41:20Z",
+      "side": 1,
+      "message": "I\u0027m a little surprised this file didn\u0027t exists already.",
+      "range": {
+        "startLine": 8,
+        "startChar": 14,
+        "endLine": 8,
+        "endChar": 26
+      },
+      "revId": "2705321936b753d3580eac3cb542fd6716e7f893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
