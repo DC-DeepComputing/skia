@@ -93,6 +93,30 @@
       },
       "revId": "bd32ea6cfc929c087e6a311f6b2fdac9e95fa6bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ef76d1b_43fc24b0",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-04-14T12:59:03Z",
+      "side": 1,
+      "message": "Correction: Turned this back into empty lists and an empty select switch. Will add libraries as soon as the code starts to depend on them.",
+      "parentUuid": "5d90b5c2_7fb843b6",
+      "range": {
+        "startLine": 334,
+        "startChar": 4,
+        "endLine": 334,
+        "endChar": 8
+      },
+      "revId": "bd32ea6cfc929c087e6a311f6b2fdac9e95fa6bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
