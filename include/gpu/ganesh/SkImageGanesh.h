@@ -380,6 +380,22 @@ inline bool GetBackendTextureFromImage(GrDirectContext* context,
                                        backendTextureReleaseProc);
 }
 
+/** Returns subset of this image as a texture-backed image.
+
+    Returns nullptr if any of the following are true:
+      - Subset is empty
+      - Subset is not contained inside the image's bounds
+      - Pixels in the source image could not be read or copied
+      - The source image is texture-backed and context does not match the source image's context.
+
+    @param context the non-null GrDirectContext to which the subset should be uploaded.
+    @param subset  bounds of returned SkImage
+    @return        the subsetted image, uploaded as a texture, or nullptr
+*/
+SK_API sk_sp<SkImage> SubsetTextureFrom(GrDirectContext* context,
+                                        const SkImage* img,
+                                        const SkIRect& subset);
+
 }  // namespace SkImages
 
 #endif
