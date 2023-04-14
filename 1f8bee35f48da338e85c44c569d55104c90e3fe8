@@ -1,6 +1,24 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e15b4c1b_a23d69ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-14T14:24:05Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/671683",
+      "tag": "mailMessageId\u003d\u003cCAGJ+D29+BmXbw27dKgUTqtiVXcfXXj_sb130xPTY2Daczu6srQ@mail.gmail.com\u003e",
+      "revId": "1f8bee35f48da338e85c44c569d55104c90e3fe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1a9f4af_3b3f700a",
