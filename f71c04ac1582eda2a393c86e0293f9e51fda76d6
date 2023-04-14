@@ -26,6 +26,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27239710_c33c7d29",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:42:21Z",
+      "side": 1,
+      "message": "wdyt about adding a debug method that asserts everything left in the purgeable queue is zero sized (and calling it here) ?",
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb6a034_d1ed4f91",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:42:21Z",
+      "side": 1,
+      "message": "This seems like a dangerous-ish default",
+      "range": {
+        "startLine": 36,
+        "startChar": 57,
+        "endLine": 36,
+        "endChar": 60
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a918bf53_e6ccb0a8",
         "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
         "patchSetId": 2
