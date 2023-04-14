@@ -10,6 +10,8 @@
 
 #include "include/core/SkTypes.h"
 
+#include <string_view>
+
 namespace skgpu {
 /**
  * Abstract class to report errors when compiling shaders.
