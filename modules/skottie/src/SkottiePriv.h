@@ -147,12 +147,12 @@ public:
 
     class AutoPropertyTracker {
     public:
-        AutoPropertyTracker(const AnimationBuilder* builder, const skjson::ObjectValue& obj, const PropertyObserver::NodeType node_type)
+        AutoPropertyTracker(const AnimationBuilder* builder, const skjson::ObjectValue* obj, const PropertyObserver::NodeType node_type)
             : fBuilder(builder)
             , fPrevContext(builder->fPropertyObserverContext), fNodeType(node_type) {
-            if (fBuilder->fPropertyObserver) {
+            if (fBuilder->fPropertyObserver && obj) {
                 auto observer = builder->fPropertyObserver.get();
-                this->updateContext(observer, obj);
+                this->updateContext(observer, *obj);
                 observer->onEnterNode(fBuilder->fPropertyObserverContext, fNodeType);
             }
         }
@@ -252,7 +252,7 @@ private:
                                fFrameRate;
     const uint32_t             fFlags;
     mutable AnimatorScope*     fCurrentAnimatorScope;
-    mutable const char*        fPropertyObserverContext;
+    mutable const char*        fPropertyObserverContext = nullptr;
     mutable bool               fHasNontrivialBlending : 1;
 
     struct LayerInfo {
