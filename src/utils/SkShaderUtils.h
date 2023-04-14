@@ -13,20 +13,21 @@
 #include <cstdint>
 #include <functional>
 #include <string>
+#include <string_view>
 
 namespace SkSL { enum class ProgramKind : int8_t; }
 
 namespace SkShaderUtils {
 
-std::string PrettyPrint(const std::string& string);
+std::string PrettyPrint(std::string_view shader);
 
-void VisitLineByLine(const std::string& text,
-                     const std::function<void(int lineNumber, const char* lineText)>&);
+void VisitLineByLine(std::string_view text,
+                     const std::function<void(int lineNumber, std::string_view lineText)>&);
 
 // Prints shaders one line at the time. This ensures they don't get truncated by the adb log.
-inline void PrintLineByLine(const std::string& text) {
-    VisitLineByLine(text, [](int lineNumber, const char* lineText) {
-        SkDebugf("%4i\t%s\n", lineNumber, lineText);
+inline void PrintLineByLine(std::string_view text) {
+    VisitLineByLine(text, [](int lineNumber, std::string_view lineText) {
+        SkDebugf("%4i\t%.*s\n", lineNumber, (int)lineText.size(), lineText.data());
     });
 }
 
