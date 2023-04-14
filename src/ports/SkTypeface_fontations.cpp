@@ -5,9 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkData.h"
 #include "include/core/SkFontMetrics.h"
 #include "src/core/SkFontPriv.h"
 #include "src/ports/SkTypeface_fontations.h"
+
+#include "src/ports/fontations/gen/src/ffi.rs.h"
+
 
 namespace {
 /* Placeholder glyph example until we extract paths through fontations, representing the capital H
@@ -39,6 +43,13 @@ void SkTypeface_Fontations::onCharsToGlyphs(const SkUnichar* chars,
                                             int count,
                                             SkGlyphID glyphs[]) const {
     sk_bzero(glyphs, count * sizeof(glyphs[0]));
+
+    sk_sp<SkData> fontData = SkData::MakeFromStream(fFontData.get(), fFontData->getLength());
+    rust::Slice<const uint8_t> slice{fontData->bytes(), fontData->size()};
+    for (int i = 0; i < count; ++i ) {
+      uint16_t glyph_id = fontations_ffi::lookup_glyph_or_zero(slice, chars[i]);
+      glyphs[i] = glyph_id;
+    }
 }
 
 void SkTypeface_Fontations::onFilterRec(SkScalerContextRec* rec) const {

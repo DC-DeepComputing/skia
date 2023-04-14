@@ -2,11 +2,30 @@ load(
     "//bazel:skia_rules.bzl",
     "exports_files_legacy",
 )
-load("@rules_rust//rust:defs.bzl", "rust_binary")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_static_library")
+load(":rust_cxx_bridge.bzl", "rust_cxx_bridge")
 
 licenses(["notice"])
 
 exports_files_legacy()
+
+rust_cxx_bridge(
+    name = "fontations_ffi",
+    src = "src/ffi.rs",
+    visibility = ["//src/ports:__pkg__"],
+)
+
+rust_static_library(
+    name = "fontations_lib",
+    srcs = ["src/ffi.rs"],
+    visibility = ["//src/ports:__pkg__"],
+    deps = [
+        "@cxx",
+        "@fontations//:font-types",
+        "@fontations//:read-fonts",
+        "@fontations//:skrifa",
+    ],
+)
 
 rust_binary(
     name = "fontations_deps_test",
@@ -16,5 +35,18 @@ rust_binary(
     deps = [
         "@fontations//:font-types",
         "@fontations//:read-fonts",
+        "@fontations//:skrifa",
+    ],
+)
+
+cc_binary(
+    name = "fontations_test",
+    testonly = True,
+    srcs = ["src/main.cpp"],
+    deps = [
+        ":fontations_ffi",
+        ":fontations_lib",
+        "//:skia_internal",
+        "//tools:tool_utils",
     ],
 )
