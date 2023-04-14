@@ -16,6 +16,24 @@
       "message": "I kept this as is, it seems to make sense. Are there any repercussions to this I might have missed?",
       "revId": "fba0333175b0692f68a5bd8816197a38d78dbddb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e6f9fb5_568b8915",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-04-14T21:17:44Z",
+      "side": 1,
+      "message": "Makes sense to me too.",
+      "parentUuid": "a9c2bbe4_69209245",
+      "revId": "fba0333175b0692f68a5bd8816197a38d78dbddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
