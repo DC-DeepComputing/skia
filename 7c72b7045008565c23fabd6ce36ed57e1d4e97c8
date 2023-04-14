@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27e2fc6e_886ccf3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-14T22:20:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d9fde1d_454510c2",
+      "revId": "7c72b7045008565c23fabd6ce36ed57e1d4e97c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75b2dbb4_4e03a47f",
@@ -78,6 +96,30 @@
       "writtenOn": "2023-04-14T14:06:44Z",
       "side": 1,
       "message": "Comment needs fixup",
+      "range": {
+        "startLine": 439,
+        "startChar": 11,
+        "endLine": 439,
+        "endChar": 41
+      },
+      "revId": "7c72b7045008565c23fabd6ce36ed57e1d4e97c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bda1e801_942a168d",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-14T22:20:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03857594_56ca7a57",
       "range": {
         "startLine": 439,
         "startChar": 11,
