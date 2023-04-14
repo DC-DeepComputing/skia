@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "901b6668_24e3817f",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-04-14T14:37:38Z",
+      "side": 1,
+      "message": "This approach makes sense semantically, but technically a null pointer dereference is undefined behavior -- so the compiler assumes that references are always non-null, and will likely not do what you expect below.\n\nE.g. https://godbolt.org/z/reddW6qe5: the null address check is simply ignored by both gcc/clang, and it also yields a helpful warning:\n\n    warning: reference cannot be bound to dereferenced null pointer in well-defined C++\n    code; pointer may be assumed to always convert to true [-Wundefined-bool-conversion]\n    \n    \nLet\u0027s make this `const skjson::ObjectValue* obj` (and update all other call sites).\n\n---\n\nCool, I see you already fixed it as I was typing this up :)  Leaving the comment in case it\u0027s informative.",
+      "range": {
+        "startLine": 150,
+        "startChar": 61,
+        "endLine": 150,
+        "endChar": 87
+      },
+      "revId": "08d9f2847d7b5f94bed2ee7ba57b107ceb3054b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adaadc25_c3985264",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-04-14T14:37:38Z",
+      "side": 1,
+      "message": "Remove debug print.",
+      "revId": "08d9f2847d7b5f94bed2ee7ba57b107ceb3054b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

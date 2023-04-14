@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a37fb0b_bfdccc68",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-04-14T14:37:38Z",
+      "side": 1,
+      "message": "Trying to figure if the root context is being initialized -- it doesn\u0027t seem to be (we were relying on updateContext always resetting to nullptr or a valid string).\n\nLooks like the initial value comes from `AnimationBuilder::fPropertyObserverContext`, let\u0027s initialize there: https://github.com/google/skia/blob/443bd7065cf0d8bd84887c7f671c1cb406362a25/modules/skottie/src/SkottiePriv.h#L255\n\n`mutable const char*        fPropertyObserverContext \u003d nullptr;`",
+      "range": {
+        "startLine": 265,
+        "startChar": 68,
+        "endLine": 265,
+        "endChar": 80
+      },
+      "revId": "d7f7632d976b4215f6bea6445edc8d5f32d0e2b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
