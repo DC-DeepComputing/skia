@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9c2bbe4_69209245",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-04-14T18:37:31Z",
+      "side": 1,
+      "message": "I kept this as is, it seems to make sense. Are there any repercussions to this I might have missed?",
+      "revId": "fba0333175b0692f68a5bd8816197a38d78dbddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
