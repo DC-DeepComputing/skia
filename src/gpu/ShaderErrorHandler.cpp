@@ -9,6 +9,8 @@
 
 #include "src/utils/SkShaderUtils.h"
 
+#include <string_view>
+
 namespace skgpu {
 
 ShaderErrorHandler* DefaultShaderErrorHandler() {
@@ -16,8 +18,8 @@ ShaderErrorHandler* DefaultShaderErrorHandler() {
     public:
         void compileError(const char* shader, const char* errors) override {
             std::string message = SkShaderUtils::BuildShaderErrorMessage(shader, errors);
-            SkShaderUtils::VisitLineByLine(message, [](int, const char* lineText) {
-                SkDebugf("%s\n", lineText);
+            SkShaderUtils::VisitLineByLine(message, [](int, std::string_view lineText) {
+                SkDebugf("%.*s\n", (int)lineText.size(), lineText.data());
             });
             SkDEBUGFAIL("Shader compilation failed!");
         }

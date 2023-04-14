@@ -85,8 +85,8 @@ using namespace skia_private;
 class CapturingShaderErrorHandler : public GrContextOptions::ShaderErrorHandler {
 public:
     void compileError(const char* shader, const char* errors) override {
-        fShaders.push_back(SkString(shader));
-        fErrors.push_back(SkString(errors));
+        fShaders.push_back(std::string(shader));
+        fErrors.push_back(std::string(errors));
     }
 
     void reset() {
@@ -94,8 +94,8 @@ public:
         fErrors.clear();
     }
 
-    TArray<SkString> fShaders;
-    TArray<SkString> fErrors;
+    TArray<std::string> fShaders;
+    TArray<std::string> fErrors;
 };
 
 static CapturingShaderErrorHandler gShaderErrorHandler;
@@ -2844,9 +2844,10 @@ void Viewer::drawImGui() {
         ImGui::Begin("Shader Errors", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
         for (int i = 0; i < gShaderErrorHandler.fErrors.size(); ++i) {
             ImGui::TextWrapped("%s", gShaderErrorHandler.fErrors[i].c_str());
-            std::string sksl(gShaderErrorHandler.fShaders[i].c_str());
-            SkShaderUtils::VisitLineByLine(sksl, [](int lineNumber, const char* lineText) {
-                ImGui::TextWrapped("%4i\t%s\n", lineNumber, lineText);
+            std::string_view sksl{gShaderErrorHandler.fShaders[i]};
+            SkShaderUtils::VisitLineByLine(sksl, [](int lineNumber, std::string_view lineText) {
+                ImGui::TextWrapped("%4i\t%.*s\n",
+                                   lineNumber, (int)lineText.size(), lineText.data());
             });
         }
         ImGui::End();
