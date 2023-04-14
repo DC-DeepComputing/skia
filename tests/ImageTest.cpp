@@ -230,7 +230,7 @@ static void test_encode(skiatest::Reporter* reporter, GrDirectContext* dContext,
 
     // Now see if we can instantiate an image from a subset of the surface/origEncoded
 
-    decoded = SkImages::DeferredFromEncodedData(origEncoded)->makeSubset(ir);
+    decoded = SkImages::DeferredFromEncodedData(origEncoded)->makeSubset(nullptr, ir);
     REPORTER_ASSERT(reporter, decoded);
     assert_equal(reporter, dContext, image, &ir, decoded.get());
 }
@@ -1663,7 +1663,7 @@ DEF_TEST(image_subset_encode_skbug_7752, reporter) {
         REPORTER_ASSERT(reporter, ToolUtils::equal_pixels(img.get(), img2.get()));
     };
     check_roundtrip(image); // should trivially pass
-    check_roundtrip(image->makeSubset({0, 0, W/2, H/2}));
-    check_roundtrip(image->makeSubset({W/2, H/2, W, H}));
+    check_roundtrip(image->makeSubset(nullptr, {0, 0, W/2, H/2}));
+    check_roundtrip(image->makeSubset(nullptr, {W/2, H/2, W, H}));
     check_roundtrip(image->makeColorSpace(SkColorSpace::MakeSRGBLinear()));
 }
