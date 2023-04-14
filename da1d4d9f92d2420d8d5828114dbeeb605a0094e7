@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ff874bc_65e29f94",
+        "filename": "src/core/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-04-14T14:31:59Z",
+      "side": 1,
+      "message": "Does this also belong in SKSL_FILES as well?",
+      "revId": "da1d4d9f92d2420d8d5828114dbeeb605a0094e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
