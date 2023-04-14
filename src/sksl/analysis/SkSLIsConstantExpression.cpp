@@ -6,9 +6,7 @@
  */
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkSLIRNode.h"
 #include "include/private/SkSLModifiers.h"
-#include "include/private/SkSLStatement.h"
 #include "include/sksl/SkSLErrorReporter.h"
 #include "include/sksl/SkSLOperator.h"
 #include "src/core/SkTHash.h"
@@ -17,7 +15,9 @@
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLForStatement.h"
+#include "src/sksl/ir/SkSLIRNode.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
+#include "src/sksl/ir/SkSLStatement.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"

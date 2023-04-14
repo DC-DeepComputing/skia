@@ -10,7 +10,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/private/SkSLModifiers.h"
-#include "include/sksl/DSLLayout.h"
+#include "src/sksl/dsl/DSLLayout.h"
 
 namespace SkSL {
 

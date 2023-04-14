@@ -7,7 +7,6 @@
 
 #include "src/sksl/ir/SkSLVariable.h"
 
-#include "include/private/SkSLIRNode.h"
 #include "include/private/SkSLLayout.h"
 #include "include/sksl/SkSLErrorReporter.h"
 #include "src/base/SkStringView.h"
@@ -18,6 +17,7 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/ir/SkSLExpression.h"
+#include "src/sksl/ir/SkSLIRNode.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"

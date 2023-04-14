@@ -11,11 +11,11 @@
 #include "include/private/SkSLDefines.h"
 #include "include/private/SkSLProgramKind.h"
 #include "include/private/base/SkTArray.h"
-#include "include/sksl/DSLCase.h"
-#include "include/sksl/DSLExpression.h"
-#include "include/sksl/DSLStatement.h"
-#include "include/sksl/DSLVar.h"  // IWYU pragma: keep
 #include "include/sksl/SkSLPosition.h"
+#include "src/sksl/dsl/DSLCase.h"
+#include "src/sksl/dsl/DSLExpression.h"
+#include "src/sksl/dsl/DSLStatement.h"
+#include "src/sksl/dsl/DSLVar.h"  // IWYU pragma: keep
 
 #include <memory>
 #include <string>
