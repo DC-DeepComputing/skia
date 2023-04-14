@@ -69,6 +69,30 @@
       },
       "revId": "bd32ea6cfc929c087e6a311f6b2fdac9e95fa6bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d90b5c2_7fb843b6",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-04-14T09:00:52Z",
+      "side": 1,
+      "message": "Added as deps the two fontations crates we\u0027re building so far. Will add the third, `skrifa`, as well in a separate CL now that that is published on crates.io as well.",
+      "parentUuid": "5346d18c_71db5033",
+      "range": {
+        "startLine": 334,
+        "startChar": 4,
+        "endLine": 334,
+        "endChar": 8
+      },
+      "revId": "bd32ea6cfc929c087e6a311f6b2fdac9e95fa6bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
