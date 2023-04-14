@@ -726,24 +726,47 @@ public:
     */
     sk_sp<SkData> refEncodedData() const;
 
-    /** Returns subset of this image.
+    /** Returns subset of this non-texture backed image.
 
         Returns nullptr if any of the following are true:
           - Subset is empty
           - Subset is not contained inside the image's bounds
-          - Pixels in the image could not be read or copied
-
-        If this image is texture-backed, the context parameter is required and must match the
-        context of the source image. If the context parameter is provided, and the image is
-        raster-backed, the subset will be converted to texture-backed.
+          - Pixels in the source image could not be read or copied
+          - This image is texture-backed.
 
         @param subset  bounds of returned SkImage
-        @param context the GrDirectContext in play, if it exists
+        @return        the subsetted image (raster-backed), or nullptr
+
+        example: https://fiddle.skia.org/c/@Image_makeSubset
+    */
+    sk_sp<SkImage> makeSubset(const SkIRect& subset) const;
+
+    /** Returns subset of this possibly texture-backed image.
+
+        Returns nullptr if any of the following are true:
+          - Subset is empty
+          - Subset is not contained inside the image's bounds
+          - Pixels in the source image could not be read or copied
+          - This image is texture-backed and the provided context is null or does not match
+            the source image's context.
+
+        If the source image was texture-backed, the resulting image will be texture-backed also.
+        Otherwise, the returned image will be raster-backed.
+
+        @param context the GrDirectContext of the source image
+        @param subset  bounds of returned SkImage
         @return        the subsetted image, or nullptr
 
         example: https://fiddle.skia.org/c/@Image_makeSubset
     */
-    sk_sp<SkImage> makeSubset(const SkIRect& subset, GrDirectContext* direct = nullptr) const;
+    sk_sp<SkImage> makeSubset(GrDirectContext* direct, const SkIRect& subset) const;
+
+
+#if !defined(SK_DISABLE_LEGACY_IMAGE_SUBSET_METHODS)
+    sk_sp<SkImage> makeSubset(const SkIRect& subset, GrDirectContext* direct = nullptr) const {
+        return this->makeSubset(direct, subset);
+    }
+#endif
 
     /**
      *  Returns true if the image has mipmap levels.
@@ -927,26 +950,34 @@ public:
     virtual sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
                                             RequiredImageProperties = {}) const = 0;
 
-    /** Returns subset of this image.
+    /** Returns subset of this possibly texture-backed image.
 
         Returns nullptr if any of the following are true:
           - Subset is empty
           - Subset is not contained inside the image's bounds
           - Pixels in the image could not be read or copied
+          - This image is texture-backed and the provided context is null or does not match
+            the source image's context.
 
-        If this image is texture-backed, the recorder parameter is required.
-        If the recorder parameter is provided, and the image is raster-backed, the subset will
-        be converted to texture-backed.
+        If the source image was texture-backed, the resulting image will be texture-backed also.
+        Otherwise, the returned image will be raster-backed.
 
+        @param recorder                 the recorder of the source image
         @param subset                   bounds of returned SkImage
-        @param recorder                 the recorder in which to create the new image
-        @param RequiredImageProperties  properties the returned SkImage must possess (e.g.,
-                                        mipmaps)
+        @param RequiredImageProperties  properties the returned SkImage must possess (e.g. mipmaps)
         @return                         the subsetted image, or nullptr
     */
-    sk_sp<SkImage> makeSubset(const SkIRect& subset,
-                              skgpu::graphite::Recorder*,
+    sk_sp<SkImage> makeSubset(skgpu::graphite::Recorder*,
+                              const SkIRect& subset,
                               RequiredImageProperties = {}) const;
+
+#if !defined(SK_DISABLE_LEGACY_IMAGE_SUBSET_METHODS)
+    sk_sp<SkImage> makeSubset(const SkIRect& subset,
+                              skgpu::graphite::Recorder* r,
+                              RequiredImageProperties props = {}) const {
+        return this->makeSubset(r, subset, props);
+    }
+#endif
 
     /** Creates SkImage in target SkColorSpace.
         Returns nullptr if SkImage could not be created.
