@@ -132,6 +132,7 @@ CORE_FILES = [
     "SkEnumerate.h",
     "SkExecutor.cpp",
     "SkFDot6.h",
+    "SkFilterColorProgram.h",
     "SkFlattenable.cpp",
     "SkFont.cpp",
     "SkFontDescriptor.cpp",
@@ -367,6 +368,7 @@ split_srcs_and_hdrs(
 
 # These files are only needed if SkSL is enabled (GPU backend or SkVM).
 SKSL_FILES = [
+    "SkFilterColorProgram.cpp",
     "SkRuntimeEffect.cpp",
     "SkSLTypeShared.cpp",
     "SkSLTypeShared.h",
