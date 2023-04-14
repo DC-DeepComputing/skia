@@ -1323,7 +1323,7 @@ static void start_keepalive() {
 }
 
 class NanobenchShaderErrorHandler : public GrContextOptions::ShaderErrorHandler {
-    void compileError(const char* shader, const char* errors) override {
+    void compileError(std::string_view shader, std::string_view errors) override {
         // Nanobench should abort if any shader can't compile. Failure is much better than
         // reporting meaningless performance metrics.
         std::string message = SkShaderUtils::BuildShaderErrorMessage(shader, errors);

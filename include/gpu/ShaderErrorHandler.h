@@ -10,6 +10,8 @@
 
 #include "include/core/SkTypes.h"
 
+#include <string_view>
+
 namespace skgpu {
 /**
  * Abstract class to report errors when compiling shaders.
@@ -18,7 +20,7 @@ class SK_API ShaderErrorHandler {
 public:
     virtual ~ShaderErrorHandler() = default;
 
-    virtual void compileError(const char* shader, const char* errors) = 0;
+    virtual void compileError(std::string_view shader, std::string_view errors) = 0;
 
 protected:
     ShaderErrorHandler() = default;
