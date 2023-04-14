@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "src/core/SkMessageBus.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/ResourceKey.h"
 
 class SkBitmap;
@@ -41,6 +42,7 @@ public:
     int numCached() const;
     void forceProcessInvalidKeyMsgs();
     void forceFreeUniquelyHeld();
+    void forcePurgeProxiesNotUsedSince(skgpu::StdSteadyClock::time_point purgeTime);
 #endif
 
 private:
@@ -48,6 +50,7 @@ private:
 
     void processInvalidKeyMsgs();
     void freeUniquelyHeld();
+    void purgeProxiesNotUsedSince(skgpu::StdSteadyClock::time_point purgeTime);
 
     typedef SkMessageBus<skgpu::UniqueKeyInvalidatedMsg_Graphite, uint32_t>::Inbox InvalidKeyInbox;
 

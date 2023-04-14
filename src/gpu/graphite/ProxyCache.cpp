@@ -141,6 +141,24 @@ void ProxyCache::freeUniquelyHeld() {
     }
 }
 
+void ProxyCache::purgeProxiesNotUsedSince(skgpu::StdSteadyClock::time_point purgeTime) {
+    this->processInvalidKeyMsgs();
+
+    std::vector<skgpu::UniqueKey> toRemove;
+
+    fCache.foreach([&](const skgpu::UniqueKey& key, const sk_sp<TextureProxy>* proxy) {
+        Resource* resource1 = (*proxy)->texture();
+        if (Resource* resource = (*proxy)->texture();
+            resource && resource->lastAccessTime() >= purgeTime) {
+            toRemove.push_back(key);
+        }
+    });
+
+    for (const skgpu::UniqueKey& k : toRemove) {
+        fCache.remove(k);
+    }
+}
+
 #if GRAPHITE_TEST_UTILS
 int ProxyCache::numCached() const {
     return fCache.count();
@@ -152,6 +170,10 @@ void ProxyCache::forceProcessInvalidKeyMsgs() {
 
 void ProxyCache::forceFreeUniquelyHeld() {
     this->freeUniquelyHeld();
+}
+
+void ProxyCache::forcePurgeProxiesNotUsedSince(skgpu::StdSteadyClock::time_point purgeTime) {
+    this->purgeProxiesNotUsedSince(purgeTime);
 }
 
 #endif // GRAPHITE_TEST_UTILS

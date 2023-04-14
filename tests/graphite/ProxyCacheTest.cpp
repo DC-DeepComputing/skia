@@ -10,10 +10,13 @@
 #include "include/core/SkBitmap.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "src/gpu/GpuTypesPriv.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "tools/Resources.h"
+
+#include <thread>
 
 namespace skgpu::graphite {
 
@@ -148,6 +151,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ProxyCacheTest4, r, context) {
     REPORTER_ASSERT(r, proxyCache->numCached() == 2);
 
     {
+        // Clean up any refs that may be lingering from the TextureProxies' creation
         auto recording = recorder->snap();
         context->insertRecording({ recording.get() });
         context->submit(SyncToCpu::kYes);
@@ -164,6 +168,70 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ProxyCacheTest4, r, context) {
 
     mipmapped.reset();
     proxyCache->forceFreeUniquelyHeld();
+
+    REPORTER_ASSERT(r, proxyCache->numCached() == 0);
+}
+
+// This test exercises the ProxyCache's purgeProxiesNotUsedSince method. To do this we:
+//    time0
+//    create proxy1
+//    time1
+//    create proxy2
+//    time2
+//    purge back to time1
+//    purge back to time0
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ProxyCacheTest5, r, context) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    ProxyCache* proxyCache = recorder->priv().proxyCache();
+
+    SkBitmap bitmap;
+    bool success = GetResourceAsBitmap("images/mandrill_128.png", &bitmap);
+    REPORTER_ASSERT(r, success);
+    if (!success) {
+        return;
+    }
+
+    REPORTER_ASSERT(r, proxyCache->numCached() == 0);
+
+    auto time0 = skgpu::StdSteadyClock::now();
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
+    sk_sp<TextureProxy> nonMipmapped = proxyCache->findOrCreateCachedProxy(recorder.get(), bitmap,
+                                                                           Mipmapped::kNo);
+    REPORTER_ASSERT(r, proxyCache->numCached() == 1);
+
+    {
+        auto recording = recorder->snap();
+        context->insertRecording({ recording.get() });
+        context->submit(SyncToCpu::kYes);
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    auto time1 = skgpu::StdSteadyClock::now();
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
+    sk_sp<TextureProxy> mipmapped = proxyCache->findOrCreateCachedProxy(recorder.get(), bitmap,
+                                                                        Mipmapped::kYes);
+    REPORTER_ASSERT(r, proxyCache->numCached() == 2);
+
+    {
+        auto recording = recorder->snap();
+        context->insertRecording({ recording.get() });
+        context->submit(SyncToCpu::kYes);
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    auto time2 = skgpu::StdSteadyClock::now();
+
+    proxyCache->forcePurgeProxiesNotUsedSince(time2);
+
+    REPORTER_ASSERT(r, proxyCache->numCached() == 2);
+
+    proxyCache->forcePurgeProxiesNotUsedSince(time1);
+
+    REPORTER_ASSERT(r, proxyCache->numCached() == 1);
+
+    proxyCache->forcePurgeProxiesNotUsedSince(time0);
 
     REPORTER_ASSERT(r, proxyCache->numCached() == 0);
 }

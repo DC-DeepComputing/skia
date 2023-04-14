@@ -139,6 +139,9 @@ private:
     void updateAccessTime() {
         fLastAccess = skgpu::StdSteadyClock::now();
     }
+    skgpu::StdSteadyClock::time_point lastAccessTime() const {
+        return fLastAccess;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // The following set of functions are only meant to be called by the ResourceCache. We don't
