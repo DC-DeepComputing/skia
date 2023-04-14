@@ -1,0 +1,222 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d996e19_54cf195a",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:30:53Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 128,
+        "startChar": 80,
+        "endLine": 128,
+        "endChar": 94
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a918bf53_e6ccb0a8",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:30:53Z",
+      "side": 1,
+      "message": "All the cool kids are using anonymous namespaces",
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0147e604_ec385292",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:30:53Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 281,
+        "startChar": 50,
+        "endLine": 281,
+        "endChar": 55
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c867e2b6_2b92087c",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:30:53Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 318,
+        "startChar": 85,
+        "endLine": 318,
+        "endChar": 94
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b6de7fb_b96618ee",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:30:53Z",
+      "side": 1,
+      "message": "by",
+      "range": {
+        "startLine": 324,
+        "startChar": 44,
+        "endLine": 324,
+        "endChar": 46
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b21430d_41c8bfce",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:30:53Z",
+      "side": 1,
+      "message": "purgeable resources ?",
+      "range": {
+        "startLine": 334,
+        "startChar": 22,
+        "endLine": 334,
+        "endChar": 31
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "054c7981_668dc03e",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:30:53Z",
+      "side": 1,
+      "message": "resource or itself ...",
+      "range": {
+        "startLine": 380,
+        "startChar": 21,
+        "endLine": 380,
+        "endChar": 31
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d774d9e_f160fd41",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:30:53Z",
+      "side": 1,
+      "message": "It seems like this is redundant",
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44abfa6d_3bb1b29d",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:30:53Z",
+      "side": 1,
+      "message": "added",
+      "range": {
+        "startLine": 467,
+        "startChar": 47,
+        "endLine": 467,
+        "endChar": 50
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da02dc2f_61552569",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-14T18:30:53Z",
+      "side": 1,
+      "message": "sized",
+      "range": {
+        "startLine": 485,
+        "startChar": 64,
+        "endLine": 485,
+        "endChar": 68
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
