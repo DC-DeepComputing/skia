@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7436d25d_d9c95276",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-14T20:04:12Z",
+      "side": 1,
+      "message": "I\u0027m fine with the build change textually, so long as whoever owns the images code is ok with it being exposed.",
+      "revId": "58226813d98e4249dd7b445ce6911afbb1708aaf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
