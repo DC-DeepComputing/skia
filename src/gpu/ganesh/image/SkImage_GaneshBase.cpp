@@ -361,3 +361,16 @@ sk_sp<GrTextureProxy> SkImage_GaneshBase::MakePromiseImageLazyProxy(
     return GrProxyProvider::CreatePromiseProxy(
             tsp, std::move(callback), backendFormat, dimensions, mipmapped);
 }
+
+namespace SkImages {
+sk_sp<SkImage> SubsetTextureFrom(GrDirectContext* context,
+                                 const SkImage* img,
+                                 const SkIRect& subset) {
+    if (context == nullptr || img == nullptr) {
+        return nullptr;
+    }
+    auto subsetImg = img->subset(context, subset);
+    return SkImages::TextureFromImage(subsetImg);
+}
+
+}

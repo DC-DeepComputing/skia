@@ -233,8 +233,7 @@ sk_sp<SkData> SkImage::refEncodedData() const {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset, GrDirectContext* direct) const {
+sk_sp<SkImage> SkImage::makeSubset(GrDirectContext* direct, const SkIRect& subset) const {
     if (subset.isEmpty()) {
         return nullptr;
     }
@@ -244,20 +243,12 @@ sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset, GrDirectContext* direc
         return nullptr;
     }
 
-#if defined(SK_GANESH)
-    auto myContext = as_IB(this)->context();
-    // This check is also performed in the subclass, but we do it here for the short-circuit below.
-    if (myContext && !myContext->priv().matches(direct)) {
-        return nullptr;
-    }
-#endif
-
     // optimization : return self if the subset == our bounds
     if (bounds == subset) {
         return sk_ref_sp(const_cast<SkImage*>(this));
     }
 
-    return as_IB(this)->onMakeSubset(subset, direct);
+    return as_IB(this)->onMakeSubset(direct, subset);
 }
 
 bool SkImage::readPixels(GrDirectContext* dContext, const SkPixmap& pmap, int srcX, int srcY,
