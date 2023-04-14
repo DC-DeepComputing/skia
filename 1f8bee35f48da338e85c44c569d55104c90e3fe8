@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1a9f4af_3b3f700a",
+        "filename": "src/ports/SkTypeface_fontations.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-14T14:09:21Z",
+      "side": 1,
+      "message": "Currently getting the error\n\n`wasm-ld: error: /tmp/emscripten_temp/fontations_185.o: undefined symbol: vtable for SkTypeface_Fontations`\n\nWhich probably means this needs to declare the destructor here and provide a (currently default is fine) implementation in the cpp file. This would at least get to the next error. Generally the vtable is emitted whenever the destructor is defined (which may be in a lot of places for default inline destructors like this one, the linker then needs to pick one destructor/vtable).",
+      "revId": "1f8bee35f48da338e85c44c569d55104c90e3fe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
