@@ -45,11 +45,12 @@ public:
 
     // From SkImage.h
     bool isValid(GrRecordingContext*) const final;
+    sk_sp<SkImage> makeSubset(GrDirectContext* direct, const SkIRect& subset) const final;
 
     // From SkImage_Base.h
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const final;
 
-    sk_sp<SkImage> onMakeSubset(const SkIRect& subset, GrDirectContext*) const final;
+    sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect& subset) const final;
 
     bool onReadPixels(GrDirectContext* dContext,
                       const SkImageInfo& dstInfo,

@@ -62,6 +62,7 @@ public:
     ~SkImage_Base() override;
 
     // From SkImage.h
+    sk_sp<SkImage> makeSubset(GrDirectContext* direct, const SkIRect& subset) const override;
     size_t textureSize() const override { return 0; }
 #if defined(SK_GRAPHITE)
     sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
@@ -155,7 +156,7 @@ public:
     virtual bool getROPixels(GrDirectContext*, SkBitmap*,
                              CachingHint = kAllow_CachingHint) const = 0;
 
-    virtual sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const = 0;
+    virtual sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect&) const = 0;
 
     virtual sk_sp<SkData> onRefEncoded() const { return nullptr; }
 

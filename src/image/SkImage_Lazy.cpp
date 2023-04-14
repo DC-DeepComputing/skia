@@ -29,7 +29,6 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
-#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/SkBackingFit.h"
@@ -261,16 +260,9 @@ bool SkImage_Lazy::isValid(GrRecordingContext* context) const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset, GrDirectContext* direct) const {
-    // TODO: can we do this more efficiently, by telling the generator we want to
-    //       "realize" a subset?
-
-#if defined(SK_GANESH)
-    auto pixels = direct ? SkImages::TextureFromImage(direct, this) : this->makeRasterImage();
-#else
+sk_sp<SkImage> SkImage_Lazy::onMakeSubset(GrDirectContext*, const SkIRect& subset) const {
     auto pixels = this->makeRasterImage();
-#endif
-    return pixels ? pixels->makeSubset(subset, direct) : nullptr;
+    return pixels ? pixels->makeSubset(nullptr, subset) : nullptr;
 }
 
 #if defined(SK_GRAPHITE)

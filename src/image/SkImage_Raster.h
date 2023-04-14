@@ -59,7 +59,7 @@ public:
     const SkBitmap* onPeekBitmap() const override { return &fBitmap; }
 
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
-    sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const override;
+    sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect&) const override;
 #if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeSubset(const SkIRect&,
                                 skgpu::graphite::Recorder*,

@@ -77,7 +77,7 @@ public:
     bool onReadPixels(GrDirectContext*, const SkImageInfo&, void*, size_t, int srcX, int srcY,
                       CachingHint) const override;
     sk_sp<SkData> onRefEncoded() const override;
-    sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const override;
+    sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect&) const override;
 #if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeSubset(const SkIRect&,
                                 skgpu::graphite::Recorder*,
