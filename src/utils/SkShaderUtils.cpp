@@ -7,13 +7,12 @@
 
 #include "src/utils/SkShaderUtils.h"
 
-#include "include/core/SkString.h"
 #include "include/private/base/SkTArray.h"
-#include "src/core/SkStringUtils.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLString.h"
 
 #include <cstddef>
+#include <string_view>
 
 using namespace skia_private;
 
@@ -23,7 +22,7 @@ class GLSLPrettyPrint {
 public:
     GLSLPrettyPrint() {}
 
-    std::string prettify(const std::string& string) {
+    std::string prettify(std::string_view shader) {
         fTabs = 0;
         fFreshline = true;
 
@@ -36,8 +35,8 @@ public:
 
         // setup pretty state
         fIndex = 0;
-        fLength = string.length();
-        fInput = string.c_str();
+        fLength = shader.length();
+        fInput = shader.data();
 
         while (fLength > fIndex) {
             /* the heart and soul of our prettification algorithm.  The rules should hopefully
@@ -191,27 +190,37 @@ private:
     const char* fInParseUntilToken;
 };
 
-std::string PrettyPrint(const std::string& string) {
+std::string PrettyPrint(std::string_view shader) {
     GLSLPrettyPrint pp;
-    return pp.prettify(string);
+    return pp.prettify(shader);
 }
 
-void VisitLineByLine(const std::string& text,
-                     const std::function<void(int lineNumber, const char* lineText)>& visitFn) {
-    TArray<SkString> lines;
-    SkStrSplit(text.c_str(), "\n", kStrict_SkStrSplitMode, &lines);
-    for (int i = 0; i < lines.size(); ++i) {
-        visitFn(i + 1, lines[i].c_str());
-    }
+void VisitLineByLine(
+        std::string_view text,
+        const std::function<void(int lineNumber, std::string_view lineText)>& visitFn) {
+    int lineNumber = 1;
+    do {
+        std::string_view line = text;
+        size_t pos = text.find('\n');
+        if (pos != std::string_view::npos) {
+            line = line.substr(0, pos);
+            text.remove_prefix(pos + 1);
+        } else {
+            text = {};
+        }
+        visitFn(lineNumber++, line);
+    } while (!text.empty());
 }
 
 std::string BuildShaderErrorMessage(const char* shader, const char* errors) {
     std::string abortText{"Shader compilation error\n"
                           "------------------------\n"};
-    VisitLineByLine(shader, [&](int lineNumber, const char* lineText) {
-        SkSL::String::appendf(&abortText, "%4i\t%s\n", lineNumber, lineText);
+    VisitLineByLine(shader, [&](int lineNumber, std::string_view lineText) {
+        SkSL::String::appendf(&abortText, "%4i\t%.*s\n",
+                              lineNumber, (int)lineText.size(), lineText.data());
     });
-    SkSL::String::appendf(&abortText, "Errors:\n%s", errors);
+    abortText += "Errors:\n";
+    abortText += errors;
     return abortText;
 }
 
