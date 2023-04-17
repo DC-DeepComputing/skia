@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d29c3555_ece8bbe9",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-04-17T20:56:32Z",
+      "side": 1,
+      "message": "Is this move ok? I moved it to after the seek to make sure the callback doesn\u0027t get overwritten, but now it only gets dispatched if the adapter is static.",
+      "revId": "1278a6bf6e3255c1dd84dbd1b4db7d7fca4de3f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
