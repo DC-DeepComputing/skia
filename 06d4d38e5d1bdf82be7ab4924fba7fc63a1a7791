@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fee92b1_bde27d60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-17T16:33:03Z",
+      "side": 1,
+      "message": "Initial feedback",
+      "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb4ec9c7_980b49f8",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-17T16:33:03Z",
+      "side": 1,
+      "message": "If no other lines were changed within this file, it is unclear to me as to why we need to add this include.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 26
+      },
+      "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e28cc726_5426f0e7",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-17T16:33:03Z",
+      "side": 1,
+      "message": "If you are purposefully making the array max root size + 1, maybe add to the comment why that is. Something like:\n`Normal PaintParams creation will have up to 7 roots for the different stages. Terminate with a null shader node for convenient traversal.`",
+      "range": {
+        "startLine": 94,
+        "startChar": 12,
+        "endLine": 94,
+        "endChar": 13
+      },
+      "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5377be5_5a69150c",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-17T16:33:03Z",
+      "side": 1,
+      "message": "nit: Intentional line add?",
+      "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56545775_a68b5471",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-17T16:33:03Z",
+      "side": 1,
+      "message": "For my own understanding - why the switch from `SkTDArray` to `skia_private::TArray`?",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 44
+      },
+      "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c83dad18_8f68a2a5",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-17T16:33:03Z",
+      "side": 1,
+      "message": "If no other lines were changed within this file, it is unclear to me as to why we need to add this include.",
+      "range": {
+        "startLine": 411,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 26
+      },
+      "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
