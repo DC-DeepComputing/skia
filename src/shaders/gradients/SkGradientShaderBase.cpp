@@ -1341,6 +1341,14 @@ void SkGradientShaderBase::addToKeyCommon(const skgpu::graphite::KeyContext& key
     SkColor4fXformer xformedColors(this, keyContext.dstColorInfo().colorSpace());
     const SkPMColor4f* colors = xformedColors.fColors.begin();
 
+    if (fColorCount > GradientShaderBlocks::GradientData::kNumInternalStorageStops) {
+        if (fBitmap) {
+
+        }
+
+    }
+
+
     GradientShaderBlocks::GradientData data(type,
                                             point0, point1,
                                             radius0, radius1,
