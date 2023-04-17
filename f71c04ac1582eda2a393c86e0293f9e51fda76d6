@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cac97902_c0be6b1f",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d996e19_54cf195a",
+      "range": {
+        "startLine": 128,
+        "startChar": 80,
+        "endLine": 128,
+        "endChar": 94
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27239710_c33c7d29",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-04-14T18:42:21Z",
       "side": 1,
       "message": "wdyt about adding a debug method that asserts everything left in the purgeable queue is zero sized (and calling it here) ?",
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "545df130_afa8e258",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "That is essentially checked in the updates I added to the validate() call which will be called immediately after this. Basically when we iterate through the purgeable queue if the first resource is size 0 we assert all future ones are as well.",
+      "parentUuid": "27239710_c33c7d29",
       "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8e9a446_9a213013",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "agree",
+      "parentUuid": "edb6a034_d1ed4f91",
+      "range": {
+        "startLine": 36,
+        "startChar": 57,
+        "endLine": 36,
+        "endChar": 60
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a918bf53_e6ccb0a8",
@@ -81,6 +147,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1766c701_f78820d5",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a918bf53_e6ccb0a8",
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0147e604_ec385292",
@@ -94,6 +178,30 @@
       "writtenOn": "2023-04-14T18:30:53Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 281,
+        "startChar": 50,
+        "endLine": 281,
+        "endChar": 55
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5062622_2aacca21",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0147e604_ec385292",
       "range": {
         "startLine": 281,
         "startChar": 50,
@@ -127,6 +235,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a00cc44e_0c513e8d",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c867e2b6_2b92087c",
+      "range": {
+        "startLine": 318,
+        "startChar": 85,
+        "endLine": 318,
+        "endChar": 94
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b6de7fb_b96618ee",
@@ -140,6 +272,30 @@
       "writtenOn": "2023-04-14T18:30:53Z",
       "side": 1,
       "message": "by",
+      "range": {
+        "startLine": 324,
+        "startChar": 44,
+        "endLine": 324,
+        "endChar": 46
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5556582e_944d2465",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b6de7fb_b96618ee",
       "range": {
         "startLine": 324,
         "startChar": 44,
@@ -173,6 +329,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b3a7098_c3acee5c",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b21430d_41c8bfce",
+      "range": {
+        "startLine": 334,
+        "startChar": 22,
+        "endLine": 334,
+        "endChar": 31
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "054c7981_668dc03e",
@@ -186,6 +366,30 @@
       "writtenOn": "2023-04-14T18:30:53Z",
       "side": 1,
       "message": "resource or itself ...",
+      "range": {
+        "startLine": 380,
+        "startChar": 21,
+        "endLine": 380,
+        "endChar": 31
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "103be610_95a32ec6",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "054c7981_668dc03e",
       "range": {
         "startLine": 380,
         "startChar": 21,
@@ -215,6 +419,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41be00a1_ca47426a",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "Added a more explicitly forcePurgeAsNeeded testing function as previously I was just relying on the side effect of that being called by setMaxBudget",
+      "parentUuid": "1d774d9e_f160fd41",
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44abfa6d_3bb1b29d",
         "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
         "patchSetId": 2
@@ -226,6 +448,30 @@
       "writtenOn": "2023-04-14T18:30:53Z",
       "side": 1,
       "message": "added",
+      "range": {
+        "startLine": 467,
+        "startChar": 47,
+        "endLine": 467,
+        "endChar": 50
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f47c432_a6499d1c",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44abfa6d_3bb1b29d",
       "range": {
         "startLine": 467,
         "startChar": 47,
@@ -249,6 +495,30 @@
       "writtenOn": "2023-04-14T18:30:53Z",
       "side": 1,
       "message": "sized",
+      "range": {
+        "startLine": 485,
+        "startChar": 64,
+        "endLine": 485,
+        "endChar": 68
+      },
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8e220ab_3f08ef7c",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:21:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da02dc2f_61552569",
       "range": {
         "startLine": 485,
         "startChar": 64,
