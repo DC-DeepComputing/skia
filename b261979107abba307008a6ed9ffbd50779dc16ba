@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de1f5015_f3fc4313",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-04-17T17:59:32Z",
+      "side": 1,
+      "message": "Submitting now, we can follow up on a different CL if we want to manually pass in nullptr for the other calls.",
+      "parentUuid": "21ae1cbb_2d64421c",
+      "range": {
+        "startLine": 175,
+        "startChar": 65,
+        "endLine": 175,
+        "endChar": 74
+      },
+      "revId": "b261979107abba307008a6ed9ffbd50779dc16ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8e0bfac_2a579091",
