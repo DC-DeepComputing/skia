@@ -10,6 +10,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
@@ -77,10 +78,10 @@ public:
     bool onReadPixels(GrDirectContext*, const SkImageInfo&, void*, size_t, int srcX, int srcY,
                       CachingHint) const override;
     sk_sp<SkData> onRefEncoded() const override;
-    sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const override;
+    sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect&) const override;
 #if defined(SK_GRAPHITE)
-    sk_sp<SkImage> onMakeSubset(const SkIRect&,
-                                skgpu::graphite::Recorder*,
+    sk_sp<SkImage> onMakeSubset(skgpu::graphite::Recorder*,
+                                const SkIRect&,
                                 RequiredImageProperties) const override;
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType targetCT,
                                                 sk_sp<SkColorSpace> targetCS,
@@ -148,6 +149,24 @@ private:
     // of the unique ID's demise. This is used to remove cached textures from GrContext.
     mutable SkIDChangeListener::List fUniqueIDListeners;
 #endif
+};
+
+// Ref-counted tuple(SkImageGenerator, SkMutex) which allows sharing one generator among N images
+class SharedGenerator final : public SkNVRefCnt<SharedGenerator> {
+public:
+    static sk_sp<SharedGenerator> Make(std::unique_ptr<SkImageGenerator> gen);
+
+    // This is thread safe.  It is a const field set in the constructor.
+    const SkImageInfo& getInfo();
+
+private:
+    explicit SharedGenerator(std::unique_ptr<SkImageGenerator> gen);
+
+    friend class ScopedGenerator;
+    friend class SkImage_Lazy;
+
+    std::unique_ptr<SkImageGenerator> fGenerator;
+    SkMutex                           fMutex;
 };
 
 #endif
