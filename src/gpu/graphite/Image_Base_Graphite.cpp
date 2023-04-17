@@ -12,7 +12,7 @@
 
 namespace skgpu::graphite {
 
-sk_sp<SkImage> Image_Base::onMakeSubset(const SkIRect&, GrDirectContext*) const {
+sk_sp<SkImage> Image_Base::onMakeSubset(GrDirectContext*, const SkIRect&) const {
     SKGPU_LOG_W("Cannot convert Graphite-backed image to Ganesh");
     return nullptr;
 }
@@ -50,8 +50,8 @@ void Image_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace
 
 using namespace skgpu::graphite;
 
-sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset,
-                                   skgpu::graphite::Recorder* recorder,
+sk_sp<SkImage> SkImage::makeSubset(skgpu::graphite::Recorder* recorder,
+                                   const SkIRect& subset,
                                    RequiredImageProperties requiredProps) const {
     if (subset.isEmpty()) {
         return nullptr;
@@ -62,5 +62,5 @@ sk_sp<SkImage> SkImage::makeSubset(const SkIRect& subset,
         return nullptr;
     }
 
-    return as_IB(this)->onMakeSubset(subset, recorder, requiredProps);
+    return as_IB(this)->onMakeSubset(recorder, subset, requiredProps);
 }
