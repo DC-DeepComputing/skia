@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "21ae1cbb_2d64421c",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-04-17T16:41:03Z",
+      "side": 1,
+      "message": "There are, FillEffect and SolidLayer. For now I\u0027m not sure where to look for an `sid` if there was to be one. I marked them with a TODO.",
+      "parentUuid": "e1ade0d9_2f8b9f82",
+      "range": {
+        "startLine": 175,
+        "startChar": 65,
+        "endLine": 175,
+        "endChar": 74
+      },
+      "revId": "b261979107abba307008a6ed9ffbd50779dc16ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a8e0bfac_2a579091",
         "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
         "patchSetId": 12
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-14T21:17:44Z",
       "side": 1,
       "message": "nit: I would just inline this in the call below.",
+      "range": {
+        "startLine": 156,
+        "startChar": 40,
+        "endLine": 156,
+        "endChar": 51
+      },
+      "revId": "b261979107abba307008a6ed9ffbd50779dc16ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee338f3b_f3410cdd",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-04-17T16:41:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8e0bfac_2a579091",
       "range": {
         "startLine": 156,
         "startChar": 40,
@@ -60,6 +108,30 @@
       "writtenOn": "2023-04-14T21:17:44Z",
       "side": 1,
       "message": "nit: ditto.",
+      "range": {
+        "startLine": 166,
+        "startChar": 40,
+        "endLine": 166,
+        "endChar": 51
+      },
+      "revId": "b261979107abba307008a6ed9ffbd50779dc16ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbd58060_d581f32f",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-04-17T16:41:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3cd8db48_c3caccad",
       "range": {
         "startLine": 166,
         "startChar": 40,
