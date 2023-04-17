@@ -65,9 +65,7 @@ public:
     /** Converts an SkColor4f to the destination color space. */
     static SkColor4f Color4fPrepForDst(SkColor4f srgb, const SkColorInfo& dstColorInfo);
 
-    void toKey(const KeyContext&,
-               PaintParamsKeyBuilder*,
-               PipelineDataGatherer*) const;
+    void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
 private:
     SkColor4f            fColor;
