@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "c75875218dbff122d418dd15d6fbc2bb8b2f8e7c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e97d771_5ef8d124",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2023-04-17T20:43:54Z",
+      "side": 1,
+      "message": "LGTM, the bug id is b/278599533",
+      "revId": "c75875218dbff122d418dd15d6fbc2bb8b2f8e7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
