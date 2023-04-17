@@ -46,6 +46,30 @@
       },
       "revId": "ff74ffd1003b1babe160e961e7ff3bd888b2bfc7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a7ad1a4_2faaa6b4",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-17T19:14:46Z",
+      "side": 1,
+      "message": "Since this is used for setup I think it\u0027s fine. You could probably also do this with an int array of DescriptorSetTypeCount size which is initialized to all 0s. We can always change it later if need be.",
+      "parentUuid": "05114cd4_5f572b6e",
+      "range": {
+        "startLine": 48,
+        "startChar": 40,
+        "endLine": 48,
+        "endChar": 89
+      },
+      "revId": "ff74ffd1003b1babe160e961e7ff3bd888b2bfc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f257e7d_ff8ca930",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 33
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-17T19:14:46Z",
+      "side": 1,
+      "message": "Still looking, but a couple of comments.",
+      "revId": "44b430cff018a4ccbdc40c51f5783797f6d111fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc83a610_5e0b570a",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 33
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-17T19:14:46Z",
+      "side": 1,
+      "message": "Nit: dsTypesAndCounts? (and elsewhere)",
+      "range": {
+        "startLine": 71,
+        "startChar": 79,
+        "endLine": 71,
+        "endChar": 95
+      },
+      "revId": "44b430cff018a4ccbdc40c51f5783797f6d111fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
