@@ -22,7 +22,11 @@ def git_repos_from_deps():
     new_git_repository(
         name = "dawn",
         build_file = "@//bazel/external/dawn:BUILD.bazel",
+<<<<<<< PATCH SET (b93a74 Revert "Manual roll Dawn from 27c772262048 to a20c1ee82d29 ()
+        commit = "27c772262048ecca2de30b6895d60ecc81acb991",
+=======
         commit = "63aa15467e9c0262912ea2d49aa807f2b3a2c456",
+>>>>>>> BASE      (962800 Make Rust CXX Bridge bazel helper available project wide)
         remote = "https://dawn.googlesource.com/dawn.git",
     )
 
