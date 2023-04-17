@@ -16,6 +16,40 @@
       "message": "More spec churn! (It\u0027s getting ... late ... for this).",
       "revId": "9d651c440a4532d55bf09d5f3d6637305cb11774",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bae9185d_d5037223",
+        "filename": "include/private/SkGainmapInfo.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-17T12:57:45Z",
+      "side": 1,
+      "message": "I know we\u0027re ignoring the old style params here, which is fine. But maybe add a comment that we\u0027re intentionally not comparing fType, because it\u0027s not important for purposes of comparing parameters? (At least, I assume that\u0027s intentional for that reason).",
+      "revId": "9d651c440a4532d55bf09d5f3d6637305cb11774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eda05e0c_4496180e",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-17T12:57:45Z",
+      "side": 1,
+      "message": "Is there a reason to have the two separate `maybe` helpers, rather than a single that writes out values in one method or the other? The way this is written also changes the order that attributes appear, depending on whether they\u0027re scalar or not? That seems confusing?",
+      "revId": "9d651c440a4532d55bf09d5f3d6637305cb11774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
