@@ -271,6 +271,7 @@ BASE_SRCS_ALL = [
     "include/private/base/SkTypeTraits.h",
     "include/private/chromium/SkChromeRemoteGlyphCache.h",
     "include/private/chromium/SkDiscardableMemory.h",
+    "include/private/chromium/SkJpegMetadata.h",
     "include/private/chromium/Slug.h",
     "include/private/gpu/ganesh/GrContext_Base.h",
     "include/private/gpu/ganesh/GrGLTypesPriv.h",
