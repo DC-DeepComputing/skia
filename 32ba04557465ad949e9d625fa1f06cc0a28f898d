@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "783fa741_804645fc",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T19:27:13Z",
+      "side": 1,
+      "message": "I don\u0027t think we\u0027ll ever need this function since we are caching pools.",
+      "range": {
+        "startLine": 51,
+        "startChar": 4,
+        "endLine": 51,
+        "endChar": 86
+      },
+      "revId": "32ba04557465ad949e9d625fa1f06cc0a28f898d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e4b5df4_6bb43350",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T19:27:13Z",
+      "side": 1,
+      "message": "We don\u0027t need this right? The only function call on VulkanResourceProvider is going to be something like `getDescriptorSet(setDescription)` right? We\u0027ll make pools on the fly in there if needed and then not store them anywhere (besides being ref\u0027d by individual descriptor sets).",
+      "range": {
+        "startLine": 46,
+        "startChar": 2,
+        "endLine": 47,
+        "endChar": 85
+      },
+      "revId": "32ba04557465ad949e9d625fa1f06cc0a28f898d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
