@@ -22,6 +22,30 @@
       },
       "revId": "ff74ffd1003b1babe160e961e7ff3bd888b2bfc7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05114cd4_5f572b6e",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-17T18:37:27Z",
+      "side": 1,
+      "message": "We seemed to be in agreement that this was fine during our meeting; marking this resolved.",
+      "parentUuid": "88aa530d_4d4cd78c",
+      "range": {
+        "startLine": 48,
+        "startChar": 40,
+        "endLine": 48,
+        "endChar": 89
+      },
+      "revId": "ff74ffd1003b1babe160e961e7ff3bd888b2bfc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

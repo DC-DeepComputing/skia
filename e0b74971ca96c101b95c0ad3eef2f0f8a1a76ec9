@@ -22,6 +22,30 @@
       },
       "revId": "e0b74971ca96c101b95c0ad3eef2f0f8a1a76ec9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09f0f9a1_663203c3",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-17T18:37:27Z",
+      "side": 1,
+      "message": "It seems the current model would not result in the reuse of pools. Marking as resolved.",
+      "parentUuid": "da4d281b_c0222ac7",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 47
+      },
+      "revId": "e0b74971ca96c101b95c0ad3eef2f0f8a1a76ec9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
