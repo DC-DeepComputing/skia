@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a015e648_3dc3e944",
+        "filename": "tests/graphite/ProxyCacheTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-17T14:29:31Z",
+      "side": 1,
+      "message": "Maybe one additional test to add somewhere is to make sure purgeProxiesNotUsedSince can clear multiple resources. I think all the tests here happen to just clear the one \"top\" resource.",
+      "range": {
+        "startLine": 176,
+        "startChar": 35,
+        "endLine": 176,
+        "endChar": 50
+      },
+      "revId": "61730a8565e13acb23539b89b8dc92ee129c3f31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
