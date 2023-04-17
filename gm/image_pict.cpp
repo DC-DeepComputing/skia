@@ -28,7 +28,9 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/GrTextureGenerator.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkImageGeneratorPriv.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrSamplerState.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
@@ -131,12 +133,12 @@ static std::unique_ptr<SkImageGenerator> make_pic_generator(SkCanvas*,
                                                             sk_sp<SkPicture> pic) {
     SkMatrix matrix;
     matrix.setTranslate(-100, -100);
-    return SkImageGenerator::MakeFromPicture({100, 100},
-                                             std::move(pic),
-                                             &matrix,
-                                             nullptr,
-                                             SkImages::BitDepth::kU8,
-                                             SkColorSpace::MakeSRGB());
+    return SkImageGenerators::MakeFromPicture({100, 100},
+                                              std::move(pic),
+                                              &matrix,
+                                              nullptr,
+                                              SkImages::BitDepth::kU8,
+                                              SkColorSpace::MakeSRGB());
 }
 
 class RasterGenerator : public SkImageGenerator {
@@ -165,7 +167,7 @@ static std::unique_ptr<SkImageGenerator> make_ras_generator(SkCanvas*,
     return std::make_unique<RasterGenerator>(bm);
 }
 
-class TextureGenerator : public SkImageGenerator {
+class TextureGenerator : public GrTextureGenerator {
 public:
     TextureGenerator(SkCanvas* canvas, const SkImageInfo& info, sk_sp<SkPicture> pic)
             : SkImageGenerator(info) {

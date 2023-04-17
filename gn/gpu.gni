@@ -76,6 +76,7 @@ skia_gpu_public = [
   "$_include/gpu/GrYUVABackendTextures.h",
   "$_include/gpu/MutableTextureState.h",
   "$_include/gpu/ShaderErrorHandler.h",
+  "$_include/gpu/ganesh/GrTextureGenerator.h",
   "$_include/gpu/ganesh/SkImageGanesh.h",
   "$_include/gpu/mock/GrMockTypes.h",
 ]
@@ -442,6 +443,8 @@ skia_ganesh_private = [
   "$_src/gpu/ganesh/image/SkImage_GaneshFactories.cpp",
   "$_src/gpu/ganesh/image/SkImage_GaneshYUVA.cpp",
   "$_src/gpu/ganesh/image/SkImage_GaneshYUVA.h",
+  "$_src/gpu/ganesh/image/SkImage_LazyTexture.cpp",
+  "$_src/gpu/ganesh/image/SkImage_LazyTexture.h",
   "$_src/gpu/ganesh/mock/GrMockAttachment.h",
   "$_src/gpu/ganesh/mock/GrMockBuffer.h",
   "$_src/gpu/ganesh/mock/GrMockCaps.cpp",

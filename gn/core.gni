@@ -390,6 +390,7 @@ skia_core_sources = [
   "$_src/core/SkImageFilterTypes.h",
   "$_src/core/SkImageFilter_Base.h",
   "$_src/core/SkImageGenerator.cpp",
+  "$_src/core/SkImageGeneratorPriv.h",
   "$_src/core/SkImageInfo.cpp",
   "$_src/core/SkImageInfoPriv.h",
   "$_src/core/SkImagePriv.h",

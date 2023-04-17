@@ -13,6 +13,7 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkSurface.h"
 #include "src/base/SkTLazy.h"
+#include "src/core/SkImageGeneratorPriv.h"
 #include "src/image/SkImage_Base.h"
 
 #if defined(SK_GANESH)
@@ -50,24 +51,24 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<SkImageGenerator> SkImageGenerator::MakeFromPicture(
-        const SkISize& size,
+namespace SkImageGenerators {
+std::unique_ptr<SkImageGenerator> MakeFromPicture(
+        const SkISize &size,
         sk_sp<SkPicture> picture,
         const SkMatrix* matrix,
         const SkPaint* paint,
         SkImages::BitDepth bitDepth,
-        sk_sp<SkColorSpace> colorSpace) {
-    return SkImageGenerator::MakeFromPicture(size, picture, matrix, paint, bitDepth,
-                                             colorSpace, {});
+        sk_sp <SkColorSpace> colorSpace) {
+    return MakeFromPicture(size, picture, matrix, paint, bitDepth, colorSpace, {});
 }
 
-std::unique_ptr<SkImageGenerator> SkImageGenerator::MakeFromPicture(const SkISize& size,
-                                                                    sk_sp<SkPicture> picture,
-                                                                    const SkMatrix* matrix,
-                                                                    const SkPaint* paint,
-                                                                    SkImages::BitDepth bitDepth,
-                                                                    sk_sp<SkColorSpace> colorSpace,
-                                                                    SkSurfaceProps props) {
+std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize &size,
+                                                  sk_sp<SkPicture> picture,
+                                                  const SkMatrix* matrix,
+                                                  const SkPaint* paint,
+                                                  SkImages::BitDepth bitDepth,
+                                                  sk_sp<SkColorSpace> colorSpace,
+                                                  SkSurfaceProps props) {
     if (!picture || !colorSpace || size.isEmpty()) {
         return nullptr;
     }
@@ -80,7 +81,8 @@ std::unique_ptr<SkImageGenerator> SkImageGenerator::MakeFromPicture(const SkISiz
     SkImageInfo info =
             SkImageInfo::Make(size, colorType, kPremul_SkAlphaType, std::move(colorSpace));
     return std::unique_ptr<SkImageGenerator>(
-        new SkPictureImageGenerator(info, std::move(picture), matrix, paint, props));
+            new SkPictureImageGenerator(info, std::move(picture), matrix, paint, props));
+}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

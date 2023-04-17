@@ -140,6 +140,7 @@ generate_cpp_files_for_headers(
     to_generate = [
         "src/core/SkColorSpacePriv.h",
         "src/core/SkDrawProcs.h",
+        "src/core/SkImageGeneratorPriv.h",
         "src/core/SkMatrixPriv.h",
         "src/core/SkPathPriv.h",
         "src/encode/SkICCPriv.h",

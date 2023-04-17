@@ -16,11 +16,6 @@
 
 #include <utility>
 
-#if defined(SK_GANESH)
-#include "include/gpu/GrRecordingContext.h"
-#include "src/gpu/ganesh/GrSurfaceProxyView.h"
-#endif
-
 #if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/Image_Graphite.h"
 #endif
@@ -57,27 +52,7 @@ bool SkImageGenerator::getYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
     return this->onGetYUVAPlanes(yuvaPixmaps);
 }
 
-#if defined(SK_GANESH)
-GrSurfaceProxyView SkImageGenerator::generateTexture(GrRecordingContext* ctx,
-                                                     const SkImageInfo& info,
-                                                     GrMipmapped mipmapped,
-                                                     GrImageTexGenPolicy texGenPolicy) {
-    SkASSERT_RELEASE(fInfo.dimensions() == info.dimensions());
 
-    if (!ctx || ctx->abandoned()) {
-        return {};
-    }
-
-    return this->onGenerateTexture(ctx, info, mipmapped, texGenPolicy);
-}
-
-GrSurfaceProxyView SkImageGenerator::onGenerateTexture(GrRecordingContext*,
-                                                       const SkImageInfo&,
-                                                       GrMipmapped,
-                                                       GrImageTexGenPolicy) {
-    return {};
-}
-#endif  // SK_GANESH
 
 #if defined(SK_GRAPHITE)
 sk_sp<SkImage> SkImageGenerator::makeTextureImage(skgpu::graphite::Recorder* recorder,

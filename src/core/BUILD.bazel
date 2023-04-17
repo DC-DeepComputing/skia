@@ -166,6 +166,7 @@ CORE_FILES = [
     "SkImageFilterTypes.h",
     "SkImageFilter_Base.h",
     "SkImageGenerator.cpp",
+    "SkImageGeneratorPriv.h",
     "SkImageInfo.cpp",
     "SkImageInfoPriv.h",
     "SkImagePriv.h",

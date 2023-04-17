@@ -165,6 +165,7 @@ public:
         kRaster,
         kRasterPinnable,
         kLazy,
+        kLazyTexture,
         kGanesh,
         kGaneshYUVA,
         kGraphite,
@@ -174,7 +175,9 @@ public:
     virtual Type type() const = 0;
 
     // True for picture-backed and codec-backed
-    bool onIsLazyGenerated() const { return this->type() == Type::kLazy; }
+    bool onIsLazyGenerated() const {
+        return this->type() == Type::kLazy || this->type() == Type::kLazyTexture;
+    }
 
     // True for images instantiated by Ganesh in GPU memory
     bool isGaneshBacked() const {
