@@ -85,6 +85,7 @@ struct GradientShaderBlocks {
                      int numStops,
                      const SkPMColor4f* colors,
                      float* offsets,
+                     sk_sp<TextureProxy> colorsAndOffsetsProxy,
                      const SkGradientShader::Interpolation&);
 
         bool operator==(const GradientData& rhs) const {
@@ -98,7 +99,8 @@ struct GradientShaderBlocks {
                    fTM == rhs.fTM &&
                    fNumStops == rhs.fNumStops &&
                    !memcmp(fColors, rhs.fColors, sizeof(fColors)) &&
-                   !memcmp(fOffsets, rhs.fOffsets, sizeof(fOffsets));
+                   !memcmp(fOffsets, rhs.fOffsets, sizeof(fOffsets)) &&
+                   true /*??*/;
         }
         bool operator!=(const GradientData& rhs) const { return !(*this == rhs); }
 
@@ -118,11 +120,10 @@ struct GradientShaderBlocks {
         // Otherwise we use fColorsAndOffsetsBitmap.
         SkPMColor4f            fColors[kNumInternalStorageStops];
         float                  fOffsets[kNumInternalStorageStops];
-        SkBitmap               fColorsAndOffsetsBitmap;
-
+        sk_sp<TextureProxy>    fColorsAndOffsetsProxy;
 
         SkGradientShader::Interpolation fInterpolation;
-        bool                   fValid = true;
+        bool                   fValid1 = true;
     };
 
     static void BeginBlock(const KeyContext&,
