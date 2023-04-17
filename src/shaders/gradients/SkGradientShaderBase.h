@@ -120,6 +120,8 @@ protected:
     SkTileMode     fTileMode;
 
 #if defined(SK_GRAPHITE)
+    mutable SkBitmap fColorsAndOffsetsBitmap;
+
     void addToKeyCommon(const skgpu::graphite::KeyContext&,
                         skgpu::graphite::PaintParamsKeyBuilder*,
                         skgpu::graphite::PipelineDataGatherer*,
