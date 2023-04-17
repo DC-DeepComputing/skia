@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e91a0d14_09657a83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "I had a bug propagating the requirement flags up the node hierarchy (it was using the children\u0027s ShaderSnippet\u0027s requirements, but not taking into account grandchildren, etc.)  So in the compose shader GMs, there were ShaderNode trees where it was the grandchildren that needed local coords but the root thought there were none required and then the fragment shader only ever sampled at (0,0).",
+      "parentUuid": "1510cc8b_f05701cc",
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4a55cb4_2e4d4bf9",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "339a4ff7_0b9f9f5c",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4a55cb4_2e4d4bf9",
+      "range": {
+        "startLine": 87,
+        "startChar": 85,
+        "endLine": 87,
+        "endChar": 91
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fffbc84_e64d0055",
@@ -54,6 +96,30 @@
       "writtenOn": "2023-04-13T17:25:55Z",
       "side": 1,
       "message": "Curious: Why `SkTDArray` and not `SkSTArray`?",
+      "range": {
+        "startLine": 90,
+        "startChar": 4,
+        "endLine": 90,
+        "endChar": 13
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f004b2a6_4c950cf9",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "SkTDArray was already included from the header so figured I wouldn\u0027t bring in another container. But switching to SkSTArray would mean getRootNodes() can avoid heap allocations (since the upper bound on roots is known), and it looks like now SkTArray\u0027s clear() preserves the allocation, which it didn\u0027t use to and was the original motivation for using SkTDArray in PaintParamsKey. I will just switch to that.",
+      "parentUuid": "4fffbc84_e64d0055",
       "range": {
         "startLine": 90,
         "startChar": 4,
@@ -110,6 +176,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a61d8c2c_da8d3580",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66e689b6_8b48f938",
+      "range": {
+        "startLine": 82,
+        "startChar": 55,
+        "endLine": 82,
+        "endChar": 66
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89885ea9_5caebc25",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2f017a9_57207225",
+      "range": {
+        "startLine": 82,
+        "startChar": 6,
+        "endLine": 82,
+        "endChar": 7
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "87e2e3d1_963ae100",
@@ -123,6 +237,30 @@
       "writtenOn": "2023-04-13T17:25:55Z",
       "side": 1,
       "message": "Does the order of creation matter to a caller?\n\n\"Increments `currentIndex` by the total number of nodes created.\"?",
+      "range": {
+        "startLine": 82,
+        "startChar": 68,
+        "endLine": 83,
+        "endChar": 54
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e589203_7f5ad129",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87e2e3d1_963ae100",
       "range": {
         "startLine": 82,
         "startChar": 68,
@@ -156,6 +294,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bba5ab9c_b84e5afc",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "I was planning to do that in a follow up CL.",
+      "parentUuid": "47964a98_d8bf839c",
+      "range": {
+        "startLine": 55,
+        "startChar": 12,
+        "endLine": 55,
+        "endChar": 37
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f7ea4c5_b30cd347",
@@ -169,6 +331,30 @@
       "writtenOn": "2023-04-13T17:40:31Z",
       "side": 1,
       "message": "up to you: if you need a counting index, IMO it feels more natural to go back to an old-school for loop.\n\n```\nfor (size_t index\u003d0; index\u003cnodes.size(); ++index) {\n  const ShaderNode* node \u003d nodes[index];\n```",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 0
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdd5da36_3e55c566",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f7ea4c5_b30cd347",
       "range": {
         "startLine": 84,
         "startChar": 0,
@@ -202,6 +388,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f5abd96_f3c03215",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "316928ba_67862400",
+      "range": {
+        "startLine": 230,
+        "startChar": 38,
+        "endLine": 230,
+        "endChar": 40
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "924b1abc_b8d60f10",
@@ -215,6 +425,30 @@
       "writtenOn": "2023-04-13T17:40:31Z",
       "side": 1,
       "message": "Why?\nIt adds complexity in lots of places, and AFAICS it really doesn\u0027t matter.",
+      "range": {
+        "startLine": 392,
+        "startChar": 7,
+        "endLine": 392,
+        "endChar": 83
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44bafdce_22e5a470",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "Removed TODO",
+      "parentUuid": "924b1abc_b8d60f10",
       "range": {
         "startLine": 392,
         "startChar": 7,
@@ -248,6 +482,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "005727e9_439ec0a1",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35f6ff35_b45b8a67",
+      "range": {
+        "startLine": 396,
+        "startChar": 4,
+        "endLine": 396,
+        "endChar": 16
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71c98db4_a66de568",
@@ -261,6 +519,30 @@
       "writtenOn": "2023-04-13T17:40:31Z",
       "side": 1,
       "message": "Copy-paste error",
+      "range": {
+        "startLine": 703,
+        "startChar": 11,
+        "endLine": 703,
+        "endChar": 40
+      },
+      "revId": "1e49028587bd70d5a4195a2627693ed68c1c3f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "232187ab_a0a6efc9",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-17T14:56:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71c98db4_a66de568",
       "range": {
         "startLine": 703,
         "startChar": 11,
