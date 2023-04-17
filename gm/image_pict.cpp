@@ -304,12 +304,12 @@ protected:
 
             if (dContext) {
                 fImageSubset = SkImages::DeferredFromGenerator(std::move(gen))
-                                       ->makeSubset(subset, dContext);
+                                       ->makeSubset(dContext, subset);
             } else {
 #if defined(SK_GRAPHITE)
                 auto recorder = canvas->recorder();
                 fImageSubset = SkImages::DeferredFromGenerator(std::move(gen))
-                                       ->makeSubset(subset, recorder);
+                                       ->makeSubset(recorder, subset, {});
 #endif
             }
             if (!fImageSubset) {

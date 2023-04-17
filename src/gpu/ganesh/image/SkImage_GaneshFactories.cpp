@@ -84,8 +84,8 @@ bool MakeBackendTextureFromImage(GrDirectContext* direct,
     // We must make a copy of the image if the image is not unique, if the GrTexture owned by the
     // image is not unique, or if the texture wraps an external object.
     if (!image->unique() || !texture->unique() || texture->resourcePriv().refsWrappedObjects()) {
-        // onMakeSubset will always copy the image.
-        image = as_IB(image)->onMakeSubset(image->bounds(), direct);
+        // onMakeSubset will always copy the image (makeSubset will not).
+        image = as_IB(image)->onMakeSubset(direct, image->bounds());
         if (!image) {
             return false;
         }
