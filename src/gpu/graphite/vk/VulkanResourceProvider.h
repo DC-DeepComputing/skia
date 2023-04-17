@@ -11,6 +11,8 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
+#include <map>
 
 namespace skgpu::graphite {
 
@@ -38,6 +40,11 @@ private:
     sk_sp<Sampler> createSampler(const SkSamplingOptions&,
                                  SkTileMode xTileMode,
                                  SkTileMode yTileMode) override;
+
+    // Creates a compatible descriptor pool for the requested types and counts. Does not hold on to
+    // a ref itself since we do not reuse pools.
+    sk_sp<VulkanDescriptorPool> createCompatibleDescriptorPool(
+            std::map<VulkanDescriptorPool::DescriptorSetType, int> DsTypesAndCounts);
 
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
     void onDeleteBackendTexture(BackendTexture&) override {}
