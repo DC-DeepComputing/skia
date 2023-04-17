@@ -1273,6 +1273,30 @@ SkGradientShaderBase::ColorStopOptimizer::ColorStopOptimizer(const SkColor4f* co
 }
 
 #if defined(SK_GRAPHITE)
+
+skgpu::graphite::GradientShaderBlocks::GradientData SkGradientShaderBase::foo(
+        const skgpu::graphite::KeyContext& keyContext,
+        GradientType type,
+        SkPoint point0, SkPoint point1,
+        float radius0, float radius1,
+        float bias, float scale) const {
+    using namespace skgpu::graphite;
+
+    SkColor4fXformer xformedColors(this, keyContext.dstColorInfo().colorSpace());
+    const SkPMColor4f* colors = xformedColors.fColors.begin();
+
+    GradientShaderBlocks::GradientData data(type,
+                                            point0, point1,
+                                            radius0, radius1,
+                                            bias, scale,
+                                            fTileMode,
+                                            fColorCount,
+                                            colors,
+                                            fPositions,
+                                            fInterpolation);
+    return data;
+}
+
 // Please see GrGradientShader.cpp::make_interpolated_to_dst for substantial comments
 // as to why this code is structured this way.
 void SkGradientShaderBase::MakeInterpolatedToDst(

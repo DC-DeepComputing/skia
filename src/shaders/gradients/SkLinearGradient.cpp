@@ -106,18 +106,11 @@ void SkLinearGradient::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                 skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;
 
-    SkColor4fXformer xformedColors(this, keyContext.dstColorInfo().colorSpace());
-    const SkPMColor4f* colors = xformedColors.fColors.begin();
-
-    GradientShaderBlocks::GradientData data(GradientType::kLinear,
-                                            fStart, fEnd,
-                                            0.0f, 0.0f,
-                                            0.0f, 0.0f,
-                                            fTileMode,
-                                            fColorCount,
-                                            colors,
-                                            fPositions,
-                                            fInterpolation);
+    GradientShaderBlocks::GradientData data = this->foo(keyContext,
+                                                        GradientType::kLinear,
+                                                        fStart, fEnd,
+                                                        0.0f, 0.0f,
+                                                        0.0f, 0.0f);
 
     MakeInterpolatedToDst(keyContext, builder, gatherer,
                           data, fInterpolation,

@@ -120,6 +120,12 @@ protected:
     SkTileMode     fTileMode;
 
 #if defined(SK_GRAPHITE)
+    skgpu::graphite::GradientShaderBlocks::GradientData foo(const skgpu::graphite::KeyContext&,
+                                                            GradientType,
+                                                            SkPoint point0, SkPoint point1,
+                                                            float radius0, float radius1,
+                                                            float bias, float scale) const;
+
     static void MakeInterpolatedToDst(const skgpu::graphite::KeyContext&,
                                       skgpu::graphite::PaintParamsKeyBuilder*,
                                       skgpu::graphite::PipelineDataGatherer*,
