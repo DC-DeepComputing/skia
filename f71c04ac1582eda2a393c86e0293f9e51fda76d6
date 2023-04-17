@@ -83,6 +83,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "888dea77_7daccbcd",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-17T14:35:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "545df130_afa8e258",
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edb6a034_d1ed4f91",
@@ -431,6 +449,24 @@
       "side": 1,
       "message": "Added a more explicitly forcePurgeAsNeeded testing function as previously I was just relying on the side effect of that being called by setMaxBudget",
       "parentUuid": "1d774d9e_f160fd41",
+      "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31873979_30185d26",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-17T14:35:34Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "41be00a1_ca47426a",
       "revId": "f71c04ac1582eda2a393c86e0293f9e51fda76d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
