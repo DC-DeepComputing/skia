@@ -435,6 +435,8 @@ skia_ganesh_private = [
   "$_src/gpu/ganesh/image/GrImageUtils.cpp",
   "$_src/gpu/ganesh/image/GrImageUtils.h",
   "$_src/gpu/ganesh/image/GrPinnableImage.cpp",
+  "$_src/gpu/ganesh/image/SkImage_CrossContext.cpp",
+  "$_src/gpu/ganesh/image/SkImage_CrossContext.h",
   "$_src/gpu/ganesh/image/SkImage_Ganesh.cpp",
   "$_src/gpu/ganesh/image/SkImage_Ganesh.h",
   "$_src/gpu/ganesh/image/SkImage_GaneshBase.cpp",

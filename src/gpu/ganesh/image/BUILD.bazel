@@ -5,6 +5,11 @@ licenses(["notice"])
 exports_files_legacy()
 
 IMAGE_FILES = [
+    "GrImageUtils.cpp",
+    "GrImageUtils.h",
+    "GrPinnableImage.cpp",
+    "SkImage_CrossContext.cpp",
+    "SkImage_CrossContext.h",
     "SkImage_Ganesh.cpp",
     "SkImage_Ganesh.h",
     "SkImage_GaneshBase.cpp",
@@ -12,9 +17,6 @@ IMAGE_FILES = [
     "SkImage_GaneshFactories.cpp",
     "SkImage_GaneshYUVA.cpp",
     "SkImage_GaneshYUVA.h",
-    "GrPinnableImage.cpp",
-    "GrImageUtils.h",
-    "GrImageUtils.cpp",
 ]
 
 split_srcs_and_hdrs(

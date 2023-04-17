@@ -1093,6 +1093,8 @@ BASE_SRCS_ALL = [
     "src/gpu/ganesh/gradients/GrGradientShader.h",
     "src/gpu/ganesh/image/GrImageUtils.cpp",
     "src/gpu/ganesh/image/GrImageUtils.h",
+    "src/gpu/ganesh/image/SkImage_CrossContext.cpp",
+    "src/gpu/ganesh/image/SkImage_CrossContext.h",
     "src/gpu/ganesh/image/SkImage_Ganesh.cpp",
     "src/gpu/ganesh/image/SkImage_Ganesh.h",
     "src/gpu/ganesh/image/SkImage_GaneshBase.cpp",

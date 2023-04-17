@@ -48,6 +48,7 @@
 #include "src/gpu/ganesh/GrTextureProxy.h"
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
+#include "src/gpu/ganesh/image/SkImage_CrossContext.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
 #include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
 #include "src/image/SkImage_Base.h"
@@ -84,8 +85,8 @@ bool MakeBackendTextureFromImage(GrDirectContext* direct,
     // We must make a copy of the image if the image is not unique, if the GrTexture owned by the
     // image is not unique, or if the texture wraps an external object.
     if (!image->unique() || !texture->unique() || texture->resourcePriv().refsWrappedObjects()) {
-        // onMakeSubset will always copy the image.
-        image = as_IB(image)->onMakeSubset(image->bounds(), direct);
+        // onMakeSubset will always copy the image (makeSubset will not).
+        image = as_IB(image)->onMakeSubset(direct, image->bounds());
         if (!image) {
             return false;
         }
@@ -420,7 +421,7 @@ sk_sp<SkImage> CrossContextTextureFromPixmap(GrDirectContext* dContext,
                                                     skCT,
                                                     pixmap->alphaType(),
                                                     pixmap->info().refColorSpace());
-    return DeferredFromGenerator(std::move(gen));
+    return MakeCrossContextImage(std::move(gen));
 }
 
 sk_sp<SkImage> TextureFromImage(GrDirectContext* dContext,

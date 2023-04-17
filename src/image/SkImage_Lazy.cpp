@@ -29,7 +29,6 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
-#include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/SkBackingFit.h"
@@ -64,28 +63,17 @@ class SkMatrix;
 enum SkColorType : int;
 enum class SkTileMode;
 
-// Ref-counted tuple(SkImageGenerator, SkMutex) which allows sharing one generator among N images
-class SharedGenerator final : public SkNVRefCnt<SharedGenerator> {
-public:
-    static sk_sp<SharedGenerator> Make(std::unique_ptr<SkImageGenerator> gen) {
-        return gen ? sk_sp<SharedGenerator>(new SharedGenerator(std::move(gen))) : nullptr;
-    }
+sk_sp<SharedGenerator> SharedGenerator::Make(std::unique_ptr<SkImageGenerator> gen) {
+    return gen ? sk_sp<SharedGenerator>(new SharedGenerator(std::move(gen))) : nullptr;
+}
 
-    // This is thread safe.  It is a const field set in the constructor.
-    const SkImageInfo& getInfo() { return fGenerator->getInfo(); }
+SharedGenerator::SharedGenerator(std::unique_ptr<SkImageGenerator> gen)
+        : fGenerator(std::move(gen)) {
+    SkASSERT(fGenerator);
+}
 
-private:
-    explicit SharedGenerator(std::unique_ptr<SkImageGenerator> gen)
-            : fGenerator(std::move(gen)) {
-        SkASSERT(fGenerator);
-    }
-
-    friend class ScopedGenerator;
-    friend class SkImage_Lazy;
-
-    std::unique_ptr<SkImageGenerator> fGenerator;
-    SkMutex                           fMutex;
-};
+// This is thread safe.  It is a const field set in the constructor.
+const SkImageInfo& SharedGenerator::getInfo() { return fGenerator->getInfo(); }
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -261,30 +249,25 @@ bool SkImage_Lazy::isValid(GrRecordingContext* context) const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset, GrDirectContext* direct) const {
-    // TODO: can we do this more efficiently, by telling the generator we want to
-    //       "realize" a subset?
-
-#if defined(SK_GANESH)
-    auto pixels = direct ? SkImages::TextureFromImage(direct, this) : this->makeRasterImage();
-#else
-    auto pixels = this->makeRasterImage();
-#endif
-    return pixels ? pixels->makeSubset(subset, direct) : nullptr;
+sk_sp<SkImage> SkImage_Lazy::onMakeSubset(GrDirectContext*, const SkIRect& subset) const {
+    // neither picture-backed nor codec-backed lazy images need the context to do readbacks.
+    // The subclass for cross-context images *does* use the direct context.
+    auto pixels = this->makeRasterImage(nullptr);
+    return pixels ? pixels->makeSubset(nullptr, subset) : nullptr;
 }
 
 #if defined(SK_GRAPHITE)
 
-sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset,
-                                          skgpu::graphite::Recorder* recorder,
-                                          RequiredImageProperties requiredProperties) const {
+sk_sp<SkImage> SkImage_Lazy::onMakeSubset(skgpu::graphite::Recorder*,
+                                          const SkIRect& subset,
+                                          RequiredImageProperties props) const {
     // TODO: can we do this more efficiently, by telling the generator we want to
     //       "realize" a subset?
-
-    sk_sp<SkImage> nonLazyImg = recorder ? this->makeTextureImage(recorder, requiredProperties)
-                                         : this->makeRasterImage();
-
-    return nonLazyImg ? nonLazyImg->makeSubset(subset, recorder, requiredProperties) : nullptr;
+    sk_sp<SkImage> nonLazyImg = this->makeRasterImage();
+    if (!nonLazyImg) {
+        return nullptr;
+    }
+    return nonLazyImg->makeSubset(nullptr, subset, props);
 }
 
 #endif // SK_GRAPHITE
