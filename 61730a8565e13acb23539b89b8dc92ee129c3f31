@@ -22,6 +22,30 @@
       },
       "revId": "61730a8565e13acb23539b89b8dc92ee129c3f31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b8be118_407546ce",
+        "filename": "tests/graphite/ProxyCacheTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-17T14:46:17Z",
+      "side": 1,
+      "message": "Done - in ProxyCacheTest7",
+      "parentUuid": "a015e648_3dc3e944",
+      "range": {
+        "startLine": 176,
+        "startChar": 35,
+        "endLine": 176,
+        "endChar": 50
+      },
+      "revId": "61730a8565e13acb23539b89b8dc92ee129c3f31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
