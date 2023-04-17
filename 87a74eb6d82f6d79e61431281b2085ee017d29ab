@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eed3beb1_dae39cbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-04-17T10:47:43Z",
+      "side": 1,
+      "message": "LMK if this looks reasonable (this is the \"really wanted for branch day next week, at least behind a flag\", thing).\n\nChrome currently uses third_party/iccjpeg for extracting ICC profiles. I\u0027m planning to roll that into this interface (and remove the old library from the build).",
+      "revId": "87a74eb6d82f6d79e61431281b2085ee017d29ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
