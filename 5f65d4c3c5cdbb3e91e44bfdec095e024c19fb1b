@@ -16,6 +16,92 @@
       "message": "OK, take a peek. Main difference is the use of SkTArray in place of a standard C-style array and some comment changes. Sorry for the obscene number of patch sets.",
       "revId": "5f65d4c3c5cdbb3e91e44bfdec095e024c19fb1b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23de951c_1714d9e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 42
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-18T21:25:59Z",
+      "side": 1,
+      "message": "It is still not obvious what values we should be storing/passing around to the pool object. I think you would benefit a lot to starting to write the follow on CL where you begin to implement/stub out what VulkanResourceProvider::getDescriptorSet(map\u003c...\u003e) should look like. It will help guide what you actually want and need from the helper supporting objects you make for it.",
+      "revId": "5f65d4c3c5cdbb3e91e44bfdec095e024c19fb1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3bedb2f_0ed37ed9",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-18T21:25:59Z",
+      "side": 1,
+      "message": "So this is a map of the entire pools types and counts. To get to this call above us in the stack we would be in `VulkanResourceProvider::findOrCreateDescriptorSet(map\u003cType, count\u003e dsDesc)`. However, the dsDesc in that call is just the types and counts for one individual descriptor set. To generate the map you have on the pool here you would need to iterate over the dsDesc and multiple all the counts by some kSetsPerPool value and create a second map.\n\nBut all the second map is used for is to pass into this factory where we immediately iterate over it to produce VkDescriptorPoolSizes. Couldn\u0027t we just skip that middle map and pass this factory the original dsDesc and an `int setsPerPool`. Then we just do that multiple when filling out poolSizes here?",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 57
+      },
+      "revId": "5f65d4c3c5cdbb3e91e44bfdec095e024c19fb1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a884a953_52a5cd40",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-18T21:25:59Z",
+      "side": 1,
+      "message": "I don\u0027t see why we would ever need to save this. We may want something that describes the layout of an individual set since we\u0027ll need the VkDescriptorSetLayout to allocate descriptors from the pool, but depending on how the calling code is set up that may also not be needed to store of this object.",
+      "range": {
+        "startLine": 79,
+        "startChar": 9,
+        "endLine": 79,
+        "endChar": 54
+      },
+      "revId": "5f65d4c3c5cdbb3e91e44bfdec095e024c19fb1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9deb49f_f4985bdb",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.h",
+        "patchSetId": 42
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-18T21:25:59Z",
+      "side": 1,
+      "message": "I imagine this enum may end up moving outside of this class and into some shared types since a lot more classes will probably want to use this and make/read DS maps, but for now this is fine to leave here.",
+      "range": {
+        "startLine": 35,
+        "startChar": 5,
+        "endLine": 35,
+        "endChar": 28
+      },
+      "revId": "5f65d4c3c5cdbb3e91e44bfdec095e024c19fb1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
