@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a750edb4_1abe3462",
+        "filename": "include/private/SkGainmapInfo.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-04-18T22:02:12Z",
+      "side": 1,
+      "message": "Shuffled the TODO around. I\u0027m pretty sure I can remove these variables now (I\u0027ll grab them in a follow-up).",
+      "parentUuid": "bae9185d_d5037223",
+      "revId": "9d651c440a4532d55bf09d5f3d6637305cb11774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eda05e0c_4496180e",
         "filename": "src/encode/SkJpegGainmapEncoder.cpp",
         "patchSetId": 4
@@ -48,6 +66,24 @@
       "writtenOn": "2023-04-17T12:57:45Z",
       "side": 1,
       "message": "Is there a reason to have the two separate `maybe` helpers, rather than a single that writes out values in one method or the other? The way this is written also changes the order that attributes appear, depending on whether they\u0027re scalar or not? That seems confusing?",
+      "revId": "9d651c440a4532d55bf09d5f3d6637305cb11774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f9e4724_9fc8235a",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-04-18T22:02:12Z",
+      "side": 1,
+      "message": "The first version will write `hdrgm:GainMapMax\u003d\"1.0\"` inline, without giving it its own tag.\n\nThe second version would write `\u003chdrgm:GainMapMax\u003e1.0\u003c/hdrgm:GainMapMax\u003e`.\n\nI vaguely wanted to avoid using the second version unless it was required. I\u0027ve updated the comments to clarify that. If you still don\u0027t like it, I can switch to always-tags.",
+      "parentUuid": "eda05e0c_4496180e",
       "revId": "9d651c440a4532d55bf09d5f3d6637305cb11774",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

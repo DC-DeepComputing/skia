@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "602089ea_de5ec3f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-04-18T22:02:12Z",
+      "side": 1,
+      "message": "Thanks, updated. I also updated the gamma interpretation (I hadn\u0027t actually tested the Adobe test images until now that I have JPEG working in Chrome).",
+      "revId": "d50585309540ef133c82ec3760b755c566b8cef9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
