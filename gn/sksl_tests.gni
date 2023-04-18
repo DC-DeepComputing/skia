@@ -101,6 +101,7 @@ sksl_error_tests = [
   "errors/InterfaceBlockReservedName.sksl",
   "errors/InterfaceBlockScope.sksl",
   "errors/InterfaceBlockStorageModifiers.sksl",
+  "errors/InterfaceBlockWithInvalidStruct.sksl",
   "errors/InterfaceBlockWithNoMembers.sksl",
   "errors/IntrinsicInGlobalVariable.sksl",
   "errors/InvalidAssignment.rts",
