@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af0f4c3d_4f751096",
+        "filename": "resources/sksl/errors/InterfaceBlockWithInvalidStruct.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-18T21:25:25Z",
+      "side": 1,
+      "message": "Should this be declared as an actual `buffer` block?",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 16
+      },
+      "revId": "3e7bb1dd8977f188a570cd71acaed1e104c096e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
