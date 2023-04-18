@@ -16,6 +16,23 @@
       "message": "Thanks, updated. I also updated the gamma interpretation (I hadn\u0027t actually tested the Adobe test images until now that I have JPEG working in Chrome).",
       "revId": "d50585309540ef133c82ec3760b755c566b8cef9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98ed9aad_4f0095de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-04-18T22:19:50Z",
+      "side": 1,
+      "message": "+nick and +francois as FYI",
+      "revId": "d50585309540ef133c82ec3760b755c566b8cef9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
