@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c3d7241_452b6c42",
+        "filename": "resources/sksl/errors/InterfaceBlockWithInvalidStruct.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-18T20:56:06Z",
+      "side": 1,
+      "message": "This is the fuzzer\u0027s repro case, with more human-readable names and formatting.",
+      "revId": "6de6bb1ba141115002d05a93416396c2bd82b217",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
