@@ -20,6 +20,18 @@
         "cross"
       ]
     },
+    "BazelBuildGeneratedTarget": {
+      "keys": [
+        "kind",
+        "label"
+      ]
+    },
+    "BazelTestGeneratedTarget": {
+      "keys": [
+        "kind",
+        "label"
+      ]
+    },
     "Build": {
       "keys": [
         "os",
