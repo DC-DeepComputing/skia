@@ -67,6 +67,10 @@ skia_objc_library(
                 "GLWindowContext.cpp",
                 "GLWindowContext.h",
             ],
+            "//src/gpu:metal_backend": [
+                "MetalWindowContext.h",
+                "MetalWindowContext.mm",
+            ],
         },
     ) + select({
         "@platforms//os:macos": ["//tools/sk_app/mac:srcs"],

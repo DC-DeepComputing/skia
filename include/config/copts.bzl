@@ -174,6 +174,7 @@ DEFAULT_COPTS = CORE_COPTS + OPT_LEVEL + WARNINGS
 OBJC_COPTS = [
     "-Wno-direct-ivar-access",
     "-Wno-objc-interface-ivars",
+    "-fobjc-arc",
 ]
 
 DEFAULT_OBJC_COPTS = DEFAULT_COPTS + OBJC_COPTS

@@ -356,6 +356,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_gpu_metal_private",
 			Rules: []string{
+				"//include/private/gpu/ganesh:mtl_private_hdrs",
 				"//src/gpu/ganesh/surface:mtl_srcs",
 				"//src/gpu/ganesh/mtl:mtl_hdrs",
 				"//src/gpu/ganesh/mtl:mtl_srcs",
