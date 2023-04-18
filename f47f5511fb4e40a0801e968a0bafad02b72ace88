@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "688b43e7_edd407bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-18T12:49:15Z",
+      "side": 1,
+      "message": "Sorry, I didn\u0027t realize a CP had been created. I tried to make one, just to see how hard the merge was going to be, but it overwrote this one instead. (sigh, gerrit).",
+      "revId": "f47f5511fb4e40a0801e968a0bafad02b72ace88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
