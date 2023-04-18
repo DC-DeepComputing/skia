@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c7cd0f8_d4588e1d",
+        "filename": "src/gpu/graphite/FactoryFunctions.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-18T01:33:20Z",
+      "side": 1,
+      "message": "I removed `Blend.h` from PaintParamsKey.h and that been bringing it in indirectly, so had to bring it back here.",
+      "parentUuid": "eb4ec9c7_980b49f8",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 26
+      },
+      "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e28cc726_5426f0e7",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d523b3cf_0669c421",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-18T01:33:20Z",
+      "side": 1,
+      "message": "I just liked powers of two, but that\u0027s not the best reason, so I moved it back to 7.",
+      "parentUuid": "e28cc726_5426f0e7",
+      "range": {
+        "startLine": 94,
+        "startChar": 12,
+        "endLine": 94,
+        "endChar": 13
+      },
+      "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5377be5_5a69150c",
@@ -77,6 +125,24 @@
       "writtenOn": "2023-04-17T16:33:03Z",
       "side": 1,
       "message": "nit: Intentional line add?",
+      "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6186b67e_79e70ab3",
+        "filename": "src/gpu/graphite/PaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-18T01:33:20Z",
+      "side": 1,
+      "message": "nope, removed",
+      "parentUuid": "e5377be5_5a69150c",
       "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -117,6 +183,30 @@
       "writtenOn": "2023-04-17T16:33:03Z",
       "side": 1,
       "message": "If no other lines were changed within this file, it is unclear to me as to why we need to add this include.",
+      "range": {
+        "startLine": 411,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 26
+      },
+      "revId": "06d4d38e5d1bdf82be7ab4924fba7fc63a1a7791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "398ae688_f6ec6b15",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-18T01:33:20Z",
+      "side": 1,
+      "message": "Same as the other include change.",
+      "parentUuid": "c83dad18_8f68a2a5",
       "range": {
         "startLine": 411,
         "startChar": 0,
