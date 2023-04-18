@@ -46,6 +46,30 @@
       },
       "revId": "72ca66a32eb5125d3b2f226432f24b2eed9b3a11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff739814_aeafab1f",
+        "filename": "tests/graphite/ProxyCacheTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-18T19:27:46Z",
+      "side": 1,
+      "message": "Resolved",
+      "parentUuid": "7a73aa1a_996ff7e3",
+      "range": {
+        "startLine": 408,
+        "startChar": 5,
+        "endLine": 408,
+        "endChar": 72
+      },
+      "revId": "72ca66a32eb5125d3b2f226432f24b2eed9b3a11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
