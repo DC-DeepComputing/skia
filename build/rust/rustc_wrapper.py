@@ -149,7 +149,7 @@ def main():
         (k, v) = item.split("=", 1)
         env[k] = v
         fixed_env_vars.append(k)
-    #print("Rust invocation: " + " ".join([str(args.rustc), *rustc_args]))
+    print("Rust invocation: " + " ".join([str(args.rustc), *rustc_args]))
     r = subprocess.run([args.rustc, *rustc_args], env=env, check=False)
     if r.returncode != 0:
         sys.exit(r.returncode)
