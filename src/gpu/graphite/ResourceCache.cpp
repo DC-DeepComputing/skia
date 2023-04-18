@@ -323,7 +323,7 @@ void ResourceCache::purgeAsNeeded() {
     this->processReturnedResources();
 
     if (this->overbudget()) {
-        // TODO: Call out to image cache to free uniquely owned resources
+        fProxyCache->freeUniquelyHeld();
 
         // After the image cache frees resources we need to return those resources to the cache
         this->processReturnedResources();
