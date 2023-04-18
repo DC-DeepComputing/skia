@@ -22,6 +22,30 @@
       },
       "revId": "3e7bb1dd8977f188a570cd71acaed1e104c096e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9119f27a_71e9837c",
+        "filename": "resources/sksl/errors/InterfaceBlockWithInvalidStruct.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-18T21:29:39Z",
+      "side": 1,
+      "message": "If the fuzzer finds a hit, I think it\u0027s best to submit the fuzzer\u0027s code as-is (modulo cleanup/removal of unrelated stuff). I don\u0027t think `buffer` changes anything here regardless; it\u0027s invalid either way and we aren\u0027t looking at that flag. But I\u0027ll add your other test suggestion as a separate test case, with a `buffer`, on it to cover both bases.",
+      "parentUuid": "af0f4c3d_4f751096",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 16
+      },
+      "revId": "3e7bb1dd8977f188a570cd71acaed1e104c096e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
