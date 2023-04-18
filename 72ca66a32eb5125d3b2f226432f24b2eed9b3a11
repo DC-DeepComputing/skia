@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0f0b0bc_13f3dca3",
+        "filename": "tests/graphite/ProxyCacheTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-18T17:36:24Z",
+      "side": 1,
+      "message": "can we add a comment that this should find proxy2 because we prefer finding the mip mapped version? I could see someone unfamiliar with the code being confused by proxy1 wasn\u0027t found. Maybe we can even assert the pointers for test and proxy2 are the same?",
+      "range": {
+        "startLine": 408,
+        "startChar": 5,
+        "endLine": 408,
+        "endChar": 72
+      },
+      "revId": "72ca66a32eb5125d3b2f226432f24b2eed9b3a11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
