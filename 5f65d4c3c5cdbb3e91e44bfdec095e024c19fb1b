@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d2446d2_c7044c8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 42
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-18T19:53:14Z",
+      "side": 1,
+      "message": "OK, take a peek. Main difference is the use of SkTArray in place of a standard C-style array and some comment changes. Sorry for the obscene number of patch sets.",
+      "revId": "5f65d4c3c5cdbb3e91e44bfdec095e024c19fb1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
