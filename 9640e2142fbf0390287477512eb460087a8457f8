@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3c224dc_22b65cae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-18T18:41:21Z",
+      "side": 1,
+      "message": "It\u0027s slightly stronger than that. This allows clients to use Skia\u0027s BUILD.bazel files for those dependencies instead of needing to provide their own.",
+      "range": {
+        "startLine": 10,
+        "startChar": 32,
+        "endLine": 10,
+        "endChar": 61
+      },
+      "revId": "9640e2142fbf0390287477512eb460087a8457f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
