@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91dca713_15329941",
+        "filename": "tests/graphite/ProxyCacheTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-18T19:29:00Z",
+      "side": 1,
+      "message": "I think these names are a little vague when reading the tests. Like if I just read the code in the tests it doesn\u0027t jump out why certain asserts are valid. This especially gets confusing since we use 1,2 for proxies but 0,1 for time. What if we rename these to be move explicit. fTimeBetweenProxyCreation and fTimeAfterAllProxyCreation",
+      "range": {
+        "startLine": 145,
+        "startChar": 38,
+        "endLine": 145,
+        "endChar": 44
+      },
+      "revId": "83232a881cc8f8515c8814a4e7c016a44f860be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
