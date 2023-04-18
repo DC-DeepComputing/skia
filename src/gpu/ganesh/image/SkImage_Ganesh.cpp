@@ -384,7 +384,7 @@ void SkImage_Ganesh::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorS
 
 void SkImage_Ganesh::generatingSurfaceIsDeleted() { fChooser.makeVolatileProxyStable(); }
 
-std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Ganesh::onAsView(
+std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Ganesh::asView(
         GrRecordingContext* recordingContext,
         GrMipmapped mipmapped,
         GrImageTexGenPolicy policy) const {
@@ -407,7 +407,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Ganesh::onAsView(
     return {std::move(view), ct};
 }
 
-std::unique_ptr<GrFragmentProcessor> SkImage_Ganesh::onAsFragmentProcessor(
+std::unique_ptr<GrFragmentProcessor> SkImage_Ganesh::asFragmentProcessor(
         GrRecordingContext* rContext,
         SkSamplingOptions sampling,
         const SkTileMode tileModes[2],

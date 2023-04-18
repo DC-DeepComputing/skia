@@ -202,7 +202,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrBackendTextureImageMipMappedTest,
                 return;
             }
 
-            std::unique_ptr<SkImageGenerator> imageGen = GrBackendTextureImageGenerator::Make(
+            std::unique_ptr<GrTextureGenerator> imageGen = GrBackendTextureImageGenerator::Make(
                     texture, kTopLeft_GrSurfaceOrigin, nullptr, kRGBA_8888_SkColorType,
                     kPremul_SkAlphaType, nullptr);
             REPORTER_ASSERT(reporter, imageGen);

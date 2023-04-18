@@ -115,30 +115,10 @@ public:
     /** this->context() try-casted to GrDirectContext. Useful for migrations – avoid otherwise! */
     GrDirectContext* directContext() const;
 
-#if defined(SK_GANESH)
-    // TODO(kjlubick) move the implementations of this out into GrImageUtils.cpp
-    virtual std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
-                                                                 GrMipmapped,
-                                                                 GrImageTexGenPolicy policy) const {
-        SK_ABORT("should call GrImageUtils::AsView\n");
-        return {};
-    }
-
-    // TODO(kjlubick) move the implementations of this out into GrImageUtils.cpp
-    virtual std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,
-                                                                       SkSamplingOptions,
-                                                                       const SkTileMode[2],
-                                                                       const SkMatrix&,
-                                                                       const SkRect* subset,
-                                                                       const SkRect* domain) const {
-        SK_ABORT("should call GrImageUtils::AsFragmentProcessor\n");
-        return nullptr;
-    }
-
     // If this image is the current cached image snapshot of a surface then this is called when the
     // surface is destroyed to indicate no further writes may happen to surface backing store.
     virtual void generatingSurfaceIsDeleted() {}
-#endif
+
 #if defined(SK_GRAPHITE)
     // Returns a TextureProxyView representation of the image, if possible. This also returns
     // a color type. This may be different than the image's color type when the image is not
@@ -175,6 +155,10 @@ public:
 
     // True for picture-backed and codec-backed
     bool onIsLazyGenerated() const { return this->type() == Type::kLazy; }
+
+    bool isRasterBacked() const {
+        return this->type() == Type::kRaster || this->type() == Type::kRasterPinnable;
+    }
 
     // True for images instantiated by Ganesh in GPU memory
     bool isGaneshBacked() const {

@@ -14,6 +14,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "src/gpu/ganesh/GrYUVATextureProxies.h"
 #include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
+#include "src/gpu/ganesh/image/SkImage_RasterPinnable.h"
 #include "src/image/SkImage_Base.h"
 
 #include <cstddef>
@@ -67,7 +68,19 @@ public:
     // From SkImage_GaneshBase.h
     GrSemaphoresSubmitted flush(GrDirectContext*, const GrFlushInfo&) const override;
 
+   std::tuple<GrSurfaceProxyView, GrColorType> asView(GrRecordingContext*,
+                                                       skgpu::Mipmapped,
+                                                       GrImageTexGenPolicy) const override;
+
+    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(GrRecordingContext*,
+                                                             SkSamplingOptions,
+                                                             const SkTileMode[2],
+                                                             const SkMatrix&,
+                                                             const SkRect*,
+                                                             const SkRect*) const override;
+
     bool setupMipmapsForPlanes(GrRecordingContext*) const;
+
 
 private:
     enum class ColorSpaceMode {
@@ -78,17 +91,6 @@ private:
                        const SkImage_GaneshYUVA* image,
                        sk_sp<SkColorSpace> targetCS,
                        ColorSpaceMode csMode);
-
-    std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
-                                                         skgpu::Mipmapped,
-                                                         GrImageTexGenPolicy) const override;
-
-    std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,
-                                                               SkSamplingOptions,
-                                                               const SkTileMode[2],
-                                                               const SkMatrix&,
-                                                               const SkRect*,
-                                                               const SkRect*) const override;
 
     mutable GrYUVATextureProxies fYUVAProxies;
 

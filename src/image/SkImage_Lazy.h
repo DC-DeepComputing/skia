@@ -14,6 +14,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkTypes.h"
+#include "include/core/SkYUVAPixmaps.h"
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/base/SkMutex.h"
 #include "src/image/SkImage_Base.h"
@@ -23,15 +24,7 @@
 #include <memory>
 #include <tuple>
 
-#if defined(SK_GANESH)
-#include "include/core/SkYUVAPixmaps.h"
-class GrCaps;
 class GrDirectContext;
-class GrFragmentProcessor;
-class GrRecordingContext;
-class GrSurfaceProxyView;
-#endif
-
 class SharedGenerator;
 class SkBitmap;
 class SkCachedData;
@@ -93,38 +86,16 @@ public:
                                                 GrDirectContext*) const override;
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const final;
 
-#if defined(SK_GANESH)
-    // Returns the texture proxy. CachingHint refers to whether the generator's output should be
-    // cached in CPU memory. We will always cache the generated texture on success.
-    GrSurfaceProxyView lockTextureProxyView(GrRecordingContext*,
-                                            GrImageTexGenPolicy,
-                                            skgpu::Mipmapped) const;
-
-    // Returns the GrColorType to use with the GrTextureProxy returned from lockTextureProxy. This
-    // may be different from the color type on the image in the case where we need up upload CPU
-    // data to a texture but the GPU doesn't support the format of CPU data. In this case we convert
-    // the data to RGBA_8888 unorm on the CPU then upload that.
-    GrColorType colorTypeOfLockTextureProxy(const GrCaps* caps) const;
-#endif
-
-private:
     void addUniqueIDListener(sk_sp<SkIDChangeListener>) const;
-    bool readPixelsProxy(GrDirectContext*, const SkPixmap&) const;
-#if defined(SK_GANESH)
-    std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
-                                                         skgpu::Mipmapped,
-                                                         GrImageTexGenPolicy) const override;
-    std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,
-                                                               SkSamplingOptions,
-                                                               const SkTileMode[2],
-                                                               const SkMatrix&,
-                                                               const SkRect*,
-                                                               const SkRect*) const override;
-
-    GrSurfaceProxyView textureProxyViewFromPlanes(GrRecordingContext*, skgpu::Budgeted) const;
     sk_sp<SkCachedData> getPlanes(const SkYUVAPixmapInfo::SupportedDataTypes& supportedDataTypes,
                                   SkYUVAPixmaps* pixmaps) const;
-#endif
+
+
+    // Be careful with this. You need to acquire the mutex, as the generator might be shared
+    // amont several images.
+    std::unique_ptr<SkImageGenerator> generator() const;
+private:
+    bool readPixelsProxy(GrDirectContext*, const SkPixmap&) const;
 
 #if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
@@ -142,12 +113,9 @@ private:
     // and SkImage_Lazy instances. Cache the result of the last successful call.
     mutable SkMutex        fOnMakeColorTypeAndSpaceMutex;
     mutable sk_sp<SkImage> fOnMakeColorTypeAndSpaceResult;
-
-#if defined(SK_GANESH)
     // When the SkImage_Lazy goes away, we will iterate over all the listeners to inform them
     // of the unique ID's demise. This is used to remove cached textures from GrContext.
     mutable SkIDChangeListener::List fUniqueIDListeners;
-#endif
 };
 
 #endif
