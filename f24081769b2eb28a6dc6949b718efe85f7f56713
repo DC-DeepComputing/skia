@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f147bab_97415609",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-18T16:31:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a1287e6_c5cdbd8d",
+      "range": {
+        "startLine": 33,
+        "startChar": 16,
+        "endLine": 33,
+        "endChar": 24
+      },
+      "revId": "f24081769b2eb28a6dc6949b718efe85f7f56713",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c89f1f16_35831d56",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65af59db_c273fc60",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-18T16:31:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c89f1f16_35831d56",
+      "range": {
+        "startLine": 569,
+        "startChar": 0,
+        "endLine": 569,
+        "endChar": 62
+      },
+      "revId": "f24081769b2eb28a6dc6949b718efe85f7f56713",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbbc5659_d4a23e1a",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-04-15T23:33:26Z",
       "side": 1,
       "message": "tiny nit: consider `has`\n\n(\"X should do Y\" comments can be ambiguous--it can mean either \"this behaves this way\" or \"this _ought_ to behave this way but doesn\u0027t.\")\n\nup to you: other instances of \"should\" above are less ambiguous but still could probably be updated for more clarity",
+      "range": {
+        "startLine": 851,
+        "startChar": 85,
+        "endLine": 851,
+        "endChar": 95
+      },
+      "revId": "f24081769b2eb28a6dc6949b718efe85f7f56713",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "810f1861_995f0d34",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-18T16:31:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbbc5659_d4a23e1a",
       "range": {
         "startLine": 851,
         "startChar": 85,
