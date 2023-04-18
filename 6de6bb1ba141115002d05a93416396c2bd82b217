@@ -34,6 +34,24 @@
       "parentUuid": "6c3d7241_452b6c42",
       "revId": "6de6bb1ba141115002d05a93416396c2bd82b217",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "610da869_38590486",
+        "filename": "resources/sksl/errors/InterfaceBlockWithInvalidStruct.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-18T21:51:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f70229e3_6ac8b0b6",
+      "revId": "6de6bb1ba141115002d05a93416396c2bd82b217",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

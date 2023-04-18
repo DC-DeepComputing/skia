@@ -70,6 +70,30 @@
       },
       "revId": "3e7bb1dd8977f188a570cd71acaed1e104c096e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98caf79b_52be7176",
+        "filename": "resources/sksl/errors/InterfaceBlockWithInvalidStruct.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-18T21:51:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1daddc39_09f13743",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 16
+      },
+      "revId": "3e7bb1dd8977f188a570cd71acaed1e104c096e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
