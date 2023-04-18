@@ -28,7 +28,9 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/GrTextureGenerator.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/image/SkImageGeneratorPriv.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrSamplerState.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
@@ -131,12 +133,12 @@ static std::unique_ptr<SkImageGenerator> make_pic_generator(SkCanvas*,
                                                             sk_sp<SkPicture> pic) {
     SkMatrix matrix;
     matrix.setTranslate(-100, -100);
-    return SkImageGenerator::MakeFromPicture({100, 100},
-                                             std::move(pic),
-                                             &matrix,
-                                             nullptr,
-                                             SkImages::BitDepth::kU8,
-                                             SkColorSpace::MakeSRGB());
+    return SkImageGenerators::MakeFromPicture({100, 100},
+                                              std::move(pic),
+                                              &matrix,
+                                              nullptr,
+                                              SkImages::BitDepth::kU8,
+                                              SkColorSpace::MakeSRGB());
 }
 
 class RasterGenerator : public SkImageGenerator {
@@ -165,10 +167,10 @@ static std::unique_ptr<SkImageGenerator> make_ras_generator(SkCanvas*,
     return std::make_unique<RasterGenerator>(bm);
 }
 
-class TextureGenerator : public SkImageGenerator {
+class TextureGenerator : public GrTextureGenerator {
 public:
     TextureGenerator(SkCanvas* canvas, const SkImageInfo& info, sk_sp<SkPicture> pic)
-            : SkImageGenerator(info) {
+            : GrTextureGenerator(info) {
 
         fRContext = sk_ref_sp(canvas->recordingContext());
 
@@ -255,9 +257,11 @@ class ImageCacheratorGM : public skiagm::GM {
     sk_sp<SkPicture> fPicture;
     sk_sp<SkImage>   fImage;
     sk_sp<SkImage>   fImageSubset;
+    bool             fUseTexture;
 
 public:
-    ImageCacheratorGM(const char suffix[], FactoryFunc factory) : fFactory(factory) {
+    ImageCacheratorGM(const char suffix[], FactoryFunc factory, bool useTexture) :
+                    fFactory(factory), fUseTexture(useTexture) {
         fName.printf("image-cacherator-from-%s", suffix);
     }
 
@@ -285,7 +289,11 @@ protected:
             if (!gen) {
                 return false;
             }
-            fImage = SkImages::DeferredFromGenerator(std::move(gen));
+            if (fUseTexture) {
+                fImage = SkImages::DeferredFromTextureGenerator(std::move(gen));
+            } else {
+                fImage = SkImages::DeferredFromGenerator(std::move(gen));
+            }
             if (!fImage) {
                 return false;
             }
@@ -303,8 +311,13 @@ protected:
             }
 
             if (dContext) {
-                fImageSubset = SkImages::DeferredFromGenerator(std::move(gen))
-                                       ->makeSubset(subset, dContext);
+                 if (fUseTexture) {
+                    fImageSubset = SkImages::DeferredFromTextureGenerator(std::move(gen))
+                            ->makeSubset(subset, dContext);
+                } else {
+                    fImageSubset = SkImages::DeferredFromGenerator(std::move(gen))
+                            ->makeSubset(subset, dContext);
+                }
             } else {
 #if defined(SK_GRAPHITE)
                 auto recorder = canvas->recorder();
@@ -410,6 +423,6 @@ private:
     using INHERITED = skiagm::GM;
 };
 
-DEF_GM( return new ImageCacheratorGM("picture", make_pic_generator); )
-DEF_GM( return new ImageCacheratorGM("raster", make_ras_generator); )
-DEF_GM( return new ImageCacheratorGM("texture", make_tex_generator); )
+DEF_GM( return new ImageCacheratorGM("picture", make_pic_generator, false); )
+DEF_GM( return new ImageCacheratorGM("raster", make_ras_generator, false); )
+DEF_GM( return new ImageCacheratorGM("texture", make_tex_generator, true); )
