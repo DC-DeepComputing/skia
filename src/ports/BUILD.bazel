@@ -342,6 +342,9 @@ skia_cc_deps(
         "//conditions:default": [],
     }) + select({
         "//bazel/common_config_settings:use_fontations_true": [
+            "//src/ports/fontations:fontations_ffi/include",
+            "//src/ports/fontations:fontations_lib",
+            "//src/ports/fontations:path_bridge_include",
         ],
         "//conditions:default": [],
     }),

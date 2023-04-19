@@ -10,11 +10,13 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypeface.h"
 #include "src/ports/SkTypeface_fontations.h"
+#include "tools/Resources.h"
 
 namespace skiagm {
 
 namespace {
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
+const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
 
 }  // namespace
 
@@ -23,7 +25,10 @@ public:
     FontationsTypefaceGM() { this->setBGColor(SK_ColorWHITE); }
 
 protected:
-    void onOnceBeforeDraw() override { fTypeface = sk_sp<SkTypeface>(new SkTypeface_Fontations()); }
+    void onOnceBeforeDraw() override {
+        std::unique_ptr<SkStreamAsset> font_data = GetResourceAsStream(kTestFontName);
+        fTypeface = sk_sp<SkTypeface>(new SkTypeface_Fontations(std::move(font_data)));
+    }
 
     SkString onShortName() override { return SkString("typeface_fontations"); }
 

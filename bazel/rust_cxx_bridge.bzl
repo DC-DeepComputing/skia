@@ -11,7 +11,7 @@ cxxbridge executable. This is based off of the example provided in [2].
 load("@bazel_skylib//rules:run_binary.bzl", "run_binary")
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
-def rust_cxx_bridge(name, src, deps = [], visibility = []):
+def rust_cxx_bridge(name, src, deps = [], visibility = [], hdrs = []):
     out_h = "gen/%s.h" % src
     out_cc = "gen/%s.cc" % src
     run_binary(
@@ -31,7 +31,13 @@ def rust_cxx_bridge(name, src, deps = [], visibility = []):
     cc_library(
         name = name,
         srcs = [out_cc],
+        hdrs = [out_h] + hdrs,
+        deps = deps + ["%s/include" % name],
+        visibility = visibility,
+    )
+
+    cc_library(
+        name = "%s/include" % name,
         hdrs = [out_h],
-        deps = deps,
         visibility = visibility,
     )
