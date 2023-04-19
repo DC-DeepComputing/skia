@@ -10,6 +10,8 @@
 
 #include "src/core/SkBlenderBase.h"
 
+#include <memory>
+
 class SkBlendModeBlender : public SkBlenderBase {
 public:
     SkBlendModeBlender(SkBlendMode mode) : fMode(mode) {}
