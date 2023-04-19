@@ -216,14 +216,7 @@ void GrGLSLShaderBuilder::appendColorGamutXform(SkString* out,
 
     // Now define a wrapper function that applies all the intermediate steps
     {
-        // Some GPUs require full float to get results that are as accurate as expected/required.
-        // Most GPUs work just fine with half float. Strangely, the GPUs that have this bug
-        // (Mali G series) only require us to promote the type of a few temporaries here --
-        // the helper functions above can always be written to use half.
-        bool useFloat = true; // fProgramBuilder->shaderCaps()->fColorSpaceMathNeedsFloat;
-
-        const GrShaderVar gColorXformArgs[] = {
-                GrShaderVar("color", useFloat ? SkSLType::kFloat4 : SkSLType::kHalf4)};
+        const GrShaderVar gColorXformArgs[] = { GrShaderVar("color", SkSLType::kFloat4) };
         SkString body;
         if (colorXformHelper->applyUnpremul()) {
             body.append("color = unpremul(color);");
