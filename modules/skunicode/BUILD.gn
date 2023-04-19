@@ -53,13 +53,13 @@ if (skia_use_icu || skia_use_client_icu || skia_use_libgrapheme) {
     } else if (skia_use_client_icu) {
       sources += skia_unicode_client_icu_sources
       defines += [ "SK_UNICODE_CLIENT_IMPLEMENTATION" ]
-      deps += [ "//third_party/icu_bidi" ]
+      deps += [ skia_icu_bidi_third_party_dir ]
     } else if (skia_use_libgrapheme) {
       sources += skia_unicode_libgrapheme
       defines += [ "SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION" ]
       deps += [
-        "//third_party/icu_bidi",
-        "//third_party/libgrapheme",
+        skia_icu_bidi_third_party_dir,
+        skia_libgrapheme_third_party_dir,
       ]
     }
   }
