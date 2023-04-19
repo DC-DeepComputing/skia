@@ -16,6 +16,24 @@
       "message": "Sorry, I didn\u0027t realize a CP had been created. I tried to make one, just to see how hard the merge was going to be, but it overwrote this one instead. (sigh, gerrit).",
       "revId": "f47f5511fb4e40a0801e968a0bafad02b72ace88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "645fe78f_f66ef7fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18129
+      },
+      "writtenOn": "2023-04-19T07:44:31Z",
+      "side": 1,
+      "message": "Hi Brian, no worries, I reverted it to the changedset 3",
+      "parentUuid": "688b43e7_edd407bc",
+      "revId": "f47f5511fb4e40a0801e968a0bafad02b72ace88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
