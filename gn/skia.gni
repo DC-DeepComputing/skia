@@ -170,6 +170,9 @@ declare_args() {
 
   # icu_bidi sources
   skia_icu_bidi_third_party_dir = "//third_party/icu_bidi"
+
+  # libgrapheme sources
+  skia_libgrapheme_third_party_dir = "//third_party/libgrapheme"
 }
 
 declare_args() {
