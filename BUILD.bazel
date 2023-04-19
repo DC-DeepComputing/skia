@@ -1,9 +1,24 @@
 load("//:defines.bzl", "DEFAULT_DEFINES", "DEFAULT_LOCAL_DEFINES")
-load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library")
+load("@skia_user_config//:copts.bzl", "DEFAULT_OBJC_COPTS")
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library", "skia_objc_library")
 
 licenses(["notice"])
 
 exports_files_legacy()
+
+skia_objc_library(
+    name = "skia_objc",
+    srcs = [
+        "//src:objc_srcs",
+    ],
+    copts = DEFAULT_OBJC_COPTS + ["-fobjc-arc"],
+    defines = DEFAULT_DEFINES,
+    visibility = ["//visibility:private"],
+    deps = [
+        "//src:deps",
+        "@skia_user_config//:user_config",
+    ],
+)
 
 # This target exposes the Skia public API. It is what external clients should use.
 skia_cc_library(
@@ -21,7 +36,10 @@ skia_cc_library(
     deps = [
         "//src:deps",
         "@skia_user_config//:user_config",
-    ],
+    ] + select({
+        "//src/gpu:metal_backend": ["//:skia_objc"],
+        "//conditions:default": [],
+    }),
 )
 
 # This target exposes headers beyond the public, supported API. It is intended to be
@@ -48,7 +66,10 @@ skia_cc_library(
     deps = [
         "//src:deps",
         "@skia_user_config//:user_config",
-    ],
+    ] + select({
+        "//src/gpu:metal_backend": ["//:skia_objc"],
+        "//conditions:default": [],
+    }),
 )
 
 ####################################################################
