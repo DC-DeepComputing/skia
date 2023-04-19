@@ -33,6 +33,46 @@
       "message": "+nick and +francois as FYI",
       "revId": "d50585309540ef133c82ec3760b755c566b8cef9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1cd908b_0a9729d8",
+        "filename": "include/private/SkGainmapInfo.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 19824
+      },
+      "writtenOn": "2023-04-19T13:33:41Z",
+      "side": 1,
+      "message": "What kinda use case are you unsure about in Android for these? I don\u0027t know what this is for which makes me think it\u0027s unneeded... but I could just be missing something here.",
+      "revId": "d50585309540ef133c82ec3760b755c566b8cef9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41b3c4c5_d065d253",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 19824
+      },
+      "writtenOn": "2023-04-19T13:33:41Z",
+      "side": 1,
+      "message": "why not update this to check if single channel, do the current implementation if so, and do the write_float3 impl otherwise?\n\nIt seems like you\u0027ve already done all the hard work to support single and multi channel cases, so I\u0027m not sure why we are imposing constraints below that things either are or aren\u0027t single channel for us to write them?",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 6
+      },
+      "revId": "d50585309540ef133c82ec3760b755c566b8cef9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
