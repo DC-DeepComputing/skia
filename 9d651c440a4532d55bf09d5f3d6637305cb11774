@@ -86,6 +86,24 @@
       "parentUuid": "eda05e0c_4496180e",
       "revId": "9d651c440a4532d55bf09d5f3d6637305cb11774",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd42a3de_01b50c68",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-19T13:19:27Z",
+      "side": 1,
+      "message": "Ah, I missed the nested vs. not distinction. Makes sense.",
+      "parentUuid": "0f9e4724_9fc8235a",
+      "revId": "9d651c440a4532d55bf09d5f3d6637305cb11774",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
