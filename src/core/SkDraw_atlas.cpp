@@ -81,6 +81,7 @@ class UpdatableColorShader : public SkShaderBase {
 public:
     explicit UpdatableColorShader(SkColorSpace* cs)
         : fSteps{sk_srgb_singleton(), kUnpremul_SkAlphaType, cs, kUnpremul_SkAlphaType} {}
+#if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder* builder,
                         skvm::Coord device,
                         skvm::Coord local,
@@ -97,6 +98,7 @@ public:
 
         return {r, g, b, a};
     }
+#endif
 
     void updateColor(SkColor c) const {
         SkColor4f c4 = SkColor4f::FromColor(c);
