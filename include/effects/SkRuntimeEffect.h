@@ -331,7 +331,9 @@ private:
     std::unique_ptr<SkSL::Program> fBaseProgram;
     std::unique_ptr<SkSL::RP::Program> fRPProgram;
     mutable SkOnce fCompileRPProgramOnce;
+#if defined(SK_ENABLE_SKVM) || defined(SK_ENABLE_SKSL_IN_RASTER_PIPELINE)
     const SkSL::FunctionDefinition& fMain;
+#endif
     std::vector<Uniform> fUniforms;
     std::vector<Child> fChildren;
     std::vector<SkSL::SampleUsage> fSampleUsages;
