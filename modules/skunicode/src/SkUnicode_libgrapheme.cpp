@@ -95,21 +95,35 @@ public:
                     : grapheme_bidirectional_override::GRAPHEME_BIDIRECTIONAL_OVERRIDE_LTR,
                 &res32[0],
                 LEN(res32));
+
+        // TODO: Is this the right way to handle this?
         if (count > utf8Units) {
+            SkDebugf("COUNT EXCEEDED!\n");
             return false;
         }
+
         BidiRegion region(0, 0, -1);
-        for (auto i = 0; i <= utf8Units; ++i) {
-            auto level = i == utf8Units ? -1 : SkToS16(res32[i]);
-            if (i == 0) {
+        const char* current = utf8;
+        const char* end = utf8 + utf8Units;
+        int codePointIndex = 0;
+        while (true) {
+            auto level = current == end ? -1 : SkToS16(res32[codePointIndex]);
+            if (codePointIndex == 0) {
                 region.start = region.end;
                 region.level = level;
             } else if (region.level != level) {
-                region.end = i;
+                int utf8Index = current - utf8;
+                region.end = utf8Index;
                 results->emplace_back(region);
                 region.start = region.end;
                 region.level = level;
             }
+
+            if (SkUTF::NextUTF8(&current, end) == -1) {
+                // We reached the end of the string.
+                break;
+            }
+            codePointIndex++;
         }
         return true;
     }
@@ -122,63 +136,63 @@ public:
     }
 
     static bool isWhitespace(SkUnichar unichar) {
-        std::u16string whitespaces =
-       u"\u0009" // character tabulation
-        "\u000A" // line feed
-        "\u000B" // line tabulation
-        "\u000C" // form feed
-        "\u000D" // carriage return
-        "\u0020" // space
-      //"\u0085" // next line
-      //"\u00A0" // no-break space
-        "\u1680" // ogham space mark
-        "\u2000" // en quad
-        "\u2001" // em quad
-        "\u2002" // en space
-        "\u2003" // em space
-        "\u2004" // three-per-em space
-        "\u2005" // four-per-em space
-        "\u2006" // six-per-em space
-      //"\u2007" // figure space
-        "\u2008" // punctuation space
-        "\u2009" // thin space
-        "\u200A" // hair space
-        "\u2028" // line separator
-        "\u2029" // paragraph separator
-      //"\u202F" // narrow no-break space
-        "\u205F" // medium mathematical space
-        "\u3000";// ideographic space
-        return whitespaces.find(unichar) != std::u16string::npos;
+        static constexpr std::array<SkUnichar, 21> whitespaces {
+                0x0009, // character tabulation
+                0x000A, // line feed
+                0x000B, // line tabulation
+                0x000C, // form feed
+                0x000D, // carriage return
+                0x0020, // space
+              //0x0085, // next line
+              //0x00A0, // no-break space
+                0x1680, // ogham space mark
+                0x2000, // en quad
+                0x2001, // em quad
+                0x2002, // en space
+                0x2003, // em space
+                0x2004, // three-per-em space
+                0x2005, // four-per-em space
+                0x2006, // six-per-em space
+              //0x2007, // figure space
+                0x2008, // punctuation space
+                0x2009, // thin space
+                0x200A, // hair space
+                0x2028, // line separator
+                0x2029, // paragraph separator
+              //0x202F, // narrow no-break space
+                0x205F, // medium mathematical space
+                0x3000};// ideographic space
+        return std::find(whitespaces.begin(), whitespaces.end(), unichar) != whitespaces.end();
     }
 
     static bool isSpace(SkUnichar unichar) {
-        std::u16string spaces =
-       u"\u0009" // character tabulation
-        "\u000A" // line feed
-        "\u000B" // line tabulation
-        "\u000C" // form feed
-        "\u000D" // carriage return
-        "\u0020" // space
-        "\u0085" // next line
-        "\u00A0" // no-break space
-        "\u1680" // ogham space mark
-        "\u2000" // en quad
-        "\u2001" // em quad
-        "\u2002" // en space
-        "\u2003" // em space
-        "\u2004" // three-per-em space
-        "\u2005" // four-per-em space
-        "\u2006" // six-per-em space
-        "\u2007" // figure space
-        "\u2008" // punctuation space
-        "\u2009" // thin space
-        "\u200A" // hair space
-        "\u2028" // line separator
-        "\u2029" // paragraph separator
-        "\u202F" // narrow no-break space
-        "\u205F" // medium mathematical space
-        "\u3000"; // ideographic space
-        return spaces.find(unichar) != std::u16string::npos;
+        static constexpr std::array<SkUnichar, 25> spaces {
+                0x0009, // character tabulation
+                0x000A, // line feed
+                0x000B, // line tabulation
+                0x000C, // form feed
+                0x000D, // carriage return
+                0x0020, // space
+                0x0085, // next line
+                0x00A0, // no-break space
+                0x1680, // ogham space mark
+                0x2000, // en quad
+                0x2001, // em quad
+                0x2002, // en space
+                0x2003, // em space
+                0x2004, // three-per-em space
+                0x2005, // four-per-em space
+                0x2006, // six-per-em space
+                0x2007, // figure space
+                0x2008, // punctuation space
+                0x2009, // thin space
+                0x200A, // hair space
+                0x2028, // line separator
+                0x2029, // paragraph separator
+                0x202F, // narrow no-break space
+                0x205F, // medium mathematical space
+                0x3000}; // ideographic space
+        return std::find(spaces.begin(), spaces.end(), unichar) != spaces.end();
     }
 
     static bool isTabulation(SkUnichar utf8) {
@@ -198,9 +212,10 @@ public:
 
         size_t lineBreak = 0;
         (*results)[lineBreak] |= CodeUnitFlags::kSoftLineBreakBefore;
-        for (size_t pos = 0; pos < utf8Units; pos += lineBreak) {
-            lineBreak = grapheme_next_line_break_utf8(utf8 + pos, utf8Units - pos);
-            auto codePoint = utf8[lineBreak];
+        while (lineBreak < utf8Units) {
+            lineBreak += grapheme_next_line_break_utf8(utf8 + lineBreak, utf8Units - lineBreak);
+            // Check if the previous code unit is a hard break.
+            auto codePoint = utf8[lineBreak - 1];
             (*results)[lineBreak] |= this->isHardBreak(codePoint)
                                     ? CodeUnitFlags::kHardLineBreakBefore
                                     : CodeUnitFlags::kSoftLineBreakBefore;
@@ -208,9 +223,9 @@ public:
         (*results)[utf8Units] |= CodeUnitFlags::kSoftLineBreakBefore;
 
         size_t graphemeBreak = 0;
-        (*results)[0] |= CodeUnitFlags::kGraphemeStart;
-        for (size_t pos = 0; pos < utf8Units; pos += graphemeBreak) {
-            graphemeBreak = grapheme_next_character_break_utf8(utf8 + pos, utf8Units - pos);
+        (*results)[graphemeBreak] |= CodeUnitFlags::kGraphemeStart;
+        while (graphemeBreak < utf8Units) {
+            graphemeBreak += grapheme_next_character_break_utf8(utf8 + graphemeBreak, utf8Units - graphemeBreak);
             (*results)[graphemeBreak] |= CodeUnitFlags::kGraphemeStart;
         }
 
@@ -251,8 +266,8 @@ public:
 
     bool getWords(const char utf8[], int utf8Units, const char* locale, std::vector<Position>* results) override {
         size_t wordBreak = 0;
-        for (size_t pos = 0; pos < utf8Units; pos += wordBreak) {
-            wordBreak = grapheme_next_word_break_utf8(utf8 + pos, utf8Units - pos);
+        while (wordBreak < utf8Units) {
+            wordBreak += grapheme_next_word_break_utf8(utf8 + wordBreak, utf8Units - wordBreak);
             results->emplace_back(wordBreak);
         }
         return true;
