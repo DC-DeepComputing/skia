@@ -149,6 +149,7 @@ DEF_TEST(WorkingFormatFilterFlags, r) {
 }
 
 struct FailureColorFilter final : public SkColorFilterBase {
+#if defined(SK_ENABLE_SKVM)
     skvm::Color onProgram(skvm::Builder*,
                           skvm::Color c,
                           const SkColorInfo&,
@@ -156,6 +157,7 @@ struct FailureColorFilter final : public SkColorFilterBase {
                           SkArenaAlloc*) const override {
         return {};
     }
+#endif
 
     bool appendStages(const SkStageRec&, bool) const override { return false; }
 
