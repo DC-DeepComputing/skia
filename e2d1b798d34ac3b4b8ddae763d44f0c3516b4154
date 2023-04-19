@@ -70,6 +70,30 @@
       },
       "revId": "e2d1b798d34ac3b4b8ddae763d44f0c3516b4154",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8a9b0b2_f13412a0",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-04-19T17:52:27Z",
+      "side": 1,
+      "message": "\u003e I wouldn\u0027t interpret that comment as written to mean that changes shouldn\u0027t go into AOSP, so clarifying would have helped me.\n\nUploaded https://skia-review.googlesource.com/c/skia/+/674516\n\n\u003e \n\u003e You could add an OWNERS file in AOSP that would ensure someone on the skia team gets a chance to review everything before it goes in.\n\nI\u0027m not sure that would work - we already have an `OWNERS` file in Skia, as well as an `OWNERS.android` file. `OWNERS` is a wildcard, which according to https://skia-review.googlesource.com/c/skia/+/443636 is necessary for enforcing code review.\n\nThe `OWNERS.android` file hasn\u0027t yet merged to AOSP, but it\u0027s also a wildcard, because we are unable to list our merge bot as an owner.\n\nIf we modified these files in AOSP, they might cause conflicts down the road.",
+      "parentUuid": "056b5ff4_a4a1064b",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 47
+      },
+      "revId": "e2d1b798d34ac3b4b8ddae763d44f0c3516b4154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
