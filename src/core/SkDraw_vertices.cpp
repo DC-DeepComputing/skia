@@ -122,6 +122,7 @@ protected:
         return true;
     }
 
+#if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord,
                         skvm::Coord,
@@ -130,6 +131,7 @@ protected:
                         const SkColorInfo&,
                         skvm::Uniforms*,
                         SkArenaAlloc*) const override;
+#endif
 
 private:
     bool isOpaque() const override { return fIsOpaque; }
@@ -144,12 +146,15 @@ private:
     SkMatrix fM33;
     const bool fIsOpaque;
     const bool fUsePersp;   // controls our stages, and what we do in update()
+#if defined(SK_ENABLE_SKVM)
     mutable skvm::Uniform fColorMatrix;
     mutable skvm::Uniform fCoordMatrix;
+#endif
 
     using INHERITED = SkShaderBase;
 };
 
+#if defined(SK_ENABLE_SKVM)
 skvm::Color SkTriColorShader::program(skvm::Builder* b,
                                       skvm::Coord device,
                                       skvm::Coord local,
@@ -190,6 +195,7 @@ skvm::Color SkTriColorShader::program(skvm::Builder* b,
     color.a = colorDot(3);
     return color;
 }
+#endif
 
 bool SkTriColorShader::update(const SkMatrix& ctmInv, const SkPoint pts[],
                               const SkPMColor4f colors[], int index0, int index1, int index2) {
