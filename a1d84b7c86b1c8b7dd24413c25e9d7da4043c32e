@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d6f67b7_bfaeb419",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2023-04-19T17:52:10Z",
+      "side": 1,
+      "message": "Android\u0027s CTS is happy with this",
+      "revId": "a1d84b7c86b1c8b7dd24413c25e9d7da4043c32e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
