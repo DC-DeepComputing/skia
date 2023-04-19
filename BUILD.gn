@@ -821,6 +821,9 @@ if (skia_compile_sksl_tests) {
       "SK_ENABLE_SPIRV_VALIDATION",
       "SK_ENABLE_WGSL_VALIDATION",
     ]
+    if (skia_enable_skvm) {
+      defines += [ "SK_ENABLE_SKVM" ]
+    }
     sources = skslc_deps
     sources += [
       "tools/skslc/Main.cpp",
