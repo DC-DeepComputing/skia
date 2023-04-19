@@ -9,6 +9,7 @@
 
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
+#include "include/private/base/SkTemplates.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
@@ -55,6 +56,8 @@
 
 #include <unordered_map>
 #include <vector>
+
+using namespace skia_private;
 
 using RescaleGamma       = SkImage::RescaleGamma;
 using RescaleMode        = SkImage::RescaleMode;
@@ -660,8 +663,40 @@ void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutab
                        paint, SkStrokeRec(paint));
 }
 
+bool foo(SkCanvas::PointMode mode, int count, const SkPaint& paint) {
+
+    if (count != 2 || mode != SkCanvas::kLines_PointMode) {
+        return false;
+    }
+
+    SkPathEffect* pe = paint.getPathEffect();
+    if (!pe) {
+        return false;
+    }
+
+    SkPathEffect::DashInfo info;
+    if (SkPathEffect::kNone_DashType == pe->asADash(&info)) {
+        return false;
+    }
+
+    if (info.fCount >= 2000) {
+        return false;
+    }
+
+    AutoTArray<SkScalar> intervals(info.fCount);
+    info.fIntervals = intervals.get();
+    pe->asADash(&info);
+
+    return true;
+}
+
 void Device::drawPoints(SkCanvas::PointMode mode, size_t count,
                         const SkPoint* points, const SkPaint& paint) {
+
+    if (foo(mode, count, paint)) {
+        return;
+    }
+
     SkStrokeRec stroke(paint, SkPaint::kStroke_Style);
     size_t next = 0;
     if (mode == SkCanvas::kPoints_PointMode) {
