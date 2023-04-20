@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6a480bf_816ccd73",
+        "filename": "BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-04-20T14:01:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a950fba_10fbbd39",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "b663a4b377466b89fb3fd3e33c08c3dcb0bea76e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e122216c_f305d13d",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ce8ae7b_b3bfc1b6",
+        "filename": "src/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-04-20T14:01:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e122216c_f305d13d",
+      "range": {
+        "startLine": 66,
+        "startChar": 19,
+        "endLine": 66,
+        "endChar": 34
+      },
+      "revId": "b663a4b377466b89fb3fd3e33c08c3dcb0bea76e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ba4992b_34782196",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-04-20T12:18:09Z",
       "side": 1,
       "message": "Can we omit this select statement?",
+      "range": {
+        "startLine": 122,
+        "startChar": 8,
+        "endLine": 122,
+        "endChar": 20
+      },
+      "revId": "b663a4b377466b89fb3fd3e33c08c3dcb0bea76e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5094ebd_1d17e5a9",
+        "filename": "src/gpu/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-04-20T14:01:33Z",
+      "side": 1,
+      "message": "Won\u0027t that mean that the top level objc_srcs won\u0027t be empty when not building metal?",
+      "parentUuid": "3ba4992b_34782196",
       "range": {
         "startLine": 122,
         "startChar": 8,
