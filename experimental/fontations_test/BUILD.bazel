@@ -1,0 +1,9 @@
+cc_binary(
+    name = "fontations_test",
+    testonly = True,
+    srcs = ["main.cpp"],
+    deps = [
+        "//:skia_internal",
+        "//tools:tool_utils",
+    ],
+)
