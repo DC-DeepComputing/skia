@@ -9,6 +9,7 @@
 #define SkImageFilterTypes_DEFINED
 
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkColorFilter.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -627,6 +628,7 @@ public:
             : fImage(std::move(image))
             , fSamplingOptions(kDefaultSampling)
             , fTransform(SkMatrix::Translate(origin.x(), origin.y()))
+            , fColorFilter(nullptr)
             , fLayerBounds(
                     fTransform.mapRect(LayerSpace<SkIRect>(fImage ? fImage->dimensions()
                                                                   : SkISize{0, 0}))) {}
@@ -645,24 +647,19 @@ public:
     sk_sp<SkSpecialImage> refImage() const { return fImage; }
 
     // Get the layer-space bounds of the result. This will incorporate any layer-space transform.
-    LayerSpace<SkIRect> layerBounds() const {
-        return fLayerBounds;
-    }
+    LayerSpace<SkIRect> layerBounds() const { return fLayerBounds; }
 
-    SkSamplingOptions sampling() const {
-        return fSamplingOptions;
-    }
+    SkSamplingOptions sampling() const { return fSamplingOptions; }
+
+    const SkColorFilter* colorFilter() const { return fColorFilter.get(); }
 
     // Produce a new FilterResult that has been cropped to 'crop', taking into account the context's
     // desired output. When possible, the returned FilterResult will reuse the underlying image and
     // adjust its metadata. This will depend on the current transform and tile mode as well as how
     // the crop rect intersects this result's layer bounds.
-    // TODO (michaelludwig): All FilterResults are decal mode and there are no current usages that
-    // require force-padding a decal FilterResult so these arguments aren't implemented yet.
     FilterResult applyCrop(const Context& ctx,
                            const LayerSpace<SkIRect>& crop) const;
-                           //  SkTileMode newTileMode=SkTileMode::kDecal,
-                           //  bool forcePad=false) const;
+                           //  SkTileMode newTileMode=SkTileMode::kDecal) const;
 
     // Produce a new FilterResult that is the transformation of this FilterResult. When this
     // result's sampling and transform are compatible with the new transformation, the returned
@@ -670,6 +667,12 @@ public:
     FilterResult applyTransform(const Context& ctx,
                                 const LayerSpace<SkMatrix>& transform,
                                 const SkSamplingOptions& sampling) const;
+
+    // Produce a new FilterResult that is visually equivalent to the output of the SkColorFilter
+    // evaluating this FilterResult. If the color filter affects transparent black, the returned
+    // FilterResult can become non-empty even if the input were empty.
+    FilterResult applyColorFilter(const Context& ctx,
+                                  sk_sp<SkColorFilter> colorFilter) const;
 
     // Extract image and origin, safely when the image is null. If there are deferred operations
     // on FilterResult (such as tiling or transforms) not representable as an image+origin pair,
@@ -683,7 +686,8 @@ public:
 
 private:
     // Renders this FilterResult into a new, but visually equivalent, image that fills 'dstBounds',
-    // has nearest-neighbor sampling, and a transform that just translates by 'dstBounds' TL corner.
+    // has default sampling, no color filter, and a transform that translates by only 'dstBounds's
+    // top-left corner.
     std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>>
     resolve(LayerSpace<SkIRect> dstBounds) const;
 
@@ -693,14 +697,18 @@ private:
                          const LayerSpace<SkIRect>& outputBounds);
 
     // The effective image of a FilterResult is 'fImage' sampled by 'fSamplingOptions' and
-    // respecting 'fTileMode' (on the SkSpecialImage's subset), transformed by 'fTransform', clipped
-    // to 'fLayerBounds'.
+    // respecting 'fTileMode' (on the SkSpecialImage's subset), transformed by 'fTransform',
+    // filtered by 'fColorFilter', and then clipped to 'fLayerBounds'.
     sk_sp<SkSpecialImage> fImage;
     SkSamplingOptions     fSamplingOptions;
     // SkTileMode         fTileMode = SkTileMode::kDecal;
     // Typically this will be an integer translation that encodes the origin of the top left corner,
     // but can become more complex when combined with applyTransform().
     LayerSpace<SkMatrix>  fTransform;
+
+    // A null color filter is the identity function. Since the output is clipped to fLayerBounds
+    // after color filtering, SkColorFilters that affect transparent black are not unbounded.
+    sk_sp<SkColorFilter>  fColorFilter;
 
     // The layer bounds are initially fImage's dimensions mapped by fTransform. As the filter result
     // is processed by the image filter DAG, it can be further restricted by crop rects or the

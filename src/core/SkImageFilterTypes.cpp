@@ -7,6 +7,7 @@
 
 #include "src/core/SkImageFilterTypes.h"
 
+#include "src/core/SkColorFilterBase.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkRectPriv.h"
@@ -239,12 +240,18 @@ FilterResult FilterResult::applyCrop(const Context& ctx,
     // decal tiling (the only current option).
     if (!fImage || !tightBounds.intersect(ctx.desiredOutput())) {
         // The desired output would be filled with transparent black.
+        SkASSERT(!fColorFilter);
         return {};
     }
 
-    if (is_nearly_integer_translation(fTransform)) {
+    if ((!fColorFilter || !as_CFB(fColorFilter)->affectsTransparentBlack()) &&
+        is_nearly_integer_translation(fTransform)) {
         // We can lift the crop to earlier in the order of operations and apply it to the image
         // subset directly, which is handled inside this resolve() call.
+        // FIXME: resolve() is supposed to apply the color filter, which we don't really want in
+        // this case. The crop lifting is easier when we have fSrcRect/fDstRect as properties but
+        // maybe we just need to lift the logic for subsetting the special image into a helper function
+        // so we can avoid resolve().
         return this->resolve(tightBounds);
     } else {
         // Otherwise cropping is the final operation to the FilterResult's image and can always be
@@ -255,6 +262,56 @@ FilterResult FilterResult::applyCrop(const Context& ctx,
         }
         return restrictedOutput;
     }
+}
+
+FilterResult FilterResult::applyColorFilter(const Context& ctx,
+                                            sk_sp<SkColorFilter> colorFilter) const {
+    // A null filter is the identity, so it should have been caught during image filter DAG creation
+    SkASSERT(colorFilter);
+
+    // Color filters are applied after the transform and image sampling, but before the layer
+    // bounds crop. Thus we can compose 'colorFilter' with any previously applied filter regardless
+    // of the transform/sample state, we only have to consider the effect of the crop. If
+    // 'colorFilter' does not affect transparent black, it can be moved before the crop without
+    // changing the "shape" of the resolved image. When 'colorFilter' does affect transparent black,
+    // the result fills ctx's desired output. Pixels within the desired output but outside of this
+    // image's layer bounds are equal to the output of the 'colorFilter({0,0,0,0})' and no longer
+    // transparent. If that region is empty (i.e. the desired output is contained in this image's
+    // layer bounds), then the transparency-affecting 'colorFilter' can also be moved before the
+    // crop and composed with any prior color filter on the FilterResult.
+    if (as_CFB(colorFilter)->affectsTransparentBlack()) {
+        if (!fImage) {
+            // The input is fully transparent black so we need to fill the desired output with
+            // 'colorFilter', which means we don't actually have any more color filter on the returned
+            // filter result since we can't defer the null image evaluation at this point.
+        }
+        if (!fLayerBounds.contains(ctx.desiredOutput())) {
+            // FIXME we don't need to resolve to entire layer bounds, we only need the desired output
+            // intersection with layer bounds
+            // That means we need to produce an image that preserves existing layer bounds, but that
+            // can be tighter than the next desired output since we can defer the ATB color filter.
+            // We just have to ensure that its layer bounds are *larger* than the transformed image bound
+            return this->resolve(fLayerBounds);
+        }
+        // else the filter's impacts on the transparency outside fLayerBounds will not be visible,
+        // so fall through to composing the filter and avoiding an intermediate renderpass.
+    } else {
+        if (!fImage) {
+            return {}; // A transparent black image remains transparent after 'colorFilter'
+        }
+    }
+
+    // If we got here, we can compose the new color filter with any previous filter and restrict
+    // output to the desired output bounds.
+    if (fColorFilter) {
+        colorFilter = SkColorFilters::Compose(fColorFilter, std::move(colorFilter));
+    }
+    FilterResult filtered = *this;
+    filtered.fColorFilter = std::move(colorFilter);
+    if (!filtered.fLayerBounds.intersect(ctx.desiredOutput())) {
+        return {};
+    }
+    return filtered;
 }
 
 static bool compatible_sampling(const SkSamplingOptions& currentSampling,
@@ -316,6 +373,7 @@ FilterResult FilterResult::applyTransform(const Context& ctx,
                                           const SkSamplingOptions &sampling) const {
     if (!fImage) {
         // Transformed transparent black remains transparent black.
+        SkASSERT(!fColorFilter);
         return {};
     }
 
@@ -332,11 +390,14 @@ FilterResult FilterResult::applyTransform(const Context& ctx,
     // Determine if the image is being visibly cropped by the layer bounds, in which case we can't
     // merge this transform with any previous transform (unless the new transform is an integer
     // translation).
+    // FIXME can we move transforms in front of ATB in what cases? all cases(///unlikely) or just
+    // the same cases as when we can move in front of a crop? Should be fine with the quadContainsRect check
     bool isCropped = false;
-    if (!nextXformIsInteger) {
+    const bool fillsLayerBounds = fColorFilter && as_CFB(fColorFilter)->affectsTransparentBlack();
+    if (!nextXformIsInteger || fillsLayerBounds) {
         LayerSpace<SkIRect> imageBounds = fTransform.mapRect(
                     LayerSpace<SkIRect>{SkIRect::MakeWH(fImage->width(), fImage->height())});
-        if (!fLayerBounds.contains(imageBounds)) {
+        if (fillsLayerBounds || !fLayerBounds.contains(imageBounds)) {
             // Layer bounds restricts the mapped image, but it may not be visible.
             isCropped = !SkRectPriv::QuadContainsRect(SkMatrix(transform),
                                                       SkIRect(fLayerBounds),
@@ -353,6 +414,7 @@ FilterResult FilterResult::applyTransform(const Context& ctx,
     } else {
         // We'll have to resolve this FilterResult first before 'transform' and 'sampling' can be
         // correctly evaluated. 'nextSampling' will always be 'sampling'.
+        // FIXME is it worth restricting fLayerBounds with the 'inverse(transform).mapRect(desiredOutput)'?
         transformed = this->resolve(fLayerBounds);
     }
 
@@ -364,6 +426,7 @@ FilterResult FilterResult::applyTransform(const Context& ctx,
     }
 }
 
+// FIXME just remove this function and fold it into applyTransform's logic
 void FilterResult::concatTransform(const LayerSpace<SkMatrix>& transform,
                                    const SkSamplingOptions& newSampling,
                                    const LayerSpace<SkIRect>& desiredOutput) {
@@ -379,6 +442,10 @@ void FilterResult::concatTransform(const LayerSpace<SkMatrix>& transform,
     // of fLayerBounds includes the image mapped by the original fTransform as well as any
     // accumulated soft crops from desired outputs of prior stages. To prevent discarding that info,
     // we map fLayerBounds by the additional transform, instead of re-mapping the image bounds.
+    // FIXME what logic has to happen here if we have a color filte ror an ATB color filter?
+    // should it be safe since if we have colored boundary from ATB filtering at the layer edge,
+    // we figured out that the mapped layer bounds are outside the desired output, so mapping it and
+    // intersecting it with the desired output brings us to the layer bounds.
     fLayerBounds = transform.mapRect(fLayerBounds);
     if (!fLayerBounds.intersect(desiredOutput)) {
         // The transformed output doesn't touch the desired, so it would just be transparent black.
