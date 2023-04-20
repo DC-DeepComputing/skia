@@ -52,6 +52,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "548274dc_b45bfffd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19824
+      },
+      "writtenOn": "2023-04-20T01:43:11Z",
+      "side": 1,
+      "message": "I don\u0027t have vote perms, but LGTM, feel free to do whatever with my comments lol",
+      "revId": "d50585309540ef133c82ec3760b755c566b8cef9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1cd908b_0a9729d8",
@@ -83,6 +100,24 @@
       "side": 1,
       "message": "This was because of a mass-renaming of the fields (I wasn\u0027t happy with the names below). But Android was already using these fields, so I duplicated them for the transition. The Type field sort-of lost its meaning (it used to be used to indicate JpegR from other things, because that required different encoding). So as long as deleting them doesn\u0027t break the build, it should be fine.",
       "parentUuid": "a1cd908b_0a9729d8",
+      "revId": "d50585309540ef133c82ec3760b755c566b8cef9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fef73e57_0c3a39f5",
+        "filename": "include/private/SkGainmapInfo.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 19824
+      },
+      "writtenOn": "2023-04-20T01:43:11Z",
+      "side": 1,
+      "message": "Ahhhh gotchya, in that case please proceed however you feel is best since I definitely don\u0027t know if there\u0027s any reason just removing them would cause problems during the transition 😊 But if this is specifically to support older versions of the format, I\u0027d be fine with just breaking them - I feel it\u0027s better for people to learn \"the hard way\" that there images are too old and shouldn\u0027t be used any more than fake it.",
+      "parentUuid": "b50b2d70_3c28cfd1",
       "revId": "d50585309540ef133c82ec3760b755c566b8cef9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -124,6 +159,30 @@
       "side": 1,
       "message": "It just ended up being a \"I want to avoid doing `\u003chdrgm:Gamma\u003e1.2\u003c/hdrgm:Gamma\u003e`, I\u0027d rather do `hdrgm:Gamma\u003d1.2\"` because I think it\u0027s pretty. I don\u0027t think there\u0027s a syntax where one can do the inline attribute assignment to a list (but, as I\u0027ve demonstrated repeatedly, I\u0027m at ChatGPT level of comprehension of XML).",
       "parentUuid": "41b3c4c5_d065d253",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 6
+      },
+      "revId": "d50585309540ef133c82ec3760b755c566b8cef9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "088a9392_a4b2275d",
+        "filename": "src/encode/SkJpegGainmapEncoder.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 19824
+      },
+      "writtenOn": "2023-04-20T01:43:11Z",
+      "side": 1,
+      "message": "ahhhh I see, I didn\u0027t read closely enough for first comment and thought we just wouldn\u0027t write a field at all if it wasn\u0027t specifically single or multi-channel depending on the field.\n\nI would still suggest doing what I suggested because I think it makes the below section more clear (where we actually write stuff out), but I don\u0027t feel strongly.",
+      "parentUuid": "e6d5c932_3d892d05",
       "range": {
         "startLine": 58,
         "startChar": 4,
