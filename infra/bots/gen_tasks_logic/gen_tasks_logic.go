@@ -82,6 +82,7 @@ const (
 	OUTPUT_BUILD_NOPATCH = "build_nopatch"
 	OUTPUT_TEST          = "test"
 	OUTPUT_PERF          = "perf"
+	OUTPUT_BAZEL         = "bazel_output"
 
 	// Name prefix for upload jobs.
 	PREFIX_UPLOAD = "Upload"
@@ -2265,4 +2266,84 @@ func (b *jobBuilder) bazelTest() {
 		b.attempts(1)
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
 	})
+}
+
+// bazelBuildGeneratedTarget builds a generated Bazel target.
+func (b *jobBuilder) bazelBuildGeneratedTarget() {
+	kind, label := b.parts.bazelBuildGeneratedTargetParts()
+	if kind != "AndroidUnitTest" {
+		panic("Unknown kind: " + kind)
+	}
+
+	fullBazelTarget := fmt.Sprintf("//tests:%s", label)
+
+	b.addTask(b.Name, func(b *taskBuilder) {
+		b.cmd(
+			// "bazel_build_task_driver/bazel_build",
+			"./bazel_build",
+			"--project_id=skia-swarming-bots",
+			"--task_id="+specs.PLACEHOLDER_TASK_ID,
+			"--task_name="+b.Name,
+			"--label="+fullBazelTarget,
+			"--config=linux_rbe",
+			"--workdir=.",
+			"--bazel_arg=--jobs=100",
+			"--out_path="+OUTPUT_BAZEL,
+			"--bazel_bin_subdir=tests", // Copy //bazel-bin/tests into the output directory.
+		)
+		b.dep(b.buildTaskDrivers("linux", "amd64"))
+		b.output(OUTPUT_BAZEL)
+		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+
+		// Use a built task_driver from CIPD instead of building it from scratch. The
+		// task_driver should not need to change often, so using a CIPD version should reduce
+		// build latency.
+		// TODO(kjlubick) For now, this only has the linux version. We could build the task
+		//   driver for all hosts that we support running Bazel from in this CIPD package
+		//   if/when needed.
+		// b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
+
+		// TODO(kjlubick) I believe this bazelisk package is just the Linux one. To support
+		//   more hosts, we need to have platform-specific bazelisk binaries.
+		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
+		b.addToPATH("bazelisk")
+		b.idempotent()
+		b.cas(CAS_BAZEL)
+		b.attempts(1)
+		b.serviceAccount(b.cfg.ServiceAccountCompile)
+	})
+}
+
+// bazelTestGeneratedTarget tests a generated Bazel target.
+func (b *jobBuilder) bazelTestGeneratedTarget() {
+	kind, label := b.parts.bazelBuildGeneratedTargetParts()
+	if kind != "AndroidUnitTest" {
+		panic("Unknown kind: " + kind)
+	}
+
+	b.addTask(b.Name, func(b *taskBuilder) {
+		b.cmd(
+			"./bazel_test_on_device",
+			"--project_id=skia-swarming-bots",
+			"--task_id="+specs.PLACEHOLDER_TASK_ID,
+			"--task_name="+b.Name,
+			"--workdir=.",
+		)
+		b.dep(b.buildTaskDrivers("linux", "amd64"), fmt.Sprintf("BazelBuildGeneratedTarget-%s-%s", kind, label))
+		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+
+		// Use a built task_driver from CIPD instead of building it from scratch. The
+		// task_driver should not need to change often, so using a CIPD version should reduce
+		// build latency.
+		// TODO(kjlubick) For now, this only has the linux version. We could build the task
+		//   driver for all hosts that we support running Bazel from in this CIPD package
+		//   if/when needed.
+		// b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
+
+		b.idempotent()
+		b.cas(CAS_BAZEL)
+		b.attempts(1)
+		b.serviceAccount(b.cfg.ServiceAccountCompile)
+	})
+
 }
