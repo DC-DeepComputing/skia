@@ -16,6 +16,24 @@
       "message": "Perhaps leave a TODO here? (I guess the presence of SK_GANESH serves as one already, as this is still in src/core)?",
       "revId": "751eeb18ede7d05ed5c5c586c71ee945829efe9c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae12dca_fe1b6890",
+        "filename": "src/core/SkPictureImageGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-20T18:35:20Z",
+      "side": 1,
+      "message": "Yeah, and I plan to address this pronto (today or tomorrow)",
+      "parentUuid": "fd6f9ad7_9736bb20",
+      "revId": "751eeb18ede7d05ed5c5c586c71ee945829efe9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
