@@ -70,6 +70,11 @@
         "BazelBuild-tests-vulkan_ganesh-linux_x64"
       ]
     },
+    "BazelBuildGeneratedTarget-AndroidUnitTest-pixel5_codec_test": {
+      "tasks": [
+        "BazelBuildGeneratedTarget-AndroidUnitTest-pixel5_codec_test"
+      ]
+    },
     "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
       "tasks": [
         "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64"
@@ -93,6 +98,11 @@
     "BazelTest-toolchain_layering_check-release-linux_x64": {
       "tasks": [
         "BazelTest-toolchain_layering_check-release-linux_x64"
+      ]
+    },
+    "BazelTestGeneratedTarget-AndroidUnitTest-pixel5_codec_test": {
+      "tasks": [
+        "BazelTestGeneratedTarget-AndroidUnitTest-pixel5_codec_test"
       ]
     },
     "Build-Debian10-Clang-arm-Debug-Android": {
@@ -4266,6 +4276,49 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
+    "BazelBuildGeneratedTarget-AndroidUnitTest-pixel5_codec_test": {
+      "casSpec": "bazel",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazelisk",
+          "path": "bazelisk",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "./bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuildGeneratedTarget-AndroidUnitTest-pixel5_codec_test",
+        "--label=//tests:pixel5_codec_test",
+        "--config=linux_rbe",
+        "--workdir=.",
+        "--bazel_arg=--jobs=100",
+        "--out_path=bazel_output",
+        "--bazel_bin_subdir=tests"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "outputs": [
+        "bazel_output"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
     "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
@@ -4472,6 +4525,35 @@
           "bazelisk"
         ]
       },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelTestGeneratedTarget-AndroidUnitTest-pixel5_codec_test": {
+      "casSpec": "bazel",
+      "command": [
+        "./bazel_test_on_device",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelTestGeneratedTarget-AndroidUnitTest-pixel5_codec_test",
+        "--label=pixel5_codec_test",
+        "--config=linux_rbe",
+        "--workdir=.",
+        "--bazel_arg=--jobs=100",
+        "--out_path=bazel_output",
+        "--bazel_bin_subdir=tests"
+      ],
+      "dependencies": [
+        "BazelBuildGeneratedTarget-AndroidUnitTest-pixel5_codec_test",
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
       "idempotent": true,
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
@@ -94196,6 +94278,9 @@
     "BazelBuild-skia_public-release-linux_x64": {},
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {},
     "BazelBuild-tests-enforce_iwyu-linux_x64": {},
+    "BazelBuildGeneratedTarget-AndroidUnitTest-pixel5_codec_test": {
+      "experimental": true
+    },
     "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
       "location_regexes": [
         "modules/canvaskit/.*"
@@ -94210,6 +94295,9 @@
       "experimental": true
     },
     "BazelTest-cpu_tests-cpu_only_release_rbe-linux_x64": {
+      "experimental": true
+    },
+    "BazelTestGeneratedTarget-AndroidUnitTest-pixel5_codec_test": {
       "experimental": true
     },
     "Build-Debian10-Clang-arm-Debug-Android": {},
