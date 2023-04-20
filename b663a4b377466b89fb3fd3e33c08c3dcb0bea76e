@@ -181,6 +181,30 @@
       },
       "revId": "b663a4b377466b89fb3fd3e33c08c3dcb0bea76e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a91d141_5107efce",
+        "filename": "src/gpu/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-04-20T14:16:59Z",
+      "side": 1,
+      "message": "Ah, good point. I guess that would have to be revisited if there were ever a non-Metal reason for including objc code in the library. Removed the select.",
+      "parentUuid": "4bd64236_b41b154e",
+      "range": {
+        "startLine": 122,
+        "startChar": 8,
+        "endLine": 122,
+        "endChar": 20
+      },
+      "revId": "b663a4b377466b89fb3fd3e33c08c3dcb0bea76e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
