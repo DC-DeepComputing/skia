@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f91474a_995075b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-20T19:18:25Z",
+      "side": 1,
+      "message": "lgtm, modulo one question in comment",
+      "revId": "14a77c7dfecf55220476c3ed7a5239c7633e3abf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fea70684_b4ada47b",
+        "filename": "src/gpu/graphite/RecorderPriv.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-20T19:18:25Z",
+      "side": 1,
+      "message": "Is this actually called somewhere?",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 92
+      },
+      "revId": "14a77c7dfecf55220476c3ed7a5239c7633e3abf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
