@@ -173,10 +173,15 @@ public:
 
     bool dispatchColorProperty(const sk_sp<sksg::Color>&,
                                const skjson::ObjectValue* jcolor = nullptr) const;
+<<<<<<< PATCH SET (159096 Revert "[skottie] pass slot id to opacity callback")
+    bool dispatchOpacityProperty(const sk_sp<sksg::OpacityEffect>&) const;
+    bool dispatchTextProperty(const sk_sp<TextAdapter>&) const;
+=======
     bool dispatchOpacityProperty(const sk_sp<sksg::OpacityEffect>&,
                                  const skjson::ObjectValue* jopacity) const;
     bool dispatchTextProperty(const sk_sp<TextAdapter>&,
                               const skjson::ObjectValue* jtext) const;
+>>>>>>> BASE      (854e78 Reland "Always run color space math in full-float within Gan)
     bool dispatchTransformProperty(const sk_sp<TransformAdapter2D>&) const;
 
     sk_sp<ExpressionManager> expression_manager() const;
