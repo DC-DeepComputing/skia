@@ -5,31 +5,16 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkData.h"
 #include "include/core/SkFontMetrics.h"
 #include "src/core/SkFontPriv.h"
 #include "src/ports/SkTypeface_fontations.h"
 
-namespace {
-/* Placeholder glyph example until we extract paths through fontations, representing the capital H
- * from Roboto Regular. */
-void drawCapitalH(SkPath* path) {
-    path->setFillType(SkPathFillType::kWinding);
-    path->moveTo(1096, -0);
-    path->lineTo(1096, -673);
-    path->lineTo(362, -673);
-    path->lineTo(362, -0);
-    path->lineTo(169, -0);
-    path->lineTo(169, -1456);
-    path->lineTo(362, -1456);
-    path->lineTo(362, -830);
-    path->lineTo(1096, -830);
-    path->lineTo(1096, -1456);
-    path->lineTo(1288, -1456);
-    path->lineTo(1288, -0);
-    path->lineTo(1096, -0);
-    path->close();
-}
+#include "src/ports/fontations/gen/src/ffi.rs.h"
+#include "src/ports/fontations/src/skpath_bridge.h"
 
+
+namespace {
 constexpr SkScalar capitalHAdvance = 1461;
 }
 
@@ -39,6 +24,14 @@ void SkTypeface_Fontations::onCharsToGlyphs(const SkUnichar* chars,
                                             int count,
                                             SkGlyphID glyphs[]) const {
     sk_bzero(glyphs, count * sizeof(glyphs[0]));
+
+    sk_sp<SkData> fontData = SkData::MakeFromStream(fFontData.get(), fFontData->getLength());
+    fFontData->rewind();
+    rust::Slice<const uint8_t> slice{fontData->bytes(), fontData->size()};
+    for (int i = 0; i < count; ++i ) {
+      uint16_t glyph_id = fontations_ffi::lookup_glyph_or_zero(slice, chars[i]);
+      glyphs[i] = glyph_id;
+    }
 }
 
 void SkTypeface_Fontations::onFilterRec(SkScalerContextRec* rec) const {
@@ -50,8 +43,9 @@ public:
     SkFontationsScalerContext(sk_sp<SkTypeface_Fontations> face,
                               const SkScalerContextEffects& effects,
                               const SkDescriptor* desc)
-            : SkScalerContext(std::move(face), effects, desc) {
+            : SkScalerContext(face, effects, desc) {
         fRec.getSingleMatrix(&fMatrix);
+        fFontData = face->fFontData.get();
         this->forceGenerateImageFromPath();
     }
 
@@ -75,11 +69,25 @@ protected:
     void generateImage(const SkGlyph&) override { SK_ABORT("Should have generated from path."); }
 
     bool generatePath(const SkGlyph& glyph, SkPath* path) override {
-        drawCapitalH(path);
-        SkMatrix scaled = fMatrix.preScale(1.0f / getTypeface()->getUnitsPerEm(),
-                                           1.0f / getTypeface()->getUnitsPerEm());
-        *path = path->makeTransform(scaled);
-        return true;
+
+      SkVector scale;
+      SkMatrix remainingMatrix;
+      if (!fRec.computeMatrices(
+                  SkScalerContextRec::PreMatrixScale::kVertical, &scale, &remainingMatrix)) {
+          return false;
+      }
+      fontations_ffi::SkPathWrapper pathWrapper;
+
+      sk_sp<SkData> fontData = SkData::MakeFromStream(fFontData, fFontData->getLength());
+      fFontData->rewind();
+      rust::Slice<const uint8_t> slice{fontData->bytes(), fontData->size()};
+      if (!fontations_ffi::get_path(slice, glyph.getGlyphID(), scale.y(), pathWrapper)) {
+        return false;
+      }
+
+      *path = pathWrapper.getPath();
+      *path = path->makeTransform(remainingMatrix);
+      return true;
     }
 
     void generateFontMetrics(SkFontMetrics* metrics) override {
@@ -102,6 +110,7 @@ protected:
 
 private:
     SkMatrix fMatrix;
+    SkStreamAsset* fFontData = nullptr;
 };
 
 std::unique_ptr<SkScalerContext> SkTypeface_Fontations::onCreateScalerContext(

@@ -13,11 +13,15 @@
 #include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/core/SkScalerContext.h"
 
+#include <memory>
+
+class SkStreamAsset;
+
 /** SkTypeface implementation based on Google Fonts Fontations Rust libraries. */
 class SkTypeface_Fontations : public SkTypeface {
 public:
-    static sk_sp<SkTypeface> Make() { return sk_sp<SkTypeface>(new SkTypeface_Fontations); }
-    SkTypeface_Fontations() : SkTypeface(SkFontStyle(), true) {}
+    SkTypeface_Fontations(std::unique_ptr<SkStreamAsset> font_data)
+            : SkTypeface(SkFontStyle(), true), fFontData(std::move(font_data)) {}
 
 protected:
 
@@ -57,6 +61,11 @@ protected:
     }
     int onGetTableTags(SkFontTableTag tags[]) const override { return 0; }
     size_t onGetTableData(SkFontTableTag, size_t, size_t, void*) const override { return 0; }
+ private:
+    std::unique_ptr<SkStreamAsset> fFontData;
+    // TODO(drott): Ugh, used to just pass over fFontData. Need to define ownership of the font data
+    // buffer.
+    friend class SkFontationsScalerContext;
 };
 
 #endif  // SkTypeface_Fontations_DEFINED
