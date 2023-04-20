@@ -16,6 +16,23 @@
       "message": "Fine with this, but I\u0027d like to wait and be sure it solves their problem",
       "revId": "8a84f3d16e4ac55c6d949aa90a544ef36f087d27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3648d4b1_9d032570",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-20T14:47:15Z",
+      "side": 1,
+      "message": "This is just a CL to remember, and get things rolling.",
+      "revId": "8a84f3d16e4ac55c6d949aa90a544ef36f087d27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
