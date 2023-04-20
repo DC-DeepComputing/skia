@@ -259,6 +259,7 @@ const SkSL::RP::Program* SkRuntimeEffect::getRPProgram(SkSL::DebugTracePriv* deb
     return SkSpan{uniformsInAlloc, numFloats};
 }
 
+#ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
 class RuntimeEffectRPCallbacks : public SkSL::RP::Callbacks {
 public:
     RuntimeEffectRPCallbacks(const SkStageRec& s,
@@ -326,6 +327,7 @@ public:
     SkSpan<const SkRuntimeEffect::ChildPtr> fChildren;
     SkSpan<const SkSL::SampleUsage> fSampleUsages;
 };
+#endif  // SK_ENABLE_SKSL_IN_RASTER_PIPELINE
 
 bool SkRuntimeEffectPriv::CanDraw(const SkCapabilities* caps, const SkSL::Program* program) {
     SkASSERT(caps && program);

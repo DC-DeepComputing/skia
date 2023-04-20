@@ -53,7 +53,7 @@
     M(emboss)                                                      \
     M(swizzle)
 
-#define SK_RASTER_PIPELINE_OPS_HIGHP_ONLY(M)                       \
+#define SK_RASTER_PIPELINE_OPS_HIGHP_BASIC_OPS(M)                  \
     M(callback)                                                    \
     M(stack_checkpoint) M(stack_rewind)                            \
     M(unbounded_set_rgb) M(unbounded_uniform_color)                \
@@ -100,8 +100,12 @@
     M(alter_2pt_conical_unswap)                                    \
     M(mask_2pt_conical_nan)                                        \
     M(mask_2pt_conical_degenerates) M(apply_vector_mask)           \
-    M(set_base_pointer)                                            \
-    /* Dedicated SkSL stages begin here: */                                                   \
+    M(set_base_pointer)
+
+#ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
+
+#define SK_RASTER_PIPELINE_OPS_HIGHP_ONLY(M)                                                  \
+    SK_RASTER_PIPELINE_OPS_HIGHP_BASIC_OPS(M)                                                 \
     M(init_lane_masks) M(store_device_xy01)                                                   \
     M(load_condition_mask) M(store_condition_mask) M(merge_condition_mask)                    \
     M(load_loop_mask)      M(store_loop_mask)      M(mask_off_loop_mask)                      \
@@ -174,6 +178,12 @@
     M(cmpne_n_floats) M(cmpne_float) M(cmpne_2_floats) M(cmpne_3_floats) M(cmpne_4_floats)    \
     M(cmpne_n_ints)   M(cmpne_int)   M(cmpne_2_ints)   M(cmpne_3_ints)   M(cmpne_4_ints)      \
     M(trace_line)     M(trace_var)   M(trace_enter)    M(trace_exit)     M(trace_scope)
+
+#else
+
+#define SK_RASTER_PIPELINE_OPS_HIGHP_ONLY(M) SK_RASTER_PIPELINE_OPS_HIGHP_BASIC_OPS(M)
+
+#endif
 
 // The combined list of all RasterPipeline ops:
 #define SK_RASTER_PIPELINE_OPS_ALL(M) \

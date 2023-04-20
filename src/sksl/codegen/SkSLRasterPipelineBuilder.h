@@ -31,6 +31,8 @@ class TraceHook;
 
 namespace RP {
 
+#ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
+
 // A single scalar in our program consumes one slot.
 using Slot = int;
 constexpr Slot NA = -1;
@@ -671,6 +673,12 @@ private:
     int fNumLabels = 0;
     int fExecutionMaskWritesEnabled = 0;
 };
+
+#else   // !defined(SK_ENABLE_SKSL_IN_RASTER_PIPELINE)
+
+class Program {};
+
+#endif  // SK_ENABLE_SKSL_IN_RASTER_PIPELINE
 
 }  // namespace RP
 }  // namespace SkSL
