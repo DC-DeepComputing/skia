@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "736585ff_92e764a7",
+        "filename": "BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-04-20T00:03:54Z",
+      "side": 1,
+      "message": "The approach I took was to bubble up all mm files from skia lib to here in a private skia_objc_library that is deps\u0027ed into both skia_public and skia_internal. cc_library just ignores mm files. One thing I found was that the Ganesh mm files that get glommed up to here all need -fobjc-arc while the non-library files do explicit ref counting, hence the explicit setting of copts here.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 17
+      },
+      "revId": "4cd2719cd9e2a437ef1980146a10abe4b6e73685",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
