@@ -61,7 +61,9 @@ enum class Output {
     kGLSL,
     kMetal,
     kSPIRV,
+#ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
     kSkRP,
+#endif
     kSkVM,     // raw SkVM bytecode
     kSkVMOpt,  // optimized SkVM bytecode
     kSkVMJIT,  // optimized native assembly code
@@ -75,7 +77,9 @@ public:
             case Output::kGLSL:    return "glsl_";
             case Output::kMetal:   return "metal_";
             case Output::kSPIRV:   return "spirv_";
+#ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
             case Output::kSkRP:    return "skrp_";
+#endif
             case Output::kSkVM:    return "skvm_";
             case Output::kSkVMOpt: return "skvm_opt_";
             case Output::kSkVMJIT: return "skvm_jit_";
@@ -108,7 +112,7 @@ protected:
     }
 
     bool usesRuntimeShader() const {
-        return fOutput >= Output::kSkRP;
+        return fOutput > Output::kSPIRV;
     }
 
     void fixUpSource() {
@@ -145,7 +149,9 @@ protected:
                 case Output::kGLSL:    SkAssertResult(fCompiler.toGLSL(*program,  &result)); break;
                 case Output::kMetal:   SkAssertResult(fCompiler.toMetal(*program, &result)); break;
                 case Output::kSPIRV:   SkAssertResult(fCompiler.toSPIRV(*program, &result)); break;
+#ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
                 case Output::kSkRP:    SkAssertResult(CompileToSkRP(*program)); break;
+#endif
                 case Output::kSkVM:
                 case Output::kSkVMOpt:
                 case Output::kSkVMJIT: SkAssertResult(CompileToSkVM(*program, fOutput)); break;
@@ -166,6 +172,7 @@ protected:
         return true;
     }
 
+#ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
     static bool CompileToSkRP(const SkSL::Program& program) {
         const SkSL::FunctionDeclaration* main = program.getFunction("main");
         if (!main) {
@@ -195,6 +202,7 @@ protected:
                                  /*uniforms=*/SkSpan{uniformBuffer, rasterProg->numUniforms()});
         return true;
     }
+#endif  // SK_ENABLE_SKSL_IN_RASTER_PIPELINE
 
 private:
     std::string fName;
@@ -209,6 +217,13 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
+#define COMPILER_BENCH_SKRP(name, text) \
+    DEF_BENCH(return new SkSLCompileBench(#name, name##_SRC, /*optimize=*/true, Output::kSkRP);)
+#else
+#define COMPILER_BENCH_SKRP(name, text) /* nothing */
+#endif
+
 #define COMPILER_BENCH(name, text)                                                                 \
 static constexpr char name ## _SRC[] = text;                                                       \
 DEF_BENCH(return new SkSLCompileBench(#name, name ## _SRC, /*optimize=*/false, Output::kNone);)    \
@@ -216,7 +231,7 @@ DEF_BENCH(return new SkSLCompileBench(#name, name ## _SRC, /*optimize=*/true,  O
 DEF_BENCH(return new SkSLCompileBench(#name, name ## _SRC, /*optimize=*/true,  Output::kGLSL);)    \
 DEF_BENCH(return new SkSLCompileBench(#name, name ## _SRC, /*optimize=*/true,  Output::kMetal);)   \
 DEF_BENCH(return new SkSLCompileBench(#name, name ## _SRC, /*optimize=*/true,  Output::kSPIRV);)   \
-DEF_BENCH(return new SkSLCompileBench(#name, name ## _SRC, /*optimize=*/true,  Output::kSkRP);)    \
+COMPILER_BENCH_SKRP(name, text)                                                                    \
 DEF_BENCH(return new SkSLCompileBench(#name, name ## _SRC, /*optimize=*/true,  Output::kSkVM);)    \
 DEF_BENCH(return new SkSLCompileBench(#name, name ## _SRC, /*optimize=*/true,  Output::kSkVMOpt);) \
 DEF_BENCH(return new SkSLCompileBench(#name, name ## _SRC, /*optimize=*/true,  Output::kSkVMJIT);)
