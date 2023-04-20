@@ -704,6 +704,8 @@ BASE_SRCS_ALL = [
     "src/effects/SkColorMatrixFilter.cpp",
     "src/effects/SkCornerPathEffect.cpp",
     "src/effects/SkDashImpl.h",
+    "src/effects/SkDashingMaskFilter.cpp",
+    "src/effects/SkDashingMaskFilter.h",
     "src/effects/SkDashPathEffect.cpp",
     "src/effects/SkDiscretePathEffect.cpp",
     "src/effects/SkEmbossMask.cpp",
