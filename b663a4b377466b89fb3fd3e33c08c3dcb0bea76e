@@ -157,6 +157,30 @@
       },
       "revId": "b663a4b377466b89fb3fd3e33c08c3dcb0bea76e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bd64236_b41b154e",
+        "filename": "src/gpu/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-20T14:10:42Z",
+      "side": 1,
+      "message": "Does that matter? There\u0027s a select statement in //:BUILD.bazel which removes the dep, so I wouldn\u0027t expect it to break anything.",
+      "parentUuid": "a5094ebd_1d17e5a9",
+      "range": {
+        "startLine": 122,
+        "startChar": 8,
+        "endLine": 122,
+        "endChar": 20
+      },
+      "revId": "b663a4b377466b89fb3fd3e33c08c3dcb0bea76e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
