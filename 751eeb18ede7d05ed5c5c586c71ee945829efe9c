@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd6f9ad7_9736bb20",
+        "filename": "src/core/SkPictureImageGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-20T18:33:19Z",
+      "side": 1,
+      "message": "Perhaps leave a TODO here? (I guess the presence of SK_GANESH serves as one already, as this is still in src/core)?",
+      "revId": "751eeb18ede7d05ed5c5c586c71ee945829efe9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
