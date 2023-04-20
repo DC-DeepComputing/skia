@@ -82,6 +82,7 @@ const (
 	OUTPUT_BUILD_NOPATCH = "build_nopatch"
 	OUTPUT_TEST          = "test"
 	OUTPUT_PERF          = "perf"
+	OUTPUT_BAZEL         = "bazel_output"
 
 	// Name prefix for upload jobs.
 	PREFIX_UPLOAD = "Upload"
@@ -797,6 +798,28 @@ func (b *taskBuilder) swarmDimensions() {
 	b.defaultSwarmDimensions()
 }
 
+var androidDeviceInfos = map[string][]string{
+	"AndroidOne":      {"sprout", "MOB30Q"},
+	"GalaxyS7_G930FD": {"herolte", "R16NW_G930FXXS2ERH6"}, // This is Oreo.
+	"GalaxyS9":        {"starlte", "QP1A.190711.020"},     // This is Android10.
+	"GalaxyS20":       {"exynos990", "QP1A.190711.020"},
+	"JioNext":         {"msm8937", "RKQ1.210602.002"},
+	"Nexus5":          {"hammerhead", "M4B30Z_3437181"},
+	"Nexus7":          {"grouper", "LMY47V_1836172"}, // 2012 Nexus 7
+	"P30":             {"HWELE", "HUAWEIELE-L29"},
+	"Pixel2XL":        {"taimen", "PPR1.180610.009"},
+	"Pixel3":          {"blueline", "PQ1A.190105.004"},
+	"Pixel3a":         {"sargo", "QP1A.190711.020"},
+	"Pixel4":          {"flame", "RPB2.200611.009"},       // R Preview
+	"Pixel4a":         {"sunfish", "AOSP.MASTER_7819821"}, // Pixel4a flashed with an Android HWASan build.
+	"Pixel4XL":        {"coral", "QD1A.190821.011.C4"},
+	"Pixel5":          {"redfin", "RD1A.200810.022.A4"},
+	"Pixel6":          {"oriole", "SD1A.210817.037"},
+	"Pixel7":          {"cheetah", "TD1A.221105.002"},
+	"TecnoSpark3Pro":  {"TECNO-KB8", "PPR1.180610.011"},
+	"Wembley":         {"wembley", "SP2A.220505.008"},
+}
+
 // defaultSwarmDimensions generates default swarming bot dimensions for the given task.
 func (b *taskBuilder) defaultSwarmDimensions() {
 	d := map[string]string{
@@ -846,27 +869,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 		if b.os("Android") {
 			// For Android, the device type is a better dimension
 			// than CPU or GPU.
-			deviceInfo, ok := map[string][]string{
-				"AndroidOne":      {"sprout", "MOB30Q"},
-				"GalaxyS7_G930FD": {"herolte", "R16NW_G930FXXS2ERH6"}, // This is Oreo.
-				"GalaxyS9":        {"starlte", "QP1A.190711.020"},     // This is Android10.
-				"GalaxyS20":       {"exynos990", "QP1A.190711.020"},
-				"JioNext":         {"msm8937", "RKQ1.210602.002"},
-				"Nexus5":          {"hammerhead", "M4B30Z_3437181"},
-				"Nexus7":          {"grouper", "LMY47V_1836172"}, // 2012 Nexus 7
-				"P30":             {"HWELE", "HUAWEIELE-L29"},
-				"Pixel2XL":        {"taimen", "PPR1.180610.009"},
-				"Pixel3":          {"blueline", "PQ1A.190105.004"},
-				"Pixel3a":         {"sargo", "QP1A.190711.020"},
-				"Pixel4":          {"flame", "RPB2.200611.009"},       // R Preview
-				"Pixel4a":         {"sunfish", "AOSP.MASTER_7819821"}, // Pixel4a flashed with an Android HWASan build.
-				"Pixel4XL":        {"coral", "QD1A.190821.011.C4"},
-				"Pixel5":          {"redfin", "RD1A.200810.022.A4"},
-				"Pixel6":          {"oriole", "SD1A.210817.037"},
-				"Pixel7":          {"cheetah", "TD1A.221105.002"},
-				"TecnoSpark3Pro":  {"TECNO-KB8", "PPR1.180610.011"},
-				"Wembley":         {"wembley", "SP2A.220505.008"},
-			}[b.parts["model"]]
+			deviceInfo, ok := androidDeviceInfos[b.parts["model"]]
 			if !ok {
 				log.Fatalf("Entry %q not found in Android mapping.", b.parts["model"])
 			}
@@ -2265,4 +2268,134 @@ func (b *jobBuilder) bazelTest() {
 		b.attempts(1)
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
 	})
+}
+
+// bazelBuildGeneratedTarget builds a generated Bazel target.
+func (b *jobBuilder) bazelBuildGeneratedTarget() {
+	kind, label := b.parts.bazelBuildGeneratedTargetParts()
+	if kind != "AndroidUnitTest" {
+		// In the future we might support tests other than unit tests (e.g. GMs) and other OSes.
+		panic("Unknown kind: " + kind)
+	}
+
+	fullBazelTarget := fmt.Sprintf("//tests:%s", label)
+
+	b.addTask(b.Name, func(b *taskBuilder) {
+		b.cmd(
+			// "bazel_build_task_driver/bazel_build",
+			"./bazel_build",
+			"--project_id=skia-swarming-bots",
+			"--task_id="+specs.PLACEHOLDER_TASK_ID,
+			"--task_name="+b.Name,
+			"--label="+fullBazelTarget,
+			"--config=linux_rbe",
+			"--workdir=.",
+			"--bazel_arg=--jobs=100",
+			"--out_path="+OUTPUT_BAZEL,
+			"--bazel_bin_subdir=tests", // Copy //bazel-bin/tests into the output directory.
+		)
+		b.dep(b.buildTaskDrivers("linux", "amd64"))
+		b.output(OUTPUT_BAZEL)
+		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+
+		// Use a built task_driver from CIPD instead of building it from scratch. The
+		// task_driver should not need to change often, so using a CIPD version should reduce
+		// build latency.
+		// TODO(kjlubick) For now, this only has the linux version. We could build the task
+		//   driver for all hosts that we support running Bazel from in this CIPD package
+		//   if/when needed.
+		// b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
+
+		// TODO(kjlubick) I believe this bazelisk package is just the Linux one. To support
+		//   more hosts, we need to have platform-specific bazelisk binaries.
+		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
+		b.addToPATH("bazelisk")
+		b.idempotent()
+		b.cas(CAS_BAZEL)
+		b.attempts(1)
+		b.serviceAccount(b.cfg.ServiceAccountCompile)
+	})
+}
+
+// generatedBazelLabelRegexp captures the format of a generated Bazel label such as
+// "pixel7_codec_test".
+var generatedBazelLabelRegexp = regexp.MustCompile(`(?P<device>[a-z0-9]+)_(?P<testgroup>[a-z0-9]+)_test`)
+
+// bazelTestGeneratedTarget tests a generated Bazel target.
+func (b *jobBuilder) bazelTestGeneratedTarget() {
+	kind, label := b.parts.bazelBuildGeneratedTargetParts()
+	if kind != "AndroidUnitTest" {
+		// In the future we might support tests other than unit tests (e.g. GMs) and other OSes.
+		panic("Unknown kind: " + kind)
+	}
+
+	// This task receives a subset of the //bazel-bin directory as a CAS input. We are going to run
+	// a Bazel-built binary (which might actually be a shell script) using the directory with the
+	// copied contents of //bazel-bin as the working directory. This emulates the environment
+	// expected by the Bazel-built binary when executed via "bazel run".
+	commandWorkDir := OUTPUT_BAZEL
+
+	// Because this is an Android unit test, we assume that the fully qualified label is
+	// //tests:<label>. The binary will therefore be found under //bazel-bin/tests.
+	command := "tests/" + label
+
+	b.addTask(b.Name, func(b *taskBuilder) {
+		b.cmd(
+			"./bazel_test_on_device",
+			"--project_id=skia-swarming-bots",
+			"--task_id="+specs.PLACEHOLDER_TASK_ID,
+			"--task_name="+b.Name,
+			"--workdir=.",
+			"--command="+command,
+			"--command_workdir="+commandWorkDir,
+		)
+		b.dep(b.buildTaskDrivers("linux", "arm64"), fmt.Sprintf("BazelBuildGeneratedTarget-%s-%s", kind, label))
+
+		// Extract device name from Bazel label.
+		labelParts := generatedBazelLabelRegexp.FindStringSubmatch(label)
+		deviceName := labelParts[generatedBazelLabelRegexp.SubexpIndex("device")]
+
+		// Normalize device name in the format used by the androidDeviceInfos map.
+		normalizedDeviceName, ok := map[string]string{
+			"pixel5": "Pixel5",
+		}[deviceName]
+		if !ok {
+			log.Fatalf("Unknown device name %q derived from Bazel label %q.", deviceName, label)
+		}
+
+		// Look up device type and OS.
+		deviceInfo, ok := androidDeviceInfos[normalizedDeviceName]
+		if !ok {
+			log.Fatalf("Entry %q not found in Android mapping.", normalizedDeviceName)
+		}
+		deviceType := deviceInfo[0]
+		deviceOS := deviceInfo[1]
+
+		// We have more Pixel 5 devices running Android 12 than Android 11.
+		if deviceName == "pixel5" {
+			deviceOS = "SP2A.220305.012"
+		}
+
+		// Set dimensions.
+		b.dimension(
+			"os:Android",
+			fmt.Sprintf("device_type:%s", deviceType),
+			fmt.Sprintf("device_os:%s", deviceOS),
+			fmt.Sprintf("pool:%s", b.cfg.Pool),
+		)
+
+		// Use a built task_driver from CIPD instead of building it from scratch. The
+		// task_driver should not need to change often, so using a CIPD version should reduce
+		// build latency.
+		// TODO(kjlubick) For now, this only has the linux version. We could build the task
+		//   driver for all hosts that we support running Bazel from in this CIPD package
+		//   if/when needed.
+		// b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
+
+		b.idempotent()
+		b.cas(CAS_BAZEL)
+		b.attempts(1)
+		b.serviceAccount(b.cfg.ServiceAccountCompile)
+	})
+
 }

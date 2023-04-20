@@ -1,0 +1,22 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "bazel_test_on_device_lib",
+    srcs = ["bazel_test_on_device.go"],
+    importpath = "go.skia.org/skia/infra/bots/task_drivers/bazel_test_on_device",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@org_skia_go_infra//go/common",
+        "@org_skia_go_infra//go/exec",
+        "@org_skia_go_infra//go/skerr",
+        "@org_skia_go_infra//task_driver/go/lib/bazel",
+        "@org_skia_go_infra//task_driver/go/lib/os_steps",
+        "@org_skia_go_infra//task_driver/go/td",
+    ],
+)
+
+go_binary(
+    name = "bazel_test_on_device",
+    embed = [":bazel_test_on_device_lib"],
+    visibility = ["//visibility:public"],
+)
