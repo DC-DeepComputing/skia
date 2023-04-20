@@ -22,6 +22,30 @@
       },
       "revId": "0a026ca1b18cc27b05e30945f5badbd2c150b87f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "888fc40f_4ff151b1",
+        "filename": "src/core/SkGlyph.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-20T19:44:07Z",
+      "side": 1,
+      "message": "This is the same tests as the if statement on line 436 in addLine without doing the divide. Remember that subtraction is the same as a comparison. So, t will be between 0 and 1 only if offset is between pt[0], and pt[1]. Otherwise the line is rejected. \n\nThis code is exercised by the gm textblob_intercepts. Since there are no differences, and the new code is being called, I think this line is covered.",
+      "parentUuid": "bf88f646_b3b6ab31",
+      "range": {
+        "startLine": 481,
+        "startChar": 16,
+        "endLine": 481,
+        "endChar": 18
+      },
+      "revId": "0a026ca1b18cc27b05e30945f5badbd2c150b87f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
