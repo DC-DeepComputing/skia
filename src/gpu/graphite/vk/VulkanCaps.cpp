@@ -999,6 +999,26 @@ const Caps::ColorTypeInfo* VulkanCaps::getColorTypeInfo(SkColorType ct,
     return nullptr;
 }
 
+bool VulkanCaps::supportsWritePixels(const TextureInfo&) const {
+    return false;
+}
+
+bool VulkanCaps::supportsReadPixels(const TextureInfo&) const {
+    return false;
+}
+
+SkColorType VulkanCaps::supportedWritePixelsColorType(SkColorType dstColorType,
+                                                      const TextureInfo& dstTextureInfo,
+                                                      SkColorType srcColorType) const {
+    return kUnknown_SkColorType;
+}
+
+SkColorType VulkanCaps::supportedReadPixelsColorType(SkColorType srcColorType,
+                                                     const TextureInfo& srcTextureInfo,
+                                                     SkColorType dstColorType) const {
+    return kUnknown_SkColorType;
+}
+
 UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const {
     UniqueKey pipelineKey;
