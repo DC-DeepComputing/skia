@@ -76,8 +76,9 @@ public:
     BackendTexture createBackendTexture(SkISize dimensions, const TextureInfo&);
     void deleteBackendTexture(BackendTexture&);
 
-#if GRAPHITE_TEST_UTILS
     ResourceCache* resourceCache() { return fResourceCache.get(); }
+
+#if GRAPHITE_TEST_UTILS
     const SharedContext* sharedContext() { return fSharedContext; }
 #endif
 
