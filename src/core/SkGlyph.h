@@ -550,6 +550,7 @@ private:
     friend class SkScalerContext_DW;
     friend class SkScalerContext_GDI;
     friend class SkScalerContext_Mac;
+    friend class SkScalerContext_Adobe;
     friend class SkStrikeClientImpl;
     friend class SkTestScalerContext;
     friend class SkTestSVGScalerContext;
