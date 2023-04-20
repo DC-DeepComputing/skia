@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55016921_466a9af9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-04-20T15:22:11Z",
+      "side": 1,
+      "message": "I noticed right after submission that I forgot to \"git add\" this file. It\u0027s needed to build the hello_world_metal target.",
+      "revId": "d5cda5f94c02b5322c714f42fe0d628cafea860c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
