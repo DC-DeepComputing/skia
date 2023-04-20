@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bc5afbc_479f1fd4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-04-20T19:03:54Z",
+      "side": 1,
+      "message": "PTAL again, thanks!",
+      "revId": "5b42c036977f55859339da94834c3fe3f41aa9a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "013a44da_bf3fe64b",
@@ -31,6 +48,30 @@
       "writtenOn": "2023-04-20T18:53:05Z",
       "side": 1,
       "message": "We don\u0027t really want to expose the ResourceCache to anyone who has a ResourceProvider. However, as you mentioned this accessor is only used to get the ProxyCache which happens to live in the ResourceCache.\n\nI think instead we can keep this query in GRAPHITE_TEST_UTILS, and then add a new function here `ProxyCache* proxyCache() { return fResourceCache-\u003eproxyCache(); }`",
+      "range": {
+        "startLine": 79,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 67
+      },
+      "revId": "5b42c036977f55859339da94834c3fe3f41aa9a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c81194b_bf4a87b8",
+        "filename": "src/gpu/graphite/ResourceProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-04-20T19:03:54Z",
+      "side": 1,
+      "message": "Added the proxyCache accessor plumbed via RecorderPriv. Added the test guard back resourceCache accessor in ResourceProvider and also for RecorderPriv.",
+      "parentUuid": "013a44da_bf3fe64b",
       "range": {
         "startLine": 79,
         "startChar": 4,
