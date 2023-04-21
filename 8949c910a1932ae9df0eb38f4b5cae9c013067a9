@@ -22,6 +22,30 @@
       },
       "revId": "8949c910a1932ae9df0eb38f4b5cae9c013067a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e110b585_523240fa",
+        "filename": "infra/bots/task_drivers/g3_canary/g3_canary.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2023-04-21T15:58:30Z",
+      "side": 1,
+      "message": "Agreed, let\u0027s stick with infra gardener and maybe link http://go/autoroll-bug ?",
+      "parentUuid": "bc051f4a_e6a15f8b",
+      "range": {
+        "startLine": 35,
+        "startChar": 140,
+        "endLine": 35,
+        "endChar": 147
+      },
+      "revId": "8949c910a1932ae9df0eb38f4b5cae9c013067a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
