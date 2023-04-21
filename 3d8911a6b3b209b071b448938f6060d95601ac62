@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f755c4a7_1255afa3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-21T12:56:22Z",
+      "side": 1,
+      "message": "Thanks for the detailed commit message -- made it very easy to understand what was changing, and why!",
+      "revId": "3d8911a6b3b209b071b448938f6060d95601ac62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
