@@ -8,7 +8,6 @@
 #ifndef skiagm_DEFINED
 #define skiagm_DEFINED
 
-#include "gm/verifiers/gmverifier.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
@@ -19,11 +18,12 @@
 
 #include <memory>
 
-class GrDirectContext;
 class GrRecordingContext;
 class SkCanvas;
 class SkMetaData;
 struct GrContextOptions;
+
+namespace skiagm { namespace verifiers { class VerifierList; } }
 
 #define DEF_GM(CODE)                                         \
     static skiagm::GMRegistry SK_MACRO_APPEND_COUNTER(REG_)( \
