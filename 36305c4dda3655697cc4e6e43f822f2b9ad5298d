@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4767daf_b756e78e",
+        "filename": "BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 1409,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-04-21T14:44:45Z",
+      "side": 1,
+      "message": "@kjlubick: This alone does not seem to do the trick, I still get link errors ultimately. This is what makes me think it might be easier to have the viewer and GMs built in bazel than fixing this linking dependency, but you may have additional ideas here. \n\n(in an `args.gn` config with `skia_use_fontations\u003dtrue`)\n\n```\n$ ninja -C out/gnrust_rel/ viewer\nninja: Entering directory `out/gnrust_rel/\u0027\n[0/1] Regenerating ninja files\n[10/10] link viewer\nFAILED: viewer \nc++ -rdynamic -Wl,-rpath,\\$ORIGIN -L. -Wl,--start-group @./viewer.rsp   -Wl,--end-group -lpthread -lfontconfig -ldl -lGL -lbridge_rust_side -lGLU -lX11 -o ./viewer\n/usr/bin/ld: ./libbridge_rust_side.a(cxx.o): in function `cxxbridge1$cxx_string$destroy\u0027:\ncxx.cc:(.text+0x51): undefined reference to `std::__1::basic_string\u003cchar, std::__1::char_traits\u003cchar\u003e, std::__1::allocator\u003cchar\u003e \u003e::~basic_string()\u0027\n/usr/bin/ld: ./libbridge_rust_side.a(cxx.o): in function `cxxbridge1$cxx_string$reserve_total\u0027:\n\n```",
+      "revId": "36305c4dda3655697cc4e6e43f822f2b9ad5298d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
