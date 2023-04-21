@@ -10,6 +10,8 @@
 
 #include "tools/viewer/Slide.h"
 
+#include "include/core/SkPoint.h"
+#include "include/core/SkString.h"
 #include "include/private/base/SkTArray.h"
 
 #include <memory>
