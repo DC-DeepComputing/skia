@@ -46,6 +46,30 @@
       },
       "revId": "8949c910a1932ae9df0eb38f4b5cae9c013067a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "826a60ac_371d5683",
+        "filename": "infra/bots/task_drivers/g3_canary/g3_canary.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2023-04-21T17:09:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e110b585_523240fa",
+      "range": {
+        "startLine": 35,
+        "startChar": 140,
+        "endLine": 35,
+        "endChar": 147
+      },
+      "revId": "8949c910a1932ae9df0eb38f4b5cae9c013067a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
