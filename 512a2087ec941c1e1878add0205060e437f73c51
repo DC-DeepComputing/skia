@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d640bc5c_07753240",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-21T20:53:27Z",
+      "side": 1,
+      "message": "Oop, didn\u0027t see the first one. It needs to be here so that the above layout transition is inserted before the CopyImageToBuffer.",
+      "parentUuid": "f69b0471_a4a2dd8c",
+      "range": {
+        "startLine": 336,
+        "startChar": 4,
+        "endLine": 336,
+        "endChar": 35
+      },
+      "revId": "512a2087ec941c1e1878add0205060e437f73c51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f05248c2_a31bbc5a",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 1
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93d5568d_cf9f7246",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-21T20:53:27Z",
+      "side": 1,
+      "message": "Same",
+      "parentUuid": "f05248c2_a31bbc5a",
+      "range": {
+        "startLine": 388,
+        "startChar": 4,
+        "endLine": 388,
+        "endChar": 35
+      },
+      "revId": "512a2087ec941c1e1878add0205060e437f73c51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "55c04abd_c7cb9cbb",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 1
@@ -77,6 +125,30 @@
       "writtenOn": "2023-04-21T20:25:02Z",
       "side": 1,
       "message": "We need to put in a big todo comment here that right now this is assuming that the buffer was used for a readPixels call (i.e. it had data copied into it on the CPU). But that is not a requirement for this function call. This is specifically one of the places where we need to have tracked how the buffer was previously used so we can put in the appropriate barrier. For example, we could have written to the buffer using compute.\n\nLike this is definitely fragile when we land this to make sure we actually remember to go back and update this call site. I wonder if it is worth already having this go into some helper function where we will set all the buffer barriers. We\u0027ll pass in the requested dst access and stage to that function. Then we can have a temporary workaround there which says if we see dst as HOST we will assume the src stuff came from a copy for now, but that we need to fix it. This at least will be more findable in terms of what needs to be updated when we do go to handle buffers correctly.\n\nMetal gets away with it because it just has a generic synchronizeResource command.",
+      "range": {
+        "startLine": 409,
+        "startChar": 4,
+        "endLine": 409,
+        "endChar": 48
+      },
+      "revId": "512a2087ec941c1e1878add0205060e437f73c51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1bfc6a2_ac2c7494",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-21T20:53:27Z",
+      "side": 1,
+      "message": "Sounds good, I\u0027ll add the helper Monday as a separate CL, and then land this after Nicolette looks at it.",
+      "parentUuid": "55c04abd_c7cb9cbb",
       "range": {
         "startLine": 409,
         "startChar": 4,
