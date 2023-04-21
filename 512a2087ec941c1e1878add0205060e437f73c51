@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ff6acfc_34d00395",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-21T19:49:52Z",
+      "side": 1,
+      "message": "One last CL if you have time for it (if not no worries).",
+      "revId": "512a2087ec941c1e1878add0205060e437f73c51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
