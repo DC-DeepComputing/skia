@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abd8455c_22f982e8",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-21T16:56:28Z",
+      "side": 1,
+      "message": "we should be checking whether the texInfo usage supports transfer dst",
+      "range": {
+        "startLine": 1014,
+        "startChar": 0,
+        "endLine": 1015,
+        "endChar": 16
+      },
+      "revId": "b6e6231b5623512cfc30cd172030be6526cfc696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d44930b2_0a604f47",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1039,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-04-21T16:56:28Z",
+      "side": 1,
+      "message": "need to check usage flags for transfer src",
+      "range": {
+        "startLine": 1038,
+        "startChar": 0,
+        "endLine": 1039,
+        "endChar": 16
+      },
+      "revId": "b6e6231b5623512cfc30cd172030be6526cfc696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
