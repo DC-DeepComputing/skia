@@ -1,6 +1,18 @@
 load("//bazel:skia_rules.bzl", "skia_cc_library")
 load("//bazel:flags.bzl", "bool_flag", "selects")
-load(":tests.bzl", "CODEC", "CODEC_TESTS", "CPU_ONLY_TESTS", "DEBUGGER_TESTS", "DISCARDABLE_MEMORY_POOL_TESTS", "GANESH", "GANESH_TESTS", "PATHOPS", "PATHOPS_TESTS", "PDF_TESTS", "PIXEL_5", "skia_android_test", "skia_cpu_tests", "skia_ganesh_tests")
+load(
+    ":tests.bzl",
+    "CODEC_TESTS",
+    "CPU_ONLY_TESTS",
+    "DEBUGGER_TESTS",
+    "DISCARDABLE_MEMORY_POOL_TESTS",
+    "GANESH_TESTS",
+    "PATHOPS_TESTS",
+    "PDF_TESTS",
+    "skia_cpu_tests",
+    "skia_ganesh_tests",
+)
+load(":generated_tests.bzl", "generated_tests")
 
 skia_cc_library(
     name = "tests_base",
@@ -295,23 +307,25 @@ selects.config_setting_group(
 # 2. Invoke Bazel as follows:
 #
 #     $ bazel test //tests:pixel5_ganesh_test --config=linux_rbe --test_output=streamed
-skia_android_test(
-    name = "pixel5_ganesh_test",
-    device = PIXEL_5,
-    test_group = GANESH,
-)
+# skia_android_test(
+#     name = "pixel5_ganesh_test",
+#     device = PIXEL_5,
+#     test_group = GANESH,
+# )
 
-skia_android_test(
-    name = "pixel5_pathops_test",
-    device = PIXEL_5,
-    test_group = PATHOPS,
-)
+# skia_android_test(
+#     name = "pixel5_pathops_test",
+#     device = PIXEL_5,
+#     test_group = PATHOPS,
+# )
 
-skia_android_test(
-    name = "pixel5_codec_test",
-    device = PIXEL_5,
-    test_group = CODEC,
-)
+# skia_android_test(
+#     name = "pixel5_codec_test",
+#     device = PIXEL_5,
+#     test_group = CODEC,
+# )
+
+generated_tests(name = "generated_tests")
 
 # TODO(lovisolo): Add example using Vulkan flavor.
 # TODO(lovisolo): Add example using a 32-bit ARM device.
