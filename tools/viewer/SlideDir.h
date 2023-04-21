@@ -10,6 +10,8 @@
 
 #include "tools/viewer/Slide.h"
 
+#include "include/core/SkPoint.h"
+#include "include/core/SkString.h"
 #include "include/private/base/SkTArray.h"
 
 #include <memory>
@@ -55,7 +57,7 @@ private:
     std::unique_ptr<FocusController>   fFocusController;
     const int                          fColumns;
 
-    std::vector<Rec>                fRecs;
+    std::vector<Rec>                   fRecs;
     std::unique_ptr<sksg::Scene>       fScene;
     std::vector<sk_sp<Animator>>       fSceneAnimators;
     sk_sp<sksg::Group>                 fRoot;
