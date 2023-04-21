@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "022878d2_d22cf2dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-21T00:58:44Z",
+      "side": 1,
+      "message": "This was triggering test failures on some pending changes to image filtering, where anisotropic sampling of an SkSpecialImage would not be restricted to its subset.",
+      "revId": "ee36a9304eb0cc0680a27d5352eb75ee4b1169f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
