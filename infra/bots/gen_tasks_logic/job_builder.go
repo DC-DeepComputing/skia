@@ -224,6 +224,16 @@ func (b *jobBuilder) genTasksForJob() {
 		return
 	}
 
+	if b.role("BazelBuildGeneratedTarget") {
+		b.bazelBuildGeneratedTarget()
+		return
+	}
+
+	if b.role("BazelTestGeneratedTarget") {
+		b.bazelTestGeneratedTarget()
+		return
+	}
+
 	log.Fatalf("Don't know how to handle job %q", b.Name)
 }
 

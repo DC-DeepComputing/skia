@@ -219,115 +219,115 @@ GANESH_TESTS = [
     "BlurTest.cpp",
     "BulkRectTest.cpp",
     "ClearTest.cpp",
-    # "ColorFilterTest.cpp",
-    # "CompressedBackendAllocationTest.cpp",
-    # "CopySurfaceTest.cpp",
-    # "CullTestTest.cpp",
-    # "DMSAATest.cpp",
-    # "DefaultPathRendererTest.cpp",
-    # "DeviceTest.cpp",
-    # # "DrawOpAtlasTest.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
-    # "EGLImageTest.cpp",
-    # "ExtendedSkColorTypeTests.cpp",
-    # "FindCubicConvex180ChopsTest.cpp",
-    # "FilterResultTest.cpp",
-    # "FloatingPointTextureTest.cpp",
-    # "GLBackendSurfaceTest.cpp",
-    # "GainmapShaderTest.cpp",
-    # "GpuDrawPathTest.cpp",
-    # "GpuRectanizerTest.cpp",
-    # "GrAHardwareBufferTest.cpp",
-    # # "GrClipStackTest.cpp",  # TODO(b/277938020): Linux - Fails at a Skia library assertion.
-    # "GrContextAbandonTest.cpp",
-    # "GrContextFactoryTest.cpp",
-    # "GrContextOOM.cpp",
-    # "GrDDLImageTest.cpp",
-    # "GrFinishedFlushTest.cpp",
-    # "GrGLExtensionsTest.cpp",
-    # # "GrGlyphVectorTest.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
-    # "GrGpuBufferTest.cpp",
-    # "GrMemoryPoolTest.cpp",
-    # "GrMeshTest.cpp",
-    # "GrMipMappedTest.cpp",
-    # "GrOpListFlushTest.cpp",
-    # "GrPipelineDynamicStateTest.cpp",
-    # "GrPorterDuffTest.cpp",
-    # "GrQuadBufferTest.cpp",
-    # "GrQuadCropTest.cpp",
-    # "GrRenderTaskClusterTest.cpp",
-    # "GrSlugTest.cpp",
-    # "GrStyledShapeTest.cpp",
-    # "GrSubmittedFlushTest.cpp",
-    # "GrSurfaceResolveTest.cpp",
-    # "GrSurfaceTest.cpp",
-    # # "GrTextBlobTest.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
-    # "GrTextureMipMapInvalidationTest.cpp",
-    # "GrThreadSafeCacheTest.cpp",
-    # "GradientTest.cpp",
-    # "ImageFilterCacheTest.cpp",
-    # # "ImageFilterTest.cpp",  # TODO(b/277938020): Linux - Fails at a Skia library assertion.
-    # # "ImageIsOpaqueTest.cpp",  # TODO(b/277938020): Linux - Fails with segmentation fault.
-    # # "ImageNewShaderTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
-    # # "ImageTest.cpp",  # TODO(b/277938020): Linux - Fails with segmentation fault.
-    # "LazyProxyTest.cpp",
-    # "LazyStencilAttachmentTest.cpp",
-    # "MatrixColorFilterTest.cpp",
-    # "MessageBusTest.cpp",
-    # "OpChainTest.cpp",
-    # "PathRendererCacheTests.cpp",
-    # "PinnedImageTest.cpp",
-    # "PreChopPathCurvesTest.cpp",
-    # "PremulAlphaRoundTripTest.cpp",
-    # "PrimitiveProcessorTest.cpp",
-    # # "ProcessorTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
-    # # "ProgramsTest.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
-    # "PromiseImageTest.cpp",
-    # "ProxyConversionTest.cpp",
-    # "ProxyRefTest.cpp",
-    # "ProxyTest.cpp",
-    # "ReadWritePixelsGpuTest.cpp",
-    # "RectangleTextureTest.cpp",
-    # "RepeatedClippedBlurTest.cpp",
-    # "ResourceAllocatorTest.cpp",
-    # "ResourceCacheTest.cpp",
-    # # "RuntimeBlendTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
-    # "SRGBReadWritePixelsTest.cpp",
-    # "SaveLayerOriginTest.cpp",
-    # "ShaderImageFilterTest.cpp",
-    # # "SkRemoteGlyphCacheTest.cpp",  # TODO(b/277938020): Linux - Fails with SkRefCnt error.
-    # # "SkRuntimeEffectTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
-    # "SkSLCross.cpp",
-    # "SkSLDSLTest.cpp",
-    # "SkSLES2ConformanceTest.cpp",
-    # # "SkSLTest.cpp",  # TODO(b/27793802): Pixel 5 - Fails at a test assertion.
-    # "Skbug12214.cpp",
-    # # "Skbug5221.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
-    # "Skbug6653.cpp",
-    # "SpecialImageTest.cpp",
-    # "SpecialSurfaceTest.cpp",
-    # "SrcSrcOverBatchTest.cpp",
-    # "SurfaceDrawContextTest.cpp",
-    # "SurfaceSemaphoreTest.cpp",
-    # # "SurfaceTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
-    # "TestTest.cpp",
-    # "TextureBindingsResetTest.cpp",
-    # "TextureOpTest.cpp",
-    # "TextureProxyTest.cpp",
-    # "TextureStripAtlasManagerTest.cpp",
-    # "TopoSortTest.cpp",
-    # "TraceMemoryDumpTest.cpp",
-    # "TransferPixelsTest.cpp",
-    # "TriangulatingPathRendererTests.cpp",
-    # "VkBackendSurfaceTest.cpp",
-    # "VkHardwareBufferTest.cpp",
-    # "VkPriorityExtensionTest.cpp",
-    # "VkProtectedContextTest.cpp",
-    # "VkWrapTests.cpp",
-    # "VkYcbcrSamplerTest.cpp",
-    # "WangsFormulaTest.cpp",
-    # "WindowRectanglesTest.cpp",
-    # "WrappedSurfaceCopyOnWriteTest.cpp",
-    # "WritePixelsTest.cpp",
+    "ColorFilterTest.cpp",
+    "CompressedBackendAllocationTest.cpp",
+    "CopySurfaceTest.cpp",
+    "CullTestTest.cpp",
+    "DMSAATest.cpp",
+    "DefaultPathRendererTest.cpp",
+    "DeviceTest.cpp",
+    # "DrawOpAtlasTest.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
+    "EGLImageTest.cpp",
+    "ExtendedSkColorTypeTests.cpp",
+    "FindCubicConvex180ChopsTest.cpp",
+    "FilterResultTest.cpp",
+    "FloatingPointTextureTest.cpp",
+    "GLBackendSurfaceTest.cpp",
+    "GainmapShaderTest.cpp",
+    "GpuDrawPathTest.cpp",
+    "GpuRectanizerTest.cpp",
+    "GrAHardwareBufferTest.cpp",
+    # "GrClipStackTest.cpp",  # TODO(b/277938020): Linux - Fails at a Skia library assertion.
+    "GrContextAbandonTest.cpp",
+    "GrContextFactoryTest.cpp",
+    "GrContextOOM.cpp",
+    "GrDDLImageTest.cpp",
+    "GrFinishedFlushTest.cpp",
+    "GrGLExtensionsTest.cpp",
+    # "GrGlyphVectorTest.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
+    "GrGpuBufferTest.cpp",
+    "GrMemoryPoolTest.cpp",
+    "GrMeshTest.cpp",
+    "GrMipMappedTest.cpp",
+    "GrOpListFlushTest.cpp",
+    "GrPipelineDynamicStateTest.cpp",
+    "GrPorterDuffTest.cpp",
+    "GrQuadBufferTest.cpp",
+    "GrQuadCropTest.cpp",
+    "GrRenderTaskClusterTest.cpp",
+    "GrSlugTest.cpp",
+    "GrStyledShapeTest.cpp",
+    "GrSubmittedFlushTest.cpp",
+    "GrSurfaceResolveTest.cpp",
+    "GrSurfaceTest.cpp",
+    # "GrTextBlobTest.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
+    "GrTextureMipMapInvalidationTest.cpp",
+    "GrThreadSafeCacheTest.cpp",
+    "GradientTest.cpp",
+    "ImageFilterCacheTest.cpp",
+    # "ImageFilterTest.cpp",  # TODO(b/277938020): Linux - Fails at a Skia library assertion.
+    # "ImageIsOpaqueTest.cpp",  # TODO(b/277938020): Linux - Fails with segmentation fault.
+    # "ImageNewShaderTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
+    # "ImageTest.cpp",  # TODO(b/277938020): Linux - Fails with segmentation fault.
+    "LazyProxyTest.cpp",
+    "LazyStencilAttachmentTest.cpp",
+    "MatrixColorFilterTest.cpp",
+    "MessageBusTest.cpp",
+    "OpChainTest.cpp",
+    "PathRendererCacheTests.cpp",
+    "PinnedImageTest.cpp",
+    "PreChopPathCurvesTest.cpp",
+    "PremulAlphaRoundTripTest.cpp",
+    "PrimitiveProcessorTest.cpp",
+    # "ProcessorTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
+    # "ProgramsTest.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
+    "PromiseImageTest.cpp",
+    "ProxyConversionTest.cpp",
+    "ProxyRefTest.cpp",
+    "ProxyTest.cpp",
+    "ReadWritePixelsGpuTest.cpp",
+    "RectangleTextureTest.cpp",
+    "RepeatedClippedBlurTest.cpp",
+    "ResourceAllocatorTest.cpp",
+    "ResourceCacheTest.cpp",
+    # "RuntimeBlendTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
+    "SRGBReadWritePixelsTest.cpp",
+    "SaveLayerOriginTest.cpp",
+    "ShaderImageFilterTest.cpp",
+    # "SkRemoteGlyphCacheTest.cpp",  # TODO(b/277938020): Linux - Fails with SkRefCnt error.
+    # "SkRuntimeEffectTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
+    "SkSLCross.cpp",
+    "SkSLDSLTest.cpp",
+    "SkSLES2ConformanceTest.cpp",
+    # "SkSLTest.cpp",  # TODO(b/27793802): Pixel 5 - Fails at a test assertion.
+    "Skbug12214.cpp",
+    # "Skbug5221.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
+    "Skbug6653.cpp",
+    "SpecialImageTest.cpp",
+    "SpecialSurfaceTest.cpp",
+    "SrcSrcOverBatchTest.cpp",
+    "SurfaceDrawContextTest.cpp",
+    "SurfaceSemaphoreTest.cpp",
+    # "SurfaceTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
+    "TestTest.cpp",
+    "TextureBindingsResetTest.cpp",
+    "TextureOpTest.cpp",
+    "TextureProxyTest.cpp",
+    "TextureStripAtlasManagerTest.cpp",
+    "TopoSortTest.cpp",
+    "TraceMemoryDumpTest.cpp",
+    "TransferPixelsTest.cpp",
+    "TriangulatingPathRendererTests.cpp",
+    "VkBackendSurfaceTest.cpp",
+    "VkHardwareBufferTest.cpp",
+    "VkPriorityExtensionTest.cpp",
+    "VkProtectedContextTest.cpp",
+    "VkWrapTests.cpp",
+    "VkYcbcrSamplerTest.cpp",
+    "WangsFormulaTest.cpp",
+    "WindowRectanglesTest.cpp",
+    "WrappedSurfaceCopyOnWriteTest.cpp",
+    "WritePixelsTest.cpp",
 ]
 
 PATHOPS_TESTS = [
@@ -668,10 +668,12 @@ $(rootpath {test_binary}) {test_args}
 """
 
 # Device names recognized by the skia_android_test macro.
+# TODO(lovisolo): Add more devices.
 PIXEL_5 = "pixel_5"
 PIXEL_7 = "pixel_7"
 
 # Named test groups recognized by the skia_android_test macro.
+# TODO(lovisolo): Add more test groups.
 CODEC = "codecs"
 GANESH = "ganesh"
 PATHOPS = "pathops"

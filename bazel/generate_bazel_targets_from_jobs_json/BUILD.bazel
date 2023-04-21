@@ -1,0 +1,28 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+go_library(
+    name = "generate_bazel_targets_from_jobs_json_lib",
+    srcs = ["generate_bazel_targets_from_jobs_json.go"],
+    importpath = "go.skia.org/skia/bazel/generate_bazel_targets_from_jobs_json",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@org_skia_go_infra//go/skerr",
+        "@org_skia_go_infra//go/sklog",
+    ],
+)
+
+go_binary(
+    name = "generate_bazel_targets_from_jobs_json",
+    embed = [":generate_bazel_targets_from_jobs_json_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "generate_bazel_targets_from_jobs_json_test",
+    srcs = ["generate_bazel_targets_from_jobs_json_test.go"],
+    embed = [":generate_bazel_targets_from_jobs_json_lib"],
+    deps = [
+        "@com_github_stretchr_testify//assert",
+        "@com_github_stretchr_testify//require",
+    ],
+)
