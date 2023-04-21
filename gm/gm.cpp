@@ -6,7 +6,7 @@
  */
 
 #include "gm/gm.h"
-#include "gm/verifiers/gmverifier.h"
+
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -15,15 +15,16 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
-#include "include/core/SkShader.h"
+#include "include/core/SkSamplingOptions.h"
+#include "include/core/SkShader.h"  // IWYU pragma: keep
 #include "include/core/SkTileMode.h"
-#include "include/core/SkTypeface.h"
 #include "include/gpu/GrRecordingContext.h"
-#include "src/core/SkCanvasPriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "tools/ToolUtils.h"
 
-#include <stdarg.h>
+#include <atomic>
+#include <cstdarg>
+#include <cstdint>
 
 using namespace skiagm;
 
