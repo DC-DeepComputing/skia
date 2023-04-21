@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
 
 #include "include/gpu/vk/VulkanMemoryAllocator.h"
+#include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/vk/VulkanMemory.h"
 
@@ -190,6 +191,30 @@ void VulkanBuffer::freeGpuData() {
     skgpu::VulkanMemory::FreeBufferMemory(sharedContext->memoryAllocator(), fAlloc);
     fAlloc.fMemory = VK_NULL_HANDLE;
     fAlloc.fBackendMemory = 0;
+}
+
+
+void VulkanBuffer::addMemoryBarrier(VulkanCommandBuffer* cmdBuffer,
+                                    VkAccessFlags srcAccessMask,
+                                    VkAccessFlags dstAccesMask,
+                                    VkPipelineStageFlags srcStageMask,
+                                    VkPipelineStageFlags dstStageMask,
+                                    bool byRegion) const {
+    VkBufferMemoryBarrier bufferMemoryBarrier = {
+            VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER,  // sType
+            nullptr,                                  // pNext
+            srcAccessMask,                            // srcAccessMask
+            dstAccesMask,                             // dstAccessMask
+            VK_QUEUE_FAMILY_IGNORED,                  // srcQueueFamilyIndex
+            VK_QUEUE_FAMILY_IGNORED,                  // dstQueueFamilyIndex
+            fBuffer,                                  // buffer
+            0,                                        // offset
+            this->size(),                             // size
+    };
+
+    // TODO: restrict to area of buffer we're interested in
+    cmdBuffer->addBufferMemoryBarrier(srcStageMask, dstStageMask, byRegion,
+                                      &bufferMemoryBarrier);
 }
 
 void VulkanBuffer::internalMap(size_t readOffset, size_t readSize) {

@@ -14,12 +14,21 @@
 
 namespace skgpu::graphite {
 
+class VulkanCommandBuffer;
+
 class VulkanBuffer final : public Buffer {
 public:
     static sk_sp<Buffer> Make(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads);
     void freeGpuData() override;
     VkBuffer vkBuffer() const { return fBuffer; }
     VkBufferUsageFlags bufferUsageFlags() const { return fBufferUsageFlags; }
+
+    void addMemoryBarrier(VulkanCommandBuffer*,
+                          VkAccessFlags srcAccessMask,
+                          VkAccessFlags dstAccesMask,
+                          VkPipelineStageFlags srcStageMask,
+                          VkPipelineStageFlags dstStageMask,
+                          bool byRegion) const;
 
 private:
     VulkanBuffer(const VulkanSharedContext*, size_t, BufferType, PrioritizeGpuReads, VkBuffer,
