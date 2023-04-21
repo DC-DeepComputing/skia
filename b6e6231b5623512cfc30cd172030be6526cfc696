@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c43ba56_fbb5be5a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-21T17:32:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abd8455c_22f982e8",
+      "range": {
+        "startLine": 1014,
+        "startChar": 0,
+        "endLine": 1015,
+        "endChar": 16
+      },
+      "revId": "b6e6231b5623512cfc30cd172030be6526cfc696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d44930b2_0a604f47",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-21T16:56:28Z",
       "side": 1,
       "message": "need to check usage flags for transfer src",
+      "range": {
+        "startLine": 1038,
+        "startChar": 0,
+        "endLine": 1039,
+        "endChar": 16
+      },
+      "revId": "b6e6231b5623512cfc30cd172030be6526cfc696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "080f9888_0e640445",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1039,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-21T17:32:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d44930b2_0a604f47",
       "range": {
         "startLine": 1038,
         "startChar": 0,
