@@ -176,6 +176,11 @@ struct SkRasterPipeline_TernaryOpCtx {
     const float *src1;
 };
 
+struct SkRasterPipeline_MatrixMultiplyCtx {
+    SkRPOffset dst;
+    uint8_t leftColumns, leftRows, rightColumns, rightRows;
+};
+
 struct SkRasterPipeline_SwizzleCtx {
     float *ptr;
     uint16_t offsets[4];  // values must be byte offsets (4 * highp-stride * component-index)
