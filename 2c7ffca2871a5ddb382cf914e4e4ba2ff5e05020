@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f0ee0d72_f36b04b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-24T15:15:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "784b79e5_a5307d6e",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 31
+      },
+      "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5983bd86_70be0348",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -102,6 +126,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b089d6a_7950cecc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-24T15:15:43Z",
+      "side": 1,
+      "message": "LGTM. You might want to link your doc on the issue as well (which I only saw after looking at this originally)",
+      "parentUuid": "02586547_5ae42d18",
+      "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4ca3053_a32bea5d",
         "filename": "relnotes/README.md",
         "patchSetId": 1
@@ -137,6 +179,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "a4ca3053_a32bea5d",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 73
+      },
+      "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "386f0505_3a5646ee",
+        "filename": "relnotes/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-24T15:15:43Z",
+      "side": 1,
+      "message": "Looks unchanged to me?",
+      "parentUuid": "f2efce19_58c1f99f",
       "range": {
         "startLine": 27,
         "startChar": 0,
