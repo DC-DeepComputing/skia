@@ -89,6 +89,7 @@ echo "Compiling bitcode"
   ] \
   is_debug=false \
   is_official_build=true \
+  is_trivial_abi=true \
   is_component_build=false \
   werror=true \
   target_cpu=\"wasm\" "

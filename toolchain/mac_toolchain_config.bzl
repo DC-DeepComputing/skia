@@ -289,6 +289,8 @@ def _make_default_flags():
                     # We do not want clang to search in absolute paths for files. This makes
                     # Bazel think we are using an outside resource and fail the compile.
                     "-no-canonical-prefixes",
+                    # http://review.skia.org/633089
+                    "-DSK_TRIVIAL_ABI=[[clang::trivial_abi]]",
                 ],
             ),
         ],
