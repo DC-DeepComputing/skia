@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b47f9452_baa74d92",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-24T20:33:24Z",
+      "side": 1,
+      "message": "Dirname didn\u0027t work?",
+      "range": {
+        "startLine": 616,
+        "startChar": 8,
+        "endLine": 616,
+        "endChar": 39
+      },
+      "revId": "55aef8bbd17d018ea7054a555bc5e95cfa17b18b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
