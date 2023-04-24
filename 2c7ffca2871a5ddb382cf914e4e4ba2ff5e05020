@@ -142,6 +142,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2dc7d22_b6976842",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T16:11:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b089d6a_7950cecc",
+      "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4ca3053_a32bea5d",
@@ -203,6 +221,30 @@
       "side": 1,
       "message": "Looks unchanged to me?",
       "parentUuid": "f2efce19_58c1f99f",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 73
+      },
+      "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7974722_6cd2b0e1",
+        "filename": "relnotes/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T16:11:55Z",
+      "side": 1,
+      "message": "I guess it helps if I commit the change :-/",
+      "parentUuid": "386f0505_3a5646ee",
       "range": {
         "startLine": 27,
         "startChar": 0,

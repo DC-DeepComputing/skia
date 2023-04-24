@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13ade784_e2105df7",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T16:11:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e21f22c_5d97505f",
+      "range": {
+        "startLine": 618,
+        "startChar": 9,
+        "endLine": 618,
+        "endChar": 40
+      },
+      "revId": "3501161c8c9aab1a263d2debb10be96d088d143d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "622cfae6_4fd0da31",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-24T15:15:43Z",
       "side": 1,
       "message": "The comments here are too short to be useful to a reader unaccustomed with the code. Either add more information or remove. (I think the logic below is easy enough to understand, the comments probably can just go)",
+      "range": {
+        "startLine": 635,
+        "startChar": 0,
+        "endLine": 637,
+        "endChar": 0
+      },
+      "revId": "3501161c8c9aab1a263d2debb10be96d088d143d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6fc111b_932ebbf4",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T16:11:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "622cfae6_4fd0da31",
       "range": {
         "startLine": 635,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4c4574b_48016847",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T16:11:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "124fb5aa_e63b9ee1",
+      "range": {
+        "startLine": 642,
+        "startChar": 9,
+        "endLine": 642,
+        "endChar": 41
+      },
+      "revId": "3501161c8c9aab1a263d2debb10be96d088d143d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c130b48_da86dc48",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24860016_7c12eeac",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T16:11:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c130b48_da86dc48",
+      "range": {
+        "startLine": 649,
+        "startChar": 12,
+        "endLine": 649,
+        "endChar": 35
+      },
+      "revId": "3501161c8c9aab1a263d2debb10be96d088d143d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa40a5a2_d016de34",
@@ -106,6 +202,30 @@
       "writtenOn": "2023-04-24T15:15:43Z",
       "side": 1,
       "message": "Why is it hardcoded here but substituted elsewhere?",
+      "range": {
+        "startLine": 651,
+        "startChar": 20,
+        "endLine": 651,
+        "endChar": 38
+      },
+      "revId": "3501161c8c9aab1a263d2debb10be96d088d143d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d4d9907_ffa4dc99",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T16:11:55Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "fa40a5a2_d016de34",
       "range": {
         "startLine": 651,
         "startChar": 20,
