@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b9ecd6b_f02c88a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-24T16:40:21Z",
+      "side": 1,
+      "message": "lgtm % nit",
+      "revId": "a28ad6119a49b26dc76a9fca9237099e0d996953",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7085c873_688076dd",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2315,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-24T16:40:21Z",
+      "side": 1,
+      "message": "It looks like `offsets` is always a `SkSpan`. Would it be better to declare this with an explicit concrete type instead of `auto`?",
+      "range": {
+        "startLine": 2315,
+        "startChar": 53,
+        "endLine": 2315,
+        "endChar": 57
+      },
+      "revId": "a28ad6119a49b26dc76a9fca9237099e0d996953",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
