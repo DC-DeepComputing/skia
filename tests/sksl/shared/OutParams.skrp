@@ -198,106 +198,100 @@
   198. label                          label 0x0000001C
   199. copy_constant                  b = 0
   200. copy_uniform                   $0 = colorWhite(0)
-  201. copy_constant                  $1 = 0
-  202. cmpne_float                    $0 = notEqual($0, $1)
-  203. copy_slot_unmasked             v₁₈ = $0
-  204. copy_slot_unmasked             b = $0
-  205. label                          label 0x0000001D
-  206. splat_2_constants              b2 = 0
-  207. copy_uniform                   $0 = colorWhite(1)
-  208. copy_constant                  $1 = 0
-  209. cmpne_float                    $0 = notEqual($0, $1)
-  210. copy_slot_unmasked             $1 = $0
-  211. copy_2_slots_unmasked          v₁₉ = $0..1
-  212. copy_2_slots_unmasked          b2 = $0..1
-  213. label                          label 0x0000001E
-  214. splat_3_constants              b3 = 0
-  215. copy_uniform                   $0 = colorWhite(2)
-  216. copy_constant                  $1 = 0
-  217. cmpne_float                    $0 = notEqual($0, $1)
-  218. swizzle_3                      $0..2 = ($0..2).xxx
-  219. copy_3_slots_unmasked          v₂₀ = $0..2
-  220. copy_3_slots_unmasked          b3 = $0..2
-  221. label                          label 0x0000001F
-  222. splat_4_constants              b4 = 0
-  223. copy_uniform                   $0 = colorWhite(3)
-  224. copy_constant                  $1 = 0
-  225. cmpne_float                    $0 = notEqual($0, $1)
-  226. swizzle_4                      $0..3 = ($0..3).xxxx
-  227. copy_4_slots_unmasked          v₂₁ = $0..3
-  228. copy_4_slots_unmasked          b4 = $0..3
-  229. label                          label 0x00000020
-  230. copy_uniform                   $0 = colorWhite(1)
-  231. copy_constant                  $1 = 0
-  232. cmpne_float                    $0 = notEqual($0, $1)
-  233. copy_slot_unmasked             $1 = $0
-  234. copy_2_slots_unmasked          v₁₉ = $0..1
-  235. swizzle_copy_2_slots_masked    (b4).xw = Mask($0..1)
-  236. label                          label 0x00000021
-  237. copy_uniform                   $0 = colorWhite(0)
-  238. copy_constant                  $1 = 0
-  239. cmpne_float                    $0 = notEqual($0, $1)
-  240. copy_slot_unmasked             v₁₈ = $0
-  241. copy_slot_unmasked             b3(2) = $0
-  242. label                          label 0x00000022
-  243. copy_constant                  ok = 0xFFFFFFFF
-  244. copy_slot_unmasked             $0 = ok
-  245. copy_constant                  $1 = 0x3F800000 (1.0)
-  246. copy_slot_unmasked             $2 = h
-  247. copy_slot_unmasked             $3 = h2(0)
+  201. cmpne_imm_float
+  202. copy_slot_unmasked             v₁₈ = $0
+  203. copy_slot_unmasked             b = $0
+  204. label                          label 0x0000001D
+  205. splat_2_constants              b2 = 0
+  206. copy_uniform                   $0 = colorWhite(1)
+  207. cmpne_imm_float
+  208. copy_slot_unmasked             $1 = $0
+  209. copy_2_slots_unmasked          v₁₉ = $0..1
+  210. copy_2_slots_unmasked          b2 = $0..1
+  211. label                          label 0x0000001E
+  212. splat_3_constants              b3 = 0
+  213. copy_uniform                   $0 = colorWhite(2)
+  214. cmpne_imm_float
+  215. swizzle_3                      $0..2 = ($0..2).xxx
+  216. copy_3_slots_unmasked          v₂₀ = $0..2
+  217. copy_3_slots_unmasked          b3 = $0..2
+  218. label                          label 0x0000001F
+  219. splat_4_constants              b4 = 0
+  220. copy_uniform                   $0 = colorWhite(3)
+  221. cmpne_imm_float
+  222. swizzle_4                      $0..3 = ($0..3).xxxx
+  223. copy_4_slots_unmasked          v₂₁ = $0..3
+  224. copy_4_slots_unmasked          b4 = $0..3
+  225. label                          label 0x00000020
+  226. copy_uniform                   $0 = colorWhite(1)
+  227. cmpne_imm_float
+  228. copy_slot_unmasked             $1 = $0
+  229. copy_2_slots_unmasked          v₁₉ = $0..1
+  230. swizzle_copy_2_slots_masked    (b4).xw = Mask($0..1)
+  231. label                          label 0x00000021
+  232. copy_uniform                   $0 = colorWhite(0)
+  233. cmpne_imm_float
+  234. copy_slot_unmasked             v₁₈ = $0
+  235. copy_slot_unmasked             b3(2) = $0
+  236. label                          label 0x00000022
+  237. copy_constant                  ok = 0xFFFFFFFF
+  238. copy_slot_unmasked             $0 = ok
+  239. copy_constant                  $1 = 0x3F800000 (1.0)
+  240. copy_slot_unmasked             $2 = h
+  241. copy_slot_unmasked             $3 = h2(0)
+  242. mul_float                      $2 *= $3
+  243. copy_slot_unmasked             $3 = h3(0)
+  244. mul_float                      $2 *= $3
+  245. copy_slot_unmasked             $3 = h4(0)
+  246. mul_float                      $2 *= $3
+  247. copy_slot_unmasked             $3 = h2x2(0)
   248. mul_float                      $2 *= $3
-  249. copy_slot_unmasked             $3 = h3(0)
+  249. copy_slot_unmasked             $3 = h3x3(0)
   250. mul_float                      $2 *= $3
-  251. copy_slot_unmasked             $3 = h4(0)
+  251. copy_slot_unmasked             $3 = h4x4(0)
   252. mul_float                      $2 *= $3
-  253. copy_slot_unmasked             $3 = h2x2(0)
-  254. mul_float                      $2 *= $3
-  255. copy_slot_unmasked             $3 = h3x3(0)
-  256. mul_float                      $2 *= $3
-  257. copy_slot_unmasked             $3 = h4x4(0)
-  258. mul_float                      $2 *= $3
-  259. cmpeq_float                    $1 = equal($1, $2)
-  260. bitwise_and_int                $0 &= $1
-  261. copy_slot_unmasked             ok = $0
-  262. copy_constant                  $1 = 0x3F800000 (1.0)
-  263. copy_slot_unmasked             $2 = f
-  264. copy_slot_unmasked             $3 = f2(0)
+  253. cmpeq_float                    $1 = equal($1, $2)
+  254. bitwise_and_int                $0 &= $1
+  255. copy_slot_unmasked             ok = $0
+  256. copy_constant                  $1 = 0x3F800000 (1.0)
+  257. copy_slot_unmasked             $2 = f
+  258. copy_slot_unmasked             $3 = f2(0)
+  259. mul_float                      $2 *= $3
+  260. copy_slot_unmasked             $3 = f3(0)
+  261. mul_float                      $2 *= $3
+  262. copy_slot_unmasked             $3 = f4(0)
+  263. mul_float                      $2 *= $3
+  264. copy_slot_unmasked             $3 = f2x2(0)
   265. mul_float                      $2 *= $3
-  266. copy_slot_unmasked             $3 = f3(0)
+  266. copy_slot_unmasked             $3 = f3x3(0)
   267. mul_float                      $2 *= $3
-  268. copy_slot_unmasked             $3 = f4(0)
+  268. copy_slot_unmasked             $3 = f4x4(0)
   269. mul_float                      $2 *= $3
-  270. copy_slot_unmasked             $3 = f2x2(0)
-  271. mul_float                      $2 *= $3
-  272. copy_slot_unmasked             $3 = f3x3(0)
-  273. mul_float                      $2 *= $3
-  274. copy_slot_unmasked             $3 = f4x4(0)
-  275. mul_float                      $2 *= $3
-  276. cmpeq_float                    $1 = equal($1, $2)
-  277. bitwise_and_int                $0 &= $1
-  278. copy_slot_unmasked             ok = $0
-  279. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  280. copy_slot_unmasked             $2 = i
-  281. copy_slot_unmasked             $3 = i2(0)
-  282. mul_int                        $2 *= $3
-  283. copy_slot_unmasked             $3 = i3(0)
-  284. mul_int                        $2 *= $3
-  285. copy_slot_unmasked             $3 = i4(0)
-  286. mul_int                        $2 *= $3
-  287. cmpeq_int                      $1 = equal($1, $2)
-  288. bitwise_and_int                $0 &= $1
-  289. copy_slot_unmasked             ok = $0
-  290. copy_slot_unmasked             $1 = b
-  291. copy_slot_unmasked             $2 = b2(0)
-  292. bitwise_and_int                $1 &= $2
-  293. copy_slot_unmasked             $2 = b3(0)
-  294. bitwise_and_int                $1 &= $2
-  295. copy_slot_unmasked             $2 = b4(0)
-  296. bitwise_and_int                $1 &= $2
-  297. bitwise_and_int                $0 &= $1
-  298. copy_slot_unmasked             ok = $0
-  299. swizzle_4                      $0..3 = ($0..3).xxxx
-  300. copy_4_uniforms                $4..7 = colorRed
-  301. copy_4_uniforms                $8..11 = colorGreen
-  302. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
-  303. load_src                       src.rgba = $0..3
+  270. cmpeq_float                    $1 = equal($1, $2)
+  271. bitwise_and_int                $0 &= $1
+  272. copy_slot_unmasked             ok = $0
+  273. copy_constant                  $1 = 0x00000001 (1.401298e-45)
+  274. copy_slot_unmasked             $2 = i
+  275. copy_slot_unmasked             $3 = i2(0)
+  276. mul_int                        $2 *= $3
+  277. copy_slot_unmasked             $3 = i3(0)
+  278. mul_int                        $2 *= $3
+  279. copy_slot_unmasked             $3 = i4(0)
+  280. mul_int                        $2 *= $3
+  281. cmpeq_int                      $1 = equal($1, $2)
+  282. bitwise_and_int                $0 &= $1
+  283. copy_slot_unmasked             ok = $0
+  284. copy_slot_unmasked             $1 = b
+  285. copy_slot_unmasked             $2 = b2(0)
+  286. bitwise_and_int                $1 &= $2
+  287. copy_slot_unmasked             $2 = b3(0)
+  288. bitwise_and_int                $1 &= $2
+  289. copy_slot_unmasked             $2 = b4(0)
+  290. bitwise_and_int                $1 &= $2
+  291. bitwise_and_int                $0 &= $1
+  292. copy_slot_unmasked             ok = $0
+  293. swizzle_4                      $0..3 = ($0..3).xxxx
+  294. copy_4_uniforms                $4..7 = colorRed
+  295. copy_4_uniforms                $8..11 = colorGreen
+  296. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
+  297. load_src                       src.rgba = $0..3

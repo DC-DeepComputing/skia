@@ -63,14 +63,13 @@
    63. trace_var                      TraceVar(ten) when $13 is true
    64. trace_line                     TraceLine(12) when $13 is true
    65. copy_slot_unmasked             $1 = ten
-   66. copy_constant                  $2 = 0x0000000A (1.401298e-44)
-   67. cmpeq_int                      $1 = equal($1, $2)
-   68. swizzle_4                      $1..4 = ($1..4).xxxx
-   69. copy_4_uniforms                $5..8 = colorRed
-   70. copy_4_uniforms                $9..12 = colorGreen
-   71. mix_4_ints                     $1..4 = mix($5..8, $9..12, $1..4)
-   72. copy_4_slots_unmasked          [main].result = $1..4
-   73. trace_var                      TraceVar([main].result) when $13 is true
-   74. trace_scope                    TraceScope(-1) when $0 is true
-   75. trace_exit                     TraceExit(half4 main(float2 pos)) when $13 is true
-   76. load_src                       src.rgba = [main].result
+   66. cmpeq_imm_int
+   67. swizzle_4                      $1..4 = ($1..4).xxxx
+   68. copy_4_uniforms                $5..8 = colorRed
+   69. copy_4_uniforms                $9..12 = colorGreen
+   70. mix_4_ints                     $1..4 = mix($5..8, $9..12, $1..4)
+   71. copy_4_slots_unmasked          [main].result = $1..4
+   72. trace_var                      TraceVar([main].result) when $13 is true
+   73. trace_scope                    TraceScope(-1) when $0 is true
+   74. trace_exit                     TraceExit(half4 main(float2 pos)) when $13 is true
+   75. load_src                       src.rgba = [main].result

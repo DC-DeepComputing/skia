@@ -22,10 +22,9 @@
    22. copy_4_slots_unmasked          $1..4 = test3[0](12..15)
    23. swizzle_1                      $1 = ($1..4).w
    24. add_float                      $0 += $1
-   25. copy_constant                  $1 = 0x41C00000 (24.0)
-   26. cmpeq_float                    $0 = equal($0, $1)
-   27. swizzle_4                      $0..3 = ($0..3).xxxx
-   28. copy_4_uniforms                $4..7 = colorRed
-   29. copy_4_uniforms                $8..11 = colorGreen
-   30. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
-   31. load_src                       src.rgba = $0..3
+   25. cmpeq_imm_float
+   26. swizzle_4                      $0..3 = ($0..3).xxxx
+   27. copy_4_uniforms                $4..7 = colorRed
+   28. copy_4_uniforms                $8..11 = colorGreen
+   29. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
+   30. load_src                       src.rgba = $0..3

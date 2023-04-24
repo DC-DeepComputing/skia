@@ -13,10 +13,9 @@
    13. div_int                        $1 /= $2
    14. add_int                        $0 += $1
    15. copy_slot_unmasked             undefined = $0
-   16. copy_constant                  $1 = 0x0096B43F (1.38399845e-38)
-   17. cmpne_int                      $0 = notEqual($0, $1)
-   18. swizzle_4                      $0..3 = ($0..3).xxxx
-   19. copy_4_uniforms                $4..7 = colorRed
-   20. copy_4_uniforms                $8..11 = colorGreen
-   21. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
-   22. load_src                       src.rgba = $0..3
+   16. cmpne_imm_int
+   17. swizzle_4                      $0..3 = ($0..3).xxxx
+   18. copy_4_uniforms                $4..7 = colorRed
+   19. copy_4_uniforms                $8..11 = colorGreen
+   20. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
+   21. load_src                       src.rgba = $0..3

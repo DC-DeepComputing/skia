@@ -89,11 +89,10 @@
    89. copy_slot_unmasked             $1 = v18₁(0)
    90. cast_to_float_from_int         $1 = IntToFloat($1)
    91. add_float                      $0 += $1
-   92. copy_constant                  $1 = 0x41900000 (18.0)
-   93. cmpeq_float                    $0 = equal($0, $1)
-   94. label                          label 0x00000001
-   95. swizzle_4                      $0..3 = ($0..3).xxxx
-   96. copy_4_uniforms                $4..7 = colorRed
-   97. copy_4_uniforms                $8..11 = colorGreen
-   98. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
-   99. load_src                       src.rgba = $0..3
+   92. cmpeq_imm_float
+   93. label                          label 0x00000001
+   94. swizzle_4                      $0..3 = ($0..3).xxxx
+   95. copy_4_uniforms                $4..7 = colorRed
+   96. copy_4_uniforms                $8..11 = colorGreen
+   97. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
+   98. load_src                       src.rgba = $0..3

@@ -20,12 +20,10 @@
    20. copy_from_indirect_unmasked    $2 = Indirect(localVector(0) + $6)
    21. mul_float                      $1 *= $2
    22. copy_slot_unmasked             $6 = zero
-   23. copy_constant                  $7 = 0x00000002 (2.802597e-45)
-   24. mul_int                        $6 *= $7
-   25. copy_from_indirect_unmasked    $2..3 = Indirect(globalMatrix(0..1) + $6)
-   26. copy_slot_unmasked             $6 = zero
-   27. copy_constant                  $7 = 0x00000002 (2.802597e-45)
-   28. mul_int                        $6 *= $7
-   29. copy_from_indirect_unmasked    $4..5 = Indirect(localMatrix(0..1) + $6)
-   30. mul_2_floats                   $2..3 *= $4..5
-   31. load_src                       src.rgba = $0..3
+   23. mul_imm_int
+   24. copy_from_indirect_unmasked    $2..3 = Indirect(globalMatrix(0..1) + $6)
+   25. copy_slot_unmasked             $6 = zero
+   26. mul_imm_int
+   27. copy_from_indirect_unmasked    $4..5 = Indirect(localMatrix(0..1) + $6)
+   28. mul_2_floats                   $2..3 *= $4..5
+   29. load_src                       src.rgba = $0..3

@@ -3,1486 +3,993 @@
     3. splat_2_constants              i, a = 0
     4. label                          label 0x00000001
     5. copy_slot_unmasked             $0 = i
-    6. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-    7. add_int                        $0 += $1
-    8. copy_slot_unmasked             i = $0
-    9. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   10. add_int                        $0 += $1
+    6. add_imm_int
+    7. copy_slot_unmasked             i = $0
+    8. add_imm_int
+    9. copy_slot_unmasked             i = $0
+   10. add_imm_int
    11. copy_slot_unmasked             i = $0
-   12. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   13. add_int                        $0 += $1
-   14. copy_slot_unmasked             i = $0
-   15. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   16. add_int                        $0 += $1
+   12. add_imm_int
+   13. copy_slot_unmasked             i = $0
+   14. add_imm_int
+   15. copy_slot_unmasked             i = $0
+   16. add_imm_int
    17. copy_slot_unmasked             i = $0
-   18. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   19. add_int                        $0 += $1
-   20. copy_slot_unmasked             i = $0
-   21. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   22. add_int                        $0 += $1
+   18. add_imm_int
+   19. copy_slot_unmasked             i = $0
+   20. add_imm_int
+   21. copy_slot_unmasked             i = $0
+   22. add_imm_int
    23. copy_slot_unmasked             i = $0
-   24. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   25. add_int                        $0 += $1
-   26. copy_slot_unmasked             i = $0
-   27. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   28. add_int                        $0 += $1
+   24. add_imm_int
+   25. copy_slot_unmasked             i = $0
+   26. add_imm_int
+   27. copy_slot_unmasked             i = $0
+   28. add_imm_int
    29. copy_slot_unmasked             i = $0
-   30. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   31. add_int                        $0 += $1
-   32. copy_slot_unmasked             i = $0
-   33. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   34. add_int                        $0 += $1
+   30. add_imm_int
+   31. copy_slot_unmasked             i = $0
+   32. add_imm_int
+   33. copy_slot_unmasked             i = $0
+   34. add_imm_int
    35. copy_slot_unmasked             i = $0
-   36. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   37. add_int                        $0 += $1
-   38. copy_slot_unmasked             i = $0
-   39. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   40. add_int                        $0 += $1
+   36. add_imm_int
+   37. copy_slot_unmasked             i = $0
+   38. add_imm_int
+   39. copy_slot_unmasked             i = $0
+   40. add_imm_int
    41. copy_slot_unmasked             i = $0
-   42. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   43. add_int                        $0 += $1
-   44. copy_slot_unmasked             i = $0
-   45. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   46. add_int                        $0 += $1
+   42. add_imm_int
+   43. copy_slot_unmasked             i = $0
+   44. add_imm_int
+   45. copy_slot_unmasked             i = $0
+   46. add_imm_int
    47. copy_slot_unmasked             i = $0
-   48. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   49. add_int                        $0 += $1
-   50. copy_slot_unmasked             i = $0
-   51. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   52. add_int                        $0 += $1
+   48. add_imm_int
+   49. copy_slot_unmasked             i = $0
+   50. add_imm_int
+   51. copy_slot_unmasked             i = $0
+   52. add_imm_int
    53. copy_slot_unmasked             i = $0
-   54. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   55. add_int                        $0 += $1
-   56. copy_slot_unmasked             i = $0
-   57. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   58. add_int                        $0 += $1
+   54. add_imm_int
+   55. copy_slot_unmasked             i = $0
+   56. add_imm_int
+   57. copy_slot_unmasked             i = $0
+   58. add_imm_int
    59. copy_slot_unmasked             i = $0
-   60. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   61. add_int                        $0 += $1
-   62. copy_slot_unmasked             i = $0
-   63. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   64. add_int                        $0 += $1
+   60. add_imm_int
+   61. copy_slot_unmasked             i = $0
+   62. add_imm_int
+   63. copy_slot_unmasked             i = $0
+   64. add_imm_int
    65. copy_slot_unmasked             i = $0
-   66. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   67. add_int                        $0 += $1
-   68. copy_slot_unmasked             i = $0
-   69. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   70. add_int                        $0 += $1
+   66. add_imm_int
+   67. copy_slot_unmasked             i = $0
+   68. add_imm_int
+   69. copy_slot_unmasked             i = $0
+   70. add_imm_int
    71. copy_slot_unmasked             i = $0
-   72. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   73. add_int                        $0 += $1
-   74. copy_slot_unmasked             i = $0
-   75. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   76. add_int                        $0 += $1
+   72. add_imm_int
+   73. copy_slot_unmasked             i = $0
+   74. add_imm_int
+   75. copy_slot_unmasked             i = $0
+   76. add_imm_int
    77. copy_slot_unmasked             i = $0
-   78. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   79. add_int                        $0 += $1
-   80. copy_slot_unmasked             i = $0
-   81. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   82. add_int                        $0 += $1
+   78. add_imm_int
+   79. copy_slot_unmasked             i = $0
+   80. add_imm_int
+   81. copy_slot_unmasked             i = $0
+   82. add_imm_int
    83. copy_slot_unmasked             i = $0
-   84. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   85. add_int                        $0 += $1
-   86. copy_slot_unmasked             i = $0
-   87. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   88. add_int                        $0 += $1
+   84. add_imm_int
+   85. copy_slot_unmasked             i = $0
+   86. add_imm_int
+   87. copy_slot_unmasked             i = $0
+   88. add_imm_int
    89. copy_slot_unmasked             i = $0
-   90. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   91. add_int                        $0 += $1
-   92. copy_slot_unmasked             i = $0
-   93. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   94. add_int                        $0 += $1
+   90. add_imm_int
+   91. copy_slot_unmasked             i = $0
+   92. add_imm_int
+   93. copy_slot_unmasked             i = $0
+   94. add_imm_int
    95. copy_slot_unmasked             i = $0
-   96. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-   97. add_int                        $0 += $1
-   98. copy_slot_unmasked             i = $0
-   99. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  100. add_int                        $0 += $1
+   96. add_imm_int
+   97. copy_slot_unmasked             i = $0
+   98. add_imm_int
+   99. copy_slot_unmasked             i = $0
+  100. add_imm_int
   101. copy_slot_unmasked             i = $0
-  102. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  103. add_int                        $0 += $1
-  104. copy_slot_unmasked             i = $0
-  105. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  106. add_int                        $0 += $1
+  102. add_imm_int
+  103. copy_slot_unmasked             i = $0
+  104. add_imm_int
+  105. copy_slot_unmasked             i = $0
+  106. add_imm_int
   107. copy_slot_unmasked             i = $0
-  108. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  109. add_int                        $0 += $1
-  110. copy_slot_unmasked             i = $0
-  111. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  112. add_int                        $0 += $1
+  108. add_imm_int
+  109. copy_slot_unmasked             i = $0
+  110. add_imm_int
+  111. copy_slot_unmasked             i = $0
+  112. add_imm_int
   113. copy_slot_unmasked             i = $0
-  114. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  115. add_int                        $0 += $1
-  116. copy_slot_unmasked             i = $0
-  117. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  118. add_int                        $0 += $1
+  114. add_imm_int
+  115. copy_slot_unmasked             i = $0
+  116. add_imm_int
+  117. copy_slot_unmasked             i = $0
+  118. add_imm_int
   119. copy_slot_unmasked             i = $0
-  120. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  121. add_int                        $0 += $1
-  122. copy_slot_unmasked             i = $0
-  123. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  124. add_int                        $0 += $1
+  120. add_imm_int
+  121. copy_slot_unmasked             i = $0
+  122. add_imm_int
+  123. copy_slot_unmasked             i = $0
+  124. add_imm_int
   125. copy_slot_unmasked             i = $0
-  126. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  127. add_int                        $0 += $1
-  128. copy_slot_unmasked             i = $0
-  129. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  130. add_int                        $0 += $1
+  126. add_imm_int
+  127. copy_slot_unmasked             i = $0
+  128. add_imm_int
+  129. copy_slot_unmasked             i = $0
+  130. add_imm_int
   131. copy_slot_unmasked             i = $0
-  132. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  133. add_int                        $0 += $1
-  134. copy_slot_unmasked             i = $0
-  135. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  136. add_int                        $0 += $1
+  132. add_imm_int
+  133. copy_slot_unmasked             i = $0
+  134. add_imm_int
+  135. copy_slot_unmasked             i = $0
+  136. add_imm_int
   137. copy_slot_unmasked             i = $0
-  138. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  139. add_int                        $0 += $1
-  140. copy_slot_unmasked             i = $0
-  141. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  142. add_int                        $0 += $1
+  138. add_imm_int
+  139. copy_slot_unmasked             i = $0
+  140. add_imm_int
+  141. copy_slot_unmasked             i = $0
+  142. add_imm_int
   143. copy_slot_unmasked             i = $0
-  144. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  145. add_int                        $0 += $1
-  146. copy_slot_unmasked             i = $0
-  147. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  148. add_int                        $0 += $1
+  144. add_imm_int
+  145. copy_slot_unmasked             i = $0
+  146. add_imm_int
+  147. copy_slot_unmasked             i = $0
+  148. add_imm_int
   149. copy_slot_unmasked             i = $0
-  150. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  151. add_int                        $0 += $1
-  152. copy_slot_unmasked             i = $0
-  153. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  154. add_int                        $0 += $1
+  150. add_imm_int
+  151. copy_slot_unmasked             i = $0
+  152. add_imm_int
+  153. copy_slot_unmasked             i = $0
+  154. add_imm_int
   155. copy_slot_unmasked             i = $0
-  156. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  157. add_int                        $0 += $1
-  158. copy_slot_unmasked             i = $0
-  159. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  160. add_int                        $0 += $1
+  156. add_imm_int
+  157. copy_slot_unmasked             i = $0
+  158. add_imm_int
+  159. copy_slot_unmasked             i = $0
+  160. add_imm_int
   161. copy_slot_unmasked             i = $0
-  162. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  163. add_int                        $0 += $1
-  164. copy_slot_unmasked             i = $0
-  165. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  166. add_int                        $0 += $1
+  162. add_imm_int
+  163. copy_slot_unmasked             i = $0
+  164. add_imm_int
+  165. copy_slot_unmasked             i = $0
+  166. add_imm_int
   167. copy_slot_unmasked             i = $0
-  168. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  169. add_int                        $0 += $1
-  170. copy_slot_unmasked             i = $0
-  171. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  172. add_int                        $0 += $1
+  168. add_imm_int
+  169. copy_slot_unmasked             i = $0
+  170. add_imm_int
+  171. copy_slot_unmasked             i = $0
+  172. add_imm_int
   173. copy_slot_unmasked             i = $0
-  174. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  175. add_int                        $0 += $1
-  176. copy_slot_unmasked             i = $0
-  177. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  178. add_int                        $0 += $1
+  174. add_imm_int
+  175. copy_slot_unmasked             i = $0
+  176. add_imm_int
+  177. copy_slot_unmasked             i = $0
+  178. add_imm_int
   179. copy_slot_unmasked             i = $0
-  180. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  181. add_int                        $0 += $1
-  182. copy_slot_unmasked             i = $0
-  183. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  184. add_int                        $0 += $1
+  180. add_imm_int
+  181. copy_slot_unmasked             i = $0
+  182. add_imm_int
+  183. copy_slot_unmasked             i = $0
+  184. add_imm_int
   185. copy_slot_unmasked             i = $0
-  186. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  187. add_int                        $0 += $1
-  188. copy_slot_unmasked             i = $0
-  189. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  190. add_int                        $0 += $1
+  186. add_imm_int
+  187. copy_slot_unmasked             i = $0
+  188. add_imm_int
+  189. copy_slot_unmasked             i = $0
+  190. add_imm_int
   191. copy_slot_unmasked             i = $0
-  192. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  193. add_int                        $0 += $1
-  194. copy_slot_unmasked             i = $0
-  195. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  196. add_int                        $0 += $1
+  192. add_imm_int
+  193. copy_slot_unmasked             i = $0
+  194. add_imm_int
+  195. copy_slot_unmasked             i = $0
+  196. add_imm_int
   197. copy_slot_unmasked             i = $0
-  198. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  199. add_int                        $0 += $1
-  200. copy_slot_unmasked             i = $0
-  201. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  202. add_int                        $0 += $1
+  198. add_imm_int
+  199. copy_slot_unmasked             i = $0
+  200. add_imm_int
+  201. copy_slot_unmasked             i = $0
+  202. add_imm_int
   203. copy_slot_unmasked             i = $0
-  204. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  205. add_int                        $0 += $1
-  206. copy_slot_unmasked             i = $0
-  207. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  208. add_int                        $0 += $1
+  204. add_imm_int
+  205. copy_slot_unmasked             i = $0
+  206. add_imm_int
+  207. copy_slot_unmasked             i = $0
+  208. add_imm_int
   209. copy_slot_unmasked             i = $0
-  210. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  211. add_int                        $0 += $1
-  212. copy_slot_unmasked             i = $0
-  213. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  214. add_int                        $0 += $1
+  210. add_imm_int
+  211. copy_slot_unmasked             i = $0
+  212. add_imm_int
+  213. copy_slot_unmasked             i = $0
+  214. add_imm_int
   215. copy_slot_unmasked             i = $0
-  216. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  217. add_int                        $0 += $1
-  218. copy_slot_unmasked             i = $0
-  219. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  220. add_int                        $0 += $1
+  216. add_imm_int
+  217. copy_slot_unmasked             i = $0
+  218. add_imm_int
+  219. copy_slot_unmasked             i = $0
+  220. add_imm_int
   221. copy_slot_unmasked             i = $0
-  222. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  223. add_int                        $0 += $1
-  224. copy_slot_unmasked             i = $0
-  225. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  226. add_int                        $0 += $1
+  222. add_imm_int
+  223. copy_slot_unmasked             i = $0
+  224. add_imm_int
+  225. copy_slot_unmasked             i = $0
+  226. add_imm_int
   227. copy_slot_unmasked             i = $0
-  228. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  229. add_int                        $0 += $1
-  230. copy_slot_unmasked             i = $0
-  231. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  232. add_int                        $0 += $1
+  228. add_imm_int
+  229. copy_slot_unmasked             i = $0
+  230. add_imm_int
+  231. copy_slot_unmasked             i = $0
+  232. add_imm_int
   233. copy_slot_unmasked             i = $0
-  234. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  235. add_int                        $0 += $1
-  236. copy_slot_unmasked             i = $0
-  237. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  238. add_int                        $0 += $1
+  234. add_imm_int
+  235. copy_slot_unmasked             i = $0
+  236. add_imm_int
+  237. copy_slot_unmasked             i = $0
+  238. add_imm_int
   239. copy_slot_unmasked             i = $0
-  240. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  241. add_int                        $0 += $1
-  242. copy_slot_unmasked             i = $0
-  243. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  244. add_int                        $0 += $1
+  240. add_imm_int
+  241. copy_slot_unmasked             i = $0
+  242. add_imm_int
+  243. copy_slot_unmasked             i = $0
+  244. add_imm_int
   245. copy_slot_unmasked             i = $0
-  246. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  247. add_int                        $0 += $1
-  248. copy_slot_unmasked             i = $0
-  249. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  250. add_int                        $0 += $1
+  246. add_imm_int
+  247. copy_slot_unmasked             i = $0
+  248. add_imm_int
+  249. copy_slot_unmasked             i = $0
+  250. add_imm_int
   251. copy_slot_unmasked             i = $0
-  252. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  253. add_int                        $0 += $1
-  254. copy_slot_unmasked             i = $0
-  255. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  256. add_int                        $0 += $1
+  252. add_imm_int
+  253. copy_slot_unmasked             i = $0
+  254. add_imm_int
+  255. copy_slot_unmasked             i = $0
+  256. add_imm_int
   257. copy_slot_unmasked             i = $0
-  258. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  259. add_int                        $0 += $1
-  260. copy_slot_unmasked             i = $0
-  261. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  262. add_int                        $0 += $1
+  258. add_imm_int
+  259. copy_slot_unmasked             i = $0
+  260. add_imm_int
+  261. copy_slot_unmasked             i = $0
+  262. add_imm_int
   263. copy_slot_unmasked             i = $0
-  264. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  265. add_int                        $0 += $1
-  266. copy_slot_unmasked             i = $0
-  267. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  268. add_int                        $0 += $1
+  264. add_imm_int
+  265. copy_slot_unmasked             i = $0
+  266. add_imm_int
+  267. copy_slot_unmasked             i = $0
+  268. add_imm_int
   269. copy_slot_unmasked             i = $0
-  270. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  271. add_int                        $0 += $1
-  272. copy_slot_unmasked             i = $0
-  273. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  274. add_int                        $0 += $1
+  270. add_imm_int
+  271. copy_slot_unmasked             i = $0
+  272. add_imm_int
+  273. copy_slot_unmasked             i = $0
+  274. add_imm_int
   275. copy_slot_unmasked             i = $0
-  276. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  277. add_int                        $0 += $1
-  278. copy_slot_unmasked             i = $0
-  279. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  280. add_int                        $0 += $1
+  276. add_imm_int
+  277. copy_slot_unmasked             i = $0
+  278. add_imm_int
+  279. copy_slot_unmasked             i = $0
+  280. add_imm_int
   281. copy_slot_unmasked             i = $0
-  282. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  283. add_int                        $0 += $1
-  284. copy_slot_unmasked             i = $0
-  285. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  286. add_int                        $0 += $1
+  282. add_imm_int
+  283. copy_slot_unmasked             i = $0
+  284. add_imm_int
+  285. copy_slot_unmasked             i = $0
+  286. add_imm_int
   287. copy_slot_unmasked             i = $0
-  288. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  289. add_int                        $0 += $1
-  290. copy_slot_unmasked             i = $0
-  291. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  292. add_int                        $0 += $1
+  288. add_imm_int
+  289. copy_slot_unmasked             i = $0
+  290. add_imm_int
+  291. copy_slot_unmasked             i = $0
+  292. add_imm_int
   293. copy_slot_unmasked             i = $0
-  294. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  295. add_int                        $0 += $1
-  296. copy_slot_unmasked             i = $0
-  297. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  298. add_int                        $0 += $1
+  294. add_imm_int
+  295. copy_slot_unmasked             i = $0
+  296. add_imm_int
+  297. copy_slot_unmasked             i = $0
+  298. add_imm_int
   299. copy_slot_unmasked             i = $0
-  300. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  301. add_int                        $0 += $1
-  302. copy_slot_unmasked             i = $0
-  303. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  304. add_int                        $0 += $1
+  300. add_imm_int
+  301. copy_slot_unmasked             i = $0
+  302. add_imm_int
+  303. copy_slot_unmasked             i = $0
+  304. add_imm_int
   305. copy_slot_unmasked             i = $0
-  306. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  307. add_int                        $0 += $1
-  308. copy_slot_unmasked             i = $0
-  309. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  310. add_int                        $0 += $1
+  306. add_imm_int
+  307. copy_slot_unmasked             i = $0
+  308. add_imm_int
+  309. copy_slot_unmasked             i = $0
+  310. add_imm_int
   311. copy_slot_unmasked             i = $0
-  312. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  313. add_int                        $0 += $1
-  314. copy_slot_unmasked             i = $0
-  315. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  316. add_int                        $0 += $1
+  312. add_imm_int
+  313. copy_slot_unmasked             i = $0
+  314. add_imm_int
+  315. copy_slot_unmasked             i = $0
+  316. add_imm_int
   317. copy_slot_unmasked             i = $0
-  318. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  319. add_int                        $0 += $1
-  320. copy_slot_unmasked             i = $0
-  321. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  322. add_int                        $0 += $1
+  318. add_imm_int
+  319. copy_slot_unmasked             i = $0
+  320. add_imm_int
+  321. copy_slot_unmasked             i = $0
+  322. add_imm_int
   323. copy_slot_unmasked             i = $0
-  324. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  325. add_int                        $0 += $1
-  326. copy_slot_unmasked             i = $0
-  327. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  328. add_int                        $0 += $1
+  324. add_imm_int
+  325. copy_slot_unmasked             i = $0
+  326. add_imm_int
+  327. copy_slot_unmasked             i = $0
+  328. add_imm_int
   329. copy_slot_unmasked             i = $0
-  330. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  331. add_int                        $0 += $1
-  332. copy_slot_unmasked             i = $0
-  333. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  334. add_int                        $0 += $1
+  330. add_imm_int
+  331. copy_slot_unmasked             i = $0
+  332. add_imm_int
+  333. copy_slot_unmasked             i = $0
+  334. add_imm_int
   335. copy_slot_unmasked             i = $0
-  336. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  337. add_int                        $0 += $1
-  338. copy_slot_unmasked             i = $0
-  339. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  340. add_int                        $0 += $1
+  336. add_imm_int
+  337. copy_slot_unmasked             i = $0
+  338. add_imm_int
+  339. copy_slot_unmasked             i = $0
+  340. add_imm_int
   341. copy_slot_unmasked             i = $0
-  342. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  343. add_int                        $0 += $1
-  344. copy_slot_unmasked             i = $0
-  345. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  346. add_int                        $0 += $1
+  342. add_imm_int
+  343. copy_slot_unmasked             i = $0
+  344. add_imm_int
+  345. copy_slot_unmasked             i = $0
+  346. add_imm_int
   347. copy_slot_unmasked             i = $0
-  348. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  349. add_int                        $0 += $1
-  350. copy_slot_unmasked             i = $0
-  351. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  352. add_int                        $0 += $1
+  348. add_imm_int
+  349. copy_slot_unmasked             i = $0
+  350. add_imm_int
+  351. copy_slot_unmasked             i = $0
+  352. add_imm_int
   353. copy_slot_unmasked             i = $0
-  354. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  355. add_int                        $0 += $1
-  356. copy_slot_unmasked             i = $0
-  357. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  358. add_int                        $0 += $1
+  354. add_imm_int
+  355. copy_slot_unmasked             i = $0
+  356. add_imm_int
+  357. copy_slot_unmasked             i = $0
+  358. add_imm_int
   359. copy_slot_unmasked             i = $0
-  360. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  361. add_int                        $0 += $1
-  362. copy_slot_unmasked             i = $0
-  363. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  364. add_int                        $0 += $1
+  360. add_imm_int
+  361. copy_slot_unmasked             i = $0
+  362. add_imm_int
+  363. copy_slot_unmasked             i = $0
+  364. add_imm_int
   365. copy_slot_unmasked             i = $0
-  366. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  367. add_int                        $0 += $1
-  368. copy_slot_unmasked             i = $0
-  369. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  370. add_int                        $0 += $1
+  366. add_imm_int
+  367. copy_slot_unmasked             i = $0
+  368. add_imm_int
+  369. copy_slot_unmasked             i = $0
+  370. add_imm_int
   371. copy_slot_unmasked             i = $0
-  372. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  373. add_int                        $0 += $1
-  374. copy_slot_unmasked             i = $0
-  375. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  376. add_int                        $0 += $1
+  372. add_imm_int
+  373. copy_slot_unmasked             i = $0
+  374. add_imm_int
+  375. copy_slot_unmasked             i = $0
+  376. add_imm_int
   377. copy_slot_unmasked             i = $0
-  378. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  379. add_int                        $0 += $1
-  380. copy_slot_unmasked             i = $0
-  381. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  382. add_int                        $0 += $1
+  378. add_imm_int
+  379. copy_slot_unmasked             i = $0
+  380. add_imm_int
+  381. copy_slot_unmasked             i = $0
+  382. add_imm_int
   383. copy_slot_unmasked             i = $0
-  384. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  385. add_int                        $0 += $1
-  386. copy_slot_unmasked             i = $0
-  387. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  388. add_int                        $0 += $1
+  384. add_imm_int
+  385. copy_slot_unmasked             i = $0
+  386. add_imm_int
+  387. copy_slot_unmasked             i = $0
+  388. add_imm_int
   389. copy_slot_unmasked             i = $0
-  390. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  391. add_int                        $0 += $1
-  392. copy_slot_unmasked             i = $0
-  393. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  394. add_int                        $0 += $1
+  390. add_imm_int
+  391. copy_slot_unmasked             i = $0
+  392. add_imm_int
+  393. copy_slot_unmasked             i = $0
+  394. add_imm_int
   395. copy_slot_unmasked             i = $0
-  396. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  397. add_int                        $0 += $1
-  398. copy_slot_unmasked             i = $0
-  399. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  400. add_int                        $0 += $1
+  396. add_imm_int
+  397. copy_slot_unmasked             i = $0
+  398. add_imm_int
+  399. copy_slot_unmasked             i = $0
+  400. add_imm_int
   401. copy_slot_unmasked             i = $0
-  402. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  403. add_int                        $0 += $1
-  404. copy_slot_unmasked             i = $0
-  405. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  406. add_int                        $0 += $1
+  402. add_imm_int
+  403. copy_slot_unmasked             i = $0
+  404. add_imm_int
+  405. copy_slot_unmasked             i = $0
+  406. add_imm_int
   407. copy_slot_unmasked             i = $0
-  408. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  409. add_int                        $0 += $1
-  410. copy_slot_unmasked             i = $0
-  411. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  412. add_int                        $0 += $1
+  408. add_imm_int
+  409. copy_slot_unmasked             i = $0
+  410. add_imm_int
+  411. copy_slot_unmasked             i = $0
+  412. add_imm_int
   413. copy_slot_unmasked             i = $0
-  414. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  415. add_int                        $0 += $1
-  416. copy_slot_unmasked             i = $0
-  417. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  418. add_int                        $0 += $1
+  414. add_imm_int
+  415. copy_slot_unmasked             i = $0
+  416. add_imm_int
+  417. copy_slot_unmasked             i = $0
+  418. add_imm_int
   419. copy_slot_unmasked             i = $0
-  420. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  421. add_int                        $0 += $1
-  422. copy_slot_unmasked             i = $0
-  423. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  424. add_int                        $0 += $1
+  420. add_imm_int
+  421. copy_slot_unmasked             i = $0
+  422. add_imm_int
+  423. copy_slot_unmasked             i = $0
+  424. add_imm_int
   425. copy_slot_unmasked             i = $0
-  426. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  427. add_int                        $0 += $1
-  428. copy_slot_unmasked             i = $0
-  429. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  430. add_int                        $0 += $1
+  426. add_imm_int
+  427. copy_slot_unmasked             i = $0
+  428. add_imm_int
+  429. copy_slot_unmasked             i = $0
+  430. add_imm_int
   431. copy_slot_unmasked             i = $0
-  432. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  433. add_int                        $0 += $1
-  434. copy_slot_unmasked             i = $0
-  435. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  436. add_int                        $0 += $1
+  432. add_imm_int
+  433. copy_slot_unmasked             i = $0
+  434. add_imm_int
+  435. copy_slot_unmasked             i = $0
+  436. add_imm_int
   437. copy_slot_unmasked             i = $0
-  438. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  439. add_int                        $0 += $1
-  440. copy_slot_unmasked             i = $0
-  441. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  442. add_int                        $0 += $1
+  438. add_imm_int
+  439. copy_slot_unmasked             i = $0
+  440. add_imm_int
+  441. copy_slot_unmasked             i = $0
+  442. add_imm_int
   443. copy_slot_unmasked             i = $0
-  444. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  445. add_int                        $0 += $1
-  446. copy_slot_unmasked             i = $0
-  447. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  448. add_int                        $0 += $1
+  444. add_imm_int
+  445. copy_slot_unmasked             i = $0
+  446. add_imm_int
+  447. copy_slot_unmasked             i = $0
+  448. add_imm_int
   449. copy_slot_unmasked             i = $0
-  450. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  451. add_int                        $0 += $1
-  452. copy_slot_unmasked             i = $0
-  453. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  454. add_int                        $0 += $1
+  450. add_imm_int
+  451. copy_slot_unmasked             i = $0
+  452. add_imm_int
+  453. copy_slot_unmasked             i = $0
+  454. add_imm_int
   455. copy_slot_unmasked             i = $0
-  456. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  457. add_int                        $0 += $1
-  458. copy_slot_unmasked             i = $0
-  459. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  460. add_int                        $0 += $1
+  456. add_imm_int
+  457. copy_slot_unmasked             i = $0
+  458. add_imm_int
+  459. copy_slot_unmasked             i = $0
+  460. add_imm_int
   461. copy_slot_unmasked             i = $0
-  462. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  463. add_int                        $0 += $1
-  464. copy_slot_unmasked             i = $0
-  465. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  466. add_int                        $0 += $1
+  462. add_imm_int
+  463. copy_slot_unmasked             i = $0
+  464. add_imm_int
+  465. copy_slot_unmasked             i = $0
+  466. add_imm_int
   467. copy_slot_unmasked             i = $0
-  468. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  469. add_int                        $0 += $1
-  470. copy_slot_unmasked             i = $0
-  471. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  472. add_int                        $0 += $1
+  468. add_imm_int
+  469. copy_slot_unmasked             i = $0
+  470. add_imm_int
+  471. copy_slot_unmasked             i = $0
+  472. add_imm_int
   473. copy_slot_unmasked             i = $0
-  474. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  475. add_int                        $0 += $1
-  476. copy_slot_unmasked             i = $0
-  477. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  478. add_int                        $0 += $1
+  474. add_imm_int
+  475. copy_slot_unmasked             i = $0
+  476. add_imm_int
+  477. copy_slot_unmasked             i = $0
+  478. add_imm_int
   479. copy_slot_unmasked             i = $0
-  480. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  481. add_int                        $0 += $1
-  482. copy_slot_unmasked             i = $0
-  483. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  484. add_int                        $0 += $1
+  480. add_imm_int
+  481. copy_slot_unmasked             i = $0
+  482. add_imm_int
+  483. copy_slot_unmasked             i = $0
+  484. add_imm_int
   485. copy_slot_unmasked             i = $0
-  486. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  487. add_int                        $0 += $1
-  488. copy_slot_unmasked             i = $0
-  489. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  490. add_int                        $0 += $1
+  486. add_imm_int
+  487. copy_slot_unmasked             i = $0
+  488. add_imm_int
+  489. copy_slot_unmasked             i = $0
+  490. add_imm_int
   491. copy_slot_unmasked             i = $0
-  492. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  493. add_int                        $0 += $1
-  494. copy_slot_unmasked             i = $0
-  495. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  496. add_int                        $0 += $1
+  492. add_imm_int
+  493. copy_slot_unmasked             i = $0
+  494. add_imm_int
+  495. copy_slot_unmasked             i = $0
+  496. add_imm_int
   497. copy_slot_unmasked             i = $0
-  498. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  499. add_int                        $0 += $1
-  500. copy_slot_unmasked             i = $0
-  501. copy_constant                  $1 = 0x00000001 (1.401298e-45)
+  498. add_imm_int
+  499. copy_slot_unmasked             i = $0
+  500. add_imm_int
+  501. copy_slot_unmasked             i = $0
   502. stack_rewind
-  503. add_int                        $0 += $1
+  503. add_imm_int
   504. copy_slot_unmasked             i = $0
-  505. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  506. add_int                        $0 += $1
-  507. copy_slot_unmasked             i = $0
-  508. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  509. add_int                        $0 += $1
+  505. add_imm_int
+  506. copy_slot_unmasked             i = $0
+  507. add_imm_int
+  508. copy_slot_unmasked             i = $0
+  509. add_imm_int
   510. copy_slot_unmasked             i = $0
-  511. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  512. add_int                        $0 += $1
-  513. copy_slot_unmasked             i = $0
-  514. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  515. add_int                        $0 += $1
+  511. add_imm_int
+  512. copy_slot_unmasked             i = $0
+  513. add_imm_int
+  514. copy_slot_unmasked             i = $0
+  515. add_imm_int
   516. copy_slot_unmasked             i = $0
-  517. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  518. add_int                        $0 += $1
-  519. copy_slot_unmasked             i = $0
-  520. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  521. add_int                        $0 += $1
+  517. add_imm_int
+  518. copy_slot_unmasked             i = $0
+  519. add_imm_int
+  520. copy_slot_unmasked             i = $0
+  521. add_imm_int
   522. copy_slot_unmasked             i = $0
-  523. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  524. add_int                        $0 += $1
-  525. copy_slot_unmasked             i = $0
-  526. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  527. add_int                        $0 += $1
+  523. add_imm_int
+  524. copy_slot_unmasked             i = $0
+  525. add_imm_int
+  526. copy_slot_unmasked             i = $0
+  527. add_imm_int
   528. copy_slot_unmasked             i = $0
-  529. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  530. add_int                        $0 += $1
-  531. copy_slot_unmasked             i = $0
-  532. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  533. add_int                        $0 += $1
+  529. add_imm_int
+  530. copy_slot_unmasked             i = $0
+  531. add_imm_int
+  532. copy_slot_unmasked             i = $0
+  533. add_imm_int
   534. copy_slot_unmasked             i = $0
-  535. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  536. add_int                        $0 += $1
-  537. copy_slot_unmasked             i = $0
-  538. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  539. add_int                        $0 += $1
+  535. add_imm_int
+  536. copy_slot_unmasked             i = $0
+  537. add_imm_int
+  538. copy_slot_unmasked             i = $0
+  539. add_imm_int
   540. copy_slot_unmasked             i = $0
-  541. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  542. add_int                        $0 += $1
-  543. copy_slot_unmasked             i = $0
-  544. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  545. add_int                        $0 += $1
+  541. add_imm_int
+  542. copy_slot_unmasked             i = $0
+  543. add_imm_int
+  544. copy_slot_unmasked             i = $0
+  545. add_imm_int
   546. copy_slot_unmasked             i = $0
-  547. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  548. add_int                        $0 += $1
-  549. copy_slot_unmasked             i = $0
-  550. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  551. add_int                        $0 += $1
+  547. add_imm_int
+  548. copy_slot_unmasked             i = $0
+  549. add_imm_int
+  550. copy_slot_unmasked             i = $0
+  551. add_imm_int
   552. copy_slot_unmasked             i = $0
-  553. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  554. add_int                        $0 += $1
-  555. copy_slot_unmasked             i = $0
-  556. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  557. add_int                        $0 += $1
+  553. add_imm_int
+  554. copy_slot_unmasked             i = $0
+  555. add_imm_int
+  556. copy_slot_unmasked             i = $0
+  557. add_imm_int
   558. copy_slot_unmasked             i = $0
-  559. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  560. add_int                        $0 += $1
-  561. copy_slot_unmasked             i = $0
-  562. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  563. add_int                        $0 += $1
+  559. add_imm_int
+  560. copy_slot_unmasked             i = $0
+  561. add_imm_int
+  562. copy_slot_unmasked             i = $0
+  563. add_imm_int
   564. copy_slot_unmasked             i = $0
-  565. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  566. add_int                        $0 += $1
-  567. copy_slot_unmasked             i = $0
-  568. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  569. add_int                        $0 += $1
+  565. add_imm_int
+  566. copy_slot_unmasked             i = $0
+  567. add_imm_int
+  568. copy_slot_unmasked             i = $0
+  569. add_imm_int
   570. copy_slot_unmasked             i = $0
-  571. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  572. add_int                        $0 += $1
-  573. copy_slot_unmasked             i = $0
-  574. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  575. add_int                        $0 += $1
+  571. add_imm_int
+  572. copy_slot_unmasked             i = $0
+  573. add_imm_int
+  574. copy_slot_unmasked             i = $0
+  575. add_imm_int
   576. copy_slot_unmasked             i = $0
-  577. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  578. add_int                        $0 += $1
-  579. copy_slot_unmasked             i = $0
-  580. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  581. add_int                        $0 += $1
+  577. add_imm_int
+  578. copy_slot_unmasked             i = $0
+  579. add_imm_int
+  580. copy_slot_unmasked             i = $0
+  581. add_imm_int
   582. copy_slot_unmasked             i = $0
-  583. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  584. add_int                        $0 += $1
-  585. copy_slot_unmasked             i = $0
-  586. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  587. add_int                        $0 += $1
+  583. add_imm_int
+  584. copy_slot_unmasked             i = $0
+  585. add_imm_int
+  586. copy_slot_unmasked             i = $0
+  587. add_imm_int
   588. copy_slot_unmasked             i = $0
-  589. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  590. add_int                        $0 += $1
-  591. copy_slot_unmasked             i = $0
-  592. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  593. add_int                        $0 += $1
+  589. add_imm_int
+  590. copy_slot_unmasked             i = $0
+  591. add_imm_int
+  592. copy_slot_unmasked             i = $0
+  593. add_imm_int
   594. copy_slot_unmasked             i = $0
-  595. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  596. add_int                        $0 += $1
-  597. copy_slot_unmasked             i = $0
-  598. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  599. add_int                        $0 += $1
+  595. add_imm_int
+  596. copy_slot_unmasked             i = $0
+  597. add_imm_int
+  598. copy_slot_unmasked             i = $0
+  599. add_imm_int
   600. copy_slot_unmasked             i = $0
-  601. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  602. add_int                        $0 += $1
-  603. copy_slot_unmasked             i = $0
-  604. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  605. add_int                        $0 += $1
+  601. add_imm_int
+  602. copy_slot_unmasked             i = $0
+  603. add_imm_int
+  604. copy_slot_unmasked             i = $0
+  605. add_imm_int
   606. copy_slot_unmasked             i = $0
-  607. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  608. add_int                        $0 += $1
-  609. copy_slot_unmasked             i = $0
-  610. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  611. add_int                        $0 += $1
+  607. add_imm_int
+  608. copy_slot_unmasked             i = $0
+  609. add_imm_int
+  610. copy_slot_unmasked             i = $0
+  611. add_imm_int
   612. copy_slot_unmasked             i = $0
-  613. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  614. add_int                        $0 += $1
-  615. copy_slot_unmasked             i = $0
-  616. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  617. add_int                        $0 += $1
+  613. add_imm_int
+  614. copy_slot_unmasked             i = $0
+  615. add_imm_int
+  616. copy_slot_unmasked             i = $0
+  617. add_imm_int
   618. copy_slot_unmasked             i = $0
-  619. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  620. add_int                        $0 += $1
-  621. copy_slot_unmasked             i = $0
-  622. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  623. add_int                        $0 += $1
+  619. add_imm_int
+  620. copy_slot_unmasked             i = $0
+  621. add_imm_int
+  622. copy_slot_unmasked             i = $0
+  623. add_imm_int
   624. copy_slot_unmasked             i = $0
-  625. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  626. add_int                        $0 += $1
-  627. copy_slot_unmasked             i = $0
-  628. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  629. add_int                        $0 += $1
+  625. add_imm_int
+  626. copy_slot_unmasked             i = $0
+  627. add_imm_int
+  628. copy_slot_unmasked             i = $0
+  629. add_imm_int
   630. copy_slot_unmasked             i = $0
-  631. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  632. add_int                        $0 += $1
-  633. copy_slot_unmasked             i = $0
-  634. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  635. add_int                        $0 += $1
+  631. add_imm_int
+  632. copy_slot_unmasked             i = $0
+  633. add_imm_int
+  634. copy_slot_unmasked             i = $0
+  635. add_imm_int
   636. copy_slot_unmasked             i = $0
-  637. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  638. add_int                        $0 += $1
-  639. copy_slot_unmasked             i = $0
-  640. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  641. add_int                        $0 += $1
+  637. add_imm_int
+  638. copy_slot_unmasked             i = $0
+  639. add_imm_int
+  640. copy_slot_unmasked             i = $0
+  641. add_imm_int
   642. copy_slot_unmasked             i = $0
-  643. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  644. add_int                        $0 += $1
-  645. copy_slot_unmasked             i = $0
-  646. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  647. add_int                        $0 += $1
+  643. add_imm_int
+  644. copy_slot_unmasked             i = $0
+  645. add_imm_int
+  646. copy_slot_unmasked             i = $0
+  647. add_imm_int
   648. copy_slot_unmasked             i = $0
-  649. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  650. add_int                        $0 += $1
-  651. copy_slot_unmasked             i = $0
-  652. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  653. add_int                        $0 += $1
+  649. add_imm_int
+  650. copy_slot_unmasked             i = $0
+  651. add_imm_int
+  652. copy_slot_unmasked             i = $0
+  653. add_imm_int
   654. copy_slot_unmasked             i = $0
-  655. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  656. add_int                        $0 += $1
-  657. copy_slot_unmasked             i = $0
-  658. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  659. add_int                        $0 += $1
+  655. add_imm_int
+  656. copy_slot_unmasked             i = $0
+  657. add_imm_int
+  658. copy_slot_unmasked             i = $0
+  659. add_imm_int
   660. copy_slot_unmasked             i = $0
-  661. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  662. add_int                        $0 += $1
-  663. copy_slot_unmasked             i = $0
-  664. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  665. add_int                        $0 += $1
+  661. add_imm_int
+  662. copy_slot_unmasked             i = $0
+  663. add_imm_int
+  664. copy_slot_unmasked             i = $0
+  665. add_imm_int
   666. copy_slot_unmasked             i = $0
-  667. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  668. add_int                        $0 += $1
-  669. copy_slot_unmasked             i = $0
-  670. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  671. add_int                        $0 += $1
+  667. add_imm_int
+  668. copy_slot_unmasked             i = $0
+  669. add_imm_int
+  670. copy_slot_unmasked             i = $0
+  671. add_imm_int
   672. copy_slot_unmasked             i = $0
-  673. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  674. add_int                        $0 += $1
-  675. copy_slot_unmasked             i = $0
-  676. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  677. add_int                        $0 += $1
+  673. add_imm_int
+  674. copy_slot_unmasked             i = $0
+  675. add_imm_int
+  676. copy_slot_unmasked             i = $0
+  677. add_imm_int
   678. copy_slot_unmasked             i = $0
-  679. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  680. add_int                        $0 += $1
-  681. copy_slot_unmasked             i = $0
-  682. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  683. add_int                        $0 += $1
+  679. add_imm_int
+  680. copy_slot_unmasked             i = $0
+  681. add_imm_int
+  682. copy_slot_unmasked             i = $0
+  683. add_imm_int
   684. copy_slot_unmasked             i = $0
-  685. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  686. add_int                        $0 += $1
-  687. copy_slot_unmasked             i = $0
-  688. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  689. add_int                        $0 += $1
+  685. add_imm_int
+  686. copy_slot_unmasked             i = $0
+  687. add_imm_int
+  688. copy_slot_unmasked             i = $0
+  689. add_imm_int
   690. copy_slot_unmasked             i = $0
-  691. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  692. add_int                        $0 += $1
-  693. copy_slot_unmasked             i = $0
-  694. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  695. add_int                        $0 += $1
+  691. add_imm_int
+  692. copy_slot_unmasked             i = $0
+  693. add_imm_int
+  694. copy_slot_unmasked             i = $0
+  695. add_imm_int
   696. copy_slot_unmasked             i = $0
-  697. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  698. add_int                        $0 += $1
-  699. copy_slot_unmasked             i = $0
-  700. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  701. add_int                        $0 += $1
+  697. add_imm_int
+  698. copy_slot_unmasked             i = $0
+  699. add_imm_int
+  700. copy_slot_unmasked             i = $0
+  701. add_imm_int
   702. copy_slot_unmasked             i = $0
-  703. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  704. add_int                        $0 += $1
-  705. copy_slot_unmasked             i = $0
-  706. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  707. add_int                        $0 += $1
+  703. add_imm_int
+  704. copy_slot_unmasked             i = $0
+  705. add_imm_int
+  706. copy_slot_unmasked             i = $0
+  707. add_imm_int
   708. copy_slot_unmasked             i = $0
-  709. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  710. add_int                        $0 += $1
-  711. copy_slot_unmasked             i = $0
-  712. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  713. add_int                        $0 += $1
+  709. add_imm_int
+  710. copy_slot_unmasked             i = $0
+  711. add_imm_int
+  712. copy_slot_unmasked             i = $0
+  713. add_imm_int
   714. copy_slot_unmasked             i = $0
-  715. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  716. add_int                        $0 += $1
-  717. copy_slot_unmasked             i = $0
-  718. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  719. add_int                        $0 += $1
+  715. add_imm_int
+  716. copy_slot_unmasked             i = $0
+  717. add_imm_int
+  718. copy_slot_unmasked             i = $0
+  719. add_imm_int
   720. copy_slot_unmasked             i = $0
-  721. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  722. add_int                        $0 += $1
-  723. copy_slot_unmasked             i = $0
-  724. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  725. add_int                        $0 += $1
+  721. add_imm_int
+  722. copy_slot_unmasked             i = $0
+  723. add_imm_int
+  724. copy_slot_unmasked             i = $0
+  725. add_imm_int
   726. copy_slot_unmasked             i = $0
-  727. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  728. add_int                        $0 += $1
-  729. copy_slot_unmasked             i = $0
-  730. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  731. add_int                        $0 += $1
+  727. add_imm_int
+  728. copy_slot_unmasked             i = $0
+  729. add_imm_int
+  730. copy_slot_unmasked             i = $0
+  731. add_imm_int
   732. copy_slot_unmasked             i = $0
-  733. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  734. add_int                        $0 += $1
-  735. copy_slot_unmasked             i = $0
-  736. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  737. add_int                        $0 += $1
+  733. add_imm_int
+  734. copy_slot_unmasked             i = $0
+  735. add_imm_int
+  736. copy_slot_unmasked             i = $0
+  737. add_imm_int
   738. copy_slot_unmasked             i = $0
-  739. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  740. add_int                        $0 += $1
-  741. copy_slot_unmasked             i = $0
-  742. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  743. add_int                        $0 += $1
+  739. add_imm_int
+  740. copy_slot_unmasked             i = $0
+  741. add_imm_int
+  742. copy_slot_unmasked             i = $0
+  743. add_imm_int
   744. copy_slot_unmasked             i = $0
-  745. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  746. add_int                        $0 += $1
-  747. copy_slot_unmasked             i = $0
-  748. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  749. add_int                        $0 += $1
+  745. add_imm_int
+  746. copy_slot_unmasked             i = $0
+  747. add_imm_int
+  748. copy_slot_unmasked             i = $0
+  749. add_imm_int
   750. copy_slot_unmasked             i = $0
-  751. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  752. add_int                        $0 += $1
-  753. copy_slot_unmasked             i = $0
-  754. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  755. add_int                        $0 += $1
+  751. add_imm_int
+  752. copy_slot_unmasked             i = $0
+  753. add_imm_int
+  754. copy_slot_unmasked             i = $0
+  755. add_imm_int
   756. copy_slot_unmasked             i = $0
-  757. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  758. add_int                        $0 += $1
-  759. copy_slot_unmasked             i = $0
-  760. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  761. add_int                        $0 += $1
+  757. add_imm_int
+  758. copy_slot_unmasked             i = $0
+  759. add_imm_int
+  760. copy_slot_unmasked             i = $0
+  761. add_imm_int
   762. copy_slot_unmasked             i = $0
-  763. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  764. add_int                        $0 += $1
-  765. copy_slot_unmasked             i = $0
-  766. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  767. add_int                        $0 += $1
+  763. add_imm_int
+  764. copy_slot_unmasked             i = $0
+  765. add_imm_int
+  766. copy_slot_unmasked             i = $0
+  767. add_imm_int
   768. copy_slot_unmasked             i = $0
-  769. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  770. add_int                        $0 += $1
-  771. copy_slot_unmasked             i = $0
-  772. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  773. add_int                        $0 += $1
+  769. add_imm_int
+  770. copy_slot_unmasked             i = $0
+  771. add_imm_int
+  772. copy_slot_unmasked             i = $0
+  773. add_imm_int
   774. copy_slot_unmasked             i = $0
-  775. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  776. add_int                        $0 += $1
-  777. copy_slot_unmasked             i = $0
-  778. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  779. add_int                        $0 += $1
+  775. add_imm_int
+  776. copy_slot_unmasked             i = $0
+  777. add_imm_int
+  778. copy_slot_unmasked             i = $0
+  779. add_imm_int
   780. copy_slot_unmasked             i = $0
-  781. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  782. add_int                        $0 += $1
-  783. copy_slot_unmasked             i = $0
-  784. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  785. add_int                        $0 += $1
+  781. add_imm_int
+  782. copy_slot_unmasked             i = $0
+  783. add_imm_int
+  784. copy_slot_unmasked             i = $0
+  785. add_imm_int
   786. copy_slot_unmasked             i = $0
-  787. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  788. add_int                        $0 += $1
-  789. copy_slot_unmasked             i = $0
-  790. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  791. add_int                        $0 += $1
+  787. add_imm_int
+  788. copy_slot_unmasked             i = $0
+  789. add_imm_int
+  790. copy_slot_unmasked             i = $0
+  791. add_imm_int
   792. copy_slot_unmasked             i = $0
-  793. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  794. add_int                        $0 += $1
-  795. copy_slot_unmasked             i = $0
-  796. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  797. add_int                        $0 += $1
+  793. add_imm_int
+  794. copy_slot_unmasked             i = $0
+  795. add_imm_int
+  796. copy_slot_unmasked             i = $0
+  797. add_imm_int
   798. copy_slot_unmasked             i = $0
-  799. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  800. add_int                        $0 += $1
-  801. copy_slot_unmasked             i = $0
-  802. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  803. add_int                        $0 += $1
+  799. add_imm_int
+  800. copy_slot_unmasked             i = $0
+  801. add_imm_int
+  802. copy_slot_unmasked             i = $0
+  803. add_imm_int
   804. copy_slot_unmasked             i = $0
-  805. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  806. add_int                        $0 += $1
-  807. copy_slot_unmasked             i = $0
-  808. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  809. add_int                        $0 += $1
+  805. add_imm_int
+  806. copy_slot_unmasked             i = $0
+  807. add_imm_int
+  808. copy_slot_unmasked             i = $0
+  809. add_imm_int
   810. copy_slot_unmasked             i = $0
-  811. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  812. add_int                        $0 += $1
-  813. copy_slot_unmasked             i = $0
-  814. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  815. add_int                        $0 += $1
+  811. add_imm_int
+  812. copy_slot_unmasked             i = $0
+  813. add_imm_int
+  814. copy_slot_unmasked             i = $0
+  815. add_imm_int
   816. copy_slot_unmasked             i = $0
-  817. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  818. add_int                        $0 += $1
-  819. copy_slot_unmasked             i = $0
-  820. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  821. add_int                        $0 += $1
+  817. add_imm_int
+  818. copy_slot_unmasked             i = $0
+  819. add_imm_int
+  820. copy_slot_unmasked             i = $0
+  821. add_imm_int
   822. copy_slot_unmasked             i = $0
-  823. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  824. add_int                        $0 += $1
-  825. copy_slot_unmasked             i = $0
-  826. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  827. add_int                        $0 += $1
+  823. add_imm_int
+  824. copy_slot_unmasked             i = $0
+  825. add_imm_int
+  826. copy_slot_unmasked             i = $0
+  827. add_imm_int
   828. copy_slot_unmasked             i = $0
-  829. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  830. add_int                        $0 += $1
-  831. copy_slot_unmasked             i = $0
-  832. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  833. add_int                        $0 += $1
+  829. add_imm_int
+  830. copy_slot_unmasked             i = $0
+  831. add_imm_int
+  832. copy_slot_unmasked             i = $0
+  833. add_imm_int
   834. copy_slot_unmasked             i = $0
-  835. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  836. add_int                        $0 += $1
-  837. copy_slot_unmasked             i = $0
-  838. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  839. add_int                        $0 += $1
+  835. add_imm_int
+  836. copy_slot_unmasked             i = $0
+  837. add_imm_int
+  838. copy_slot_unmasked             i = $0
+  839. add_imm_int
   840. copy_slot_unmasked             i = $0
-  841. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  842. add_int                        $0 += $1
-  843. copy_slot_unmasked             i = $0
-  844. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  845. add_int                        $0 += $1
+  841. add_imm_int
+  842. copy_slot_unmasked             i = $0
+  843. add_imm_int
+  844. copy_slot_unmasked             i = $0
+  845. add_imm_int
   846. copy_slot_unmasked             i = $0
-  847. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  848. add_int                        $0 += $1
-  849. copy_slot_unmasked             i = $0
-  850. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  851. add_int                        $0 += $1
+  847. add_imm_int
+  848. copy_slot_unmasked             i = $0
+  849. add_imm_int
+  850. copy_slot_unmasked             i = $0
+  851. add_imm_int
   852. copy_slot_unmasked             i = $0
-  853. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  854. add_int                        $0 += $1
-  855. copy_slot_unmasked             i = $0
-  856. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  857. add_int                        $0 += $1
+  853. add_imm_int
+  854. copy_slot_unmasked             i = $0
+  855. add_imm_int
+  856. copy_slot_unmasked             i = $0
+  857. add_imm_int
   858. copy_slot_unmasked             i = $0
-  859. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  860. add_int                        $0 += $1
-  861. copy_slot_unmasked             i = $0
-  862. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  863. add_int                        $0 += $1
+  859. add_imm_int
+  860. copy_slot_unmasked             i = $0
+  861. add_imm_int
+  862. copy_slot_unmasked             i = $0
+  863. add_imm_int
   864. copy_slot_unmasked             i = $0
-  865. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  866. add_int                        $0 += $1
-  867. copy_slot_unmasked             i = $0
-  868. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  869. add_int                        $0 += $1
+  865. add_imm_int
+  866. copy_slot_unmasked             i = $0
+  867. add_imm_int
+  868. copy_slot_unmasked             i = $0
+  869. add_imm_int
   870. copy_slot_unmasked             i = $0
-  871. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  872. add_int                        $0 += $1
-  873. copy_slot_unmasked             i = $0
-  874. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  875. add_int                        $0 += $1
+  871. add_imm_int
+  872. copy_slot_unmasked             i = $0
+  873. add_imm_int
+  874. copy_slot_unmasked             i = $0
+  875. add_imm_int
   876. copy_slot_unmasked             i = $0
-  877. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  878. add_int                        $0 += $1
-  879. copy_slot_unmasked             i = $0
-  880. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  881. add_int                        $0 += $1
+  877. add_imm_int
+  878. copy_slot_unmasked             i = $0
+  879. add_imm_int
+  880. copy_slot_unmasked             i = $0
+  881. add_imm_int
   882. copy_slot_unmasked             i = $0
-  883. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  884. add_int                        $0 += $1
-  885. copy_slot_unmasked             i = $0
-  886. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  887. add_int                        $0 += $1
+  883. add_imm_int
+  884. copy_slot_unmasked             i = $0
+  885. add_imm_int
+  886. copy_slot_unmasked             i = $0
+  887. add_imm_int
   888. copy_slot_unmasked             i = $0
-  889. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  890. add_int                        $0 += $1
-  891. copy_slot_unmasked             i = $0
-  892. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  893. add_int                        $0 += $1
+  889. add_imm_int
+  890. copy_slot_unmasked             i = $0
+  891. add_imm_int
+  892. copy_slot_unmasked             i = $0
+  893. add_imm_int
   894. copy_slot_unmasked             i = $0
-  895. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  896. add_int                        $0 += $1
-  897. copy_slot_unmasked             i = $0
-  898. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  899. add_int                        $0 += $1
+  895. add_imm_int
+  896. copy_slot_unmasked             i = $0
+  897. add_imm_int
+  898. copy_slot_unmasked             i = $0
+  899. add_imm_int
   900. copy_slot_unmasked             i = $0
-  901. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  902. add_int                        $0 += $1
-  903. copy_slot_unmasked             i = $0
-  904. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  905. add_int                        $0 += $1
+  901. add_imm_int
+  902. copy_slot_unmasked             i = $0
+  903. add_imm_int
+  904. copy_slot_unmasked             i = $0
+  905. add_imm_int
   906. copy_slot_unmasked             i = $0
-  907. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  908. add_int                        $0 += $1
-  909. copy_slot_unmasked             i = $0
-  910. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  911. add_int                        $0 += $1
+  907. add_imm_int
+  908. copy_slot_unmasked             i = $0
+  909. add_imm_int
+  910. copy_slot_unmasked             i = $0
+  911. add_imm_int
   912. copy_slot_unmasked             i = $0
-  913. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  914. add_int                        $0 += $1
-  915. copy_slot_unmasked             i = $0
-  916. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  917. add_int                        $0 += $1
+  913. add_imm_int
+  914. copy_slot_unmasked             i = $0
+  915. add_imm_int
+  916. copy_slot_unmasked             i = $0
+  917. add_imm_int
   918. copy_slot_unmasked             i = $0
-  919. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  920. add_int                        $0 += $1
-  921. copy_slot_unmasked             i = $0
-  922. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  923. add_int                        $0 += $1
+  919. add_imm_int
+  920. copy_slot_unmasked             i = $0
+  921. add_imm_int
+  922. copy_slot_unmasked             i = $0
+  923. add_imm_int
   924. copy_slot_unmasked             i = $0
-  925. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  926. add_int                        $0 += $1
-  927. copy_slot_unmasked             i = $0
-  928. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  929. add_int                        $0 += $1
+  925. add_imm_int
+  926. copy_slot_unmasked             i = $0
+  927. add_imm_int
+  928. copy_slot_unmasked             i = $0
+  929. add_imm_int
   930. copy_slot_unmasked             i = $0
-  931. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  932. add_int                        $0 += $1
-  933. copy_slot_unmasked             i = $0
-  934. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  935. add_int                        $0 += $1
+  931. add_imm_int
+  932. copy_slot_unmasked             i = $0
+  933. add_imm_int
+  934. copy_slot_unmasked             i = $0
+  935. add_imm_int
   936. copy_slot_unmasked             i = $0
-  937. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  938. add_int                        $0 += $1
-  939. copy_slot_unmasked             i = $0
-  940. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  941. add_int                        $0 += $1
+  937. add_imm_int
+  938. copy_slot_unmasked             i = $0
+  939. add_imm_int
+  940. copy_slot_unmasked             i = $0
+  941. add_imm_int
   942. copy_slot_unmasked             i = $0
-  943. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  944. add_int                        $0 += $1
-  945. copy_slot_unmasked             i = $0
-  946. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  947. add_int                        $0 += $1
+  943. add_imm_int
+  944. copy_slot_unmasked             i = $0
+  945. add_imm_int
+  946. copy_slot_unmasked             i = $0
+  947. add_imm_int
   948. copy_slot_unmasked             i = $0
-  949. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  950. add_int                        $0 += $1
-  951. copy_slot_unmasked             i = $0
-  952. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  953. add_int                        $0 += $1
+  949. add_imm_int
+  950. copy_slot_unmasked             i = $0
+  951. add_imm_int
+  952. copy_slot_unmasked             i = $0
+  953. add_imm_int
   954. copy_slot_unmasked             i = $0
-  955. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  956. add_int                        $0 += $1
-  957. copy_slot_unmasked             i = $0
-  958. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  959. add_int                        $0 += $1
+  955. add_imm_int
+  956. copy_slot_unmasked             i = $0
+  957. add_imm_int
+  958. copy_slot_unmasked             i = $0
+  959. add_imm_int
   960. copy_slot_unmasked             i = $0
-  961. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  962. add_int                        $0 += $1
-  963. copy_slot_unmasked             i = $0
-  964. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  965. add_int                        $0 += $1
+  961. add_imm_int
+  962. copy_slot_unmasked             i = $0
+  963. add_imm_int
+  964. copy_slot_unmasked             i = $0
+  965. add_imm_int
   966. copy_slot_unmasked             i = $0
-  967. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  968. add_int                        $0 += $1
-  969. copy_slot_unmasked             i = $0
-  970. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  971. add_int                        $0 += $1
+  967. add_imm_int
+  968. copy_slot_unmasked             i = $0
+  969. add_imm_int
+  970. copy_slot_unmasked             i = $0
+  971. add_imm_int
   972. copy_slot_unmasked             i = $0
-  973. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  974. add_int                        $0 += $1
-  975. copy_slot_unmasked             i = $0
-  976. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  977. add_int                        $0 += $1
+  973. add_imm_int
+  974. copy_slot_unmasked             i = $0
+  975. add_imm_int
+  976. copy_slot_unmasked             i = $0
+  977. add_imm_int
   978. copy_slot_unmasked             i = $0
-  979. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  980. add_int                        $0 += $1
-  981. copy_slot_unmasked             i = $0
-  982. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  983. add_int                        $0 += $1
+  979. add_imm_int
+  980. copy_slot_unmasked             i = $0
+  981. add_imm_int
+  982. copy_slot_unmasked             i = $0
+  983. add_imm_int
   984. copy_slot_unmasked             i = $0
-  985. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  986. add_int                        $0 += $1
-  987. copy_slot_unmasked             i = $0
-  988. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  989. add_int                        $0 += $1
-  990. copy_slot_unmasked             i = $0
-  991. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  992. add_int                        $0 += $1
-  993. copy_slot_unmasked             i = $0
-  994. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  995. add_int                        $0 += $1
-  996. copy_slot_unmasked             i = $0
-  997. copy_constant                  $1 = 0x00000001 (1.401298e-45)
-  998. add_int                        $0 += $1
-  999. copy_slot_unmasked             i = $0
- 1000. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1001. add_int                        $0 += $1
- 1002. copy_slot_unmasked             i = $0
- 1003. stack_rewind
- 1004. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1005. add_int                        $0 += $1
- 1006. copy_slot_unmasked             i = $0
- 1007. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1008. add_int                        $0 += $1
- 1009. copy_slot_unmasked             i = $0
- 1010. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1011. add_int                        $0 += $1
- 1012. copy_slot_unmasked             i = $0
- 1013. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1014. add_int                        $0 += $1
- 1015. copy_slot_unmasked             i = $0
- 1016. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1017. add_int                        $0 += $1
- 1018. copy_slot_unmasked             i = $0
- 1019. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1020. add_int                        $0 += $1
- 1021. copy_slot_unmasked             i = $0
- 1022. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1023. add_int                        $0 += $1
- 1024. copy_slot_unmasked             i = $0
- 1025. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1026. add_int                        $0 += $1
- 1027. copy_slot_unmasked             i = $0
- 1028. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1029. add_int                        $0 += $1
- 1030. copy_slot_unmasked             i = $0
- 1031. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1032. add_int                        $0 += $1
- 1033. copy_slot_unmasked             i = $0
- 1034. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1035. add_int                        $0 += $1
- 1036. copy_slot_unmasked             i = $0
- 1037. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1038. add_int                        $0 += $1
- 1039. copy_slot_unmasked             i = $0
- 1040. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1041. add_int                        $0 += $1
- 1042. copy_slot_unmasked             i = $0
- 1043. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1044. add_int                        $0 += $1
- 1045. copy_slot_unmasked             i = $0
- 1046. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1047. add_int                        $0 += $1
- 1048. copy_slot_unmasked             i = $0
- 1049. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1050. add_int                        $0 += $1
- 1051. copy_slot_unmasked             i = $0
- 1052. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1053. add_int                        $0 += $1
- 1054. copy_slot_unmasked             i = $0
- 1055. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1056. add_int                        $0 += $1
- 1057. copy_slot_unmasked             i = $0
- 1058. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1059. add_int                        $0 += $1
- 1060. copy_slot_unmasked             i = $0
- 1061. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1062. add_int                        $0 += $1
- 1063. copy_slot_unmasked             i = $0
- 1064. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1065. add_int                        $0 += $1
- 1066. copy_slot_unmasked             i = $0
- 1067. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1068. add_int                        $0 += $1
- 1069. copy_slot_unmasked             i = $0
- 1070. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1071. add_int                        $0 += $1
- 1072. copy_slot_unmasked             i = $0
- 1073. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1074. add_int                        $0 += $1
- 1075. copy_slot_unmasked             i = $0
- 1076. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1077. add_int                        $0 += $1
- 1078. copy_slot_unmasked             i = $0
- 1079. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1080. add_int                        $0 += $1
- 1081. copy_slot_unmasked             i = $0
- 1082. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1083. add_int                        $0 += $1
- 1084. copy_slot_unmasked             i = $0
- 1085. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1086. add_int                        $0 += $1
- 1087. copy_slot_unmasked             i = $0
- 1088. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1089. add_int                        $0 += $1
- 1090. copy_slot_unmasked             i = $0
- 1091. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1092. add_int                        $0 += $1
- 1093. copy_slot_unmasked             i = $0
- 1094. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1095. add_int                        $0 += $1
- 1096. copy_slot_unmasked             i = $0
- 1097. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1098. add_int                        $0 += $1
- 1099. copy_slot_unmasked             i = $0
- 1100. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1101. add_int                        $0 += $1
- 1102. copy_slot_unmasked             i = $0
- 1103. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1104. add_int                        $0 += $1
- 1105. copy_slot_unmasked             i = $0
- 1106. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1107. add_int                        $0 += $1
- 1108. copy_slot_unmasked             i = $0
- 1109. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1110. add_int                        $0 += $1
- 1111. copy_slot_unmasked             i = $0
- 1112. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1113. add_int                        $0 += $1
- 1114. copy_slot_unmasked             i = $0
- 1115. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1116. add_int                        $0 += $1
- 1117. copy_slot_unmasked             i = $0
- 1118. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1119. add_int                        $0 += $1
- 1120. copy_slot_unmasked             i = $0
- 1121. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1122. add_int                        $0 += $1
- 1123. copy_slot_unmasked             i = $0
- 1124. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1125. add_int                        $0 += $1
- 1126. copy_slot_unmasked             i = $0
- 1127. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1128. add_int                        $0 += $1
- 1129. copy_slot_unmasked             i = $0
- 1130. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1131. add_int                        $0 += $1
- 1132. copy_slot_unmasked             i = $0
- 1133. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1134. add_int                        $0 += $1
- 1135. copy_slot_unmasked             i = $0
- 1136. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1137. add_int                        $0 += $1
- 1138. copy_slot_unmasked             i = $0
- 1139. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1140. add_int                        $0 += $1
- 1141. copy_slot_unmasked             i = $0
- 1142. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1143. add_int                        $0 += $1
- 1144. copy_slot_unmasked             i = $0
- 1145. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1146. add_int                        $0 += $1
- 1147. copy_slot_unmasked             i = $0
- 1148. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1149. add_int                        $0 += $1
- 1150. copy_slot_unmasked             i = $0
- 1151. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1152. add_int                        $0 += $1
- 1153. copy_slot_unmasked             i = $0
- 1154. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1155. add_int                        $0 += $1
- 1156. copy_slot_unmasked             i = $0
- 1157. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1158. add_int                        $0 += $1
- 1159. copy_slot_unmasked             i = $0
- 1160. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1161. add_int                        $0 += $1
- 1162. copy_slot_unmasked             i = $0
- 1163. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1164. add_int                        $0 += $1
- 1165. copy_slot_unmasked             i = $0
- 1166. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1167. add_int                        $0 += $1
- 1168. copy_slot_unmasked             i = $0
- 1169. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1170. add_int                        $0 += $1
- 1171. copy_slot_unmasked             i = $0
- 1172. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1173. add_int                        $0 += $1
- 1174. copy_slot_unmasked             i = $0
- 1175. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1176. add_int                        $0 += $1
- 1177. copy_slot_unmasked             i = $0
- 1178. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1179. add_int                        $0 += $1
- 1180. copy_slot_unmasked             i = $0
- 1181. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1182. add_int                        $0 += $1
- 1183. copy_slot_unmasked             i = $0
- 1184. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1185. add_int                        $0 += $1
- 1186. copy_slot_unmasked             i = $0
- 1187. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1188. add_int                        $0 += $1
- 1189. copy_slot_unmasked             i = $0
- 1190. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1191. add_int                        $0 += $1
- 1192. copy_slot_unmasked             i = $0
- 1193. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1194. add_int                        $0 += $1
- 1195. copy_slot_unmasked             i = $0
- 1196. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1197. add_int                        $0 += $1
- 1198. copy_slot_unmasked             i = $0
- 1199. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1200. add_int                        $0 += $1
- 1201. copy_slot_unmasked             i = $0
- 1202. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1203. add_int                        $0 += $1
- 1204. copy_slot_unmasked             i = $0
- 1205. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1206. add_int                        $0 += $1
- 1207. copy_slot_unmasked             i = $0
- 1208. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1209. add_int                        $0 += $1
- 1210. copy_slot_unmasked             i = $0
- 1211. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1212. add_int                        $0 += $1
- 1213. copy_slot_unmasked             i = $0
- 1214. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1215. add_int                        $0 += $1
- 1216. copy_slot_unmasked             i = $0
- 1217. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1218. add_int                        $0 += $1
- 1219. copy_slot_unmasked             i = $0
- 1220. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1221. add_int                        $0 += $1
- 1222. copy_slot_unmasked             i = $0
- 1223. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1224. add_int                        $0 += $1
- 1225. copy_slot_unmasked             i = $0
- 1226. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1227. add_int                        $0 += $1
- 1228. copy_slot_unmasked             i = $0
- 1229. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1230. add_int                        $0 += $1
- 1231. copy_slot_unmasked             i = $0
- 1232. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1233. add_int                        $0 += $1
- 1234. copy_slot_unmasked             i = $0
- 1235. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1236. add_int                        $0 += $1
- 1237. copy_slot_unmasked             i = $0
- 1238. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1239. add_int                        $0 += $1
- 1240. copy_slot_unmasked             i = $0
- 1241. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1242. add_int                        $0 += $1
- 1243. copy_slot_unmasked             i = $0
- 1244. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1245. add_int                        $0 += $1
- 1246. copy_slot_unmasked             i = $0
- 1247. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1248. add_int                        $0 += $1
- 1249. copy_slot_unmasked             i = $0
- 1250. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1251. add_int                        $0 += $1
- 1252. copy_slot_unmasked             i = $0
- 1253. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1254. add_int                        $0 += $1
- 1255. copy_slot_unmasked             i = $0
- 1256. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1257. add_int                        $0 += $1
- 1258. copy_slot_unmasked             i = $0
- 1259. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1260. add_int                        $0 += $1
- 1261. copy_slot_unmasked             i = $0
- 1262. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1263. add_int                        $0 += $1
- 1264. copy_slot_unmasked             i = $0
- 1265. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1266. add_int                        $0 += $1
- 1267. copy_slot_unmasked             i = $0
- 1268. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1269. add_int                        $0 += $1
- 1270. copy_slot_unmasked             i = $0
- 1271. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1272. add_int                        $0 += $1
- 1273. copy_slot_unmasked             i = $0
- 1274. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1275. add_int                        $0 += $1
- 1276. copy_slot_unmasked             i = $0
- 1277. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1278. add_int                        $0 += $1
- 1279. copy_slot_unmasked             i = $0
- 1280. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1281. add_int                        $0 += $1
- 1282. copy_slot_unmasked             i = $0
- 1283. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1284. add_int                        $0 += $1
- 1285. copy_slot_unmasked             i = $0
- 1286. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1287. add_int                        $0 += $1
- 1288. copy_slot_unmasked             i = $0
- 1289. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1290. add_int                        $0 += $1
- 1291. copy_slot_unmasked             i = $0
- 1292. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1293. add_int                        $0 += $1
- 1294. copy_slot_unmasked             i = $0
- 1295. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1296. add_int                        $0 += $1
- 1297. copy_slot_unmasked             i = $0
- 1298. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1299. add_int                        $0 += $1
- 1300. copy_slot_unmasked             i = $0
- 1301. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1302. add_int                        $0 += $1
- 1303. copy_slot_unmasked             i = $0
- 1304. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1305. add_int                        $0 += $1
- 1306. copy_slot_unmasked             i = $0
- 1307. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1308. add_int                        $0 += $1
- 1309. copy_slot_unmasked             i = $0
- 1310. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1311. add_int                        $0 += $1
- 1312. copy_slot_unmasked             i = $0
- 1313. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1314. add_int                        $0 += $1
- 1315. copy_slot_unmasked             i = $0
- 1316. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1317. add_int                        $0 += $1
- 1318. copy_slot_unmasked             i = $0
- 1319. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1320. add_int                        $0 += $1
- 1321. copy_slot_unmasked             i = $0
- 1322. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1323. add_int                        $0 += $1
- 1324. copy_slot_unmasked             i = $0
- 1325. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1326. add_int                        $0 += $1
- 1327. copy_slot_unmasked             i = $0
- 1328. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1329. add_int                        $0 += $1
- 1330. copy_slot_unmasked             i = $0
- 1331. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1332. add_int                        $0 += $1
- 1333. copy_slot_unmasked             i = $0
- 1334. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1335. add_int                        $0 += $1
- 1336. copy_slot_unmasked             i = $0
- 1337. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1338. add_int                        $0 += $1
- 1339. copy_slot_unmasked             i = $0
- 1340. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1341. add_int                        $0 += $1
- 1342. copy_slot_unmasked             i = $0
- 1343. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1344. add_int                        $0 += $1
- 1345. copy_slot_unmasked             i = $0
- 1346. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1347. add_int                        $0 += $1
- 1348. copy_slot_unmasked             i = $0
- 1349. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1350. add_int                        $0 += $1
- 1351. copy_slot_unmasked             i = $0
- 1352. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1353. add_int                        $0 += $1
- 1354. copy_slot_unmasked             i = $0
- 1355. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1356. add_int                        $0 += $1
- 1357. copy_slot_unmasked             i = $0
- 1358. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1359. add_int                        $0 += $1
- 1360. copy_slot_unmasked             i = $0
- 1361. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1362. add_int                        $0 += $1
- 1363. copy_slot_unmasked             i = $0
- 1364. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1365. add_int                        $0 += $1
- 1366. copy_slot_unmasked             i = $0
- 1367. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1368. add_int                        $0 += $1
- 1369. copy_slot_unmasked             i = $0
- 1370. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1371. add_int                        $0 += $1
- 1372. copy_slot_unmasked             i = $0
- 1373. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1374. add_int                        $0 += $1
- 1375. copy_slot_unmasked             i = $0
- 1376. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1377. add_int                        $0 += $1
- 1378. copy_slot_unmasked             i = $0
- 1379. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1380. add_int                        $0 += $1
- 1381. copy_slot_unmasked             i = $0
- 1382. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1383. add_int                        $0 += $1
- 1384. copy_slot_unmasked             i = $0
- 1385. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1386. add_int                        $0 += $1
- 1387. copy_slot_unmasked             i = $0
- 1388. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1389. add_int                        $0 += $1
- 1390. copy_slot_unmasked             i = $0
- 1391. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1392. add_int                        $0 += $1
- 1393. copy_slot_unmasked             i = $0
- 1394. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1395. add_int                        $0 += $1
- 1396. copy_slot_unmasked             i = $0
- 1397. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1398. add_int                        $0 += $1
- 1399. copy_slot_unmasked             i = $0
- 1400. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1401. add_int                        $0 += $1
- 1402. copy_slot_unmasked             i = $0
- 1403. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1404. add_int                        $0 += $1
- 1405. copy_slot_unmasked             i = $0
- 1406. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1407. add_int                        $0 += $1
- 1408. copy_slot_unmasked             i = $0
- 1409. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1410. add_int                        $0 += $1
- 1411. copy_slot_unmasked             i = $0
- 1412. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1413. add_int                        $0 += $1
- 1414. copy_slot_unmasked             i = $0
- 1415. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1416. add_int                        $0 += $1
- 1417. copy_slot_unmasked             i = $0
- 1418. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1419. add_int                        $0 += $1
- 1420. copy_slot_unmasked             i = $0
- 1421. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1422. add_int                        $0 += $1
- 1423. copy_slot_unmasked             i = $0
- 1424. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1425. add_int                        $0 += $1
- 1426. copy_slot_unmasked             i = $0
- 1427. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1428. add_int                        $0 += $1
- 1429. copy_slot_unmasked             i = $0
- 1430. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1431. add_int                        $0 += $1
- 1432. copy_slot_unmasked             i = $0
- 1433. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1434. add_int                        $0 += $1
- 1435. copy_slot_unmasked             i = $0
- 1436. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1437. add_int                        $0 += $1
- 1438. copy_slot_unmasked             i = $0
- 1439. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1440. add_int                        $0 += $1
- 1441. copy_slot_unmasked             i = $0
- 1442. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1443. add_int                        $0 += $1
- 1444. copy_slot_unmasked             i = $0
- 1445. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1446. add_int                        $0 += $1
- 1447. copy_slot_unmasked             i = $0
- 1448. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1449. add_int                        $0 += $1
- 1450. copy_slot_unmasked             i = $0
- 1451. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1452. add_int                        $0 += $1
- 1453. copy_slot_unmasked             i = $0
- 1454. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1455. add_int                        $0 += $1
- 1456. copy_slot_unmasked             i = $0
- 1457. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1458. add_int                        $0 += $1
- 1459. copy_slot_unmasked             i = $0
- 1460. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1461. add_int                        $0 += $1
- 1462. copy_slot_unmasked             i = $0
- 1463. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1464. add_int                        $0 += $1
- 1465. copy_slot_unmasked             i = $0
- 1466. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1467. add_int                        $0 += $1
- 1468. copy_slot_unmasked             i = $0
- 1469. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1470. add_int                        $0 += $1
- 1471. copy_slot_unmasked             i = $0
- 1472. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1473. add_int                        $0 += $1
- 1474. copy_slot_unmasked             i = $0
- 1475. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1476. add_int                        $0 += $1
- 1477. copy_slot_unmasked             i = $0
- 1478. copy_slot_unmasked             $0 = a
- 1479. copy_constant                  $1 = 0x00000001 (1.401298e-45)
- 1480. add_int                        $0 += $1
- 1481. copy_slot_unmasked             a = $0
- 1482. copy_constant                  $1 = 0x00000064 (1.401298e-43)
- 1483. cmplt_int                      $0 = lessThan($0, $1)
- 1484. stack_rewind
- 1485. branch_if_no_active_lanes_eq   branch -1481 (label 1 at #4) if no lanes of $0 == 0
- 1486. label                          label 0
- 1487. splat_4_constants              $0..3 = 0
- 1488. load_src                       src.rgba = $0..3
+  985. add_imm_int
+  986. copy_slot_unmasked             i = $0
+  987. copy_slot_unmasked             $0 = a
+  988. add_imm_int
+  989. copy_slot_unmasked             a = $0
+  990. cmplt_imm_int
+  991. stack_rewind
+  992. branch_if_no_active_lanes_eq   branch -988 (label 1 at #4) if no lanes of $0 == 0
+  993. label                          label 0
+  994. splat_4_constants              $0..3 = 0
+  995. load_src                       src.rgba = $0..3
