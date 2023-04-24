@@ -69,10 +69,9 @@
    69. copy_slot_unmasked             $1 = f(0)
    70. add_float                      $0 += $1
    71. copy_slot_unmasked             result = $0
-   72. copy_constant                  $1 = 0x40C00000 (6.0)
-   73. cmpeq_float                    $0 = equal($0, $1)
-   74. swizzle_4                      $0..3 = ($0..3).xxxx
-   75. copy_4_uniforms                $4..7 = colorRed
-   76. copy_4_uniforms                $8..11 = colorGreen
-   77. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
-   78. load_src                       src.rgba = $0..3
+   72. cmpeq_imm_float
+   73. swizzle_4                      $0..3 = ($0..3).xxxx
+   74. copy_4_uniforms                $4..7 = colorRed
+   75. copy_4_uniforms                $8..11 = colorGreen
+   76. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
+   77. load_src                       src.rgba = $0..3

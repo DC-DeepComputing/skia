@@ -411,58 +411,49 @@
   411. bitwise_and_int                $0 &= $1
   412. copy_slot_unmasked             _0_ok = $0
   413. copy_slot_unmasked             $1 = _5_m(0)
-  414. copy_constant                  $2 = 0x3F800000 (1.0)
-  415. cmpeq_float                    $1 = equal($1, $2)
-  416. bitwise_and_int                $0 &= $1
-  417. copy_slot_unmasked             _0_ok = $0
-  418. copy_3_slots_unmasked          $1..3 = _5_m(0..2)
-  419. swizzle_1                      $1 = ($1..2).y
-  420. copy_constant                  $2 = 0x40000000 (2.0)
-  421. cmpeq_float                    $1 = equal($1, $2)
-  422. bitwise_and_int                $0 &= $1
-  423. copy_slot_unmasked             _0_ok = $0
-  424. copy_3_slots_unmasked          $1..3 = _5_m(0..2)
-  425. swizzle_1                      $1 = ($1..3).z
-  426. copy_constant                  $2 = 0x40400000 (3.0)
-  427. cmpeq_float                    $1 = equal($1, $2)
-  428. bitwise_and_int                $0 &= $1
-  429. copy_slot_unmasked             _0_ok = $0
-  430. copy_slot_unmasked             $1 = _5_m(3)
-  431. copy_constant                  $2 = 0x40800000 (4.0)
-  432. cmpeq_float                    $1 = equal($1, $2)
-  433. bitwise_and_int                $0 &= $1
-  434. copy_slot_unmasked             _0_ok = $0
-  435. copy_3_slots_unmasked          $1..3 = _5_m(3..5)
-  436. swizzle_1                      $1 = ($1..2).y
-  437. copy_constant                  $2 = 0x40A00000 (5.0)
-  438. cmpeq_float                    $1 = equal($1, $2)
+  414. cmpeq_imm_float
+  415. bitwise_and_int                $0 &= $1
+  416. copy_slot_unmasked             _0_ok = $0
+  417. copy_3_slots_unmasked          $1..3 = _5_m(0..2)
+  418. swizzle_1                      $1 = ($1..2).y
+  419. cmpeq_imm_float
+  420. bitwise_and_int                $0 &= $1
+  421. copy_slot_unmasked             _0_ok = $0
+  422. copy_3_slots_unmasked          $1..3 = _5_m(0..2)
+  423. swizzle_1                      $1 = ($1..3).z
+  424. cmpeq_imm_float
+  425. bitwise_and_int                $0 &= $1
+  426. copy_slot_unmasked             _0_ok = $0
+  427. copy_slot_unmasked             $1 = _5_m(3)
+  428. cmpeq_imm_float
+  429. bitwise_and_int                $0 &= $1
+  430. copy_slot_unmasked             _0_ok = $0
+  431. copy_3_slots_unmasked          $1..3 = _5_m(3..5)
+  432. swizzle_1                      $1 = ($1..2).y
+  433. cmpeq_imm_float
+  434. bitwise_and_int                $0 &= $1
+  435. copy_slot_unmasked             _0_ok = $0
+  436. copy_3_slots_unmasked          $1..3 = _5_m(3..5)
+  437. swizzle_1                      $1 = ($1..3).z
+  438. cmpeq_imm_float
   439. bitwise_and_int                $0 &= $1
   440. copy_slot_unmasked             _0_ok = $0
-  441. copy_3_slots_unmasked          $1..3 = _5_m(3..5)
-  442. swizzle_1                      $1 = ($1..3).z
-  443. copy_constant                  $2 = 0x40C00000 (6.0)
-  444. cmpeq_float                    $1 = equal($1, $2)
-  445. bitwise_and_int                $0 &= $1
-  446. copy_slot_unmasked             _0_ok = $0
-  447. copy_slot_unmasked             $1 = _5_m(6)
-  448. copy_constant                  $2 = 0x40E00000 (7.0)
-  449. cmpeq_float                    $1 = equal($1, $2)
-  450. bitwise_and_int                $0 &= $1
-  451. copy_slot_unmasked             _0_ok = $0
-  452. copy_3_slots_unmasked          $1..3 = _5_m(6..8)
-  453. swizzle_1                      $1 = ($1..2).y
-  454. copy_constant                  $2 = 0x41000000 (8.0)
-  455. cmpeq_float                    $1 = equal($1, $2)
-  456. bitwise_and_int                $0 &= $1
-  457. copy_slot_unmasked             _0_ok = $0
-  458. copy_3_slots_unmasked          $1..3 = _5_m(6..8)
-  459. swizzle_1                      $1 = ($1..3).z
-  460. copy_constant                  $2 = 0x41100000 (9.0)
-  461. cmpeq_float                    $1 = equal($1, $2)
-  462. bitwise_and_int                $0 &= $1
-  463. copy_slot_unmasked             _0_ok = $0
-  464. swizzle_4                      $0..3 = ($0..3).xxxx
-  465. copy_4_uniforms                $4..7 = colorRed
-  466. copy_4_uniforms                $8..11 = colorGreen
-  467. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
-  468. load_src                       src.rgba = $0..3
+  441. copy_slot_unmasked             $1 = _5_m(6)
+  442. cmpeq_imm_float
+  443. bitwise_and_int                $0 &= $1
+  444. copy_slot_unmasked             _0_ok = $0
+  445. copy_3_slots_unmasked          $1..3 = _5_m(6..8)
+  446. swizzle_1                      $1 = ($1..2).y
+  447. cmpeq_imm_float
+  448. bitwise_and_int                $0 &= $1
+  449. copy_slot_unmasked             _0_ok = $0
+  450. copy_3_slots_unmasked          $1..3 = _5_m(6..8)
+  451. swizzle_1                      $1 = ($1..3).z
+  452. cmpeq_imm_float
+  453. bitwise_and_int                $0 &= $1
+  454. copy_slot_unmasked             _0_ok = $0
+  455. swizzle_4                      $0..3 = ($0..3).xxxx
+  456. copy_4_uniforms                $4..7 = colorRed
+  457. copy_4_uniforms                $8..11 = colorGreen
+  458. mix_4_ints                     $0..3 = mix($4..7, $8..11, $0..3)
+  459. load_src                       src.rgba = $0..3
