@@ -33,6 +33,24 @@
       "message": "Not sure if that\u0027s relevant, but independently building this target, I get:\n```\ngm/gm.cpp:21:10: fatal error: \u0027include/gpu/GrRecordingContext.h\u0027 file not found\n#include \"include/gpu/GrRecordingContext.h\"\n         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n```",
       "revId": "49e26657f579ebb01ed578ce853f2e9b94e8a935",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "765b9771_a6bd156e",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-24T12:16:49Z",
+      "side": 1,
+      "message": "Don\u0027t build this directly without setting a command line flag to build with a GPU backend. All of our GMs assume one is built in.",
+      "parentUuid": "b643bd23_31376ed7",
+      "revId": "49e26657f579ebb01ed578ce853f2e9b94e8a935",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
