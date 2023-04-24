@@ -22,6 +22,30 @@
       },
       "revId": "dc7ad11fe54e5bdbcf4048d5d125237df49e0f04",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ef0ca33_c20137ae",
+        "filename": "relnotes/skrp.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-24T19:39:09Z",
+      "side": 1,
+      "message": "Done (and added a note to the README)",
+      "parentUuid": "a981a0f6_f2536fad",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 1
+      },
+      "revId": "dc7ad11fe54e5bdbcf4048d5d125237df49e0f04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
