@@ -16,6 +16,24 @@
       "message": "Once the related CL is approved, these removals LGTM",
       "revId": "b14b90b17944d505c632de49a9a043b4d4993093",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d98a6f0_4501a4aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-24T15:57:42Z",
+      "side": 1,
+      "message": "This one is safe to land separate from the rest. I\u0027ll look at the merge conflict that popped up.",
+      "parentUuid": "2521aa90_f4d24365",
+      "revId": "b14b90b17944d505c632de49a9a043b4d4993093",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
