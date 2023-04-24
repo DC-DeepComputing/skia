@@ -39,6 +39,30 @@
       },
       "revId": "a28ad6119a49b26dc76a9fca9237099e0d996953",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "126e1a4d_09e52849",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2315,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-24T16:41:22Z",
+      "side": 1,
+      "message": "It\u0027s sometimes a `SkSpan\u003cconst uint16_t\u003e` and sometimes a `SkSpan\u003cconst uint8_t\u003e`. Is there a way to declare this more explicitly? `SkSpan\u003cauto\u003e` did not work.",
+      "parentUuid": "7085c873_688076dd",
+      "range": {
+        "startLine": 2315,
+        "startChar": 53,
+        "endLine": 2315,
+        "endChar": 57
+      },
+      "revId": "a28ad6119a49b26dc76a9fca9237099e0d996953",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
