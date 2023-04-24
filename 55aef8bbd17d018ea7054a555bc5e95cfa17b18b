@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "777e63a2_6d367061",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T21:05:56Z",
+      "side": 1,
+      "message": "At present it\u0027s just by running `./PRESUBMIT_test.py`. I was going to integrate into the CI in a downstream CL.",
+      "parentUuid": "6e37a757_65f6e164",
+      "range": {
+        "startLine": 9,
+        "startChar": 11,
+        "endLine": 9,
+        "endChar": 15
+      },
+      "revId": "55aef8bbd17d018ea7054a555bc5e95cfa17b18b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c9389f4_f5c93a5d",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-24T20:40:48Z",
       "side": 1,
       "message": "skia:14276",
+      "range": {
+        "startLine": 16,
+        "startChar": 5,
+        "endLine": 16,
+        "endChar": 10
+      },
+      "revId": "55aef8bbd17d018ea7054a555bc5e95cfa17b18b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63ead86a_f12dc8f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T21:05:56Z",
+      "side": 1,
+      "message": "LMK if you want this written in Go and I\u0027ll make that change.",
+      "parentUuid": "0c9389f4_f5c93a5d",
       "range": {
         "startLine": 16,
         "startChar": 5,
@@ -188,6 +236,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bbd32e50_fbe5765a",
+        "filename": "PRESUBMIT_test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T21:05:56Z",
+      "side": 1,
+      "message": "My guess is \"no\". I copied it from chrome, which does have that bit set.",
+      "parentUuid": "d96e82b7_5660517a",
+      "range": {
+        "startLine": 1,
+        "startChar": 15,
+        "endLine": 1,
+        "endChar": 22
+      },
+      "revId": "55aef8bbd17d018ea7054a555bc5e95cfa17b18b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f9478a1_fbe7e551",
         "filename": "PRESUBMIT_test_mocks.py",
         "patchSetId": 1
@@ -199,6 +271,30 @@
       "writtenOn": "2023-04-24T20:40:48Z",
       "side": 1,
       "message": "Did this come from somewhere in Chrome? If so, can you link to it near the top?",
+      "range": {
+        "startLine": 19,
+        "startChar": 6,
+        "endLine": 19,
+        "endChar": 22
+      },
+      "revId": "55aef8bbd17d018ea7054a555bc5e95cfa17b18b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c54f05ad_2bdd00d5",
+        "filename": "PRESUBMIT_test_mocks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T21:05:56Z",
+      "side": 1,
+      "message": "Yes. done.",
+      "parentUuid": "1f9478a1_fbe7e551",
       "range": {
         "startLine": 19,
         "startChar": 6,
