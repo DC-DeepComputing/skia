@@ -16,6 +16,24 @@
       "message": "missing \u0027 \u0027 ?",
       "revId": "4374d4c973597e5d5e7f206b769cc4de4d0168c7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbb9be31_e24d5168",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-24T14:41:43Z",
+      "side": 1,
+      "message": "Yes, I noticed this in a follow-up CL and it\u0027ll be fixed there.",
+      "parentUuid": "b0112225_21c5e55f",
+      "revId": "4374d4c973597e5d5e7f206b769cc4de4d0168c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
