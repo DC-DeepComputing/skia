@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6b85315_e241112c",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-24T15:01:46Z",
+      "side": 1,
+      "message": "I believe this \u0027fProxyCache\u0027 will need to by guarded against being null.",
+      "revId": "056734c699e9534134e5b3a517ea72fd888aad61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94c8617d_3547589f",
+        "filename": "tests/graphite/ProxyCacheTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-04-24T15:01:46Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 391,
+        "startChar": 76,
+        "endLine": 391,
+        "endChar": 77
+      },
+      "revId": "056734c699e9534134e5b3a517ea72fd888aad61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
