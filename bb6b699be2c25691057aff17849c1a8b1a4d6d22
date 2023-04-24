@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b19da93_7bb67a66",
+        "filename": "src/sksl/SkSLAnalysis.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-24T15:12:21Z",
+      "side": 1,
+      "message": "`\u003e`",
+      "range": {
+        "startLine": 213,
+        "startChar": 39,
+        "endLine": 213,
+        "endChar": 41
+      },
+      "revId": "bb6b699be2c25691057aff17849c1a8b1a4d6d22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20eb56ad_e56ab055",
+        "filename": "tests/sksl/runtime/LoopInt.skrp",
+        "patchSetId": 1
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-24T15:12:21Z",
+      "side": 1,
+      "message": "WDYT about only doing the rewrite for floats? Seems unnecessary (but harmless, I suppose) with integral types?",
+      "revId": "bb6b699be2c25691057aff17849c1a8b1a4d6d22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
