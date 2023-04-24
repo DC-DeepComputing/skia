@@ -603,7 +603,7 @@
   603. trace_var                      TraceVar(i₈) when $13 is true
   604. copy_slot_unmasked             $4 = i₈
   605. copy_constant                  $5 = 0x00000004 (5.605194e-45)
-  606. cmpne_int                      $4 = notEqual($4, $5)
+  606. cmplt_int                      $4 = lessThan($4, $5)
   607. stack_rewind
   608. branch_if_no_active_lanes_eq   branch -20 (label 38 at #588) if no lanes of $4 == 0
   609. label                          label 0x00000025

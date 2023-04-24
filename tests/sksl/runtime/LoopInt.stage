@@ -97,7 +97,7 @@ bool loop_operator_ne_0()
 {
 	;
 	int4 result = int4(9);
-	for (int i = 1;i != 4; ++i) 
+	for (int i = 1;i < 4; ++i) 
 	{
 		result = int4(result.yzw, i);
 	}
