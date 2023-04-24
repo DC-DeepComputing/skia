@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a501ff8c_489d675f",
+        "filename": "relnotes/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T19:42:23Z",
+      "side": 1,
+      "message": "Thanks. I will see about updating the presubmit checks to detect this.",
+      "range": {
+        "startLine": 27,
+        "startChar": 3,
+        "endLine": 27,
+        "endChar": 34
+      },
+      "revId": "cd23d357998fb26a660cd5defb50792530658749",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
