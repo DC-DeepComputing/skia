@@ -11,9 +11,9 @@
 #include "gm/gm.h"
 #include "include/core/SkExecutor.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkImage.h"
 #include "include/gpu/GrContextOptions.h"
 #include "src/core/SkScan.h"
-#include "src/core/SkVMBlitter.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "tools/gpu/MemoryCache.h"
@@ -274,13 +274,6 @@ private:
         kShaderOptLevel_Inline,
     };
     ShaderOptLevel fOptLevel = kShaderOptLevel_Source;
-
-#ifdef SK_ENABLE_SKVM
-    SkVMBlitter::Key fHoveredKey;
-    skvm::Program    fHoveredProgram;
-
-    skia_private::THashMap<SkVMBlitter::Key, std::string> fDisassemblyCache;
-#endif
 };
 
 #endif
