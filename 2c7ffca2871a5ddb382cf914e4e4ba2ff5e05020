@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "784b79e5_a5307d6e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T15:07:09Z",
+      "side": 1,
+      "message": "The conflicts are with a local dev branch, which modifies RELEASE_NOTES.md, and an upstream change that did the same. This is because devs always add a new bullet item to the end of the list.",
+      "parentUuid": "d40025d3_f9b42b1f",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 31
+      },
+      "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5983bd86_70be0348",
@@ -60,6 +84,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "02586547_5ae42d18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T15:07:09Z",
+      "side": 1,
+      "message": "I added a Background section to the commit message with more context on the need for this change.",
+      "parentUuid": "ad8385ad_10d5e937",
+      "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4ca3053_a32bea5d",
         "filename": "relnotes/README.md",
         "patchSetId": 1
@@ -71,6 +113,30 @@
       "writtenOn": "2023-04-10T13:39:16Z",
       "side": 1,
       "message": "Phrasing seems overly strict (there may be some context where a HR still makes sense). Maybe something more like \"Horizontal rules will automatically be inserted between milestones when the release notes are generated.\"",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 73
+      },
+      "revId": "2c7ffca2871a5ddb382cf914e4e4ba2ff5e05020",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2efce19_58c1f99f",
+        "filename": "relnotes/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-24T15:07:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4ca3053_a32bea5d",
       "range": {
         "startLine": 27,
         "startChar": 0,
