@@ -83,10 +83,13 @@ public:
 
     // Be careful with this. You need to acquire the mutex, as the generator might be shared
     // among several images.
-    //std::unique_ptr<SkImageGenerator> generator() const;
     sk_sp<SharedGenerator> generator() const;
 protected:
     virtual bool readPixelsProxy(GrDirectContext*, const SkPixmap&) const { return false; }
+    // Note that this->imageInfo() is not necessarily the info from the generator. It may be
+    // cropped by onMakeSubset and its color type/space may be changed by
+    // onMakeColorTypeAndColorSpace.
+    sk_sp<SharedGenerator> fSharedGenerator;
 
 private:
 
@@ -96,11 +99,6 @@ private:
 #endif
 
     class ScopedGenerator;
-
-    // Note that this->imageInfo() is not necessarily the info from the generator. It may be
-    // cropped by onMakeSubset and its color type/space may be changed by
-    // onMakeColorTypeAndColorSpace.
-    sk_sp<SharedGenerator> fSharedGenerator;
 
     // Repeated calls to onMakeColorTypeAndColorSpace will result in a proliferation of unique IDs
     // and SkImage_Lazy instances. Cache the result of the last successful call.
