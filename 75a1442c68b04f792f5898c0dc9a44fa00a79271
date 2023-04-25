@@ -87,6 +87,24 @@
       "parentUuid": "ab2dce9c_2a92fc50",
       "revId": "75a1442c68b04f792f5898c0dc9a44fa00a79271",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "588e3d64_849e13c9",
+        "filename": "src/image/SkPictureImageGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-25T18:48:28Z",
+      "side": 1,
+      "message": "The behavior isn\u0027t changed in this CL (and the inconsistency predates this CL). However, it will potentially be an issue if we try to land https://skia-review.googlesource.com/c/skia/+/671679 which will *always* draw skps into a raster canvas for onGetPixels and subset().\n\nI think clients can make the behavior explicit, as I say in the release notes for that other CL.\nhttps://skia-review.googlesource.com/c/skia/+/671679/15/relnotes/skimage_subset.md",
+      "parentUuid": "49246f7e_dad4cb87",
+      "revId": "75a1442c68b04f792f5898c0dc9a44fa00a79271",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
