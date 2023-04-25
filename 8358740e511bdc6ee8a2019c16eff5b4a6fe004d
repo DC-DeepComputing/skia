@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ebf5e19_5dfb9d95",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3241,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-25T12:45:46Z",
+      "side": 1,
+      "message": "Need to remove the integer arguments, too.",
+      "range": {
+        "startLine": 3241,
+        "startChar": 48,
+        "endLine": 3241,
+        "endChar": 66
+      },
+      "revId": "8358740e511bdc6ee8a2019c16eff5b4a6fe004d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
