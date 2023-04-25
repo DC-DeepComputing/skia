@@ -16,6 +16,7 @@ namespace skgpu::graphite {
 
 class VulkanResourceProvider;
 class VulkanSharedContext;
+class DrawPass;
 
 class VulkanCommandBuffer final : public CommandBuffer {
 public:
@@ -57,14 +58,42 @@ private:
     void begin();
     void end();
 
-    // TODO: The virtuals in this class have not yet been implemented as we still haven't
-    // implemented the objects they use.
     bool onAddRenderPass(const RenderPassDesc&,
+                        const Texture* colorTexture,
+                        const Texture* resolveTexture,
+                        const Texture* depthStencilTexture,
+                        SkRect viewport,
+                        const DrawPassList&) override;
+
+    bool beginRenderPass(const RenderPassDesc&,
                          const Texture* colorTexture,
                          const Texture* resolveTexture,
-                         const Texture* depthStencilTexture,
-                         SkRect viewport,
-                         const DrawPassList&) override;
+                         const Texture* depthStencilTexture);
+    void endRenderPass();
+
+    void addDrawPass(const DrawPass*);
+
+    // TODO: Populate these different methods to handle the possible commands in a draw pass.
+    void bindGraphicsPipeline(const GraphicsPipeline*);
+    void setBlendConstants(float* blendConstants);
+
+    void bindUniformBuffer(const BindBufferInfo& info, UniformSlot);
+    void bindDrawBuffers(const BindBufferInfo& vertices,
+                         const BindBufferInfo& instances,
+                         const BindBufferInfo& indices,
+                         const BindBufferInfo& indirect);
+    void bindVertexBuffers(const Buffer* vertexBuffer, size_t vertexOffset,
+                           const Buffer* instanceBuffer, size_t instanceOffset);
+    void bindIndexBuffer(const Buffer* indexBuffer, size_t offset);
+    void bindIndirectBuffer(const Buffer* indirectBuffer, size_t offset);
+
+    void bindTextureAndSampler(const Texture*, const Sampler*, unsigned int bindIndex);
+
+    void setScissor(unsigned int left, unsigned int top,
+                    unsigned int width, unsigned int height);
+
+    // TODO: The virtuals in this class have not yet been implemented as we still haven't
+    // implemented the objects they use.
     bool onAddComputePass(const DispatchGroupList&) override;
 
     bool onCopyBufferToBuffer(const Buffer* srcBuffer,
