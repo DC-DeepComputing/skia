@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08df9bef_14786b49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-25T15:28:31Z",
+      "side": 1,
+      "message": "Code size seems acceptable, assuming the perf wins are big enough. (This seems like another thing that we may want to lump into a large \"trade perf for smaller RP\" switch, though).",
+      "revId": "8cbee34f6dda3ebe901bbc7e9eec68a4d33283df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
