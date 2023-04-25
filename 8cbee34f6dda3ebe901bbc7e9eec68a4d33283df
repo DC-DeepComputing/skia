@@ -16,6 +16,24 @@
       "message": "Code size seems acceptable, assuming the perf wins are big enough. (This seems like another thing that we may want to lump into a large \"trade perf for smaller RP\" switch, though).",
       "revId": "8cbee34f6dda3ebe901bbc7e9eec68a4d33283df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e65ddc5e_7dd658c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-25T16:26:42Z",
+      "side": 1,
+      "message": "I cut a bug skia:14280 to investigate optimize-for-size changes in SkRP.\nWe know SkRP ops take ~34K-38K in total (http://review.skia.org/675121), so it\u0027s not likely to save more than ~20K. But if it doesn\u0027t add much complexity, and the speed is still OK, it could be a decent win.",
+      "parentUuid": "08df9bef_14786b49",
+      "revId": "8cbee34f6dda3ebe901bbc7e9eec68a4d33283df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
