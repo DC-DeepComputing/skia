@@ -60,6 +60,10 @@ GENERAL_DEFINES = [
 }) + select({
     "//src/lazy:enable_discardable_memory_true": ["SK_USE_DISCARDABLE_SCALEDIMAGECACHE"],
     "//src/lazy:enable_discardable_memory_false": [],
+}) + select({
+    # http://review.skia.org/633089
+    "//bazel/common_config_settings:trivial_abi_true": ["SK_TRIVIAL_ABI=[[clang::trivial_abi]]"],
+    "//bazel/common_config_settings:trivial_abi_false": [],
 })
 
 GPU_DEFINES = select_multi({

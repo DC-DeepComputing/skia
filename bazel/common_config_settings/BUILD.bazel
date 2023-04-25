@@ -214,6 +214,11 @@ bool_flag(
 )
 
 bool_flag(
+    name = "trivial_abi",
+    default = True,
+)
+
+bool_flag(
     name = "use_harfbuzz",
     default = False,
 )
