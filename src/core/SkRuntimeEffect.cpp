@@ -67,7 +67,7 @@
 #ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
 #include "src/core/SkStreamPriv.h"
 #include "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h"
-constexpr bool kRPEnableLiveTrace = false;
+constexpr bool kRPEnableLiveTrace = true;
 #endif
 
 #include <algorithm>
