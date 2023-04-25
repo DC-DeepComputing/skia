@@ -86,6 +86,7 @@ public:
     static sk_sp<SkShader> Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src);
     static sk_sp<SkShader> Blend(sk_sp<SkBlender>, sk_sp<SkShader> dst, sk_sp<SkShader> src);
     static sk_sp<SkShader> CoordClamp(sk_sp<SkShader>, const SkRect& subset);
+    static sk_sp<SkShader> Dashing(int foo);
 private:
     SkShaders() = delete;
 };

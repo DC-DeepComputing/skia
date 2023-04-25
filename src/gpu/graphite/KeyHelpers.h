@@ -175,6 +175,20 @@ struct CoordClampShaderBlock {
                            const CoordClampData*);
 };
 
+struct DashingShaderBlock {
+    struct DashingShaderData {
+        DashingShaderData(int foo) : fFoo(foo) {}
+
+        int fFoo;
+    };
+
+    // The gatherer and data should be null or non-null together
+    static void BeginBlock(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           PipelineDataGatherer*,
+                           const DashingShaderData*);
+};
+
 struct DitherShaderBlock {
     struct DitherData {
         DitherData(float range) : fRange(range) {}

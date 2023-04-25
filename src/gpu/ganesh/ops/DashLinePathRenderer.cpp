@@ -33,6 +33,9 @@ skgpu::ganesh::PathRenderer::CanDrawPath DashLinePathRenderer::onCanDrawPath(
 }
 
 bool DashLinePathRenderer::onDrawPath(const DrawPathArgs& args) {
+#if 0
+    return true;
+#else
     GR_AUDIT_TRAIL_AUTO_FRAME(args.fContext->priv().auditTrail(),
                               "DashLinePathRenderer::onDrawPath");
     DashOp::AAMode aaMode;
@@ -59,6 +62,7 @@ bool DashLinePathRenderer::onDrawPath(const DrawPathArgs& args) {
     }
     args.fSurfaceDrawContext->addDrawOp(args.fClip, std::move(op));
     return true;
+#endif
 }
 
 } // namespace skgpu::ganesh

@@ -12,6 +12,8 @@ EFFECTS_FILES = [
     "SkColorMatrixFilter.cpp",
     "SkCornerPathEffect.cpp",
     "SkDashImpl.h",
+    "SkDashingMaskFilter.cpp",
+    "SkDashingMaskFilter.h",
     "SkDashPathEffect.cpp",
     "SkDiscretePathEffect.cpp",
     "SkEmbossMask.cpp",

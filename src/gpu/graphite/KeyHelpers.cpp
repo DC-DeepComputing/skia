@@ -474,6 +474,36 @@ void CoordClampShaderBlock::BeginBlock(const KeyContext& keyContext,
 
 namespace {
 
+void add_dash_uniform_data(const ShaderCodeDictionary* dict,
+                           const DashingShaderBlock::DashingShaderData& dashData,
+                           PipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kDashingShader)
+
+    gatherer->write(dashData.fFoo);
+
+    gatherer->addFlags(dict->getSnippetRequirementFlags(BuiltInCodeSnippetID::kDashingShader));
+}
+
+} // anonymous namespace
+
+void DashingShaderBlock::BeginBlock(const KeyContext& keyContext,
+                                    PaintParamsKeyBuilder* builder,
+                                    PipelineDataGatherer* gatherer,
+                                    const DashingShaderData* dashData) {
+    SkASSERT(!gatherer == !dashData);
+
+    auto dict = keyContext.dict();
+    if (gatherer) {
+        add_dash_uniform_data(dict, *dashData, gatherer);
+    }
+
+    builder->beginBlock(BuiltInCodeSnippetID::kCoordClampShader);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+namespace {
+
 void add_dither_uniform_data(const ShaderCodeDictionary* dict,
                              const DitherShaderBlock::DitherData& ditherData,
                              PipelineDataGatherer* gatherer) {

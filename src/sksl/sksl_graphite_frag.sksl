@@ -843,6 +843,11 @@ $pure half4 sk_matrix_colorfilter(half4 colorIn, float4x4 m, float4 v, int inHSL
     return colorOut;
 }
 
+$pure half4 dash_me(float2 coords,
+                    float4 colorParam) {
+    return half4(1);
+}
+
 // This method computes the 4 x-coodinates ([0..1]) that should be used to look
 // up in the Perlin noise shader's noise table.
 $pure half4 noise_helper(half2 noiseVec,

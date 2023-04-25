@@ -12,13 +12,17 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathEffect.h"
 #include "include/core/SkRRect.h"
+#include "include/effects/SkDashPathEffect.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkColorFilterPriv.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 
+#if 0
 namespace {
 
 sk_sp<SkShader> create_gradient_shader(SkRect r,
@@ -246,6 +250,7 @@ void draw_blend_mode_swatches(SkCanvas* canvas, SkRect clipRect) {
 }
 
 } // anonymous namespace
+#endif
 
 namespace skiagm {
 
@@ -274,11 +279,12 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
 
-        const SkRect clipRect = SkRect::MakeWH(kWidth, kHeight).makeInset(kClipInset, kClipInset);
+//        const SkRect clipRect = SkRect::MakeWH(kWidth, kHeight).makeInset(kClipInset, kClipInset);
 
         canvas->save();
-        canvas->clipRRect(SkRRect::MakeRectXY(clipRect, 32.f, 32.f), true);
+//        canvas->clipRRect(SkRRect::MakeRectXY(clipRect, 32.f, 32.f), true);
 
+#if 0
         // Upper-left corner
         draw_image_shader_tile(canvas, SkRect::MakeXYWH(0, 0, kTileWidth, kTileHeight));
 
@@ -288,16 +294,56 @@ protected:
         // Upper-right corner
         draw_colorfilter_swatches(canvas, SkRect::MakeXYWH(2*kTileWidth, 0,
                                                            kTileWidth, kTileWidth));
+#endif
 
         // Middle-left tile
         {
-            SkPaint p;
-            p.setColor(SK_ColorRED);
+            constexpr float kStrokeWidth = kTileHeight/20.0f;
+            SkPath path = SkPathBuilder().moveTo(0, 0).lineTo(kTileWidth, 0).detach();
 
+            SkPaint paint;
+            paint.setColor(SK_ColorWHITE);
+            paint.setStrokeWidth(kStrokeWidth);
+            paint.setStyle(SkPaint::kStroke_Style);
+
+            float vals[5][5] {
+                { 2.0f,     kStrokeWidth, 3 * kStrokeWidth, 0.0f,         0.0f },
+                { 2.0f, 4 * kStrokeWidth, 3 * kStrokeWidth, 0.0f,         0.0f },
+                { 4.0f, 4 * kStrokeWidth, 3 * kStrokeWidth, kStrokeWidth, 3 * kStrokeWidth },
+                { 2.0f, 8 * kStrokeWidth, 3 * kStrokeWidth, 0.0f,         0.0f },
+                { 4.0f, 8 * kStrokeWidth, 3 * kStrokeWidth, kStrokeWidth, 3 * kStrokeWidth },
+            };
+
+            for (int i = 0; i < 5; ++i) {
+                int numIntervals = vals[i][0];
+                const float* intervals = &vals[i][1];
+
+                int sum = 0;
+                for (int j = 0; j < numIntervals; ++j) {
+                    sum += intervals[j];
+                }
+
+                canvas->save();
+                    canvas->translate(0.0f, kTileHeight + kStrokeWidth/2.0f + 2 + i * (2*kStrokeWidth));
+                    paint.setPathEffect(SkDashPathEffect::Make(intervals, numIntervals, 0.0f));
+                    canvas->drawPath(path, paint);
+
+                    canvas->translate(0.0f, 10 * kStrokeWidth);
+                    paint.setPathEffect(SkDashPathEffect::Make(intervals, numIntervals, 0.5f*sum));
+                    canvas->drawPath(path, paint);
+                canvas->restore();
+            }
+
+#if 1
+            paint.setColor(SK_ColorWHITE);
+            paint.setStrokeWidth(1.0f);
+            paint.setPathEffect(nullptr);
             SkRect r = SkRect::MakeXYWH(0, kTileHeight, kTileWidth, kTileHeight);
-            canvas->drawRect(r.makeInset(1.0f, 1.0f), p);
+            canvas->drawRect(r, paint);
+#endif
         }
 
+#if 0
         // Middle-middle tile
         {
             SkPaint p;
@@ -358,6 +404,7 @@ protected:
                 canvas->drawRect(kTile.makeInset(15, 25), circlePaint);
             canvas->restore();
         }
+#endif
     }
 
 private:

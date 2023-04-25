@@ -9,6 +9,8 @@
 
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
+#include "include/private/base/SkTemplates.h"
+#include "src/effects/SkDashingMaskFilter.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
@@ -55,6 +57,8 @@
 
 #include <unordered_map>
 #include <vector>
+
+using namespace skia_private;
 
 using RescaleGamma       = SkImage::RescaleGamma;
 using RescaleMode        = SkImage::RescaleMode;
@@ -653,7 +657,116 @@ void Device::drawRRect(const SkRRect& rr, const SkPaint& paint) {
                        paint, SkStrokeRec(paint));
 }
 
+
+namespace {
+
+sk_sp<SkShader> make_dash_shader() {
+    return SkShaders::Dashing(1);
+}
+
+void draw_dashed_line(Device* device,
+                      const SkPoint line[2],
+                      const SkPaint& paint) {
+    Rect r;
+
+    float halfStrokeWidth = paint.getStrokeWidth() * 0.5f;
+
+    if (line[0].fX == line[1].fX) {
+        r = { line[0].fX - halfStrokeWidth,
+              line[0].fY,
+              line[0].fX + halfStrokeWidth,
+              line[1].fY };
+    } else {
+        SkASSERT(line[0].fY == line[1].fY);
+
+        r = { line[0].fX,
+              line[0].fY - halfStrokeWidth,
+              line[1].fX,
+              line[0].fY + halfStrokeWidth };
+    }
+
+    r.sort();
+
+    SkPaint newPaint;
+    newPaint.setColor4f(paint.getColor4f());
+    newPaint.setShader(make_dash_shader());
+
+    device->drawGeometry(device->localToDeviceTransform(), Geometry(Shape(r)),
+                         newPaint, SkStrokeRec(newPaint));
+}
+
+bool draw_as_dashed_line(Device* device,
+                         SkCanvas::PointMode mode,
+                         int count,
+                         const SkPoint* points,
+                         const SkPaint& paint) {
+
+    if (count != 2 || mode != SkCanvas::kLines_PointMode) {
+        return false;
+    }
+
+    // Pts must be either horizontal or vertical in src space
+    if (points[0].fX != points[1].fX && points[0].fY != points[1].fY) {
+        return false;
+    }
+
+    if (points[0] == points[1]) {
+        // a point? It seems like this could work
+        return false;
+    }
+
+    SkPathEffect* pe = paint.getPathEffect();
+    if (!pe) {
+        return false;
+    }
+
+    SkPathEffect::DashInfo info;
+    if (SkPathEffect::kNone_DashType == pe->asADash(&info)) {
+        return false;
+    }
+
+    if (info.fCount > 2) {
+        return false;
+    }
+
+    AutoTArray<SkScalar> intervals(info.fCount);
+    info.fIntervals = intervals.get();
+    pe->asADash(&info);
+
+    SkPaint::Cap cap = paint.getStrokeCap();
+    if (SkPaint::kRound_Cap == cap) {
+        // Current we don't support round caps unless the on interval is zero
+        if (intervals[0] != 0.f) {
+            return false;
+        }
+        // If the width of the circle caps in greater than the off interval we will pick up unwanted
+        // segments of circles at the start and end of the dash line.
+        if (paint.getStrokeWidth() > intervals[1]) {
+            return false;
+        }
+    }
+
+    draw_dashed_line(device, points, paint);
+    return true;
+}
+
+bool draw_as_dashed_line(Device* device, const SkPath& path, const SkPaint& paint) {
+    SkPoint pts[2];
+
+    if (!path.isLine(pts)) {
+        return false;
+    }
+
+    return draw_as_dashed_line(device, SkCanvas::kLines_PointMode, 2, pts, paint);
+}
+
+} // anonymous namespace
+
 void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable) {
+    if (draw_as_dashed_line(this, path, paint)) {
+        return;
+    }
+
     // TODO: If we do try to inspect the path, it should happen here and possibly after computing
     // the path effect. Alternatively, all that should be handled in SkCanvas.
     this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(path)),
@@ -662,6 +775,10 @@ void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutab
 
 void Device::drawPoints(SkCanvas::PointMode mode, size_t count,
                         const SkPoint* points, const SkPaint& paint) {
+    if (draw_as_dashed_line(this, mode, count, points, paint)) {
+        return;
+    }
+
     SkStrokeRec stroke(paint, SkPaint::kStroke_Style);
     size_t next = 0;
     if (mode == SkCanvas::kPoints_PointMode) {
