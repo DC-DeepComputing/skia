@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d50d32d1_a30ed104",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-25T21:09:22Z",
+      "side": 1,
+      "message": "While working on getting CLs out to better represent the top-down flow of descriptor set layout (and pipeline layout) creation, I wanted to expand upon out some of the Vulkan command buffer methods to better facilitate that.",
+      "revId": "de4c7023f48f7a50cd0ea765fc3023519e77d7f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
