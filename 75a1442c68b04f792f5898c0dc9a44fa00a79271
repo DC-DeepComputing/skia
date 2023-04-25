@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e2ecbb99_012532e3",
+        "filename": "src/gpu/ganesh/image/GrImageUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-25T17:56:34Z",
+      "side": 1,
+      "message": "Just want to think through this (and make sure I understand):\n\nPreviously, picture-backed images were lazy images (just like codec-backed, etc...). All of the dynamic dispatch was one level below (in the generator). I was trying to figure out why we needed to specialize at this level now (vs. being able to reuse the generator logic in the next block), but it\u0027s because the picture-generator can\u0027t be a texture generator. (It needs to support generating raster data). So we had to effectively hoist the texture-generating parts of picture-image-generator into picture-image itself (and then slice those off to host them here)?",
+      "revId": "75a1442c68b04f792f5898c0dc9a44fa00a79271",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab2dce9c_2a92fc50",
         "filename": "src/image/SkPictureImageGenerator.cpp",
         "patchSetId": 6
