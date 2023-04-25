@@ -45,6 +45,7 @@ sk_sp<SkData> SkSharingSerialContext::serializeImage(SkImage* img, void* ctx) {
         auto iter2 = context->fNonTexMap.find(id);
         if (iter2 != context->fNonTexMap.end()) {
             img = iter2->second.get();
+            if (!img) return nullptr;
         }
         return img->encodeToData();
     }
