@@ -43,7 +43,8 @@ public:
     std::tuple<UniformWriter, BindBufferInfo> getUniformWriter(size_t requiredBytes);
     std::tuple<UniformWriter, BindBufferInfo> getSsboWriter(size_t requiredBytes);
 
-    // Returns a pointer to a mapped storage buffer slice without a specific data writer.
+    // Return a pointer to a mapped buffer slice without a specific data writer.
+    std::tuple<void*, BindBufferInfo> getMappedUniform(size_t requiredBytes);
     std::tuple<void*, BindBufferInfo> getMappedStorage(size_t requiredBytes);
 
     // Utilities that return an unmapped buffer slice with a particular usage. These slices are
