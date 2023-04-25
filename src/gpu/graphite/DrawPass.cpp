@@ -427,7 +427,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     //    indirection and does not work as well with SkTBlockList.
     // In pseudo tests, manipulating the pointer or having to mask out indices was about 15% slower
     // than an 8 byte key and unmodified pointer.
-    static_assert(sizeof(DrawPass::SortKey) == 16 + sizeof(void*));
+    static_assert(sizeof(DrawPass::SortKey) == 16 + alignof(void*));
 
     // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
     // is returned from Make(), it is considered immutable.
