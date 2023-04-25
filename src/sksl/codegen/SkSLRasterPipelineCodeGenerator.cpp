@@ -3580,6 +3580,13 @@ bool Generator::pushTernaryExpression(const Expression& test,
 }
 
 bool Generator::pushVariableReference(const VariableReference& v) {
+    // If we are pushing a constant-value scalar variable, just push the value directly. Literal
+    // values are generally more amenable to optimization.
+    if (v.type().isScalar()) {
+        if (const Expression* value = ConstantFolder::GetConstantValueOrNullForVariable(v)) {
+            return this->pushExpression(*value);
+        }
+    }
     return this->pushVariableReferencePartial(v, SlotRange{0, (int)v.type().slotCount()});
 }
 
