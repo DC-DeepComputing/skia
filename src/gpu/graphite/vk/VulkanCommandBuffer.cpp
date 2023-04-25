@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 
+#include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
@@ -256,16 +257,145 @@ void VulkanCommandBuffer::waitUntilFinished() {
                                                                     /*timeout=*/UINT64_MAX));
 }
 
-bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc&,
+bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                           const Texture* colorTexture,
                                           const Texture* resolveTexture,
                                           const Texture* depthStencilTexture,
                                           SkRect viewport,
                                           const DrawPassList& drawPasses) {
-    // TODO: fill this in
+    if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
+        return false;
+    }
 
-    // return true despite doing nothing to allow dm to run
+    for (const auto& drawPass : drawPasses) {
+        this->addDrawPass(drawPass.get());
+    }
+
+    // TODO: Set viewport
+
+    this->endRenderPass();
     return true;
+}
+
+bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
+                                          const Texture* colorTexture,
+                                          const Texture* resolveTexture,
+                                          const Texture* depthStencilTexture) {
+    const static VkAttachmentLoadOp vkLoadActionMap[]{
+        VK_ATTACHMENT_LOAD_OP_LOAD,
+        VK_ATTACHMENT_LOAD_OP_CLEAR,
+        VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+    };
+
+    static_assert((int)LoadOp::kLoad == 0);
+    static_assert((int)LoadOp::kClear == 1);
+    static_assert((int)LoadOp::kDiscard == 2);
+    static_assert(std::size(vkLoadActionMap) == kLoadOpCount);
+
+    const static VkAttachmentStoreOp vkStoreActionMap[]{
+        VK_ATTACHMENT_STORE_OP_STORE,
+        VK_ATTACHMENT_STORE_OP_DONT_CARE
+    };
+    static_assert((int)StoreOp::kStore == 0);
+    static_assert((int)StoreOp::kDiscard == 1);
+    static_assert(std::size(vkStoreActionMap) == kStoreOpCount);
+
+    // TODO: Implement the following:
+    // Get render pass descriptor
+    // Set up color attachment
+    // Set up depth/stencil attachment
+    // If needed, load MSAA from resolve
+
+    // Return true despite not being fully completed to allow dm to run.
+    return true;
+}
+
+void VulkanCommandBuffer::endRenderPass() {
+    SkASSERT(fIsActive);
+    SkASSERT(fActiveRenderPass);
+    this->submitPipelineBarriers();
+    VULKAN_CALL(fSharedContext->interface(), CmdEndRenderPass(fPrimaryCommandBuffer));
+    fActiveRenderPass = nullptr;
+}
+
+void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
+    drawPass->addResourceRefs(this);
+    for (auto [type, cmdPtr] : drawPass->commands()) {
+        switch (type) {
+            case DrawPassCommands::Type::kBindGraphicsPipeline: {
+                auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
+                this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex));
+                break;
+            }
+            case DrawPassCommands::Type::kSetBlendConstants: {
+                auto sbc = static_cast<DrawPassCommands::SetBlendConstants*>(cmdPtr);
+                this->setBlendConstants(sbc->fBlendConstants);
+                break;
+            }
+            case DrawPassCommands::Type::kBindUniformBuffer: {
+                auto bub = static_cast<DrawPassCommands::BindUniformBuffer*>(cmdPtr);
+                this->bindUniformBuffer(bub->fInfo, bub->fSlot);
+                break;
+            }
+            case DrawPassCommands::Type::kBindDrawBuffers: {
+                auto bdb = static_cast<DrawPassCommands::BindDrawBuffers*>(cmdPtr);
+                this->bindDrawBuffers(
+                        bdb->fVertices, bdb->fInstances, bdb->fIndices, bdb->fIndirect);
+                break;
+            }
+            case DrawPassCommands::Type::kBindTexturesAndSamplers: {
+                auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
+                this->bindTextureAndSamplers(*drawPass, *bts);
+                break;
+            }
+            case DrawPassCommands::Type::kSetScissor: {
+                auto ss = static_cast<DrawPassCommands::SetScissor*>(cmdPtr);
+                const SkIRect& rect = ss->fScissor;
+                this->setScissor(rect.fLeft, rect.fTop, rect.width(), rect.height());
+                break;
+            }
+            case DrawPassCommands::Type::kDraw: {
+                auto draw = static_cast<DrawPassCommands::Draw*>(cmdPtr);
+                this->draw(draw->fType, draw->fBaseVertex, draw->fVertexCount);
+                break;
+            }
+            case DrawPassCommands::Type::kDrawIndexed: {
+                auto draw = static_cast<DrawPassCommands::DrawIndexed*>(cmdPtr);
+                this->drawIndexed(
+                        draw->fType, draw->fBaseIndex, draw->fIndexCount, draw->fBaseVertex);
+                break;
+            }
+            case DrawPassCommands::Type::kDrawInstanced: {
+                auto draw = static_cast<DrawPassCommands::DrawInstanced*>(cmdPtr);
+                this->drawInstanced(draw->fType,
+                                    draw->fBaseVertex,
+                                    draw->fVertexCount,
+                                    draw->fBaseInstance,
+                                    draw->fInstanceCount);
+                break;
+            }
+            case DrawPassCommands::Type::kDrawIndexedInstanced: {
+                auto draw = static_cast<DrawPassCommands::DrawIndexedInstanced*>(cmdPtr);
+                this->drawIndexedInstanced(draw->fType,
+                                           draw->fBaseIndex,
+                                           draw->fIndexCount,
+                                           draw->fBaseVertex,
+                                           draw->fBaseInstance,
+                                           draw->fInstanceCount);
+                break;
+            }
+            case DrawPassCommands::Type::kDrawIndirect: {
+                auto draw = static_cast<DrawPassCommands::DrawIndirect*>(cmdPtr);
+                this->drawIndirect(draw->fType);
+                break;
+            }
+            case DrawPassCommands::Type::kDrawIndexedIndirect: {
+                auto draw = static_cast<DrawPassCommands::DrawIndexedIndirect*>(cmdPtr);
+                this->drawIndexedIndirect(draw->fType);
+                break;
+            }
+        }
+    }
 }
 
 bool VulkanCommandBuffer::onAddComputePass(const DispatchGroupList&) { return false; }
