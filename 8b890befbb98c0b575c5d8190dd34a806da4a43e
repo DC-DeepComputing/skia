@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5f8251d_a788c55c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-25T19:31:37Z",
+      "side": 1,
+      "message": "Just to be clear, I don\u0027t see anything here using this `clang_abi_mode` yet. To test this we would need to add a job that builds with it, yes? It\u0027s fine if we don\u0027t have one right now.",
+      "revId": "8b890befbb98c0b575c5d8190dd34a806da4a43e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

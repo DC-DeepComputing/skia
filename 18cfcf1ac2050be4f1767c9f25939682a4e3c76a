@@ -52,6 +52,24 @@
       "parentUuid": "cc593386_62445378",
       "revId": "18cfcf1ac2050be4f1767c9f25939682a4e3c76a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8afc43d1_fb285abb",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-25T19:31:37Z",
+      "side": 1,
+      "message": "This works for any platform (and breaks any Itanium ABI), so adding for all our current platforms is good.",
+      "parentUuid": "32cc3c77_80bbfa5b",
+      "revId": "18cfcf1ac2050be4f1767c9f25939682a4e3c76a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
