@@ -123,6 +123,24 @@
       "parentUuid": "588e3d64_849e13c9",
       "revId": "75a1442c68b04f792f5898c0dc9a44fa00a79271",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ebe9a4a_f5613c93",
+        "filename": "src/image/SkPictureImageGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-25T18:54:56Z",
+      "side": 1,
+      "message": "Although I do find it suspicious there are some slight Gold diffs in the \"image-cacherator-from-picture\" test. Minor stuff around the edges, but I\u0027m not sure why.",
+      "parentUuid": "68a31f56_66cad5c1",
+      "revId": "75a1442c68b04f792f5898c0dc9a44fa00a79271",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
