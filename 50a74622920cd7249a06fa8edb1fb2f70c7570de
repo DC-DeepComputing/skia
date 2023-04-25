@@ -16,6 +16,24 @@
       "message": "The binary size bump is surprising, do you know if skottie_tool using the slot manager by any chance?",
       "revId": "50a74622920cd7249a06fa8edb1fb2f70c7570de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cc71452_70c4dff7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-04-25T17:48:40Z",
+      "side": 1,
+      "message": "I was also suspicious of the bump. It shouldn\u0027t use SlotManager to my knowledge.",
+      "parentUuid": "a13ef90c_7965c32a",
+      "revId": "50a74622920cd7249a06fa8edb1fb2f70c7570de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
