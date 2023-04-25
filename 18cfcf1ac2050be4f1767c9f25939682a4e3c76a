@@ -34,6 +34,24 @@
       "parentUuid": "0a120133_43c7e5d2",
       "revId": "18cfcf1ac2050be4f1767c9f25939682a4e3c76a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32cc3c77_80bbfa5b",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-25T19:12:54Z",
+      "side": 1,
+      "message": "Done. A custom platform constraint is pretty easy to add. Does it need to be Linux + that constraint setting or would any platform that has that key be ok?\n\nI went with the latter because it was easier (and clearer, IMO)",
+      "parentUuid": "cc593386_62445378",
+      "revId": "18cfcf1ac2050be4f1767c9f25939682a4e3c76a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
