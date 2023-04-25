@@ -3309,26 +3309,20 @@ bool Generator::pushPostfixExpression(const PostfixExpression& p, bool usesResul
     fBuilder.push_clone(p.type().slotCount());
 
     // Increment or decrement the scratch copy by one.
-    Literal oneLiteral{Position{}, 1.0, &p.type().componentType()};
-    if (!this->pushVectorizedExpression(oneLiteral, p.type())) {
+    double amount;
+    switch (p.getOperator().kind()) {
+        case OperatorKind::PLUSPLUS:   amount = 1.0;  break;
+        case OperatorKind::MINUSMINUS: amount = -1.0; break;
+        default:                       SkUNREACHABLE;
+    }
+
+    Literal amountLiteral{p.fPosition, amount, &p.type().componentType()};
+    if (!this->pushVectorizedExpression(amountLiteral, p.type())) {
         return unsupported();
     }
 
-    switch (p.getOperator().kind()) {
-        case OperatorKind::PLUSPLUS:
-            if (!this->binaryOp(p.type(), kAddOps)) {
-                return unsupported();
-            }
-            break;
-
-        case OperatorKind::MINUSMINUS:
-            if (!this->binaryOp(p.type(), kSubtractOps)) {
-                return unsupported();
-            }
-            break;
-
-        default:
-            SkUNREACHABLE;
+    if (!this->binaryOp(p.type(), kAddOps)) {
+        return unsupported();
     }
 
     // Write the new value back to the operand.
