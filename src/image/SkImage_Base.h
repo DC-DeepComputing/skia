@@ -46,6 +46,7 @@ public:
     ~SkImage_Base() override;
 
     // From SkImage.h
+    sk_sp<SkImage> makeSubset(GrDirectContext* direct, const SkIRect& subset) const override;
     size_t textureSize() const override { return 0; }
 #if defined(SK_GRAPHITE)
     sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
@@ -119,7 +120,7 @@ public:
     virtual bool getROPixels(GrDirectContext*, SkBitmap*,
                              CachingHint = kAllow_CachingHint) const = 0;
 
-    virtual sk_sp<SkImage> onMakeSubset(const SkIRect&, GrDirectContext*) const = 0;
+    virtual sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect&) const = 0;
 
     virtual sk_sp<SkData> onRefEncoded() const { return nullptr; }
 
@@ -129,6 +130,7 @@ public:
         kRaster,
         kRasterPinnable,
         kLazy,
+        kCrossContextGanesh,
         kGanesh,
         kGaneshYUVA,
         kGraphite,
@@ -137,8 +139,10 @@ public:
 
     virtual Type type() const = 0;
 
-    // True for picture-backed and codec-backed
-    bool onIsLazyGenerated() const { return this->type() == Type::kLazy; }
+    // True for picture-backed, codec-backed, and cross-context images.
+    bool onIsLazyGenerated() const {
+        return this->type() == Type::kLazy || this->type() == Type::kCrossContextGanesh;
+    }
 
     bool isRasterBacked() const {
         return this->type() == Type::kRaster || this->type() == Type::kRasterPinnable;
@@ -181,8 +185,8 @@ public:
 #if defined(SK_GRAPHITE)
     virtual sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
                                               RequiredImageProperties) const = 0;
-    virtual sk_sp<SkImage> onMakeSubset(const SkIRect&,
-                                        skgpu::graphite::Recorder*,
+    virtual sk_sp<SkImage> onMakeSubset(skgpu::graphite::Recorder*,
+                                        const SkIRect&,
                                         RequiredImageProperties) const = 0;
     virtual sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,
                                                         sk_sp<SkColorSpace>,
