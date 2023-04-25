@@ -38,14 +38,15 @@
     #define SK_OPTS_NS portable
 #endif
 
+#include "src/opts/Hash_opts_impl.h"
+#include "src/opts/Memset_opts_impl.h"
 #include "src/opts/SkBitmapProcState_opts.h"
 #include "src/opts/SkBlitMask_opts.h"
 #include "src/opts/SkBlitRow_opts.h"
-#include "src/opts/SkChecksum_opts.h"
 #include "src/opts/SkRasterPipeline_opts.h"
-#include "src/opts/SkSwizzler_opts.h"
-#include "src/opts/SkUtils_opts.h"
 #include "src/opts/SkVM_opts.h"
+#include "src/opts/SkXfermode_opts.h"
+#include "src/opts/Swizzle_opts_impl.h"
 
 namespace SkOpts {
     // Define default function pointer values here...
@@ -69,6 +70,7 @@ namespace SkOpts {
     DEFINE_DEFAULT(inverted_CMYK_to_RGB1);
     DEFINE_DEFAULT(inverted_CMYK_to_BGR1);
 
+    DEFINE_DEFAULT(memset8);
     DEFINE_DEFAULT(memset16);
     DEFINE_DEFAULT(memset32);
     DEFINE_DEFAULT(memset64);

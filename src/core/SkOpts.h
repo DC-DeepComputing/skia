@@ -9,9 +9,16 @@
 #define SkOpts_DEFINED
 
 #include "include/core/SkColor.h"
-#include "include/core/SkTypes.h"
 #include "include/private/SkOpts_spi.h"
+#include "include/private/base/SkCPUTypes.h"
 #include "src/core/SkRasterPipelineOpList.h"
+
+#include <cstddef>
+#include <cstdint>
+
+enum class SkBlendMode;
+struct SkBitmapProcState;
+struct SkRasterPipelineStage;
 
 /**
  * SkOpts (short for SkOptimizations) is a mechanism where we can ship with multiple implementations

@@ -13,7 +13,6 @@
 #include "include/core/SkSize.h"
 #include "src/core/SkCachedData.h"
 #include "src/core/SkImageInfoPriv.h"
-#include "src/shaders/SkShaderBase.h"
 
 class SkBitmap;
 class SkData;

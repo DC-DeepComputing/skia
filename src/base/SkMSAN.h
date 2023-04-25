@@ -40,4 +40,4 @@ static inline void sk_msan_mark_initialized(const void* begin, const void* end, 
 #endif
 }
 
-#endif//SkMSAN_DEFINED
+#endif //SkMSAN_DEFINED

@@ -12,7 +12,8 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkSize.h"
-#include "include/core/SkTypes.h"
+#include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAssert.h"
 
 #include <array>
 #include <cstddef>

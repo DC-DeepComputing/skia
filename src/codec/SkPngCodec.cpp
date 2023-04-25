@@ -25,7 +25,8 @@
 #include "src/codec/SkColorTable.h"
 #include "src/codec/SkPngPriv.h"
 #include "src/codec/SkSwizzler.h"
-#include "src/core/SkOpts.h"
+#include "src/opts/Memset_opts.h"
+#include "src/opts/Swizzle_opts.h"
 
 #include <csetjmp>
 #include <algorithm>

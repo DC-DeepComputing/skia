@@ -8,6 +8,7 @@
 #include "include/core/SkYUVAInfo.h"
 
 #include "include/core/SkColor.h"
+#include "include/private/base/SkAssert.h"
 #include "src/base/SkSafeMath.h"
 #include "src/core/SkYUVAInfoLocation.h"
 

@@ -8,8 +8,10 @@
 #include "include/core/SkYUVAPixmaps.h"
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkData.h"
 #include "include/private/base/SkDebug.h"
 #include "src/base/SkRectMemcpy.h"
+#include "src/core/SkConvertPixels.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkYUVAInfoLocation.h"
 
@@ -261,6 +263,13 @@ SkYUVAPixmaps SkYUVAPixmaps::FromExternalPixmaps(const SkYUVAInfo& yuvaInfo,
     }
     return SkYUVAPixmaps(yuvaInfo, yuvaPixmapInfo.dataType(), pixmaps);
 }
+
+SkYUVAPixmaps::SkYUVAPixmaps() = default;
+SkYUVAPixmaps::~SkYUVAPixmaps() = default;
+SkYUVAPixmaps::SkYUVAPixmaps(SkYUVAPixmaps&& that) = default;
+SkYUVAPixmaps& SkYUVAPixmaps::operator=(SkYUVAPixmaps&& that) = default;
+SkYUVAPixmaps::SkYUVAPixmaps(const SkYUVAPixmaps&) = default;
+SkYUVAPixmaps& SkYUVAPixmaps::operator=(const SkYUVAPixmaps& that) = default;
 
 SkYUVAPixmaps::SkYUVAPixmaps(const SkYUVAPixmapInfo& yuvaPixmapInfo, sk_sp<SkData> data)
         : fData(std::move(data))

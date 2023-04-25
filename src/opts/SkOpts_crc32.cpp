@@ -10,7 +10,7 @@
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 #define SK_OPTS_NS crc32
-#include "src/opts/SkChecksum_opts.h"
+#include "src/opts/Hash_opts_impl.h"
 
 namespace SkOpts {
     void Init_crc32() {
