@@ -17,8 +17,7 @@ splat_2_constants              expectedA(2..3) = 0x00000032 (7.006492e-44)
 splat_3_constants              expectedB(0..2) = 0
 copy_constant                  expectedB(3) = 0x00000064 (1.401298e-43)
 copy_slot_unmasked             $0 = uintValues(0)
-copy_constant                  $1 = 0x00000032 (7.006492e-44)
-min_uint                       $0 = min($0, $1)
+min_imm_uint
 copy_slot_unmasked             $1 = expectedA(0)
 cmpeq_int                      $0 = equal($0, $1)
 copy_2_slots_unmasked          $1..2 = uintValues(0..1)

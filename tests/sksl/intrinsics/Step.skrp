@@ -67,8 +67,7 @@ bitwise_and_2_ints             $1..2 &= $3..4
 bitwise_and_int                $1 &= $2
 bitwise_and_int                $0 &= $1
 copy_uniform                   $1 = testInputs(0)
-copy_constant                  $2 = 0
-cmplt_float                    $1 = lessThan($1, $2)
+cmplt_imm_float
 copy_constant                  $2 = 0x3F800000 (1.0)
 bitwise_and_int                $1 &= $2
 copy_slot_unmasked             $2 = expectedB(0)

@@ -5,10 +5,8 @@ splat_2_constants              expected(1..2) = 0
 copy_constant                  expected(3) = 0x00000001 (1.401298e-45)
 copy_uniform                   $0 = testInputs(0)
 cast_to_int_from_float         $0 = FloatToInt($0)
-copy_constant                  $1 = 0xFFFFFFFF
-max_int                        $0 = max($0, $1)
-copy_constant                  $1 = 0x00000001 (1.401298e-45)
-min_int                        $0 = min($0, $1)
+max_imm_int
+min_imm_int
 copy_slot_unmasked             $1 = expected(0)
 cmpeq_int                      $0 = equal($0, $1)
 copy_2_uniforms                $1..2 = testInputs(0..1)
