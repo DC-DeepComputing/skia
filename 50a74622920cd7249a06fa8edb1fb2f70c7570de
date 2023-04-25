@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a13ef90c_7965c32a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-04-25T16:28:58Z",
+      "side": 1,
+      "message": "The binary size bump is surprising, do you know if skottie_tool using the slot manager by any chance?",
+      "revId": "50a74622920cd7249a06fa8edb1fb2f70c7570de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
