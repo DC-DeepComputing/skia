@@ -3365,23 +3365,20 @@ bool Generator::pushPrefixExpression(Operator op, const Expression& expr) {
             fBuilder.unary_op(BuilderOp::bitwise_not_int, expr.type().slotCount());
             return true;
 
-        case OperatorKind::MINUS:
-            // Handle negation as a componentwise `0 - expr`.
-            fBuilder.push_zeros(expr.type().slotCount());
-            if (!this->pushExpression(expr)) {
-                return unsupported();
-            }
-            return this->binaryOp(expr.type(), kSubtractOps);
-
+        case OperatorKind::MINUS: {
+            // Handle negation as a componentwise `expr * -1`.
+            Literal minusOneLiteral{expr.fPosition, -1.0, &expr.type().componentType()};
+            return this->pushBinaryExpression(expr, OperatorKind::STAR, minusOneLiteral);
+        }
         case OperatorKind::PLUSPLUS: {
             // Rewrite as `expr += 1`.
             Literal oneLiteral{Position{}, 1.0, &expr.type().componentType()};
             return this->pushBinaryExpression(expr, OperatorKind::PLUSEQ, oneLiteral);
         }
         case OperatorKind::MINUSMINUS: {
-            // Rewrite as `expr -= 1`.
-            Literal oneLiteral{Position{}, 1.0, &expr.type().componentType()};
-            return this->pushBinaryExpression(expr, OperatorKind::MINUSEQ, oneLiteral);
+            // Rewrite as `expr += -1`.
+            Literal minusOneLiteral{expr.fPosition, -1.0, &expr.type().componentType()};
+            return this->pushBinaryExpression(expr, OperatorKind::PLUSEQ, minusOneLiteral);
         }
         default:
             break;
