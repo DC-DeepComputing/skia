@@ -101,12 +101,43 @@ namespace RP {
     case BuilderOp::cmpne_n_floats:     \
     case BuilderOp::cmpne_n_ints
 
+#define ALL_IMMEDIATE_BINARY_OP_CASES   \
+         BuilderOp::add_imm_float:      \
+    case BuilderOp::add_imm_int:        \
+    case BuilderOp::mul_imm_float:      \
+    case BuilderOp::mul_imm_int:        \
+    case BuilderOp::min_imm_int:        \
+    case BuilderOp::min_imm_uint:       \
+    case BuilderOp::max_imm_float:      \
+    case BuilderOp::max_imm_int:        \
+    case BuilderOp::max_imm_uint:       \
+    case BuilderOp::cmple_imm_float:    \
+    case BuilderOp::cmple_imm_int:      \
+    case BuilderOp::cmple_imm_uint:     \
+    case BuilderOp::cmplt_imm_float:    \
+    case BuilderOp::cmplt_imm_int:      \
+    case BuilderOp::cmplt_imm_uint:     \
+    case BuilderOp::cmpeq_imm_float:    \
+    case BuilderOp::cmpeq_imm_int:      \
+    case BuilderOp::cmpne_imm_float:    \
+    case BuilderOp::cmpne_imm_int
+
 #define ALL_N_WAY_TERNARY_OP_CASES       \
          BuilderOp::smoothstep_n_floats
 
 #define ALL_MULTI_SLOT_TERNARY_OP_CASES \
          BuilderOp::mix_n_floats:       \
     case BuilderOp::mix_n_ints
+
+static BuilderOp convert_n_way_op_to_immediate(BuilderOp op) {
+    // This relies on the ordering of SkRP ops; the immediate-mode op must always come directly
+    // before the n-way op.
+    BuilderOp immOp = (BuilderOp)((int)op - 1);
+    switch (immOp) {
+        case ALL_IMMEDIATE_BINARY_OP_CASES: return immOp;
+        default:                            return op;
+    }
+}
 
 void Builder::unary_op(BuilderOp op, int32_t slots) {
     switch (op) {
@@ -122,6 +153,23 @@ void Builder::unary_op(BuilderOp op, int32_t slots) {
 }
 
 void Builder::binary_op(BuilderOp op, int32_t slots) {
+    // If this is a single-slot operation...
+    if (slots == 1 && !fInstructions.empty()) {
+        // ... and we just pushed a constant onto the stack...
+        Instruction& lastInstruction = fInstructions.back();
+        if (lastInstruction.fOp == BuilderOp::push_constant) {
+            // ... and this op has an immediate-mode equivalent...
+            BuilderOp immOp = convert_n_way_op_to_immediate(op);
+            if (immOp != op) {
+                // ... discard the constant from the stack, and use an immediate-mode op.
+                int32_t constantValue = lastInstruction.fImmB;
+                this->discard_stack(1);
+                fInstructions.push_back({immOp, {}, constantValue});
+                return;
+            }
+        }
+    }
+
     switch (op) {
         case ALL_N_WAY_BINARY_OP_CASES:
         case ALL_MULTI_SLOT_BINARY_OP_CASES:
@@ -1099,6 +1147,7 @@ static int stack_usage(const Instruction& inst) {
         }
         case ALL_SINGLE_SLOT_UNARY_OP_CASES:
         case ALL_MULTI_SLOT_UNARY_OP_CASES:
+        case ALL_IMMEDIATE_BINARY_OP_CASES:
         default:
             return 0;
     }
@@ -1566,6 +1615,15 @@ void Program::makeStages(TArray<Stage>* pipeline,
             case ALL_MULTI_SLOT_UNARY_OP_CASES: {
                 float* dst = tempStackPtr - (inst.fImmA * N);
                 this->appendMultiSlotUnaryOp(pipeline, (ProgramOp)inst.fOp, dst, inst.fImmA);
+                break;
+            }
+            case ALL_IMMEDIATE_BINARY_OP_CASES: {
+                float* dst = tempStackPtr - (1 * N);
+
+                SkRasterPipeline_ConstantCtx ctx;
+                ctx.dst = OffsetFromBase(dst);
+                ctx.value = sk_bit_cast<float>(inst.fImmA);
+                pipeline->push_back({(ProgramOp)inst.fOp, SkRPCtxUtils::Pack(ctx, alloc)});
                 break;
             }
             case ALL_N_WAY_BINARY_OP_CASES: {

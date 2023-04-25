@@ -1,252 +1,135 @@
 store_src_rg                   coords = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
 copy_constant                  $0 = 0x7B2D556E (9.000001e+35)
-copy_constant                  $1 = 0x4E6E6B28 (1e+09)
-mul_float                      $0 *= $1
-copy_constant                  $1 = 0x4E6E6B28 (1e+09)
-mul_float                      $0 *= $1
-copy_constant                  $1 = 0x4E6E6B28 (1e+09)
-mul_float                      $0 *= $1
-copy_constant                  $1 = 0x4E6E6B28 (1e+09)
-mul_float                      $0 *= $1
-copy_constant                  $1 = 0x4E6E6B28 (1e+09)
-mul_float                      $0 *= $1
-copy_constant                  $1 = 0x4E6E6B28 (1e+09)
-mul_float                      $0 *= $1
-copy_constant                  $1 = 0x4E6E6B28 (1e+09)
-mul_float                      $0 *= $1
-copy_constant                  $1 = 0x4E6E6B28 (1e+09)
-mul_float                      $0 *= $1
-copy_constant                  $1 = 0x4E6E6B28 (1e+09)
-mul_float                      $0 *= $1
-copy_constant                  $1 = 0x4E6E6B28 (1e+09)
-mul_float                      $0 *= $1
+mul_imm_float
+mul_imm_float
+mul_imm_float
+mul_imm_float
+mul_imm_float
+mul_imm_float
+mul_imm_float
+mul_imm_float
+mul_imm_float
+mul_imm_float
 copy_slot_unmasked             huge = $0
 copy_constant                  $0 = 0x40000000 (2.0)
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
 copy_slot_unmasked             hugeI = $0
 copy_constant                  $0 = 0x80000000 (-0.0)
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
 copy_slot_unmasked             hugeU = $0
 copy_constant                  $0 = 0x00004000 (2.295887e-41)
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
 copy_slot_unmasked             hugeS = $0
 copy_constant                  $0 = 0x00008000 (4.591775e-41)
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
 copy_slot_unmasked             hugeUS = $0
 copy_constant                  $0 = 0x80000000 (-0.0)
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
 copy_slot_unmasked             hugeNI = $0
 copy_constant                  $0 = 0xFFFF8000
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
-copy_constant                  $1 = 0x00000002 (2.802597e-45)
-mul_int                        $0 *= $1
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
+mul_imm_int
 copy_slot_unmasked             hugeNS = $0
 splat_4_constants              i4 = 0x00000002 (2.802597e-45)
 splat_4_constants              $0..3 = 0x40000000 (2.0)
@@ -314,56 +197,49 @@ mul_4_ints                     $0..3 *= $4..7
 copy_4_slots_unmasked          hugeUvec = $0..3
 copy_4_uniforms                $0..3 = colorGreen
 copy_slot_unmasked             $4 = huge
-copy_constant                  $5 = 0
-max_float                      $4 = max($4, $5)
+max_imm_float
 copy_constant                  $5 = 0x3F800000 (1.0)
 min_float                      $4 = min($4, $5)
 swizzle_4                      $4..7 = ($4..7).xxxx
 mul_4_floats                   $0..3 *= $4..7
 copy_slot_unmasked             $4 = hugeI
 cast_to_float_from_int         $4 = IntToFloat($4)
-copy_constant                  $5 = 0
-max_float                      $4 = max($4, $5)
+max_imm_float
 copy_constant                  $5 = 0x3F800000 (1.0)
 min_float                      $4 = min($4, $5)
 swizzle_4                      $4..7 = ($4..7).xxxx
 mul_4_floats                   $0..3 *= $4..7
 copy_slot_unmasked             $4 = hugeU
 cast_to_float_from_uint        $4 = UintToFloat($4)
-copy_constant                  $5 = 0
-max_float                      $4 = max($4, $5)
+max_imm_float
 copy_constant                  $5 = 0x3F800000 (1.0)
 min_float                      $4 = min($4, $5)
 swizzle_4                      $4..7 = ($4..7).xxxx
 mul_4_floats                   $0..3 *= $4..7
 copy_slot_unmasked             $4 = hugeS
 cast_to_float_from_int         $4 = IntToFloat($4)
-copy_constant                  $5 = 0
-max_float                      $4 = max($4, $5)
+max_imm_float
 copy_constant                  $5 = 0x3F800000 (1.0)
 min_float                      $4 = min($4, $5)
 swizzle_4                      $4..7 = ($4..7).xxxx
 mul_4_floats                   $0..3 *= $4..7
 copy_slot_unmasked             $4 = hugeUS
 cast_to_float_from_uint        $4 = UintToFloat($4)
-copy_constant                  $5 = 0
-max_float                      $4 = max($4, $5)
+max_imm_float
 copy_constant                  $5 = 0x3F800000 (1.0)
 min_float                      $4 = min($4, $5)
 swizzle_4                      $4..7 = ($4..7).xxxx
 mul_4_floats                   $0..3 *= $4..7
 copy_slot_unmasked             $4 = hugeNI
 cast_to_float_from_int         $4 = IntToFloat($4)
-copy_constant                  $5 = 0
-max_float                      $4 = max($4, $5)
+max_imm_float
 copy_constant                  $5 = 0x3F800000 (1.0)
 min_float                      $4 = min($4, $5)
 swizzle_4                      $4..7 = ($4..7).xxxx
 mul_4_floats                   $0..3 *= $4..7
 copy_slot_unmasked             $4 = hugeNS
 cast_to_float_from_int         $4 = IntToFloat($4)
-copy_constant                  $5 = 0
-max_float                      $4 = max($4, $5)
+max_imm_float
 copy_constant                  $5 = 0x3F800000 (1.0)
 min_float                      $4 = min($4, $5)
 swizzle_4                      $4..7 = ($4..7).xxxx

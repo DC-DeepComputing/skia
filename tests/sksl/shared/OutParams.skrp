@@ -198,45 +198,39 @@ copy_slot_unmasked             f2x2(0) = $0
 label                          label 0x0000001C
 copy_constant                  b = 0
 copy_uniform                   $0 = colorWhite(0)
-copy_constant                  $1 = 0
-cmpne_float                    $0 = notEqual($0, $1)
+cmpne_imm_float
 copy_slot_unmasked             v₁₈ = $0
 copy_slot_unmasked             b = $0
 label                          label 0x0000001D
 splat_2_constants              b2 = 0
 copy_uniform                   $0 = colorWhite(1)
-copy_constant                  $1 = 0
-cmpne_float                    $0 = notEqual($0, $1)
+cmpne_imm_float
 copy_slot_unmasked             $1 = $0
 copy_2_slots_unmasked          v₁₉ = $0..1
 copy_2_slots_unmasked          b2 = $0..1
 label                          label 0x0000001E
 splat_3_constants              b3 = 0
 copy_uniform                   $0 = colorWhite(2)
-copy_constant                  $1 = 0
-cmpne_float                    $0 = notEqual($0, $1)
+cmpne_imm_float
 swizzle_3                      $0..2 = ($0..2).xxx
 copy_3_slots_unmasked          v₂₀ = $0..2
 copy_3_slots_unmasked          b3 = $0..2
 label                          label 0x0000001F
 splat_4_constants              b4 = 0
 copy_uniform                   $0 = colorWhite(3)
-copy_constant                  $1 = 0
-cmpne_float                    $0 = notEqual($0, $1)
+cmpne_imm_float
 swizzle_4                      $0..3 = ($0..3).xxxx
 copy_4_slots_unmasked          v₂₁ = $0..3
 copy_4_slots_unmasked          b4 = $0..3
 label                          label 0x00000020
 copy_uniform                   $0 = colorWhite(1)
-copy_constant                  $1 = 0
-cmpne_float                    $0 = notEqual($0, $1)
+cmpne_imm_float
 copy_slot_unmasked             $1 = $0
 copy_2_slots_unmasked          v₁₉ = $0..1
 swizzle_copy_2_slots_masked    (b4).xw = Mask($0..1)
 label                          label 0x00000021
 copy_uniform                   $0 = colorWhite(0)
-copy_constant                  $1 = 0
-cmpne_float                    $0 = notEqual($0, $1)
+cmpne_imm_float
 copy_slot_unmasked             v₁₈ = $0
 copy_slot_unmasked             b3(2) = $0
 label                          label 0x00000022

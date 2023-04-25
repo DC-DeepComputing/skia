@@ -4,10 +4,8 @@ copy_constant                  expected(0) = 0xBF800000 (-1.0)
 copy_constant                  expected(1) = 0
 splat_2_constants              expected(2..3) = 0x3F800000 (1.0)
 copy_uniform                   $0 = testInputs(0)
-copy_constant                  $1 = 0x7F7FFFFF (3.40282347e+38)
-mul_float                      $0 *= $1
-copy_constant                  $1 = 0xBF800000 (-1.0)
-max_float                      $0 = max($0, $1)
+mul_imm_float
+max_imm_float
 copy_constant                  $1 = 0x3F800000 (1.0)
 min_float                      $0 = min($0, $1)
 copy_slot_unmasked             $1 = expected(0)
