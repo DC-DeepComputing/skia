@@ -31,12 +31,13 @@ ExtractPaintData(Recorder* recorder,
                  const Layout layout,
                  const SkM44& local2Dev,
                  const PaintParams& p,
+                 sk_sp<TextureProxy> dstTexture,
                  const SkColorInfo& targetColorInfo) {
     SkDEBUGCODE(builder->checkReset());
 
     gatherer->resetWithNewLayout(layout);
 
-    KeyContext keyContext(recorder, local2Dev, targetColorInfo, p.color());
+    KeyContext keyContext(recorder, local2Dev, targetColorInfo, p.color(), std::move(dstTexture));
     p.toKey(keyContext, builder, gatherer);
 
     UniquePaintParamsID paintID = recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
@@ -74,6 +75,23 @@ std::tuple<const UniformDataBlock*, const TextureDataBlock*> ExtractRenderStepDa
                                     : nullptr;
 
     return { uniforms, textures };
+}
+
+DstReadRequirement GetDstReadRequirement(const Caps* caps, std::optional<SkBlendMode> blendMode) {
+    // If the blend mode is absent, this is assumed to be for a runtime blender, for which we always
+    // do a dst read.
+    if (!blendMode || *blendMode > SkBlendMode::kLastCoeffMode) {
+        return caps->getDstReadRequirement();
+    }
+    return DstReadRequirement::kNone;
+}
+
+DstReadRequirement GetDstReadRequirement(const Caps* caps, const SkPaint& paint) {
+    const SkBlenderBase* blender = as_BB(paint.getBlender());
+    if (blender) {
+        return GetDstReadRequirement(caps, blender->asBlendMode());
+    }
+    return DstReadRequirement::kNone;
 }
 
 namespace {

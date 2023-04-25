@@ -639,10 +639,17 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
     SkColorInfo ci = SkColorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType,
                                  SkColorSpace::MakeSRGB());
 
-    KeyContext extractPaintKeyContext(recorder.get(), {}, ci, SkColors::kBlack);
-
     std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
-    KeyContext precompileKeyContext(dict, rtDict.get(), ci);
+    KeyContext precompileKeyContext(
+            recorder->priv().caps(), dict, rtDict.get(), ci, /* dstTexture= */ nullptr);
+
+    sk_sp<TextureProxy> fakeDstTexture = TextureProxy::Make(recorder->priv().caps(),
+                                                            SkISize::Make(1, 1),
+                                                            kRGBA_8888_SkColorType,
+                                                            skgpu::Mipmapped::kNo,
+                                                            skgpu::Protected::kNo,
+                                                            skgpu::Renderable::kYes,
+                                                            skgpu::Budgeted::kNo);
 
     SkFont font(ToolUtils::create_portable_typeface(), 16);
     const char text[] = "hambur";
@@ -695,12 +702,19 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                             primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
                         }
 
+                        DstReadRequirement dstReadReq =
+                                GetDstReadRequirement(recorder->priv().caps(), paint);
+                        bool needsDstSample = dstReadReq == DstReadRequirement::kTextureCopy ||
+                                              dstReadReq == DstReadRequirement::kTextureSample;
+                        sk_sp<TextureProxy> curDst = needsDstSample ? fakeDstTexture : nullptr;
+
                         auto [paintID, uData, tData] = ExtractPaintData(
                                 recorder.get(), &gatherer, &builder, Layout::kMetal, {},
                                 PaintParams(paint,
                                             std::move(primitiveBlender),
+                                            dstReadReq,
                                             /* skipColorXform= */ false),
-                                extractPaintKeyContext.dstColorInfo());
+                                curDst, ci);
 
                         std::vector<UniquePaintParamsID> precompileIDs;
                         paintOptions.priv().buildCombinations(precompileKeyContext,
