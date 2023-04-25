@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e133a8b_ccf984fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-25T18:00:16Z",
+      "side": 1,
+      "message": "cbrokaw@: PTAL at the logic in VelloRenderer.cpp which is a port of the full pipeline logic in vello/src/render.rs.",
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9553f7fd_35a4e46b",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-25T18:00:16Z",
+      "side": 1,
+      "message": "I don\u0027t know if this is the best home for this renderer but it should get stored as a singleton somewhere.",
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
