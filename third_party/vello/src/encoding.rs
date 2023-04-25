@@ -112,9 +112,9 @@ impl Encoding {
                         path_encoder.quad_to(p0.x, p0.y, p1.x, p1.y);
                     }
                     ffi::PathVerb::CurveTo => {
-                        let p0 = &path_el.points[2];
-                        let p1 = &path_el.points[3];
-                        let p2 = &path_el.points[4];
+                        let p0 = &path_el.points[1];
+                        let p1 = &path_el.points[2];
+                        let p2 = &path_el.points[3];
                         path_encoder.cubic_to(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y);
                     }
                     ffi::PathVerb::Close => path_encoder.close(),
