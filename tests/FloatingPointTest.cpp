@@ -94,17 +94,20 @@ DEF_TEST(DoubleNearlyEqualUlps, reporter) {
     SkASSERT(std::isnan(smallestNAN));
     SkASSERT(biggest != nextBiggest);
 
+    // Sanity check.
+    REPORTER_ASSERT(reporter, !sk_doubles_nearly_equal_ulps(smallestNAN, NAN));
+
     // The following tests are *wrong*. All the following should return false.
-    REPORTER_ASSERT(reporter, sk_doubles_nearly_equal_ulps(INFINITY, biggest));
-    REPORTER_ASSERT(reporter, sk_doubles_nearly_equal_ulps(smallestNAN, biggest));
-    REPORTER_ASSERT(reporter, sk_doubles_nearly_equal_ulps(smallestNAN, INFINITY));
+    REPORTER_ASSERT(reporter, !sk_doubles_nearly_equal_ulps(INFINITY, biggest));
+    REPORTER_ASSERT(reporter, !sk_doubles_nearly_equal_ulps(smallestNAN, biggest));
+    REPORTER_ASSERT(reporter, !sk_doubles_nearly_equal_ulps(smallestNAN, INFINITY));
 
     // The following tests assert, but should work.
-    // const double smallest = std::numeric_limits<double>::denorm_min();
-    //REPORTER_ASSERT(reporter, !sk_doubles_nearly_equal_ulps(NAN, NAN));
-    //REPORTER_ASSERT(reporter, sk_doubles_nearly_equal_ulps(smallest, -smallest));
-    //REPORTER_ASSERT(reporter, sk_doubles_nearly_equal_ulps(8*smallest, -8*smallest));
-    //REPORTER_ASSERT(reporter, !sk_doubles_nearly_equal_ulps(10*smallest, -10*smallest));
+    const double smallest = std::numeric_limits<double>::denorm_min();
+    REPORTER_ASSERT(reporter, !sk_doubles_nearly_equal_ulps(NAN, NAN));
+    REPORTER_ASSERT(reporter, sk_doubles_nearly_equal_ulps(smallest, -smallest));
+    REPORTER_ASSERT(reporter, sk_doubles_nearly_equal_ulps(8*smallest, -8*smallest));
+    REPORTER_ASSERT(reporter, !sk_doubles_nearly_equal_ulps(10*smallest, -10*smallest));
 }
 
 DEF_TEST(BitCastDoubleRoundTrip, reporter) {
