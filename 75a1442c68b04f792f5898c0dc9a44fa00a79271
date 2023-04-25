@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d1c207ee_741b703b",
+        "filename": "src/gpu/ganesh/image/GrImageUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-25T18:13:21Z",
+      "side": 1,
+      "message": "\u003e but it\u0027s because the picture-generator can\u0027t be a texture generator. (It needs to support generating raster data).\n\nYes. At least, not in an ergonomic sense. We don\u0027t want users to have to think too hard about \"am I going to draw this picture on a texture surface or not\".\n\n\u003e Previously, picture-backed images were lazy images.\n\nThey still are a subclass of lazy images; a subclass that gives us easier access to the picture, matrix, paint, and props. I think that\u0027s what you meant by \"texture-generating parts\", right?",
+      "parentUuid": "e2ecbb99_012532e3",
+      "revId": "75a1442c68b04f792f5898c0dc9a44fa00a79271",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab2dce9c_2a92fc50",
         "filename": "src/image/SkPictureImageGenerator.cpp",
         "patchSetId": 6
