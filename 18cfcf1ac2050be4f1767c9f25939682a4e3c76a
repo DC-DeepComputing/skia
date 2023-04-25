@@ -16,6 +16,24 @@
       "message": "Mostly for those who want to use our bazel build, this should probably default to false. Even our own builds should be careful about making this `True` since *this breaks platform ABI*. This should generally be treated the same as building for a different target architecture. Thinking about that, it might be more truthful to model this like a `x86_64-pc-linux-gnu_trivial` architecture target or something like that, though that\u0027s rather a pain, I think. Though if it isn\u0027t, I\u0027d be all for that.",
       "revId": "18cfcf1ac2050be4f1767c9f25939682a4e3c76a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc593386_62445378",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-25T14:32:05Z",
+      "side": 1,
+      "message": "Of course, the platform ABI being broken by Skia at the moment is the C++ ABI, which isn\u0027t \"stable\" anyway, but it is still Skia\u0027s public ABI.",
+      "parentUuid": "0a120133_43c7e5d2",
+      "revId": "18cfcf1ac2050be4f1767c9f25939682a4e3c76a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
