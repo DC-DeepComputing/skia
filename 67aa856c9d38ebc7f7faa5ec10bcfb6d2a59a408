@@ -16,6 +16,24 @@
       "message": "I don\u0027t know how the linked CL is related, but this change LGTM",
       "revId": "67aa856c9d38ebc7f7faa5ec10bcfb6d2a59a408",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "840d940c_edfee678",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-25T13:16:24Z",
+      "side": 1,
+      "message": "The linked CL had to add a \"-Wno-string-conversion\" cflags_cc to work around this.\nhttps://chromium-review.googlesource.com/c/chromium/src/+/4456509/8/skia/BUILD.gn#818",
+      "parentUuid": "6dfd59a6_eac888db",
+      "revId": "67aa856c9d38ebc7f7faa5ec10bcfb6d2a59a408",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
