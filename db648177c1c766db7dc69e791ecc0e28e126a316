@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f779224_ade517d5",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-25T13:57:22Z",
+      "side": 1,
+      "message": "This now does the actual dst read in a dst read block which is added to the beginning of a shader. But as mentioned in a later comment I\u0027m not sure this will work when trying to account for coverage, since we don\u0027t associate render steps with paint params when setting up shader snippet blocks.",
+      "parentUuid": "ee25042b_3ce1ef58",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 56,
+        "endChar": 14
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ee837da_8a92db35",
@@ -89,6 +113,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1f8101d_f6fb6b5f",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-25T13:57:22Z",
+      "side": 1,
+      "message": "If we\u0027re keeping some kind of Caps method to return a dst read requirement, and that method is what actually decides between non-kNone requirements, then I think it makes sense for this to be here.",
+      "parentUuid": "c6bab7f0_6d4e95bf",
+      "range": {
+        "startLine": 56,
+        "startChar": 11,
+        "endLine": 56,
+        "endChar": 29
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c30af00e_37e4e714",
         "filename": "src/gpu/graphite/Caps.h",
         "patchSetId": 11
@@ -100,6 +148,30 @@
       "writtenOn": "2023-04-04T20:18:15Z",
       "side": 1,
       "message": "IMO this doesn\u0027t fit my mental model for Caps. The DstReadRequirement is primarily defining *how* the dst value is available, which does seem like a relevant piece of info for Caps to provide.  But deciding whether or not a given paint needs the dst seems like it should be handled with the rest of the rendering logic.\n\nIn particular, Device has a static function `paint_depends_on_dst` that has very similar series of if-statements to the current impl of `getDstReadRequirement`.  Currently they have nuanced differences because `paint_depends_on_dst` returns true if the final color is affected by the dst color which is a broader mode than whether or not the shader needs access to the dst color in order to compute the final color. Device is also responsible for picking the Renderer, which determines if the coverage modulation has to happen, and that can modify or tweak any fixed-function blend or actually require the dst color in shader.",
+      "range": {
+        "startLine": 187,
+        "startChar": 5,
+        "endLine": 188,
+        "endChar": 67
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15506d3f_77b3430a",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-25T13:57:22Z",
+      "side": 1,
+      "message": "Added GetDstReadRequirement functions to ContextUtils; these functions determine whether we need a dst read based on blend options, and call a Caps method to determine how we\u0027re going to do the dst read.",
+      "parentUuid": "c30af00e_37e4e714",
       "range": {
         "startLine": 187,
         "startChar": 5,
@@ -272,6 +344,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b22b20a3_01c87989",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-25T13:57:22Z",
+      "side": 1,
+      "message": "Done (just for dstTexture, I\u0027d missed that dstReadReq is already tracked on PaintParams)",
+      "parentUuid": "6920c9a2_93067553",
+      "range": {
+        "startLine": 76,
+        "startChar": 15,
+        "endLine": 77,
+        "endChar": 45
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc36074c_20b7c3ee",
@@ -285,6 +381,30 @@
       "writtenOn": "2023-04-04T20:18:15Z",
       "side": 1,
       "message": "A big part of my refactor is that the preamble generation happens once up front and tracking of the `entryIndex` across children pretty much completely goes away, so it will mostly just clean up this code, assuming it stays as a snippet.\n\nI think I there are \"final blend\"s that we would need to handle, and maybe they are explicitly written out in the `toSkSL` function, or maybe we provide enough info to the PaintParams.toKey() function that we can record the final blend type in the key, even if some of its parameters (e.g. the dst color or the coverage value) are passed in explicitly from another source. I think we have:\n\n1. HW fixed-function blend based solely on the SkPaint\u0027s coefficient-based SkBlendMode, and there\u0027s no analytic coverage to fold in.\n2. As #1, but we have to fold an analytic coverage value into the shader\u0027s output color and possibly tweak the blend functions to produce the coverage-modulated blend result (e.g. dual-source blending).\n3. The dst color is available in shader *somehow* and we just need to call the blend functions and coverage modulation in SkSL",
+      "range": {
+        "startLine": 460,
+        "startChar": 0,
+        "endLine": 460,
+        "endChar": 62
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da495644_9e941efa",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-04-25T13:57:22Z",
+      "side": 1,
+      "message": "Is there any good way to account for coverage to determine the final blend type when calling PaintParams.toKey()? The paint params at this point are independent of render steps so I guess we don\u0027t know how coverage will affect blending, or whether we\u0027ll need the dst color?",
+      "parentUuid": "fc36074c_20b7c3ee",
       "range": {
         "startLine": 460,
         "startChar": 0,
