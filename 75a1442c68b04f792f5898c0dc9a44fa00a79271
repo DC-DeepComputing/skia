@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab2dce9c_2a92fc50",
+        "filename": "src/image/SkPictureImageGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-25T15:04:44Z",
+      "side": 1,
+      "message": "One potential issue/inconsistency here is that skps draw themselves to a raster canvas in onGetPixels, but SkImage_Lazy::subset() [1] first tries to turn a skp into a texture-backed image, which calls `generate_picture_texture` (formerly SkPictureImageGenerator::onGenerateTexture()). I believe if an skp has a texture-backed image in it, this will result in inconsistent readbacks since this drawPicture will fail, but the `generate_picture_texture` one will succeed.\n\n\n[1] https://github.com/google/skia/blob/2a2d795fe7d085d6eb9a7b456413cb2279f7e707/src/image/SkImage_Lazy.cpp#L198",
+      "revId": "75a1442c68b04f792f5898c0dc9a44fa00a79271",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
