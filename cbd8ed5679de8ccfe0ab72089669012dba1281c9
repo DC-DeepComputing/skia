@@ -16,6 +16,24 @@
       "message": "My only concern here is if we do eventually say to users \"hey, use our bazel build to build a libskia.so or libskia.a\" (which people currently do using our gn build, partially because they\u0027ll build their app with msvc and Skia with clang), that they\u0027ll use our toolchain (just shell out to bazel from their build to build Skia, similar to what they do with gn now) and by default get the trivial abi, which will then result in very strange runtime errors if they don\u0027t also build their app with it (which many are not).\n\nSo while putting trivial abi in our toolchain works for other projects using bazel to use our bazel build (since they won\u0027t be using our toolchain) this doesn\u0027t seem to work for those not using bazel who want to use our bazel build.",
       "revId": "cbd8ed5679de8ccfe0ab72089669012dba1281c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14397809_96e63631",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-25T13:49:22Z",
+      "side": 1,
+      "message": "I added a flag and moved it to defines.bzl. That seemed like the least worst spot to put it.",
+      "parentUuid": "797b7fd4_be24c166",
+      "revId": "cbd8ed5679de8ccfe0ab72089669012dba1281c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
