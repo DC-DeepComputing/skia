@@ -2251,6 +2251,15 @@ bool Generator::pushBinaryExpression(const Expression& left, Operator op, const 
                 std::unique_ptr<LValue> lvRight = this->makeLValue(right, /*allowScratch=*/true);
                 return this->pushStructuredComparison(lvLeft.get(), op, lvRight.get(), left.type());
             }
+            [[fallthrough]];
+
+        // Rewrite commutative ops so that the literal is on the right-hand side. This gives the
+        // Builder more opportunities to use immediate-mode ops.
+        case OperatorKind::PLUS:
+        case OperatorKind::STAR:
+            if (left.is<Literal>() && !right.is<Literal>()) {
+                return this->pushBinaryExpression(right, op, left);
+            }
             break;
 
         // Emit comma expressions.
@@ -3309,26 +3318,20 @@ bool Generator::pushPostfixExpression(const PostfixExpression& p, bool usesResul
     fBuilder.push_clone(p.type().slotCount());
 
     // Increment or decrement the scratch copy by one.
-    Literal oneLiteral{Position{}, 1.0, &p.type().componentType()};
-    if (!this->pushVectorizedExpression(oneLiteral, p.type())) {
+    double amount;
+    switch (p.getOperator().kind()) {
+        case OperatorKind::PLUSPLUS:   amount = 1.0;  break;
+        case OperatorKind::MINUSMINUS: amount = -1.0; break;
+        default:                       SkUNREACHABLE;
+    }
+
+    Literal amountLiteral{p.fPosition, amount, &p.type().componentType()};
+    if (!this->pushVectorizedExpression(amountLiteral, p.type())) {
         return unsupported();
     }
 
-    switch (p.getOperator().kind()) {
-        case OperatorKind::PLUSPLUS:
-            if (!this->binaryOp(p.type(), kAddOps)) {
-                return unsupported();
-            }
-            break;
-
-        case OperatorKind::MINUSMINUS:
-            if (!this->binaryOp(p.type(), kSubtractOps)) {
-                return unsupported();
-            }
-            break;
-
-        default:
-            SkUNREACHABLE;
+    if (!this->binaryOp(p.type(), kAddOps)) {
+        return unsupported();
     }
 
     // Write the new value back to the operand.
