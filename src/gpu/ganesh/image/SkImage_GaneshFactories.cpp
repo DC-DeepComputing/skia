@@ -24,6 +24,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/GrTextureGenerator.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -420,7 +421,7 @@ sk_sp<SkImage> CrossContextTextureFromPixmap(GrDirectContext* dContext,
                                                     skCT,
                                                     pixmap->alphaType(),
                                                     pixmap->info().refColorSpace());
-    return DeferredFromGenerator(std::move(gen));
+    return DeferredFromTextureGenerator(std::move(gen));
 }
 
 sk_sp<SkImage> TextureFromImage(GrDirectContext* dContext,
