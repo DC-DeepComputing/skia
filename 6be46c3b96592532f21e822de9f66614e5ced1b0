@@ -16,6 +16,23 @@
       "message": "Wow, good catch.",
       "revId": "6be46c3b96592532f21e822de9f66614e5ced1b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49f16c3e_7ab73f4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-26T20:27:12Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "6be46c3b96592532f21e822de9f66614e5ced1b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
