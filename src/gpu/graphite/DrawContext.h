@@ -133,6 +133,9 @@ private:
     SkImageInfo fImageInfo;
     const SkSurfaceProps fSurfaceProps;
 
+    // TODO: remove
+    sk_sp<TextureProxy> fVelloTarget;
+
     // Stores the most immediately recorded draws into the SDC's surface. This list is mutable and
     // can be appended to, or have its commands rewritten if they are inlined into a parent SDC.
     std::unique_ptr<DrawList> fPendingDraws;

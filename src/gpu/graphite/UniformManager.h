@@ -86,6 +86,7 @@ public:
     void write(const SkPoint&);
     void write(float f);
     void write(int);
+    void write(unsigned int);
 
     void writeArray(SkSpan<const SkColor4f>);
     void writeArray(SkSpan<const SkPMColor4f>);

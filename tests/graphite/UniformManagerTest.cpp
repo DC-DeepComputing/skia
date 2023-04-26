@@ -26,6 +26,7 @@ static constexpr SkSLType kTypes[] = {
         SkSLType::kFloat,    SkSLType::kFloat2,   SkSLType::kFloat3,   SkSLType::kFloat4,   //
         SkSLType::kHalf,     SkSLType::kHalf2,    SkSLType::kHalf3,    SkSLType::kHalf4,    //
         SkSLType::kInt,      SkSLType::kInt2,     SkSLType::kInt3,     SkSLType::kInt4,     //
+        SkSLType::kUInt,     SkSLType::kUInt2,    SkSLType::kUInt3,    SkSLType::kUInt4,    //
         SkSLType::kFloat2x2, SkSLType::kFloat3x3, SkSLType::kFloat4x4,                      //
         SkSLType::kHalf2x2,  SkSLType::kHalf3x3,  SkSLType::kHalf4x4,
 };
@@ -49,6 +50,11 @@ static constexpr int32_t kInts[16] = { 1,  -2,  3,  -4,
                                        5,  -6,  7,  -8,
                                        9, -10, 11, -12,
                                       13, -14, 15, -16 };
+
+static constexpr uint32_t kUInts[16] = { 1,  2,  3,  4,
+                                         5,  6,  7,  8,
+                                         9, 10, 11, 12,
+                                        13, 14, 15, 16 };
 
 static size_t element_size(Layout layout, SkSLType type) {
     // Metal encodes half-precision uniforms in 16 bits.
@@ -132,6 +138,38 @@ DEF_GRAPHITE_TEST(UniformManagerCheckIntEncoding, r) {
         }
     }
 }
+
+#if 0
+DEF_GRAPHITE_TEST(UniformManagerCheckUIntEncoding, r) {
+    // Verify that the uniform manager encodes int data properly.
+    for (Layout layout : kLayouts) {
+        UniformManager mgr(layout);
+
+        for (SkSLType type : kTypes) {
+            if (!SkSLTypeIsIntegralType(type)) {
+                continue;
+            }
+
+            // Write our uniform int scalar/vector.
+            const Uniform expectations[] = {{"uniform", type}};
+            mgr.setExpectedUniforms(SkSpan(expectations));
+            mgr.write(type, kUInts);
+            mgr.doneWithExpectedUniforms();
+
+            // Read back the uniform data.
+            UniformDataBlock uniformData = mgr.finishUniformDataBlock();
+            int vecLength = SkSLTypeVecLength(type);
+            size_t elementSize = element_size(layout, type);
+            REPORTER_ASSERT(
+            const void* validData = (elementSize == 4) ? (const void*)kUInts : (const void*)kShorts;
+            REPORTER_ASSERT(r, uniformData.size() >= vecLength * elementSize);
+            REPORTER_ASSERT(r, 0 == memcmp(validData, uniformData.data(), vecLength * elementSize),
+                            "Layout:%d Type:%d int encoding failed", (int)layout, (int)type);
+            mgr.reset();
+        }
+    }
+}
+#endif
 
 DEF_GRAPHITE_TEST(UniformManagerCheckScalarVectorPacking, r) {
     // Verify that the uniform manager can pack scalars and vectors of identical type correctly.

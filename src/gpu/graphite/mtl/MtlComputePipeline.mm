@@ -46,6 +46,8 @@ sk_sp<MtlComputePipeline> MtlComputePipeline::Make(const MtlSharedContext* share
     // guarantee that the thread group size used in a dispatch command is a multiple of
     // `threadExecutionWidth` property of the pipeline state object (otherwise this will cause UB).
 
+    (*psoDescriptor).threadGroupSizeIsMultipleOfThreadExecutionWidth = YES;
+
     NSError* error;
     sk_cfp<id<MTLComputePipelineState>> pso([sharedContext->device()
             newComputePipelineStateWithDescriptor:psoDescriptor.get()
@@ -56,6 +58,8 @@ sk_sp<MtlComputePipeline> MtlComputePipeline::Make(const MtlSharedContext* share
         SKGPU_LOG_E("Compute pipeline creation failure:\n%s", error.debugDescription.UTF8String);
         return nullptr;
     }
+
+    SKGPU_LOG_D("PSO %s: threadExecutionWidth: %lu", label.c_str(), pso.get().threadExecutionWidth);
 
     return sk_sp<MtlComputePipeline>(new MtlComputePipeline(sharedContext, std::move(pso)));
 }

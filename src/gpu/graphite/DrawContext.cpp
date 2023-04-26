@@ -32,6 +32,12 @@
 #include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/text/AtlasManager.h"
 
+// TODO: remove this; this is only here for testing
+#ifdef SK_ENABLE_VELLO_SHADERS
+#include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/compute/VelloComputeSteps.h"
+#endif
+
 namespace skgpu::graphite {
 
 sk_sp<DrawContext> DrawContext::Make(sk_sp<TextureProxy> target,
@@ -235,6 +241,69 @@ sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {
 }
 
 sk_sp<Task> DrawContext::snapComputeTask(Recorder* recorder) {
+#ifdef SK_ENABLE_VELLO_SHADERS
+#define VELLO_TEST_CLIP 1
+    // TODO: remove
+    if (!fVelloTarget) {
+        fVelloTarget = TextureProxy::MakeStorage(
+                recorder->priv().caps(),
+                {2088, 1600},
+                kRGBA_8888_SkColorType,
+                skgpu::Budgeted::kYes);
+    }
+
+    SkPath fills[4];
+    fills[0].moveTo(200.5, 200.5).quadTo(1000.5, 1000.5, 2000.5, 200.5);
+    fills[1].moveTo(400.5, 400.5).lineTo(400.5, 1200.5).lineTo(800.5, 1200.5).lineTo(800.5, 400.5);
+    fills[2].moveTo(400.5, 400.5).cubicTo(500.5, 1200.5, 1400.5, 400.5, 1500.5, 1200.5);
+    fills[3].moveTo(200.5, 200.5)
+            .conicTo(600.5, 600.5, 1200.5, 200.5, 6.0)
+            .moveTo(200.5, 500.5)
+            .conicTo(600.5, 100.5, 1200.5, 500.5, 6.0)
+            .lineTo(1200.5, 700.5)
+            .lineTo(1000.5, 700.5)
+            .lineTo(1000.5, 500.5);
+
+    SkPath strokes[1];
+    strokes[0].moveTo(200.5, 200.5).quadTo(1000.5, 1000.5, 2000.5, 200.5).lineTo(200.5, 200.5);
+
+    VelloScene scene;
+#if VELLO_TEST_CLIP
+    SkPath clip;
+    clip.moveTo(0.5, 400.5).quadTo(600.5, 1000.5, 1200.5, 400.5).quadTo(600.5, 0.5, 0.5, 400.5);
+    //clip.lineTo(0, 500).lineTo(500, 500).lineTo(500, 0);
+    SkM44 clipT;
+    // TODO: recreate this scene in the vello repo
+    clipT.setScale(1.5, 1.5);
+    // clipT.setTranslate(400.0, -590.0);
+    scene.pushClipLayer(clip, Transform(clipT));
+#endif
+    for (size_t i = 0u; i < std::size(fills); ++i) {
+        scene.solidFill(fills[i],
+                        {0.3, 0.5, (float)(i + 1) / (float)std::size(fills), 0.5},
+                        SkPathFillType::kWinding,
+                        i < 3 ? Transform::Identity() : Transform(SkM44::Scale(1.0, 2.5)));
+    }
+    for (size_t i = 0u; i < std::size(strokes); ++i) {
+        scene.solidStroke(strokes[i],
+                          {0.6, 0.9, 0.0, 0.5},
+                          StrokeStyle(10.0, 0.0, SkPaint::kMiter_Join, SkPaint::kRound_Cap),
+                          Transform::Identity());
+    }
+#if VELLO_TEST_CLIP
+    scene.popClipLayer();
+#endif
+
+    auto group = recorder->priv().rendererProvider()->velloRenderer()->renderScene(
+            {2088, 1600, SkColors::kWhite},
+            scene, fVelloTarget, recorder);
+    if (!group) {
+        SK_ABORT("Failed to add ComputeStep to DispatchGroup");
+        return nullptr;
+    }
+    fDispatchGroups.push_back(std::move(group));
+#endif
+
     if (fDispatchGroups.empty()) {
         return nullptr;
     }

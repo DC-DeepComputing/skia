@@ -268,6 +268,9 @@ public:
             case SkSLType::kShort4:
                 return Write<int32_t, int16_t, 4>(dest, n, static_cast<const int32_t *>(src));
 
+            case SkSLType::kUInt:
+                return Write<uint32_t, uint32_t>(dest, n, static_cast<const uint32_t *>(src));
+
             case SkSLType::kInt:
                 return Write<int32_t, int32_t>(dest, n, static_cast<const int32_t *>(src));
 
@@ -623,6 +626,11 @@ void UniformManager::write(float f) {
 
 void UniformManager::write(int i) {
     static constexpr SkSLType kType = SkSLType::kInt;
+    this->write(kType, &i);
+}
+
+void UniformManager::write(unsigned int i) {
+    static constexpr SkSLType kType = SkSLType::kUInt;
     this->write(kType, &i);
 }
 
