@@ -75,6 +75,8 @@
 
 using namespace skia_private;
 
+#ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
+
 namespace SkSL {
 namespace RP {
 
@@ -3720,3 +3722,5 @@ std::unique_ptr<RP::Program> MakeRasterPipelineProgram(const SkSL::Program& prog
 }
 
 }  // namespace SkSL
+
+#endif  // SK_ENABLE_SKSL_IN_RASTER_PIPELINE
