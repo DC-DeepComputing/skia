@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15dfeccc_984ca86d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-26T02:06:16Z",
+      "side": 1,
+      "message": "I decided to make this change following Greg\u0027s review comment on https://skia-review.googlesource.com/c/skia/+/665583. PTAL.",
+      "revId": "c28703ebc4cbcb65307824ffe3e1810220d628ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
