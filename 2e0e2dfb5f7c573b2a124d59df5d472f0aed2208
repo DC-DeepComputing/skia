@@ -33,6 +33,110 @@
       "message": "I don\u0027t know if this is the best home for this renderer but it should get stored as a singleton somewhere.",
       "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69914757_2cf376c6",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-26T14:09:10Z",
+      "side": 1,
+      "message": "I think it is the best place for it. While the semantics of this Renderer are a bit different than other Renderers, this is the place Devices query for how to draw content so it still fits and has the right lifetime.",
+      "parentUuid": "9553f7fd_35a4e46b",
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecb52efa_b5dfdb11",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-26T14:09:10Z",
+      "side": 1,
+      "message": "Consider SkPathPriv::Iterate. It provides a much barer-bones representation of the underlying path content whereas SkPath::Iter has lots of extra closing and compacting logic (unless vello requires that to be done here).\n\nIn the long-long term this won\u0027t matter since that sort of cleanup can happen when SkPathBuilder finishes an SkPath.",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 23
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27870721_78958bb1",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-26T14:09:10Z",
+      "side": 1,
+      "message": "That seems reasonable to me. appendStep() is really meant to be called once per draw, but it makes sense that there are global compute steps that would not need that and are only called once per \"pass\".",
+      "range": {
+        "startLine": 208,
+        "startChar": 4,
+        "endLine": 211,
+        "endChar": 72
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "151ce26d_74616c31",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-26T14:09:10Z",
+      "side": 1,
+      "message": "Could we have an overview comment that shows the intended compute flow?",
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd0dcde7_eac45ede",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-26T14:09:10Z",
+      "side": 1,
+      "message": "Does vello want colors premultiplied or unpremultiplied? Does it handle colorspace conversions?",
+      "range": {
+        "startLine": 37,
+        "startChar": 25,
+        "endLine": 37,
+        "endChar": 34
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
