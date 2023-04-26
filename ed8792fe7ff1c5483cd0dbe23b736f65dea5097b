@@ -34,6 +34,24 @@
       "parentUuid": "9d434c1e_dc592219",
       "revId": "ed8792fe7ff1c5483cd0dbe23b736f65dea5097b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdbc4acf_2db16fe4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-26T13:43:25Z",
+      "side": 1,
+      "message": "That plan sounds good to me.",
+      "parentUuid": "b1506d49_b8094711",
+      "revId": "ed8792fe7ff1c5483cd0dbe23b736f65dea5097b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
