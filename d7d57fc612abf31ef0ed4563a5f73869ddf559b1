@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c6383af_d8867545",
+        "filename": "third_party/vello/Cargo.toml",
+        "patchSetId": 8
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-26T13:54:34Z",
+      "side": 1,
+      "message": "Should this be a broader author?",
+      "range": {
+        "startLine": 4,
+        "startChar": 11,
+        "endLine": 4,
+        "endChar": 48
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c9451217_c3d8bee4",
         "filename": "third_party/vello/build.rs",
         "patchSetId": 8
@@ -36,6 +59,29 @@
         "startChar": 25,
         "endLine": 1,
         "endChar": 28
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79152bf1_e1bd203a",
+        "filename": "third_party/vello/src/lib.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-26T13:54:34Z",
+      "side": 1,
+      "message": "Does Vello not support perspective?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 93
       },
       "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
