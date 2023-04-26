@@ -210,7 +210,7 @@ bool_flag(
 
 bool_flag(
     name = "enable_sksl_in_raster_pipeline",
-    default = True,
+    default = False,
 )
 
 bool_flag(
