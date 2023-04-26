@@ -662,6 +662,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
                     return true;
                 });
 #endif
+#if defined(SK_ENABLE_SKSL_IN_RASTER_PIPELINE)
     } else if (skstd::ends_with(outputPath, ".skrp")) {
         settings.fMaxVersionAllowed = SkSL::Version::k300;
         return compileProgramAsRuntimeShader(
@@ -682,6 +683,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
                     rasterProg->dump(as_SkWStream(out).get());
                     return true;
                 });
+#endif
     } else if (skstd::ends_with(outputPath, ".stage")) {
         return compileProgram(
                 [](SkSL::Compiler&, SkSL::Program& program, SkSL::OutputStream& out) {
