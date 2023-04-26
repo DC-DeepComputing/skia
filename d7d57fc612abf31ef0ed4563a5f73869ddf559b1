@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5d030cb_9f93c3c1",
+        "filename": "third_party/vello/Cargo.toml",
+        "patchSetId": 8
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-26T18:13:31Z",
+      "side": 1,
+      "message": "Yeah, probably \"The Skia Authors\"?",
+      "parentUuid": "2c6383af_d8867545",
+      "range": {
+        "startLine": 4,
+        "startChar": 11,
+        "endLine": 4,
+        "endChar": 48
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c9451217_c3d8bee4",
         "filename": "third_party/vello/build.rs",
         "patchSetId": 8
@@ -54,6 +78,30 @@
       "writtenOn": "2023-04-25T18:09:56Z",
       "side": 1,
       "message": "LLC (here and other files)",
+      "range": {
+        "startLine": 1,
+        "startChar": 25,
+        "endLine": 1,
+        "endChar": 28
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cefac731_2de6910f",
+        "filename": "third_party/vello/build.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-26T18:13:31Z",
+      "side": 1,
+      "message": "Will do!",
+      "parentUuid": "c9451217_c3d8bee4",
       "range": {
         "startLine": 1,
         "startChar": 25,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "01f24607_8b728944",
+        "filename": "third_party/vello/src/lib.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-26T18:13:31Z",
+      "side": 1,
+      "message": "It currently does not. I know perspective transforms are in scope as part (or following?) the stroke rework and Raph and I have discussed changing this matrix definition to accommodate the perspective row. CC\u0027d raph@ to provide more context on this as we\u0027ll need perspective support for Skia.",
+      "parentUuid": "79152bf1_e1bd203a",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 93
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2411cf3d_115715d9",
         "filename": "third_party/vello/src/lib.rs",
         "patchSetId": 8
@@ -100,6 +172,30 @@
       "writtenOn": "2023-04-25T18:09:56Z",
       "side": 1,
       "message": "Why do some of these have three slashes and some have two?",
+      "range": {
+        "startLine": 142,
+        "startChar": 6,
+        "endLine": 142,
+        "endChar": 7
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79aec549_b5f59c5a",
+        "filename": "third_party/vello/src/lib.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-26T18:13:31Z",
+      "side": 1,
+      "message": "In Rust `///` denotes a doc comment that applies to an isolated definition, `//!` is for module-scope doc comments, and `//` are in-line comments.\n\nYou can find some information on the grammar and style at https://doc.rust-lang.org/reference/comments.html and https://doc.rust-lang.org/rust-by-example/meta/doc.html",
+      "parentUuid": "2411cf3d_115715d9",
       "range": {
         "startLine": 142,
         "startChar": 6,
