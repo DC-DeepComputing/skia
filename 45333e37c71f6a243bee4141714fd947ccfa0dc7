@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d336b758_bea5df1f",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-26T13:50:29Z",
+      "side": 1,
+      "message": "BindBufferInfo?",
+      "range": {
+        "startLine": 135,
+        "startChar": 4,
+        "endLine": 136,
+        "endChar": 23
+      },
+      "revId": "45333e37c71f6a243bee4141714fd947ccfa0dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
