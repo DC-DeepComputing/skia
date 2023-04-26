@@ -78,6 +78,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2da816c4_1f355244",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-04-26T20:58:27Z",
+      "side": 1,
+      "message": "It\u0027s not necessarily true that the encoding is non-empty at this point. Our internal path encoder will ignore empty paths as well various sequences of move and close commands. In these cases, we also prevent encoding of the brush to avoid desync in the streams.",
+      "range": {
+        "startLine": 125,
+        "startChar": 4,
+        "endLine": 130,
+        "endChar": 19
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fc7f152_c6065639",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-04-26T20:58:27Z",
+      "side": 1,
+      "message": "Just a note that we do layer tracking internally and the resolve phase ensures that any open layers are closed. You might want to be more strict here though.",
+      "range": {
+        "startLine": 199,
+        "startChar": 4,
+        "endLine": 199,
+        "endChar": 70
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "27870721_78958bb1",
         "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
         "patchSetId": 1
