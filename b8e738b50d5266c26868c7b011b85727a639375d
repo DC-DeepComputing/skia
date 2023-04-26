@@ -16,6 +16,24 @@
       "message": "Why not use `x * -1.0`? It may not actually produce the sign-flipped answer for zero, but I don\u0027t think that\u0027s necessary?",
       "revId": "b8e738b50d5266c26868c7b011b85727a639375d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbb2b9e3_c74b5101",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3373,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-26T13:55:29Z",
+      "side": 1,
+      "message": "That also works (I actually wrote it that way originally: https://skia-review.googlesource.com/c/skia/+/681516/2..5/src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp ). I looked it up and saw that multiplication had a few more cycles of latency than addition, but there\u0027s no other reason to prefer one form or the other.\n\nI am actually thinking another option might be `x ^ 0x80000000`. This wasn\u0027t available as an immediate when I originally wrote this CL, but it would be an option now.",
+      "parentUuid": "94e4843b_12bb395a",
+      "revId": "b8e738b50d5266c26868c7b011b85727a639375d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
