@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06cea7b4_41dbe175",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-26T21:15:35Z",
+      "side": 1,
+      "message": "This is substantially different than the original CL because the code changed a lot since Android T.",
+      "revId": "10b9ec290fb9bf9fcc8845da618100271d796b84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
