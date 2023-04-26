@@ -118,6 +118,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba307378_25df637c",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-26T18:06:36Z",
+      "side": 1,
+      "message": "Yes! I actually documented each pipeline stage and the meaning of the various data buffers in VelloComputeSteps.h in this CL: https://skia-review.googlesource.com/c/skia/+/681138/1/src/gpu/graphite/compute/VelloComputeSteps.h. I don\u0027t mind repeating some of that here (or maybe referencing out to VelloComputeSteps.h).",
+      "parentUuid": "151ce26d_74616c31",
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cd0dcde7_eac45ede",
         "filename": "src/gpu/graphite/compute/VelloRenderer.h",
         "patchSetId": 1
@@ -129,6 +147,30 @@
       "writtenOn": "2023-04-26T14:09:10Z",
       "side": 1,
       "message": "Does vello want colors premultiplied or unpremultiplied? Does it handle colorspace conversions?",
+      "range": {
+        "startLine": 37,
+        "startChar": 25,
+        "endLine": 37,
+        "endChar": 34
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3782dc18_06529421",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-26T18:06:36Z",
+      "side": 1,
+      "message": "The vello shaders expect brush/paint colors to be premultiplied by alpha, however the encoding crate does not and it will itself premultiply the input colors as it encodes them into the scene buffer AFAICT. So this input color here should not be premultiplied (cbrokaw@ can confirm).\n\nAs for colorspace conversions Vello currently does not handle any conversions and assumes all colors are in sRGB colorspace (there is some information on this in the comments here: https://github.com/linebender/vello/blob/main/shader/shared/blend.wgsl).",
+      "parentUuid": "cd0dcde7_eac45ede",
       "range": {
         "startLine": 37,
         "startChar": 25,
