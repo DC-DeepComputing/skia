@@ -368,7 +368,8 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
 
         GrGLint contextFlags;
         GR_GL_GetIntegerv(gli, GR_GL_CONTEXT_FLAGS, &contextFlags);
-        return SkToBool(contextFlags & GR_GL_CONTEXT_FLAG_PROTECTED_CONTENT_BIT_EXT);
+        bool hasIt = SkToBool(contextFlags & GR_GL_CONTEXT_FLAG_PROTECTED_CONTENT_BIT_EXT);
+        return hasIt;
     }();
 
 
