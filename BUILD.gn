@@ -98,6 +98,10 @@ config("skia_public") {
       cflags_objcc += [ "-Wno-unguarded-availability" ]
     }
   }
+
+  if (skia_use_fontations) {
+    include_dirs += [ "$root_out_dir" ]
+  }
 }
 
 # Skia internal APIs, used by Skia itself and a few test tools.
@@ -1395,8 +1399,49 @@ optional("typeface_freetype") {
 optional("typeface_fontations") {
   enabled = skia_use_fontations
   sources = [
+    "$root_out_dir/src/ports/fontations/gen/src/ffi.rs.cc",
     "src/ports/SkTypeface_fontations.cpp",
     "src/ports/SkTypeface_fontations.h",
+    "src/ports/fontations/src/skpath_bridge.cpp",
+  ]
+  deps = [
+    ":fontations_ffi_cc",
+    ":fontations_ffi_h",
+    ":fontations_rust_lib",
+  ]
+  lib_dirs = [ "$root_out_dir" ]
+  libs = [ "bridge_rust_side" ]
+}
+
+action("fontations_rust_lib") {
+  script = "gn/bazel_build.py"
+  sources = [ "src/ports/fontations/src/ffi.rs" ]
+  outputs = [ "$root_out_dir/libbridge_rust_side.a" ]
+  args = [
+    "//src/ports/fontations:bridge_rust_side",
+    "../../bazel-bin/src/ports/fontations/libbridge_rust_side.a",
+  ]
+}
+
+action("fontations_ffi_h") {
+  script = "gn/bazel_build.py"
+  sources = [ "src/ports/fontations/src/ffi.rs" ]
+  outputs = [ "$root_out_dir/src/ports/fontations/gen/src/ffi.rs.h" ]
+  args = [
+    "//src/ports/fontations:fontations_ffi/generated",
+    "../../bazel-bin/src/ports/fontations/gen/src/ffi.rs.h",
+    "src/ports/fontations/gen/src",
+  ]
+}
+
+action("fontations_ffi_cc") {
+  script = "gn/bazel_build.py"
+  sources = [ "src/ports/fontations/src/ffi.rs" ]
+  outputs = [ "$root_out_dir/src/ports/fontations/gen/src/ffi.rs.cc" ]
+  args = [
+    "//src/ports/fontations:fontations_ffi/generated",
+    "../../bazel-bin/src/ports/fontations/gen/src/ffi.rs.cc",
+    "src/ports/fontations/gen/src",
   ]
 }
 
