@@ -16,6 +16,24 @@
       "message": "First off this change seems fine to me to land as is, but I feel like with how things are evolving we may want better names for things here.\n\nWhat are your thoughts one the following:\n1) Change mappable to requiresCPUUploadOfData\n2) Change PrioritizeGpuReads to be GPUOnlyAccess\n\nI think those names more reflect what the intent of the client/callers are. Now down in the backend it is allowed to make something that requests GPUOnlyAccess to be mappable assuming its the same performance as private gpu memory (which is the case on all Android tiled gpus afaik).",
       "revId": "ed8792fe7ff1c5483cd0dbe23b736f65dea5097b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1506d49_b8094711",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-26T02:09:03Z",
+      "side": 1,
+      "message": "I think your suggestion makes a lot of sense and I like your suggested naming. I separately uploaded https://skia-review.googlesource.com/c/skia/+/681876 to rename PrioritizeGpuReads to a new AccessPattern enum that captures the GPU-only vs host-visible intent. If everyone is happy with that naming then I\u0027ll rebase this CL on top of that and make the `mappable` -\u003e `requiresCPUUploadOfData` rename (or maybe `cpuVisible` since upload is not the only use case: the compute unit tests use this for read-back for example).",
+      "parentUuid": "9d434c1e_dc592219",
+      "revId": "ed8792fe7ff1c5483cd0dbe23b736f65dea5097b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
