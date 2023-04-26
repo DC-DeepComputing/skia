@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30bc30da_f11bbbbe",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-26T20:47:33Z",
+      "side": 0,
+      "message": "This flag was also unused.",
+      "range": {
+        "startLine": 128,
+        "startChar": 8,
+        "endLine": 128,
+        "endChar": 23
+      },
+      "revId": "20a1c61c55977f0b6c291584d8b1108e180883bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
