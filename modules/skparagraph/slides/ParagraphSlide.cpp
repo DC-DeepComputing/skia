@@ -4079,9 +4079,9 @@ public:
     }
 };
 
-class ParagraphSlideLast : public ParagraphSlide_Base {
+class ParagraphSlideUnresolvedCodepoints : public ParagraphSlide_Base {
 public:
-    ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
+    ParagraphSlideUnresolvedCodepoints() { fName = "ParagraphSlideUnresolvedCodepoints"; }
     void draw(SkCanvas* canvas) override {
 
         canvas->drawColor(SK_ColorWHITE);
@@ -4115,6 +4115,51 @@ public:
         }
     }
 };
+
+class ParagraphSlideLast : public ParagraphSlide_Base {
+public:
+    ParagraphSlideLast() { fName = "ParagraphSlideLast"; }
+    void draw(SkCanvas* canvas) override {
+
+        canvas->drawColor(SK_ColorWHITE);
+        const char* text1 = "World    domination is     such an ugly phrase - I     prefer to call it    world optimisation";
+        const char* text2 =
+                "左線読設重説切abc後碁給能上目秘使約。満毎冠行   来昼本可   def   必図将発確年。今属場育"
+                "図情闘陰野高備込制詩西校客。審対江置講今固残必託地集済決維駆年策。立得庭"
+                "際輝求佐抗蒼提夜合逃表。注統天言件自謙雅載報紙喪。作画稿愛器灯女書利変探"
+                "訃第金線朝開化建。子戦年帝励害表月幕株漠新期刊人秘。図的海力生禁挙保天戦"
+                "聞条年所在口。";
+        const char* text3 = "من أسر وإعلان الخاصّة وهولندا،, عل def    قائمة الضغوط بالمabcطالبة تلك. الصفحة "
+            "بمباركة التقليدية قام عن. تصفح";
+        auto fontCollection = sk_make_sp<FontCollection>();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextAlign(TextAlign::kJustify);
+
+        auto draw = [&](const char* text, TextDirection textDirection) {
+            paragraph_style.setTextDirection(textDirection);
+            ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+            TextStyle text_style;
+            text_style.setFontFamilies({SkString("Katibeh"), SkString("Roboto"), SkString("Source Han Serif CN")});
+            text_style.setFontSize(40);
+            text_style.setColor(SK_ColorBLACK);
+            builder.pushStyle(text_style);
+            builder.addText(text);
+
+            auto paragraph = builder.Build();
+            paragraph->layout(this->size().width()); // 497
+            paragraph->paint(canvas, 0, 0);
+            canvas->translate(0, paragraph->getHeight() + 20);
+        };
+
+        draw(text1, TextDirection::kLtr);
+        //draw(text2, TextDirection::kLtr);
+        //draw(text3, TextDirection::kLtr);
+    }
+};
+
 }  // namespace
 
 //////////////////////////////////////////////////////////////////////////////
@@ -4190,4 +4235,5 @@ DEF_SLIDE(return new ParagraphSlide_MultiStyle_Zalgo();)
 DEF_SLIDE(return new ParagraphSlide_MultiStyle_Arabic2();)
 DEF_SLIDE(return new ParagraphSlideMixedTextDirection();)
 DEF_SLIDE(return new ParagraphSlideEllipsisCases();)
+DEF_SLIDE(return new ParagraphSlideUnresolvedCodepoints();)
 DEF_SLIDE(return new ParagraphSlideLast();)
