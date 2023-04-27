@@ -569,25 +569,6 @@ void Builder::trace_var_indirect(int traceMaskStackID,
                              dynamicStackID});
 }
 
-void Builder::copy_constant(Slot slot, int constantValue) {
-    // If the last instruction copied the same constant, just extend it.
-    if (!fInstructions.empty()) {
-        Instruction& lastInstr = fInstructions.back();
-
-        // If the last op is copy-constant...
-        if (lastInstr.fOp == BuilderOp::copy_constant &&
-            // and has the same value
-            lastInstr.fImmB == constantValue &&
-            // and the slot is immediately after the last copy-constant's destination
-            lastInstr.fSlotA + lastInstr.fImmA == slot) {
-            // then we can just extend the copy!
-            lastInstr.fImmA += 1;
-            return;
-        }
-    }
-    fInstructions.push_back({BuilderOp::copy_constant, {slot}, 1, constantValue});
-}
-
 void Builder::push_constant_i(int32_t val, int count) {
     SkASSERT(count >= 0);
     if (count > 0) {
@@ -841,6 +822,61 @@ static bool slot_ranges_overlap(SlotRange x, SlotRange y) {
            y.index < x.index + x.count;
 }
 
+void Builder::simplifyOverwrittenRange(SlotRange dst) {
+    while (!fInstructions.empty()) {
+        Instruction& lastInstruction = fInstructions.back();
+
+        SlotRange last;
+        switch (lastInstruction.fOp) {
+            case BuilderOp::copy_constant:
+            case BuilderOp::copy_uniform_to_slots_unmasked:
+            case BuilderOp::copy_stack_to_slots_unmasked:
+                last = {lastInstruction.fSlotA, lastInstruction.fImmA};
+                break;
+
+            default:
+                return;
+        }
+
+        if (dst.index <= last.index && dst.index + dst.count >= last.index + last.count) {
+            // The overwrite range totally encompasses the last instruction's write range;
+            // the last instruction is dead code.
+            fInstructions.pop_back();
+        } else {
+            // We can't simplify further.
+            return;
+        }
+    }
+}
+
+void Builder::copy_constant(Slot slot, int constantValue) {
+    // If the last instruction copied the same constant, just extend it.
+    if (!fInstructions.empty()) {
+        Instruction lastInstr = fInstructions.back();
+
+        // If the last op is copy-constant...
+        if (lastInstr.fOp == BuilderOp::copy_constant &&
+            // ... and has the same value...
+            lastInstr.fImmB == constantValue &&
+            // ... and the slot is immediately after the last copy-constant's destination...
+            lastInstr.fSlotA + lastInstr.fImmA == slot) {
+            // ... then we can extend the copy!
+            lastInstr.fImmA += 1;
+
+            // If the previous instruction was writing to this range, it's dead code.
+            fInstructions.pop_back();
+            this->simplifyOverwrittenRange({lastInstr.fSlotA, lastInstr.fImmA});
+
+            // Put back the copy-constant instruction with the newly increased range.
+            fInstructions.push_back(lastInstr);
+            return;
+        }
+    }
+
+    this->simplifyOverwrittenRange({slot, 1});
+    fInstructions.push_back({BuilderOp::copy_constant, {slot}, 1, constantValue});
+}
+
 void Builder::copy_slots_unmasked(SlotRange dst, SlotRange src) {
     // If the last instruction copied adjacent slots, just extend it.
     if (!fInstructions.empty()) {
@@ -876,8 +912,8 @@ void Builder::copy_uniform_to_slots_unmasked(SlotRange dst, SlotRange src) {
             lastInstr.fSlotB + lastInstr.fImmA == dst.index &&
             // and this op's source is immediately after the last copy-constant's source
             lastInstr.fSlotA + lastInstr.fImmA == src.index) {
-            // then we can just extend the copy!
-            lastInstr.fImmA += dst.count;
+            // ... then we can extend the copy!
+            lastInstr.fImmA += 1;
             return;
         }
     }
@@ -890,16 +926,16 @@ void Builder::copy_uniform_to_slots_unmasked(SlotRange dst, SlotRange src) {
 void Builder::copy_stack_to_slots_unmasked(SlotRange dst, int offsetFromStackTop) {
     // If the last instruction copied the previous stack slots, just extend it.
     if (!fInstructions.empty()) {
-        Instruction& lastInstruction = fInstructions.back();
+        Instruction& lastInstr = fInstructions.back();
 
         // If the last op is copy-stack-to-slots-unmasked...
-        if (lastInstruction.fOp == BuilderOp::copy_stack_to_slots_unmasked &&
+        if (lastInstr.fOp == BuilderOp::copy_stack_to_slots_unmasked &&
             // and this op's destination is immediately after the last copy-slots-op's destination
-            lastInstruction.fSlotA + lastInstruction.fImmA == dst.index &&
+            lastInstr.fSlotA + lastInstr.fImmA == dst.index &&
             // and this op's source is immediately after the last copy-slots-op's source
-            lastInstruction.fImmB - lastInstruction.fImmA == offsetFromStackTop) {
-            // then we can just extend the copy!
-            lastInstruction.fImmA += dst.count;
+            lastInstr.fImmB - lastInstr.fImmA == offsetFromStackTop) {
+            // ... then we can extend the copy!
+            lastInstr.fImmA += 1;
             return;
         }
     }
