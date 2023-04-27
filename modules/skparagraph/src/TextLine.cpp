@@ -28,6 +28,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <deque>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -449,15 +450,34 @@ void TextLine::justify(SkScalar maxWidth) {
     // TODO: do it at the line breaking?..
     size_t whitespacePatches = 0;
     SkScalar textLen = 0;
-    bool whitespacePatch = false;
+    SkScalar whitespaceLen = 0;
+    bool whitespacePatch = true;
+    bool wordBreak = false;
     this->iterateThroughClustersInGlyphsOrder(false, false,
-        [&whitespacePatches, &textLen, &whitespacePatch](const Cluster* cluster, bool ghost) {
+        [&](const Cluster* cluster, bool ghost) {
+
+            if (wordBreak && !cluster->isWhitespaceBreak()) {
+               whitespacePatch = true;
+               ++whitespacePatches;
+                wordBreak = false;
+            }
             if (cluster->isWhitespaceBreak()) {
                 if (!whitespacePatch) {
                     whitespacePatch = true;
                     ++whitespacePatches;
                 }
+                whitespaceLen += cluster->width();
+            } else if (cluster->isWordBreak()) {
+                if (whitespacePatch) {
+                    // Word break AFTER the whitespaces
+                    whitespacePatch = false;
+                } else {
+                   // Word break in ZH, for instance without whitespaces
+                   wordBreak = true;
+                   // whitespaceLen += 0.0;
+                }
             } else {
+                // Nothing that affects the justification
                 whitespacePatch = false;
             }
             textLen += cluster->width();
@@ -468,13 +488,14 @@ void TextLine::justify(SkScalar maxWidth) {
         return;
     }
 
-    SkScalar step = (maxWidth - textLen) / whitespacePatches;
+    SkScalar step = (maxWidth - (textLen - whitespaceLen)) / whitespacePatches;
     SkScalar shift = 0;
 
     // Deal with the ghost spaces
     auto ghostShift = maxWidth - this->fAdvance.fX;
     // Spread the extra whitespaces
-    whitespacePatch = false;
+    whitespacePatch = true;
+    wordBreak = false;
     this->iterateThroughClustersInGlyphsOrder(false, true, [&](const Cluster* cluster, bool ghost) {
 
         if (ghost) {
@@ -484,21 +505,47 @@ void TextLine::justify(SkScalar maxWidth) {
             return true;
         }
 
+        SkString str( fOwner->text(cluster->textRange()).data(), cluster->textRange().width());
+
+        if (wordBreak) {
+            shift += step;
+            if (!cluster->isWhitespaceBreak()) {
+                whitespacePatch = true;
+                --whitespacePatches;
+                wordBreak = false;
+                SkDebugf("W[%d:%d) '%s' %f += %f\n",
+                         cluster->textRange().start, cluster->textRange().end, str.data(), shift, step);
+            }
+        }
+
         auto prevShift = shift;
         if (cluster->isWhitespaceBreak()) {
             if (!whitespacePatch) {
-                shift += step;
+                // Some clusters have whitespaces already, some don't (ZH)
+                shift += (step - cluster->width());
                 whitespacePatch = true;
+                SkDebugf("S[%d:%d) '%s' %f += %f\n",
+                         cluster->textRange().start, cluster->textRange().end, str.data(), shift, step - cluster->width());
                 --whitespacePatches;
+            }
+        } else if (cluster->isWordBreak()) {
+            if (whitespacePatch) {
+                whitespacePatch = false;
+                SkDebugf("SW[%d:%d) '%s'\n", cluster->textRange().start, cluster->textRange().end, str.data());
+            } else {
+                wordBreak = true;
+                SkDebugf("W>[%d:%d) '%s'\n", cluster->textRange().start, cluster->textRange().end, str.data());
             }
         } else {
             whitespacePatch = false;
+            SkDebugf("?[%d:%d) '%s' %f\n",
+                     cluster->textRange().start, cluster->textRange().end, str.data(), shift);
         }
-        shiftCluster(cluster, shift, prevShift);
+        this->shiftCluster(cluster, shift, prevShift);
         return true;
     });
 
-    SkAssertResult(nearlyEqual(shift, maxWidth - textLen));
+    SkAssertResult(nearlyEqual(shift, maxWidth - (textLen - whitespaceLen)));
     SkASSERT(whitespacePatches == 0);
 
     this->fWidthWithSpaces += ghostShift;

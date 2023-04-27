@@ -2022,10 +2022,10 @@ UNIX_ONLY_TEST(SkParagraph_JustifyRTL, reporter) {
     REPORTER_ASSERT(reporter, SkScalarNearlyEqual(boxes[0].rect.bottom(), 156, EPSILON100));
 }
 
-UNIX_ONLY_TEST(SkParagraph_JustifyRTLNewLine, reporter) {
+UNIX_ONLY_TEST(SkParagraph_NewLine_JustifyRTL, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
     if (!fontCollection->fontsFound()) return;
-    TestCanvas canvas("SkParagraph_JustifyRTLNewLine.png");
+    TestCanvas canvas("SkParagraph_NewLine_JustifyRTL.png");
     const char* text =
             "אאא בּבּבּבּ אאאא\nבּבּ אאא בּבּבּ אאאאא בּבּבּבּ אאאא בּבּבּבּבּ "
             "אאאאא בּבּבּבּבּ אאאבּבּבּבּבּבּאאאאא בּבּבּבּבּבּאאאאאבּבּבּבּבּבּ אאאאא בּבּבּבּבּ "
