@@ -261,13 +261,6 @@ void Run::iterateThroughClustersInTextOrder(Visitor visitor) {
 
 class Cluster {
 public:
-    enum BreakType {
-        None,
-        GraphemeBreak,  // calculated for all clusters (UBRK_CHARACTER)
-        SoftLineBreak,  // calculated for all clusters (UBRK_LINE & UBRK_CHARACTER)
-        HardLineBreak,  // calculated for all clusters (UBRK_LINE)
-    };
-
     Cluster()
             : fOwner(nullptr)
             , fRunIndex(EMPTY_RUN)
@@ -316,6 +309,8 @@ public:
     SkScalar width() const { return fWidth; }
     SkScalar height() const { return fHeight; }
     size_t size() const { return fEnd - fStart; }
+
+    bool isWordBreak() const;
 
     void setHalfLetterSpacing(SkScalar halfLetterSpacing) { fHalfLetterSpacing = halfLetterSpacing; }
     SkScalar getHalfLetterSpacing() const { return fHalfLetterSpacing; }

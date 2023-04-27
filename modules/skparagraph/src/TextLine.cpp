@@ -28,6 +28,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <deque>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -449,16 +450,34 @@ void TextLine::justify(SkScalar maxWidth) {
     // TODO: do it at the line breaking?..
     size_t whitespacePatches = 0;
     SkScalar textLen = 0;
-    bool whitespacePatch = false;
+    SkScalar whitespaceLen = 0;
+    bool whitespacePatch = true;
     this->iterateThroughClustersInGlyphsOrder(false, false,
-        [&whitespacePatches, &textLen, &whitespacePatch](const Cluster* cluster, bool ghost) {
+        [&](const Cluster* cluster, ClusterIndex index, bool ghost) {
+            SkDebugf("C[%d:%d) %f ", cluster->textRange().start, cluster->textRange().end, cluster->width());
+            bool clusterOnEdge = (index == 0) || (index == this->fClusterRange.width() - 1);
             if (cluster->isWhitespaceBreak()) {
+                SkASSERT(!clusterOnEdge);
                 if (!whitespacePatch) {
                     whitespacePatch = true;
                     ++whitespacePatches;
+                    SkDebugf("Space %d: %f/%f += %f\n",  whitespacePatches, textLen, whitespaceLen, cluster->width());
+                } else {
+                    SkDebugf("Space %d: %f/%f\n",  whitespacePatches, textLen, whitespaceLen, cluster->width());
+                }
+                whitespaceLen += cluster->width();
+            } else if (cluster->isWordBreak() && !clusterOnEdge) {
+                if (!whitespacePatch) {
+                    ++whitespacePatches;
+                    SkDebugf("Word %d: %f/%f %f\n",  whitespacePatches, textLen, whitespaceLen, cluster->width());
+                } else {
+                    whitespacePatch = false;
+                    SkDebugf("Word %d: %f/%f\n",  whitespacePatches, textLen, whitespaceLen);
                 }
             } else {
+                // Nothing that affects the justification
                 whitespacePatch = false;
+                SkDebugf("Text %d: %f/%f\n",  whitespacePatches, textLen, whitespaceLen);
             }
             textLen += cluster->width();
             return true;
@@ -468,15 +487,18 @@ void TextLine::justify(SkScalar maxWidth) {
         return;
     }
 
-    SkScalar step = (maxWidth - textLen) / whitespacePatches;
+    SkDebugf("(%f - (%f - %f)) / %d = %f\n", maxWidth, textLen, whitespaceLen, whitespacePatches);
+    SkScalar step = (maxWidth - (textLen - whitespaceLen)) / whitespacePatches;
     SkScalar shift = 0;
 
     // Deal with the ghost spaces
     auto ghostShift = maxWidth - this->fAdvance.fX;
     // Spread the extra whitespaces
-    whitespacePatch = false;
-    this->iterateThroughClustersInGlyphsOrder(false, true, [&](const Cluster* cluster, bool ghost) {
-
+    whitespacePatch = true;
+    SkScalar tl = 0;
+    SkScalar wl = 0;
+    this->iterateThroughClustersInGlyphsOrder(false, true,
+        [&](const Cluster* cluster, ClusterIndex index, bool ghost) {
         if (ghost) {
             if (cluster->run().leftToRight()) {
                 this->shiftCluster(cluster, ghostShift, ghostShift);
@@ -484,20 +506,47 @@ void TextLine::justify(SkScalar maxWidth) {
             return true;
         }
 
+        SkString str( fOwner->text(cluster->textRange()).data(), cluster->textRange().width());
+        bool clusterOnEdge = (index == 0) || (index == this->fClusterRange.width() - 1);
         auto prevShift = shift;
         if (cluster->isWhitespaceBreak()) {
+            SkASSERT(!clusterOnEdge);
+            if (!whitespacePatch) {
+                // Some clusters have whitespaces already, some don't (ZH)
+                shift += (step - cluster->width());
+                whitespacePatch = true;
+                SkDebugf("S[%d:%d) %f %f += (%f - %f)\n",
+                         cluster->textRange().start, cluster->textRange().end, tl, shift, step, cluster->width());
+                --whitespacePatches;
+            } else {
+                shift -= cluster->width();
+                SkDebugf("0[%d:%d) %f %f\n",
+                        cluster->textRange().start, cluster->textRange().end, tl, shift);
+            }
+            wl += cluster->width();
+        } else if (cluster->isWordBreak() && !clusterOnEdge) {
             if (!whitespacePatch) {
                 shift += step;
-                whitespacePatch = true;
+                SkDebugf("W[%d:%d) %f %f += %f\n",
+                         cluster->textRange().start, cluster->textRange().end, tl, shift, step);
                 --whitespacePatches;
+            } else {
+                whitespacePatch = false;
+                SkDebugf("2[%d:%d) %f %f\n",
+                         cluster->textRange().start, cluster->textRange().end, tl, shift);
             }
         } else {
             whitespacePatch = false;
+            SkDebugf("?[%d:%d) %f %f\n",
+                     cluster->textRange().start, cluster->textRange().end, tl, shift);
         }
-        shiftCluster(cluster, shift, prevShift);
+        this->shiftCluster(cluster, shift, prevShift);
+        ++index;
+        tl += cluster->width();
         return true;
     });
 
+    SkDebugf("(%f = %f - %f\n", shift, maxWidth, textLen);
     SkAssertResult(nearlyEqual(shift, maxWidth - textLen));
     SkASSERT(whitespacePatches == 0);
 
@@ -841,6 +890,7 @@ void TextLine::iterateThroughClustersInGlyphsOrder(bool reversed,
     // Walk through the clusters in the logical order (or reverse)
     SkSpan<const size_t> runs(fRunsInVisualOrder.data(), fRunsInVisualOrder.size());
     bool ignore = false;
+    ClusterIndex index = 0;
     directional_for_each(runs, !reversed, [&](decltype(runs[0]) r) {
         if (ignore) return;
         auto run = this->fOwner->run(r);
@@ -856,7 +906,7 @@ void TextLine::iterateThroughClustersInGlyphsOrder(bool reversed,
             if (!includeGhosts && ghost) {
                 return;
             }
-            if (!visitor(&cluster, ghost)) {
+            if (!visitor(&cluster, index++, ghost)) {
                 ignore = true;
                 return;
             }
