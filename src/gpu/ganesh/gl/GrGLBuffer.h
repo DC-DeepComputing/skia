@@ -19,7 +19,8 @@ public:
     static sk_sp<GrGLBuffer> Make(GrGLGpu*,
                                   size_t size,
                                   GrGpuBufferType intendedType,
-                                  GrAccessPattern);
+                                  GrAccessPattern,
+                                  const char* label);
 
     ~GrGLBuffer() override {
         // either release or abandon should have been called by the owner of this object.

@@ -110,7 +110,7 @@ public:
     }
 #endif
 
-    void* lock(size_t stride, int eagerCount) override {
+    void* lock(size_t stride, int eagerCount, const char* label) override {
         SkASSERT(!fLockStride && !fVertices && !fVertexBuffer && !fVertexData);
         SkASSERT(stride && eagerCount);
 
@@ -118,7 +118,8 @@ public:
         fVertexBuffer = fResourceProvider->createBuffer(size,
                                                         GrGpuBufferType::kVertex,
                                                         kStatic_GrAccessPattern,
-                                                        GrResourceProvider::ZeroInit::kNo);
+                                                        GrResourceProvider::ZeroInit::kNo,
+                                                        label);
         if (!fVertexBuffer) {
             return nullptr;
         }
@@ -308,7 +309,8 @@ private:
                 sk_sp<GrGpuBuffer> buffer = rp->createBuffer(fVertexData->vertices(),
                                                              fVertexData->size(),
                                                              GrGpuBufferType::kVertex,
-                                                             kStatic_GrAccessPattern);
+                                                             kStatic_GrAccessPattern,
+                                                             "TriangulatingPathOp::createNonAAMesh");
                 if (!buffer) {
                     return;
                 }

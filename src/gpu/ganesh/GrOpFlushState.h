@@ -130,22 +130,24 @@ public:
                     const GrSurfaceProxy* const primProcProxies[],
                     GrPrimitiveType) final;
     void* makeVertexSpace(size_t vertexSize, int vertexCount, sk_sp<const GrBuffer>*,
-                          int* startVertex) final;
-    uint16_t* makeIndexSpace(int indexCount, sk_sp<const GrBuffer>*, int* startIndex) final;
+                          int* startVertex, const char* label) final;
+    uint16_t* makeIndexSpace(int indexCount, sk_sp<const GrBuffer>*, int* startIndex,
+                             const char* label) final;
     void* makeVertexSpaceAtLeast(size_t vertexSize, int minVertexCount, int fallbackVertexCount,
                                  sk_sp<const GrBuffer>*, int* startVertex,
-                                 int* actualVertexCount) final;
+                                 int* actualVertexCount, const char* label) final;
     uint16_t* makeIndexSpaceAtLeast(int minIndexCount, int fallbackIndexCount,
                                     sk_sp<const GrBuffer>*, int* startIndex,
-                                    int* actualIndexCount) final;
+                                    int* actualIndexCount, const char* label) final;
     GrDrawIndirectWriter makeDrawIndirectSpace(int drawCount, sk_sp<const GrBuffer>* buffer,
-                                               size_t* offset) override {
-        return fDrawIndirectPool.makeSpace(drawCount, buffer, offset);
+                                               size_t* offset, const char* label) override {
+        return fDrawIndirectPool.makeSpace(drawCount, buffer, offset, label);
     }
     GrDrawIndexedIndirectWriter makeDrawIndexedIndirectSpace(int drawCount,
                                                              sk_sp<const GrBuffer>* buffer,
-                                                             size_t* offset) override {
-        return fDrawIndirectPool.makeIndexedSpace(drawCount, buffer, offset);
+                                                             size_t* offset,
+                                                             const char* label) override {
+        return fDrawIndirectPool.makeIndexedSpace(drawCount, buffer, offset, label);
     }
     void putBackIndices(int indexCount) final;
     void putBackVertices(int vertices, size_t vertexStride) final;

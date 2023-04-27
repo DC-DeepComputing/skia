@@ -170,7 +170,8 @@ void StrokeTessellator::prepare(GrMeshDrawTarget* target,
                 GrGpuBufferType::kVertex,
                 FixedCountStrokes::VertexBufferSize(),
                 gVertexIDFallbackBufferKey,
-                FixedCountStrokes::WriteVertexBuffer);
+                FixedCountStrokes::WriteVertexBuffer,
+                "StrokeTessellator::prepare");
     }
 }
 

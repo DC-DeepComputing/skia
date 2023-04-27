@@ -686,7 +686,8 @@ int GrAATriangulator::polysToAATriangles(Poly* polys,
     int count = count64;
 
     size_t vertexStride = sizeof(SkPoint) + sizeof(float);
-    skgpu::VertexWriter verts = vertexAllocator->lockWriter(vertexStride, count);
+    skgpu::VertexWriter verts = vertexAllocator->lockWriter(vertexStride, count,
+                                                            "GrAATriangulator::polysToAATriangles");
     if (!verts) {
         SkDebugf("Could not allocate vertices\n");
         return 0;

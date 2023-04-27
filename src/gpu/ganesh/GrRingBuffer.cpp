@@ -72,7 +72,8 @@ GrRingBuffer::Slice GrRingBuffer::suballocate(size_t size) {
     fCurrentBuffer = resourceProvider->createBuffer(fTotalSize,
                                                     fType,
                                                     kDynamic_GrAccessPattern,
-                                                    GrResourceProvider::ZeroInit::kNo);
+                                                    GrResourceProvider::ZeroInit::kNo,
+                                                    "GrRingBuffer::suballocate");
 
     SkASSERT(fCurrentBuffer);
     fHead = 0;

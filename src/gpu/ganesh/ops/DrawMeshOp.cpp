@@ -905,7 +905,8 @@ void MeshOp::onPrepareDraws(GrMeshDrawTarget* target) {
         skgpu::VertexWriter verts = target->makeVertexWriter(vertexStride,
                                                              fVertexCount,
                                                              &vertexBuffer,
-                                                             &firstVertex);
+                                                             &firstVertex,
+                                                             "MeshOp::onPrepareDraws");
         if (!verts) {
             SkDebugf("Could not allocate vertices.\n");
             return;
@@ -927,7 +928,8 @@ void MeshOp::onPrepareDraws(GrMeshDrawTarget* target) {
     std::tie(indexBuffer, firstIndex) = fMeshes[0].gpuIB();
     if (fIndexCount && !indexBuffer) {
         uint16_t* indices = nullptr;
-        indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
+        indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex,
+                                         "MeshOp::onPrepareDraws");
         if (!indices) {
             SkDebugf("Could not allocate indices.\n");
             return;

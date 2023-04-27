@@ -219,7 +219,8 @@ sk_sp<Base> SkMeshPriv::GpuBuffer<Base, Type>::Make(GrDirectContext* dc,
             size,
             Type,
             kStatic_GrAccessPattern,
-            data ? GrResourceProvider::ZeroInit::kNo : GrResourceProvider::ZeroInit::kYes);
+            data ? GrResourceProvider::ZeroInit::kNo : GrResourceProvider::ZeroInit::kYes,
+            "Mesh");
     if (!buffer) {
         return nullptr;
     }

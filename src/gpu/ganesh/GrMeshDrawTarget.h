@@ -58,14 +58,15 @@ public:
      * the buffer (in 'vertexSize' units) where the data will be placed.
      */
     virtual void* makeVertexSpace(size_t vertexSize, int vertexCount, sk_sp<const GrBuffer>*,
-                                  int* startVertex) = 0;
+                                  int* startVertex, const char* label) = 0;
 
     /**
      * Makes space for index data. The returned pointer is the location where index data
      * should be written. On return the buffer that will hold the data as well as an offset into
      * the buffer (in uint16_t units) where the data will be placed.
      */
-    virtual uint16_t* makeIndexSpace(int indexCount, sk_sp<const GrBuffer>*, int* startIndex) = 0;
+    virtual uint16_t* makeIndexSpace(int indexCount, sk_sp<const GrBuffer>*, int* startIndex,
+                                     const char* label) = 0;
 
     /**
      * This is similar to makeVertexSpace. It allows the caller to use up to 'actualVertexCount'
@@ -75,7 +76,8 @@ public:
      */
     virtual void* makeVertexSpaceAtLeast(size_t vertexSize, int minVertexCount,
                                          int fallbackVertexCount, sk_sp<const GrBuffer>*,
-                                         int* startVertex, int* actualVertexCount) = 0;
+                                         int* startVertex, int* actualVertexCount,
+                                         const char* label) = 0;
 
     /**
      * This is similar to makeIndexSpace. It allows the caller to use up to 'actualIndexCount'
@@ -85,14 +87,15 @@ public:
      */
     virtual uint16_t* makeIndexSpaceAtLeast(int minIndexCount, int fallbackIndexCount,
                                             sk_sp<const GrBuffer>*, int* startIndex,
-                                            int* actualIndexCount) = 0;
+                                            int* actualIndexCount, const char* label) = 0;
 
     /**
      * Makes space for elements in a draw-indirect buffer. Upon success, the returned pointer is a
      * CPU mapping where the data should be written.
      */
     virtual GrDrawIndirectWriter makeDrawIndirectSpace(int drawCount, sk_sp<const GrBuffer>* buffer,
-                                                       size_t* offsetInBytes) = 0;
+                                                       size_t* offsetInBytes,
+                                                       const char* label) = 0;
 
     /**
      * Makes space for elements in a draw-indexed-indirect buffer. Upon success, the returned
@@ -100,18 +103,23 @@ public:
      */
     virtual GrDrawIndexedIndirectWriter makeDrawIndexedIndirectSpace(int drawCount,
                                                                      sk_sp<const GrBuffer>*,
-                                                                     size_t* offsetInBytes) = 0;
+                                                                     size_t* offsetInBytes,
+                                                                     const char* label) = 0;
 
     /** Helpers for ops that only need to use the VertexWriter to fill the data directly. */
     skgpu::VertexWriter makeVertexWriter(size_t vertexSize, int vertexCount,
-                                         sk_sp<const GrBuffer>*, int* startVertex);
-    skgpu::IndexWriter makeIndexWriter(int indexCount, sk_sp<const GrBuffer>*, int* startIndex);
+                                         sk_sp<const GrBuffer>*, int* startVertex,
+                                         const char* label);
+    skgpu::IndexWriter makeIndexWriter(int indexCount, sk_sp<const GrBuffer>*, int* startIndex,
+                                       const char* label);
     skgpu::VertexWriter makeVertexWriterAtLeast(size_t vertexSize, int minVertexCount,
                                                 int fallbackVertexCount, sk_sp<const GrBuffer>*,
-                                                int* startVertex, int* actualVertexCount);
+                                                int* startVertex, int* actualVertexCount,
+                                                const char* label);
     skgpu::IndexWriter makeIndexWriterAtLeast(int minIndexCount, int fallbackIndexCount,
                                               sk_sp<const GrBuffer>*, int* startIndex,
-                                              int* actualIndexCount);
+                                              int* actualIndexCount,
+                                              const char* label);
 
     /** Helpers for ops which over-allocate and then return excess data to the pool. */
     virtual void putBackIndices(int indices) = 0;

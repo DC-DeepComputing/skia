@@ -1287,7 +1287,8 @@ private:
         sk_sp<const GrBuffer> vertexBuffer;
         int firstVertex;
         VertexWriter vertices = target->makeVertexWriter(fProgramInfo->geomProc().vertexStride(),
-                                                         fVertCount, &vertexBuffer, &firstVertex);
+                                                         fVertCount, &vertexBuffer, &firstVertex,
+                                                         "CircleOp::onPrepareDraws - verts");
         if (!vertices) {
             SkDebugf("Could not allocate vertices\n");
             return;
@@ -1295,7 +1296,8 @@ private:
 
         sk_sp<const GrBuffer> indexBuffer = nullptr;
         int firstIndex = 0;
-        uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
+        uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex,
+                                                   "CircleOp::onPrepareDraws - indices");
         if (!indices) {
             SkDebugf("Could not allocate indices\n");
             return;
@@ -1659,7 +1661,8 @@ private:
         sk_sp<const GrBuffer> vertexBuffer;
         int firstVertex;
         VertexWriter vertices = target->makeVertexWriter(fProgramInfo->geomProc().vertexStride(),
-                                                         fVertCount, &vertexBuffer, &firstVertex);
+                                                         fVertCount, &vertexBuffer, &firstVertex,
+                                                         "ButtCapDashedCircleOp::onPrepareDraws - v");
         if (!vertices) {
             SkDebugf("Could not allocate vertices\n");
             return;
@@ -1667,7 +1670,8 @@ private:
 
         sk_sp<const GrBuffer> indexBuffer;
         int firstIndex = 0;
-        uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
+        uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex,
+                                                   "ButtCapDashedCircleOp::onPrepareDraws - i");
         if (!indices) {
             SkDebugf("Could not allocate indices\n");
             return;
@@ -2690,7 +2694,8 @@ private:
         int firstVertex;
 
         VertexWriter verts = target->makeVertexWriter(fProgramInfo->geomProc().vertexStride(),
-                                                      fVertCount, &vertexBuffer, &firstVertex);
+                                                      fVertCount, &vertexBuffer, &firstVertex,
+                                                      "CircularRRectOp::onPrepareDraws - v");
         if (!verts) {
             SkDebugf("Could not allocate vertices\n");
             return;
@@ -2698,7 +2703,8 @@ private:
 
         sk_sp<const GrBuffer> indexBuffer;
         int firstIndex = 0;
-        uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
+        uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex,
+                                                   "CircularRRectOp::onPrepareDraws - i");
         if (!indices) {
             SkDebugf("Could not allocate indices\n");
             return;

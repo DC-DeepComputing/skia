@@ -242,7 +242,8 @@ private:
                                                                           kFallbackVerticesPerChunk,
                                                                           &fVertexBuffer,
                                                                           &fFirstVertex,
-                                                                          &fVerticesInChunk));
+                                                                          &fVerticesInChunk,
+                                                                          "PathGeoBuilder::allocNewBuffers"));
         if (!fVertices) {
             SkDebugf("WARNING: Failed to allocate vertex buffer for DefaultPathRenderer.\n");
             fCurVert = nullptr;
@@ -261,7 +262,8 @@ private:
 
             fIndices = fTarget->makeIndexSpaceAtLeast(kMinIndicesPerChunk, kFallbackIndicesPerChunk,
                                                       &fIndexBuffer, &fFirstIndex,
-                                                      &fIndicesInChunk);
+                                                      &fIndicesInChunk,
+                                                      "PathGeoBuilder::allocNewBuffers");
             if (!fIndices) {
                 SkDebugf("WARNING: Failed to allocate index buffer for DefaultPathRenderer.\n");
                 fVertices = nullptr;

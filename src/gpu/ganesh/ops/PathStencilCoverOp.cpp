@@ -245,7 +245,8 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
         int maxTrianglesInFans = std::max(fTotalCombinedPathVerbCnt - 2, 0);
         int fanTriangleCount = 0;
         if (VertexWriter triangleVertexWriter =
-                    vertexAlloc.lockWriter(sizeof(SkPoint), maxTrianglesInFans * 3)) {
+                    vertexAlloc.lockWriter(sizeof(SkPoint), maxTrianglesInFans * 3,
+                                           "PathStencilCoverOp::onPrepare")) {
             for (auto [pathMatrix, path, color] : *fPathDrawList) {
                 tess::AffineMatrix m(pathMatrix);
                 for (tess::PathMiddleOutFanIter it(path); !it.done();) {
@@ -274,7 +275,8 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
         VertexWriter vertexWriter = flushState->makeVertexWriter(instanceStride,
                                                                  fPathCount,
                                                                  &fBBoxBuffer,
-                                                                 &fBBoxBaseInstance);
+                                                                 &fBBoxBaseInstance,
+                                                                 "PathStencilCoverOp::onPrepare");
         SkDEBUGCODE(int pathCount = 0;)
         for (auto [pathMatrix, path, color] : *fPathDrawList) {
             SkDEBUGCODE(auto end = vertexWriter.mark(instanceStride));
@@ -311,7 +313,8 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
         SKGPU_DEFINE_STATIC_UNIQUE_KEY(gUnitQuadBufferKey);
 
         fBBoxVertexBufferIfNoIDSupport = flushState->resourceProvider()->findOrMakeStaticBuffer(
-                GrGpuBufferType::kVertex, sizeof(kUnitQuad), kUnitQuad, gUnitQuadBufferKey);
+                GrGpuBufferType::kVertex, sizeof(kUnitQuad), kUnitQuad, gUnitQuadBufferKey,
+                "PathStencilCoverOp::onPrepare");
     }
 }
 

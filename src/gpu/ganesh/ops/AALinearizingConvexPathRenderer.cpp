@@ -184,7 +184,7 @@ private:
         sk_sp<const GrBuffer> vertexBuffer;
         int firstVertex;
         void* verts = target->makeVertexSpace(vertexStride, vertexCount, &vertexBuffer,
-                                              &firstVertex);
+                                              &firstVertex, "AAFlatteningConvexPathOp::recordDraw");
         if (!verts) {
             SkDebugf("Could not allocate vertices\n");
             return;
@@ -193,7 +193,8 @@ private:
 
         sk_sp<const GrBuffer> indexBuffer;
         int firstIndex;
-        uint16_t* idxs = target->makeIndexSpace(indexCount, &indexBuffer, &firstIndex);
+        uint16_t* idxs = target->makeIndexSpace(indexCount, &indexBuffer, &firstIndex,
+                                                "AAFlatteningConvexPathOp::recordDraw");
         if (!idxs) {
             SkDebugf("Could not allocate indices\n");
             return;

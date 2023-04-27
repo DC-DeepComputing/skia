@@ -207,14 +207,16 @@ void PathCurveTessellator::prepareWithTriangles(
     fFixedVertexBuffer = rp->findOrMakeStaticBuffer(GrGpuBufferType::kVertex,
                                                     FixedCountCurves::VertexBufferSize(),
                                                     gFixedCountCurveVertexBufferKey,
-                                                    FixedCountCurves::WriteVertexBuffer);
+                                                    FixedCountCurves::WriteVertexBuffer,
+                                                    "PathCurveTessellator::prepareWithTriangles verts");
 
     SKGPU_DEFINE_STATIC_UNIQUE_KEY(gFixedCountCurveIndexBufferKey);
 
     fFixedIndexBuffer = rp->findOrMakeStaticBuffer(GrGpuBufferType::kIndex,
                                                    FixedCountCurves::IndexBufferSize(),
                                                    gFixedCountCurveIndexBufferKey,
-                                                   FixedCountCurves::WriteIndexBuffer);
+                                                   FixedCountCurves::WriteIndexBuffer,
+                                                   "PathCurveTessellator::prepareWithTriangles indices");
 }
 
 void PathCurveTessellator::draw(GrOpFlushState* flushState) const {
@@ -259,14 +261,16 @@ void PathWedgeTessellator::prepare(GrMeshDrawTarget* target,
     fFixedVertexBuffer = rp->findOrMakeStaticBuffer(GrGpuBufferType::kVertex,
                                                     FixedCountWedges::VertexBufferSize(),
                                                     gFixedCountWedgesVertexBufferKey,
-                                                    FixedCountWedges::WriteVertexBuffer);
+                                                    FixedCountWedges::WriteVertexBuffer,
+                                                    "PathWedgeTessellator::prepare - verts");
 
     SKGPU_DEFINE_STATIC_UNIQUE_KEY(gFixedCountWedgesIndexBufferKey);
 
     fFixedIndexBuffer = rp->findOrMakeStaticBuffer(GrGpuBufferType::kIndex,
                                                    FixedCountWedges::IndexBufferSize(),
                                                    gFixedCountWedgesIndexBufferKey,
-                                                   FixedCountWedges::WriteIndexBuffer);
+                                                   FixedCountWedges::WriteIndexBuffer,
+                                                   "PathWedgeTessellator::prepare - indices");
 }
 
 void PathWedgeTessellator::draw(GrOpFlushState* flushState) const {

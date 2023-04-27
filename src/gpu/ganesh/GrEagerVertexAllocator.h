@@ -24,14 +24,14 @@ class GrMeshDrawTarget;
 // actual vertex count.
 class GrEagerVertexAllocator {
 public:
-    virtual void* lock(size_t stride, int eagerCount) = 0;
+    virtual void* lock(size_t stride, int eagerCount, const char* label) = 0;
 
     virtual void unlock(int actualCount) = 0;
 
     virtual ~GrEagerVertexAllocator() {}
 
-    skgpu::VertexWriter lockWriter(size_t stride, int eagerCount) {
-        void* p = this->lock(stride, eagerCount);
+    skgpu::VertexWriter lockWriter(size_t stride, int eagerCount, const char* label) {
+        void* p = this->lock(stride, eagerCount, label);
         return p ? skgpu::VertexWriter{p, stride * eagerCount} : skgpu::VertexWriter{};
     }
 };
@@ -55,7 +55,7 @@ public:
 #endif
 
     // Mark "final" as a hint for the compiler to not use the vtable.
-    void* lock(size_t stride, int eagerCount) final;
+    void* lock(size_t stride, int eagerCount, const char* label) final;
 
     // Mark "final" as a hint for the compiler to not use the vtable.
     void unlock(int actualCount) final;
@@ -79,7 +79,7 @@ public:
     }
 #endif
 
-    void* lock(size_t stride, int eagerCount) override;
+    void* lock(size_t stride, int eagerCount, const char* label) override;
     void unlock(int actualCount) override;
 
     sk_sp<GrThreadSafeCache::VertexData> detachVertexData();

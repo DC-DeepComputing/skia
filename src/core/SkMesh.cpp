@@ -905,7 +905,8 @@ bool SkMeshPriv::UpdateGpuBuffer(GrDirectContext* dc,
         tempBuffer = dc->priv().resourceProvider()->createBuffer(size,
                                                                  GrGpuBufferType::kXferCpuToGpu,
                                                                  kDynamic_GrAccessPattern,
-                                                                 GrResourceProvider::ZeroInit::kNo);
+                                                                 GrResourceProvider::ZeroInit::kNo,
+                                                                 "MeshUpdate");
         if (!tempBuffer) {
             return false;
         }

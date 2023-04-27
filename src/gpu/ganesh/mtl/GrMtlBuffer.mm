@@ -38,12 +38,13 @@ NSString* kBufferTypeNames[kGrGpuBufferTypeCount] = {
 sk_sp<GrMtlBuffer> GrMtlBuffer::Make(GrMtlGpu* gpu,
                                      size_t size,
                                      GrGpuBufferType intendedType,
-                                     GrAccessPattern accessPattern) {
+                                     GrAccessPattern accessPattern,
+                                     const char* label) {
     return sk_sp<GrMtlBuffer>(new GrMtlBuffer(gpu,
                                               size,
                                               intendedType,
                                               accessPattern,
-                                              /*label=*/"MakeMtlBuffer"));
+                                              label));
 }
 
 GrMtlBuffer::GrMtlBuffer(GrMtlGpu* gpu, size_t size, GrGpuBufferType intendedType,

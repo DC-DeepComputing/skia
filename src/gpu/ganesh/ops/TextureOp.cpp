@@ -910,7 +910,8 @@ private:
         size_t vertexSize = fDesc->fVertexSpec.vertexSize();
 
         void* vdata = target->makeVertexSpace(vertexSize, fDesc->totalNumVertices(),
-                                              &fDesc->fVertexBuffer, &fDesc->fBaseVertex);
+                                              &fDesc->fVertexBuffer, &fDesc->fBaseVertex,
+                                              "TextureOpImpl::onPrepareDraws - verts");
         if (!vdata) {
             SkDebugf("Could not allocate vertices\n");
             return;

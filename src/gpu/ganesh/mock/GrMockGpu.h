@@ -91,7 +91,8 @@ private:
 
     sk_sp<GrGpuBuffer> onCreateBuffer(size_t sizeInBytes,
                                       GrGpuBufferType,
-                                      GrAccessPattern) override;
+                                      GrAccessPattern,
+                                      const char* label) override;
 
     bool onReadPixels(GrSurface*,
                       SkIRect,

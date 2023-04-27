@@ -220,7 +220,8 @@ private:
         int firstVertex;
 
         void* verts =
-                target->makeVertexSpace(kVertexStride, vertexCount, &vertexBuffer, &firstVertex);
+                target->makeVertexSpace(kVertexStride, vertexCount, &vertexBuffer, &firstVertex,
+                                        "NonAAStrokeRectOp::onPrepareDraws");
 
         if (!verts) {
             SkDebugf("Could not allocate vertices\n");

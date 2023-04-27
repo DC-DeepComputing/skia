@@ -213,7 +213,8 @@ private:
         fVertexBuffer = flushState->resourceProvider()->createBuffer(v,
                                                                      sizeof(v),
                                                                      GrGpuBufferType::kVertex,
-                                                                     kStatic_GrAccessPattern);
+                                                                     kStatic_GrAccessPattern,
+                                                                     "test");
     }
 
     void onPrepare(GrOpFlushState* flushState) override {

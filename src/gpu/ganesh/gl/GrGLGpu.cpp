@@ -1922,8 +1922,9 @@ sk_sp<GrAttachment> GrGLGpu::makeMSAAAttachment(SkISize dimensions, const GrBack
 
 sk_sp<GrGpuBuffer> GrGLGpu::onCreateBuffer(size_t size,
                                            GrGpuBufferType intendedType,
-                                           GrAccessPattern accessPattern) {
-    return GrGLBuffer::Make(this, size, intendedType, accessPattern);
+                                           GrAccessPattern accessPattern,
+                                           const char* label) {
+    return GrGLBuffer::Make(this, size, intendedType, accessPattern, label);
 }
 
 void GrGLGpu::flushScissorTest(GrScissorTest scissorTest) {
@@ -3212,7 +3213,8 @@ bool GrGLGpu::createCopyProgram(GrTexture* srcTex) {
         fCopyProgramArrayBuffer = GrGLBuffer::Make(this,
                                                    sizeof(vdata),
                                                    GrGpuBufferType::kVertex,
-                                                   kStatic_GrAccessPattern);
+                                                   kStatic_GrAccessPattern,
+                                                   "createCopyProgram");
         fCopyProgramArrayBuffer->updateData(vdata, /*offset=*/0, sizeof(vdata), /*preserve=*/false);
     }
     if (!fCopyProgramArrayBuffer) {
@@ -3693,9 +3695,9 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
         fMipmapProgramArrayBuffer = GrGLBuffer::Make(this,
                                                      sizeof(vdata),
                                                      GrGpuBufferType::kVertex,
-                                                     kStatic_GrAccessPattern);
+                                                     kStatic_GrAccessPattern,
+                                                     "onRegenerateMipMapLevels");
         fMipmapProgramArrayBuffer->updateData(vdata, /*offset=*/0,
-
                                               sizeof(vdata),
                                               /*preserve=*/false);
     }
