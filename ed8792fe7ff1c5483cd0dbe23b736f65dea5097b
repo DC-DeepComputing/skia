@@ -52,6 +52,24 @@
       "parentUuid": "b1506d49_b8094711",
       "revId": "ed8792fe7ff1c5483cd0dbe23b736f65dea5097b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd6e303b_d12add62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-27T20:47:57Z",
+      "side": 1,
+      "message": "I made one additional change and renamed `getMappedStorage` to `getStoragePoiner`. This removes the mapping term from the public definitions (although \"mapped\" wasn\u0027t wrong in this context) and mirrors `getStorageWriter`",
+      "parentUuid": "cdbc4acf_2db16fe4",
+      "revId": "ed8792fe7ff1c5483cd0dbe23b736f65dea5097b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
