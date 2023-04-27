@@ -16,6 +16,98 @@
       "message": "Friendly bump 😊",
       "revId": "9e716b9e6469ad54fb0d9d838f55c692bbc0e81a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10e93713_d2ccdb6e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-27T14:22:39Z",
+      "side": 1,
+      "message": "I\u0027m not 100% sure how I\u0027m going to implement this yet so unless you need it I\u0027d just leave it out.",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 300,
+        "endChar": 64
+      },
+      "revId": "9e716b9e6469ad54fb0d9d838f55c692bbc0e81a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aab5a2ff_a56aeff9",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-27T14:22:39Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to do this -- we haven\u0027t called vkCmdBeginRenderPass. And again unless you need this code I\u0027d just leave the method empty for now and put in a TODO comment, other than maybe SkASSERT(fActive).",
+      "range": {
+        "startLine": 316,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 86
+      },
+      "revId": "9e716b9e6469ad54fb0d9d838f55c692bbc0e81a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6ef8eb0_1af9ffeb",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-27T14:22:39Z",
+      "side": 1,
+      "message": "line wrap",
+      "range": {
+        "startLine": 440,
+        "startChar": 100,
+        "endLine": 440,
+        "endChar": 103
+      },
+      "revId": "9e716b9e6469ad54fb0d9d838f55c692bbc0e81a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ffcbb7d_f2059859",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-27T14:22:39Z",
+      "side": 1,
+      "message": "line wrap",
+      "range": {
+        "startLine": 444,
+        "startChar": 95,
+        "endLine": 444,
+        "endChar": 105
+      },
+      "revId": "9e716b9e6469ad54fb0d9d838f55c692bbc0e81a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
