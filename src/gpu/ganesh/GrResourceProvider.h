@@ -356,7 +356,13 @@ public:
                                                       GrSemaphoreWrapType,
                                                       GrWrapOwnership = kBorrow_GrWrapOwnership);
 
+    void dropRefs() {
+        fNonAAQuadIndexBuffer = nullptr;
+        fAAQuadIndexBuffer = nullptr;
+    }
+
     void abandon() {
+        this->dropRefs();
         fCache = nullptr;
         fGpu = nullptr;
     }

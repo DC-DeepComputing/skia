@@ -130,6 +130,10 @@ GrDirectContext::~GrDirectContext() {
 
     this->destroyDrawingManager();
 
+    if (fResourceProvider) {
+        fResourceProvider->dropRefs();
+    }
+
     // Ideally we could just let the ptr drop, but resource cache queries this ptr in releaseAll.
     if (fResourceCache) {
         fResourceCache->releaseAll();
