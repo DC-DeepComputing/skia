@@ -16,6 +16,24 @@
       "message": "Guess it\u0027s no longer needed but still worth adding I think.",
       "revId": "48d81034204606c67c04e042e44ed77ed9a96b51",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc9ab201_99933120",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2023-04-27T20:08:36Z",
+      "side": 1,
+      "message": "I used this change in a local build to figure out what was going on. Once we knew which format was getting requested it was easier to figure out where the failure was and fix that. This is for next time :)",
+      "parentUuid": "84adff2c_ce846dc4",
+      "revId": "48d81034204606c67c04e042e44ed77ed9a96b51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
