@@ -200,7 +200,7 @@ void DrawAtlasPathOp::onPrepare(GrOpFlushState* flushState) {
 
     if (VertexWriter instanceWriter = flushState->makeVertexWriter(
                 fProgram->geomProc().instanceStride(), fInstanceCount, &fInstanceBuffer,
-                &fBaseInstance)) {
+                &fBaseInstance, "DrawAtlasPathOp::onPrepare")) {
         for (const Instance* i = fHeadInstance; i; i = i->fNext) {
             instanceWriter << SkRect::Make(i->fFillBounds)
                            << VertexWriter::If(fUsesLocalCoords,
@@ -216,7 +216,8 @@ void DrawAtlasPathOp::onPrepare(GrOpFlushState* flushState) {
         SKGPU_DEFINE_STATIC_UNIQUE_KEY(gUnitQuadBufferKey);
 
         fVertexBufferIfNoIDSupport = flushState->resourceProvider()->findOrMakeStaticBuffer(
-                GrGpuBufferType::kVertex, sizeof(kUnitQuad), kUnitQuad, gUnitQuadBufferKey);
+                GrGpuBufferType::kVertex, sizeof(kUnitQuad), kUnitQuad, gUnitQuadBufferKey,
+                "DrawAtlasPathOp::onPrepare");
     }
 }
 

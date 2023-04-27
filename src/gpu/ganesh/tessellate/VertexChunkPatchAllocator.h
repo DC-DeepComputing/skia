@@ -29,9 +29,9 @@ public:
             : fWorstCaseTolerances(worstCaseTolerances)
             , fBuilder(target, chunks, stride, minVerticesPerChunk) {}
 
-    VertexWriter append(const tess::LinearTolerances& tolerances) {
+    VertexWriter append(const tess::LinearTolerances& tolerances, const char* label) {
         fWorstCaseTolerances->accumulate(tolerances);
-        return fBuilder.appendVertices(1);
+        return fBuilder.appendVertices(1, label);
     }
 
 private:

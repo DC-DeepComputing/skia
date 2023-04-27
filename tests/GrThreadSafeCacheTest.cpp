@@ -597,7 +597,7 @@ private:
                 sk_sp<GrGpuBuffer> tmp = rp->createBuffer(fVertexData->vertices(),
                                                           fVertexData->size(),
                                                           GrGpuBufferType::kVertex,
-                                                          kStatic_GrAccessPattern);
+                                                          kStatic_GrAccessPattern, "test");
                 fVertexData->setGpuBuffer(std::move(tmp));
             }
         }

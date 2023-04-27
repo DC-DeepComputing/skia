@@ -283,7 +283,8 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
                 vertexStride,
                 kVerticesPerGlyph * quadEnd,
                 &flushInfo.fVertexBuffer,
-                &flushInfo.fVertexOffset);
+                &flushInfo.fVertexOffset,
+                "AtlasTextOp::onPrepareDraws");
 
         if (!vertices || !flushInfo.fVertexBuffer) {
             SkDebugf("Could not allocate vertices\n");

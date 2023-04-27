@@ -84,7 +84,8 @@ void GrMeshDrawOp::PatternHelper::init(GrMeshDrawTarget* target, GrPrimitiveType
     sk_sp<const GrBuffer> vertexBuffer;
     int firstVertex;
     int vertexCount = verticesPerRepetition * repeatCount;
-    fVertices = target->makeVertexSpace(vertexStride, vertexCount, &vertexBuffer, &firstVertex);
+    fVertices = target->makeVertexSpace(vertexStride, vertexCount, &vertexBuffer, &firstVertex,
+                                        "GrMeshDrawOp::PatternHelper::init 1");
     if (!fVertices) {
         SkDebugf("Vertices could not be allocated for patterned rendering.");
         return;

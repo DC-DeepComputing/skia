@@ -10,10 +10,11 @@
 #include "src/gpu/ganesh/GrMeshDrawTarget.h"
 
 //-------------------------------------------------------------------------------------------------
-void* GrEagerDynamicVertexAllocator::lock(size_t stride, int eagerCount) {
+void* GrEagerDynamicVertexAllocator::lock(size_t stride, int eagerCount, const char* label) {
     SkASSERT(!fLockCount);
     SkASSERT(eagerCount);
-    if (void* data = fTarget->makeVertexSpace(stride, eagerCount, fVertexBuffer, fBaseVertex)) {
+    if (void* data = fTarget->makeVertexSpace(stride, eagerCount, fVertexBuffer, fBaseVertex,
+                                              label)) {
         fLockStride = stride;
         fLockCount = eagerCount;
         return data;
@@ -35,7 +36,7 @@ void GrEagerDynamicVertexAllocator::unlock(int actualCount) {
 }
 
 //-------------------------------------------------------------------------------------------------
-void* GrCpuVertexAllocator::lock(size_t stride, int eagerCount) {
+void* GrCpuVertexAllocator::lock(size_t stride, int eagerCount, const char* label) {
     SkASSERT(!fLockStride && !fVertices && !fVertexData);
     SkASSERT(stride && eagerCount);
 

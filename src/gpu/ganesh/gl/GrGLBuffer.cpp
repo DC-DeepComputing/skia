@@ -31,15 +31,15 @@
 sk_sp<GrGLBuffer> GrGLBuffer::Make(GrGLGpu* gpu,
                                    size_t size,
                                    GrGpuBufferType intendedType,
-                                   GrAccessPattern accessPattern) {
+                                   GrAccessPattern accessPattern,
+                                   const char* label) {
     if (gpu->glCaps().transferBufferType() == GrGLCaps::TransferBufferType::kNone &&
         (GrGpuBufferType::kXferCpuToGpu == intendedType ||
          GrGpuBufferType::kXferGpuToCpu == intendedType)) {
         return nullptr;
     }
 
-    sk_sp<GrGLBuffer> buffer(new GrGLBuffer(gpu, size, intendedType, accessPattern,
-                                            /*label=*/"MakeGlBuffer"));
+    sk_sp<GrGLBuffer> buffer(new GrGLBuffer(gpu, size, intendedType, accessPattern, label));
     if (0 == buffer->bufferID()) {
         return nullptr;
     }

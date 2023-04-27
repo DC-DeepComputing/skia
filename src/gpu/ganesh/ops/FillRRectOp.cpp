@@ -549,7 +549,8 @@ void FillRRectOpImpl::onPrepareDraws(GrMeshDrawTarget* target) {
     size_t instanceStride = fProgramInfo->geomProc().instanceStride();
 
     if (VertexWriter instanceWriter = target->makeVertexWriter(instanceStride, fInstanceCount,
-                                                               &fInstanceBuffer, &fBaseInstance)) {
+                                                               &fInstanceBuffer, &fBaseInstance,
+                                                               "FillRRectOpImpl::onPrepareDraws")) {
         SkDEBUGCODE(auto end = instanceWriter.mark(instanceStride * fInstanceCount));
         for (Instance* i = fHeadInstance; i; i = i->fNext) {
             auto [l, t, r, b] = i->fRRect.rect();
@@ -596,14 +597,16 @@ void FillRRectOpImpl::onPrepareDraws(GrMeshDrawTarget* target) {
 
     fIndexBuffer = target->resourceProvider()->findOrMakeStaticBuffer(GrGpuBufferType::kIndex,
                                                                       sizeof(kIndexData),
-                                                                      kIndexData, gIndexBufferKey);
+                                                                      kIndexData, gIndexBufferKey,
+                                                                      "FillRRectOpImpl::onPrepareDraws - indices");
 
     SKGPU_DEFINE_STATIC_UNIQUE_KEY(gVertexBufferKey);
 
     fVertexBuffer = target->resourceProvider()->findOrMakeStaticBuffer(GrGpuBufferType::kVertex,
                                                                       sizeof(kVertexData),
                                                                       kVertexData,
-                                                                      gVertexBufferKey);
+                                                                      gVertexBufferKey,
+                                                                      "FillRRectOpImpl::onPrepareDraws - verts");
 }
 
 class FillRRectOpImpl::Processor::Impl : public ProgramImpl {

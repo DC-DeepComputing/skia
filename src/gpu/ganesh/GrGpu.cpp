@@ -393,7 +393,8 @@ sk_sp<GrRenderTarget> GrGpu::onWrapVulkanSecondaryCBAsRenderTarget(const SkImage
 
 sk_sp<GrGpuBuffer> GrGpu::createBuffer(size_t size,
                                        GrGpuBufferType intendedType,
-                                       GrAccessPattern accessPattern) {
+                                       GrAccessPattern accessPattern,
+                                       const char* label) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     this->handleDirtyContext();
     if ((intendedType == GrGpuBufferType::kXferCpuToGpu ||
@@ -401,7 +402,7 @@ sk_sp<GrGpuBuffer> GrGpu::createBuffer(size_t size,
         accessPattern == kStatic_GrAccessPattern) {
         return nullptr;
     }
-    sk_sp<GrGpuBuffer> buffer = this->onCreateBuffer(size, intendedType, accessPattern);
+    sk_sp<GrGpuBuffer> buffer = this->onCreateBuffer(size, intendedType, accessPattern, label);
     if (!this->caps()->reuseScratchBuffers()) {
         buffer->resourcePriv().removeScratchKey();
     }

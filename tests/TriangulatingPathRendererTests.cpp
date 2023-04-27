@@ -915,7 +915,7 @@ namespace {
 
 class SimpleVertexAllocator : public GrEagerVertexAllocator {
 public:
-    void* lock(size_t stride, int eagerCount) override {
+    void* lock(size_t stride, int eagerCount, const char* label) override {
         SkASSERT(!fPoints);
         SkASSERT(stride == sizeof(SkPoint));
         fPoints.reset(eagerCount);
@@ -928,7 +928,7 @@ public:
 
 class SimplerVertexAllocator : public GrEagerVertexAllocator {
 public:
-    void* lock(size_t stride, int eagerCount) override {
+    void* lock(size_t stride, int eagerCount, const char* label) override {
         size_t allocSize = eagerCount * stride;
         if (allocSize > fVertexAllocSize) {
             fVertexData.reset(allocSize);

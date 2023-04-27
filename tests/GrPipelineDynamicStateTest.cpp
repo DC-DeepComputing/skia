@@ -268,7 +268,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrPipelineDynamicStateTest,
     sk_sp<const GrBuffer> vbuff(rp->createBuffer(vdata,
                                                  sizeof(vdata),
                                                  GrGpuBufferType::kVertex,
-                                                 kDynamic_GrAccessPattern));
+                                                 kDynamic_GrAccessPattern, "test"));
     if (!vbuff) {
         ERRORF(reporter, "vbuff is null.");
         return;

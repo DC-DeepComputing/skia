@@ -27,7 +27,8 @@ public:
         void* fOffsetMapPtr = nullptr;
     };
 
-    Slice allocateStagingBufferSlice(size_t size, size_t requiredAlignment = 1);
+    Slice allocateStagingBufferSlice(size_t size, size_t requiredAlignment = 1,
+                                     const char* label = nullptr); //$$
 
     // This call is used to move all the buffers off of the manager and to backend gpu by calling
     // the virtual GrGpu::takeOwnershipOfBuffer on each buffer. This is called during
@@ -65,4 +66,3 @@ private:
 };
 
 #endif
-

@@ -1263,7 +1263,8 @@ SurfaceContext::PixelTransferResult SurfaceContext::transferPixels(GrColorType d
             size,
             GrGpuBufferType::kXferGpuToCpu,
             GrAccessPattern::kStream_GrAccessPattern,
-            GrResourceProvider::ZeroInit::kNo);
+            GrResourceProvider::ZeroInit::kNo,
+            "transferPixels");
     if (!buffer) {
         return {};
     }

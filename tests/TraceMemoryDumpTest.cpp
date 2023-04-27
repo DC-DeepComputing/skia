@@ -96,7 +96,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SkTraceMemoryDump_ownedGLBuffer,
     GrGLGpu* gpu = static_cast<GrGLGpu*>(dContext->priv().getGpu());
     const size_t kMemorySize = 1024;
     sk_sp<GrGLBuffer> buffer =
-            GrGLBuffer::Make(gpu, kMemorySize, GrGpuBufferType::kVertex, kDynamic_GrAccessPattern);
+            GrGLBuffer::Make(gpu, kMemorySize, GrGpuBufferType::kVertex, kDynamic_GrAccessPattern, "test");
 
     ValidateMemoryDumps(reporter, dContext, 2, kMemorySize, true /* isOwned */);
 }

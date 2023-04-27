@@ -55,9 +55,9 @@ public:
 
     // Appends 'count' contiguous vertices. These vertices are not guaranteed to be contiguous with
     // previous or future calls to appendVertices.
-    SK_ALWAYS_INLINE skgpu::VertexWriter appendVertices(int count) {
+    SK_ALWAYS_INLINE skgpu::VertexWriter appendVertices(int count, const char* label) {
         SkASSERT(count > 0);
-        if (fCurrChunkVertexCount + count > fCurrChunkVertexCapacity && !this->allocChunk(count)) {
+        if (fCurrChunkVertexCount + count > fCurrChunkVertexCapacity && !this->allocChunk(count, label)) {
             SkDEBUGCODE(fLastAppendAmount = 0;)
             return {};
         }
@@ -80,7 +80,7 @@ public:
     }
 
 private:
-    bool allocChunk(int minCount);
+    bool allocChunk(int minCount, const char* label);
 
     GrMeshDrawTarget* const fTarget;
     GrVertexChunkArray* const fChunks;

@@ -227,7 +227,8 @@ private:
         fVertexBuffer = flushState->resourceProvider()->createBuffer(vertices,
                                                                      sizeof(vertices),
                                                                      GrGpuBufferType::kVertex,
-                                                                     kStatic_GrAccessPattern);
+                                                                     kStatic_GrAccessPattern,
+                                                                     "squircle");
     }
 
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) final {
