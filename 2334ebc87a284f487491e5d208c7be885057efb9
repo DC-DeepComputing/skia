@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87aa2b23_a4c30eb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-27T17:53:47Z",
+      "side": 1,
+      "message": "Currently buffer sub-allocations are created when a DispatchGroup is initialized, which happens when a Recording gets snapped. I think the current scheme (especially considering when the clear task should get inserted) may not support replaying a Recording, which would need to reinitialize all the BindBufferInfo\u0027s assigned to the various flow graph slots.",
+      "revId": "2334ebc87a284f487491e5d208c7be885057efb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -22,6 +22,30 @@
       },
       "revId": "45333e37c71f6a243bee4141714fd947ccfa0dc7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "005c8ca3_38e02788",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-27T17:53:47Z",
+      "side": 1,
+      "message": "That\u0027s how I originally had this but then decided to go with separate field definitions. Obviously a cleared buffer is intended to be bound to some GPU operation but I didn\u0027t want any future changes to the BindBufferInfo definition to impact the contract for clearing a buffer. Another motivation was that a clear task could possibly take a shared pointer to a buffer in the future, so managing these two Info structs separately felt cleaner to me.\n\nI\u0027m happy to go in either direction if you disagree.",
+      "parentUuid": "d336b758_bea5df1f",
+      "range": {
+        "startLine": 135,
+        "startChar": 4,
+        "endLine": 136,
+        "endChar": 23
+      },
+      "revId": "45333e37c71f6a243bee4141714fd947ccfa0dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
