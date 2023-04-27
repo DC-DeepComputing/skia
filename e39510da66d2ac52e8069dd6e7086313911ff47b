@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1ea67d3_7ece8f63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-27T14:48:27Z",
+      "side": 1,
+      "message": "This should be a rock solid comparison of two doubles. If something is unclear, please point it out, and I will try to improve the prose. Is you can think of a counter example, tell me, and I will added it to the tests and fix the code.",
+      "revId": "e39510da66d2ac52e8069dd6e7086313911ff47b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
