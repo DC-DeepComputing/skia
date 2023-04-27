@@ -13,9 +13,10 @@ import sys
 
 target = sys.argv[1]
 output = sys.argv[2]
+output_dir = sys.argv[3] if len(sys.argv) == 4 else ""
 subprocess.run(["bazelisk", "build", target], check=True)
 
-expected_output = os.path.join(os.getcwd(), os.path.basename(output))
+expected_output = os.path.join(os.path.join(os.getcwd(), output_dir), os.path.basename(output))
 if not os.path.exists(expected_output):
     shutil.copyfile(output, expected_output)
     os.chmod(expected_output, 0o755)
