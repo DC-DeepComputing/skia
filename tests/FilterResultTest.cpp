@@ -11,7 +11,9 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorFilter.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkData.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
@@ -23,13 +25,16 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "include/core/SkColorFilter.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/SkColorData.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
+#include "src/core/SkColorFilterBase.h"
 #include "src/core/SkImageFilterTypes.h"
+#include "src/core/SkRectPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkSpecialSurface.h"
 #include "tests/CtsEnforcement.h"
@@ -78,6 +83,16 @@ static const float kFuzzyKernel[3][3] = {{0.9f, 0.9f, 0.9f},
 static_assert(std::size(kFuzzyKernel) == std::size(kFuzzyKernel[0]), "Kernel must be square");
 static constexpr int kKernelSize = std::size(kFuzzyKernel);
 
+bool colorfilter_equals(const SkColorFilter* actual, const SkColorFilter* expected) {
+    if (!actual || !expected) {
+        return !actual && !expected; // both null
+    }
+    // The two filter objects are equal if they serialize to the same structure
+    sk_sp<SkData> actualData = actual->serialize();
+    sk_sp<SkData> expectedData = expected->serialize();
+    return actualData && actualData->equals(expectedData.get());
+}
+
 enum class Expect {
     kDeferredImage, // i.e. modified properties of FilterResult instead of rendering
     kNewImage,      // i.e. rendered a new image before modifying other properties
@@ -98,17 +113,30 @@ public:
     ApplyAction(const SkMatrix& transform,
                 const SkSamplingOptions& sampling,
                 Expect expectation,
-                const SkSamplingOptions& expectedSampling)
+                const SkSamplingOptions& expectedSampling,
+                sk_sp<SkColorFilter> expectedColorFilter)
             : fAction{TransformParams{LayerSpace<SkMatrix>(transform), sampling}}
             , fExpectation(expectation)
-            , fExpectedSampling(expectedSampling) {}
+            , fExpectedSampling(expectedSampling)
+            , fExpectedColorFilter(std::move(expectedColorFilter)) {}
 
     ApplyAction(const SkIRect& cropRect,
                 Expect expectation,
-                const SkSamplingOptions& expectedSampling)
+                const SkSamplingOptions& expectedSampling,
+                sk_sp<SkColorFilter> expectedColorFilter)
             : fAction{CropParams{LayerSpace<SkIRect>(cropRect)}}
             , fExpectation(expectation)
-            , fExpectedSampling(expectedSampling) {}
+            , fExpectedSampling(expectedSampling)
+            , fExpectedColorFilter(std::move(expectedColorFilter)) {}
+
+    ApplyAction(sk_sp<SkColorFilter> colorFilter,
+                Expect expectation,
+                const SkSamplingOptions& expectedSampling,
+                sk_sp<SkColorFilter> expectedColorFilter)
+            : fAction(std::move(colorFilter))
+            , fExpectation(expectation)
+            , fExpectedSampling(expectedSampling)
+            , fExpectedColorFilter(std::move(expectedColorFilter)) {}
 
     // Test-simplified logic for bounds propagation similar to how image filters calculate bounds
     // while evaluating a filter DAG, which is outside of skif::FilterResult's responsibilities.
@@ -123,6 +151,8 @@ public:
                 intersection = LayerSpace<SkIRect>::Empty();
             }
             return intersection;
+        } else if (std::holds_alternative<sk_sp<SkColorFilter>>(fAction)) {
+            return desiredOutput;
         }
         SkUNREACHABLE;
     }
@@ -133,12 +163,15 @@ public:
             return in.applyTransform(ctx, t->fMatrix, t->fSampling);
         } else if (auto* c = std::get_if<CropParams>(&fAction)) {
             return in.applyCrop(ctx, c->fRect);
+        } else if (auto* cf = std::get_if<sk_sp<SkColorFilter>>(&fAction)) {
+            return in.applyColorFilter(ctx, *cf);
         }
         SkUNREACHABLE;
     }
 
     Expect expectation() const { return fExpectation; }
     const SkSamplingOptions& expectedSampling() const { return fExpectedSampling; }
+    const SkColorFilter* expectedColorFilter() const { return fExpectedColorFilter.get(); }
 
     LayerSpace<SkIRect> expectedBounds(const LayerSpace<SkIRect>& inputBounds) const {
         // This assumes anything outside 'inputBounds' is transparent black.
@@ -153,6 +186,13 @@ public:
                 intersection = LayerSpace<SkIRect>::Empty();
             }
             return intersection;
+        } else if (auto* cf = std::get_if<sk_sp<SkColorFilter>>(&fAction)) {
+            if (as_CFB(*cf)->affectsTransparentBlack()) {
+                // Fills out infinitely
+                return LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
+            } else {
+                return inputBounds;
+            }
         }
         SkUNREACHABLE;
     }
@@ -197,6 +237,8 @@ public:
                 canvas->concat(m);
             } else if (auto* c = std::get_if<CropParams>(&fAction)) {
                 canvas->clipIRect(SkIRect(c->fRect));
+            } else if (auto* cf = std::get_if<sk_sp<SkColorFilter>>(&fAction)) {
+                paint.setColorFilter(*cf);
             }
             paint.setShader(source->asShader(SkTileMode::kDecal,
                                              sampling,
@@ -209,13 +251,14 @@ public:
 private:
     // Action
     std::variant<TransformParams, // for applyTransform()
-                CropParams        // for applyCrop()
-                // TODO: add variants for SkColorFilters, etc.
+                 CropParams,        // for applyCrop()
+                 sk_sp<SkColorFilter> // for applyColorFilter()
             > fAction;
 
     // Expectation
     Expect fExpectation;
     SkSamplingOptions fExpectedSampling;
+    sk_sp<SkColorFilter> fExpectedColorFilter;
     // The expected desired outputs and layer bounds are calculated automatically based on the
     // action type and parameters to simplify test case specification.
 };
@@ -535,7 +578,8 @@ public:
     TestCase& applyCrop(const SkIRect& crop,
                         Expect expectation) {
         fActions.emplace_back(crop, expectation,
-                              this->getDefaultExpectedSampling(expectation));
+                              this->getDefaultExpectedSampling(expectation),
+                              this->getDefaultExpectedColorFilter(expectation));
         return *this;
     }
 
@@ -552,11 +596,23 @@ public:
         if (!expectedSampling.has_value()) {
             expectedSampling = sampling;
         }
-        fActions.emplace_back(matrix, sampling, expectation, *expectedSampling);
+        fActions.emplace_back(matrix, sampling, expectation, *expectedSampling,
+                              this->getDefaultExpectedColorFilter(expectation));
         return *this;
     }
 
-    // TODO: applyColorFilter() etc. to maintain parity with FilterResult API
+    TestCase& applyColorFilter(sk_sp<SkColorFilter> colorFilter,
+                               Expect expectation) {
+        // The expected color filter is the composition of the default expectation (e.g. last
+        // color filter or null for a new image) and the new 'colorFilter'. Compose() automatically
+        // returns 'colorFilter' if the inner filter is null.
+        auto expectedColorFilter = SkColorFilters::Compose(
+                colorFilter, this->getDefaultExpectedColorFilter(expectation));
+        fActions.emplace_back(std::move(colorFilter), expectation,
+                              this->getDefaultExpectedSampling(expectation),
+                              std::move(expectedColorFilter));
+        return *this;
+    }
 
     void run(const SkIRect& requestedOutput) const {
         skiatest::ReporterContext caseLabel(fRunner, fName);
@@ -585,8 +641,16 @@ public:
             // subsequent actions.
             auto inputBounds = fSourceBounds;
             for (int i = 0; i < (int) fActions.size() - 1; ++i) {
-                inputBounds = fActions[i].expectedBounds(inputBounds);
-                desiredOutputs[i] = inputBounds;
+                auto nextOutput = fActions[i].expectedBounds(inputBounds);
+                if (SkIRect(nextOutput) == SkRectPriv::MakeILarge()) {
+                    // The action technially produces infinte non-transparent content, so inflate
+                    // the previous input bounds by a fixed amount to show that it is filling out,
+                    // but not so much that it hurts performance.
+                    nextOutput = inputBounds;
+                    nextOutput.outset(LayerSpace<SkISize>({25, 25}));
+                }
+                desiredOutputs[i] = nextOutput;
+                inputBounds = nextOutput;
             }
         }
 
@@ -633,6 +697,10 @@ public:
                                          backPropagateDesiredOutput);
                 expectedBounds = LayerSpace<SkIRect>::Empty();
                 correctedExpectation = Expect::kEmptyImage;
+            } else if (SkIRect(expectedBounds) == SkRectPriv::MakeILarge()) {
+                // An expected image filling out to infinity should have an actual image that
+                // fills the desired output.
+                expectedBounds = desiredOutputs[i];
             }
 
             bool actualNewImage = output.image() &&
@@ -654,6 +722,8 @@ public:
                 REPORTER_ASSERT(fRunner, !expectedBounds.isEmpty());
                 REPORTER_ASSERT(fRunner, SkIRect(output.layerBounds()) == SkIRect(expectedBounds));
                 REPORTER_ASSERT(fRunner, output.sampling() == fActions[i].expectedSampling());
+                REPORTER_ASSERT(fRunner, colorfilter_equals(output.colorFilter(),
+                                                            fActions[i].expectedColorFilter()));
             }
 
             expectedImage = fActions[i].renderExpectedImage(ctx,
@@ -683,6 +753,15 @@ private:
             return fActions[fActions.size() - 1].expectedSampling();
         }
     }
+    // By default an action that doesn't define its own color filter will not change filtering,
+    // unless it produces a new image. Otherwise it inherits the prior action's expectations.
+    sk_sp<SkColorFilter> getDefaultExpectedColorFilter(Expect expectation) const {
+        if (expectation != Expect::kDeferredImage || fActions.empty()) {
+            return nullptr;
+        } else {
+            return sk_ref_sp(fActions[fActions.size() - 1].expectedColorFilter());
+        }
+    }
 
     TestRunner& fRunner;
     std::string fName;
@@ -696,6 +775,20 @@ private:
 
     std::vector<ApplyAction> fActions;
 };
+
+// ----------------------------------------------------------------------------
+// Utilities to create color filters for the unit tests
+
+sk_sp<SkColorFilter> alpha_modulate(float v) {
+    // dst-in blending with src = (1,1,1,v) = dst * v
+    return SkColorFilters::Blend({1.f, 1.f, 1.f, v}, /*colorSpace=*/nullptr, SkBlendMode::kDstIn);
+}
+
+sk_sp<SkColorFilter> affect_transparent() {
+    return SkColorFilters::Blend(SkColors::kBlue, /*colorSpace=*/nullptr, SkBlendMode::kPlus);
+}
+
+// ----------------------------------------------------------------------------
 
 #if defined(SK_GANESH)
 #define DEF_GANESH_TEST_SUITE(name) \
@@ -757,6 +850,16 @@ DEF_TEST_SUITE(EmptySource, r) {
             .source(SkIRect::MakeEmpty(), SkColors::kRed)
             .applyTransform(SkMatrix::Translate(10.f, 10.f), Expect::kEmptyImage)
             .run(/*requestedOutput=*/{10, 10, 20, 20});
+
+    TestCase(r, "applyColorFilter() to empty source")
+            .source(SkIRect::MakeEmpty(), SkColors::kRed)
+            .applyColorFilter(alpha_modulate(0.5f), Expect::kEmptyImage)
+            .run(/*requestedOutput=*/{0, 0, 10, 10});
+
+    TestCase(r, "Transparency-affecting color filter overrules empty source")
+            .source(SkIRect::MakeEmpty(), SkColors::kRed)
+            .applyColorFilter(affect_transparent(), Expect::kNewImage)
+            .run(/*requestedOutput=*/{0, 0, 10, 10});
 }
 
 DEF_TEST_SUITE(EmptyDesiredOutput, r) {
@@ -770,6 +873,16 @@ DEF_TEST_SUITE(EmptyDesiredOutput, r) {
     TestCase(r, "applyTransform() + empty output becomes empty")
             .source({0, 0, 10, 10}, SkColors::kRed)
             .applyTransform(SkMatrix::RotateDeg(10.f), Expect::kEmptyImage)
+            .run(/*requestedOutput=*/SkIRect::MakeEmpty());
+
+    TestCase(r, "applyColorFilter() + empty output becomes empty")
+            .source({0, 0, 10, 10}, SkColors::kRed)
+            .applyColorFilter(alpha_modulate(0.5f), Expect::kEmptyImage)
+            .run(/*requestedOutput=*/SkIRect::MakeEmpty());
+
+    TestCase(r, "Transpency-affecting color filter + empty output is empty")
+            .source({0, 0, 10, 10}, SkColors::kRed)
+            .applyColorFilter(affect_transparent(), Expect::kEmptyImage)
             .run(/*requestedOutput=*/SkIRect::MakeEmpty());
 }
 
@@ -1115,6 +1228,35 @@ DEF_TEST_SUITE(TransformAndCrop, r) {
             .run(/*requestedOutput=*/{0, 0, 64, 64});
 }
 
+// ----------------------------------------------------------------------------
+// applyColorFilter() and interactions with transforms/crops
 
+// DEF_TEST_SUITE(ColorFilter, r) {
+//     TestCase(r, "applyColorFilter() defers image");
+//     TestCase(r, "applyColorFilter() composes with other color filters");
+//     TestCase(r, "Transparency-affecting color filter fills output");
+//     TestCase(r, "Transparency-affecting composition fills output"); // both orders
+// }
+
+// DEF_TEST_SUITE(TransformedColorFilter, r) {
+    // should always be free right? even if the edge of the layer bounds is visible
+    // in the desired output after transforming,
+
+    // transform has to move *before* the color filter; color filtrs should always
+    // compose with each other after a transform, since they come after, but
+    // we should consider the case where we have a transparency affecting CF
+    // and then a complex transform, and then another CF or ATB CF.
+// }
+
+// DEF_TEST_SUITE(CroppedColorFilter, r) {
+    // Crop -> empty stays empty for regular clor filter
+    // crop -> empty fills output for ATB color filter
+    // Cropp after ATB filter properly restricts its evaluation
+
+    // CF compose across a crop if they don't affect transparent black
+    // CF with ATB composes across a crop if its desired output is inside layer bounds
+    // CF composes with an earlier ATB cf even if it would show the crop because we only care
+    //   about the ATB of the CF being actively applied.
+// }
 
 } // anonymous namespace
