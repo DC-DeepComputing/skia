@@ -22,6 +22,30 @@
       },
       "revId": "7cd31e2f6493b4b8ef110182eaeed0e5be04499a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b3e4037_8e5ca428",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-27T13:32:20Z",
+      "side": 1,
+      "message": "Oops, the methods called on fSource.image() below were meant to refer to `fGaneshContext` directly but it got lost when I was teasing apart a mega-CL.\n\nYou are correct that SkImageFilter won\u0027t do this yet, primarily for legacy implementations that are not implemented in terms of FilterResult yet. In a follow-up CL that adds color filter support to FilterResult, unit tests will rely on `fSource` being null to test that a transparency-affecting color filter can still produce a new image.",
+      "parentUuid": "90730c66_08a8d330",
+      "range": {
+        "startLine": 718,
+        "startChar": 7,
+        "endLine": 718,
+        "endChar": 31
+      },
+      "revId": "7cd31e2f6493b4b8ef110182eaeed0e5be04499a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

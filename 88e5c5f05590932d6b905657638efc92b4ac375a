@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4d5a8f6_aea0feb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-27T13:32:20Z",
+      "side": 1,
+      "message": "In follow-up work I realized there were some places throughout the code that were sneaking into the SkSpecialImage and still calling makeSurface() on it directly. This is removed in https://skia-review.googlesource.com/c/skia/+/683356.",
+      "revId": "88e5c5f05590932d6b905657638efc92b4ac375a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
