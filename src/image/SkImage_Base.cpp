@@ -18,6 +18,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
 #include "src/core/SkBitmapCache.h"
+#include "src/core/SkColorSpacePriv.h"
 #include "src/image/SkRescaleAndReadPixels.h"
 
 #if defined(SK_GANESH)
@@ -116,6 +117,27 @@ void SkImage_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
     // TODO: Call non-YUV asyncRescaleAndReadPixels and then make our callback convert to YUV and
     // call client's callback.
     callback(context, nullptr);
+}
+
+sk_sp<SkImage> SkImage_Base::makeColorTypeAndColorSpace(GrDirectContext* dContext,
+                                                        SkColorType targetColorType,
+                                                        sk_sp<SkColorSpace> targetCS) const {
+    if (kUnknown_SkColorType == targetColorType || !targetCS) {
+        return nullptr;
+    }
+
+    SkColorType colorType = this->colorType();
+    SkColorSpace* colorSpace = this->colorSpace();
+    if (!colorSpace) {
+        colorSpace = sk_srgb_singleton();
+    }
+    if (colorType == targetColorType &&
+        (SkColorSpace::Equals(colorSpace, targetCS.get()) || this->isAlphaOnly())) {
+        return sk_ref_sp(const_cast<SkImage_Base*>(this));
+    }
+
+    return this->onMakeColorTypeAndColorSpace(targetColorType,
+                                              std::move(targetCS), dContext);
 }
 
 

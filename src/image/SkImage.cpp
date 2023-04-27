@@ -288,37 +288,8 @@ sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext, const SkIma
 
 bool SkImage::isAlphaOnly() const { return SkColorTypeIsAlphaOnly(fInfo.colorType()); }
 
-sk_sp<SkImage> SkImage::makeColorSpace(sk_sp<SkColorSpace> target, GrDirectContext* direct) const {
-    return this->makeColorTypeAndColorSpace(this->colorType(), std::move(target), direct);
-}
-
-sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
-                                                   sk_sp<SkColorSpace> targetColorSpace,
-                                                   GrDirectContext* dContext) const {
-    if (kUnknown_SkColorType == targetColorType || !targetColorSpace) {
-        return nullptr;
-    }
-
-#if defined(SK_GANESH)
-    auto myContext = as_IB(this)->context();
-    // This check is also performed in the subclass, but we do it here for the short-circuit below.
-    if (myContext && !myContext->priv().matches(dContext)) {
-        return nullptr;
-    }
-#endif
-
-    SkColorType colorType = this->colorType();
-    SkColorSpace* colorSpace = this->colorSpace();
-    if (!colorSpace) {
-        colorSpace = sk_srgb_singleton();
-    }
-    if (colorType == targetColorType &&
-        (SkColorSpace::Equals(colorSpace, targetColorSpace.get()) || this->isAlphaOnly())) {
-        return sk_ref_sp(const_cast<SkImage*>(this));
-    }
-
-    return as_IB(this)->onMakeColorTypeAndColorSpace(targetColorType,
-                                                     std::move(targetColorSpace), dContext);
+sk_sp<SkImage> SkImage::makeColorSpace(GrDirectContext* direct, sk_sp<SkColorSpace> target) const {
+    return this->makeColorTypeAndColorSpace(direct, this->colorType(), std::move(target));
 }
 
 sk_sp<SkImage> SkImage::reinterpretColorSpace(sk_sp<SkColorSpace> target) const {

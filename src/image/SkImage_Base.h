@@ -46,6 +46,9 @@ public:
     ~SkImage_Base() override;
 
     // From SkImage.h
+    sk_sp<SkImage> makeColorTypeAndColorSpace(GrDirectContext* dContext,
+                                              SkColorType targetColorType,
+                                              sk_sp<SkColorSpace> targetCS) const override;
     sk_sp<SkImage> makeSubset(GrDirectContext* direct, const SkIRect& subset) const override;
     size_t textureSize() const override { return 0; }
 #if defined(SK_GRAPHITE)

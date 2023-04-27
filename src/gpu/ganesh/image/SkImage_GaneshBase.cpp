@@ -23,6 +23,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkBitmapCache.h"
+#include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/SkBackingFit.h"
@@ -268,6 +269,33 @@ bool SkImage_GaneshBase::isValid(GrRecordingContext* context) const {
         return false;
     }
     return true;
+}
+
+sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(GrDirectContext* dContext,
+                                                              SkColorType targetColorType,
+                                                              sk_sp<SkColorSpace> targetCS) const {
+    if (kUnknown_SkColorType == targetColorType || !targetCS) {
+        return nullptr;
+    }
+
+    auto myContext = this->context();
+    // This check is also performed in the subclass, but we do it here for the short-circuit below.
+    if (myContext && !myContext->priv().matches(dContext)) {
+        return nullptr;
+    }
+
+    SkColorType colorType = this->colorType();
+    SkColorSpace* colorSpace = this->colorSpace();
+    if (!colorSpace) {
+        colorSpace = sk_srgb_singleton();
+    }
+    if (colorType == targetColorType &&
+        (SkColorSpace::Equals(colorSpace, targetCS.get()) || this->isAlphaOnly())) {
+        return sk_ref_sp(const_cast<SkImage_GaneshBase*>(this));
+    }
+
+    return this->onMakeColorTypeAndColorSpace(targetColorType,
+                                              std::move(targetCS), dContext);
 }
 
 sk_sp<GrTextureProxy> SkImage_GaneshBase::MakePromiseImageLazyProxy(
