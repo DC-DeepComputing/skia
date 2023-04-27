@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa414447_6d130f93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19869
+      },
+      "writtenOn": "2023-04-27T08:26:04Z",
+      "side": 1,
+      "message": "Hi Heather, some new update on our development on chromium is that we managed to get the browser running on StarFive VisionFive 2 board (RISCV architecture). We ported it on a Debian Linux system and it is working fine, we tested google services (such as google account sign in, google meet, youtube video playback) are working fine now. This code changes are valid to make it happen. We really hope this changes can be accepted upstream. We submitted a few changes before to Google mainline, and it was merged after some discussion. Do let me know what we can do to improve the code quality for acceptance. Thanks.",
+      "parentUuid": "8f756c65_7076191c",
+      "revId": "5c316c55597290f85536ffca66e32307a5efd6e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ce69e7a_2dbebad6",
