@@ -41,8 +41,19 @@ private:
      */
     void release() {
         fResource->release();
+        SkDebugf("---- %s %zu %s %d\n",
+                 fResource->getResourceType(),
+                 fResource->gpuMemorySize(),
+                 fResource->getLabel().c_str(),
+                 fResource->testingOnly_getRefCnt());
         if (!fResource->hasRef() && fResource->hasNoCommandBufferUsages()) {
             delete fResource;
+        } else {
+            SkDebugf("GrGpuResource::CacheAccess::release Some resource still has external references %s %zu %s %d\n",
+                     fResource->getResourceType(),
+                     fResource->gpuMemorySize(),
+                     fResource->getLabel().c_str(),
+                     fResource->testingOnly_getRefCnt());
         }
     }
 
