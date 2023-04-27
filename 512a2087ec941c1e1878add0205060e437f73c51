@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed912ae_1a471079",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-27T14:12:55Z",
+      "side": 1,
+      "message": "Just adding you to the review list so you know the contents -- still some work to do here.",
+      "revId": "512a2087ec941c1e1878add0205060e437f73c51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f69b0471_a4a2dd8c",
