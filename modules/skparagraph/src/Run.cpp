@@ -279,6 +279,12 @@ SkScalar Cluster::sizeToChar(TextIndex ch) const {
     return SkDoubleToScalar(fWidth * ratio);
 }
 
+bool Cluster::isWordBreak() const {
+    return fOwner->codeUnitHasProperty(
+                 run().leftToRight() ? fTextRange.end : fTextRange.start,
+                 SkUnicode::CodeUnitFlags::kWordBoundary);
+}
+
 SkScalar Cluster::sizeFromChar(TextIndex ch) const {
     if (ch < fTextRange.start || ch >= fTextRange.end) {
         return 0;

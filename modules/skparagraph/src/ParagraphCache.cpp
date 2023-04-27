@@ -73,7 +73,6 @@ public:
         , fClusters(paragraph->fClusters)
         , fClustersIndexFromCodeUnit(paragraph->fClustersIndexFromCodeUnit)
         , fCodeUnitProperties(paragraph->fCodeUnitProperties)
-        , fWords(paragraph->fWords)
         , fBidiRegions(paragraph->fBidiRegions)
         , fHasLineBreaks(paragraph->fHasLineBreaks)
         , fHasWhitespacesInside(paragraph->fHasWhitespacesInside)
@@ -88,7 +87,6 @@ public:
     TArray<size_t, true> fClustersIndexFromCodeUnit;
     // ICU results
     TArray<SkUnicode::CodeUnitFlags, true> fCodeUnitProperties;
-    std::vector<size_t> fWords;
     std::vector<SkUnicode::BidiRegion> fBidiRegions;
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
@@ -258,7 +256,6 @@ void ParagraphCache::updateTo(ParagraphImpl* paragraph, const Entry* entry) {
     paragraph->fClusters = entry->fValue->fClusters;
     paragraph->fClustersIndexFromCodeUnit = entry->fValue->fClustersIndexFromCodeUnit;
     paragraph->fCodeUnitProperties = entry->fValue->fCodeUnitProperties;
-    paragraph->fWords = entry->fValue->fWords;
     paragraph->fBidiRegions = entry->fValue->fBidiRegions;
     paragraph->fHasLineBreaks = entry->fValue->fHasLineBreaks;
     paragraph->fHasWhitespacesInside = entry->fValue->fHasWhitespacesInside;

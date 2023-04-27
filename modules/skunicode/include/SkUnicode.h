@@ -76,15 +76,16 @@ public:
 class SKUNICODE_API SkUnicode {
     public:
         enum CodeUnitFlags {
-            kNoCodeUnitFlag = 0x00,
-            kPartOfWhiteSpaceBreak = 0x01,
-            kGraphemeStart = 0x02,
-            kSoftLineBreakBefore = 0x04,
-            kHardLineBreakBefore = 0x08,
-            kPartOfIntraWordBreak = 0x10,
-            kControl = 0x20,
-            kTabulation = 0x40,
-            kGlyphClusterStart = 0x80,
+            kNoCodeUnitFlag = 0x000,
+            kPartOfWhiteSpaceBreak = 0x001,
+            kGraphemeStart = 0x002,
+            kSoftLineBreakBefore = 0x004,
+            kHardLineBreakBefore = 0x008,
+            kPartOfIntraWordBreak = 0x010,
+            kControl = 0x020,
+            kTabulation = 0x040,
+            kGlyphClusterStart = 0x080,
+            kWordBoundary = 0x100,
         };
         enum class TextDirection {
             kLTR,

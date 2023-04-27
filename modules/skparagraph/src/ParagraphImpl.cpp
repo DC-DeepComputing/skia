@@ -630,6 +630,7 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
 }
 
 void ParagraphImpl::formatLines(SkScalar maxWidth) {
+
     auto effectiveAlign = fParagraphStyle.effective_align();
     const bool isLeftAligned = effectiveAlign == TextAlign::kLeft
         || (effectiveAlign == TextAlign::kJustify && fParagraphStyle.getTextDirection() == TextDirection::kLtr);
@@ -639,6 +640,12 @@ void ParagraphImpl::formatLines(SkScalar maxWidth) {
         // We had to go through shaping though because we need all the measurement numbers
         fLines.clear();
         return;
+    }
+
+    if (effectiveAlign == TextAlign::kJustify) {
+        // We use words for justification
+        this->ensureUTF16Mapping();
+        this->ensureWordBounds();
     }
 
     for (auto& line : fLines) {
@@ -848,29 +855,33 @@ PositionWithAffinity ParagraphImpl::getGlyphPositionAtCoordinate(SkScalar dx, Sk
 // Finds the first and last glyphs that define a word containing
 // the glyph at index offset.
 // By "glyph" they mean a character index - indicated by Minikin's code
-SkRange<size_t> ParagraphImpl::getWordBoundary(unsigned offset) {
+SkRange<size_t> ParagraphImpl::getWordBoundary(unsigned offset16) {
 
-    if (fWords.empty()) {
-        if (!fUnicode->getWords(fText.c_str(), fText.size(), nullptr, &fWords)) {
-            return {0, 0 };
-        }
-    }
+    this->ensureUTF16Mapping();
+    this->ensureWordBounds();
 
+    auto offset8 = fUTF8IndexForUTF16Index[offset16];
     int32_t start = 0;
     int32_t end = 0;
-    for (size_t i = 0; i < fWords.size(); ++i) {
-        auto word = fWords[i];
-        if (word <= offset) {
-            start = word;
-            end = word;
-        } else if (word > offset) {
-            end = word;
-            break;
+    for (size_t i = 0ul; i < SkToSizeT(fCodeUnitProperties.size()); ++i) {
+        auto flags = fCodeUnitProperties[i];
+        if (flags & SkUnicode::CodeUnitFlags::kWordBoundary) {
+            if (i <= offset8) {
+                start = i;
+                end = i;
+            } else if (i > offset8) {
+                end = i;
+                break;
+            }
         }
+
     }
 
     //SkDebugf("getWordBoundary(%d): %d - %d\n", offset, start, end);
-    return { SkToU32(start), SkToU32(end) };
+    return {
+              SkToU32(fUTF16IndexForUTF8Index[start]),
+              SkToU32(fUTF16IndexForUTF8Index[end])
+    };
 }
 
 void ParagraphImpl::getLineMetrics(std::vector<LineMetrics>& metrics) {
@@ -1113,11 +1124,25 @@ TextIndex ParagraphImpl::findPreviousGlyphClusterBoundary(TextIndex utf8) const 
 }
 
 void ParagraphImpl::ensureUTF16Mapping() {
-    fillUTF16MappingOnce([&] {
+    this->fillUTF16MappingOnce([&] {
         fUnicode->extractUtfConversionMapping(
                 this->text(),
                 [&](size_t index) { fUTF8IndexForUTF16Index.emplace_back(index); },
                 [&](size_t index) { fUTF16IndexForUTF8Index.emplace_back(index); });
+    });
+}
+
+void ParagraphImpl::ensureWordBounds() {
+    this->fillWordBounds([&] {
+        //SkDebugf("Word bounds: '%s'\n", fText.data());
+        std::vector<size_t> words;
+        fUnicode->getWords(fText.c_str(), fText.size(), nullptr, &words);
+        for (auto word16 : words) {
+            auto word8 = this->fUTF8IndexForUTF16Index[word16];
+            fCodeUnitProperties[word8] |= SkUnicode::CodeUnitFlags::kWordBoundary;
+            //SkDebugf("%lu ", word);
+        }
+        //SkDebugf("\n\n");
     });
 }
 
