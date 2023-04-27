@@ -73,7 +73,7 @@ void GrGpuResource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) con
     }
 
     this->dumpMemoryStatisticsPriv(traceMemoryDump, this->getResourceName(),
-                                   this->getResourceType(), this->gpuMemorySize());
+                                   this->getResourceType().c_str(), this->gpuMemorySize());
 }
 
 void GrGpuResource::dumpMemoryStatisticsPriv(SkTraceMemoryDump* traceMemoryDump,

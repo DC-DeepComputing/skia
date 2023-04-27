@@ -380,7 +380,7 @@ private:
 
     size_t onGpuMemorySize() const override { return fSize; }
     void onSetLabel() override{}
-    const char* getResourceType() const override { return "Test"; }
+    SkString getResourceType() const override { return SkString("Test"); }
 
     sk_sp<TestResource> fToDelete;
     size_t fSize;

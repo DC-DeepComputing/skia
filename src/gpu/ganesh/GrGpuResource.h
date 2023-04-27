@@ -218,7 +218,7 @@ public:
      *
      * The value returned is expected to be long lived and will not be copied by the caller.
      */
-    virtual const char* getResourceType() const = 0;
+    virtual SkString getResourceType() const = 0;
 
     static uint32_t CreateUniqueID();
 

@@ -85,13 +85,13 @@ private:
 
     void computeScratchKey(skgpu::ScratchKey*) const final;
 
-    const char* getResourceType() const override {
+    SkString getResourceType() const override {
         if (fSupportedUsages == UsageFlags::kStencilAttachment) {
-            return "StencilAttachment";
+            return SkString("StencilAttachment");
         }
 
         // This is a general grouping of all textures and color attachments.
-        return "Surface";
+        return SkString("Surface");
     }
 
     UsageFlags fSupportedUsages;

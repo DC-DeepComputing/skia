@@ -124,7 +124,7 @@ private:
 
     size_t onGpuMemorySize() const override { return fSizeInBytes; }
     void onSetLabel() override{}
-    const char* getResourceType() const override { return "Buffer Object"; }
+    SkString getResourceType() const override { return SkString("Buffer Object"); }
     void computeScratchKey(skgpu::ScratchKey* key) const override;
 
     size_t            fSizeInBytes;

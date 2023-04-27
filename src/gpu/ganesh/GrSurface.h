@@ -148,7 +148,9 @@ protected:
     void onAbandon() override;
 
 private:
-    const char* getResourceType() const override { return "Surface"; }
+    SkString getResourceType() const override {
+        return SkStringPrintf("Surface %dx%d", fDimensions.width(), fDimensions.height());
+    }
 
     // Unmanaged backends (e.g. Vulkan) may want to specially handle the release proc in order to
     // ensure it isn't called until GPU work related to the resource is completed.
