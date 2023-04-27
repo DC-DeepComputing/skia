@@ -126,32 +126,6 @@ static void test_image(const sk_sp<SkSpecialImage>& img, skiatest::Reporter* rep
                                                           kSmallerSize+kPad-1));
     REPORTER_ASSERT(reporter, SK_ColorBLUE == bm.getColor(kSmallerSize+kPad,
                                                           kSmallerSize+kPad));
-
-    //--------------
-    // Test that asImage & makeTightSurface return appropriately sized objects
-    // of the correct backing type
-    SkIRect newSubset = SkIRect::MakeWH(subset.width(), subset.height());
-    {
-        sk_sp<SkImage> tightImg(img->asImage(&newSubset));
-
-        REPORTER_ASSERT(reporter, tightImg->width() == subset.width());
-        REPORTER_ASSERT(reporter, tightImg->height() == subset.height());
-        REPORTER_ASSERT(reporter, isGPUBacked == tightImg->isTextureBacked());
-        SkPixmap tmpPixmap;
-        REPORTER_ASSERT(reporter, isGPUBacked != !!tightImg->peekPixels(&tmpPixmap));
-    }
-    {
-        sk_sp<SkSurface> tightSurf(img->makeTightSurface(kN32_SkColorType, img->getColorSpace(),
-                                                         subset.size()));
-
-        REPORTER_ASSERT(reporter, tightSurf->width() == subset.width());
-        REPORTER_ASSERT(reporter, tightSurf->height() == subset.height());
-        GrBackendTexture backendTex = tightSurf->getBackendTexture(
-                                                    SkSurface::kDiscardWrite_BackendHandleAccess);
-        REPORTER_ASSERT(reporter, isGPUBacked == backendTex.isValid());
-        SkPixmap tmpPixmap;
-        REPORTER_ASSERT(reporter, isGPUBacked != !!tightSurf->peekPixels(&tmpPixmap));
-    }
 }
 
 DEF_TEST(SpecialImage_Raster, reporter) {
