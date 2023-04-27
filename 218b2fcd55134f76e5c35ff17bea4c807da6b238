@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b1b3f24_59995c50",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-27T20:49:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77598e09_965f6520",
+      "range": {
+        "startLine": 188,
+        "startChar": 7,
+        "endLine": 188,
+        "endChar": 13
+      },
+      "revId": "218b2fcd55134f76e5c35ff17bea4c807da6b238",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2af30b95_24e19f4e",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e006a31_fc393ea8",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-27T20:49:20Z",
+      "side": 1,
+      "message": "Ah these comments are now a bit stale. This used to refer to the conditional in `appendStep` before this became its own method. Removed.",
+      "parentUuid": "2af30b95_24e19f4e",
+      "range": {
+        "startLine": 297,
+        "startChar": 15,
+        "endLine": 297,
+        "endChar": 53
+      },
+      "revId": "218b2fcd55134f76e5c35ff17bea4c807da6b238",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97a16731_5d8ee35d",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-04-07T19:33:36Z",
       "side": 1,
       "message": "One of the reasons for having RenderSteps declaring the Uniforms in C++ was so that the declarations could be automatically generated.\n\nDo you think in a follow-up that that would be a reasonable direction to go towards? Or does the fact that it returns a complete SkSL program (or an externally defined program) make that not a very important convenience to have?",
+      "range": {
+        "startLine": 524,
+        "startChar": 50,
+        "endLine": 524,
+        "endChar": 78
+      },
+      "revId": "218b2fcd55134f76e5c35ff17bea4c807da6b238",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c9f8a9e_a405c07d",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-27T20:49:20Z",
+      "side": 1,
+      "message": "With the current model in which ComputeSteps only declare resources and already have to implement logic to encode storage and uniforms buffers dynamically, I didn\u0027t feel that having a special convenience for uniforms added much value.\n\nThe fact that a ComputeStep defines a complete program without a prescribed design for how UBO/SSBO data gets laid out is one big difference compared to RenderSteps (which is why I didn\u0027t define this in terms of a PipelineDataGatherer).\n\nThis might potentially change as this gets revised for batched draw processing for geometry steps. In that model, we may want per-draw uniform data that get laid out and indexed similarly to RenderStep uniforms. I think for geometry processing steps it makes sense to have a prescribed model for data bindings that perhaps works at a higher-level than a ComputeStep. Perhaps having a GeometryStep specialization of ComputeStep could define methods that are more batching oriented and layered on top of the data flow smarts provided by ComputeStep/DispatchGroup.\n\nThis is worth a revisit as I re-focus on geometry steps once the Vello-based AA work has settled.\n\nI filed b/279955342 and documented my current thoughts around this issue.",
+      "parentUuid": "97a16731_5d8ee35d",
       "range": {
         "startLine": 524,
         "startChar": 50,
