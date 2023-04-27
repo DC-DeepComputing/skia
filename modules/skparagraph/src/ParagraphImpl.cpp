@@ -850,23 +850,22 @@ PositionWithAffinity ParagraphImpl::getGlyphPositionAtCoordinate(SkScalar dx, Sk
 // By "glyph" they mean a character index - indicated by Minikin's code
 SkRange<size_t> ParagraphImpl::getWordBoundary(unsigned offset) {
 
-    if (fWords.empty()) {
-        if (!fUnicode->getWords(fText.c_str(), fText.size(), nullptr, &fWords)) {
-            return {0, 0 };
-        }
-    }
+    this->ensureWordBounds();
 
     int32_t start = 0;
     int32_t end = 0;
-    for (size_t i = 0; i < fWords.size(); ++i) {
-        auto word = fWords[i];
-        if (word <= offset) {
-            start = word;
-            end = word;
-        } else if (word > offset) {
-            end = word;
-            break;
+    for (size_t i = 0ul; i < fCodeUnitProperties.size(); ++i) {
+        auto flags = fCodeUnitProperties[i];
+        if (flags & SkUnicode::CodeUnitFlags::kWordBoundary) {
+            if (i <= offset) {
+                start = i;
+                end = i;
+            } else if (i > offset) {
+                end = i;
+                break;
+            }
         }
+
     }
 
     //SkDebugf("getWordBoundary(%d): %d - %d\n", offset, start, end);
@@ -1113,11 +1112,24 @@ TextIndex ParagraphImpl::findPreviousGlyphClusterBoundary(TextIndex utf8) const 
 }
 
 void ParagraphImpl::ensureUTF16Mapping() {
-    fillUTF16MappingOnce([&] {
+    this->fillUTF16MappingOnce([&] {
         fUnicode->extractUtfConversionMapping(
                 this->text(),
                 [&](size_t index) { fUTF8IndexForUTF16Index.emplace_back(index); },
                 [&](size_t index) { fUTF16IndexForUTF8Index.emplace_back(index); });
+    });
+}
+
+void ParagraphImpl::ensureWordBounds() {
+    this->fillWordBounds([&] {
+        SkDebugf("Word bounds: '%s'\n", fText.data());
+        std::vector<size_t> words;
+        fUnicode->getWords(fText.c_str(), fText.size(), nullptr, &words);
+        for (auto word : words) {
+            fCodeUnitProperties[word] |= SkUnicode::CodeUnitFlags::kWordBoundary;
+            SkDebugf("%lu ", word);
+        }
+        SkDebugf("\n\n");
     });
 }
 

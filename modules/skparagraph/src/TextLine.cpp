@@ -28,6 +28,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <deque>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -442,59 +443,63 @@ void TextLine::paintDecorations(ParagraphPainter* painter, SkScalar x, SkScalar 
 void TextLine::justify(SkScalar maxWidth) {
     // Count words and the extra spaces to spread across the line
     // TODO: do it at the line breaking?..
-    size_t whitespacePatches = 0;
-    SkScalar textLen = 0;
-    bool whitespacePatch = false;
+    std::deque<ClusterIndex> words;
+    SkScalar whitespaceLength = 0;
+    ClusterIndex index = 0;
     this->iterateThroughClustersInGlyphsOrder(false, false,
-        [&whitespacePatches, &textLen, &whitespacePatch](const Cluster* cluster, bool ghost) {
-            if (cluster->isWhitespaceBreak()) {
-                if (!whitespacePatch) {
-                    whitespacePatch = true;
-                    ++whitespacePatches;
+        [&](const Cluster* cluster, bool ghost) {
+            if (cluster->isWordBreak()) {
+                if (cluster->isWhitespaceBreak()) {
+                    // Ignore whitespaces
+                } else {
+                    words.emplace_back(index);
                 }
-            } else {
-                whitespacePatch = false;
+            } else if (index == 0) {
+                // Line starts from the middle of too long word
+                // Let's pretend the start of the line is the start of the word
+                words.emplace_back(index);
             }
-            textLen += cluster->width();
+            if (cluster->isWhitespaceBreak()) {
+                whitespaceLength += cluster->width();
+            }
+            ++index;
             return true;
         });
 
-    if (whitespacePatches == 0) {
+    if (words.size() <= 1) {
         return;
     }
 
-    SkScalar step = (maxWidth - textLen) / whitespacePatches;
+    SkScalar step = whitespaceLength / (words.size() - 1);
     SkScalar shift = 0;
 
     // Deal with the ghost spaces
     auto ghostShift = maxWidth - this->fAdvance.fX;
     // Spread the extra whitespaces
-    whitespacePatch = false;
+    bool whitespacePatch = false;
+    ClusterIndex wordStart = 0;
     this->iterateThroughClustersInGlyphsOrder(false, true, [&](const Cluster* cluster, bool ghost) {
 
         if (ghost) {
             if (cluster->run().leftToRight()) {
                 this->shiftCluster(cluster, ghostShift, ghostShift);
             }
+            ++wordStart;
             return true;
         }
 
         auto prevShift = shift;
-        if (cluster->isWhitespaceBreak()) {
-            if (!whitespacePatch) {
-                shift += step;
-                whitespacePatch = true;
-                --whitespacePatches;
-            }
-        } else {
-            whitespacePatch = false;
+        if (words.front() == wordStart) {
+            words.pop_front();
+            shift += step;
         }
         shiftCluster(cluster, shift, prevShift);
+        ++wordStart;
         return true;
     });
 
-    SkAssertResult(nearlyEqual(shift, maxWidth - textLen));
-    SkASSERT(whitespacePatches == 0);
+    SkAssertResult(nearlyEqual(shift, whitespaceLength));
+    SkASSERT(words.empty());
 
     this->fWidthWithSpaces += ghostShift;
     this->fAdvance.fX = maxWidth;

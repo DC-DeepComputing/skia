@@ -137,9 +137,11 @@ public:
     SkSpan<TextLine> lines() { return SkSpan<TextLine>(fLines.data(), fLines.size()); }
     const ParagraphStyle& paragraphStyle() const { return fParagraphStyle; }
     SkSpan<Cluster> clusters() { return SkSpan<Cluster>(fClusters.begin(), fClusters.size()); }
+
     sk_sp<FontCollection> fontCollection() const { return fFontCollection; }
     void formatLines(SkScalar maxWidth);
     void ensureUTF16Mapping();
+    void ensureWordBounds();
     skia_private::TArray<TextIndex> countSurroundingGraphemes(TextRange textRange) const;
     TextIndex findNextGraphemeBoundary(TextIndex utf8) const;
     TextIndex findPreviousGraphemeBoundary(TextIndex utf8) const;
@@ -262,14 +264,16 @@ private:
     skia_private::TArray<Cluster, true> fClusters;  // kClusterized (cached: text, word spacing, letter spacing, resolved fonts)
     skia_private::TArray<SkUnicode::CodeUnitFlags, true> fCodeUnitProperties;
     skia_private::TArray<size_t, true> fClustersIndexFromCodeUnit;
-    std::vector<size_t> fWords;
     std::vector<SkUnicode::BidiRegion> fBidiRegions;
+
     // These two arrays are used in measuring methods (getRectsForRange, getGlyphPositionAtCoordinate)
-    // They are filled lazily whenever they need and cached
+    // They are filled lazily whenever they needed and cached
     skia_private::TArray<TextIndex, true> fUTF8IndexForUTF16Index;
     skia_private::TArray<size_t, true> fUTF16IndexForUTF8Index;
     SkOnce fillUTF16MappingOnce;
     size_t fUnresolvedGlyphs;
+
+    SkOnce fillWordBounds; // Indicates that word bounds (lazily) collected
 
     skia_private::TArray<TextLine, false> fLines;   // kFormatted   (cached: width, max lines, ellipsis, text align)
     sk_sp<SkPicture> fPicture;          // kRecorded    (cached: text styles)
