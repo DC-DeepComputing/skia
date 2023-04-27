@@ -384,10 +384,11 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
                          size_t ignoredOffset;
                          // Make a superfluous call to makeDrawIndirectSpace in order to test
                          // "offsetInBytes!=0" for the actual call to makeDrawIndexedIndirectSpace.
-                         helper->target()->makeDrawIndirectSpace(29, &ignoredBuff, &ignoredOffset);
+                         helper->target()->makeDrawIndirectSpace(29, &ignoredBuff, &ignoredOffset,
+                                                                 "test");
                          indexedIndirectWriter = helper->target()->makeDrawIndexedIndirectSpace(
                                  kBoxCountY, &helper->fDrawIndirectBuffer,
-                                 &helper->fDrawIndirectBufferOffset);
+                                 &helper->fDrawIndirectBufferOffset, "test");
                      } else {
                          // Make helper->fDrawIndirectBufferOffset nonzero.
                          sk_sp<const GrBuffer> ignoredBuff;
@@ -395,10 +396,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
                          // Make a superfluous call to makeDrawIndexedIndirectSpace in order to test
                          // "offsetInBytes!=0" for the actual call to makeDrawIndirectSpace.
                          helper->target()->makeDrawIndexedIndirectSpace(7, &ignoredBuff,
-                                                                        &ignoredOffset);
+                                                                        &ignoredOffset, "test");
                          indirectWriter = helper->target()->makeDrawIndirectSpace(
                                  kBoxCountY, &helper->fDrawIndirectBuffer,
-                                 &helper->fDrawIndirectBufferOffset);
+                                 &helper->fDrawIndirectBufferOffset, "test");
                      }
 
                      // Draw boxes one line at a time to exercise multiple draws.
@@ -589,7 +590,7 @@ sk_sp<const GrBuffer> DrawMeshHelper::makeIndexBuffer(const uint16_t indices[], 
     return fState->resourceProvider()->createBuffer(indices,
                                                     count*sizeof(uint16_t),
                                                     GrGpuBufferType::kIndex,
-                                                    kDynamic_GrAccessPattern);
+                                                    kDynamic_GrAccessPattern, "test");
 }
 
 template<typename T>
@@ -597,7 +598,7 @@ sk_sp<const GrBuffer> DrawMeshHelper::makeVertexBuffer(const T* data, int count)
     return fState->resourceProvider()->createBuffer(data,
                                                     count*sizeof(T),
                                                     GrGpuBufferType::kVertex,
-                                                    kDynamic_GrAccessPattern);
+                                                    kDynamic_GrAccessPattern, "test");
 }
 
 sk_sp<const GrBuffer> DrawMeshHelper::getIndexBuffer() {

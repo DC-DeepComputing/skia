@@ -1648,7 +1648,8 @@ int GrTriangulator::polysToTriangles(Poly* polys, GrEagerVertexAllocator* vertex
     if (fEmitCoverage) {
         vertexStride += sizeof(float);
     }
-    skgpu::VertexWriter verts = vertexAllocator->lockWriter(vertexStride, count);
+    skgpu::VertexWriter verts = vertexAllocator->lockWriter(vertexStride, count,
+                                                            "Triangulator::polysToTriangles");
     if (!verts) {
         SkDebugf("Could not allocate vertices\n");
         return 0;

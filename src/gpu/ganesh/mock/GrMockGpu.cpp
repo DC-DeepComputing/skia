@@ -233,10 +233,10 @@ sk_sp<GrRenderTarget> GrMockGpu::onWrapBackendRenderTarget(const GrBackendRender
 
 sk_sp<GrGpuBuffer> GrMockGpu::onCreateBuffer(size_t sizeInBytes,
                                              GrGpuBufferType type,
-                                             GrAccessPattern accessPattern) {
+                                             GrAccessPattern accessPattern,
+                                             const char* label) {
     return sk_sp<GrGpuBuffer>(
-            new GrMockBuffer(this, sizeInBytes, type, accessPattern,
-                             /*label=*/"MockGpu_CreateBuffer"));
+            new GrMockBuffer(this, sizeInBytes, type, accessPattern, label));
 }
 
 sk_sp<GrAttachment> GrMockGpu::makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,

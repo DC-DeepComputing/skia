@@ -21,7 +21,8 @@ public:
     static sk_sp<GrMtlBuffer> Make(GrMtlGpu*,
                                    size_t size,
                                    GrGpuBufferType intendedType,
-                                   GrAccessPattern);
+                                   GrAccessPattern,
+                                   const char* label);
 
     ~GrMtlBuffer() override;
 

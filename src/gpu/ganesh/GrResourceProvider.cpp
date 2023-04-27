@@ -452,12 +452,13 @@ sk_sp<GrGpuResource> GrResourceProvider::findResourceByUniqueKey(const skgpu::Un
 sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(GrGpuBufferType intendedType,
                                                                     size_t size,
                                                                     const void* staticData,
-                                                                    const skgpu::UniqueKey& key) {
+                                                                    const skgpu::UniqueKey& key,
+                                                                    const char* label) {
     if (auto buffer = this->findByUniqueKey<GrGpuBuffer>(key)) {
         return std::move(buffer);
     }
 
-    auto buffer = this->createBuffer(staticData, size, intendedType, kStatic_GrAccessPattern);
+    auto buffer = this->createBuffer(staticData, size, intendedType, kStatic_GrAccessPattern, label);
     if (!buffer) {
         return nullptr;
     }
@@ -475,7 +476,8 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(
         GrGpuBufferType intendedType,
         size_t size,
         const skgpu::UniqueKey& uniqueKey,
-        InitializeBufferFn initializeBufferFn) {
+        InitializeBufferFn initializeBufferFn,
+        const char* label) {
     if (auto buffer = this->findByUniqueKey<GrGpuBuffer>(uniqueKey)) {
         return std::move(buffer);
     }
@@ -483,7 +485,8 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::findOrMakeStaticBuffer(
     auto buffer = this->createBuffer(size,
                                      intendedType,
                                      kStatic_GrAccessPattern,
-                                     ZeroInit::kNo);
+                                     ZeroInit::kNo,
+                                     label);
     if (!buffer) {
         return nullptr;
     }
@@ -524,7 +527,8 @@ sk_sp<const GrGpuBuffer> GrResourceProvider::createPatternedIndexBuffer(
     sk_sp<GrGpuBuffer> buffer = this->createBuffer(bufferSize,
                                                    GrGpuBufferType::kIndex,
                                                    kStatic_GrAccessPattern,
-                                                   ZeroInit::kNo);
+                                                   ZeroInit::kNo,
+                                                   "createPatternedIndexBuffer");
     if (!buffer) {
         return nullptr;
     }
@@ -610,7 +614,8 @@ int GrResourceProvider::NumIndicesPerAAQuad() { return kIndicesPerAAQuad; }
 sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(size_t size,
                                                     GrGpuBufferType intendedType,
                                                     GrAccessPattern accessPattern,
-                                                    ZeroInit zeroInit) {
+                                                    ZeroInit zeroInit,
+                                                    const char* label) {
     if (this->isAbandoned()) {
         return nullptr;
     }
@@ -618,7 +623,8 @@ sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(size_t size,
         if (this->caps()->buffersAreInitiallyZero()) {
             zeroInit = ZeroInit::kNo;
         }
-        sk_sp<GrGpuBuffer> buffer = this->gpu()->createBuffer(size, intendedType, accessPattern);
+        sk_sp<GrGpuBuffer> buffer = this->gpu()->createBuffer(size, intendedType, accessPattern,
+                                                              label);
         if (buffer && zeroInit == ZeroInit::kYes && !buffer->clearToZero()) {
             return nullptr;
         }
@@ -643,7 +649,7 @@ sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(size_t size,
         if (this->caps()->buffersAreInitiallyZero()) {
             zeroInit = ZeroInit::kNo;
         }
-        buffer = this->gpu()->createBuffer(allocSize, intendedType, kDynamic_GrAccessPattern);
+        buffer = this->gpu()->createBuffer(allocSize, intendedType, kDynamic_GrAccessPattern, label);
     }
     if (buffer && zeroInit == ZeroInit::kYes && !buffer->clearToZero()) {
         return nullptr;
@@ -654,9 +660,10 @@ sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(size_t size,
 sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(const void* data,
                                                     size_t size,
                                                     GrGpuBufferType type,
-                                                    GrAccessPattern pattern) {
+                                                    GrAccessPattern pattern,
+                                                    const char* label) {
     SkASSERT(data);
-    auto buffer = this->createBuffer(size, type, pattern, ZeroInit::kNo);
+    auto buffer = this->createBuffer(size, type, pattern, ZeroInit::kNo, label);
     if (!buffer) {
         return nullptr;
     }

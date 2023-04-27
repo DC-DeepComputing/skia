@@ -179,27 +179,29 @@ void GrOpFlushState::recordDraw(
 }
 
 void* GrOpFlushState::makeVertexSpace(size_t vertexSize, int vertexCount,
-                                      sk_sp<const GrBuffer>* buffer, int* startVertex) {
-    return fVertexPool.makeSpace(vertexSize, vertexCount, buffer, startVertex);
+                                      sk_sp<const GrBuffer>* buffer, int* startVertex,
+                                      const char* label) {
+    return fVertexPool.makeSpace(vertexSize, vertexCount, buffer, startVertex, label);
 }
 
 uint16_t* GrOpFlushState::makeIndexSpace(int indexCount, sk_sp<const GrBuffer>* buffer,
-                                         int* startIndex) {
-    return reinterpret_cast<uint16_t*>(fIndexPool.makeSpace(indexCount, buffer, startIndex));
+                                         int* startIndex, const char* label) {
+    return reinterpret_cast<uint16_t*>(fIndexPool.makeSpace(indexCount, buffer, startIndex, label));
 }
 
 void* GrOpFlushState::makeVertexSpaceAtLeast(size_t vertexSize, int minVertexCount,
                                              int fallbackVertexCount, sk_sp<const GrBuffer>* buffer,
-                                             int* startVertex, int* actualVertexCount) {
+                                             int* startVertex, int* actualVertexCount,
+                                             const char* label) {
     return fVertexPool.makeSpaceAtLeast(vertexSize, minVertexCount, fallbackVertexCount, buffer,
-                                        startVertex, actualVertexCount);
+                                        startVertex, actualVertexCount, label);
 }
 
 uint16_t* GrOpFlushState::makeIndexSpaceAtLeast(int minIndexCount, int fallbackIndexCount,
                                                 sk_sp<const GrBuffer>* buffer, int* startIndex,
-                                                int* actualIndexCount) {
+                                                int* actualIndexCount, const char* label) {
     return reinterpret_cast<uint16_t*>(fIndexPool.makeSpaceAtLeast(
-            minIndexCount, fallbackIndexCount, buffer, startIndex, actualIndexCount));
+            minIndexCount, fallbackIndexCount, buffer, startIndex, actualIndexCount, label));
 }
 
 void GrOpFlushState::putBackIndices(int indexCount) {

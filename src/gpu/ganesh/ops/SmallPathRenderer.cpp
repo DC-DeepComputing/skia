@@ -209,7 +209,7 @@ private:
         }
         VertexWriter vertices = target->makeVertexWriter(
             kVertexStride, GrResourceProvider::NumVertsPerNonAAQuad() * instanceCount,
-            &flushInfo.fVertexBuffer, &flushInfo.fVertexOffset);
+            &flushInfo.fVertexBuffer, &flushInfo.fVertexOffset, "SmallPathOp::onPrepareDraws");
 
         flushInfo.fIndexBuffer = target->resourceProvider()->refNonAAQuadIndexBuffer();
         if (!vertices || !flushInfo.fIndexBuffer) {

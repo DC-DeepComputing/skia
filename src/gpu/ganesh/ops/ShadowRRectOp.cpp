@@ -557,7 +557,8 @@ private:
         sk_sp<const GrBuffer> vertexBuffer;
         int firstVertex;
         CircleVertex* verts = (CircleVertex*)target->makeVertexSpace(
-                sizeof(CircleVertex), fVertCount, &vertexBuffer, &firstVertex);
+                sizeof(CircleVertex), fVertCount, &vertexBuffer, &firstVertex,
+                "ShadowCircularRRectOp::onPrepareDraws - v");
         if (!verts) {
             SkDebugf("Could not allocate vertices\n");
             return;
@@ -565,7 +566,8 @@ private:
 
         sk_sp<const GrBuffer> indexBuffer;
         int firstIndex = 0;
-        uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex);
+        uint16_t* indices = target->makeIndexSpace(fIndexCount, &indexBuffer, &firstIndex,
+                                                   "ShadowCircularRRectOp::onPrepareDraws - i");
         if (!indices) {
             SkDebugf("Could not allocate indices\n");
             return;

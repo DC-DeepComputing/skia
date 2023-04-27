@@ -1224,7 +1224,7 @@ void AAHairlineOp::onPrepareDraws(GrMeshDrawTarget* target) {
 
         int vertexCount = kQuadNumVertices * quadAndConicCount;
         void* vertices = target->makeVertexSpace(sizeof(BezierVertex), vertexCount, &vertexBuffer,
-                                                 &firstVertex);
+                                                 &firstVertex, "AAHairlineOp::onPrepareDraws");
 
         if (!vertices || !quadsIndexBuffer) {
             SkDebugf("Could not allocate vertices\n");

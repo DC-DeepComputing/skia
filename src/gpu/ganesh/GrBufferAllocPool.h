@@ -107,7 +107,8 @@ protected:
      * @param offset       returns the offset into buffer of the data.
      * @return pointer to where the client should write the data.
      */
-    void* makeSpace(size_t size, size_t alignment, sk_sp<const GrBuffer>* buffer, size_t* offset);
+    void* makeSpace(size_t size, size_t alignment, sk_sp<const GrBuffer>* buffer, size_t* offset,
+                    const char* label);
 
     /**
      * Returns a block of memory to hold data. A buffer designated to hold the
@@ -139,9 +140,10 @@ protected:
                            size_t alignment,
                            sk_sp<const GrBuffer>* buffer,
                            size_t* offset,
-                           size_t* actualSize);
+                           size_t* actualSize,
+                           const char* label);
 
-    sk_sp<GrBuffer> getBuffer(size_t size);
+    sk_sp<GrBuffer> getBuffer(size_t size, const char* label);
 
 private:
     struct BufferBlock {
@@ -153,7 +155,7 @@ private:
         using sk_is_trivially_relocatable = std::true_type;
     };
 
-    bool createBlock(size_t requestSize);
+    bool createBlock(size_t requestSize, const char* label);
     void destroyBlock();
     void deleteBlocks();
     void flushCpuData(const BufferBlock& block, size_t flushSize);
@@ -210,7 +212,8 @@ public:
     void* makeSpace(size_t vertexSize,
                     int vertexCount,
                     sk_sp<const GrBuffer>* buffer,
-                    int* startVertex);
+                    int* startVertex,
+                    const char* label);
 
     /**
      * Returns a block of memory to hold vertices. A buffer designated to hold
@@ -244,7 +247,8 @@ public:
                            int fallbackVertexCount,
                            sk_sp<const GrBuffer>* buffer,
                            int* startVertex,
-                           int* actualVertexCount);
+                           int* actualVertexCount,
+                           const char* label);
 
 private:
     using INHERITED = GrBufferAllocPool;
@@ -283,7 +287,8 @@ public:
      * @param startIndex   returns the offset into buffer of the first index.
      * @return pointer to first index.
      */
-    void* makeSpace(int indexCount, sk_sp<const GrBuffer>* buffer, int* startIndex);
+    void* makeSpace(int indexCount, sk_sp<const GrBuffer>* buffer, int* startIndex,
+                    const char* label);
 
     /**
      * Returns a block of memory to hold indices. A buffer designated to hold
@@ -314,7 +319,7 @@ public:
                            int fallbackIndexCount,
                            sk_sp<const GrBuffer>* buffer,
                            int* startIndex,
-                           int* actualIndexCount);
+                           int* actualIndexCount, const char* label);
 
 private:
     using INHERITED = GrBufferAllocPool;
@@ -325,9 +330,10 @@ public:
     GrDrawIndirectBufferAllocPool(GrGpu* gpu, sk_sp<CpuBufferCache> cpuBufferCache)
             : GrBufferAllocPool(gpu, GrGpuBufferType::kDrawIndirect, std::move(cpuBufferCache)) {}
 
-    GrDrawIndirectWriter makeSpace(int drawCount, sk_sp<const GrBuffer>* buffer, size_t* offset) {
+    GrDrawIndirectWriter makeSpace(int drawCount, sk_sp<const GrBuffer>* buffer, size_t* offset,
+                                   const char* label) {
         return this->GrBufferAllocPool::makeSpace(drawCount * sizeof(GrDrawIndirectCommand), 4,
-                                                  buffer, offset);
+                                                  buffer, offset, label);
     }
 
     void putBack(int drawCount) {
@@ -335,9 +341,9 @@ public:
     }
 
     GrDrawIndexedIndirectWriter makeIndexedSpace(int drawCount, sk_sp<const GrBuffer>* buffer,
-                                                 size_t* offset) {
+                                                 size_t* offset, const char* label) {
         return this->GrBufferAllocPool::makeSpace(
-                drawCount * sizeof(GrDrawIndexedIndirectCommand), 4, buffer, offset);
+                drawCount * sizeof(GrDrawIndexedIndirectCommand), 4, buffer, offset, label);
     }
 
     void putBackIndexed(int drawCount) {

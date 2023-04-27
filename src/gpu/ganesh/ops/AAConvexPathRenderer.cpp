@@ -812,7 +812,8 @@ private:
             VertexWriter verts = target->makeVertexWriter(kVertexStride,
                                                           vertexCount,
                                                           &vertexBuffer,
-                                                          &firstVertex);
+                                                          &firstVertex,
+                                                          "AAConvexPathOp::onPrepareDraws");
 
             if (!verts) {
                 SkDebugf("Could not allocate vertices\n");
@@ -822,7 +823,8 @@ private:
             sk_sp<const GrBuffer> indexBuffer;
             int firstIndex;
 
-            uint16_t *idxs = target->makeIndexSpace(indexCount, &indexBuffer, &firstIndex);
+            uint16_t *idxs = target->makeIndexSpace(indexCount, &indexBuffer, &firstIndex,
+                                                    "AAConvexPathOp::onPrepareDraws");
             if (!idxs) {
                 SkDebugf("Could not allocate indices\n");
                 return;

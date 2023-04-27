@@ -13,7 +13,7 @@
 #include "src/gpu/ganesh/GrResourceProvider.h"
 
 GrStagingBufferManager::Slice GrStagingBufferManager::allocateStagingBufferSlice(
-        size_t size, size_t requiredAlignment) {
+        size_t size, size_t requiredAlignment, const char* label) {
     StagingBuffer* buffer = nullptr;
     size_t offset = 0;
     for (size_t i = 0; i < fBuffers.size(); ++i) {
@@ -33,7 +33,8 @@ GrStagingBufferManager::Slice GrStagingBufferManager::allocateStagingBufferSlice
                 bufferSize,
                 GrGpuBufferType::kXferCpuToGpu,
                 kDynamic_GrAccessPattern,
-                GrResourceProvider::ZeroInit::kNo);
+                GrResourceProvider::ZeroInit::kNo,
+                label);
         if (!newBuffer) {
             return {}; // invalid slice
         }

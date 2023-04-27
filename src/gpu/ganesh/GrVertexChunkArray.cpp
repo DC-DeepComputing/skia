@@ -16,7 +16,7 @@ GrVertexChunkBuilder::~GrVertexChunkBuilder() {
     }
 }
 
-bool GrVertexChunkBuilder::allocChunk(int minCount) {
+bool GrVertexChunkBuilder::allocChunk(int minCount, const char* label) {
     if (!fChunks->empty()) {
         // No need to put back vertices; the buffer is full.
         fChunks->back().fCount = fCurrChunkVertexCount;
@@ -27,7 +27,8 @@ bool GrVertexChunkBuilder::allocChunk(int minCount) {
     fCurrChunkVertexWriter = fTarget->makeVertexWriterAtLeast(fStride, minAllocCount,
                                                               minAllocCount, &chunk->fBuffer,
                                                               &chunk->fBase,
-                                                              &fCurrChunkVertexCapacity);
+                                                              &fCurrChunkVertexCapacity,
+                                                              label);
     if (!fCurrChunkVertexWriter || !chunk->fBuffer || fCurrChunkVertexCapacity < minCount) {
         SkDebugf("WARNING: Failed to allocate vertex buffer for GrVertexChunk.\n");
         fChunks->pop_back();

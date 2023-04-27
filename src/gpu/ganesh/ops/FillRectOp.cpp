@@ -273,7 +273,8 @@ private:
 
         // Fill the allocated vertex data
         void* vdata = target->makeVertexSpace(vertexSpec.vertexSize(), totalNumVertices,
-                                              &fVertexBuffer, &fBaseVertex);
+                                              &fVertexBuffer, &fBaseVertex,
+                                              "FillRectOpImpl::onPrepareDraws");
         if (!vdata) {
             SkDebugf("Could not allocate vertices\n");
             return;

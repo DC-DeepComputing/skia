@@ -31,7 +31,7 @@ public:
 
     VertexWriter append(const tess::LinearTolerances& tolerances) {
         fWorstCaseTolerances->accumulate(tolerances);
-        return fBuilder.appendVertices(1);
+        return fBuilder.appendVertices(1, "append");
     }
 
 private:

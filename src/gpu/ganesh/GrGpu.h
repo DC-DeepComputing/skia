@@ -205,7 +205,8 @@ public:
      */
     sk_sp<GrGpuBuffer> createBuffer(size_t size,
                                     GrGpuBufferType intendedType,
-                                    GrAccessPattern accessPattern);
+                                    GrAccessPattern accessPattern,
+                                    const char* label);
 
     /**
      * Resolves MSAA. The resolveRect must already be in the native destination space.
@@ -764,7 +765,8 @@ private:
 
     virtual sk_sp<GrGpuBuffer> onCreateBuffer(size_t size,
                                               GrGpuBufferType intendedType,
-                                              GrAccessPattern) = 0;
+                                              GrAccessPattern,
+                                              const char* label) = 0;
 
     // overridden by backend-specific derived class to perform the surface read
     virtual bool onReadPixels(GrSurface*,

@@ -40,9 +40,17 @@ private:
      * Called by the cache to delete the resource under normal circumstances.
      */
     void release() {
+        size_t gpuMemorySize = fResource->gpuMemorySize();
+
         fResource->release();
         if (!fResource->hasRef() && fResource->hasNoCommandBufferUsages()) {
             delete fResource;
+        } else {
+            SkDebugf("GrGpuResource::CacheAccess::release Some resource still has external references %s %zu %s %d\n",
+                     fResource->getResourceType(),
+                     gpuMemorySize,
+                     fResource->getLabel().c_str(),
+                     fResource->testingOnly_getRefCnt());
         }
     }
 

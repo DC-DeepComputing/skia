@@ -440,7 +440,7 @@ void PathInnerTriangulateOp::onPrepare(GrOpFlushState* flushState) {
 
         fHullVertexBufferIfNoIDSupport = flushState->resourceProvider()->findOrMakeStaticBuffer(
                 GrGpuBufferType::kVertex, sizeof(kStripOrderIDs), kStripOrderIDs,
-                gHullVertexBufferKey);
+                gHullVertexBufferKey, "PathInnerTriangulateOp::onPrepare");
     }
 }
 

@@ -223,7 +223,8 @@ public:
     sk_sp<const GrGpuBuffer> findOrMakeStaticBuffer(GrGpuBufferType intendedType,
                                                     size_t size,
                                                     const skgpu::UniqueKey& key,
-                                                    InitializeBufferFn);
+                                                    InitializeBufferFn,
+                                                    const char* label);
 
     /**
      * Either finds and refs, or creates a static buffer with the given parameters and contents.
@@ -238,7 +239,8 @@ public:
     sk_sp<const GrGpuBuffer> findOrMakeStaticBuffer(GrGpuBufferType intendedType,
                                                     size_t size,
                                                     const void* staticData,
-                                                    const skgpu::UniqueKey& key);
+                                                    const skgpu::UniqueKey& key,
+                                                    const char* label);
 
     /**
      * Either finds and refs, or creates an index buffer with a repeating pattern for drawing
@@ -312,13 +314,15 @@ public:
      *
      * @return the buffer if successful, otherwise nullptr.
      */
-    sk_sp<GrGpuBuffer> createBuffer(size_t size, GrGpuBufferType, GrAccessPattern, ZeroInit);
+    sk_sp<GrGpuBuffer> createBuffer(size_t size, GrGpuBufferType, GrAccessPattern, ZeroInit,
+                                    const char* label);
 
     /** Same as above but also fills the buffer from data. */
     sk_sp<GrGpuBuffer> createBuffer(const void* data,
                                     size_t size,
                                     GrGpuBufferType type,
-                                    GrAccessPattern pattern);
+                                    GrAccessPattern pattern,
+                                    const char* label);
 
     /**
      * If passed in render target already has a stencil buffer on the specified surface, return
