@@ -22,6 +22,30 @@
       },
       "revId": "a708ec9c4b001bc1565023f6a74d756e99fe950e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f77278a2_826a87cd",
+        "filename": "src/gpu/graphite/compute/ComputeStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-27T21:13:28Z",
+      "side": 1,
+      "message": "Done. I\u0027m not sure why clang-format chose to insert a newline there.",
+      "parentUuid": "27e75637_60088090",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 108,
+        "endChar": 33
+      },
+      "revId": "a708ec9c4b001bc1565023f6a74d756e99fe950e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
