@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acb0d82b_62bddcb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9563
+      },
+      "writtenOn": "2023-04-27T14:37:49Z",
+      "side": 1,
+      "message": "Looks like skia\u0027s bazel files need updating for newly added files\n https://dawn.googlesource.com/dawn.git/+/d3b09b90e31e468746d5ec643a6a6c30e4554123",
+      "revId": "14cba83b7d9d13bfff9fff8bb1fab9dc3786b1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
