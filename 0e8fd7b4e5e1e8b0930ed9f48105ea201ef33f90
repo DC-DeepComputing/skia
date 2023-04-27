@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfe1f6dc_183c867d",
+        "filename": "PRESUBMIT_test.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-04-27T15:36:49Z",
+      "side": 1,
+      "message": "I thought we were supposed to use `Google Inc.` licenses now?",
+      "range": {
+        "startLine": 2,
+        "startChar": 2,
+        "endLine": 2,
+        "endChar": 37
+      },
+      "revId": "0e8fd7b4e5e1e8b0930ed9f48105ea201ef33f90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
