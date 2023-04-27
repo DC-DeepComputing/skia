@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90730c66_08a8d330",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-04-27T13:22:36Z",
+      "side": 1,
+      "message": "This isn\u0027t true yet, right? (Based on the comment/code in SkImageFilter.cpp, and the methods below that call functions on the image)?",
+      "range": {
+        "startLine": 718,
+        "startChar": 7,
+        "endLine": 718,
+        "endChar": 31
+      },
+      "revId": "7cd31e2f6493b4b8ef110182eaeed0e5be04499a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
