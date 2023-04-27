@@ -357,6 +357,8 @@ public:
                                                       GrWrapOwnership = kBorrow_GrWrapOwnership);
 
     void abandon() {
+        fNonAAQuadIndexBuffer.reset();
+        fAAQuadIndexBuffer.reset();
         fCache = nullptr;
         fGpu = nullptr;
     }
