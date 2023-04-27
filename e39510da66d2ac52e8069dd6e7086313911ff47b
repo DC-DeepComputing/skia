@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4401cd32_cf348935",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-27T19:53:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28c59d78_8c8b4e3a",
+      "range": {
+        "startLine": 225,
+        "startChar": 51,
+        "endLine": 225,
+        "endChar": 58
+      },
+      "revId": "e39510da66d2ac52e8069dd6e7086313911ff47b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20816c37_aa6a1905",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-04-27T18:08:59Z",
       "side": 1,
       "message": "Should this be 9, -9?",
+      "range": {
+        "startLine": 110,
+        "startChar": 60,
+        "endLine": 110,
+        "endChar": 74
+      },
+      "revId": "e39510da66d2ac52e8069dd6e7086313911ff47b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f18aab9_99f173df",
+        "filename": "tests/FloatingPointTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-04-27T19:53:02Z",
+      "side": 1,
+      "message": "The line above shows that things within 16 ulps are \"close enough\". This line shows that 17 ulps are too far away. It just shows the accuracy of the ulps measurement for the smallest numbers.",
+      "parentUuid": "20816c37_aa6a1905",
       "range": {
         "startLine": 110,
         "startChar": 60,
