@@ -16,6 +16,52 @@
       "message": "This should be a rock solid comparison of two doubles. If something is unclear, please point it out, and I will try to improve the prose. Is you can think of a counter example, tell me, and I will added it to the tests and fix the code.",
       "revId": "e39510da66d2ac52e8069dd6e7086313911ff47b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28c59d78_8c8b4e3a",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-27T18:08:59Z",
+      "side": 1,
+      "message": "Nit: within",
+      "range": {
+        "startLine": 225,
+        "startChar": 51,
+        "endLine": 225,
+        "endChar": 58
+      },
+      "revId": "e39510da66d2ac52e8069dd6e7086313911ff47b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20816c37_aa6a1905",
+        "filename": "tests/FloatingPointTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-27T18:08:59Z",
+      "side": 1,
+      "message": "Should this be 9, -9?",
+      "range": {
+        "startLine": 110,
+        "startChar": 60,
+        "endLine": 110,
+        "endChar": 74
+      },
+      "revId": "e39510da66d2ac52e8069dd6e7086313911ff47b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
