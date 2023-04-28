@@ -999,6 +999,18 @@ const Caps::ColorTypeInfo* VulkanCaps::getColorTypeInfo(SkColorType ct,
     return nullptr;
 }
 
+bool VulkanCaps::onIsTexturable(const TextureInfo& texInfo) const {
+    VulkanTextureInfo vkInfo;
+    texInfo.getVulkanTextureInfo(&vkInfo);
+
+    // TODO:
+    // We can always texture from an external format (assuming we have the YCbCr conversion
+    // info which we require to be passed in).
+
+    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
+    return info.isTexturable(vkInfo.fImageTiling);
+}
+
 bool VulkanCaps::supportsWritePixels(const TextureInfo& texInfo) const {
     VulkanTextureInfo vkInfo;
     texInfo.getVulkanTextureInfo(&vkInfo);
