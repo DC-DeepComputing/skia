@@ -1,0 +1,31 @@
+# Copyright 2023 Google Inc.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("../../gn/skia.gni")
+
+config("public_config") {
+  defines = []
+  include_dirs = [ "." ]
+}
+
+skia_component("window") {
+  check_includes = false
+  public_configs = [ ":public_config" ]
+  public = [
+    "SkDisplayParams.h",
+    "SkWindowContext.h",
+  ]
+  sources = [
+    "SkDisplayParams.h",
+    "SkRasterWindowContext.h",
+    "SkWindowContext.cpp",
+    "SkWindowContext.h",
+  ]
+  configs = [ "../../:skia_private" ]
+  deps = [
+    "../..:gpu_tool_utils",
+    "../..:skia",
+  ]
+}
