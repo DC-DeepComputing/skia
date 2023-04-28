@@ -16,6 +16,24 @@
       "message": "this failed because https://dawn.googlesource.com/dawn.git/+/576ba1c4939288fdc1ae723f173d155a63c7c8e7 added a new file which is not in the Bazel build",
       "revId": "965b72b23c469a92004d99e9f3fc3c11c5e1a12c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c66d2cc6_33251f72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10818
+      },
+      "writtenOn": "2023-04-28T17:34:44Z",
+      "side": 1,
+      "message": "Fixed here: https://skia-review.googlesource.com/c/skia/+/685996",
+      "parentUuid": "c5927c16_3d59b6d8",
+      "revId": "965b72b23c469a92004d99e9f3fc3c11c5e1a12c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
