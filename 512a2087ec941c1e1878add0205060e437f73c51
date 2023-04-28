@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a9303ad_48d7d20b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-28T16:18:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d640bc5c_07753240",
+      "range": {
+        "startLine": 336,
+        "startChar": 4,
+        "endLine": 336,
+        "endChar": 35
+      },
+      "revId": "512a2087ec941c1e1878add0205060e437f73c51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f05248c2_a31bbc5a",
@@ -129,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8695ad72_65e39b77",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-28T16:18:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93d5568d_cf9f7246",
+      "range": {
+        "startLine": 388,
+        "startChar": 4,
+        "endLine": 388,
+        "endChar": 35
+      },
+      "revId": "512a2087ec941c1e1878add0205060e437f73c51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55c04abd_c7cb9cbb",
@@ -166,6 +214,30 @@
       "side": 1,
       "message": "Sounds good, I\u0027ll add the helper Monday as a separate CL, and then land this after Nicolette looks at it.",
       "parentUuid": "55c04abd_c7cb9cbb",
+      "range": {
+        "startLine": 409,
+        "startChar": 4,
+        "endLine": 409,
+        "endChar": 48
+      },
+      "revId": "512a2087ec941c1e1878add0205060e437f73c51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f3a9438_14d1ec32",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-28T16:18:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1bfc6a2_ac2c7494",
       "range": {
         "startLine": 409,
         "startChar": 4,
