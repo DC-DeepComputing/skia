@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0821a422_2ac6a09c",
+        "filename": "src/gpu/ganesh/image/SkImage_GaneshBase.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T14:48:50Z",
+      "side": 1,
+      "message": "here and in a few other functions, would it make more sense to be `!myContext || !myContext.matches(rContext)`?\n\nThe matches call should make sure rCOntext isn\u0027t null, but if we are a Ganesh image, it really only makes sense to make new images if we have a context for it.",
+      "range": {
+        "startLine": 319,
+        "startChar": 8,
+        "endLine": 319,
+        "endChar": 17
+      },
+      "revId": "334b7554b509296299187bc40d1c70983807bb03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7367fe76_5935ba7f",
+        "filename": "src/image/SkImage_Base.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T14:48:50Z",
+      "side": 1,
+      "message": "With makeWithFilter being virtual now, I think it makes sense that SkImage_Graphite will just override it when we\u0027re ready to support it.\n\nI suppose there is more than just SkImage_Raster that wants to use CPU image filtering so it makes sense to keep this on SkImage_Base vs. pushing it down.",
+      "range": {
+        "startLine": 146,
+        "startChar": 12,
+        "endLine": 147,
+        "endChar": 64
+      },
+      "revId": "334b7554b509296299187bc40d1c70983807bb03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13fa14b3_1125ffd8",
+        "filename": "src/image/SkImage_Base.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T14:48:50Z",
+      "side": 1,
+      "message": "A more concise possibility would be to add a private virtual along the lines of `skif::Context makeFilterContext(GrRecordingContext*, ContextInfo)` and leave makeWithFilter non-virtual?",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 63
+      },
+      "revId": "334b7554b509296299187bc40d1c70983807bb03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
