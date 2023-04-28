@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc878060_382c619b",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-28T20:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "676a4b25_1fc700ee",
+      "range": {
+        "startLine": 266,
+        "startChar": 16,
+        "endLine": 266,
+        "endChar": 64
+      },
+      "revId": "4d089804176c2d43394776e16fb5623f4e509457",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67367ca3_aea73889",
@@ -88,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1633441b_323c8f3e",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-28T20:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cab5a61_f8f7c962",
+      "range": {
+        "startLine": 160,
+        "startChar": 8,
+        "endLine": 163,
+        "endChar": 9
+      },
+      "revId": "4d089804176c2d43394776e16fb5623f4e509457",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7d30974_79ee7a7d",
@@ -101,6 +149,30 @@
       "writtenOn": "2023-04-06T19:32:09Z",
       "side": 1,
       "message": "Is there a reason that this is inside the loop instead of outside?",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 55
+      },
+      "revId": "4d089804176c2d43394776e16fb5623f4e509457",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86abd7d2_888978d7",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-28T20:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7d30974_79ee7a7d",
       "range": {
         "startLine": 143,
         "startChar": 0,
