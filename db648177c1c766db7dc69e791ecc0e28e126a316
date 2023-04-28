@@ -135,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "125cf101_5190cb01",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T02:16:18Z",
+      "side": 1,
+      "message": "That\u0027s fair, I don\u0027t think there\u0027s a real scenario where someone needs to refer to the Requirement enum without also having the caps to get the specific value for the current hardware.",
+      "parentUuid": "e1f8101d_f6fb6b5f",
+      "range": {
+        "startLine": 56,
+        "startChar": 11,
+        "endLine": 56,
+        "endChar": 29
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c30af00e_37e4e714",
@@ -274,6 +298,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b267f4fe_57deb283",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T02:16:18Z",
+      "side": 1,
+      "message": "This idea won\u0027t actually work because splitting up a DrawPass into several tasks means the depth attachment is being discarded and cleared. Device needs to be involved to ensure the clip stack\u0027s depth-only draws are recorded properly, so I think your approach is exactly the right way to handle the texture copy fallback.\n\nWhen we have the texture barrier and sampling options that let us stay within a renderpass, we side step that issue entirely.",
+      "parentUuid": "7b9ce292_2b29dda4",
+      "range": {
+        "startLine": 423,
+        "startChar": 0,
+        "endLine": 423,
+        "endChar": 46
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5719c56e_18a2dd0b",
@@ -311,6 +359,30 @@
       "side": 1,
       "message": "I would not really even think to try to optimize this. I believe we shouldn\u0027t really ever need a copy for any of the modern APIs once we get things all implemented. So really in the end this might be an optimization for old GL desktops (as most mobile gles have fb fetch). Not worth adding extra logic/complexity for that IMO",
       "parentUuid": "5719c56e_18a2dd0b",
+      "range": {
+        "startLine": 506,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 94
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dfbdd41_cd8fc497",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T02:16:18Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f008cbdf_5cff826b",
       "range": {
         "startLine": 506,
         "startChar": 0,
@@ -405,6 +477,30 @@
       "side": 1,
       "message": "Is there any good way to account for coverage to determine the final blend type when calling PaintParams.toKey()? The paint params at this point are independent of render steps so I guess we don\u0027t know how coverage will affect blending, or whether we\u0027ll need the dst color?",
       "parentUuid": "fc36074c_20b7c3ee",
+      "range": {
+        "startLine": 460,
+        "startChar": 0,
+        "endLine": 460,
+        "endChar": 62
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7619768f_9b430eff",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T02:16:18Z",
+      "side": 1,
+      "message": "Summarizing the thoughts from our offline chat:\n\nPaintParams.toKey() shouldn\u0027t need to know if there\u0027s coverage or not. The key restructuring to put the final blend as the root node means that ShaderInfo::toSkSL() can strip off the DstColor block and switch to HW blending if the RenderStep is compatible.\n\nHowever, we do still need to know if this would be compatible in Device if the DstReadRequirement is kTextureCopy since that\u0027s the place that triggers the right tasks. Once the coverage analysis is refactored out of Ganesh, it should be possible to make equivalent decisions in Device by just looking at the SkBlendMode for the final blend of the PaintParams. At that point it doesn\u0027t have to generate the full HW blend info or the key, it just needs to know if the dst color needs to be copied into a separate texture.",
+      "parentUuid": "da495644_9e941efa",
       "range": {
         "startLine": 460,
         "startChar": 0,

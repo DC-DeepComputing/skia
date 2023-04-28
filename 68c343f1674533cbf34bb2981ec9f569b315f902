@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fc07d28_dc0c0761",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T02:16:18Z",
+      "side": 1,
+      "message": "I think we can just combine these into a single function that takes an `const SkBlender*`. If it\u0027s null, it implies src-over. Otherwise internally we can get the `optional\u003cSkBlendMode\u003e`.\n\nI also think we will need to pass in the Renderer so it can query its coverage behavior.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 70
+      },
+      "revId": "68c343f1674533cbf34bb2981ec9f569b315f902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9935643_b9fa80e6",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T02:16:18Z",
+      "side": 1,
+      "message": "Besides the TODO above, it would be nice to lift this logic outside of the loop over draws. For the texture-copy case, we already flushed the Device before recording the draw that required the copy. Any additional draws that made it into the DrawPass are ones that won\u0027t need to access the proxy. \n\nRight now it has to be in the loop so we can send the proxy to ExtractPaintData. In the long term, I hope the paint sksl restructuring will allow the copy proxy to be considered an \"intrinsic\" uniform like rtAdjust and be bound externally to any other paint uniforms that have to be extracted. That will clean up when and where we have to reference the proxy.\n\nIn particular, Arman\u0027s compute work has started having DrawContext manage more of the task creation and coordination so DrawPass::Make() might create a ComputeTask that it knows will be inserted before the RenderPassTask via the DrawContext, but it can accumulate all the data it needs while processing the entire DrawPass before it has to commit to that.\n\nI can imagine something similar where detect a draw with texture-copy requirement when collecting the draw uniforms. We can create the copy task and the proxy then, prior to iterating the SortKeys and recording the commands. If we have a texture copy proxy, we record a command to bind it to the intrinsic slot we reserve for that purpose. Then DrawContext makes sure the created CopyTask goes before the RenderPassTask that the DrawPass turns into.\n\nWe are a ways off from that, so I don\u0027t think this has to necessarily change for this CL.",
+      "range": {
+        "startLine": 510,
+        "startChar": 26,
+        "endLine": 510,
+        "endChar": 46
+      },
+      "revId": "68c343f1674533cbf34bb2981ec9f569b315f902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
