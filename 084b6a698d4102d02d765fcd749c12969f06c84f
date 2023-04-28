@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a28c79_f3a40eb5",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1009,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-28T20:05:08Z",
+      "side": 1,
+      "message": "I\u0027m not sure this comment explicitly calls out what actually needs to change here; it reads more like documentation on how something works. Maybe try something more like: \n`TODO: Return true in the case of external formats, asserting that YCbCr conversion information has been passed in`.",
+      "range": {
+        "startLine": 1007,
+        "startChar": 3,
+        "endLine": 1009,
+        "endChar": 0
+      },
+      "revId": "084b6a698d4102d02d765fcd749c12969f06c84f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
