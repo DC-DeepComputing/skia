@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b18aaaaf_d39da3a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-28T14:06:09Z",
+      "side": 1,
+      "message": "These changes are all pretty mechanical.",
+      "revId": "ed6c37ca1ac60ef0191b278cddd709f89d7393ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
