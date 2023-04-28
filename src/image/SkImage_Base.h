@@ -28,11 +28,16 @@ class TextureProxyView;
 
 class GrDirectContext;
 class GrImageContext;
+class GrRecordingContext;
 class SkBitmap;
 class SkColorSpace;
+class SkImageFilter;
+class SkImageFilter_Base;
 class SkPixmap;
+class SkSpecialImage;
 enum SkColorType : int;
 enum SkYUVColorSpace : int;
+struct SkIPoint;
 struct SkIRect;
 struct SkISize;
 struct SkImageInfo;
@@ -46,7 +51,16 @@ public:
     ~SkImage_Base() override;
 
     // From SkImage.h
+    sk_sp<SkImage> makeColorTypeAndColorSpace(GrDirectContext* dContext,
+                                              SkColorType targetColorType,
+                                              sk_sp<SkColorSpace> targetCS) const override;
     sk_sp<SkImage> makeSubset(GrDirectContext* direct, const SkIRect& subset) const override;
+    sk_sp<SkImage> makeWithFilter(GrRecordingContext* context,
+                                  const SkImageFilter* filter,
+                                  const SkIRect& subset,
+                                  const SkIRect& clipBounds,
+                                  SkIRect* outSubset,
+                                  SkIPoint* offset) const override;
     size_t textureSize() const override { return 0; }
 #if defined(SK_GRAPHITE)
     sk_sp<SkImage> makeTextureImage(skgpu::graphite::Recorder*,
@@ -98,7 +112,7 @@ public:
     virtual GrImageContext* context() const { return nullptr; }
 
     /** this->context() try-casted to GrDirectContext. Useful for migrations – avoid otherwise! */
-    GrDirectContext* directContext() const;
+    virtual GrDirectContext* directContext() const { return nullptr; }
 
     // If this image is the current cached image snapshot of a surface then this is called when the
     // surface is destroyed to indicate no further writes may happen to surface backing store.
@@ -196,6 +210,13 @@ public:
 
 protected:
     SkImage_Base(const SkImageInfo& info, uint32_t uniqueID);
+
+    sk_sp<SkImage> filterSpecialImage(const SkImageFilter_Base* filter,
+                                      const SkSpecialImage* specialImage,
+                                      const SkIRect& subset,
+                                      const SkIRect& clipBounds,
+                                      SkIRect* outSubset,
+                                      SkIPoint* offset) const;
 
 private:
     // Set true by caches when they cache content that's derived from the current pixels.
