@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cf38b92_396c02c4",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-04-28T20:01:15Z",
+      "side": 1,
+      "message": "I\u0027m not sure how to determine which pipeline stage flag to use from the different depth/stencil access flags - Are our depth/stencil tests necessarily performed *after* fragment shading (as opposed to using VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT or VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT)? Or are we just making that assumption based upon only currently using setBufferAccess for GPU texture data-\u003emappable buffer-\u003ereading from CPU?",
+      "range": {
+        "startLine": 291,
+        "startChar": 7,
+        "endLine": 291,
+        "endChar": 59
+      },
+      "revId": "8a2df59798dc59fddbc7560e3a3d05c9d711f6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
