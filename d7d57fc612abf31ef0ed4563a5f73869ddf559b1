@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bb70a4e_e87adff8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T14:52:10Z",
+      "side": 1,
+      "message": "LGTM pending LLC and author clenaup.",
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c6383af_d8867545",
@@ -55,6 +72,30 @@
       "side": 1,
       "message": "Yeah, probably \"The Skia Authors\"?",
       "parentUuid": "2c6383af_d8867545",
+      "range": {
+        "startLine": 4,
+        "startChar": 11,
+        "endLine": 4,
+        "endChar": 48
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed777c27_5b67bae0",
+        "filename": "third_party/vello/Cargo.toml",
+        "patchSetId": 8
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T14:52:10Z",
+      "side": 1,
+      "message": "Can we just reference our AUTHORS file? Otherwise in that file we have `Skia \u003c*@skia.org\u003e`, which isn\u0027t quite right anymore since skia.org isn\u0027t used. But then there\u0027s also `Google \u003c*@google.org\u003e` which is probably the best choice if we can\u0027t refer to AUTHORS.",
+      "parentUuid": "a5d030cb_9f93c3c1",
       "range": {
         "startLine": 4,
         "startChar": 11,
@@ -159,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4811b6a7_177af59c",
+        "filename": "third_party/vello/src/lib.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T14:52:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "01f24607_8b728944",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 93
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2411cf3d_115715d9",
@@ -196,6 +261,30 @@
       "side": 1,
       "message": "In Rust `///` denotes a doc comment that applies to an isolated definition, `//!` is for module-scope doc comments, and `//` are in-line comments.\n\nYou can find some information on the grammar and style at https://doc.rust-lang.org/reference/comments.html and https://doc.rust-lang.org/rust-by-example/meta/doc.html",
       "parentUuid": "2411cf3d_115715d9",
+      "range": {
+        "startLine": 142,
+        "startChar": 6,
+        "endLine": 142,
+        "endChar": 7
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac5d85dd_b8af9c57",
+        "filename": "third_party/vello/src/lib.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T14:52:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "79aec549_b5f59c5a",
       "range": {
         "startLine": 142,
         "startChar": 6,
