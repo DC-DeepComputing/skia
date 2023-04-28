@@ -46,6 +46,30 @@
       },
       "revId": "ae4871a89bfad222ef8fe57059518f0795271c40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71afdc24_d87828c1",
+        "filename": "src/image/SkImage_Lazy.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-04-28T11:34:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "938090b1_66765182",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 66
+      },
+      "revId": "ae4871a89bfad222ef8fe57059518f0795271c40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
