@@ -18,14 +18,14 @@ bool test_matrix_op_matrix_half_b()
     float3x3 splat_4 = float3x3(4.0f.xxx, 4.0f.xxx, 4.0f.xxx);
     float3x3 splat_2 = float3x3(2.0f.xxx, 2.0f.xxx, 2.0f.xxx);
     float3x3 m = float3x3(float3(2.0f, 0.0f, 0.0f), float3(0.0f, 2.0f, 0.0f), float3(0.0f, 0.0f, 2.0f));
-    float3 _45 = float3(2.0f, 0.0f, 0.0f) + 4.0f.xxx;
-    float3 _46 = float3(0.0f, 2.0f, 0.0f) + 4.0f.xxx;
-    float3 _47 = float3(0.0f, 0.0f, 2.0f) + 4.0f.xxx;
-    m = float3x3(_45, _46, _47);
+    float3 _46 = float3(2.0f, 0.0f, 0.0f) + 4.0f.xxx;
+    float3 _47 = float3(0.0f, 2.0f, 0.0f) + 4.0f.xxx;
+    float3 _48 = float3(0.0f, 0.0f, 2.0f) + 4.0f.xxx;
+    m = float3x3(_46, _47, _48);
     bool _66 = false;
     if (true)
     {
-        _66 = (all(bool3(_45.x == float3(6.0f, 4.0f, 4.0f).x, _45.y == float3(6.0f, 4.0f, 4.0f).y, _45.z == float3(6.0f, 4.0f, 4.0f).z)) && all(bool3(_46.x == float3(4.0f, 6.0f, 4.0f).x, _46.y == float3(4.0f, 6.0f, 4.0f).y, _46.z == float3(4.0f, 6.0f, 4.0f).z))) && all(bool3(_47.x == float3(4.0f, 4.0f, 6.0f).x, _47.y == float3(4.0f, 4.0f, 6.0f).y, _47.z == float3(4.0f, 4.0f, 6.0f).z));
+        _66 = (all(bool3(_46.x == float3(6.0f, 4.0f, 4.0f).x, _46.y == float3(6.0f, 4.0f, 4.0f).y, _46.z == float3(6.0f, 4.0f, 4.0f).z)) && all(bool3(_47.x == float3(4.0f, 6.0f, 4.0f).x, _47.y == float3(4.0f, 6.0f, 4.0f).y, _47.z == float3(4.0f, 6.0f, 4.0f).z))) && all(bool3(_48.x == float3(4.0f, 4.0f, 6.0f).x, _48.y == float3(4.0f, 4.0f, 6.0f).y, _48.z == float3(4.0f, 4.0f, 6.0f).z));
     }
     else
     {

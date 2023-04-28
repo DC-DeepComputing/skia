@@ -17,14 +17,14 @@ bool test_matrix_op_matrix_half_b()
     bool ok = true;
     float3x2 splat_4 = float3x2(4.0f.xx, 4.0f.xx, 4.0f.xx);
     float3x2 m = float3x2(float2(2.0f, 0.0f), float2(0.0f, 2.0f), 0.0f.xx);
-    float2 _40 = float2(2.0f, 0.0f) + 4.0f.xx;
-    float2 _41 = float2(0.0f, 2.0f) + 4.0f.xx;
-    float2 _42 = 0.0f.xx + 4.0f.xx;
-    m = float3x2(_40, _41, _42);
+    float2 _41 = float2(2.0f, 0.0f) + 4.0f.xx;
+    float2 _42 = float2(0.0f, 2.0f) + 4.0f.xx;
+    float2 _43 = 0.0f.xx + 4.0f.xx;
+    m = float3x2(_41, _42, _43);
     bool _60 = false;
     if (true)
     {
-        _60 = (all(bool2(_40.x == float2(6.0f, 4.0f).x, _40.y == float2(6.0f, 4.0f).y)) && all(bool2(_41.x == float2(4.0f, 6.0f).x, _41.y == float2(4.0f, 6.0f).y))) && all(bool2(_42.x == 4.0f.xx.x, _42.y == 4.0f.xx.y));
+        _60 = (all(bool2(_41.x == float2(6.0f, 4.0f).x, _41.y == float2(6.0f, 4.0f).y)) && all(bool2(_42.x == float2(4.0f, 6.0f).x, _42.y == float2(4.0f, 6.0f).y))) && all(bool2(_43.x == 4.0f.xx.x, _43.y == 4.0f.xx.y));
     }
     else
     {

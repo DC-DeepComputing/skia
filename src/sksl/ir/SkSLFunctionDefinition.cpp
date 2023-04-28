@@ -20,10 +20,14 @@
 #include "src/sksl/dsl/DSLExpression.h"
 #include "src/sksl/dsl/DSLStatement.h"
 #include "src/sksl/dsl/DSLType.h"
+#include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLExpression.h"
+#include "src/sksl/ir/SkSLExpressionStatement.h"
 #include "src/sksl/ir/SkSLField.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLNop.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
 #include "src/sksl/ir/SkSLSymbol.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
@@ -98,6 +102,11 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
             }
         }
 
+        ~Finalizer() override {
+            SkASSERT(fBreakableLevel == 0);
+            SkASSERT(fContinuableLevel == std::forward_list<int>{0});
+        }
+
         void addLocalVariable(const Variable* var, Position pos) {
             if (var->type().isOrContainsUnsizedArray()) {
                 fContext.fErrors->error(pos, "unsized arrays are not permitted here");
@@ -117,9 +126,67 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
             }
         }
 
-        ~Finalizer() override {
-            SkASSERT(fBreakableLevel == 0);
-            SkASSERT(fContinuableLevel == std::forward_list<int>{0});
+        void fuseVariableDeclarationsWithInitialization(Statement& stmt) {
+            switch (stmt.kind()) {
+                case Statement::Kind::kNop:
+                case Statement::Kind::kBlock:
+                    // Blocks and no-ops are inert; it is safe to fuse a variable declaration with
+                    // its initialization across a nop or an open-brace, so we don't null out
+                    // `fUninitializedVarDecl` here.
+                    break;
+
+                case Statement::Kind::kVarDeclaration:
+                    // Look for variable declarations without an initializer.
+                    if (VarDeclaration& decl = stmt.as<VarDeclaration>(); !decl.value()) {
+                        fUninitializedVarDecl = &decl;
+                        break;
+                    }
+                    [[fallthrough]];
+
+                default:
+                    // We found an intervening statement; it's not safe to fuse a declaration
+                    // with an initializer if we encounter any other code.
+                    fUninitializedVarDecl = nullptr;
+                    break;
+
+                case Statement::Kind::kExpression: {
+                    // We found an expression-statement. If there was a variable declaration
+                    // immediately above it, it might be possible to fuse them.
+                    if (fUninitializedVarDecl) {
+                        VarDeclaration* vardecl = fUninitializedVarDecl;
+                        fUninitializedVarDecl = nullptr;
+
+                        std::unique_ptr<Expression>& nextExpr = stmt.as<ExpressionStatement>()
+                                                                    .expression();
+                        // This statement must be a binary-expression...
+                        if (!nextExpr->is<BinaryExpression>()) {
+                            break;
+                        }
+                        // ... performing simple `var = expr` assignment...
+                        BinaryExpression& binaryExpr = nextExpr->as<BinaryExpression>();
+                        if (binaryExpr.getOperator().kind() != OperatorKind::EQ) {
+                            break;
+                        }
+                        // ... directly into the variable (not a field/swizzle)...
+                        const Expression& leftExpr = *binaryExpr.left();
+                        if (!leftExpr.is<VariableReference>()) {
+                            break;
+                        }
+                        // ... and it must be the same variable as our vardecl.
+                        if (leftExpr.as<VariableReference>().variable() != vardecl->var()) {
+                            break;
+                        }
+                        // We found a match! Move the init-expression directly onto the vardecl, and
+                        // turn the assignment into a no-op.
+                        vardecl->value() = std::move(binaryExpr.right());
+
+                        // Replace the contents of the expression-statement with an inert
+                        // expression (`false;`).
+                        nextExpr = Literal::MakeBool(fContext, Position{}, false);
+                    }
+                    break;
+                }
+            }
         }
 
         bool functionReturnsValue() const {
@@ -132,6 +199,14 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         }
 
         bool visitStatement(Statement& stmt) override {
+            // When the optimizer is on, we look for variable declarations that are immediately
+            // followed by an initialization expression, and fuse them into one statement.
+            // (e.g.: `int i; i = 1;` can become `int i = 1;`)
+            if (fContext.fConfig->fSettings.fOptimize) {
+                this->fuseVariableDeclarationsWithInitialization(stmt);
+            }
+
+            // Perform error checking.
             switch (stmt.kind()) {
                 case Statement::Kind::kVarDeclaration:
                     this->addLocalVariable(stmt.as<VarDeclaration>().var(), stmt.fPosition);
@@ -193,6 +268,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                                                 "break statement must be inside a loop or switch");
                     }
                     break;
+
                 case Statement::Kind::kContinue:
                     if (fContinuableLevel.front() == 0) {
                         if (std::any_of(fContinuableLevel.begin(),
@@ -206,6 +282,7 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
                         }
                     }
                     break;
+
                 default:
                     break;
             }
@@ -222,6 +299,9 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         // how deeply nested we are in continuable constructs (for, do).
         // We keep a stack (via a forward_list) in order to disallow continue inside of switch.
         std::forward_list<int> fContinuableLevel{0};
+        // We track uninitialized variable declarations, and if they are immediately assigned-to,
+        // we can move the assignment directly into the decl.
+        VarDeclaration* fUninitializedVarDecl = nullptr;
 
         using INHERITED = ProgramWriter;
     };

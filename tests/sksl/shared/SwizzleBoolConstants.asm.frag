@@ -51,8 +51,8 @@ OpDecorate %117 RelaxedPrecision
 %int = OpTypeInt 32 1
 %int_0 = OpConstant %int 0
 %true = OpConstantTrue %bool
-%v2bool = OpTypeVector %bool 2
 %false = OpConstantFalse %bool
+%v2bool = OpTypeVector %bool 2
 %v3bool = OpTypeVector %bool 3
 %_ptr_Function_v4float = OpTypePointer Function %v4float
 %int_1 = OpConstant %int 1
@@ -79,10 +79,10 @@ OpStore %v %36
 %38 = OpCompositeExtract %bool %36 0
 %40 = OpCompositeConstruct %v4bool %38 %true %true %true
 OpStore %result %40
-%41 = OpVectorShuffle %v2bool %36 %36 0 1
-%43 = OpCompositeExtract %bool %41 0
-%44 = OpCompositeExtract %bool %41 1
-%46 = OpCompositeConstruct %v4bool %43 %44 %false %true
+%42 = OpVectorShuffle %v2bool %36 %36 0 1
+%44 = OpCompositeExtract %bool %42 0
+%45 = OpCompositeExtract %bool %42 1
+%46 = OpCompositeConstruct %v4bool %44 %45 %false %true
 OpStore %result %46
 %47 = OpCompositeConstruct %v4bool %38 %true %true %false
 OpStore %result %47

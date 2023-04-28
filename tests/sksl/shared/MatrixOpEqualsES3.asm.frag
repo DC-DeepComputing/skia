@@ -42,10 +42,10 @@ OpDecorate %11 Binding 0
 OpDecorate %11 DescriptorSet 0
 OpDecorate %splat_4 RelaxedPrecision
 OpDecorate %m RelaxedPrecision
-OpDecorate %40 RelaxedPrecision
 OpDecorate %41 RelaxedPrecision
 OpDecorate %42 RelaxedPrecision
 OpDecorate %43 RelaxedPrecision
+OpDecorate %44 RelaxedPrecision
 OpDecorate %52 RelaxedPrecision
 OpDecorate %54 RelaxedPrecision
 OpDecorate %57 RelaxedPrecision
@@ -289,20 +289,20 @@ OpFunctionEnd
 OpStore %ok %true
 OpStore %splat_4 %34
 OpStore %m %39
-%40 = OpFAdd %v2float %37 %33
-%41 = OpFAdd %v2float %38 %33
-%42 = OpFAdd %v2float %20 %33
-%43 = OpCompositeConstruct %mat3v2float %40 %41 %42
-OpStore %m %43
+%41 = OpFAdd %v2float %37 %33
+%42 = OpFAdd %v2float %38 %33
+%43 = OpFAdd %v2float %20 %33
+%44 = OpCompositeConstruct %mat3v2float %41 %42 %43
+OpStore %m %44
 OpSelectionMerge %46 None
 OpBranchConditional %true %45 %46
 %45 = OpLabel
-%52 = OpFOrdEqual %v2bool %40 %48
+%52 = OpFOrdEqual %v2bool %41 %48
 %53 = OpAll %bool %52
-%54 = OpFOrdEqual %v2bool %41 %49
+%54 = OpFOrdEqual %v2bool %42 %49
 %55 = OpAll %bool %54
 %56 = OpLogicalAnd %bool %53 %55
-%57 = OpFOrdEqual %v2bool %42 %33
+%57 = OpFOrdEqual %v2bool %43 %33
 %58 = OpAll %bool %57
 %59 = OpLogicalAnd %bool %56 %58
 OpBranch %46

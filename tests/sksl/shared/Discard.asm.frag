@@ -19,6 +19,7 @@ OpDecorate %sk_FragColor Index 0
 %sk_FragColor = OpVariable %_ptr_Output_v4float Output
 %void = OpTypeVoid
 %11 = OpTypeFunction %void
+%false = OpConstantFalse %bool
 %main = OpFunction %void None %11
 %12 = OpLabel
 OpKill

@@ -3,9 +3,8 @@ out vec4 sk_FragColor;
 uniform vec4 colorGreen;
 uniform vec4 colorRed;
 bool flatten_known_if_b() {
-    int value;
+    int value = 1;
     {
-        value = 1;
     }
     return value == 1;
 }
