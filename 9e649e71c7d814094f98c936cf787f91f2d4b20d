@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "9e649e71c7d814094f98c936cf787f91f2d4b20d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e854104_3b4a41cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19135
+      },
+      "writtenOn": "2023-04-28T21:44:57Z",
+      "side": 1,
+      "message": "I guess another approach we could take is to get rid of the union - something Greg was also in favor of when I discussed this a few weeks ago, but keeping the union with a dummy member is also fine.",
+      "revId": "9e649e71c7d814094f98c936cf787f91f2d4b20d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
