@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b519764_11684706",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-04-28T14:47:02Z",
+      "side": 1,
+      "message": "Other than my perpetual hatred of putting the \"associated header\" (the .h file with the same name as the .cpp file) first in its own group, lgtm.",
+      "revId": "5968d23621613fa3537774ecdad4d5dea876d4d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
