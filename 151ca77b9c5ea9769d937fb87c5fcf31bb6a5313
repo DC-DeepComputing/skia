@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "210fbbcc_c06504f5",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-28T00:32:06Z",
+      "side": 1,
+      "message": "Correct, this was defined as a uint8_t slice in the vello_shaders crate to accommodate SPIR-V and other binary formats. I can certainly change the vello_shaders crate to return different types for different native shader source formats which can be cleanly expressed in Rust as an enum:\n\n\n    enum ShaderSource\u003c\u0027a\u003e {\n        Textual(\u0026\u0027a str),  // a string\n        Spirv(\u0026\u0027a [u32]),  // a slice of words\n        Binary(\u0026\u0027a [u8]),  // pre-compiled ISA\n    }\n\nThis gets annoying in C++ but I can imagine redefining `fSource` as a `std::variant` of various Span types or alternately adding different methods here like `nativeShaderSource`, `nativeShaderWords`, `nativeShaderSpirv` etc for the different formats.",
+      "parentUuid": "78e42e10_56bec189",
+      "range": {
+        "startLine": 151,
+        "startChar": 21,
+        "endLine": 151,
+        "endChar": 28
+      },
+      "revId": "151ca77b9c5ea9769d937fb87c5fcf31bb6a5313",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "41e2f275_275bc361",
         "filename": "src/gpu/graphite/compute/ComputeStep.h",
         "patchSetId": 1
@@ -85,6 +109,30 @@
       "writtenOn": "2023-04-07T19:42:02Z",
       "side": 1,
       "message": "Will we need to provide the native shader format to this function if the ComputeStep uses native source? Or can we require that their uniforms be generally the same (same order, ignoring the alignment handled by the manager)? \n\nIt would get tricky if the WGSL compiler that exports these from Vello produces actual different uniform declarations that we\u0027d have to account for.",
+      "range": {
+        "startLine": 215,
+        "startChar": 17,
+        "endLine": 215,
+        "endChar": 37
+      },
+      "revId": "151ca77b9c5ea9769d937fb87c5fcf31bb6a5313",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d64c7ec6_75dbdd99",
+        "filename": "src/gpu/graphite/compute/ComputeStep.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-28T00:32:06Z",
+      "side": 1,
+      "message": "The uniform declarations are going to be the same (same types and declaration order) with the exception of any implicit padding that needs to be inserted to satisfy layout constraints. Fortunately WGSL has a well-defined type and layout model and neither Tint nor Naga inject magic variables inside host shareable data definitions.\n\nSo this is certainly a requirement from the point of a ComputeStep and the vello_shaders crate will honor it. The caller of the ComputeStep just needs to make sure that the passed in `UniformManager` is initialized with a layout that\u0027s compatible with the native shader format that it requests from the ComputeStep.",
+      "parentUuid": "41e2f275_275bc361",
       "range": {
         "startLine": 215,
         "startChar": 17,
