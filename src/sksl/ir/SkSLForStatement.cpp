@@ -144,7 +144,7 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
         scope.push_back(ForStatement::Make(context, pos, positions, /*initializer=*/nullptr,
                                            std::move(test), std::move(next), std::move(statement),
                                            std::move(unrollInfo), /*symbolTable=*/nullptr));
-        return Block::Make(pos, std::move(scope), Block::Kind::kBracedScope,
+        return Block::Make(context, pos, std::move(scope), Block::Kind::kBracedScope,
                            std::move(symbolTable));
     }
 

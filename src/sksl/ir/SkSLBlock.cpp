@@ -14,13 +14,14 @@
 
 namespace SkSL {
 
-std::unique_ptr<Statement> Block::Make(Position pos,
+std::unique_ptr<Statement> Block::Make(const Context& context,
+                                       Position pos,
                                        StatementArray statements,
                                        Kind kind,
                                        std::shared_ptr<SymbolTable> symbols) {
     // We can't simplify away braces or populated symbol tables.
     if (kind == Kind::kBracedScope || (symbols && symbols->count())) {
-        return std::make_unique<Block>(pos, std::move(statements), kind, std::move(symbols));
+        return MakeBlock(context, pos, std::move(statements), kind, std::move(symbols));
     }
 
     // If the Block is completely empty, synthesize a Nop.
@@ -41,8 +42,7 @@ std::unique_ptr<Statement> Block::Make(Position pos,
                     continue;
                 }
                 // We found more than one non-empty statement. We actually do need a Block.
-                return std::make_unique<Block>(pos, std::move(statements), kind,
-                                               /*symbols=*/nullptr);
+                return MakeBlock(context, pos, std::move(statements), kind, /*symbols=*/nullptr);
             }
         }
 
@@ -59,7 +59,8 @@ std::unique_ptr<Statement> Block::Make(Position pos,
     return std::move(statements.front());
 }
 
-std::unique_ptr<Block> Block::MakeBlock(Position pos,
+std::unique_ptr<Block> Block::MakeBlock(const Context&,
+                                        Position pos,
                                         StatementArray statements,
                                         Kind kind,
                                         std::shared_ptr<SymbolTable> symbols) {

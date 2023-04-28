@@ -61,7 +61,8 @@ public:
     // disassembled by this call and must then be discarded).
     // Returns null (and leaves the switch unmodified) if no such simple reduction is possible, such
     // as when break statements appear inside conditionals.
-    static std::unique_ptr<Statement> BlockForCase(StatementArray* cases,
+    static std::unique_ptr<Statement> BlockForCase(const Context& context,
+                                                   StatementArray* cases,
                                                    SwitchCase* caseToCapture,
                                                    std::shared_ptr<SymbolTable> symbolTable);
 

@@ -19,6 +19,7 @@
 
 namespace SkSL {
 
+class Context;
 class SymbolTable;
 
 /**
@@ -48,14 +49,16 @@ public:
 
     // Make is allowed to simplify compound statements. For a single-statement unscoped Block,
     // Make can return the Statement as-is. For an empty unscoped Block, Make can return Nop.
-    static std::unique_ptr<Statement> Make(Position pos,
+    static std::unique_ptr<Statement> Make(const Context& context,
+                                           Position pos,
                                            StatementArray statements,
                                            Kind kind = Kind::kBracedScope,
                                            std::shared_ptr<SymbolTable> symbols = nullptr);
 
     // MakeBlock always makes a real Block object. This is important because many callers rely on
     // Blocks specifically; e.g. a function body must be a scoped Block, nothing else will do.
-    static std::unique_ptr<Block> MakeBlock(Position pos,
+    static std::unique_ptr<Block> MakeBlock(const Context& context,
+                                            Position pos,
                                             StatementArray statements,
                                             Kind kind = Kind::kBracedScope,
                                             std::shared_ptr<SymbolTable> symbols = nullptr);

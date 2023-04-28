@@ -80,7 +80,9 @@ static std::forward_list<const SwitchCase*> find_duplicate_case_values(
     return duplicateCases;
 }
 
-static void move_all_but_break(std::unique_ptr<Statement>& stmt, StatementArray* target) {
+static void move_all_but_break(const Context& context,
+                               std::unique_ptr<Statement>& stmt,
+                               StatementArray* target) {
     switch (stmt->kind()) {
         case Statement::Kind::kBlock: {
             // Recurse into the block.
@@ -89,11 +91,11 @@ static void move_all_but_break(std::unique_ptr<Statement>& stmt, StatementArray*
             StatementArray blockStmts;
             blockStmts.reserve_back(block.children().size());
             for (std::unique_ptr<Statement>& blockStmt : block.children()) {
-                move_all_but_break(blockStmt, &blockStmts);
+                move_all_but_break(context, blockStmt, &blockStmts);
             }
 
-            target->push_back(Block::Make(block.fPosition, std::move(blockStmts), block.blockKind(),
-                                          block.symbolTable()));
+            target->push_back(Block::Make(context, block.fPosition, std::move(blockStmts),
+                                          block.blockKind(), block.symbolTable()));
             break;
         }
 
@@ -108,7 +110,8 @@ static void move_all_but_break(std::unique_ptr<Statement>& stmt, StatementArray*
     }
 }
 
-std::unique_ptr<Statement> SwitchStatement::BlockForCase(StatementArray* cases,
+std::unique_ptr<Statement> SwitchStatement::BlockForCase(const Context& context,
+                                                         StatementArray* cases,
                                                          SwitchCase* caseToCapture,
                                                          std::shared_ptr<SymbolTable> symbolTable) {
     // We have to be careful to not move any of the pointers until after we're sure we're going to
@@ -156,12 +159,12 @@ std::unique_ptr<Statement> SwitchStatement::BlockForCase(StatementArray* cases,
     // that break.
     if (stripBreakStmt != nullptr) {
         SkASSERT((*startIter)->as<SwitchCase>().statement().get() == stripBreakStmt);
-        move_all_but_break((*startIter)->as<SwitchCase>().statement(), &caseStmts);
+        move_all_but_break(context, (*startIter)->as<SwitchCase>().statement(), &caseStmts);
     }
 
     // Return our newly-synthesized block.
-    return Block::Make(caseToCapture->fPosition, std::move(caseStmts), Block::Kind::kBracedScope,
-                       std::move(symbolTable));
+    return Block::Make(context, caseToCapture->fPosition, std::move(caseStmts),
+                       Block::Kind::kBracedScope, std::move(symbolTable));
 }
 
 std::unique_ptr<Statement> SwitchStatement::Convert(const Context& context,
@@ -262,7 +265,8 @@ std::unique_ptr<Statement> SwitchStatement::Make(const Context& context,
             }
 
             // Convert the switch-case that we matched with into a block.
-            std::unique_ptr<Statement> newBlock = BlockForCase(&cases, matchingCase, symbolTable);
+            std::unique_ptr<Statement> newBlock = BlockForCase(context, &cases, matchingCase,
+                                                               symbolTable);
             if (newBlock) {
                 return newBlock;
             }

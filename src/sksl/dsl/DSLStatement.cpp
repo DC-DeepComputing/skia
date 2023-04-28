@@ -59,7 +59,8 @@ DSLStatement operator,(DSLStatement left, DSLStatement right) {
     stmts.reserve_back(2);
     stmts.push_back(left.release());
     stmts.push_back(right.release());
-    return DSLStatement(SkSL::Block::Make(pos, std::move(stmts), Block::Kind::kCompoundStatement));
+    return DSLStatement(SkSL::Block::Make(ThreadContext::Context(), pos, std::move(stmts),
+                                          Block::Kind::kCompoundStatement));
 }
 
 } // namespace dsl

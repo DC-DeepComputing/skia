@@ -146,7 +146,8 @@ public:
         for (DSLVar& v : vars) {
             statements.push_back(Declare(v, pos).release());
         }
-        return SkSL::Block::Make(pos, std::move(statements), Block::Kind::kCompoundStatement);
+        return SkSL::Block::Make(ThreadContext::Context(), pos, std::move(statements),
+                                 Block::Kind::kCompoundStatement);
     }
 
     static void Declare(DSLGlobalVar& var, Position pos) {
@@ -281,7 +282,9 @@ public:
         caseBlocks.reserve_back(cases.size());
         for (DSLCase& c : cases) {
             values.push_back(c.fValue.releaseIfPossible());
-            caseBlocks.push_back(SkSL::Block::Make(Position(), std::move(c.fStatements),
+            caseBlocks.push_back(SkSL::Block::Make(ThreadContext::Context(),
+                                                   Position(),
+                                                   std::move(c.fStatements),
                                                    Block::Kind::kUnbracedBlock));
         }
         return DSLStatement(SwitchStatement::Convert(ThreadContext::Context(), pos,

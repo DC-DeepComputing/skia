@@ -347,7 +347,7 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
     switch (statement.kind()) {
         case Statement::Kind::kBlock: {
             const Block& b = statement.as<Block>();
-            return Block::Make(pos, blockStmts(b), b.blockKind(),
+            return Block::Make(*fContext, pos, blockStmts(b), b.blockKind(),
                                SymbolTable::WrapIfBuiltin(b.symbolTable()));
         }
 
@@ -557,7 +557,7 @@ Inliner::InlinedCall Inliner::inlineCall(const FunctionCall& call,
     // Wrap all of the generated statements in a block. We need a real Block here, because we need
     // to add another child statement to the Block later.
     InlinedCall inlinedCall;
-    inlinedCall.fInlinedBody = Block::MakeBlock(pos, std::move(inlineStatements),
+    inlinedCall.fInlinedBody = Block::MakeBlock(*fContext, pos, std::move(inlineStatements),
                                                 Block::Kind::kUnbracedBlock);
     if (resultExpr) {
         // Return our result expression as-is.
