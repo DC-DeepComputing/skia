@@ -100,9 +100,13 @@ static void test_image(const sk_sp<SkSpecialImage>& img, skiatest::Reporter* rep
 
     //--------------
     // Test that draw restricts itself to the subset
-    sk_sp<SkSpecialSurface> surf(img->makeSurface(kN32_SkColorType, img->getColorSpace(),
-                                                  SkISize::Make(kFullSize, kFullSize),
-                                                  kPremul_SkAlphaType, SkSurfaceProps()));
+    SkImageInfo imageInfo = SkImageInfo::Make(SkISize::Make(kFullSize, kFullSize),
+                                              kN32_SkColorType,
+                                              kPremul_SkAlphaType,
+                                              sk_ref_sp(img->getColorSpace()));
+    sk_sp<SkSpecialSurface> surf = isGPUBacked
+            ? SkSpecialSurface::MakeRenderTarget(rContext, imageInfo, {}, kTopLeft_GrSurfaceOrigin)
+            : SkSpecialSurface::MakeRaster(imageInfo, {});
 
     SkCanvas* canvas = surf->getCanvas();
 
