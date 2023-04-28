@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bba9110_8af6dfeb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-04-28T14:13:06Z",
+      "side": 1,
+      "message": "I dropped use of urllib2. LMK if you want that left in. Tested both on macOS and Linux.",
+      "revId": "df157e3d3083f2bd509cfa670d6419908e3f58be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
