@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a72395aa_92fe83ef",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T13:09:14Z",
+      "side": 1,
+      "message": "`SkSpecialImage::makeSurface` was also doing this. I had seen that `SkBitmapDevice::onCreateDevice` was also forcing layer color types to N32 so assumed it was redundant. However, when SkCanvas is able to apply an image filter directly to a drawImage and avoids the layer, the skif::Context sees a color type from the base device and not one that went through SkBitMapDevice\u0027s correction.",
+      "range": {
+        "startLine": 744,
+        "startChar": 0,
+        "endLine": 744,
+        "endChar": 42
+      },
+      "revId": "c2cc6bb02f3fc7ecf6dc5ba294fd7ba5fdf63bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
