@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4058e5bd_2190c91a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-28T13:52:28Z",
+      "side": 1,
+      "message": "Thought I +1ed this...",
+      "revId": "f1a1fa0c3ae93fc407f962ed637f8604ecc1ada3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b949a20c_1600ade2",
+        "filename": "tests/graphite/ComputeTest.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-04-28T13:52:28Z",
+      "side": 1,
+      "message": "Remove this to fix compile error.",
+      "range": {
+        "startLine": 527,
+        "startChar": 14,
+        "endLine": 527,
+        "endChar": 15
+      },
+      "revId": "f1a1fa0c3ae93fc407f962ed637f8604ecc1ada3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
