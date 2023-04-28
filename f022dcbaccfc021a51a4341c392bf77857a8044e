@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a699c09d_0cd179ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T16:52:39Z",
+      "side": 1,
+      "message": "Unless I missed one, they are all graphite configs and are actually graphite starting to draw the right thing. It\u0027s not perfect though, there\u0027s at least one (tileimagefilter) that is 90% right in graphite but is dropping an E when the tile image filter is optimized into an offset image filter. However, it renders correctly in viewer. I believe it\u0027s because the input E image is a bitmap and we\u0027re running into a corner case around the image cache.\n\nI don\u0027t think it should block this CL, I figure we can tackle all these little quirks when it becomes time to focus on the filtering impl for Graphite.",
+      "parentUuid": "a4fbf75b_de7debea",
+      "revId": "f022dcbaccfc021a51a4341c392bf77857a8044e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da1d49a9_6c71ad08",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-04-28T16:15:54Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 148,
+        "startChar": 64,
+        "endLine": 148,
+        "endChar": 75
+      },
+      "revId": "f022dcbaccfc021a51a4341c392bf77857a8044e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6815e903_20aced75",
+        "filename": "src/effects/imagefilters/SkTileImageFilter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-04-28T16:52:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da1d49a9_6c71ad08",
       "range": {
         "startLine": 148,
         "startChar": 64,
