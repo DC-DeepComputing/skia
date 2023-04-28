@@ -9,11 +9,6 @@
 
 #include "include/core/SkTypes.h"
 
-#if defined(SK_GANESH)
-// With GPU support, SkSL::MemoryPool is really GrMemoryPool
-#include "src/gpu/ganesh/GrMemoryPool.h"
-#endif
-
 #define VLOG(...) // printf(__VA_ARGS__)
 
 namespace SkSL {
@@ -34,15 +29,12 @@ Pool::~Pool() {
         set_thread_local_memory_pool(nullptr);
     }
 
-    fMemPool->reportLeaks();
-    SkASSERT(fMemPool->isEmpty());
-
     VLOG("DELETE Pool:0x%016llX\n", (uint64_t)fMemPool.get());
 }
 
 std::unique_ptr<Pool> Pool::Create() {
     auto pool = std::unique_ptr<Pool>(new Pool);
-    pool->fMemPool = MemoryPool::Make(/*preallocSize=*/65536, /*minAllocSize=*/32768);
+    pool->fMemPool = MemoryPool::Make();
     VLOG("CREATE Pool:0x%016llX\n", (uint64_t)pool->fMemPool.get());
     return pool;
 }
@@ -58,10 +50,8 @@ void Pool::attachToThread() {
 }
 
 void Pool::detachFromThread() {
-    MemoryPool* memPool = get_thread_local_memory_pool();
     VLOG("DETACH Pool:0x%016llX\n", (uint64_t)memPool);
-    SkASSERT(memPool == fMemPool.get());
-    memPool->resetScratchSpace();
+    SkASSERT(get_thread_local_memory_pool() == fMemPool.get());
     set_thread_local_memory_pool(nullptr);
 }
 
