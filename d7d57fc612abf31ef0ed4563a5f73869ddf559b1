@@ -106,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bafb4cef_ab8085bc",
+        "filename": "third_party/vello/Cargo.toml",
+        "patchSetId": 8
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-29T01:38:05Z",
+      "side": 1,
+      "message": "Actually, I\u0027ll go ahead and remove the `authors` line. We don\u0027t really need it.",
+      "parentUuid": "ed777c27_5b67bae0",
+      "range": {
+        "startLine": 4,
+        "startChar": 11,
+        "endLine": 4,
+        "endChar": 48
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9451217_c3d8bee4",
@@ -143,6 +167,30 @@
       "side": 1,
       "message": "Will do!",
       "parentUuid": "c9451217_c3d8bee4",
+      "range": {
+        "startLine": 1,
+        "startChar": 25,
+        "endLine": 1,
+        "endChar": 28
+      },
+      "revId": "d7d57fc612abf31ef0ed4563a5f73869ddf559b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b55444cc_0d82e94c",
+        "filename": "third_party/vello/build.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-04-29T01:38:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cefac731_2de6910f",
       "range": {
         "startLine": 1,
         "startChar": 25,
