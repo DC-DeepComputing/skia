@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d708ef48_de9c11f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2023-04-29T03:34:46Z",
+      "side": 1,
+      "message": "PTAL, I found this helped with image quality during conversion from PQ to wide gamut SDR (the exponential in the PQ EOTF wants a lot of bits...)",
+      "revId": "5b288b9340e96c1afb85614545fba92b78eb3ffc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
