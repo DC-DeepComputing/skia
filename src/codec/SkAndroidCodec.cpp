@@ -38,10 +38,167 @@ static bool is_valid_sample_size(int sampleSize) {
     return sampleSize > 0;
 }
 
-SkAndroidCodec::SkAndroidCodec(SkCodec* codec)
-    : fInfo(codec->getInfo())
-    , fCodec(codec)
-{}
+static bool CICPGetPrimaries(uint8_t primaries, SkColorSpacePrimaries& sk_primaries) {
+    // Rec. ITU-T H.273, Table 2.
+    switch (primaries) {
+        case 0:
+            // Reserved.
+            break;
+        case 1:
+            sk_primaries = SkNamedPrimariesExt::kRec709;
+            return true;
+        case 2:
+            // Unspecified.
+            break;
+        case 3:
+            // Reserved.
+            break;
+        case 4:
+            sk_primaries = SkNamedPrimariesExt::kRec470SystemM;
+            return true;
+        case 5:
+            sk_primaries = SkNamedPrimariesExt::kRec470SystemBG;
+            return true;
+        case 6:
+            sk_primaries = SkNamedPrimariesExt::kRec601;
+            return true;
+        case 7:
+            sk_primaries = SkNamedPrimariesExt::kSMPTE_ST_240;
+            return true;
+        case 8:
+            sk_primaries = SkNamedPrimariesExt::kGenericFilm;
+            return true;
+        case 9:
+            sk_primaries = SkNamedPrimariesExt::kRec2020;
+            return true;
+        case 10:
+            sk_primaries = SkNamedPrimariesExt::kSMPTE_ST_428_1;
+            return true;
+        case 11:
+            sk_primaries = SkNamedPrimariesExt::kSMPTE_RP_431_2;
+            return true;
+        case 12:
+            sk_primaries = SkNamedPrimariesExt::kSMPTE_EG_432_1;
+            return true;
+        case 22:
+            sk_primaries = SkNamedPrimariesExt::kITU_T_H273_Value22;
+            return true;
+        default:
+            // Reserved.
+            break;
+    }
+    sk_primaries = SkNamedPrimariesExt::kInvalid;
+    return false;
+}
+
+static bool CICPGetTransferFn(uint8_t transfer_characteristics, skcms_TransferFunction& trfn) {
+    // Rec. ITU-T H.273, Table 3.
+    switch (transfer_characteristics) {
+        case 0:
+            // Reserved.
+            break;
+        case 1:
+            trfn = SkNamedTransferFnExt::kRec709;
+            return true;
+        case 2:
+            // Unspecified.
+            break;
+        case 3:
+            // Reserved.
+            break;
+        case 4:
+            trfn = SkNamedTransferFnExt::kRec470SystemM;
+            return true;
+        case 5:
+            trfn = SkNamedTransferFnExt::kRec470SystemBG;
+            return true;
+        case 6:
+            trfn = SkNamedTransferFnExt::kRec601;
+            return true;
+        case 7:
+            trfn = SkNamedTransferFnExt::kSMPTE_ST_240;
+            return true;
+        case 8:
+            trfn = SkNamedTransferFn::kLinear;
+            return true;
+        case 9:
+            // Logarithmic transfer characteristic (100:1 range).
+            break;
+        case 10:
+            // Logarithmic transfer characteristic (100 * Sqrt( 10 ) : 1 range).
+            break;
+        case 11:
+            trfn = SkNamedTransferFnExt::kIEC61966_2_4;
+            break;
+        case 12:
+            // Rec. ITU-R BT.1361-0 extended colour gamut system (historical).
+            // Same as kRec709 on positive values, differs on negative values.
+            break;
+        case 13:
+            // IEC 61966-2-1.
+            trfn = SkNamedTransferFnExt::kSRGB;
+            return true;
+        case 14:
+            trfn = SkNamedTransferFnExt::kRec2020_10bit;
+            return true;
+        case 15:
+            trfn = SkNamedTransferFnExt::kRec2020_12bit;
+            return true;
+        case 16:
+            // Android expects PQ to match 203 nits to SDR white
+            trfn = {-2.f,
+                    -1.55522297832f,
+                    1.86045365631f,
+                    32 / 2523.0f,
+                    2413 / 128.0f,
+                    -2392 / 128.0f,
+                    8192 / 1305.0f};
+            return true;
+        case 17:
+            trfn = SkNamedTransferFnExt::kSMPTE_ST_428_1;
+            return true;
+        case 18:
+            // Android expects HLG to match 203 nits to SDR white
+            if (skcms_TransferFunction_makeScaledHLGish(&trfn,
+                                                        0.314509843,
+                                                        2.f,
+                                                        2.f,
+                                                        1.f / 0.17883277f,
+                                                        0.28466892f,
+                                                        0.55991073f)) {
+                return true;
+            }
+            break;
+        default:
+            // 19-255 Reserved.
+            break;
+    }
+
+    trfn = SkNamedTransferFnExt::kInvalid;
+    return false;
+}
+
+static sk_sp<SkColorSpace> CICPGetSkColorSpace(uint8_t color_primaries,
+                                               uint8_t transfer_characteristics,
+                                               uint8_t matrix_coefficients,
+                                               uint8_t full_range_flag) {
+    if (matrix_coefficients != 0) return nullptr;
+
+    if (full_range_flag != 1) return nullptr;
+
+    skcms_TransferFunction trfn;
+    if (!CICPGetTransferFn(transfer_characteristics, trfn)) return nullptr;
+
+    SkColorSpacePrimaries primaries;
+    if (!CICPGetPrimaries(color_primaries, primaries)) return nullptr;
+
+    skcms_Matrix3x3 primaries_matrix;
+    if (!primaries.toXYZD50(&primaries_matrix)) return nullptr;
+
+    return SkColorSpace::MakeRGB(trfn, primaries_matrix);
+}
+
+SkAndroidCodec::SkAndroidCodec(SkCodec* codec) : fInfo(codec->getInfo()), fCodec(codec) {}
 
 SkAndroidCodec::~SkAndroidCodec() {}
 
@@ -125,7 +282,7 @@ SkColorType SkAndroidCodec::computeOutputColorType(SkColorType requestedColorTyp
             break;
         case kRGBA_1010102_SkColorType:
             if (colorDepth == 10) {
-              return kRGBA_1010102_SkColorType;
+                return kRGBA_1010102_SkColorType;
             }
             break;
         case kRGBA_F16_SkColorType:
@@ -135,8 +292,8 @@ SkColorType SkAndroidCodec::computeOutputColorType(SkColorType requestedColorTyp
     }
 
     // F16 is the Android default for high precision images.
-    return highPrecision ? kRGBA_F16_SkColorType :
-        (colorDepth == 10 ? kRGBA_1010102_SkColorType : kN32_SkColorType);
+    return highPrecision ? kRGBA_F16_SkColorType
+                         : (colorDepth == 10 ? kRGBA_1010102_SkColorType : kN32_SkColorType);
 }
 
 SkAlphaType SkAndroidCodec::computeOutputAlphaType(bool requestedUnpremul) {
@@ -161,11 +318,24 @@ sk_sp<SkColorSpace> SkAndroidCodec::computeOutputColorSpace(SkColorType outputCo
 
             const skcms_ICCProfile* encodedProfile = fCodec->getEncodedInfo().profile();
             if (encodedProfile) {
+                // Prefer CICP information it exists.
+                if (encodedProfile->has_CICP) {
+                    const auto cicpColorSpace =
+                            skia::CICPGetSkColorSpace(profile->CICP.color_primaries,
+                                                      profile->CICP.transfer_characteristics,
+                                                      profile->CICP.matrix_coefficients,
+                                                      profile->CICP.video_full_range_flag);
+                    if (cicpColorSpace) {
+                        return cicpColorSpace;
+                    }
+                }
                 if (auto encodedSpace = SkColorSpace::Make(*encodedProfile)) {
                     // Leave the pixels in the encoded color space.  Color space conversion
                     // will be handled after decode time.
                     return encodedSpace;
                 }
+
+static sk_sp<SkColorSpace> CICPGetSkColorSpace(uint8_t color_primaries,
 
                 if (encodedProfile->has_toXYZD50) {
                     return SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
@@ -221,7 +391,7 @@ int SkAndroidCodec::computeSampleSize(SkISize* desiredSize) const {
         return 1;
     }
 
-    int sampleX = origDims.width()  / desiredSize->width();
+    int sampleX = origDims.width() / desiredSize->width();
     int sampleY = origDims.height() / desiredSize->height();
     int sampleSize = std::min(sampleX, sampleY);
     auto computedSize = this->getSampledDimensions(sampleSize);
@@ -322,7 +492,9 @@ SkISize SkAndroidCodec::getSampledSubsetDimensions(int sampleSize, const SkIRect
 }
 
 SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& requestInfo,
-        void* requestPixels, size_t requestRowBytes, const AndroidOptions* options) {
+                                                 void* requestPixels,
+                                                 size_t requestRowBytes,
+                                                 const AndroidOptions* options) {
     if (!requestPixels) {
         return SkCodec::kInvalidParameters;
     }
@@ -354,24 +526,28 @@ SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& requestInfo,
     // to resolve one frame depending on another. The recursion stops
     // when we find a frame which does not require an earlier frame
     // e.g. frame->getRequiredFrame() returns kNoFrame
-    auto getPixelsFn = [&](const SkImageInfo& info, void* pixels, size_t rowBytes,
-                           const SkCodec::Options& opts, int requiredFrame
-                           ) -> SkCodec::Result {
+    auto getPixelsFn = [&](const SkImageInfo& info,
+                           void* pixels,
+                           size_t rowBytes,
+                           const SkCodec::Options& opts,
+                           int requiredFrame) -> SkCodec::Result {
         SkAndroidCodec::AndroidOptions prevFrameOptions(
-                        reinterpret_cast<const SkAndroidCodec::AndroidOptions&>(opts));
+                reinterpret_cast<const SkAndroidCodec::AndroidOptions&>(opts));
         prevFrameOptions.fFrameIndex = requiredFrame;
         return this->getAndroidPixels(info, pixels, rowBytes, &prevFrameOptions);
     };
-    if (auto result = fCodec->handleFrameIndex(requestInfo, requestPixels, requestRowBytes,
-            *options, getPixelsFn); result != SkCodec::kSuccess) {
+    if (auto result = fCodec->handleFrameIndex(
+                requestInfo, requestPixels, requestRowBytes, *options, getPixelsFn);
+        result != SkCodec::kSuccess) {
         return result;
     }
 
     return this->onGetAndroidPixels(requestInfo, requestPixels, requestRowBytes, *options);
 }
 
-SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& info, void* pixels,
-        size_t rowBytes) {
+SkCodec::Result SkAndroidCodec::getAndroidPixels(const SkImageInfo& info,
+                                                 void* pixels,
+                                                 size_t rowBytes) {
     return this->getAndroidPixels(info, pixels, rowBytes, nullptr);
 }
 
