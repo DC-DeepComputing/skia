@@ -141,6 +141,10 @@ static const struct {
 #endif
 #ifdef SK_DAWN
     { "grdawn",                "graphite", "api=dawn" },
+    { "grdawn_d3d11",          "graphite", "api=dawn_d3d11" },
+    { "grdawn_d3d12",          "graphite", "api=dawn_d3d12" },
+    { "grdawn_metal",          "graphite", "api=dawn_metal" },
+    { "grdawn_vulkan",         "graphite", "api=dawn_vulkan" },
 #endif
 #ifdef SK_METAL
     { "grmtl",                 "graphite", "api=metal" },
@@ -482,6 +486,22 @@ public:
 #ifdef SK_DAWN
         if (optionValue->equals("dawn")) {
             *outContextType = sk_gpu_test::GrContextFactory::kDawn_ContextType;
+            return true;
+        }
+        if (optionValue->equals("dawn_d3d11")) {
+            *outContextType = sk_gpu_test::GrContextFactory::kDawn_D3D11_ContextType;
+            return true;
+        }
+        if (optionValue->equals("dawn_d3d12")) {
+            *outContextType = sk_gpu_test::GrContextFactory::kDawn_D3D12_ContextType;
+            return true;
+        }
+        if (optionValue->equals("dawn_metal")) {
+            *outContextType = sk_gpu_test::GrContextFactory::kDawn_Metal_ContextType;
+            return true;
+        }
+        if (optionValue->equals("dawn_vulkan")) {
+            *outContextType = sk_gpu_test::GrContextFactory::kDawn_Vulkan_ContextType;
             return true;
         }
 #endif
