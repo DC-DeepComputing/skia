@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "332777c1_c996a1a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T14:04:07Z",
+      "side": 1,
+      "message": "Are we making a new MemoryPool each time we make an SkSL compiler? Do we need the thread-local setting/unsetting? If not it would help to remove it and it would help clarify how long the memory pool lives for. Otherwise, it\u0027s not clear to me how long this SkArenaAlloc will live for.\n\nSince it doesn\u0027t reclaim any memory, we need something external to delete it all. It seems fine for this to be compiler bounded, assuming the compiler itself is scoped to a single use or some other scope. Mostly we don\u0027t want this arena living for the entire process and holding on to all sksl allocations for every program that\u0027s compiled.",
+      "revId": "085d09d140f78290aab423a6a1eb5124eb6ae690",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab1b21c7_75e7681c",
+        "filename": "src/sksl/SkSLMemoryPool.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T14:04:07Z",
+      "side": 1,
+      "message": "Just use `SkSTArenaAlloc\u003c65536\u003e{/*firstHeapAllocation\u003d*/32768};`?",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 23
+      },
+      "revId": "085d09d140f78290aab423a6a1eb5124eb6ae690",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
