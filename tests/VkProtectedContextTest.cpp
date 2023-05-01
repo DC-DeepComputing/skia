@@ -31,6 +31,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
@@ -74,12 +75,12 @@ static sk_sp<SkSurface> create_protected_sksurface(GrDirectContext* dContext,
     }
     if (textureable) {
         GrBackendTexture backendTex =
-                surface->getBackendTexture(SkSurface::kFlushRead_BackendHandleAccess);
+                SkSurfaces::GetBackendTexture(surface, SkSurfaces::BackendHandleAccess::kFlushRead);
         REPORTER_ASSERT(reporter, backendTex.isValid());
         REPORTER_ASSERT(reporter, backendTex.isProtected());
     } else {
-        GrBackendRenderTarget backendRT =
-                surface->getBackendRenderTarget(SkSurface::kFlushRead_BackendHandleAccess);
+        GrBackendRenderTarget backendRT = SkSurfaces::GetBackendRenderTarget(
+                surface, SkSurfaces::BackendHandleAccess::kFlushRead);
         REPORTER_ASSERT(reporter, backendRT.isValid());
         REPORTER_ASSERT(reporter, backendRT.isProtected());
     }
