@@ -415,37 +415,87 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
                              skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;
 
-    ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset,
-                                        ReadSwizzle::kRGBA);
-
     auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),
                                                                            fImage.get(),
                                                                            fSampling);
 
-    if (imageToDraw) {
-        imgData.fSampling = newSampling;
-        skgpu::Mipmapped mipmapped = (newSampling.mipmap != SkMipmapMode::kNone)
-                                         ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
+    if (as_IB(imageToDraw)->type() == SkImage_Base::Type::kGraphiteYUVA) {
+        YUV420ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset,
+                                                  ReadSwizzle::kRGBA);
 
-        auto [view, _] = as_IB(imageToDraw)->asView(keyContext.recorder(), mipmapped);
-        imgData.fTextureProxy = view.refProxy();
-        skgpu::Swizzle readSwizzle = view.swizzle();
-        // If the color type is alpha-only, propagate the alpha value to the other channels.
-        if (imageToDraw->isAlphaOnly()) {
-            readSwizzle = skgpu::Swizzle::Concat(readSwizzle, skgpu::Swizzle("aaaa"));
+
+        if (imageToDraw) {
+            imgData.fSampling = newSampling;
+            skgpu::Mipmapped mipmapped = (newSampling.mipmap != SkMipmapMode::kNone)
+            ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
+
+            auto [view, _] = as_IB(imageToDraw)->asView(keyContext.recorder(), mipmapped);
+            imgData.fTextureProxy = view.refProxy();
+            skgpu::Swizzle readSwizzle = view.swizzle();
+            // If the color type is alpha-only, propagate the alpha value to the other channels.
+            if (imageToDraw->isAlphaOnly()) {
+                readSwizzle = skgpu::Swizzle::Concat(readSwizzle, skgpu::Swizzle("aaaa"));
+            }
+            imgData.fReadSwizzle = swizzle_class_to_read_enum(readSwizzle);
         }
-        imgData.fReadSwizzle = swizzle_class_to_read_enum(readSwizzle);
-    }
 
-    if (!fRaw) {
-        imgData.fSteps = SkColorSpaceXformSteps(fImage->colorSpace(),
-                                                fImage->alphaType(),
-                                                keyContext.dstColorInfo().colorSpace(),
-                                                keyContext.dstColorInfo().alphaType());
+        if (!fRaw) {
+            imgData.fSteps = SkColorSpaceXformSteps(fImage->colorSpace(),
+                                                    fImage->alphaType(),
+                                                    keyContext.dstColorInfo().colorSpace(),
+                                                    keyContext.dstColorInfo().alphaType());
 
-        if (fImage->isAlphaOnly()) {
-            SkSpan<const float> constants = skgpu::GetPorterDuffBlendConstants(SkBlendMode::kDstIn);
-            BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+            if (fImage->isAlphaOnly()) {
+                SkSpan<const float> constants = skgpu::GetPorterDuffBlendConstants(SkBlendMode::kDstIn);
+                BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+                // src
+                YUV420ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
+                builder->endBlock();
+
+                // dst
+                SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
+                                                  keyContext.paintColor());
+                builder->endBlock();
+
+                CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, constants);
+                builder->endBlock();
+
+                builder->endBlock();
+                return;
+            }
+        }
+
+        YUV420ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
+        builder->endBlock();
+    } else {
+        ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset,
+                                            ReadSwizzle::kRGBA);
+
+        if (imageToDraw) {
+            imgData.fSampling = newSampling;
+            skgpu::Mipmapped mipmapped = (newSampling.mipmap != SkMipmapMode::kNone)
+            ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
+
+            auto [view, _] = as_IB(imageToDraw)->asView(keyContext.recorder(), mipmapped);
+            imgData.fTextureProxy = view.refProxy();
+            skgpu::Swizzle readSwizzle = view.swizzle();
+            // If the color type is alpha-only, propagate the alpha value to the other channels.
+            if (imageToDraw->isAlphaOnly()) {
+                readSwizzle = skgpu::Swizzle::Concat(readSwizzle, skgpu::Swizzle("aaaa"));
+            }
+            imgData.fReadSwizzle = swizzle_class_to_read_enum(readSwizzle);
+        }
+
+        if (!fRaw) {
+            imgData.fSteps = SkColorSpaceXformSteps(fImage->colorSpace(),
+                                                    fImage->alphaType(),
+                                                    keyContext.dstColorInfo().colorSpace(),
+                                                    keyContext.dstColorInfo().alphaType());
+
+            if (fImage->isAlphaOnly()) {
+                SkSpan<const float> constants = skgpu::GetPorterDuffBlendConstants(SkBlendMode::kDstIn);
+                BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
                 // src
                 ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
@@ -459,13 +509,15 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
                 CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, constants);
                 builder->endBlock();
 
-            builder->endBlock();
-            return;
+                builder->endBlock();
+                return;
+            }
         }
-    }
 
-    ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
-    builder->endBlock();
+        ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
+        builder->endBlock();
+
+    }
 }
 #endif
 
