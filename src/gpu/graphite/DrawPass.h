@@ -14,11 +14,13 @@
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkEnumBitMask.h"
 #include "src/gpu/graphite/AttachmentTypes.h"
+#include "src/gpu/graphite/Descriptors.h"
 #include "src/gpu/graphite/DrawCommands.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+#include <map>
 #include <memory>
 
 struct SkImageInfo;
@@ -50,6 +52,8 @@ enum class UniformSlot;
  * on the backend, it may even be able to write accumulated vertex and uniform data directly to
  * mapped GPU memory, although that is the extent of the CPU->GPU work they perform before they are
  * executed by a RenderPassTask.
+ *
+ * TODO: Add comment as to why we don't use pure virtual method for the thing mentioned in chat.
  */
 class DrawPass {
 public:
@@ -61,6 +65,11 @@ public:
                                           const SkImageInfo& targetInfo,
                                           std::pair<LoadOp, StoreOp>,
                                           std::array<float, 4> clearColor);
+
+    // struct BindBufferInfoSlot {
+    //     BindBufferInfo b;
+    //     int slot;
+    // };
 
     // Defined relative to the top-left corner of the surface the DrawPass renders to, and is
     // contained within its dimensions.
@@ -103,6 +112,8 @@ private:
              std::pair<LoadOp, StoreOp> ops,
              std::array<float, 4> clearColor);
 
+    // void bindUniforms(skia_private::TArray<BindBufferInfoSlot>);
+
     DrawPassCommands::List fCommandList;
 
     sk_sp<TextureProxy> fTarget;
@@ -114,9 +125,12 @@ private:
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
     bool fRequiresMSAA = false;
 
+    // skia_private::TArray<BindBufferInfoSlot> fBuffersAndSlots;
+
     // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
     // an array of actual GraphicsPipelines.
     skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs;
+    skia_private::TArray<std::map<DescriptorType, int>> fDescriptorCounts;
     skia_private::TArray<SamplerDesc> fSamplerDescs;
 
     // These resources all get instantiated during prepareResources.

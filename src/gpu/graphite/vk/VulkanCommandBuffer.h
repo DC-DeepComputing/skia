@@ -46,6 +46,7 @@ public:
                                VkPipelineStageFlags dstStageMask,
                                bool byRegion,
                                VkImageMemoryBarrier* barrier);
+    void bindDescriptorSets() {}
 
 private:
     VulkanCommandBuffer(VkCommandPool pool,

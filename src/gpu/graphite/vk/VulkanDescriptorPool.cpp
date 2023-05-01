@@ -13,19 +13,19 @@
 namespace skgpu::graphite {
 
 namespace { // anonymous namespace
-VkDescriptorType ds_type_enum_to_vk_ds(VulkanDescriptorPool::DescriptorSetType type) {
+VkDescriptorType ds_type_enum_to_vk_ds(DescriptorType type) {
     switch (type) {
-        case VulkanDescriptorPool::kUniformBuffer:
+        case DescriptorType::kUniformBuffer:
             return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        case VulkanDescriptorPool::kTextureSampler:
+        case DescriptorType::kTextureSampler:
             return VK_DESCRIPTOR_TYPE_SAMPLER;
-        case VulkanDescriptorPool::kTexture:
+        case DescriptorType::kTexture:
             return VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
-        case VulkanDescriptorPool::kCombinedTextureSampler:
+        case DescriptorType::kCombinedTextureSampler:
             return VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        case VulkanDescriptorPool::kStorageBuffer:
+        case DescriptorType::kStorageBuffer:
             return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-        case VulkanDescriptorPool::kInputAttachment:
+        case DescriptorType::kInputAttachment:
             return VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT;
     }
     SkUNREACHABLE;
@@ -33,22 +33,22 @@ VkDescriptorType ds_type_enum_to_vk_ds(VulkanDescriptorPool::DescriptorSetType t
 } // anonymous namespace
 
 sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext* context,
-        std::map<DescriptorSetType, int> dsTypesAndCounts) {
+        std::map<DescriptorType, int> dsTypesAndCounts) {
     if (dsTypesAndCounts.empty()) {
         return nullptr;
     }
     // Each unique descriptor type necessitates the creation of a VkDescriptorPoolSize struct which
     // specifies the descriptor type and quantity for descriptor pool creation. Initialize an
     // STArray with capacity for the maximum possible number of VkDescriptorPoolSizes (1 per
-    // possible DescriptorSetType).
-    skia_private::STArray<kDescriptorSetTypeCount, VkDescriptorPoolSize> poolSizes;
+    // possible DescriptorType).
+    skia_private::STArray<kDescriptorTypeCount, VkDescriptorPoolSize> poolSizes;
     int i = 0;
-    for (auto descriptorSetType : dsTypesAndCounts) {
+    for (auto descriptorType : dsTypesAndCounts) {
         VkDescriptorPoolSize* poolSize = &poolSizes.at(i++);
         memset(poolSize, 0, sizeof(VkDescriptorPoolSize));
-        // Map each DescriptorSetType to the appropriate backend VkDescriptorType.
-        poolSize->type = ds_type_enum_to_vk_ds(descriptorSetType.first);
-        poolSize->descriptorCount = descriptorSetType.second;
+        // Map each DescriptorType to the appropriate backend VkDescriptorType.
+        poolSize->type = ds_type_enum_to_vk_ds(descriptorType.first);
+        poolSize->descriptorCount = descriptorType.second;
     }
 
     VkDescriptorPoolCreateInfo createInfo;
@@ -74,7 +74,7 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext
 
 VulkanDescriptorPool::VulkanDescriptorPool(const VulkanSharedContext* context,
         VkDescriptorPool pool,
-        std::map<DescriptorSetType, int> requestedDsTypesAndCounts)
+        std::map<DescriptorType, int> requestedDsTypesAndCounts)
         : fSharedContext(context)
         , fDsTypesAndCounts(requestedDsTypesAndCounts)
         , fDescPool(pool) {}

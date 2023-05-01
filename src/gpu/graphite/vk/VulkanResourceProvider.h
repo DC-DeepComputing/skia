@@ -12,6 +12,9 @@
 
 #include "include/gpu/vk/VulkanTypes.h"
 
+// TODO: Move the enum out of this header so we don't have to include it everywhere.
+#include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
+
 namespace skgpu::graphite {
 
 class VulkanCommandBuffer;
@@ -23,6 +26,11 @@ public:
     ~VulkanResourceProvider() override;
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;
+
+    // What information needs to be passed in to determine DS layout(s)?
+    // For now: Batch together uniform buffers, then texture/samplers, then input attachments
+    void groupDescriptors(std::map<DescriptorType, int> dsTypesAndCounts) override;
+
 
 private:
     const VulkanSharedContext* vulkanSharedContext();
@@ -41,6 +49,14 @@ private:
 
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
     void onDeleteBackendTexture(BackendTexture&) override {}
+
+    //VkDescriptorSetLayout;
+    // Store an array of descriptor set layouts. How to know which set corresponds to which
+    // pipeline(s)?
+
+
+    // std::map<DescriptorSType, int> getDescriptorMapFromRenderPassDesc(const RenderPassDesc&);
+
 };
 
 } // namespace skgpu::graphite

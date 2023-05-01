@@ -377,7 +377,7 @@ void DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kBindTexturesAndSamplers: {
                 auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
-                bindTextureAndSamplers(*drawPass, *bts);
+                this->bindTextureAndSamplers(*drawPass, *bts);
                 break;
             }
             case DrawPassCommands::Type::kSetScissor: {
