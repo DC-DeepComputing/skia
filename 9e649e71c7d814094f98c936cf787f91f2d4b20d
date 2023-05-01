@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "c91efb5c_4342abeb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-01T12:51:42Z",
+      "side": 1,
+      "message": "nit: placeholder",
+      "range": {
+        "startLine": 15,
+        "startChar": 12,
+        "endLine": 15,
+        "endChar": 17
+      },
+      "revId": "9e649e71c7d814094f98c936cf787f91f2d4b20d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "abe0ac51_06875c92",
@@ -31,6 +54,23 @@
       "writtenOn": "2023-04-28T21:44:57Z",
       "side": 1,
       "message": "I guess another approach we could take is to get rid of the union - something Greg was also in favor of when I discussed this a few weeks ago, but keeping the union with a dummy member is also fine.",
+      "revId": "9e649e71c7d814094f98c936cf787f91f2d4b20d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b755ea95_a4438b10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-01T12:51:42Z",
+      "side": 1,
+      "message": "LGTM if Michael (or someone else on the GPU team) agrees",
       "revId": "9e649e71c7d814094f98c936cf787f91f2d4b20d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
