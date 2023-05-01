@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ab61088_59abb4d4",
+        "filename": "src/gpu/ganesh/image/SkImage_GaneshBase.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-01T13:19:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0821a422_2ac6a09c",
+      "range": {
+        "startLine": 319,
+        "startChar": 8,
+        "endLine": 319,
+        "endChar": 17
+      },
+      "revId": "334b7554b509296299187bc40d1c70983807bb03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7367fe76_5935ba7f",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1c3c612_d387e65b",
+        "filename": "src/image/SkImage_Base.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-01T13:19:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7367fe76_5935ba7f",
+      "range": {
+        "startLine": 146,
+        "startChar": 12,
+        "endLine": 147,
+        "endChar": 64
+      },
+      "revId": "334b7554b509296299187bc40d1c70983807bb03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13fa14b3_1125ffd8",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-04-28T14:48:50Z",
       "side": 1,
       "message": "A more concise possibility would be to add a private virtual along the lines of `skif::Context makeFilterContext(GrRecordingContext*, ContextInfo)` and leave makeWithFilter non-virtual?",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 63
+      },
+      "revId": "334b7554b509296299187bc40d1c70983807bb03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0a5b837_fa64b1d4",
+        "filename": "src/image/SkImage_Base.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-01T13:19:34Z",
+      "side": 1,
+      "message": "Then we can\u0027t do the rContext validity check since that differs between the two implementations.",
+      "parentUuid": "13fa14b3_1125ffd8",
       "range": {
         "startLine": 148,
         "startChar": 0,
