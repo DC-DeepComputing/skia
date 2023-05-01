@@ -70,6 +70,9 @@
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/ProxyUtils.h"
 
+#include "src/gpu/ganesh/image/SkImage_Ganesh.h"
+#include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
+
 #include <cstddef>
 #include <cstdint>
 #include <initializer_list>
@@ -1054,6 +1057,23 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceWrappedWithRelease_Gpu,
         if (!surface) {
             ERRORF(reporter, "Failed to create surface");
             continue;
+        }
+
+        GrBackendTexture beTex = surface->getBackendTexture(SkSurface::kFlushRead_BackendHandleAccess);
+        SkDebugf("Surface protected: %d\n", beTex.isProtected());
+
+        sk_sp<SkImage> img = surface->makeImageSnapshot();
+
+
+        SkImage_Base* ib = as_IB(img.get());
+        if (ib->type() == SkImage_Base::Type::kGanesh) {
+            const SkImage_Ganesh* g = static_cast<const SkImage_Ganesh*>(ib);
+
+            GrBackendTexture imgTex;
+            GrSurfaceOrigin origin;
+            if (g->getExistingBackendTexture(&imgTex, false, &origin)) {
+                SkDebugf("Image protected: %d\n", imgTex.isProtected());
+            }
         }
 
         surface->getCanvas()->clear(SK_ColorRED);
