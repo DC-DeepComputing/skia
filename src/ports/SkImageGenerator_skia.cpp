@@ -8,7 +8,10 @@
 #include "include/core/SkData.h"
 #include "src/codec/SkCodecImageGenerator.h"
 
-std::unique_ptr<SkImageGenerator> SkImageGenerator::MakeFromEncodedImpl(
-        sk_sp<SkData> data, std::optional<SkAlphaType> at) {
+namespace SkImageGenerators {
+
+std::unique_ptr<SkImageGenerator> MakeFromEncodedImpl(sk_sp<SkData> data, std::optional<SkAlphaType> at) {
     return SkCodecImageGenerator::MakeFromEncodedCodec(std::move(data), at);
+}
+
 }

@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurfaceProps.h"
 #include "src/image/SkImage_Picture.h"
+#include "src/image/SkImageGeneratorPriv.h"
 
 #include <optional>
 #include <utility>
@@ -29,7 +30,7 @@ sk_sp<SkImage> DeferredFromEncodedData(sk_sp<SkData> encoded,
     if (nullptr == encoded || 0 == encoded->size()) {
         return nullptr;
     }
-    return DeferredFromGenerator(SkImageGenerator::MakeFromEncoded(std::move(encoded), alphaType));
+    return DeferredFromGenerator(SkImageGenerators::MakeFromEncoded(std::move(encoded), alphaType));
 }
 
 sk_sp<SkImage> DeferredFromPicture(sk_sp<SkPicture> picture,

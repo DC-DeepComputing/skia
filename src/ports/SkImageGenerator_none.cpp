@@ -7,7 +7,10 @@
 
 #include "include/core/SkImageGenerator.h"
 
-std::unique_ptr<SkImageGenerator> SkImageGenerator::MakeFromEncodedImpl(
-        sk_sp<SkData>, std::optional<SkAlphaType>) {
+namespace SkImageGenerators {
+
+std::unique_ptr<SkImageGenerator> MakeFromEncodedImpl(sk_sp<SkData>, std::optional<SkAlphaType>) {
     return nullptr;
+}
+
 }
