@@ -52,6 +52,24 @@
       "parentUuid": "583caeb8_60208ab2",
       "revId": "a7344c4dcd07706fd094f875dc0230218c384e33",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a123fc99_a7dc8907",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19979
+      },
+      "writtenOn": "2023-05-01T20:59:21Z",
+      "side": 1,
+      "message": "if locateFile function is provided by Emscripten and it sets default value and it works, shouldn\u0027t we just have definition which matches with this behaviour?",
+      "parentUuid": "35d4917f_fd927c5a",
+      "revId": "a7344c4dcd07706fd094f875dc0230218c384e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
