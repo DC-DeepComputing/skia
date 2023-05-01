@@ -10,6 +10,8 @@
 
 #include "include/core/SkRefCnt.h"
 
+#include "src/gpu/graphite/Descriptors.h"
+#include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include <map>
 
@@ -19,7 +21,7 @@ class VulkanSharedContext;
 
 /**
  * Graphite's Vulkan backend allows for multiple descriptor types to exist within a single
- * descriptor set. Given a map of DescriptorSetType(s) to their requested quantity, a DescriptorPool
+ * descriptor set. Given a map of DescriptorType(s) to their requested quantity, a DescriptorPool
  * will be created with the appropriate VkDescriptorTypes and quantities.
  *
  * For example, if you want a descriptor pool that has descriptors to support a set of 1 sampler and
@@ -27,25 +29,8 @@ class VulkanSharedContext;
  */
 class VulkanDescriptorPool : public SkRefCnt {
 public:
-    /**
-     * Descriptor sets can be requested for the following structures.
-     * TODO: Optionally elevate this structure to be higher-up in graphite code so other backends
-     * can utilize it.
-    */
-    enum DescriptorSetType {
-        kUniformBuffer = 0,
-        kTextureSampler,
-        kTexture,
-        kCombinedTextureSampler,
-        kStorageBuffer,
-        kInputAttachment,
-
-        kLast = kInputAttachment,
-    };
-    static constexpr int kDescriptorSetTypeCount = (int)(DescriptorSetType::kLast) + 1;
-
     static sk_sp<VulkanDescriptorPool> Make(const VulkanSharedContext*,
-                                            std::map<DescriptorSetType, int> dsTypesAndCounts);
+            std::map<DescriptorType, int> dsTypesAndCounts);
 
     VkDescriptorPool descPool() const { return fDescPool; }
 
@@ -54,13 +39,13 @@ private:
     static constexpr int kMaxNumSets = 512;
 
     VulkanDescriptorPool(const VulkanSharedContext*,
-                         VkDescriptorPool,
-                         std::map<DescriptorSetType, int> requestedDsTypesAndCounts);
+            VkDescriptorPool,
+            std::map<DescriptorType, int> requestedDsTypesAndCounts);
     ~VulkanDescriptorPool() override;
 
-    const VulkanSharedContext*       fSharedContext;
-    std::map<DescriptorSetType, int> fDsTypesAndCounts;
-    VkDescriptorPool                 fDescPool;
+    const VulkanSharedContext*                      fSharedContext;
+    std::map<DescriptorType, int>                   fDsTypesAndCounts;
+    VkDescriptorPool                                fDescPool;
 };
 } // namespace skgpu::graphite
 
