@@ -93,6 +93,30 @@
       },
       "revId": "8a2df59798dc59fddbc7560e3a3d05c9d711f6dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23d024a4_4cbad7c3",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-01T14:56:24Z",
+      "side": 1,
+      "message": "Noted, I\u0027ll tweak it in another CL.",
+      "parentUuid": "5b1fcc43_f88116ad",
+      "range": {
+        "startLine": 26,
+        "startChar": 46,
+        "endLine": 26,
+        "endChar": 52
+      },
+      "revId": "8a2df59798dc59fddbc7560e3a3d05c9d711f6dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
