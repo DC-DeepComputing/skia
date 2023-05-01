@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cca2d3b_993cdce4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-01T14:29:05Z",
+      "side": 1,
+      "message": "Yeah, I am sure there were a handful of cases where we benefitted from reclaiming that last-allocated-block; SkSL does create highly-temporary objects from time to time. But the objects are generally all pretty small, so we\u0027re not winning back a ton of space when this happens. And in practice, SkArenaAlloc ends up getting better benchmark scores in `nanobench`... it\u0027s hard to argue with results :)\n\nAnother benefit is that we want pooling even when we are `SK_GRAPHITE`-only in the hopefully-not-too-distant future.",
+      "parentUuid": "a0d856e4_fc9c8e04",
+      "revId": "085d09d140f78290aab423a6a1eb5124eb6ae690",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab1b21c7_75e7681c",
