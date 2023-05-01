@@ -315,6 +315,7 @@ public:
                                              const SkSurfaceProps* surfaceProps,
                                              bool shouldCreateWithMips = false);
 
+#if defined(SK_GANESH)
     /** Returns SkSurface on GPU indicated by context. Allocates memory for
         pixels, based on the width, height, and SkColorType in SkImageInfo.  budgeted
         selects whether allocation for pixels is tracked by context. imageInfo
@@ -341,13 +342,8 @@ public:
                                              const SkImageInfo& imageInfo,
                                              int sampleCount,
                                              const SkSurfaceProps* surfaceProps) {
-#if defined(SK_GANESH)
         return MakeRenderTarget(context, budgeted, imageInfo, sampleCount,
                                 kBottomLeft_GrSurfaceOrigin, surfaceProps);
-#else
-        // TODO(kjlubick, scroggo) Remove this once Android is updated.
-        return nullptr;
-#endif
     }
 
     /** Returns SkSurface on GPU indicated by context. Allocates memory for
@@ -366,17 +362,13 @@ public:
     static sk_sp<SkSurface> MakeRenderTarget(GrRecordingContext* context,
                                              skgpu::Budgeted budgeted,
                                              const SkImageInfo& imageInfo) {
-#if defined(SK_GANESH)
         if (!imageInfo.width() || !imageInfo.height()) {
             return nullptr;
         }
         return MakeRenderTarget(context, budgeted, imageInfo, 0, kBottomLeft_GrSurfaceOrigin,
                                 nullptr);
-#else
-        // TODO(kjlubick, scroggo) Remove this once Android is updated.
-        return nullptr;
-#endif
     }
+#endif
 
     /** Returns SkSurface on GPU indicated by context that is compatible with the provided
         characterization. budgeted selects whether allocation for pixels is tracked by context.
