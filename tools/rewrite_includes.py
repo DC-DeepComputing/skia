@@ -49,6 +49,8 @@ ignorelist = [
   # Temporary shims
   'SkEncodedImageFormat.h',
   'SkICC.h',
+  # Transitional
+  'tools/window',
 ]
 
 assert '/' in [os.sep, os.altsep]
