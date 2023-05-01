@@ -12,6 +12,8 @@ SHARED_FILES = [
     "AtlasTypes.h",
     "Blend.cpp",
     "Blend.h",
+    "src/gpu/BlendFormula.cpp",
+    "src/gpu/BlendFormula.h",
     "BufferWriter.h",
     "DitherUtils.cpp",
     "DitherUtils.h",
