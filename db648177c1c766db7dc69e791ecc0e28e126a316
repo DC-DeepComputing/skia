@@ -509,6 +509,30 @@
       },
       "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3aaa50f2_f521640a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-01T21:33:20Z",
+      "side": 1,
+      "message": "So the new coverage CL takes coverage into account when determining the DstReadRequirement in Device, at record time. However this requirement is still being used in PaintParams.toKey() to determine which blocks to use, since that\u0027s a convenient way to handle the uniform \u0026 texture needed for a dst copy.",
+      "parentUuid": "7619768f_9b430eff",
+      "range": {
+        "startLine": 460,
+        "startChar": 0,
+        "endLine": 460,
+        "endChar": 62
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

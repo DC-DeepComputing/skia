@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51243669_d3a99998",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-01T21:33:20Z",
+      "side": 1,
+      "message": "Uploaded new child CLs for a) splitting the BlendFormula logic into `src/gpu/` so Graphite can use it, and b) accounting for coverage in blending. Fine with rolling those into this CL if that\u0027s preferable. One open question from the coverage CL is how specifically to account for coverage in the precompile system.",
+      "revId": "68c343f1674533cbf34bb2981ec9f569b315f902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1fc07d28_dc0c0761",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-04-28T02:16:18Z",
       "side": 1,
       "message": "I think we can just combine these into a single function that takes an `const SkBlender*`. If it\u0027s null, it implies src-over. Otherwise internally we can get the `optional\u003cSkBlendMode\u003e`.\n\nI also think we will need to pass in the Renderer so it can query its coverage behavior.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 70
+      },
+      "revId": "68c343f1674533cbf34bb2981ec9f569b315f902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5f05b99_1f2801f7",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-01T21:33:20Z",
+      "side": 1,
+      "message": "Done. Passing in coverage is done in the coverage CL.",
+      "parentUuid": "1fc07d28_dc0c0761",
       "range": {
         "startLine": 65,
         "startChar": 0,
