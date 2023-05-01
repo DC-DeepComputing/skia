@@ -140,6 +140,30 @@
       },
       "revId": "334b7554b509296299187bc40d1c70983807bb03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f91382d4_7a7a3f5d",
+        "filename": "src/image/SkImage_Base.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T13:27:46Z",
+      "side": 1,
+      "message": "Ack and hmm, and we can\u0027t just push validation into makeContext() since we have to make a backend-specific special image for the source image going into the ContextInfo. I think this will be easier once SkSpecialImage can be removed entirely (sometime this year I hope).",
+      "parentUuid": "c0a5b837_fa64b1d4",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 63
+      },
+      "revId": "334b7554b509296299187bc40d1c70983807bb03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
