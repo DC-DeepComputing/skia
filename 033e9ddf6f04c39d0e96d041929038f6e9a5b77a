@@ -16,6 +16,52 @@
       "message": "Hi Michael, PTAL. Thanks",
       "revId": "033e9ddf6f04c39d0e96d041929038f6e9a5b77a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbb5475b_b357c7fe",
+        "filename": "tools/graphite/ContextFactory.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T13:38:24Z",
+      "side": 1,
+      "message": "nit: Maybe name it `CASE_DAWN_CONTEXT_TYPE` so its name starts with `case` to match the regular switches?",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 70,
+        "endChar": 30
+      },
+      "revId": "033e9ddf6f04c39d0e96d041929038f6e9a5b77a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd83a332_9821c10a",
+        "filename": "tools/graphite/ContextFactory.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T13:38:24Z",
+      "side": 1,
+      "message": "nit: remove the {} and just have break; inline with the case so it\u0027s clearer this is the empty case when dawn isn\u0027t around.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 16
+      },
+      "revId": "033e9ddf6f04c39d0e96d041929038f6e9a5b77a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
