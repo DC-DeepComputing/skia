@@ -610,6 +610,19 @@ static constexpr Uniform kSolidShaderUniforms[] = {
 
 static constexpr char kSolidShaderName[] = "sk_solid_shader";
 
+
+//--------------------------------------------------------------------------------------------------
+static constexpr Uniform kDashingShaderUniforms[] = {
+        { "color",        SkSLType::kFloat4 },
+        { "point0",       SkSLType::kFloat2 },
+        { "point1",       SkSLType::kFloat2 },
+        { "intervals",    SkSLType::kFloat, 4 },
+        { "phase",        SkSLType::kFloat },
+
+};
+
+static constexpr char kDashingShaderName[] = "dash_me";
+
 //--------------------------------------------------------------------------------------------------
 static constexpr Uniform kLocalMatrixShaderUniforms[] = {
         { "localMatrix", SkSLType::kFloat4x4 },
@@ -1371,6 +1384,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateCoordClampPreamble,
             kNumCoordClampShaderChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kDashingShader] = {
+            "Dashing",
+            SkSpan(kDashingShaderUniforms),
+            SnippetRequirementFlags::kLocalCoords,
+            { },     // no samplers
+            kDashingShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kDitherShader] = {
             "DitherShader",

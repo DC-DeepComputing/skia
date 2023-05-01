@@ -175,6 +175,35 @@ struct CoordClampShaderBlock {
                            const CoordClampData*);
 };
 
+struct DashingShaderBlock {
+    struct DashingShaderData {
+        // The number of stops stored internal to this data structure before falling back to
+        // bitmap storage.
+        static constexpr int kMaxIntervals = 4;
+
+        DashingShaderData(const SkPMColor4f& color,
+                          const SkPoint line[2],
+                          const float cumulativeIntervals[kMaxIntervals],
+                          float phase)
+                : fColor(color)
+                , fPhase(phase) {
+            memcpy(fLine, line, sizeof(fLine));
+            memcpy(fCumulativeIntervals, cumulativeIntervals, sizeof(fCumulativeIntervals));
+        }
+
+        SkPMColor4f fColor;
+        SkPoint     fLine[2];
+        float       fCumulativeIntervals[kMaxIntervals];
+        float       fPhase;
+    };
+
+    // The gatherer and data should be null or non-null together
+    static void BeginBlock(const KeyContext&,
+                           PaintParamsKeyBuilder*,
+                           PipelineDataGatherer*,
+                           const DashingShaderData*);
+};
+
 struct DitherShaderBlock {
     struct DitherData {
         DitherData(float range) : fRange(range) {}
