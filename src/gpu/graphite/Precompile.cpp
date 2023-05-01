@@ -95,11 +95,12 @@ int PaintOptions::numCombinations() const {
 }
 
 DstReadRequirement get_dst_read_req(const Caps* caps,
+                                    bool hasCoverage,
                                     SkSpan<const sk_sp<PrecompileBlender>> options,
                                     int desiredOption) {
     for (const sk_sp<PrecompileBlender>& option : options) {
         if (desiredOption < option->numCombinations()) {
-            return GetDstReadRequirement(caps, option->asBlendMode());
+            return GetDstReadRequirement(caps, option->asBlendMode(), hasCoverage);
         }
         desiredOption -= option->numCombinations();
     }
@@ -134,8 +135,10 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                                       {1, 0, 0, 1});
     keyBuilder->endBlock();
 
-    DstReadRequirement dstReadReq =
-            get_dst_read_req(keyContext.caps(), fBlenderOptions, desiredBlendCombination);
+    // TODO how to determine whether this draw has coverage?
+    bool hasCoverage = false;
+    DstReadRequirement dstReadReq = get_dst_read_req(
+            keyContext.caps(), hasCoverage, fBlenderOptions, desiredBlendCombination);
     bool needsDstSample = dstReadReq == DstReadRequirement::kTextureCopy ||
                           dstReadReq == DstReadRequirement::kTextureSample;
     if (needsDstSample) {

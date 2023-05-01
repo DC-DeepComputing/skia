@@ -706,7 +706,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                         DstReadRequirement dstReadReq = DstReadRequirement::kNone;
                         const SkBlenderBase* blender = as_BB(paint.getBlender());
                         if (blender) {
-                            dstReadReq = GetDstReadRequirement(recorder->priv().caps(), blender->asBlendMode());
+                            // TODO how to determine whether this draw has coverage?
+                            dstReadReq = GetDstReadRequirement(recorder->priv().caps(),
+                                                               blender->asBlendMode(),
+                                                               /* hasCoverage= */ false);
                         }
                         bool needsDstSample = dstReadReq == DstReadRequirement::kTextureCopy ||
                                               dstReadReq == DstReadRequirement::kTextureSample;
