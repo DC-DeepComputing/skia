@@ -195,6 +195,7 @@ private:
 
     Device(Recorder*, sk_sp<DrawContext>, bool addInitialClear);
 
+public:
     // Handles applying path effects, mask filters, stroke-and-fill styles, and hairlines.
     // Ignores geometric style on the paint in favor of explicitly provided SkStrokeRec and flags.
     // All overridden SkDevice::draw() functions should bottom-out with calls to drawGeometry().
