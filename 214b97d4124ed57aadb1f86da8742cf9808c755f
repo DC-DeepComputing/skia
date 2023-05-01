@@ -22,6 +22,30 @@
       },
       "revId": "214b97d4124ed57aadb1f86da8742cf9808c755f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ed0a44f_6cb66a5b",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1374,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-01T23:55:23Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "d5451a67_83c9068a",
+      "range": {
+        "startLine": 1374,
+        "startChar": 13,
+        "endLine": 1374,
+        "endChar": 21
+      },
+      "revId": "214b97d4124ed57aadb1f86da8742cf9808c755f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

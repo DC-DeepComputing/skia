@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f142939_43bde406",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-01T23:55:23Z",
+      "side": 1,
+      "message": "lgtm % nits",
+      "revId": "2ca419014ee17a3aee9f366c4f55e6d54bfa5113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bff063a_936a9c50",
+        "filename": "src/core/SkRasterPipelineOpList.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-01T23:55:23Z",
+      "side": 1,
+      "message": "The indentation here looks a little odd and inconsistent (e.g. `bitwise_and_n_ints` is indented but `bitwise_or_n_ints` is not). Is the idea to indent lines by category?",
+      "range": {
+        "startLine": 69,
+        "startChar": 5,
+        "endLine": 69,
+        "endChar": 7
+      },
+      "revId": "2ca419014ee17a3aee9f366c4f55e6d54bfa5113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc082fc0_71d42f7d",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-01T23:55:23Z",
+      "side": 1,
+      "message": "Does this generate better code than `return op \u003d\u003d ALL_IMMEDIATE_BINARY_OP_CASES;`?",
+      "range": {
+        "startLine": 134,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 57
+      },
+      "revId": "2ca419014ee17a3aee9f366c4f55e6d54bfa5113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f26f076e_39446f75",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-01T23:55:23Z",
+      "side": 1,
+      "message": "How about `return op \u003d\u003d ALL_IMMEDIATE_MULTI_SLOT_BINARY_OP_CASES;`?",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 143,
+        "endChar": 5
+      },
+      "revId": "2ca419014ee17a3aee9f366c4f55e6d54bfa5113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee25db7b_24e34079",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-01T23:55:23Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 147,
+        "startChar": 22,
+        "endLine": 147,
+        "endChar": 27
+      },
+      "revId": "2ca419014ee17a3aee9f366c4f55e6d54bfa5113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
