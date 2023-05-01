@@ -25,6 +25,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkSpecialSurface.h"
 #include "src/gpu/ganesh/GrColorInfo.h" // IWYU pragma: keep
@@ -147,8 +148,8 @@ static void test_image(const sk_sp<SkSpecialImage>& img, skiatest::Reporter* rep
 
         REPORTER_ASSERT(reporter, tightSurf->width() == subset.width());
         REPORTER_ASSERT(reporter, tightSurf->height() == subset.height());
-        GrBackendTexture backendTex = tightSurf->getBackendTexture(
-                                                    SkSurface::kDiscardWrite_BackendHandleAccess);
+        GrBackendTexture backendTex = SkSurfaces::GetBackendTexture(
+                tightSurf, SkSurfaces::BackendHandleAccess::kDiscardWrite);
         REPORTER_ASSERT(reporter, isGPUBacked == backendTex.isValid());
         SkPixmap tmpPixmap;
         REPORTER_ASSERT(reporter, isGPUBacked != !!tightSurf->peekPixels(&tmpPixmap));

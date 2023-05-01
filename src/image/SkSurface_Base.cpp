@@ -63,23 +63,6 @@ skgpu::graphite::Recorder* SkSurface_Base::onGetRecorder() const {
     return nullptr;
 }
 
-#if defined(SK_GANESH)
-GrBackendTexture SkSurface_Base::onGetBackendTexture(BackendHandleAccess) {
-    return GrBackendTexture(); // invalid
-}
-
-GrBackendRenderTarget SkSurface_Base::onGetBackendRenderTarget(BackendHandleAccess) {
-    return GrBackendRenderTarget(); // invalid
-}
-
-bool SkSurface_Base::onReplaceBackendTexture(const GrBackendTexture&,
-                                             GrSurfaceOrigin, ContentChangeMode,
-                                             TextureReleaseProc,
-                                             ReleaseContext) {
-    return false;
-}
-#endif
-
 void SkSurface_Base::onDraw(SkCanvas* canvas, SkScalar x, SkScalar y,
                             const SkSamplingOptions& sampling, const SkPaint* paint) {
     auto image = this->makeImageSnapshot();

@@ -47,18 +47,35 @@ public:
     SkSurface_Base(const SkImageInfo&, const SkSurfaceProps*);
     ~SkSurface_Base() override;
 
+    // From SkSurface.h
+    bool replaceBackendTexture(const GrBackendTexture&,
+                               GrSurfaceOrigin,
+                               ContentChangeMode,
+                               TextureReleaseProc,
+                               ReleaseContext) override { return false; }
+
+
+
+    enum class Type {
+        kGanesh,
+        kGraphite,
+        kNull,
+        kRaster,
+    };
+
+    virtual Type type() const = 0;
+
+    // True for surfaces instantiated by pixels in CPU memory
+    bool isRasterBacked() const { return this->type() == Type::kRaster; }
+    // True for surfaces instantiated by Ganesh in GPU memory
+    bool isGaneshBacked() const { return this->type() == Type::kGanesh; }
+    // True for surfaces instantiated by Graphite in GPU memory
+    bool isGraphiteBacked() const { return this->type() == Type::kGraphite; }
+
     virtual GrRecordingContext* onGetRecordingContext() const;
     virtual skgpu::graphite::Recorder* onGetRecorder() const;
 
 #if defined(SK_GANESH)
-    virtual GrBackendTexture onGetBackendTexture(BackendHandleAccess);
-    virtual GrBackendRenderTarget onGetBackendRenderTarget(BackendHandleAccess);
-    virtual bool onReplaceBackendTexture(const GrBackendTexture&,
-                                         GrSurfaceOrigin,
-                                         ContentChangeMode,
-                                         TextureReleaseProc,
-                                         ReleaseContext);
-
     virtual void onResolveMSAA() {}
 
     /**
@@ -176,9 +193,6 @@ public:
     // TODO: Remove this (make it pure virtual) after updating Android (which has a class derived
     // from SkSurface_Base).
     virtual sk_sp<const SkCapabilities> onCapabilities();
-
-    // True for surfaces instantiated by Graphite in GPU memory
-    virtual bool isGraphiteBacked() const { return false; }
 
     inline SkCanvas* getCachedCanvas();
     inline sk_sp<SkImage> refCachedImage();

@@ -250,22 +250,6 @@ bool SkSurface::draw(sk_sp<const SkDeferredDisplayList> ddl, int xOffset, int yO
 }
 
 #if defined(SK_GANESH)
-GrBackendTexture SkSurface::getBackendTexture(BackendHandleAccess access) {
-    return asSB(this)->onGetBackendTexture(access);
-}
-
-GrBackendRenderTarget SkSurface::getBackendRenderTarget(BackendHandleAccess access) {
-    return asSB(this)->onGetBackendRenderTarget(access);
-}
-
-bool SkSurface::replaceBackendTexture(const GrBackendTexture& backendTexture,
-                                      GrSurfaceOrigin origin, ContentChangeMode mode,
-                                      TextureReleaseProc textureReleaseProc,
-                                      ReleaseContext releaseContext) {
-    return asSB(this)->onReplaceBackendTexture(backendTexture, origin, mode, textureReleaseProc,
-                                               releaseContext);
-}
-
 void SkSurface::resolveMSAA() {
     asSB(this)->onResolveMSAA();
 }
