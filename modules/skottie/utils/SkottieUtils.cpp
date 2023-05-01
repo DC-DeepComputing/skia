@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "modules/skottie/src/SkottieJson.h"
+
 #include "modules/skottie/utils/SkottieUtils.h"
 
 namespace skottie_utils {
@@ -329,7 +331,25 @@ SlotManager::SlotManager() {
     fPropertyObserver = sk_make_sp<SlottablePropertyObserver>();
 }
 
-// TODO: consider having a generic setSlotMethod that is overloaded by PropertyValue type
+std::vector<SlotManager::SlotInfo> SlotManager::parseSlotIDsFromFileName(const char path[]) {
+    std::vector<SlotManager::SlotInfo> slotInfos;
+    if (const auto data = SkData::MakeFromFileName(path)) {
+        const skjson::DOM dom(static_cast<const char*>(data->data()), data->size());
+        if (dom.root().is<skjson::ObjectValue>()) {
+            const auto& json = dom.root().as<skjson::ObjectValue>();
+            if (const skjson::ObjectValue* jslots = json["slots"]) {
+                for (const auto& member : *jslots) {
+                    auto slotID = member.fKey.begin();
+                    const skjson::ObjectValue* jslot = member.fValue;
+                    int type = skottie::ParseDefault<int>((*jslot)["t"], -1);
+                    slotInfos.push_back({slotID, type});
+                }
+            }
+        }
+    }
+    return slotInfos;
+}
+
 void SlotManager::setColorSlot(std::string slotID, SkColor color) {
     fPropertyObserver->fColorMap[slotID] = color;
 }

@@ -140,6 +140,18 @@ public:
     void setTextStringSlot(std::string, SkString);
     void setImageSlot(std::string, sk_sp<skresources::ImageAsset>);
 
+    struct SlotInfo {
+        std::string slotID;
+        int type;
+    };
+    /**
+     * Returns a list of slotIDs and type
+     *
+     * @param path path to the json you want to parse
+     * @return std::vector<SlotInfo> slotIDs are the keys of "slots", type found under "t"
+     */
+    std::vector<SlotInfo> parseSlotIDsFromFileName(const char path[]);
+
     sk_sp<skresources::ResourceProvider> getResourceProvider();
     sk_sp<skottie::PropertyObserver>     getPropertyObserver();
 
