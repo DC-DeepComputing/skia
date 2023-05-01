@@ -34,6 +34,24 @@
       "parentUuid": "a6012f7a_e5f1f6f2",
       "revId": "a7344c4dcd07706fd094f875dc0230218c384e33",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35d4917f_fd927c5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-01T12:38:47Z",
+      "side": 1,
+      "message": "I would guess Emscripten sets some default value that happens to work some of the time.",
+      "parentUuid": "583caeb8_60208ab2",
+      "revId": "a7344c4dcd07706fd094f875dc0230218c384e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
