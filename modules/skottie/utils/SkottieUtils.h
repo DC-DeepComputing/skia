@@ -133,15 +133,28 @@ private:
 class SlotManager final : public SkRefCnt {
 
 public:
-    SlotManager();
+    SlotManager(const char[]);
 
     void setColorSlot(std::string, SkColor);
     void setOpacitySlot(std::string, SkScalar);
     void setTextStringSlot(std::string, SkString);
     void setImageSlot(std::string, sk_sp<skresources::ImageAsset>);
 
+    struct SlotInfo {
+        std::string slotID;
+        int type;
+    };
+    /**
+     * Returns a list of slotIDs and type
+     *
+     * @param path path to the json you want to parse
+     * @return std::vector<SlotInfo> slotIDs are the keys of "slots", type found under "t"
+     */
+
     sk_sp<skresources::ResourceProvider> getResourceProvider();
     sk_sp<skottie::PropertyObserver>     getPropertyObserver();
+
+    std::vector<SlotInfo> getSlotInfo();
 
 private:
     class SlottableResourceProvider;
@@ -149,6 +162,9 @@ private:
 
     sk_sp<SlottableResourceProvider> fResourceProvider;
     sk_sp<SlottablePropertyObserver> fPropertyObserver;
+
+    void parseSlotIDsFromFileName(const char path[]);
+    std::vector<SlotInfo> fSlotInfos;
 };
 
 } // namespace skottie_utils
