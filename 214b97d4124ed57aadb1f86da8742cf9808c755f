@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5451a67_83c9068a",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1374,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-01T21:09:29Z",
+      "side": 0,
+      "message": "I patterned `appendImmediateBinaryOp` after this function, and as I was working on it, realized that the original code here would do the wrong thing when `numSlots \u003d\u003d 0`. This shouldn\u0027t generally happen, but it is supposed to be allowed (e.g. if we optimize away an op by decrementing its count all the way to zero). The new structure actually generates less code anyway, so it feels like a win-win.",
+      "range": {
+        "startLine": 1374,
+        "startChar": 13,
+        "endLine": 1374,
+        "endChar": 21
+      },
+      "revId": "214b97d4124ed57aadb1f86da8742cf9808c755f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
