@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "134d8698_c8fcd893",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T13:56:03Z",
+      "side": 1,
+      "message": "tag is equivalent to SkPath\u0027s verbs, right? It might be helpful to have a little table of term equivalences here. Although maybe it\u0027s just tag and brush?",
+      "range": {
+        "startLine": 33,
+        "startChar": 16,
+        "endLine": 33,
+        "endChar": 19
+      },
+      "revId": "7bb35ac1950c76a0fb249e0a006ac84187918b3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0621f1b9_a6844863",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T13:56:03Z",
+      "side": 1,
+      "message": "monoid is used for several things here, and while I can read the abstract definition of it, it\u0027s unclear to me how or why tags and draws need to be represented as monoids.\n\nIf this is internal Vello leaking up, we might want to avoid it, otherwise it might be helpful to summarize what\u0027s relevant to making a tag stream a monoid and similarly for a draw (vs. the original input stream data).",
+      "range": {
+        "startLine": 42,
+        "startChar": 57,
+        "endLine": 42,
+        "endChar": 64
+      },
+      "revId": "7bb35ac1950c76a0fb249e0a006ac84187918b3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "710f0386_b7c3ecdd",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T13:56:03Z",
+      "side": 1,
+      "message": "is this sum representing the offsets into each data stream for a particular draw?",
+      "range": {
+        "startLine": 74,
+        "startChar": 24,
+        "endLine": 74,
+        "endChar": 34
+      },
+      "revId": "7bb35ac1950c76a0fb249e0a006ac84187918b3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "960842a0_ec275cec",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T13:56:03Z",
+      "side": 1,
+      "message": "nit: clarify?",
+      "range": {
+        "startLine": 101,
+        "startChar": 50,
+        "endLine": 101,
+        "endChar": 54
+      },
+      "revId": "7bb35ac1950c76a0fb249e0a006ac84187918b3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e36140a1_8e32a1f1",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T13:56:03Z",
+      "side": 1,
+      "message": "nit: newline after the template",
+      "range": {
+        "startLine": 152,
+        "startChar": 35,
+        "endLine": 152,
+        "endChar": 36
+      },
+      "revId": "7bb35ac1950c76a0fb249e0a006ac84187918b3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8c7f434_6d134bcc",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T13:56:03Z",
+      "side": 1,
+      "message": "Could this just be a `using Vello##stage##Step \u003d VelloStep\u003cvello_cpp::ShaderStage::stage\u003e;`?",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 6
+      },
+      "revId": "7bb35ac1950c76a0fb249e0a006ac84187918b3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
