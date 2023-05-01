@@ -437,6 +437,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     Rect passBounds = Rect::InfiniteInverted();
 
+    // Track buffer types and their slots to later determine the type of descriptors necessary for
+    // some backends.
+    // skia_private::TArray<BindBufferInfoSlot> buffersAndSlots;
+
     // We don't expect the uniforms from the renderSteps to reappear multiple times across a
     // recorder's lifetime so we only de-dupe them w/in a given DrawPass.
     UniformDataCache geometryUniformDataCache;
@@ -534,13 +538,14 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
              SkIRect::MakeSize(drawPass->fTarget->dimensions()).contains(lastScissor));
     drawPass->fCommandList.setScissor(lastScissor);
 
+    int i = -1;
     for (const SortKey& key : keys) {
         const DrawList::Draw& draw = key.draw();
         const RenderStep& renderStep = key.renderStep();
 
         const bool pipelineChange = key.pipelineIndex() != lastPipeline;
 
-        const bool geomBindingChange    = geometrySsboTracker.setCurrentUniforms(
+        const bool geomBindingChange     = geometrySsboTracker.setCurrentUniforms(
                 key.pipelineIndex(), key.geometrySsboIndex());
         const bool shadingBindingChange  = shadingSsboTracker.setCurrentUniforms(
                 key.pipelineIndex(), key.shadingSsboIndex());
@@ -568,16 +573,22 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         if (pipelineChange) {
             drawPass->fCommandList.bindGraphicsPipeline(key.pipelineIndex());
             lastPipeline = key.pipelineIndex();
+            i++;
         }
         if (stateChange) {
             if (geomBindingChange) {
                 geometrySsboTracker.bindUniforms(UniformSlot::kRenderStep, &drawPass->fCommandList);
+                // 1 uniform buffer because doesn't use SSBOs (VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER)
+                drawPass->fDescriptorCounts.at(i).at(DescriptorType::kUniformBuffer)++;
             }
             if (shadingBindingChange) {
                 shadingSsboTracker.bindUniforms(UniformSlot::kPaint, &drawPass->fCommandList);
+                // 1 uniform (VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER)
+                // OR 1 SSBO (VK_DESCRIPTOR_TYPE_STORAGE_BUFFER)
             }
             if (textureBindingsChange) {
                 textureBindingTracker.bindTextures(&drawPass->fCommandList);
+                // 1 texture and 1 sampler; unsure if combined.
             }
             if (newScissor) {
                 drawPass->fCommandList.setScissor(*newScissor);
@@ -603,7 +614,11 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 const RuntimeEffectDictionary* runtimeDict,
                                 const RenderPassDesc& renderPassDesc) {
     fFullPipelines.reserve_back(fPipelineDescs.size());
+    // Verify that the number of descriptor counts matches up with the number of pipelines.
+    SkASSERT(fPipelineDescs.size() == fDescriptorCounts.size());
+    int j = 0;
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
+        resourceProvider->groupDescriptors(fDescriptorCounts.at(j));
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
                                                                        pipelineDesc,
                                                                        renderPassDesc);
@@ -612,6 +627,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
             return false;
         }
         fFullPipelines.push_back(std::move(pipeline));
+        j++;
     }
     // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
     // once we've created pipelines, so we drop the storage for them here.
@@ -673,5 +689,28 @@ const Sampler* DrawPass::getSampler(size_t index) const {
     SkASSERT(fSamplers[index]);
     return fSamplers[index].get();
 }
+
+
+// void DrawPass::bindUniforms(skia_private::TArray<BindBufferInfoSlot> buffersAndSlots) {
+    // Determine the type and quantity of descriptors.
+    // Accumulate an array of bindBufferInfos duirng DrawPass::Make(...)?
+    // UniformSlot only ever renderstep or paint
+    // flexible binding setup isn't necessary immediately
+    // The tricky part will be merging the two UniformSsboTrackers.
+
+    // collect the descriptors prior to a draw and then bind them all into a group in a final pass
+    // shared between Vulkan and Dawn, and Metal could either use Argument Buffers or the separate
+    // bindings we have now.
+    /**
+     * Maybe it's as simple as adding a BindUniforms command, that takes an array of BindBufferInfo
+     * and an array of slot indices. Each backend could decide whether to combine uniforms and
+     * textures/samplers in a single descriptor set (or equivalent) or separate ones.
+    */
+    // for (auto buf : buffersAndSlots) {
+
+    // }
+    // Call into backends - maybe through resource provider - to let them organize the descriptors
+    // Input attachments will eventually be a part of RenderPassDesc
+// }
 
 } // namespace skgpu::graphite

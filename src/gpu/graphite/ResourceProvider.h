@@ -13,8 +13,11 @@
 #include "src/core/SkLRUCache.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/Descriptors.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+
+#include <map>
 
 struct SkSamplingOptions;
 
@@ -78,6 +81,10 @@ public:
     void deleteBackendTexture(BackendTexture&);
 
     ProxyCache* proxyCache() { return fResourceCache->proxyCache(); }
+
+    // Backends can optionally override this method to dictate and indiviaully store how descriptors
+    // should be grouped together.
+    virtual void groupDescriptors(std::map<DescriptorType, int> dsTypesAndCounts) {}
 
 #if GRAPHITE_TEST_UTILS
     ResourceCache* resourceCache() { return fResourceCache.get(); }

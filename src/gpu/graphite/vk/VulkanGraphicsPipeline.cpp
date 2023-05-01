@@ -13,7 +13,9 @@ namespace skgpu::graphite {
 
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(const VulkanSharedContext* sharedContext
                                                            /* TODO: fill in argument list*/) {
+    // Determine descriptor set layout
 
+    // Translate GraphicsPipelineDesc to VkGraphicsPipelineCreateInfo
     return sk_sp<VulkanGraphicsPipeline>(new VulkanGraphicsPipeline(sharedContext));
 }
 
