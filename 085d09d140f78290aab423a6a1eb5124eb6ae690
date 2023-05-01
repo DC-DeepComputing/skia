@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19a3c5a8_fee6a32e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-01T14:11:11Z",
+      "side": 1,
+      "message": "MemoryPools are attached to Programs, not Compilers: https://osscs.corp.google.com/skia/skia/+/main:src/sksl/ir/SkSLProgram.h;l\u003d154;drc\u003d47d56658e6bf9305580b63fa299299d91571cdd2\n\nA program\u0027s IRNodes are stored in the pool.\n\nYes, the thread-local business is necessary. All SkSL IRNodes are Poolables: https://osscs.corp.google.com/skia/skia/+/main:src/sksl/SkSLPool.h;l\u003d61;drc\u003d68d6ff9222b6eb0010b76820362ea50751d46739\n\nAnd they override `operator new`/`delete` to get automatic pooling behavior while still using normal `std::unique_ptr` without needing to set up a custom allocator. Otherwise our `operator new` overload wouldn\u0027t be able to find its `Pool`.\n\nThe arenas are reclaimed when Programs are deleted. They don\u0027t live forever. (This strategy is the same as it was with GrMemoryPool.) This CL shouldn\u0027t change any externally-visible behavior or allocation patterns, it\u0027s just swapping one Pool class with another.",
+      "parentUuid": "332777c1_c996a1a3",
+      "revId": "085d09d140f78290aab423a6a1eb5124eb6ae690",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab1b21c7_75e7681c",
