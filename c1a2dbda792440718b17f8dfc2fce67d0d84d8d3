@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ca104a3_c56281c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-05-01T18:07:06Z",
+      "side": 1,
+      "message": "Hi Michael, Please take a look this reland CL. The problem is fixed with https://skia-review.googlesource.com/c/skia/+/687640/1..2 thanks",
+      "revId": "c1a2dbda792440718b17f8dfc2fce67d0d84d8d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
