@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f7eec8b_fb64dc40",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-01T18:42:51Z",
+      "side": 1,
+      "message": "Yes, though they currently mainly correspond to path verbs the tags could be more generally thought of as the \"geometry stream\". I\u0027ll add an introductory paragraph explaining the input stream/tag/monoid relationship.",
+      "parentUuid": "134d8698_c8fcd893",
+      "range": {
+        "startLine": 33,
+        "startChar": 16,
+        "endLine": 33,
+        "endChar": 19
+      },
+      "revId": "7bb35ac1950c76a0fb249e0a006ac84187918b3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0621f1b9_a6844863",
         "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
         "patchSetId": 1
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec8c69a4_64e63781",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-01T18:42:51Z",
+      "side": 1,
+      "message": "I will add a paragraph to explain the details. The monoids themselves are intermediate data structures between the pipeline stages but since Graphite is allocating and tracking the buffers that hold the monoids it made sense to refer to them by name. Since the monoids are so central to the algorithm I think the concept deserves some elaboration in comments in here, which I will add in the next patch set.\n\n----\nP.S.: The input scene encoding consists of several independent streams/arrays with an implicit correspondence between their individual elements. The important ones are path tags (verbs and other markers), path data (variable length control points), draw tags (fill, gradient, begin and end clip, etc), draw data (variable length data associated with the draw tags), and transforms.\n\nThe tag values are defined in such a way that a straight-forward prefix sums over the stream results in a set of offsets into these separate arrays for each Path and Draw \"element\". This is important because the GPU can calculate all of these offsets in parallel when you model each group of offsets as a monoid and the general parallel calculation problem as a monoidal reduction and scan. A good portion of the Vello pipelines involve performing these calculations.\n\nI highly recommend taking a look at Guy Blelloch\u0027s 1990 paper \"Prefix Sums and Their Applications\" (https://www.cs.cmu.edu/~scandal/papers/CMU-CS-90-190.html, https://www.cs.cmu.edu/~guyb/papers/Ble93.pdf). It describes the concepts very clearly and lists several applications (including several sorting algorithms and line rasterization) that are relevant to Skia beyond just this Vello integration. For instance, producing instance attribute streams for wedge/non-wedge fills and strokes from a unified path encoding (which also calculates contour midpoints in parallel) is one application I\u0027m thinking of for geometry processing.\n\nSo while the concept is an internal Vello detail I think the overall approach has a broad set of applications that I\u0027d like to introduce to Skia folks and document it here so the information is available.",
+      "parentUuid": "0621f1b9_a6844863",
+      "range": {
+        "startLine": 42,
+        "startChar": 57,
+        "endLine": 42,
+        "endChar": 64
+      },
+      "revId": "7bb35ac1950c76a0fb249e0a006ac84187918b3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "710f0386_b7c3ecdd",
         "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
         "patchSetId": 1
@@ -60,6 +108,30 @@
       "writtenOn": "2023-05-01T13:56:03Z",
       "side": 1,
       "message": "is this sum representing the offsets into each data stream for a particular draw?",
+      "range": {
+        "startLine": 74,
+        "startChar": 24,
+        "endLine": 74,
+        "endChar": 34
+      },
+      "revId": "7bb35ac1950c76a0fb249e0a006ac84187918b3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0af8b624_ec3401cf",
+        "filename": "src/gpu/graphite/compute/VelloComputeSteps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-01T18:42:51Z",
+      "side": 1,
+      "message": "Pretty much, yes. See my reply to your comment above where I added a little bit more detail.",
+      "parentUuid": "710f0386_b7c3ecdd",
       "range": {
         "startLine": 74,
         "startChar": 24,
