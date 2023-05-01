@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0d856e4_fc9c8e04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-01T14:25:01Z",
+      "side": 1,
+      "message": "GrMemoryPool would keep a ref count for alive pointers in each of its internal allocations and eventually free the block if all of the pointers in it had been returned. Hypothetically this would lead to tighter final memory size of the pool, for instance if there were lots of temporary objects that didn\u0027t need to live past the creation of the program (and were co-located within a block that could be deleted too).\n\nThat seems unlikely in practice, but did mean we had some way of reclaiming memory even if the memory pool itself was never deleted. But being scoped to the lifetime of an SkSL::Program seems perfectly reasonable and we\u0027re unlikely to see a difference between the two methods\u0027 final allocation size (since it was probably pretty rare for a given block to have exclusively released pointers that allowed the block to be released at the end).",
+      "parentUuid": "19a3c5a8_fee6a32e",
+      "revId": "085d09d140f78290aab423a6a1eb5124eb6ae690",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab1b21c7_75e7681c",
