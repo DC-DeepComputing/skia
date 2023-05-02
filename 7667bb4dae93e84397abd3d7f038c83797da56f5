@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4818711d_6bafa98e",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-02T20:30:16Z",
+      "side": 1,
+      "message": "Maybe we should document a convention here? Even with it documented, I suppose a client could add an extra e.g. \"PNG\" decoder when we already have a \"png\" decoder. I guess with it being appended to the end of the list, that doesn\u0027t help them accomplish anything.\n\nThough we could have a convention that we always convert to lower case (for example), meaning they would get what they probably wanted (replacing the existing one), but a client could always add \"png1\" or something. But the lower case convention would at least help us prevent users from accidentally adding a decoder that doesn\u0027t do anything.",
+      "revId": "7667bb4dae93e84397abd3d7f038c83797da56f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7f8b08e_ade6ddab",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1033,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-02T20:30:16Z",
+      "side": 1,
+      "message": "While we\u0027re at it, I wonder if we\u0027d want to add a way to query the existing registered decoders. I know clients like to know what they can decode.\n\nTaking this a step further, they might want to know even more details about the existing decoders. Maybe this is contrived, but let\u0027s say someone wanted to add their own APNG decoder. Presumably that requires their own PNG decoder, but let\u0027s say they wanted to call to the existing decoder if it\u0027s not an APNG file. (Not sure this is necessary, but worth thinking about.)",
+      "range": {
+        "startLine": 1033,
+        "startChar": 5,
+        "endLine": 1033,
+        "endChar": 13
+      },
+      "revId": "7667bb4dae93e84397abd3d7f038c83797da56f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
