@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64b6a1a4_9485b6ec",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-02T15:07:48Z",
+      "side": 1,
+      "message": "Do we need both scoped and unscoped legacy names?",
+      "range": {
+        "startLine": 608,
+        "startChar": 4,
+        "endLine": 613,
+        "endChar": 47
+      },
+      "revId": "33613724c2b5939edf6818bae8a4d0c7be04e807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5143c10_fdc510cf",
+        "filename": "src/gpu/ganesh/surface/SkSurface_Ganesh.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-02T15:07:48Z",
+      "side": 1,
+      "message": "nit: maybe just `getBackendFoo` since these aren\u0027t virtual anymore?",
+      "range": {
+        "startLine": 103,
+        "startChar": 21,
+        "endLine": 103,
+        "endChar": 24
+      },
+      "revId": "33613724c2b5939edf6818bae8a4d0c7be04e807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d48c1d90_011c4de6",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-02T15:07:48Z",
+      "side": 1,
+      "message": "nit: Maybe have kNull first so it corresponds to 0?",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 14
+      },
+      "revId": "33613724c2b5939edf6818bae8a4d0c7be04e807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "870eb3f8_02d625d9",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-02T15:07:48Z",
+      "side": 1,
+      "message": "Can we keep this private and just have SkSurface_Ganesh use `hasCachedImage()` and `refCachedImage()`?",
+      "range": {
+        "startLine": 206,
+        "startChar": 4,
+        "endLine": 206,
+        "endChar": 32
+      },
+      "revId": "33613724c2b5939edf6818bae8a4d0c7be04e807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
