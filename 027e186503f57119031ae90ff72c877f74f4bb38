@@ -16,6 +16,24 @@
       "message": "Is this how urls are done in skia readmes?",
       "revId": "027e186503f57119031ae90ff72c877f74f4bb38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "615076c5_ea895259",
+        "filename": "infra/bots/assets/cabe/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19774
+      },
+      "writtenOn": "2023-05-02T20:59:47Z",
+      "side": 1,
+      "message": "I believe so, but don\u0027t take my word for it 😊. Gerrit provides markdown previews:\nhttps://screenshot.googleplex.com/5ZuTc5FBAEQJjm3\n\n(and markdown link formatting syntax is pretty consistent everywhere that supports markdown)",
+      "parentUuid": "708e3f55_8c210c42",
+      "revId": "027e186503f57119031ae90ff72c877f74f4bb38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
