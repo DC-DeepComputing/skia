@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb64c15a_6c2f2528",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-02T14:13:23Z",
+      "side": 1,
+      "message": "Put the TODO in a comment, not in user-visible output",
+      "range": {
+        "startLine": 1045,
+        "startChar": 17,
+        "endLine": 1045,
+        "endChar": 35
+      },
+      "revId": "40de603fb2cd7803d1f94ec0fb2d9ad738b938e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
