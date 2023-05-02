@@ -39,6 +39,30 @@
       },
       "revId": "d35e0229e763e687ad3b3ffc30231a5b72dbaea0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c60063c_2f1df039",
+        "filename": "src/sksl/transform/SkSLFindAndDeclareBuiltinVariables.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-02T16:42:35Z",
+      "side": 1,
+      "message": "Moved the caps check up to the code generation code where this input is checked; is this what you had in mind?",
+      "parentUuid": "564a1bb5_f77f1f87",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 57
+      },
+      "revId": "d35e0229e763e687ad3b3ffc30231a5b72dbaea0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
