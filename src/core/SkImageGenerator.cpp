@@ -12,6 +12,7 @@
 #include "include/core/SkGraphics.h"
 #include "include/private/base/SkAssert.h"
 #include "src/core/SkNextID.h"
+#include "src/image/SkImageGeneratorPriv.h"
 
 #include <utility>
 
@@ -83,8 +84,10 @@ SkGraphics::SetImageGeneratorFromEncodedDataFactory(ImageGeneratorFromEncodedDat
     return prev;
 }
 
-std::unique_ptr<SkImageGenerator> SkImageGenerator::MakeFromEncoded(
-        sk_sp<SkData> data, std::optional<SkAlphaType> at) {
+namespace SkImageGenerators {
+
+std::unique_ptr<SkImageGenerator> MakeFromEncoded(sk_sp<SkData> data,
+                                                  std::optional<SkAlphaType> at) {
     if (!data || at == kOpaque_SkAlphaType) {
         return nullptr;
     }
@@ -93,5 +96,7 @@ std::unique_ptr<SkImageGenerator> SkImageGenerator::MakeFromEncoded(
             return generator;
         }
     }
-    return SkImageGenerator::MakeFromEncodedImpl(std::move(data), at);
+    return MakeFromEncodedImpl(std::move(data), at);
 }
+
+}  // namespace SkImageGenerators
