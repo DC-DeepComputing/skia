@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59c5d88c_6b2f4542",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-02T15:15:05Z",
+      "side": 1,
+      "message": "Kind of awkward that we need to parse JSON twice.  I have an idea of how to clean that up later.",
+      "revId": "3196b735d8c62478d7a4d841101b86fa9c4c8546",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c72d9ce3_52a08031",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-02T15:15:05Z",
+      "side": 1,
+      "message": "I think we start with an SkString, can we pass that around instead of raw chars?  Then only convert to char[] at the last minute, when building the SkData.\n\nBetter yet, let\u0027s make it an optional `const SkString*` and add null checks, such that clients can decide to skip if not needed.",
+      "range": {
+        "startLine": 136,
+        "startChar": 16,
+        "endLine": 136,
+        "endChar": 28
+      },
+      "revId": "3196b735d8c62478d7a4d841101b86fa9c4c8546",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ea17f45_c1444844",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-02T15:15:05Z",
+      "side": 1,
+      "message": "`const std::vector\u003cSlotInfo\u003e\u0026 getSlotInfo() const` so we don\u0027t force a copy.  Also inline the implementation since it\u0027s trivial.",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 150,
+        "endChar": 25
+      },
+      "revId": "3196b735d8c62478d7a4d841101b86fa9c4c8546",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52da140f_9e042c5c",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-02T15:15:05Z",
+      "side": 1,
+      "message": "nit: move the declaration before the fields above, so the fields stay grouped.",
+      "revId": "3196b735d8c62478d7a4d841101b86fa9c4c8546",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
