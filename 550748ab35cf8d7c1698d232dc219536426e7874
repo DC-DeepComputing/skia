@@ -16,6 +16,29 @@
       "message": "Looking at the chrome canary, this will need to rebase chrome layout tests, but I didn\u0027t see anything wrong.",
       "revId": "550748ab35cf8d7c1698d232dc219536426e7874",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36612ce4_e33b4d80",
+        "filename": "src/effects/imagefilters/SkColorFilterImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-02T14:35:44Z",
+      "side": 1,
+      "message": "Is seems like this should be an sk_sp\u003cSkColorFilter\u003e* but that would be a separate CL",
+      "range": {
+        "startLine": 60,
+        "startChar": 29,
+        "endLine": 60,
+        "endChar": 44
+      },
+      "revId": "550748ab35cf8d7c1698d232dc219536426e7874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
