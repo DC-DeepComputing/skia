@@ -22,6 +22,7 @@
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkFrameHolder.h"
 #include "src/codec/SkSampler.h"
+#include "include/private/base/SkMutex.h"
 
 // We always include and compile in these BMP codecs
 #include "src/codec/SkBmpCodec.h"
@@ -62,46 +63,25 @@
 #include "src/codec/SkWuffsCodec.h"
 #endif
 
-namespace {
+namespace SkCodecs {
+std::vector<Decoder> decoders;
+SkMutex decoderMutex;
 
-struct DecoderProc {
-    bool (*IsFormat)(const void*, size_t);
-    std::unique_ptr<SkCodec> (*MakeFromStream)(std::unique_ptr<SkStream>, SkCodec::Result*);
-};
-
-std::vector<DecoderProc>* decoders() {
-    static auto* decoders = new std::vector<DecoderProc> {
-    #ifdef SK_CODEC_DECODES_JPEG
-        { SkJpegCodec::IsJpeg, SkJpegCodec::MakeFromStream },
-    #endif
-    #ifdef SK_CODEC_DECODES_WEBP
-        { SkWebpCodec::IsWebp, SkWebpCodec::MakeFromStream },
-    #endif
-    #ifdef SK_HAS_WUFFS_LIBRARY
-        { SkWuffsCodec_IsFormat, SkWuffsCodec_MakeFromStream },
-    #endif
-    #ifdef SK_CODEC_DECODES_PNG
-        { SkIcoCodec::IsIco, SkIcoCodec::MakeFromStream },
-    #endif
-        { SkBmpCodec::IsBmp, SkBmpCodec::MakeFromStream },
-        { SkWbmpCodec::IsWbmp, SkWbmpCodec::MakeFromStream },
-    #ifdef SK_CODEC_DECODES_AVIF
-        { SkAvifCodec::IsAvif, SkAvifCodec::MakeFromStream },
-    #endif
-    #ifdef SK_CODEC_DECODES_JPEGXL
-        { SkJpegxlCodec::IsJpegxl, SkJpegxlCodec::MakeFromStream },
-    #endif
-    };
-    return decoders;
+void Register(Decoder d) {
+    decoderMutex.acquire();
+    for (size_t i = 0; i < decoders.size(); i++) {
+        if (decoders[i].id == d.id) {
+            decoders[i] = d;
+            decoderMutex.release();
+            return;
+        }
+    }
+    decoders.push_back(d);
+    decoderMutex.release();
 }
 
-}  // namespace
 
-void SkCodec::Register(
-            bool                     (*peek)(const void*, size_t),
-            std::unique_ptr<SkCodec> (*make)(std::unique_ptr<SkStream>, SkCodec::Result*)) {
-    decoders()->push_back(DecoderProc{peek, make});
-}
+}  // namespace SkCodecs
 
 std::unique_ptr<SkCodec> SkCodec::MakeFromStream(
         std::unique_ptr<SkStream> stream, Result* outResult,
@@ -150,17 +130,15 @@ std::unique_ptr<SkCodec> SkCodec::MakeFromStream(
         }
     }
 
-    // PNG is special, since we want to be able to supply an SkPngChunkReader.
-    // But this code follows the same pattern as the loop.
-#ifdef SK_CODEC_DECODES_PNG
-    if (SkPngCodec::IsPng(buffer, bytesRead)) {
-        return SkPngCodec::MakeFromStream(std::move(stream), outResult, chunkReader);
-    }
-#endif
-
-    for (DecoderProc proc : *decoders()) {
-        if (proc.IsFormat(buffer, bytesRead)) {
-            return proc.MakeFromStream(std::move(stream), outResult);
+    for (SkCodecs::Decoder proc : SkCodecs::decoders) {
+        if (proc.isFormat(buffer, bytesRead)) {
+            // PNG is special, since we want to be able to supply an SkPngChunkReader.
+            if (proc.id == "png") {
+                proc.makeFromStream(std::move(stream), outResult, chunkReader);
+            } else if (proc.id == "heif") {
+                proc.makeFromStream(std::move(stream), outResult, &selectionPolicy);
+            }
+            return proc.makeFromStream(std::move(stream), outResult, nullptr);
         }
     }
 

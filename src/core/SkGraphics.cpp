@@ -30,10 +30,48 @@
 
 #include <stdlib.h>
 
+#ifdef SK_CODEC_DECODES_JPEG
+#include "include/codec/SkJpegDecoder.h"
+#endif
+
+#ifdef SK_CODEC_DECODES_WEBP
+#include "src/codec/SkWebpCodec.h"
+#endif
+
+static void legacy_init_decoders() {
+    #ifdef SK_CODEC_DECODES_JPEG
+        SkCodecs::Register({ "jpeg", SkJpegDecoder::IsJpeg, SkJpegDecoder::Decode });
+    #endif
+    // #ifdef SK_CODEC_DECODES_WEBP
+    //     SkCodecs::Register({ "webp", SkWebpDecoder::IsWebp, SkWebpDecoder::Decode });
+    // #endif
+    // FIXME
+    // #ifdef SK_HAS_WUFFS_LIBRARY
+    //     { SkWuffsCodec_IsFormat, SkWuffsCodec_MakeFromStream },
+    // #endif
+    // #ifdef SK_CODEC_DECODES_PNG
+    //     { SkIcoCodec::IsIco, SkIcoCodec::MakeFromStream },
+    // #endif
+    // { SkBmpCodec::IsBmp, SkBmpCodec::MakeFromStream },
+    // { SkWbmpCodec::IsWbmp, SkWbmpCodec::MakeFromStream },
+    // #ifdef SK_CODEC_DECODES_AVIF
+    //     { SkAvifCodec::IsAvif, SkAvifCodec::MakeFromStream },
+    // #endif
+    // #ifdef SK_CODEC_DECODES_JPEGXL
+    //     { SkJpegxlCodec::IsJpegxl, SkJpegxlCodec::MakeFromStream },
+    // #endif
+    // #ifdef SK_CODEC_DECODES_RAW
+    //     // Try to treat the input as RAW if all the other checks failed.
+    //     return SkRawCodec::MakeFromStream(std::move(stream), outResult);
+    // #endif
+}
+
+
 void SkGraphics::Init() {
     // SkGraphics::Init() must be thread-safe and idempotent.
     SkCpu::CacheRuntimeFeatures();
     SkOpts::Init();
+    legacy_init_decoders();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
