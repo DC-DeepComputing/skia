@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "708e3f55_8c210c42",
+        "filename": "infra/bots/assets/cabe/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 19894
+      },
+      "writtenOn": "2023-05-02T20:30:57Z",
+      "side": 1,
+      "message": "Is this how urls are done in skia readmes?",
+      "revId": "027e186503f57119031ae90ff72c877f74f4bb38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
