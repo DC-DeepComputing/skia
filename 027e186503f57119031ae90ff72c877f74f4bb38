@@ -34,6 +34,24 @@
       "parentUuid": "708e3f55_8c210c42",
       "revId": "027e186503f57119031ae90ff72c877f74f4bb38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e51a1918_dcfde269",
+        "filename": "infra/bots/assets/cabe/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2023-05-02T21:09:26Z",
+      "side": 1,
+      "message": "Yup, we just use whatever markdown Gerrit supports.",
+      "parentUuid": "615076c5_ea895259",
+      "revId": "027e186503f57119031ae90ff72c877f74f4bb38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
