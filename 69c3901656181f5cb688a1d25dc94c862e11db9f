@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee8627b7_05ec0ef3",
+        "filename": "resources/sksl/shared/PrefixExpressions.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-02T03:21:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9749720_b80eee09",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 16
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0536957e_f52ec9a6",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-21T15:42:34Z",
       "side": 1,
       "message": "This will make `ok` false; this isn\u0027t correct, but we never check `ok` again.",
+      "range": {
+        "startLine": 6,
+        "startChar": 9,
+        "endLine": 6,
+        "endChar": 38
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98c5671a_5e718081",
+        "filename": "resources/sksl/shared/PrefixExpressions.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-02T03:21:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0536957e_f52ec9a6",
       "range": {
         "startLine": 6,
         "startChar": 9,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db9bdfbf_23ac59dc",
+        "filename": "resources/sksl/shared/PrefixExpressions.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-02T03:21:33Z",
+      "side": 1,
+      "message": "This was intentional initially. I removed the uniform, so this no longer shadows.",
+      "parentUuid": "d85506e4_ba3a9768",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32ae7bd7_d9ede099",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "947e69ca_071930c7",
+        "filename": "resources/sksl/shared/PrefixExpressions.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-02T03:21:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32ae7bd7_d9ede099",
+      "range": {
+        "startLine": 11,
+        "startChar": 4,
+        "endLine": 11,
+        "endChar": 8
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0eeabf5_734fd264",
@@ -106,6 +202,30 @@
       "writtenOn": "2023-02-21T15:42:34Z",
       "side": 1,
       "message": "Way too hard to reason about (what\u0027s mask.x going to be here?), fold the check into `ok` and then return `ok ? colorGreen : colorRed`",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 52
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3568a8d4_5ed09b59",
+        "filename": "resources/sksl/shared/PrefixExpressions.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-02T03:21:33Z",
+      "side": 1,
+      "message": "This was only testing the expressions and wasn\u0027t meant to be run so I had just thrown in a bunch of negation expressions. I updated the test so that the logic should make sense now.",
+      "parentUuid": "e0eeabf5_734fd264",
       "range": {
         "startLine": 14,
         "startChar": 4,
@@ -186,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69436bdb_18b16c1f",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1041,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-02T03:21:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7eed5dd_ea3d1b4e",
+      "range": {
+        "startLine": 1040,
+        "startChar": 0,
+        "endLine": 1041,
+        "endChar": 54
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be5f226e_dbe67926",
@@ -199,6 +343,30 @@
       "writtenOn": "2023-02-21T15:51:58Z",
       "side": 1,
       "message": "I _think_ this is safe as-is, but it might be safest to rewrite as\n\n    if (needsNegation) {\n        this-\u003ewrite(\"-1.0 * \");\n        this-\u003ewriteExpression(*p.operand(), Precedence::kMultiplicative);\n    } else {\n        this-\u003ewrite(p.getOperator().tightOperatorName());\n        this-\u003ewriteExpression(*p.operand(), Precedence::kPrefix);\n    }",
+      "range": {
+        "startLine": 1063,
+        "startChar": 4,
+        "endLine": 1063,
+        "endChar": 61
+      },
+      "revId": "69c3901656181f5cb688a1d25dc94c862e11db9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90fec46f_5df2ccac",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1063,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-02T03:21:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be5f226e_dbe67926",
       "range": {
         "startLine": 1063,
         "startChar": 4,
