@@ -11,6 +11,8 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
 
+#include <cstdint>
+
 /**
  *  Description of how the LCD strips are arranged for each pixel. If this is unknown, or the
  *  pixels are meant to be "portable" and/or transformed before showing (e.g. rotated, scaled)
@@ -58,6 +60,9 @@ public:
         // If set, all rendering will have dithering enabled
         // Currently this only impacts GPU backends
         kAlwaysDither_Flag              = 1 << 2,
+        // If set, have the created surface count against the GPU cache
+        // budget (i.e. skgpu::Budgeted::kYes)
+        kGpuBudgeted_Flag               = 1 << 3,
     };
     /** Deprecated alias used by Chromium. Will be removed. */
     static const Flags kUseDistanceFieldFonts_Flag = kUseDeviceIndependentFonts_Flag;
@@ -82,6 +87,10 @@ public:
 
     bool isAlwaysDither() const {
         return SkToBool(fFlags & kAlwaysDither_Flag);
+    }
+
+    bool useGpuBudget() const {
+        return SkToBool(fFlags & kGpuBudgeted_Flag);
     }
 
     bool operator==(const SkSurfaceProps& that) const {

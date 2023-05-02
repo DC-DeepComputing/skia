@@ -1241,6 +1241,7 @@ BASE_SRCS_ALL = [
     "src/image/SkRescaleAndReadPixels.cpp",
     "src/image/SkRescaleAndReadPixels.h",
     "src/image/SkSurface.cpp",
+    "src/image/SkSurfaceProps.cpp",
     "src/image/SkSurface_Base.cpp",
     "src/image/SkSurface_Base.h",
     "src/image/SkSurface_Null.cpp",
