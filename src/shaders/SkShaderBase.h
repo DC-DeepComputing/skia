@@ -483,6 +483,7 @@ void SkRegisterColor4ShaderFlattenable();
 void SkRegisterColorShaderFlattenable();
 void SkRegisterComposeShaderFlattenable();
 void SkRegisterCoordClampShaderFlattenable();
+void SkRegisterDashingShaderFlattenable();
 void SkRegisterEmptyShaderFlattenable();
 
 #endif // SkShaderBase_DEFINED
