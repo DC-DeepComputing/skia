@@ -16,6 +16,24 @@
       "message": "Should also have a README.md in the directory to explain where the data comes from and how to update it again in the future.",
       "revId": "8448f6463087ad16f9c644d56f801caff95f2720",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c78a4c4f_0540796e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19774
+      },
+      "writtenOn": "2023-05-02T18:36:55Z",
+      "side": 1,
+      "message": "+1 for the README.md, though the steps to regenerate these are probably going to change a substantially from what we had been doing internally. Is it okay to leave exact update steps TBD, and describe it with something like \"These .zip files contain unit test data, pre-recorded RPC response protos from CABE\u0027s service dependencies\" or does it need to be more precise?\n\nThe code to update this data hasn\u0027t been ported to skia so far (that\u0027s part of the cli toolset that we haven\u0027t yet started moving over yet), but we\u0027d like to move some essential analysis code that uses this data in tests over to skia first before we move the cli tools.",
+      "parentUuid": "2ee8b35a_f983d9ef",
+      "revId": "8448f6463087ad16f9c644d56f801caff95f2720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
