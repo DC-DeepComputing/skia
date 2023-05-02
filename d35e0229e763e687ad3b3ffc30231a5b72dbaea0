@@ -63,6 +63,30 @@
       },
       "revId": "d35e0229e763e687ad3b3ffc30231a5b72dbaea0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38168618_434368f6",
+        "filename": "src/sksl/transform/SkSLFindAndDeclareBuiltinVariables.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-02T17:27:46Z",
+      "side": 1,
+      "message": "LGTM!",
+      "parentUuid": "8c60063c_2f1df039",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 57
+      },
+      "revId": "d35e0229e763e687ad3b3ffc30231a5b72dbaea0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
