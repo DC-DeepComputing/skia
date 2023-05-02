@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5e21a36_0edd68bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-02T17:37:30Z",
+      "side": 1,
+      "message": "This CL should precede the more in-depth VulkanDescriptorPool review (https://skia-review.googlesource.com/c/skia/+/660859). \n\nThe goal for this CL is to allow for higher-level integration which will reference these classes, while still leaving the wiggle room necessary to flesh out some specifics that will be informed by the integration efforts of having a Draw call translate all the way down Vulkan-specific allocations and resources.",
+      "revId": "0240bb0a643b5158116b039dc990aae376ae6d42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
