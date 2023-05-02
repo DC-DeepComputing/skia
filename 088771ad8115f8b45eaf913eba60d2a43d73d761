@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29f384a0_7d14f2d9",
+        "filename": "src/effects/imagefilters/SkMagnifierImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-02T19:55:25Z",
+      "side": 1,
+      "message": "Might be a teeny bit faster in software if you use a ternary",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 247,
+        "endChar": 15
+      },
+      "revId": "088771ad8115f8b45eaf913eba60d2a43d73d761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
