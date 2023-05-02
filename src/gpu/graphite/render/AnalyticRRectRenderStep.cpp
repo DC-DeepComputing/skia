@@ -258,9 +258,10 @@ static bool opposite_insets_intersect(const Rect& rect, float strokeRadius, floa
 static bool opposite_insets_intersect(const Geometry& geometry,
                                       float strokeRadius,
                                       float aaRadius) {
-    if (geometry.isEdgeAAQuad()) {
+    //$$
+    if (geometry.isEdgeAAQuad1()) {
         SkASSERT(strokeRadius == 0.f);
-        const EdgeAAQuad& quad = geometry.edgeAAQuad();
+        const EdgeAAQuad& quad = geometry.edgeAAQuad1();
         if (quad.edgeFlags() == AAFlags::kNone) {
             // If all edges are non-AA, there won't be any insetting. This allows completely non-AA
             // quads to use the fill triangles for simpler fragment shader work.
@@ -883,7 +884,8 @@ const char* AnalyticRRectRenderStep::fragmentCoverageSkSL() const {
 void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
                                            const DrawParams& params,
                                            int ssboIndex) const {
-    SkASSERT(params.geometry().isShape() || params.geometry().isEdgeAAQuad());
+    //$$
+    SkASSERT(params.geometry().isShape() || params.geometry().isEdgeAAQuad1());
 
     DrawWriter::Instances instance{*writer, fVertexBuffer, fIndexBuffer, kIndexCount};
     auto vw = instance.append(1);
@@ -967,10 +969,11 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
         // Empty fills should not have been recorded at all.
         SkASSERT(!bounds.isEmptyNegativeOrNaN());
 
-        if (params.geometry().isEdgeAAQuad()) {
+        //$$
+        if (params.geometry().isEdgeAAQuad1()) {
             // NOTE: If quad.isRect() && quad.edgeFlags() == kAll, the written data is identical to
             // Shape.isRect() case below.
-            const EdgeAAQuad& quad = params.geometry().edgeAAQuad();
+            const EdgeAAQuad& quad = params.geometry().edgeAAQuad1();
 
             // If all edges are non-AA, set localAARadius to 0 so that the fill triangles cover the
             // entire shape. Otherwise leave it as-is for the full AA rect case; in the event it's
@@ -1023,9 +1026,10 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
         }
     }
 
+    //$$
     // All instance types share the remaining instance attribute definitions
     const SkM44& m = params.transform().matrix();
-    auto center = params.geometry().isEdgeAAQuad() ? quad_center(params.geometry().edgeAAQuad())
+    auto center = params.geometry().isEdgeAAQuad1() ? quad_center(params.geometry().edgeAAQuad1())
                                                    : bounds.center();
     vw << center << centerWeight << aaRadius
        << params.order().depthAsFloat()

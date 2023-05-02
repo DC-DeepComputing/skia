@@ -125,7 +125,8 @@ const char* VerticesRenderStep::fragmentColorSkSL() const {
 void VerticesRenderStep::writeVertices(DrawWriter* writer,
                                        const DrawParams& params,
                                        int ssboIndex) const {
-    SkVerticesPriv info(params.geometry().vertices()->priv());
+    //$$
+    SkVerticesPriv info(params.geometry().vertices1()->priv());
     const int vertexCount = info.vertexCount();
     const int indexCount = info.indexCount();
     const SkPoint* positions = info.positions();

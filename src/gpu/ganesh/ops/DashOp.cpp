@@ -705,7 +705,7 @@ private:
  * This effect will draw a dotted line (defined as a dashed lined with round caps and no on
  * interval). The radius of the dots is given by the strokeWidth and the spacing by the DashInfo.
  * Both of the previous two parameters are in device space. This effect also requires the setting of
- * a float2 vertex attribute for the the four corners of the bounding rect. This attribute is the
+ * a float2 vertex attribute for the four corners of the bounding rect. This attribute is the
  * "dash position" of each vertex. In other words it is the vertex coords (in device space) if we
  * transform the line to be horizontal, with the start of line at the origin then shifted to the
  * right by half the off interval. The line then goes in the positive x direction.
@@ -782,7 +782,7 @@ void DashingCircleEffect::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) {
     varyingHandler->addVarying("DashParam", &dashParams);
     vertBuilder->codeAppendf("%s = %s;", dashParams.vsOut(), dce.fInDashParams.name());
 
-    // x refers to circle radius - 0.5, y refers to cicle's center x coord
+    // x refers to circle radius - 0.5, y refers to circle's center x coord
     GrGLSLVarying circleParams(SkSLType::kHalf2);
     varyingHandler->addVarying("CircleParams", &circleParams);
     vertBuilder->codeAppendf("%s = %s;", circleParams.vsOut(), dce.fInCircleParams.name());
@@ -894,7 +894,7 @@ GrGeometryProcessor* DashingCircleEffect::TestCreate(GrProcessorTestData* d) {
 /*
  * This effect will draw a dashed line. The width of the dash is given by the strokeWidth and the
  * length and spacing by the DashInfo. Both of the previous two parameters are in device space.
- * This effect also requires the setting of a float2 vertex attribute for the the four corners of the
+ * This effect also requires the setting of a float2 vertex attribute for the four corners of the
  * bounding rect. This attribute is the "dash position" of each vertex. In other words it is the
  * vertex coords (in device space) if we transform the line to be horizontal, with the start of
  * line at the origin then shifted to the right by half the off interval. The line then goes in the
@@ -1197,7 +1197,7 @@ bool CanDrawDashLine(const SkPoint pts[2], const GrStyle& style, const SkMatrix&
     }
 
     // May be able to relax this to include skew. As of now cannot do perspective
-    // because of the non uniform scaling of bloating a rect
+    // because of the non-uniform scaling of bloating a rect
     if (!viewMatrix.preservesRightAngles()) {
         return false;
     }
