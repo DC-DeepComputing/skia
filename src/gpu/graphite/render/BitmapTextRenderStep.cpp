@@ -111,7 +111,7 @@ const char* BitmapTextRenderStep::fragmentCoverageSkSL() const {
 void BitmapTextRenderStep::writeVertices(DrawWriter* dw,
                                          const DrawParams& params,
                                          int ssboIndex) const {
-    const SubRunData& subRunData = params.geometry().subRunData();
+    const SubRunData& subRunData = params.geometry().subRunData1();
 
     subRunData.subRun()->fillInstanceData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
                                           ssboIndex, params.order().depthAsFloat());
@@ -121,7 +121,7 @@ void BitmapTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
                                                     PipelineDataGatherer* gatherer) const {
     SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
 
-    const SubRunData& subRunData = params.geometry().subRunData();
+    const SubRunData& subRunData = params.geometry().subRunData1();
     unsigned int numProxies;
     Recorder* recorder = subRunData.recorder();
     const sk_sp<TextureProxy>* proxies =

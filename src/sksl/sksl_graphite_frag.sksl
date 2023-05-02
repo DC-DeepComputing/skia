@@ -796,6 +796,101 @@ $pure half4 sk_matrix_colorfilter(half4 colorIn, float4x4 m, float4 v, int inHSL
     return colorOut;
 }
 
+$pure float4 dash_coverage(float2 coords,
+                          float2 point0,
+                          float2 point1,
+                          float  cumulativeIntervals[4],
+                          float  phase) {
+    float cumulativeIntervalLen = cumulativeIntervals[3];
+
+    float2 delta = point1 - point0;
+    delta = normalize(delta);
+
+    point1 -= coords;
+    coords -= point0;
+
+    float t2 = dot(point1, delta);
+    float t = dot(coords, delta);
+
+    // if we're near the absolute start and end of the line skip the shader-based AA
+    // so it isn't combined w/ the rect-drawing AA
+    bool skipAA = (t2 < 1) || (t < 1);
+
+//    if (skipAA) {
+//        return float4(1.0, 0.0, 1.0, 1.0);
+//    }
+
+    t += phase;
+    t = mod(t, cumulativeIntervalLen);
+    if (t >= cumulativeIntervalLen) {
+        t -= cumulativeIntervalLen;
+    }
+
+//    return float4(t/cumulativeIntervalLen, t/cumulativeIntervalLen, t/cumulativeIntervalLen, 1.0);
+
+    float AATol = skipAA ? 0.0 : 0.5;
+//    float AATol = 0.5;
+
+    if (t < AATol) {
+        float tmp = t + AATol;
+        //return float4(1.0, 1.0, 1.0, 1.0);      // off to on
+        return float4(tmp, tmp, tmp, 1.0);
+    }
+
+    if (t < cumulativeIntervals[0] - AATol) {
+        //return float4(0.0, 1.0, 0.0, 1.0);      // on
+        return float4(1.0, 1.0, 1.0, 1.0);
+    } else if (t <= cumulativeIntervals[0] + AATol) {
+        float tmp = 1.0 - (t - cumulativeIntervals[0] + AATol);
+        //return float4(0.0, 1.0, 1.0, 1.0);      // on to off
+        return float4(tmp, tmp, tmp, 1.0);
+    }
+
+    if (t < cumulativeIntervals[1] - AATol) {
+        //return float4(0.0, 0.0, 1.0, 1.0);      // off
+        return float4(0.0, 0.0, 0.0, 1.0);
+    } else if (t <= cumulativeIntervals[1] + AATol) {
+        float tmp = t - cumulativeIntervals[1] + AATol;
+        //return float4(1.0, 1.0, 0.0, 1.0);      // off to on
+        return float4(tmp, tmp, tmp, 1.0);
+    }
+
+    return float4(0.0, 0.0, 0.5, 1.0);
+
+    if (t < cumulativeIntervals[2] - AATol) {
+         //return float4(1.0, 0.0, 0.0, 1.0);      // on
+         return float4(1.0, 1.0, 1.0, 1.0);
+    } else if (t <= cumulativeIntervals[2] + AATol) {
+        float tmp = (t - cumulativeIntervals[2] + AATol);
+        //return float4(0.0, 1.0, 1.0, 1.0);      // increasing
+        return float4(tmp, tmp, tmp, 1.0);
+    }
+
+    if (t < cumulativeIntervals[3] - AATol) {
+        //return float4(0.5, 0.5, 0.5, 1.0);       // off
+        return float4(0.0, 0.0, 0.0, 1.0);
+    } else if (t <= cumulativeIntervals[3] + AATol) {
+        float tmp = (t - cumulativeIntervals[3] + AATol);
+        //return float4(1.0, 1.0, 0.0, 1.0);       // decreasing
+        return float4(tmp, tmp, tmp, 1.0);
+    }
+
+    return float4(0.0);
+}
+
+$pure half4 dash_me(float2 coords,
+                    float4 color,
+                    float2 point0,
+                    float2 point1,
+                    float  cumulativeIntervals[4],
+                    float  phase) {
+    float4 coverage = dash_coverage(coords, point0, point1, cumulativeIntervals, phase);
+    return half4(coverage);
+//    half4 tmp = half4(color.r, color.g, color.b, 1.0);
+//    tmp *= half(coverage);
+//    return tmp;
+}
+
 // This method computes the 4 x-coodinates ([0..1]) that should be used to look
 // up in the Perlin noise shader's noise table.
 $pure half4 noise_helper(half2 noiseVec,

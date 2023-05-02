@@ -17,6 +17,30 @@
 
 namespace skgpu::graphite {
 
+class DashedLine {
+public:
+    DashedLine(const SkPoint line[2], const float intervals[4]) {
+        this->set(line, intervals);
+    }
+
+    DashedLine(const DashedLine& dashedLine) = default;
+
+    DashedLine& operator=(const DashedLine& dashedLine) = default;
+
+    void set(const SkPoint line[2], const float intervals[4]) {
+        memcpy(fLine, line, sizeof(fLine));
+        memcpy(fIntervals, intervals, sizeof(fIntervals));
+    }
+
+    Rect bounds() const {
+        return {};
+    }
+
+private:
+    SkPoint fLine[2];
+    float   fIntervals[4];
+};
+
 /**
  * Geometry is a container that can house Shapes, SkVertices, text SubRuns, and per-edge AA quads.
  * TODO - Add unit tests for Geometry.
@@ -24,7 +48,7 @@ namespace skgpu::graphite {
 class Geometry {
 public:
     enum class Type : uint8_t {
-        kEmpty, kShape, kVertices, kSubRun, kEdgeAAQuad
+        kEmpty, kShape, kVertices1, kSubRun1, kEdgeAAQuad1, kDashedLine
     };
 
     Geometry() {}
@@ -32,9 +56,12 @@ public:
     Geometry(const Geometry& geom) { *this = geom; }
 
     explicit Geometry(const Shape& shape) { this->setShape(shape); }
-    explicit Geometry(const SubRunData& subrun) { this->setSubRun(subrun); }
-    explicit Geometry(sk_sp<SkVertices> vertices) { this->setVertices(vertices); }
-    explicit Geometry(const EdgeAAQuad& edgeAAQuad) { this->setEdgeAAQuad(edgeAAQuad); }
+    explicit Geometry(const SubRunData& subrun) { this->setSubRun1(subrun); }
+    explicit Geometry(sk_sp<SkVertices> vertices) { this->setVertices1(vertices); }
+    explicit Geometry(const EdgeAAQuad& edgeAAQuad) { this->setEdgeAAQuad1(edgeAAQuad); }
+    explicit Geometry(const SkPoint line[2], float intervals[4]) {
+        this->setDashedLine(line, intervals);
+    }
 
     ~Geometry() { this->setType(Type::kEmpty); }
 
@@ -48,18 +75,21 @@ public:
                     this->setShape(geom.shape());
                     geom.setType(Type::kEmpty);
                     break;
-                case Type::kVertices:
-                    this->setVertices(std::move(geom.fVertices));
+                case Type::kVertices1:
+                    this->setVertices1(std::move(geom.fVertices));
                     geom.setType(Type::kEmpty);
                     break;
-                case Type::kSubRun:
-                    this->setSubRun(geom.subRunData());
+                case Type::kSubRun1:
+                    this->setSubRun1(geom.subRunData1());
                     geom.setType(Type::kEmpty);
                     break;
-                case Type::kEdgeAAQuad:
-                    this->setEdgeAAQuad(geom.edgeAAQuad());
+                case Type::kEdgeAAQuad1:
+                    this->setEdgeAAQuad1(geom.edgeAAQuad1());
                     geom.setType(Type::kEmpty);
                     break;
+                case Type::kDashedLine:
+                    this->setDashedLine(geom.dashedLine());
+                    geom.setType(Type::kEmpty);
             }
         }
         return *this;
@@ -68,9 +98,10 @@ public:
         switch (geom.type()) {
             case Type::kEmpty: this->setType(Type::kEmpty); break;
             case Type::kShape: this->setShape(geom.shape()); break;
-            case Type::kSubRun: this->setSubRun(geom.subRunData()); break;
-            case Type::kVertices: this->setVertices(geom.fVertices); break;
-            case Type::kEdgeAAQuad: this->setEdgeAAQuad(geom.edgeAAQuad()); break;
+            case Type::kSubRun1: this->setSubRun1(geom.subRunData1()); break;
+            case Type::kVertices1: this->setVertices1(geom.fVertices); break;
+            case Type::kEdgeAAQuad1: this->setEdgeAAQuad1(geom.edgeAAQuad1()); break;
+            case Type::kDashedLine: this->setDashedLine(geom.dashedLine()); break;
             default: break;
         }
         return *this;
@@ -79,21 +110,23 @@ public:
     Type type() const { return fType; }
 
     bool isShape() const { return fType == Type::kShape; }
-    bool isVertices() const { return fType == Type::kVertices; }
-    bool isSubRun() const { return fType == Type::kSubRun; }
-    bool isEdgeAAQuad() const { return fType == Type::kEdgeAAQuad; }
+    bool isVertices1() const { return fType == Type::kVertices1; }
+    bool isSubRun1() const { return fType == Type::kSubRun1; }
+    bool isEdgeAAQuad1() const { return fType == Type::kEdgeAAQuad1; }
     bool isEmpty() const {
         return fType == (Type::kEmpty) || (this->isShape() && this->shape().isEmpty());
     }
+    bool isDashedLine() const { return fType == Type::kDashedLine; }
 
     const Shape& shape() const { SkASSERT(this->isShape()); return fShape; }
-    const SubRunData& subRunData() const { SkASSERT(this->isSubRun()); return fSubRunData; }
-    const EdgeAAQuad& edgeAAQuad() const { SkASSERT(this->isEdgeAAQuad()); return fEdgeAAQuad; }
-    const SkVertices* vertices() const { SkASSERT(this->isVertices()); return fVertices.get(); }
+    const SubRunData& subRunData1() const { SkASSERT(this->isSubRun1()); return fSubRunData; }
+    const EdgeAAQuad& edgeAAQuad1() const { SkASSERT(this->isEdgeAAQuad1()); return fEdgeAAQuad; }
+    const SkVertices* vertices1() const { SkASSERT(this->isVertices1()); return fVertices.get(); }
     sk_sp<SkVertices> refVertices() const {
-        SkASSERT(this->isVertices());
+        SkASSERT(this->isVertices1());
         return fVertices;
     }
+    const DashedLine& dashedLine() const { SkASSERT(this->isDashedLine()); return fDashedLine; }
 
     void setShape(const Shape& shape) {
         if (fType == Type::kShape) {
@@ -103,29 +136,47 @@ public:
             new (&fShape) Shape(shape);
         }
     }
-    void setSubRun(const SubRunData& subRun) {
-        if (fType == Type::kSubRun) {
+    void setSubRun1(const SubRunData& subRun) {
+        if (fType == Type::kSubRun1) {
             fSubRunData = subRun;
         } else {
-            this->setType(Type::kSubRun);
+            this->setType(Type::kSubRun1);
             new (&fSubRunData) SubRunData(subRun);
         }
     }
-    void setVertices(sk_sp<SkVertices> vertices) {
-        if (fType == Type::kVertices) {
+    void setVertices1(sk_sp<SkVertices> vertices) {
+        if (fType == Type::kVertices1) {
             fVertices = std::move(vertices);
         } else {
-            this->setType(Type::kVertices);
+            this->setType(Type::kVertices1);
             new (&fVertices) sk_sp<SkVertices>(std::move(vertices));
         }
     }
 
-    void setEdgeAAQuad(const EdgeAAQuad& edgeAAQuad) {
-        if (fType == Type::kEdgeAAQuad) {
+    void setEdgeAAQuad1(const EdgeAAQuad& edgeAAQuad) {
+        if (fType == Type::kEdgeAAQuad1) {
             fEdgeAAQuad = edgeAAQuad;
         } else {
-            this->setType(Type::kEdgeAAQuad);
+            this->setType(Type::kEdgeAAQuad1);
             new (&fEdgeAAQuad) EdgeAAQuad(edgeAAQuad);
+        }
+    }
+
+    void setDashedLine(const DashedLine& dashedLine) {
+        if (fType == Type::kDashedLine) {
+            fDashedLine = dashedLine;
+        } else {
+            this->setType(Type::kDashedLine);
+            new (&fDashedLine) DashedLine(dashedLine);
+        }
+    }
+
+    void setDashedLine(const SkPoint line[2], const float intervals[4]) {
+        if (fType == Type::kDashedLine) {
+            fDashedLine.set(line, intervals);
+        } else {
+            this->setType(Type::kDashedLine);
+            new (&fDashedLine) DashedLine(line, intervals);
         }
     }
 
@@ -133,9 +184,10 @@ public:
         switch (fType) {
             case Type::kEmpty: return Rect(0, 0, 0, 0);
             case Type::kShape: return fShape.bounds();
-            case Type::kVertices: return fVertices->bounds();
-            case Type::kSubRun: return fSubRunData.bounds();
-            case Type::kEdgeAAQuad: return fEdgeAAQuad.bounds();
+            case Type::kVertices1: return fVertices->bounds();
+            case Type::kSubRun1: return fSubRunData.bounds();
+            case Type::kEdgeAAQuad1: return fEdgeAAQuad.bounds();
+            case Type::kDashedLine: return fDashedLine.bounds();
         }
         SkUNREACHABLE;
     }
@@ -145,10 +197,12 @@ private:
         static_assert(std::is_trivially_destructible<EdgeAAQuad>::value);
         if (this->isShape() && type != Type::kShape) {
             fShape.~Shape();
-        } else if (this->isSubRun() && type != Type::kSubRun) {
+        } else if (this->isSubRun1() && type != Type::kSubRun1) {
             fSubRunData.~SubRunData();
-        } else if (this->isVertices() && type != Type::kVertices) {
+        } else if (this->isVertices1() && type != Type::kVertices1) {
             fVertices.~sk_sp<SkVertices>();
+        } else if (this->isDashedLine() && type != Type::kDashedLine) {
+            fDashedLine.~DashedLine();  // needed?
         }
         fType = type;
     }
@@ -159,6 +213,7 @@ private:
         SubRunData fSubRunData;
         sk_sp<SkVertices> fVertices;
         EdgeAAQuad fEdgeAAQuad;
+        DashedLine fDashedLine;
     };
 };
 
