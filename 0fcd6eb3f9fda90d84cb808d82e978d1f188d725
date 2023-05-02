@@ -114,6 +114,30 @@
       },
       "revId": "0fcd6eb3f9fda90d84cb808d82e978d1f188d725",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1057d3bc_6172a16c",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-02T14:48:01Z",
+      "side": 1,
+      "message": "Right we should probably add a SolidColorShader block w/ the error color and return if we have no image.",
+      "parentUuid": "d98b65ba_74984abd",
+      "range": {
+        "startLine": 475,
+        "startChar": 8,
+        "endLine": 475,
+        "endChar": 26
+      },
+      "revId": "0fcd6eb3f9fda90d84cb808d82e978d1f188d725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
