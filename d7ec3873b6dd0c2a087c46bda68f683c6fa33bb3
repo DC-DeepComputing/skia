@@ -45,6 +45,54 @@
       },
       "revId": "d7ec3873b6dd0c2a087c46bda68f683c6fa33bb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c5bc99c_309db47c",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-02T18:14:08Z",
+      "side": 1,
+      "message": "Done for SlotInfo, but for ResourceProvider and PropertyObserver, I get warned `returning reference to local temporary object`. It should be fine though since it returns a shared pointer, no?",
+      "parentUuid": "18ffe27d_9c540d79",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 75
+      },
+      "revId": "d7ec3873b6dd0c2a087c46bda68f683c6fa33bb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07d63c48_4f7c823c",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-02T18:14:08Z",
+      "side": 1,
+      "message": "No.",
+      "parentUuid": "b5339d7f_16f2780e",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 75
+      },
+      "revId": "d7ec3873b6dd0c2a087c46bda68f683c6fa33bb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
