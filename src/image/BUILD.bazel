@@ -22,6 +22,7 @@ CORE_FILES = [
     "SkRescaleAndReadPixels.cpp",
     "SkRescaleAndReadPixels.h",
     "SkSurface.cpp",
+    "SkSurfaceProps.cpp",
     "SkSurface_Base.cpp",
     "SkSurface_Base.h",
     "SkSurface_Null.cpp",

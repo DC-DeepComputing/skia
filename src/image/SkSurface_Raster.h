@@ -37,7 +37,7 @@ public:
     SkImageInfo imageInfo() const override { return fBitmap.info(); }
 
     SkCanvas* onNewCanvas() override;
-    sk_sp<SkSurface> onNewSurface(const SkImageInfo&) override;
+    sk_sp<SkSurface> onNewSurface(const SkImageInfo&, const SkSurfaceProps& props) override;
     sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subset) override;
     void onWritePixels(const SkPixmap&, int x, int y) override;
     void onDraw(SkCanvas*, SkScalar, SkScalar, const SkSamplingOptions&, const SkPaint*) override;
