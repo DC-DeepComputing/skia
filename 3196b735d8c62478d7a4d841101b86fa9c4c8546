@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aca0e6c4_2b39a230",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-02T16:23:10Z",
+      "side": 1,
+      "message": "I can make it a SkString, not sure about it being optional. I was hoping to change the `onFooProperty` callbacks such that we don\u0027t need to pre-set the slots before building the animation (instead we\u0027d hold the Handles).\nBut in order to know which handles to hold on to, we need to either 1) pass a list of slotIDs to the constructor of SlotManager, 2) parse the slotIDs in the constructor\n\nWe can talk about other solutions I haven\u0027t thought of yet.",
+      "parentUuid": "c72d9ce3_52a08031",
+      "range": {
+        "startLine": 136,
+        "startChar": 16,
+        "endLine": 136,
+        "endChar": 28
+      },
+      "revId": "3196b735d8c62478d7a4d841101b86fa9c4c8546",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5ea17f45_c1444844",
         "filename": "modules/skottie/utils/SkottieUtils.h",
         "patchSetId": 6
@@ -54,6 +78,30 @@
       "writtenOn": "2023-05-02T15:15:05Z",
       "side": 1,
       "message": "`const std::vector\u003cSlotInfo\u003e\u0026 getSlotInfo() const` so we don\u0027t force a copy.  Also inline the implementation since it\u0027s trivial.",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 150,
+        "endChar": 25
+      },
+      "revId": "3196b735d8c62478d7a4d841101b86fa9c4c8546",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc8cf030_12240cef",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-02T16:23:10Z",
+      "side": 1,
+      "message": "Done, for the others as well.",
+      "parentUuid": "5ea17f45_c1444844",
       "range": {
         "startLine": 150,
         "startChar": 4,
@@ -77,6 +125,24 @@
       "writtenOn": "2023-05-02T15:15:05Z",
       "side": 1,
       "message": "nit: move the declaration before the fields above, so the fields stay grouped.",
+      "revId": "3196b735d8c62478d7a4d841101b86fa9c4c8546",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e8365ca_d702cd89",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-02T16:23:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52da140f_9e042c5c",
       "revId": "3196b735d8c62478d7a4d841101b86fa9c4c8546",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
