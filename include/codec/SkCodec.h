@@ -23,6 +23,7 @@
 #include <cstddef>
 #include <functional>
 #include <memory>
+#include <string>
 #include <tuple>
 #include <vector>
 
@@ -41,10 +42,30 @@ enum class Blend;
 enum class DisposalMethod;
 }
 
-
 namespace DM {
 class CodecSrc;
 } // namespace DM
+
+namespace SkCodecs {
+
+using DecodeContext = void*;
+using IsFormatCallback = std::function<bool(const void* data, size_t len)>;
+using MakeFromStreamCallback = std::function<std::unique_ptr<SkCodec>(std::unique_ptr<SkStream>,
+                                                                      SkCodec::Result*,
+                                                                      DecodeContext)>;
+
+struct Decoder {
+    std::string id;
+    IsFormatCallback isFormat;
+    MakeFromStreamCallback makeFromStream;
+}
+
+// Add the decoder to the end of a linked list of decoders, which will be used to identify calls to
+// SkCodec::MakeFromStream. If a decoder with the same id already exists, this new decoder
+// will replace the existing one (in the same position).
+void Register(Decoder d);
+
+}
 
 /**
  *  Abstraction layer directly on top of an image codec.
