@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a974098_ed483225",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-05-02T14:43:16Z",
+      "side": 1,
+      "message": "rewrite_includes is not happy about multiple include files with the same name in different dirs (which arguably should be fine), so I turned it off for the affected files while we migrate.",
+      "revId": "0c56765c3fa3455b8403500c529e7ff8dba8caaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
