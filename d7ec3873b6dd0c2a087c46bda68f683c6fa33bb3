@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18ffe27d_9c540d79",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-02T16:47:45Z",
+      "side": 1,
+      "message": "`const foo\u003cbar\u003e\u0026` (to return a const reference) for all.",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 75
+      },
+      "revId": "d7ec3873b6dd0c2a087c46bda68f683c6fa33bb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5339d7f_16f2780e",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-02T16:47:45Z",
+      "side": 1,
+      "message": "Can you inline these two also?",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 75
+      },
+      "revId": "d7ec3873b6dd0c2a087c46bda68f683c6fa33bb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
