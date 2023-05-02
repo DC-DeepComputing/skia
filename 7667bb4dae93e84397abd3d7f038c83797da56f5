@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8ababac5_3893e585",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-02T20:48:52Z",
+      "side": 1,
+      "message": "How does this convention sound?\n\n\"By convention, we use all lowercase letters and go with the primary filename extension. For example \"png\", \"jpg\", \"ico\", \"webp\", etc\"",
+      "parentUuid": "4818711d_6bafa98e",
+      "revId": "7667bb4dae93e84397abd3d7f038c83797da56f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e7f8b08e_ade6ddab",
         "filename": "include/codec/SkCodec.h",
         "patchSetId": 2
@@ -31,6 +49,30 @@
       "writtenOn": "2023-05-02T20:30:16Z",
       "side": 1,
       "message": "While we\u0027re at it, I wonder if we\u0027d want to add a way to query the existing registered decoders. I know clients like to know what they can decode.\n\nTaking this a step further, they might want to know even more details about the existing decoders. Maybe this is contrived, but let\u0027s say someone wanted to add their own APNG decoder. Presumably that requires their own PNG decoder, but let\u0027s say they wanted to call to the existing decoder if it\u0027s not an APNG file. (Not sure this is necessary, but worth thinking about.)",
+      "range": {
+        "startLine": 1033,
+        "startChar": 5,
+        "endLine": 1033,
+        "endChar": 13
+      },
+      "revId": "7667bb4dae93e84397abd3d7f038c83797da56f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3be4aa5_5ff632e6",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1033,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-02T20:48:52Z",
+      "side": 1,
+      "message": "I\u0027m hesitant to add too many details here, beyond the name, just because I don\u0027t want the scope of this refactor to creep too much.\n\nWhat did you have in mind as far as the details go?",
+      "parentUuid": "e7f8b08e_ade6ddab",
       "range": {
         "startLine": 1033,
         "startChar": 5,
