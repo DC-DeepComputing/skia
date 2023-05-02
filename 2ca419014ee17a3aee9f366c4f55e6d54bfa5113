@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2de59f35_56e2a8eb",
+        "filename": "src/core/SkRasterPipelineOpList.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-02T00:07:51Z",
+      "side": 1,
+      "message": "I\u0027m keeping the first op in a group unindented, and indenting the rest by a little bit. I experimented with a few groupings and I can\u0027t say I love any of them, but I haven\u0027t found one I like better than this. Open to suggestions.",
+      "parentUuid": "1bff063a_936a9c50",
+      "range": {
+        "startLine": 69,
+        "startChar": 5,
+        "endLine": 69,
+        "endChar": 7
+      },
+      "revId": "2ca419014ee17a3aee9f366c4f55e6d54bfa5113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc082fc0_71d42f7d",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-05-01T23:55:23Z",
       "side": 1,
       "message": "Does this generate better code than `return op \u003d\u003d ALL_IMMEDIATE_BINARY_OP_CASES;`?",
+      "range": {
+        "startLine": 134,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 57
+      },
+      "revId": "2ca419014ee17a3aee9f366c4f55e6d54bfa5113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9016362e_4ab4b5d2",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-02T00:07:51Z",
+      "side": 1,
+      "message": "Clang generates extremely good code for simple return-true/false switches.\n\nSingle-case: https://godbolt.org/z/TWeve8oWj\nMulti-case: https://godbolt.org/z/13h1bs77j",
+      "parentUuid": "fc082fc0_71d42f7d",
       "range": {
         "startLine": 134,
         "startChar": 8,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28d333ec_8fdf2742",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-02T00:07:51Z",
+      "side": 1,
+      "message": "See above",
+      "parentUuid": "f26f076e_39446f75",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 143,
+        "endChar": 5
+      },
+      "revId": "2ca419014ee17a3aee9f366c4f55e6d54bfa5113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee25db7b_24e34079",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-05-01T23:55:23Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 147,
+        "startChar": 22,
+        "endLine": 147,
+        "endChar": 27
+      },
+      "revId": "2ca419014ee17a3aee9f366c4f55e6d54bfa5113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3095c5df_868141e0",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-02T00:07:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee25db7b_24e34079",
       "range": {
         "startLine": 147,
         "startChar": 22,
