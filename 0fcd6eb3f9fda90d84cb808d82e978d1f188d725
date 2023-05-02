@@ -91,6 +91,29 @@
       "parentUuid": "9d3318fd_4c6eec5e",
       "revId": "0fcd6eb3f9fda90d84cb808d82e978d1f188d725",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d98b65ba_74984abd",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-02T14:21:09Z",
+      "side": 1,
+      "message": "If imageToDraw is null here, should we just bail, or do some other fallback? It looks like that happens if something goes awry with the imageProvider, but we could still add an ImageShaderBlock block to the key.",
+      "range": {
+        "startLine": 475,
+        "startChar": 8,
+        "endLine": 475,
+        "endChar": 26
+      },
+      "revId": "0fcd6eb3f9fda90d84cb808d82e978d1f188d725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
