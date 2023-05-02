@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ee8b35a_f983d9ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2023-05-02T18:11:57Z",
+      "side": 1,
+      "message": "Should also have a README.md in the directory to explain where the data comes from and how to update it again in the future.",
+      "revId": "8448f6463087ad16f9c644d56f801caff95f2720",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
