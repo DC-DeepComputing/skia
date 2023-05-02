@@ -75,8 +75,9 @@ SkSurface_Raster::SkSurface_Raster(const SkImageInfo& info, sk_sp<SkPixelRef> pr
 
 SkCanvas* SkSurface_Raster::onNewCanvas() { return new SkCanvas(fBitmap, this->props()); }
 
-sk_sp<SkSurface> SkSurface_Raster::onNewSurface(const SkImageInfo& info) {
-    return SkSurface::MakeRaster(info, &this->props());
+sk_sp<SkSurface> SkSurface_Raster::onNewSurface(const SkImageInfo& info,
+                                                const SkSurfaceProps& props) {
+    return SkSurface::MakeRaster(info, &props);
 }
 
 void SkSurface_Raster::onDraw(SkCanvas* canvas, SkScalar x, SkScalar y,
