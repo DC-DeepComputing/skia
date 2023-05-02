@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7f82c68_3487c5e6",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-02T20:59:11Z",
+      "side": 1,
+      "message": "can this fit on one line ?",
+      "revId": "eecb5940c8ebee6f3e8d5852982da2aa52ca1c2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71a82c07_7d127651",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-02T20:59:11Z",
+      "side": 1,
+      "message": "wdyt about making these const and kInset and kZoomAmount ?",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 32
+      },
+      "revId": "eecb5940c8ebee6f3e8d5852982da2aa52ca1c2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f1d7edf_647967b2",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-02T20:59:11Z",
+      "side": 1,
+      "message": "Chromium - here and elsewhere ?",
+      "range": {
+        "startLine": 156,
+        "startChar": 37,
+        "endLine": 156,
+        "endChar": 47
+      },
+      "revId": "eecb5940c8ebee6f3e8d5852982da2aa52ca1c2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f551e891_b17201d4",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-02T20:59:11Z",
+      "side": 1,
+      "message": "line is up ?",
+      "revId": "eecb5940c8ebee6f3e8d5852982da2aa52ca1c2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
