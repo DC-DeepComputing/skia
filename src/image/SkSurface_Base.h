@@ -19,7 +19,6 @@
 #include "include/core/SkTypes.h"
 
 #if defined(SK_GANESH)
-#include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrTypes.h"
 #endif
 
@@ -27,6 +26,7 @@
 #include <memory>
 
 class GrBackendSemaphore;
+class GrBackendTexture;
 class GrRecordingContext;
 class SkCapabilities;
 class SkColorSpace;
@@ -47,18 +47,35 @@ public:
     SkSurface_Base(const SkImageInfo&, const SkSurfaceProps*);
     ~SkSurface_Base() override;
 
-    virtual GrRecordingContext* onGetRecordingContext();
-    virtual skgpu::graphite::Recorder* onGetRecorder();
+    // From SkSurface.h
+    bool replaceBackendTexture(const GrBackendTexture&,
+                               GrSurfaceOrigin,
+                               ContentChangeMode,
+                               TextureReleaseProc,
+                               ReleaseContext) override {
+        return false;
+    }
+
+    enum class Type {
+        kNull,     // intentionally associating 0 with a null canvas
+        kGanesh,
+        kGraphite,
+        kRaster,
+    };
+
+    virtual Type type() const = 0;
+
+    // True for surfaces instantiated by pixels in CPU memory
+    bool isRasterBacked() const { return this->type() == Type::kRaster; }
+    // True for surfaces instantiated by Ganesh in GPU memory
+    bool isGaneshBacked() const { return this->type() == Type::kGanesh; }
+    // True for surfaces instantiated by Graphite in GPU memory
+    bool isGraphiteBacked() const { return this->type() == Type::kGraphite; }
+
+    virtual GrRecordingContext* onGetRecordingContext() const;
+    virtual skgpu::graphite::Recorder* onGetRecorder() const;
 
 #if defined(SK_GANESH)
-    virtual GrBackendTexture onGetBackendTexture(BackendHandleAccess);
-    virtual GrBackendRenderTarget onGetBackendRenderTarget(BackendHandleAccess);
-    virtual bool onReplaceBackendTexture(const GrBackendTexture&,
-                                         GrSurfaceOrigin,
-                                         ContentChangeMode,
-                                         TextureReleaseProc,
-                                         ReleaseContext);
-
     virtual void onResolveMSAA() {}
 
     /**
@@ -177,9 +194,6 @@ public:
     // from SkSurface_Base).
     virtual sk_sp<const SkCapabilities> onCapabilities();
 
-    // True for surfaces instantiated by Graphite in GPU memory
-    virtual bool isGraphiteBacked() const { return false; }
-
     inline SkCanvas* getCachedCanvas();
     inline sk_sp<SkImage> refCachedImage();
 
@@ -201,8 +215,6 @@ private:
 
     friend class SkCanvas;
     friend class SkSurface;
-
-    using INHERITED = SkSurface;
 };
 
 SkCanvas* SkSurface_Base::getCachedCanvas() {
