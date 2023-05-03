@@ -6,9 +6,6 @@
  */
 
 #include "include/core/SkSurface.h"
-#include "src/base/SkMathPriv.h"
-#include "tools/sk_app/GraphiteMetalWindowContext.h"
-
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/ContextOptions.h"
@@ -17,7 +14,10 @@
 #include "include/gpu/graphite/mtl/MtlBackendContext.h"
 #include "include/gpu/graphite/mtl/MtlGraphiteTypes.h"
 #include "include/gpu/graphite/mtl/MtlGraphiteUtils.h"
+#include "include/gpu/graphite/Surface.h"
+#include "src/base/SkMathPriv.h"
 #include "tools/ToolUtils.h"
+#include "tools/sk_app/GraphiteMetalWindowContext.h"
 
 using sk_app::DisplayParams;
 using sk_app::GraphiteMetalWindowContext;
@@ -90,11 +90,11 @@ sk_sp<SkSurface> GraphiteMetalWindowContext::getBackbufferSurface() {
     skgpu::graphite::BackendTexture backendTex(this->dimensions(),
                                                (skgpu::graphite::MtlHandle)currentDrawable.texture);
 
-    surface = SkSurface::MakeGraphiteFromBackendTexture(this->graphiteRecorder(),
-                                                        backendTex,
-                                                        kBGRA_8888_SkColorType,
-                                                        fDisplayParams.fColorSpace,
-                                                        &fDisplayParams.fSurfaceProps);
+    surface = SkSurfaces::WrapBackendTexture(this->graphiteRecorder(),
+                                             backendTex,
+                                             kBGRA_8888_SkColorType,
+                                             fDisplayParams.fColorSpace,
+                                             &fDisplayParams.fSurfaceProps);
 
     fDrawableHandle = CFRetain((skgpu::graphite::MtlHandle) currentDrawable);
 
