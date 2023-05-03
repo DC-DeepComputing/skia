@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5302e812_5ec48184",
+        "filename": "relnotes/skimagefilters_magnifier.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-03T17:08:16Z",
+      "side": 1,
+      "message": "for ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 14
+      },
+      "revId": "98313cc2aa005df1b0c50767cafe94d49c6664b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f811564d_48c5359c",
+        "filename": "src/effects/imagefilters/SkMagnifierImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-03T17:08:16Z",
+      "side": 1,
+      "message": "Chromium - here and below ?",
+      "range": {
+        "startLine": 51,
+        "startChar": 38,
+        "endLine": 51,
+        "endChar": 46
+      },
+      "revId": "98313cc2aa005df1b0c50767cafe94d49c6664b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b903d1e4_81789728",
+        "filename": "src/effects/imagefilters/SkMagnifierImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-03T17:08:16Z",
+      "side": 1,
+      "message": "seams ?",
+      "range": {
+        "startLine": 237,
+        "startChar": 18,
+        "endLine": 237,
+        "endChar": 23
+      },
+      "revId": "98313cc2aa005df1b0c50767cafe94d49c6664b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26d6f9cc_bacbcfb1",
+        "filename": "src/effects/imagefilters/SkMagnifierImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-03T17:08:16Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "98313cc2aa005df1b0c50767cafe94d49c6664b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
