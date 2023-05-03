@@ -17,7 +17,7 @@ Shape& Shape::operator=(const Shape& shape) {
     switch (shape.type()) {
         case Type::kEmpty: this->reset();                         break;
         case Type::kLine:  this->setLine(shape.p0(), shape.p1()); break;
-        case Type::kRect:  this->setRect(shape.rect());           break;
+        case Type::kRect:  this->setRect(shape.rect1());           break;
         case Type::kRRect: this->setRRect(shape.rrect());         break;
         case Type::kPath:  this->setPath(shape.path());           break;
     }

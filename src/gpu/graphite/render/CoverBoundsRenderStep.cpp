@@ -75,7 +75,7 @@ void CoverBoundsRenderStep::writeVertices(DrawWriter* writer,
                 skvx::cast<float>(skvx::int4::Load(&params.clip().scissor())));
         m = &params.transform().inverse();
     } else {
-        bounds = params.geometry().bounds().ltrb();
+        bounds = params.geometry().bounds22().ltrb();
         m = &params.transform().matrix();
     }
 

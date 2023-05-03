@@ -43,6 +43,10 @@ public:
         return kHairline_Style == this->getStyle();
     }
 
+    bool isStrokeStyle() const {
+        return kStroke_Style == this->getStyle();
+    }
+
     bool isFillStyle() const {
         return kFill_Style == this->getStyle();
     }

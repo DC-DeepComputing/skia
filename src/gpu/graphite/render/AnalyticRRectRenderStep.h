@@ -10,9 +10,17 @@
 
 #include "src/gpu/graphite/Renderer.h"
 
+#include "src/base/SkVx.h"
+
+namespace skgpu {
+struct VertexWriter;
+};
+
 namespace skgpu::graphite {
 
+class Shape;
 class StaticBufferManager;
+
 
 class AnalyticRRectRenderStep final : public RenderStep {
 public:
@@ -27,6 +35,14 @@ public:
     void writeUniformsAndTextures(const DrawParams&, PipelineDataGatherer*) const override;
 
 private:
+    void foo(VertexWriter& vw,
+             const DrawParams& params,
+             const Shape& shape,
+             float* strokeInset,
+             float* centerWeight,
+             const skvx::float4& intervals) const;
+
+
     // Points to the static buffers holding the fixed indexed vertex template for drawing instances.
     BindBufferInfo fVertexBuffer;
     BindBufferInfo fIndexBuffer;

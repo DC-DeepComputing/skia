@@ -429,7 +429,7 @@ bool ClipStack::RawElement::combine(const RawElement& other, const SaveRecord& c
     bool shapeUpdated = false;
     if (fShape.isRect() && other.fShape.isRect()) {
         if (fLocalToDevice == other.fLocalToDevice) {
-            Rect intersection = fShape.rect().makeIntersect(other.fShape.rect());
+            Rect intersection = fShape.rect1().makeIntersect(other.fShape.rect1());
             // Simplify() should have caught this case
             SkASSERT(!intersection.isEmptyNegativeOrNaN());
             fShape.setRect(intersection);
@@ -439,9 +439,9 @@ bool ClipStack::RawElement::combine(const RawElement& other, const SaveRecord& c
                (other.fShape.isRect() || other.fShape.isRRect())) {
         if (fLocalToDevice == other.fLocalToDevice) {
             // Treat rrect+rect intersections as rrect+rrect
-            SkRRect a = fShape.isRect() ? SkRRect::MakeRect(fShape.rect().asSkRect())
+            SkRRect a = fShape.isRect() ? SkRRect::MakeRect(fShape.rect1().asSkRect())
                                         : fShape.rrect();
-            SkRRect b = other.fShape.isRect() ? SkRRect::MakeRect(other.fShape.rect().asSkRect())
+            SkRRect b = other.fShape.isRect() ? SkRRect::MakeRect(other.fShape.rect1().asSkRect())
                                               : other.fShape.rrect();
 
             SkRRect joined = SkRRectPriv::ConservativeIntersect(a, b);
@@ -1102,12 +1102,12 @@ std::pair<Clip, CompressedPaintersOrder> ClipStack::applyClipToDraw(
     } else {
         // The geometry is something special like text or vertices, in which case it's definitely
         // not a shape that could simplify cleanly with the clip stack.
-        styledShape.initIfNeeded(geometry.bounds());
+        styledShape.initIfNeeded(geometry.bounds22());
     }
 
-    auto origSize = geometry.bounds().size();
+    auto origSize = geometry.bounds22().size();
     if (!std::isfinite(origSize.x()) || !std::isfinite(origSize.y())) {
-        // Discard all non-fininte geometry as if it were clipped out
+        // Discard all non-finite geometry as if it were clipped out
         return kClippedOut;
     }
 

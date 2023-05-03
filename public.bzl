@@ -1395,6 +1395,8 @@ BASE_SRCS_ALL = [
     "src/shaders/SkColorShader.cpp",
     "src/shaders/SkComposeShader.cpp",
     "src/shaders/SkCoordClampShader.cpp",
+    "src/shaders/SkDashingShader.cpp",
+    "src/shaders/SkDashingShader.h",
     "src/shaders/SkEmptyShader.cpp",
     "src/shaders/SkGainmapShader.cpp",
     "src/shaders/SkImageShader.cpp",

@@ -47,6 +47,7 @@
 //    the Y coordinates of the quadrilateral.
 //
 // From the other direction, shapes produce instance values like:
+//                     xRadiiOrFlags          radiiOrQuadXs          ltrbOrQuadYs
 //  - filled rect:    [-1 -1 -1 -1]            [L R R L]             [T T B B]
 //  - stroked rect:   [-2 0 stroke join]       [0 0 0 0]             [L T R B]
 //  - hairline rect:  [-2 -2 -2 -2]            [0 0 0 0]             [L T R B]
@@ -258,9 +259,12 @@ static bool opposite_insets_intersect(const Rect& rect, float strokeRadius, floa
 static bool opposite_insets_intersect(const Geometry& geometry,
                                       float strokeRadius,
                                       float aaRadius) {
-    if (geometry.isEdgeAAQuad()) {
+    if (geometry.isDashedLine()) {
+        //$$
+        return strokeRadius <= aaRadius;
+    } else if (geometry.isEdgeAAQuad1()) {
         SkASSERT(strokeRadius == 0.f);
-        const EdgeAAQuad& quad = geometry.edgeAAQuad();
+        const EdgeAAQuad& quad = geometry.edgeAAQuad1();
         if (quad.edgeFlags() == AAFlags::kNone) {
             // If all edges are non-AA, there won't be any insetting. This allows completely non-AA
             // quads to use the fill triangles for simpler fragment shader work.
@@ -282,7 +286,7 @@ static bool opposite_insets_intersect(const Geometry& geometry,
         if (shape.isLine()) {
             return strokeRadius <= aaRadius;
         } else if (shape.isRect()) {
-            return opposite_insets_intersect(shape.rect(), strokeRadius, aaRadius);
+            return opposite_insets_intersect(shape.rect1(), strokeRadius, aaRadius);
         } else {
             SkASSERT(shape.isRRect());
             return opposite_insets_intersect(shape.rrect(), strokeRadius, aaRadius);
@@ -465,8 +469,9 @@ AnalyticRRectRenderStep::AnalyticRRectRenderStep(StaticBufferManager* bufferMana
                              {"edgeDistances", SkSLType::kFloat4}, // distance to LTRB edges
                              // TODO: These are constant for all fragments for a given instance,
                              // could we store them in the draw's SSBO?
-                             {"xRadii", SkSLType::kFloat4},
+                             {"xRadii1", SkSLType::kFloat4},
                              {"yRadii", SkSLType::kFloat4},
+                             {"intervals", SkSLType::kFloat4},
                              // Matches the StrokeStyle struct (X is radius, Y < 0 is round join,
                              // Y = 0 is bevel, Y > 0 is miter join).
                              // TODO: These could easily be considered part of the draw's uniforms.
@@ -541,14 +546,22 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
             if (xRadiiOrFlags.y < 0.0) {
                 // A hairline [r]rect so the X radii are encoded as negative values in this field,
                 // and Y radii are stored directly in the subsequent float4.
-                xRadii = -xRadiiOrFlags - 2.0;
+                xRadii1 = -xRadiiOrFlags - 2.0;
                 yRadii = radiiOrQuadXs;
+                intervals = float4(0.0);
 
                 // All hairlines use miter joins (join style > 0)
                 strokeParams = float2(0.0, 1.0);
             } else {
-                xRadii = radiiOrQuadXs;
-                yRadii = xRadii; // regular strokes are circular
+                if (any(greaterThan(radiiOrQuadXs, float4(0.0)))) {
+                    xRadii1 = float4(0.0);
+                    intervals = radiiOrQuadXs;
+                } else {
+                    xRadii1 = radiiOrQuadXs;
+                    intervals = float4(0.0);
+                }
+
+                yRadii = xRadii1; // regular strokes are circular
                 strokeParams = xRadiiOrFlags.zw;
 
                 if (strokeParams.y < 0.0) {
@@ -562,19 +575,25 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
             xs = ltrbOrQuadYs.LRRL;
             ys = ltrbOrQuadYs.TTBB;
 
-            xRadii = xRadiiOrFlags;
+            xRadii1 = xRadiiOrFlags;
             yRadii = radiiOrQuadXs;
+            intervals = float4(0.0);
 
             strokeParams = float2(0.0, -1.0); // A negative join style is "round"
         } else {
+            //$$
+            //xRadiiOrFlags.x >= -1.0
+            //all xRadiiOrFlags <= 0.0
+
             // Per-edge quadrilateral, so we have to calculate the corner's basis from the
             // quad's edges.
             xs = radiiOrQuadXs;
             ys = ltrbOrQuadYs;
             edgeAA = -xRadiiOrFlags; // AA flags needed to be < 0 on upload, so flip the sign.
 
-            xRadii = float4(0.0);
+            xRadii1 = float4(0.0);
             yRadii = float4(0.0);
+            intervals = float4(0.0);
 
             strokeParams = float2(0.0, 1.0); // Will be ignored, but set to a "miter"
             deviceSpaceDistances = true;
@@ -582,7 +601,7 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
 
         // Adjust state on a per-corner basis
         int cornerID = sk_VertexID / kCornerVertexCount;
-        float2 cornerRadii = float2(xRadii[cornerID], yRadii[cornerID]);
+        float2 cornerRadii = float2(xRadii1[cornerID], yRadii[cornerID]);
         if (cornerID % 2 != 0) {
             // Corner radii are uploaded in the local coordinate frame, but vertex placement happens
             // in a consistent winding before transforming to final local coords, so swap the
@@ -785,6 +804,14 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
             perPixelControl.x = bidirectionalCoverage ? -1.0 : 0.0;
         }
 
+//        if (perPixelControl.x <= 0.0 && perPixelControl.y > 1.0) {
+//            if (!dashed) {
+//               perPixelControl.x = -1.0;
+//            else {
+//               perPixelControl.x = -2.0;
+//            }
+//        }
+
         // The fragment shader operates in a canonical basis (x-axis = (1,0), y-axis = (0,1)). For
         // stroked lines, incorporate their local orientation into the Jacobian to preserve this.
         if (strokedLine) {
@@ -814,11 +841,15 @@ const char* AnalyticRRectRenderStep::fragmentCoverageSkSL() const {
             // their scale and bias is not uniform over the shape; Rounded shapes cannot use this
             // because they rely on the edge distances being in local space to reconstruct the
             // per-corner positions for the elliptical implicit functions.
-            float2 outerDist = min(edgeDistances.xy, edgeDistances.zw);
-            float c = min(outerDist.x, outerDist.y) * sk_FragCoord.w;
-            float scale = (perPixelControl.y - 1.0) * sk_FragCoord.w;
-            float bias = coverage_bias(scale);
-            outputCoverage = half4(clamp(scale * (c + bias), 0.0, 1.0));
+            if (perPixelControl.x < -1.5) {
+                outputCoverage = half4(0.5);
+            } else {
+                float2 outerDist = min(edgeDistances.xy, edgeDistances.zw);
+                float c = min(outerDist.x, outerDist.y) * sk_FragCoord.w;
+                float scale = (perPixelControl.y - 1.0) * sk_FragCoord.w;
+                float bias = coverage_bias(scale);
+                outputCoverage = half4(clamp(scale * (c + bias), 0.0, 1.0));
+            }
         } else {
             // Compute per-pixel coverage, mixing four outer edge distances, possibly four inner
             // edge distances, and per-corner elliptical distances into a final coverage value.
@@ -870,107 +901,140 @@ const char* AnalyticRRectRenderStep::fragmentCoverageSkSL() const {
             }
 
             // Check all corners, although most pixels should only be influenced by 1.
-            corner_distances(d, J, strokeParams, edgeDistances, xRadii, yRadii);
+            corner_distances(d, J, strokeParams, edgeDistances, xRadii1, yRadii);
 
             float outsetDist = min(perPixelControl.y, 0.0) * sk_FragCoord.w;
             float finalCoverage = scale * (min(d.x + outsetDist, -d.y) + bias);
+
+            if (any(greaterThan(intervals, float4(0.0)))) {
+                 finalCoverage = 1.0;
+            }
 
             outputCoverage = half4(clamp(finalCoverage, 0.0, 1.0));
         }
     )";
 }
 
+void AnalyticRRectRenderStep::foo(VertexWriter& vw,
+                                  const DrawParams& params,
+                                  const Shape& shape,
+                                  float* strokeInset,
+                                  float* centerWeight,
+                                  const skvx::float4& intervals) const {
+    Rect bounds77 = params.geometry().bounds22();
+
+    SkASSERT(params.strokeStyle().halfWidth() >= 0.f);
+    SkASSERT(shape.isRect() || shape.isLine() || params.strokeStyle().halfWidth() == 0.f ||
+             (shape.isRRect() && SkRRectPriv::AllCornersCircular(shape.rrect())));
+
+    float strokeRadius = params.strokeStyle().halfWidth();
+
+    skvx::float2 size = shape.isLine() ? skvx::float2(length(shape.p1() - shape.p0()), 0.f)
+                                       : bounds77.size(); // rect or [r]rect
+
+    skvx::float2 innerGap = size - 2.f * params.strokeStyle().halfWidth();
+    if (any(innerGap <= 0.f) && strokeRadius > 0.f) {
+        // AA inset intersections are measured from the *outset* and remain marked as "solid"
+        *strokeInset = -strokeRadius;
+    } else {
+        // This will be upgraded to kFilledStrokeInterior if insets intersect
+        *centerWeight = kStrokeInterior;
+        *strokeInset = strokeRadius;
+    }
+
+    skvx::float4 xRadii = shape.isRRect() ? load_x_radii(shape.rrect()) : intervals;
+    if (strokeRadius > 0.f || shape.isLine()) {
+        // Regular strokes only need to upload 4 corner radii; hairline lines can be uploaded in
+        // the same manner since it has no real corner radii.
+        float joinStyle = params.strokeStyle().joinLimit();
+        float lineFlag = shape.isLine() ? 1.f : 0.f;
+        auto empty = size == 0.f;
+
+        // Points and lines produce caps instead of joins. However, the capped geometry is
+        // visually equivalent to a joined, stroked [r]rect of the paired join style.
+        if (shape.isLine() || all(empty)) {
+            // However, butt-cap points are defined not to produce any geometry, so that combo
+            // should have been rejected earlier.
+            SkASSERT(shape.isLine() || params.strokeStyle().cap() != SkPaint::kButt_Cap);
+            switch(params.strokeStyle().cap()) {
+                case SkPaint::kRound_Cap:  joinStyle = -1.f; break; // round cap == round join
+                case SkPaint::kButt_Cap:   joinStyle =  0.f; break; // butt cap == bevel join
+                case SkPaint::kSquare_Cap: joinStyle =  1.f; break; // square cap == miter join
+            }
+        } else if (params.strokeStyle().isMiterJoin()) {
+            // Normal corners are 90-degrees so become beveled if the miter limit is < sqrt(2).
+            // If the [r]rect has a width or height of 0, the corners are actually 180-degrees,
+            // so they must always be beveled (or, equivalently, butt-capped).
+            if (params.strokeStyle().miterLimit() < SK_ScalarSqrt2 || any(empty)) {
+                joinStyle = 0.f; // == bevel (or butt if width or height are zero)
+            } else {
+                // Discard actual miter limit because a 90-degree corner never exceeds it.
+                joinStyle = 1.f;
+            }
+        } // else no join style correction needed for non-empty geometry or round joins
+
+        //$$
+        // Write a negative value outside [-1, 0] to signal a stroked shape, the line flag, then
+        // the style params, followed by corner radii and coords.
+        vw << -2.f << lineFlag << strokeRadius << joinStyle << xRadii
+           << (shape.isLine() ? shape.line1() : bounds77.ltrb());
+    } else {
+        // Write (-2 - cornerRadii) to encode the X radii in such a way to trigger stroking but
+        // guarantee the 2nd field is non-zero to signal hairline. Then we upload Y radii as
+        // well to allow for elliptical hairlines.
+        skvx::float4 yRadii = shape.isRRect() ? load_y_radii(shape.rrect()) : skvx::float4(0.f);
+        vw << (-2.f - xRadii) << yRadii << bounds77.ltrb();
+    }
+}
+
 void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
-                                           const DrawParams& params,
-                                           int ssboIndex) const {
-    SkASSERT(params.geometry().isShape() || params.geometry().isEdgeAAQuad());
+                                            const DrawParams& params,
+                                            int ssboIndex) const {
+    SkASSERT(params.geometry().isShape() || params.geometry().isEdgeAAQuad1() ||
+             params.geometry().isDashedLine());
 
     DrawWriter::Instances instance{*writer, fVertexBuffer, fIndexBuffer, kIndexCount};
     auto vw = instance.append(1);
 
     // The bounds of a rect is the rect, and the bounds of a rrect is tight (== SkRRect::getRect()).
-    Rect bounds = params.geometry().bounds();
+    Rect bounds77 = params.geometry().bounds22();
 
     // aaRadius will be set to a negative value to signal a complex self-intersection that has to
     // be calculated in the vertex shader.
-    float aaRadius = local_aa_radius(params.transform(), bounds);
+    float aaRadius = local_aa_radius(params.transform(), bounds77);
     float strokeInset = 0.f;
     float centerWeight = kSolidInterior;
 
+#if 0
+    if (params.geometry().isDashedLine()) {
+        skvx::float4 ltrb = bounds77.ltrb();
+        vw << /*edge flags*/ skvx::float4(-1.f)
+           << /*xs*/ skvx::shuffle<0,2,2,0>(ltrb)
+           << /*ys*/ skvx::shuffle<1,1,3,3>(ltrb);
+    } else
+#endif
+
     if (params.isStroke()) {
-         // EdgeAAQuads are not stroked so we know it's a Shape, but we support rects, rrects, and
-         // lines that all need to be converted to the same form.
-        const Shape& shape = params.geometry().shape();
+        if (params.geometry().isDashedLine()) {
+            Shape line(params.geometry().dashedLine().p0(), params.geometry().dashedLine().p1());
 
-        SkASSERT(params.strokeStyle().halfWidth() >= 0.f);
-        SkASSERT(shape.isRect() || shape.isLine() || params.strokeStyle().halfWidth() == 0.f ||
-                 (shape.isRRect() && SkRRectPriv::AllCornersCircular(shape.rrect())));
-
-        float strokeRadius = params.strokeStyle().halfWidth();
-
-        skvx::float2 size = shape.isLine() ? skvx::float2(length(shape.p1() - shape.p0()), 0.f)
-                                           : bounds.size(); // rect or [r]rect
-
-        skvx::float2 innerGap = size - 2.f * params.strokeStyle().halfWidth();
-        if (any(innerGap <= 0.f) && strokeRadius > 0.f) {
-            // AA inset intersections are measured from the *outset* and remain marked as "solid"
-            strokeInset = -strokeRadius;
+            SkDebugf("here\n");
+            this->foo(vw, params, line, &strokeInset, &centerWeight, params.geometry().dashedLine().intervals());
         } else {
-            // This will be upgraded to kFilledStrokeInterior if insets intersect
-            centerWeight = kStrokeInterior;
-            strokeInset = strokeRadius;
-        }
+            // EdgeAAQuads are not stroked so we know it's a Shape, but we support rects, rrects, and
+            // lines that all need to be converted to the same form.
+            const Shape& shape = params.geometry().shape();
 
-        skvx::float4 xRadii = shape.isRRect() ? load_x_radii(shape.rrect()) : skvx::float4(0.f);
-        if (strokeRadius > 0.f || shape.isLine()) {
-            // Regular strokes only need to upload 4 corner radii; hairline lines can be uploaded in
-            // the same manner since it has no real corner radii.
-            float joinStyle = params.strokeStyle().joinLimit();
-            float lineFlag = shape.isLine() ? 1.f : 0.f;
-            auto empty = size == 0.f;
-
-            // Points and lines produce caps instead of joins. However, the capped geometry is
-            // visually equivalent to a joined, stroked [r]rect of the paired join style.
-            if (shape.isLine() || all(empty)) {
-                // However, butt-cap points are defined not to produce any geometry, so that combo
-                // should have been rejected earlier.
-                SkASSERT(shape.isLine() || params.strokeStyle().cap() != SkPaint::kButt_Cap);
-                switch(params.strokeStyle().cap()) {
-                    case SkPaint::kRound_Cap:  joinStyle = -1.f; break; // round cap == round join
-                    case SkPaint::kButt_Cap:   joinStyle =  0.f; break; // butt cap == bevel join
-                    case SkPaint::kSquare_Cap: joinStyle =  1.f; break; // square cap == miter join
-                }
-            } else if (params.strokeStyle().isMiterJoin()) {
-                // Normal corners are 90-degrees so become beveled if the miter limit is < sqrt(2).
-                // If the [r]rect has a width or height of 0, the corners are actually 180-degrees,
-                // so the must always be beveled (or, equivalently, butt-capped).
-                if (params.strokeStyle().miterLimit() < SK_ScalarSqrt2 || any(empty)) {
-                    joinStyle = 0.f; // == bevel (or butt if width or height are zero)
-                } else {
-                    // Discard actual miter limit because a 90-degree corner never exceeds it.
-                    joinStyle = 1.f;
-                }
-            } // else no join style correction needed for non-empty geometry or round joins
-
-            // Write a negative value outside [-1, 0] to signal a stroked shape, the line flag, then
-            // the style params, followed by corner radii and coords.
-            vw << -2.f << lineFlag << strokeRadius << joinStyle << xRadii
-               << (shape.isLine() ? shape.line() : bounds.ltrb());
-        } else {
-            // Write -2 - cornerRadii to encode the X radii in such a way to trigger stroking but
-            // guarantee the 2nd field is non-zero to signal hairline. Then we upload Y radii as
-            // well to allow for elliptical hairlines.
-            skvx::float4 yRadii = shape.isRRect() ? load_y_radii(shape.rrect()) : skvx::float4(0.f);
-            vw << (-2.f - xRadii) << yRadii << bounds.ltrb();
+            this->foo(vw, params, shape, &strokeInset, &centerWeight, skvx::float4(0.f));
         }
     } else {
         // Empty fills should not have been recorded at all.
-        SkASSERT(!bounds.isEmptyNegativeOrNaN());
+        SkASSERT(!bounds77.isEmptyNegativeOrNaN());
 
-        if (params.geometry().isEdgeAAQuad()) {
+        if (params.geometry().isEdgeAAQuad1()) {
             // NOTE: If quad.isRect() && quad.edgeFlags() == kAll, the written data is identical to
             // Shape.isRect() case below.
-            const EdgeAAQuad& quad = params.geometry().edgeAAQuad();
+            const EdgeAAQuad& quad = params.geometry().edgeAAQuad1();
 
             // If all edges are non-AA, set localAARadius to 0 so that the fill triangles cover the
             // entire shape. Otherwise leave it as-is for the full AA rect case; in the event it's
@@ -1002,7 +1066,7 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
             if (shape.isRect() || (shape.isRRect() && shape.rrect().isRect())) {
                 // Rectangles (or rectangles embedded in an SkRRect) are converted to the
                 // quadrilateral case, but with all edges anti-aliased (== -1).
-                skvx::float4 ltrb = bounds.ltrb();
+                skvx::float4 ltrb = bounds77.ltrb();
                 vw << /*edge flags*/ skvx::float4(-1.f)
                    << /*xs*/ skvx::shuffle<0,2,2,0>(ltrb)
                    << /*ys*/ skvx::shuffle<1,1,3,3>(ltrb);
@@ -1011,7 +1075,7 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
                 // shader won't detect it as a rounded rect.
                 SkASSERT(any(load_x_radii(shape.rrect()) > 0.f));
 
-                vw << load_x_radii(shape.rrect()) << load_y_radii(shape.rrect()) << bounds.ltrb();
+                vw << load_x_radii(shape.rrect()) << load_y_radii(shape.rrect()) << bounds77.ltrb();
             }
         }
     }
@@ -1023,10 +1087,11 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
         }
     }
 
+    //$$
     // All instance types share the remaining instance attribute definitions
     const SkM44& m = params.transform().matrix();
-    auto center = params.geometry().isEdgeAAQuad() ? quad_center(params.geometry().edgeAAQuad())
-                                                   : bounds.center();
+    auto center = params.geometry().isEdgeAAQuad1() ? quad_center(params.geometry().edgeAAQuad1())
+                                                   : bounds77.center();
     vw << center << centerWeight << aaRadius
        << params.order().depthAsFloat()
        << ssboIndex

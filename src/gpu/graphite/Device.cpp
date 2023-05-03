@@ -9,6 +9,7 @@
 
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
+#include "include/private/base/SkTemplates.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
@@ -56,6 +57,8 @@
 
 #include <unordered_map>
 #include <vector>
+
+using namespace skia_private;
 
 using RescaleGamma       = SkImage::RescaleGamma;
 using RescaleMode        = SkImage::RescaleMode;
@@ -493,7 +496,7 @@ bool Device::onClipIsAA() const {
     } else if (type == ClipStack::ClipState::kDeviceRect) {
         const ClipStack::Element rect = *fClip.begin();
         SkASSERT(rect.fShape.isRect() && rect.fLocalToDevice.type() == Transform::Type::kIdentity);
-        return rect.fShape.rect() != rect.fShape.rect().makeRoundOut();
+        return rect.fShape.rect1() != rect.fShape.rect1().makeRoundOut();
     } else {
         return true;
     }
@@ -524,7 +527,7 @@ void Device::onAsRgnClip(SkRegion* region) const {
     for (const ClipStack::Element& e : fClip) {
         SkRegion tmp;
         if (e.fShape.isRect() && e.fLocalToDevice.type() == Transform::Type::kIdentity) {
-            tmp.setRect(rect_to_pixelbounds(e.fShape.rect()));
+            tmp.setRect(rect_to_pixelbounds(e.fShape.rect1()));
         } else {
             SkPath tmpPath = e.fShape.asPath();
             tmpPath.transform(e.fLocalToDevice);
@@ -660,7 +663,120 @@ void Device::drawRRect(const SkRRect& rr, const SkPaint& paint) {
                        paint, SkStrokeRec(paint));
 }
 
+
+namespace {
+
+#if 0
+sk_sp<SkShader> make_dash_shader(const SkColor4f& color,
+                                 const SkPoint line[2],
+                                 float intervals[4], int numIntervals, float phase) {
+    return SkShaders::Dashing(color, line, intervals, numIntervals, phase);
+}
+#endif
+
+void draw_dashed_line(Device* device,
+                      const SkPoint line[2],
+                      float intervals[4], int numIntervals, float phase,
+                      const SkPaint& paint) {
+    float strokeWidth = paint.getStrokeWidth();
+
+    // We adjust the intervals for Square caps and adjust the drawn rectangle in XXX
+    if (paint.getStrokeCap() == SkPaint::kSquare_Cap) {
+        for (int i = 0; i < numIntervals; ++i) {
+            intervals[i] += (i & 1) ? -strokeWidth : strokeWidth;
+        }
+    }
+
+//    SkPaint newPaint(paint);
+//    newPaint.setPathEffect(nullptr);
+//    newPaint.setStroke(false);
+
+//    this->drawGeometry(this->localToDeviceTransform(),
+//                       Geometry(Shape(points[i], points[i + next])),
+//                       paint, stroke, DrawFlags::kIgnorePathEffect);
+
+    device->drawGeometry(device->localToDeviceTransform(),
+                         Geometry(line, intervals),
+//                         Geometry(Shape(line[0], line[1])),
+                         paint, SkStrokeRec(paint), Device::DrawFlags::kIgnorePathEffect);
+}
+
+bool draw_as_dashed_line(Device* device,
+                         SkCanvas::PointMode mode,
+                         int count,
+                         const SkPoint* points,
+                         const SkPaint& paint) {
+
+    if (count != 2 || mode != SkCanvas::kLines_PointMode) {
+        return false;
+    }
+
+    // Pts must be either horizontal or vertical in src space
+    if (points[0].fX != points[1].fX && points[0].fY != points[1].fY) {
+        return false;
+    }
+
+    if (points[0] == points[1]) {
+        // a point? It seems like this could work
+        return false;
+    }
+
+    SkPathEffect* pe = paint.getPathEffect();
+    if (!pe) {
+        return false;
+    }
+
+    SkPathEffect::DashInfo info;
+    if (SkPathEffect::kNone_DashType == pe->asADash(&info)) {
+        return false;
+    }
+
+    if (info.fCount > 4) {
+        return false;
+    }
+
+    AutoTArray<SkScalar> intervals(4);
+    info.fIntervals = intervals.get();
+    pe->asADash(&info);
+
+    for (int i = info.fCount; i < 4; ++i) {
+        intervals[i] = 0.0f;
+    }
+
+    SkPaint::Cap cap = paint.getStrokeCap();
+    if (SkPaint::kRound_Cap == cap) {
+        // Current we don't support round caps unless the on interval is zero
+        if (intervals[0] != 0.f) {
+            return false;
+        }
+        // If the width of the circle caps in greater than the off interval we will pick up unwanted
+        // segments of circles at the start and end of the dash line.
+        if (paint.getStrokeWidth() > intervals[1]) {
+            return false;
+        }
+    }
+
+    draw_dashed_line(device, points, intervals.get(), info.fCount, info.fPhase, paint);
+    return true;
+}
+
+bool draw_as_dashed_line(Device* device, const SkPath& path, const SkPaint& paint) {
+    SkPoint pts[2];
+
+    if (!path.isLine(pts)) {
+        return false;
+    }
+
+    return draw_as_dashed_line(device, SkCanvas::kLines_PointMode, 2, pts, paint);
+}
+
+} // anonymous namespace
+
 void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable) {
+    if (draw_as_dashed_line(this, path, paint)) {
+        return;
+    }
+
     // TODO: If we do try to inspect the path, it should happen here and possibly after computing
     // the path effect. Alternatively, all that should be handled in SkCanvas.
     this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(path)),
@@ -669,6 +785,10 @@ void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutab
 
 void Device::drawPoints(SkCanvas::PointMode mode, size_t count,
                         const SkPoint* points, const SkPaint& paint) {
+    if (draw_as_dashed_line(this, mode, count, points, paint)) {
+        return;
+    }
+
     SkStrokeRec stroke(paint, SkPaint::kStroke_Style);
     size_t next = 0;
     if (mode == SkCanvas::kPoints_PointMode) {
@@ -689,7 +809,7 @@ void Device::drawPoints(SkCanvas::PointMode mode, size_t count,
     for (size_t i = 0; i < count; i += inc) {
         this->drawGeometry(this->localToDeviceTransform(),
                            Geometry(Shape(points[i], points[i + next])),
-                           paint, stroke);
+                           paint, stroke, DrawFlags::kIgnorePathEffect);
     }
 }
 
@@ -1079,14 +1199,17 @@ const Renderer* Device::chooseRenderer(const Geometry& geometry,
     const RendererProvider* renderers = fRecorder->priv().rendererProvider();
     SkStrokeRec::Style type = style.getStyle();
 
-    if (geometry.isSubRun()) {
+    if (geometry.isSubRun1()) {
         SkASSERT(!requireMSAA);
-        return geometry.subRunData().subRun()->renderer(renderers);
-    } else if (geometry.isVertices()) {
-        SkVerticesPriv info(geometry.vertices()->priv());
+        return geometry.subRunData1().subRun()->renderer(renderers);
+    } else if (geometry.isVertices1()) {
+        SkVerticesPriv info(geometry.vertices1()->priv());
         return renderers->vertices(info.mode(), info.hasColors(), info.hasTexCoords());
-    } else if (geometry.isEdgeAAQuad()) {
+    } else if (geometry.isEdgeAAQuad1()) {
         SkASSERT(!requireMSAA && style.isFillStyle());
+        return renderers->analyticRRect(); // handled by the same system as rects and round rects
+    } else if (geometry.isDashedLine()) {
+        SkASSERT(!requireMSAA && style.isStrokeStyle());
         return renderers->analyticRRect(); // handled by the same system as rects and round rects
     } else if (!geometry.isShape()) {
         // We must account for new Geometry types with specific Renderers
