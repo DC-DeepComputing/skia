@@ -36,6 +36,9 @@
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/ProxyUtils.h"
 
+#include "src/image/SkImage_Gpu.h"
+#include "src/image/SkImage_GpuBase.h"
+
 #include <functional>
 #include <initializer_list>
 #include <vector>
@@ -957,6 +960,16 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceWrappedWithRelease_Gpu, reporter, ctxI
         if (!surface) {
             ERRORF(reporter, "Failed to create surface");
             continue;
+        }
+
+        GrBackendTexture beTex = surface->getBackendTexture(SkSurface::kFlushRead_BackendHandleAccess);
+        SkDebugf("Surface protected: %d\n", beTex.isProtected());
+
+        sk_sp<SkImage> img = surface->makeImageSnapshot();
+
+        if (img->isTextureBacked()) {
+            GrBackendTexture imgTex = img->getBackendTexture(false);
+            SkDebugf("Image protected: %d\n", imgTex.isProtected());
         }
 
         surface->getCanvas()->clear(SK_ColorRED);
