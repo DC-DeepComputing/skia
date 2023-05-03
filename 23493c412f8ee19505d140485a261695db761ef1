@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cb276469_8db62a83",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1990,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-03T13:21:06Z",
+      "side": 1,
+      "message": "It looks like we can just remove of the `to_wgsl_type` helper function, right? Now that it requires the ProgramSettings, it isn\u0027t useful any longer as a freestanding function.",
+      "range": {
+        "startLine": 1990,
+        "startChar": 11,
+        "endLine": 1990,
+        "endChar": 56
+      },
+      "revId": "23493c412f8ee19505d140485a261695db761ef1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0418dbc7_1d70ffa8",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1994,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-03T13:21:06Z",
+      "side": 1,
+      "message": "Remove?",
+      "range": {
+        "startLine": 1994,
+        "startChar": 11,
+        "endLine": 1994,
+        "endChar": 31
+      },
+      "revId": "23493c412f8ee19505d140485a261695db761ef1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04a9c22f_283255a1",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
         "patchSetId": 4
