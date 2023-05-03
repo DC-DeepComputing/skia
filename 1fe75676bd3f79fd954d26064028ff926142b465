@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa33c530_c34481cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-03T16:54:53Z",
+      "side": 1,
+      "message": "@robertphillips@google.com, is it possible to backport this to `android/t-release` - particularly getting whether the `SkImage` is protected? I suspect the bug *would* reproduce on newer versions, but daitx wasn\u0027t able to get the bootloader changes working there yet, as I understand it.",
+      "revId": "1fe75676bd3f79fd954d26064028ff926142b465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
