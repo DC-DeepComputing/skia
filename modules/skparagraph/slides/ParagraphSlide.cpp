@@ -4046,6 +4046,138 @@ public:
     }
 };
 
+class ParagraphSlideGetPath : public ParagraphSlide_Base {
+public:
+    ParagraphSlideGetPath() { fName = "ParagraphSlideGetPath"; }
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = getFontCollection();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(50);
+        text_style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(text_style);
+        paragraph_style.setTextAlign(TextAlign::kStart);
+
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Multi lined sticky notes drawn as paths");
+        auto paragraph = builder.Build();
+        paragraph->layout(this->size().width());
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        SkPath fullPath;
+        SkScalar height = 0;
+        for (auto& line : impl->lines()) {
+            line.ensureTextBlobCachePopulated();
+            for (auto& rec : line.fTextBlobCache) {
+                auto paths = paragraph->getPath(rec.fBlob.get());
+                paths.offset(0, height);
+                fullPath.addPath(paths);
+                height += line.height();
+            }
+        }
+        SkRect rect = SkRect::MakeXYWH(100, 100 + paragraph->getHeight(), this->size().width(), paragraph->getHeight());
+        SkPaint paint;
+        paint.setShader(setgrad(rect, SK_ColorBLUE, SK_ColorLTGRAY));
+        canvas->drawPath(fullPath, paint);
+    }
+};
+
+class ParagraphSlideExperiment : public ParagraphSlide_Base {
+public:
+    ParagraphSlideExperiment() { fName = "ParagraphSlideExperiment"; }
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = getFontCollection();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(50);
+        text_style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(text_style);
+        paragraph_style.setTextAlign(TextAlign::kStart);
+
+        {
+            ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+            builder.pushStyle(text_style);
+            builder.addText("Sticky notes\non multple lines\nwith bounds around glyphs");
+            auto paragraph = builder.Build();
+            paragraph->layout(this->size().width());
+            paragraph->paint(canvas, 0, 0);
+            paragraph->extendedVisit([&](int, const skia::textlayout::Paragraph::ExtendedVisitorInfo* info) {
+                if (!info) {
+                    return;
+                }
+                SkPaint paint;
+                paint.setStyle(SkPaint::kStroke_Style);
+                paint.setAntiAlias(true);
+                paint.setStrokeWidth(1);
+                for (auto i = 0; i < info->count; ++i) {
+                    paint.setColor(SK_ColorDKGRAY);
+                    SkRect rect(info->bounds[i]);
+                    rect.offset(info->positions[i]);
+                    rect.offset(info->origin);
+                    canvas->drawRect(rect, paint);
+                }
+            });
+            canvas->translate(0, paragraph->getHeight() + 20);
+        }
+
+        {
+          ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+          builder.pushStyle(text_style);
+          builder.addText("Sticky notes with glyphs changing position");
+          auto paragraph = builder.Build();
+          paragraph->layout(this->size().width());
+          paragraph->paint(canvas, 0, 0);
+          paragraph->extendedVisit([&](int, const skia::textlayout::Paragraph::ExtendedVisitorInfo* info) {
+              if (!info) {
+                  return;
+              }
+              SkScalar offset = 0;
+              for (auto i = 0; i < info->count; ++i) {
+                  info->positions[i].fY += offset;
+                  if (i % 3 == 0) {
+                      offset = 20;
+                  } else if (i % 3 == 1) {
+                      offset = -20;
+                  } else {
+                      offset = 0;
+                  }
+              }
+          });
+          paragraph->paint(canvas, 0, 0);
+          canvas->translate(0, paragraph->getHeight() + 40);
+        }
+
+        {
+            ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+            builder.pushStyle(text_style);
+            builder.addText("Multi lined sticky notes drawn as paths");
+            auto paragraph = builder.Build();
+            paragraph->layout(300);
+            SkPaint paint;
+            //paint.setColor(SK_ColorBLUE);
+            std::vector<LineMetrics> metrics;
+            paragraph->getLineMetrics(metrics);
+            SkScalar height = 0;
+            for (size_t lineNum = 0; lineNum < paragraph->lineNumber(); ++lineNum) {
+                auto paths = paragraph->getPath(lineNum);
+                auto& line = metrics[lineNum];
+                SkRect rect = SkRect::MakeXYWH(line.fLeft, height, line.fWidth, line.fHeight);
+                height += line.fHeight;
+                paint.setShader(setgrad(rect, SK_ColorBLUE, SK_ColorLTGRAY));
+                canvas->drawPath(paths, paint);
+            }
+        }
+    }
+};
 
 class ParagraphSlideLast : public ParagraphSlide_Base {
 public:
@@ -4079,6 +4211,7 @@ public:
         draw(u"abcdefsdasds1112222");
     }
 };
+
 }  // namespace
 
 //////////////////////////////////////////////////////////////////////////////
@@ -4153,5 +4286,7 @@ DEF_SLIDE(return new ParagraphSlide_MultiStyle_Arabic1();)
 DEF_SLIDE(return new ParagraphSlide_MultiStyle_Zalgo();)
 DEF_SLIDE(return new ParagraphSlide_MultiStyle_Arabic2();)
 DEF_SLIDE(return new ParagraphSlideMixedTextDirection();)
+DEF_SLIDE(return new ParagraphSlideGetPath();)
+DEF_SLIDE(return new ParagraphSlideExperiment();)
 DEF_SLIDE(return new ParagraphSlideLast();)
 
