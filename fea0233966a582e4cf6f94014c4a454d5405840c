@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87442611_32660273",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2629,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-03T21:16:23Z",
+      "side": 1,
+      "message": "`sizeof(uint32_t)` so the expected width is explicit?",
+      "range": {
+        "startLine": 2629,
+        "startChar": 55,
+        "endLine": 2629,
+        "endChar": 58
+      },
+      "revId": "fea0233966a582e4cf6f94014c4a454d5405840c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
