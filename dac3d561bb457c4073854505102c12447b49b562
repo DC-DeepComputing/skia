@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba0a3104_9650b4c1",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1350,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-05-03T13:27:15Z",
+      "side": 1,
+      "message": "I think this is better expressed as:\nauto budgeted \u003d props.useGpuBudget() ? skgpu::Budgeted::kYes : skgpu::Budgeted::kNo\n\nHere and below",
+      "range": {
+        "startLine": 1347,
+        "startChar": 4,
+        "endLine": 1350,
+        "endChar": 5
+      },
+      "revId": "dac3d561bb457c4073854505102c12447b49b562",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
