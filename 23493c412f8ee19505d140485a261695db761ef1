@@ -39,6 +39,30 @@
       },
       "revId": "23493c412f8ee19505d140485a261695db761ef1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a21941c2_572757db",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-03T13:16:15Z",
+      "side": 1,
+      "message": "Oh, I see, these are used by freestanding helper functions.\nNot sure if I am too worried about it either way, but it seems like you have options that minimize public exposure better, e.g.:\n- Make the `enum` private, make the helpers class-static.\n- Make the `enum` into a forward declaration, remove default parameters. (If the default parameters are super helpful, you can use overloads to get the same effect.)\n\nBut at the same time, this might be gilding the lily; none of this is public API anyway, and I don\u0027t think there\u0027s any real harm from exposing the enum. Your call.",
+      "parentUuid": "04a9c22f_283255a1",
+      "range": {
+        "startLine": 113,
+        "startChar": 15,
+        "endLine": 113,
+        "endChar": 30
+      },
+      "revId": "23493c412f8ee19505d140485a261695db761ef1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
