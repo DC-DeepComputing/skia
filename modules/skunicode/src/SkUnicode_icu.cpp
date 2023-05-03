@@ -310,6 +310,11 @@ class SkUnicode_icu : public SkUnicode {
         return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
     }
 
+    bool isEmoji(SkUnichar utf8) override {
+        return sk_u_hasBinaryProperty(utf8, UCHAR_EMOJI) ||
+               sk_u_hasBinaryProperty(utf8, UCHAR_EMOJI_COMPONENT);
+    }
+
 public:
     ~SkUnicode_icu() override { }
     std::unique_ptr<SkBidiIterator> makeBidiIterator(const uint16_t text[], int count,

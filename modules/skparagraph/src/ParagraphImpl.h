@@ -206,6 +206,9 @@ public:
     void updateBackgroundPaint(size_t from, size_t to, SkPaint paint) override;
 
     void visit(const Visitor&) override;
+    void extendedVisit(const ExtendedVisitor&) override;
+    SkPath getPath(int lineNumber) override;
+    bool containsColorFontOrEmoji(SkTextBlob* textBlob) override;
 
     int getLineNumberAt(TextIndex codeUnitIndex) const override;
     bool getLineMetricsAt(int lineNumber, LineMetrics* lineMetrics) const override;
