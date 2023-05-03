@@ -19,7 +19,6 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
-#include "include/core/SkSurfaceProps.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkSurfacePriv.h"
@@ -36,14 +35,6 @@ class SkSurfaceCharacterization;
 namespace skgpu { class MutableTextureState; }
 namespace skgpu { namespace graphite { class Recorder; } }
 
-SkSurfaceProps::SkSurfaceProps() : fFlags(0), fPixelGeometry(kUnknown_SkPixelGeometry) {}
-
-SkSurfaceProps::SkSurfaceProps(uint32_t flags, SkPixelGeometry pg)
-    : fFlags(flags), fPixelGeometry(pg)
-{}
-
-SkSurfaceProps::SkSurfaceProps(const SkSurfaceProps&) = default;
-SkSurfaceProps& SkSurfaceProps::operator=(const SkSurfaceProps&) = default;
 
 SkSurface::SkSurface(int width, int height, const SkSurfaceProps* props)
     : fProps(SkSurfacePropsCopyOrDefault(props)), fWidth(width), fHeight(height)
@@ -121,12 +112,15 @@ sk_sp<SkImage> SkSurface::makeImageCopy(const SkIRect* subset,
 }
 #endif
 
-sk_sp<SkSurface> SkSurface::makeSurface(const SkImageInfo& info) {
-    return asSB(this)->onNewSurface(info);
+sk_sp<SkSurface> SkSurface::makeSurface(const SkImageInfo& info, const SkSurfaceProps* props) {
+    if (props == nullptr) {
+        props = &fProps;
+    }
+    return asSB(this)->onNewSurface(info, *props);
 }
 
 sk_sp<SkSurface> SkSurface::makeSurface(int width, int height) {
-    return this->makeSurface(this->imageInfo().makeWH(width, height));
+    return this->makeSurface(this->imageInfo().makeWH(width, height), nullptr);
 }
 
 void SkSurface::draw(SkCanvas* canvas, SkScalar x, SkScalar y, const SkSamplingOptions& sampling,

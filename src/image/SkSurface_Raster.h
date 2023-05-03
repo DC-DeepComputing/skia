@@ -41,7 +41,7 @@ public:
     SkSurface_Base::Type type() const override { return SkSurface_Base::Type::kRaster; }
 
     SkCanvas* onNewCanvas() override;
-    sk_sp<SkSurface> onNewSurface(const SkImageInfo&) override;
+    sk_sp<SkSurface> onNewSurface(const SkImageInfo&, const SkSurfaceProps& props) override;
     sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subset) override;
     void onWritePixels(const SkPixmap&, int x, int y) override;
     void onDraw(SkCanvas*, SkScalar, SkScalar, const SkSamplingOptions&, const SkPaint*) override;

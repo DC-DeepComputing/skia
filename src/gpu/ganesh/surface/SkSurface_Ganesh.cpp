@@ -134,14 +134,17 @@ GrBackendRenderTarget SkSurface_Ganesh::getBackendRenderTarget(BackendHandleAcce
 
 SkCanvas* SkSurface_Ganesh::onNewCanvas() { return new SkCanvas(fDevice); }
 
-sk_sp<SkSurface> SkSurface_Ganesh::onNewSurface(const SkImageInfo& info) {
+sk_sp<SkSurface> SkSurface_Ganesh::onNewSurface(const SkImageInfo& info,
+                                                const SkSurfaceProps& props) {
     GrSurfaceProxyView targetView = fDevice->readSurfaceView();
     int sampleCount = targetView.asRenderTargetProxy()->numSamples();
     GrSurfaceOrigin origin = targetView.origin();
-    // TODO: Make caller specify this (change virtual signature of onNewSurface).
-    static const skgpu::Budgeted kBudgeted = skgpu::Budgeted::kNo;
+    auto budgeted = skgpu::Budgeted::kNo;
+    if (props.useGpuBudget()) {
+        budgeted = skgpu::Budgeted::kYes;
+    }
     return SkSurface::MakeRenderTarget(
-            fDevice->recordingContext(), kBudgeted, info, sampleCount, origin, &this->props());
+            fDevice->recordingContext(), budgeted, info, sampleCount, origin, &props);
 }
 
 sk_sp<SkImage> SkSurface_Ganesh::onNewImageSnapshot(const SkIRect* subset) {

@@ -28,6 +28,7 @@ class SkPaint;
 class SkPixmap;
 class SkSurface;
 class SkSurfaceCharacterization;
+class SkSurfaceProps;
 enum GrSurfaceOrigin : int;
 enum class GrSemaphoresSubmitted : bool;
 namespace skgpu {
@@ -62,7 +63,7 @@ public:
     GrRecordingContext* onGetRecordingContext() const override;
 
     SkCanvas* onNewCanvas() override;
-    sk_sp<SkSurface> onNewSurface(const SkImageInfo&) override;
+    sk_sp<SkSurface> onNewSurface(const SkImageInfo&, const SkSurfaceProps& props) override;
     sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subset) override;
     void onWritePixels(const SkPixmap&, int x, int y) override;
     void onAsyncRescaleAndReadPixels(const SkImageInfo& info,
