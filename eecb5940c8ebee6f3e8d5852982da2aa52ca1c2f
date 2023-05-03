@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f9e88ce_30f29b09",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-03T15:52:07Z",
+      "side": 1,
+      "message": "Yes, not sure what happened there.",
+      "parentUuid": "f7f82c68_3487c5e6",
+      "revId": "eecb5940c8ebee6f3e8d5852982da2aa52ca1c2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71a82c07_7d127651",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-05-02T20:59:11Z",
       "side": 1,
       "message": "wdyt about making these const and kInset and kZoomAmount ?",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 32
+      },
+      "revId": "eecb5940c8ebee6f3e8d5852982da2aa52ca1c2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac73cf58_fd02907e",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-03T15:52:07Z",
+      "side": 1,
+      "message": "Done. I also adjusted outBounds to kOutBounds. Only widgetBounds animates.",
+      "parentUuid": "71a82c07_7d127651",
       "range": {
         "startLine": 147,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92cfd4d3_dc58b04b",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-03T15:52:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f1d7edf_647967b2",
+      "range": {
+        "startLine": 156,
+        "startChar": 37,
+        "endLine": 156,
+        "endChar": 47
+      },
+      "revId": "eecb5940c8ebee6f3e8d5852982da2aa52ca1c2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f551e891_b17201d4",
@@ -77,6 +143,24 @@
       "writtenOn": "2023-05-02T20:59:11Z",
       "side": 1,
       "message": "line is up ?",
+      "revId": "eecb5940c8ebee6f3e8d5852982da2aa52ca1c2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96409306_30a0ed86",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-03T15:52:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f551e891_b17201d4",
       "revId": "eecb5940c8ebee6f3e8d5852982da2aa52ca1c2f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
