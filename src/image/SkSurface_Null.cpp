@@ -17,6 +17,7 @@
 class SkCanvas;
 class SkPaint;
 class SkPixmap;
+class SkSurfaceProps;
 struct SkIRect;
 struct SkSamplingOptions;
 
@@ -31,7 +32,7 @@ protected:
     SkCanvas* onNewCanvas() override {
         return new SkNoDrawCanvas(this->width(), this->height());
     }
-    sk_sp<SkSurface> onNewSurface(const SkImageInfo& info) override {
+    sk_sp<SkSurface> onNewSurface(const SkImageInfo& info, const SkSurfaceProps&) override {
         return MakeNull(info.width(), info.height());
     }
     sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subsetOrNull) override { return nullptr; }

@@ -38,7 +38,7 @@ public:
 
     Recorder* onGetRecorder() const override;
     SkCanvas* onNewCanvas() override;
-    sk_sp<SkSurface> onNewSurface(const SkImageInfo&) override;
+    sk_sp<SkSurface> onNewSurface(const SkImageInfo&, const SkSurfaceProps&) override;
     sk_sp<SkImage> onNewImageSnapshot(const SkIRect* subset) override;
     sk_sp<SkImage> onAsImage() override;
     sk_sp<SkImage> onMakeImageCopy(const SkIRect* subset, Mipmapped) override;

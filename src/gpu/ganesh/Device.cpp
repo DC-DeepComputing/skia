@@ -1344,9 +1344,8 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& cinfo, const SkPaint*) {
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
     ASSERT_SINGLE_OWNER
-    // TODO: Change the signature of newSurface to take a budgeted parameter.
-    static const skgpu::Budgeted kBudgeted = skgpu::Budgeted::kNo;
-    return SkSurface::MakeRenderTarget(fContext.get(), kBudgeted, info,
+    auto budgeted = props.useGpuBudget() ? skgpu::Budgeted::kYes : skgpu::Budgeted::kNo;
+    return SkSurface::MakeRenderTarget(fContext.get(), budgeted, info,
                                        fSurfaceDrawContext->numSamples(),
                                        fSurfaceDrawContext->origin(), &props);
 }

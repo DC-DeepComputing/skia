@@ -658,13 +658,15 @@ public:
 
         @param imageInfo  width, height, SkColorType, SkAlphaType, SkColorSpace,
                           of SkSurface; width and height must be greater than zero
+        @param props      If not specified, the props of this surface will be used.
         @return           compatible SkSurface or nullptr
 
         example: https://fiddle.skia.org/c/@Surface_makeSurface
     */
-    sk_sp<SkSurface> makeSurface(const SkImageInfo& imageInfo);
+    sk_sp<SkSurface> makeSurface(const SkImageInfo& imageInfo,
+                                 const SkSurfaceProps* props = nullptr);
 
-    /** Calls makeSurface(ImageInfo) with the same ImageInfo as this surface, but with the
+    /** Calls makeSurface(ImageInfo) with the same ImageInfo and props as this surface, but with the
      *  specified width and height.
      */
     sk_sp<SkSurface> makeSurface(int width, int height);

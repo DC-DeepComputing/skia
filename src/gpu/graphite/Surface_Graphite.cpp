@@ -38,8 +38,8 @@ TextureProxyView Surface::readSurfaceView() const {
 
 SkCanvas* Surface::onNewCanvas() { return new SkCanvas(fDevice); }
 
-sk_sp<SkSurface> Surface::onNewSurface(const SkImageInfo& ii) {
-    return SkSurface::MakeGraphite(fDevice->recorder(), ii, Mipmapped::kNo, &this->props());
+sk_sp<SkSurface> Surface::onNewSurface(const SkImageInfo& ii, const SkSurfaceProps& props) {
+    return SkSurface::MakeGraphite(fDevice->recorder(), ii, Mipmapped::kNo, &props);
 }
 
 sk_sp<SkImage> Surface::onNewImageSnapshot(const SkIRect* subset) {
