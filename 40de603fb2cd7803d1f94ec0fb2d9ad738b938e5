@@ -22,6 +22,30 @@
       },
       "revId": "40de603fb2cd7803d1f94ec0fb2d9ad738b938e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfaf38f2_7a2c69aa",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-03T02:38:58Z",
+      "side": 1,
+      "message": "Done. I mainly meant to report an issue link but it\u0027s not that important.",
+      "parentUuid": "fb64c15a_6c2f2528",
+      "range": {
+        "startLine": 1045,
+        "startChar": 17,
+        "endLine": 1045,
+        "endChar": 35
+      },
+      "revId": "40de603fb2cd7803d1f94ec0fb2d9ad738b938e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
