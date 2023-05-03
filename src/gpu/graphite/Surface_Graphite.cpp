@@ -10,6 +10,7 @@
 #include "include/core/SkCapabilities.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/Surface.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Image_Graphite.h"
@@ -39,7 +40,7 @@ TextureProxyView Surface::readSurfaceView() const {
 SkCanvas* Surface::onNewCanvas() { return new SkCanvas(fDevice); }
 
 sk_sp<SkSurface> Surface::onNewSurface(const SkImageInfo& ii) {
-    return SkSurface::MakeGraphite(fDevice->recorder(), ii, Mipmapped::kNo, &this->props());
+    return SkSurfaces::RenderTarget(fDevice->recorder(), ii, Mipmapped::kNo, &this->props());
 }
 
 sk_sp<SkImage> Surface::onNewImageSnapshot(const SkIRect* subset) {
@@ -168,21 +169,20 @@ bool validate_backend_texture(const Caps* caps,
 
 } // anonymous namespace
 
-sk_sp<SkSurface> SkSurface::MakeGraphite(Recorder* recorder,
-                                         const SkImageInfo& info,
-                                         skgpu::Mipmapped mipmapped,
-                                         const SkSurfaceProps* props) {
+sk_sp<SkSurface> SkSurfaces::RenderTarget(Recorder* recorder,
+                                          const SkImageInfo& info,
+                                          skgpu::Mipmapped mipmapped,
+                                          const SkSurfaceProps* props) {
     // The client is getting the ref on this surface so it must be unbudgeted.
     return skgpu::graphite::Surface::MakeGraphite(
             recorder, info, skgpu::Budgeted::kNo, mipmapped, props);
 }
 
-sk_sp<SkSurface> SkSurface::MakeGraphiteFromBackendTexture(Recorder* recorder,
-                                                           const BackendTexture& backendTex,
-                                                           SkColorType ct,
-                                                           sk_sp<SkColorSpace> cs,
-                                                           const SkSurfaceProps* props) {
-
+sk_sp<SkSurface> SkSurfaces::WrapBackendTexture(Recorder* recorder,
+                                                const BackendTexture& backendTex,
+                                                SkColorType ct,
+                                                sk_sp<SkColorSpace> cs,
+                                                const SkSurfaceProps* props) {
     if (!recorder) {
         return nullptr;
     }
