@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58229345_57db6b58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-03T04:15:58Z",
+      "side": 1,
+      "message": "I implemented conditional toggling of the f16 extension as we discussed in the SkSL sync last week, instead of always enabling the extension. I added a new test (ShaderF16) as well as a copy of the Matrices test that enables the extension as the latter exercises many different half/float type combinations.\n\nPTAL",
+      "revId": "23493c412f8ee19505d140485a261695db761ef1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
