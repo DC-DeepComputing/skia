@@ -40,7 +40,7 @@ auto SkStrikeCache::findOrCreateStrike(const SkStrikeSpec& strikeSpec) -> sk_sp<
     if (strike == nullptr) {
         strike = this->internalCreateStrike(strikeSpec);
     }
-    this->internalPurge();
+    // this->internalPurge();
     return strike;
 }
 
@@ -90,7 +90,7 @@ void SkStrikeCache::DumpMemoryStatistics(SkTraceMemoryDump* dump) {
 sk_sp<SkStrike> SkStrikeCache::findStrike(const SkDescriptor& desc) {
     SkAutoMutexExclusive ac(fLock);
     sk_sp<SkStrike> result = this->internalFindStrikeOrNull(desc);
-    this->internalPurge();
+    // this->internalPurge();
     return result;
 }
 
