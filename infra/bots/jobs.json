@@ -735,13 +735,14 @@
    "cq_config": {}
    },
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Dawn"},
+  {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Graphite_Vulkan"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-PreAbandonGpuContext"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan",
    "cq_config": {}
-   },
+  },
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All",
    "cq_config": {}
-   },
+  },
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-DDL3_TSAN"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-PreAbandonGpuContext"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Valgrind_AbandonGpuContext_SK_CPU_LIMIT_SSE41"},
@@ -836,6 +837,8 @@
   {"name": "Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Release-All-Graphite_Dawn",
    "cq_config": {"location_regexes": ["(tests|src/gpu)/graphite/.*", "dm/.+"]}
   },
+  {"name": "Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Debug-All-Graphite_Vulkan"},
+  {"name": "Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Release-All-Graphite_Vulkan"},
   {"name": "Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Release-All-Vulkan"},
   {"name": "Test-Win2019-Clang-GCE-CPU-AVX2-x86-Debug-All"},
   {"name": "Test-Win2019-Clang-GCE-CPU-AVX2-x86-Release-All"},
