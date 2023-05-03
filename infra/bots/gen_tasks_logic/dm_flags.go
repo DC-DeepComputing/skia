@@ -343,6 +343,11 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "gm", ALL, "async_rescale_and_read_rose")
 				}
 			}
+			if b.extraConfig("Vulkan") {
+				configs = []string{"grvk"}
+                                // Validation error
+				skip(ALL, "gm", ALL, "xfermodes3")
+			}
 		}
 
 		// ANGLE bot *only* runs the angle configs
