@@ -695,6 +695,17 @@ static_assert(4 == static_cast<int>(ReadSwizzle::kBGRA),
 static constexpr char kImageShaderName[] = "sk_image_shader";
 
 //--------------------------------------------------------------------------------------------------
+
+// Borrowing ImageShader uniforms now
+
+static constexpr TextureAndSampler kYUV420ISTexturesAndSamplers[] = {
+    { "samplerY" },
+    { "samplerUV"},
+};
+
+static constexpr char kYUV420ImageShaderName[] = "sk_yuv_420_image_shader";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr Uniform kCoordClampShaderUniforms[] = {
         { "subset", SkSLType::kFloat4 },
 };
@@ -1358,6 +1369,16 @@ ShaderCodeDictionary::ShaderCodeDictionary() {
             SnippetRequirementFlags::kLocalCoords,
             SkSpan(kISTexturesAndSamplers),
             kImageShaderName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kYUV420ImageShader] = {
+            "YUV420ImageShader",
+            SkSpan(kImageShaderUniforms),
+            SnippetRequirementFlags::kLocalCoords,
+            SkSpan(kYUV420ISTexturesAndSamplers),
+            kYUV420ImageShaderName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren
