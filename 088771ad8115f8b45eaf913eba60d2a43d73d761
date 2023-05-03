@@ -22,6 +22,30 @@
       },
       "revId": "088771ad8115f8b45eaf913eba60d2a43d73d761",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f89c3b5d_85506953",
+        "filename": "src/effects/imagefilters/SkMagnifierImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-03T16:05:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29f384a0_7d14f2d9",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 247,
+        "endChar": 15
+      },
+      "revId": "088771ad8115f8b45eaf913eba60d2a43d73d761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
