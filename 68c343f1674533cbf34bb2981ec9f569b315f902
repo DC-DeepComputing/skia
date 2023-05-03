@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5513ddc_f8365c39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-03T15:39:18Z",
+      "side": 1,
+      "message": "The precompile system iterates over all Renderers for each PaintOption. Currently I think we generate a key once and then combine it with each RenderStep. With the key temporarily needing to have coverage knowledge to add the dst texture, we should have it produce two keys (one with coverage and one without) and then during the Renderer for-loop, use the appropriate paint key.",
+      "parentUuid": "51243669_d3a99998",
+      "revId": "68c343f1674533cbf34bb2981ec9f569b315f902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1fc07d28_dc0c0761",
