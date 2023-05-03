@@ -17,6 +17,7 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 
 #include <emscripten/bind.h>
 #include <emscripten/emscripten.h>
@@ -127,7 +128,7 @@ public:
         GrBackendRenderTarget backendRenderTarget(fWidth, fHeight, 1, 8, rtInfo);
         SkSurfaceProps surfaceProps(0, kRGB_H_SkPixelGeometry);
 
-        sk_sp<SkSurface> surface = SkSurface::MakeFromBackendRenderTarget(fContext.get(),
+        sk_sp<SkSurface> surface = SkSurfaces::WrapBackendRenderTarget(fContext.get(),
                                                                           backendRenderTarget,
                                                                           kTopLeft_GrSurfaceOrigin,
                                                                           kN32_SkColorType,

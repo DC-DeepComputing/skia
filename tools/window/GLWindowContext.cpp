@@ -9,6 +9,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "src/base/SkMathPriv.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -69,7 +70,7 @@ sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
                                             fStencilBits,
                                             fbInfo);
 
-            fSurface = SkSurface::MakeFromBackendRenderTarget(fContext.get(), backendRT,
+            fSurface = SkSurfaces::WrapBackendRenderTarget(fContext.get(), backendRT,
                                                               kBottomLeft_GrSurfaceOrigin,
                                                               kRGBA_8888_SkColorType,
                                                               fDisplayParams.fColorSpace,

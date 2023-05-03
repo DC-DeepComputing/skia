@@ -380,8 +380,7 @@ static void add_run(SkTextBlobBuilder* builder, const char text[], SkScalar x, S
 }
 
 static sk_sp<SkImage> render(const SkTextBlob* blob) {
-    auto surf = SkSurface::MakeRasterN32Premul(SkScalarRoundToInt(blob->bounds().width()),
-                                               SkScalarRoundToInt(blob->bounds().height()));
+    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(SkScalarRoundToInt(blob->bounds().width()), SkScalarRoundToInt(blob->bounds().height())));
     if (!surf) {
         return nullptr; // bounds are empty?
     }

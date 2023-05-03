@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
 // HASH=8e6530b26ab4096a9a91cfaadda1c568
-REG_FIDDLE(Surface_MakeRasterDirectReleaseProc, 256, 256, true, 0) {
+REG_FIDDLE(Surface_WrapPixels_WithReleaseProc, 256, 256, true, 0) {
 static void release_direct_surface_storage(void* pixels, void* context) {
     if (pixels == context) {
         SkDebugf("expected release context\n");
@@ -14,7 +14,7 @@ void draw(SkCanvas* ) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(3, 3);
     const size_t rowBytes = info.minRowBytes();
     void* pixels = sk_malloc_throw(info.computeByteSize(rowBytes));
-    sk_sp<SkSurface> surface(SkSurface::MakeRasterDirectReleaseProc(info, pixels, rowBytes,
+    sk_sp<SkSurface> surface(SkSurfaces::WrapPixels(info, pixels, rowBytes,
             release_direct_surface_storage, pixels));
     SkCanvas* canvas = surface->getCanvas();
     canvas->clear(SK_ColorWHITE);

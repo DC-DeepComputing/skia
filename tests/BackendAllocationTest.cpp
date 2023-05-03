@@ -25,6 +25,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/SkColorData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkAutoPixmapStorage.h"
@@ -135,7 +136,7 @@ void test_wrapping(GrDirectContext* dContext,
     }
 
     if (GrRenderable::kYes == renderable && dContext->colorTypeSupportedAsSurface(skColorType)) {
-        sk_sp<SkSurface> surf = SkSurface::MakeFromBackendTexture(dContext,
+        sk_sp<SkSurface> surf = SkSurfaces::WrapBackendTexture(dContext,
                                                                   mbet->texture(),
                                                                   kTopLeft_GrSurfaceOrigin,
                                                                   0,

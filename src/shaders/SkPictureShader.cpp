@@ -28,6 +28,7 @@
 #if defined(SK_GANESH)
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColorInfo.h"
 #include "src/gpu/ganesh/GrFPArgs.h"
@@ -44,6 +45,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
+#include "include/gpu/graphite/Surface.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #endif
@@ -292,7 +294,7 @@ sk_sp<SkShader> SkPictureShader::rasterShader(const SkMatrix& totalM,
 
     sk_sp<SkImage> image;
     if (!SkResourceCache::Find(key, ImageFromPictureRec::Visitor, &image)) {
-        image = info.makeImage(SkSurface::MakeRaster(info.imageInfo, &info.props), fPicture.get());
+        image = info.makeImage(SkSurfaces::Raster(info.imageInfo, &info.props), fPicture.get());
         if (!image) {
             return nullptr;
         }
@@ -417,7 +419,7 @@ std::unique_ptr<GrFragmentProcessor> SkPictureShader::asFragmentProcessor(
     } else {
         const int msaaSampleCount = 0;
         const bool createWithMips = false;
-        auto image = info.makeImage(SkSurface::MakeRenderTarget(ctx,
+        auto image = info.makeImage(SkSurfaces::RenderTarget(ctx,
                                                                 skgpu::Budgeted::kYes,
                                                                 info.imageInfo,
                                                                 msaaSampleCount,
@@ -483,7 +485,7 @@ void SkPictureShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
     // TODO: right now we're explicitly not caching here. We could expand the ImageProvider
     // API to include already Graphite-backed images, add a Recorder-local cache or add
     // rendered-picture images to the global cache.
-    sk_sp<SkImage> img = info.makeImage(SkSurface::MakeGraphite(recorder, info.imageInfo,
+    sk_sp<SkImage> img = info.makeImage(SkSurfaces::RenderTarget(recorder, info.imageInfo,
                                                                 skgpu::Mipmapped::kNo, &info.props),
                                         fPicture.get());
     if (!img) {

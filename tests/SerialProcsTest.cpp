@@ -35,7 +35,7 @@
 
 static sk_sp<SkImage> picture_to_image(sk_sp<SkPicture> pic) {
     SkIRect r = pic->cullRect().round();
-    auto surf = SkSurface::MakeRasterN32Premul(r.width(), r.height());
+    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(r.width(), r.height()));
     surf->getCanvas()->drawPicture(pic);
     return surf->makeImageSnapshot();
 }

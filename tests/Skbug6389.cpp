@@ -17,7 +17,7 @@
 #include "tools/Resources.h"
 
 DEF_TEST(skbug_6389, r) {
-    auto s = SkSurface::MakeRasterN32Premul(100, 100);
+    auto s = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(100, 100));
     SkPaint p;
     p.setMaskFilter(SkMaskFilter::MakeBlur(SkBlurStyle::kNormal_SkBlurStyle, 5));
     p.setImageFilter(SkImageFilters::Image(GetResourceAsImage("images/mandrill_512.png"),

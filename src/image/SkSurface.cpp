@@ -20,6 +20,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurfaceProps.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkSurfacePriv.h"
@@ -266,7 +267,7 @@ void SkSurface::flush() {} // Flush is a no-op for CPU surfaces
 void SkSurface::flushAndSubmit(bool syncCpu) {}
 
 // TODO(kjlubick, scroggo) Remove this once Android is updated.
-sk_sp<SkSurface> SkSurface::MakeRenderTarget(GrRecordingContext*,
+sk_sp<SkSurface> SkSurfaces::RenderTarget(GrRecordingContext*,
                                              skgpu::Budgeted,
                                              const SkImageInfo&,
                                              int,

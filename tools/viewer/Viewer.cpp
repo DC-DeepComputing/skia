@@ -1627,7 +1627,7 @@ void Viewer::drawSlide(SkSurface* surface) {
 
         SkImageInfo info = SkImageInfo::Make(w, h, colorType, kPremul_SkAlphaType, colorSpace);
         return Window::kRaster_BackendType == this->fBackendType
-                ? SkSurface::MakeRaster(info, &props)
+                ? SkSurfaces::Raster(info, &props)
                 : slideCanvas->makeSurface(info, &props);
     };
 

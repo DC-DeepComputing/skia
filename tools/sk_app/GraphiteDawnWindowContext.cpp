@@ -10,6 +10,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Surface.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recorder.h"
@@ -85,7 +86,7 @@ sk_sp<SkSurface> GraphiteDawnWindowContext::getBackbufferSurface() {
                                                info,
                                                textureView.Get());
     SkASSERT(this->graphiteRecorder());
-    auto surface = SkSurface::MakeGraphiteFromBackendTexture(
+    auto surface = SkSurfaces::WrapBackendTexture(
         this->graphiteRecorder(),
         backendTex,
         kBGRA_8888_SkColorType,

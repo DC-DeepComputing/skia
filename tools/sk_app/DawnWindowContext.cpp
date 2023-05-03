@@ -8,6 +8,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "src/base/SkAutoMalloc.h"
 #include "tools/sk_app/DawnWindowContext.h"
 
@@ -86,7 +87,7 @@ sk_sp<SkSurface> DawnWindowContext::getBackbufferSurface() {
     rtInfo.fLevelCount = 1; // FIXME
     GrBackendRenderTarget backendRenderTarget(fWidth, fHeight, fDisplayParams.fMSAASampleCount, 8,
                                               rtInfo);
-    fSurface = SkSurface::MakeFromBackendRenderTarget(fContext.get(),
+    fSurface = SkSurfaces::WrapBackendRenderTarget(fContext.get(),
                                                       backendRenderTarget,
                                                       this->getRTOrigin(),
                                                       fDisplayParams.fColorType,

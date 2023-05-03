@@ -10,8 +10,10 @@
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Surface.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkAutoPixmapStorage.h"
+#include "include/gpu/graphite/Surface.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
@@ -113,7 +115,7 @@ void check_levels(skiatest::Reporter* reporter,
                                  : SkSamplingOptions(SkFilterMode::kNearest);
 
     SkImageInfo surfaceII = SkImageInfo::Make(kSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    sk_sp<SkSurface> surf = SkSurface::MakeGraphite(recorder, surfaceII, Mipmapped::kNo);
+    sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, surfaceII, Mipmapped::kNo);
     SkCanvas* canvas = surf->getCanvas();
 
     for (int i = 0, drawSize = kSize.width(); i < numLevels; ++i, drawSize /= 2) {

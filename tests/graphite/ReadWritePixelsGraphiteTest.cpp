@@ -12,6 +12,7 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkGradientShader.h"
+#include "include/gpu/graphite/Surface.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
@@ -184,7 +185,7 @@ SkPixmap make_pixmap_have_valid_alpha_type(SkPixmap pm) {
 static SkAutoPixmapStorage make_ref_data(const SkImageInfo& info, bool forceOpaque) {
     SkAutoPixmapStorage result;
     result.alloc(info);
-    auto surface = SkSurface::MakeRasterDirect(make_pixmap_have_valid_alpha_type(result));
+    auto surface = SkSurfaces::WrapPixels(make_pixmap_have_valid_alpha_type(result));
     if (!surface) {
         return result;
     }
@@ -628,7 +629,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SurfaceAsyncReadPixelsGraphite,
     auto factory = std::function<GraphiteSrcFactory<Surface>>([&](
             skgpu::graphite::Recorder* recorder,
             const SkPixmap& src) {
-        Surface surface = SkSurface::MakeGraphite(recorder,
+        Surface surface = SkSurfaces::RenderTarget(recorder,
                                                   src.info(),
                                                   Mipmapped::kNo,
                                                   /*surfaceProps=*/nullptr);

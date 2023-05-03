@@ -33,5 +33,5 @@ DEF_TEST(IndexedPngOverflow, reporter) {
     bool success = decode_memory(gPng, sizeof(gPng), &bm);
     REPORTER_ASSERT(reporter, success);
 
-    SkSurface::MakeRasterN32Premul(20, 1)->getCanvas()->drawImage(bm.asImage(), 0, 0);
+    SkSurfaces::Raster(SkImageInfo::MakeN32Premul(20, 1))->getCanvas()->drawImage(bm.asImage(), 0, 0);
 }

@@ -23,6 +23,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/SkColorData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/SkBackingFit.h"
@@ -64,7 +65,7 @@ bool check_pixels(skiatest::Reporter* reporter,
     // We have to do the readback of the backend texture wrapped in a different Skia surface than
     // the one used in the main body of the test or else the readPixels call will trigger resolves
     // itself.
-    sk_sp<SkSurface> surface = SkSurface::MakeFromBackendTexture(dContext,
+    sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(dContext,
                                                                  tex,
                                                                  kTopLeft_GrSurfaceOrigin,
                                                                  /*sampleCnt=*/4,
@@ -112,7 +113,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
     auto tex = managedTex->texture();
     // Wrap the backend surface but tell it rendering with MSAA so that the wrapped texture is the
     // resolve.
-    sk_sp<SkSurface> surface = SkSurface::MakeFromBackendTexture(dContext,
+    sk_sp<SkSurface> surface = SkSurfaces::WrapBackendTexture(dContext,
                                                                  tex,
                                                                  kTopLeft_GrSurfaceOrigin,
                                                                  /*sampleCnt=*/4,
@@ -186,7 +187,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
     // First clear out dirty msaa from previous test
     surface->flush();
 
-    auto otherSurface = SkSurface::MakeRenderTarget(dContext, skgpu::Budgeted::kYes, info);
+    auto otherSurface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, info);
     REPORTER_ASSERT(reporter, otherSurface);
     otherSurface->getCanvas()->clear(SK_ColorRED);
     surface->resolveMSAA();

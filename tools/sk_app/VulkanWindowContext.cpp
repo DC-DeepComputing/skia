@@ -12,10 +12,10 @@
 #include "include/gpu/GrBackendSemaphore.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
-#include "src/base/SkAutoMalloc.h"
-
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/gpu/vk/GrVkTypes.h"
 #include "include/gpu/vk/VulkanExtensions.h"
+#include "src/base/SkAutoMalloc.h"
 #include "src/gpu/ganesh/vk/GrVkImage.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
 #include "src/gpu/vk/VulkanInterface.h"
@@ -357,7 +357,7 @@ bool VulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFlags usage
 
         if (usageFlags & VK_IMAGE_USAGE_SAMPLED_BIT) {
             GrBackendTexture backendTexture(fWidth, fHeight, info);
-            fSurfaces[i] = SkSurface::MakeFromBackendTexture(
+            fSurfaces[i] = SkSurfaces::WrapBackendTexture(
                     fContext.get(), backendTexture, kTopLeft_GrSurfaceOrigin,
                     fDisplayParams.fMSAASampleCount,
                     colorType, fDisplayParams.fColorSpace, &fDisplayParams.fSurfaceProps);
@@ -366,7 +366,7 @@ bool VulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFlags usage
                 return false;
             }
             GrBackendRenderTarget backendRT(fWidth, fHeight, fSampleCount, info);
-            fSurfaces[i] = SkSurface::MakeFromBackendRenderTarget(
+            fSurfaces[i] = SkSurfaces::WrapBackendRenderTarget(
                     fContext.get(), backendRT, kTopLeft_GrSurfaceOrigin, colorType,
                     fDisplayParams.fColorSpace, &fDisplayParams.fSurfaceProps);
 

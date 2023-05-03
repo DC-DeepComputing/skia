@@ -9,6 +9,7 @@
 // assembled by the fiddler program to compile into a fiddle: an
 // implementation of the GetDrawOptions() and draw() functions.
 
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tools/fiddle/fiddle_main.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
@@ -38,7 +39,7 @@ void draw(SkCanvas* canvas) {
                                                          nullptr);
 
         constexpr int kSampleCnt = 0;
-        sk_sp<SkSurface> tmp2 = SkSurface::MakeFromBackendTexture(
+        sk_sp<SkSurface> tmp2 = SkSurfaces::WrapBackendTexture(
                                                             dContext,
                                                             backEndTextureRenderTarget,
                                                             kTopLeft_GrSurfaceOrigin,
@@ -47,7 +48,7 @@ void draw(SkCanvas* canvas) {
                                                             nullptr, nullptr);
 
         // Note: this surface should only be renderable (i.e., not textureable)
-        sk_sp<SkSurface> tmp3 = SkSurface::MakeFromBackendRenderTarget(dContext,
+        sk_sp<SkSurface> tmp3 = SkSurfaces::WrapBackendRenderTarget(dContext,
                                                                        backEndRenderTarget,
                                                                        kTopLeft_GrSurfaceOrigin,
                                                                        kRGBA_8888_SkColorType,

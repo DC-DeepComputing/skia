@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
 // HASH=d3aec071998f871809f515e58abb1b0e
-REG_FIDDLE(Surface_MakeFromBackendTexture, 256, 256, false, 3) {
+REG_FIDDLE(Surface_WrapBackendTexture, 256, 256, false, 3) {
 void draw(SkCanvas* canvas) {
     SkFont font(nullptr, 32);
     SkPaint paint;
@@ -18,7 +18,7 @@ void draw(SkCanvas* canvas) {
          return;
     }
 
-    sk_sp<SkSurface> gpuSurface = SkSurface::MakeFromBackendTexture(direct,
+    sk_sp<SkSurface> gpuSurface = SkSurfaces::WrapBackendTexture(direct,
                                                                     backEndTexture,
                                                                     kTopLeft_GrSurfaceOrigin,
                                                                     0,

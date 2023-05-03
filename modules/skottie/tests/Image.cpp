@@ -69,7 +69,7 @@ DEF_TEST(Skottie_Image_CustomTransform, r) {
             : fTest(tst)
             , fReporter(r) {
 
-            auto surf = SkSurface::MakeRasterN32Premul(200, 100);
+            auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(200, 100));
             surf->getCanvas()->drawColor(0xffff0000);
             fImage = surf->makeImageSnapshot();
         }
@@ -110,7 +110,7 @@ DEF_TEST(Skottie_Image_CustomTransform, r) {
     REPORTER_ASSERT(r, anim);
 
     static constexpr SkSize render_size{100, 100};
-    auto surf = SkSurface::MakeRasterN32Premul(render_size.width(), render_size.height());
+    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(render_size.width(), render_size.height()));
     auto rect = SkRect::MakeSize(render_size);
 
     SkPixmap pmap;

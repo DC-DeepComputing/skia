@@ -13,6 +13,7 @@
 #include "include/core/SkSpan.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Image.h"
+#include "include/gpu/graphite/Surface.h"
 #include "include/gpu/graphite/Recording.h"
 #include "src/core/SkMipmapBuilder.h"
 #include "src/gpu/graphite/Caps.h"
@@ -171,7 +172,7 @@ bool check_img(skiatest::Reporter* reporter,
     SkAssertResult(result.peekPixels(&pm));
 
     {
-        sk_sp<SkSurface> surface = SkSurface::MakeGraphite(recorder, ii);
+        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder, ii);
         if (!surface) {
             ERRORF(reporter, "Surface creation failed");
             return false;

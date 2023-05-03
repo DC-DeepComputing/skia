@@ -185,7 +185,7 @@ public:
         auto info = SkImageInfo::Make(fSupersampleFactor * kTileWidth,
                                       fSupersampleFactor * kTileHeight,
                                       kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-        auto surface = fForceRasterBackend ? SkSurface::MakeRaster(info)
+        auto surface = fForceRasterBackend ? SkSurfaces::Raster(info)
                                            : canvas->makeSurface(info);
 
         surface->getCanvas()->save();

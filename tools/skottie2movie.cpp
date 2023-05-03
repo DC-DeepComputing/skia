@@ -20,6 +20,7 @@
 #include "tools/gpu/GrContextFactory.h"
 
 #include "include/gpu/GrContextOptions.h"
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
 
 static DEFINE_string2(input, i, "", "skottie animation to render");
 static DEFINE_string2(output, o, "", "mp4 file to create");
@@ -110,7 +111,7 @@ int main(int argc, char** argv) {
         if (!surf) {
             if (FLAGS_gpu) {
                 grctx = factory.getContextInfo(contextType).directContext();
-                surf = SkSurface::MakeRenderTarget(grctx,
+                surf = SkSurfaces::RenderTarget(grctx,
                                                    skgpu::Budgeted::kNo,
                                                    info,
                                                    0,
@@ -121,7 +122,7 @@ int main(int argc, char** argv) {
                 }
             }
             if (!surf) {
-                surf = SkSurface::MakeRaster(info);
+                surf = SkSurfaces::Raster(info);
             }
             surf->getCanvas()->scale(scale, scale);
         }
