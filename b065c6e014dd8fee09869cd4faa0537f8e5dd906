@@ -16,6 +16,23 @@
       "message": "https://chromium-review.googlesource.com/c/chromium/src/+/4500321?tab\u003dchecks suppresses this new implementation in chrome. Re-running the canary to confirm and then I\u0027ll land this change.",
       "revId": "b065c6e014dd8fee09869cd4faa0537f8e5dd906",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9725adc7_98953dae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-03T19:32:18Z",
+      "side": 1,
+      "message": "Canary failure is unrelated to this CL; suppression seems to be working.",
+      "revId": "b065c6e014dd8fee09869cd4faa0537f8e5dd906",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
