@@ -130,6 +130,9 @@ class SKUNICODE_API SkUnicode {
             (const char locale[], BreakType breakType) = 0;
         virtual std::unique_ptr<SkBreakIterator> makeBreakIterator(BreakType type) = 0;
 
+        // Common codepoint methods
+        virtual bool isEmoji(SkUnichar codePoint);
+
         // Methods used in SkParagraph
         static bool isTabulation(SkUnicode::CodeUnitFlags flags);
         static bool isHardLineBreak(SkUnicode::CodeUnitFlags flags);
