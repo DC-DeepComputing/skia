@@ -4046,6 +4046,46 @@ public:
     }
 };
 
+class ParagraphSlideGetPath : public ParagraphSlide_Base {
+public:
+    ParagraphSlideGetPath() { fName = "ParagraphSlideGetPath"; }
+    void draw(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = getFontCollection();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(50);
+        text_style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(text_style);
+        paragraph_style.setTextAlign(TextAlign::kStart);
+
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+        builder.pushStyle(text_style);
+        builder.addText("Multi lined sticky notes drawn as paths");
+        auto paragraph = builder.Build();
+        paragraph->layout(this->size().width());
+
+        auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+        SkPath fullPath;
+        SkScalar height = 0;
+        for (auto& line : impl->lines()) {
+            line.ensureTextBlobCachePopulated();
+            for (auto& rec : line.fTextBlobCache) {
+                auto paths = paragraph->getPaths(rec.fBlob.get());
+                paths.offset(0, height);
+                fullPath.addPath(paths);
+                height += line.height();
+            }
+        }
+        SkRect rect = SkRect::MakeXYWH(100, 100 + paragraph->getHeight(), this->size().width(), paragraph->getHeight());
+        SkPaint paint;
+        paint.setShader(setgrad(rect, SK_ColorBLUE, SK_ColorLTGRAY));
+        canvas->drawPath(fullPath, paint);
+    }
+};
 
 class ParagraphSlideLast : public ParagraphSlide_Base {
 public:
@@ -4153,5 +4193,6 @@ DEF_SLIDE(return new ParagraphSlide_MultiStyle_Arabic1();)
 DEF_SLIDE(return new ParagraphSlide_MultiStyle_Zalgo();)
 DEF_SLIDE(return new ParagraphSlide_MultiStyle_Arabic2();)
 DEF_SLIDE(return new ParagraphSlideMixedTextDirection();)
+DEF_SLIDE(return new ParagraphSlideGetPath();)
 DEF_SLIDE(return new ParagraphSlideLast();)
 

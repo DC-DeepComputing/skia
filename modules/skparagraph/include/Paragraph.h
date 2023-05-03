@@ -6,6 +6,7 @@
 #include "modules/skparagraph/include/Metrics.h"
 #include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
+#include "include/core/SkPath.h"
 
 class SkCanvas;
 
@@ -94,6 +95,9 @@ public:
     // lineNumber begins at 0. If info is null, this signals the end of that line.
     using Visitor = std::function<void(int lineNumber, const VisitorInfo*)>;
     virtual void visit(const Visitor&) = 0;
+
+    static SkPath getPaths(SkTextBlob* textBlob);
+    virtual bool containsColorFontOrEmoji(SkTextBlob* textBlob) = 0;
 
     // Editing API
     virtual int getLineNumberAt(TextIndex codeUnitIndex) const = 0;

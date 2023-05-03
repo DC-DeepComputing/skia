@@ -5,6 +5,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSpan.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkTypeface.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTo.h"
@@ -20,9 +21,11 @@
 #include "modules/skparagraph/src/TextLine.h"
 #include "modules/skparagraph/src/TextWrapper.h"
 #include "src/base/SkUTF.h"
+#include "src/core/SkTextBlobPriv.h"
 #include <math.h>
 #include <algorithm>
 #include <utility>
+#include <tools/ToolUtils.h>
 
 using namespace skia_private;
 
@@ -1247,6 +1250,48 @@ std::vector<Paragraph::FontInfo> ParagraphImpl::getFonts() const {
         results.emplace_back(run.font(), run.textRange());
     }
     return results;
+}
+
+SkPath Paragraph::getPaths(SkTextBlob* textBlob) {
+    SkPath path;
+    SkTextBlobRunIterator iter(textBlob);
+    while (!iter.done()) {
+        SkFont font = iter.font();
+        struct Rec { SkPath* fDst; SkPoint fOffset; const SkPoint* fPos; } rec =
+            {&path, {textBlob->bounds().left(), textBlob->bounds().top()},
+             iter.points()};
+        font.getPaths(iter.glyphs(), iter.glyphCount(),
+            [](const SkPath* src, const SkMatrix& mx, void* ctx) {
+                Rec* rec = (Rec*)ctx;
+                if (src) {
+                    SkMatrix tmp(mx);
+                    tmp.postTranslate(rec->fPos->fX - rec->fOffset.fX,
+                                      rec->fPos->fY - rec->fOffset.fY);
+                    rec->fDst->addPath(*src, tmp);
+                }
+                rec->fPos += 1;
+            },
+            &rec);
+        iter.next();
+    }
+    return path;
+}
+
+bool ParagraphImpl::containsColorFontOrEmoji(SkTextBlob* textBlob) {
+    bool result = false;
+    SkTextBlobRunIterator iter(textBlob);
+    while (!iter.done() && !result) {
+        this->getUnicode()->forEachCodepoint(iter.text(), iter.textSize(),
+           [&](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
+                if (this->getUnicode()->SkUnicode::isEmoji(unichar)) {
+                    result = true;
+                }
+            });
+        result |= iter.font().isEmbeddedBitmaps();
+        //result |= iter.font().getTypefaceOrDefault()->color;
+        iter.next();
+    }
+    return result;
 }
 
 }  // namespace textlayout

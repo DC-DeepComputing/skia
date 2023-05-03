@@ -207,6 +207,8 @@ public:
 
     void visit(const Visitor&) override;
 
+    bool containsColorFontOrEmoji(SkTextBlob* textBlob) override;
+
     int getLineNumberAt(TextIndex codeUnitIndex) const override;
     bool getLineMetricsAt(int lineNumber, LineMetrics* lineMetrics) const override;
     TextRange getActualTextRange(int lineNumber, bool includeSpaces) const override;
