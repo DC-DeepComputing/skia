@@ -39,6 +39,30 @@
       },
       "revId": "550748ab35cf8d7c1698d232dc219536426e7874",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a15ba321_60d0c6e2",
+        "filename": "src/effects/imagefilters/SkColorFilterImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-03T18:17:59Z",
+      "side": 1,
+      "message": "I agree.",
+      "parentUuid": "36612ce4_e33b4d80",
+      "range": {
+        "startLine": 60,
+        "startChar": 29,
+        "endLine": 60,
+        "endChar": 44
+      },
+      "revId": "550748ab35cf8d7c1698d232dc219536426e7874",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
