@@ -63,6 +63,7 @@ bool GraphiteMetalWindowContext_mac::onInitializeContext() {
     fMetalLayer.contentsGravity = kCAGravityTopLeft;
     fMetalLayer.magnificationFilter = kCAFilterNearest;
     fMetalLayer.framebufferOnly = false;
+    fMetalLayer.allowsNextDrawableTimeout = NO;
     NSColorSpace* cs = fMainView.window.colorSpace;
     fMetalLayer.colorspace = cs.CGColorSpace;
 
