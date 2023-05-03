@@ -343,6 +343,11 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "gm", ALL, "async_rescale_and_read_rose")
 				}
 			}
+			if b.extraConfig("Vulkan") {
+				configs = []string{"grvk"}
+                                // Validation error
+				skip(ALL, "gm", ALL, "xfermodes3")
+			}
 		}
 
 		// ANGLE bot *only* runs the angle configs
@@ -419,7 +424,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		if b.gpu() && b.extraConfig("Vulkan") && (b.gpu("RadeonR9M470X", "RadeonHD7770")) {
 			skip(ALL, "tests", ALL, "VkDrawableImportTest")
 		}
-		if b.extraConfig("Vulkan") {
+		if b.extraConfig("Vulkan") && !b.extraConfig("Graphite") {
 			configs = []string{"vk"}
 			// MSAA doesn't work well on Intel GPUs chromium:527565, chromium:983926, skia:9023
 			if !b.matchGpu("Intel") {
