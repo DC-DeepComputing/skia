@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a0d09a9_4998af48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2023-05-04T23:13:25Z",
+      "side": 1,
+      "message": "I think I can just test the resulting profiles.\n\nIs AndroidCodecTest the correct test-bed?",
+      "parentUuid": "d5f97158_cb66a22e",
+      "revId": "9b6cf2b041ad063e965c79eb59bee8fd4bf0022a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "785aacdd_f8e828d9",
         "filename": "src/codec/SkAndroidCodec.cpp",
         "patchSetId": 4
@@ -140,6 +158,24 @@
       "writtenOn": "2023-05-04T19:31:42Z",
       "side": 1,
       "message": "I don\u0027t understand these comments that don\u0027t have any code attached. Is this a TODO?",
+      "revId": "9b6cf2b041ad063e965c79eb59bee8fd4bf0022a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa960978_54f5589b",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2023-05-04T23:13:25Z",
+      "side": 1,
+      "message": "These aren\u0027t TODOs per-se. The comments are describing CICP points that don\u0027t have clean support in skcms.\n\nWould it be preferred if I just link in H.273 documentation instead?",
+      "parentUuid": "da568b81_964a1809",
       "revId": "9b6cf2b041ad063e965c79eb59bee8fd4bf0022a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
