@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14426d0e_b736ea8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-04T20:38:09Z",
+      "side": 1,
+      "message": "this will be ready to land when http://github.com/flutter/engine/pull/41743 lands. The prior nearest-neighbor sampling change fixes the speckling that was occurring on some android devices due to low-precision bilerp.",
+      "revId": "af37638055bc9f58bc0d189d11b5aa969c0cdf7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
