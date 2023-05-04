@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "26d9d928_eaf95ba5",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-04T17:17:21Z",
+      "side": 1,
+      "message": "I\u0027m not sure. Both places seem appropriate to an extent. My understanding of the difference between settings and caps is that settings change compiler behavior while caps allow platform capabilities to be queried? There seems to be some overlap.\n\nBecause this flag is more about driving compiler behavior (based on an API query) compiler settings felt appropriate but I could be convinced otherwise. The caps vs settings distinction is still a bit unclear to me.",
+      "parentUuid": "6929e3cd_c4a05aef",
+      "range": {
+        "startLine": 90,
+        "startChar": 4,
+        "endLine": 90,
+        "endChar": 38
+      },
+      "revId": "25d01eafc3a3a92a38c3cbd82cd10946173cbc28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "24e0da2d_9c6a35b5",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-04T14:05:52Z",
       "side": 1,
       "message": "I think this is correct as-is, but just to be sure, I would appreciate parens here.",
+      "range": {
+        "startLine": 267,
+        "startChar": 11,
+        "endLine": 267,
+        "endChar": 60
+      },
+      "revId": "25d01eafc3a3a92a38c3cbd82cd10946173cbc28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0d25d10_a7eea64f",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-04T17:17:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24e0da2d_9c6a35b5",
       "range": {
         "startLine": 267,
         "startChar": 11,
