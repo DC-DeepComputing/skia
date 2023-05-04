@@ -959,6 +959,22 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceWrappedWithRelease_Gpu, reporter, ctxI
             continue;
         }
 
+        GrBackendTexture beTex = surface->getBackendTexture(SkSurface::kFlushRead_BackendHandleAccess);
+        if (beTex.isValid()) {
+            SkDebugf("Surface protected: %d\n", beTex.isProtected());
+        } else {
+            SkDebugf("Invalid Surface beTex\n");
+        }
+
+        sk_sp<SkImage> img = surface->makeImageSnapshot();
+
+        GrBackendTexture imgTex = img->getBackendTexture(false);
+        if (imgTex.isValid()) {
+            SkDebugf("Image protected: %d\n", imgTex.isProtected());
+        } else {
+            SkDebugf("Invalid Image beTex\n");
+        }
+
         surface->getCanvas()->clear(SK_ColorRED);
         surface->flush();
         ctx->submit(true);
