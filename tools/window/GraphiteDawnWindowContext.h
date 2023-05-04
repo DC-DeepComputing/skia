@@ -7,11 +7,11 @@
 #ifndef GraphiteDawnWindowContext_DEFINED
 #define GraphiteDawnWindowContext_DEFINED
 
-#include "tools/sk_app/WindowContext.h"
+#include "tools/window/WindowContext.h"
 #include "webgpu/webgpu_cpp.h"
 #include "dawn/native/DawnNative.h"
 
-namespace sk_app {
+namespace skwindow::internal {
 
 class GraphiteDawnWindowContext : public WindowContext {
 public:
@@ -44,6 +44,6 @@ protected:
     wgpu::SwapChain                         fSwapChain;
 };
 
-}   // namespace sk_app
+}   // namespace skwindow::internal
 
 #endif

@@ -5,16 +5,16 @@
  * found in the LICENSE file.
  */
 
-#include "tools/sk_app/GraphiteDawnWindowContext.h"
-#include "tools/sk_app/mac/WindowContextFactory_mac.h"
+#include "tools/window/GraphiteDawnWindowContext.h"
+#include "tools/window/mac/WindowContextFactory_mac.h"
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/CAConstraintLayoutManager.h>
 #import <QuartzCore/CAMetalLayer.h>
 
-using sk_app::DisplayParams;
-using sk_app::window_context_factory::MacWindowInfo;
-using sk_app::GraphiteDawnWindowContext;
+using skwindow::DisplayParams;
+using skwindow::MacWindowInfo;
+using skwindow::internal::GraphiteDawnWindowContext;
 
 namespace {
 
@@ -118,11 +118,9 @@ bool GraphiteDawnMetalWindowContext_mac::resizeInternal() {
     return true;
 }
 
-
 }  // anonymous namespace
 
-namespace sk_app {
-namespace window_context_factory {
+namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGraphiteDawnMetalForMac(const MacWindowInfo& info,
                                                            const DisplayParams& params) {
@@ -133,5 +131,4 @@ std::unique_ptr<WindowContext> MakeGraphiteDawnMetalForMac(const MacWindowInfo& 
     return ctx;
 }
 
-}  // namespace window_context_factory
-}  // namespace sk_app
+}  // namespace skwindow

@@ -9,7 +9,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/base/SkAutoMalloc.h"
-#include "tools/sk_app/DawnWindowContext.h"
+#include "tools/window/DawnWindowContext.h"
 
 #include "dawn/dawn_proc.h"
 
@@ -33,7 +33,7 @@ static wgpu::SwapChainDescriptor CreateSwapChainDesc(int width,
     return desc;
 }
 
-namespace sk_app {
+namespace skwindow::internal {
 
 DawnWindowContext::DawnWindowContext(const DisplayParams& params,
                                      wgpu::TextureFormat swapChainFormat)
@@ -131,4 +131,4 @@ wgpu::Device DawnWindowContext::createDevice(wgpu::BackendType type) {
     return nullptr;
 }
 
-}   //namespace sk_app
+}   //namespace skwindow::internal

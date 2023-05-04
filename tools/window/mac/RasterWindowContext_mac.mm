@@ -6,40 +6,50 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColorFilter.h"
 #include "include/gpu/gl/GrGLInterface.h"
-#include "tools/sk_app/GLWindowContext.h"
-#include "tools/sk_app/mac/WindowContextFactory_mac.h"
+#include "tools/ToolUtils.h"
+#include "tools/window/GLWindowContext.h"
+#include "tools/window/mac/WindowContextFactory_mac.h"
 
 #include <OpenGL/gl.h>
+
 #include <Cocoa/Cocoa.h>
 
-using sk_app::DisplayParams;
-using sk_app::window_context_factory::MacWindowInfo;
-using sk_app::GLWindowContext;
+using skwindow::DisplayParams;
+using skwindow::MacWindowInfo;
+using skwindow::internal::GLWindowContext;
 
 namespace {
 
-class GLWindowContext_mac : public GLWindowContext {
-public:
-    GLWindowContext_mac(const MacWindowInfo&, const DisplayParams&);
+// TODO: This still uses GL to handle the update rather than using a purely raster backend,
+// for historical reasons. Writing a pure raster backend would be better in the long run.
 
-    ~GLWindowContext_mac() override;
+class RasterWindowContext_mac : public GLWindowContext {
+public:
+    RasterWindowContext_mac(const MacWindowInfo&, const DisplayParams&);
+
+    ~RasterWindowContext_mac() override;
+
+    sk_sp<SkSurface> getBackbufferSurface() override;
 
     sk_sp<const GrGLInterface> onInitializeContext() override;
-    void onDestroyContext() override;
+    void onDestroyContext() override {}
 
     void resize(int w, int h) override;
 
 private:
-    void teardownContext();
     void onSwapBuffers() override;
 
     NSView*              fMainView;
     NSOpenGLContext*     fGLContext;
     NSOpenGLPixelFormat* fPixelFormat;
+    sk_sp<SkSurface>     fBackbufferSurface;
 };
 
-GLWindowContext_mac::GLWindowContext_mac(const MacWindowInfo& info, const DisplayParams& params)
+RasterWindowContext_mac::RasterWindowContext_mac(const MacWindowInfo& info,
+                                                 const DisplayParams& params)
         : GLWindowContext(params)
         , fMainView(info.fMainView)
         , fGLContext(nil) {
@@ -49,11 +59,7 @@ GLWindowContext_mac::GLWindowContext_mac(const MacWindowInfo& info, const Displa
     this->initializeContext();
 }
 
-GLWindowContext_mac::~GLWindowContext_mac() {
-    teardownContext();
-}
-
-void GLWindowContext_mac::teardownContext() {
+RasterWindowContext_mac::~RasterWindowContext_mac() {
     [NSOpenGLContext clearCurrentContext];
     [fPixelFormat release];
     fPixelFormat = nil;
@@ -61,12 +67,12 @@ void GLWindowContext_mac::teardownContext() {
     fGLContext = nil;
 }
 
-sk_sp<const GrGLInterface> GLWindowContext_mac::onInitializeContext() {
+sk_sp<const GrGLInterface> RasterWindowContext_mac::onInitializeContext() {
     SkASSERT(nil != fMainView);
 
     if (!fGLContext) {
         // set up pixel format
-        constexpr int kMaxAttributes = 19;
+        constexpr int kMaxAttributes = 18;
         NSOpenGLPixelFormatAttribute attributes[kMaxAttributes];
         int numAttributes = 0;
         attributes[numAttributes++] = NSOpenGLPFAAccelerated;
@@ -83,7 +89,6 @@ sk_sp<const GrGLInterface> GLWindowContext_mac::onInitializeContext() {
         attributes[numAttributes++] = NSOpenGLPFAStencilSize;
         attributes[numAttributes++] = 8;
         if (fDisplayParams.fMSAASampleCount > 1) {
-            attributes[numAttributes++] = NSOpenGLPFAMultisample;
             attributes[numAttributes++] = NSOpenGLPFASampleBuffers;
             attributes[numAttributes++] = 1;
             attributes[numAttributes++] = NSOpenGLPFASamples;
@@ -110,10 +115,10 @@ sk_sp<const GrGLInterface> GLWindowContext_mac::onInitializeContext() {
 
         [fMainView setWantsBestResolutionOpenGLSurface:YES];
         [fGLContext setView:fMainView];
-    }
 
-    GLint swapInterval = fDisplayParams.fDisableVsync ? 0 : 1;
-    [fGLContext setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+        GLint swapInterval = fDisplayParams.fDisableVsync ? 0 : 1;
+        [fGLContext setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
+    }
 
     // make context current
     [fGLContext makeCurrentContext];
@@ -136,41 +141,47 @@ sk_sp<const GrGLInterface> GLWindowContext_mac::onInitializeContext() {
     fHeight = fMainView.bounds.size.height * backingScaleFactor;
     glViewport(0, 0, fWidth, fHeight);
 
+    // make the offscreen image
+    SkImageInfo info = SkImageInfo::Make(fWidth, fHeight, fDisplayParams.fColorType,
+                                         kPremul_SkAlphaType, fDisplayParams.fColorSpace);
+    fBackbufferSurface = SkSurface::MakeRaster(info);
     return GrGLMakeNativeInterface();
 }
 
-void GLWindowContext_mac::onDestroyContext() {
-    // We only need to tear down the GLContext if we've changed the sample count.
-    if (fGLContext && fSampleCount != fDisplayParams.fMSAASampleCount) {
-        teardownContext();
+sk_sp<SkSurface> RasterWindowContext_mac::getBackbufferSurface() { return fBackbufferSurface; }
+
+void RasterWindowContext_mac::onSwapBuffers() {
+    if (fBackbufferSurface) {
+        // We made/have an off-screen surface. Get the contents as an SkImage:
+        sk_sp<SkImage> snapshot = fBackbufferSurface->makeImageSnapshot();
+
+        sk_sp<SkSurface> gpuSurface = GLWindowContext::getBackbufferSurface();
+        SkCanvas* gpuCanvas = gpuSurface->getCanvas();
+        gpuCanvas->drawImage(snapshot, 0, 0);
+        gpuCanvas->flush();
+
+        [fGLContext flushBuffer];
     }
 }
 
-void GLWindowContext_mac::onSwapBuffers() {
-    [fGLContext flushBuffer];
-}
-
-void GLWindowContext_mac::resize(int w, int h) {
+void RasterWindowContext_mac::resize(int w, int h) {
     [fGLContext update];
 
     // The super class always recreates the context.
     GLWindowContext::resize(0, 0);
 }
 
-
 }  // anonymous namespace
 
-namespace sk_app {
-namespace window_context_factory {
+namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeGLForMac(const MacWindowInfo& info,
-                                            const DisplayParams& params) {
-    std::unique_ptr<WindowContext> ctx(new GLWindowContext_mac(info, params));
+std::unique_ptr<WindowContext> MakeRasterForMac(const MacWindowInfo& info,
+                                                const DisplayParams& params) {
+    std::unique_ptr<WindowContext> ctx(new RasterWindowContext_mac(info, params));
     if (!ctx->isValid()) {
         return nullptr;
     }
     return ctx;
 }
 
-}  // namespace window_context_factory
-}  // namespace sk_app
+}  // namespace skwindow
