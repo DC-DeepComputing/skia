@@ -56,7 +56,7 @@ static void append_rtadjust_fixup_to_vertex_main(const Context& context,
     ThreadContext::RTAdjustData& rtAdjust = ThreadContext::RTAdjustState();
     if (rtAdjust.fVar || rtAdjust.fInterfaceBlock) {
         // ...append a line to the end of the function body which fixes up sk_Position.
-        const SymbolTable* symbolTable = ThreadContext::SymbolTable().get();
+        const SymbolTable* symbolTable = context.fSymbolTable.get();
         const Field& skPositionField = symbolTable->find(Compiler::POSITION_NAME)->as<Field>();
 
         auto Ref = [](const Variable* var) -> std::unique_ptr<Expression> {

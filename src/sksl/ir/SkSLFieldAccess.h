@@ -53,7 +53,6 @@ public:
     // Returns a field-access expression; reports errors via the ErrorReporter.
     static std::unique_ptr<Expression> Convert(const Context& context,
                                                Position pos,
-                                               SymbolTable& symbolTable,
                                                std::unique_ptr<Expression> base,
                                                std::string_view field);
 

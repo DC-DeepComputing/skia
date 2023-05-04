@@ -46,7 +46,6 @@ public:
                         bool builtin);
 
     static FunctionDeclaration* Convert(const Context& context,
-                                        SymbolTable& symbols,
                                         Position pos,
                                         Position modifiersPos,
                                         const Modifiers* modifiers,

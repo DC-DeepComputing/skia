@@ -87,11 +87,6 @@ public:
     }
 
     /**
-     * Returns the current SymbolTable.
-     */
-    static std::shared_ptr<SkSL::SymbolTable>& SymbolTable();
-
-    /**
      * Returns the current memory pool.
      */
     static std::unique_ptr<Pool>& MemoryPool() { return Instance().fPool; }

@@ -409,7 +409,7 @@ std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
         return nullptr;
     }
 
-    SymbolTable* symbols = ThreadContext::SymbolTable().get();
+    SymbolTable* symbols = context.fSymbolTable.get();
     if (var->storage() == Variable::Storage::kGlobal ||
         var->storage() == Variable::Storage::kInterfaceBlock) {
         // Check if this globally-scoped variable name overlaps an existing symbol name.

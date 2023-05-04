@@ -120,10 +120,12 @@ void DSLWriter::AddVarDeclaration(DSLStatement& existing, DSLVar& additional) {
 }
 
 void DSLWriter::Reset() {
-    SymbolTable::Pop(&ThreadContext::SymbolTable());
-    SymbolTable::Push(&ThreadContext::SymbolTable());
+    SkSL::Context& context = ThreadContext::Context();
+
+    SymbolTable::Pop(&context.fSymbolTable);
+    SymbolTable::Push(&context.fSymbolTable);
     ThreadContext::ProgramElements().clear();
-    ThreadContext::GetModifiersPool()->clear();
+    context.fModifiersPool->clear();
 }
 
 } // namespace dsl
