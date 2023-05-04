@@ -409,11 +409,10 @@ std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
         return nullptr;
     }
 
-    SymbolTable* symbols = ThreadContext::SymbolTable().get();
     if (var->storage() == Variable::Storage::kGlobal ||
         var->storage() == Variable::Storage::kInterfaceBlock) {
         // Check if this globally-scoped variable name overlaps an existing symbol name.
-        if (symbols->find(var->name())) {
+        if (context.fSymbolTable->find(var->name())) {
             context.fErrors->error(var->fPosition,
                                    "symbol '" + std::string(var->name()) + "' was already defined");
             return nullptr;
@@ -434,7 +433,7 @@ std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
         }
     }
 
-    symbols->takeOwnershipOfSymbol(std::move(var));
+    context.fSymbolTable->takeOwnershipOfSymbol(std::move(var));
     return varDecl;
 }
 
