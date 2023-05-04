@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c819b21_3863993c",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1169,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-04T19:04:21Z",
+      "side": 1,
+      "message": "So the range start is inclusive and the range end is exclusive. So something like\n\n123\n456\n\nline 1 is `[1,4)` and line 2 `[4,7)`. So the empty range `[4,4)` is in both of these lines (at the end of line 1 and the beginning of line 2) and the first line with this range is line 1, so it was reported as being on line 1. However, what we really wanted to know was the line with the codeUnit with range `[4,5)`.",
+      "revId": "1a8609331c28738bad8814a3409b58786786339a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
