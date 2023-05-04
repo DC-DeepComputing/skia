@@ -88,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bb95e19_b9b7b885",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-04T15:57:01Z",
+      "side": 1,
+      "message": "Addressing coverage in http://review.skia.org/688099.",
+      "parentUuid": "2ee837da_8a92db35",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 32
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6bab7f0_6d4e95bf",
@@ -621,6 +645,30 @@
       "side": 1,
       "message": "I think that\u0027s an okay short-term solution and eventually we can move the dst-proxy to an intrinsic uniform and then toKey() will not require it anymore.",
       "parentUuid": "3aaa50f2_f521640a",
+      "range": {
+        "startLine": 460,
+        "startChar": 0,
+        "endLine": 460,
+        "endChar": 62
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9e4e3db_2052880f",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-04T15:57:01Z",
+      "side": 1,
+      "message": "Created b/280802448 for moving dst-proxy to an intrinsic uniform.",
+      "parentUuid": "2dc63144_2de31394",
       "range": {
         "startLine": 460,
         "startChar": 0,

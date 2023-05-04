@@ -104,6 +104,30 @@
       },
       "revId": "68c343f1674533cbf34bb2981ec9f569b315f902",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b38276ee_1f269064",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-04T15:57:01Z",
+      "side": 1,
+      "message": "Created b/280802448 for moving dst-proxy to an intrinsic uniform.",
+      "parentUuid": "a9935643_b9fa80e6",
+      "range": {
+        "startLine": 510,
+        "startChar": 26,
+        "endLine": 510,
+        "endChar": 46
+      },
+      "revId": "68c343f1674533cbf34bb2981ec9f569b315f902",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

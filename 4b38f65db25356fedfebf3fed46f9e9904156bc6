@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0454cdb_5cda558e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-04T15:57:01Z",
+      "side": 1,
+      "message": "Addressing coverage in http://review.skia.org/688099.",
+      "parentUuid": "27829c08_cdcf1d4c",
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37f21625_6f58c8be",
@@ -78,6 +96,30 @@
       "writtenOn": "2023-03-02T18:24:08Z",
       "side": 1,
       "message": "In this CL, this is where we make a decision to add a dst read for a draw. As Greg and I discussed, this decision-making probably needs to look a lot different than this and probably needs to be much more sophisticated (for example from looking at Ganesh: https://crsrc.org/c/third_party/skia/src/gpu/ganesh/effects/GrPorterDuffXferProcessor.cpp;l\u003d764).",
+      "range": {
+        "startLine": 895,
+        "startChar": 0,
+        "endLine": 897,
+        "endChar": 91
+      },
+      "revId": "4b38f65db25356fedfebf3fed46f9e9904156bc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cbbe240_c9f2d74a",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-04T15:57:01Z",
+      "side": 1,
+      "message": "This can evolve over time, and will already be closer to what we want with http://review.skia.org/688099.\n\nBTW a correct, versioned link to the relevant Ganesh code is https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/effects/GrPorterDuffXferProcessor.cpp;l\u003d764;drc\u003d46572b4d",
+      "parentUuid": "ad29c68f_0ad33cf2",
       "range": {
         "startLine": 895,
         "startChar": 0,
