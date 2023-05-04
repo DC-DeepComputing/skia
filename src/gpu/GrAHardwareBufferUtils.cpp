@@ -30,6 +30,9 @@
 #include "src/gpu/vk/GrVkGpu.h"
 #endif
 
+#include "src/gpu/gl/GrGLCaps.h"
+
+#define TMP_GL_TEXTURE_PROTECTED_EXT                        0x8BFA
 #define PROT_CONTENT_EXT_STR "EGL_EXT_protected_content"
 #define EGL_PROTECTED_CONTENT_EXT 0x32C0
 
@@ -227,6 +230,12 @@ static GrBackendTexture make_gl_backend_texture(
         bool isRenderable) {
     while (GL_NO_ERROR != glGetError()) {} //clear GL errors
 
+    if (dContext->backend() == GrBackendApi::kOpenGL) {
+        const GrCaps* caps = dContext->priv().caps();
+        const GrGLCaps* glCaps = reinterpret_cast<const GrGLCaps*>(caps);
+        SkDebugf("GrDirectContext supports protected: %d\n", glCaps->supportsProtected());
+    }
+
     EGLClientBuffer clientBuffer = eglGetNativeClientBufferANDROID(hardwareBuffer);
     EGLint attribs[] = { EGL_IMAGE_PRESERVED_KHR, EGL_TRUE,
                          isProtectedContent ? EGL_PROTECTED_CONTENT_EXT : EGL_NONE,
@@ -265,6 +274,11 @@ static GrBackendTexture make_gl_backend_texture(
         eglDestroyImageKHR(display, image);
         return GrBackendTexture();
     }
+
+    if (isProtectedContent) {
+        glTexParameteri(target, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE);
+    }
+
     dContext->resetContext(kTextureBinding_GrGLBackendState);
 
     GrGLTextureInfo textureInfo;
@@ -276,6 +290,10 @@ static GrBackendTexture make_gl_backend_texture(
     *deleteProc = delete_gl_texture;
     *updateProc = update_gl_texture;
     *imageCtx = new GLTextureHelper(texID, image, display, target);
+
+    GLint isProtected = 0;
+    glGetTexParameteriv(texID, TMP_GL_TEXTURE_PROTECTED_EXT, &isProtected);
+    SkDebugf("GL's protected %d\n", isProtected);
 
     return GrBackendTexture(width, height, GrMipmapped::kNo, textureInfo);
 }
@@ -582,4 +600,3 @@ GrBackendTexture MakeBackendTexture(GrDirectContext* dContext, AHardwareBuffer* 
 } // GrAHardwareBufferUtils
 
 #endif
-
