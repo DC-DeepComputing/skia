@@ -10,8 +10,8 @@
 
 #include "include/core/SkRefCnt.h"
 
+#include "src/gpu/graphite/Descriptors.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
-#include <map>
 
 namespace skgpu::graphite {
 
@@ -23,14 +23,18 @@ class VulkanSharedContext;
  */
 class VulkanDescriptorPool : public SkRefCnt {
 public:
-    // TODO: Finalize argument list.
-    static sk_sp<VulkanDescriptorPool> Make(const VulkanSharedContext*);
-
-    VkDescriptorPool descPool() const { return fDescPool; }
-
-private:
     // Conservative upper bound of number of sets supported per pool.
     static constexpr int kMaxNumSets = 512;
+
+    static sk_sp<VulkanDescriptorPool> Make(const VulkanSharedContext*,
+                                            DescTypeAndCount [kDescriptorTypeCount]);
+
+    VkDescriptorPool* descPool() { return &fDescPool; }
+
+private:
+    // Conservative overestimation of a maximum number of descriptors of any given type that can be
+    // requested.
+    static constexpr int kMaxNumDescriptors = 1024;
 
     VulkanDescriptorPool(const VulkanSharedContext*,
                          VkDescriptorPool);
