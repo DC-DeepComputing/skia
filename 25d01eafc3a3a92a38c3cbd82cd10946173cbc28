@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6929e3cd_c4a05aef",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-04T14:05:52Z",
+      "side": 1,
+      "message": "Should this live in the ShaderCaps?",
+      "range": {
+        "startLine": 90,
+        "startChar": 4,
+        "endLine": 90,
+        "endChar": 38
+      },
+      "revId": "25d01eafc3a3a92a38c3cbd82cd10946173cbc28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24e0da2d_9c6a35b5",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-04T14:05:52Z",
+      "side": 1,
+      "message": "I think this is correct as-is, but just to be sure, I would appreciate parens here.",
+      "range": {
+        "startLine": 267,
+        "startChar": 11,
+        "endLine": 267,
+        "endChar": 60
+      },
+      "revId": "25d01eafc3a3a92a38c3cbd82cd10946173cbc28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
