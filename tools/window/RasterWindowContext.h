@@ -8,9 +8,9 @@
 #ifndef RasterWindowContext_DEFINED
 #define RasterWindowContext_DEFINED
 
-#include "tools/sk_app/WindowContext.h"
+#include "tools/window/WindowContext.h"
 
-namespace sk_app {
+namespace skwindow::internal {
 
 class RasterWindowContext : public WindowContext {
 public:
@@ -20,6 +20,6 @@ protected:
     bool isGpuContext() override { return false; }
 };
 
-}   // namespace sk_app
+}   // namespace skwindow::internal
 
 #endif

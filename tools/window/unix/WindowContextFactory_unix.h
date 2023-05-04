@@ -20,12 +20,10 @@
 
 typedef Window XWindow;
 
-namespace sk_app {
+namespace skwindow {
 
 class WindowContext;
 struct DisplayParams;
-
-namespace window_context_factory {
 
 struct XlibWindowInfo {
     Display*     fDisplay;
@@ -51,8 +49,6 @@ std::unique_ptr<WindowContext> MakeGraphiteDawnVulkanForXlib(const XlibWindowInf
 
 std::unique_ptr<WindowContext> MakeRasterForXlib(const XlibWindowInfo&, const DisplayParams&);
 
-}  // namespace window_context_factory
-
-}  // namespace sk_app
+}  // namespace skwindow
 
 #endif

@@ -15,12 +15,12 @@
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/image/SkImage_Base.h"
-#include "tools/sk_app/MetalWindowContext.h"
+#include "tools/window/MetalWindowContext.h"
 
-using sk_app::DisplayParams;
-using sk_app::MetalWindowContext;
+using skwindow::DisplayParams;
+using skwindow::internal::MetalWindowContext;
 
-namespace sk_app {
+namespace skwindow::internal {
 
 MetalWindowContext::MetalWindowContext(const DisplayParams& params)
         : WindowContext(params)
@@ -188,4 +188,4 @@ void MetalWindowContext::activate(bool isActive) {
     }
 }
 
-}   //namespace sk_app
+}   //namespace skwindow::internal

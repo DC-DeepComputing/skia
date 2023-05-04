@@ -9,13 +9,13 @@
 #ifndef WindowContextFactory_mac_DEFINED
 #define WindowContextFactory_mac_DEFINED
 
-#include "tools/sk_app/WindowContext.h"
+#include "tools/window/WindowContext.h"
 
 #include <Cocoa/Cocoa.h>
 
 #include <memory>
 
-namespace sk_app {
+namespace skwindow {
 
 struct DisplayParams;
 
@@ -28,8 +28,6 @@ static inline CGFloat GetBackingScaleFactor(NSView* view) {
     return screen.backingScaleFactor;
     #endif
 }
-
-namespace window_context_factory {
 
 struct MacWindowInfo {
     NSView*   fMainView;
@@ -61,8 +59,6 @@ std::unique_ptr<WindowContext> MakeGraphiteMetalForMac(const MacWindowInfo&, con
 #endif
 #endif
 
-}  // namespace window_context_factory
-
-}  // namespace sk_app
+}  // namespace skwindow
 
 #endif

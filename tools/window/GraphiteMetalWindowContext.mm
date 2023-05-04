@@ -7,7 +7,7 @@
 
 #include "include/core/SkSurface.h"
 #include "src/base/SkMathPriv.h"
-#include "tools/sk_app/GraphiteMetalWindowContext.h"
+#include "tools/window/GraphiteMetalWindowContext.h"
 
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
@@ -19,10 +19,10 @@
 #include "include/gpu/graphite/mtl/MtlGraphiteUtils.h"
 #include "tools/ToolUtils.h"
 
-using sk_app::DisplayParams;
-using sk_app::GraphiteMetalWindowContext;
+using skwindow::DisplayParams;
+using skwindow::internal::GraphiteMetalWindowContext;
 
-namespace sk_app {
+namespace skwindow::internal {
 
 GraphiteMetalWindowContext::GraphiteMetalWindowContext(const DisplayParams& params)
         : WindowContext(params)
@@ -122,4 +122,4 @@ void GraphiteMetalWindowContext::setDisplayParams(const DisplayParams& params) {
 
 void GraphiteMetalWindowContext::activate(bool isActive) {}
 
-}   //namespace sk_app
+}   //namespace skwindow::internal
