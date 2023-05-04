@@ -49,7 +49,7 @@ ThreadContext::ThreadContext(SkSL::Compiler* compiler,
 }
 
 ThreadContext::~ThreadContext() {
-    if (SymbolTable()) {
+    if (fCompiler->fContext->fSymbolTable) {
         fCompiler->fContext->fSymbolTable = nullptr;
         fProgramElements.clear();
     } else {
@@ -78,10 +78,6 @@ SkSL::Context& ThreadContext::Context() {
 
 const SkSL::ProgramSettings& ThreadContext::Settings() {
     return Context().fConfig->fSettings;
-}
-
-std::shared_ptr<SkSL::SymbolTable>& ThreadContext::SymbolTable() {
-    return Context().fSymbolTable;
 }
 
 const SkSL::Modifiers* ThreadContext::Modifiers(const SkSL::Modifiers& modifiers) {
