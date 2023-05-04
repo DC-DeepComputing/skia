@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad0039fb_ab721322",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-04T20:54:34Z",
+      "side": 1,
+      "message": "The gold diffs are to be expected since I was unable to exactly reconstruct what the original intended lens bounds should have been.",
+      "revId": "afc535867c21bd3575428bc1d5451abc19d59594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
