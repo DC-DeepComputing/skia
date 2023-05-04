@@ -277,6 +277,10 @@ static GrBackendTexture make_gl_backend_texture(
     *updateProc = update_gl_texture;
     *imageCtx = new GLTextureHelper(texID, image, display, target);
 
+    GLint isProtected = 0;
+    glGetTexParameteriv(texID, GL_TEXTURE_PROTECTED_EXT, &isProtected);
+    SkDebugf("GL's protected %d\n", isProtected);
+
     return GrBackendTexture(width, height, GrMipmapped::kNo, textureInfo);
 }
 
@@ -582,4 +586,3 @@ GrBackendTexture MakeBackendTexture(GrDirectContext* dContext, AHardwareBuffer* 
 } // GrAHardwareBufferUtils
 
 #endif
-
