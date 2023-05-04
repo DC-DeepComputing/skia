@@ -10,12 +10,13 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypeface.h"
 #include "src/ports/SkTypeface_fontations.h"
+#include "tools/Resources.h"
 
 namespace skiagm {
 
 namespace {
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
-
+const char kTestFontName[] = "fonts/Roboto-Regular.ttf";
 }  // namespace
 
 class FontationsTypefaceGM : public GM {
@@ -23,7 +24,10 @@ public:
     FontationsTypefaceGM() { this->setBGColor(SK_ColorWHITE); }
 
 protected:
-    void onOnceBeforeDraw() override { fTypeface = sk_sp<SkTypeface>(new SkTypeface_Fontations()); }
+    void onOnceBeforeDraw() override {
+        std::unique_ptr<SkStreamAsset> font_data = GetResourceAsStream(kTestFontName);
+        fTypeface = sk_sp<SkTypeface>(new SkTypeface_Fontations(std::move(font_data)));
+    }
 
     SkString onShortName() override { return SkString("typeface_fontations"); }
 
@@ -37,9 +41,26 @@ protected:
             *errorMsg = "Unable to initialize typeface.";
             return DrawResult::kSkip;
         }
+        printf("Num glyphs: %d\n", fTypeface->countGlyphs());
+
+        auto family_names = fTypeface->createFamilyNameIterator();
+        SkTypeface::LocalizedString famName;
+        while (family_names->next(&famName)) {
+            printf("Name: %s Language: %s\n", famName.fString.c_str(), famName.fLanguage.c_str());
+        }
+        family_names->unref();
+
+        SkString familyName;
+        SkString postscriptName;
+        if (fTypeface->getPostScriptName(&postscriptName)) {
+          printf("PS Name: %s\n", postscriptName.c_str());
+        }
+        fTypeface->getFamilyName(&familyName);
+        printf("Family name: %s\n", familyName.c_str());
 
         SkFont font(fTypeface);
-        uint16_t glyphs[] = {1, 1, 1};
+        const char32_t testText[] = U"xyz";
+        size_t testText_bytesize = sizeof(testText) / sizeof(char32_t) * sizeof(char32_t);
         SkScalar x = 100;
         SkScalar y = 150;
 
@@ -52,13 +73,8 @@ protected:
             canvas->drawRect(SkRect::MakeXYWH(x, y, 2, 2), paint);
             paint.setColor(SK_ColorBLACK);
 
-            canvas->drawSimpleText(glyphs,
-                                   sizeof(uint16_t) * std::size(glyphs),
-                                   SkTextEncoding::kGlyphID,
-                                   x,
-                                   y,
-                                   font,
-                                   paint);
+            canvas->drawSimpleText(
+                    testText, testText_bytesize, SkTextEncoding::kUTF32, x, y, font, paint);
         }
 
         return DrawResult::kOk;
