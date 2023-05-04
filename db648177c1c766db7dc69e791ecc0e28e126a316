@@ -229,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8543878a_eeac10b5",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-04T14:37:27Z",
+      "side": 1,
+      "message": "Per offline discussions, paint_depends_on_dst will remain as-is. While the checks are similar to whether or not a dst read is needed, their purposes are actually quite different so staying separate is fine.",
+      "parentUuid": "9fbd069c_869e2a3c",
+      "range": {
+        "startLine": 70,
+        "startChar": 5,
+        "endLine": 70,
+        "endChar": 25
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e3bceb5_a611aa27",
@@ -252,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f286fc17_e5e611c9",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-04T14:37:27Z",
+      "side": 1,
+      "message": "Created b/280793619 to address this ordering issue in a follow-up CL.",
+      "parentUuid": "9e3bceb5_a611aa27",
+      "range": {
+        "startLine": 931,
+        "startChar": 4,
+        "endLine": 933,
+        "endChar": 48
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "967b91b4_6531cd1e",
@@ -265,6 +313,30 @@
       "writtenOn": "2023-04-04T20:18:15Z",
       "side": 1,
       "message": "Other than needing the Renderer here, there\u0027s no reason this couldn\u0027t get moved up to the start of the logic to determine a flush or not.",
+      "range": {
+        "startLine": 972,
+        "startChar": 0,
+        "endLine": 972,
+        "endChar": 89
+      },
+      "revId": "db648177c1c766db7dc69e791ecc0e28e126a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e03945e_535d4c60",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 972,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-04T14:37:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "967b91b4_6531cd1e",
       "range": {
         "startLine": 972,
         "startChar": 0,
