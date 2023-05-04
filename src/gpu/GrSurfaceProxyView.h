@@ -102,14 +102,16 @@ public:
                                    GrMipmapped mipMapped,
                                    SkIRect srcRect,
                                    SkBackingFit fit,
-                                   SkBudgeted budgeted) {
+                                   SkBudgeted budgeted,
+                                   bool hackMaybeProtected) {
         auto copy = GrSurfaceProxy::Copy(context,
                                          src.refProxy(),
                                          src.origin(),
                                          mipMapped,
                                          srcRect,
                                          fit,
-                                         budgeted);
+                                         budgeted,
+                                         hackMaybeProtected);
         return {std::move(copy), src.origin(), src.swizzle()};
     }
 
@@ -140,4 +142,3 @@ private:
 };
 
 #endif
-

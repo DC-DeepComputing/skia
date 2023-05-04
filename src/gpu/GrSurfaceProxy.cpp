@@ -261,6 +261,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
                                            SkIRect srcRect,
                                            SkBackingFit fit,
                                            SkBudgeted budgeted,
+                                           bool hackMaybeProtected,
                                            RectsMustMatch rectsMustMatch,
                                            sk_sp<GrRenderTask>* outTask) {
     SkASSERT(!src->isFullyLazy());
@@ -284,6 +285,11 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
     auto format = src->backendFormat().makeTexture2D();
     SkASSERT(format.isValid());
 
+    GrProtected isProtected = src->isProtected();
+    if (hackMaybeProtected) {
+        isProtected = GrProtected::kYes;
+    }
+
     if (src->backendFormat().textureType() != GrTextureType::kExternal) {
         GrImageInfo info(GrColorType::kUnknown, kUnknown_SkAlphaType, nullptr, {width, height});
         auto dstContext = rContext->priv().makeSC(info,
@@ -293,7 +299,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
                                                   GrRenderable::kNo,
                                                   1,
                                                   mipMapped,
-                                                  src->isProtected(),
+                                                  isProtected,
                                                   budgeted);
         sk_sp<GrRenderTask> copyTask;
         if (dstContext && (copyTask = dstContext->copy(src, srcRect, dstPoint))) {
@@ -344,6 +350,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* context,
                 rect,
                 fit,
                 budgeted,
+                /* hackMaybeProtected= */ false,
                 RectsMustMatch::kNo,
                 outTask);
 }
