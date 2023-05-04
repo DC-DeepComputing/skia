@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05244a8d_fa510372",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-04T16:24:09Z",
+      "side": 1,
+      "message": "Maybe move all this into the following \"fills_layer_bounds\" if-block ?",
+      "range": {
+        "startLine": 636,
+        "startChar": 0,
+        "endLine": 644,
+        "endChar": 5
+      },
+      "revId": "9e935e95199d70c064c4a0867688979e1958dee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
