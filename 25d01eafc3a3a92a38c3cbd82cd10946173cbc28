@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a159176f_2d8b0b8d",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-04T17:45:44Z",
+      "side": 1,
+      "message": "I think this would make sense as a ProgramSettings if it were something that we would want to adjust independent of the hardware capabilities. ShaderCaps exposes the capabilities of the hardware--if WGSL supports F16, the caps bit should be set. ProgramSettings tells the compiler how we want the code to be generated. If we ever want to decouple `f16` support from the capabilities of WGSL--that is, would we ever want to disable `f16` support even in cases where WGSL supports it?--we\u0027d want a ProgramSettings bit. I don\u0027t think that applies here.\n\n@brianosman@google.com WDYT?",
+      "parentUuid": "26d9d928_eaf95ba5",
+      "range": {
+        "startLine": 90,
+        "startChar": 4,
+        "endLine": 90,
+        "endChar": 38
+      },
+      "revId": "25d01eafc3a3a92a38c3cbd82cd10946173cbc28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "24e0da2d_9c6a35b5",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 5
