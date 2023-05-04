@@ -5,17 +5,20 @@
  * found in the LICENSE file.
  */
 
-#include "tools/sk_app/DawnWindowContext.h"
-#include "tools/sk_app/mac/WindowContextFactory_mac.h"
+#include "tools/window/DawnWindowContext.h"
+#include "tools/window/DisplayParams.h"
+#include "tools/window/mac/WindowContextFactory_mac.h"
 #include "webgpu/webgpu_cpp.h"
 #include "dawn/native/DawnNative.h"
 
 #import <QuartzCore/CAMetalLayer.h>
 #import <Cocoa/Cocoa.h>
 
-namespace sk_app {
+using skwindow::DisplayParams;
+using skwindow::MacWindowInfo;
+using skwindow::internal::DawnWindowContext;
 
-using sk_app::window_context_factory::MacWindowInfo;
+namespace {
 
 class DawnMTLWindowContext : public DawnWindowContext {
 public:
@@ -32,7 +35,7 @@ private:
 DawnMTLWindowContext::DawnMTLWindowContext(const MacWindowInfo& info, const DisplayParams& params)
     : DawnWindowContext(params, wgpu::TextureFormat::BGRA8Unorm)
     , fMainView(info.fMainView) {
-    CGFloat backingScaleFactor = sk_app::GetBackingScaleFactor(fMainView);
+    CGFloat backingScaleFactor = skwindow::GetBackingScaleFactor(fMainView);
     CGSize size = fMainView.bounds.size;
     size.width *= backingScaleFactor;
     size.height *= backingScaleFactor;
@@ -47,7 +50,7 @@ wgpu::Device DawnMTLWindowContext::onInitializeContext() {
     fLayer = [CAMetalLayer layer];
     [fLayer setFramebufferOnly: YES];
     [fLayer setColorspace: CGColorSpaceCreateDeviceRGB()];
-    [fLayer setContentsScale: sk_app::GetBackingScaleFactor(fMainView)];
+    [fLayer setContentsScale: skwindow::GetBackingScaleFactor(fMainView)];
     [fLayer setContentsGravity: kCAGravityTopLeft];
     [fLayer setAutoresizingMask: kCALayerHeightSizable | kCALayerWidthSizable];
 
@@ -70,7 +73,7 @@ void DawnMTLWindowContext::onDestroyContext() {
 }
 
 void DawnMTLWindowContext::resize(int w, int h) {
-    CGFloat backingScaleFactor = sk_app::GetBackingScaleFactor(fMainView);
+    CGFloat backingScaleFactor = skwindow::GetBackingScaleFactor(fMainView);
     CGSize size = fMainView.bounds.size;
     size.width *= backingScaleFactor;
     size.height *= backingScaleFactor;
@@ -81,7 +84,9 @@ void DawnMTLWindowContext::resize(int w, int h) {
     DawnWindowContext::resize(size.width, size.height);
 }
 
-namespace window_context_factory {
+} // anonymous namespace
+
+namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeDawnMTLForMac(const MacWindowInfo& winInfo,
                                                  const DisplayParams& params) {
@@ -92,6 +97,4 @@ std::unique_ptr<WindowContext> MakeDawnMTLForMac(const MacWindowInfo& winInfo,
     return ctx;
 }
 
-}
-
-}   //namespace sk_app
+} // namespace skwindow

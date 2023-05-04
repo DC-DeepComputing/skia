@@ -1,25 +1,25 @@
 /*
- * Copyright 2019 Google Inc.
+ * Copyright 2021 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-#ifndef MetalWindowContext_DEFINED
-#define MetalWindowContext_DEFINED
+#ifndef GraphiteMetalWindowContext_DEFINED
+#define GraphiteMetalWindowContext_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/core/SkSurface.h"
 #include "include/ports/SkCFObject.h"
-#include "include/private/gpu/ganesh/GrMtlTypesPriv.h"
 
-#include "tools/sk_app/WindowContext.h"
+#include "tools/window/WindowContext.h"
 
 #import <Metal/Metal.h>
 #import <QuartzCore/CAMetalLayer.h>
 
-namespace sk_app {
+class SkSurface;
 
-class MetalWindowContext : public WindowContext {
+namespace skwindow::internal {
+
+class GraphiteMetalWindowContext : public WindowContext {
 public:
     sk_sp<SkSurface> getBackbufferSurface() override;
 
@@ -30,9 +30,7 @@ public:
     void activate(bool isActive) override;
 
 protected:
-    static NSURL* CacheURL();
-
-    MetalWindowContext(const DisplayParams&);
+    GraphiteMetalWindowContext(const DisplayParams&);
     // This should be called by subclass constructor. It is also called when window/display
     // parameters change. This will in turn call onInitializeContext().
     void initializeContext();
@@ -50,13 +48,9 @@ protected:
     sk_cfp<id<MTLDevice>>       fDevice;
     sk_cfp<id<MTLCommandQueue>> fQueue;
     CAMetalLayer*               fMetalLayer;
-    GrMTLHandle                 fDrawableHandle;
-#if SKGPU_GRAPHITE_METAL_SDK_VERSION >= 230
-    // wrapping this in sk_cfp throws up an availability warning, so we'll track lifetime manually
-    id<MTLBinaryArchive>        fPipelineArchive SK_API_AVAILABLE(macos(11.0), ios(14.0));
-#endif
+    CFTypeRef                   fDrawableHandle;
 };
 
-}   // namespace sk_app
+}   // namespace skwindow::internal
 
 #endif

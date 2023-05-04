@@ -6,11 +6,11 @@
  */
 
 #include "include/core/SkSurface.h"
-#include "tools/sk_app/RasterWindowContext.h"
-#include "tools/sk_app/unix/WindowContextFactory_unix.h"
+#include "tools/window/RasterWindowContext.h"
+#include "tools/window/unix/WindowContextFactory_unix.h"
 
-using sk_app::RasterWindowContext;
-using sk_app::DisplayParams;
+using skwindow::DisplayParams;
+using skwindow::internal::RasterWindowContext;
 
 namespace {
 
@@ -86,8 +86,7 @@ void RasterWindowContext_xlib::onSwapBuffers() {
 
 }  // anonymous namespace
 
-namespace sk_app {
-namespace window_context_factory {
+namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeRasterForXlib(const XlibWindowInfo& info,
                                                  const DisplayParams& params) {
@@ -99,5 +98,4 @@ std::unique_ptr<WindowContext> MakeRasterForXlib(const XlibWindowInfo& info,
     return ctx;
 }
 
-}  // namespace window_context_factory
-}  // namespace sk_app
+}  // namespace skwindow

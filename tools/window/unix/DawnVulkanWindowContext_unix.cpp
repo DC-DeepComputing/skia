@@ -5,15 +5,15 @@
  * found in the LICENSE file.
  */
 
-#include "tools/sk_app/DawnWindowContext.h"
-#include "tools/sk_app/unix/WindowContextFactory_unix.h"
+#include "tools/window/DawnWindowContext.h"
+#include "tools/window/unix/WindowContextFactory_unix.h"
 #include "dawn/native/DawnNative.h"
 
-using sk_app::window_context_factory::XlibWindowInfo;
-using sk_app::DisplayParams;
-using sk_app::DawnWindowContext;
+using skwindow::XlibWindowInfo;
+using skwindow::DisplayParams;
+using skwindow::internal::DawnWindowContext;
 
-namespace sk_app {
+namespace {
 
 class DawnVulkanWindowContext_xlib : public DawnWindowContext {
 public:
@@ -54,7 +54,9 @@ wgpu::Device DawnVulkanWindowContext_xlib::onInitializeContext() {
     return this->createDevice(wgpu::BackendType::Vulkan);
 }
 
-namespace window_context_factory {
+}  // anonymous namespace
+
+namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeDawnVulkanForXlib(const XlibWindowInfo& winInfo,
                                                      const DisplayParams& params) {
@@ -65,6 +67,4 @@ std::unique_ptr<WindowContext> MakeDawnVulkanForXlib(const XlibWindowInfo& winIn
     return ctx;
 }
 
-}
-
-}  // namespace sk_app
+}  // namespace skwindow

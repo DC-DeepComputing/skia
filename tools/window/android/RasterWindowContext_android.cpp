@@ -8,11 +8,11 @@
 
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
-#include "tools/sk_app/RasterWindowContext.h"
-#include "tools/sk_app/android/WindowContextFactory_android.h"
+#include "tools/window/RasterWindowContext.h"
+#include "tools/window/android/WindowContextFactory_android.h"
 
-using sk_app::RasterWindowContext;
-using sk_app::DisplayParams;
+using skwindow::internal::RasterWindowContext;
+using skwindow::DisplayParams;
 
 namespace {
 class RasterWindowContext_android : public RasterWindowContext {
@@ -91,9 +91,7 @@ void RasterWindowContext_android::onSwapBuffers() {
 }
 }  // anonymous namespace
 
-namespace sk_app {
-namespace window_context_factory {
-
+namespace skwindow {
 std::unique_ptr<WindowContext> MakeRasterForAndroid(ANativeWindow* window,
                                                     const DisplayParams& params) {
     std::unique_ptr<WindowContext> ctx(new RasterWindowContext_android(window, params));
@@ -103,5 +101,4 @@ std::unique_ptr<WindowContext> MakeRasterForAndroid(ANativeWindow* window,
     return ctx;
 }
 
-}
-}   // namespace sk_app
+}   // namespace skwindow

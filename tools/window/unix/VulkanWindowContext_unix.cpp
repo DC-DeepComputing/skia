@@ -10,14 +10,12 @@
 
 #include "tools/gpu/vk/VkTestUtils.h"
 
-#include "tools/sk_app/VulkanWindowContext.h"
-#include "tools/sk_app/unix/WindowContextFactory_unix.h"
+#include "tools/window/VulkanWindowContext.h"
+#include "tools/window/unix/WindowContextFactory_unix.h"
 
 #include <X11/Xlib-xcb.h>
 
-namespace sk_app {
-
-namespace window_context_factory {
+namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeVulkanForXlib(const XlibWindowInfo& info,
                                                  const DisplayParams& displayParams) {
@@ -72,13 +70,14 @@ std::unique_ptr<WindowContext> MakeVulkanForXlib(const XlibWindowInfo& info,
         return (VK_FALSE != check);
     };
     std::unique_ptr<WindowContext> ctx(
-            new VulkanWindowContext(displayParams, createVkSurface, canPresent, instProc));
+            new internal::VulkanWindowContext(displayParams,
+                                              createVkSurface,
+                                              canPresent,
+                                              instProc));
     if (!ctx->isValid()) {
         return nullptr;
     }
     return ctx;
 }
 
-}  // namespace window_context_factory
-
-}  // namespace sk_app
+}  // namespace skwindow

@@ -7,14 +7,14 @@
  */
 
 #include "include/gpu/gl/GrGLInterface.h"
-#include "tools/sk_app/GLWindowContext.h"
-#include "tools/sk_app/unix/WindowContextFactory_unix.h"
+#include "tools/window/GLWindowContext.h"
+#include "tools/window/unix/WindowContextFactory_unix.h"
 
 #include <GL/gl.h>
 
-using sk_app::window_context_factory::XlibWindowInfo;
-using sk_app::DisplayParams;
-using sk_app::GLWindowContext;
+using skwindow::XlibWindowInfo;
+using skwindow::DisplayParams;
+using skwindow::internal::GLWindowContext;
 
 namespace {
 
@@ -174,9 +174,7 @@ void GLWindowContext_xlib::onSwapBuffers() {
 
 }  // anonymous namespace
 
-namespace sk_app {
-
-namespace window_context_factory {
+namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGLForXlib(const XlibWindowInfo& winInfo,
                                              const DisplayParams& params) {
@@ -187,6 +185,4 @@ std::unique_ptr<WindowContext> MakeGLForXlib(const XlibWindowInfo& winInfo,
     return ctx;
 }
 
-}  // namespace window_context_factory
-
-}  // namespace sk_app
+}  // namespace skwindow

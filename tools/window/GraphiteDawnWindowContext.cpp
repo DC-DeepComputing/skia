@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "tools/sk_app/GraphiteDawnWindowContext.h"
+#include "tools/window/GraphiteDawnWindowContext.h"
 
 #include "include/core/SkSurface.h"
 #include "include/gpu/graphite/BackendTexture.h"
@@ -20,7 +20,7 @@
 
 #include "dawn/dawn_proc.h"
 
-namespace sk_app {
+namespace skwindow::internal {
 
 GraphiteDawnWindowContext::GraphiteDawnWindowContext(const DisplayParams& params,
                                                      wgpu::TextureFormat swapChainFormat)
@@ -139,4 +139,4 @@ wgpu::SwapChain GraphiteDawnWindowContext::createSwapChain() {
     return swapChain;
 }
 
-}   //namespace sk_app
+}   //namespace skwindow::internal

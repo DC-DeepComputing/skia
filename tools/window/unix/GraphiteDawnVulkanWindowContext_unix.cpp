@@ -5,12 +5,12 @@
  * found in the LICENSE file.
  */
 
-#include "tools/sk_app/GraphiteDawnWindowContext.h"
-#include "tools/sk_app/unix/WindowContextFactory_unix.h"
+#include "tools/window/GraphiteDawnWindowContext.h"
+#include "tools/window/unix/WindowContextFactory_unix.h"
 
-using sk_app::window_context_factory::XlibWindowInfo;
-using sk_app::DisplayParams;
-using sk_app::GraphiteDawnWindowContext;
+using skwindow::XlibWindowInfo;
+using skwindow::DisplayParams;
+using skwindow::internal::GraphiteDawnWindowContext;
 
 namespace {
 
@@ -84,8 +84,7 @@ void GraphiteDawnVulkanWindowContext_unix::resize(int w, int h) {
 
 }  // anonymous namespace
 
-namespace sk_app {
-namespace window_context_factory {
+namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeGraphiteDawnVulkanForXlib(const XlibWindowInfo& info,
                                                              const DisplayParams& params) {
@@ -96,5 +95,4 @@ std::unique_ptr<WindowContext> MakeGraphiteDawnVulkanForXlib(const XlibWindowInf
     return ctx;
 }
 
-}  // namespace window_context_factory
-}  // namespace sk_app
+}  // namespace skwindow

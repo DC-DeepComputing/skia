@@ -1,27 +1,27 @@
 /*
- * Copyright 2021 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
-#include "tools/sk_app/GraphiteMetalWindowContext.h"
-#include "tools/sk_app/mac/WindowContextFactory_mac.h"
+#include "tools/window/MetalWindowContext.h"
+#include "tools/window/mac/WindowContextFactory_mac.h"
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/CAConstraintLayoutManager.h>
 
-using sk_app::DisplayParams;
-using sk_app::window_context_factory::MacWindowInfo;
-using sk_app::GraphiteMetalWindowContext;
+using skwindow::DisplayParams;
+using skwindow::MacWindowInfo;
+using skwindow::internal::MetalWindowContext;
 
 namespace {
 
-class GraphiteMetalWindowContext_mac : public GraphiteMetalWindowContext {
+class MetalWindowContext_mac : public MetalWindowContext {
 public:
-    GraphiteMetalWindowContext_mac(const MacWindowInfo&, const DisplayParams&);
+    MetalWindowContext_mac(const MacWindowInfo&, const DisplayParams&);
 
-    ~GraphiteMetalWindowContext_mac() override;
+    ~MetalWindowContext_mac() override;
 
     bool onInitializeContext() override;
     void onDestroyContext() override;
@@ -32,9 +32,9 @@ private:
     NSView*              fMainView;
 };
 
-GraphiteMetalWindowContext_mac::GraphiteMetalWindowContext_mac(const MacWindowInfo& info,
-                                                               const DisplayParams& params)
-    : GraphiteMetalWindowContext(params)
+MetalWindowContext_mac::MetalWindowContext_mac(const MacWindowInfo& info,
+                                               const DisplayParams& params)
+    : MetalWindowContext(params)
     , fMainView(info.fMainView) {
 
     // any config code here (particularly for msaa)?
@@ -42,11 +42,11 @@ GraphiteMetalWindowContext_mac::GraphiteMetalWindowContext_mac(const MacWindowIn
     this->initializeContext();
 }
 
-GraphiteMetalWindowContext_mac::~GraphiteMetalWindowContext_mac() {
+MetalWindowContext_mac::~MetalWindowContext_mac() {
     this->destroyContext();
 }
 
-bool GraphiteMetalWindowContext_mac::onInitializeContext() {
+bool MetalWindowContext_mac::onInitializeContext() {
     SkASSERT(nil != fMainView);
 
     fMetalLayer = [CAMetalLayer layer];
@@ -62,7 +62,6 @@ bool GraphiteMetalWindowContext_mac::onInitializeContext() {
     fMetalLayer.autoresizingMask = kCALayerHeightSizable | kCALayerWidthSizable;
     fMetalLayer.contentsGravity = kCAGravityTopLeft;
     fMetalLayer.magnificationFilter = kCAFilterNearest;
-    fMetalLayer.framebufferOnly = false;
     NSColorSpace* cs = fMainView.window.colorSpace;
     fMetalLayer.colorspace = cs.CGColorSpace;
 
@@ -72,10 +71,10 @@ bool GraphiteMetalWindowContext_mac::onInitializeContext() {
     return true;
 }
 
-void GraphiteMetalWindowContext_mac::onDestroyContext() {}
+void MetalWindowContext_mac::onDestroyContext() {}
 
-void GraphiteMetalWindowContext_mac::resize(int w, int h) {
-    CGFloat backingScaleFactor = sk_app::GetBackingScaleFactor(fMainView);
+void MetalWindowContext_mac::resize(int w, int h) {
+    CGFloat backingScaleFactor = skwindow::GetBackingScaleFactor(fMainView);
     CGSize backingSize = fMainView.bounds.size;
     backingSize.width *= backingScaleFactor;
     backingSize.height *= backingScaleFactor;
@@ -89,17 +88,15 @@ void GraphiteMetalWindowContext_mac::resize(int w, int h) {
 
 }  // anonymous namespace
 
-namespace sk_app {
-namespace window_context_factory {
+namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeGraphiteMetalForMac(const MacWindowInfo& info,
-                                                       const DisplayParams& params) {
-    std::unique_ptr<WindowContext> ctx(new GraphiteMetalWindowContext_mac(info, params));
+std::unique_ptr<WindowContext> MakeMetalForMac(const MacWindowInfo& info,
+                                               const DisplayParams& params) {
+    std::unique_ptr<WindowContext> ctx(new MetalWindowContext_mac(info, params));
     if (!ctx->isValid()) {
         return nullptr;
     }
     return ctx;
 }
 
-}  // namespace window_context_factory
-}  // namespace sk_app
+}  // namespace skwindow

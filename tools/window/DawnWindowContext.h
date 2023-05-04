@@ -10,11 +10,11 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
 
-#include "tools/sk_app/WindowContext.h"
+#include "tools/window/WindowContext.h"
 #include "webgpu/webgpu_cpp.h"
 #include "dawn/native/DawnNative.h"
 
-namespace sk_app {
+namespace skwindow::internal {
 
 class DawnWindowContext : public WindowContext {
 public:
@@ -45,6 +45,6 @@ protected:
     std::unique_ptr<dawn::native::Instance> fInstance;
 };
 
-}   // namespace sk_app
+}   // namespace skwindow::internal
 
 #endif
