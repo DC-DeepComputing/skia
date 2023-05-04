@@ -11,6 +11,7 @@ flutter_defines = [
 
   # Staging
   "SK_LEGACY_IGNORE_DRAW_VERTICES_BLEND_WITH_NO_SHADER",
+  "SK_USE_LEGACY_COLORFILTER_IMAGEFILTER",
 
   # Fast low-precision software rendering isn't a priority for Flutter.
   "SK_DISABLE_LEGACY_SHADERCONTEXT",
