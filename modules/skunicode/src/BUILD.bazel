@@ -51,7 +51,7 @@ skia_filegroup(
 )
 
 skia_filegroup(
-    name = "libgrapheme",
+    name = "libgrapheme_srcs",
     srcs = [
         "SkUnicode_libgrapheme.cpp",
     ] + ICU_BIDI_SRCS,

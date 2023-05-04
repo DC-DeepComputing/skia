@@ -513,6 +513,20 @@ void ParagraphImpl::buildClusterTable() {
     }
     fClustersIndexFromCodeUnit[fText.size()] = fClusters.size();
     fClusters.emplace_back(this, EMPTY_RUN, 0, 0, this->text({fText.size(), fText.size()}), 0, 0);
+
+    SkDebugf("CodeUnitProperties:\n");
+    for (auto i = 0ul; i < fText.size(); ++i) {
+        auto flags = fCodeUnitProperties[i];
+        SkDebugf("[%zu] = %s%s%s%s%s%s%s%s\n", i,
+                 flags & SkUnicode::CodeUnitFlags::kGraphemeStart ? "grapheme " : "",
+                 flags & SkUnicode::CodeUnitFlags::kGlyphClusterStart ? "glyphCluster " : "",
+                 flags & SkUnicode::CodeUnitFlags::kSoftLineBreakBefore ? "softBreak " : "",
+                 flags & SkUnicode::CodeUnitFlags::kHardLineBreakBefore ? "hardBreak " : "",
+                 flags & SkUnicode::CodeUnitFlags::kPartOfWhiteSpaceBreak ? "whitespace " : "",
+                 flags & SkUnicode::CodeUnitFlags::kPartOfIntraWordBreak ? "intraspace " : "",
+                 flags & SkUnicode::CodeUnitFlags::kControl ? "control " : "",
+                 flags & SkUnicode::CodeUnitFlags::kTabulation ? "tabulation " : "");
+    }
 }
 
 bool ParagraphImpl::shapeTextIntoEndlessLine() {
