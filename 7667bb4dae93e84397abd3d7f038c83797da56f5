@@ -140,6 +140,30 @@
       },
       "revId": "7667bb4dae93e84397abd3d7f038c83797da56f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b28b8759_a04d1317",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1033,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-04T11:30:58Z",
+      "side": 1,
+      "message": "I plan to keep the id so SkGraphics::Init() can be idempotent (and this makes things less error-prone from registering the same codec multiple times).",
+      "parentUuid": "67b6727f_62a15030",
+      "range": {
+        "startLine": 1033,
+        "startChar": 5,
+        "endLine": 1033,
+        "endChar": 13
+      },
+      "revId": "7667bb4dae93e84397abd3d7f038c83797da56f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
