@@ -22,6 +22,30 @@
       },
       "revId": "9e935e95199d70c064c4a0867688979e1958dee1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1daca59c_e7b66ade",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-04T18:28:37Z",
+      "side": 1,
+      "message": "Oops, the else block was supposed to use `sampling` too now. Fixed it.",
+      "parentUuid": "05244a8d_fa510372",
+      "range": {
+        "startLine": 636,
+        "startChar": 0,
+        "endLine": 644,
+        "endChar": 5
+      },
+      "revId": "9e935e95199d70c064c4a0867688979e1958dee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
