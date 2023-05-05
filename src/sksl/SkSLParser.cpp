@@ -21,6 +21,7 @@
 #include "src/sksl/dsl/DSLVar.h"
 #include "src/sksl/dsl/priv/DSLWriter.h"
 #include "src/sksl/dsl/priv/DSL_priv.h"
+#include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLBreakStatement.h"
 #include "src/sksl/ir/SkSLContinueStatement.h"
@@ -34,7 +35,9 @@
 #include "src/sksl/ir/SkSLProgramElement.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
 #include "src/sksl/ir/SkSLSwitchStatement.h"
+#include "src/sksl/ir/SkSLSwizzle.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
+#include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLVariable.h"
 
 #include <algorithm>
@@ -1548,7 +1551,7 @@ DSLStatement Parser::expressionStatement() {
 bool Parser::operatorRight(Parser::AutoDepth& depth,
                            Operator::Kind op,
                            BinaryParseFn rightFn,
-                           DSLExpression& result) {
+                           DSLExpression& expr) {
     this->nextToken();
     if (!depth.increase()) {
         return false;
@@ -1557,9 +1560,11 @@ bool Parser::operatorRight(Parser::AutoDepth& depth,
     if (!right.hasValue()) {
         return false;
     }
-    Position pos = result.position().rangeThrough(right.position());
-    DSLExpression next = result.binary(op, std::move(right), pos);
-    result.swap(next);
+    Position pos = expr.position().rangeThrough(right.position());
+    auto computed = DSLExpression(BinaryExpression::Convert(ThreadContext::Context(), pos,
+                                                            expr.release(), op, right.release()),
+                                  pos);
+    expr.swap(computed);
     return true;
 }
 
@@ -1599,75 +1604,23 @@ DSLExpression Parser::assignmentExpression() {
         return {};
     }
     for (;;) {
+        Operator::Kind op;
         switch (this->peek().fKind) {
-            case Token::Kind::TK_EQ:
-                if (!operatorRight(depth, Operator::Kind::EQ, &Parser::assignmentExpression,
-                        result)) {
-                    return {};
-                }
-                break;
-            case Token::Kind::TK_STAREQ:
-                if (!operatorRight(depth, Operator::Kind::STAREQ, &Parser::assignmentExpression,
-                        result)) {
-                    return {};
-                }
-                break;
-            case Token::Kind::TK_SLASHEQ:
-                if (!operatorRight(depth, Operator::Kind::SLASHEQ, &Parser::assignmentExpression,
-                        result)) {
-                    return {};
-                }
-                break;
-            case Token::Kind::TK_PERCENTEQ:
-                if (!operatorRight(depth, Operator::Kind::PERCENTEQ,
-                        &Parser::assignmentExpression, result)) {
-                    return {};
-                }
-                break;
-            case Token::Kind::TK_PLUSEQ:
-                if (!operatorRight(depth, Operator::Kind::PLUSEQ, &Parser::assignmentExpression,
-                        result)) {
-                    return {};
-                }
-                break;
-            case Token::Kind::TK_MINUSEQ:
-                if (!operatorRight(depth, Operator::Kind::MINUSEQ, &Parser::assignmentExpression,
-                        result)) {
-                    return {};
-                }
-                break;
-            case Token::Kind::TK_SHLEQ:
-                if (!operatorRight(depth, Operator::Kind::SHLEQ, &Parser::assignmentExpression,
-                        result)) {
-                    return {};
-                }
-                break;
-            case Token::Kind::TK_SHREQ:
-                if (!operatorRight(depth, Operator::Kind::SHREQ, &Parser::assignmentExpression,
-                        result)) {
-                    return {};
-                }
-                break;
-            case Token::Kind::TK_BITWISEANDEQ:
-                if (!operatorRight(depth, Operator::Kind::BITWISEANDEQ,
-                        &Parser::assignmentExpression, result)) {
-                    return {};
-                }
-                break;
-            case Token::Kind::TK_BITWISEXOREQ:
-                if (!operatorRight(depth, Operator::Kind::BITWISEXOREQ,
-                        &Parser::assignmentExpression, result)) {
-                    return {};
-                }
-                break;
-            case Token::Kind::TK_BITWISEOREQ:
-                if (!operatorRight(depth, Operator::Kind::BITWISEOREQ,
-                        &Parser::assignmentExpression, result)) {
-                    return {};
-                }
-                break;
-            default:
-                return result;
+            case Token::Kind::TK_EQ:           op = Operator::Kind::EQ;           break;
+            case Token::Kind::TK_STAREQ:       op = Operator::Kind::STAREQ;       break;
+            case Token::Kind::TK_SLASHEQ:      op = Operator::Kind::SLASHEQ;      break;
+            case Token::Kind::TK_PERCENTEQ:    op = Operator::Kind::PERCENTEQ;    break;
+            case Token::Kind::TK_PLUSEQ:       op = Operator::Kind::PLUSEQ;       break;
+            case Token::Kind::TK_MINUSEQ:      op = Operator::Kind::MINUSEQ;      break;
+            case Token::Kind::TK_SHLEQ:        op = Operator::Kind::SHLEQ;        break;
+            case Token::Kind::TK_SHREQ:        op = Operator::Kind::SHREQ;        break;
+            case Token::Kind::TK_BITWISEANDEQ: op = Operator::Kind::BITWISEANDEQ; break;
+            case Token::Kind::TK_BITWISEXOREQ: op = Operator::Kind::BITWISEXOREQ; break;
+            case Token::Kind::TK_BITWISEOREQ:  op = Operator::Kind::BITWISEOREQ;  break;
+            default:                           return result;
+        }
+        if (!this->operatorRight(depth, op, &Parser::assignmentExpression, result)) {
+            return {};
         }
     }
 }
@@ -1697,7 +1650,8 @@ DSLExpression Parser::ternaryExpression() {
         return {};
     }
     Position pos = base.position().rangeThrough(falseExpr.position());
-    return Select(std::move(base), std::move(trueExpr), std::move(falseExpr), pos);
+    return DSLExpression(TernaryExpression::Convert(ThreadContext::Context(), pos, base.release(),
+                                                    trueExpr.release(), falseExpr.release()), pos);
 }
 
 /* logicalXorExpression (LOGICALOR logicalXorExpression)* */
@@ -2027,7 +1981,8 @@ DSLExpression Parser::swizzle(Position pos,
         return base.field(swizzleMask, pos);
     }
     int length = swizzleMask.length();
-    SkSL::SwizzleComponent::Type components[4];
+    SkSL::ComponentArray components;
+    components.resize(4);
     for (int i = 0; i < length; ++i) {
         if (i >= 4) {
             Position errorPos = maskPos.valid() ? Position::Range(maskPos.startOffset() + 4,
@@ -2057,22 +2012,17 @@ DSLExpression Parser::swizzle(Position pos,
             case 'B': components[i] = SwizzleComponent::UB;   break;
             default: {
                 Position componentPos = Position::Range(maskPos.startOffset() + i,
-                        maskPos.startOffset() + i + 1);
+                                                        maskPos.startOffset() + i + 1);
                 this->error(componentPos, String::printf("invalid swizzle component '%c'",
-                        swizzleMask[i]).c_str());
+                                                         swizzleMask[i]).c_str());
                 return DSLExpression::Poison(pos);
             }
         }
     }
-    switch (length) {
-        case 1: return dsl::Swizzle(std::move(base), components[0], pos, maskPos);
-        case 2: return dsl::Swizzle(std::move(base), components[0], components[1], pos, maskPos);
-        case 3: return dsl::Swizzle(std::move(base), components[0], components[1], components[2],
-                                    pos, maskPos);
-        case 4: return dsl::Swizzle(std::move(base), components[0], components[1], components[2],
-                                    components[3], pos, maskPos);
-        default: SkUNREACHABLE;
-    }
+    SkASSERT(length >= 1 && length <= 4);
+    components.resize(length);
+    return DSLExpression(Swizzle::Convert(ThreadContext::Context(), pos, maskPos,
+                                          base.release(), std::move(components)), pos);
 }
 
 dsl::DSLExpression Parser::call(Position pos, dsl::DSLExpression base, ExpressionArray args) {
