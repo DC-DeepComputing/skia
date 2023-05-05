@@ -34,7 +34,9 @@
 #include "src/sksl/ir/SkSLProgramElement.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
 #include "src/sksl/ir/SkSLSwitchStatement.h"
+#include "src/sksl/ir/SkSLSwizzle.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
+#include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLVariable.h"
 
 #include <algorithm>
@@ -1697,7 +1699,8 @@ DSLExpression Parser::ternaryExpression() {
         return {};
     }
     Position pos = base.position().rangeThrough(falseExpr.position());
-    return Select(std::move(base), std::move(trueExpr), std::move(falseExpr), pos);
+    return DSLExpression(TernaryExpression::Convert(ThreadContext::Context(), pos, base.release(),
+                                                    trueExpr.release(), falseExpr.release()), pos);
 }
 
 /* logicalXorExpression (LOGICALOR logicalXorExpression)* */
@@ -2027,7 +2030,8 @@ DSLExpression Parser::swizzle(Position pos,
         return base.field(swizzleMask, pos);
     }
     int length = swizzleMask.length();
-    SkSL::SwizzleComponent::Type components[4];
+    SkSL::ComponentArray components;
+    components.resize(4);
     for (int i = 0; i < length; ++i) {
         if (i >= 4) {
             Position errorPos = maskPos.valid() ? Position::Range(maskPos.startOffset() + 4,
@@ -2057,22 +2061,17 @@ DSLExpression Parser::swizzle(Position pos,
             case 'B': components[i] = SwizzleComponent::UB;   break;
             default: {
                 Position componentPos = Position::Range(maskPos.startOffset() + i,
-                        maskPos.startOffset() + i + 1);
+                                                        maskPos.startOffset() + i + 1);
                 this->error(componentPos, String::printf("invalid swizzle component '%c'",
-                        swizzleMask[i]).c_str());
+                                                         swizzleMask[i]).c_str());
                 return DSLExpression::Poison(pos);
             }
         }
     }
-    switch (length) {
-        case 1: return dsl::Swizzle(std::move(base), components[0], pos, maskPos);
-        case 2: return dsl::Swizzle(std::move(base), components[0], components[1], pos, maskPos);
-        case 3: return dsl::Swizzle(std::move(base), components[0], components[1], components[2],
-                                    pos, maskPos);
-        case 4: return dsl::Swizzle(std::move(base), components[0], components[1], components[2],
-                                    components[3], pos, maskPos);
-        default: SkUNREACHABLE;
-    }
+    SkASSERT(length >= 1 && length <= 4);
+    components.resize(length);
+    return DSLExpression(Swizzle::Convert(ThreadContext::Context(), pos, maskPos,
+                                          base.release(), std::move(components)), pos);
 }
 
 dsl::DSLExpression Parser::call(Position pos, dsl::DSLExpression base, ExpressionArray args) {
