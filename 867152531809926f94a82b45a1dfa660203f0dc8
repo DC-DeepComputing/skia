@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32c9d048_991383a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-05T20:29:15Z",
+      "side": 1,
+      "message": "PTAL - I called out some things here that I am doing that are inefficient and can be improved upon once higher-priority needs are knocked out. I already have some thoughts on how I\u0027d proceed, but suggestions are certainly welcome.",
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

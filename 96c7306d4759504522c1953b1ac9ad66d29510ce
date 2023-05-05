@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ff0c02f_89b1175e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-05T20:29:15Z",
+      "side": 1,
+      "message": "Jim, please weigh in here. My understanding is that multiple sets can point to the same resources, but the actual allocated set can only be used by one thing at a time and can only be used again once whatever was using it before no longer needs it, which led me to choose `Shareable::kNo`.",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 85
+      },
+      "revId": "96c7306d4759504522c1953b1ac9ad66d29510ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
