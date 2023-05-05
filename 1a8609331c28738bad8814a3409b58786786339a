@@ -34,6 +34,24 @@
       "parentUuid": "1c819b21_3863993c",
       "revId": "1a8609331c28738bad8814a3409b58786786339a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5c7fae5_48ee8062",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1169,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-05-05T16:30:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c842df18_7e2ff6fb",
+      "revId": "1a8609331c28738bad8814a3409b58786786339a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
