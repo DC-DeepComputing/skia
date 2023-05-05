@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bc08f7ef_28826bdb",
+        "filename": "src/ports/SkTypeface_fontations.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-05-05T00:52:15Z",
+      "side": 1,
+      "message": "It would be nice to have a comment here noting that `fBridgeFontRef` contains references to the memory owned by `fFontData`.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 62
+      },
+      "revId": "29ce031378698eaabdba76fc7048ebd508614b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "49665b4c_2c3e8076",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 2
