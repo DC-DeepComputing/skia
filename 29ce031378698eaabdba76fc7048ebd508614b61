@@ -16,6 +16,75 @@
       "message": "@kjlubick: This breaks the GN build if `skia_use_fontations` is enabled (which happens nowhere on the bots to my knowledge), as the GN build cannot build this more complicated CXX bridge code. (as we discussed, I tried doing that with the GN-\u003ebazel converter code but in the end ran into C++ standard library linking issues). From my point of view we have some options:\n* Disable building fontations code in the GN build altogether and remove it from the GN build files. But then near-term we would need a way to run the GM on a bot that is built from bazel. What would be the best way to do that?\n* Fix the C++ standard library issues with the GN + GN-\u003ebazel script.",
       "revId": "29ce031378698eaabdba76fc7048ebd508614b61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49665b4c_2c3e8076",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-05-05T00:45:21Z",
+      "side": 1,
+      "message": "I\u0027d suggest:\n```rust\nfont_ref\n    .0\n    .and_then(|f| f.charmap().map(codepoint))\n    .map_or(0, |id| id.to_u16())\n```\nas more idiomatic Rust.",
+      "range": {
+        "startLine": 17,
+        "startChar": 3,
+        "endLine": 21,
+        "endChar": 6
+      },
+      "revId": "29ce031378698eaabdba76fc7048ebd508614b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa93f298_1ab0a06f",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-05-05T00:45:21Z",
+      "side": 1,
+      "message": "This could pull units_per_em directly from the head table in the same way that maxp is used for num_glyphs.",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 1
+      },
+      "revId": "29ce031378698eaabdba76fc7048ebd508614b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66a382bc_5f1740dc",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-05-05T00:45:21Z",
+      "side": 1,
+      "message": "It is technically safe as it correctly propagates the appropriate lifetime. The lifetime is necessarily erased at the FFI boundary but that doesn\u0027t affect the safety guarantees of this function.",
+      "range": {
+        "startLine": 158,
+        "startChar": 8,
+        "endLine": 161,
+        "endChar": 95
+      },
+      "revId": "29ce031378698eaabdba76fc7048ebd508614b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
