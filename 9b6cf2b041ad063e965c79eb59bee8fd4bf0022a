@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c16f8f8_6d67302f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-05T15:00:55Z",
+      "side": 1,
+      "message": "\u003e Is AndroidCodecTest the correct test-bed?\n\nYes, that should be fine. You could also add a new test. I don\u0027t have a preference.",
+      "parentUuid": "dda50ef4_7c0da382",
+      "revId": "9b6cf2b041ad063e965c79eb59bee8fd4bf0022a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "785aacdd_f8e828d9",
         "filename": "src/codec/SkAndroidCodec.cpp",
         "patchSetId": 4
@@ -194,6 +212,24 @@
       "side": 1,
       "message": "These aren\u0027t TODOs per-se. The comments are describing CICP points that don\u0027t have clean support in skcms.\n\nWould it be preferred if I just link in H.273 documentation instead?",
       "parentUuid": "da568b81_964a1809",
+      "revId": "9b6cf2b041ad063e965c79eb59bee8fd4bf0022a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52f3c6ec_098a7b37",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-05T15:00:55Z",
+      "side": 1,
+      "message": "I think the comment is fine, but I\u0027d follow it with something like\n\n```\n// Not supported by skcms, so ignored.\n```",
+      "parentUuid": "aa960978_54f5589b",
       "revId": "9b6cf2b041ad063e965c79eb59bee8fd4bf0022a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
