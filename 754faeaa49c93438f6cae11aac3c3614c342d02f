@@ -34,6 +34,24 @@
       "parentUuid": "a934028b_0605dae1",
       "revId": "754faeaa49c93438f6cae11aac3c3614c342d02f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7274f8cc_250e1878",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9562
+      },
+      "writtenOn": "2023-05-05T17:48:52Z",
+      "side": 1,
+      "message": "this red box: https://screenshot.googleplex.com/BjieahZC6fNKyU2\n\nlooks like the same images already failed in https://skia-review.googlesource.com/c/skia/+/689116 too though\n\nSo, not a regression that you caused.\nLGTM but I don\u0027t have review privleges here.\n\nConfusing though - it says \"Anyone can approve\" but then I don\u0027t have rights",
+      "parentUuid": "089b63af_3fcf7923",
+      "revId": "754faeaa49c93438f6cae11aac3c3614c342d02f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
