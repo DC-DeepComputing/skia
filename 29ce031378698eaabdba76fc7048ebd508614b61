@@ -18,6 +18,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b2c87f6_b500d630",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-05T10:59:14Z",
+      "side": 1,
+      "message": "Acknowledged.",
+      "parentUuid": "a5d58a91_ada1e8c6",
+      "revId": "29ce031378698eaabdba76fc7048ebd508614b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "644398ea_f5b63df2",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-05T10:59:14Z",
+      "side": 1,
+      "message": "Why can\u0027t this just be the fontations_ffi cc_library? Why do we have depend on the headers and include the generated cc file above?",
+      "range": {
+        "startLine": 348,
+        "startChar": 36,
+        "endLine": 348,
+        "endChar": 50
+      },
+      "revId": "29ce031378698eaabdba76fc7048ebd508614b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc08f7ef_28826bdb",
