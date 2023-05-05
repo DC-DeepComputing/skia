@@ -107,6 +107,10 @@ public:
         fKey = key;
     }
 
+    // Methods that can be optionally overridden to indicate if a resource is available for use
+    virtual bool isAvailable() { return true; }
+    virtual void setAvailability(bool) {}
+
 #if GRAPHITE_TEST_UTILS
     bool testingShouldDeleteASAP() const { return fDeleteASAP == DeleteASAP::kYes; }
 #endif
