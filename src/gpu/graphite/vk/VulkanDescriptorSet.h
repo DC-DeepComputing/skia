@@ -10,6 +10,7 @@
 
 #include "src/gpu/graphite/Resource.h"
 
+#include "src/gpu/graphite/Descriptors.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 
 namespace skgpu::graphite {
@@ -23,7 +24,13 @@ class VulkanSharedContext;
 */
 class VulkanDescriptorSet : public Resource {
 public:
-    VulkanDescriptorSet(const VulkanSharedContext*, sk_sp<VulkanDescriptorPool>);
+    static sk_sp<VulkanDescriptorSet> Make(const VulkanSharedContext*,
+                                           sk_sp<VulkanDescriptorPool>,
+                                           const VkDescriptorSetLayout*);
+
+    static VkDescriptorType dsTypeEnumToVkDs(DescriptorType type);
+
+    VulkanDescriptorSet(const VulkanSharedContext*, VkDescriptorSet, sk_sp<VulkanDescriptorPool>);
 
     VkDescriptorSetLayout layout() const { return fDescLayout; }
 
@@ -40,12 +47,14 @@ public:
     }
 
 private:
-    void freeGpuData() override {
-        //TODO: Implement.
-    }
+    void freeGpuData() override;
 
     VkDescriptorSet             fDescSet;
+    // Have this class hold on to a reference of the descriptor pool. When a pool's reference count
+    // is 0, that means all the descriptor sets that came from that pool are no longer needed, so
+    // the pool can safely be destroyed.
     sk_sp<VulkanDescriptorPool> fPool;
+    // TODO: Are the below member attributes needed?
     bool                        fIsAvailable;
     VkDescriptorSetLayout       fDescLayout;
 };
