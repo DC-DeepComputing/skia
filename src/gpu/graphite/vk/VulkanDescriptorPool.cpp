@@ -32,7 +32,7 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext
         VkDescriptorPoolSize* poolSize = &poolSizes.at(i++);
         memset(poolSize, 0, sizeof(VkDescriptorPoolSize));
         // Map each DescriptorSetType to the appropriate backend VkDescriptorType
-        poolSize->type = ds_type_enum_to_vk_ds(requestedDescriptors[i].type);
+        poolSize->type = VulkanDescriptorSet::dsTypeEnumToVkDs(requestedDescriptors[i].type);
         // Create a pool large enough to accommodate the maximum possible number of descriptor sets
         poolSize->descriptorCount = requestedDescriptors[i].count * kMaxNumSets;
     }
