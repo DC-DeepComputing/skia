@@ -136,24 +136,9 @@ public:
     DSLExpression operator()(ExpressionArray args, Position pos = {});
 
     /**
-     * Invokes a prefix operator.
-     */
-    DSLExpression prefix(Operator::Kind op, Position pos);
-
-    /**
      * Invokes a postfix operator.
      */
     DSLExpression postfix(Operator::Kind op, Position pos);
-
-    /**
-     * Invokes a binary operator.
-     */
-    DSLExpression binary(Operator::Kind op, DSLExpression right, Position pos);
-
-    /**
-     * Equivalent to operator[].
-     */
-    DSLExpression index(DSLExpression index, Position pos);
 
     /**
      * Returns true if this object contains an expression. DSLExpressions which were created with
