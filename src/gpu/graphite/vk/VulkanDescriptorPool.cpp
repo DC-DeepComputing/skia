@@ -13,26 +13,6 @@
 
 namespace skgpu::graphite {
 
-namespace { // anonymous namespace
-static VkDescriptorType ds_type_enum_to_vk_ds(DescriptorType type) {
-    switch (type) {
-        case DescriptorType::kUniformBuffer:
-            return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        case DescriptorType::kTextureSampler:
-            return VK_DESCRIPTOR_TYPE_SAMPLER;
-        case DescriptorType::kTexture:
-            return VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
-        case DescriptorType::kCombinedTextureSampler:
-            return VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        case DescriptorType::kStorageBuffer:
-            return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-        case DescriptorType::kInputAttachment:
-            return VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT;
-    }
-    SkUNREACHABLE;
-}
-} // anonymous namespace
-
 sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext* context,
         DescTypeAndCount requestedDescriptors [kDescriptorTypeCount]) {
     // Each unique descriptor type necessitates the creation of a VkDescriptorPoolSize struct which
@@ -52,7 +32,7 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext
         VkDescriptorPoolSize* poolSize = &poolSizes.at(i++);
         memset(poolSize, 0, sizeof(VkDescriptorPoolSize));
         // Map each DescriptorSetType to the appropriate backend VkDescriptorType
-        poolSize->type = ds_type_enum_to_vk_ds(requestedDescriptors[i].type);
+        poolSize->type = VulkanDescriptorSet::dsTypeEnumToVkDs(requestedDescriptors[i].type);
         // Create a pool large enough to accommodate the maximum possible number of descriptor sets
         poolSize->descriptorCount = requestedDescriptors[i].count * kMaxNumSets;
     }
