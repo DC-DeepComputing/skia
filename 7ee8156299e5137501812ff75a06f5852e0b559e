@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a9c3106_a30624d1",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-05T17:33:45Z",
+      "side": 1,
+      "message": "Looks like you want `SkToSizeT`?",
+      "range": {
+        "startLine": 170,
+        "startChar": 31,
+        "endLine": 170,
+        "endChar": 39
+      },
+      "revId": "7ee8156299e5137501812ff75a06f5852e0b559e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6714247_3e917ae2",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-05T17:33:45Z",
+      "side": 1,
+      "message": "Looks like you want `SkToSizeT`?",
+      "range": {
+        "startLine": 174,
+        "startChar": 30,
+        "endLine": 174,
+        "endChar": 38
+      },
+      "revId": "7ee8156299e5137501812ff75a06f5852e0b559e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
