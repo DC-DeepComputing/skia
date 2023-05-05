@@ -446,14 +446,15 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
             // names are important.
             const std::string* name = symbolTableForStatement->takeOwnershipOfString(
                     fMangler.uniqueName(variable->name(), symbolTableForStatement));
-            auto clonedVar = std::make_unique<Variable>(
-                    pos,
-                    variable->modifiersPosition(),
-                    variableModifiers(*variable, initialValue.get()),
-                    name->c_str(),
-                    variable->type().clone(symbolTableForStatement),
-                    isBuiltinCode,
-                    variable->storage());
+            auto clonedVar =
+                    std::make_unique<Variable>(pos,
+                                               variable->modifiersPosition(),
+                                               variableModifiers(*variable, initialValue.get()),
+                                               name->c_str(),
+                                               /*mangledName=*/nullptr,
+                                               variable->type().clone(symbolTableForStatement),
+                                               isBuiltinCode,
+                                               variable->storage());
             varMap->set(variable, VariableReference::Make(pos, clonedVar.get()));
             auto result = VarDeclaration::Make(*fContext,
                                                clonedVar.get(),
@@ -721,7 +722,7 @@ public:
             }
             case Statement::Kind::kFor: {
                 ForStatement& forStmt = (*stmt)->as<ForStatement>();
-                // The initializer and loop body are candidates for inlining.
+                // The initializer and loop-body are candidates for inlining.
                 this->visitStatement(&forStmt.initializer(),
                                      /*isViableAsEnclosingStatement=*/false);
                 this->visitStatement(&forStmt.statement());
@@ -765,7 +766,7 @@ public:
             }
             case Statement::Kind::kVarDeclaration: {
                 VarDeclaration& varDeclStmt = (*stmt)->as<VarDeclaration>();
-                // Don't need to scan the declaration's sizes; those are always IntLiterals.
+                // Don't need to scan the declaration's sizes; those are always literals.
                 this->visitExpression(&varDeclStmt.value());
                 break;
             }
