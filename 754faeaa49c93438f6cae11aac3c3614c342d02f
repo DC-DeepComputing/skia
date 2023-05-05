@@ -16,6 +16,24 @@
       "message": "Gold images seem wrong? maybe Dawn-\u003eSkia roll hasn\u0027t happened yet?",
       "revId": "754faeaa49c93438f6cae11aac3c3614c342d02f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "089b63af_3fcf7923",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2023-05-05T01:51:28Z",
+      "side": 1,
+      "message": "Where do I see that the gold image is wrong? (And I\u0027m pretty sure it rolled, I checked before I ran CQ and sent out for review.)",
+      "parentUuid": "a934028b_0605dae1",
+      "revId": "754faeaa49c93438f6cae11aac3c3614c342d02f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
