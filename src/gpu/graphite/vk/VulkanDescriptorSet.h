@@ -24,6 +24,7 @@ class VulkanSharedContext;
 class VulkanDescriptorSet : public Resource {
 public:
     VulkanDescriptorSet(const VulkanSharedContext*, sk_sp<VulkanDescriptorPool>);
+    ~VulkanDescriptorSet() override;
 
     VkDescriptorSetLayout layout() const { return fDescLayout; }
 
@@ -35,9 +36,8 @@ public:
         return fDescSet;
     }
 
-    void setAvailability(bool isAvailable) {
-        fIsAvailable = isAvailable;
-    }
+    bool isAvailable() override { return fIsAvailable; }
+    void setAvailability(bool isAvailable) override { fIsAvailable = isAvailable; }
 
 private:
     void freeGpuData() override {
