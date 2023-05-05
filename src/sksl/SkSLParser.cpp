@@ -23,6 +23,7 @@
 #include "src/sksl/dsl/priv/DSL_priv.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLForStatement.h"
+#include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLModifiers.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLProgramElement.h"
@@ -1210,8 +1211,11 @@ DSLStatement Parser::ifStatement() {
         }
     }
     Position pos = this->rangeFrom(start);
-    return If(std::move(test), std::move(ifTrue),
-              ifFalse.hasValue() ? std::move(ifFalse) : DSLStatement(), pos);
+    return DSLStatement(IfStatement::Convert(ThreadContext::Context(),
+                                             pos,
+                                             test.release(),
+                                             ifTrue.release(),
+                                             ifFalse.releaseIfPossible()), pos);
 }
 
 /* DO statement WHILE LPAREN expression RPAREN SEMICOLON */
