@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d852273f_757e1d76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-05T21:48:43Z",
+      "side": 1,
+      "message": "Dawn failure was from a different CL already on the tree",
+      "revId": "2e622658996cf63d0b11e8945bcb6d99e828d154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
