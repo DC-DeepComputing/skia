@@ -16,6 +16,23 @@
       "message": "this will be ready to land when http://github.com/flutter/engine/pull/41743 lands. The prior nearest-neighbor sampling change fixes the speckling that was occurring on some android devices due to low-precision bilerp.",
       "revId": "af37638055bc9f58bc0d189d11b5aa969c0cdf7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6e802e2_96aac8ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-05T01:47:12Z",
+      "side": 1,
+      "message": "Canary roll isn\u0027t triggering, we\u0027ll submit and see what the real roll says in the morning.",
+      "revId": "af37638055bc9f58bc0d189d11b5aa969c0cdf7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
