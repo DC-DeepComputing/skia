@@ -110,7 +110,7 @@ Resource* ResourceCache::findAndRefResource(const GraphiteResourceKey& key,
     SkASSERT(key.isValid());
 
     Resource* resource = fResourceMap.find(key);
-    if (resource) {
+    if (resource && resource->isAvailable()) {
         // All resources we pull out of the cache for use should be budgeted
         SkASSERT(resource->budgeted() == skgpu::Budgeted::kYes);
         if (key.shareable() == Shareable::kNo) {
