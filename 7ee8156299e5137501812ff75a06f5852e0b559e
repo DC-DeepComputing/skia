@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aef6e3d_795e1367",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-05-05T17:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a9c3106_a30624d1",
+      "range": {
+        "startLine": 170,
+        "startChar": 31,
+        "endLine": 170,
+        "endChar": 39
+      },
+      "revId": "7ee8156299e5137501812ff75a06f5852e0b559e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6714247_3e917ae2",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-05T17:33:45Z",
       "side": 1,
       "message": "Looks like you want `SkToSizeT`?",
+      "range": {
+        "startLine": 174,
+        "startChar": 30,
+        "endLine": 174,
+        "endChar": 38
+      },
+      "revId": "7ee8156299e5137501812ff75a06f5852e0b559e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "686c6556_6acbf041",
+        "filename": "modules/skunicode/include/SkUnicode.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-05-05T17:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6714247_3e917ae2",
       "range": {
         "startLine": 174,
         "startChar": 30,
