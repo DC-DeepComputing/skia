@@ -20,4 +20,10 @@ VulkanDescriptorSet::VulkanDescriptorSet(const VulkanSharedContext* ctxt,
     fPool->ref();
 }
 
+VulkanDescriptorSet::~VulkanDescriptorSet() {
+    // When a descriptor set is no longer needed, we do not want to free it, but simply mark it
+    // as available to be used again.
+    this->setAvailablity(true);
+}
+
 } // namespace skgpu::graphite

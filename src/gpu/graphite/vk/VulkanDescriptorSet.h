@@ -35,9 +35,8 @@ public:
         return fDescSet;
     }
 
-    void setAvailability(bool isAvailable) {
-        fIsAvailable = isAvailable;
-    }
+    bool isAvailable() override { return fIsAvailable; }
+    void setAvailability(bool isAvailable) override { fIsAvailable = isAvailable; }
 
 private:
     void freeGpuData() override {
