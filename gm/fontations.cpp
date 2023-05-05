@@ -17,6 +17,34 @@ namespace skiagm {
 namespace {
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
 const char kTestFontName[] = "fonts/Roboto-Regular.ttf";
+
+// TODO(drott): Test these dumps is in a unit test or make them part of the GMs visual result.
+
+void dumpLocalizedStrings(sk_sp<SkTypeface> typeface) {
+    auto family_names = typeface->createFamilyNameIterator();
+    SkTypeface::LocalizedString famName;
+    while (family_names->next(&famName)) {
+        printf("Name: %s Language: %s\n", famName.fString.c_str(), famName.fLanguage.c_str());
+    }
+    family_names->unref();
+}
+
+void dumpGlyphCount(sk_sp<SkTypeface> typeface) {
+    printf("Num glyphs: %d\n", typeface->countGlyphs());
+}
+
+void dumpFamilyAndPostscriptName(sk_sp<SkTypeface> typeface) {
+    SkString name;
+    typeface->getFamilyName(&name);
+    printf("Family name: %s\n", name.c_str());
+
+    if (typeface->getPostScriptName(&name)) {
+        printf("PS Name: %s\n", name.c_str());
+    } else {
+        printf("No Postscript name.");
+    }
+}
+
 }  // namespace
 
 class FontationsTypefaceGM : public GM {
@@ -41,6 +69,10 @@ protected:
             *errorMsg = "Unable to initialize typeface.";
             return DrawResult::kSkip;
         }
+
+        dumpGlyphCount(fTypeface);
+        dumpLocalizedStrings(fTypeface);
+        dumpFamilyAndPostscriptName(fTypeface);
 
         SkFont font(fTypeface);
         const char32_t testText[] = U"xyz";
