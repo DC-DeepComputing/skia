@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dda50ef4_7c0da382",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-05T10:52:58Z",
+      "side": 1,
+      "message": "Gold shows whatever images are output by the tests, so if they have a different color profile (HDR), then Chrome should show them that way too.",
+      "parentUuid": "2a0d09a9_4998af48",
+      "revId": "9b6cf2b041ad063e965c79eb59bee8fd4bf0022a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "785aacdd_f8e828d9",
         "filename": "src/codec/SkAndroidCodec.cpp",
         "patchSetId": 4
