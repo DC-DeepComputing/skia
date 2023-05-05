@@ -175,12 +175,14 @@ public:
      */
     std::unique_ptr<SkSL::Expression> release();
 
-private:
     /**
      * Calls release if this expression has a value, otherwise returns null.
      */
-    std::unique_ptr<SkSL::Expression> releaseIfPossible();
+    std::unique_ptr<SkSL::Expression> releaseIfPossible() {
+        return std::move(fExpression);
+    }
 
+private:
     std::unique_ptr<SkSL::Expression> fExpression;
 
     friend DSLExpression SampleChild(int index, DSLExpression coords);
