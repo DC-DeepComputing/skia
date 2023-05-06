@@ -612,9 +612,7 @@ std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
         return extract_subset(fImage.get(), origin, dstBounds);
     } // else fall through and attempt a draw
 
-    // Don't use context properties to avoid DMSAA on internal stages of filter evaluation.
-    SkSurfaceProps props = {};
-    sk_sp<SkSpecialSurface> surface = ctx.makeSurface(SkISize(dstBounds.size()), &props);
+    sk_sp<SkSpecialSurface> surface = ctx.makeSurface(SkISize(dstBounds.size()));
     if (!surface) {
         return {nullptr, {}};
     }
@@ -627,7 +625,7 @@ std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
     canvas->translate(-dstBounds.left(), -dstBounds.top()); // dst's origin adjustment
 
     SkPaint paint;
-    paint.setAntiAlias(true);
+    paint.setAntiAlias(false); // preferably keep this AA... but does it fix DMSAA sampling?
     paint.setBlendMode(SkBlendMode::kSrc);
     paint.setColorFilter(fColorFilter);
 
