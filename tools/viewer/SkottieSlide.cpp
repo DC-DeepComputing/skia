@@ -326,7 +326,6 @@ public:
                 fSlotManager->setImageSlot(s.first.data(), img);
             }
         }
-        fSkottieSlide->init();
     }
 
     void prepareImageAssetList(const char* dirname) {
