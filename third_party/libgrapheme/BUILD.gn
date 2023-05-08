@@ -1,0 +1,32 @@
+# Copyright 2022 Google LLC
+#
+# Use of this source code is governed by a ISC-License license that can be
+# found in the LICENSE file.
+
+import("../third_party.gni")
+
+action("build_and_install") {
+
+    script = "make_libgrapheme.py"
+    # GN insists its outputs should go somewhere underneath target_out_dir, so we trick it with a
+    # path that starts with target_out_dir and then uses ".." to back up into the externals/libgrapheme dir.
+    output_dir =
+        rebase_path("third_party/externals/libgrapheme", root_out_dir)
+    outputs = [ "$root_out_dir/$output_dir" ]
+  }
+
+third_party("libgrapheme") {
+  public_include_dirs = [ "third_party/externals/libgrapheme" ]
+  cflags_cc = [ "-std=c99" ]
+  sources = [
+    "../externals/libgrapheme/src/bidirectional.c",
+    "../externals/libgrapheme/src/case.c",
+    "../externals/libgrapheme/src/character.c",
+    "../externals/libgrapheme/src/line.c",
+    "../externals/libgrapheme/src/sentence.c",
+    "../externals/libgrapheme/src/utf8.c",
+    "../externals/libgrapheme/src/util.c",
+    "../externals/libgrapheme/src/word.c",
+  ]
+  deps = [ ":build_and_install" ]
+}
