@@ -40,6 +40,7 @@ class Swizzle;
 
 namespace skgpu::graphite {
 
+class Caps;
 class RenderStep;
 class RuntimeEffectDictionary;
 
@@ -190,7 +191,7 @@ public:
 
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
 
-    std::string toSkSL(const ResourceBindingRequirements& bindingReqs,
+    std::string toSkSL(const Caps* caps,
                        const RenderStep* step,
                        const bool useStorageBuffers,
                        int* numTexturesAndSamplersUsed,
