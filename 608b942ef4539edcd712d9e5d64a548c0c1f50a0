@@ -51,6 +51,155 @@
       "parentUuid": "6166b63b_e85d259f",
       "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7b6ace8_129b03ac",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-05-08T14:20:06Z",
+      "side": 1,
+      "message": "rust::Slice does the right thing if bytes is null to avoid UB, so this is okay, phew. (https://github.com/dtolnay/cxx/blob/master/include/cxx.h#L525-L533) I had to double check. Just noting that passing a nullptr to Rust and having it construct a Slice unsafely from it would produce UB.\n\nMore context for the curious: https://groups.google.com/a/google.com/g/unsafe-rust-crabal/c/42XI6HuDvcU/m/e4464RMqAQAJ",
+      "range": {
+        "startLine": 27,
+        "startChar": 47,
+        "endLine": 27,
+        "endChar": 52
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37382b12_9ae748d0",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-05-08T14:20:06Z",
+      "side": 1,
+      "message": "This returns a Box, but the field in a const ref, which will be a dangling reference to the destroyed temporary Box?",
+      "range": {
+        "startLine": 35,
+        "startChar": 25,
+        "endLine": 35,
+        "endChar": 45
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc6949b6_f2e4873a",
+        "filename": "src/ports/SkTypeface_fontations.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-05-08T14:20:06Z",
+      "side": 1,
+      "message": "Why is this part of the public API? You could return *fBridgeFontRef?",
+      "range": {
+        "startLine": 26,
+        "startChar": 10,
+        "endLine": 26,
+        "endChar": 19
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cdd656d_09a8bdd4",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-05-08T14:20:06Z",
+      "side": 1,
+      "message": "why core and not std?",
+      "range": {
+        "startLine": 4,
+        "startChar": 4,
+        "endLine": 4,
+        "endChar": 8
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daaaf2b2_4864992f",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-05-08T14:20:06Z",
+      "side": 1,
+      "message": "u8 is always available; it\u0027s in the std prelude",
+      "range": {
+        "startLine": 4,
+        "startChar": 21,
+        "endLine": 4,
+        "endChar": 23
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "190e47f3_651dfe58",
+        "filename": "src/ports/fontations/src/skpath_bridge.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-05-08T14:20:06Z",
+      "side": 1,
+      "message": "I wondered about an into_inner()\u0026\u0026 { return std::move(path_); } if you can destroy the wrapper when you want to take the path out of it.",
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "739a779a_a437e925",
+        "filename": "src/ports/fontations/src/skpath_bridge.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-05-08T14:20:06Z",
+      "side": 1,
+      "message": "nit: put these above includes",
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
