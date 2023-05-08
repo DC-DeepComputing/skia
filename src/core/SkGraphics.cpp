@@ -30,10 +30,80 @@
 
 #include <stdlib.h>
 
+#include "include/codec/SkBmpDecoder.h"
+#include "include/codec/SkWbmpDecoder.h"
+
+#ifdef SK_CODEC_DECODES_AVIF
+#include "include/codec/SkAvifDecoder.h"
+#endif
+
+#ifdef SK_HAS_WUFFS_LIBRARY
+#include "include/codec/SkGifDecoder.h"
+#endif
+
+#ifdef SK_HAS_HEIF_LIBRARY
+#include "include/android/SkHeifDecoder.h"
+#endif
+
+#ifdef SK_CODEC_DECODES_JPEG
+#include "include/codec/SkJpegDecoder.h"
+#endif
+
+#ifdef SK_CODEC_DECODES_JPEGXL
+#include "include/codec/SkJpegxlDecoder.h"
+#endif
+
+#ifdef SK_CODEC_DECODES_PNG
+#include "include/codec/SkIcoDecoder.h"
+#include "include/codec/SkPngDecoder.h"
+#endif
+
+#ifdef SK_CODEC_DECODES_RAW
+#include "include/codec/SkRawDecoder.h"
+#endif
+
+#ifdef SK_CODEC_DECODES_WEBP
+#include "include/codec/SkWebpDecoder.h"
+#endif
+
+static void legacy_init_decoders() {
+#ifdef SK_CODEC_DECODES_JPEG
+    SkCodecs::Register(SkJpegDecoder::Decoder());
+#endif
+#ifdef SK_CODEC_DECODES_WEBP
+    SkCodecs::Register(SkWebpDecoder::Decoder());
+#endif
+#ifdef SK_HAS_WUFFS_LIBRARY
+    SkCodecs::Register(SkGifDecoder::Decoder());
+#endif
+#ifdef SK_CODEC_DECODES_PNG
+    SkCodecs::Register(SkPngDecoder::Decoder());
+    SkCodecs::Register(SkIcoDecoder::Decoder());
+#endif
+    SkCodecs::Register(SkBmpDecoder::Decoder());
+    SkCodecs::Register(SkWbmpDecoder::Decoder());
+
+#ifdef SK_CODEC_DECODES_AVIF
+    SkCodecs::Register(SkAvifDecoder::Decoder());
+#endif
+#ifdef SK_HAS_HEIF_LIBRARY
+    SkCodecs::Register(SkHeifDecoder::Decoder());
+#endif
+#ifdef SK_CODEC_DECODES_JPEGXL
+    SkCodecs::Register(SkJpegxlDecoder::Decoder());
+#endif
+#ifdef SK_CODEC_DECODES_RAW
+    SkCodecs::Register(SkRawDecoder::Decoder());
+#endif
+}
+
 void SkGraphics::Init() {
     // SkGraphics::Init() must be thread-safe and idempotent.
     SkCpu::CacheRuntimeFeatures();
     SkOpts::Init();
+#if !defined(SK_LEGACY_INIT_DECODERS_AUTOMATICALLY)
+    legacy_init_decoders();
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////
