@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a771be8_22533705",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-08T19:56:51Z",
+      "side": 1,
+      "message": "Should be a quick one, just copied and updated the contents of GrVkImageView.",
+      "revId": "267dc5955684871d050a9843b08227698d6a8c56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
