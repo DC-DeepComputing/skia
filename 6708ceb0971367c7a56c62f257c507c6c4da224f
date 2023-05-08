@@ -22,6 +22,30 @@
       },
       "revId": "6708ceb0971367c7a56c62f257c507c6c4da224f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c46d7dc_8c65a032",
+        "filename": "include/config/linkopts.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-08T19:13:44Z",
+      "side": 1,
+      "message": "Sure. The reason I placed `-landroid` in `//src/gpu/ganesh/vk/BUILD.bazel` is because we include `-landroid` from `//src/gpu/ganesh/gl/BUILD.bazel`. This patchset also removes `-landroid` from the latter.",
+      "parentUuid": "857e6fd7_8ce99f1e",
+      "range": {
+        "startLine": 15,
+        "startChar": 10,
+        "endLine": 15,
+        "endChar": 13
+      },
+      "revId": "6708ceb0971367c7a56c62f257c507c6c4da224f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
