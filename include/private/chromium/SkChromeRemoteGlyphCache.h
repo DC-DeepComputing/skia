@@ -142,6 +142,9 @@ public:
     // renderer to GPU. Returns nullptr if there was a problem.
     sk_sp<sktext::gpu::Slug> deserializeSlugForTest(const void* data, size_t size) const;
 
+    // Attempt to purge unlock strikes if needed.
+    SK_SPI void purgePinnedStrikes();
+
 private:
     std::unique_ptr<SkStrikeClientImpl> fImpl;
 };
