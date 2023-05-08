@@ -706,7 +706,7 @@ static bool check_backend_texture(const GrBackendTexture& backendTex,
     } else if (GR_GL_TEXTURE_2D != desc->fTarget) {
         return false;
     }
-    if (backendTex.isProtected()) {
+    if (backendTex.isProtectedS()) {
         // Not supported in GL backend at this time.
         return false;
     }
@@ -764,7 +764,7 @@ static bool check_compressed_backend_texture(const GrBackendTexture& backendTex,
     if (GR_GL_TEXTURE_2D != desc->fTarget) {
         return false;
     }
-    if (backendTex.isProtected()) {
+    if (backendTex.isProtectedS()) {
         // Not supported in GL backend at this time.
         return false;
     }
@@ -844,10 +844,11 @@ sk_sp<GrRenderTarget> GrGLGpu::onWrapBackendRenderTarget(const GrBackendRenderTa
         return nullptr;
     }
 
-    if (backendRT.isProtected()) {
+    // test //$$
+//    if (backendRT.isProtected()) {
         // Not supported in GL at this time.
-        return nullptr;
-    }
+//        return nullptr;
+//    }
 
     const auto format = backendRT.getBackendFormat().asGLFormat();
     if (!this->glCaps().isFormatRenderable(format, backendRT.sampleCnt())) {
@@ -3950,9 +3951,9 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
         dimensions.height() > this->caps()->maxRenderTargetSize()) {
         return {};
     }
-    if (isProtected == GrProtected::kYes) {
-        return {};
-    }
+//    if (isProtected == GrProtected::kYes) {
+//        return {};
+//    }
 
     this->handleDirtyContext();
     auto format = this->glCaps().getFormatFromColorType(colorType);
@@ -3984,7 +3985,8 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
     GrGLuint stencilID = 0;
     GrGLFramebufferInfo info;
     info.fFBOID = 0;
-    info.fFormat = GrGLFormatToEnum(format);
+    info.fFormat1 = GrGLFormatToEnum(format);
+    info.fProtected11 = isProtected;
 
     auto deleteIDs = [&](bool saveFBO = false) {
         if (colorID) {

@@ -801,15 +801,24 @@ void GrBackendTexture::setMutableState(const skgpu::MutableTextureState& state) 
     fMutableState->set(state);
 }
 
-bool GrBackendTexture::isProtected() const {
+bool GrBackendTexture::isProtectedS() const {
     if (!this->isValid()) {
         return false;
     }
+#ifdef SK_GL
+    if (this->backend() == GrBackendApi::kOpenGL) {
+        return false; // fVkInfo.isProtected();
+    }
+#endif
 #ifdef SK_VULKAN
     if (this->backend() == GrBackendApi::kVulkan) {
         return fVkInfo.isProtected();
     }
 #endif
+    if (this->backend() == GrBackendApi::kMock) {
+        return fMockInfo.isProtected();
+    }
+
     return false;
 }
 
@@ -1056,7 +1065,7 @@ GrBackendRenderTarget::GrBackendRenderTarget(int width,
         , fStencilBits(stencilBits)
         , fBackend(GrBackendApi::kOpenGL)
         , fGLInfo(glInfo) {
-    fIsValid = SkToBool(glInfo.fFormat); // the glInfo must have a valid format
+    fIsValid = SkToBool(glInfo.fFormat1); // the glInfo must have a valid format
 }
 #endif
 
@@ -1226,7 +1235,7 @@ GrBackendFormat GrBackendRenderTarget::getBackendFormat() const {
     switch (fBackend) {
 #ifdef SK_GL
         case GrBackendApi::kOpenGL:
-            return GrBackendFormat::MakeGL(fGLInfo.fFormat, GR_GL_TEXTURE_NONE);
+            return GrBackendFormat::MakeGL(fGLInfo.fFormat1, GR_GL_TEXTURE_NONE);
 #endif
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan: {
@@ -1277,15 +1286,25 @@ void GrBackendRenderTarget::setMutableState(const skgpu::MutableTextureState& st
     fMutableState->set(state);
 }
 
-bool GrBackendRenderTarget::isProtected() const {
-    if (!this->isValid() || this->backend() != GrBackendApi::kVulkan) {
+bool GrBackendRenderTarget::isProtectedRT() const {
+    if (!this->isValid()) {
         return false;
     }
-#ifdef SK_VULKAN
-    return fVkInfo.isProtected();
-#else
-    return false;
+#ifdef SK_GL
+    if (this->backend() == GrBackendApi::kOpenGL) {
+        return fGLInfo.isProtected();
+    }
 #endif
+#ifdef SK_VULKAN
+    if (this->backend() == GrBackendApi::kVulkan) {
+        return fVkInfo.isProtected();
+    }
+#endif
+    if (this->backend() == GrBackendApi::kMock) {
+        return fMockInfo.isProtected();
+    }
+
+    return false;
 }
 
 #if GR_TEST_UTILS

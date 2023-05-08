@@ -94,7 +94,7 @@ private:
 
 struct GrGLTextureSpec {
     GrGLTextureSpec() : fTarget(0), fFormat(0) {}
-    GrGLTextureSpec(const GrGLSurfaceInfo& info) : fTarget(info.fTarget), fFormat(info.fFormat) {}
+    GrGLTextureSpec(const GrGLSurfaceInfo& info) : fTarget(info.fTarget1), fFormat(info.fFormat) {}
 
     GrGLenum fTarget;
     GrGLenum fFormat;
