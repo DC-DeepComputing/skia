@@ -59,6 +59,7 @@ sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
     return MakeBackendTextureSurface(
             dContext, ii, origin, sampleCnt, mipmapped, isProtected, props);
 }
+
 sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext* dContext,
                                                 const SkImageInfo& ii,
                                                 GrSurfaceOrigin origin,
