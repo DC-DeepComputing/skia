@@ -30,6 +30,7 @@ OPT_LEVEL = select({
         "-Wl,--gc-sections",
         "-Wl,--strip-all",
     ],
+    "//conditions:default": [],
 })
 
 DEFAULT_LINKOPTS = CORE_LINKOPTS + OPT_LEVEL
