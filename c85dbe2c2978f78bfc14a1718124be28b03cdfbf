@@ -77,6 +77,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3dd4616_691e1a41",
+        "filename": "include/private/chromium/SkChromeRemoteGlyphCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-08T21:51:22Z",
+      "side": 1,
+      "message": "I didn\u0027t want to assume we were using the global SkStrikeCache. Is that the case?",
+      "parentUuid": "c44e3d18_338e1423",
+      "range": {
+        "startLine": 149,
+        "startChar": 4,
+        "endLine": 150,
+        "endChar": 37
+      },
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d1ece8d_e6fa14fb",
         "filename": "src/core/SkStrikeCache.cpp",
         "patchSetId": 1
@@ -88,6 +112,24 @@
       "writtenOn": "2023-05-08T18:54:00Z",
       "side": 1,
       "message": "/* checkPinners\u003d */",
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0da3ec2_9730d922",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-08T21:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d1ece8d_e6fa14fb",
       "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -109,6 +151,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2640754b_6626980e",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-08T21:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afa3235e_4bdff5c0",
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d235a69b_8ef1b8b3",
@@ -122,6 +182,30 @@
       "writtenOn": "2023-05-08T18:54:00Z",
       "side": 1,
       "message": "checkPinners",
+      "range": {
+        "startLine": 202,
+        "startChar": 64,
+        "endLine": 202,
+        "endChar": 77
+      },
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b22dab6_a917d996",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-08T21:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d235a69b_8ef1b8b3",
       "range": {
         "startLine": 202,
         "startChar": 64,
@@ -155,6 +239,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4229183_e639abfd",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-08T21:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcf1a6ea_694c8f29",
+      "range": {
+        "startLine": 203,
+        "startChar": 3,
+        "endLine": 205,
+        "endChar": 0
+      },
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05fb0286_ec3f3e99",
@@ -172,6 +280,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76174756_7afd9956",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-08T21:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05fb0286_ec3f3e99",
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fbcd619_7bc905ab",
@@ -185,6 +311,30 @@
       "writtenOn": "2023-05-08T18:54:00Z",
       "side": 1,
       "message": "fPinnerCount +\u003d strikePtr-\u003efPinner !\u003d nullptr ? 1 : 0;",
+      "range": {
+        "startLine": 265,
+        "startChar": 4,
+        "endLine": 265,
+        "endChar": 23
+      },
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb88aed7_64b4df79",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-08T21:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fbcd619_7bc905ab",
       "range": {
         "startLine": 265,
         "startChar": 4,
@@ -218,6 +368,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dc4f540_06d34237",
+        "filename": "src/core/SkStrikeCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-08T21:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dce084d6_40e356ce",
+      "range": {
+        "startLine": 283,
+        "startChar": 4,
+        "endLine": 283,
+        "endChar": 62
+      },
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf1b0851_4dcb39a6",
@@ -241,6 +415,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1e4a6b1_805fa852",
+        "filename": "src/core/SkStrikeCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-08T21:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf1b0851_4dcb39a6",
+      "range": {
+        "startLine": 87,
+        "startChar": 57,
+        "endLine": 87,
+        "endChar": 70
+      },
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b470b88_8280c762",
@@ -254,6 +452,24 @@
       "writtenOn": "2023-05-08T18:54:00Z",
       "side": 1,
       "message": "This is not really unpinned count. It\u0027s more like strikes that have pinners. Maybe fPinnerCount?",
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98c8533a_e2fbb272",
+        "filename": "src/core/SkStrikeCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-08T21:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b470b88_8280c762",
       "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
