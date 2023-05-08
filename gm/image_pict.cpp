@@ -199,7 +199,7 @@ protected:
         return GrSurfaceProxyView::Copy(
                 fRContext.get(), fView, mipMapped,
                 SkIRect::MakeXYWH(origin.x(), origin.y(), info.width(), info.height()),
-                SkBackingFit::kExact, budgeted);
+                SkBackingFit::kExact, budgeted, /* hackMaybeProtected= */ false);
     }
 
 private:

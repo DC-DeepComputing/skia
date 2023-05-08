@@ -322,6 +322,7 @@ public:
                                       SkIRect srcRect,
                                       SkBackingFit,
                                       SkBudgeted,
+                                      bool hackMaybeProtected,
                                       RectsMustMatch = RectsMustMatch::kNo,
                                       sk_sp<GrRenderTask>* outTask = nullptr);
 

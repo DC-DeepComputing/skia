@@ -199,6 +199,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
                                             srcRect,
                                             kFit,
                                             kBudgeted,
+                                            /* hackMaybeProtected= */ false,
                                             restrictions.fRectsMustMatch);
                 pt = {0, 0};
             }
@@ -847,7 +848,8 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
                                            GrMipmapped::kNo,
                                            srcRect,
                                            SkBackingFit::kApprox,
-                                           SkBudgeted::kYes);
+                                           SkBudgeted::kYes,
+                                           /* hackMaybeProtected= */ false);
         if (!srcView) {
             // If we can't get a texture copy of the contents then give up.
             callback(callbackContext, nullptr);
@@ -1105,7 +1107,8 @@ bool SurfaceContext::rescaleInto(skgpu::SurfaceFillContext* dst,
         // TODO: If copying supported specifying a renderable copy then we could return the copy
         // when there are no other conversions.
         texView = GrSurfaceProxyView::Copy(fContext, std::move(texView), GrMipmapped::kNo, srcRect,
-                                           SkBackingFit::kApprox, SkBudgeted::kNo);
+                                           SkBackingFit::kApprox, SkBudgeted::kNo,
+                                           /* hackMaybeProtected= */ false);
         if (!texView) {
             return false;
         }
