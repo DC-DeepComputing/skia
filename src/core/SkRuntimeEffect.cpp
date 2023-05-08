@@ -733,8 +733,8 @@ sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
     };
     SK_END_REQUIRE_DENSE
 
-    static auto* mutex = new SkMutex;
-    static auto* cache = new SkLRUCache<Key, sk_sp<SkRuntimeEffect>>(11/*totally arbitrary*/);
+    static SkNoDestructor<SkMutex> mutex;
+    static SkNoDestructor<SkLRUCache<Key, sk_sp<SkRuntimeEffect>>> cache(11/*totally arbitrary*/);
 
     Key key(sksl);
     {
