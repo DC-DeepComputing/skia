@@ -22,6 +22,30 @@
       },
       "revId": "ad0b182cee323e7718a60958860b8170f668312e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeecefe1_1794424f",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-08T19:40:37Z",
+      "side": 1,
+      "message": "Hm, I would think we\u0027d want it at this level such that DrawPass can have access to a backend-agnostic enum of descriptor types. That way, DrawPass can communicate down into Vulkan what types of descriptors are needed, then Vulkan can translate from that generic enum to VkDescriptorType.\n\nLMKWYT, happy to hear other ideas if we want that descriptors enum to be in vk/.",
+      "parentUuid": "c4782ef4_32ec947c",
+      "range": {
+        "startLine": 54,
+        "startChar": 3,
+        "endLine": 54,
+        "endChar": 22
+      },
+      "revId": "ad0b182cee323e7718a60958860b8170f668312e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
