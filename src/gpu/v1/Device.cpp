@@ -743,7 +743,8 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
                                         GrMipmapped::kNo,  // Don't auto generate mips
                                         subset,
                                         SkBackingFit::kApprox,
-                                        SkBudgeted::kYes);  // Always budgeted
+                                        SkBudgeted::kYes,
+                                        /* hackMaybeProtected= */ false);  // Always budgeted
         if (!view) {
             return nullptr;
         }

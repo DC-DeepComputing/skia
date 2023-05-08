@@ -2121,6 +2121,7 @@ bool SurfaceDrawContext::setupDstProxyView(const SkRect& opBounds,
                                      copyRect,
                                      fit,
                                      SkBudgeted::kYes,
+                                     /* hackMaybeProtected= */ false,
                                      restrictions.fRectsMustMatch);
     SkASSERT(copy);
 

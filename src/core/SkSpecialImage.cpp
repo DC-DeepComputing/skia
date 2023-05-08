@@ -454,7 +454,8 @@ public:
             }
 
             auto subsetView = GrSurfaceProxyView::Copy(fContext, fView, GrMipmapped::kNo, *subset,
-                                                       SkBackingFit::kExact, SkBudgeted::kYes);
+                                                       SkBackingFit::kExact, SkBudgeted::kYes,
+                                                       /* hackMaybeProtected= */ false);
             if (!subsetView) {
                 return nullptr;
             }
