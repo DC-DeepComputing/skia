@@ -188,6 +188,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed9a12e_355077ee",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T15:28:02Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "8a8753ec_93e2a970",
+      "range": {
+        "startLine": 35,
+        "startChar": 25,
+        "endLine": 35,
+        "endChar": 45
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc6949b6_f2e4873a",
@@ -450,6 +474,24 @@
       "side": 1,
       "message": "I think getPath() is only for the C++ side (it\u0027s not here https://skia-review.googlesource.com/c/skia/+/692737/7/src/ports/fontations/src/ffi.rs#201). So I thought maybe if the Rust side is done with it, has no references left, then C++ could move the path and save copying stuff.",
       "parentUuid": "4c63b4ce_b640db25",
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31fc096d_3be13b96",
+        "filename": "src/ports/fontations/src/skpath_bridge.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T15:28:02Z",
+      "side": 1,
+      "message": "Changed getPath() to move(path_) - hope that\u0027s what you meant and I didn\u0027t miss anything.",
+      "parentUuid": "55b0b9d5_d80e7b8f",
       "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
