@@ -137,9 +137,14 @@ auto SkStrikeCache::internalCreateStrike(
     return strike;
 }
 
+void SkStrikeCache::purgePinned(size_t minBytesNeeded) {
+    SkAutoMutexExclusive ac(fLock);
+    this->internalPurge(minBytesNeeded, true);
+}
+
 void SkStrikeCache::purgeAll() {
     SkAutoMutexExclusive ac(fLock);
-    this->internalPurge(fTotalMemoryUsed);
+    this->internalPurge(fTotalMemoryUsed, true);
 }
 
 size_t SkStrikeCache::getTotalMemoryUsed() const {
@@ -194,7 +199,10 @@ void SkStrikeCache::forEachStrike(std::function<void(const SkStrike&)> visitor) 
     }
 }
 
-size_t SkStrikeCache::internalPurge(size_t minBytesNeeded) {
+size_t SkStrikeCache::internalPurge(size_t minBytesNeeded, bool includePinned) {
+    if (fUnpinnedCacheCount == 0 && !includePinned)
+        return 0;
+
     size_t bytesNeeded = 0;
     if (fTotalMemoryUsed > fCacheSizeLimit) {
         bytesNeeded = fTotalMemoryUsed - fCacheSizeLimit;
@@ -227,7 +235,7 @@ size_t SkStrikeCache::internalPurge(size_t minBytesNeeded) {
         SkStrike* prev = strike->fPrev;
 
         // Only delete if the strike is not pinned.
-        if (strike->fPinner == nullptr || strike->fPinner->canDelete()) {
+        if (strike->fPinner == nullptr || (includePinned && strike->fPinner->canDelete())) {
             bytesFreed += strike->fMemoryUsed;
             countFreed += 1;
             this->internalRemoveStrike(strike);
@@ -254,6 +262,7 @@ void SkStrikeCache::internalAttachToHead(sk_sp<SkStrike> strike) {
     SkASSERT(nullptr == strikePtr->fPrev && nullptr == strikePtr->fNext);
 
     fCacheCount += 1;
+    fUnpinnedCacheCount += strikePtr->fPinner == nullptr ? 1 : 0;
     fTotalMemoryUsed += strikePtr->fMemoryUsed;
 
     if (fHead != nullptr) {
@@ -271,6 +280,7 @@ void SkStrikeCache::internalAttachToHead(sk_sp<SkStrike> strike) {
 void SkStrikeCache::internalRemoveStrike(SkStrike* strike) {
     SkASSERT(fCacheCount > 0);
     fCacheCount -= 1;
+    fUnpinnedCacheCount -= strike->fPinner == nullptr ? 1 : 0;
     fTotalMemoryUsed -= strike->fMemoryUsed;
 
     if (strike->fPrev) {

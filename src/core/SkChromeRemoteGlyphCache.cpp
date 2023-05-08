@@ -863,6 +863,7 @@ public:
 
     bool readStrikeData(const volatile void* memory, size_t memorySize);
     bool translateTypefaceID(SkAutoDescriptor* descriptor) const;
+    void purgePinnedStrikes();
 
 private:
     class PictureBackedGlyphDrawable final : public SkDrawable {
@@ -1117,6 +1118,10 @@ sk_sp<SkTypeface> SkStrikeClientImpl::addTypeface(const WireTypeface& wire) {
     return std::move(newTypeface);
 }
 
+void SkStrikeClientImpl::purgePinnedStrikes() {
+    fStrikeCache->purgePinned();
+}
+
 // SkStrikeClient ----------------------------------------------------------------------------------
 SkStrikeClient::SkStrikeClient(sk_sp<DiscardableHandleManager> discardableManager,
                                bool isLogging,
@@ -1141,4 +1146,9 @@ bool SkStrikeClient::translateTypefaceID(SkAutoDescriptor* descriptor) const {
 sk_sp<sktext::gpu::Slug> SkStrikeClient::deserializeSlug(const void* data, size_t size) const {
     return sktext::gpu::Slug::Deserialize(data, size, this);
 }
+
+void SkStrikeClient::purgePinnedStrikes() {
+    fImpl->purgePinnedStrikes();
+}
+
 #endif  // SK_SUPPORT_GPU
