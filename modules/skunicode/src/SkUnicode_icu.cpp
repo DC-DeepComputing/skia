@@ -303,7 +303,7 @@ class SkUnicode_icu : public SkUnicode {
 
     bool isHardBreak(SkUnichar utf8) override {
         auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
-        return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
+        return SkUnicode_icu::isHardLineBreak(utf8);
     }
 
     bool isEmoji(SkUnichar unichar) override {
@@ -317,6 +317,11 @@ class SkUnicode_icu : public SkUnicode {
 
     bool isTabulation(SkUnichar utf8) override {
         return utf8 == '\t';
+    }
+
+    static bool isHardLineBreak(SkUnichar utf8) override {
+        auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
+        return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
     }
 
 public:
@@ -345,9 +350,28 @@ public:
         return makeBreakIterator(sk_uloc_getDefault(), breakType);
     }
 
-    static bool isHardLineBreak(SkUnichar utf8) {
-        auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
-        return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
+    bool isControl(SkUnichar codepoint)  override {
+        return sk_u_iscntrl(codepoint);    }
+
+    bool isWhitespace(SkUnichar codepoint)  override {
+        return sk_u_isWhitespace(codepoint);
+    }
+
+    bool isSpace(SkUnichar codepoint)  override {
+        return sk_u_isspace(codepoint);
+    }
+
+    bool isTabulation(SkUnichar codepoint)  override {
+        return codepoint == '\t';
+    }
+
+    bool isHardBreak(SkUnichar codepoint) override {
+        return SkUnicode_icu::codepointIsHardBreak(codepoint);
+    }
+
+    bool isEmoji(SkUnichar codepoint) override {
+        return sk_u_hasBinaryProperty(codepoint, UCHAR_EMOJI) ||
+               sk_u_hasBinaryProperty(codepoint, UCHAR_EMOJI_COMPONENT);
     }
 
     SkString toUpper(const SkString& str) override {
