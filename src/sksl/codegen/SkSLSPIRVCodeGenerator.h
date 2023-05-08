@@ -516,6 +516,8 @@ private:
 
     void addRTFlipUniform(Position pos);
 
+    std::unique_ptr<Expression> identifier(std::string_view name);
+
     std::tuple<const Variable*, const Variable*> synthesizeTextureAndSampler(
             const Variable& combinedSampler);
 
