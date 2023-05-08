@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a7e6cd3_8b7c5ed3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T14:30:10Z",
+      "side": 1,
+      "message": "Thanks Dana, I\u0027ll incorporate those comments. One response below so far.",
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6166b63b_e85d259f",
@@ -112,6 +129,30 @@
       "writtenOn": "2023-05-08T14:20:06Z",
       "side": 1,
       "message": "Why is this part of the public API? You could return *fBridgeFontRef?",
+      "range": {
+        "startLine": 26,
+        "startChar": 10,
+        "endLine": 26,
+        "endChar": 19
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "131b556f_774c9b3f",
+        "filename": "src/ports/SkTypeface_fontations.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T14:30:10Z",
+      "side": 1,
+      "message": "It\u0027s not part of the public API of SkTypeface (not visible to Skia API clients), only used internally between `SkTypeface_Fontations` and `ScalerContext`, but indeed, I\u0027ll try to shorten that to `fontations_ffi::BridgeFontRef`, good point.",
+      "parentUuid": "dc6949b6_f2e4873a",
       "range": {
         "startLine": 26,
         "startChar": 10,
