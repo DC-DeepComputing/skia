@@ -1,0 +1,88 @@
+# Copyright 2022 Google LLC
+#
+# Use of this source code is governed by a ISC-License license that can be
+# found in the LICENSE file.
+
+import("../third_party.gni")
+
+declare_args() {
+
+    VERSION_MAJOR = "2"
+    VERSION_MINOR = "0"
+    VERSION_PATCH = "1"
+    UNICODE_VERSION = "15.0.0"
+
+    DESTDIR   =  ""
+    PREFIX    = "install"
+    INCPREFIX = "$PREFIX/include"
+    LIBPREFIX = "$PREFIX/lib"
+    MANPREFIX = "$PREFIX/share/man"
+    PCPREFIX  = "$LIBPREFIX/pkgconfig"
+
+    # names
+    ANAME     = "libgrapheme.a"
+    SONAME    = "libgrapheme.so.$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
+    BINSUFFIX = ""
+
+    # flags
+    CPPFLAGS = "-D_ISOC99_SOURCE"
+    CFLAGS   = "-std=c99 -Os -Wall -Wextra -Wpedantic"
+    LDFLAGS  = "-s"
+
+    BUILD_CPPFLAGS = "$CPPFLAGS"
+    BUILD_CFLAGS   = "$CFLAGS"
+    BUILD_LDFLAGS  = "$LDFLAGS"
+
+    SHFLAGS   = "-fPIC -ffreestanding"
+    SOFLAGS   = "-shared -nostdlib -Wl,--soname=libgrapheme.so.$VERSION_MAJOR.$VERSION_MINOR"
+    SOSYMLINK = true
+
+    CC       = "cc"
+    BUILD_CC = "$CC"
+    AR       = "ar"
+    RANLIB   = "ranlib"
+    LDCONFIG = ""
+    SH       = "sh"
+}
+
+action("download_unicode_data") {
+    script = "download_assets.py"
+    output_dir = rebase_path("../externals/libgrapheme/data", root_out_dir)
+    outputs = [ "$root_out_dir/$output_dir/" ]
+    args = [
+      "15.0.0",
+      "https://github.com/unicode-org/unicodetools/tree/main/unicodetools/data/ucd/$UNICODE_VERSION/ucd/",
+      "third_party/externals/libgrapheme/data/",
+    ]
+}
+
+# Run an executable that will produce a header
+action_foreach("generate") {
+    script = "generate_headers.py"
+    output_dir = rebase_path("../externals/libgrapheme", root_out_dir)
+    gen_dir = "$output_dir/gen"
+    sources = [ "$gen_dir/bidirectional.c",  "$gen_dir/case.c", "$gen_dir/character.c", "$gen_dir/line.c", "$gen_dir/sentence.c", "$gen_dir/word.c"]
+    outputs = ["$root_out_dir/$gen_dir/{{source_name_part}}.h"]
+    args = [ "../externals/libgrapheme/", "{{source_name_part}}" ]
+}
+
+third_party("libgrapheme") {
+
+    public_include_dirs = [ "../externals/libgrapheme" ]
+    _src = "../externals/libgrapheme/src"
+
+    cflags_cc = [ "$CPPFLAGS $CFLAGS $SHFLAGS" ]
+
+    sources = [
+      "$_src/bidirectional.c",
+      "$_src/case.c",
+      "$_src/character.c",
+      "$_src/line.c",
+      "$_src/sentence.c",
+      "$_src/utf8.c",
+      "$_src/util.c",
+      "$_src/word.c",
+    ]
+
+    deps = [ ":download_unicode_data", ":generate" ]
+}
