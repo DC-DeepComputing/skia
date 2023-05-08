@@ -703,10 +703,14 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                             primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
                         }
 
+                        bool hasCoverage = rand.nextBool();
+
                         DstReadRequirement dstReadReq = DstReadRequirement::kNone;
                         const SkBlenderBase* blender = as_BB(paint.getBlender());
                         if (blender) {
-                            dstReadReq = GetDstReadRequirement(recorder->priv().caps(), blender->asBlendMode());
+                            dstReadReq = GetDstReadRequirement(recorder->priv().caps(),
+                                                               blender->asBlendMode(),
+                                                               hasCoverage);
                         }
                         bool needsDstSample = dstReadReq == DstReadRequirement::kTextureCopy ||
                                               dstReadReq == DstReadRequirement::kTextureSample;
@@ -723,6 +727,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                         std::vector<UniquePaintParamsID> precompileIDs;
                         paintOptions.priv().buildCombinations(precompileKeyContext,
                                                               withPrimitiveBlender,
+                                                              hasCoverage,
                                                               [&](UniquePaintParamsID id) {
                                                                   precompileIDs.push_back(id);
                                                               });
