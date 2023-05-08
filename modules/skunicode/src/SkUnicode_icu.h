@@ -22,6 +22,7 @@
     SKICU_FUNC(u_errorName)           \
     SKICU_FUNC(u_hasBinaryProperty)   \
     SKICU_FUNC(u_getIntPropertyValue) \
+    SKICU_FUNC(u_hasBinaryProperty)   \
     SKICU_FUNC(u_iscntrl)             \
     SKICU_FUNC(u_isspace)             \
     SKICU_FUNC(u_isWhitespace)        \

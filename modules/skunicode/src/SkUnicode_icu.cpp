@@ -281,7 +281,11 @@ class SkUnicode_icu : public SkUnicode {
             const char* ch = utf8;
             while (ch < end) {
                 auto unichar = utf8_next(&ch, end);
+<<<<<<< PATCH SET (f77fa2 SkUnicode with libgrapheme implementation)
+                if (SkUnicode_icu::codepointIsHardBreak(unichar)) {
+=======
                 if (SkUnicode_icu::isHardLineBreak(unichar)) {
+>>>>>>> BASE      (1fa31b Extending SkUnicode API to avoid code duplication)
                     setBreak(ch - utf8, UBRK_LINE_HARD);
                 }
             }
@@ -289,6 +293,10 @@ class SkUnicode_icu : public SkUnicode {
         return true;
     }
 
+<<<<<<< PATCH SET (f77fa2 SkUnicode with libgrapheme implementation)
+    static bool codepointIsHardBreak(SkUnichar codepoint) {
+        auto property = sk_u_getIntPropertyValue(codepoint, UCHAR_LINE_BREAK);
+=======
     bool isControl(SkUnichar utf8) override {
         return sk_u_iscntrl(utf8);
     }
@@ -303,6 +311,7 @@ class SkUnicode_icu : public SkUnicode {
 
     bool isHardBreak(SkUnichar utf8) override {
         auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
+>>>>>>> BASE      (1fa31b Extending SkUnicode API to avoid code duplication)
         return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
     }
 
@@ -345,9 +354,28 @@ public:
         return makeBreakIterator(sk_uloc_getDefault(), breakType);
     }
 
-    static bool isHardLineBreak(SkUnichar utf8) {
-        auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
-        return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
+    bool isControl(SkUnichar codepoint)  override {
+        return sk_u_iscntrl(codepoint);    }
+
+    bool isWhitespace(SkUnichar codepoint)  override {
+        return sk_u_isWhitespace(codepoint);
+    }
+
+    bool isSpace(SkUnichar codepoint)  override {
+        return sk_u_isspace(codepoint);
+    }
+
+    bool isTabulation(SkUnichar codepoint)  override {
+        return codepoint == '\t';
+    }
+
+    bool isHardBreak(SkUnichar codepoint) override {
+        return SkUnicode_icu::codepointIsHardBreak(codepoint);
+    }
+
+    bool isEmoji(SkUnichar codepoint) override {
+        return sk_u_hasBinaryProperty(codepoint, UCHAR_EMOJI) ||
+               sk_u_hasBinaryProperty(codepoint, UCHAR_EMOJI_COMPONENT);
     }
 
     SkString toUpper(const SkString& str) override {
