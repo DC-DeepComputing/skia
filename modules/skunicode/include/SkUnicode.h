@@ -86,6 +86,7 @@ class SKUNICODE_API SkUnicode {
             kControl = 0x20,
             kTabulation = 0x40,
             kGlyphClusterStart = 0x80,
+            kWordBreak = 0x100,
         };
         enum class TextDirection {
             kLTR,
@@ -289,6 +290,8 @@ class SKUNICODE_API SkUnicode {
                 std::vector<SkUnicode::Position> words,
                 std::vector<SkUnicode::Position> graphemeBreaks,
                 std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+
+        static std::unique_ptr<SkUnicode> MakeLibgraphemeBasedUnicode();
 };
 
 namespace sknonstd {
