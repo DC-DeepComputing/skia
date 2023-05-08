@@ -100,16 +100,16 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
     sk_sp<GrDirectContext> context1 = GrDirectContext::MakeGL(sk_ref_sp(glCtx1->gl()));
     GrEGLImage image = GR_EGL_NO_IMAGE;
     GrGLTextureInfo externalTexture;
-    externalTexture.fID = 0;
+    externalTexture.fID2 = 0;
 
     if (!context1) {
-        cleanup(glCtx0, externalTexture.fID, glCtx1.get(), context1, image);
+        cleanup(glCtx0, externalTexture.fID2, glCtx1.get(), context1, image);
         return;
     }
 
     if (!glCtx1->gl()->hasExtension("EGL_KHR_image") ||
         !glCtx1->gl()->hasExtension("EGL_KHR_gl_texture_2D_image")) {
-        cleanup(glCtx0, externalTexture.fID, glCtx1.get(), context1, image);
+        cleanup(glCtx0, externalTexture.fID2, glCtx1.get(), context1, image);
         return;
     }
 
@@ -129,7 +129,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
 
     if (!mbet) {
         ERRORF(reporter, "Error creating texture for EGL Image");
-        cleanup(glCtx0, externalTexture.fID, glCtx1.get(), context1, image);
+        cleanup(glCtx0, externalTexture.fID2, glCtx1.get(), context1, image);
         return;
     }
 
@@ -141,15 +141,15 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
 
     if (GR_GL_TEXTURE_2D != texInfo.fTarget) {
         ERRORF(reporter, "Expected backend texture to be 2D");
-        cleanup(glCtx0, externalTexture.fID, glCtx1.get(), context1, image);
+        cleanup(glCtx0, externalTexture.fID2, glCtx1.get(), context1, image);
         return;
     }
 
     // Wrap the texture in an EGLImage
-    image = glCtx1->texture2DToEGLImage(texInfo.fID);
+    image = glCtx1->texture2DToEGLImage(texInfo.fID2);
     if (GR_EGL_NO_IMAGE == image) {
         ERRORF(reporter, "Error creating EGL Image from texture");
-        cleanup(glCtx0, externalTexture.fID, glCtx1.get(), context1, image);
+        cleanup(glCtx0, externalTexture.fID2, glCtx1.get(), context1, image);
         return;
     }
 
@@ -167,7 +167,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
         pixels.get()[i] = 0xDDAABBCC;
     }
     GR_GL_CALL(glCtx1->gl(), ActiveTexture(GR_GL_TEXTURE0));
-    GR_GL_CALL(glCtx1->gl(), BindTexture(texInfo.fTarget, texInfo.fID));
+    GR_GL_CALL(glCtx1->gl(), BindTexture(texInfo.fTarget, texInfo.fID2));
     GR_GL_CALL(glCtx1->gl(), TexSubImage2D(texInfo.fTarget, 0, 0, 0, kSize, kSize,
                                            GR_GL_RGBA, GR_GL_UNSIGNED_BYTE, pixels.get()));
     GR_GL_CALL(glCtx1->gl(), Finish());
@@ -180,11 +180,11 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
     // Make a new texture ID in GL Context 0 from the EGL Image
     glCtx0->makeCurrent();
     externalTexture.fTarget = GR_GL_TEXTURE_EXTERNAL;
-    externalTexture.fID = glCtx0->eglImageToExternalTexture(image);
-    externalTexture.fFormat = GR_GL_RGBA8;
-    if (0 == externalTexture.fID) {
+    externalTexture.fID2 = glCtx0->eglImageToExternalTexture(image);
+    externalTexture.fFormat2 = GR_GL_RGBA8;
+    if (0 == externalTexture.fID2) {
         ERRORF(reporter, "Error converting EGL Image back to texture");
-        cleanup(glCtx0, externalTexture.fID, glCtx1.get(), context1, image);
+        cleanup(glCtx0, externalTexture.fID2, glCtx1.get(), context1, image);
         return;
     }
 
@@ -199,7 +199,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
             backendTex, kBorrow_GrWrapOwnership, GrWrapCacheable::kNo, kRW_GrIOType);
     if (!texProxy) {
         ERRORF(reporter, "Error wrapping external texture in GrTextureProxy.");
-        cleanup(glCtx0, externalTexture.fID, glCtx1.get(), context1, image);
+        cleanup(glCtx0, externalTexture.fID2, glCtx1.get(), context1, image);
         return;
     }
     skgpu::Swizzle swizzle = context0->priv().caps()->getReadSwizzle(texProxy->backendFormat(),
@@ -209,7 +209,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
 
     if (!surfaceContext) {
         ERRORF(reporter, "Error wrapping external texture in SurfaceContext.");
-        cleanup(glCtx0, externalTexture.fID, glCtx1.get(), context1, image);
+        cleanup(glCtx0, externalTexture.fID2, glCtx1.get(), context1, image);
         return;
     }
 
@@ -250,7 +250,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
                         pixels.get(),
                         "EGLImageTest-copy");
 
-    cleanup(glCtx0, externalTexture.fID, glCtx1.get(), context1, image);
+    cleanup(glCtx0, externalTexture.fID2, glCtx1.get(), context1, image);
 }
 
 #endif  // SK_GL
