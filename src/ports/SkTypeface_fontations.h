@@ -23,7 +23,7 @@ class SkTypeface_Fontations : public SkTypeface {
 public:
     SkTypeface_Fontations(std::unique_ptr<SkStreamAsset> font_data);
 
-    const rust::Box<::fontations_ffi::BridgeFontRef>& getBridgeFontRef() { return fBridgeFontRef; }
+    const fontations_ffi::BridgeFontRef& getBridgeFontRef() { return *fBridgeFontRef; }
 
 protected:
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override { return nullptr; }

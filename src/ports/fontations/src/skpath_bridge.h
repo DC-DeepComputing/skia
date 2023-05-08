@@ -1,10 +1,10 @@
 // Copyright 2023 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
-#include <memory>
-#include "include/core/SkPath.h"
-
 #ifndef SkPathBridge_DEFINED
 #define SkPathBridge_DEFINED
+
+#include <memory>
+#include "include/core/SkPath.h"
 
 class SkPath;
 

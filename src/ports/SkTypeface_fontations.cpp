@@ -117,7 +117,7 @@ protected:
         }
         float x_advance = 0.0f;
         x_advance = fontations_ffi::advance_width_or_zero(
-                *fBridgeFontRef, scale.y(), glyph->getGlyphID());
+                fBridgeFontRef, scale.y(), glyph->getGlyphID());
         // TODO(drott): y-advance?
         const SkVector advance = remainingMatrix.mapXY(x_advance, SkFloatToScalar(0.f));
         glyph->fAdvanceX = SkScalarToFloat(advance.fX);
@@ -144,7 +144,7 @@ protected:
         fontations_ffi::SkPathWrapper pathWrapper;
 
         if (!fontations_ffi::get_path(
-                    *fBridgeFontRef, glyph.getGlyphID(), scale.y(), pathWrapper)) {
+                    fBridgeFontRef, glyph.getGlyphID(), scale.y(), pathWrapper)) {
             return false;
         }
 
@@ -155,7 +155,7 @@ protected:
 
     void generateFontMetrics(SkFontMetrics* out_metrics) override {
         fontations_ffi::Metrics metrics =
-                fontations_ffi::get_skia_metrics(*fBridgeFontRef, fMatrix.getScaleY());
+                fontations_ffi::get_skia_metrics(fBridgeFontRef, fMatrix.getScaleY());
         out_metrics->fTop = -metrics.top;
         out_metrics->fAscent = -metrics.ascent;
         out_metrics->fDescent = -metrics.descent;
@@ -174,7 +174,7 @@ protected:
 private:
     SkMatrix fMatrix;
     sk_sp<SkData> fFontData = nullptr;
-    const rust::Box<::fontations_ffi::BridgeFontRef>& fBridgeFontRef;
+    const fontations_ffi::BridgeFontRef& fBridgeFontRef;
 };
 
 std::unique_ptr<SkScalerContext> SkTypeface_Fontations::onCreateScalerContext(
