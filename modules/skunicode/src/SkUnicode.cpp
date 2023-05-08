@@ -9,12 +9,20 @@
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTemplates.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include <algorithm>
+#include <array>
 
 using namespace skia_private;
 
 std::unique_ptr<SkUnicode> SkUnicode::Make() {
 #ifdef SK_UNICODE_ICU_IMPLEMENTATION
     std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeIcuBasedUnicode();
+    if (unicode) {
+        return unicode;
+    }
+#endif
+#ifdef SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION
+    std::unique_ptr<SkUnicode> unicode = SkUnicode::MakeLibgraphemeBasedUnicode();
     if (unicode) {
         return unicode;
     }
