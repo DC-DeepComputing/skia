@@ -498,6 +498,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8e985c3b_337138e4",
+        "filename": "src/ports/fontations/src/skpath_bridge.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-05-08T15:37:49Z",
+      "side": 1,
+      "message": "Not quite.\n\nThat won\u0027t do anything as it is casting to an rvalue then changes to a const\u0026 on the return type.\n\nTo move the path you\u0027ll want to\n- qualify the method with \u0026\u0026\n- rename it from get since it\u0027s now destructive to `this` (i suggested into_inner() as thats how rust names such wrapper unwrapper methods)\n- change the return type to SkPath (not a reference)\n- do std::move() in the return as you did.\n\nThen callers to the method will have to move the SkPathWrapper to call the method - this will be enforced by the compiler thanks to the \u0026\u0026 qualifier on the method itself.\n\nAll together:\n\n`SkPath SkPathWrapper::into_inner() \u0026\u0026 { return std::move(path_); }`",
+      "parentUuid": "31fc096d_3be13b96",
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "739a779a_a437e925",
         "filename": "src/ports/fontations/src/skpath_bridge.h",
         "patchSetId": 6
