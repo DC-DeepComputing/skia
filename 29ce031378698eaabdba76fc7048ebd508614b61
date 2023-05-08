@@ -100,6 +100,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d3f66cf_2ceceb69",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-08T11:38:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8b372743_72d98e5d",
+      "range": {
+        "startLine": 348,
+        "startChar": 36,
+        "endLine": 348,
+        "endChar": 50
+      },
+      "revId": "29ce031378698eaabdba76fc7048ebd508614b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc08f7ef_28826bdb",
