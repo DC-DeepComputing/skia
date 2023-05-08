@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb16e51a_2d396ee3",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-08T15:53:03Z",
+      "side": 1,
+      "message": "See note below, but the ResourceCache *should* already be collecting returned resources that are marked purgeable and be able to return them from findAndRefResource(). They are returned when there are no public refs or command buffer refs on them anymore, which should match what you\u0027re intending with availability here.",
+      "range": {
+        "startLine": 113,
+        "startChar": 16,
+        "endLine": 113,
+        "endChar": 43
+      },
+      "revId": "f8027d632921a2b951e3f13118ae682e893e0d03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6898fd3f_443196da",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-08T15:53:03Z",
+      "side": 1,
+      "message": "Having this run in the destructor leads to undefined behavior since we can\u0027t actually return the same \"object\" anymore if it\u0027s been destructed.",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "f8027d632921a2b951e3f13118ae682e893e0d03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e30ac767_697fbaee",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-08T15:53:03Z",
+      "side": 1,
+      "message": "I\u0027m not sure we need these, we should be able to get the right behavior from whether or not the resource cache thinks the descriptor set is purgeable and/or if the resource key we use for the descriptor sets is shareable (I am not sure if a VkDescriptorSet is shareable, my gut feeling is that it\u0027s not unless the GraphiteResourceKey encoded the specific descriptors that were in it).",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 83
+      },
+      "revId": "f8027d632921a2b951e3f13118ae682e893e0d03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
