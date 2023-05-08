@@ -9,6 +9,8 @@
 
 #include "modules/skottie/utils/SkottieUtils.h"
 
+#include "include/core/SkImage.h"
+
 namespace skottie_utils {
 
 class CustomPropertyManager::PropertyInterceptor final : public skottie::PropertyObserver {
@@ -253,24 +255,53 @@ sk_sp<skottie::ExternalLayer> ExternalAnimationPrecompInterceptor::onLoadPrecomp
                 : nullptr;
 }
 
+class ImageAssetProxy final : public skresources::ImageAsset {
+public:
+    ImageAssetProxy() {}
+
+    // always returns true in case Image asset is swapped during playback
+    bool isMultiFrame() override { return true; }
+
+    FrameData getFrameData(float t) override {
+        if (fImageAsset) {
+            return fImageAsset->getFrameData(t);
+        }
+        return {nullptr , SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNearest),
+            SkMatrix::I(), SizeFit::kCenter};
+    }
+
+    void setImageAsset (sk_sp<skresources::ImageAsset> asset) {
+        fImageAsset = std::move(asset);
+    }
+private:
+    sk_sp<skresources::ImageAsset> fImageAsset;
+};
+
 /**
  * An implementation of ResourceProvider designed for Lottie template asset substitution (images,
  * audio, etc)
  */
 class SlotManager::SlottableResourceProvider final : public skresources::ResourceProvider {
 public:
-    SlottableResourceProvider() {}
+    SlottableResourceProvider(std::vector<SlotInfo> slotInfos) {
+        for (const auto &s : slotInfos) {
+            if (s.type == 50) {
+                fImageAssetMap[s.slotID] = sk_make_sp<ImageAssetProxy>();
+            }
+        }
+    }
 
+    // This implementation depends on slot ID being passed through id instead of asset ID when slots
+    // are present
     sk_sp<skresources::ImageAsset> loadImageAsset(const char /*resource_path*/[],
-                                                  const char slot_name[],
-                                                  const char /*resource_id*/[]) const override {
+                                                  const char /*name*/[],
+                                                  const char slot_name[]) const override {
         const auto it = fImageAssetMap.find(slot_name);
         return it == fImageAssetMap.end() ? nullptr : it->second;
     }
 
 private:
-    std::unordered_map<std::string, sk_sp<skresources::ImageAsset>> fImageAssetMap;
-
+    std::unordered_map<std::string, sk_sp<ImageAssetProxy>> fImageAssetMap;
     friend class SlotManager;
 };
 
@@ -347,7 +378,7 @@ private:
 
 SlotManager::SlotManager(const SkString path) {
     parseSlotIDsFromFileName(path);
-    fResourceProvider = sk_make_sp<SlottableResourceProvider>();
+    fResourceProvider = sk_make_sp<SlottableResourceProvider>(fSlotInfos);
     fPropertyObserver = sk_make_sp<SlottablePropertyObserver>(fSlotInfos);
 }
 
@@ -399,7 +430,9 @@ void SlotManager::setTextStringSlot(std::string slotID, SkString text) {
 }
 
 void SlotManager::setImageSlot(std::string slotID, sk_sp<skresources::ImageAsset> img) {
-    fResourceProvider->fImageAssetMap[slotID] = std::move(img);
+    if (auto assetProxy = fResourceProvider->fImageAssetMap[slotID]) {
+        assetProxy->setImageAsset(std::move(img));
+    }
 }
 
 sk_sp<skresources::ResourceProvider> SlotManager::getResourceProvider() const {
