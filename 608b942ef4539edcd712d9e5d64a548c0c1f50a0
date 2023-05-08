@@ -516,6 +516,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c918b476_23785046",
+        "filename": "src/ports/fontations/src/skpath_bridge.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T18:10:40Z",
+      "side": 1,
+      "message": "Thanks for the instructions, now I understood - TIL. Another attempt in the latest patchset.",
+      "parentUuid": "8e985c3b_337138e4",
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "739a779a_a437e925",
         "filename": "src/ports/fontations/src/skpath_bridge.h",
         "patchSetId": 6
