@@ -154,7 +154,11 @@ public:
             SkUnichar unichar = SkUTF::NextUTF8(&current, end);
             if (unichar < 0) unichar = 0xFFFD;
             auto after = current - utf8;
+<<<<<<< PATCH SET (f77fa2 SkUnicode with libgrapheme implementation)
+            if (replaceTabs && SkUnicode::isTabulation(unichar)) {
+=======
             if (replaceTabs && this->isTabulation(unichar)) {
+>>>>>>> BASE      (1fa31b Extending SkUnicode API to avoid code duplication)
                 results->at(before) |= SkUnicode::kTabulation;
                 if (replaceTabs) {
                     unichar = ' ';
@@ -162,13 +166,25 @@ public:
                 }
             }
             for (auto i = before; i < after; ++i) {
+<<<<<<< PATCH SET (f77fa2 SkUnicode with libgrapheme implementation)
+                if (SkUnicode::isSpace(unichar)) {
+=======
                 if (this->isSpace(unichar)) {
+>>>>>>> BASE      (1fa31b Extending SkUnicode API to avoid code duplication)
                     results->at(i) |= SkUnicode::kPartOfIntraWordBreak;
                 }
+<<<<<<< PATCH SET (f77fa2 SkUnicode with libgrapheme implementation)
+                if (SkUnicode::isWhitespace(unichar)) {
+=======
                 if (this->isWhitespace(unichar)) {
+>>>>>>> BASE      (1fa31b Extending SkUnicode API to avoid code duplication)
                     results->at(i) |= SkUnicode::kPartOfWhiteSpaceBreak;
                 }
+<<<<<<< PATCH SET (f77fa2 SkUnicode with libgrapheme implementation)
+                if (SkUnicode::isControl(unichar)) {
+=======
                 if (this->isControl(unichar)) {
+>>>>>>> BASE      (1fa31b Extending SkUnicode API to avoid code duplication)
                     results->at(i) |= SkUnicode::kControl;
                 }
             }
