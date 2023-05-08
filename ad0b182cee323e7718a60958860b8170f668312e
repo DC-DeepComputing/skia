@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4782ef4_32ec947c",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-08T19:35:22Z",
+      "side": 1,
+      "message": "Reading Greg\u0027s comment in the big DescriptorPool CL made me realize that I didn\u0027t look closely enough here. I suspect what he meant was that the types should be moved into a file in src/gpu/graphite/vk named DescriptorTypes.h. That would match \nthe other XXXTypes.h files in there. There\u0027s no reason to share it with the rest of Graphite (yet) so I\u0027d keep it in vk. No hurry on this.",
+      "range": {
+        "startLine": 54,
+        "startChar": 3,
+        "endLine": 54,
+        "endChar": 22
+      },
+      "revId": "ad0b182cee323e7718a60958860b8170f668312e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
