@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04d9ac05_1e807b93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-05-08T13:42:57Z",
+      "side": 1,
+      "message": "From the Rust side, these changes LGTM!",
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
