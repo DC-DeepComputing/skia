@@ -22,6 +22,30 @@
       },
       "revId": "96c7306d4759504522c1953b1ac9ad66d29510ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7823f974_10bcc0f0",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-08T19:23:26Z",
+      "side": 1,
+      "message": "My reading of https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#vkCmdBindDescriptorSets is that you can use a given descriptor set multiple times as long as you don\u0027t change its contents. \"Once all pending uses [N.B. plural] have completed, it is legal to update and reuse a descriptor set.\"",
+      "parentUuid": "2ff0c02f_89b1175e",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 85
+      },
+      "revId": "96c7306d4759504522c1953b1ac9ad66d29510ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
