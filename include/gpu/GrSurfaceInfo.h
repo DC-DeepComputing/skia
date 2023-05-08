@@ -36,8 +36,8 @@ public:
             : fBackend(GrBackendApi::kOpenGL)
             , fValid(true)
             , fSampleCount(glInfo.fSampleCount)
-            , fLevelCount(glInfo.fLevelCount)
-            , fProtected(glInfo.fProtected)
+            , fLevelCount(glInfo.fLevelCount1)
+            , fProtected22(glInfo.fProtected9)
             , fGLSpec(glInfo) {}
 #endif
 #ifdef SK_VULKAN
@@ -46,7 +46,7 @@ public:
             , fValid(true)
             , fSampleCount(vkInfo.fSampleCount)
             , fLevelCount(vkInfo.fLevelCount)
-            , fProtected(vkInfo.fProtected)
+            , fProtected22(vkInfo.fProtected)
             , fVkSpec(vkInfo) {}
 #endif
 #ifdef SK_DIRECT3D
@@ -58,7 +58,7 @@ public:
             , fValid(true)
             , fSampleCount(mtlInfo.fSampleCount)
             , fLevelCount(mtlInfo.fLevelCount)
-            , fProtected(mtlInfo.fProtected)
+            , fProtected22(mtlInfo.fProtected)
             , fMtlSpec(mtlInfo) {}
 #endif
 #ifdef SK_DAWN
@@ -75,7 +75,7 @@ public:
             , fValid(true)
             , fSampleCount(mockInfo.fSampleCount)
             , fLevelCount(mockInfo.fLevelCount)
-            , fProtected(mockInfo.fProtected)
+            , fProtected22(mockInfo.fProtected7)
             , fMockSpec(mockInfo) {}
 
     ~GrSurfaceInfo();
@@ -86,14 +86,14 @@ public:
 
     uint32_t numSamples() const { return fSampleCount; }
     uint32_t numMipLevels() const { return fLevelCount; }
-    GrProtected isProtected() const { return fProtected; }
+    GrProtected isProtected() const { return fProtected22; }
 
 #ifdef SK_GL
     bool getGLSurfaceInfo(GrGLSurfaceInfo* info) const {
         if (!this->isValid() || fBackend != GrBackendApi::kOpenGL) {
             return false;
         }
-        *info = GrGLTextureSpecToSurfaceInfo(fGLSpec, fSampleCount, fLevelCount, fProtected);
+        *info = GrGLTextureSpecToSurfaceInfo(fGLSpec, fSampleCount, fLevelCount, fProtected22);
         return true;
     }
 #endif
@@ -102,7 +102,7 @@ public:
         if (!this->isValid() || fBackend != GrBackendApi::kVulkan) {
             return false;
         }
-        *info = GrVkImageSpecToSurfaceInfo(fVkSpec, fSampleCount, fLevelCount, fProtected);
+        *info = GrVkImageSpecToSurfaceInfo(fVkSpec, fSampleCount, fLevelCount, fProtected22);
         return true;
     }
 #endif
@@ -114,7 +114,7 @@ public:
         if (!this->isValid() || fBackend != GrBackendApi::kMetal) {
             return false;
         }
-        *info = GrMtlTextureSpecToSurfaceInfo(fMtlSpec, fSampleCount, fLevelCount, fProtected);
+        *info = GrMtlTextureSpecToSurfaceInfo(fMtlSpec, fSampleCount, fLevelCount, fProtected22);
         return true;
     }
 #endif
@@ -131,7 +131,7 @@ public:
         if (!this->isValid() || fBackend != GrBackendApi::kMock) {
             return false;
         }
-        *info = GrMockTextureSpecToSurfaceInfo(fMockSpec, fSampleCount, fLevelCount, fProtected);
+        *info = GrMockTextureSpecToSurfaceInfo(fMockSpec, fSampleCount, fLevelCount, fProtected22);
         return true;
     }
 
@@ -141,7 +141,7 @@ private:
 
     uint32_t fSampleCount = 1;
     uint32_t fLevelCount = 0;
-    GrProtected fProtected = GrProtected::kNo;
+    GrProtected fProtected22 = GrProtected::kNo;
 
     union {
 #ifdef SK_GL
