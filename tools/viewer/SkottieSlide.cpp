@@ -285,7 +285,7 @@ public:
             for (size_t i = 0; i < fImageSlots.size(); i++) {
                 auto& iSlot = fImageSlots.at(i);
                 ImGui::PushID(i);
-                ImGui::InputText("ImageSlotID", iSlot.first.data(), iSlot.first.size());
+                ImGui::Text("%s", iSlot.first.c_str());
                 if (ImGui::BeginCombo("Resource", iSlot.second.data())) {
                     for (const auto& res : fResList) {
                         if (ImGui::Selectable(res.c_str(), false)) {
@@ -296,11 +296,6 @@ public:
                 }
                 ImGui::PopID();
             }
-            if (ImGui::Button("+ Image")) {
-                std::array<char, kBufferLen> s = {'\0'};
-                fImageSlots.push_back(std::make_pair(s, std::string()));
-            }
-
             if (ImGui::Button("Apply Slots")) {
                 this->pushSlots();
             }
@@ -323,7 +318,7 @@ public:
         for(const auto& s : fImageSlots) {
             auto img = fResourceProvider->loadImageAsset("images/", s.second.c_str(), nullptr);
             if (img) {
-                fSlotManager->setImageSlot(s.first.data(), img);
+                fSlotManager->setImageSlot(s.first.data(), std::move(img));
             }
         }
     }
@@ -347,6 +342,9 @@ public:
                     break;
                 case 4: // opacity
                     addOpacitySlot(slotInfo.slotID);
+                    break;
+                case 50: // images
+                    addImageSlot(slotInfo.slotID);
                     break;
                 case 99: // text
                     addTextSlot(slotInfo.slotID);
@@ -390,10 +388,14 @@ private:
         fTextStringSlots.push_back(std::make_pair(slotID, textSource));
     }
 
+    void addImageSlot(std::string slotID) {
+        fImageSlots.push_back(std::make_pair(slotID, std::string()));
+    }
+
     std::vector<std::pair<std::string, std::array<float, 4>>> fColorSlots;
     std::vector<std::pair<std::string, float>>                fOpacitySlots;
     std::vector<std::pair<std::string, GuiTextBuffer>>        fTextStringSlots;
-    std::vector<std::pair<GuiTextBuffer, std::string>>        fImageSlots;
+    std::vector<std::pair<std::string, std::string>>          fImageSlots;
 
 };
 
