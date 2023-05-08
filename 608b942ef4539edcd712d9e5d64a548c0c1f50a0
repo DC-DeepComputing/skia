@@ -16,6 +16,23 @@
       "message": "From the Rust side, these changes LGTM!",
       "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6166b63b_e85d259f",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-08T14:17:30Z",
+      "side": 1,
+      "message": "Yeah, we do the \"don\u0027t do a copy thing\" in the common case elsewhere [0][1]. It almost seems like we could factor something out, but it always seems to turn out that the handling code is different. We can put that off for now though.\n\n[0] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skshaper/src/SkShaper_harfbuzz.cpp;l\u003d246;drc\u003d759829e218f3576462230e048c5e12dc2034dce6\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/SkFontHost_FreeType.cpp;l\u003d377;drc\u003d86d229d99bc0bfe97f0c2b8c8d784c4777ebc8d9",
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
