@@ -46,6 +46,30 @@
       },
       "revId": "ad0b182cee323e7718a60958860b8170f668312e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "913c0530_9dff9efa",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-08T19:52:13Z",
+      "side": 1,
+      "message": "Ah, I think I might see - did you envision collating our descriptors in VulkanGraphicsPipeline::Make(...) like Dawn does, circumventing the need to track within DrawPass at all and \"retroactively\" determine the # of uniforms and texture/samplers for sets from the frag shader?",
+      "parentUuid": "eeecefe1_1794424f",
+      "range": {
+        "startLine": 54,
+        "startChar": 3,
+        "endLine": 54,
+        "endChar": 22
+      },
+      "revId": "ad0b182cee323e7718a60958860b8170f668312e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
