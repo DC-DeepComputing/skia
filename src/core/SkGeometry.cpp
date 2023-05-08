@@ -92,12 +92,17 @@ int return_check_zero(int value) {
 */
 int SkFindUnitQuadRoots(SkScalar A, SkScalar B, SkScalar C, SkScalar roots[2]) {
     SkASSERT(roots);
+    using std::isfinite;
 
+    // Fast paths without square roots.
     if (A == 0) {
-        return return_check_zero(valid_unit_divide(-C, B, roots));
+	roots[0] = -C / B;
+        return isfinite(roots[0]) ? 1 : 0;
+    } else if (C == 0) {
+	roots[0] = 0.0f;
+        roots[1] = -B / A;
+	return (roots[0] == roots[1]) ? 1 : 2;
     }
-
-    SkScalar* r = roots;
 
     // use doubles so we don't overflow temporarily trying to compute R
     double dr = (double)B * B - 4 * (double)A * C;
@@ -106,22 +111,24 @@ int SkFindUnitQuadRoots(SkScalar A, SkScalar B, SkScalar C, SkScalar roots[2]) {
     }
     dr = sqrt(dr);
     SkScalar R = SkDoubleToScalar(dr);
-    if (!SkScalarIsFinite(R)) {
+    if (!isfinite(R)) {
         return return_check_zero(0);
     }
 
-    SkScalar Q = (B < 0) ? -(B-R)/2 : -(B+R)/2;
-    r += valid_unit_divide(Q, A, r);
-    r += valid_unit_divide(C, Q, r);
-    if (r - roots == 2) {
-        if (roots[0] > roots[1]) {
-            using std::swap;
-            swap(roots[0], roots[1]);
-        } else if (roots[0] == roots[1]) { // nearly-equal?
-            r -= 1; // skip the double root
-        }
+    SkScalar Q = -SK_ScalarHalf * (B + std::copysign(R, B));
+    SkScalar x1 = Q / A;
+    SkScalar x2 = C / Q;
+
+    if (isfinite(x1) && isfinite(x2)) {
+       // Common, happy case.
+       roots[0] = std::min(x1, x2);
+       roots[1] = std::max(x1, x2);
+       return (x1 == x2) ? 1 : 2;
     }
-    return return_check_zero((int)(r - roots));
+
+    roots[0] = x1;
+    roots[isfinite(x1) ? 1 : 0] = x2;
+    return return_check_zero(isfinite(x1) + isfinite(x2));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
