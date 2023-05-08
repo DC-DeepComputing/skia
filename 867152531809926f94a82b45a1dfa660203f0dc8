@@ -39,6 +39,29 @@
       },
       "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "152d8a67_2bf32045",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-08T20:59:18Z",
+      "side": 1,
+      "message": "WIP: I actually should and will delete this struct and replace it with an array of integers (size \u003d kDescriptorTypeCount), simply populating the array at the indices of the descriptor types to be the requested count.",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 68
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "03403eb3_383c4f9d",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-08T20:59:18Z",
+      "side": 0,
+      "message": "Note: \nI may move this somewhere else or we may not need it based upon our discussion on another CL (https://skia-review.googlesource.com/c/skia/+/689076?tab\u003dcomments)",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 24
+      },
+      "revId": "3ff9190c67f959b5d01fe500b021216c97acc4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "54076e0d_04310cf1",
