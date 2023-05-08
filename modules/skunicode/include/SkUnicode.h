@@ -86,6 +86,7 @@ class SKUNICODE_API SkUnicode {
             kControl = 0x20,
             kTabulation = 0x40,
             kGlyphClusterStart = 0x80,
+            kWordBreak = 0x100,
         };
         enum class TextDirection {
             kLTR,
@@ -131,12 +132,20 @@ class SKUNICODE_API SkUnicode {
         virtual std::unique_ptr<SkBreakIterator> makeBreakIterator(BreakType type) = 0;
 
         // Methods used in SkParagraph
-        static bool isTabulation(SkUnicode::CodeUnitFlags flags);
-        static bool isHardLineBreak(SkUnicode::CodeUnitFlags flags);
-        static bool isSoftLineBreak(SkUnicode::CodeUnitFlags flags);
-        static bool isGraphemeStart(SkUnicode::CodeUnitFlags flags);
-        static bool isControl(SkUnicode::CodeUnitFlags flags);
-        static bool isPartOfWhiteSpaceBreak(SkUnicode::CodeUnitFlags flags);
+
+        virtual bool isControl(SkUnichar codepoint);
+        virtual bool isWhitespace(SkUnichar codepoint);
+        virtual bool isSpace(SkUnichar codepoint);
+        virtual bool isTabulation(SkUnichar codepoint);
+        virtual bool isHardBreak(SkUnichar codepoint);
+        virtual bool isEmoji(SkUnichar codepoint);
+
+        static bool hasTabulationFlag(SkUnicode::CodeUnitFlags flags);
+        static bool hasHardLineBreakFlag(SkUnicode::CodeUnitFlags flags);
+        static bool hasSoftLineBreakFlag(SkUnicode::CodeUnitFlags flags);
+        static bool hasGraphemeStartFlag(SkUnicode::CodeUnitFlags flags);
+        static bool hasControlFlag(SkUnicode::CodeUnitFlags flags);
+        static bool hasPartOfWhiteSpaceBreakFlag(SkUnicode::CodeUnitFlags flags);
         static bool extractBidi(const char utf8[],
                                 int utf8Units,
                                 TextDirection dir,
@@ -280,6 +289,8 @@ class SKUNICODE_API SkUnicode {
                 std::vector<SkUnicode::Position> words,
                 std::vector<SkUnicode::Position> graphemeBreaks,
                 std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+
+        static std::unique_ptr<SkUnicode> MakeLibgraphemeBasedUnicode();
 };
 
 namespace sknonstd {

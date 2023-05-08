@@ -39,7 +39,7 @@ UNIX_ONLY_TEST(SkUnicode_Native, reporter) {
     skia_private::TArray<SkUnicode::CodeUnitFlags, true> results;
     icu->computeCodeUnitFlags(utf8.data(), utf8.size(), false, &results);
     for (auto flag : results) {
-        REPORTER_ASSERT(reporter, !SkUnicode::isPartOfWhiteSpaceBreak(flag));
+        REPORTER_ASSERT(reporter, !SkUnicode::hasPartOfWhiteSpaceBreakFlag(flag));
     }
 }
 #endif
