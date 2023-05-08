@@ -16,6 +16,29 @@
       "message": "LGTM but I think you want someone more C++ savvy than me to also take a look.",
       "revId": "f75ca0d452507704ed98334d358ff7fdd9e5db56",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2ee0196_70b3f232",
+        "filename": "src/base/SkNoDestructor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-05-08T20:38:01Z",
+      "side": 1,
+      "message": "Consider std::byte?",
+      "range": {
+        "startLine": 107,
+        "startChar": 15,
+        "endLine": 107,
+        "endChar": 19
+      },
+      "revId": "f75ca0d452507704ed98334d358ff7fdd9e5db56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
