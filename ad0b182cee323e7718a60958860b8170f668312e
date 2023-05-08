@@ -70,6 +70,30 @@
       },
       "revId": "ad0b182cee323e7718a60958860b8170f668312e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3418fac3_07666c17",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-08T21:04:22Z",
+      "side": 1,
+      "message": "Ah yes, I see what you mean -- I forgot about the collation in DrawPass. I\u0027d leave it here then, but when you have a moment I suggest changing the filename to DescriptorTypes.h.",
+      "parentUuid": "913c0530_9dff9efa",
+      "range": {
+        "startLine": 54,
+        "startChar": 3,
+        "endLine": 54,
+        "endChar": 22
+      },
+      "revId": "ad0b182cee323e7718a60958860b8170f668312e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
