@@ -93,6 +93,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7faed522_8d1ca170",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T15:02:29Z",
+      "side": 1,
+      "message": "Thanks for the extra background.",
+      "parentUuid": "a7b6ace8_129b03ac",
+      "range": {
+        "startLine": 27,
+        "startChar": 47,
+        "endLine": 27,
+        "endChar": 52
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37382b12_9ae748d0",
@@ -106,6 +130,30 @@
       "writtenOn": "2023-05-08T14:20:06Z",
       "side": 1,
       "message": "This returns a Box, but the field in a const ref, which will be a dangling reference to the destroyed temporary Box?",
+      "range": {
+        "startLine": 35,
+        "startChar": 25,
+        "endLine": 35,
+        "endChar": 45
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdb5ab8b_e68350b5",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T15:02:29Z",
+      "side": 1,
+      "message": "I am sorry, I don\u0027t understand this comment. What do you mean by \"the field\" here? Do you have a fix suggestion? \n\n`make_bridge_font_ref` returns a box and `fBridgeFontRef` is a box type, too - so that\u0027s assigned to it?",
+      "parentUuid": "37382b12_9ae748d0",
       "range": {
         "startLine": 35,
         "startChar": 25,
@@ -153,6 +201,30 @@
       "side": 1,
       "message": "It\u0027s not part of the public API of SkTypeface (not visible to Skia API clients), only used internally between `SkTypeface_Fontations` and `ScalerContext`, but indeed, I\u0027ll try to shorten that to `fontations_ffi::BridgeFontRef`, good point.",
       "parentUuid": "dc6949b6_f2e4873a",
+      "range": {
+        "startLine": 26,
+        "startChar": 10,
+        "endLine": 26,
+        "endChar": 19
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55533cf1_96b494c2",
+        "filename": "src/ports/SkTypeface_fontations.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T15:02:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "131b556f_774c9b3f",
       "range": {
         "startLine": 26,
         "startChar": 10,
@@ -211,6 +283,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a72cf9d0_625fea99",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T15:02:29Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "daaaf2b2_4864992f",
+      "range": {
+        "startLine": 4,
+        "startChar": 21,
+        "endLine": 4,
+        "endChar": 23
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebda6aec_9ead1f03",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T15:02:29Z",
+      "side": 1,
+      "message": "Changed to `std`.",
+      "parentUuid": "5cdd656d_09a8bdd4",
+      "range": {
+        "startLine": 4,
+        "startChar": 4,
+        "endLine": 4,
+        "endChar": 8
+      },
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "190e47f3_651dfe58",
         "filename": "src/ports/fontations/src/skpath_bridge.cpp",
         "patchSetId": 6
@@ -228,6 +348,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c63b4ce_b640db25",
+        "filename": "src/ports/fontations/src/skpath_bridge.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T15:02:29Z",
+      "side": 1,
+      "message": "(Maybe due to my limited Rust knowledge...) I am having trouble fully understanding the suggestion. Yes, in general, I could `std::move()` the path as the SkPathWrapper is single use, but where and on what (The Pin\u003cSkPathWrapper\u003e?) would I call the `into_inner()`? The `SkPathWrapper` is created on the C++ side, compare https://skia-review.googlesource.com/c/skia/+/692737/6/src/ports/SkTypeface_fontations.cpp#105",
+      "parentUuid": "190e47f3_651dfe58",
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "739a779a_a437e925",
         "filename": "src/ports/fontations/src/skpath_bridge.h",
         "patchSetId": 6
@@ -239,6 +377,24 @@
       "writtenOn": "2023-05-08T14:20:06Z",
       "side": 1,
       "message": "nit: put these above includes",
+      "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fa330b1_b4168458",
+        "filename": "src/ports/fontations/src/skpath_bridge.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-08T15:02:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "739a779a_a437e925",
       "revId": "608b942ef4539edcd712d9e5d64a548c0c1f50a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
