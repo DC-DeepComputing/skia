@@ -16,6 +16,29 @@
       "message": "PTAL - I called out some things here that I am doing that are inefficient and can be improved upon once higher-priority needs are knocked out. I already have some thoughts on how I\u0027d proceed, but suggestions are certainly welcome.",
       "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47401e1f_e743a904",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-08T20:03:58Z",
+      "side": 1,
+      "message": "Change to DsTypeEnumToVkDs? (since it\u0027s static)",
+      "range": {
+        "startLine": 33,
+        "startChar": 28,
+        "endLine": 33,
+        "endChar": 44
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
