@@ -9,6 +9,8 @@
 #include <array>
 #include <utility>
 
+SkUnicodeHardCodedCharProperties::~SkUnicodeHardCodedCharProperties() = default;
+
 bool SkUnicodeHardCodedCharProperties::isControl(SkUnichar utf8) {
     return (utf8 < ' ') || (utf8 >= 0x7f && utf8 <= 0x9f) ||
            (utf8 >= 0x200D && utf8 <= 0x200F) ||
