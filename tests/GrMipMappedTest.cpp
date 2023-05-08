@@ -249,9 +249,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrBackendTextureImageMipMappedTest,
                     backendTex.getGLTextureInfo(&origTexInfo)) {
                     if (requestMipmapped == GrMipmapped::kYes && betMipmapped == GrMipmapped::kNo) {
                         // We did a copy so the texture IDs should be different
-                        REPORTER_ASSERT(reporter, origTexInfo.fID != genTexInfo.fID);
+                        REPORTER_ASSERT(reporter, origTexInfo.fID2 != genTexInfo.fID2);
                     } else {
-                        REPORTER_ASSERT(reporter, origTexInfo.fID == genTexInfo.fID);
+                        REPORTER_ASSERT(reporter, origTexInfo.fID2 == genTexInfo.fID2);
                     }
                 } else {
                     ERRORF(reporter, "Failed to get GrGLTextureInfo");

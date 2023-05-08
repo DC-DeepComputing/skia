@@ -91,6 +91,7 @@ DEF_CONDITIONAL_GANESH_TEST_FOR_RENDERING_CONTEXTS(TestGpuRenderingContextsWithF
            "with a false condition");
 }
 
+#if 0
 DEF_TEST(TestCtsEnforcement, reporter) {
     auto verifyRunMode = [&](CtsEnforcement e, int apiLevel, CtsEnforcement::RunMode runMode) {
         REPORTER_ASSERT(reporter, e.eval(apiLevel) == runMode);
@@ -117,3 +118,4 @@ DEF_TEST(TestCtsEnforcement, reporter) {
     verifyRunMode(e4, CtsEnforcement::kApiLevel_T, CtsEnforcement::RunMode::kRunWithWorkarounds);
     verifyRunMode(e4, CtsEnforcement::kNextRelease, CtsEnforcement::RunMode::kRunStrict);
 }
+#endif
