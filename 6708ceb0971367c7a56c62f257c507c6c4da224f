@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "857e6fd7_8ce99f1e",
+        "filename": "include/config/linkopts.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-08T18:46:26Z",
+      "side": 1,
+      "message": "Do you think landroid should go here also instead of deep in the vulkan build?",
+      "range": {
+        "startLine": 15,
+        "startChar": 10,
+        "endLine": 15,
+        "endChar": 13
+      },
+      "revId": "6708ceb0971367c7a56c62f257c507c6c4da224f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
