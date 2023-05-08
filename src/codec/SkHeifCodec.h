@@ -35,7 +35,7 @@ public:
      */
     static std::unique_ptr<SkCodec> MakeFromStream(
             std::unique_ptr<SkStream>, SkCodec::SelectionPolicy selectionPolicy,
-            SkEncodedImageFormat, Result*);
+            Result*);
 
 protected:
 
