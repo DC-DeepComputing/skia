@@ -271,6 +271,12 @@ protected:
                                                                         constraint);
     }
 
+    void onDrawVerticesObject(const SkVertices* vertices,
+                              SkBlendMode mode,
+                              const SkPaint& paint) override {
+        fRecorder.getRecordingCanvas()->drawVertices(vertices, mode, paint);
+    }
+
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
     void onDrawEdgeAAQuad(const SkRect& rect,
                           const SkPoint clip[4],
