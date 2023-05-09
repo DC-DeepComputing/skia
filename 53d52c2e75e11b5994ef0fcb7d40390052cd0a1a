@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f90cea22_65f0e967",
+        "filename": "src/sksl/ir/SkSLVariable.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-09T22:16:22Z",
+      "side": 1,
+      "message": "As I\u0027m unable to come up with a better name, I will go out and suggest `MoreVariable` as a fun alternative.",
+      "range": {
+        "startLine": 163,
+        "startChar": 6,
+        "endLine": 163,
+        "endChar": 17
+      },
+      "revId": "53d52c2e75e11b5994ef0fcb7d40390052cd0a1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
