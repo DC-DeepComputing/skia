@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e85ae1d8_7c06b731",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-09T15:12:08Z",
+      "side": 1,
+      "message": "PS1 is a pure reland. PS2 includes https://skia-review.googlesource.com/c/skia/+/695237 to fix the Bazel build.",
+      "revId": "9eaf3030cd72d86c53c81790bf2ef71c27772e5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
