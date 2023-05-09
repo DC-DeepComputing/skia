@@ -76,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc25b90d_0609b37c",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-09T06:58:38Z",
+      "side": 1,
+      "message": "\u003e Consider SkPathPriv::Iterate. It provides a much barer-bones representation of the underlying path content whereas SkPath::Iter has lots of extra closing and compacting logic (unless vello requires that to be done here).\n\u003e \n\nDone. I was already disabling `forceClose` above since I enable Vello\u0027s own similar logic in the cxx bridge crate. The compaction logic sounds useful though, I\u0027m not sure if vello implements the same.\n\nWhile at it I fixed the code for conics by approximating them as 2 quads. The vello path representation doesn\u0027t support conics and the previous version of this code was incorrect.\n\n\u003e In the long-long term this won\u0027t matter since that sort of cleanup can happen when SkPathBuilder finishes an SkPath.\n\nThat sounds good to me.",
+      "parentUuid": "ecb52efa_b5dfdb11",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 23
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2da816c4_1f355244",
@@ -89,6 +113,30 @@
       "writtenOn": "2023-04-26T20:58:27Z",
       "side": 1,
       "message": "It\u0027s not necessarily true that the encoding is non-empty at this point. Our internal path encoder will ignore empty paths as well various sequences of move and close commands. In these cases, we also prevent encoding of the brush to avoid desync in the streams.",
+      "range": {
+        "startLine": 125,
+        "startChar": 4,
+        "endLine": 130,
+        "endChar": 19
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a33a846_0916e086",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-09T06:58:38Z",
+      "side": 1,
+      "message": "If encoding a path fails, what state does that leave the encoding in? `SceneBuilder::fill` always encodes the transform and linewidth even if the `encode_shape` returns false (https://github.com/linebender/vello/blob/main/src/scene.rs#L128). How are those treated by subsequent path entries?",
+      "parentUuid": "2da816c4_1f355244",
       "range": {
         "startLine": 125,
         "startChar": 4,
@@ -122,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0dda483_9bdee6e9",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-09T06:58:38Z",
+      "side": 1,
+      "message": "Neat, I wasn\u0027t aware of that. I\u0027ll keep the tracking and assertion in here in debug builds for correctness.",
+      "parentUuid": "4fc7f152_c6065639",
+      "range": {
+        "startLine": 199,
+        "startChar": 4,
+        "endLine": 199,
+        "endChar": 70
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27870721_78958bb1",
@@ -135,6 +207,30 @@
       "writtenOn": "2023-04-26T14:09:10Z",
       "side": 1,
       "message": "That seems reasonable to me. appendStep() is really meant to be called once per draw, but it makes sense that there are global compute steps that would not need that and are only called once per \"pass\".",
+      "range": {
+        "startLine": 208,
+        "startChar": 4,
+        "endLine": 211,
+        "endChar": 72
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82eaad3a_cc7b2a12",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-09T06:58:38Z",
+      "side": 1,
+      "message": "Sounds good. I added a reference to `b/279955342`.",
+      "parentUuid": "27870721_78958bb1",
       "range": {
         "startLine": 208,
         "startChar": 4,
@@ -180,6 +276,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fdd95ac_f05ad092",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-09T06:58:38Z",
+      "side": 1,
+      "message": "Added a comment referencing VelloComputeSteps.h",
+      "parentUuid": "ba307378_25df637c",
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd0dcde7_eac45ede",
@@ -217,6 +331,30 @@
       "side": 1,
       "message": "The vello shaders expect brush/paint colors to be premultiplied by alpha, however the encoding crate does not and it will itself premultiply the input colors as it encodes them into the scene buffer AFAICT. So this input color here should not be premultiplied (cbrokaw@ can confirm).\n\nAs for colorspace conversions Vello currently does not handle any conversions and assumes all colors are in sRGB colorspace (there is some information on this in the comments here: https://github.com/linebender/vello/blob/main/shader/shared/blend.wgsl).",
       "parentUuid": "cd0dcde7_eac45ede",
+      "range": {
+        "startLine": 37,
+        "startChar": 25,
+        "endLine": 37,
+        "endChar": 34
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0db91c4c_8f030764",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-09T06:58:38Z",
+      "side": 1,
+      "message": "I added a comment about the requirements above. FWIW I\u0027m intending to add (or turn this into) a `VelloMaskScene` class that doesn\u0027t define any color parameters since they are not needed for generating coverage masks.",
+      "parentUuid": "3782dc18_06529421",
       "range": {
         "startLine": 37,
         "startChar": 25,
