@@ -70,6 +70,8 @@ public:
 
     void dumpJSON(SkJSONWriter*) const;
 
+    void print() const;
+
 private:
     bool fInitialized = false;
     skia_private::TArray<SkString> fStrings;

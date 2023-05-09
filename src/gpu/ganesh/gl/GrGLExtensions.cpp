@@ -168,3 +168,10 @@ void GrGLExtensions::dumpJSON(SkJSONWriter* writer) const {
 #else
 void GrGLExtensions::dumpJSON(SkJSONWriter* writer) const { }
 #endif
+
+void GrGLExtensions::print() const {
+    SkDebugf("Extensions:\n");
+    for (int i = 0; i < fStrings.size(); ++i) {
+        SkDebugf("%s\n", fStrings[i].c_str());
+    }
+}
