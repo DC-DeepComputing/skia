@@ -18,6 +18,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f25e07a_699cedc0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T17:20:55Z",
+      "side": 1,
+      "message": "Overall this looks good, just some comments on implementation details.",
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1183a173_0ecdce8f",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T17:20:55Z",
+      "side": 1,
+      "message": "I don\u0027t think this belongs in here because it\u0027s not used in this file at all. Since it\u0027s associated with the type defined in Descriptor(Types).h I\u0027d suggest putting it in there as a raw function, or defined in a new DescriptorTypes.cpp file. That could be part of the CL that renames Descriptor.h, no need to do it here.",
+      "range": {
+        "startLine": 40,
+        "startChar": 17,
+        "endLine": 40,
+        "endChar": 54
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47401e1f_e743a904",
@@ -59,6 +99,99 @@
         "startChar": 8,
         "endLine": 31,
         "endChar": 68
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a696f829_c4e422e8",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T17:20:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "152d8a67_2bf32045",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 68
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0202b23_7d682745",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T17:20:55Z",
+      "side": 1,
+      "message": "Incrementing the loop counter inside the loop body isn\u0027t safe. I\u0027d do [i] and [i+1], and increment by 2 in the for statement. Or go ahead and pack the type and count into one 32-bit value.",
+      "range": {
+        "startLine": 141,
+        "startChar": 16,
+        "endLine": 141,
+        "endChar": 19
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "304460da_d1c304c2",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T17:20:55Z",
+      "side": 1,
+      "message": "It appears this will work but it feels a little sketchy, since the hash for the key is generated after you find the resource. If the resource cache ever depended on the hash for search this would break. Even if it\u0027s slower I\u0027d fill in the entire key each time, in case you never get back to revising this.",
+      "range": {
+        "startLine": 154,
+        "startChar": 12,
+        "endLine": 154,
+        "endChar": 29
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9735fe6b_214b449d",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T17:20:55Z",
+      "side": 1,
+      "message": "Same here.",
+      "range": {
+        "startLine": 178,
+        "startChar": 4,
+        "endLine": 178,
+        "endChar": 21
       },
       "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
