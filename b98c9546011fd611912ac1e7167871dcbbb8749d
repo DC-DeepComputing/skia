@@ -16,6 +16,24 @@
       "message": "It looks like IWYU told me to remove \u003ctype_traits\u003e and I believed it.",
       "revId": "b98c9546011fd611912ac1e7167871dcbbb8749d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72fcec6c_38eb322a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T14:52:32Z",
+      "side": 1,
+      "message": "IWYU appears to assume that template users should have to #include things which we, the humans, might disagree with.",
+      "parentUuid": "cadef823_b16672e0",
+      "revId": "b98c9546011fd611912ac1e7167871dcbbb8749d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
