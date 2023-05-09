@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "538f0add_0406db2d",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T16:45:19Z",
+      "side": 1,
+      "message": "Nit: align with second argument below.",
+      "range": {
+        "startLine": 36,
+        "startChar": 55,
+        "endLine": 36,
+        "endChar": 89
+      },
+      "revId": "3ff9190c67f959b5d01fe500b021216c97acc4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01162310_03733e79",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 50
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T16:45:19Z",
+      "side": 1,
+      "message": "Is this intended? It increments i twice. Maybe \u0026poolSizes[i]?",
+      "range": {
+        "startLine": 52,
+        "startChar": 55,
+        "endLine": 52,
+        "endChar": 58
+      },
+      "revId": "3ff9190c67f959b5d01fe500b021216c97acc4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d80a48b8_f13b8888",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.h",
+        "patchSetId": 50
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T16:45:19Z",
+      "side": 1,
+      "message": "I think a comment here indicating usage might be helpful for future readers, i.e. the intent is to create a pool of kMaxNumSets where each set matches the DescTypeAndCount array.",
+      "revId": "3ff9190c67f959b5d01fe500b021216c97acc4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
