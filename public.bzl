@@ -1586,6 +1586,7 @@ BASE_SRCS_ALL = [
     "src/sksl/ir/SkSLMethodReference.h",
     "src/sksl/ir/SkSLModifiers.cpp",
     "src/sksl/ir/SkSLModifiers.h",
+    "src/sksl/ir/SkSLModifiersDeclaration.cpp",
     "src/sksl/ir/SkSLModifiersDeclaration.h",
     "src/sksl/ir/SkSLNop.h",
     "src/sksl/ir/SkSLPoison.h",
