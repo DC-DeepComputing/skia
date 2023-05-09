@@ -55,19 +55,35 @@ static EGLContext create_gles_egl_context(EGLDisplay display,
                                           EGLConfig surfaceConfig,
                                           EGLContext eglShareContext,
                                           EGLint eglContextClientVersion) {
-    const EGLint contextAttribsForOpenGLES[] = {
-        EGL_CONTEXT_CLIENT_VERSION,
-        eglContextClientVersion,
-        EGL_NONE
+
+    std::vector<EGLint> contextAttribs = {
+            EGL_CONTEXT_CLIENT_VERSION, eglContextClientVersion,
     };
-    return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribsForOpenGLES);
+
+    const char* extensions = eglQueryString(display, EGL_EXTENSIONS);
+    if (strstr(extensions, "EGL_EXT_protected_content")) {
+        contextAttribs.push_back(EGL_PROTECTED_CONTENT_EXT);
+        contextAttribs.push_back(EGL_TRUE);
+    }
+
+    contextAttribs.push_back(EGL_NONE);
+
+    SkDebugf("---here 3\n");
+
+    return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribs.data());
 }
 static EGLContext create_gl_egl_context(EGLDisplay display,
                                         EGLConfig surfaceConfig,
                                         EGLContext eglShareContext) {
+    bool isProtectedContent = true;
     const EGLint contextAttribsForOpenGL[] = {
+        isProtectedContent ? EGL_PROTECTED_CONTENT_EXT : EGL_NONE,
+        isProtectedContent ? EGL_TRUE : EGL_NONE,
         EGL_NONE
     };
+
+    SkDebugf("---here 4\n");
+
     return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribsForOpenGL);
 }
 
