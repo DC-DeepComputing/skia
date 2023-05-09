@@ -12,6 +12,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/graphite/BackendTexture.h"
+#include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Caps.h"
@@ -39,7 +40,7 @@ Image::~Image() {}
 
 sk_sp<SkImage> Image::onMakeSubset(Recorder* recorder,
                                    const SkIRect& subset,
-                                   RequiredImageProperties requiredProps) const {
+                                   RequiredProperties requiredProps) const {
     const SkIRect bounds = SkIRect::MakeWH(this->width(), this->height());
 
     // optimization : return self if the subset == our bounds and requirements met
@@ -52,7 +53,7 @@ sk_sp<SkImage> Image::onMakeSubset(Recorder* recorder,
 }
 
 sk_sp<SkImage> Image::onMakeTextureImage(Recorder* recorder,
-                                         RequiredImageProperties requiredProps) const {
+                                         RequiredProperties requiredProps) const {
     if (requiredProps.fMipmapped == Mipmapped::kNo || this->hasMipmaps()) {
         const SkImage* image = this;
         return sk_ref_sp(const_cast<SkImage*>(image));
@@ -64,7 +65,7 @@ sk_sp<SkImage> Image::onMakeTextureImage(Recorder* recorder,
 
 sk_sp<SkImage> Image::copyImage(const SkIRect& subset,
                                 Recorder* recorder,
-                                RequiredImageProperties requiredProps) const {
+                                RequiredProperties requiredProps) const {
     TextureProxyView srcView = this->textureProxyView();
     if (!srcView) {
         return nullptr;
@@ -93,7 +94,7 @@ sk_sp<SkImage> Image::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {
 sk_sp<SkImage> Image::onMakeColorTypeAndColorSpace(SkColorType targetCT,
                                                    sk_sp<SkColorSpace> targetCS,
                                                    Recorder* recorder,
-                                                   RequiredImageProperties requiredProps) const {
+                                                   RequiredProperties requiredProps) const {
     SkAlphaType at = (this->alphaType() == kOpaque_SkAlphaType) ? kPremul_SkAlphaType
                                                                 : this->alphaType();
 
@@ -260,7 +261,7 @@ sk_sp<SkImage> SkImage::MakeGraphitePromiseTexture(
     return sk_make_sp<Image>(view, colorInfo);
 }
 
-sk_sp<SkImage> SkImage::MakeGraphiteFromBackendTexture(Recorder* recorder,
+sk_sp<SkImage> SkImages::AdoptTextureFrom(Recorder* recorder,
                                                        const BackendTexture& backendTex,
                                                        SkColorType ct,
                                                        SkAlphaType at,

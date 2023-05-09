@@ -16,7 +16,7 @@ namespace {
 
 bool valid_client_provided_image(const SkImage* clientProvided,
                                  const SkImage* original,
-                                 SkImage::RequiredImageProperties requiredProps) {
+                                 SkImage::RequiredProperties requiredProps) {
     if (!clientProvided ||
         !as_IB(clientProvided)->isGraphiteBacked() ||
         original->dimensions() != clientProvided->dimensions() ||
@@ -60,9 +60,11 @@ std::pair<sk_sp<SkImage>, SkSamplingOptions> GetGraphiteBacked(Recorder* recorde
         }
     } else {
         auto clientImageProvider = recorder->clientImageProvider();
-        result = clientImageProvider->findOrCreate(recorder, imageIn, { mipmapped });
+        result = clientImageProvider->findOrCreate(recorder, imageIn,
+                                                   { mipmapped == skgpu::Mipmapped::kYes });
 
-        if (!valid_client_provided_image(result.get(), imageIn, { mipmapped })) {
+        if (!valid_client_provided_image(result.get(), imageIn,
+                                         { mipmapped == skgpu::Mipmapped::kYes })) {
             // The client did not fulfill the ImageProvider contract so drop the image.
             result = nullptr;
         }

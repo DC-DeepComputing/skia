@@ -122,15 +122,15 @@ protected:
 
 #if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
-                                      RequiredImageProperties) const final;
+                                      RequiredProperties) const final;
     sk_sp<SkImage> onMakeSubset(skgpu::graphite::Recorder*,
                                 const SkIRect& subset,
-                                RequiredImageProperties) const final;
+                                RequiredProperties) const final;
     using SkImage_Base::onMakeColorTypeAndColorSpace;
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,
                                                 sk_sp<SkColorSpace>,
                                                 skgpu::graphite::Recorder*,
-                                                RequiredImageProperties) const final;
+                                                RequiredProperties) const final;
 #endif
 };
 

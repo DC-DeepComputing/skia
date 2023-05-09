@@ -31,6 +31,9 @@ public:
     // From SkImage.h
     // TODO(egdaniel) This feels wrong. Re-think how this method is used and works.
     bool isValid(GrRecordingContext*) const override { return true; }
+    sk_sp<SkImage> makeSubset(skgpu::graphite::Recorder*,
+                              const SkIRect&,
+                              RequiredProperties) const override;
 
     // From SkImage_Base.h
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kGraphite; }

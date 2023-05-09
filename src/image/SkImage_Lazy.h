@@ -61,19 +61,18 @@ public:
                       CachingHint) const override;
     sk_sp<SkData> onRefEncoded() const override;
     sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect&) const override;
-#if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeSubset(skgpu::graphite::Recorder*,
                                 const SkIRect&,
-                                RequiredImageProperties) const override;
-    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType targetCT,
-                                                sk_sp<SkColorSpace> targetCS,
-                                                skgpu::graphite::Recorder*,
-                                                RequiredImageProperties) const override;
-#endif
+                                RequiredProperties) const override;
+
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kLazy; }
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
                                                 GrDirectContext*) const override;
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace(skgpu::graphite::Recorder*,
+                                                SkColorType targetCT,
+                                                sk_sp<SkColorSpace> targetCS,
+                                                RequiredProperties) const override;
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const final;
 
     void addUniqueIDListener(sk_sp<SkIDChangeListener>) const;
@@ -88,11 +87,6 @@ protected:
     virtual bool readPixelsProxy(GrDirectContext*, const SkPixmap&) const { return false; }
 
 private:
-
-#if defined(SK_GRAPHITE)
-    sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
-                                      RequiredImageProperties) const override;
-#endif
 
     class ScopedGenerator;
 

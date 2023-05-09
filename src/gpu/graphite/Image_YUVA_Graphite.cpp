@@ -13,6 +13,7 @@
 #include "include/core/SkYUVAInfo.h"
 #include "include/core/SkYUVAPixmaps.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/YUVABackendTextures.h"
 #include "src/gpu/RefCntedCallback.h"
@@ -88,9 +89,9 @@ sk_sp<SkImage> SkImage::MakeGraphiteFromYUVABackendTextures(Recorder* recorder,
                                   std::move(imageColorSpace));
 }
 
-sk_sp<SkImage> SkImage::MakeGraphiteFromYUVAPixmaps(Recorder* recorder,
+sk_sp<SkImage> SkImages::TextureFromYUVAPixmaps(Recorder* recorder,
                                                     const SkYUVAPixmaps& pixmaps,
-                                                    RequiredImageProperties required,
+                                                    RequiredProperties required,
                                                     bool limitToMaxTextureSize,
                                                     sk_sp<SkColorSpace> imageColorSpace) {
     if (!recorder) {

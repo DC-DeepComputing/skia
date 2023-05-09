@@ -13,6 +13,7 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "src/core/SkAutoPixmapStorage.h"
@@ -223,7 +224,7 @@ public:
         update_backend_texture(fReporter, fRecorder, fBETexture, kRGBA_8888_SkColorType,
                                fWithMips, kInitialColor);
 
-        fMutatingImg = SkImage::MakeGraphiteFromBackendTexture(fRecorder,
+        fMutatingImg = SkImages::AdoptTextureFrom(fRecorder,
                                                                fBETexture,
                                                                kRGBA_8888_SkColorType,
                                                                kPremul_SkAlphaType,
