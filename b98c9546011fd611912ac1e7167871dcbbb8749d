@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cadef823_b16672e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-09T14:48:58Z",
+      "side": 1,
+      "message": "It looks like IWYU told me to remove \u003ctype_traits\u003e and I believed it.",
+      "revId": "b98c9546011fd611912ac1e7167871dcbbb8749d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
