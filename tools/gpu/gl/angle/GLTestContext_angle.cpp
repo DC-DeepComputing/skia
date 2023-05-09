@@ -304,7 +304,15 @@ ANGLEGLContext::ANGLEGLContext(ANGLEBackend type, ANGLEContextVersion version,
         contextAttribs.push_back(EGL_FALSE);
     }
 
+    bool isProtectedContent = true;
+    if (isProtectedContent) {
+        contextAttribs.push_back(EGL_PROTECTED_CONTENT_EXT);
+        contextAttribs.push_back(EGL_TRUE);
+    }
+
     contextAttribs.push_back(EGL_NONE);
+
+    SkDebugf("---here 2\n");
 
     EGLContext eglShareContext = shareContext ? shareContext->fContext : nullptr;
     fContext = eglCreateContext(fDisplay, surfaceConfig, eglShareContext, contextAttribs.data());

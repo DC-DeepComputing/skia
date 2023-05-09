@@ -281,6 +281,7 @@ GANESH_TESTS = [
     # "ProcessorTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
     # "ProgramsTest.cpp",  # TODO(b/277938020): Linux - Causes SkRefCnt error after all tests finish.
     "PromiseImageTest.cpp",
+    "ProtectedTest.cpp",
     "ProxyConversionTest.cpp",
     "ProxyRefTest.cpp",
     "ProxyTest.cpp",
