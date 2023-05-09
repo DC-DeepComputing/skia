@@ -87,6 +87,8 @@ public:
     void cleanup();
     void assign(const GrGLBackendTextureInfo&, bool thisIsValid);
 
+    bool isProtected() const { return fInfo.isProtected22(); }
+
 private:
     GrGLTextureInfo fInfo;
     GrGLTextureParameters* fParams;
@@ -94,7 +96,7 @@ private:
 
 struct GrGLTextureSpec {
     GrGLTextureSpec() : fTarget(0), fFormat(0) {}
-    GrGLTextureSpec(const GrGLSurfaceInfo& info) : fTarget(info.fTarget), fFormat(info.fFormat) {}
+    GrGLTextureSpec(const GrGLSurfaceInfo& info) : fTarget(info.fTarget1), fFormat(info.fFormat) {}
 
     GrGLenum fTarget;
     GrGLenum fFormat;

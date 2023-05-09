@@ -77,12 +77,12 @@ static sk_sp<SkSurface> create_protected_sksurface(GrDirectContext* dContext,
         GrBackendTexture backendTex = SkSurfaces::GetBackendTexture(
                 surface.get(), SkSurfaces::BackendHandleAccess::kFlushRead);
         REPORTER_ASSERT(reporter, backendTex.isValid());
-        REPORTER_ASSERT(reporter, backendTex.isProtected());
+        REPORTER_ASSERT(reporter, backendTex.isProtectedS());
     } else {
         GrBackendRenderTarget backendRT = SkSurfaces::GetBackendRenderTarget(
                 surface.get(), SkSurfaces::BackendHandleAccess::kFlushRead);
         REPORTER_ASSERT(reporter, backendRT.isValid());
-        REPORTER_ASSERT(reporter, backendRT.isProtected());
+        REPORTER_ASSERT(reporter, backendRT.isProtectedRT());
     }
     return surface;
 }

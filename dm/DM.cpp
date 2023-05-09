@@ -481,11 +481,14 @@ static constexpr bool kMemcpyOK = true;
 static TArray<TaggedSrc,  kMemcpyOK>* gSrcs  = new TArray<TaggedSrc,  kMemcpyOK>;
 static TArray<TaggedSink, kMemcpyOK>* gSinks = new TArray<TaggedSink, kMemcpyOK>;
 
+#if 0
 static bool in_shard() {
     static int N = 0;
     return N++ % FLAGS_shards == FLAGS_shard;
 }
+#endif
 
+#if 0
 static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
     std::unique_ptr<Src> src(inSrc);
     if (in_shard() && FLAGS_src.contains(tag) &&
@@ -496,7 +499,9 @@ static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
         s.options = options;
     }
 }
+#endif
 
+#if 0
 static void push_codec_src(Path path, CodecSrc::Mode mode, CodecSrc::DstColorType dstColorType,
         SkAlphaType dstAlphaType, float scale) {
     if (FLAGS_simpleCodec) {
@@ -689,8 +694,11 @@ static void push_brd_srcs(Path path, bool gray) {
         }
     }
 }
+#endif
+
 #endif // SK_ENABLE_ANDROID_UTILS
 
+#if 0
 static void push_codec_srcs(Path path) {
     sk_sp<SkData> encoded(SkData::MakeFromFileName(path.c_str()));
     if (!encoded) {
@@ -862,6 +870,7 @@ static void push_codec_srcs(Path path) {
 #endif
     }
 }
+#endif
 
 template <typename T>
 void gather_file_srcs(const CommandLineFlags::StringArray& flags,
@@ -886,6 +895,7 @@ void gather_file_srcs(const CommandLineFlags::StringArray& flags,
 }
 
 static bool gather_srcs() {
+#if 0
     for (skiagm::GMFactory f : skiagm::GMRegistry::Range()) {
         push_src("gm", "", new GMSrc(f));
     }
@@ -922,6 +932,7 @@ static bool gather_srcs() {
         push_src("colorImage", "decode_native", new ColorCodecSrc(colorImage, false));
         push_src("colorImage", "decode_to_dst", new ColorCodecSrc(colorImage,  true));
     }
+#endif
 
     return true;
 }
@@ -1468,6 +1479,12 @@ static void gather_tests() {
         return;
     }
     for (const skiatest::Test& test : skiatest::TestRegistry::Range()) {
+        if (!strcmp(test.fName, "Protected_SmokeTest")) {
+            gGaneshTests->push_back(test);
+            break;
+        }
+
+#if 0
         if (!in_shard()) {
             continue;
         }
@@ -1481,7 +1498,9 @@ static void gather_tests() {
         } else if (test.fTestType == TestType::kCPU && FLAGS_cpu) {
             gCPUTests->push_back(test);
         }
+#endif
     }
+
 }
 
 struct DMReporter : public skiatest::Reporter {
