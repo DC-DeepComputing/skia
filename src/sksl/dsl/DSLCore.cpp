@@ -118,11 +118,6 @@ public:
                 std::move(argArray)));
     }
 
-    static void Declare(const DSLModifiers& modifiers) {
-        ThreadContext::ProgramElements().push_back(std::make_unique<SkSL::ModifiersDeclaration>(
-                ThreadContext::Modifiers(modifiers.fModifiers)));
-    }
-
     static DSLStatement Declare(DSLVar& var, Position pos) {
         return DSLWriter::Declaration(var);
     }
@@ -230,17 +225,6 @@ std::unique_ptr<SkSL::Program> ReleaseProgram(std::unique_ptr<std::string> sourc
 
 void AddExtension(std::string_view name, Position pos) {
     ThreadContext::ProgramElements().push_back(std::make_unique<SkSL::Extension>(pos, name));
-}
-
-void Declare(const DSLModifiers& modifiers, Position pos) {
-    SkSL::ProgramKind kind = ThreadContext::GetProgramConfig()->fKind;
-    if (!ProgramConfig::IsFragment(kind) &&
-        !ProgramConfig::IsVertex(kind)) {
-        ThreadContext::ReportError("layout qualifiers are not allowed in this kind of program",
-                                   pos);
-        return;
-    }
-    DSLCore::Declare(modifiers);
 }
 
 // Logically, we'd want the variable's initial value to appear on here in Declare, since that
