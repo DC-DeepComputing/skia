@@ -101,6 +101,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "187e520c_52ebba66",
+        "filename": "include/private/chromium/SkChromeRemoteGlyphCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-05-09T12:32:58Z",
+      "side": 1,
+      "message": "It is the case that the GPU process is using the global CPU glyph cache. Independent glyph caches are really only used in testing.",
+      "parentUuid": "e3dd4616_691e1a41",
+      "range": {
+        "startLine": 149,
+        "startChar": 4,
+        "endLine": 150,
+        "endChar": 37
+      },
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d1ece8d_e6fa14fb",
         "filename": "src/core/SkStrikeCache.cpp",
         "patchSetId": 1
