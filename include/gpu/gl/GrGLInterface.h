@@ -85,6 +85,8 @@ public:
 
     bool hasExtension(const char ext[]) const { return fExtensions.has(ext); }
 
+    void print() const { return fExtensions.print(); }
+
     /**
      * The function pointers are in a struct so that we can have a compiler generated assignment
      * operator.

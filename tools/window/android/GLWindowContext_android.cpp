@@ -52,6 +52,8 @@ GLWindowContext_android::~GLWindowContext_android() {
     this->destroyContext();
 }
 
+#define EGL_PROTECTED_CONTENT_EXT 0x32C0
+
 sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
     fWidth = ANativeWindow_getWidth(fNativeWindow);
     fHeight = ANativeWindow_getHeight(fNativeWindow);
@@ -84,10 +86,16 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
     SkAssertResult(eglChooseConfig(fDisplay, configAttribs, &surfaceConfig, 1, &numConfigs));
     SkASSERT(numConfigs > 0);
 
+    bool isProtectedContent = true;
     static const EGLint kEGLContextAttribsForOpenGLES[] = {
         EGL_CONTEXT_CLIENT_VERSION, 2,
+        isProtectedContent ? EGL_PROTECTED_CONTENT_EXT : EGL_NONE,
+        isProtectedContent ? EGL_TRUE : EGL_NONE,
         EGL_NONE
     };
+
+    SkDebugf("---here 1\n");
+
     fEGLContext = eglCreateContext(
             fDisplay, surfaceConfig, nullptr, kEGLContextAttribsForOpenGLES);
     SkASSERT(EGL_NO_CONTEXT != fEGLContext);
