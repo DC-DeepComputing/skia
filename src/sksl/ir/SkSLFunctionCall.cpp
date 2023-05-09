@@ -413,8 +413,13 @@ double evaluate_inversesqrt(double a, double, double) {
     return sk_ieee_double_divide(1.0, std::sqrt(a));
 }
 
+double evaluate_add(double a, double b, double)        { return a + b; }
+double evaluate_sub(double a, double b, double)        { return a - b; }
+double evaluate_mul(double a, double b, double)        { return a * b; }
+double evaluate_div(double a, double b, double)        { return a / b; }
 double evaluate_abs(double a, double, double)          { return std::abs(a); }
 double evaluate_sign(double a, double, double)         { return (a > 0) - (a < 0); }
+double evaluate_opposite_sign(double a,double, double) { return (a < 0) - (a > 0); }
 double evaluate_floor(double a, double, double)        { return std::floor(a); }
 double evaluate_ceil(double a, double, double)         { return std::ceil(a); }
 double evaluate_fract(double a, double, double)        { return a - std::floor(a); }
@@ -450,6 +455,62 @@ double evaluate_floatBitsToInt(double a, double, double)  { return pun_value<flo
 double evaluate_floatBitsToUint(double a, double, double) { return pun_value<float, uint32_t>(a); }
 double evaluate_intBitsToFloat(double a, double, double)  { return pun_value<int32_t,  float>(a); }
 double evaluate_uintBitsToFloat(double a, double, double) { return pun_value<uint32_t, float>(a); }
+
+std::unique_ptr<Expression> evaluate_length(const IntrinsicArguments& arguments) {
+    return coalesce_vector<float>(arguments, /*startingState=*/0,
+                                  arguments[0]->type().componentType(),
+                                  coalesce_length,
+                                  finalize_length);
+}
+
+std::unique_ptr<Expression> evaluate_distance(const IntrinsicArguments& arguments) {
+    return coalesce_pairwise_vectors<float>(arguments, /*startingState=*/0,
+                                            arguments[0]->type().componentType(),
+                                            coalesce_distance,
+                                            finalize_distance);
+}
+std::unique_ptr<Expression> evaluate_dot(const IntrinsicArguments& arguments) {
+    return coalesce_pairwise_vectors<float>(arguments, /*startingState=*/0,
+                                            arguments[0]->type().componentType(),
+                                            coalesce_dot,
+                                            /*finalize=*/nullptr);
+}
+
+std::unique_ptr<Expression> evaluate_sign(const Context& context,
+                                          const IntrinsicArguments& arguments) {
+    return evaluate_intrinsic_numeric(context, arguments, arguments[0]->type(),
+                                      evaluate_sign);
+}
+
+std::unique_ptr<Expression> evaluate_opposite_sign(const Context& context,
+                                                   const IntrinsicArguments& arguments) {
+    return evaluate_intrinsic_numeric(context, arguments, arguments[0]->type(),
+                                      evaluate_opposite_sign);
+}
+
+std::unique_ptr<Expression> evaluate_add(const Context& context,
+                                         const IntrinsicArguments& arguments) {
+    return evaluate_pairwise_intrinsic(context, arguments, arguments[0]->type(),
+                                       evaluate_add);
+}
+
+std::unique_ptr<Expression> evaluate_sub(const Context& context,
+                                         const IntrinsicArguments& arguments) {
+    return evaluate_pairwise_intrinsic(context, arguments, arguments[0]->type(),
+                                       evaluate_sub);
+}
+
+std::unique_ptr<Expression> evaluate_mul(const Context& context,
+                                         const IntrinsicArguments& arguments) {
+    return evaluate_pairwise_intrinsic(context, arguments, arguments[0]->type(),
+                                       evaluate_mul);
+}
+
+std::unique_ptr<Expression> evaluate_div(const Context& context,
+                                         const IntrinsicArguments& arguments) {
+    return evaluate_pairwise_intrinsic(context, arguments, arguments[0]->type(),
+                                       evaluate_div);
+}
 
 }  // namespace
 }  // namespace Intrinsics
@@ -555,8 +616,8 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             return evaluate_intrinsic_numeric(context, arguments, returnType,
                                               Intrinsics::evaluate_abs);
         case k_sign_IntrinsicKind:
-            return evaluate_intrinsic_numeric(context, arguments, returnType,
-                                              Intrinsics::evaluate_sign);
+            return Intrinsics::evaluate_sign(context, arguments);
+
         case k_floor_IntrinsicKind:
             return evaluate_intrinsic<float>(context, arguments, returnType,
                                              Intrinsics::evaluate_floor);
@@ -679,17 +740,14 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
         }
         // 8.5 : Geometric Functions
         case k_length_IntrinsicKind:
-            return coalesce_vector<float>(arguments, /*startingState=*/0, returnType,
-                                          Intrinsics::coalesce_length,
-                                          Intrinsics::finalize_length);
+            return Intrinsics::evaluate_length(arguments);
+
         case k_distance_IntrinsicKind:
-            return coalesce_pairwise_vectors<float>(arguments, /*startingState=*/0, returnType,
-                                                    Intrinsics::coalesce_distance,
-                                                    Intrinsics::finalize_distance);
+            return Intrinsics::evaluate_distance(arguments);
+
         case k_dot_IntrinsicKind:
-            return coalesce_pairwise_vectors<float>(arguments, /*startingState=*/0, returnType,
-                                                    Intrinsics::coalesce_dot,
-                                                    /*finalize=*/nullptr);
+            return Intrinsics::evaluate_dot(arguments);
+
         case k_cross_IntrinsicKind: {
             auto X = [&](int n) -> float { return Get(0, n); };
             auto Y = [&](int n) -> float { return Get(1, n); };
@@ -701,39 +759,87 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             return assemble_compound(context, arguments[0]->fPosition, returnType, vec);
         }
         case k_normalize_IntrinsicKind: {
-            auto Vec  = [&] { return DSLExpression{arguments[0]->clone()}; };
-            return (Vec() / Length(Vec())).release();
+            // normalize(v): v / length(v)
+            std::unique_ptr<Expression> length = Intrinsics::evaluate_length(arguments);
+
+            const IntrinsicArguments divArgs = {arguments[0], length.get(), nullptr};
+            return Intrinsics::evaluate_div(context, divArgs);
         }
         case k_faceforward_IntrinsicKind: {
-            auto N    = [&] { return DSLExpression{arguments[0]->clone()}; };
-            auto I    = [&] { return DSLExpression{arguments[1]->clone()}; };
-            auto NRef = [&] { return DSLExpression{arguments[2]->clone()}; };
-            return (N() * Select(Dot(NRef(), I()) < 0, 1, -1)).release();
+            const Expression* N    = arguments[0];
+            const Expression* I    = arguments[1];
+            const Expression* NRef = arguments[2];
+
+            // faceforward(N,I,NRef): N * -sign(dot(I, NRef))
+            const IntrinsicArguments dotArgs = {I, NRef, nullptr};
+            std::unique_ptr<Expression> dotExpr = Intrinsics::evaluate_dot(dotArgs);
+
+            const IntrinsicArguments signArgs = {dotExpr.get(), nullptr, nullptr};
+            std::unique_ptr<Expression> signExpr = Intrinsics::evaluate_opposite_sign(context,
+                                                                                      signArgs);
+            const IntrinsicArguments mulArgs = {N, signExpr.get(), nullptr};
+            return Intrinsics::evaluate_mul(context, mulArgs);
         }
         case k_reflect_IntrinsicKind: {
-            auto I    = [&] { return DSLExpression{arguments[0]->clone()}; };
-            auto N    = [&] { return DSLExpression{arguments[1]->clone()}; };
-            return (I() - 2.0 * Dot(N(), I()) * N()).release();
+            const Expression* I = arguments[0];
+            const Expression* N = arguments[1];
+
+            // reflect(I,N): temp = (N * dot(N, I)); reflect = I - (temp + temp)
+            const IntrinsicArguments dotArgs = {N, I, nullptr};
+            std::unique_ptr<Expression> dotExpr = Intrinsics::evaluate_dot(dotArgs);
+
+            const IntrinsicArguments mulArgs = {N, dotExpr.get(), nullptr};
+            std::unique_ptr<Expression> mulExpr = Intrinsics::evaluate_mul(context, mulArgs);
+
+            const IntrinsicArguments addArgs = {mulExpr.get(), mulExpr.get(), nullptr};
+            std::unique_ptr<Expression> addExpr = Intrinsics::evaluate_add(context, addArgs);
+
+            const IntrinsicArguments subArgs = {I, addExpr.get(), nullptr};
+            return Intrinsics::evaluate_sub(context, subArgs);
         }
         case k_refract_IntrinsicKind: {
-            // Refract uses its arguments out-of-order in such a way that we end up trying to create
-            // an invalid Position range, so we rewrite the arguments' positions to avoid that here.
-            auto clone = [&](const Expression* expr) {
-                return DSLExpression(expr->clone(pos));
-            };
-            auto I    = [&] { return clone(arguments[0]); };
-            auto N    = [&] { return clone(arguments[1]); };
-            auto Eta  = [&] { return clone(arguments[2]); };
+            const Expression* I    = arguments[0];
+            const Expression* N    = arguments[1];
+            const Expression* Eta  = arguments[2];
 
-            std::unique_ptr<Expression> k =
-                    (1 - Pow(Eta(), 2) * (1 - Pow(Dot(N(), I()), 2))).release();
-            if (!k->is<Literal>()) {
+            // DotNI = Dot(N, I)
+            const IntrinsicArguments DotNIArgs = {N, I, nullptr};
+            std::unique_ptr<Expression> DotNIExpr = Intrinsics::evaluate_dot(DotNIArgs);
+
+            // DotNI2 = DotNI * DotNI
+            const IntrinsicArguments DotNI2Args = {DotNIExpr.get(), DotNIExpr.get(), nullptr};
+            std::unique_ptr<Expression> DotNI2Expr = Intrinsics::evaluate_mul(context, DotNI2Args);
+
+            // OneMinusDotNI2 = 1 - DotNI2
+            Literal oneLiteral{Position{}, 1.0, &DotNI2Expr->type()};
+            const IntrinsicArguments OneMinusDotNI2Args = {&oneLiteral, DotNI2Expr.get(), nullptr};
+            std::unique_ptr<Expression> OneMinusDotNI2Expr =
+                    Intrinsics::evaluate_sub(context, OneMinusDotNI2Args);
+
+            // Eta2 = Eta * Eta
+            const IntrinsicArguments Eta2Args = {Eta, Eta, nullptr};
+            std::unique_ptr<Expression> Eta2Expr = Intrinsics::evaluate_mul(context, Eta2Args);
+
+            // Eta2xDot = Eta2 * OneMinusDotNI2
+            const IntrinsicArguments Eta2xDotArgs = {Eta2Expr.get(), OneMinusDotNI2Expr.get(),
+                                                     nullptr};
+            std::unique_ptr<Expression> Eta2xDotExpr = Intrinsics::evaluate_mul(context,
+                                                                                Eta2xDotArgs);
+            // K = 1 - Eta2xDot
+            const IntrinsicArguments KArgs = {&oneLiteral, Eta2xDotExpr.get(), nullptr};
+            std::unique_ptr<Expression> KExpr = Intrinsics::evaluate_sub(context, KArgs);
+
+            // If we hit a nan/inf, leave the expression alone.
+            if (!KExpr->is<Literal>()) {
                 return nullptr;
             }
-            double kValue = k->as<Literal>().value();
-            return ((kValue < 0) ?
-                       (0 * I()) :
-                       (Eta() * I() - (Eta() * Dot(N(), I()) + std::sqrt(kValue)) * N())).release();
+            double kValue = KExpr->as<Literal>().value();
+            return ((kValue < 0) ? (0 * DSLExpression(I->clone()))
+                                 : (DSLExpression(Eta->clone()) * DSLExpression(I->clone()) -
+                                    (DSLExpression(Eta->clone()) * DSLExpression(DotNIExpr->clone()) +
+                                     std::sqrt(kValue)) *
+                                            DSLExpression(N->clone())))
+                    .release();
         }
 
         // 8.6 : Matrix Functions
