@@ -23,6 +23,7 @@
 #include <cstddef>
 #include <functional>
 #include <memory>
+#include <string>
 #include <tuple>
 #include <vector>
 
@@ -40,7 +41,6 @@ namespace SkCodecAnimation {
 enum class Blend;
 enum class DisposalMethod;
 }
-
 
 namespace DM {
 class CodecSrc;
@@ -1012,4 +1012,27 @@ private:
     friend class SkIcoCodec;
     friend class SkAndroidCodec; // for fEncodedInfo
 };
+
+namespace SkCodecs {
+
+using DecodeContext = void*;
+using IsFormatCallback = bool (*)(const void* data, size_t len);
+using MakeFromStreamCallback = std::unique_ptr<SkCodec> (*)(std::unique_ptr<SkStream>,
+                                                            SkCodec::Result*,
+                                                            DecodeContext);
+
+struct Decoder {
+    // By convention, we use all lowercase letters and go with the primary filename extension.
+    // For example "png", "jpg", "ico", "webp", etc
+    std::string id;
+    IsFormatCallback isFormat;
+    MakeFromStreamCallback makeFromStream;
+};
+
+// Add the decoder to the end of a linked list of decoders, which will be used to identify calls to
+// SkCodec::MakeFromStream. If a decoder with the same id already exists, this new decoder
+// will replace the existing one (in the same position).
+void Register(Decoder d);
+}
+
 #endif // SkCodec_DEFINED

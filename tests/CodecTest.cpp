@@ -9,6 +9,7 @@
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
 #include "include/codec/SkPngChunkReader.h"
+#include "include/codec/SkRawDecoder.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -59,6 +60,7 @@
 #include <cstring>
 #include <initializer_list>
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -589,6 +591,26 @@ DEF_TEST(Codec_raw, r) {
     check(r, "images/sample_1mp.dng", SkISize::Make(600, 338), false, false, false);
     check(r, "images/sample_1mp_rotated.dng", SkISize::Make(600, 338), false, false, false);
     check(r, "images/dng_with_preview.dng", SkISize::Make(600, 338), true, false, false);
+}
+
+DEF_TEST(Codec_raw_images_detected, r) {
+    std::string raw_files[3] = {"sample_1mp.dng", "sample_1mp_rotated.dng", "dng_with_preview.dng"};
+    for (int i = 0; i < 3; i++) {
+        std::string file = raw_files[i];
+        skiatest::ReporterContext subtest(r, "RAW: " + file);
+        sk_sp<SkData> data = GetResourceAsData("images/" + file);
+        size_t bytesToSniff = std::min(SkCodec::MinBufferedBytesNeeded(), data->size());
+        REPORTER_ASSERT(r, SkRawDecoder::IsRaw(data->data(), bytesToSniff));
+    }
+
+    std::string non_raw[2] = {"plane.png", "color_wheel.jpg"};
+    for (int i = 0; i < 2; i++) {
+        std::string file = non_raw[i];
+        skiatest::ReporterContext subtest(r, "non-RAW:" + file);
+        sk_sp<SkData> data = GetResourceAsData("images/" + file);
+        size_t bytesToSniff = std::min(SkCodec::MinBufferedBytesNeeded(), data->size());
+        REPORTER_ASSERT(r, !SkRawDecoder::IsRaw(data->data(), bytesToSniff));
+    }
 }
 #endif
 
