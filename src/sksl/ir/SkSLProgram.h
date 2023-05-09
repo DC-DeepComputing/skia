@@ -160,6 +160,7 @@ struct Program {
     // Use elements() to iterate over the combined set of owned + shared elements.
     std::vector<const ProgramElement*> fSharedElements;
     Inputs fInputs;
+    bool fHasSecondaryFragColor = false;
 };
 
 }  // namespace SkSL
