@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a8213c2_3a3c64cd",
+        "filename": "src/gpu/BlendFormula.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-09T13:48:47Z",
+      "side": 1,
+      "message": "LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "8700ecab743875f5fdb0ff3ef577ca62c90485af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a6be20a_a813b40a",
+        "filename": "src/gpu/BlendFormula.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-09T13:48:47Z",
+      "side": 1,
+      "message": "LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "8700ecab743875f5fdb0ff3ef577ca62c90485af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
