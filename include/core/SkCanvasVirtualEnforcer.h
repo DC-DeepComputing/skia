@@ -34,11 +34,42 @@ protected:
     void onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
                         const SkPaint& paint) override = 0;
 
+//    void onDrawGlyphRunList(const sktext::GlyphRunList& glyphRunList,
+//                            const SkPaint& paint) override = 0;
+
     void onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
                      const SkPoint texCoords[4], SkBlendMode mode,
                      const SkPaint& paint) override = 0;
     void onDrawPoints(SkCanvas::PointMode mode, size_t count, const SkPoint pts[],
                       const SkPaint& paint) override = 0;
+
+    void onDrawImage2(const SkImage*, SkScalar dx, SkScalar dy, const SkSamplingOptions&,
+                      const SkPaint*) override = 0;
+    void onDrawImageRect2(const SkImage*, const SkRect& src, const SkRect& dst,
+                          const SkSamplingOptions&, const SkPaint*,
+                          SkCanvas::SrcRectConstraint) override = 0;
+    void onDrawImageLattice2(const SkImage*, const SkCanvas::Lattice&, const SkRect& dst,
+                             SkFilterMode, const SkPaint*) override = 0;
+    void onDrawAtlas2(const SkImage*, const SkRSXform[], const SkRect src[],
+                      const SkColor[], int count, SkBlendMode, const SkSamplingOptions&,
+                      const SkRect* cull, const SkPaint*) override = 0;
+    void onDrawEdgeAAImageSet2(const SkCanvas::ImageSetEntry imageSet[], int count,
+                               const SkPoint dstClips[], const SkMatrix preViewMatrices[],
+                               const SkSamplingOptions&, const SkPaint*,
+                               SkCanvas::SrcRectConstraint) override = 0;
+
+    void onDrawVerticesObject(const SkVertices* vertices, SkBlendMode mode,
+                              const SkPaint& paint) override = 0;
+#ifdef SK_ENABLE_SKSL
+//    void onDrawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override = 0;
+#endif
+
+    void onDrawAnnotation(const SkRect& rect, const char key[], SkData* value) override = 0;
+    void onDrawShadowRec(const SkPath&, const SkDrawShadowRec&) override = 0;
+
+    void onDrawDrawable(SkDrawable* drawable, const SkMatrix* matrix) override = 0;
+    void onDrawPicture(const SkPicture* picture, const SkMatrix* matrix,
+                       const SkPaint* paint) override = 0;
 
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
     // This is under active development for Chrome and not used in Android. Hold off on adding
@@ -49,13 +80,6 @@ protected:
     void onDrawEdgeAAQuad(const SkRect& rect, const SkPoint clip[4],
             SkCanvas::QuadAAFlags aaFlags, const SkColor4f& color, SkBlendMode mode) override = 0;
 #endif
-
-    void onDrawAnnotation(const SkRect& rect, const char key[], SkData* value) override = 0;
-    void onDrawShadowRec(const SkPath&, const SkDrawShadowRec&) override = 0;
-
-    void onDrawDrawable(SkDrawable* drawable, const SkMatrix* matrix) override = 0;
-    void onDrawPicture(const SkPicture* picture, const SkMatrix* matrix,
-                       const SkPaint* paint) override = 0;
 };
 
 #endif
