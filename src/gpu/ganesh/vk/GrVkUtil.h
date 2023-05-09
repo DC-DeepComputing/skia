@@ -104,7 +104,7 @@ bool GrCompileVkShaderModule(GrVkGpu* gpu,
                              VkPipelineShaderStageCreateInfo* stageInfo,
                              const SkSL::ProgramSettings& settings,
                              std::string* outSPIRV,
-                             SkSL::Program::Inputs* outInputs);
+                             SkSL::Program::InputOutput* outInputs);
 
 bool GrInstallVkShaderModule(GrVkGpu* gpu,
                              const std::string& spirv,

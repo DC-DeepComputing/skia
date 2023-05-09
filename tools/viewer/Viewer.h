@@ -271,9 +271,9 @@ private:
         SkString            fKeyString;
         SkString            fKeyDescription;
 
-        SkFourByteTag         fShaderType;
-        std::string           fShader[kGrShaderTypeCount];
-        SkSL::Program::Inputs fInputs[kGrShaderTypeCount];
+        SkFourByteTag              fShaderType;
+        std::string                fShader[kGrShaderTypeCount];
+        SkSL::Program::InputOutput fInputs[kGrShaderTypeCount];
     };
 
     sk_gpu_test::MemoryCache fPersistentCache;

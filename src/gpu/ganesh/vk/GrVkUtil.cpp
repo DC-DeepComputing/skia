@@ -64,7 +64,7 @@ bool GrCompileVkShaderModule(GrVkGpu* gpu,
                              VkPipelineShaderStageCreateInfo* stageInfo,
                              const SkSL::ProgramSettings& settings,
                              std::string* outSPIRV,
-                             SkSL::Program::Inputs* outInputs) {
+                             SkSL::Program::InputOutput* outInputs) {
     TRACE_EVENT0("skia.shaders", "CompileVkShaderModule");
     auto errorHandler = gpu->getContext()->priv().getShaderErrorHandler();
     std::unique_ptr<SkSL::Program> program = gpu->shaderCompiler()->convertProgram(
@@ -74,7 +74,7 @@ bool GrCompileVkShaderModule(GrVkGpu* gpu,
                                    gpu->shaderCompiler()->errorText().c_str());
         return false;
     }
-    *outInputs = program->fInputs;
+    *outInputs = program->fInputOutput;
     if (!gpu->shaderCompiler()->toSPIRV(*program, outSPIRV)) {
         errorHandler->compileError(shaderString.c_str(),
                                    gpu->shaderCompiler()->errorText().c_str());

@@ -69,7 +69,7 @@ static constexpr SkFourByteTag kMSL_Tag = SkSetFourByteTag('M', 'S', 'L', ' ');
 static constexpr SkFourByteTag kSKSL_Tag = SkSetFourByteTag('S', 'K', 'S', 'L');
 
 void GrMtlPipelineStateBuilder::storeShadersInCache(const std::string shaders[],
-                                                    const SkSL::Program::Inputs inputs[],
+                                                    const SkSL::Program::InputOutput inputs[],
                                                     SkSL::ProgramSettings* settings,
                                                     sk_sp<SkData> pipelineData,
                                                     bool isSkSL) {
@@ -87,7 +87,8 @@ void GrMtlPipelineStateBuilder::storeShadersInCache(const std::string shaders[],
 }
 
 id<MTLLibrary> GrMtlPipelineStateBuilder::compileMtlShaderLibrary(
-        const std::string& shader, SkSL::Program::Inputs inputs,
+        const std::string& shader,
+        SkSL::Program::InputOutput inputs,
         GrContextOptions::ShaderErrorHandler* errorHandler) {
     id<MTLLibrary> shaderLibrary = GrCompileMtlShaderLibrary(fGpu, shader, errorHandler);
     if (shaderLibrary != nil && inputs.fUseFlipRTUniform) {
@@ -554,7 +555,7 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
 
         auto errorHandler = fGpu->getContext()->priv().getShaderErrorHandler();
         std::string msl[kGrShaderTypeCount];
-        SkSL::Program::Inputs inputs[kGrShaderTypeCount];
+        SkSL::Program::InputOutput inputs[kGrShaderTypeCount];
 
         // Unpack any stored shaders from the persistent cache
         if (cached) {
@@ -742,7 +743,7 @@ bool GrMtlPipelineStateBuilder::PrecompileShaders(GrMtlGpu* gpu, const SkData& c
     meta.fSettings = &settings;
 
     std::string shaders[kGrShaderTypeCount];
-    SkSL::Program::Inputs inputs[kGrShaderTypeCount];
+    SkSL::Program::InputOutput inputs[kGrShaderTypeCount];
     if (!GrPersistentCacheUtils::UnpackCachedShaders(&reader, shaders, inputs, kGrShaderTypeCount,
                                                      &meta)) {
         return false;

@@ -102,7 +102,7 @@ bool SkSLToSPIRV(SkSL::Compiler* compiler,
                  SkSL::ProgramKind programKind,
                  const SkSL::ProgramSettings& settings,
                  std::string* spirv,
-                 SkSL::Program::Inputs* outInputs,
+                 SkSL::Program::InputOutput* outInputs,
                  ShaderErrorHandler* errorHandler) {
 #ifdef SK_DEBUG
     std::string src = SkShaderUtils::PrettyPrint(sksl);
@@ -123,7 +123,7 @@ bool SkSLToSPIRV(SkSL::Compiler* compiler,
         SkShaderUtils::PrintLineByLine(SkShaderUtils::PrettyPrint(sksl));
     }
 
-    *outInputs = program->fInputs;
+    *outInputs = program->fInputOutput;
     return true;
 }
 

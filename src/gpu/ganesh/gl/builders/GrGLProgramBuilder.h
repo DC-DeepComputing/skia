@@ -26,12 +26,11 @@ struct GrShaderCaps;
 
 struct GrGLPrecompiledProgram {
     GrGLPrecompiledProgram(GrGLuint programID = 0,
-                           SkSL::Program::Inputs inputs = SkSL::Program::Inputs())
-        : fProgramID(programID)
-        , fInputs(inputs) {}
+                           SkSL::Program::InputOutput inputs = SkSL::Program::InputOutput())
+            : fProgramID(programID), fInputOutput(inputs) {}
 
     GrGLuint fProgramID;
-    SkSL::Program::Inputs fInputs;
+    SkSL::Program::InputOutput fInputOutput;
 };
 
 class GrGLProgramBuilder : public GrGLSLProgramBuilder {
@@ -61,7 +60,7 @@ public:
 private:
     GrGLProgramBuilder(GrGLGpu*, const GrProgramDesc&, const GrProgramInfo&);
 
-    void addInputVars(const SkSL::Program::Inputs& inputs);
+    void addInputVars(const SkSL::Program::InputOutput& inputs);
     bool compileAndAttachShaders(const std::string& glsl,
                                  GrGLuint programId,
                                  GrGLenum type,
@@ -71,8 +70,10 @@ private:
     void computeCountsAndStrides(GrGLuint programID,
                                  const GrGeometryProcessor&,
                                  bool bindAttribLocations);
-    void storeShaderInCache(const SkSL::Program::Inputs& inputs, GrGLuint programID,
-                            const std::string shaders[], bool isSkSL,
+    void storeShaderInCache(const SkSL::Program::InputOutput& inputs,
+                            GrGLuint programID,
+                            const std::string shaders[],
+                            bool isSkSL,
                             SkSL::ProgramSettings* settings);
     sk_sp<GrGLProgram> finalize(const GrGLPrecompiledProgram*);
     void bindProgramResourceLocations(GrGLuint programID);
@@ -96,7 +97,7 @@ private:
     size_t fInstanceStride;
 
     // shader pulled from cache. Data is organized as:
-    // SkSL::Program::Inputs inputs
+    // SkSL::Program::InputOutput inputs
     // int binaryFormat
     // (all remaining bytes) char[] binary
     sk_sp<SkData> fCached;

@@ -105,7 +105,7 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
     std::string vsMSL, fsMSL;
-    SkSL::Program::Inputs vsInputs, fsInputs;
+    SkSL::Program::InputOutput vsInputs, fsInputs;
     SkSL::ProgramSettings settings;
 
     settings.fForceNoRTFlip = true;
@@ -186,7 +186,7 @@ sk_sp<ComputePipeline> MtlResourceProvider::createComputePipeline(
         entryPointName = std::move(nativeShader.fEntryPoint);
     } else {
         std::string msl;
-        SkSL::Program::Inputs inputs;
+        SkSL::Program::InputOutput inputs;
         SkSL::ProgramSettings settings;
 
         auto skslCompiler = this->skslCompiler();
