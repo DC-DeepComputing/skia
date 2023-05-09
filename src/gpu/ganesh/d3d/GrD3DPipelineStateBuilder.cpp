@@ -115,7 +115,7 @@ static gr_cp<ID3DBlob> GrCompileHLSLShader(GrD3DGpu* gpu,
 bool GrD3DPipelineStateBuilder::loadHLSLFromCache(SkReadBuffer* reader, gr_cp<ID3DBlob> shaders[]) {
 
     std::string hlsl[kGrShaderTypeCount];
-    SkSL::Program::Inputs inputs[kGrShaderTypeCount];
+    SkSL::Program::InputOutput inputs[kGrShaderTypeCount];
 
     if (!GrPersistentCacheUtils::UnpackCachedShaders(reader, hlsl, inputs, kGrShaderTypeCount)) {
         return false;
@@ -133,12 +133,11 @@ bool GrD3DPipelineStateBuilder::loadHLSLFromCache(SkReadBuffer* reader, gr_cp<ID
            compile(SkSL::ProgramKind::kFragment, kFragment_GrShaderType);
 }
 
-gr_cp<ID3DBlob> GrD3DPipelineStateBuilder::compileD3DProgram(
-        SkSL::ProgramKind kind,
-        const std::string& sksl,
-        const SkSL::ProgramSettings& settings,
-        SkSL::Program::Inputs* outInputs,
-        std::string* outHLSL) {
+gr_cp<ID3DBlob> GrD3DPipelineStateBuilder::compileD3DProgram(SkSL::ProgramKind kind,
+                                                             const std::string& sksl,
+                                                             const SkSL::ProgramSettings& settings,
+                                                             SkSL::Program::InputOutput* outInputs,
+                                                             std::string* outHLSL) {
 #ifdef SK_DEBUG
     std::string src = SkShaderUtils::PrettyPrint(sksl);
 #else
@@ -153,7 +152,7 @@ gr_cp<ID3DBlob> GrD3DPipelineStateBuilder::compileD3DProgram(
                                    fGpu->shaderCompiler()->errorText().c_str());
         return gr_cp<ID3DBlob>();
     }
-    *outInputs = program->fInputs;
+    *outInputs = program->fInputOutput;
 
     if (gPrintSKSL || gPrintHLSL) {
         SkShaderUtils::PrintShaderBanner(kind);
@@ -167,7 +166,7 @@ gr_cp<ID3DBlob> GrD3DPipelineStateBuilder::compileD3DProgram(
         }
     }
 
-    if (program->fInputs.fUseFlipRTUniform) {
+    if (program->fInputOutput.fUseFlipRTUniform) {
         this->addRTFlipUniform(SKSL_RTFLIP_NAME);
     }
 
@@ -583,7 +582,7 @@ std::unique_ptr<GrD3DPipelineState> GrD3DPipelineStateBuilder::finalize() {
     if (kHLSL_Tag == shaderType && this->loadHLSLFromCache(&reader, shaders)) {
         // We successfully loaded and compiled HLSL
     } else {
-        SkSL::Program::Inputs inputs[kGrShaderTypeCount];
+        SkSL::Program::InputOutput inputs[kGrShaderTypeCount];
         std::string* sksl[kGrShaderTypeCount] = {
             &fVS.fCompilerString,
             &fFS.fCompilerString,

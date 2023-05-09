@@ -266,7 +266,7 @@ sk_sp<GrDawnProgram> GrDawnProgramBuilder::Build(GrDawnGpu* gpu,
 
     builder.finalizeShaders();
 
-    SkSL::Program::Inputs vertInputs, fragInputs;
+    SkSL::Program::InputOutput vertInputs, fragInputs;
     bool flipY = programInfo.origin() != kTopLeft_GrSurfaceOrigin;
     auto vsModule = builder.createShaderModule(builder.fVS, SkSL::ProgramKind::kVertex, flipY,
                                                &vertInputs);
@@ -422,7 +422,7 @@ GrDawnProgramBuilder::GrDawnProgramBuilder(GrDawnGpu* gpu,
 wgpu::ShaderModule GrDawnProgramBuilder::createShaderModule(const GrGLSLShaderBuilder& builder,
                                                             SkSL::ProgramKind kind,
                                                             bool flipY,
-                                                            SkSL::Program::Inputs* inputs) {
+                                                            SkSL::Program::InputOutput* inputs) {
     wgpu::Device device = fGpu->device();
     SkString source(builder.fCompilerString.c_str());
 

@@ -220,7 +220,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
                                                        const RenderPassDesc& renderPassDesc) {
     const auto& device = sharedContext->device();
 
-    SkSL::Program::Inputs vsInputs, fsInputs;
+    SkSL::Program::InputOutput vsInputs, fsInputs;
     SkSL::ProgramSettings settings;
 
     settings.fForceNoRTFlip = true;

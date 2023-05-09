@@ -17,22 +17,22 @@ namespace GrPersistentCacheUtils {
 static constexpr int kCurrentVersion = 11;
 
 int GetCurrentVersion() {
-    // The persistent cache stores a copy of the SkSL::Program::Inputs struct. If you alter the
-    // Program::Inputs struct in any way, you must increment kCurrentVersion to invalidate the
-    // outdated persistent cache files. The KnownSkSLProgramInputs struct must also be updated to
-    // match the new contents of Program::Inputs.
-    struct KnownSkSLProgramInputs {
+    // The persistent cache stores a copy of the SkSL::Program::InputOutput struct. If you alter the
+    // Program::InputOutput struct in any way, you must increment kCurrentVersion to invalidate the
+    // outdated persistent cache files. The KnownSkSLProgramInputOutput struct must also be updated
+    // to match the new contents of Program::InputOutput.
+    struct KnownSkSLProgramInputOutput {
         bool useLastFragColor;
         bool useRTFlipUniform;
     };
-    static_assert(sizeof(SkSL::Program::Inputs) == sizeof(KnownSkSLProgramInputs));
+    static_assert(sizeof(SkSL::Program::InputOutput) == sizeof(KnownSkSLProgramInputOutput));
 
     return kCurrentVersion;
 }
 
 sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
                                 const std::string shaders[],
-                                const SkSL::Program::Inputs inputs[],
+                                const SkSL::Program::InputOutput inputs[],
                                 int numInputs,
                                 const ShaderMetadata* meta) {
     // For consistency (so tools can blindly pack and unpack cached shaders), we always write
@@ -44,7 +44,7 @@ sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
     writer.writeUInt(shaderType);
     for (int i = 0; i < kGrShaderTypeCount; ++i) {
         writer.writeByteArray(shaders[i].c_str(), shaders[i].size());
-        writer.writePad32(&inputs[std::min(i, numInputs - 1)], sizeof(SkSL::Program::Inputs));
+        writer.writePad32(&inputs[std::min(i, numInputs - 1)], sizeof(SkSL::Program::InputOutput));
     }
     writer.writeBool(SkToBool(meta));
     if (meta) {
@@ -79,7 +79,7 @@ SkFourByteTag GetType(SkReadBuffer* reader) {
 
 bool UnpackCachedShaders(SkReadBuffer* reader,
                          std::string shaders[],
-                         SkSL::Program::Inputs inputs[],
+                         SkSL::Program::InputOutput inputs[],
                          int numInputs,
                          ShaderMetadata* meta) {
     for (int i = 0; i < kGrShaderTypeCount; ++i) {
@@ -89,11 +89,11 @@ bool UnpackCachedShaders(SkReadBuffer* reader,
             shaders[i].assign(shaderBuf, shaderLen);
         }
 
-        // GL, for example, only wants one set of Inputs
+        // GL, for example, only wants one set of inputs and outputs
         if (i < numInputs) {
             reader->readPad32(&inputs[i], sizeof(inputs[i]));
         } else {
-            reader->skip(sizeof(SkSL::Program::Inputs));
+            reader->skip(sizeof(SkSL::Program::InputOutput));
         }
     }
     if (reader->readBool() && meta) {
