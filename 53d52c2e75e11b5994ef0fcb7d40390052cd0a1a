@@ -22,6 +22,30 @@
       },
       "revId": "53d52c2e75e11b5994ef0fcb7d40390052cd0a1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f297323_e59487d1",
+        "filename": "src/sksl/ir/SkSLVariable.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-09T23:04:36Z",
+      "side": 1,
+      "message": "To clarify, I didn\u0027t mean to imply that BigVariable is not an appropriate name. My initial reaction was that conveying a bit more context in the name would be nice but this is pretty concise and sufficiently informative.",
+      "parentUuid": "f90cea22_65f0e967",
+      "range": {
+        "startLine": 163,
+        "startChar": 6,
+        "endLine": 163,
+        "endChar": 17
+      },
+      "revId": "53d52c2e75e11b5994ef0fcb7d40390052cd0a1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
