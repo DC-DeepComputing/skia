@@ -171,7 +171,7 @@ bool SkSurfaceCharacterization::isCompatible(const GrBackendTexture& backendTex)
         return false;
     }
 
-    if (this->isProtected() != GrProtected(backendTex.isProtected())) {
+    if (this->isProtected() != GrProtected(backendTex.isProtectedS())) {
         return false;
     }
 

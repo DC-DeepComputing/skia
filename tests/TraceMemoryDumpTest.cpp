@@ -111,8 +111,9 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SkTraceMemoryDump_ownedGLTexture,
     GrGLTexture::Desc desc;
     desc.fTarget = GR_GL_TEXTURE_2D;
     desc.fID = 7;  // Arbitrary, we don't actually use the texture.
-    desc.fFormat = GrGLFormat::kRGBA8;
-    desc.fOwnership = GrBackendObjectOwnership::kOwned;
+    desc.fFormat1 = GrGLFormat::kRGBA8;
+    desc.fOwnership1 = GrBackendObjectOwnership::kOwned;
+    desc.fIsProtectedDesc = skgpu::Protected::kNo; //$$
     desc.fSize = SkISize::Make(64, 64);
 
     auto texture = sk_make_sp<GrGLTexture>(gpu,
@@ -134,9 +135,10 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SkTraceMemoryDump_unownedGLTexture,
     GrGLTexture::Desc desc;
     desc.fTarget = GR_GL_TEXTURE_2D;
     desc.fID = 7;  // Arbitrary, we don't actually use the texture.
-    desc.fFormat = GrGLFormat::kRGBA8;
-    desc.fOwnership = GrBackendObjectOwnership::kBorrowed;
+    desc.fFormat1 = GrGLFormat::kRGBA8;
+    desc.fOwnership1 = GrBackendObjectOwnership::kBorrowed;
     desc.fSize = SkISize::Make(64, 64);
+    desc.fIsProtectedDesc = skgpu::Protected::kNo;
 
     auto params = sk_make_sp<GrGLTextureParameters>();
 
@@ -173,7 +175,8 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SkTraceMemoryDump_ownedGLRenderTarget,
                                                                1,
                                                                rtIDs,
                                                                0,
-                                                               /*label=*/{});
+                                                               /*label=*/{},
+                                                               skgpu::Protected::kNo);
 
     ValidateMemoryDumps(reporter, dContext, 2, rt->gpuMemorySize(), true /* isOwned */);
 }
@@ -200,7 +203,8 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SkTraceMemoryDump_unownedGLRenderTarge
                                                                4,
                                                                rtIDs,
                                                                0,
-                                                               /*label=*/{});
+                                                               /*label=*/{},
+                                                               skgpu::Protected::kNo);
 
     ValidateMemoryDumps(reporter, dContext, 2, rt->gpuMemorySize(), false /* isOwned */);
 }
@@ -218,8 +222,9 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(SkTraceMemoryDump_ownedGLTextureRender
     texDesc.fSize = kSize;
     texDesc.fTarget = GR_GL_TEXTURE_2D;
     texDesc.fID = 17;
-    texDesc.fFormat = GrGLFormat::kRGBA8;
-    texDesc.fOwnership = GrBackendObjectOwnership::kOwned;
+    texDesc.fFormat1 = GrGLFormat::kRGBA8;
+    texDesc.fOwnership1 = GrBackendObjectOwnership::kOwned;
+    texDesc.fIsProtectedDesc = skgpu::Protected::kNo;
 
     GrGLRenderTarget::IDs rtIDs;
     rtIDs.fMultisampleFBOID = 12;
