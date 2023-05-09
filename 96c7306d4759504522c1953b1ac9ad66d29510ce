@@ -46,6 +46,30 @@
       },
       "revId": "96c7306d4759504522c1953b1ac9ad66d29510ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c72b1aa3_867fa9c4",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T16:20:00Z",
+      "side": 1,
+      "message": "Looking more closely, since we\u0027re keying based on types and counts and not the particular resources I agree they\u0027re not shareable.",
+      "parentUuid": "7823f974_10bcc0f0",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 85
+      },
+      "revId": "96c7306d4759504522c1953b1ac9ad66d29510ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
