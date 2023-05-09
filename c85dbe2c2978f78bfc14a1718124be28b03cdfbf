@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c961ec36_baf71d37",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-09T18:00:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37c08b58_0330fe19",
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "47157d2d_6f4ec36f",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -113,6 +131,30 @@
       "side": 1,
       "message": "It is the case that the GPU process is using the global CPU glyph cache. Independent glyph caches are really only used in testing.",
       "parentUuid": "e3dd4616_691e1a41",
+      "range": {
+        "startLine": 149,
+        "startChar": 4,
+        "endLine": 150,
+        "endChar": 37
+      },
+      "revId": "c85dbe2c2978f78bfc14a1718124be28b03cdfbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77f1bab2_f6cf40c4",
+        "filename": "include/private/chromium/SkChromeRemoteGlyphCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-09T18:00:08Z",
+      "side": 1,
+      "message": "Added SkGraphics::PurgePinnedFontCache().",
+      "parentUuid": "187e520c_52ebba66",
       "range": {
         "startLine": 149,
         "startChar": 4,

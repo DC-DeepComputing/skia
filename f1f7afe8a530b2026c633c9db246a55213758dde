@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0858fe3_16f8d7de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2023-05-09T18:00:08Z",
+      "side": 1,
+      "message": "PTAL\n\nCorresponding Chromium change to enable this\nhttps://chromium-review.googlesource.com/c/chromium/src/+/4518840",
+      "revId": "f1f7afe8a530b2026c633c9db246a55213758dde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
