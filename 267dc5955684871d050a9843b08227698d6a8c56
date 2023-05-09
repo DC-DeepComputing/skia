@@ -16,6 +16,52 @@
       "message": "Should be a quick one, just copied and updated the contents of GrVkImageView.",
       "revId": "267dc5955684871d050a9843b08227698d6a8c56",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa1116ad_420affe2",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-09T17:38:36Z",
+      "side": 1,
+      "message": "nit: I think we are typically naming this `result` and then having `if (result !\u003d VK_SUCCESS)` in other spots, so maybe change this for consistency within graphite?",
+      "range": {
+        "startLine": 42,
+        "startChar": 13,
+        "endLine": 42,
+        "endChar": 16
+      },
+      "revId": "267dc5955684871d050a9843b08227698d6a8c56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "704601f3_5f094702",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-09T17:38:36Z",
+      "side": 1,
+      "message": "Do we want to include Ganesh types here?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 32
+      },
+      "revId": "267dc5955684871d050a9843b08227698d6a8c56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
