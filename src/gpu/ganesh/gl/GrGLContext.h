@@ -73,6 +73,10 @@ public:
         return fInterface->hasExtension(ext);
     }
 
+    void print() const {
+        fInterface->print();
+    }
+
     const GrGLExtensions& extensions() const { return fInterface->fExtensions; }
 
 protected:

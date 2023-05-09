@@ -113,7 +113,8 @@ GrBackendRenderTarget GrGLRenderTarget::getBackendRenderTarget() const {
     bool useMultisampleFBO = (this->numSamples() > 1);
     GrGLFramebufferInfo fbi;
     fbi.fFBOID = (useMultisampleFBO) ? fMultisampleFBOID : fSingleSampleFBOID;
-    fbi.fFormat = GrGLFormatToEnum(this->format());
+    fbi.fFormat1 = GrGLFormatToEnum(this->format());
+    fbi.fProtected11 = this->isProtected() ? skgpu::Protected::kYes : skgpu::Protected::kNo;
     int numStencilBits = 0;
     if (GrAttachment* stencil = this->getStencilAttachment(useMultisampleFBO)) {
         numStencilBits = GrBackendFormatStencilBits(stencil->backendFormat());
