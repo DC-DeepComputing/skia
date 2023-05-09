@@ -14,7 +14,7 @@
 
 namespace GrPersistentCacheUtils {
 
-static constexpr int kCurrentVersion = 11;
+static constexpr int kCurrentVersion = 12;
 
 int GetCurrentVersion() {
     // The persistent cache stores a copy of the SkSL::Program::InputOutput struct. If you alter the
@@ -24,6 +24,7 @@ int GetCurrentVersion() {
     struct KnownSkSLProgramInputOutput {
         bool useLastFragColor;
         bool useRTFlipUniform;
+        bool outputSecondaryColor;
     };
     static_assert(sizeof(SkSL::Program::InputOutput) == sizeof(KnownSkSLProgramInputOutput));
 
