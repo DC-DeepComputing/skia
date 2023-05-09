@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3068c843_8b3416f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19f99fe7_3ba31139",
+      "range": {
+        "startLine": 13,
+        "startChar": 21,
+        "endLine": 13,
+        "endChar": 28
+      },
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8542114_4ce6e900",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-09T16:16:28Z",
       "side": 1,
       "message": "Isn\u0027t this `SkCodecs`?",
+      "range": {
+        "startLine": 20,
+        "startChar": 41,
+        "endLine": 20,
+        "endChar": 48
+      },
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d263a62_c57d2695",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8542114_4ce6e900",
       "range": {
         "startLine": 20,
         "startChar": 41,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1bfb3b6_02300c1d",
+        "filename": "gm/texelsubset.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "There\u0027s a smoke test for that elsewhere. This assert makes sure the .png can be decoded into a SkBitmap.\n\nhttps://github.com/google/skia/blob/main/dm/DM.cpp#L1584-L1586",
+      "parentUuid": "a2b46666_24a08386",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 22
+      },
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50f7a584_138f5025",
@@ -87,6 +159,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9728a7f9_4c0ca468",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 1027,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "We could, but I would say that\u0027s outside the scope of this CL.",
+      "parentUuid": "50f7a584_138f5025",
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fad18180_b83d4116",
@@ -100,6 +190,30 @@
       "writtenOn": "2023-05-09T16:16:28Z",
       "side": 1,
       "message": "Is there a transition period? I thought we were temporarily registering the existing ones by default.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 19
+      },
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "456023d4_641af8b0",
+        "filename": "relnotes/skcodecs_register.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "Added some prose about the temporary code to aid transitions.",
+      "parentUuid": "fad18180_b83d4116",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec3b9a3e_c842e756",
+        "filename": "relnotes/skcodecs_register.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4def566f_25d7e9b2",
+      "range": {
+        "startLine": 3,
+        "startChar": 32,
+        "endLine": 3,
+        "endChar": 35
+      },
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd741bc9_4d49182f",
@@ -146,6 +284,30 @@
       "writtenOn": "2023-05-09T16:16:28Z",
       "side": 1,
       "message": "nit: I struggle to explain myself here, but I find it awkward to say \"Some thing we\u0027re not doing is bad.\" My first thought was to suggest something like:\n\n```\n// Use a function to avoid a static initializer.\n```\n\nwhich *also* references what we\u0027re not doing. Maybe I think I like it better since it\u0027s at least explicit about what it\u0027s doing instead.",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 14
+      },
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "995f581a_8b3faa5c",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd741bc9_4d49182f",
       "range": {
         "startLine": 68,
         "startChar": 0,
@@ -173,6 +335,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0489aa03_a68933a7",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "I\u0027m not sure. This mimics what we already do elsewhere: https://github.com/google/skia/blob/117b7cafa814a51b0aee5b6c0d79509cad9c8fb1/src/core/SkTypefaceCache.cpp#L66\n\nIn any case, I deleted this Mutex and replaced it with SkOnce.",
+      "parentUuid": "d9b0af59_1ae38ec1",
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1dae00c4_da661612",
@@ -190,6 +370,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58e78f8f_f8594860",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "I just removed the mutex. I had it in because I was initializing it from SkGraphics::Init(), but since that apparently is not used by most G3 clients, Chromium, or Android, I changed it to what you see here.",
+      "parentUuid": "1dae00c4_da661612",
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9dc51643_e60e9290",
@@ -203,6 +401,30 @@
       "writtenOn": "2023-05-09T16:16:28Z",
       "side": 1,
       "message": "Can we have a `const` version of this method? Maybe less important because it\u0027s not a public API? Still helpful to make sure we\u0027re not modifying it here.",
+      "range": {
+        "startLine": 176,
+        "startChar": 30,
+        "endLine": 176,
+        "endChar": 42
+      },
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26ef0454_cd4f035c",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dc51643_e60e9290",
       "range": {
         "startLine": 176,
         "startChar": 30,
@@ -236,6 +458,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "297955e2_3cfb11ad",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe2794e6_b5b83e57",
+      "range": {
+        "startLine": 179,
+        "startChar": 15,
+        "endLine": 179,
+        "endChar": 27
+      },
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85d0fe07_5e2bc53d",
@@ -249,6 +495,24 @@
       "writtenOn": "2023-05-09T16:16:28Z",
       "side": 1,
       "message": "I\u0027m a little concerned about this call. This will call [`BytesRequiredForIsRaw`](https://source.corp.google.com/android-internal/external/piex/src/piex.cc;l\u003d636;rcl\u003deeae447b7baf32568765801cb304d72dadfcd739), which calls [`RequestedSize`](https://source.corp.google.com/android-internal/external/piex/src/image_type_recognition/image_type_recognition_lite.cc;l\u003d60;bpv\u003d1;bpt\u003d1;rcl\u003deeae447b7baf32568765801cb304d72dadfcd739), which has implementations that go up to 5000. As I understand it, unless we use the full size, it will return `false` when it should\u0027ve returned `true`. That\u0027s why we didn\u0027t have an `IsRaw`, and why we put `SkRawCodec` last.\n\nMaybe `IsRaw` should just return `true`? We should also document somewhere that raw must be last.",
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f365e043_98c23340",
+        "filename": "src/codec/SkRawCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 838,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-09T18:05:04Z",
+      "side": 1,
+      "message": "Ah, I should have looked at more implementations of RequestedSize - the first one I found was 4 and I jumped to conclusions.\n\nI have made some modifications to make raw (if given) be last (less error-prone by the client).",
+      "parentUuid": "85d0fe07_5e2bc53d",
       "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
