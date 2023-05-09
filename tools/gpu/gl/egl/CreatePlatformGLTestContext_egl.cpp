@@ -55,19 +55,31 @@ static EGLContext create_gles_egl_context(EGLDisplay display,
                                           EGLConfig surfaceConfig,
                                           EGLContext eglShareContext,
                                           EGLint eglContextClientVersion) {
+    bool isProtectedContent = true;
     const EGLint contextAttribsForOpenGLES[] = {
         EGL_CONTEXT_CLIENT_VERSION,
         eglContextClientVersion,
+        isProtectedContent ? EGL_PROTECTED_CONTENT_EXT : EGL_NONE,
+        isProtectedContent ? EGL_TRUE : EGL_NONE,
         EGL_NONE
     };
+
+    SkDebugf("---here 3\n");
+
     return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribsForOpenGLES);
 }
 static EGLContext create_gl_egl_context(EGLDisplay display,
                                         EGLConfig surfaceConfig,
                                         EGLContext eglShareContext) {
+    bool isProtectedContent = true;
     const EGLint contextAttribsForOpenGL[] = {
+        isProtectedContent ? EGL_PROTECTED_CONTENT_EXT : EGL_NONE,
+        isProtectedContent ? EGL_TRUE : EGL_NONE,
         EGL_NONE
     };
+
+    SkDebugf("---here 4\n");
+
     return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribsForOpenGL);
 }
 
