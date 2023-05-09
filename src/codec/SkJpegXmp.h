@@ -20,10 +20,11 @@ struct SkGainmapInfo;
 /*
  * A structure to manage JPEG XMP metadata.
  */
-class SkJpegXmp {
+class SK_API SkJpegXmp {
 public:
     // Find and parse all XMP metadata, given a list of all APP1 segment parameters.
     static std::unique_ptr<SkJpegXmp> Make(const std::vector<sk_sp<SkData>>& decoderApp1Params);
+    static std::unique_ptr<SkJpegXmp> Make(sk_sp<SkData> xmpStandard);
 
     // Extract HDRGM gainmap parameters.
     bool getGainmapInfoHDRGM(SkGainmapInfo* info) const;

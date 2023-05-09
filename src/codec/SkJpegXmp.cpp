@@ -556,6 +556,16 @@ std::unique_ptr<SkJpegXmp> SkJpegXmp::Make(const std::vector<sk_sp<SkData>>& dec
     return xmp;
 }
 
+std::unique_ptr<SkJpegXmp> SkJpegXmp::Make(sk_sp<SkData> xmpStandard) {
+    std::unique_ptr<SkJpegXmp> xmp(new SkJpegXmp);
+    auto xmpStandardStream = SkMemoryStream::Make(xmpStandard);
+    if (!xmp->fStandardDOM.build(*xmpStandardStream)) {
+        SkCodecPrintf("Failed to parse XMP standard metadata.\n");
+        return nullptr;
+    }
+    return xmp;
+}
+
 bool SkJpegXmp::findUriNamespaces(size_t count,
                                   const char* uris[],
                                   const char* outNamespaces[],
