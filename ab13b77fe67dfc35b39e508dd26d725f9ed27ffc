@@ -16,6 +16,52 @@
       "message": "PTAL 😊",
       "revId": "ab13b77fe67dfc35b39e508dd26d725f9ed27ffc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "435a1b32_d4bd54bf",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T21:04:29Z",
+      "side": 1,
+      "message": "So I think this is fine and I\u0027d stick with it for now but another interface could be to pass in SkSpan\u003cDescTypeAndCount\u003e. Then the caller can choose how they want to actually store it and this method just needs to iterate through what it\u0027s given. The contract could be that count has to be \u003e 0 for all the entries, so you could get rid of your poolSizeCount.",
+      "range": {
+        "startLine": 38,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 51
+      },
+      "revId": "ab13b77fe67dfc35b39e508dd26d725f9ed27ffc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed5fa8c0_b20b8890",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-09T21:04:29Z",
+      "side": 1,
+      "message": "Add SkASSERT(descriptorCounts[i] \u003e\u003d 0)?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 8
+      },
+      "revId": "ab13b77fe67dfc35b39e508dd26d725f9ed27ffc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
