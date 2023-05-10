@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c53491de_62b2d1e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-10T19:49:49Z",
+      "side": 1,
+      "message": "I wasn\u0027t sure if this needs additional changes to GrPersistentCacheUtils. I noticed this field: https://skia.googlesource.com/skia/+/68a1517a/src/gpu/ganesh/GrPersistentCacheUtils.h#29\nbut would this now be redundant with Program::Interface::fOutputSecondaryColor, for caching purposes?",
+      "revId": "92a198e6f78f493d889c5d7ea2045e08e3111d6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
