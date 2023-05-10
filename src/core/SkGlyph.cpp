@@ -366,7 +366,7 @@ void SkGlyph::flattenDrawable(SkWriteBuffer& buffer) const {
         return;
     }
 
-    sk_sp<SkPicture> picture{this->drawable()->newPictureSnapshot()};
+    sk_sp<SkPicture> picture = this->drawable()->makePictureSnapshot();
     sk_sp<SkData> data = picture->serialize();
 
     // If the picture is too big, or there is no picture, then drop by sending an empty byte array.
