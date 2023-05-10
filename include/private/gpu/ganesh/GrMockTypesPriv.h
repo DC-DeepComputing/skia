@@ -14,7 +14,7 @@
 struct GrMockTextureSpec {
     GrMockTextureSpec()
             : fColorType(GrColorType::kUnknown)
-             , fCompressionType(SkTextureCompressionType::kNone) {}
+            , fCompressionType(SkTextureCompressionType::kNone) {}
     GrMockTextureSpec(const GrMockSurfaceInfo& info)
             : fColorType(info.fColorType)
             , fCompressionType(info.fCompressionType) {}
@@ -29,4 +29,3 @@ GrMockSurfaceInfo GrMockTextureSpecToSurfaceInfo(const GrMockTextureSpec& mockSp
                                                  GrProtected isProtected);
 
 #endif
-

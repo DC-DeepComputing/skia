@@ -1393,7 +1393,7 @@ sk_sp<GrTexture> GrVkGpu::onWrapBackendTexture(const GrBackendTexture& backendTe
         return nullptr;
     }
 
-    if (backendTex.isProtected() && (fProtectedContext == GrProtected::kNo)) {
+    if (backendTex.isProtectedS() && (fProtectedContext == GrProtected::kNo)) {
         return nullptr;
     }
 
@@ -1433,7 +1433,7 @@ sk_sp<GrTexture> GrVkGpu::onWrapRenderableBackendTexture(const GrBackendTexture&
         return nullptr;
     }
 
-    if (backendTex.isProtected() && (fProtectedContext == GrProtected::kNo)) {
+    if (backendTex.isProtectedS() && (fProtectedContext == GrProtected::kNo)) {
         return nullptr;
     }
 
@@ -1464,7 +1464,7 @@ sk_sp<GrRenderTarget> GrVkGpu::onWrapBackendRenderTarget(const GrBackendRenderTa
         return nullptr;
     }
 
-    if (backendRT.isProtected() && (fProtectedContext == GrProtected::kNo)) {
+    if (backendRT.isProtectedRT() && (fProtectedContext == GrProtected::kNo)) {
         return nullptr;
     }
 
