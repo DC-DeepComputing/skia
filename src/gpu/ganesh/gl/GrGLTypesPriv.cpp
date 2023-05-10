@@ -75,11 +75,11 @@ GrGLSurfaceInfo GrGLTextureSpecToSurfaceInfo(const GrGLTextureSpec& glSpec,
     GrGLSurfaceInfo info;
     // Shared info
     info.fSampleCount = sampleCount;
-    info.fLevelCount = levelCount;
-    info.fProtected = isProtected;
+    info.fLevelCount9 = levelCount;
+    info.fProtected9 = isProtected;
 
     // GL info
-    info.fTarget = glSpec.fTarget;
+    info.fTarget9 = glSpec.fTarget;
     info.fFormat = glSpec.fFormat;
 
     return info;

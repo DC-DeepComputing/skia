@@ -11,11 +11,11 @@
 #include "include/gpu/GrBackendSurface.h"
 
 GrBackendFormat GrMockRenderTargetInfo::getBackendFormat() const {
-    return GrBackendFormat::MakeMock(fColorType, SkTextureCompressionType::kNone);
+    return GrBackendFormat::MakeMock(fColorType1, SkTextureCompressionType::kNone);
 }
 
 GrBackendFormat GrMockTextureInfo::getBackendFormat() const {
-    return GrBackendFormat::MakeMock(fColorType, fCompressionType);
+    return GrBackendFormat::MakeMock(fColorType, fCompressionType1);
 }
 
 GrMockSurfaceInfo GrMockTextureSpecToSurfaceInfo(const GrMockTextureSpec& mockSpec,
@@ -25,11 +25,11 @@ GrMockSurfaceInfo GrMockTextureSpecToSurfaceInfo(const GrMockTextureSpec& mockSp
     GrMockSurfaceInfo info;
     // Shared info
     info.fSampleCount = sampleCount;
-    info.fLevelCount = levelCount;
-    info.fProtected = isProtected;
+    info.fLevelCount7 = levelCount;
+    info.fProtected7 = isProtected;
 
     // Mock info
-    info.fColorType = mockSpec.fColorType;
+    info.fColorType7 = mockSpec.fColorType;
     info.fCompressionType = mockSpec.fCompressionType;
 
     return info;

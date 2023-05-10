@@ -136,8 +136,8 @@ struct GrVkDrawableInfo {
 
 struct GrVkSurfaceInfo {
     uint32_t fSampleCount = 1;
-    uint32_t fLevelCount = 0;
-    skgpu::Protected fProtected = skgpu::Protected::kNo;
+    uint32_t fLevelCount12 = 0;
+    skgpu::Protected fProtected12 = skgpu::Protected::kNo;
 
     VkImageTiling fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     VkFormat fFormat = VK_FORMAT_UNDEFINED;

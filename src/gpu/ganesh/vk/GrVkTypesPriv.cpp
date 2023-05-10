@@ -32,8 +32,8 @@ GrVkSurfaceInfo GrVkImageSpecToSurfaceInfo(const GrVkImageSpec& vkSpec,
     GrVkSurfaceInfo info;
     // Shared info
     info.fSampleCount = sampleCount;
-    info.fLevelCount = levelCount;
-    info.fProtected = isProtected;
+    info.fLevelCount12 = levelCount;
+    info.fProtected12 = isProtected;
 
     // Vulkan info
     info.fImageTiling = vkSpec.fImageTiling;

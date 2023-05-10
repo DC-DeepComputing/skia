@@ -35,7 +35,7 @@ struct GrVkBackendSurfaceInfo {
 
     GrVkImageInfo snapImageInfo(const skgpu::MutableTextureStateRef*) const;
 
-    bool isProtected() const { return fImageInfo.fProtected == skgpu::Protected::kYes; }
+    bool isProtected21() const { return fImageInfo.fProtected == skgpu::Protected::kYes; }
 #if GR_TEST_UTILS
     bool operator==(const GrVkBackendSurfaceInfo& that) const;
 #endif
