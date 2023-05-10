@@ -184,7 +184,7 @@ sk_sp<GrVkRenderTarget> GrVkRenderTarget::MakeSecondaryCBRenderTarget(
     // others we keep at the default "null" values.
     GrVkImageInfo info;
     info.fImageLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-    info.fFormat = vkInfo.fFormat;
+    info.fFormat101 = vkInfo.fFormat;
     info.fImageUsageFlags = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT |
                             VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
 

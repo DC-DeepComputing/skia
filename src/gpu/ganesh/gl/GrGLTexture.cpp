@@ -60,7 +60,7 @@ GrGLTexture::GrGLTexture(GrGLGpu* gpu,
         , fParameters(sk_make_sp<GrGLTextureParameters>()) {
     this->init(desc);
     this->registerWithCache(budgeted);
-    if (GrGLFormatIsCompressed(desc.fFormat)) {
+    if (GrGLFormatIsCompressed(desc.fFormat1)) {
         this->setReadOnly();
     }
 }
@@ -68,10 +68,10 @@ GrGLTexture::GrGLTexture(GrGLGpu* gpu,
 GrGLTexture::GrGLTexture(GrGLGpu* gpu, const Desc& desc, GrMipmapStatus mipmapStatus,
                          sk_sp<GrGLTextureParameters> parameters, GrWrapCacheable cacheable,
                          GrIOType ioType, std::string_view label)
-        : GrSurface(gpu, desc.fSize, GrProtected::kNo, label)
-        , INHERITED(gpu,
+        : GrSurface(gpu, desc.fSize, desc.fIsProtectedDesc, label)
+        , GrTexture(gpu,
                     desc.fSize,
-                    GrProtected::kNo,
+                    desc.fIsProtectedDesc,
                     TextureTypeFromTarget(desc.fTarget),
                     mipmapStatus,
                     label)
@@ -89,24 +89,24 @@ GrGLTexture::GrGLTexture(GrGLGpu* gpu,
                          sk_sp<GrGLTextureParameters> parameters,
                          GrMipmapStatus mipmapStatus,
                          std::string_view label)
-        : GrSurface(gpu, desc.fSize, GrProtected::kNo, label)
-        , INHERITED(gpu,
+        : GrSurface(gpu, desc.fSize, desc.fIsProtectedDesc, label)
+        , GrTexture(gpu,
                     desc.fSize,
-                    GrProtected::kNo,
+                    desc.fIsProtectedDesc,
                     TextureTypeFromTarget(desc.fTarget),
                     mipmapStatus,
                     label) {
-    SkASSERT(parameters || desc.fOwnership == GrBackendObjectOwnership::kOwned);
+    SkASSERT(parameters || desc.fOwnership1 == GrBackendObjectOwnership::kOwned);
     fParameters = parameters ? std::move(parameters) : sk_make_sp<GrGLTextureParameters>();
     this->init(desc);
 }
 
 void GrGLTexture::init(const Desc& desc) {
     SkASSERT(0 != desc.fID);
-    SkASSERT(GrGLFormat::kUnknown != desc.fFormat);
+    SkASSERT(GrGLFormat::kUnknown != desc.fFormat1);
     fID = desc.fID;
-    fFormat = desc.fFormat;
-    fTextureIDOwnership = desc.fOwnership;
+    fFormat1 = desc.fFormat1;
+    fTextureIDOwnership1 = desc.fOwnership1;
 }
 
 GrGLenum GrGLTexture::target() const { return target_from_texture_type(this->textureType()); }
@@ -116,7 +116,7 @@ void GrGLTexture::onRelease() {
     ATRACE_ANDROID_FRAMEWORK_ALWAYS("Texture release(%u)", this->uniqueID().asUInt());
 
     if (fID) {
-        if (GrBackendObjectOwnership::kBorrowed != fTextureIDOwnership) {
+        if (GrBackendObjectOwnership::kBorrowed != fTextureIDOwnership1) {
             GL_CALL(DeleteTextures(1, &fID));
         }
         fID = 0;
@@ -132,13 +132,15 @@ void GrGLTexture::onAbandon() {
 GrBackendTexture GrGLTexture::getBackendTexture() const {
     GrGLTextureInfo info;
     info.fTarget = target_from_texture_type(this->textureType());
-    info.fID = fID;
-    info.fFormat = GrGLFormatToEnum(fFormat);
+    info.fID2 = fID;
+    info.fFormat27 = GrGLFormatToEnum(fFormat1);
+    info.fProtected27 = skgpu::Protected(this->isProtected());
+
     return GrBackendTexture(this->width(), this->height(), this->mipmapped(), info, fParameters);
 }
 
 GrBackendFormat GrGLTexture::backendFormat() const {
-    return GrBackendFormat::MakeGL(GrGLFormatToEnum(fFormat),
+    return GrBackendFormat::MakeGL(GrGLFormatToEnum(fFormat1),
                                    target_from_texture_type(this->textureType()));
 }
 
@@ -168,7 +170,7 @@ bool GrGLTexture::onStealBackendTexture(GrBackendTexture* backendTexture,
 
 void GrGLTexture::onSetLabel() {
     SkASSERT(fID);
-    SkASSERT(fTextureIDOwnership == GrBackendObjectOwnership::kOwned);
+    SkASSERT(fTextureIDOwnership1 == GrBackendObjectOwnership::kOwned);
     if (!this->getLabel().empty()) {
         const std::string label = "_Skia_" + this->getLabel();
         GrGLGpu* glGpu = static_cast<GrGLGpu*>(this->getGpu());
@@ -183,7 +185,7 @@ void GrGLTexture::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const
     // which is multiply inherited from both ourselves and a texture. In these cases, one part
     // (texture, rt) may be wrapped, while the other is owned by Skia.
     bool refsWrappedTextureObjects =
-            this->fTextureIDOwnership == GrBackendObjectOwnership::kBorrowed;
+            this->fTextureIDOwnership1 == GrBackendObjectOwnership::kBorrowed;
     if (refsWrappedTextureObjects && !traceMemoryDump->shouldDumpWrappedObjects()) {
         return;
     }
