@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bbec49d_d7f5cb82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20009
+      },
+      "writtenOn": "2023-05-10T16:54:51Z",
+      "side": 1,
+      "message": "Thank you for the quick turnaround on this implementation. I\u0027ll give it a spin and see how it goes.",
+      "revId": "76058d1c5ef6566de0aa41e92c83e766d2899dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86942c0b_22a310a2",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 20009
+      },
+      "writtenOn": "2023-05-10T16:54:51Z",
+      "side": 1,
+      "message": "I don\u0027t think this explicit check is necessary. `std::unordered_set::emplace()` will just no-op if the value is already in the set.",
+      "revId": "76058d1c5ef6566de0aa41e92c83e766d2899dc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
