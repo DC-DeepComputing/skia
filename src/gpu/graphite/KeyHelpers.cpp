@@ -399,6 +399,8 @@ ImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
     SkASSERT(fSteps.flags.mask() == 0);   // By default, the colorspace should have no effect
 }
 
+// Create YUVImageShaderBlock?
+
 void ImageShaderBlock::BeginBlock(const KeyContext& keyContext,
                                   PaintParamsKeyBuilder* builder,
                                   PipelineDataGatherer* gatherer,
@@ -423,6 +425,77 @@ void ImageShaderBlock::BeginBlock(const KeyContext& keyContext,
     }
 
     builder->beginBlock(BuiltInCodeSnippetID::kImageShader);
+}
+
+//--------------------------------------------------------------------------------------------------
+
+// makes use of ImageShader functions, above
+namespace {
+
+void add_yuv420_image_uniform_data(const ShaderCodeDictionary* dict,
+                                   const YUV420ImageShaderBlock::ImageData& imgData,
+                                   PipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kImageShader)
+
+    gatherer->write(SkPoint::Make(imgData.fYTextureProxy->dimensions().fWidth,
+                                  imgData.fYTextureProxy->dimensions().fHeight));
+    gatherer->write(imgData.fSubset);
+    gatherer->write(SkTo<int>(imgData.fTileModes[0]));
+    gatherer->write(SkTo<int>(imgData.fTileModes[1]));
+    gatherer->write(SkTo<int>(imgData.fSampling.filter));
+    gatherer->write(imgData.fSampling.useCubic);
+    if (imgData.fSampling.useCubic) {
+        const SkCubicResampler& cubic = imgData.fSampling.cubic;
+        gatherer->write(SkImageShader::CubicResamplerMatrix(cubic.B, cubic.C));
+    } else {
+        gatherer->write(SkM44());
+    }
+    gatherer->write(SkTo<int>(imgData.fReadSwizzle));
+
+    add_color_space_uniforms(imgData.fSteps, gatherer);
+}
+
+} // anonymous namespace
+
+YUV420ImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
+                                             SkTileMode tileModeX,
+                                             SkTileMode tileModeY,
+                                             SkRect subset,
+                                             ReadSwizzle readSwizzle)
+        : fSampling(sampling)
+        , fTileModes{tileModeX, tileModeY}
+        , fSubset(subset)
+        , fReadSwizzle(readSwizzle) {
+    SkASSERT(fSteps.flags.mask() == 0);   // By default, the colorspace should have no effect
+}
+
+void YUV420ImageShaderBlock::BeginBlock(const KeyContext& keyContext,
+                                        PaintParamsKeyBuilder* builder,
+                                        PipelineDataGatherer* gatherer,
+                                        const ImageData* imgData) {
+    SkASSERT(!gatherer == !imgData);
+
+    // TODO: allow through lazy proxies
+    if (gatherer && !(imgData->fYTextureProxy || imgData->fUVTextureProxy)) {
+        // TODO: At some point the pre-compile path should also be creating a texture
+        // proxy (i.e., we can remove the 'pipelineData' in the above test).
+        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+        return;
+    }
+
+    auto dict = keyContext.dict();
+    if (gatherer) {
+        gatherer->add(imgData->fSampling,
+                      imgData->fTileModes,
+                      imgData->fYTextureProxy);
+        gatherer->add(imgData->fSampling,
+                      imgData->fTileModes,
+                      imgData->fUVTextureProxy);
+
+        add_yuv420_image_uniform_data(dict, *imgData, gatherer);
+    }
+
+    builder->beginBlock(BuiltInCodeSnippetID::kYUV420ImageShader);
 }
 
 //--------------------------------------------------------------------------------------------------
