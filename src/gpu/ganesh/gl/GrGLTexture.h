@@ -23,8 +23,9 @@ public:
         SkISize fSize                       = {-1, -1};
         GrGLenum fTarget                    = 0;
         GrGLuint fID                        = 0;
-        GrGLFormat fFormat                  = GrGLFormat::kUnknown;
-        GrBackendObjectOwnership fOwnership = GrBackendObjectOwnership::kOwned;
+        GrGLFormat fFormatDesc               = GrGLFormat::kUnknown;
+        GrBackendObjectOwnership fOwnership1 = GrBackendObjectOwnership::kOwned;
+        skgpu::Protected fIsProtectedDesc     = skgpu::Protected::kNo;
     };
 
     static GrTextureType TextureTypeFromTarget(GrGLenum textureTarget);
@@ -46,10 +47,10 @@ public:
 
     GrGLenum target() const;
 
-    GrGLFormat format() const { return fFormat; }
+    GrGLFormat format1() const { return fFormat1; }
 
-    bool hasBaseLevelBeenBoundToFBO() const { return fBaseLevelHasBeenBoundToFBO; }
-    void baseLevelWasBoundToFBO() { fBaseLevelHasBeenBoundToFBO = true; }
+    bool hasBaseLevelBeenBoundToFBO1() const { return fBaseLevelHasBeenBoundToFBO1; }
+    void baseLevelWasBoundToFBO() { fBaseLevelHasBeenBoundToFBO1 = true; }
 
     static sk_sp<GrGLTexture> MakeWrapped(GrGLGpu*,
                                           GrMipmapStatus,
@@ -89,9 +90,9 @@ protected:
 private:
     sk_sp<GrGLTextureParameters> fParameters;
     GrGLuint fID;
-    GrGLFormat fFormat;
-    GrBackendObjectOwnership fTextureIDOwnership;
-    bool fBaseLevelHasBeenBoundToFBO = false;
+    GrGLFormat fFormat1;
+    GrBackendObjectOwnership fTextureIDOwnership1;
+    bool fBaseLevelHasBeenBoundToFBO1 = false;
 
     using INHERITED = GrTexture;
 };

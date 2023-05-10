@@ -65,7 +65,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo, CtsEnfo
     info.fImageTiling = VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT;
 
     GrBackendTexture drmBETex = GrBackendTexture(1, 1, info);
-    GrBackendFormat drmFormat = GrBackendFormat::MakeVk(info.fFormat, true);
+    GrBackendFormat drmFormat = GrBackendFormat::MakeVk(info.fFormat101, true);
     REPORTER_ASSERT(reporter, drmFormat == drmBETex.getBackendFormat());
     REPORTER_ASSERT(reporter, drmBETex.textureType() == GrTextureType::kExternal);
 

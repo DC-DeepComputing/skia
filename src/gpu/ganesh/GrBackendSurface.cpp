@@ -776,7 +776,8 @@ bool GrBackendTexture::getGLTextureInfo(GrGLTextureInfo* outInfo) const {
         // If that code ever goes away (or ideally becomes backend-agnostic), this can go away.
         *outInfo = GrGLTextureInfo{ GR_GL_TEXTURE_2D,
                                     static_cast<GrGLuint>(fMockInfo.id()),
-                                    GR_GL_RGBA8 };
+                                    GR_GL_RGBA8,
+                                    GrProtected(fMockInfo.isProtected202()) };
         return true;
     }
     return false;
@@ -805,11 +806,20 @@ bool GrBackendTexture::isProtected() const {
     if (!this->isValid()) {
         return false;
     }
-#ifdef SK_VULKAN
-    if (this->backend() == GrBackendApi::kVulkan) {
-        return fVkInfo.isProtected();
+#ifdef SK_GL
+    if (this->backend() == GrBackendApi::kOpenGL) {
+        return fGLInfo.isProtected93();
     }
 #endif
+#ifdef SK_VULKAN
+    if (this->backend() == GrBackendApi::kVulkan) {
+        return fVkInfo.isProtected21();
+    }
+#endif
+    if (this->backend() == GrBackendApi::kMock) {
+        return fMockInfo.isProtected202();
+    }
+
     return false;
 }
 
@@ -865,10 +875,10 @@ GrBackendFormat GrBackendTexture::getBackendFormat() const {
             auto info = fVkInfo.snapImageInfo(fMutableState.get());
             bool usesDRMModifier = info.fImageTiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT;
             if (info.fYcbcrConversionInfo.isValid()) {
-                SkASSERT(info.fFormat == info.fYcbcrConversionInfo.fFormat);
+                SkASSERT(info.fFormat101 == info.fYcbcrConversionInfo.fFormat);
                 return GrBackendFormat::MakeVk(info.fYcbcrConversionInfo, usesDRMModifier);
             }
-            return GrBackendFormat::MakeVk(info.fFormat, usesDRMModifier);
+            return GrBackendFormat::MakeVk(info.fFormat101, usesDRMModifier);
         }
 #endif
 #ifdef SK_METAL
@@ -1056,7 +1066,7 @@ GrBackendRenderTarget::GrBackendRenderTarget(int width,
         , fStencilBits(stencilBits)
         , fBackend(GrBackendApi::kOpenGL)
         , fGLInfo(glInfo) {
-    fIsValid = SkToBool(glInfo.fFormat); // the glInfo must have a valid format
+    fIsValid = SkToBool(glInfo.fFormat1); // the glInfo must have a valid format
 }
 #endif
 
@@ -1226,16 +1236,16 @@ GrBackendFormat GrBackendRenderTarget::getBackendFormat() const {
     switch (fBackend) {
 #ifdef SK_GL
         case GrBackendApi::kOpenGL:
-            return GrBackendFormat::MakeGL(fGLInfo.fFormat, GR_GL_TEXTURE_NONE);
+            return GrBackendFormat::MakeGL(fGLInfo.fFormat1, GR_GL_TEXTURE_NONE);
 #endif
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan: {
             auto info = fVkInfo.snapImageInfo(fMutableState.get());
             if (info.fYcbcrConversionInfo.isValid()) {
-                SkASSERT(info.fFormat == info.fYcbcrConversionInfo.fFormat);
+                SkASSERT(info.fFormat101 == info.fYcbcrConversionInfo.fFormat);
                 return GrBackendFormat::MakeVk(info.fYcbcrConversionInfo);
             }
-            return GrBackendFormat::MakeVk(info.fFormat);
+            return GrBackendFormat::MakeVk(info.fFormat101);
         }
 #endif
 #ifdef SK_METAL
@@ -1278,14 +1288,24 @@ void GrBackendRenderTarget::setMutableState(const skgpu::MutableTextureState& st
 }
 
 bool GrBackendRenderTarget::isProtected() const {
-    if (!this->isValid() || this->backend() != GrBackendApi::kVulkan) {
+    if (!this->isValid()) {
         return false;
     }
-#ifdef SK_VULKAN
-    return fVkInfo.isProtected();
-#else
-    return false;
+#ifdef SK_GL
+    if (this->backend() == GrBackendApi::kOpenGL) {
+        return fGLInfo.isProtected11();
+    }
 #endif
+#ifdef SK_VULKAN
+    if (this->backend() == GrBackendApi::kVulkan) {
+        return fVkInfo.isProtected21();
+    }
+#endif
+    if (this->backend() == GrBackendApi::kMock) {
+        return fMockInfo.isProtected222();
+    }
+
+    return false;
 }
 
 #if GR_TEST_UTILS
