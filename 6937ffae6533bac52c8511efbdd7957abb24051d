@@ -16,6 +16,23 @@
       "message": "The original CL was reverted due to BazelTest failures for the AndroidCodecTest so I would suggest waiting for that fix to be landed before landing this cherry-pick.",
       "revId": "6937ffae6533bac52c8511efbdd7957abb24051d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6afa3c0c_dce3e1ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-10T13:04:56Z",
+      "side": 1,
+      "message": "Derek, I don\u0027t see why the Bazel changes matter, since Android won\u0027t use them. Alec said there was a merge conflict. Looking at `android/u-release`, `resources/BUILD.bazel` looks like\n\n```\nload(\"//bazel:skia_rules.bzl\", \"skia_filegroup\")\n\nskia_filegroup(\n    name \u003d \"resources\",\n    srcs \u003d glob([\"**\"]),\n    visibility \u003d [\"//tests:__pkg__\"],\n)\n```\n\nAny concerns with landing this?",
+      "revId": "6937ffae6533bac52c8511efbdd7957abb24051d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
