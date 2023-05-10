@@ -9,6 +9,8 @@
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "tools/gpu/gl/GLTestContext.h"
 
+#include <vector>
+
 #define GL_GLEXT_PROTOTYPES
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
@@ -55,12 +57,20 @@ static EGLContext create_gles_egl_context(EGLDisplay display,
                                           EGLConfig surfaceConfig,
                                           EGLContext eglShareContext,
                                           EGLint eglContextClientVersion) {
-    const EGLint contextAttribsForOpenGLES[] = {
-        EGL_CONTEXT_CLIENT_VERSION,
-        eglContextClientVersion,
-        EGL_NONE
+
+    std::vector<EGLint> contextAttribs = {
+            EGL_CONTEXT_CLIENT_VERSION, eglContextClientVersion,
     };
-    return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribsForOpenGLES);
+
+    const char* extensions = eglQueryString(display, EGL_EXTENSIONS);
+    if (strstr(extensions, "EGL_EXT_protected_content")) {
+        contextAttribs.push_back(EGL_PROTECTED_CONTENT_EXT);
+        contextAttribs.push_back(EGL_TRUE);
+    }
+
+    contextAttribs.push_back(EGL_NONE);
+
+    return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribs.data());
 }
 static EGLContext create_gl_egl_context(EGLDisplay display,
                                         EGLConfig surfaceConfig,
@@ -68,6 +78,7 @@ static EGLContext create_gl_egl_context(EGLDisplay display,
     const EGLint contextAttribsForOpenGL[] = {
         EGL_NONE
     };
+
     return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribsForOpenGL);
 }
 
