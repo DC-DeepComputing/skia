@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04a8238e_356392eb",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-10T19:24:36Z",
+      "side": 1,
+      "message": "Acknowledged - follow-up CL I think will rename Descriptors.h -\u003e DescriptorTypes.h, and add a new Vulkan-only header file to define the function to translate between higher-level DescriptorTypes to Vulkan-specific descriptor types.",
+      "parentUuid": "1183a173_0ecdce8f",
+      "range": {
+        "startLine": 40,
+        "startChar": 17,
+        "endLine": 40,
+        "endChar": 54
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47401e1f_e743a904",
@@ -71,6 +95,30 @@
       "writtenOn": "2023-05-08T20:03:58Z",
       "side": 1,
       "message": "Change to DsTypeEnumToVkDs? (since it\u0027s static)",
+      "range": {
+        "startLine": 33,
+        "startChar": 28,
+        "endLine": 33,
+        "endChar": 44
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71ce28b4_9b109430",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-10T19:24:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47401e1f_e743a904",
       "range": {
         "startLine": 33,
         "startChar": 28,
@@ -151,6 +199,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86ad5908_ebe839a2",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-10T19:24:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0202b23_7d682745",
+      "range": {
+        "startLine": 141,
+        "startChar": 16,
+        "endLine": 141,
+        "endChar": 19
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "304460da_d1c304c2",
@@ -174,6 +246,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aef5c674_5c6f6587",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-10T19:24:36Z",
+      "side": 1,
+      "message": "Yeah, you\u0027re right. Sketchiness removed. Thank you for being the voice of reason. 😋",
+      "parentUuid": "304460da_d1c304c2",
+      "range": {
+        "startLine": 154,
+        "startChar": 12,
+        "endLine": 154,
+        "endChar": 29
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9735fe6b_214b449d",
@@ -187,6 +283,30 @@
       "writtenOn": "2023-05-09T17:20:55Z",
       "side": 1,
       "message": "Same here.",
+      "range": {
+        "startLine": 178,
+        "startChar": 4,
+        "endLine": 178,
+        "endChar": 21
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6891d541_1802ccf9",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-10T19:24:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9735fe6b_214b449d",
       "range": {
         "startLine": 178,
         "startChar": 4,
