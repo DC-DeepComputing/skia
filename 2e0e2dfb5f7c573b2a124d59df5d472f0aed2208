@@ -147,6 +147,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c7af754_fa659501",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-10T17:19:50Z",
+      "side": 1,
+      "message": "I removed the `fEmpty` tracking here and added an FFI bridge for `vello_encoding::Encoding::is_empty` instead.",
+      "parentUuid": "0a33a846_0916e086",
+      "range": {
+        "startLine": 125,
+        "startChar": 4,
+        "endLine": 130,
+        "endChar": 19
+      },
+      "revId": "2e0e2dfb5f7c573b2a124d59df5d472f0aed2208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fc7f152_c6065639",
