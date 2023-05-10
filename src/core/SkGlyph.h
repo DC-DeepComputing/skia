@@ -395,6 +395,19 @@ private:
     uint16_t fWidth, fHeight;
 };
 
+class SkPictureBackedGlyphDrawable final : public SkDrawable {
+public:
+    static sk_sp<SkPictureBackedGlyphDrawable>MakeFromBuffer(SkReadBuffer& buffer);
+    static void FlattenDrawable(SkWriteBuffer& buffer, SkDrawable* drawable);
+    SkPictureBackedGlyphDrawable(sk_sp<SkPicture> self);
+
+private:
+    sk_sp<SkPicture> fPicture;
+    SkRect onGetBounds() override;
+    size_t onApproximateBytesUsed() override;
+    void onDraw(SkCanvas* canvas) override;
+};
+
 class SkGlyph {
 public:
     static std::optional<SkGlyph> MakeFromBuffer(SkReadBuffer&);
