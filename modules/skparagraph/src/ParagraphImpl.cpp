@@ -115,6 +115,21 @@ int32_t ParagraphImpl::unresolvedGlyphs() {
     return fUnresolvedGlyphs;
 }
 
+std::unordered_set<SkUnichar> ParagraphImpl::unresolvedCodepoints() {
+    return fUnresolvedCodepoints;
+}
+
+void ParagraphImpl::addUnresolvedCodepoints(TextRange textRange) {
+    fUnicode->forEachCodepoint(
+        &fText[textRange.start], textRange.width(),
+        [&](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
+            if (fUnresolvedCodepoints.find(unichar) == fUnresolvedCodepoints.end()) {
+                fUnresolvedCodepoints.emplace(unichar);
+            }
+        }
+    );
+}
+
 void ParagraphImpl::layout(SkScalar rawWidth) {
     // TODO: This rounding is done to match Flutter tests. Must be removed...
     auto floorWidth = rawWidth;
