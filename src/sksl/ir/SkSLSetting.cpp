@@ -28,22 +28,19 @@ using CapsLookupTable = THashMap<std::string_view, Setting::CapsPtr>;
 static const CapsLookupTable& caps_lookup_table() {
     // Create a lookup table that converts strings into the equivalent ShaderCaps member-pointers.
     static CapsLookupTable* sCapsLookupTable = new CapsLookupTable({
-        CapsLookupTable::Pair("mustDoOpBetweenFloorAndAbs",
-                              &ShaderCaps::fMustDoOpBetweenFloorAndAbs),
-        CapsLookupTable::Pair("mustGuardDivisionEvenAfterExplicitZeroCheck",
-                              &ShaderCaps::fMustGuardDivisionEvenAfterExplicitZeroCheck),
-        CapsLookupTable::Pair("atan2ImplementedAsAtanYOverX",
-                              &ShaderCaps::fAtan2ImplementedAsAtanYOverX),
-        CapsLookupTable::Pair("floatIs32Bits",
-                              &ShaderCaps::fFloatIs32Bits),
-        CapsLookupTable::Pair("integerSupport",
-                              &ShaderCaps::fIntegerSupport),
-        CapsLookupTable::Pair("builtinDeterminantSupport",
-                              &ShaderCaps::fBuiltinDeterminantSupport),
-        CapsLookupTable::Pair("rewriteMatrixVectorMultiply",
-                              &ShaderCaps::fRewriteMatrixVectorMultiply),
-        CapsLookupTable::Pair("PerlinNoiseRoundingFix",
-                              &ShaderCaps::fPerlinNoiseRoundingFix),
+            CapsLookupTable::Pair("mustDoOpBetweenFloorAndAbs",
+                                  &ShaderCaps::fMustDoOpBetweenFloorAndAbs),
+            CapsLookupTable::Pair("mustGuardDivisionEvenAfterExplicitZeroCheck",
+                                  &ShaderCaps::fMustGuardDivisionEvenAfterExplicitZeroCheck),
+            CapsLookupTable::Pair("atan2ImplementedAsAtanYOverX",
+                                  &ShaderCaps::fAtan2ImplementedAsAtanYOverX),
+            CapsLookupTable::Pair("floatIs32Bits", &ShaderCaps::fFloatIs32Bits),
+            CapsLookupTable::Pair("integerSupport", &ShaderCaps::fIntegerSupport),
+            CapsLookupTable::Pair("builtinDeterminantSupport",
+                                  &ShaderCaps::fBuiltinDeterminantSupport),
+            CapsLookupTable::Pair("rewriteMatrixVectorMultiply",
+                                  &ShaderCaps::fRewriteMatrixVectorMultiply),
+            CapsLookupTable::Pair("PerlinNoiseRoundingFix", &ShaderCaps::fPerlinNoiseRoundingFix),
     });
     return *sCapsLookupTable;
 }

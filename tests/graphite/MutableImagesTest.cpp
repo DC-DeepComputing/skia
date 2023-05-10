@@ -7,12 +7,11 @@
 
 #include "tests/Test.h"
 
-#if defined(SK_GRAPHITE)
-
 #include "include/core/SkImage.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "src/core/SkAutoPixmapStorage.h"
@@ -223,11 +222,11 @@ public:
         update_backend_texture(fReporter, fRecorder, fBETexture, kRGBA_8888_SkColorType,
                                fWithMips, kInitialColor);
 
-        fMutatingImg = SkImage::MakeGraphiteFromBackendTexture(fRecorder,
-                                                               fBETexture,
-                                                               kRGBA_8888_SkColorType,
-                                                               kPremul_SkAlphaType,
-                                                               /* colorSpace= */ nullptr);
+        fMutatingImg = SkImages::AdoptTextureFrom(fRecorder,
+                                                  fBETexture,
+                                                  kRGBA_8888_SkColorType,
+                                                  kPremul_SkAlphaType,
+                                                  /* colorSpace= */ nullptr);
         REPORTER_ASSERT(fReporter, fMutatingImg);
 
         return fRecorder->snap();
@@ -316,17 +315,17 @@ public:
                                    fWithMips, kMutationColors[i]);
         }
 
-        fMutatingImg = SkImage::MakeGraphitePromiseTexture(fRecorder,
-                                                           kImageSize,
-                                                           info,
-                                                           SkColorInfo(kRGBA_8888_SkColorType,
-                                                                       kPremul_SkAlphaType,
-                                                                       /* colorSpace= */ nullptr),
-                                                           Volatile::kYes,
-                                                           fulfill,
-                                                           imageRelease,
-                                                           textureRelease,
-                                                           this);
+        fMutatingImg = SkImages::PromiseTextureFrom(fRecorder,
+                                                    kImageSize,
+                                                    info,
+                                                    SkColorInfo(kRGBA_8888_SkColorType,
+                                                                kPremul_SkAlphaType,
+                                                                /* colorSpace= */ nullptr),
+                                                    Volatile::kYes,
+                                                    fulfill,
+                                                    imageRelease,
+                                                    textureRelease,
+                                                    this);
         REPORTER_ASSERT(fReporter, fMutatingImg);
 
         return fRecorder->snap();
@@ -519,5 +518,3 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(MutableImagesTest, reporter, context) {
         }
     }
 }
-
-#endif // SK_GRAPHITE

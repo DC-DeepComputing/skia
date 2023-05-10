@@ -220,28 +220,20 @@ sk_sp<SkImage> SkImage_GaneshBase::onMakeSubset(GrDirectContext* direct,
                                       this->imageInfo().colorInfo());
 }
 
-#if defined(SK_GRAPHITE)
-sk_sp<SkImage> SkImage_GaneshBase::onMakeTextureImage(skgpu::graphite::Recorder*,
-                                                      SkImage::RequiredImageProperties) const {
-    SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
-    return nullptr;
-}
-
 sk_sp<SkImage> SkImage_GaneshBase::onMakeSubset(skgpu::graphite::Recorder*,
                                                 const SkIRect&,
-                                                RequiredImageProperties) const {
+                                                RequiredProperties) const {
     SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
     return nullptr;
 }
 
-sk_sp<SkImage> SkImage_GaneshBase::onMakeColorTypeAndColorSpace(SkColorType,
-                                                                sk_sp<SkColorSpace>,
-                                                                skgpu::graphite::Recorder*,
-                                                                RequiredImageProperties) const {
+sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(skgpu::graphite::Recorder*,
+                                                              SkColorType,
+                                                              sk_sp<SkColorSpace>,
+                                                              RequiredProperties) const {
     SKGPU_LOG_W("Cannot convert Ganesh-backed image to Graphite");
     return nullptr;
 }
-#endif
 
 bool SkImage_GaneshBase::onReadPixels(GrDirectContext* dContext,
                                       const SkImageInfo& dstInfo,

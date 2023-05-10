@@ -14,10 +14,9 @@ namespace SkSL {
 
 const IntrinsicMap& GetIntrinsicMap() {
     #define SKSL_INTRINSIC(name) {#name, k_##name##_IntrinsicKind},
-    static const auto* kAllIntrinsics = new THashMap<std::string_view, IntrinsicKind>{
-        SKSL_INTRINSIC_LIST
-    };
-    #undef SKSL_INTRINSIC
+    static const auto* kAllIntrinsics =
+            new THashMap<std::string_view, IntrinsicKind>{SKSL_INTRINSIC_LIST};
+#undef SKSL_INTRINSIC
 
     return *kAllIntrinsics;
 }
