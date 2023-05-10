@@ -265,6 +265,7 @@ bool SkImage_Ganesh::getExistingBackendTexture(GrBackendTexture* outTexture,
     // We don't know how client's use of the texture will be ordered WRT Skia's. Ensure the
     // texture seen by the client won't be mutated by a SkSurface.
     sk_sp<GrSurfaceProxy> proxy = fChooser.switchToStableProxy();
+    SkDebugf("proxy protected: %d\n", proxy->isProtected() == GrProtected::kYes);
 
     if (!proxy->isInstantiated()) {
         auto resourceProvider = direct->priv().resourceProvider();
@@ -433,4 +434,3 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Ganesh::asFragmentProcessor(
 GrSurfaceProxyView SkImage_Ganesh::makeView(GrRecordingContext* rContext) const {
     return {fChooser.chooseProxy(rContext), fOrigin, fSwizzle};
 }
-
