@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66a0143c_20d87a88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-10T13:53:34Z",
+      "side": 1,
+      "message": "Personally I still prefer `Interface`, especially if we want to also update argument and variable names (and there\u0027s stuff like `outInputs` and `numInputs` which I think sound more natural swapping Inputs for Interface).",
+      "parentUuid": "9b17d962_e883450d",
+      "revId": "525118eb3f782054d2a280f497dbd8a1a6d7f8b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fe29a451_f9d4363c",
         "filename": "src/gpu/ganesh/d3d/GrD3DPipelineStateBuilder.cpp",
         "patchSetId": 2
