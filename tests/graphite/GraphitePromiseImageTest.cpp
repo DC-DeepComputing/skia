@@ -12,6 +12,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recording.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
@@ -219,7 +220,7 @@ void setup_test_context(Context* context,
                                        kRGBA_8888_SkColorType,
                                        kPremul_SkAlphaType);
 
-    testCtx->fImg = SkImage::MakeGraphitePromiseTexture(testCtx->fRecorder.get(),
+    testCtx->fImg = SkImages::PromiseTextureFrom(testCtx->fRecorder.get(),
                                                         dimensions,
                                                         textureInfo,
                                                         ii.colorInfo(),
