@@ -16,6 +16,47 @@
       "message": "LGTM, thanks!",
       "revId": "2c322383044e4ee20815bd1d353adc0180f6b9f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b54a8b6_56a20b54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-10T11:58:38Z",
+      "side": 1,
+      "message": "Actually, I found an issue when testing the Bazel fontations build.",
+      "parentUuid": "4a3173b6_e179361c",
+      "revId": "2c322383044e4ee20815bd1d353adc0180f6b9f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff7bece2_17c98b39",
+        "filename": "src/ports/fontations/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-10T11:58:38Z",
+      "side": 1,
+      "message": "This needs to be \":fontations_c_side\".",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 32
+      },
+      "revId": "2c322383044e4ee20815bd1d353adc0180f6b9f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
