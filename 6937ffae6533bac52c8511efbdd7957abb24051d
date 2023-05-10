@@ -33,6 +33,24 @@
       "message": "Derek, I don\u0027t see why the Bazel changes matter, since Android won\u0027t use them. Alec said there was a merge conflict. Looking at `android/u-release`, `resources/BUILD.bazel` looks like\n\n```\nload(\"//bazel:skia_rules.bzl\", \"skia_filegroup\")\n\nskia_filegroup(\n    name \u003d \"resources\",\n    srcs \u003d glob([\"**\"]),\n    visibility \u003d [\"//tests:__pkg__\"],\n)\n```\n\nAny concerns with landing this?",
       "revId": "6937ffae6533bac52c8511efbdd7957abb24051d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94c37882_c5ef45f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-10T13:10:23Z",
+      "side": 1,
+      "message": "I agree we don\u0027t need to worry about that. This glob supersedes the need to list all images manually",
+      "parentUuid": "6afa3c0c_dce3e1ff",
+      "revId": "6937ffae6533bac52c8511efbdd7957abb24051d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
