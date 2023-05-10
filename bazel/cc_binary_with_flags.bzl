@@ -28,6 +28,7 @@ _bool_flags = [
 _string_flags = [
     "//bazel/common_config_settings:fontmgr_factory",
     "//src/gpu:with_gl_standard",
+    "//command_line_option:compilation_mode",
 ]
 
 _string_list_flags = [
@@ -35,6 +36,7 @@ _string_list_flags = [
     "//src/codec:include_decoder",
     "//src/encode:include_encoder",
     "//bazel/common_config_settings:include_fontmgr",
+    "//command_line_option:platforms",
 ]
 
 # These are the flags that we support setting via set_flags

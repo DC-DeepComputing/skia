@@ -11,6 +11,18 @@ load(
     "PATHOPS_TESTS",
     "PDF_TESTS",
 )
+load(
+    ":android.bzl",
+    "CODEC",
+    "DEBUG",
+    "GANESH",
+    "GL",
+    "PATHOPS",
+    "PIXEL_5",
+    "RELEASE",
+    "VULKAN",
+    "skia_android_unit_test",
+)
 
 skia_cc_library(
     name = "tests_base",
@@ -280,24 +292,51 @@ selects.config_setting_group(
     ],
 )
 
-# This target is known to build successfully for Android with the following Bazel invocations:
+# These target can be run from a gLinux workstation. Instructions:
 #
-#     # For 64-bit ARM.
-#     $ bazel build //tests:known_good_android_ganesh_test \
-#           --config=for_android_arm64_with_rbe \
-#           --gpu_backend=gl_backend \
-#           --enable_gpu_test_utils
+# 1. Port-forward the ADB server from a Raspberry Pi that is connected to a Pixel 5:
 #
-#     # For 32-bit ARM.
-#     $ bazel build //tests:known_good_android_ganesh_test \
-#           --config=for_android_arm32_with_rbe \
-#           --gpu_backend=gl_backend \
-#           --enable_gpu_test_utils
+#     $ ssh -L 5037:localhost:5037 skia-rpi2-rack1-shelf1-036
 #
-# lovisolo@ has yet to test the resulting binaries on a physical Android device.
+# 2. Invoke Bazel as follows (replace target label as needed):
 #
-# Building this alias is equivalent to building //tests:text_blob_cache_test.
-alias(
-    name = "known_good_android_ganesh_test",
-    actual = ":TextBlobCacheTest",
+#     $ bazel test //tests:pixel5_codec_test --config=linux_rbe --test_output=streamed
+
+skia_android_unit_test(
+    name = "pixel5_codec_test",
+    device = PIXEL_5,
+    test_group = CODEC,
+    # No flavor specified; defaults to flavors [GL, RELEASE].
+)
+
+skia_android_unit_test(
+    name = "pixel5_codec_gl_debug_test",
+    device = PIXEL_5,
+    flavors = [
+        GL,
+        DEBUG,
+    ],
+    test_group = CODEC,
+)
+
+skia_android_unit_test(
+    name = "pixel5_codec_vulkan_release_test",
+    device = PIXEL_5,
+    flavors = [
+        VULKAN,
+        RELEASE,
+    ],
+    test_group = CODEC,
+)
+
+skia_android_unit_test(
+    name = "pixel5_ganesh_test",
+    device = PIXEL_5,
+    test_group = GANESH,
+)
+
+skia_android_unit_test(
+    name = "pixel5_pathops_test",
+    device = PIXEL_5,
+    test_group = PATHOPS,
 )
