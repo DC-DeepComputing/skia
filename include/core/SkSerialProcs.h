@@ -75,7 +75,8 @@ struct SK_API SkDeserialProcs {
 
     SkDeserialTypefaceProc  fTypefaceProc = nullptr;
     void*                   fTypefaceCtx = nullptr;
+
+    bool                    fAllowSkSL = true;
 };
 
 #endif
-

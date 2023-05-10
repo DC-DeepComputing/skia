@@ -50,7 +50,7 @@ namespace {
 
 } // anonymous namespace
 
-void SkReadBuffer::setMemory(const void* data, size_t size) {
+SkReadBuffer::SkReadBuffer(const void* data, size_t size) {
     this->validate(IsPtrAlign4(data) && (SkAlign4(size) == size));
     if (!fError) {
         fBase = fCurr = (const char*)data;
@@ -85,6 +85,7 @@ const void* SkReadBuffer::skip(size_t count, size_t size) {
 
 void SkReadBuffer::setDeserialProcs(const SkDeserialProcs& procs) {
     fProcs = procs;
+    fAllowSkSL = procs.fAllowSkSL;
 }
 
 bool SkReadBuffer::readBool() {
