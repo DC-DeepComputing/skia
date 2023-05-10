@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b17d962_e883450d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-10T13:49:22Z",
+      "side": 1,
+      "message": "You know, after sleeping on it, maybe you were right and `Interface` was the right choice. WDYT",
+      "revId": "525118eb3f782054d2a280f497dbd8a1a6d7f8b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fe29a451_f9d4363c",
         "filename": "src/gpu/ganesh/d3d/GrD3DPipelineStateBuilder.cpp",
         "patchSetId": 2
