@@ -76,7 +76,7 @@ public:
         return fInfo.fAlloc;
     }
     const GrVkImageInfo& vkImageInfo() const { return fInfo; }
-    VkFormat imageFormat() const { return fInfo.fFormat; }
+    VkFormat imageFormat() const { return fInfo.fFormat101; }
     GrBackendFormat backendFormat() const override {
         bool usesDRMModifier =
                 this->vkImageInfo().fImageTiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT;
