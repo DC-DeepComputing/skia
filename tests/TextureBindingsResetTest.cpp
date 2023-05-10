@@ -150,13 +150,14 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(TextureBindingsResetTest,
                                                                     GrProtected::kNo);
         GrGLTextureInfo info2D;
         REPORTER_ASSERT(reporter, texture2D.getGLTextureInfo(&info2D));
-        GrEGLImage eglImage = ctxInfo.glContext()->texture2DToEGLImage(info2D.fID);
+        GrEGLImage eglImage = ctxInfo.glContext()->texture2DToEGLImage(info2D.fID2);
         REPORTER_ASSERT(reporter, eglImage);
         GrGLTextureInfo infoExternal;
-        infoExternal.fID = ctxInfo.glContext()->eglImageToExternalTexture(eglImage);
+        infoExternal.fID2 = ctxInfo.glContext()->eglImageToExternalTexture(eglImage);
         infoExternal.fTarget = GR_GL_TEXTURE_EXTERNAL;
-        infoExternal.fFormat = info2D.fFormat;
-        REPORTER_ASSERT(reporter, infoExternal.fID);
+        infoExternal.fFormat2 = info2D.fFormat2;
+        REPORTER_ASSERT(reporter, infoExternal.fID2);
+        infoExternal.fProtected27 = info2D.fProtected27;
         GrBackendTexture backendTexture(10, 10, GrMipmapped::kNo, infoExternal);
         // Above texture creation will have messed with GL state and bindings.
         resetBindings();
@@ -174,7 +175,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(TextureBindingsResetTest,
         dContext->resetGLTextureBindings();
         checkBindings();
         resetBindings();
-        GL(DeleteTextures(1, &infoExternal.fID));
+        GL(DeleteTextures(1, &infoExternal.fID2));
         ctxInfo.glContext()->destroyEGLImage(eglImage);
         dContext->deleteBackendTexture(texture2D);
         dContext->resetContext();

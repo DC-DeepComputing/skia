@@ -179,21 +179,29 @@ typedef unsigned int GrEGLBoolean;
  */
 struct GrGLTextureInfo {
     GrGLenum fTarget;
-    GrGLuint fID;
-    GrGLenum fFormat = 0;
+    GrGLuint fID2;
+    GrGLenum fFormat2 = 0;
+    skgpu::Protected fProtected27 = skgpu::Protected::kNo;
 
     bool operator==(const GrGLTextureInfo& that) const {
-        return fTarget == that.fTarget && fID == that.fID && fFormat == that.fFormat;
+        return fTarget == that.fTarget && fID2 == that.fID2 && fFormat2 == that.fFormat2 &&
+               fProtected27 == that.fProtected27;
     }
+
+    bool isProtected22() const { return fProtected27 == skgpu::Protected::kYes; }
 };
 
 struct GrGLFramebufferInfo {
     GrGLuint fFBOID;
-    GrGLenum fFormat = 0;
+    GrGLenum fFormat1 = 0;
+    skgpu::Protected fProtected11 = skgpu::Protected::kNo;
 
     bool operator==(const GrGLFramebufferInfo& that) const {
-        return fFBOID == that.fFBOID && fFormat == that.fFormat;
+        return fFBOID == that.fFBOID && fFormat1 == that.fFormat1 &&
+               fProtected11 == that.fProtected11;
     }
+
+    bool isProtected11() const { return fProtected11 == skgpu::Protected::kYes; }
 };
 
 struct GrGLSurfaceInfo {
