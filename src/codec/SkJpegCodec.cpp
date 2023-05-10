@@ -107,6 +107,26 @@ SkJpegMarkerList get_sk_marker_list(jpeg_decompress_struct* dinfo) {
     return markerList;
 }
 
+/**
+ * Return true if the specified SkJpegMarker has marker |targetMarker| and begins with the specified
+ * signature.
+ */
+static bool marker_has_signature(const SkJpegMarker& marker,
+                                 const uint32_t targetMarker,
+                                 const uint8_t* signature,
+                                 size_t signatureSize) {
+    if (targetMarker != marker.marker) {
+        return false;
+    }
+    if (marker.data->size() <= signatureSize) {
+        return false;
+    }
+    if (memcmp(marker.data->bytes(), signature, signatureSize) != 0) {
+        return false;
+    }
+    return true;
+}
+
 /*
  * Return metadata with a specific marker and signature.
  *
@@ -147,16 +167,20 @@ static sk_sp<SkData> read_metadata(const SkJpegMarkerList& markerList,
 
     // Iterate through the image's segments.
     for (const auto& marker : markerList) {
-        const uint8_t* data = marker.data->bytes();
+        // Skip segments that don't have the right marker or signature.
+        if (!marker_has_signature(marker, targetMarker, signature, signatureSize)) {
+            continue;
+        }
+
+        // Skip segments that or are too small to include the index and count.
         const size_t dataLength = marker.data->size();
-        // Skip segments that don't have the right marker, signature, or are too small.
-        if (targetMarker != marker.marker || dataLength <= headerSize ||
-            memcmp(data, signature, signatureSize) != 0) {
+        if (dataLength <= headerSize) {
             continue;
         }
 
         // Read this part's index and count as big-endian (if they are present, otherwise hard-code
         // them to 1).
+        const uint8_t* data = marker.data->bytes();
         uint32_t partIndex = 0;
         uint32_t partCount = 0;
         if (bytesInIndex == 0) {
@@ -1307,6 +1331,20 @@ bool SkJpegCodec::onGetGainmapInfo(SkGainmapInfo* info,
 class SkJpegMetadataDecoderImpl : public SkJpegMetadataDecoder {
 public:
     SkJpegMetadataDecoderImpl(SkJpegMarkerList markerList) : fMarkerList(std::move(markerList)) {}
+
+    bool mightHaveGainmapImage() const override {
+        // Gainmap images are stored either in MPF or APP15 segments. If both are absent, then
+        // there will not be a gainmap image.
+        for (const auto& marker : fMarkerList) {
+            if (marker_has_signature(marker, kMpfMarker, kMpfSig, sizeof(kMpfSig))) {
+                return true;
+            }
+            if (marker_has_signature(marker, kGainmapMarker, kGainmapSig, sizeof(kGainmapSig))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     bool findGainmapImage(sk_sp<SkData> baseImageData,
                           sk_sp<SkData>& outGainmapImageData,

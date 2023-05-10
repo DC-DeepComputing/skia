@@ -49,6 +49,11 @@ public:
     static std::unique_ptr<SkJpegMetadataDecoder> Make(std::vector<Segment> headerSegments);
 
     /**
+     * Return false if it can be determined that |findGainmapImage| will return false.
+     */
+    virtual bool mightHaveGainmapImage() const = 0;
+
+    /**
      * Given a JPEG encoded image |baseImageData|, return in |outGainmapImageData| the JPEG encoded
      * gainmap image and return in |outGainmapInfo| its gainmap rendering parameters. Return true if
      * both output variables were successfully populated, otherwise return false.
