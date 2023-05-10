@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbbb76a2_caaf2b66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-10T15:10:05Z",
+      "side": 1,
+      "message": "Updated to Interface per offline discussion",
+      "parentUuid": "66a0143c_20d87a88",
+      "revId": "525118eb3f782054d2a280f497dbd8a1a6d7f8b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe29a451_f9d4363c",
@@ -49,6 +67,30 @@
       "writtenOn": "2023-05-10T13:41:52Z",
       "side": 1,
       "message": "`io`? (here and elsewhere that we still call it `inputs`)",
+      "range": {
+        "startLine": 585,
+        "startChar": 35,
+        "endLine": 585,
+        "endChar": 41
+      },
+      "revId": "525118eb3f782054d2a280f497dbd8a1a6d7f8b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f86f340d_6078bd93",
+        "filename": "src/gpu/ganesh/d3d/GrD3DPipelineStateBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-10T15:10:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe29a451_f9d4363c",
       "range": {
         "startLine": 585,
         "startChar": 35,
