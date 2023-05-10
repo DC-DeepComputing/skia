@@ -1333,11 +1333,11 @@ static bool check_tex_image_info(const GrVkCaps& caps, const GrVkImageInfo& info
         return true;
     }
     if (info.fImageTiling == VK_IMAGE_TILING_OPTIMAL) {
-        if (!caps.isVkFormatTexturable(info.fFormat)) {
+        if (!caps.isVkFormatTexturable(info.fFormat101)) {
             return false;
         }
     } else if (info.fImageTiling == VK_IMAGE_TILING_LINEAR) {
-        if (!caps.isVkFormatTexturableLinearly(info.fFormat)) {
+        if (!caps.isVkFormatTexturableLinearly(info.fFormat101)) {
             return false;
         }
     } else if (info.fImageTiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT) {
@@ -1366,7 +1366,7 @@ static bool check_tex_image_info(const GrVkCaps& caps, const GrVkImageInfo& info
 }
 
 static bool check_rt_image_info(const GrVkCaps& caps, const GrVkImageInfo& info, bool resolveOnly) {
-    if (!caps.isFormatRenderable(info.fFormat, info.fSampleCount)) {
+    if (!caps.isFormatRenderable(info.fFormat101, info.fSampleCount)) {
         return false;
     }
     if (!resolveOnly && !SkToBool(info.fImageUsageFlags & VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT)) {
@@ -1437,7 +1437,7 @@ sk_sp<GrTexture> GrVkGpu::onWrapRenderableBackendTexture(const GrBackendTexture&
         return nullptr;
     }
 
-    sampleCnt = this->vkCaps().getRenderTargetSampleCount(sampleCnt, imageInfo.fFormat);
+    sampleCnt = this->vkCaps().getRenderTargetSampleCount(sampleCnt, imageInfo.fFormat101);
 
     sk_sp<skgpu::MutableTextureStateRef> mutableState = backendTex.getMutableState();
     SkASSERT(mutableState);
@@ -1745,7 +1745,7 @@ bool GrVkGpu::onClearBackendTexture(const GrBackendTexture& backendTexture,
                              false);
 
     // CmdClearColorImage doesn't work for compressed formats
-    SkASSERT(!skgpu::VkFormatIsCompressed(info.fFormat));
+    SkASSERT(!skgpu::VkFormatIsCompressed(info.fFormat101));
 
     VkClearColorValue vkColor;
     // If we ever support SINT or UINT formats this needs to be updated to use the int32 and
@@ -1863,7 +1863,7 @@ bool GrVkGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendTe
                                &individualMipOffsets,
                                &slice,
                                compression,
-                               info.fFormat,
+                               info.fFormat101,
                                backendTexture.dimensions(),
                                backendTexture.fMipmapped);
 
