@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "18e1eeea_78b52aaa",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-10T17:27:49Z",
+      "side": 1,
+      "message": "I like using a span so this method can be \"dumb\". However, if the contract is that the count is \u003e 0 and we no longer track poolSizeCount, we need to strictly enforce not accepting counts of 0 being passed in (otherwise we could misrepresent the VkDescriptorPoolCreateInfo.poolSizeCount), so I added an assert for (count \u003e 0) instead of (count \u003e\u003d 0). That might be a bit harsh. LMKWYT, it is easy to change now or later.",
+      "parentUuid": "435a1b32_d4bd54bf",
+      "range": {
+        "startLine": 38,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 51
+      },
+      "revId": "ab13b77fe67dfc35b39e508dd26d725f9ed27ffc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ed5fa8c0_b20b8890",
         "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
         "patchSetId": 51
@@ -54,6 +78,30 @@
       "writtenOn": "2023-05-09T21:04:29Z",
       "side": 1,
       "message": "Add SkASSERT(descriptorCounts[i] \u003e\u003d 0)?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 8
+      },
+      "revId": "ab13b77fe67dfc35b39e508dd26d725f9ed27ffc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a25a9cc9_f0ccc086",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-10T17:27:49Z",
+      "side": 1,
+      "message": "See other response",
+      "parentUuid": "ed5fa8c0_b20b8890",
       "range": {
         "startLine": 46,
         "startChar": 0,
