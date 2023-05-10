@@ -88,6 +88,7 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
         EGL_CONTEXT_CLIENT_VERSION, 2,
         EGL_NONE
     };
+
     fEGLContext = eglCreateContext(
             fDisplay, surfaceConfig, nullptr, kEGLContextAttribsForOpenGLES);
     SkASSERT(EGL_NO_CONTEXT != fEGLContext);

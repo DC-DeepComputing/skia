@@ -394,7 +394,7 @@ public:
     void setMutableState(const skgpu::MutableTextureState&);
 
     // Returns true if we are working with protected content.
-    bool isProtected() const;
+    bool isProtectedS() const;
 
     // Returns true if the backend texture has been initialized.
     bool isValid() const { return fIsValid; }
@@ -596,7 +596,7 @@ public:
     void setMutableState(const skgpu::MutableTextureState&);
 
     // Returns true if we are working with protected content.
-    bool isProtected() const;
+    bool isProtectedRT() const;
 
     // Returns true if the backend texture has been initialized.
     bool isValid() const { return fIsValid; }
