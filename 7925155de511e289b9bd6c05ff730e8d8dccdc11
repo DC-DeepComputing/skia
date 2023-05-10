@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcb3c2e2_62f8f823",
+        "filename": "src/sksl/ir/SkSLConstructorCompoundCast.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-10T20:41:09Z",
+      "side": 1,
+      "message": "Maybe `SkASSERT(numSlots \u003c\u003d 16)` ?",
+      "revId": "7925155de511e289b9bd6c05ff730e8d8dccdc11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
