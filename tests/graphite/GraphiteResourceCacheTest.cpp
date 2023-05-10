@@ -12,6 +12,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "src/core/SkCanvasPriv.h"
@@ -167,7 +168,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest, reporter, cont
     sk_sp<SkImage> image = SkImages::RasterFromData(info, std::move(data), info.minRowBytes());
     REPORTER_ASSERT(reporter, image);
 
-    sk_sp<SkImage> imageGpu = image->makeTextureImage(recorder.get());
+    sk_sp<SkImage> imageGpu = SkImages::TextureFromImage(recorder.get(), image, {});
     REPORTER_ASSERT(reporter, imageGpu);
 
     TextureProxy* imageProxy = nullptr;

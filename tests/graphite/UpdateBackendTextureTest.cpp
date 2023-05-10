@@ -10,6 +10,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/gpu/graphite/Caps.h"
@@ -89,7 +90,7 @@ sk_sp<SkImage> wrap_backend_texture(skiatest::Reporter* reporter,
                                     const skgpu::graphite::BackendTexture& backendTex,
                                     SkColorType ct,
                                     bool withMips) {
-    sk_sp<SkImage> image = SkImage::MakeGraphiteFromBackendTexture(recorder,
+    sk_sp<SkImage> image = SkImages::AdoptTextureFrom(recorder,
                                                                    backendTex,
                                                                    ct,
                                                                    kPremul_SkAlphaType,

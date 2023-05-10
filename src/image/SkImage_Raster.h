@@ -63,7 +63,7 @@ public:
 #if defined(SK_GRAPHITE)
     sk_sp<SkImage> onMakeSubset(skgpu::graphite::Recorder*,
                                 const SkIRect&,
-                                RequiredImageProperties) const override;
+                                RequiredProperties) const override;
 #endif
 
     SkPixelRef* getPixelRef() const { return fBitmap.pixelRef(); }
@@ -110,15 +110,6 @@ public:
 
 private:
     SkBitmap fBitmap;
-
-#if defined(SK_GRAPHITE)
-    sk_sp<SkImage> onMakeTextureImage(skgpu::graphite::Recorder*,
-                                      RequiredImageProperties) const override;
-    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType targetCT,
-                                                sk_sp<SkColorSpace> targetCS,
-                                                skgpu::graphite::Recorder*,
-                                                RequiredImageProperties) const override;
-#endif
 };
 
 sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id);
