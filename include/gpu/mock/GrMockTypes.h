@@ -17,67 +17,79 @@ class GrBackendFormat;
 struct GrMockTextureInfo {
     GrMockTextureInfo()
         : fColorType(GrColorType::kUnknown)
-        , fCompressionType(SkTextureCompressionType::kNone)
+        , fCompressionType1(SkTextureCompressionType::kNone)
         , fID(0) {}
 
     GrMockTextureInfo(GrColorType colorType,
                       SkTextureCompressionType compressionType,
-                      int id)
+                      int id,
+                      skgpu::Protected isProtected /* = skgpu::Protected::kNo */)
             : fColorType(colorType)
-            , fCompressionType(compressionType)
-            , fID(id) {
+            , fCompressionType1(compressionType)
+            , fID(id)
+            , fProtected202(isProtected) {
         SkASSERT(fID);
-        if (fCompressionType != SkTextureCompressionType::kNone) {
+        if (fCompressionType1 != SkTextureCompressionType::kNone) {
             SkASSERT(colorType == GrColorType::kUnknown);
         }
     }
 
     bool operator==(const GrMockTextureInfo& that) const {
         return fColorType == that.fColorType &&
-               fCompressionType == that.fCompressionType &&
-               fID == that.fID;
+               fCompressionType1 == that.fCompressionType1 &&
+               fID == that.fID &&
+               fProtected202 == that.fProtected202;
     }
 
     GrBackendFormat getBackendFormat() const;
 
-    SkTextureCompressionType compressionType() const { return fCompressionType; }
+    SkTextureCompressionType compressionType() const { return fCompressionType1; }
 
     GrColorType colorType() const {
-        SkASSERT(fCompressionType == SkTextureCompressionType::kNone);
+        SkASSERT(fCompressionType1 == SkTextureCompressionType::kNone);
         return fColorType;
     }
 
     int id() const { return fID; }
 
+    bool isProtected202() const { return fProtected202 == skgpu::Protected::kYes; }
+
 private:
     GrColorType              fColorType;
-    SkTextureCompressionType fCompressionType;
+    SkTextureCompressionType fCompressionType1;
     int                      fID;
+    skgpu::Protected         fProtected202 = skgpu::Protected::kNo;
 };
 
 struct GrMockRenderTargetInfo {
     GrMockRenderTargetInfo()
-            : fColorType(GrColorType::kUnknown)
-            , fID(0) {}
+            : fColorType1(GrColorType::kUnknown)
+            , fID111(0) {}
 
-    GrMockRenderTargetInfo(GrColorType colorType, int id)
-            : fColorType(colorType)
-            , fID(id) {
-        SkASSERT(fID);
+    GrMockRenderTargetInfo(GrColorType colorType, int id,
+                           skgpu::Protected isProtected /* = skgpu::Protected::kNo */)
+            : fColorType1(colorType)
+            , fID111(id)
+            , fProtected(isProtected) {
+        SkASSERT(fID111);
     }
 
     bool operator==(const GrMockRenderTargetInfo& that) const {
-        return fColorType == that.fColorType &&
-               fID == that.fID;
+        return fColorType1 == that.fColorType1 &&
+               fID111 == that.fID111 &&
+               fProtected == that.fProtected;
     }
 
     GrBackendFormat getBackendFormat() const;
 
-    GrColorType colorType() const { return fColorType; }
+    GrColorType colorType() const { return fColorType1; }
+
+    bool isProtected222() const { return fProtected == skgpu::Protected::kYes; }
 
 private:
-    GrColorType   fColorType;
-    int           fID;
+    GrColorType      fColorType1;
+    int              fID111;
+    skgpu::Protected fProtected = skgpu::Protected::kNo;
 };
 
 struct GrMockSurfaceInfo {

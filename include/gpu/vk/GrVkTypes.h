@@ -67,12 +67,12 @@ struct GrVkImageInfo {
     skgpu::VulkanAlloc       fAlloc;
     VkImageTiling            fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     VkImageLayout            fImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    VkFormat                 fFormat = VK_FORMAT_UNDEFINED;
+    VkFormat                 fFormat101 = VK_FORMAT_UNDEFINED;
     VkImageUsageFlags        fImageUsageFlags = 0;
     uint32_t                 fSampleCount = 1;
     uint32_t                 fLevelCount = 0;
     uint32_t                 fCurrentQueueFamily = VK_QUEUE_FAMILY_IGNORED;
-    skgpu::Protected         fProtected = skgpu::Protected::kNo;
+    skgpu::Protected         fProtected101 = skgpu::Protected::kNo;
     GrVkYcbcrConversionInfo  fYcbcrConversionInfo;
     VkSharingMode            fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
@@ -84,12 +84,12 @@ struct GrVkImageInfo {
         bool equal = fImage == that.fImage && fAlloc == that.fAlloc &&
                      fImageTiling == that.fImageTiling &&
                      fImageLayout == that.fImageLayout &&
-                     fFormat == that.fFormat &&
+                     fFormat101 == that.fFormat101 &&
                      fImageUsageFlags == that.fImageUsageFlags &&
                      fSampleCount == that.fSampleCount &&
                      fLevelCount == that.fLevelCount &&
                      fCurrentQueueFamily == that.fCurrentQueueFamily &&
-                     fProtected == that.fProtected &&
+                     fProtected101 == that.fProtected101 &&
                      fYcbcrConversionInfo == that.fYcbcrConversionInfo &&
                      fSharingMode == that.fSharingMode;
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
