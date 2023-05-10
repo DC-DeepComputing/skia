@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "838b0360_cb371d76",
+        "filename": "gm/fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-10T18:58:42Z",
+      "side": 1,
+      "message": "We don\u0027t want printfs in the gms. Looks like the tests we have for this are in `tests/FontNamesTest.cpp` and `test_systemfonts` kinda does what you want (and has a `verbose` flag for printing things out but is currently tied up with the default FontMgr (since that\u0027s all we needed to do to test everything before). It might be possible to follow the example of how `tests/FontMgrFontConfigTest.cpp` works to only build a test when building this feature.\n\nOr, yeah, you could just use the typeface to draw the names onto the gm.",
+      "revId": "4dadac8d88deed3824abb155484545c7c94606a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cd8e5873_552e3db1",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 6
