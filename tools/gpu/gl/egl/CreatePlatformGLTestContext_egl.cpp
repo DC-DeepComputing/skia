@@ -9,6 +9,8 @@
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "tools/gpu/gl/GLTestContext.h"
 
+#include <vector>
+
 #define GL_GLEXT_PROTOTYPES
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
@@ -54,13 +56,28 @@ private:
 static EGLContext create_gles_egl_context(EGLDisplay display,
                                           EGLConfig surfaceConfig,
                                           EGLContext eglShareContext,
-                                          EGLint eglContextClientVersion) {
-    const EGLint contextAttribsForOpenGLES[] = {
-        EGL_CONTEXT_CLIENT_VERSION,
-        eglContextClientVersion,
-        EGL_NONE
+                                          EGLint eglContextClientVersion,
+                                          bool createProtected) {
+
+    std::vector<EGLint> contextAttribs = {
+            EGL_CONTEXT_CLIENT_VERSION, eglContextClientVersion,
     };
-    return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribsForOpenGLES);
+
+    const char* extensions = eglQueryString(display, EGL_EXTENSIONS);
+    if (strstr(extensions, "EGL_EXT_protected_content")) {
+        contextAttribs.push_back(EGL_PROTECTED_CONTENT_EXT);
+        contextAttribs.push_back(EGL_TRUE);
+    }
+
+    contextAttribs.push_back(EGL_NONE);
+
+    EGLContext result = eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribs.data());
+
+    SkDebugf("---here 3 with: %d - %s\n",
+             eglContextClientVersion,
+             EGL_NO_CONTEXT == result ? "failed" : "succeeded");
+
+    return result;
 }
 static EGLContext create_gl_egl_context(EGLDisplay display,
                                         EGLConfig surfaceConfig,
@@ -68,6 +85,7 @@ static EGLContext create_gl_egl_context(EGLDisplay display,
     const EGLint contextAttribsForOpenGL[] = {
         EGL_NONE
     };
+
     return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribsForOpenGL);
 }
 
@@ -139,12 +157,15 @@ EGLGLTestContext::EGLGLTestContext(GrGLStandard forcedGpuAPI, EGLGLTestContext* 
 #ifdef GR_EGL_TRY_GLES3_THEN_GLES2
             // Some older devices (Nexus7/Tegra3) crash when you try this.  So it is (for now)
             // hidden behind this flag.
-            fContext = create_gles_egl_context(fDisplay, surfaceConfig, eglShareContext, 3);
+            fContext = create_gles_egl_context(fDisplay, surfaceConfig, eglShareContext, 3,
+                                               skgpu::Protected::kYes);
             if (EGL_NO_CONTEXT == fContext) {
-                fContext = create_gles_egl_context(fDisplay, surfaceConfig, eglShareContext, 2);
+                fContext = create_gles_egl_context(fDisplay, surfaceConfig, eglShareContext, 2,
+                                                   skgpu::Protected::kYes);
             }
 #else
-            fContext = create_gles_egl_context(fDisplay, surfaceConfig, eglShareContext, 2);
+            fContext = create_gles_egl_context(fDisplay, surfaceConfig, eglShareContext, 2,
+                                               skgpu::Protected::kYes);
 #endif
         } else {
             fContext = create_gl_egl_context(fDisplay, surfaceConfig, eglShareContext);
