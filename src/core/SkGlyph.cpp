@@ -12,6 +12,7 @@
 #include "include/core/SkDrawable.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSerialProcs.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTemplates.h"
@@ -403,7 +404,9 @@ size_t SkGlyph::addDrawableFromBuffer(SkReadBuffer& buffer, SkArenaAlloc* alloc)
 
     // If the picture is too big, or there is no picture is indicated by an empty byte array.
     if (pictureData->size() > 0) {
-        sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get());
+        SkDeserialProcs procs;
+        procs.fAllowSkSL = false;
+        sk_sp<SkPicture> picture = SkPicture::MakeFromData(pictureData.get(), &procs);
         if (!buffer.validate(picture != nullptr)) {
             return 0;
         }
