@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1964f3ac_9d100abf",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-10T19:51:37Z",
+      "side": 1,
+      "message": "Right, it\u0027s Vulkan-only. VulkanGraphiteUtilsPriv.h/VulkanGraphiteUtils.cpp might be a good place.",
+      "parentUuid": "04a8238e_356392eb",
+      "range": {
+        "startLine": 40,
+        "startChar": 17,
+        "endLine": 40,
+        "endChar": 54
+      },
+      "revId": "867152531809926f94a82b45a1dfa660203f0dc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47401e1f_e743a904",
