@@ -101,7 +101,10 @@ sk_sp<const GrGLInterface> ANGLEGLWindowContext_win::onInitializeContext() {
         return nullptr;
     }
     // We currently only support ES3.
-    const EGLint contextAttribs[] = {EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE};
+    const EGLint contextAttribs[] = {
+            EGL_CONTEXT_CLIENT_VERSION, 3,
+            EGL_NONE};
+
     fEGLContext = eglCreateContext(fDisplay, surfaceConfig, nullptr, contextAttribs);
     if (EGL_NO_CONTEXT == fEGLContext) {
         SkDebugf("Could not create context!\n");
