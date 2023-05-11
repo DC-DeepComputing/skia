@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2265ef22_2f5237ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-11T18:02:24Z",
+      "side": 1,
+      "message": "This should fix the invalidations layout test errors that chrome was seeing. We were flooding out the bounds more than we should have been.",
+      "revId": "7dce85b1dc5e31dc083a9ed415799625683bda94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
