@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b48ec5b5_7d21bb70",
+        "filename": "modules/skottie/src/layers/FootageLayer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-11T15:48:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c1f07b7_2709e800",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 5
+      },
+      "revId": "fab1a340b82c726e909abc7ab37a40e0fa7ffc3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0532a2df_103e9389",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55d0297b_98ffa860",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-11T15:48:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0532a2df_103e9389",
+      "range": {
+        "startLine": 288,
+        "startChar": 26,
+        "endLine": 288,
+        "endChar": 28
+      },
+      "revId": "fab1a340b82c726e909abc7ab37a40e0fa7ffc3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aafedd71_2bbddfc2",
@@ -60,6 +108,24 @@
       "writtenOn": "2023-05-11T13:05:17Z",
       "side": 1,
       "message": "`operator[]` always inserts, use `find` to check if the key is present without changing the map.",
+      "revId": "fab1a340b82c726e909abc7ab37a40e0fa7ffc3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf78cafd_a80ce26c",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-11T15:48:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aafedd71_2bbddfc2",
       "revId": "fab1a340b82c726e909abc7ab37a40e0fa7ffc3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
