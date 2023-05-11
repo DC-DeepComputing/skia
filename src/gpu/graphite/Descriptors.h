@@ -25,11 +25,6 @@ enum class DescriptorType : uint8_t {
 };
 static constexpr int kDescriptorTypeCount = (int)(DescriptorType::kLast) + 1;
 
-struct DescTypeAndCount {
-    DescriptorType type;
-    uint32_t count;
-};
-
 };  // namespace skgpu::graphite
 
 #endif // skgpu_graphite_Descriptors_DEFINED

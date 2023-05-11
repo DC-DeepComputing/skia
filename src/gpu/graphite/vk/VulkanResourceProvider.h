@@ -11,10 +11,12 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/Descriptors.h"
 
 namespace skgpu::graphite {
 
 class VulkanCommandBuffer;
+class VulkanDescriptorSet;
 class VulkanSharedContext;
 
 class VulkanResourceProvider final : public ResourceProvider {
@@ -23,6 +25,10 @@ public:
     ~VulkanResourceProvider() override;
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;
+
+    static VkDescriptorSetLayout determine_descriptor_set_layout(
+            const VulkanSharedContext*,
+            int requestedDescCounts[kDescriptorTypeCount]);
 
 private:
     const VulkanSharedContext* vulkanSharedContext();
@@ -41,6 +47,10 @@ private:
 
     BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) override;
     void onDeleteBackendTexture(BackendTexture&) override {}
+
+    VulkanDescriptorSet* findOrCreateDescriptorSet(int requestedDescCounts[kDescriptorTypeCount]);
+
+    friend class VulkanCommandBuffer;
 };
 
 } // namespace skgpu::graphite

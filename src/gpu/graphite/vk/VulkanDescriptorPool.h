@@ -10,7 +10,6 @@
 
 #include "include/core/SkRefCnt.h"
 
-#include "include/core/SkSpan.h"
 #include "src/gpu/graphite/Descriptors.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 
@@ -29,6 +28,16 @@ public:
     */
     static sk_sp<VulkanDescriptorPool> Make(const VulkanSharedContext*,
                                             SkSpan<DescTypeAndCount>);
+
+    VkDescriptorPool* descPool() { return &fDescPool; }
+
+private:
+    // Conservative overestimation of a maximum number of descriptors of any given type that can be
+    // requested.
+    static constexpr int kMaxNumDescriptors = 1024;
+
+    static sk_sp<VulkanDescriptorPool> Make(const VulkanSharedContext*,
+                                            int requestedDescCounts [kDescriptorTypeCount]);
 
     VkDescriptorPool* descPool() { return &fDescPool; }
 
