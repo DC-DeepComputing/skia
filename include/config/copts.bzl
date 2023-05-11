@@ -33,7 +33,8 @@ Skia and the third party dep depend on that.
 CORE_COPTS = [
     "-fstrict-aliasing",
     "-fPIC",
-    "-fno-rtti",  # Reduces code size
+    "-fvisibility=hidden",
+    "-fno-rtti",  # Reduces code size  
 ] + select({
     # SkRawCodec catches any exceptions thrown by dng_sdk, insulating the rest of Skia.
     "//src/codec:raw_decode_codec": [],
