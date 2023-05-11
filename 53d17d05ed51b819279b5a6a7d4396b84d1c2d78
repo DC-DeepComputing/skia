@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92918af4_d1fcba1b",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-11T00:34:52Z",
+      "side": 1,
+      "message": "nit: spelling",
+      "range": {
+        "startLine": 104,
+        "startChar": 19,
+        "endLine": 104,
+        "endChar": 29
+      },
+      "revId": "53d17d05ed51b819279b5a6a7d4396b84d1c2d78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91adcf04_cdf3a5c2",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-11T00:34:52Z",
+      "side": 1,
+      "message": "Consider `SkAutoConicToQuads` in `SkGeometry.h` that will increase the number of quadratics automatically based on the accuracy. `tol` generally specifies the maximum allowed distance between the conic (or original curve) and the quad (or other approximation) in Skia code. Often when used in the raster backend or Ganesh, the curve being processed has been mapped to device space so this tolerance directly translates to maximum subpixel error.\n\nSince these paths are in local space, a pixel error tolerance needs to be mapped by the scale factor from the transform (which should be available in DrawParams\u0027 transform, although the ucrrent impl is a little wishy-washy and might need to be replaced with the SVD approach used in `local_aa_radius` in AnalyticRRectRenderStep).",
+      "range": {
+        "startLine": 105,
+        "startChar": 16,
+        "endLine": 106,
+        "endChar": 83
+      },
+      "revId": "53d17d05ed51b819279b5a6a7d4396b84d1c2d78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
