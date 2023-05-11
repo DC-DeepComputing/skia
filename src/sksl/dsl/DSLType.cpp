@@ -257,20 +257,6 @@ bool DSLType::isEffectChild() const {
     return this->skslType().isEffectChild();
 }
 
-DSLExpression DSLType::Construct(DSLType type, SkSpan<DSLExpression> argArray) {
-    SkSL::ExpressionArray skslArgs;
-    skslArgs.reserve_back(argArray.size());
-
-    for (DSLExpression& arg : argArray) {
-        if (!arg.hasValue()) {
-            return DSLExpression();
-        }
-        skslArgs.push_back(arg.release());
-    }
-    return DSLExpression(SkSL::Constructor::Convert(ThreadContext::Context(), Position(),
-                                                    type.skslType(), std::move(skslArgs)));
-}
-
 DSLType Array(const DSLType& base, int count, Position pos) {
     SkSL::Context& context = ThreadContext::Context();
     count = base.skslType().convertArraySize(context, pos, DSLExpression(count, pos).release());
