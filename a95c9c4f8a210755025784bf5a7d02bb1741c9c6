@@ -22,6 +22,30 @@
       },
       "revId": "a95c9c4f8a210755025784bf5a7d02bb1741c9c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6559e3b_e5cfe166",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-11T07:02:59Z",
+      "side": 1,
+      "message": "Done. Good to know!",
+      "parentUuid": "e6356e6d_7569cde8",
+      "range": {
+        "startLine": 29,
+        "startChar": 18,
+        "endLine": 29,
+        "endChar": 29
+      },
+      "revId": "a95c9c4f8a210755025784bf5a7d02bb1741c9c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
