@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94d44b18_90ed67d7",
+        "filename": "relnotes/skcodecs_register.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-11T15:23:25Z",
+      "side": 1,
+      "message": "I\u0027m confused - I thought the way we typically did this was to\n1. define the legacy flag in our clients (the flag doesn\u0027t do anything yet)\n2. make the legacy flag keep the old behavior\n3. update clients to the new behavior\n4. remove the old behavior from Skia\n\nThat means that the flag keeps the old behavior - which is what the flag\u0027s name seems to mean. But it behaves in the opposite direction.",
+      "range": {
+        "startLine": 9,
+        "startChar": 1,
+        "endLine": 9,
+        "endChar": 38
+      },
+      "revId": "47c3995baedd5f13ccb2dacfb182c5e65755d503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

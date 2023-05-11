@@ -353,6 +353,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "556586f9_fa3684fd",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-11T15:23:25Z",
+      "side": 1,
+      "message": "Fwiw, from https://chat.google.com/room/AAAABiWIgTc/VDmC4bxEEiY, it sounds like we do *not* want to run the destructor.",
+      "parentUuid": "0489aa03_a68933a7",
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1dae00c4_da661612",
