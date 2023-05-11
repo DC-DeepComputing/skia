@@ -36,7 +36,10 @@ split_srcs_and_hdrs(
 
 skia_filegroup(
     name = "android_srcs",
-    srcs = ["SkImage_AndroidFactories.cpp"],
+    srcs = select({
+        "//src/gpu:has_gpu_backend": ["SkImage_AndroidFactories.cpp"],
+        "//conditions:default": [],
+    }),
     visibility = ["//src:__pkg__"],
 )
 
