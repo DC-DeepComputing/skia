@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8bb855e_fd69ccef",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-11T15:53:12Z",
+      "side": 1,
+      "message": "kImage",
+      "range": {
+        "startLine": 288,
+        "startChar": 26,
+        "endLine": 288,
+        "endChar": 28
+      },
+      "revId": "cc46c8272e1467055fd208cd4c21a3d14be01532",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
