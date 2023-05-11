@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb682c6a_51676669",
+        "filename": "toolchain/linux_trampolines/ar_trampoline_linux.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-11T18:09:03Z",
+      "side": 1,
+      "message": "How about `touch $2`? It\u0027s slightly spooky to create non-empty/invalid `.a` files. If they are zero bytes, it\u0027s more obvious.",
+      "range": {
+        "startLine": 10,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 37
+      },
+      "revId": "a081f3bb727c095da4d92760888450285b4b7cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "102e90b9_044b0013",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-11T18:09:03Z",
+      "side": 1,
+      "message": "as above",
+      "range": {
+        "startLine": 14,
+        "startChar": 2,
+        "endLine": 14,
+        "endChar": 45
+      },
+      "revId": "a081f3bb727c095da4d92760888450285b4b7cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
