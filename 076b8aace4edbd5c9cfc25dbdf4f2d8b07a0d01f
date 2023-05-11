@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac0e6904_b7ddc7b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-11T21:00:29Z",
+      "side": 1,
+      "message": "Thoughts on this? It works, but see the CL comment about the bit I dislike.\n\nNote: Previously, we talked about doing this detection via playback of the picture (with a paint-filter canvas, or similar). Alas, when I looked into that, it seemed much harder than doing this. We have poor (i.e. no) introspection capabilities for our effect types (`SkShader`, `SkColorFilter`, `SkBlender`), so finding an `SkRuntimeShader` in an `SkPaint` is basically impossible without some pretty big changes.",
+      "revId": "076b8aace4edbd5c9cfc25dbdf4f2d8b07a0d01f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daf44c9a_d519b38f",
+        "filename": "src/core/SkGlyph.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-11T21:00:29Z",
+      "side": 1,
+      "message": "This (the fact that I need to add a flag to `SkDeserialProcs`) is the part of this CL that I really dislike. Having the flag on `SkReadBuffer` seems fairly clean, as is the error-checking in the various `CreateProc` factories. The problem is that we need to propagate the flag into the new `SkReadBuffer` that\u0027s created when we deserialize this picture, and there\u0027s no good way to communicate that down. We have to hop through several levels:\n```\nSkPicture::MakeFromData\nSkPicture::MakeFromStreamPriv\nSkPictureData::CreateFromStream\nSkPictureData::parseStream\nSkPictureData::parseStreamTag\n```\n\nThe `SkDeserialProcs` are already plumbed through that whole chain (and also propagate to nested pictures), but it\u0027s a public structure, and everthing else here is private. (Also, it\u0027s not even a proc, just a flag).",
+      "revId": "076b8aace4edbd5c9cfc25dbdf4f2d8b07a0d01f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
