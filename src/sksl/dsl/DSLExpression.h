@@ -105,11 +105,6 @@ public:
     DSLExpression assign(DSLExpression other);
 
     /**
-     * Creates an SkSL struct field access expression.
-     */
-    DSLExpression field(std::string_view name, Position pos = {});
-
-    /**
      * Creates an SkSL array index expression.
      */
     DSLExpression operator[](DSLExpression index);

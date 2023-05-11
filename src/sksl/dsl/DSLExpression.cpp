@@ -116,11 +116,6 @@ void DSLExpression::setPosition(Position pos) {
     fExpression->fPosition = pos;
 }
 
-DSLExpression DSLExpression::field(std::string_view name, Position pos) {
-    return DSLExpression(FieldAccess::Convert(ThreadContext::Context(), pos, this->release(), name),
-                         pos);
-}
-
 DSLExpression DSLExpression::assign(DSLExpression right) {
     Position pos = this->position().rangeThrough(right.position());
     return DSLExpression(BinaryExpression::Convert(ThreadContext::Context(), pos, this->release(),
