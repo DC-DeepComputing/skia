@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2102e76f_96e29fc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-11T19:11:33Z",
+      "side": 1,
+      "message": "Hypothetically we can make that decision in drawGeometry, right? This CL is calling GetBlendFormula in GetDstReadRequirement to see if we need dual-src blending to account for coverage. Then if we do need dual-src blending, but it\u0027s not supported per caps, we can decide we need the DstColor. I believe if we can do dual-src blending then we never need the DstColor for coverage.",
+      "parentUuid": "63a57312_81044c09",
+      "revId": "c0b658f2e1f90d0d9fe6baa8b491d54c9360bbf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d89e6ebe_e8892e9f",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-05-11T18:42:34Z",
       "side": 1,
       "message": "do we need this include?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 30
+      },
+      "revId": "c0b658f2e1f90d0d9fe6baa8b491d54c9360bbf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b96c6860_42731b5d",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-11T19:11:33Z",
+      "side": 1,
+      "message": "Good catch; we do not",
+      "parentUuid": "d89e6ebe_e8892e9f",
       "range": {
         "startLine": 25,
         "startChar": 0,
