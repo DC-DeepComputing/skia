@@ -11,7 +11,7 @@
 #include "include/gpu/GrBackendSurface.h"
 
 GrBackendFormat GrMockRenderTargetInfo::getBackendFormat() const {
-    return GrBackendFormat::MakeMock(fColorType, SkTextureCompressionType::kNone);
+    return GrBackendFormat::MakeMock(fColorType1, SkTextureCompressionType::kNone);
 }
 
 GrBackendFormat GrMockTextureInfo::getBackendFormat() const {
