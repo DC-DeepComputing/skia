@@ -53,10 +53,6 @@ public:
         return fStorage;
     }
 
-    DSLExpression field(std::string_view name) {
-        return DSLExpression(*this).field(name);
-    }
-
     DSLExpression operator[](DSLExpression&& index);
 
     DSLExpression operator++() {
