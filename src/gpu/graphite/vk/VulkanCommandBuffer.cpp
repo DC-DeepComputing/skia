@@ -7,15 +7,19 @@
 
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 
+#include "src/gpu/graphite/Descriptors.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
 
 using namespace skia_private;
 
 namespace skgpu::graphite {
+
+class VulkanDescriptorSet;
 
 std::unique_ptr<VulkanCommandBuffer> VulkanCommandBuffer::Make(
         const VulkanSharedContext* sharedContext,
@@ -74,10 +78,6 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkCommandPool pool,
         , fPrimaryCommandBuffer(primaryCommandBuffer)
         , fSharedContext(sharedContext)
         , fResourceProvider(resourceProvider) {
-
-    // TODO: Remove this line. It is only here to hide compiler warnings/errors about unused
-    // member variables.
-    (void) fResourceProvider;
     // When making a new command buffer, we automatically begin the command buffer
     this->begin();
 }
@@ -384,7 +384,29 @@ void VulkanCommandBuffer::setBlendConstants(float* blendConstants) {
 }
 
 void VulkanCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlot) {
-    // TODO: Implement
+    // Query resource provider to obtain a descriptor set for the uniforms
+    // VulkanGraphicsPipeline::NumUniformBuffers maybe?
+    // VulkanDescriptorSet* set = fResourceProvider->findOrCreateDescriptorSet();
+
+    //VkWriteDescriptorSet
+    // VkDescriptorBufferInfo bufferInfo;
+    // memset(&bufferInfo, 0, sizeof(VkDescriptorBufferInfo));
+    // bufferInfo.buffer = info.buffer;
+    // bufferInfo.offset = 0;
+    // bufferInfo.range = size;
+
+    // VkWriteDescriptorSet descriptorWrite;
+    // memset(&descriptorWrite, 0, sizeof(VkWriteDescriptorSet));
+    // descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+    // descriptorWrite.pNext = nullptr;
+    // descriptorWrite.dstSet = *descriptorSet->descriptorSet();
+    // descriptorWrite.dstBinding = GrVkUniformHandler::kUniformBinding;
+    // descriptorWrite.dstArrayElement = 0;
+    // descriptorWrite.descriptorCount = 1;
+    // descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    // descriptorWrite.pImageInfo = nullptr;
+    // descriptorWrite.pBufferInfo = &bufferInfo;
+    // descriptorWrite.pTexelBufferView = nullptr;
 }
 
 void VulkanCommandBuffer::bindDrawBuffers(const BindBufferInfo& vertices,
@@ -408,7 +430,18 @@ void VulkanCommandBuffer::bindIndirectBuffer(const Buffer* indirectBuffer, size_
 }
 void VulkanCommandBuffer::bindTextureAndSamplers(const DrawPass& drawPass,
         const DrawPassCommands::BindTexturesAndSamplers& command) {
-    // TODO: Implement
+    // Query resource provider to obtain a descriptor set for the texture/samplers
+    // int requestedDescCounts[kDescriptorTypeCount];
+    // requestedDescCounts[static_cast<int>(DescriptorType::kCombinedTextureSampler)] =
+    //         command.fNumTexSamplers;
+    DescTypeAndCount textureSamplerDescriptors(DescriptorType::kCombinedTextureSampler,  command.fNumTexSamplers);
+    VulkanDescriptorSet* set = fResourceProvider->findOrCreateDescriptorSet(SkSpan<DescTypeAndCount>{&textureSamplerDescriptors, 1});
+    // TODO: Create descriptors for the texture samplers. Update the returned descriptor set to
+    // include the newly-created descriptors. Use vkCmdBindDescriptorSets to bind the set to bind
+    // the set to a slot in the active graphics pipeline.
+
+    //TODO: Remove the line below to silence unused variable warnings.
+    (void) set;
 }
 void VulkanCommandBuffer::setScissor(unsigned int left, unsigned int top, unsigned int width,
                                      unsigned int height) {
