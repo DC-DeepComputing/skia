@@ -50,17 +50,17 @@ GrGLTexture::GrGLTexture(GrGLGpu* gpu,
                          const Desc& desc,
                          GrMipmapStatus mipmapStatus,
                          std::string_view label)
-        : GrSurface(gpu, desc.fSize, GrProtected::kNo, label)
-        , INHERITED(gpu,
+        : GrSurface(gpu, desc.fSize, desc.fIsProtectedDesc, label)
+        , GrTexture(gpu,
                     desc.fSize,
-                    GrProtected::kNo,
+                    desc.fIsProtectedDesc,
                     TextureTypeFromTarget(desc.fTarget),
                     mipmapStatus,
                     label)
         , fParameters(sk_make_sp<GrGLTextureParameters>()) {
     this->init(desc);
     this->registerWithCache(budgeted);
-    if (GrGLFormatIsCompressed(desc.fFormat)) {
+    if (GrGLFormatIsCompressed(desc.fFormatDesc)) {
         this->setReadOnly();
     }
 }
@@ -68,10 +68,10 @@ GrGLTexture::GrGLTexture(GrGLGpu* gpu,
 GrGLTexture::GrGLTexture(GrGLGpu* gpu, const Desc& desc, GrMipmapStatus mipmapStatus,
                          sk_sp<GrGLTextureParameters> parameters, GrWrapCacheable cacheable,
                          GrIOType ioType, std::string_view label)
-        : GrSurface(gpu, desc.fSize, GrProtected::kNo, label)
-        , INHERITED(gpu,
+        : GrSurface(gpu, desc.fSize, desc.fIsProtectedDesc, label)
+        , GrTexture(gpu,
                     desc.fSize,
-                    GrProtected::kNo,
+                    desc.fIsProtectedDesc,
                     TextureTypeFromTarget(desc.fTarget),
                     mipmapStatus,
                     label)
@@ -89,24 +89,24 @@ GrGLTexture::GrGLTexture(GrGLGpu* gpu,
                          sk_sp<GrGLTextureParameters> parameters,
                          GrMipmapStatus mipmapStatus,
                          std::string_view label)
-        : GrSurface(gpu, desc.fSize, GrProtected::kNo, label)
-        , INHERITED(gpu,
+        : GrSurface(gpu, desc.fSize, desc.fIsProtectedDesc, label)
+        , GrTexture(gpu,
                     desc.fSize,
-                    GrProtected::kNo,
+                    desc.fIsProtectedDesc,
                     TextureTypeFromTarget(desc.fTarget),
                     mipmapStatus,
                     label) {
-    SkASSERT(parameters || desc.fOwnership == GrBackendObjectOwnership::kOwned);
+    SkASSERT(parameters || desc.fOwnership1 == GrBackendObjectOwnership::kOwned);
     fParameters = parameters ? std::move(parameters) : sk_make_sp<GrGLTextureParameters>();
     this->init(desc);
 }
 
 void GrGLTexture::init(const Desc& desc) {
     SkASSERT(0 != desc.fID);
-    SkASSERT(GrGLFormat::kUnknown != desc.fFormat);
+    SkASSERT(GrGLFormat::kUnknown != desc.fFormatDesc);
     fID = desc.fID;
-    fFormat = desc.fFormat;
-    fTextureIDOwnership = desc.fOwnership;
+    fFormat = desc.fFormatDesc;
+    fTextureIDOwnership = desc.fOwnership1;
 }
 
 GrGLenum GrGLTexture::target() const { return target_from_texture_type(this->textureType()); }
@@ -134,6 +134,8 @@ GrBackendTexture GrGLTexture::getBackendTexture() const {
     info.fTarget = target_from_texture_type(this->textureType());
     info.fID = fID;
     info.fFormat = GrGLFormatToEnum(fFormat);
+    info.fProtected27 = skgpu::Protected(this->isProtected());
+
     return GrBackendTexture(this->width(), this->height(), this->mipmapped(), info, fParameters);
 }
 
