@@ -226,12 +226,13 @@ Java_org_skia_skottie_SkottieAnimation_nDrawFrame(JNIEnv *env, jclass clazz,
     GrGLFramebufferInfo fboInfo;
     fboInfo.fFBOID = 0;
     if (wideColorGamut) {
-        fboInfo.fFormat = GL_RGBA16F;
+        fboInfo.fFormat11 = GL_RGBA16F;
         colorType = kRGBA_F16_SkColorType;
     } else {
-        fboInfo.fFormat = GL_RGBA8;
+        fboInfo.fFormat11 = GL_RGBA8;
         colorType = kN32_SkColorType;
     }
+    fboInfo.fProtected11 = skgpu::Protected::kNo;
     GrBackendRenderTarget backendRT(width, height, 0, STENCIL_BUFFER_SIZE, fboInfo);
 
     SkSurfaceProps props(0, kUnknown_SkPixelGeometry);
