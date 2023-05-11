@@ -110,6 +110,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be8ae052_3f732cf6",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-11T01:52:38Z",
+      "side": 1,
+      "message": "I think the ES3 level was a bug before. I originally added this test at http://review.skia.org/441878 and I don\u0027t see any reason for adding it as ES3-only at that time. \n\nIt was `kNever` because we only run ES2 tests in CTS. (There\u0027s no CTS requirement for an Android device to support ES3 at all...! It\u0027s just strongly encouraged :) )",
+      "parentUuid": "dafdad52_cd2b9612",
+      "range": {
+        "startLine": 634,
+        "startChar": 10,
+        "endLine": 634,
+        "endChar": 38
+      },
+      "revId": "d7c86ddf0ed71f31bef402c9546bc0bb86717605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b404bef1_514e42e3",
@@ -150,6 +174,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc7f19dc_b76702cc",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-11T01:52:38Z",
+      "side": 1,
+      "message": "This does not pass in RP yet. I haven\u0027t implemented all the ES3-specific operators. I think `%` `\u003c\u003c` `\u003e\u003e` are the only missing ones left.",
+      "parentUuid": "37773ff6_1b397fd0",
+      "revId": "d7c86ddf0ed71f31bef402c9546bc0bb86717605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07362a49_4e0b51ae",
@@ -175,6 +217,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "395a488b_5a844a52",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-11T01:52:38Z",
+      "side": 1,
+      "message": "Good catch. Looks like this test was originally broken in Metal, but was since fixed, and should pass now as of http://review.skia.org/645677 \n\n@armansito@google.com this should work now, right?",
+      "parentUuid": "07362a49_4e0b51ae",
+      "range": {
+        "startLine": 695,
+        "startChar": 10,
+        "endLine": 695,
+        "endChar": 13
+      },
+      "revId": "d7c86ddf0ed71f31bef402c9546bc0bb86717605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6442238_8cf2be3d",
         "filename": "tests/SkSLTest.cpp",
         "patchSetId": 3
@@ -186,6 +252,30 @@
       "writtenOn": "2023-05-11T00:49:06Z",
       "side": 1,
       "message": "`kNever` vs. `kNextRelease`?",
+      "range": {
+        "startLine": 710,
+        "startChar": 25,
+        "endLine": 710,
+        "endChar": 37
+      },
+      "revId": "d7c86ddf0ed71f31bef402c9546bc0bb86717605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15163d47_76e35990",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-11T01:52:38Z",
+      "side": 1,
+      "message": "No ES3 requirements enforced in CTS.",
+      "parentUuid": "e6442238_8cf2be3d",
       "range": {
         "startLine": 710,
         "startChar": 25,
