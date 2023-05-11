@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c1f07b7_2709e800",
+        "filename": "modules/skottie/src/layers/FootageLayer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-11T13:05:17Z",
+      "side": 1,
+      "message": "nit: use ternary operator to reduce duplication\n\n    auto asset \u003d fResourceProvider-\u003eloadImageAsset(path-\u003ebegin(),\n                                                   name-\u003ebegin(),\n                                                   slotID\n                                                       ? slotID-\u003ebegin()\n                                                       : id-\u003ebegin());",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 5
+      },
+      "revId": "fab1a340b82c726e909abc7ab37a40e0fa7ffc3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0532a2df_103e9389",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-11T13:05:17Z",
+      "side": 1,
+      "message": "Let\u0027s add an enum for these values, so we can use descriptive names instead of magic numbers.",
+      "range": {
+        "startLine": 288,
+        "startChar": 26,
+        "endLine": 288,
+        "endChar": 28
+      },
+      "revId": "fab1a340b82c726e909abc7ab37a40e0fa7ffc3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aafedd71_2bbddfc2",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-11T13:05:17Z",
+      "side": 1,
+      "message": "`operator[]` always inserts, use `find` to check if the key is present without changing the map.",
+      "revId": "fab1a340b82c726e909abc7ab37a40e0fa7ffc3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
