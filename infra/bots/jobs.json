@@ -41,7 +41,13 @@
   {"name": "BazelBuildGeneratedTarget-AndroidUnitTest-pixel5_codec_vulkan_release_test",
     "cq_config": {"experimental": true}
   },
+  {"name": "BazelBuildGeneratedTarget-AndroidUnitTest-pixel7_ganesh_gl_debug_test",
+    "cq_config": {"experimental": true}
+  },
   {"name": "BazelTestGeneratedTarget-AndroidUnitTest-pixel5_codec_vulkan_release_test",
+    "cq_config": {"experimental": true}
+  },
+  {"name": "BazelTestGeneratedTarget-AndroidUnitTest-pixel7_ganesh_gl_debug_test",
     "cq_config": {"experimental": true}
   },
   {"name": "Build-Debian10-GCC-x86-Debug-Docker"},
