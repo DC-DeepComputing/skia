@@ -22,6 +22,30 @@
       },
       "revId": "47c3995baedd5f13ccb2dacfb182c5e65755d503",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3aa6eb9_e8f33118",
+        "filename": "relnotes/skcodecs_register.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-11T15:48:51Z",
+      "side": 1,
+      "message": "You are right, I forgot DISABLE in my define name",
+      "parentUuid": "94d44b18_90ed67d7",
+      "range": {
+        "startLine": 9,
+        "startChar": 1,
+        "endLine": 9,
+        "endChar": 38
+      },
+      "revId": "47c3995baedd5f13ccb2dacfb182c5e65755d503",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
