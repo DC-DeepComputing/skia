@@ -21,13 +21,13 @@ namespace SkSL {
 
 class Compiler;
 class ErrorReporter;
+struct Field;
 class Position;
 struct Program;
 struct ProgramSettings;
 
 namespace dsl {
 
-class DSLField;
 class DSLModifiers;
 
 /**
@@ -69,8 +69,8 @@ void SetErrorReporter(ErrorReporter* errorReporter);
 void Declare(DSLGlobalVar& var, Position pos = {});
 
 DSLExpression InterfaceBlock(const DSLModifiers& modifiers,  std::string_view typeName,
-                             skia_private::TArray<DSLField> fields, std::string_view varName = "",
-                             int arraySize = 0, Position pos = {});
+                             skia_private::TArray<Field> fields,
+                             std::string_view varName = "", int arraySize = 0, Position pos = {});
 
 } // namespace dsl
 
