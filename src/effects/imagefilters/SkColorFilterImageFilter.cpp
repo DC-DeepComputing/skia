@@ -300,7 +300,7 @@ skif::LayerSpace<SkIRect> SkColorFilterImageFilter::onGetInputLayerBounds(
 skif::LayerSpace<SkIRect> SkColorFilterImageFilter::onGetOutputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& contentBounds) const {
-    if (this->affectsTransparentBlack()) {
+    if (as_CFB(fColorFilter)->affectsTransparentBlack()) {
         return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
     } else {
         return this->visitOutputLayerBounds(mapping, contentBounds);
@@ -308,7 +308,7 @@ skif::LayerSpace<SkIRect> SkColorFilterImageFilter::onGetOutputLayerBounds(
 }
 
 SkRect SkColorFilterImageFilter::computeFastBounds(const SkRect& bounds) const {
-    if (this->affectsTransparentBlack()) {
+    if (as_CFB(fColorFilter)->affectsTransparentBlack()) {
         return SkRectPriv::MakeLargeS32();
     } else if (this->getInput(0)) {
         return this->getInput(0)->computeFastBounds(bounds);
