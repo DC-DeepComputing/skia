@@ -8,6 +8,13 @@ export LD_LIBRARY_PATH="external/clang_linux_amd64/usr/lib/x86_64-linux-gnu"
 
 set -euo pipefail
 
+if [[ "$@" == *DSKIA_SKIP_LINKING* ]]; then
+  # The output executable binary file is listed as the second argument to this script, and we must
+  # make sure it exists or Bazel will fail a validation step.
+  echo "linking executable file skipped" > $2
+  exit 0
+fi
+
 # We only want to run include-what-you-use if DSKIA_ENFORCE_IWYU is in the arguments
 # passed in (i.e. the "skia_enforce_iwyu" feature is enabled) and we are not linking
 # (as detected by the presence of -fuse-ld).
