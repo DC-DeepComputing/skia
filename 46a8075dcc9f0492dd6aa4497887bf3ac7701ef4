@@ -177,6 +177,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ffa84cf_9fcf8fee",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 1027,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-11T17:52:06Z",
+      "side": 1,
+      "message": "Sgtm",
+      "parentUuid": "9728a7f9_4c0ca468",
+      "revId": "46a8075dcc9f0492dd6aa4497887bf3ac7701ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fad18180_b83d4116",

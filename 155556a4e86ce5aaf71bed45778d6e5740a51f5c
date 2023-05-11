@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73644c9f_d49555f0",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-11T17:52:06Z",
+      "side": 1,
+      "message": "Isn\u0027t this going to return a copy? I was thinking we would return a `const std::vector\u003cDecoder\u003e\u0026`. Although I guess to be really safe we\u0027d want it to be a vector of `const Decoder`s? Maybe it should be an `SkSpan`? Or maybe I\u0027m overthinking this method that\u0027s only used internally. Sorry about that.\n\nJust want to avoid making the copy, though.",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 21
+      },
+      "revId": "155556a4e86ce5aaf71bed45778d6e5740a51f5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
