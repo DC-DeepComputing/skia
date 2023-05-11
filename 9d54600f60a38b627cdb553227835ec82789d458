@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8c04327_205214d9",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-11T12:54:14Z",
+      "side": 1,
+      "message": "I think this inserts a new (empty) vector if the slotID does not exist.  Let\u0027s use `find` instead and do nothing if passed an inexistent key.",
+      "range": {
+        "startLine": 373,
+        "startChar": 43,
+        "endLine": 373,
+        "endChar": 61
+      },
+      "revId": "9d54600f60a38b627cdb553227835ec82789d458",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1136dccf_735cf418",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-11T12:54:14Z",
+      "side": 1,
+      "message": "Ditto.",
+      "revId": "9d54600f60a38b627cdb553227835ec82789d458",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99f10198_5c0d49b6",
+        "filename": "modules/skottie/utils/SkottieUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-11T12:54:14Z",
+      "side": 1,
+      "message": "Ditto.",
+      "revId": "9d54600f60a38b627cdb553227835ec82789d458",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
