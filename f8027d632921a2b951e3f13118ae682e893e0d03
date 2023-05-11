@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "180f7fda_a276cbb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-11T01:26:54Z",
+      "side": 1,
+      "message": "So, if I am understanding how purgeable resources work, really nothing needs to be done here and it should \"just work\". By that I mean that within this design, a non-shareable resource (like a descriptor set) will not be returned and ref\u0027d if it is currently in use already. Once it\u0027s no longer in use, it is returned to the cache to be reused again and not automatically. Is that correct?\n\nIf so, I will go ahead and abandon this CL and collaborate with Michael with any edge cases we encounter along the way while using purgeable resources this way.",
+      "revId": "f8027d632921a2b951e3f13118ae682e893e0d03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb16e51a_2d396ee3",
@@ -24,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c76f286_5b9d3ab6",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-11T01:26:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bb16e51a_2d396ee3",
+      "range": {
+        "startLine": 113,
+        "startChar": 16,
+        "endLine": 113,
+        "endChar": 43
+      },
+      "revId": "f8027d632921a2b951e3f13118ae682e893e0d03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6898fd3f_443196da",
@@ -37,6 +78,30 @@
       "writtenOn": "2023-05-08T15:53:03Z",
       "side": 1,
       "message": "Having this run in the destructor leads to undefined behavior since we can\u0027t actually return the same \"object\" anymore if it\u0027s been destructed.",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "f8027d632921a2b951e3f13118ae682e893e0d03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a167bbd_4788e8a8",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-11T01:26:54Z",
+      "side": 1,
+      "message": "You\u0027re so right. We don\u0027t need to manually define a dtor; we should only have to unref the pool once we are ready to free GPU data.",
+      "parentUuid": "6898fd3f_443196da",
       "range": {
         "startLine": 24,
         "startChar": 4,
@@ -84,6 +149,30 @@
       "side": 1,
       "message": "https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#vkCmdBindDescriptorSets has this quote: \"Once all pending uses have completed, it is legal to update and reuse a descriptor set.\" Given the plural \"uses\" my interpretation is that you can bind it multiple times as long as you don\u0027t change the contents.",
       "parentUuid": "e30ac767_697fbaee",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 83
+      },
+      "revId": "f8027d632921a2b951e3f13118ae682e893e0d03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e76be8b_3b4b5e5e",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-11T01:26:54Z",
+      "side": 1,
+      "message": "Yes, my understanding is that descriptor sets can be reused once they are no longer being used or referenced elsewhere. Also, in another CL Jim and I decided they should not be shareable, so your gut feel is correct.",
+      "parentUuid": "0bb3a7a0_dd41359d",
       "range": {
         "startLine": 39,
         "startChar": 4,
