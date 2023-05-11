@@ -11,18 +11,7 @@ load(
     "PATHOPS_TESTS",
     "PDF_TESTS",
 )
-load(
-    ":android.bzl",
-    "CODEC",
-    "DEBUG",
-    "GANESH",
-    "GL",
-    "PATHOPS",
-    "PIXEL_5",
-    "RELEASE",
-    "VULKAN",
-    "skia_android_unit_test",
-)
+load(":generated_tests.bzl", "generated_tests")
 
 skia_cc_library(
     name = "tests_base",
@@ -292,51 +281,4 @@ selects.config_setting_group(
     ],
 )
 
-# These target can be run from a gLinux workstation. Instructions:
-#
-# 1. Port-forward the ADB server from a Raspberry Pi that is connected to a Pixel 5:
-#
-#     $ ssh -L 5037:localhost:5037 skia-rpi2-rack1-shelf1-036
-#
-# 2. Invoke Bazel as follows (replace target label as needed):
-#
-#     $ bazel test //tests:pixel5_codec_test --config=linux_rbe --test_output=streamed
-
-skia_android_unit_test(
-    name = "pixel5_codec_test",
-    device = PIXEL_5,
-    test_group = CODEC,
-    # No flavor specified; defaults to flavors [GL, RELEASE].
-)
-
-skia_android_unit_test(
-    name = "pixel5_codec_gl_debug_test",
-    device = PIXEL_5,
-    flavors = [
-        GL,
-        DEBUG,
-    ],
-    test_group = CODEC,
-)
-
-skia_android_unit_test(
-    name = "pixel5_codec_vulkan_release_test",
-    device = PIXEL_5,
-    flavors = [
-        VULKAN,
-        RELEASE,
-    ],
-    test_group = CODEC,
-)
-
-skia_android_unit_test(
-    name = "pixel5_ganesh_test",
-    device = PIXEL_5,
-    test_group = GANESH,
-)
-
-skia_android_unit_test(
-    name = "pixel5_pathops_test",
-    device = PIXEL_5,
-    test_group = PATHOPS,
-)
+generated_tests(name = "generated_tests")
