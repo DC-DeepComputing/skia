@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eecbe3c7_27691cad",
+        "filename": "include/core/SkSerialProcs.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-12T15:49:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "186efef0_7f033254",
+      "revId": "076b8aace4edbd5c9cfc25dbdf4f2d8b07a0d01f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "daf44c9a_d519b38f",
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "It is a proc, you just have to pick between two implementations, one that always returns true and one that always returns false. Given that this proc takes no parameters and returns bool, that seems fairly logical. If it did take a parameter then it might make more sense to allow picking between more implementations (allow someone to write their own). Would be interesting to try to implement this as an enum with function pointer underlying type (I know, can\u0027t be expressed in the language, but that\u0027s what is being done here).",
       "parentUuid": "daf44c9a_d519b38f",
+      "revId": "076b8aace4edbd5c9cfc25dbdf4f2d8b07a0d01f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40bfcf8f_83f6ab88",
+        "filename": "src/core/SkGlyph.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-12T15:49:06Z",
+      "side": 1,
+      "message": "I can buy that reasoning. 😊 I was briefly tempted to make it be an actual proc that lets you mutate the SkReadBuffer, but that doesn\u0027t make any sense, because SkReadBuffer is private anyway. So this formulation makes the most sense. I\u0027ll add a comment to the procs struct.",
+      "parentUuid": "e84e04b9_491df350",
       "revId": "076b8aace4edbd5c9cfc25dbdf4f2d8b07a0d01f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
