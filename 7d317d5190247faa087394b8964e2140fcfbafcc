@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88b150de_a21b807c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-12T14:29:27Z",
+      "side": 1,
+      "message": "`android/u-release` does *not* merge to Skia\u0027s `main` branch, so we need to land it here, too.",
+      "revId": "7d317d5190247faa087394b8964e2140fcfbafcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
