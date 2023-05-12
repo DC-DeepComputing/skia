@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4974e1f0_28eaeb68",
+        "filename": "src/core/SkBigPicture.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-12T15:18:34Z",
+      "side": 0,
+      "message": "I have no idea what GrLayerHoister is/was. (There are no other mentions of it in the repo).",
+      "revId": "8b81c94850837e5ed1d738912b5d5217544f72d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "073d96cf_75471c05",
+        "filename": "src/core/SkRecordDraw.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-12T15:18:34Z",
+      "side": 0,
+      "message": "This function wasn\u0027t even defined.",
+      "revId": "8b81c94850837e5ed1d738912b5d5217544f72d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
