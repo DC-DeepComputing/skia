@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67bbd0d7_cd473ca4",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-12T15:57:25Z",
+      "side": 1,
+      "message": "shadowing the method\u0027s parameter",
+      "range": {
+        "startLine": 127,
+        "startChar": 82,
+        "endLine": 127,
+        "endChar": 87
+      },
+      "revId": "af1767a7e4dcbeda960155389c401e844b19b091",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
