@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3548604d_3cfdf32c",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-12T14:43:17Z",
+      "side": 0,
+      "message": "Chrome is still adding this define directly to it\u0027s user config, so its guarded code can be removed yet. But flutter is no longer on the legacy color filter, so I\u0027m cleaning up the GN args while I\u0027m here.",
+      "range": {
+        "startLine": 91,
+        "startChar": 18,
+        "endLine": 91,
+        "endChar": 55
+      },
+      "revId": "aa4730959a410a27bdf345d7a5fdb286ae336c47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
