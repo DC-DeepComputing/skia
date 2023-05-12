@@ -22,6 +22,30 @@
       },
       "revId": "155556a4e86ce5aaf71bed45778d6e5740a51f5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aba738b7_57ca8e12",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-12T15:42:30Z",
+      "side": 1,
+      "message": "Went with the const reference, since this is an internal method.",
+      "parentUuid": "73644c9f_d49555f0",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 21
+      },
+      "revId": "155556a4e86ce5aaf71bed45778d6e5740a51f5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
