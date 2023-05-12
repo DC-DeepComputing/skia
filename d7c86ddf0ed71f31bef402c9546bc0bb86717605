@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fe7f46f_77d38530",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-12T13:33:19Z",
+      "side": 1,
+      "message": "http://review.skia.org/696856/",
+      "parentUuid": "6246f5b7_0a8d17e9",
+      "range": {
+        "startLine": 69,
+        "startChar": 10,
+        "endLine": 69,
+        "endChar": 23
+      },
+      "revId": "d7c86ddf0ed71f31bef402c9546bc0bb86717605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6dc30bfe_4c740f4c",
@@ -373,6 +397,30 @@
       "side": 1,
       "message": "I\u0027ll do this in a followup just in case.",
       "parentUuid": "719f35f5_2e3e69e1",
+      "range": {
+        "startLine": 695,
+        "startChar": 10,
+        "endLine": 695,
+        "endChar": 13
+      },
+      "revId": "d7c86ddf0ed71f31bef402c9546bc0bb86717605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c00cdda_70c79611",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-12T13:33:19Z",
+      "side": 1,
+      "message": "http://review.skia.org/696857",
+      "parentUuid": "587fc4a1_4386213c",
       "range": {
         "startLine": 695,
         "startChar": 10,
