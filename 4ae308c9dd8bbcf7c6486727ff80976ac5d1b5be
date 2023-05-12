@@ -16,6 +16,23 @@
       "message": "I also cannot reproduce the drastically bad images from the QuadroP400. I suspect that there was a device error or the images failed to upload. This change shouldn\u0027t have any HW-specific change, nor any real behavioral change for our bots that haven\u0027t had the flag enabled for a long time.",
       "revId": "4ae308c9dd8bbcf7c6486727ff80976ac5d1b5be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb6f8ebb_e86572a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-12T15:43:16Z",
+      "side": 1,
+      "message": "Oops, looks like chrome still had this defined from ancient times: https://chromium-review.googlesource.com/c/chromium/src/+/4526066",
+      "revId": "4ae308c9dd8bbcf7c6486727ff80976ac5d1b5be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
