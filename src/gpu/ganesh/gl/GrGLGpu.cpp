@@ -1851,6 +1851,12 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         set_initial_texture_params(this->glInterface(), this->glCaps(), target);
     }
 
+    bool supportsTexStorage = this->glCaps().formatSupportsTexStorage(format);
+    SkDebugf("isProtected %d - supportsProtected %d format %d supportsTexStorage %d\n",
+             GrProtected::kYes == isProtected,
+             this->glCaps().supportsProtected(),
+             format,
+             supportsTexStorage);
     if (GrProtected::kYes == isProtected) {
         if (this->glCaps().supportsProtected()) {
             GL_CALL(TexParameteri(target, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
