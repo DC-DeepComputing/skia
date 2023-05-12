@@ -128,7 +128,7 @@ skif::LayerSpace<SkIRect> SkCropImageFilter::onGetInputLayerBounds(
         return requiredInput;
     } else {
         // Our required input is the desired output for our child image filter.
-        return this->visitInputLayerBounds(mapping, requiredInput, contentBounds);
+        return this->getChildInputLayerBounds(0, mapping, requiredInput, contentBounds);
     }
 }
 
@@ -139,7 +139,7 @@ skif::LayerSpace<SkIRect> SkCropImageFilter::onGetOutputLayerBounds(
     skif::LayerSpace<SkIRect> output = this->cropRect(mapping);
     // But the child output image is drawn into our output surface with its own decal tiling, which
     // may allow the output dimensions to be reduced.
-    skif::LayerSpace<SkIRect> childOutput = this->visitOutputLayerBounds(mapping, contentBounds);
+    skif::LayerSpace<SkIRect> childOutput = this->getChildOutputLayerBounds(0, mapping, contentBounds);
 
     if (output.intersect(childOutput)) {
         return output;

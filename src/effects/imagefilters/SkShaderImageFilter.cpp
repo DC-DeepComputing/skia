@@ -21,9 +21,11 @@
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkRectPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkSpecialSurface.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/effects/imagefilters/SkCropImageFilter.h"
 
 #include <utility>
 
@@ -31,14 +33,17 @@ namespace {
 
 class SkShaderImageFilter final : public SkImageFilter_Base {
 public:
-    SkShaderImageFilter(sk_sp<SkShader> shader, SkImageFilters::Dither dither, const SkRect* rect)
-            : INHERITED(nullptr, 0, rect)
+    SkShaderImageFilter(sk_sp<SkShader> shader, SkImageFilters::Dither dither)
+            : SkImageFilter_Base(nullptr, 0, nullptr)
             , fShader(std::move(shader))
             , fDither(dither) {}
 
+    SkRect computeFastBounds(const SkRect& bounds) const override {
+        return fShader ? SkRectPriv::MakeLargeS32() : SkRect::MakeEmpty();
+    }
+
 protected:
     void flatten(SkWriteBuffer&) const override;
-    sk_sp<SkSpecialImage> onFilterImage(const Context&, SkIPoint* offset) const override;
 
 private:
     friend void ::SkRegisterShaderImageFilterFlattenable();
@@ -46,10 +51,37 @@ private:
 
     bool onAffectsTransparentBlack() const override { return true; }
 
+    MatrixCapability onGetCTMCapability() const override { return MatrixCapability::kComplex; }
+
+    skif::FilterResult onFilterImage(const skif::Context& ctx) const override {
+        const bool dither = fDither == SkImageFilters::Dither::kYes;
+        return skif::FilterResult::MakeFromShader(ctx, fShader, dither);
+    }
+
+    skif::LayerSpace<SkIRect> onGetInputLayerBounds(
+            const skif::Mapping& mapping,
+            const skif::LayerSpace<SkIRect>& desiredOutput,
+            const skif::LayerSpace<SkIRect>& contentBounds,
+            VisitChildren recurse) const override {
+        // This is a leaf filter, it requires no input and no further recursion
+        return skif::LayerSpace<SkIRect>::Empty();
+    }
+
+    skif::LayerSpace<SkIRect> onGetOutputLayerBounds(
+            const skif::Mapping& mapping,
+            const skif::LayerSpace<SkIRect>& contentBounds) const override {
+        if (fShader) {
+            // The output of a shader is infinite, unless we were to inspect the shader for a decal
+            // tile mode around a gradient or image.
+            return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
+        } else {
+            // An empty shader is fully transparent
+            return skif::LayerSpace<SkIRect>::Empty();
+        }
+    }
+
     sk_sp<SkShader> fShader;
     SkImageFilters::Dither fDither;
-
-    using INHERITED = SkImageFilter_Base;
 };
 
 } // end namespace
@@ -57,7 +89,11 @@ private:
 sk_sp<SkImageFilter> SkImageFilters::Shader(sk_sp<SkShader> shader,
                                             Dither dither,
                                             const CropRect& cropRect) {
-    return sk_sp<SkImageFilter>(new SkShaderImageFilter(std::move(shader), dither, cropRect));
+    sk_sp<SkImageFilter> filter{new SkShaderImageFilter(std::move(shader), dither)};
+    if (cropRect) {
+        filter = SkMakeCropImageFilter(*cropRect, std::move(filter));
+    }
+    return filter;
 }
 
 void SkRegisterShaderImageFilterFlattenable() {
@@ -88,48 +124,7 @@ sk_sp<SkFlattenable> SkShaderImageFilter::CreateProc(SkReadBuffer& buffer) {
 }
 
 void SkShaderImageFilter::flatten(SkWriteBuffer& buffer) const {
-    this->INHERITED::flatten(buffer);
+    this->SkImageFilter_Base::flatten(buffer);
     buffer.writeFlattenable(fShader.get());
     buffer.writeBool(fDither == SkImageFilters::Dither::kYes);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-sk_sp<SkSpecialImage> SkShaderImageFilter::onFilterImage(const Context& ctx,
-                                                         SkIPoint* offset) const {
-    SkIRect bounds;
-    const SkIRect srcBounds = SkIRect::MakeWH(ctx.sourceImage()->width(),
-                                              ctx.sourceImage()->height());
-    if (!this->applyCropRect(ctx, srcBounds, &bounds)) {
-        return nullptr;
-    }
-
-    sk_sp<SkSpecialSurface> surf(ctx.makeSurface(bounds.size()));
-    if (!surf) {
-        return nullptr;
-    }
-
-    SkCanvas* canvas = surf->getCanvas();
-    SkASSERT(canvas);
-
-    canvas->clear(0x0);
-
-    SkMatrix matrix(ctx.ctm());
-    matrix.postTranslate(SkIntToScalar(-bounds.left()), SkIntToScalar(-bounds.top()));
-    SkRect rect = SkRect::MakeIWH(bounds.width(), bounds.height());
-    SkMatrix inverse;
-    if (matrix.invert(&inverse)) {
-        inverse.mapRect(&rect);
-    }
-    canvas->setMatrix(matrix);
-    if (rect.isFinite()) {
-        SkPaint paint;
-        paint.setShader(fShader);
-        paint.setDither(fDither == SkImageFilters::Dither::kYes);
-        canvas->drawRect(rect, paint);
-    }
-
-    offset->fX = bounds.fLeft;
-    offset->fY = bounds.fTop;
-    return surf->makeImageSnapshot();
 }

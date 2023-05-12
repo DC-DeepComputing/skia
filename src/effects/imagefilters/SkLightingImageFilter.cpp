@@ -483,7 +483,7 @@ private:
                   const SkIRect& bounds) const;
 #endif
 
-    sk_sp<SkImageFilterLight> fLight;
+    sk_sp<SkImageFilterLight> fLight; // wuuut
     SkScalar fSurfaceScale;
 
     using INHERITED = SkImageFilter_Base;

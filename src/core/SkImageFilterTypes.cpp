@@ -591,6 +591,55 @@ FilterResult FilterResult::applyTransform(const Context& ctx,
     return transformed;
 }
 
+class AutoSurface {
+public:
+
+    AutoSurface(const Context& ctx,
+                const LayerSpace<SkIRect>& dstBounds,
+                bool renderInParameterSpace)
+            : fSurface(nullptr)
+            , fDstBounds(dstBounds) {
+        // Most internal triggers of render_new_result will have already had dstBounds restricted to
+        // the desired output as part of the accumulated actions, but it's useful to do the
+        // intersection for external triggers, e.g. MakeFromPicture and MakeFromShader.
+        if (!fDstBounds.intersect(ctx.desiredOutput())) {
+            return;
+        }
+
+        fSurface = ctx.makeSurface(SkISize(dstBounds.size())); // FIXME props?
+        if (!fSurface) {
+            return;
+        }
+
+        // Configure the canvas
+        SkCanvas* canvas = fSurface->getCanvas();
+        // skbug.com/5075: GPU-backed special surfaces don't reset their contents.
+        canvas->clear(SK_ColorTRANSPARENT);
+        canvas->translate(-dstBounds.left(), -dstBounds.top()); // dst's origin adjustment
+
+        if (renderInParameterSpace) {
+            canvas->concat(ctx.mapping().layerMatrix());
+        }
+    }
+
+    explicit operator bool() const { return SkToBool(fSurface); }
+
+    SkCanvas* canvas() { SkASSERT(fSurface); return fSurface->getCanvas(); }
+    SkCanvas* operator->() { SkASSERT(fSurface); return fSurface->getCanvas(); }
+
+    std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> snap() {
+        if (fSurface) {
+            return {fSurface->makeImageSnapshot(), fDstBounds.topLeft()};
+        } else {
+            return {nullptr, {}};
+        }
+    }
+
+private:
+    sk_sp<SkSpecialSurface> fSurface;
+    LayerSpace<SkIRect> fDstBounds;
+};
+
 std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
         const Context& ctx,
         LayerSpace<SkIRect> dstBounds) const {
@@ -612,19 +661,17 @@ std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
         return extract_subset(fImage.get(), origin, dstBounds);
     } // else fall through and attempt a draw
 
-    // Don't use context properties to avoid DMSAA on internal stages of filter evaluation.
-    SkSurfaceProps props = {};
-    sk_sp<SkSpecialSurface> surface = ctx.makeSurface(SkISize(dstBounds.size()), &props);
-    if (!surface) {
-        return {nullptr, {}};
+    AutoSurface surface{ctx, dstBounds, /*renderInParameterSpace=*/false};
+    if (surface) {
+        this->draw(surface.canvas());
     }
+    return surface.snap();
+}
 
-    // Since dstBounds has been intersected with fLayerBounds already, there is no need to
-    // explicitly clip the surface's canvas.
-    SkCanvas* canvas = surface->getCanvas();
-    // skbug.com/5075: GPU-backed special surfaces don't reset their contents.
-    canvas->clear(SK_ColorTRANSPARENT);
-    canvas->translate(-dstBounds.left(), -dstBounds.top()); // dst's origin adjustment
+void FilterResult::draw(SkCanvas* canvas) const {
+    // When this is called by resolve(), the surface and canvas matrix are such that this clip is
+    // trivially a no-op, but including the clip means draw() works correctly in other scenarios.
+    canvas->clipIRect(SkIRect(fLayerBounds));
 
     SkPaint paint;
     paint.setAntiAlias(true);
@@ -649,7 +696,188 @@ std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
     } else {
         fImage->draw(canvas, 0.f, 0.f, sampling, &paint);
     }
-    return {surface->makeImageSnapshot(), dstBounds.topLeft()};
+}
+
+sk_sp<SkShader> FilterResult::asShader(const Context& ctx,
+                                       const LayerSpace<SkIRect>& sampleBounds,
+                                       const SkSamplingOptions& xtraSampling,
+                                       SkEnumBitMask<ShaderFlags> flags) const {
+    if (!fImage) {
+        return nullptr;
+    }
+
+    // FIXME reason about sampleBounds vs. layerBounds ? some of this logic is redundant and will
+    // become valuable when we get to the dry-run code later.
+
+    // Even if flags don't force resolving the filter result to an axis-aligned image, if it's
+    // cropped by layer bounds, we need to resolve it because there is not a good means of
+    // embedding that effect into a shader hierarchy.
+    const bool currentXformIsInteger = is_nearly_integer_translation(fTransform);
+    // FIXME we want some way to convey that we don't care about xtraSampling or that there is
+    // a non-linear sampling that will be used on the returned shader. In that case
+    // nextXformIsInteger should be false even if we are evaluating in layer space.
+    const bool nextXformIsInteger = !(flags & ShaderFlags::kNonLinearSampling) &&
+                (!(flags & ShaderFlags::kSampleInParameterSpace) ||
+        is_nearly_integer_translation(LayerSpace<SkMatrix>(ctx.mapping().layerMatrix())));
+
+    SkSamplingOptions sampling = xtraSampling;
+    const bool needsResolve = flags & ShaderFlags::kForceResolveInputs ||
+            !compatible_sampling(fSamplingOptions, currentXformIsInteger, &sampling, nextXformIsInteger) ||
+            this->isCropped(LayerSpace<SkMatrix>(SkMatrix::I()), sampleBounds);
+
+    // Downgrade to nearest-neighbor if the sequence of sampling doesn't do anything
+    if (sampling == kDefaultSampling && (needsResolve || currentXformIsInteger) && nextXformIsInteger) {
+        sampling = {};
+    }
+
+    sk_sp<SkShader> shader;
+    if (needsResolve) {
+        auto [pixels, origin] = this->resolve(ctx, sampleBounds);
+        if (pixels) {
+            shader = pixels->asShader(SkTileMode::kDecal, sampling, SkMatrix::Translate(origin.x(), origin.y()));
+        }
+    } else {
+        shader = fImage->asShader(SkTileMode::kDecal, sampling, SkMatrix(fTransform))->makeWithColorFilter(fColorFilter);
+    }
+
+    if (shader && flags & ShaderFlags::kSampleInParameterSpace) {
+        // Since the shader and FilterResult are already meant ot be sampled in layer space, we
+        // add the inverse layerMatrix() (i.e. layer to param) as a local matrix to match the
+        // local coordinate space that the rest of rendering is going to participate in.
+        SkMatrix layerToParam;
+        if (!ctx.mapping().layerMatrix().invert(&layerToParam)) {
+            return nullptr;
+        }
+        shader = shader->makeWithLocalMatrix(layerToParam);
+    }
+
+    return shader;
+}
+
+FilterResult FilterResult::MakeFromPicture(const Context& ctx,
+                                           sk_sp<SkPicture> pic,
+                                           ParameterSpace<SkRect> cullRect) {
+    if (!pic) {
+        return {};
+    }
+
+    const LayerSpace<SkIRect> dstBounds = ctx.mapping().paramToLayer(cullRect).roundOut();
+    AutoSurface surface{ctx, dstBounds, /*renderInParameterSpace=*/true};
+    if (surface) {
+        surface->clipRect(SkRect(cullRect));
+        surface->drawPicture(pic);
+    }
+    return surface.snap();
+}
+
+FilterResult FilterResult::MakeFromShader(const Context& ctx,
+                                          sk_sp<SkShader> shader,
+                                          bool dither) {
+    if (!shader) {
+        return {};
+    }
+
+    AutoSurface surface{ctx, ctx.desiredOutput(), /*renderInParameterSpace=*/true};
+    if (surface) {
+        SkPaint paint;
+        paint.setShader(shader);
+        paint.setDither(dither);
+        surface->drawPaint(paint);
+    }
+    return surface.snap();
+}
+
+FilterResult FilterResult::MakeFromImage(const Context& ctx,
+                                         sk_sp<SkImage> image,
+                                         const SkRect& srcRect,
+                                         const ParameterSpace<SkRect>& dstRect,
+                                         const SkSamplingOptions& sampling) {
+    if (!image) {
+        return {};
+    }
+
+    // Check for direct conversion to an SkSpecialImage and then FilterResult. Eventually this
+    // whole function should be replaceable with:
+    //    FilterResult(fImage, fSrcRect, fDstRect).applyTransform(mapping.layerMatrix(), fSampling);
+    SkIRect srcSubset = RoundOut(srcRect);
+    if (srcSubset.fLeft == srcRect.fLeft && srcSubset.fTop == srcRect.fTop &&
+        srcSubset.fRight == srcRect.fRight && srcSubset.fBottom == srcRect.fBottom) {
+        // Construct an SkSpecialImage from the subset directly instead of drawing.
+        auto specialImage = SkSpecialImage::MakeFromImage(
+                ctx.getContext(), srcSubset, std::move(image), ctx.surfaceProps());
+
+        // Treat the srcRect's top left as "layer" space since we are folding the src->dst transform
+        // and the param->layer transform into a single transform step.
+        skif::FilterResult subset{std::move(specialImage),
+                                  skif::LayerSpace<SkIPoint>(srcSubset.topLeft())};
+        SkMatrix transform = SkMatrix::Concat(ctx.mapping().layerMatrix(),
+                                              SkMatrix::RectToRect(srcRect, SkRect(dstRect)));
+        return subset.applyTransform(ctx, skif::LayerSpace<SkMatrix>(transform), sampling);
+    }
+
+    // For now, draw the src->dst subset of image into a new image.
+    const LayerSpace<SkIRect> dstBounds = ctx.mapping().paramToLayer(dstRect).roundOut();
+    AutoSurface surface{ctx, dstBounds, /*renderInParameterSpace=*/true};
+    if (surface) {
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        surface->drawImageRect(image, srcRect, SkRect(dstRect), sampling, &paint,
+                               SkCanvas::kStrict_SrcRectConstraint);
+    }
+    return surface.snap();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// FilterResult::Builder
+
+void FilterResult::Builder::createInputShaders(SkEnumBitMask<ShaderFlags> flags,
+                                               const SkSamplingOptions& sampling) {
+                                                // FIXME reserve input shader space
+    for (const FilterResult& input : fInputs) {
+        // TODO: For now assume that the layer bounds of the input exactly correspond to the
+        // bounds of the coords passed into inputShaders[i].eval()
+        fInputShaders.push_back(input.asShader(fContext, input.layerBounds(), sampling, flags));
+    }
+}
+
+LayerSpace<SkIRect> FilterResult::Builder::outputBounds(SkEnumBitMask<ShaderFlags> flags) const {
+    // union, first, intersect, or fill to desired output
+}
+
+FilterResult FilterResult::Builder::drawShader(sk_sp<SkShader> shader,
+                                               SkEnumBitMask<ShaderFlags> flags,
+                                               const LayerSpace<SkIRect>& outputBounds) const {
+    SkASSERT(!outputBounds.isEmpty()); // Should have been rejected before we created shaders
+    if (!shader) {
+        return {};
+    }
+
+    AutoSurface surface{fContext, outputBounds, flags & ShaderFlags::kSampleInParameterSpace};
+    if (surface) {
+        SkPaint paint;
+        paint.setShader(std::move(shader));
+        surface->drawPaint(paint);
+    }
+    return surface.snap();
+}
+
+FilterResult FilterResult::Builder::merge() {
+    if (fInputs.empty()) {
+        return {};
+    } else if (fInputs.size() == 1) {
+        return fInputs[0];
+    }
+
+    LayerSpace<SkIRect> outputBounds = this->outputBounds(ShaderFlags::kOutputFillsInputUnion);
+    AutoSurface surface{fContext, outputBounds, /*renderInParameterSpace=*/false};
+    if (surface) {
+        for (const FilterResult& input : fInputs) {
+            surface->save();
+            input.draw(surface.canvas());
+            surface->restore();
+        }
+    }
+    return surface.snap();
 }
 
 } // end namespace skif

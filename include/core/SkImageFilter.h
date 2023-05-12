@@ -81,8 +81,7 @@ public:
      */
     const SkImageFilter* getInput(int i) const;
 
-    // Default impl returns union of all input bounds.
-    virtual SkRect computeFastBounds(const SkRect& bounds) const;
+    virtual SkRect computeFastBounds(const SkRect& bounds) const = 0;
 
     // Can this filter DAG compute the resulting bounds of an object-space rectangle?
     bool canComputeFastBounds() const;
@@ -99,16 +98,8 @@ public:
                 SkFlattenable::Deserialize(kSkImageFilter_Type, data, size, procs).release()));
     }
 
-protected:
-
-    sk_sp<SkImageFilter> refMe() const {
-        return sk_ref_sp(const_cast<SkImageFilter*>(this));
-    }
-
 private:
     friend class SkImageFilter_Base;
-
-    using INHERITED = SkFlattenable;
 };
 
 #endif

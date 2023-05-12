@@ -535,12 +535,7 @@ skif::LayerSpace<SkIRect> SkImageFilter_Base::visitOutputLayerBounds(
 
     skif::LayerSpace<SkIRect> netOutput;
     for (int i = 0; i < this->countInputs(); ++i) {
-        const SkImageFilter* filter = this->getInput(i);
-        // The output for just this input filter, or 'contentBounds' if the filter is null and
-        // the source image is used (i.e. the identity filter applied to the source).
-        skif::LayerSpace<SkIRect> output =
-                filter ? as_IFB(filter)->onGetOutputLayerBounds(mapping, contentBounds)
-                       : contentBounds;
+        auto output = this->getChildOutputLayerBounds(i, mapping, contentBounds);
         // Accumulate with all other filters
         if (i == 0) {
             netOutput = output;
@@ -549,6 +544,38 @@ skif::LayerSpace<SkIRect> SkImageFilter_Base::visitOutputLayerBounds(
         }
     }
     return netOutput;
+}
+
+skif::LayerSpace<SkIRect> SkImageFilter_Base::getChildInputLayerBounds(
+        int index,
+        const skif::Mapping& mapping,
+        const skif::LayerSpace<SkIRect>& desiredOutput,
+        const skif::LayerSpace<SkIRect>& contentBounds) const {
+    // The required input for this input filter, or 'contentBounds' intersected with 'desiredOutput'
+    // if the filter is null and the source image is used (i.e. the identity filter).
+    const SkImageFilter* childFilter = this->getInput(index);
+    if (childFilter) {
+        // FIXME recurse == no ever?
+        return as_IFB(childFilter)->onGetInputLayerBounds(mapping, desiredOutput, contentBounds);
+    } else {
+        skif::LayerSpace<SkIRect> bounds = contentBounds;
+        if (!bounds.intersect(desiredOutput)) {
+            return skif::LayerSpace<SkIRect>::Empty();
+        } else {
+            return bounds;
+        }
+    }
+}
+
+skif::LayerSpace<SkIRect> SkImageFilter_Base::getChildOutputLayerBounds(
+        int index,
+        const skif::Mapping& mapping,
+        const skif::LayerSpace<SkIRect>& contentBounds) const {
+    // The output for just this input filter, or 'contentBounds' if the filter is null and
+    // the source image is used (i.e. the identity filter applied to the source).
+    const SkImageFilter* childFilter = this->getInput(index);
+    return childFilter ? as_IFB(childFilter)->onGetOutputLayerBounds(mapping, contentBounds)
+                       : contentBounds;
 }
 
 skif::LayerSpace<SkIRect> SkImageFilter_Base::onGetInputLayerBounds(

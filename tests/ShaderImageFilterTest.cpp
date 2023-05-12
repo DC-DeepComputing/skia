@@ -152,9 +152,8 @@ static void test_runtime_shader(skiatest::Reporter* r, SkSurface* surface) {
     sk_sp<SkImageFilter> input = SkImageFilters::Shader(SkShaders::Color(SK_ColorRED));
 
     // Create the different variations of SkImageFilters::RuntimeShader
-    // All 3 variations should produce the same pixel output
+    // All 2 variations should produce the same pixel output
     std::vector<sk_sp<SkImageFilter>> filters = {
-            SkMakeRuntimeImageFilter(effect, /*uniforms=*/nullptr, input),
             SkImageFilters::RuntimeShader(builder, /*childShaderName=*/"", input),
             SkImageFilters::RuntimeShader(builder, /*childShaderName=*/"child", input)};
 

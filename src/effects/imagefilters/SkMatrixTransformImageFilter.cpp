@@ -170,7 +170,7 @@ skif::LayerSpace<SkIRect> SkMatrixTransformImageFilter::onGetInputLayerBounds(
         return requiredInput;
     } else {
         // Our required input is the desired output for our child image filter.
-        return this->visitInputLayerBounds(mapping, requiredInput, contentBounds);
+        return this->getChildInputLayerBounds(0, mapping, requiredInput, contentBounds);
     }
 }
 
@@ -178,6 +178,6 @@ skif::LayerSpace<SkIRect> SkMatrixTransformImageFilter::onGetOutputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& contentBounds) const {
     // The output of this filter is the transformed bounds of its child's output.
-    skif::LayerSpace<SkIRect> childOutput = this->visitOutputLayerBounds(mapping, contentBounds);
+    skif::LayerSpace<SkIRect> childOutput = this->getChildOutputLayerBounds(0, mapping, contentBounds);
     return mapping.paramToLayer(fTransform).mapRect(childOutput);
 }
