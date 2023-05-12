@@ -349,7 +349,7 @@ bool VulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFlags usage
         info.fAlloc = skgpu::VulkanAlloc();
         info.fImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
-        info.fFormat = format;
+        info.fFormat101 = format;
         info.fImageUsageFlags = usageFlags;
         info.fLevelCount = 1;
         info.fCurrentQueueFamily = fPresentQueueIndex;
