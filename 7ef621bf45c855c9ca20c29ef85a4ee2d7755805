@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "129b2306_6f46457d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-05-12T21:49:46Z",
+      "side": 1,
+      "message": "Manually merged early as only a Mac test was running, but this only affects Android. Android tests already passed.",
+      "revId": "7ef621bf45c855c9ca20c29ef85a4ee2d7755805",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
