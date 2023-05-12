@@ -36,7 +36,10 @@ third_party("cpp") {
     "$_build_root/cxxbridge",
   ]
 
-  sources = [ "$_build_root/cxxbridge/vello_cpp/src/lib.rs.cc" ]
+  sources = [
+    "$_build_root/cxxbridge/vello_cpp/src/lib.rs.cc",
+    "$_build_root/cxxbridge/vello_cpp/src/lib.rs.h",
+  ]
 
   if (is_debug) {
     libs = [ "$_build_root/debug/libvello_cpp.a" ]

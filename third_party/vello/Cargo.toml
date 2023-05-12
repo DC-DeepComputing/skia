@@ -11,6 +11,9 @@ crate-type = ["staticlib"]
 
 [profile.release]
 panic = "abort"
+strip = true
+lto = true
+opt-level = "s"  # Generates smaller binary than "z" if used with fixed inline-threshold
 
 [features]
 msl = ["vello_shaders/msl"]
@@ -21,7 +24,7 @@ bytemuck = "1.12.1"
 cxx = "1.0"
 peniko = { git = "https://github.com/linebender/peniko", rev = "cafdac9a211a0fb2fec5656bd663d1ac770bcc81" }
 vello_encoding = { path = "../externals/vello/crates/encoding", default_features = false }
-vello_shaders = { path = "../externals/vello/crates/shaders", default_features = false }
+vello_shaders = { path = "../../..//vello/crates/shaders", default_features = false }
 
 [build-dependencies]
 cxx-build = "1.0"
