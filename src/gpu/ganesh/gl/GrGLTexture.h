@@ -25,6 +25,7 @@ public:
         GrGLuint fID                        = 0;
         GrGLFormat fFormat                  = GrGLFormat::kUnknown;
         GrBackendObjectOwnership fOwnership = GrBackendObjectOwnership::kOwned;
+        skgpu::Protected fIsProtected       = skgpu::Protected::kNo;
     };
 
     static GrTextureType TextureTypeFromTarget(GrGLenum textureTarget);
@@ -46,7 +47,7 @@ public:
 
     GrGLenum target() const;
 
-    GrGLFormat format() const { return fFormat; }
+    GrGLFormat format1() const { return fFormat; }
 
     bool hasBaseLevelBeenBoundToFBO() const { return fBaseLevelHasBeenBoundToFBO; }
     void baseLevelWasBoundToFBO() { fBaseLevelHasBeenBoundToFBO = true; }
