@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a86f2bd_812bfe98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-05-12T21:44:39Z",
+      "side": 1,
+      "message": "Calling out that this feels a little beyond my scope to approve, _but_ this fix looks reasonable IMO given the prior change overall was approved by Leon and Brian, and Sally\u0027s explanation makes sense. Also IIUC, this fix aligns with Brian\u0027s 3rd point in https://skia-review.googlesource.com/c/skia/+/696480/comment/b425bac4_d287764c/ about those calls seeming unnecessary.\n\nWe still have Android\u0027s tests as a line of \"defense\", and Sumir to decide risk. Apologies in advance if I should not be approving this. :-)",
+      "revId": "732a06b2564f9c36aae8f55fe0589cef2217c42e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
