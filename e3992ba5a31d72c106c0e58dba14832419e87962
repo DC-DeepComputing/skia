@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "e3992ba5a31d72c106c0e58dba14832419e87962",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f565b1b0_0d122af6",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-12T15:46:35Z",
+      "side": 1,
+      "message": "I\u0027m surprised this isn\u0027t a loop over \u0027fTextureProxies\u0027",
+      "revId": "e3992ba5a31d72c106c0e58dba14832419e87962",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5df21fe7_43cd542a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-12T15:46:35Z",
+      "side": 1,
+      "message": "4 floats each - that seems like a lot",
+      "range": {
+        "startLine": 753,
+        "startChar": 0,
+        "endLine": 756,
+        "endChar": 55
+      },
+      "revId": "e3992ba5a31d72c106c0e58dba14832419e87962",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
