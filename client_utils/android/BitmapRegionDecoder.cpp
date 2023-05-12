@@ -79,6 +79,13 @@ bool BitmapRegionDecoder::decodeRegion(SkBitmap* bitmap, BRDAllocator* allocator
     }
     SkISize scaledSize = fCodec->getSampledSubsetDimensions(sampleSize, subset);
 
+<<<<<<< HEAD   (872787 [skif] Fix inset=0 case for new Magnifier)
+=======
+    if (fCodec->getInfo().colorType() == kGray_8_SkColorType) {
+        dstColorType = kGray_8_SkColorType;
+    }
+
+>>>>>>> CHANGE (7ef621 Fix the way of Alpha8 gainmap support in Skia.)
     // Create the image info for the decode
     SkAlphaType dstAlphaType = fCodec->computeOutputAlphaType(requireUnpremul);
     SkImageInfo decodeInfo =
