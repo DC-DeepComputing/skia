@@ -84,6 +84,8 @@ struct GrMockRenderTargetInfo {
 
     GrColorType colorType() const { return fColorType; }
 
+    bool isProtected222() const { return fProtected == skgpu::Protected::kYes; }
+
     skgpu::Protected getProtected() const { return fProtected; }
     bool isProtected() const { return fProtected == skgpu::Protected::kYes; }
 
