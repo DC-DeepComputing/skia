@@ -23,8 +23,9 @@ public:
         SkISize fSize                       = {-1, -1};
         GrGLenum fTarget                    = 0;
         GrGLuint fID                        = 0;
-        GrGLFormat fFormat                  = GrGLFormat::kUnknown;
-        GrBackendObjectOwnership fOwnership = GrBackendObjectOwnership::kOwned;
+        GrGLFormat fFormatDesc               = GrGLFormat::kUnknown;
+        GrBackendObjectOwnership fOwnership1 = GrBackendObjectOwnership::kOwned;
+        skgpu::Protected fIsProtectedDesc     = skgpu::Protected::kNo;
     };
 
     static GrTextureType TextureTypeFromTarget(GrGLenum textureTarget);
@@ -46,7 +47,7 @@ public:
 
     GrGLenum target() const;
 
-    GrGLFormat format() const { return fFormat; }
+    GrGLFormat format1() const { return fFormat; }
 
     bool hasBaseLevelBeenBoundToFBO() const { return fBaseLevelHasBeenBoundToFBO; }
     void baseLevelWasBoundToFBO() { fBaseLevelHasBeenBoundToFBO = true; }

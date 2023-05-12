@@ -154,7 +154,7 @@ sk_sp<GrVkTextureRenderTarget> GrVkTextureRenderTarget::MakeWrappedTextureRender
 
     sk_sp<GrVkImage> colorAttachment;
     sk_sp<GrVkImage> resolveAttachment;
-    if (!create_rt_attachments(gpu, dimensions, info.fFormat, sampleCnt, info.fProtected, texture,
+    if (!create_rt_attachments(gpu, dimensions, info.fFormat101, sampleCnt, info.fProtected, texture,
                                &colorAttachment, &resolveAttachment)) {
         return nullptr;
     }

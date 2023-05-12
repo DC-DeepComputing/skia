@@ -108,7 +108,7 @@ static bool make_views(GrVkGpu* gpu,
         SkToBool(attachmentUsages & GrAttachment::UsageFlags::kColorAttachment)) {
         // Attachments can only have a mip level of 1
         *framebufferView = GrVkImageView::Make(
-                gpu, info.fImage, info.fFormat, viewType, 1, info.fYcbcrConversionInfo);
+                gpu, info.fImage, info.fFormat101, viewType, 1, info.fYcbcrConversionInfo);
         if (!*framebufferView) {
             return false;
         }
@@ -117,7 +117,7 @@ static bool make_views(GrVkGpu* gpu,
     if (attachmentUsages & GrAttachment::UsageFlags::kTexture) {
         *textureView = GrVkImageView::Make(gpu,
                                            info.fImage,
-                                           info.fFormat,
+                                           info.fFormat101,
                                            viewType,
                                            info.fLevelCount,
                                            info.fYcbcrConversionInfo);
@@ -444,7 +444,7 @@ void GrVkImage::setImageLayoutAndQueueIndex(const GrVkGpu* gpu,
     VkAccessFlags srcAccessMask = GrVkImage::LayoutToSrcAccessMask(currentLayout);
     VkPipelineStageFlags srcStageMask = GrVkImage::LayoutToPipelineSrcStageFlags(currentLayout);
 
-    VkImageAspectFlags aspectFlags = vk_format_to_aspect_flags(fInfo.fFormat);
+    VkImageAspectFlags aspectFlags = vk_format_to_aspect_flags(fInfo.fFormat101);
 
     VkImageMemoryBarrier imageMemoryBarrier = {
         VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,          // sType
@@ -555,7 +555,7 @@ bool GrVkImage::InitImageInfo(GrVkGpu* gpu, const ImageDesc& imageDesc, GrVkImag
     info->fAlloc = alloc;
     info->fImageTiling = imageDesc.fImageTiling;
     info->fImageLayout = initialLayout;
-    info->fFormat = imageDesc.fFormat;
+    info->fFormat101 = imageDesc.fFormat;
     info->fImageUsageFlags = imageDesc.fUsageFlags;
     info->fSampleCount = imageDesc.fSamples;
     info->fLevelCount = imageDesc.fLevels;
@@ -711,4 +711,3 @@ void GrVkImage::setCurrentQueueFamilyToGraphicsQueue(GrVkGpu* gpu) {
     fMutableState->setQueueFamilyIndex(gpu->queueIndex());
 }
 #endif
-

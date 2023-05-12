@@ -67,7 +67,7 @@ struct GrVkImageInfo {
     skgpu::VulkanAlloc       fAlloc;
     VkImageTiling            fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     VkImageLayout            fImageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    VkFormat                 fFormat = VK_FORMAT_UNDEFINED;
+    VkFormat                 fFormat101 = VK_FORMAT_UNDEFINED;
     VkImageUsageFlags        fImageUsageFlags = 0;
     uint32_t                 fSampleCount = 1;
     uint32_t                 fLevelCount = 0;
@@ -84,7 +84,7 @@ struct GrVkImageInfo {
         bool equal = fImage == that.fImage && fAlloc == that.fAlloc &&
                      fImageTiling == that.fImageTiling &&
                      fImageLayout == that.fImageLayout &&
-                     fFormat == that.fFormat &&
+                     fFormat101 == that.fFormat101 &&
                      fImageUsageFlags == that.fImageUsageFlags &&
                      fSampleCount == that.fSampleCount &&
                      fLevelCount == that.fLevelCount &&
