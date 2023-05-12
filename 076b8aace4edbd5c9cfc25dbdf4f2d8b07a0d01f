@@ -38,6 +38,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "186efef0_7f033254",
+        "filename": "include/core/SkSerialProcs.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-12T15:33:28Z",
+      "side": 1,
+      "message": "Maybe just a bit of comment:\n\nfAllowSkSL is a function which takes no parameters and returns a bool. Since there are only two deterministic implementations of such a function, it is inlined as a bool.",
+      "revId": "076b8aace4edbd5c9cfc25dbdf4f2d8b07a0d01f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "daf44c9a_d519b38f",
         "filename": "src/core/SkGlyph.cpp",
         "patchSetId": 7
@@ -49,6 +66,24 @@
       "writtenOn": "2023-05-11T21:00:29Z",
       "side": 1,
       "message": "This (the fact that I need to add a flag to `SkDeserialProcs`) is the part of this CL that I really dislike. Having the flag on `SkReadBuffer` seems fairly clean, as is the error-checking in the various `CreateProc` factories. The problem is that we need to propagate the flag into the new `SkReadBuffer` that\u0027s created when we deserialize this picture, and there\u0027s no good way to communicate that down. We have to hop through several levels:\n```\nSkPicture::MakeFromData\nSkPicture::MakeFromStreamPriv\nSkPictureData::CreateFromStream\nSkPictureData::parseStream\nSkPictureData::parseStreamTag\n```\n\nThe `SkDeserialProcs` are already plumbed through that whole chain (and also propagate to nested pictures), but it\u0027s a public structure, and everthing else here is private. (Also, it\u0027s not even a proc, just a flag).",
+      "revId": "076b8aace4edbd5c9cfc25dbdf4f2d8b07a0d01f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e84e04b9_491df350",
+        "filename": "src/core/SkGlyph.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-12T15:33:28Z",
+      "side": 1,
+      "message": "It is a proc, you just have to pick between two implementations, one that always returns true and one that always returns false. Given that this proc takes no parameters and returns bool, that seems fairly logical. If it did take a parameter then it might make more sense to allow picking between more implementations (allow someone to write their own). Would be interesting to try to implement this as an enum with function pointer underlying type (I know, can\u0027t be expressed in the language, but that\u0027s what is being done here).",
+      "parentUuid": "daf44c9a_d519b38f",
       "revId": "076b8aace4edbd5c9cfc25dbdf4f2d8b07a0d01f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
