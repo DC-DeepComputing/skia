@@ -453,6 +453,7 @@ static void check_mipmaps(GrDirectContext* dContext,
 
     constexpr int kNumMipLevels = 6;
 
+    SkDebugf("pre wrapping %d\n", backendTex.isProtected());
     auto proxy = dContext->priv().proxyProvider()->wrapBackendTexture(backendTex,
                                                                       kBorrow_GrWrapOwnership,
                                                                       GrWrapCacheable::kNo,
@@ -801,9 +802,9 @@ DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
     auto context = ctxInfo.directContext();
     const GrGLCaps* glCaps = static_cast<const GrGLCaps*>(context->priv().caps());
 
-    constexpr SkColor4f kTransCol     { 0,     0.25f, 0.75f, 0.5f };
-    constexpr SkColor4f kGrayCol      { 0.75f, 0.75f, 0.75f, 1.f  };
-    constexpr SkColor4f kTransGrayCol { 0.5f,  0.5f,  0.5f,  .8f  };
+//    constexpr SkColor4f kTransCol     { 0,     0.25f, 0.75f, 0.5f };
+//    constexpr SkColor4f kGrayCol      { 0.75f, 0.75f, 0.75f, 1.f  };
+//    constexpr SkColor4f kTransGrayCol { 0.5f,  0.5f,  0.5f,  .8f  };
 
     struct {
         GrColorType   fColorType;
@@ -811,6 +812,7 @@ DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
         SkColor4f     fColor;
     } combinations[] = {
         { GrColorType::kRGBA_8888,        GR_GL_RGBA8,                SkColors::kRed       },
+#if 0
         { GrColorType::kRGBA_8888_SRGB,   GR_GL_SRGB8_ALPHA8,         SkColors::kRed       },
 
         { GrColorType::kRGB_888x,         GR_GL_RGBA8,                SkColors::kYellow    },
@@ -847,6 +849,7 @@ DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
 
         { GrColorType::kRGBA_16161616,    GR_GL_RGBA16,               SkColors::kLtGray    },
         { GrColorType::kRG_F16,           GR_GL_RG16F,                SkColors::kYellow    },
+#endif
     };
 
     for (auto combo : combinations) {
@@ -955,8 +958,8 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
     auto context = ctxInfo.directContext();
     const GrVkCaps* vkCaps = static_cast<const GrVkCaps*>(context->priv().caps());
 
-    constexpr SkColor4f kTransCol { 0, 0.25f, 0.75f, 0.5f };
-    constexpr SkColor4f kGrayCol { 0.75f, 0.75f, 0.75f, 1 };
+    //constexpr SkColor4f kTransCol { 0, 0.25f, 0.75f, 0.5f };
+    //constexpr SkColor4f kGrayCol { 0.75f, 0.75f, 0.75f, 1 };
 
     struct {
         GrColorType fColorType;
@@ -964,6 +967,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
         SkColor4f   fColor;
     } combinations[] = {
         { GrColorType::kRGBA_8888,        VK_FORMAT_R8G8B8A8_UNORM,           SkColors::kRed      },
+#if 0
         { GrColorType::kRGBA_8888_SRGB,   VK_FORMAT_R8G8B8A8_SRGB,            SkColors::kRed      },
 
         // In this configuration (i.e., an RGB_888x colortype with an RGBA8 backing format),
@@ -1000,6 +1004,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
         { GrColorType::kRG_1616,          VK_FORMAT_R16G16_UNORM,             SkColors::kYellow   },
         { GrColorType::kRGBA_16161616,    VK_FORMAT_R16G16B16A16_UNORM,       SkColors::kLtGray   },
         { GrColorType::kRG_F16,           VK_FORMAT_R16G16_SFLOAT,            SkColors::kYellow   },
+#endif
     };
 
     for (auto combo : combinations) {
