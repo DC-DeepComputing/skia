@@ -22,6 +22,30 @@
       },
       "revId": "4ef1c3ffbb90611c0ebbec810f57be552bcd0c67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4f3e626_576cff5c",
+        "filename": "src/image/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-12T12:39:22Z",
+      "side": 1,
+      "message": "No, these are GPU agnostic.",
+      "parentUuid": "f4e0c800_f3483acd",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 0
+      },
+      "revId": "4ef1c3ffbb90611c0ebbec810f57be552bcd0c67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
