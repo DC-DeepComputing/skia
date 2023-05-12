@@ -706,8 +706,8 @@ static bool check_backend_texture(const GrBackendTexture& backendTex,
     } else if (GR_GL_TEXTURE_2D != desc->fTarget) {
         return false;
     }
-    if (backendTex.isProtected()) {
-        // Not supported in GL backend at this time.
+    if (backendTex.isProtected() && !caps.supportsProtected()) {
+        SkDebugf("1\n");
         return false;
     }
 
@@ -764,8 +764,8 @@ static bool check_compressed_backend_texture(const GrBackendTexture& backendTex,
     if (GR_GL_TEXTURE_2D != desc->fTarget) {
         return false;
     }
-    if (backendTex.isProtected()) {
-        // Not supported in GL backend at this time.
+    if (backendTex.isProtected() && !caps.supportsProtected()) {
+        SkDebugf("2\n");
         return false;
     }
 
@@ -1465,8 +1465,8 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
                                           int mipLevelCount,
                                           uint32_t levelClearMask,
                                           std::string_view label) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
+    if (isProtected == GrProtected::kYes && !this->glCaps().supportsProtected()) {
+        SkDebugf("3\n");
         return nullptr;
     }
     SkASSERT(GrGLCaps::kNone_MSFBOType != this->glCaps().msFBOType() || renderTargetSampleCnt == 1);
@@ -1574,8 +1574,8 @@ sk_sp<GrTexture> GrGLGpu::onCreateCompressedTexture(SkISize dimensions,
                                                     GrProtected isProtected,
                                                     const void* data,
                                                     size_t dataSize) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
+    if (isProtected == GrProtected::kYes && this->glCaps().supportsProtected()) {
+        SkDebugf("4\n");
         return nullptr;
     }
     SkTextureCompressionType compression = GrBackendFormatToCompressionType(format);
@@ -1619,7 +1619,8 @@ GrBackendTexture GrGLGpu::onCreateCompressedBackendTexture(
         SkISize dimensions, const GrBackendFormat& format, GrMipmapped mipmapped,
         GrProtected isProtected) {
     // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
+    if (isProtected == GrProtected::kYes && !this->glCaps().supportsProtected()) {
+        SkDebugf("5\n");
         return {};
     }
 
@@ -1851,14 +1852,30 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         set_initial_texture_params(this->glInterface(), this->glCaps(), target);
     }
 
+    bool supportsTexStorage = this->glCaps().formatSupportsTexStorage(format);
+    SkDebugf("isProtected %d - supportsProtected %d format %d supportsTexStorage %d\n",
+             GrProtected::kYes == isProtected,
+             this->glCaps().supportsProtected(),
+             format,
+             supportsTexStorage);
     if (GrProtected::kYes == isProtected) {
         if (this->glCaps().supportsProtected()) {
+            SkDebugf("explicitly setting protected\n");
             GL_CALL(TexParameteri(target, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
         } else {
             GL_CALL(DeleteTextures(1, &id));
             return 0;
         }
     }
+
+    int isProtected2 = 0;
+    GL_CALL(GetTexParameteriv(target, GR_GL_TEXTURE_PROTECTED_EXT, &isProtected2));
+    GrGLenum glError = this->fGLContext->glInterface()->fFunctions.fGetError();
+    if (glError != GR_GL_NO_ERROR) {
+        SkDebugf("glGetTexParameteriv failed (%#x)", (int) glError);
+    }
+
+    SkDebugf("GL's protected %d\n", isProtected2);
 
     GrGLenum internalFormat = this->glCaps().getTexImageOrStorageInternalFormat(format);
 
@@ -3950,7 +3967,8 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
         dimensions.height() > this->caps()->maxRenderTargetSize()) {
         return {};
     }
-    if (isProtected == GrProtected::kYes) {
+    if (isProtected == GrProtected::kYes && !this->glCaps().supportsProtected()) {
+        SkDebugf("6\n");
         return {};
     }
 
