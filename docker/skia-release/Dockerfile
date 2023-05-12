@@ -43,6 +43,7 @@ cxx = "clang++"  \n\
 skia_use_egl = true  \n\
 is_debug = false  \n\
 skia_use_system_freetype2 = false  \n\
+link_pool_depth=2  \n\
 extra_cflags = [  \n\
   "-I/tmp/swiftshader/include",  \n\
   "-DGR_EGL_TRY_GLES3_THEN_GLES2",  \n\
