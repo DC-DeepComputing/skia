@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d026e66_a5d6340d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-12T15:22:35Z",
+      "side": 1,
+      "message": "Oh you\u0027re right; when have coverage but no dual-source blending, drawGeometry() stores the DstReadRequirement on the PaintParams so addToKey() sees that and handles it like any other texture copy. I\u0027d forgotten PaintParams had added that, and was looking for a change in signature.",
+      "parentUuid": "2102e76f_96e29fc5",
+      "revId": "c0b658f2e1f90d0d9fe6baa8b491d54c9360bbf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d89e6ebe_e8892e9f",
