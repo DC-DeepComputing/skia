@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e1d13f6_2b2522d3",
+        "filename": "public.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 1565,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-12T01:27:22Z",
+      "side": 1,
+      "message": "Move after SkSLFieldAccess.h to maintain alphabetical order?",
+      "revId": "1b13a4b4fbbc996c1663a8ee79a4f0322856a71f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73ec4674_7b978f61",
+        "filename": "src/sksl/ir/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-12T01:27:22Z",
+      "side": 1,
+      "message": "Sort (move after SkSLFieldAccess.h)?",
+      "revId": "1b13a4b4fbbc996c1663a8ee79a4f0322856a71f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
