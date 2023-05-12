@@ -51,6 +51,23 @@
       "message": "Skia works differently from Android - this branch doesn\u0027t merge to our `main` branch, so I\u0027ve uploaded a cherry-pick there.",
       "revId": "b316b6c752b8b502ac7859ece738f930b7a5055f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b425bac4_d287764c",
+        "filename": "client_utils/android/BitmapRegionDecoder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-12T17:53:40Z",
+      "side": 1,
+      "message": "If I\u0027m reading this code right:\n\n1) The calling code probably asked for kN32 initially?\n2) Here, we detect that the encoded image is naturally Gray8, and change the dstColorType to Gray8.\n3) Then, we call computeOutputColorType, which will still return kGray8 (because it checks the codec\u0027s color type as well)?\n4) ... then on line 110, we see the Gray8 color type, and switch it back to Alpha8?\n\nCan we cut out any of these steps? I\u0027m okay with landing this, if everything still works, but it seems like we\u0027re making things harder than they need to be?",
+      "revId": "b316b6c752b8b502ac7859ece738f930b7a5055f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
