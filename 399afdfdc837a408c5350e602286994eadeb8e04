@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f04c865d_f74d9d12",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-12T15:15:49Z",
+      "side": 1,
+      "message": "I\u0027m assuming this was for brevity, but it has a side effect of not needing to use `SK_MAKE_BITMASK_OPS`.",
+      "range": {
+        "startLine": 511,
+        "startChar": 0,
+        "endLine": 515,
+        "endChar": 72
+      },
+      "revId": "399afdfdc837a408c5350e602286994eadeb8e04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
