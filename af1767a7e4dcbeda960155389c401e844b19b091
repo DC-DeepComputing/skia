@@ -22,6 +22,30 @@
       },
       "revId": "af1767a7e4dcbeda960155389c401e844b19b091",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d92767ca_088ade22",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-12T16:04:48Z",
+      "side": 1,
+      "message": "In this case I think it\u0027s okay. They are different insets passed to drawBorder within the same call to drawRow().",
+      "parentUuid": "67bbd0d7_cd473ca4",
+      "range": {
+        "startLine": 127,
+        "startChar": 82,
+        "endLine": 127,
+        "endChar": 87
+      },
+      "revId": "af1767a7e4dcbeda960155389c401e844b19b091",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
