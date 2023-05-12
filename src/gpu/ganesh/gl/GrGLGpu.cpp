@@ -690,9 +690,10 @@ static bool check_backend_texture(const GrBackendTexture& backendTex,
     desc->fSize = {backendTex.width(), backendTex.height()};
     desc->fTarget = info.fTarget;
     desc->fID = info.fID;
-    desc->fFormat = GrGLFormatFromGLEnum(info.fFormat);
+    desc->fFormatDesc = GrGLFormatFromGLEnum(info.fFormat);
+    desc->fIsProtectedDesc = info.fProtected27;
 
-    if (desc->fFormat == GrGLFormat::kUnknown) {
+    if (desc->fFormatDesc == GrGLFormat::kUnknown) {
         return false;
     }
     if (GR_GL_TEXTURE_EXTERNAL == desc->fTarget) {
@@ -706,8 +707,7 @@ static bool check_backend_texture(const GrBackendTexture& backendTex,
     } else if (GR_GL_TEXTURE_2D != desc->fTarget) {
         return false;
     }
-    if (backendTex.isProtected()) {
-        // Not supported in GL backend at this time.
+    if (backendTex.isProtected() && !caps.supportsProtected()) {
         return false;
     }
 
@@ -724,9 +724,9 @@ sk_sp<GrTexture> GrGLGpu::onWrapBackendTexture(const GrBackendTexture& backendTe
     }
 
     if (kBorrow_GrWrapOwnership == ownership) {
-        desc.fOwnership = GrBackendObjectOwnership::kBorrowed;
+        desc.fOwnership1 = GrBackendObjectOwnership::kBorrowed;
     } else {
-        desc.fOwnership = GrBackendObjectOwnership::kOwned;
+        desc.fOwnership1 = GrBackendObjectOwnership::kOwned;
     }
 
     GrMipmapStatus mipmapStatus = backendTex.hasMipmaps() ? GrMipmapStatus::kValid
@@ -755,17 +755,17 @@ static bool check_compressed_backend_texture(const GrBackendTexture& backendTex,
     desc->fSize = {backendTex.width(), backendTex.height()};
     desc->fTarget = info.fTarget;
     desc->fID = info.fID;
-    desc->fFormat = GrGLFormatFromGLEnum(info.fFormat);
+    desc->fFormatDesc = GrGLFormatFromGLEnum(info.fFormat);
+    desc->fIsProtectedDesc = info.fProtected27;
 
-    if (desc->fFormat == GrGLFormat::kUnknown) {
+    if (desc->fFormatDesc == GrGLFormat::kUnknown) {
         return false;
     }
 
     if (GR_GL_TEXTURE_2D != desc->fTarget) {
         return false;
     }
-    if (backendTex.isProtected()) {
-        // Not supported in GL backend at this time.
+    if (backendTex.isProtected() && !caps.supportsProtected()) {
         return false;
     }
 
@@ -781,9 +781,9 @@ sk_sp<GrTexture> GrGLGpu::onWrapCompressedBackendTexture(const GrBackendTexture&
     }
 
     if (kBorrow_GrWrapOwnership == ownership) {
-        desc.fOwnership = GrBackendObjectOwnership::kBorrowed;
+        desc.fOwnership1 = GrBackendObjectOwnership::kBorrowed;
     } else {
-        desc.fOwnership = GrBackendObjectOwnership::kOwned;
+        desc.fOwnership1 = GrBackendObjectOwnership::kOwned;
     }
 
     GrMipmapStatus mipmapStatus = backendTex.hasMipmaps() ? GrMipmapStatus::kValid
@@ -805,8 +805,8 @@ sk_sp<GrTexture> GrGLGpu::onWrapRenderableBackendTexture(const GrBackendTexture&
     if (!check_backend_texture(backendTex, this->glCaps(), &desc)) {
         return nullptr;
     }
-    SkASSERT(caps.isFormatRenderable(desc.fFormat, sampleCnt));
-    SkASSERT(caps.isFormatTexturable(desc.fFormat));
+    SkASSERT(caps.isFormatRenderable(desc.fFormatDesc, sampleCnt));
+    SkASSERT(caps.isFormatTexturable(desc.fFormatDesc));
 
     // We don't support rendering to a EXTERNAL texture.
     if (GR_GL_TEXTURE_EXTERNAL == desc.fTarget) {
@@ -814,13 +814,13 @@ sk_sp<GrTexture> GrGLGpu::onWrapRenderableBackendTexture(const GrBackendTexture&
     }
 
     if (kBorrow_GrWrapOwnership == ownership) {
-        desc.fOwnership = GrBackendObjectOwnership::kBorrowed;
+        desc.fOwnership1 = GrBackendObjectOwnership::kBorrowed;
     } else {
-        desc.fOwnership = GrBackendObjectOwnership::kOwned;
+        desc.fOwnership1 = GrBackendObjectOwnership::kOwned;
     }
 
 
-    sampleCnt = caps.getRenderTargetSampleCount(sampleCnt, desc.fFormat);
+    sampleCnt = caps.getRenderTargetSampleCount(sampleCnt, desc.fFormatDesc);
     SkASSERT(sampleCnt);
 
     GrGLRenderTarget::IDs rtIDs;
@@ -844,8 +844,7 @@ sk_sp<GrRenderTarget> GrGLGpu::onWrapBackendRenderTarget(const GrBackendRenderTa
         return nullptr;
     }
 
-    if (backendRT.isProtected()) {
-        // Not supported in GL at this time.
+    if (backendRT.isProtected() && !this->glCaps().supportsProtected()) {
         return nullptr;
     }
 
@@ -874,6 +873,7 @@ sk_sp<GrRenderTarget> GrGLGpu::onWrapBackendRenderTarget(const GrBackendRenderTa
                                          sampleCount,
                                          rtIDs,
                                          backendRT.stencilBits(),
+                                         skgpu::Protected(backendRT.isProtected()),
                                          /*label=*/"GLGpu_WrapBackendRenderTarget");
 }
 
@@ -926,8 +926,8 @@ bool GrGLGpu::onWritePixels(GrSurface* surface,
         GL_CALL(Flush());
     }
 
-    SkASSERT(!GrGLFormatIsCompressed(glTex->format()));
-    return this->uploadColorTypeTexData(glTex->format(),
+    SkASSERT(!GrGLFormatIsCompressed(glTex->format1()));
+    return this->uploadColorTypeTexData(glTex->format1(),
                                         surfaceColorType,
                                         glTex->dimensions(),
                                         glTex->target(),
@@ -972,7 +972,7 @@ bool GrGLGpu::onTransferPixelsTo(GrTexture* texture,
     GrGLTexture* glTex = static_cast<GrGLTexture*>(texture);
 
     // Can't transfer compressed data
-    SkASSERT(!GrGLFormatIsCompressed(glTex->format()));
+    SkASSERT(!GrGLFormatIsCompressed(glTex->format1()));
 
     if (!check_write_and_transfer_input(glTex)) {
         return false;
@@ -1003,7 +1003,7 @@ bool GrGLGpu::onTransferPixelsTo(GrTexture* texture,
         restoreGLRowLength = true;
     }
 
-    GrGLFormat textureFormat = glTex->format();
+    GrGLFormat textureFormat = glTex->format1();
     // External format and type come from the upload data.
     GrGLenum externalFormat = 0;
     GrGLenum externalType = 0;
@@ -1317,7 +1317,7 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
 
     GrGLenum colorRenderbufferFormat = 0; // suppress warning
 
-    if (desc.fFormat == GrGLFormat::kUnknown) {
+    if (desc.fFormatDesc == GrGLFormat::kUnknown) {
         return false;
     }
 
@@ -1349,7 +1349,7 @@ bool GrGLGpu::createRenderTargetObjects(const GrGLTexture::Desc& desc,
         if (!rtIDs->fMSColorRenderbufferID) {
             return false;
         }
-        colorRenderbufferFormat = this->glCaps().getRenderbufferInternalFormat(desc.fFormat);
+        colorRenderbufferFormat = this->glCaps().getRenderbufferInternalFormat(desc.fFormatDesc);
     }
 
 #if defined(__has_feature)
@@ -1465,8 +1465,7 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
                                           int mipLevelCount,
                                           uint32_t levelClearMask,
                                           std::string_view label) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
+    if (isProtected == GrProtected::kYes && !this->glCaps().supportsProtected()) {
         return nullptr;
     }
     SkASSERT(GrGLCaps::kNone_MSFBOType != this->glCaps().msFBOType() || renderTargetSampleCnt == 1);
@@ -1491,14 +1490,14 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
             texDesc.fTarget = GR_GL_TEXTURE_RECTANGLE;
             break;
     }
-    texDesc.fFormat = format.asGLFormat();
-    texDesc.fOwnership = GrBackendObjectOwnership::kOwned;
-    SkASSERT(texDesc.fFormat != GrGLFormat::kUnknown);
-    SkASSERT(!GrGLFormatIsCompressed(texDesc.fFormat));
+    texDesc.fFormatDesc = format.asGLFormat();
+    texDesc.fOwnership1 = GrBackendObjectOwnership::kOwned;
+    SkASSERT(texDesc.fFormatDesc != GrGLFormat::kUnknown);
+    SkASSERT(!GrGLFormatIsCompressed(texDesc.fFormatDesc));
+    texDesc.fIsProtectedDesc = isProtected;
 
-    texDesc.fID = this->createTexture(dimensions, texDesc.fFormat, texDesc.fTarget, renderable,
-                                      &initialState, mipLevelCount, isProtected, label);
-
+    texDesc.fID = this->createTexture(dimensions, texDesc.fFormatDesc, texDesc.fTarget, renderable,
+                                      &initialState, mipLevelCount, texDesc.fIsProtectedDesc, label);
     if (!texDesc.fID) {
         return return_null_texture();
     }
@@ -1532,7 +1531,7 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
             GrGLenum externalFormat, externalType;
             GrColorType colorType;
             this->glCaps().getTexSubImageDefaultFormatTypeAndColorType(
-                    texDesc.fFormat, &externalFormat, &externalType, &colorType);
+                    texDesc.fFormatDesc, &externalFormat, &externalType, &colorType);
             for (int i = 0; i < mipLevelCount; ++i) {
                 if (levelClearMask & (1U << i)) {
                     GL_CALL(ClearTexImage(tex->textureID(), i, externalFormat, externalType,
@@ -1557,7 +1556,7 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
         } else {
             this->bindTextureToScratchUnit(texDesc.fTarget, tex->textureID());
             std::array<float, 4> zeros = {};
-            this->uploadColorToTex(texDesc.fFormat,
+            this->uploadColorToTex(texDesc.fFormatDesc,
                                    texDesc.fSize,
                                    texDesc.fTarget,
                                    zeros,
@@ -1574,8 +1573,7 @@ sk_sp<GrTexture> GrGLGpu::onCreateCompressedTexture(SkISize dimensions,
                                                     GrProtected isProtected,
                                                     const void* data,
                                                     size_t dataSize) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
+    if (isProtected == GrProtected::kYes && !this->glCaps().supportsProtected()) {
         return nullptr;
     }
     SkTextureCompressionType compression = GrBackendFormatToCompressionType(format);
@@ -1584,16 +1582,17 @@ sk_sp<GrTexture> GrGLGpu::onCreateCompressedTexture(SkISize dimensions,
     GrGLTexture::Desc desc;
     desc.fSize = dimensions;
     desc.fTarget = GR_GL_TEXTURE_2D;
-    desc.fOwnership = GrBackendObjectOwnership::kOwned;
-    desc.fFormat = format.asGLFormat();
-    desc.fID = this->createCompressedTexture2D(desc.fSize, compression, desc.fFormat,
-                                               mipmapped, &initialState);
+    desc.fOwnership1 = GrBackendObjectOwnership::kOwned;
+    desc.fFormatDesc = format.asGLFormat();
+    desc.fIsProtectedDesc = isProtected;
+    desc.fID = this->createCompressedTexture2D(desc.fSize, compression, desc.fFormatDesc,
+                                               mipmapped, desc.fIsProtectedDesc, &initialState);
     if (!desc.fID) {
         return nullptr;
     }
 
     if (data) {
-        if (!this->uploadCompressedTexData(compression, desc.fFormat, dimensions, mipmapped,
+        if (!this->uploadCompressedTexData(compression, desc.fFormatDesc, dimensions, mipmapped,
                                            GR_GL_TEXTURE_2D, data, dataSize)) {
             GL_CALL(DeleteTextures(1, &desc.fID));
             return nullptr;
@@ -1618,8 +1617,7 @@ sk_sp<GrTexture> GrGLGpu::onCreateCompressedTexture(SkISize dimensions,
 GrBackendTexture GrGLGpu::onCreateCompressedBackendTexture(
         SkISize dimensions, const GrBackendFormat& format, GrMipmapped mipmapped,
         GrProtected isProtected) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
+    if (isProtected == GrProtected::kYes && !this->glCaps().supportsProtected()) {
         return {};
     }
 
@@ -1637,8 +1635,9 @@ GrBackendTexture GrGLGpu::onCreateCompressedBackendTexture(
 
     info.fTarget = GR_GL_TEXTURE_2D;
     info.fFormat = GrGLFormatToEnum(glFormat);
+    info.fProtected27 = isProtected;
     info.fID = this->createCompressedTexture2D(dimensions, compression, glFormat,
-                                               mipmapped, &initialState);
+                                               mipmapped, info.fProtected27, &initialState);
     if (!info.fID) {
         return {};
     }
@@ -1797,6 +1796,7 @@ GrGLuint GrGLGpu::createCompressedTexture2D(
         SkTextureCompressionType compression,
         GrGLFormat format,
         GrMipmapped mipmapped,
+        GrProtected isProtected,
         GrGLTextureParameters::SamplerOverriddenState* initialState) {
     if (format == GrGLFormat::kUnknown) {
         return 0;
@@ -1814,6 +1814,15 @@ GrGLuint GrGLGpu::createCompressedTexture2D(
     *initialState = set_initial_texture_params(this->glInterface(),
                                                this->glCaps(),
                                                GR_GL_TEXTURE_2D);
+
+    if (GrProtected::kYes == isProtected) {
+        if (this->glCaps().supportsProtected()) {
+            GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
+        } else {
+            GL_CALL(DeleteTextures(1, &id));
+            return 0;
+        }
+    }
 
     return id;
 }
@@ -3526,7 +3535,7 @@ bool GrGLGpu::copySurfaceAsDraw(GrSurface* dst, bool drawToMultisampleFBO, GrSur
         auto* dstTex = static_cast<GrGLTexture*>(src->asTexture());
         SkASSERT(dstTex);
         SkASSERT(!drawToMultisampleFBO);
-        if (!this->glCaps().isFormatRenderable(dstTex->format(), 1)) {
+        if (!this->glCaps().isFormatRenderable(dstTex->format1(), 1)) {
             return false;
         }
         this->bindSurfaceFBOForPixelOps(dst, 0, GR_GL_FRAMEBUFFER, kDst_TempFBOTarget);
@@ -3651,7 +3660,7 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
     if (GR_GL_TEXTURE_2D != glTex->target()) {
         return false;
     }
-    GrGLFormat format = glTex->format();
+    GrGLFormat format = glTex->format1();
     // Manual implementation of mipmap generation, to work around driver bugs w/sRGB.
     // Uses draw calls to do a series of downsample operations to successive mips.
 
@@ -3846,6 +3855,7 @@ GrBackendTexture GrGLGpu::onCreateBackendTexture(SkISize dimensions,
     if (!info.fID) {
         return {};
     }
+    info.fProtected27 = isProtected;
 
     // Unbind this texture from the scratch texture unit.
     this->bindTextureToScratchUnit(info.fTarget, 0);
@@ -3950,7 +3960,7 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
         dimensions.height() > this->caps()->maxRenderTargetSize()) {
         return {};
     }
-    if (isProtected == GrProtected::kYes) {
+    if (isProtected == GrProtected::kYes && !this->glCaps().supportsProtected()) {
         return {};
     }
 
@@ -3985,6 +3995,7 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
     GrGLFramebufferInfo info;
     info.fFBOID = 0;
     info.fFormat = GrGLFormatToEnum(format);
+    info.fProtected11 = isProtected;
 
     auto deleteIDs = [&](bool saveFBO = false) {
         if (colorID) {
@@ -4027,7 +4038,7 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
         colorID = this->createTexture(dimensions, format, GR_GL_TEXTURE_2D, GrRenderable::kYes,
                                       &initialState,
                                       1,
-                                      isProtected,
+                                      info.fProtected11,
                                       /*label=*/"Skia");
         if (!colorID) {
             deleteIDs();

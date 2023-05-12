@@ -181,19 +181,30 @@ struct GrGLTextureInfo {
     GrGLenum fTarget;
     GrGLuint fID;
     GrGLenum fFormat = 0;
+    skgpu::Protected fProtected27 = skgpu::Protected::kNo;
 
     bool operator==(const GrGLTextureInfo& that) const {
-        return fTarget == that.fTarget && fID == that.fID && fFormat == that.fFormat;
+        return fTarget == that.fTarget &&
+               fID == that.fID &&
+               fFormat == that.fFormat &&
+               fProtected27 == that.fProtected27;
     }
+
+    bool isProtected27() const { return fProtected27 == skgpu::Protected::kYes; }
 };
 
 struct GrGLFramebufferInfo {
     GrGLuint fFBOID;
     GrGLenum fFormat = 0;
+    skgpu::Protected fProtected11 = skgpu::Protected::kNo;
 
     bool operator==(const GrGLFramebufferInfo& that) const {
-        return fFBOID == that.fFBOID && fFormat == that.fFormat;
+        return fFBOID == that.fFBOID &&
+               fFormat == that.fFormat &&
+               fProtected11 == that.fProtected11;
     }
+
+    bool isProtected11() const { return fProtected11 == skgpu::Protected::kYes; }
 };
 
 struct GrGLSurfaceInfo {
