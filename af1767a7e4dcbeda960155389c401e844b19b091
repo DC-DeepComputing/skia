@@ -46,6 +46,30 @@
       },
       "revId": "af1767a7e4dcbeda960155389c401e844b19b091",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ef6b10_801b0f1c",
+        "filename": "gm/imagemagnifier.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-13T00:38:50Z",
+      "side": 1,
+      "message": "Renamed",
+      "parentUuid": "d92767ca_088ade22",
+      "range": {
+        "startLine": 127,
+        "startChar": 82,
+        "endLine": 127,
+        "endChar": 87
+      },
+      "revId": "af1767a7e4dcbeda960155389c401e844b19b091",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
