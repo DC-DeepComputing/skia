@@ -28,7 +28,6 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "src/effects/imagefilters/SkRuntimeImageFilter.h"
 #include "tests/CtsEnforcement.h"
 #include "tests/Test.h"
 
@@ -153,9 +152,8 @@ static void test_runtime_shader(skiatest::Reporter* r, SkSurface* surface) {
     sk_sp<SkImageFilter> input = SkImageFilters::Shader(SkShaders::Color(SK_ColorRED));
 
     // Create the different variations of SkImageFilters::RuntimeShader
-    // All 3 variations should produce the same pixel output
+    // All variations should produce the same pixel output
     std::vector<sk_sp<SkImageFilter>> filters = {
-            SkMakeRuntimeImageFilter(effect, /*uniforms=*/nullptr, input),
             SkImageFilters::RuntimeShader(builder, /*childShaderName=*/"", input),
             SkImageFilters::RuntimeShader(builder, /*childShaderName=*/"child", input)};
 
