@@ -10,7 +10,6 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkTArray.h"
 #include "src/sksl/dsl/DSLExpression.h"
 
 #include <string_view>
@@ -20,12 +19,12 @@ namespace SkSL {
 
 class Compiler;
 struct Field;
+struct Modifiers;
 class Position;
 class Type;
 
 namespace dsl {
 
-class DSLModifiers;
 struct DSLVarBase;
 
 class DSLType {
@@ -34,7 +33,8 @@ public:
 
     DSLType(std::string_view name, Position pos = {});
 
-    DSLType(std::string_view name, DSLModifiers* modifiers, Position pos = {});
+    DSLType(std::string_view name, Position overallPos,
+            SkSL::Modifiers* modifiers, Position modifiersPos);
 
     static DSLType Invalid();
     static DSLType Poison();
@@ -134,10 +134,6 @@ private:
 
     friend DSLType Array(const DSLType& base, int count, Position pos);
     friend DSLType Struct(std::string_view name, SkSpan<Field> fields, Position pos);
-    friend DSLType StructType(std::string_view name,
-                              skia_private::TArray<Field> fields,
-                              bool interfaceBlock,
-                              Position pos);
     friend DSLType UnsizedArray(const DSLType& base, Position pos);
     friend class DSLCore;
     friend class DSLFunction;
@@ -148,21 +144,6 @@ private:
 DSLType Array(const DSLType& base, int count, Position pos = {});
 
 DSLType UnsizedArray(const DSLType& base, Position pos = {});
-
-/**
- * Creates a StructDefinition at the top level and returns the associated type.
- */
-DSLType Struct(std::string_view name, skia_private::TArray<Field> fields, Position pos = {});
-
-/**
- * Creates a struct type and adds it to the current symbol table. Does _not_ create a ProgramElement
- * at the top level, so the type will exist, but won't be represented anywhere in the output.
- * (Use Struct or InterfaceBlock to add a top-level program element.)
- */
-DSLType StructType(std::string_view name,
-                   skia_private::TArray<Field> fields,
-                   bool interfaceBlock,
-                   Position pos);
 
 } // namespace dsl
 
