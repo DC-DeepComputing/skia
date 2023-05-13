@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad1d130a_f5c91f71",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-05-13T04:08:01Z",
+      "side": 1,
+      "message": "Approving since Brian approved https://skia-review.googlesource.com/c/skia/+/696862, which is the version of this without the fix of removing the `dstColorSpace \u003d xyz` line (and Leon approved that change on `android/u-release` to begin with)",
+      "revId": "7807b51026977494d2a81d56af8f7315cdbd7905",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
