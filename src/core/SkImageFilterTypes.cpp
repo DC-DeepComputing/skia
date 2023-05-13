@@ -809,4 +809,37 @@ FilterResult FilterResult::MakeFromImage(const Context& ctx,
     return surface.snap();
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// FilterResult::Builder
+
+LayerSpace<SkIRect> FilterResult::Builder::outputBounds() const {
+    SkASSERT(!fInputs.empty());
+
+    // The union of all inputs' layer bounds
+    LayerSpace<SkIRect> output = fInputs[0].layerBounds();
+    for (int i = 1; i < fInputs.size(); ++i) {
+        output.join(fInputs[i].layerBounds());
+    }
+    return output;
+}
+
+FilterResult FilterResult::Builder::merge() {
+    if (fInputs.empty()) {
+        return {};
+    } else if (fInputs.size() == 1) {
+        return fInputs[0];
+    }
+
+    const LayerSpace<SkIRect> outputBounds = this->outputBounds();
+    AutoSurface surface{fContext, outputBounds, /*renderInParameterSpace=*/false};
+    if (surface) {
+        for (const FilterResult& input : fInputs) {
+            surface->save();
+            input.draw(surface.canvas());
+            surface->restore();
+        }
+    }
+    return surface.snap();
+}
+
 } // end namespace skif
