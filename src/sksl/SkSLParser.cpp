@@ -782,7 +782,6 @@ DSLType Parser::structDeclaration() {
         return DSLType(nullptr);
     }
     TArray<SkSL::Field> fields;
-    THashSet<std::string_view> fieldNames;
     while (!this->checkNext(Token::Kind::TK_RBRACE)) {
         Token fieldStart = this->peek();
         DSLModifiers modifiers = this->modifiers();
@@ -807,29 +806,18 @@ DSLType Parser::structDeclaration() {
                     return DSLType(nullptr);
                 }
                 actualType = dsl::Array(actualType, size,
-                        this->rangeFrom(this->position(fieldStart)));
+                                        this->rangeFrom(this->position(fieldStart)));
             }
 
-            std::string_view nameText = this->text(memberName);
-            if (!fieldNames.contains(nameText)) {
-                fields.push_back(SkSL::Field(this->rangeFrom(fieldStart),
-                                             modifiers.fModifiers,
-                                             nameText,
-                                             &actualType.skslType()));
-                fieldNames.add(nameText);
-            } else {
-                this->error(memberName, "field '" + std::string(nameText) +
-                                        "' was already defined in the same struct ('" +
-                                        std::string(this->text(name)) + "')");
-            }
+            fields.push_back(SkSL::Field(this->rangeFrom(fieldStart),
+                                         modifiers.fModifiers,
+                                         this->text(memberName),
+                                         &actualType.skslType()));
         } while (this->checkNext(Token::Kind::TK_COMMA));
+
         if (!this->expect(Token::Kind::TK_SEMICOLON, "';'")) {
             return DSLType(nullptr);
         }
-    }
-    if (fields.empty()) {
-        this->error(this->rangeFrom(start), "struct '" + std::string(this->text(name)) +
-                "' must contain at least one field");
     }
     return dsl::Struct(this->text(name), std::move(fields), this->rangeFrom(start));
 }

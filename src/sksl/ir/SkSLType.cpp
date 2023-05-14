@@ -9,6 +9,7 @@
 
 #include "src/base/SkMathPriv.h"
 #include "src/base/SkSafeMath.h"
+#include "src/core/SkTHash.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLConstantFolder.h"
 #include "src/sksl/SkSLContext.h"
@@ -666,8 +667,22 @@ std::unique_ptr<Type> Type::MakeStructType(const Context& context,
                                            std::string_view name,
                                            TArray<Field> fields,
                                            bool interfaceBlock) {
+    if (fields.empty()) {
+        context.fErrors->error(pos, "struct '" + std::string(name) +
+                                    "' must contain at least one field");
+    }
     size_t slots = 0;
+
+    THashSet<std::string_view> fieldNames;
     for (const Field& field : fields) {
+        // Add this field name to our set; if the set doesn't grow, we found a duplicate.
+        int numFieldNames = fieldNames.count();
+        fieldNames.add(field.fName);
+        if (fieldNames.count() == numFieldNames) {
+            context.fErrors->error(field.fPosition, "field '" + std::string(field.fName) +
+                                                    "' was already defined in the same struct ('" +
+                                                    std::string(name) + "')");
+        }
         if (field.fModifiers.fFlags != Modifiers::kNo_Flag) {
             std::string desc = field.fModifiers.description();
             desc.pop_back();  // remove trailing space
