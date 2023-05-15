@@ -810,7 +810,8 @@ static constexpr Uniform kYUVImageShaderUniforms[] = {
         { "channelSelectU",        SkSLType::kHalf4 },
         { "channelSelectV",        SkSLType::kHalf4 },
         { "channelSelectA",        SkSLType::kHalf4 },
-        { "yuvToRGBTransform",     SkSLType::kFloat4x4 },
+        { "yuvToRGBMatrix",        SkSLType::kHalf3x3 },
+        { "yuvToRGBTranslate",     SkSLType::kFloat3 },
         // The next 6 uniforms are for the color space transformation
         { "csXformFlags",          SkSLType::kInt },
         { "csXformSrcKind",        SkSLType::kInt },

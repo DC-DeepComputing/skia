@@ -34,6 +34,10 @@ public:
         return nullptr;
     }
 
+    const YUVATextureProxies& yuvaProxies() {
+        return fYUVAProxies;
+    }
+
 private:
     sk_sp<SkImage> makeTextureImage(Recorder*, RequiredProperties) const override {
         return nullptr;
