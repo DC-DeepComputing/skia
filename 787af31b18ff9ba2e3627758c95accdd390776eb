@@ -16,6 +16,23 @@
       "message": "I\u0027ve been testing this out in this PR: https://github.com/flutter/engine/pull/41991\n\nIt\u0027s working great!",
       "revId": "787af31b18ff9ba2e3627758c95accdd390776eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab51ce56_9630986a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-15T14:56:12Z",
+      "side": 1,
+      "message": "This is fine, though in the future you may end up wanting \"unresolved runs\" so that if multiple code points in a row are unresolved then the user also knows that a whole run was unresolved and also so the user knows where that run was in context so they could maybe re-shape even more or have more information when doing font resolution. It might also be somewhat helpful in the future to return with those runs the resolved language/script (so that the right fonts might be picked for Han unified code points).\n\nIn other words, this is a fine first step, but for a more robust solution in the future you\u0027re going to want to return a list of unresolved code point ranges, each annotated with the corresponding script and language.",
+      "revId": "787af31b18ff9ba2e3627758c95accdd390776eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
