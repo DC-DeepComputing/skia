@@ -33,6 +33,24 @@
       "message": "Oops, looks like chrome still had this defined from ancient times: https://chromium-review.googlesource.com/c/chromium/src/+/4526066",
       "revId": "4ae308c9dd8bbcf7c6486727ff80976ac5d1b5be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dd73d1b_14762677",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-15T14:49:58Z",
+      "side": 1,
+      "message": "The chrome flag removal is https://chromium-review.googlesource.com/c/chromium/src/+/4526066, once it lands today, I will land this CL.\n\nThe flutter flag PR had been reverted due to a scuba diff over the weekend, but it was an improvement and the revert was reverted. I believe the engine roll has completed and I don\u0027t see any reference to `skia_use_legacy_layer_bounds` in g3 anymore.",
+      "parentUuid": "bb6f8ebb_e86572a8",
+      "revId": "4ae308c9dd8bbcf7c6486727ff80976ac5d1b5be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
