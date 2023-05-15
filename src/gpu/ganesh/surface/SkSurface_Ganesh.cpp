@@ -239,7 +239,7 @@ bool SkSurface_Ganesh::onCopyOnWrite(ContentChangeMode mode) {
 
 void SkSurface_Ganesh::onDiscard() { fDevice->discard(); }
 
-void SkSurface_Ganesh::onResolveMSAA() { fDevice->resolveMSAA(); }
+void SkSurface_Ganesh::resolveMSAA() { fDevice->resolveMSAA(); }
 
 GrSemaphoresSubmitted SkSurface_Ganesh::onFlush(BackendSurfaceAccess access,
                                                 const GrFlushInfo& info,
@@ -554,15 +554,6 @@ bool validate_backend_render_target(const GrCaps* caps,
     }
 
     return true;
-}
-
-void SkSurface::flushAndSubmit(bool syncCpu) {
-    this->flush(BackendSurfaceAccess::kNoAccess, GrFlushInfo());
-
-    auto direct = GrAsDirectContext(this->recordingContext());
-    if (direct) {
-        direct->submit(syncCpu);
-    }
 }
 
 namespace SkSurfaces {

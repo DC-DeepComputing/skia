@@ -492,6 +492,29 @@ void GrDirectContext::flushAndSubmit(sk_sp<const SkImage> image) {
     this->submit();
 }
 
+GrSemaphoresSubmitted GrDirectContext::flush(sk_sp<SkSurface> surface,
+                                             SkSurfaces::BackendAccess access,
+                                             const GrFlushInfo& info) {
+    return {};
+    //return asSB(this)->onFlush(access, flushInfo, nullptr);
+}
+
+GrSemaphoresSubmitted GrDirectContext::flush(sk_sp<SkSurface> surface,
+                                             const GrFlushInfo& info,
+                                             const skgpu::MutableTextureState* newState) {
+    return {};
+    //return asSB(this)->onFlush(SkSurfaces::BackendAccess::kNoAccess, info, newState);
+}
+
+void GrDirectContext::flushAndSubmit(sk_sp<SkSurface> surface, bool syncCpu) {
+    this->flush(std::move(surface), SkSurfaces::BackendAccess::kNoAccess, GrFlushInfo());
+    this->submit(syncCpu);
+}
+
+void GrDirectContext::flush(sk_sp<SkSurface> surface) {
+    this->flush(std::move(surface), GrFlushInfo());
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 void GrDirectContext::checkAsyncWorkCompletion() {
