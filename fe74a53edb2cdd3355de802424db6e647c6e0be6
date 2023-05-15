@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7c2f52b_ab9be2ca",
+        "filename": "src/gpu/ganesh/image/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-15T19:42:54Z",
+      "side": 1,
+      "message": "I don\u0027t think we need two separate lists anymore. All of these files should be gpu only, right?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 15
+      },
+      "revId": "fe74a53edb2cdd3355de802424db6e647c6e0be6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
