@@ -129,12 +129,15 @@ void GrContextFactory::releaseResourcesAndAbandonContexts() {
 }
 
 GrDirectContext* GrContextFactory::get(ContextType type, ContextOverrides overrides) {
+    SkDebugf("get 0x%x\n", overrides);
     return this->getContextInfo(type, overrides).directContext();
 }
 
-ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOverrides overrides,
+ContextInfo GrContextFactory::getContextInfoInternal(ContextType type,
+                                                     ContextOverrides overrides,
                                                      GrDirectContext* shareContext,
                                                      uint32_t shareIndex) {
+    SkDebugf("getContextInfoInternal 0x%x\n", overrides);
     // (shareIndex != 0) -> (shareContext != nullptr)
     SkASSERT((shareIndex == 0) || (shareContext != nullptr));
 
@@ -173,10 +176,16 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             GLTestContext* glCtx;
             switch (type) {
                 case kGL_ContextType:
-                    glCtx = CreatePlatformGLTestContext(kGL_GrGLStandard, glShareContext);
+                    SkDebugf("---2\n");
+
+                    glCtx = CreatePlatformGLTestContext(kGL_GrGLStandard, glShareContext,
+                                                        overrides & ContextOverrides::kProtected);
                     break;
                 case kGLES_ContextType:
-                    glCtx = CreatePlatformGLTestContext(kGLES_GrGLStandard, glShareContext);
+                    SkDebugf("---3\n");
+
+                    glCtx = CreatePlatformGLTestContext(kGLES_GrGLStandard, glShareContext,
+                                                        overrides & ContextOverrides::kProtected);
                     break;
 #if SK_ANGLE
                 case kANGLE_D3D9_ES2_ContextType:
@@ -248,9 +257,15 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             // slow. Perhaps this prevents repeated driver loading/unloading? Note that keeping
             // a persistent VkTestContext around instead was tried and did not work.
             if (!fSentinelGLContext) {
-                fSentinelGLContext.reset(CreatePlatformGLTestContext(kGL_GrGLStandard));
+                SkDebugf("---a\n");
+                fSentinelGLContext.reset(
+                        CreatePlatformGLTestContext(kGL_GrGLStandard, nullptr,
+                                                    /* createProtected= */ false));
                 if (!fSentinelGLContext) {
-                    fSentinelGLContext.reset(CreatePlatformGLTestContext(kGLES_GrGLStandard));
+                    SkDebugf("---b\n");
+                    fSentinelGLContext.reset(
+                            CreatePlatformGLTestContext(kGLES_GrGLStandard, nullptr,
+                                                        /* createProtected= */ false));
                 }
             }
 #endif
@@ -326,6 +341,7 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
         SkASSERT(grCtx->directContextID() != shareContext->directContextID());
     }
 
+    SkDebugf("creating w/ 0x%x\n", overrides);
     // We must always add new contexts by pushing to the back so that when we delete them we delete
     // them in reverse order in which they were made.
     Context& context = fContexts.push_back();
@@ -343,11 +359,13 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
 }
 
 ContextInfo GrContextFactory::getContextInfo(ContextType type, ContextOverrides overrides) {
+    SkDebugf("getContextInfo\n");
     return this->getContextInfoInternal(type, overrides, nullptr, 0);
 }
 
 ContextInfo GrContextFactory::getSharedContextInfo(GrDirectContext* shareContext,
                                                    uint32_t shareIndex) {
+    SkDebugf("getSharedContextInfo\n");
     SkASSERT(shareContext);
     for (int i = 0; i < fContexts.size(); ++i) {
         if (!fContexts[i].fAbandoned && fContexts[i].fGrContext == shareContext) {

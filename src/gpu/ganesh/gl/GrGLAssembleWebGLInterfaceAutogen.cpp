@@ -124,6 +124,7 @@ sk_sp<const GrGLInterface> GrGLMakeAssembledWebGLInterface(void *ctx, GrGLGetPro
     GET_PROC(TexParameterfv);
     GET_PROC(TexParameteri);
     GET_PROC(TexParameteriv);
+    GET_PROC(GetTexParameteriv);
     GET_PROC(TexSubImage2D);
     GET_PROC(Uniform1f);
     GET_PROC(Uniform1fv);
