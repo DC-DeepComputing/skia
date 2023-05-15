@@ -273,6 +273,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/gpu/ganesh/gradients:gradient_srcs",
 				"//src/gpu/ganesh/image:image_hdrs",
 				"//src/gpu/ganesh/image:image_srcs",
+				"//src/gpu/ganesh/image:image_gpu_hdrs",
+				"//src/gpu/ganesh/image:image_gpu_srcs",
 				"//src/gpu/ganesh/mock:mock_hdrs",
 				"//src/gpu/ganesh/mock:mock_srcs",
 				"//src/gpu/ganesh/ops:ops_hdrs",

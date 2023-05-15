@@ -5,8 +5,6 @@ licenses(["notice"])
 exports_files_legacy()
 
 IMAGE_FILES = [
-    "GrImageUtils.cpp",
-    "GrImageUtils.h",
     "GrTextureGenerator.cpp",
     "SkImage_Ganesh.cpp",
     "SkImage_Ganesh.h",
@@ -17,8 +15,13 @@ IMAGE_FILES = [
     "SkImage_GaneshYUVA.h",
     "SkImage_LazyTexture.cpp",
     "SkImage_LazyTexture.h",
+]
+
+IMAGE_GPU_FILES = [
     "SkImage_RasterPinnable.cpp",
     "SkImage_RasterPinnable.h",
+    "GrImageUtils.cpp",
+    "GrImageUtils.h",
 ]
 
 split_srcs_and_hdrs(
@@ -26,14 +29,25 @@ split_srcs_and_hdrs(
     files = IMAGE_FILES,
 )
 
+split_srcs_and_hdrs(
+    name = "image_gpu",
+    files = IMAGE_GPU_FILES,
+)
+
 skia_filegroup(
     name = "srcs",
-    srcs = [":image_srcs"],
+    srcs = [":image_srcs"] + select({
+        "//src/gpu:has_gpu_backend": [":image_gpu_srcs"],
+        "//conditions:default": [],
+    }),
     visibility = ["//src/gpu/ganesh:__pkg__"],
 )
 
 skia_filegroup(
     name = "private_hdrs",
-    srcs = [":image_hdrs"],
+    srcs = [":image_hdrs"] + select({
+        "//src/gpu:has_gpu_backend": [":image_gpu_hdrs"],
+        "//conditions:default": [],
+    }),
     visibility = ["//src/gpu/ganesh:__pkg__"],
 )
