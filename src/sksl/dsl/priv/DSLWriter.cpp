@@ -50,8 +50,6 @@ SkSL::Variable* DSLWriter::Var(DSLVarBase& var) {
                                                                           &var.fType.skslType(),
                                                                           var.fNamePosition,
                                                                           var.fName,
-                                                                          /*isArray=*/false,
-                                                                          /*arraySize=*/nullptr,
                                                                           var.fStorage);
         if (var.fStorage != SkSL::VariableStorage::kParameter) {
             var.fDeclaration = VarDeclaration::Convert(ThreadContext::Context(),
@@ -76,8 +74,6 @@ std::unique_ptr<SkSL::Variable> DSLWriter::CreateParameterVar(DSLParameter& var)
                                    &var.fType.skslType(),
                                    var.fNamePosition,
                                    var.fName,
-                                   /*isArray=*/false,
-                                   /*arraySize=*/nullptr,
                                    var.fStorage);
 }
 
