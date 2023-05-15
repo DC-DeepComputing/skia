@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d79f103a_fdbc5877",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-15T17:47:14Z",
+      "side": 1,
+      "message": "Yea, this is where ShaderCaps are defined.",
+      "parentUuid": "709b810d_c2d8ff14",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 30
+      },
+      "revId": "9b4759e8d9861147c61208d6028fc64ad43a5d34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e3c1e4a_61a48ff3",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-15T17:36:38Z",
       "side": 1,
       "message": "do we need this forward declared anymore?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 35
+      },
+      "revId": "9b4759e8d9861147c61208d6028fc64ad43a5d34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bee645a_583d9a5f",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-15T17:47:14Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "6e3c1e4a_61a48ff3",
       "range": {
         "startLine": 47,
         "startChar": 0,
