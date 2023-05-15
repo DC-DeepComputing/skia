@@ -1708,7 +1708,11 @@ void Viewer::drawSlide(SkSurface* surface) {
 
     // Force a flush so we can time that, too
     fStatsLayer.beginTiming(fFlushTimer);
-    slideSurface->flushAndSubmit();
+#if defined(SK_GANESH)
+    if (auto rContext = slideSurface->recordingContext(); rContext != nullptr) {
+        GrAsDirectContext(rContext)->flushAndSubmit(slideSurface);
+    }
+#endif
     fStatsLayer.endTiming(fFlushTimer);
 
     // If we rendered offscreen, snap an image and push the results to the window's canvas

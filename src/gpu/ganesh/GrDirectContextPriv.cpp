@@ -42,7 +42,7 @@ using MaskFormat = skgpu::MaskFormat;
 
 GrSemaphoresSubmitted GrDirectContextPriv::flushSurfaces(
                                                     SkSpan<GrSurfaceProxy*> proxies,
-                                                    SkSurface::BackendSurfaceAccess access,
+                                                    SkSurfaces::BackendSurfaceAccess access,
                                                     const GrFlushInfo& info,
                                                     const skgpu::MutableTextureState* newState) {
     ASSERT_SINGLE_OWNER

@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/Log.h"
 
 namespace skgpu::graphite {
 
@@ -30,6 +31,8 @@ Surface::~Surface() {}
 SkImageInfo Surface::imageInfo() const {
     return fDevice->imageInfo();
 }
+
+sk_sp<Device> device() const { return fDevice; }
 
 Recorder* Surface::onGetRecorder() const { return fDevice->recorder(); }
 
@@ -52,7 +55,11 @@ sk_sp<SkImage> Surface::onNewImageSnapshot(const SkIRect* subset) {
     return this->onMakeImageCopy(subset, srcView.mipmapped());
 }
 
-sk_sp<SkImage> Surface::onAsImage() {
+sk_sp<SkImage> Surface::asImage() {
+    if (this->fCachedImage) {
+        SKGPU_LOG_W("Intermingling makeImageSnapshot and asImage calls may produce "
+                    "unexpected results. Please use either the old _or_ new API.");
+    }
     TextureProxyView srcView = fDevice->readSurfaceView();
     if (!srcView) {
         return nullptr;
@@ -61,7 +68,11 @@ sk_sp<SkImage> Surface::onAsImage() {
     return sk_sp<Image>(new Image(std::move(srcView), this->imageInfo().colorInfo()));
 }
 
-sk_sp<SkImage> Surface::onMakeImageCopy(const SkIRect* subset, Mipmapped mipmapped) {
+sk_sp<SkImage> Surface::makeImageCopy(const SkIRect* subset, Mipmapped mipmapped) {
+    if (this->fCachedImage) {
+        SKGPU_LOG_W("Intermingling makeImageSnapshot and asImage calls may produce "
+                    "unexpected results. Please use either the old _or_ new API.");
+    }
     TextureProxyView srcView = fDevice->createCopy(subset, mipmapped);
     if (!srcView) {
         return nullptr;
@@ -112,15 +123,6 @@ sk_sp<const SkCapabilities> Surface::onCapabilities() {
     return fDevice->recorder()->priv().caps()->capabilities();
 }
 
-#if GRAPHITE_TEST_UTILS && defined(SK_GANESH)
-GrSemaphoresSubmitted Surface::onFlush(BackendSurfaceAccess,
-                                       const GrFlushInfo&,
-                                       const skgpu::MutableTextureState*) {
-    fDevice->flushPendingWorkToRecorder();
-    return GrSemaphoresSubmitted::kNo;
-}
-#endif
-
 TextureProxy* Surface::backingTextureProxy() { return fDevice->target(); }
 
 sk_sp<SkSurface> Surface::MakeGraphite(Recorder* recorder,
@@ -140,6 +142,20 @@ sk_sp<SkSurface> Surface::MakeGraphite(Recorder* recorder,
     }
     return sk_make_sp<Surface>(std::move(device));
 }
+
+#if GRAPHITE_TEST_UTILS
+void Flush(sk_sp<Surface> surface) {
+    if (!surface) {
+        return;
+    }
+    auto sb = asSB(surface);
+    if (!sb->isGraphiteBacked()) {
+        return;
+    }
+    auto gs = static_cast<Surface*>(surface);
+    gs->device()->flushPendingWorkToRecorder();
+}
+#endif
 
 } // namespace skgpu::graphite
 

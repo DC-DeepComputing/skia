@@ -50,14 +50,14 @@ public:
      */
     GrSemaphoresSubmitted flushSurfaces(
                 SkSpan<GrSurfaceProxy*>,
-                SkSurface::BackendSurfaceAccess = SkSurface::BackendSurfaceAccess::kNoAccess,
+                SkSurfaces::BackendSurfaceAccess = SkSurfaces::BackendSurfaceAccess::kNoAccess,
                 const GrFlushInfo& = {},
                 const skgpu::MutableTextureState* newState = nullptr);
 
     /** Version of above that flushes for a single proxy. Null is allowed. */
     GrSemaphoresSubmitted flushSurface(
                 GrSurfaceProxy* proxy,
-                SkSurface::BackendSurfaceAccess access = SkSurface::BackendSurfaceAccess::kNoAccess,
+                SkSurfaces::BackendSurfaceAccess access = SkSurfaces::BackendSurfaceAccess::kNoAccess,
                 const GrFlushInfo& info = {},
                 const skgpu::MutableTextureState* newState = nullptr) {
         size_t size = proxy ? 1 : 0;
