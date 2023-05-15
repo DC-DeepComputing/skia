@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec5002ab_a998aa84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-05-15T16:32:58Z",
+      "side": 1,
+      "message": "Reads like a really reasonable refactor. But realize the rigor of my rubberstamp may be rubbish.",
+      "revId": "c7ed8828e82190f27571cdb85a7d456d82543686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
