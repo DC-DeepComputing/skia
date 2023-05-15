@@ -17,8 +17,6 @@ IMAGE_FILES = [
     "SkImage_GaneshYUVA.h",
     "SkImage_LazyTexture.cpp",
     "SkImage_LazyTexture.h",
-    "SkImage_RasterPinnable.cpp",
-    "SkImage_RasterPinnable.h",
 ]
 
 split_srcs_and_hdrs(
@@ -28,12 +26,18 @@ split_srcs_and_hdrs(
 
 skia_filegroup(
     name = "srcs",
-    srcs = [":image_srcs"],
+    srcs = [":image_srcs"] + select({
+        "//src:android_with_gpu_backend": ["SkImage_RasterPinnable.cpp"],
+        "//conditions:default": [],
+    }),
     visibility = ["//src/gpu/ganesh:__pkg__"],
 )
 
 skia_filegroup(
     name = "private_hdrs",
-    srcs = [":image_hdrs"],
+    srcs = [":image_hdrs"] + select({
+        "//src:android_with_gpu_backend": ["SkImage_RasterPinnable.h"],
+        "//conditions:default": [],
+    }),
     visibility = ["//src/gpu/ganesh:__pkg__"],
 )
