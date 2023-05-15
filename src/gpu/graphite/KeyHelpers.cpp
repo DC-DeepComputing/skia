@@ -482,9 +482,10 @@ void add_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
     }
 
     for (int i = 0; i < 4; ++i) {
-        gatherer->writeHalfArray({(const float*)&imgData.fChannelSelect[i], 4});
+        gatherer->writeHalf(imgData.fChannelSelect[i]);
     }
-    gatherer->write(imgData.fYUVtoRGBTransform);
+    gatherer->writeHalf(imgData.fYUVtoRGBMatrix);
+    gatherer->write(imgData.fYUVtoRGBTranslate);
 
     add_color_space_uniforms(imgData.fSteps, gatherer);
 }

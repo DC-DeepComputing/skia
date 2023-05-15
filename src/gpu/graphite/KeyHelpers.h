@@ -11,6 +11,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkM44.h"
+#include "include/core/SkPoint3.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSpan.h"
@@ -179,7 +180,8 @@ struct YUVImageShaderBlock {
         SkTileMode fTileModes[2];
         SkRect fSubset;
         SkColor4f fChannelSelect[4];
-        SkM44 fYUVtoRGBTransform;
+        SkMatrix fYUVtoRGBMatrix;
+        SkPoint3 fYUVtoRGBTranslate;
 
         SkColorSpaceXformSteps fSteps;
 
