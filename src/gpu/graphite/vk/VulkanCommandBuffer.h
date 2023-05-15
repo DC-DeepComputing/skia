@@ -12,6 +12,7 @@
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/DrawPass.h"
+#include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 
 namespace skgpu::graphite {
 
@@ -153,6 +154,8 @@ private:
     // TODO: define what this is once we implement renderpasses.
     const void* fActiveRenderPass = nullptr;
 
+    const VulkanGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
+
     VkFence fSubmitFence = VK_NULL_HANDLE;
 
     // Tracking of memory barriers so that we can submit them all in a batch together.
@@ -162,6 +165,11 @@ private:
     VkPipelineStageFlags fSrcStageMask = 0;
     VkPipelineStageFlags fDstStageMask = 0;
 
+    // Commiting uniform buffers' changes if any before drawing
+    void syncUniformBuffers();
+
+    bool fBoundUniformBuffersDirty = false;
+    skia_private::TArray<BindBufferInfo> fUniformBuffersToBind;
 };
 
 } // namespace skgpu::graphite
