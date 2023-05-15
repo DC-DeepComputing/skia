@@ -1860,14 +1860,30 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         set_initial_texture_params(this->glInterface(), this->glCaps(), target);
     }
 
+    bool supportsTexStorage = this->glCaps().formatSupportsTexStorage(format);
+    SkDebugf("isProtected %d - supportsProtected %d format %d supportsTexStorage %d\n",
+             GrProtected::kYes == isProtected,
+             this->glCaps().supportsProtected(),
+             format,
+             supportsTexStorage);
     if (GrProtected::kYes == isProtected) {
         if (this->glCaps().supportsProtected()) {
+            SkDebugf("explicitly setting protected\n");
             GL_CALL(TexParameteri(target, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
         } else {
             GL_CALL(DeleteTextures(1, &id));
             return 0;
         }
     }
+
+    int isProtected2 = 0;
+    GL_CALL(GetTexParameteriv(target, GR_GL_TEXTURE_PROTECTED_EXT, &isProtected2));
+    GrGLenum glError = this->fGLContext->glInterface()->fFunctions.fGetError();
+    if (glError != GR_GL_NO_ERROR) {
+        SkDebugf("glGetTexParameteriv failed (%#x)", (int) glError);
+    }
+
+    SkDebugf("GL's protected %d\n", isProtected2);
 
     GrGLenum internalFormat = this->glCaps().getTexImageOrStorageInternalFormat(format);
 

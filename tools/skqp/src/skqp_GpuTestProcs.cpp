@@ -149,11 +149,13 @@ void SkQP::printBackendInfo(const char* dstPath) {
         switch (contextType) {
 #ifdef SK_GL
             case GrContextFactory::kGL_ContextType:
-                testCtx.reset(sk_gpu_test::CreatePlatformGLTestContext(kGL_GrGLStandard, nullptr));
+                testCtx.reset(sk_gpu_test::CreatePlatformGLTestContext(kGL_GrGLStandard, nullptr,
+                                                                       /* createProtected= */ false));
                 break;
             case GrContextFactory::kGLES_ContextType:
                 testCtx.reset(
-                        sk_gpu_test::CreatePlatformGLTestContext(kGLES_GrGLStandard, nullptr));
+                        sk_gpu_test::CreatePlatformGLTestContext(kGLES_GrGLStandard, nullptr,
+                                                                 /* createProtected= */ false));
                 break;
 #endif
 #ifdef SK_VULKAN
