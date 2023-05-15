@@ -12,6 +12,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/GpuTypes.h"
 
+class SkImage;
 struct SkImageInfo;
 
 namespace skgpu::graphite {
@@ -20,6 +21,32 @@ class Recorder;
 }  // namespace skgpu::graphite
 
 namespace SkSurfaces {
+/**
+ * The 'asImage' and 'makeImageCopy' API/entry points are currently only available for
+ * Graphite.
+ *
+ * In this API, SkSurface no longer supports copy-on-write behavior. Instead, when creating
+ * an image for a surface, the client must explicitly indicate if a copy should be made.
+ * In both of the below calls the resource backing the surface will never change.
+ *
+ * The 'asImage' entry point has some major ramifications for the mutability of the
+ * returned SkImage. Since the originating surface and the returned image share the
+ * same backing, care must be taken by the client to ensure that the contents of the image
+ * reflect the desired contents when it is consumed by the gpu.
+ * Note: if the backing GPU buffer isn't textureable this method will return null. Graphite
+ * will not attempt to make a copy.
+ * Note: For 'asImage', the mipmapping of the image will match that of the source surface.
+ *
+ * The 'makeImageCopy' entry point allows subsetting and the addition of mipmaps (since
+ * a copy is already being made).
+ *
+ * In Graphite, the legacy API call (i.e., makeImageSnapshot) will just always make a copy.
+ */
+SK_API sk_sp<SkImage> AsImage(const sk_sp<SkSurface>);
+SK_API sk_sp<SkImage> AsImageCopy(const sk_sp<SkSurface>,
+                                  const SkIRect* subset = nullptr,
+                                  skgpu::Mipmapped mipmapped = skgpu::Mipmapped::kNo);
+
 /**
  * In Graphite, while clients hold a ref on an SkSurface, the backing gpu object does _not_
  * count against the budget. Once an SkSurface is freed, the backing gpu object may or may
