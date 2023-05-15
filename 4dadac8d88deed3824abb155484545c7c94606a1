@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d607493e_77c3c41d",
+        "filename": "gm/fontations.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-15T14:26:11Z",
+      "side": 1,
+      "message": "Thanks for the pointers. If it is okay with you, I come back to unit testing these and other metadata stuff in a separate CL. For now, added the output to the GM canvas, removed `printf`s.",
+      "parentUuid": "838b0360_cb371d76",
+      "revId": "4dadac8d88deed3824abb155484545c7c94606a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd8e5873_552e3db1",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-05-10T18:34:25Z",
       "side": 1,
       "message": "Slightly more idiomatic:\n`.map(|l| l.to_string()).unwrap_or_default();`",
+      "range": {
+        "startLine": 145,
+        "startChar": 16,
+        "endLine": 145,
+        "endChar": 62
+      },
+      "revId": "4dadac8d88deed3824abb155484545c7c94606a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e592753a_6c35c238",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-15T14:26:11Z",
+      "side": 1,
+      "message": "Thanks, done.",
+      "parentUuid": "cd8e5873_552e3db1",
       "range": {
         "startLine": 145,
         "startChar": 16,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cbfe465_309a4985",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-15T14:26:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5351f0ec_7ba3e505",
+      "range": {
+        "startLine": 157,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 76
+      },
+      "revId": "4dadac8d88deed3824abb155484545c7c94606a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a460f809_7c7016de",
@@ -94,6 +160,30 @@
       "writtenOn": "2023-05-10T18:34:25Z",
       "side": 1,
       "message": "Is there any particular reason why this one is called \"Name\" instead of \"String\"?",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 0
+      },
+      "revId": "4dadac8d88deed3824abb155484545c7c94606a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "059bba48_6a505990",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-15T14:26:11Z",
+      "side": 1,
+      "message": "Changed to `string`.",
+      "parentUuid": "a460f809_7c7016de",
       "range": {
         "startLine": 215,
         "startChar": 0,
