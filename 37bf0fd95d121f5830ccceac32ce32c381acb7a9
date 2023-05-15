@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88d7f785_a943c9ca",
+        "filename": "include/codec/SkRawDecoder.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-15T13:31:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "402a5c4c_f4306b6c",
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc230fc8_8a5e01b4",
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "I hope that this won\u0027t be too long-lived, but my guess is that G3 clients will take a while to migrate.",
       "parentUuid": "bc230fc8_8a5e01b4",
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a1c04be_77489788",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-15T13:31:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1866eeb4_96de769e",
       "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
