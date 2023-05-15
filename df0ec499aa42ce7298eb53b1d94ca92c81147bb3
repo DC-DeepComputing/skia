@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe44f66e_890228ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-15T14:44:13Z",
+      "side": 1,
+      "message": "The GM changes for `imagefiltersclipped` are an improvement in correctness I believe. Those columns created image filters that don\u0027t reference the layer\u0027s source image. At ToT, the bounds passed to the save layer are clipped out in the bottom row, so it was dropping the layer and never evaluating the image filter. Now, it detects that the filter would still produce something visible (and seems to make sense, since the content is aligned with the [dilated] checkboards of the higher rows).",
+      "revId": "df0ec499aa42ce7298eb53b1d94ca92c81147bb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
