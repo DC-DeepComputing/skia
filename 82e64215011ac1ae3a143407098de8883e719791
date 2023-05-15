@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e66ee585_eab8682b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-15T21:00:37Z",
+      "side": 1,
+      "message": "This is just the raw code (and the GN file), but not linked into anything yet. (The follow-up CL shows that it does work by just adding the deps entry). I\u0027m going to do a more complete follow-up though - the entry point doesn\u0027t really belong in SkOpts if we\u0027re not going to specialize by arch, but that\u0027s going to be a big migration, so I need to formulate a strategy.",
+      "revId": "82e64215011ac1ae3a143407098de8883e719791",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
