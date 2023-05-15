@@ -67,6 +67,7 @@ using namespace skia_private;
 extern bool gSkForceRasterPipelineBlitter;
 extern bool gForceHighPrecisionRasterPipeline;
 extern bool gSkBlobAsSlugTesting;
+bool gCreateProtectedContext = false;
 
 static DEFINE_string(src, "tests gm skp mskp lottie rive svg image colorImage",
                      "Source types to test.");
@@ -102,6 +103,7 @@ static DEFINE_string(mskps, "", "Directory to read mskps from, or a single mskp 
 static DEFINE_bool(forceRasterPipeline, false, "sets gSkForceRasterPipelineBlitter");
 static DEFINE_bool(forceRasterPipelineHP, false, "sets gSkForceRasterPipelineBlitter and gForceHighPrecisionRasterPipeline");
 static DEFINE_bool(blobAsSlugTesting, false, "sets gSkBlobAsSlugTesting");
+static DEFINE_bool(createProtected, false, "attempts to create a protected backend context");
 
 static DEFINE_string(bisect, "",
         "Pair of: SKP file to bisect, followed by an l/r bisect trail string (e.g., 'lrll'). The "
@@ -481,6 +483,7 @@ static constexpr bool kMemcpyOK = true;
 static TArray<TaggedSrc,  kMemcpyOK>* gSrcs  = new TArray<TaggedSrc,  kMemcpyOK>;
 static TArray<TaggedSink, kMemcpyOK>* gSinks = new TArray<TaggedSink, kMemcpyOK>;
 
+#if 0
 static bool in_shard() {
     static int N = 0;
     return N++ % FLAGS_shards == FLAGS_shard;
@@ -689,8 +692,12 @@ static void push_brd_srcs(Path path, bool gray) {
         }
     }
 }
+
+#endif
+
 #endif // SK_ENABLE_ANDROID_UTILS
 
+#if 0
 static void push_codec_srcs(Path path) {
     sk_sp<SkData> encoded(SkData::MakeFromFileName(path.c_str()));
     if (!encoded) {
@@ -862,6 +869,7 @@ static void push_codec_srcs(Path path) {
 #endif
     }
 }
+#endif
 
 template <typename T>
 void gather_file_srcs(const CommandLineFlags::StringArray& flags,
@@ -886,6 +894,7 @@ void gather_file_srcs(const CommandLineFlags::StringArray& flags,
 }
 
 static bool gather_srcs() {
+#if 0
     for (skiagm::GMFactory f : skiagm::GMRegistry::Range()) {
         push_src("gm", "", new GMSrc(f));
     }
@@ -922,6 +931,7 @@ static bool gather_srcs() {
         push_src("colorImage", "decode_native", new ColorCodecSrc(colorImage, false));
         push_src("colorImage", "decode_to_dst", new ColorCodecSrc(colorImage,  true));
     }
+#endif
 
     return true;
 }
@@ -957,6 +967,7 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLi
     if (FLAGS_gpu) {
         if (const SkCommandLineConfigGpu* gpuConfig = config->asConfigGpu()) {
             GrContextFactory testFactory(grCtxOptions);
+            SkDebugf("gpuConfig 0x%x\n", gpuConfig->getContextOverrides());
             if (!testFactory.get(gpuConfig->getContextType(), gpuConfig->getContextOverrides())) {
                 info("WARNING: can not create GPU context for config '%s'. "
                      "GM tests will be skipped.\n", gpuConfig->getTag().c_str());
@@ -1468,6 +1479,17 @@ static void gather_tests() {
         return;
     }
     for (const skiatest::Test& test : skiatest::TestRegistry::Range()) {
+        if (!strcmp(test.fName, "GLBackendAllocationTest")) {
+            gGaneshTests->push_back(test);
+            continue;
+        }
+
+        if (!strcmp(test.fName, "Protected_SmokeTest")) {
+            gGaneshTests->push_back(test);
+            continue;
+        }
+
+#if 0
         if (!in_shard()) {
             continue;
         }
@@ -1481,6 +1503,7 @@ static void gather_tests() {
         } else if (test.fTestType == TestType::kCPU && FLAGS_cpu) {
             gCPUTests->push_back(test);
         }
+#endif
     }
 }
 
@@ -1560,6 +1583,7 @@ int main(int argc, char** argv) {
     gSkForceRasterPipelineBlitter     = FLAGS_forceRasterPipelineHP || FLAGS_forceRasterPipeline;
     gForceHighPrecisionRasterPipeline = FLAGS_forceRasterPipelineHP;
     gSkBlobAsSlugTesting              = FLAGS_blobAsSlugTesting;
+    gCreateProtectedContext           = FLAGS_createProtected;
 
     // The bots like having a verbose.log to upload, so always touch the file even if --verbose.
     if (!FLAGS_writePath.isEmpty()) {

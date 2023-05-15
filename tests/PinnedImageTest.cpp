@@ -129,7 +129,7 @@ static void cleanup_test(skiatest::Reporter* reporter) {
 
             {
                 GrContextFactory testFactory;
-                ContextInfo info = testFactory.getContextInfo(ctxType);
+                ContextInfo info = testFactory.getContextInfo(ctxType, sk_gpu_test::GrContextFactory::ContextOverrides::kNone);
                 dContext = info.directContext();
                 if (!dContext) {
                     continue;

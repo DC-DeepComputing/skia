@@ -20,7 +20,7 @@ DEF_GANESH_TEST(GrContext_abandonContext, reporter, options, CtsEnforcement::kAp
         for (int i = 0; i < GrContextFactory::kContextTypeCnt; ++i) {
             GrContextFactory testFactory(options);
             GrContextFactory::ContextType ctxType = (GrContextFactory::ContextType) i;
-            ContextInfo info = testFactory.getContextInfo(ctxType);
+            ContextInfo info = testFactory.getContextInfo(ctxType, sk_gpu_test::GrContextFactory::ContextOverrides::kNone);
             if (auto context = info.directContext()) {
                 switch (testType) {
                     case 0:

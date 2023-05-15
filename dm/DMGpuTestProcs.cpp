@@ -71,7 +71,7 @@ void RunWithGaneshTestContexts(GrContextTestFn* testFn, GrContextTypeFilterFn* f
         // also tracks which of its contexts is current above that API and gets tripped up if the
         // native windowing API is used directly outside of the command buffer code.
         GrContextFactory factory(options);
-        ContextInfo ctxInfo = factory.getContextInfo(contextType);
+        ContextInfo ctxInfo = factory.getContextInfo(contextType, sk_gpu_test::GrContextFactory::ContextOverrides::kNone);
         if (filter && !(*filter)(contextType)) {
             continue;
         }
