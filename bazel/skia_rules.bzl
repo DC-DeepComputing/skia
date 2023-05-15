@@ -217,6 +217,8 @@ def split_srcs_and_hdrs(name, files):
             srcs.append(f)
         elif f.endswith(".mm"):
             srcs.append(f)
+        elif f.endswith(".cc"):
+            srcs.append(f)
         elif f.endswith(".h"):
             hdrs.append(f)
         else:
