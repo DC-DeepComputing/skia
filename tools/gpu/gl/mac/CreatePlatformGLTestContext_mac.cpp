@@ -153,7 +153,8 @@ GrGLFuncPtr MacGLTestContext::onPlatformGetProcAddress(const char* procName) con
 
 namespace sk_gpu_test {
 GLTestContext* CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext* shareContext) {
+                                           GLTestContext* shareContext,
+                                           bool /* createProtected */) {
     if (kGLES_GrGLStandard == forcedGpuAPI) {
         return nullptr;
     }

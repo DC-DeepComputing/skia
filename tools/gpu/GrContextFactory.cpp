@@ -173,10 +173,16 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             GLTestContext* glCtx;
             switch (type) {
                 case kGL_ContextType:
-                    glCtx = CreatePlatformGLTestContext(kGL_GrGLStandard, glShareContext);
+                    SkDebugf("---2\n");
+
+                    glCtx = CreatePlatformGLTestContext(kGL_GrGLStandard, glShareContext,
+                                                        overrides & ContextOverrides::kProtected);
                     break;
                 case kGLES_ContextType:
-                    glCtx = CreatePlatformGLTestContext(kGLES_GrGLStandard, glShareContext);
+                    SkDebugf("---3\n");
+
+                    glCtx = CreatePlatformGLTestContext(kGLES_GrGLStandard, glShareContext,
+                                                        overrides & ContextOverrides::kProtected);
                     break;
 #if SK_ANGLE
                 case kANGLE_D3D9_ES2_ContextType:
@@ -248,9 +254,15 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             // slow. Perhaps this prevents repeated driver loading/unloading? Note that keeping
             // a persistent VkTestContext around instead was tried and did not work.
             if (!fSentinelGLContext) {
-                fSentinelGLContext.reset(CreatePlatformGLTestContext(kGL_GrGLStandard));
+                SkDebugf("---a\n");
+                fSentinelGLContext.reset(
+                        CreatePlatformGLTestContext(kGL_GrGLStandard, nullptr,
+                                                    /* createProtected= */ false));
                 if (!fSentinelGLContext) {
-                    fSentinelGLContext.reset(CreatePlatformGLTestContext(kGLES_GrGLStandard));
+                    SkDebugf("---b\n");
+                    fSentinelGLContext.reset(
+                            CreatePlatformGLTestContext(kGLES_GrGLStandard, nullptr,
+                                                        /* createProtected= */ false));
                 }
             }
 #endif

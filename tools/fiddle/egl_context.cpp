@@ -20,7 +20,9 @@
 sk_sp<GrDirectContext> create_direct_context(
         std::ostringstream& driverinfo,
         std::unique_ptr<sk_gpu_test::GLTestContext>* glContext) {
-    glContext->reset(sk_gpu_test::CreatePlatformGLTestContext(kGLES_GrGLStandard));
+    SkDebugf("---1\n");
+    glContext->reset(sk_gpu_test::CreatePlatformGLTestContext(kGLES_GrGLStandard, nullptr,
+                                                              /* createProtected= */ false));
     if (!glContext) {
         return nullptr;
     }

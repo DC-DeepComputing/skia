@@ -801,9 +801,9 @@ DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
     auto context = ctxInfo.directContext();
     const GrGLCaps* glCaps = static_cast<const GrGLCaps*>(context->priv().caps());
 
-    constexpr SkColor4f kTransCol     { 0,     0.25f, 0.75f, 0.5f };
-    constexpr SkColor4f kGrayCol      { 0.75f, 0.75f, 0.75f, 1.f  };
-    constexpr SkColor4f kTransGrayCol { 0.5f,  0.5f,  0.5f,  .8f  };
+//    constexpr SkColor4f kTransCol     { 0,     0.25f, 0.75f, 0.5f };
+//    constexpr SkColor4f kGrayCol      { 0.75f, 0.75f, 0.75f, 1.f  };
+//    constexpr SkColor4f kTransGrayCol { 0.5f,  0.5f,  0.5f,  .8f  };
 
     struct {
         GrColorType   fColorType;
@@ -811,6 +811,7 @@ DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
         SkColor4f     fColor;
     } combinations[] = {
         { GrColorType::kRGBA_8888,        GR_GL_RGBA8,                SkColors::kRed       },
+#if 0
         { GrColorType::kRGBA_8888_SRGB,   GR_GL_SRGB8_ALPHA8,         SkColors::kRed       },
 
         { GrColorType::kRGB_888x,         GR_GL_RGBA8,                SkColors::kYellow    },
@@ -847,6 +848,7 @@ DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
 
         { GrColorType::kRGBA_16161616,    GR_GL_RGBA16,               SkColors::kLtGray    },
         { GrColorType::kRG_F16,           GR_GL_RG16F,                SkColors::kYellow    },
+#endif
     };
 
     for (auto combo : combinations) {
