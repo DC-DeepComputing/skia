@@ -10,7 +10,6 @@
 
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
-#include "include/private/base/SkTArray.h"
 #include "src/sksl/dsl/DSLExpression.h"
 
 #include <string_view>
@@ -20,12 +19,12 @@ namespace SkSL {
 
 class Compiler;
 struct Field;
+struct Modifiers;
 class Position;
 class Type;
 
 namespace dsl {
 
-class DSLModifiers;
 struct DSLVarBase;
 
 class DSLType {
@@ -34,7 +33,8 @@ public:
 
     DSLType(std::string_view name, Position pos = {});
 
-    DSLType(std::string_view name, DSLModifiers* modifiers, Position pos = {});
+    DSLType(std::string_view name, Position overallPos,
+            SkSL::Modifiers* modifiers, Position modifiersPos);
 
     static DSLType Invalid();
     static DSLType Poison();
@@ -144,11 +144,6 @@ private:
 DSLType Array(const DSLType& base, int count, Position pos = {});
 
 DSLType UnsizedArray(const DSLType& base, Position pos = {});
-
-/**
- * Creates a StructDefinition at the top level and returns the associated type.
- */
-DSLType Struct(std::string_view name, skia_private::TArray<Field> fields, Position pos = {});
 
 } // namespace dsl
 
