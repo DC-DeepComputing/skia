@@ -93,6 +93,7 @@ public:
 
     void writeHalf(float f);
     void writeHalf(const SkMatrix&);
+    void writeHalf(const SkColor4f&);
     void writeHalfArray(SkSpan<const float>);
 
     // Debug only utilities used for debug assertions and tests.

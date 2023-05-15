@@ -124,6 +124,7 @@ public:
 
     void writeHalf(float f) { fUniformManager.writeHalf(f); }
     void writeHalf(const SkMatrix& mat) { fUniformManager.writeHalf(mat); }
+    void writeHalf(const SkColor4f& unpremulColor) { fUniformManager.writeHalf(unpremulColor); }
     void writeHalfArray(SkSpan<const float> floats) { fUniformManager.writeHalfArray(floats); }
 
     bool hasUniforms() const { return fUniformManager.size(); }

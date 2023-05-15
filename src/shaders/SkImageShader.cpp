@@ -28,13 +28,14 @@
 #include "src/gpu/Blend.h"
 #include "src/gpu/graphite/ImageUtils.h"
 #include "src/gpu/graphite/Image_Graphite.h"
+#include "src/gpu/graphite/Image_YUVA_Graphite.h"
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/ReadSwizzle.h"
 #include "src/gpu/graphite/TextureProxyView.h"
-
+#include "src/gpu/graphite/YUVATextureProxies.h"
 
 static skgpu::graphite::ReadSwizzle swizzle_class_to_read_enum(const skgpu::Swizzle& swizzle) {
     if (swizzle == skgpu::Swizzle::RGBA()) {
@@ -424,10 +425,20 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
         builder->endBlock();
         return;
     }
+    if (as_IB(imageToDraw)->isYUVA()) {
+        return this->addYUVImageToKey(keyContext,
+                                      builder,
+                                      gatherer,
+                                      std::move(imageToDraw),
+                                      newSampling);
+    }
+
     skgpu::Mipmapped mipmapped = (newSampling.mipmap != SkMipmapMode::kNone)
                                      ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
 
-    auto [view, _] = skgpu::graphite::AsView(keyContext.recorder(), imageToDraw.get(), mipmapped);
+    auto [view, _] = skgpu::graphite::AsView(keyContext.recorder(),
+                                             imageToDraw.get(),
+                                             mipmapped);
 
     ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset,
                                         ReadSwizzle::kRGBA);
@@ -450,17 +461,17 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
             SkSpan<const float> constants = skgpu::GetPorterDuffBlendConstants(SkBlendMode::kDstIn);
             BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
 
-                // src
-                ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
-                builder->endBlock();
+            // src
+            ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
+            builder->endBlock();
 
-                // dst
-                SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
-                                                  keyContext.paintColor());
-                builder->endBlock();
+            // dst
+            SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
+                                              keyContext.paintColor());
+            builder->endBlock();
 
-                CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, constants);
-                builder->endBlock();
+            CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, constants);
+            builder->endBlock();
 
             builder->endBlock();
             return;
@@ -468,6 +479,44 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
     }
 
     ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
+    builder->endBlock();
+}
+
+void SkImageShader::addYUVImageToKey(const skgpu::graphite::KeyContext& keyContext,
+                             skgpu::graphite::PaintParamsKeyBuilder* builder,
+                             skgpu::graphite::PipelineDataGatherer* gatherer,
+                             sk_sp<SkImage> imageToDraw,
+                             SkSamplingOptions sampling) const {
+    using namespace skgpu::graphite;
+
+    SkASSERT(!imageToDraw->isAlphaOnly());
+    const YUVATextureProxies& yuvaProxies =
+            static_cast<Image_YUVA*>(imageToDraw.get())->yuvaProxies();
+    const SkYUVAInfo& yuvaInfo = yuvaProxies.yuvaInfo();
+
+    YUVImageShaderBlock::ImageData imgData(sampling, fTileModeX, fTileModeY, fSubset);
+    int textureIndex = 0;
+    for (int plane = 0; plane < yuvaProxies.numPlanes(); ++plane) {
+        TextureProxyView view = yuvaProxies.makeView(plane);
+        for (int i = 0; i < yuvaInfo.numChannelsInPlane(plane); ++i) {
+            imgData.fTextureProxies[textureIndex] = view.refProxy();
+            auto [yuvPlane, yuvChannel] = yuvaProxies.yuvaLocations()[textureIndex];
+            imgData.fChannelSelect[textureIndex][static_cast<int>(yuvChannel)] = 1.0f;
+            textureIndex++;
+        }
+    }
+    if (!SkYUVAInfo::HasAlpha(yuvaInfo.planeConfig())) {
+        imgData.fTextureProxies[3] = imgData.fTextureProxies[0];
+    }
+
+    if (!fRaw) {
+        imgData.fSteps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
+                                                imageToDraw->alphaType(),
+                                                keyContext.dstColorInfo().colorSpace(),
+                                                keyContext.dstColorInfo().alphaType());
+    }
+
+    YUVImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
     builder->endBlock();
 }
 #endif
