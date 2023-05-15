@@ -68,10 +68,6 @@ void SetErrorReporter(ErrorReporter* errorReporter);
  */
 void Declare(DSLGlobalVar& var, Position pos = {});
 
-DSLExpression InterfaceBlock(const DSLModifiers& modifiers, std::string_view typeName,
-                             skia_private::TArray<Field> fields, std::string_view varName = "",
-                             int arraySize = 0, Position pos = {});
-
 } // namespace dsl
 
 } // namespace SkSL
