@@ -12,7 +12,11 @@
 
 namespace sk_gpu_test {
 
-GLTestContext* CreatePlatformGLTestContext(GrGLStandard, GLTestContext*) { return nullptr; }
+GLTestContext* CreatePlatformGLTestContext(GrGLStandard,
+                                           GLTestContext*,
+                                           bool /* createProtected */) {
+    return nullptr;
+}
 
 }  // namespace sk_gpu_test
 
@@ -220,7 +224,8 @@ GrGLFuncPtr WinGLTestContext::onPlatformGetProcAddress(const char* name) const {
 
 namespace sk_gpu_test {
 GLTestContext* CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext *shareContext) {
+                                           GLTestContext *shareContext,
+                                           bool /* createProtected */) {
     WinGLTestContext* winShareContext = reinterpret_cast<WinGLTestContext*>(shareContext);
     WinGLTestContext *ctx = new WinGLTestContext(forcedGpuAPI, winShareContext);
     if (!ctx->isValid()) {
