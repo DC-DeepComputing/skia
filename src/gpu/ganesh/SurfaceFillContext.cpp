@@ -98,6 +98,7 @@ void SurfaceFillContext::fillRectWithFP(const SkIRect& dstRect,
     auto op = FillRectOp::MakeNonAARect(fContext, std::move(paint), SkMatrix::I(),
                                         SkRect::Make(dstRect));
     this->addDrawOp(std::move(op));
+    SkDebugf("fillRectWithFP\n");
 }
 
 void SurfaceFillContext::fillRectWithFP(const SkIRect& dstRect,
