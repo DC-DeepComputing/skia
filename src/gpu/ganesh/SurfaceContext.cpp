@@ -264,6 +264,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
     if (tmp.hasPixels()) {
         return GrConvertPixels(dst, tmp, flip);
     }
+    SkDebugf("readPixels\n");
     return true;
 }
 

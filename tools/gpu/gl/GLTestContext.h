@@ -102,9 +102,12 @@ private:
  * context with which to share display lists. This should be a pointer to an GLTestContext created
  * with SkCreatePlatformGLTestContext.  NULL indicates that no sharing is to take place. Returns a
  * valid gl context object or NULL if such can not be created.
+ * If 'createProtected' is true the backend will attempt to create a Protected backend context
+ * if it is supported.
  */
 GLTestContext* CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext *shareContext = nullptr);
+                                           GLTestContext *shareContext,
+                                           bool /* createProtected */);
 
 }  // namespace sk_gpu_test
 #endif

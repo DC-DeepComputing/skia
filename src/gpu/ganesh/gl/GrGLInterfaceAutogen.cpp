@@ -151,6 +151,7 @@ bool GrGLInterface::validate() const {
         !fFunctions.fTexParameterfv ||
         !fFunctions.fTexParameteri ||
         !fFunctions.fTexParameteriv ||
+        !fFunctions.fGetTexParameteriv ||
         !fFunctions.fTexSubImage2D ||
         !fFunctions.fUniform1f ||
         !fFunctions.fUniform1fv ||
