@@ -1,0 +1,18 @@
+load("//bazel:cc_binary_with_flags.bzl", "cc_binary_with_flags")
+load("//bazel:macros.bzl", "exports_files_legacy")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+cc_binary_with_flags(
+    name = "ahem_advance",
+    testonly = True,
+    srcs = [
+        "main.cpp",
+    ],
+    deps = [
+        "//:skia_public",
+        "//tools:tool_utils",
+    ],
+)
