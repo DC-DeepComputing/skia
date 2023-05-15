@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "402a5c4c_f4306b6c",
+        "filename": "include/codec/SkRawDecoder.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-15T13:28:23Z",
+      "side": 1,
+      "message": "Correct. I believe when I was doing research on how Skia\u0027s decoding logic was being used (internally and externally), I observed several cases where clients had data and needed to put it in a stream before decoding it. Thus, if someone wants to use the decoder API directly (e.g. SkPngDecoder::Decode(my_data)), then this would allow that to be done more easily.",
+      "parentUuid": "228dc575_3f8e17e5",
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc230fc8_8a5e01b4",
         "filename": "src/codec/SkCodec.cpp",
         "patchSetId": 18
@@ -54,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1866eeb4_96de769e",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-15T13:28:23Z",
+      "side": 1,
+      "message": "I hope that this won\u0027t be too long-lived, but my guess is that G3 clients will take a while to migrate.",
+      "parentUuid": "bc230fc8_8a5e01b4",
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ce598157_de57b932",
         "filename": "src/codec/SkCodec.cpp",
         "patchSetId": 18
@@ -65,6 +101,24 @@
       "writtenOn": "2023-05-15T13:20:36Z",
       "side": 1,
       "message": "I don\u0027t have any concrete suggestion, but the raw handling is a little funny. As I read the CL, I hit the initialization of the decoder list, and thought that if someone registered another decoder after raw, we wouldn\u0027t honor the idea of doing it last. Then I hit this code, and realized that if someone does register a custom raw decoder, we will reorder it relative to any others they\u0027ve registered. I don\u0027t think there\u0027s necessarily anything to solve, just an observation.",
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dde10669_0282b65a",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-15T13:28:23Z",
+      "side": 1,
+      "message": "Acknowledged. I did specify this in the SkRawDecoder header, so at least we are documenting the strangeness. This was the least bad approach I could think of.",
+      "parentUuid": "ce598157_de57b932",
       "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
