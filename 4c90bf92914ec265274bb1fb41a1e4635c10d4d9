@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f133ed6_ad565041",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-15T12:27:11Z",
+      "side": 1,
+      "message": "Please pair down this error message to the relevant parts.\n\nPlease also shorten the absolute file path on line 17. We shouldn\u0027t be including those.",
+      "revId": "4c90bf92914ec265274bb1fb41a1e4635c10d4d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
