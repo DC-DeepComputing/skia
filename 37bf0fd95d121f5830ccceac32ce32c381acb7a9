@@ -16,6 +16,57 @@
       "message": "Finally got Android canary to work.",
       "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "228dc575_3f8e17e5",
+        "filename": "include/codec/SkRawDecoder.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-15T13:20:36Z",
+      "side": 1,
+      "message": "My read is that all the SkData Decode functions are unused right now? Do we anticipate an immediate need for those, or could we get by with just having the SkStream versions?",
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc230fc8_8a5e01b4",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-15T13:20:36Z",
+      "side": 1,
+      "message": "I was going to suggest putting this in the initialization of decoders (rather than the separate SkOnce), but I suspect this is all getting deleted before too long?",
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce598157_de57b932",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-15T13:20:36Z",
+      "side": 1,
+      "message": "I don\u0027t have any concrete suggestion, but the raw handling is a little funny. As I read the CL, I hit the initialization of the decoder list, and thought that if someone registered another decoder after raw, we wouldn\u0027t honor the idea of doing it last. Then I hit this code, and realized that if someone does register a custom raw decoder, we will reorder it relative to any others they\u0027ve registered. I don\u0027t think there\u0027s necessarily anything to solve, just an observation.",
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
