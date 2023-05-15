@@ -86,7 +86,7 @@ void GrDrawingManager::freeGpuResources() {
 // MDB TODO: make use of the 'proxies' parameter.
 bool GrDrawingManager::flush(
         SkSpan<GrSurfaceProxy*> proxies,
-        SkSurface::BackendSurfaceAccess access,
+        SkSurfaces::BackendSurfaceAccess access,
         const GrFlushInfo& info,
         const skgpu::MutableTextureState* newState) {
     GR_CREATE_TRACE_MARKER_CONTEXT("GrDrawingManager", "flush", fContext);
@@ -105,7 +105,7 @@ bool GrDrawingManager::flush(
 
     // As of now we only short-circuit if we got an explicit list of surfaces to flush.
     if (!proxies.empty() && !info.fNumSemaphores && !info.fFinishedProc &&
-        access == SkSurface::BackendSurfaceAccess::kNoAccess && !newState) {
+        access == SkSurfaces::BackendSurfaceAccess::kNoAccess && !newState) {
         bool allUnused = std::all_of(proxies.begin(), proxies.end(), [&](GrSurfaceProxy* proxy) {
             bool used = std::any_of(fDAG.begin(), fDAG.end(), [&](auto& task) {
                 return task && task->isUsed(proxy);
@@ -497,7 +497,7 @@ static void resolve_and_mipmap(GrGpu* gpu, GrSurfaceProxy* proxy) {
 
 GrSemaphoresSubmitted GrDrawingManager::flushSurfaces(
         SkSpan<GrSurfaceProxy*> proxies,
-        SkSurface::BackendSurfaceAccess access,
+        SkSurfaces::BackendSurfaceAccess access,
         const GrFlushInfo& info,
         const skgpu::MutableTextureState* newState) {
     if (this->wasAbandoned()) {
@@ -972,7 +972,7 @@ bool GrDrawingManager::newWritePixelsTask(sk_sp<GrSurfaceProxy> dst,
     // complete flush here.
     if (!caps.preferVRAMUseOverFlushes()) {
         this->flushSurfaces(SkSpan<GrSurfaceProxy*>{},
-                            SkSurface::BackendSurfaceAccess::kNoAccess,
+                            SkSurfaces::BackendSurfaceAccess::kNoAccess,
                             GrFlushInfo{},
                             nullptr);
     }
@@ -1063,7 +1063,7 @@ void GrDrawingManager::flushIfNecessary() {
 
     auto resourceCache = direct->priv().getResourceCache();
     if (resourceCache && resourceCache->requestsFlush()) {
-        if (this->flush({}, SkSurface::BackendSurfaceAccess::kNoAccess, GrFlushInfo(), nullptr)) {
+        if (this->flush({}, SkSurfaces::BackendSurfaceAccess::kNoAccess, GrFlushInfo(), nullptr)) {
             this->submitToGpu(false);
         }
         resourceCache->purgeAsNeeded();
