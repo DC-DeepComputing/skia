@@ -27,6 +27,11 @@ skia_filegroup(
     srcs = [
         "SkFontHost_FreeType.cpp",
         "SkFontHost_FreeType_common.cpp",
+        "src/ports/libfreetype.wasm.c",
+        "src/ports/libfreetype.wasm.h",
+        "src/ports/wasm-rt-impl.c",
+        "src/ports/wasm-rt-impl.h",
+        "src/ports/wasm-rt.h",
     ],
 )
 
