@@ -1783,29 +1783,35 @@ GrBackendTexture GrVkGpu::onCreateBackendTexture(SkISize dimensions,
     const GrVkCaps& caps = this->vkCaps();
 
     if (fProtectedContext != isProtected) {
+        SkDebugf("1\n");
         return {};
     }
 
     VkFormat vkFormat;
     if (!format.asVkFormat(&vkFormat)) {
+        SkDebugf("2\n");
         return {};
     }
 
     // TODO: move the texturability check up to GrGpu::createBackendTexture and just assert here
     if (!caps.isVkFormatTexturable(vkFormat)) {
+        SkDebugf("3\n");
         return {};
     }
 
     if (skgpu::VkFormatNeedsYcbcrSampler(vkFormat)) {
+        SkDebugf("4\n");
         return {};
     }
 
     GrVkImageInfo info;
     if (!this->createVkImageForBackendSurface(vkFormat, dimensions, 1, GrTexturable::kYes,
                                               renderable, mipmapped, &info, isProtected)) {
+        SkDebugf("5\n");
         return {};
     }
 
+    SkDebugf("6\n");
     return GrBackendTexture(dimensions.width(), dimensions.height(), info);
 }
 
