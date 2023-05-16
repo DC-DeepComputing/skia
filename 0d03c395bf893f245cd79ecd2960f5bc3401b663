@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "0d03c395bf893f245cd79ecd2960f5bc3401b663",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c6038c2_ef47247a",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-16T21:04:48Z",
+      "side": 1,
+      "message": "I think this also needs to be newContext",
+      "range": {
+        "startLine": 546,
+        "startChar": 40,
+        "endLine": 546,
+        "endChar": 50
+      },
+      "revId": "0d03c395bf893f245cd79ecd2960f5bc3401b663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
