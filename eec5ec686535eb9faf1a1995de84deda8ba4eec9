@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fff2c730_56e5ab70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-16T17:42:43Z",
+      "side": 1,
+      "message": "The beginning of VulkanPipeline CLs. PTAL :^)",
+      "revId": "eec5ec686535eb9faf1a1995de84deda8ba4eec9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
