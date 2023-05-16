@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9ef7b76_02b09362",
+        "filename": "src/effects/imagefilters/SkShaderImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-16T15:56:47Z",
+      "side": 1,
+      "message": "Maybe /* bounds */ ?",
+      "range": {
+        "startLine": 36,
+        "startChar": 43,
+        "endLine": 36,
+        "endChar": 49
+      },
+      "revId": "7870c5f3e2aecca0e1b7a4452d35e34629b7effb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f79c9dfc_a7f3626d",
+        "filename": "src/effects/imagefilters/SkShaderImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-16T15:56:47Z",
+      "side": 1,
+      "message": "You could remove this guy though",
+      "range": {
+        "startLine": 51,
+        "startChar": 58,
+        "endLine": 51,
+        "endChar": 61
+      },
+      "revId": "7870c5f3e2aecca0e1b7a4452d35e34629b7effb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf748715_a48ba441",
+        "filename": "src/effects/imagefilters/SkShaderImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-16T15:56:47Z",
+      "side": 1,
+      "message": "the usual here and below",
+      "range": {
+        "startLine": 55,
+        "startChar": 39,
+        "endLine": 56,
+        "endChar": 45
+      },
+      "revId": "7870c5f3e2aecca0e1b7a4452d35e34629b7effb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
