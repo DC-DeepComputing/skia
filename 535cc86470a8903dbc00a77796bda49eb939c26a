@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4eba70a_5ebf40e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-05-16T17:44:06Z",
+      "side": 1,
+      "message": "LGTM modulo nitpick questions wondering about includes. Fair warning, if there are any finicky memory management details here I\u0027m not going to catch them.",
+      "revId": "535cc86470a8903dbc00a77796bda49eb939c26a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dde575d1_55880871",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-05-16T17:44:06Z",
+      "side": 1,
+      "message": "Is \u003cvector\u003e still needed in this file? I might be missing something, just didn\u0027t see any \"Vector\u003c\" when searching FWIW.",
+      "revId": "535cc86470a8903dbc00a77796bda49eb939c26a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "947256d6_cb888794",
+        "filename": "src/sksl/dsl/DSLFunction.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-05-16T17:44:06Z",
+      "side": 1,
+      "message": "Include stil needed?",
+      "revId": "535cc86470a8903dbc00a77796bda49eb939c26a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
