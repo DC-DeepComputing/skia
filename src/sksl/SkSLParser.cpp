@@ -148,8 +148,8 @@ std::shared_ptr<SymbolTable>& Parser::symbolTable() {
 }
 
 void Parser::addToSymbolTable(DSLVarBase& var, Position pos) {
-    if (SkSL::Variable* skslVar = DSLWriter::Var(var)) {
-        this->symbolTable()->addWithoutOwnership(skslVar);
+    if (var.fVar) {
+        this->symbolTable()->addWithoutOwnership(var.fVar);
     }
 }
 
@@ -680,9 +680,10 @@ DSLStatement Parser::localVarDeclarationEnd(Position pos,
     }
     DSLVar first(mods, type, this->text(name), std::move(initializer), this->rangeFrom(pos),
                  this->position(name));
-    DSLStatement result = DSLWriter::Declaration(first);
+    DSLWriter::Var(first);
     this->addToSymbolTable(first);
 
+    DSLStatement result(std::move(first.fDeclaration));
     while (this->checkNext(Token::Kind::TK_COMMA)) {
         type = baseType;
         Token identifierName;
