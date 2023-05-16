@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3457708_7c4d733b",
+        "filename": "bazel/platform/BUILD.bazel",
+        "patchSetId": 16
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-16T12:53:31Z",
+      "side": 1,
+      "message": "Is this still necessary, or just the constraint_values?",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 8
+      },
+      "revId": "844fdac97d6aee52c50ad5c639dcf3b7500ef2d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e3acc56_dd7e5258",
+        "filename": "tests/android.bzl",
+        "patchSetId": 16
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-16T12:53:31Z",
+      "side": 1,
+      "message": "Is this also on the \"write in go\" checklist?",
+      "range": {
+        "startLine": 356,
+        "startChar": 6,
+        "endLine": 356,
+        "endChar": 10
+      },
+      "revId": "844fdac97d6aee52c50ad5c639dcf3b7500ef2d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f317f158_a1fb8189",
+        "filename": "tests/android.bzl",
+        "patchSetId": 16
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-16T12:53:31Z",
+      "side": 1,
+      "message": "nit: let\u0027s define new rules in their own .bzl file. I find that easier when I need to go find the implementation/documentation to read, since I don\u0027t have to find which file the rule is imported from, I can just start typing the rule name in my file search bar.",
+      "range": {
+        "startLine": 417,
+        "startChar": 0,
+        "endLine": 417,
+        "endChar": 15
+      },
+      "revId": "844fdac97d6aee52c50ad5c639dcf3b7500ef2d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

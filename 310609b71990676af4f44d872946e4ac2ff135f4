@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f93d9065_318d99c1",
+        "filename": "tests/android.bzl",
+        "patchSetId": 14
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-16T12:53:31Z",
+      "side": 1,
+      "message": "So this would be something like:\n\n```\nextra_args \u003d select({\n   \"pixel_5\": [\"--skip\u003dbroken_test\"],\n   \"pixel_6\": [\"--skip\u003dother_broken_test\", \"--skip\u003dflaky_test\" ],\n})\n```\n\ndefined in the tests/BUILD.bazel? I think that\u0027s an ok place to try it out in.",
+      "parentUuid": "c0115188_6ffea01f",
+      "range": {
+        "startLine": 158,
+        "startChar": 12,
+        "endLine": 159,
+        "endChar": 57
+      },
+      "revId": "310609b71990676af4f44d872946e4ac2ff135f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "de53bf95_aa41c513",
         "filename": "tests/android.bzl",
         "patchSetId": 14
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-16T01:20:03Z",
       "side": 1,
       "message": "Feedback wanted.",
+      "range": {
+        "startLine": 160,
+        "startChar": 8,
+        "endLine": 166,
+        "endChar": 59
+      },
+      "revId": "310609b71990676af4f44d872946e4ac2ff135f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df1bdc54_429b8995",
+        "filename": "tests/android.bzl",
+        "patchSetId": 14
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-16T12:53:31Z",
+      "side": 1,
+      "message": "I would think this is not necessary given that we build the binary with the flags we need.",
+      "parentUuid": "de53bf95_aa41c513",
       "range": {
         "startLine": 160,
         "startChar": 8,
