@@ -160,7 +160,7 @@ EGLGLTestContext::EGLGLTestContext(GrGLStandard forcedGpuAPI, EGLGLTestContext* 
         }
 
         bool createProtected = gCreateProtectedContext;
-        if (createProtected && !strstr(extensions, "EGL_EXT_protected_content")) {
+        if (!strstr(extensions, "EGL_EXT_protected_content")) {
             SkDebugf("Missing EGL_EXT_protected_content support!\n");
             createProtected = false;
         }
