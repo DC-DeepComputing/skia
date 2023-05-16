@@ -174,6 +174,13 @@ def git_repos_from_deps(ws = "@"):
     )
 
     new_git_repository(
+        name = "vello",
+        build_file = ws + "//bazel/external/vello:BUILD.bazel",
+        commit = "ef2630ad9c647b90863cb0915701d54725733968",
+        remote = "https://skia.googlesource.com/external/github.com/linebender/vello.git",
+    )
+
+    new_git_repository(
         name = "vulkan_headers",
         build_file = ws + "//bazel/external/vulkan_headers:BUILD.bazel",
         commit = "bae9700cd9425541a0f6029957f005e5ad3ef660",
