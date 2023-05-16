@@ -18,8 +18,7 @@
 
 using namespace skia_private;
 
-namespace SkSL {
-namespace dsl {
+namespace SkSL::dsl {
 
 DSLExpression::DSLExpression(std::unique_ptr<SkSL::Expression> expression, Position pos)
         : fExpression(expression ? std::move(expression)
@@ -61,5 +60,4 @@ void DSLExpression::setPosition(Position pos) {
     fExpression->fPosition = pos;
 }
 
-} // namespace dsl
-} // namespace SkSL
+}  // namespace SkSL::dsl

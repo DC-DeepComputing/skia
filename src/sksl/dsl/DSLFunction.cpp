@@ -65,8 +65,6 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
     std::vector<std::unique_ptr<Variable>> paramVars;
     paramVars.reserve(params.size());
     for (DSLParameter* param : params) {
-        SkASSERT(!param->fInitialValue.hasValue());
-        SkASSERT(!param->fDeclaration);
         std::unique_ptr<SkSL::Variable> paramVar = DSLWriter::CreateParameterVar(*param);
         if (!paramVar) {
             return;
@@ -85,7 +83,6 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
     if (fDecl) {
         for (size_t i = 0; i < params.size(); ++i) {
             params[i]->fVar = fDecl->parameters()[i];
-            params[i]->fInitialized = true;
         }
     }
 }
