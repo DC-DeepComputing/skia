@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9024eda8_e48ce44e",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-16T01:20:03Z",
+      "side": 1,
+      "message": "I broke the hard dependency on GPU stuff here: https://skia-review.googlesource.com/c/skia/+/696637.",
+      "parentUuid": "d50742f1_19c087e5",
+      "range": {
+        "startLine": 325,
+        "startChar": 48,
+        "endLine": 325,
+        "endChar": 50
+      },
+      "revId": "7cbd06060ea686e6322c393259e810b99dea7a8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08802526_75fd6fb9",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-09T14:01:55Z",
       "side": 1,
       "message": "I am concerned about the scalability and maintainability of listing every possible test and device combination here as a rule in addition to having to specify it where ever we have our list of jobs that should run on the CI.\n\nWhat benefits are there to listing them all instead of listing a more general \"ganesh_tests\" target that the developer can augment with something like --config\u003dpixel5 and --config\u003dgl ?",
+      "range": {
+        "startLine": 328,
+        "startChar": 0,
+        "endLine": 328,
+        "endChar": 22
+      },
+      "revId": "7cbd06060ea686e6322c393259e810b99dea7a8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a185d96_1f646807",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-16T01:20:03Z",
+      "side": 1,
+      "message": "Removed the comprehensive list of tests as per our chat, along with the flavors and devices mechanisms. Tests can now be specialized using `--config\u003dpixel_5`, `--config\u003dgl_ganesh`, etc.",
+      "parentUuid": "08802526_75fd6fb9",
       "range": {
         "startLine": 328,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e31818f_b0e41bfa",
+        "filename": "tests/android.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-16T01:20:03Z",
+      "side": 1,
+      "message": "Summary and action items from our offline chat (plus feedback from Joe):\n\n- We\u0027re trying not to add any more Python to our codebase.\n- I left a TODO to rewrite this script in Go.",
+      "parentUuid": "a246e510_c7e60f49",
+      "range": {
+        "startLine": 216,
+        "startChar": 12,
+        "endLine": 216,
+        "endChar": 23
+      },
+      "revId": "7cbd06060ea686e6322c393259e810b99dea7a8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2261547c_09459db8",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-05-09T14:01:55Z",
       "side": 1,
       "message": "I do not think the flavors abstraction is worth the lack of clarity in the BUILD.bazel file\n\nCan we not just specify the flags we want instead of a flavor that represents an opaque set of flags?",
+      "range": {
+        "startLine": 305,
+        "startChar": 4,
+        "endLine": 305,
+        "endChar": 33
+      },
+      "revId": "7cbd06060ea686e6322c393259e810b99dea7a8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb253e10_4e8e6e5c",
+        "filename": "tests/android.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-16T01:20:03Z",
+      "side": 1,
+      "message": "Removed flavors as per our chat.",
+      "parentUuid": "2261547c_09459db8",
       "range": {
         "startLine": 305,
         "startChar": 4,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "579dc9f6_5b947e8e",
+        "filename": "tests/android.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-16T01:20:03Z",
+      "side": 1,
+      "message": "Now that flavors are gone, we should be able to specify `--config\u003dgl_ganesh`, `--config\u003dvulkan_ganesh`, etc.",
+      "parentUuid": "768cd6a6_03371576",
+      "range": {
+        "startLine": 310,
+        "startChar": 48,
+        "endLine": 310,
+        "endChar": 55
+      },
+      "revId": "7cbd06060ea686e6322c393259e810b99dea7a8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f028d645_1da2e756",
@@ -129,6 +249,30 @@
       "writtenOn": "2023-05-09T14:01:55Z",
       "side": 1,
       "message": "Yes, I would expect anything that is currently in tests/BUILD.bazel as a skia_cpu_test to *not* need a GPU backend.",
+      "range": {
+        "startLine": 321,
+        "startChar": 40,
+        "endLine": 321,
+        "endChar": 51
+      },
+      "revId": "7cbd06060ea686e6322c393259e810b99dea7a8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "661db9bb_a04f330c",
+        "filename": "tests/android.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-16T01:20:03Z",
+      "side": 1,
+      "message": "Done. I broke the hard dependency on GPU stuff here: https://skia-review.googlesource.com/c/skia/+/696637.",
+      "parentUuid": "f028d645_1da2e756",
       "range": {
         "startLine": 321,
         "startChar": 40,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef70f55f_d91aa016",
+        "filename": "tests/android.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-16T01:20:03Z",
+      "side": 1,
+      "message": "Similarly as above, let\u0027s rewrite this script in Go if/when it grows too complex.",
+      "parentUuid": "17e62ebd_8e587e0c",
+      "range": {
+        "startLine": 372,
+        "startChar": 8,
+        "endLine": 372,
+        "endChar": 19
+      },
+      "revId": "7cbd06060ea686e6322c393259e810b99dea7a8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63eb5b71_614614b7",
@@ -175,6 +343,30 @@
       "writtenOn": "2023-05-09T14:01:55Z",
       "side": 1,
       "message": "Instead of this, make the templates a string variable that has the proper indentation.\n\nhttps://github.com/google/skia/blob/8c936fb9ba8e27b195e7085a5684d2e1703c8c04/tools/skslc/BUILD.bazel#L92",
+      "range": {
+        "startLine": 418,
+        "startChar": 4,
+        "endLine": 418,
+        "endChar": 22
+      },
+      "revId": "7cbd06060ea686e6322c393259e810b99dea7a8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c94c437e_39a0400d",
+        "filename": "tests/android.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-16T01:20:03Z",
+      "side": 1,
+      "message": "The rationale here is to allow reading the source code linearly by defining a template inside the function where it\u0027s used, rather than outside.\n\nIf you don\u0027t like this function, I\u0027m happy to remove it and extract the templates outside of the functions where they are used.",
+      "parentUuid": "63eb5b71_614614b7",
       "range": {
         "startLine": 418,
         "startChar": 4,
