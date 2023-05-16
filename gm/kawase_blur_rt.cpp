@@ -15,6 +15,10 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "tools/Resources.h"
 
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#endif
+
 class KawaseBlurFilter {
 public:
     // Downsample scale factor used to improve performance
@@ -115,7 +119,9 @@ public:
         canvas->drawImage(drawSurface->makeImageSnapshot(), input->width() / 4, 0,
                           SkSamplingOptions());
         canvas->translate(input->width() / 4, input->height() * 0.75);
-        drawSurface->flush();
+#if defined(SK_GANESH)
+        skgpu::ganesh::Flush(drawSurface);
+#endif
 
         // And now we'll ping pong between our surfaces, to accumulate the result of various
         // offsets.
