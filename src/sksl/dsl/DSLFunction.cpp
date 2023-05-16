@@ -13,7 +13,6 @@
 #include "include/private/base/SkTo.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLIntrinsicList.h"
-#include "src/sksl/SkSLModifiersPool.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/SkSLThreadContext.h"
@@ -81,7 +80,7 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
     fDecl = SkSL::FunctionDeclaration::Convert(context,
                                                pos,
                                                modifiers.fPosition,
-                                               context.fModifiersPool->add(modifiers.fModifiers),
+                                               &modifiers.fModifiers,
                                                name,
                                                std::move(paramVars),
                                                pos,
