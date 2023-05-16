@@ -15,7 +15,6 @@
 namespace SkSL {
 
 class Variable;
-class Statement;
 
 namespace dsl {
 
@@ -30,19 +29,14 @@ struct DSLVar;
 class DSLWriter {
 public:
     /**
-     * Returns the SkSL variable corresponding to a DSL var.
+     * Populates `var.fVar` and `var.fDeclaration` with a matching Variable and VarDeclaration.
      */
-    static SkSL::Variable* Var(DSLVarBase& var);
+    static void Var(DSLVarBase& var);
 
     /**
      * Creates an SkSL variable corresponding to a DSLParameter.
      */
     static std::unique_ptr<SkSL::Variable> CreateParameterVar(DSLParameter& var);
-
-    /**
-     * Returns the SkSL declaration corresponding to a DSLVar.
-     */
-    static std::unique_ptr<SkSL::Statement> Declaration(DSLVarBase& var);
 
     /**
      * Adds a new declaration into an existing declaration statement. This either turns the original
