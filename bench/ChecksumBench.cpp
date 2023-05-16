@@ -14,7 +14,6 @@
 
 enum ChecksumType {
     kMD5_ChecksumType,
-    kHash_ChecksumType,
     kCity_ChecksumType,
 };
 
@@ -42,7 +41,6 @@ protected:
     const char* onGetName() override {
         switch (fType) {
             case kMD5_ChecksumType: return "compute_md5";
-            case kHash_ChecksumType: return "compute_hash";
             case kCity_ChecksumType: return "compute_city";
 
             default: SK_ABORT("Invalid Type");
@@ -58,12 +56,6 @@ protected:
                     (void)md5.finish();
                 }
             } break;
-            case kHash_ChecksumType: {
-                for (int i = 0; i < loops; i++) {
-                    volatile uint32_t result = SkOpts::hash(fData, sizeof(fData));
-                    sk_ignore_unused_variable(result);
-                }
-            }break;
             case kCity_ChecksumType: {
                 for (int i = 0; i < loops; i++) {
                     volatile uint32_t result = SkChecksum::Hash(fData, sizeof(fData));
@@ -81,5 +73,4 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 
 DEF_BENCH( return new ComputeChecksumBench(kMD5_ChecksumType); )
-DEF_BENCH( return new ComputeChecksumBench(kHash_ChecksumType); )
 DEF_BENCH( return new ComputeChecksumBench(kCity_ChecksumType); )

@@ -16,7 +16,6 @@
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMatrixProvider.h"
-#include "src/core/SkOpts.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkVM.h"
 #include "src/core/SkVMBlitter.h"
@@ -480,7 +479,7 @@ SkVMBlitter::Key SkVMBlitter::CacheKey(
                 outColor->b.id,
                 outColor->a.id
             };
-            hash ^= SkOpts::hash(outputs, sizeof(outputs));
+            hash ^= SkChecksum::Hash(outputs, sizeof(outputs));
         } else {
             *ok = false;
         }
@@ -529,7 +528,7 @@ SkVMBlitter::Key SkVMBlitter::CacheKey(
                 outColor.b.id,
                 outColor.a.id
             };
-            blendHash ^= SkOpts::hash(outputs, sizeof(outputs));
+            blendHash ^= SkChecksum::Hash(outputs, sizeof(outputs));
         } else {
             *ok = false;
         }

@@ -8,7 +8,7 @@
 #include "src/pdf/SkPDFGradientShader.h"
 
 #include "include/docs/SkPDFDocument.h"
-#include "src/core/SkOpts.h"
+#include "src/core/SkChecksum.h"
 #include "src/pdf/SkPDFDocumentPriv.h"
 #include "src/pdf/SkPDFFormXObject.h"
 #include "src/pdf/SkPDFGraphicState.h"
@@ -21,25 +21,25 @@ using namespace skia_private;
 static uint32_t hash(const SkShaderBase::GradientInfo& v) {
     uint32_t buffer[] = {
         (uint32_t)v.fColorCount,
-        SkOpts::hash(v.fColors, v.fColorCount * sizeof(SkColor)),
-        SkOpts::hash(v.fColorOffsets, v.fColorCount * sizeof(SkScalar)),
-        SkOpts::hash(v.fPoint, 2 * sizeof(SkPoint)),
-        SkOpts::hash(v.fRadius, 2 * sizeof(SkScalar)),
+        SkChecksum::Hash(v.fColors, v.fColorCount * sizeof(SkColor)),
+        SkChecksum::Hash(v.fColorOffsets, v.fColorCount * sizeof(SkScalar)),
+        SkChecksum::Hash(v.fPoint, 2 * sizeof(SkPoint)),
+        SkChecksum::Hash(v.fRadius, 2 * sizeof(SkScalar)),
         (uint32_t)v.fTileMode,
         v.fGradientFlags,
     };
-    return SkOpts::hash(buffer, sizeof(buffer));
+    return SkChecksum::Hash(buffer, sizeof(buffer));
 }
 
 static uint32_t hash(const SkPDFGradientShader::Key& k) {
     uint32_t buffer[] = {
         (uint32_t)k.fType,
         hash(k.fInfo),
-        SkOpts::hash(&k.fCanvasTransform, sizeof(SkMatrix)),
-        SkOpts::hash(&k.fShaderTransform, sizeof(SkMatrix)),
-        SkOpts::hash(&k.fBBox, sizeof(SkIRect))
+        SkChecksum::Hash(&k.fCanvasTransform, sizeof(SkMatrix)),
+        SkChecksum::Hash(&k.fShaderTransform, sizeof(SkMatrix)),
+        SkChecksum::Hash(&k.fBBox, sizeof(SkIRect))
     };
-    return SkOpts::hash(buffer, sizeof(buffer));
+    return SkChecksum::Hash(buffer, sizeof(buffer));
 }
 
 static void unit_to_points_matrix(const SkPoint pts[2], SkMatrix* matrix) {

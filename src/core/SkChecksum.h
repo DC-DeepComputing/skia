@@ -10,7 +10,6 @@
 
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkOpts_spi.h"
 #include "third_party/cityhash/city.h"
 
 #include <string>
@@ -69,19 +68,19 @@ struct SkGoodHash {
     template <typename K>
     std::enable_if_t<std::has_unique_object_representations<K>::value && sizeof(K) != 4, uint32_t>
     operator()(const K& k) const {
-        return SkOpts::hash_fn(&k, sizeof(K), 0);
+        return SkChecksum::Hash(&k, sizeof(K), 0);
     }
 
     uint32_t operator()(const SkString& k) const {
-        return SkOpts::hash_fn(k.c_str(), k.size(), 0);
+        return SkChecksum::Hash(k.c_str(), k.size(), 0);
     }
 
     uint32_t operator()(const std::string& k) const {
-        return SkOpts::hash_fn(k.c_str(), k.size(), 0);
+        return SkChecksum::Hash(k.c_str(), k.size(), 0);
     }
 
     uint32_t operator()(std::string_view k) const {
-        return SkOpts::hash_fn(k.data(), k.size(), 0);
+        return SkChecksum::Hash(k.data(), k.size(), 0);
     }
 };
 
@@ -99,7 +98,7 @@ struct SkGoodHash {
 template <typename K>
 struct SkForceDirectHash {
     uint32_t operator()(const K& k) const {
-        return SkOpts::hash_fn(&k, sizeof(K), 0);
+        return SkChecksum::Hash(&k, sizeof(K), 0);
     }
 };
 
