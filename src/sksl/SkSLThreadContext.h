@@ -28,7 +28,6 @@ class Pool;
 class ProgramElement;
 class Variable;
 enum class ProgramKind : int8_t;
-struct Modifiers;
 struct Module;
 
 namespace dsl {
@@ -76,12 +75,6 @@ public:
     static const std::unique_ptr<ProgramConfig>& GetProgramConfig() { return Instance().fConfig; }
 
     static bool IsModule() { return GetProgramConfig()->fIsBuiltinCode; }
-
-    /**
-     * Returns the final pointer to a pooled Modifiers object that should be used to represent the
-     * given modifiers.
-     */
-    static const SkSL::Modifiers* Modifiers(const SkSL::Modifiers& modifiers);
 
     struct RTAdjustData {
         // Points to a standalone sk_RTAdjust variable, if one exists.
