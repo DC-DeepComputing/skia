@@ -16,6 +16,29 @@
       "message": "The quadrop400 failures appear to be the bots dying affecting the whole tree.",
       "revId": "316512b709182f9bb1b239c4b05a451a8c993501",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f1a0c9b_2c1e32ec",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2026,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-16T20:49:35Z",
+      "side": 1,
+      "message": "Can this be \"const SkIRect kInf\" ?",
+      "range": {
+        "startLine": 2026,
+        "startChar": 4,
+        "endLine": 2026,
+        "endChar": 15
+      },
+      "revId": "316512b709182f9bb1b239c4b05a451a8c993501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
