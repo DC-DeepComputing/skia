@@ -90,6 +90,7 @@ public:
     SkTScopedComPtr<IDWriteFontFace1> fDWriteFontFace1;
     SkTScopedComPtr<IDWriteFontFace2> fDWriteFontFace2;
     SkTScopedComPtr<IDWriteFontFace4> fDWriteFontFace4;
+    SkTScopedComPtr<IDWriteFontFace7> fDWriteFontFace7;
     bool fIsColorFont;
 
     std::unique_ptr<SkFontArguments::Palette::Override> fRequestedPaletteEntryOverrides;
@@ -97,6 +98,7 @@ public:
 
     size_t fPaletteEntryCount;
     std::unique_ptr<SkColor[]> fPalette;
+    std::unique_ptr<DWRITE_COLOR_F[]> fDWPalette;
 
     static sk_sp<DWriteFontTypeface> Make(
         IDWriteFactory* factory,
