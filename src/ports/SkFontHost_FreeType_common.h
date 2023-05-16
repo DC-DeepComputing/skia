@@ -18,6 +18,7 @@
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkSharedMutex.h"
 #include "src/utils/SkCharToGlyphCache.h"
+#include <src/ports/libfreetype.wasm.h>
 
 struct SkAdvancedTypefaceMetrics;
 class SkFontDescriptor;
@@ -30,7 +31,12 @@ typedef struct FT_StreamRec_* FT_Stream;
 typedef signed long FT_Pos;
 typedef struct FT_BBox_ FT_BBox;
 
+#define LOG2(msg, c) printf(msg " %c in %s\n", c, __PRETTY_FUNCTION__)
+#define LOG(msg) LOG2(msg, '\0') 
+#define LOG2ID(msg, id) printf(msg " %d(%c) in %s\n", id, id, __PRETTY_FUNCTION__)
+#define LOG3ID(msg, id, ind) printf(msg " %d(%c) %d(%c) in %s\n", id, id, ind, ind, __PRETTY_FUNCTION__)
 
+static bool wasmbox_inited = false;
 #ifdef SK_DEBUG
 const char* SkTraceFtrGetError(int);
 #define SK_TRACEFTR(ERR, MSG, ...) \
@@ -109,6 +115,7 @@ public:
     private:
         FT_Face openFace(SkStreamAsset* stream, int ttcIndex, FT_Stream ftStream) const;
         FT_Library fLibrary;
+        u32 ft2_pp;             // double pointer to a 4-byte block that contains the pointer to actual ft_library object
         mutable SkMutex fLibraryMutex;
     };
 

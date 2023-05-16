@@ -60,6 +60,8 @@
 #include <freetype/t1tables.h>
 #include <freetype/ftfntfmt.h>
 
+#include <src/ports/libfreetype.wasm.h>
+
 using namespace skia_private;
 
 namespace {
@@ -137,9 +139,55 @@ extern "C" {
 }
 FT_MemoryRec_ gFTMemory = { nullptr, sk_ft_alloc, sk_ft_free, sk_ft_realloc };
 
+void* wasm_addr_to_absolute(u32 wasm_addr) {
+  return &Z_memory->data[wasm_addr];
+}
+
+void write_u32(u32 wasm_addr, u32 value) {
+  *(u32*)wasm_addr_to_absolute(wasm_addr) = value;
+}
+
+u32 read_u32(u32 wasm_addr) {
+  return *(u32*)wasm_addr_to_absolute(wasm_addr);
+}
+
+int32_t read_i32(u32 wasm_addr) {
+  return *(int32_t*)wasm_addr_to_absolute(wasm_addr);
+}
+
+
+u8 read_u8(u32 wasm_addr) {
+  return *(u8*)wasm_addr_to_absolute(wasm_addr);
+}
+
+u16 read_u16(u32 wasm_addr) {
+  return *(u16*)wasm_addr_to_absolute(wasm_addr);
+}
+
+void outbuf(int start, int sz) {
+  for (int i = 0; i < sz; i+=4) {
+    printf("%u ", read_u32(start+i));
+  }
+  printf("\n");
+}
+
+void outbuf8(int start, int sz) {
+  for (int i = 0; i < sz; i++) {
+    printf("%u ", read_u8(start+i));
+  }
+  printf("\n");
+}
+
 class FreeTypeLibrary : SkNoncopyable {
+    //static bool wasmbox_inited;
 public:
-    FreeTypeLibrary() : fLibrary(nullptr) {
+    FreeTypeLibrary() : fLibrary(nullptr), ft2_pp(0/*Z_mallocZ_ii(4)*/) {
+        if (wasmbox_inited == false) {
+            printf("WASMBOX inited()\n");
+            fflush(stdout);
+            wasmbox_init();
+            wasmbox_inited = true;
+        }
         if (FT_New_Library(&gFTMemory, &fLibrary)) {
             return;
         }
@@ -150,17 +198,39 @@ public:
         // Newer versions may still need this, so this test with side effects must come first.
         // The default has changed over time, so this doesn't mean the same thing to all users.
         FT_Library_SetLcdFilter(fLibrary, FT_LCD_FILTER_DEFAULT);
+        printf("ft2_pp = %d\n", ft2_pp);
+        ft2_pp = Z_mallocZ_ii(4);
+        u32 mem_p = Z_FT_New_MemoryZ_iv(); // pointer to a memory address
+        printf("ft2_box = %u, Mem P = %u\n", ft2_pp, mem_p);
+        printf("ft2_p = %u\n", read_u32(ft2_pp));
+        if (Z_FT_New_LibraryZ_iii(mem_p, ft2_pp)) {
+            printf("ERROR: Failed to init FreeType (Sandboxed)\n");
+            return;
+        }
+        printf("WASMBOX: NewLib is created!\n");
+        u32 ft2_p = read_u32(ft2_pp);
+        printf("ft2_p = %u\n", read_u32(ft2_pp));
+
+        Z_FT_Add_Default_ModulesZ_vi(ft2_p);
+        Z_FT_Set_Default_PropertiesZ_vi(ft2_p);
+        Z_FT_Library_SetLcdFilterZ_iii(ft2_p, FT_LCD_FILTER_DEFAULT);
     }
     ~FreeTypeLibrary() {
         if (fLibrary) {
             FT_Done_Library(fLibrary);
         }
+        if (read_u32(ft2_pp)) {
+            Z_FT_Done_LibraryZ_ii(read_u32(ft2_pp));
+        }
     }
 
     FT_Library library() { return fLibrary; }
+    u32 lib2_p() { return read_u32(ft2_pp); }
+    u32 lib2_pp() { return ft2_pp; }
 
 private:
     FT_Library fLibrary;
+    u32 ft2_pp;
 
     // FT_Library_SetLcdFilterWeights 2.4.0
     // FT_LOAD_COLOR 2.5.0
@@ -185,6 +255,7 @@ private:
     // RHEL 8             2.9.1
 };
 
+//bool FreeTypeLibrary::wasmbox_inited = false;
 static SkMutex& f_t_mutex() {
     static SkMutex& mutex = *(new SkMutex);
     return mutex;
@@ -197,6 +268,7 @@ static FreeTypeLibrary* gFTLibrary;
 class SkTypeface_FreeType::FaceRec {
 public:
     SkUniqueFTFace fFace;
+    u32 face2_pp;
     FT_StreamRec fFTStream;
     std::unique_ptr<SkStreamAsset> fSkStream;
     FT_UShort fFTPaletteEntryCount = 0;
@@ -223,6 +295,7 @@ private:
             gFTLibrary = new FreeTypeLibrary;
         }
         ++gFTCount;
+        printf("In %s, gFTCount = %d\n", __PRETTY_FUNCTION__, gFTCount);
         return gFTLibrary->library();
     }
 
@@ -232,6 +305,7 @@ private:
         SkASSERT(gFTCount > 0);
 
         --gFTCount;
+        printf("In %s, gFTCount = %d\n", __PRETTY_FUNCTION__, gFTCount);
         if (0 == gFTCount) {
             SkASSERT(nullptr != gFTLibrary);
             delete gFTLibrary;
@@ -281,6 +355,7 @@ SkTypeface_FreeType::FaceRec::~FaceRec() {
 }
 
 void SkTypeface_FreeType::FaceRec::setupAxes(const SkFontData& data) {
+    LOG("IN SetupAxes");
     if (!(fFace->face_flags & FT_FACE_FLAG_MULTIPLE_MASTERS)) {
         return;
     }
@@ -315,10 +390,20 @@ void SkTypeface_FreeType::FaceRec::setupAxes(const SkFontData& data) {
                  rec->fFace->family_name);
         return;
     }
+
+    u32 coords_p = Z_mallocZ_ii(data.getAxisCount()*4);
+    memcpy(wasm_addr_to_absolute(coords_p), coords.get(), data.getAxisCount()*4);
+
+    if (Z_FT_Set_Var_Design_CoordinatesZ_iiii(read_u32(face2_pp), data.getAxisCount(), coords_p)) {
+        printf("Z_FT_Set_Var_Design_CoordinatesZ_iiii FAILED!\n");
+        return;
+    }
 }
 
 void SkTypeface_FreeType::FaceRec::setupPalette(const SkFontData& data) {
 #ifdef FT_COLOR_H
+    LOG("IN FaceRec::setupPalette");
+
     FT_Palette_Data paletteData;
     if (FT_Palette_Data_Get(fFace.get(), &paletteData)) {
         return;
@@ -377,23 +462,44 @@ SkTypeface_FreeType::FaceRec::Make(const SkTypeface_FreeType* typeface) {
     FT_Open_Args args;
     memset(&args, 0, sizeof(args));
     const void* memoryBase = rec->fSkStream->getMemoryBase();
+
+    u32 mem2_p = Z_mallocZ_ii(rec->fSkStream->getLength());
+    memcpy(wasm_addr_to_absolute(mem2_p), memoryBase, rec->fSkStream->getLength());
+
+    u32 args2_p = Z_mallocZ_ii(64); // args actually only needs 32 bytes. Just to be safe.
+
     if (memoryBase) {
+        printf("FaceRec::Make:: MEMORYBASE\n");
         args.flags = FT_OPEN_MEMORY;
         args.memory_base = (const FT_Byte*)memoryBase;
         args.memory_size = rec->fSkStream->getLength();
+        write_u32(args2_p, FT_OPEN_MEMORY);
+        write_u32(args2_p+4, mem2_p);
+        write_u32(args2_p+8, rec->fSkStream->getLength());
     } else {
+        printf("FaceRec::Make:: MEMORYSTREAM\n");
         args.flags = FT_OPEN_STREAM;
         args.stream = &rec->fFTStream;
     }
 
     {
         FT_Face rawFace;
+        printf("In %s\n", __PRETTY_FUNCTION__);
         FT_Error err = FT_Open_Face(gFTLibrary->library(), &args, data->getIndex(), &rawFace);
         if (err) {
             SK_TRACEFTR(err, "unable to open font '%x'", typeface->uniqueID());
             return nullptr;
         }
         rec->fFace.reset(rawFace);
+
+        u32 face2_pp = Z_mallocZ_ii(4);
+
+        if (Z_FT_Open_FaceZ_iiiii(gFTLibrary->lib2_p(), args2_p, data->getIndex(), face2_pp)) {
+            printf("lib2: %d %d\n", gFTLibrary->lib2_p(), gFTLibrary->lib2_pp());
+            printf("MAKE: OpenFace in sandbox failed\n");
+            return nullptr;
+        }
+        rec->face2_pp = face2_pp;
     }
     SkASSERT(rec->fFace);
 
@@ -408,6 +514,8 @@ SkTypeface_FreeType::FaceRec::Make(const SkTypeface_FreeType* typeface) {
     // https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6cmap.html
     if (!rec->fFace->charmap) {
         FT_Select_Charmap(rec->fFace.get(), FT_ENCODING_MS_SYMBOL);
+        // TODO:    FT_Select_Charmap(rec->fFace.get(), FT_ENCODING_MS_SYMBOL);
+
     }
 
     return rec;
@@ -425,6 +533,7 @@ public:
     }
 
     FT_Face face() { return fFaceRec ? fFaceRec->fFace.get() : nullptr; }
+    u32 face2_pp() { return fFaceRec ? fFaceRec->face2_pp : 0; }
 
 private:
     SkTypeface_FreeType::FaceRec* fFaceRec;
@@ -454,7 +563,9 @@ protected:
 private:
     SkTypeface_FreeType::FaceRec* fFaceRec; // Borrowed face from the typeface's FaceRec.
     FT_Face   fFace;  // Borrowed face from fFaceRec.
+    u32 face2_pp;
     FT_Size   fFTSize;  // The size to apply to the fFace.
+    u32 fsize2_pp;
     FT_Int    fStrikeIndex; // The bitmap strike for the fFace (or -1 if none).
 
     /** The rest of the matrix after FreeType handles the size.
@@ -486,12 +597,16 @@ private:
 ///////////////////////////////////////////////////////////////////////////
 
 static bool canEmbed(FT_Face face) {
+    LOG("IN canEmbed");
+
     FT_UShort fsType = FT_Get_FSType_Flags(face);
     return (fsType & (FT_FSTYPE_RESTRICTED_LICENSE_EMBEDDING |
                       FT_FSTYPE_BITMAP_EMBEDDING_ONLY)) == 0;
 }
 
 static bool canSubset(FT_Face face) {
+    LOG("In canSubset");
+
     FT_UShort fsType = FT_Get_FSType_Flags(face);
     return (fsType & FT_FSTYPE_NO_SUBSETTING) == 0;
 }
@@ -532,6 +647,8 @@ static bool is_opentype_font_data_standard_format(const SkTypeface& typeface) {
 std::unique_ptr<SkAdvancedTypefaceMetrics> SkTypeface_FreeType::onGetAdvancedMetrics() const {
     AutoFTAccess fta(this);
     FT_Face face = fta.face();
+        LOG("In SkTypeface_FreeType::onGetAdvancedMetrics");
+
     if (!face) {
         return nullptr;
     }
@@ -603,6 +720,8 @@ std::unique_ptr<SkAdvancedTypefaceMetrics> SkTypeface_FreeType::onGetAdvancedMet
 void SkTypeface_FreeType::getGlyphToUnicodeMap(SkUnichar* dstArray) const {
     AutoFTAccess fta(this);
     FT_Face face = fta.face();
+    LOG("In SkTypeface_FreeType::getGlyphToUnicodeMap");
+
     if (!face) {
         return;
     }
@@ -612,6 +731,8 @@ void SkTypeface_FreeType::getGlyphToUnicodeMap(SkUnichar* dstArray) const {
     sk_bzero(dstArray, sizeof(SkUnichar) * numGlyphs);
 
     FT_UInt glyphIndex;
+        LOG(" - Flag: FT_Get_First_Char");
+
     SkUnichar charCode = FT_Get_First_Char(face, &glyphIndex);
     while (glyphIndex) {
         SkASSERT(glyphIndex < SkToUInt(numGlyphs));
@@ -626,6 +747,8 @@ void SkTypeface_FreeType::getGlyphToUnicodeMap(SkUnichar* dstArray) const {
 void SkTypeface_FreeType::getPostScriptGlyphNames(SkString* dstArray) const {
     AutoFTAccess fta(this);
     FT_Face face = fta.face();
+    LOG("In getPostScriptGlyphNames");
+
     if (!face) {
         return;
     }
@@ -645,6 +768,8 @@ void SkTypeface_FreeType::getPostScriptGlyphNames(SkString* dstArray) const {
 bool SkTypeface_FreeType::onGetPostScriptName(SkString* skPostScriptName) const {
     AutoFTAccess fta(this);
     FT_Face face = fta.face();
+    LOG("In onGetPostScriptName");
+
     if (!face) {
         return false;
     }
@@ -699,6 +824,8 @@ static int GetVariationDesignPosition(AutoFTAccess& fta,
     SkFontArguments::VariationPosition::Coordinate coordinates[], int coordinateCount)
 {
     FT_Face face = fta.face();
+    LOG("In GetVariationDesignPosition");
+
     if (!face) {
         return -1;
     }
@@ -721,6 +848,7 @@ static int GetVariationDesignPosition(AutoFTAccess& fta,
     if (FT_Get_Var_Design_Coordinates(face, variations->num_axis, coords.get())) {
         return -1;
     }
+    // TODO
     for (FT_UInt i = 0; i < variations->num_axis; ++i) {
         coordinates[i].axis = variations->axis[i].tag;
         coordinates[i].value = SkFixedToScalar(coords[i]);
@@ -794,6 +922,7 @@ void SkTypeface_FreeType::onFilterRec(SkScalerContextRec* rec) const {
 
 int SkTypeface_FreeType::GetUnitsPerEm(FT_Face face) {
     SkASSERT(face);
+    LOG("In SkTypeface_FreeType::GetUnitsPerEm");
 
     SkScalar upem = SkIntToScalar(face->units_per_EM);
     // At least some versions of FreeType set face->units_per_EM to 0 for bitmap only fonts.
@@ -818,6 +947,8 @@ int SkTypeface_FreeType::onGetUPEM() const {
 bool SkTypeface_FreeType::onGetKerningPairAdjustments(const uint16_t glyphs[],
                                       int count, int32_t adjustments[]) const {
     AutoFTAccess fta(this);
+    LOG("In SkTypeface_FreeType::onGetKerningPairAdjustments");
+
     FT_Face face = fta.face();
     if (!face || !FT_HAS_KERNING(face)) {
         return false;
@@ -875,6 +1006,8 @@ SkScalerContext_FreeType::SkScalerContext_FreeType(sk_sp<SkTypeface_FreeType> ty
     , fFTSize(nullptr)
     , fStrikeIndex(-1)
 {
+    LOG("In SkScalerContext_FreeType::ctor");
+
     SkAutoMutexExclusive  ac(f_t_mutex());
     fFaceRec = static_cast<SkTypeface_FreeType*>(this->getTypeface())->getFaceRec();
 
@@ -953,6 +1086,8 @@ SkScalerContext_FreeType::SkScalerContext_FreeType(sk_sp<SkTypeface_FreeType> ty
     }
 
     SkUniqueFTSize ftSize([this]() -> FT_Size {
+        LOG(" -- Calling FT_New_Size");
+
         FT_Size size;
         FT_Error err = FT_New_Size(fFaceRec->fFace.get(), &size);
         if (err != 0) {
@@ -972,6 +1107,16 @@ SkScalerContext_FreeType::SkScalerContext_FreeType(sk_sp<SkTypeface_FreeType> ty
         return;
     }
 
+    u32 ft2_size_pp = Z_mallocZ_ii(4);
+    if (Z_FT_New_SizeZ_iii(read_u32(fFaceRec->face2_pp), ft2_size_pp)) {
+        printf ("FT_New_Size failed in sandbox\n");
+        return;
+    }
+    if (Z_FT_Activate_SizeZ_ii(read_u32(ft2_size_pp))) {
+        printf("FT_Activate_Size failed in sandbox\n");
+        return;
+    }
+
     fRec.computeMatrices(SkScalerContextRec::PreMatrixScale::kFull, &fScale, &fMatrix22Scalar);
     FT_F26Dot6 scaleX = SkScalarToFDot6(fScale.fX);
     FT_F26Dot6 scaleY = SkScalarToFDot6(fScale.fY);
@@ -981,6 +1126,12 @@ SkScalerContext_FreeType::SkScalerContext_FreeType(sk_sp<SkTypeface_FreeType> ty
         if (err != 0) {
             SK_TRACEFTR(err, "FT_Set_CharSize(%s, %f, %f) failed.",
                         fFaceRec->fFace->family_name, fScale.fX, fScale.fY);
+            return;
+        }
+
+        // This makes the glyphs of uneven sizes?
+        if (Z_FT_Set_Char_SizeZ_iiiiii(read_u32(fFaceRec->face2_pp), scaleX, scaleY, 72, 72)) {
+            printf("FT_Set_Char_Size failed in sandbox\n");
             return;
         }
 
@@ -1018,6 +1169,10 @@ SkScalerContext_FreeType::SkScalerContext_FreeType(sk_sp<SkTypeface_FreeType> ty
             return;
         }
 
+        if (Z_FT_Select_SizeZ_iii(read_u32(fFaceRec->face2_pp), fStrikeIndex)) {
+            printf("FT_Select_Size failed in sandbox\n");
+            return;
+        }
         // Adjust the matrix to reflect the actually chosen scale.
         // It is likely that the ppem chosen was not the one requested, this allows for scaling.
         fMatrix22Scalar.preScale(fScale.x() / fFaceRec->fFace->size->metrics.x_ppem,
@@ -1047,12 +1202,15 @@ SkScalerContext_FreeType::SkScalerContext_FreeType(sk_sp<SkTypeface_FreeType> ty
     fMatrix22.yy = SkScalarToFixed(fMatrix22Scalar.getScaleY());
 
     fFTSize = ftSize.release();
+    fsize2_pp = ft2_size_pp;
     fFace = fFaceRec->fFace.get();
+    face2_pp = fFaceRec->face2_pp;
     fDoLinearMetrics = linearMetrics;
 }
 
 SkScalerContext_FreeType::~SkScalerContext_FreeType() {
     SkAutoMutexExclusive  ac(f_t_mutex());
+    LOG("In SkScalerContext_FreeType::dtor");
 
     if (fFTSize != nullptr) {
         FT_Done_Size(fFTSize);
@@ -1066,11 +1224,36 @@ SkScalerContext_FreeType::~SkScalerContext_FreeType() {
 */
 FT_Error SkScalerContext_FreeType::setupSize() {
     f_t_mutex().assertHeld();
+    LOG("In SkScalerContext_FreeType::setupSize");
+
     FT_Error err = FT_Activate_Size(fFTSize);
     if (err != 0) {
         return err;
     }
+    err = Z_FT_Activate_SizeZ_ii(read_u32(fsize2_pp));
+    if (err != 0) {
+        printf("Z_FT_Activate_SizeZ_ii Failed!\n");
+        return err;
+    }
+    int sz_mat = sizeof(fMatrix22);
+    u32 mat = Z_mallocZ_ii(sz_mat);
+    // Direct copy doesn't work!
+    // memcpy(wasm_addr_to_absolute(mat), &fMatrix22, sz_mat);
+
+    // Separate assignment works!
+    write_u32(mat, fMatrix22.xx);
+    write_u32(mat+4, fMatrix22.xy);
+    write_u32(mat+8, fMatrix22.yx);
+    write_u32(mat+12, fMatrix22.yy);
+
     FT_Set_Transform(fFace, &fMatrix22, nullptr);
+    // This makes the fonts disappear?
+    // After mat is written to by separate members, the font reappears and size seems now correct
+    // And after setting the transforms, the coordniates loaded are completely correct!
+    printf("fMatrix22 (%lu %lu) = %ld %ld;%ld %ld\n", sizeof(fMatrix22), sizeof(FT_Matrix), fMatrix22.xx, fMatrix22.xy,
+            fMatrix22.yx, fMatrix22.yy);
+    outbuf(mat, 16);
+    Z_FT_Set_TransformZ_viii(read_u32(face2_pp), mat, 0);
     return 0;
 }
 
@@ -1078,6 +1261,9 @@ bool SkScalerContext_FreeType::generateAdvance(SkGlyph* glyph) {
    /* unhinted and light hinted text have linearly scaled advances
     * which are very cheap to compute with some font formats...
     */
+    LOG("In SkScalerContext_FreeType::generateAdvance");
+    // Unused.
+
     if (!fDoLinearMetrics) {
         return false;
     }
@@ -1107,6 +1293,8 @@ bool SkScalerContext_FreeType::generateAdvance(SkGlyph* glyph) {
 }
 
 bool SkScalerContext_FreeType::getBoundsOfCurrentOutlineGlyph(FT_GlyphSlot glyph, SkRect* bounds) {
+    LOG("In SkScalerContext_FreeType::getBoundsOfCurrentOutlineGlyph");
+
     if (glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
         SkASSERT(false);
         return false;
@@ -1123,10 +1311,14 @@ bool SkScalerContext_FreeType::getBoundsOfCurrentOutlineGlyph(FT_GlyphSlot glyph
 }
 
 bool SkScalerContext_FreeType::getCBoxForLetter(char letter, FT_BBox* bbox) {
+    LOG("In SkScalerContext_FreeType::getCBoxForLetter");
+    
     const FT_UInt glyph_id = FT_Get_Char_Index(fFace, letter);
     if (!glyph_id) {
         return false;
     }
+       LOG2("Load Glyph", letter);
+
     if (FT_Load_Glyph(fFace, glyph_id, fLoadGlyphFlags)) {
         return false;
     }
@@ -1178,6 +1370,8 @@ void SkScalerContext_FreeType::updateGlyphBoundsIfLCD(SkGlyph* glyph) {
 }
 
 bool SkScalerContext_FreeType::shouldSubpixelBitmap(const SkGlyph& glyph, const SkMatrix& matrix) {
+    LOG("In SkScalerContext_FreeType::shouldSubpixelBitmap");
+
     // If subpixel rendering of a bitmap *can* be done.
     bool mechanism = fFace->glyph->format == FT_GLYPH_FORMAT_BITMAP &&
                      this->isSubpixel() &&
@@ -1195,6 +1389,7 @@ bool SkScalerContext_FreeType::shouldSubpixelBitmap(const SkGlyph& glyph, const 
 
 void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph, SkArenaAlloc* alloc) {
     SkAutoMutexExclusive  ac(f_t_mutex());
+    LOG("In SkScalerContext_FreeType::generateMetrics");
 
     if (this->setupSize()) {
         glyph->zeroMetrics();
@@ -1257,6 +1452,8 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph, SkArenaAlloc* all
             while (FT_Get_Color_Glyph_Layer(fFace, glyph->getGlyphID(), &layerGlyphIndex,
                                             &layerColorIndex, &layerIterator)) {
                 haveLayers = true;
+                       LOG3ID("Load Glyph", glyph->getGlyphID(), layerGlyphIndex);
+
                 if (FT_Load_Glyph(fFace, layerGlyphIndex, flags)) {
                     glyph->zeroMetrics();
                     return;
@@ -1279,6 +1476,7 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph, SkArenaAlloc* all
         }
     }
 #endif  //FT_COLOR_H
+       LOG2ID("Load Glyph", glyph->getGlyphID());
 
     // Even if haveLayers, the base glyph must be loaded to get the metrics.
     if (FT_Load_Glyph(fFace, glyph->getGlyphID(), fLoadGlyphFlags | FT_LOAD_BITMAP_METRICS_ONLY)) {
@@ -1378,6 +1576,7 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph, SkArenaAlloc* all
 
 void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
     SkAutoMutexExclusive  ac(f_t_mutex());
+    LOG("In SkScalerContext_FreeType::generateImage");
 
     if (this->setupSize()) {
         sk_bzero(glyph.fImage, glyph.imageSize());
@@ -1416,6 +1615,8 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
 #endif
         } else if (glyph.fScalerContextBits == ScalerContextBits::SVG) {
 #if defined(FT_CONFIG_OPTION_SVG)
+       LOG2ID("Load Glyph", glyph.getGlyphID());
+            if (glyph.getGlyphID() < 128) return; 
             if (FT_Load_Glyph(fFace, glyph.getGlyphID(), fLoadGlyphFlags)) {
                 return;
             }
@@ -1424,13 +1625,118 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
         }
         return;
     }
+       LOG2ID("Load Glyph", glyph.getGlyphID());
+            // if (glyph.getGlyphID() < 128) return; 
 
-    if (FT_Load_Glyph(fFace, glyph.getGlyphID(), fLoadGlyphFlags)) {
+        printf("LoadFLAGS : %d\n", fLoadGlyphFlags);
+    if (FT_Load_Glyph(fFace, 
+        //(glyph.getGlyphID() > 32)?glyph.getGlyphID()+1:glyph.getGlyphID(),
+        glyph.getGlyphID(),
+        fLoadGlyphFlags)) {
         sk_bzero(glyph.fImage, glyph.imageSize());
         return;
     }
-    emboldenIfNeeded(fFace, fFace->glyph, glyph.getGlyphID());
+    if (Z_FT_Load_GlyphZ_iiii(read_u32(face2_pp), glyph.getGlyphID(), fLoadGlyphFlags)) {
+        printf("SAND LOAD failed face2_pp = %d!\n", face2_pp);
+    }
+    //FT_Outline_Embolden(&(fFace->glyph)->outline, 64);
 
+    emboldenIfNeeded(fFace, fFace->glyph, glyph.getGlyphID());
+    // void* new_buf = malloc()
+
+    u32 face2_p = read_u32(face2_pp);
+  u32 glyph_p = read_u32(face2_p + 21 * 4); // offset of glyph
+  u32 bitmap = glyph_p + 19 * 4;  // offset of glyph->bitmap ?? why 19? // looks like that object members are "flattened" instead of being a pointer
+    u32 outline_p = glyph_p + 27 * 4;
+    u32 outline_n_contours_p = outline_p + 0;
+    u32 outline_n_points_p = outline_p + 2;
+    u32 outline_points_pp = outline_p + 4;
+    u32 outline_tags_pp = outline_p + 8;
+    u32 outline_contours_pp = outline_p + 12;
+    u32 outline_flags_p = outline_p + 16;
+  int nr_2 = read_u32(bitmap);
+  int nc_2 = read_u32(bitmap+4);
+  int pitch_2 = read_u32(bitmap+8);
+  u32 buf2_p = read_u32(bitmap+12);
+
+
+    printf("SAND LOAD: face2_p: %u, glyph_p: %u, bitmap: %u, nr %d, nc %d, pitch %d, buf_p %d\n", face2_p, glyph_p, bitmap, nr_2, nc_2,pitch_2,buf2_p);
+    printf("");
+    printf("");
+    printf("SAND LOAD: Outline Before: %d, %d, %p, %p, %d\n", 
+        fFace->glyph->outline.n_contours,
+        fFace->glyph->outline.n_points,
+        fFace->glyph->outline.points, 
+        fFace->glyph->outline.tags, 
+        fFace->glyph->outline.flags);
+    printf("Points before\n");
+    for (int i = 0; i < fFace->glyph->outline.n_points; ++i) {
+        printf("(%ld, %ld)\n",(fFace->glyph->outline.points)[i].x, (fFace->glyph->outline.points)[i].y);
+    }
+    for (int i = 0; i < fFace->glyph->outline.n_points;++i) {
+        printf("%d\n", fFace->glyph->outline.tags[i]);
+    }
+    // printf("SAND LOAD: Outline Before: %ld, %ld, %ld, %ld, %ld, %d %d %d %d %d %d, %d %d %d %d\n", 
+    //     fFace->num_faces, fFace->face_index, fFace->face_flags, fFace->style_flags, fFace->num_glyphs,
+    //     fFace->num_fixed_sizes, fFace->num_charmaps, fFace->units_per_EM, fFace->ascender, fFace->descender, fFace->height,
+    //     fFace->max_advance_width, fFace->max_advance_height, fFace->underline_position, fFace->underline_thickness);
+    fFace->glyph->bitmap.buffer = (unsigned char*)wasm_addr_to_absolute(buf2_p);
+    //fFace->glyph->outline.n_contours = read_u16(outline_n_contours_p);
+    //fFace->glyph->outline.n_points = read_u16(outline_n_points_p);
+    FT_Vector* old_points = fFace->glyph->outline.points;
+    fFace->glyph->outline.points = (FT_Vector*)malloc(sizeof(FT_Vector) * fFace->glyph->outline.n_points);
+
+    u32 outline_points_p = read_u32(outline_points_pp);
+
+    // Cannot read as u32 and then convert. Need to read i32.
+    for (int i = 0; i <fFace->glyph->outline.n_points; ++i) {
+        fFace->glyph->outline.points[i].x = read_i32(outline_points_p+i*2*4); // old_points[i].x; // 
+        fFace->glyph->outline.points[i].y = read_i32(outline_points_p+i*2*4+4); //old_points[i].y; // 
+        //if (fFace->glyph->outline.points[i].x > 10000 ) fFace->glyph->outline.points[i].x = 0;
+        //if (fFace->glyph->outline.points[i].y > 10000 ) fFace->glyph->outline.points[i].y = 0;
+    }
+//    (FT_Vector *)wasm_addr_to_absolute(read_u32(outline_points_pp));
+    //fFace->glyph->outline.tags = (char*) malloc()
+    
+   // wasm_addr_to_absolute(read_u32(outline_tags_pp));
+    //fFace->glyph->outline.contours = (short *)wasm_addr_to_absolute(read_u32(outline_contours_pp));
+    printf("Points after\n");
+
+    for (int i = 0; i < fFace->glyph->outline.n_points; ++i) {
+        printf("(%ld, %ld)\n",(fFace->glyph->outline.points)[i].x, (fFace->glyph->outline.points)[i].y);
+    }
+    // for (int i = 0; i <fFace->glyph->outline.n_points; ++i) {
+    //     fFace->glyph->outline.points[i].x =read_u32(outline_points_p+i*2*4);
+    //     fFace->glyph->outline.points[i].y =read_u32(outline_points_p+i*2*4+4);
+    // }
+    outbuf8(read_u32(outline_tags_pp), fFace->glyph->outline.n_points*4);
+
+    outbuf(outline_points_p, 20*4);
+    //fFace->glyph->outline.flags = read_u32(outline_flags_p);
+    // printf("SAND LOAD: Outline: %u, %u, %u, %u, %u\n", 
+    //     read_u32(outline_n_contours_p),
+    //     read_u32(outline_n_points_p),
+    //     read_u32(outline_points_pp), 
+    //     read_u32(outline_tags_pp), 
+    //     read_u32(outline_tags_pp));
+    printf("SAND LOAD: Outline After: %d, %d, %p, %p, %d\n", 
+        fFace->glyph->outline.n_contours,
+        fFace->glyph->outline.n_points,
+        fFace->glyph->outline.points, 
+        fFace->glyph->outline.tags, 
+        fFace->glyph->outline.flags);
+    // for (int i = 0; i < n_points; ++i) {
+    //     printf("(%d, %d)\n",(fFace->glyph->outline.points)[i].x, (fFace->glyph->outline.points)[i].y);
+    // }
+    //outbuf(outline_p, 35*4);
+    // for (int i = face2_p + 17*4; i < face2_p+17*4+8*2; i += 2) {
+    //     printf("%d ", read_u16(i));
+    // }
+    for (int i = outline_p; i < outline_p+8*2; i += 2) {
+        printf("%d ", read_u16(i));
+    }
+    printf("\n");
+    fflush(stdout);
     SkMatrix* bitmapMatrix = &fMatrix22Scalar;
     SkMatrix subpixelBitmapMatrix;
     if (this->shouldSubpixelBitmap(glyph, *bitmapMatrix)) {
@@ -1440,6 +1746,7 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
         bitmapMatrix = &subpixelBitmapMatrix;
     }
 
+    //fFace->glyph->outline.n_contours = glyph_p
     generateGlyphImage(fFace, glyph, *bitmapMatrix);
 }
 
@@ -1482,6 +1789,9 @@ sk_sp<SkDrawable> SkScalerContext_FreeType::generateDrawable(const SkGlyph& glyp
 #endif
         } else if (glyph.fScalerContextBits == ScalerContextBits::SVG) {
 #if defined(FT_CONFIG_OPTION_SVG)
+       LOG2ID("Load Glyph", glyph->getGlyphID());
+                if (glyph.getGlyphID() < 128) return; 
+
             if (FT_Load_Glyph(fFace, glyph.getGlyphID(), fLoadGlyphFlags)) {
                 return nullptr;
             }
@@ -1502,6 +1812,7 @@ bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path) 
     SkASSERT(path);
 
     SkAutoMutexExclusive  ac(f_t_mutex());
+    LOG("In SkScalerContext_FreeType::generatePath");
 
     SkGlyphID glyphID = glyph.getGlyphID();
     // FT_IS_SCALABLE is documented to mean the face contains outline glyphs.
@@ -1513,6 +1824,7 @@ bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path) 
     uint32_t flags = fLoadGlyphFlags;
     flags |= FT_LOAD_NO_BITMAP; // ignore embedded bitmaps so we're sure to get the outline
     flags &= ~FT_LOAD_RENDER;   // don't scan convert (we just want the outline)
+       LOG2ID("Load Glyph", glyphID);
 
     FT_Error err = FT_Load_Glyph(fFace, glyphID, flags);
     if (err != 0 || fFace->glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
@@ -1539,6 +1851,8 @@ bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path) 
 }
 
 void SkScalerContext_FreeType::generateFontMetrics(SkFontMetrics* metrics) {
+    LOG("In SkScalerContext_FreeType::generateFontMetrics");
+
     if (nullptr == metrics) {
         return;
     }
@@ -1706,6 +2020,8 @@ void SkScalerContext_FreeType::generateFontMetrics(SkFontMetrics* metrics) {
 
 void SkScalerContext_FreeType::emboldenIfNeeded(FT_Face face, FT_GlyphSlot glyph, SkGlyphID gid) {
     // check to see if the embolden bit is set
+    LOG("In SkScalerContext_FreeType::emboldenIfNeeded");
+
     if (0 == (fRec.fFlags & SkScalerContext::kEmbolden_Flag)) {
         return;
     }
@@ -1719,6 +2035,8 @@ void SkScalerContext_FreeType::emboldenIfNeeded(FT_Face face, FT_GlyphSlot glyph
             break;
         case FT_GLYPH_FORMAT_BITMAP:
             if (!fFace->glyph->bitmap.buffer) {
+       LOG2ID("Load Glyph", gid);
+
                 FT_Load_Glyph(fFace, gid, fLoadGlyphFlags);
             }
             FT_GlyphSlot_Own_Bitmap(glyph);
@@ -1752,6 +2070,7 @@ void SkTypeface_FreeType::onCharsToGlyphs(const SkUnichar uni[], int count,
     // Try the cache first, *before* accessing freetype lib/face, as that
     // can be very slow. If we do need to compute a new glyphID, then
     // access those freetype objects and continue the loop.
+    LOG("SkTypeface_FreeType::onCharsToGlyphs");
 
     int i;
     {
@@ -1835,6 +2154,8 @@ int SkTypeface_FreeType::onGetVariationDesignPosition(
 int SkTypeface_FreeType::onGetVariationDesignParameters(
     SkFontParameters::Variation::Axis parameters[], int parameterCount) const
 {
+        LOG("SkTypeface_FreeType::onGetVariationDesignParameters");
+
     AutoFTAccess fta(this);
     FT_Face face = fta.face();
     if (!face) {
@@ -1870,6 +2191,8 @@ int SkTypeface_FreeType::onGetVariationDesignParameters(
 }
 
 int SkTypeface_FreeType::onGetTableTags(SkFontTableTag tags[]) const {
+    LOG("In SkTypeface_FreeType::onGetTableTags");
+
     AutoFTAccess fta(this);
     FT_Face face = fta.face();
     if (!face) {
@@ -1902,6 +2225,8 @@ int SkTypeface_FreeType::onGetTableTags(SkFontTableTag tags[]) const {
 size_t SkTypeface_FreeType::onGetTableData(SkFontTableTag tag, size_t offset,
                                            size_t length, void* data) const
 {
+        LOG("In SkTypeface_FreeType::onGetTableData");
+
     AutoFTAccess fta(this);
     FT_Face face = fta.face();
     if (!face) {
@@ -1933,6 +2258,8 @@ size_t SkTypeface_FreeType::onGetTableData(SkFontTableTag tag, size_t offset,
 
 sk_sp<SkData> SkTypeface_FreeType::onCopyTableData(SkFontTableTag tag) const {
     AutoFTAccess fta(this);
+    LOG("In SkTypeface_FreeType::onCopyTableData");
+
     FT_Face face = fta.face();
     if (!face) {
         return nullptr;
@@ -1982,21 +2309,54 @@ void SkTypeface_FreeType::FontDataPaletteToDescriptorPalette(const SkFontData& f
 ///////////////////////////////////////////////////////////////////////////////
 
 SkTypeface_FreeType::Scanner::Scanner() : fLibrary(nullptr) {
+        LOG("In SkTypeface_FreeType::Scanner::Scanner");
+
     if (FT_New_Library(&gFTMemory, &fLibrary)) {
         return;
     }
     FT_Add_Default_Modules(fLibrary);
     FT_Set_Default_Properties(fLibrary);
+
+    if (wasmbox_inited == false) {
+        printf("WASMBOX inited()\n");
+        fflush(stdout);
+        wasmbox_init();
+        wasmbox_inited = true;
+    }
+    ft2_pp = Z_mallocZ_ii(4);
+        // u32 mem_p = Z_FT_New_MemoryZ_iv(); // pointer to a memory address
+        // printf("ft2_box = %u, Mem P = %udd\n", ft2_pp, mem_p);
+        // printf("ft2_p = %u\n", read_u32(ft2_pp));
+        // if (Z_FT_New_LibraryZ_iii(mem_p, ft2_pp)) {
+        //     printf("ERROR: Failed to init FreeType (Sandboxed)\n");
+        //     return;
+        // }
+        // printf("WASMBOX: NewLib is created!\n");
+        // u32 ft2_p = read_u32(ft2_pp);
+        // printf("ft2_p = %u\n", read_u32(ft2_pp));
+
+        // Z_FT_Add_Default_ModulesZ_vi(ft2_p);
+    u32 ft2_p = read_u32(ft2_pp);
+    if (Z_FT_Init_FreeTypeZ_ii(ft2_pp)) {
+        printf("ERROR: Failed to init FreeType (Sandboxed)\n");
+        return;
+    }
 }
 SkTypeface_FreeType::Scanner::~Scanner() {
     if (fLibrary) {
+        LOG("In SkTypeface_FreeType::Scanner::~Scanner");
         FT_Done_Library(fLibrary);
+    }
+    if (read_u32(ft2_pp)) {
+        Z_FT_Done_LibraryZ_ii(read_u32(ft2_pp));
     }
 }
 
 FT_Face SkTypeface_FreeType::Scanner::openFace(SkStreamAsset* stream, int ttcIndex,
                                                FT_Stream ftStream) const
 {
+    LOG("In Scanner::openFace()!!");
+
     if (fLibrary == nullptr || stream == nullptr) {
         return nullptr;
     }
@@ -2005,12 +2365,21 @@ FT_Face SkTypeface_FreeType::Scanner::openFace(SkStreamAsset* stream, int ttcInd
     memset(&args, 0, sizeof(args));
 
     const void* memoryBase = stream->getMemoryBase();
+    u32 mem2_p = Z_mallocZ_ii(stream->getLength());
+    u32 args2_p = Z_mallocZ_ii(64); // args actually only needs 32 bytes. Just to be safe.
+    memcpy(wasm_addr_to_absolute(mem2_p), memoryBase, stream->getLength());
+ 
 
     if (memoryBase) {
+        printf("IS MemoryBase!\n");
         args.flags = FT_OPEN_MEMORY;
         args.memory_base = (const FT_Byte*)memoryBase;
         args.memory_size = stream->getLength();
+        write_u32(args2_p, FT_OPEN_MEMORY);
+        write_u32(args2_p+4, mem2_p);
+        write_u32(args2_p+8, stream->getLength());
     } else {
+        printf("IS MemoryStream!\n");
         memset(ftStream, 0, sizeof(*ftStream));
         ftStream->size = stream->getLength();
         ftStream->descriptor.pointer = stream;
@@ -2022,9 +2391,24 @@ FT_Face SkTypeface_FreeType::Scanner::openFace(SkStreamAsset* stream, int ttcInd
     }
 
     FT_Face face;
+    printf("In %s\n", __PRETTY_FUNCTION__);
+
+    u32 face2_pp = Z_mallocZ_ii(4);
+    
+
     if (FT_Open_Face(fLibrary, &args, ttcIndex, &face)) {
         return nullptr;
     }
+    printf("Face fam:%s, sty:%s\n", face->family_name, face->style_name);
+    printf("About to OPENFACE!\n");
+    printf("ft2_pp: %u, ft2_p:%u \n", ft2_pp, read_u32(ft2_pp));
+    if (Z_FT_Open_FaceZ_iiiii(read_u32(ft2_pp), args2_p, ttcIndex, face2_pp)) { // this ft2_pp is a member
+        printf("FACE: OpenFace in sandbox failed\n");
+        return nullptr;
+    }
+    printf("Face2 fam:%s, sty:%s\n", 
+        (char*)wasm_addr_to_absolute(read_u32(read_u32(face2_pp)+5*4)),
+        (char*)wasm_addr_to_absolute(read_u32(read_u32(face2_pp)+6*4)));
     return face;
 }
 
@@ -2032,6 +2416,7 @@ bool SkTypeface_FreeType::Scanner::recognizedFont(SkStreamAsset* stream, int* nu
     SkAutoMutexExclusive libraryLock(fLibraryMutex);
 
     FT_StreamRec streamRec;
+    LOG("RECOGNIZEDFONT!");
     SkUniqueFTFace face(this->openFace(stream, -1, &streamRec));
     if (!face) {
         return false;
@@ -2045,6 +2430,7 @@ bool SkTypeface_FreeType::Scanner::scanFont(
     SkStreamAsset* stream, int ttcIndex,
     SkString* name, SkFontStyle* style, bool* isFixedPitch, AxisDefinitions* axes) const
 {
+    LOG("SCANFONT1");
     SkAutoMutexExclusive libraryLock(fLibraryMutex);
 
     FT_StreamRec streamRec;
@@ -2198,6 +2584,8 @@ bool SkTypeface_FreeType::Scanner::scanFont(
 
 bool SkTypeface_FreeType::Scanner::GetAxes(FT_Face face, AxisDefinitions* axes) {
     SkASSERT(face && axes);
+    LOG("In Scanner::GetAxes");
+
     if (face->face_flags & FT_FACE_FLAG_MULTIPLE_MASTERS) {
         FT_MM_Var* variations = nullptr;
         FT_Error err = FT_Get_MM_Var(face, &variations);
