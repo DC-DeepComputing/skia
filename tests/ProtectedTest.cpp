@@ -9,11 +9,13 @@
 
 #if defined(SK_GANESH)
 
+#include "include/core/SkBitmap.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tests/CtsEnforcement.h"
+#include "tests/TestUtils.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/BackendTextureImageFactory.h"
 
@@ -86,15 +88,43 @@ sk_sp<SkSurface> create_protected_sksurface(GrDirectContext* dContext,
         GrBackendTexture backendTex = SkSurfaces::GetBackendTexture(
                 surface.get(), SkSurfaces::BackendHandleAccess::kFlushRead);
         REPORTER_ASSERT(reporter, backendTex.isValid());
+        SkDebugf("S: %d %d\n", backendTex.isProtected(), isProtected);
         REPORTER_ASSERT(reporter, backendTex.isProtected() == isProtected);
     } else {
         GrBackendRenderTarget backendRT = SkSurfaces::GetBackendRenderTarget(
                 surface.get(), SkSurfaces::BackendHandleAccess::kFlushRead);
         REPORTER_ASSERT(reporter, backendRT.isValid());
+        SkDebugf("RT: %d %d\n", backendRT.isProtected(), isProtected);
         REPORTER_ASSERT(reporter, backendRT.isProtected() == isProtected);
     }
 
     return surface;
+}
+
+void check_pixels(skiatest::Reporter* reporter,
+                  SkSurface* surface,
+                  SkColor4f expectedColor) {
+
+    SkBitmap actual;
+    actual.allocPixels(surface->imageInfo());
+    REPORTER_ASSERT(reporter, surface->readPixels(actual, 0, 0));
+    actual.setImmutable();
+
+    SkBitmap expected;
+    expected.allocPixels(surface->imageInfo());
+    expected.eraseColor(expectedColor);
+    expected.setImmutable();
+
+    const float tols[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+    auto error = std::function<ComparePixmapsErrorReporter>(
+            [reporter](int x, int y, const float diffs[4]) {
+                SkASSERT(x >= 0 && y >= 0);
+                ERRORF(reporter, "mismatch at %d, %d (%f, %f, %f %f)",
+                       x, y, diffs[0], diffs[1], diffs[2], diffs[3]);
+            });
+
+    ComparePixels(expected.pixmap(), actual.pixmap(), tols, error);
 }
 
 void check_image_be_protection(SkImage* image,
@@ -112,11 +142,13 @@ void check_image_be_protection(SkImage* image,
     }
 
     REPORTER_ASSERT(reporter, beTex.isValid());
+    SkDebugf("S: %d %d\n", beTex.isProtected(), expectingProtected);
     REPORTER_ASSERT(reporter, beTex.isProtected() == expectingProtected);
 }
 
 sk_sp<SkImage> create_protected_skimage(GrDirectContext* dContext,
                                         skiatest::Reporter* reporter,
+                                        SkColor4f color,
                                         bool isProtected) {
     const int kW = 8;
     const int kH = 8;
@@ -125,7 +157,7 @@ sk_sp<SkImage> create_protected_skimage(GrDirectContext* dContext,
 
     sk_sp<SkImage> image = sk_gpu_test::MakeBackendTextureImage(dContext,
                                                                 ii,
-                                                                SkColors::kBlue,
+                                                                color,
                                                                 GrMipmapped::kNo,
                                                                 GrRenderable::kNo,
                                                                 kTopLeft_GrSurfaceOrigin,
@@ -148,15 +180,27 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
 
     if (!context_supports_protected(dContext)) {
         // Protected content not supported
+        SkDebugf("Protected content not supported by %s\n", GrBackendApiToStr(dContext->backend()));
         return;
     }
 
+    SkDebugf("Protected content _IS_ supported by %s\n", GrBackendApiToStr(dContext->backend()));
+
+    SkDebugf("Surfaces\n");
     for (bool textureable : { true, false }) {
         for (bool isProtected : { true, false }) {
             sk_sp<SkSurface> surface = create_protected_sksurface(dContext, reporter, textureable,
                                                                   isProtected);
+            if (!surface) {
+                continue;
+            }
 
             sk_sp<SkImage> image = surface->makeImageSnapshot();
+            if (!image) {
+                ERRORF(reporter, "Could not makeImageSnapshot from a %s surface.",
+                       isProtected ? "protected" : "unprotected");
+                continue;
+            }
 
             dContext->submit(/* syncCpu= */ true);
 
@@ -164,10 +208,12 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
         }
     }
 
+    SkDebugf("Images\n");
     for (bool isProtected : { true, false }) {
-        create_protected_skimage(dContext, reporter, isProtected);
+        create_protected_skimage(dContext, reporter, SkColors::kBlue, isProtected);
     }
 
+    SkDebugf("BackendTextures\n");
     for (bool renderable : { true, false }) {
         for (bool isProtected : { true, false }) {
             GrBackendTexture beTex = dContext->createBackendTexture(16,
@@ -179,9 +225,61 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
                                                                     GrProtected(isProtected));
 
             REPORTER_ASSERT(reporter, beTex.isValid());
+            SkDebugf("S: %d %d\n", beTex.isProtected(), isProtected);
             REPORTER_ASSERT(reporter, beTex.isProtected() == isProtected);
         }
     }
+}
+
+// Unprotected images can be drawn to an unprotected surface but protected images cannot.
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_DrawsToUnprotectedSurfaces, reporter, ctxInfo,
+                                 CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+
+    if (!context_supports_protected(dContext)) {
+        // Protected content not supported
+        SkDebugf("Protected content not supported by %s\n", GrBackendApiToStr(dContext->backend()));
+        return;
+    }
+
+    SkDebugf("Protected content _IS_ supported by %s\n", GrBackendApiToStr(dContext->backend()));
+
+    sk_sp<SkSurface> surface = create_protected_sksurface(dContext, reporter,
+                                                          /* textureable= */ true,
+                                                          /* isProtected= */ false);
+    if (!surface) {
+        ERRORF(reporter, "Could not create unprotected surface");
+        return;
+    }
+
+    SkCanvas* canvas = surface->getCanvas();
+
+    sk_sp<SkImage> unprotectedRed = create_protected_skimage(dContext, reporter, SkColors::kRed,
+                                                             /* isProtected= */ false);
+    if (!unprotectedRed) {
+        ERRORF(reporter, "Could not create unprotected image");
+        return;
+    }
+
+    sk_sp<SkImage> protectedGreen = create_protected_skimage(dContext, reporter, SkColors::kGreen,
+                                                             /* isProtected= */ true);
+    if (!protectedGreen) {
+        ERRORF(reporter, "Could not create protected image");
+        return;
+    }
+
+    canvas->clear(SkColors::kBlue);
+
+    check_pixels(reporter, surface.get(), SkColors::kBlue);
+
+    canvas->drawImage(unprotectedRed.get(), 0, 0);
+
+    check_pixels(reporter, surface.get(), SkColors::kRed);
+
+    canvas->drawImage(protectedGreen.get(), 0, 0);
+
+    // The protected draw had better fail
+    check_pixels(reporter, surface.get(), SkColors::kRed);
 }
 
 #endif  // defined(SK_GANESH)
