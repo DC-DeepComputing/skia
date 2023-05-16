@@ -14,6 +14,7 @@
 
 #include <cmath>
 
+#if 0
 static void fuzz_quad_real_roots(double A, double B, double C) {
     double roots[2];
     const int numSolutions = SkQuads::RootsReal(A, B, C, roots);
@@ -32,7 +33,34 @@ static void fuzz_quad_real_roots(double A, double B, double C) {
         SkASSERT_RELEASE(!sk_doubles_nearly_equal_ulps(roots[0], roots[1]));
     }
 }
+#else
+static void fuzz_quad_real_roots(double root0, double root1, double scale) {
+    constexpr double kMachineError = std::numeric_limits<double>::epsilon();
 
+    // Produce the quadratic equation for scale * (x - root0) * (x - root1) == 0
+    // (x - r0)(x-r1) = x*x - r0*x - r1*x + r1 * r2
+    double A = scale;
+    double B = scale * (-root0 - root1);
+    double C = scale * root0 * root1;
+    double roots[2];
+    const int numSolutions = SkQuads::RootsReal(A, B, C, roots);
+
+    if (root0 == root1) {
+        SkASSERT_RELEASE(numSolutions == 1);
+
+        // Check relative error
+        SkASSERT_RELEASE(abs(root0 - roots[0]) / abs(root0) <= 2.0 * kMachineError);
+    } else {
+        SkASSERT_RELEASE(numSolutions == 2);
+
+        auto [answerLow, answerHi] = std::minmax(root0, root1);
+        auto [resultLow, resultHi] = std::minmax(roots[0], roots[1]);
+
+        SkASSERT_RELEASE(abs(answerLow - resultLow) / abs(answerLow) <= 2.0 * kMachineError);
+        SkASSERT_RELEASE(abs(answerHi - resultHi) / abs(answerHi) <= 2.0 * kMachineError);
+    }
+}
+#endif
 static void fuzz_cubic_real_roots(double A, double B, double C, double D) {
     double roots[3];
     const int numSolutions = SkCubics::RootsReal(A, B, C, D, roots);
@@ -89,6 +117,20 @@ static void fuzz_cubic_roots_binary_search(double A, double B, double C, double 
         SkASSERT_RELEASE(!sk_doubles_nearly_equal_ulps(roots[1], roots[2]));
         SkASSERT_RELEASE(!sk_doubles_nearly_equal_ulps(roots[0], roots[2]));
     }
+}
+
+DEF_FUZZ(QuadRoots, fuzz) {
+    double root0, root1, scale;
+    fuzz->next(&root0);
+    fuzz->next(&root1);
+    fuzz->next(&scale);
+
+    // Only allow finite parameters.
+    if (0.0 * root0 * root1 * scale != 0) {
+        return;
+    }
+
+    fuzz_quad_real_roots(root0, root1, scale);
 }
 
 DEF_FUZZ(CubicQuadRoots, fuzz) {
