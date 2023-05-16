@@ -36,4 +36,34 @@
     } while (false)
 
 
+#include "src/sksl/SkSLProgramKind.h"
+#include "src/sksl/ir/SkSLProgram.h"
+
+namespace skgpu {
+class ShaderErrorHandler;
+}
+
+namespace SkSL {
+class Compiler;
+struct ProgramSettings;
+}
+
+namespace skgpu::graphite {
+
+class VulkanSharedContext;
+
+VkShaderModule createVulkanShaderModule(const VulkanSharedContext*,
+                                        const std::string& spirv,
+                                        VkShaderStageFlagBits);
+
+bool SkSLToSPIRV(SkSL::Compiler*,
+                 const std::string& sksl,
+                 SkSL::ProgramKind,
+                 const SkSL::ProgramSettings&,
+                 std::string* spirv,
+                 SkSL::Program::Interface*,
+                 ShaderErrorHandler*);
+
+} // namespace skgpu::graphite
+
 #endif // skgpu_graphite_VulkanGraphiteUtilsPriv_DEFINED
