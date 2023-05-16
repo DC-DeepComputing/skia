@@ -79,5 +79,35 @@ bool TextureInfo::operator==(const TextureInfo& that) const {
     }
 }
 
+#ifdef SK_DAWN
+bool TextureInfo::getDawnTextureInfo(DawnTextureInfo* info) const {
+    if (!this->isValid() || fBackend != BackendApi::kDawn) {
+        return false;
+    }
+    *info = DawnTextureSpecToTextureInfo(fDawnSpec, fSampleCount, fMipmapped);
+    return true;
+}
+#endif
+
+#ifdef SK_METAL
+bool TextureInfo::getMtlTextureInfo(MtlTextureInfo* info) const {
+    if (!this->isValid() || fBackend != BackendApi::kMetal) {
+        return false;
+    }
+    *info = MtlTextureSpecToTextureInfo(fMtlSpec, fSampleCount, fMipmapped);
+    return true;
+}
+#endif
+
+#ifdef SK_VULKAN
+bool TextureInfo::getVulkanTextureInfo(VulkanTextureInfo* info) const {
+    if (!this->isValid() || fBackend != BackendApi::kVulkan) {
+        return false;
+    }
+    *info = VulkanTextureSpecToTextureInfo(fVkSpec, fSampleCount, fMipmapped);
+    return true;
+}
+#endif
+
 } // namespace skgpu::graphite
 
