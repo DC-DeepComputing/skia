@@ -14,6 +14,11 @@
 #include "include/core/SkSurface.h"
 #include "src/base/SkRandom.h"
 
+#if defined(SK_GANESH)
+#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/GrRecordingContext.h"
+#endif
+
 /**
  * Draws a small set of small images multiple times each with no overlaps so that each image could
  * be batched. This was originally added to detect regressions as TextureOp is refactored to
@@ -75,9 +80,14 @@ protected:
                 }
             }
             // Prevent any batching between "frames".
-            if (auto surf = canvas->getSurface()) {
-                surf->flushAndSubmit();
+#if defined(SK_GANESH)
+            auto surface = canvas->getSurface();
+            if (surface) {
+                if (auto rContext = surface->recordingContext(); rContext != nullptr) {
+                    GrAsDirectContext(rContext)->flushAndSubmit(surface);
+                }
             }
+#endif
         }
     }
 

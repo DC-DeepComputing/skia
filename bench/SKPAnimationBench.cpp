@@ -9,6 +9,11 @@
 #include "include/core/SkSurface.h"
 #include "tools/flags/CommandLineFlags.h"
 
+#if defined(SK_GANESH)
+#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/GrRecordingContext.h"
+#endif
+
 SKPAnimationBench::SKPAnimationBench(const char* name, const SkPicture* pic, const SkIRect& clip,
                                      sk_sp<Animation> animation, bool doLooping)
     : INHERITED(name, pic, clip, 1.0, doLooping)
@@ -34,9 +39,14 @@ void SKPAnimationBench::drawPicture() {
         this->surfaces()[j]->getCanvas()->drawPicture(this->picture(), &trans, nullptr);
     }
 
+#if defined(SK_GANESH)
     for (int j = 0; j < this->tileRects().size(); ++j) {
-       this->surfaces()[j]->flush();
+        auto surface = this->surfaces()[j];
+        if (auto rContext = surface->recordingContext(); rContext != nullptr) {
+            GrAsDirectContext(rContext)->flush(surface);
+        }
     }
+#endif
 }
 
 class ZoomAnimation : public SKPAnimationBench::Animation {

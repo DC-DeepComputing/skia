@@ -12,9 +12,13 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkSurface.h"
-#include "include/gpu/GrDirectContext.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkRandom.h"
+
+#if defined(SK_GANESH)
+#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/GrRecordingContext.h"
+#endif
 
 using namespace skia_private;
 
@@ -220,10 +224,14 @@ protected:
                 }
             }
             // Prevent any batching between composited "frames".
+#if defined(SK_GANESH)
             auto surface = canvas->getSurface();
             if (surface) {
-                surface->flush();
+                if (auto rContext = surface->recordingContext(); rContext != nullptr) {
+                    GrAsDirectContext(rContext)->flush(sk_ref_sp(surface));
+                }
             }
+#endif
         }
         canvas->restore();
     }

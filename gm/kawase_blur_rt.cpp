@@ -15,6 +15,11 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "tools/Resources.h"
 
+#if defined(SK_GANESH)
+#include "include/gpu/GrDirectContext.h"
+#include "include/gpu/GrRecordingContext.h"
+#endif
+
 class KawaseBlurFilter {
 public:
     // Downsample scale factor used to improve performance
@@ -115,7 +120,11 @@ public:
         canvas->drawImage(drawSurface->makeImageSnapshot(), input->width() / 4, 0,
                           SkSamplingOptions());
         canvas->translate(input->width() / 4, input->height() * 0.75);
-        drawSurface->flush();
+#if defined(SK_GANESH)
+        if (auto rContext = drawSurface->recordingContext(); rContext != nullptr) {
+            GrAsDirectContext(rContext)->flush(drawSurface);
+        }
+#endif
 
         // And now we'll ping pong between our surfaces, to accumulate the result of various
         // offsets.

@@ -455,8 +455,8 @@ GrSemaphoresSubmitted GrDirectContext::flush(const GrFlushInfo& info) {
         return GrSemaphoresSubmitted::kNo;
     }
 
-    return this->drawingManager()->flushSurfaces({}, SkSurface::BackendSurfaceAccess::kNoAccess,
-                                                 info, nullptr);
+    return this->drawingManager()->flushSurfaces(
+            {}, SkSurfaces::BackendSurfaceAccess::kNoAccess, info, nullptr);
 }
 
 bool GrDirectContext::submit(bool syncCpu) {
@@ -490,6 +490,29 @@ void GrDirectContext::flush(sk_sp<const SkImage> image) { this->flush(image, {})
 void GrDirectContext::flushAndSubmit(sk_sp<const SkImage> image) {
     this->flush(image, {});
     this->submit();
+}
+
+GrSemaphoresSubmitted GrDirectContext::flush(sk_sp<SkSurface> surface,
+                                             SkSurfaces::BackendSurfaceAccess access,
+                                             const GrFlushInfo& info) {
+    return {};
+    // return asSB(this)->onFlush(access, flushInfo, nullptr);
+}
+
+GrSemaphoresSubmitted GrDirectContext::flush(sk_sp<SkSurface> surface,
+                                             const GrFlushInfo& info,
+                                             const skgpu::MutableTextureState* newState) {
+    return {};
+    // return asSB(this)->onFlush(SkSurfaces::BackendSurfaceAccess::kNoAccess, info, newState);
+}
+
+void GrDirectContext::flushAndSubmit(sk_sp<SkSurface> surface, bool syncCpu) {
+    this->flush(std::move(surface), SkSurfaces::BackendSurfaceAccess::kNoAccess, GrFlushInfo());
+    this->submit(syncCpu);
+}
+
+void GrDirectContext::flush(sk_sp<SkSurface> surface) {
+    this->flush(std::move(surface), GrFlushInfo());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -666,10 +689,8 @@ static bool update_texture_with_pixmaps(GrDirectContext* context,
 
     GrSurfaceProxy* p = surfaceContext.asSurfaceProxy();
     GrFlushInfo info;
-    context->priv().drawingManager()->flushSurfaces({&p, 1},
-                                                    SkSurface::BackendSurfaceAccess::kNoAccess,
-                                                    info,
-                                                    nullptr);
+    context->priv().drawingManager()->flushSurfaces(
+            {&p, 1}, SkSurfaces::BackendSurfaceAccess::kNoAccess, info, nullptr);
     return true;
 }
 

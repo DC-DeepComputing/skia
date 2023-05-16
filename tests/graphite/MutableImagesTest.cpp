@@ -427,7 +427,8 @@ public:
 
         fMutatingSurface->getCanvas()->clear(kInitialColor);
 
-        fMutatingImg = fMutatingSurface->asImage();
+        auto gs = static_cast<Surface*>(fMutatingSurface.get());
+        fMutatingImg = gs->asImage();
         REPORTER_ASSERT(fReporter, fMutatingImg);
 
         return fRecorder->snap();
