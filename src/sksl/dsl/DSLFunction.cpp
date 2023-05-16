@@ -25,7 +25,6 @@
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLFunctionPrototype.h"
-#include "src/sksl/ir/SkSLModifiers.h"
 #include "src/sksl/ir/SkSLProgramElement.h"
 #include "src/sksl/ir/SkSLStatement.h"
 #include "src/sksl/ir/SkSLVariable.h"
@@ -55,13 +54,6 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
     fPosition = pos;
 
     const Context& context = ThreadContext::Context();
-    if (context.fConfig->fSettings.fForceNoInline) {
-        // Apply the `noinline` modifier to every function. This allows us to test Runtime
-        // Effects without any inlining, even when the code is later added to a paint.
-        modifiers.fModifiers.fFlags &= ~Modifiers::kInline_Flag;
-        modifiers.fModifiers.fFlags |= Modifiers::kNoInline_Flag;
-    }
-
     std::vector<std::unique_ptr<Variable>> paramVars;
     paramVars.reserve(params.size());
     for (DSLParameter* param : params) {
@@ -77,7 +69,7 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
     fDecl = SkSL::FunctionDeclaration::Convert(context,
                                                pos,
                                                modifiers.fPosition,
-                                               context.fModifiersPool->add(modifiers.fModifiers),
+                                               &modifiers.fModifiers,
                                                name,
                                                std::move(paramVars),
                                                pos,
