@@ -925,6 +925,7 @@ void SkCanvas::internalDrawDeviceWithFilter(SkBaseDevice* src,
                                                             kPremul_SkAlphaType,
                                                             filterColorSpace),
                                           SkPixelGeometry::kUnknown_SkPixelGeometry,
+                                         SK_GAMMA_CONTRAST, SK_GAMMA_EXPONENT,
                                           SkBaseDevice::TileUsage::kNever_TileUsage,
                                           fAllocator.get());
             sk_sp<SkBaseDevice> intermediateDevice(src->onCreateDevice(info, &paint));
@@ -1110,10 +1111,18 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec, SaveLayerStrategy stra
                                              layerColorType, kPremul_SkAlphaType,
                                              priorDevice->imageInfo().refColorSpace());
 
-        SkPixelGeometry geo = rec.fSaveLayerFlags & kPreserveLCDText_SaveLayerFlag
-                                      ? fProps.pixelGeometry()
-                                      : kUnknown_SkPixelGeometry;
-        const auto createInfo = SkBaseDevice::CreateInfo(info, geo, SkBaseDevice::kNever_TileUsage,
+-        SkPixelGeometry geo = kUnknown_SkPixelGeometry;
+-        SkScalar textContrast = SK_GAMMA_CONTRAST;
+-        SkScalar textGamma = SK_GAMMA_EXPONENT;
+-        if (rec.fSaveLayerFlags  & kPreserveLCDText_SaveLayerFlag) {
+-            geo = fProps.pixelGeometry();
+-            textContrast = fProps.textContrast();
+-            textGamma = fProps.textGamma();
+-        }
+-
+-        const auto createInfo = SkBaseDevice::CreateInfo(info, geo,
+-                                                         textContrast,
+-                                                         textGamma, SkBaseDevice::kNever_TileUsage,
                                                          fAllocator.get());
         // Use the original paint as a hint so that it includes the image filter
         newDevice.reset(priorDevice->onCreateDevice(createInfo, rec.fPaint));

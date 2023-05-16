@@ -36,10 +36,11 @@ class SkSurfaceCharacterization;
 namespace skgpu { class MutableTextureState; }
 namespace skgpu { namespace graphite { class Recorder; } }
 
-SkSurfaceProps::SkSurfaceProps() : fFlags(0), fPixelGeometry(kUnknown_SkPixelGeometry) {}
-
+SkSurfaceProps::SkSurfaceProps() : fFlags(0), fPixelGeometry(kUnknown_SkPixelGeometry), fTextContrast(SK_GAMMA_CONTRAST)
+        , fTextGamma(SK_GAMMA_EXPONENT) {}
 SkSurfaceProps::SkSurfaceProps(uint32_t flags, SkPixelGeometry pg)
-    : fFlags(flags), fPixelGeometry(pg)
+    : fFlags(flags), fPixelGeometry(pg), fTextContrast(SK_GAMMA_CONTRAST)
+        , fTextGamma(SK_GAMMA_EXPONENT)
 {}
 
 SkSurfaceProps::SkSurfaceProps(const SkSurfaceProps&) = default;

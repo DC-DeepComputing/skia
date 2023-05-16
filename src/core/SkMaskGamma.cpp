@@ -69,9 +69,21 @@ class SkSRGBColorSpaceLuminance : public SkColorSpaceLuminance {
     }
 }
 
-static float apply_contrast(float srca, float contrast) {
-    return srca + ((1.0f - srca) * contrast * srca);
+///@{
+/**
+ *  If EXPERIMENTAL_CONTRAST is false, uses old contrast formula.
+ *  If EXPERIMENTAL_CONTRAST is true, uses new experimental contrast formula.
+ *  @param EXPERIMENTAL_CONTRAST whether or not to use the experimental contrast formula.
+ */
+template<bool EXPERIMENTAL_CONTRAST>
+ static float apply_contrast(float srca, float contrast) {
+     return srca + ((1.0f - srca) * contrast * srca);
+ }
+template<> /*static*/ float apply_contrast<true>(float srca, float contrast) {
+    // New experimental contrast formula
+    return (srca * (contrast + 1.0f)) / (srca * contrast + 1.0f);
 }
+///@}
 
 void SkTMaskGamma_build_correcting_lut(uint8_t table[256], U8CPU srcI, SkScalar contrast,
                                        const SkColorSpaceLuminance& srcConvert, SkScalar srcGamma,
@@ -94,7 +106,7 @@ void SkTMaskGamma_build_correcting_lut(uint8_t table[256], U8CPU srcI, SkScalar 
         float ii = 0.0f;
         for (int i = 0; i < 256; ++i, ii += 1.0f) {
             float rawSrca = ii / 255.0f;
-            float srca = apply_contrast(rawSrca, adjustedContrast);
+            float srca = apply_contrast<EXPERIMENTAL_CONTRAST>(rawSrca, adjustedContrast);
             table[i] = SkToU8(sk_float_round2int(255.0f * srca));
         }
     } else {
@@ -122,4 +134,18 @@ void SkTMaskGamma_build_correcting_lut(uint8_t table[256], U8CPU srcI, SkScalar 
             table[i] = SkToU8(sk_float_round2int(255.0f * result));
         }
     }
+}
+
+void SkTMaskGamma_build_correcting_lut(uint8_t table[256], U8CPU srcI, SkScalar contrast,
+                                       const SkColorSpaceLuminance& srcConvert, SkScalar srcGamma,
+                                       const SkColorSpaceLuminance& dstConvert, SkScalar dstGamma) {
+    SkTMaskGamma_build_correcting_lut_t<false>(table, srcI, contrast, srcConvert, srcGamma,
+                                               dstConvert, dstGamma);
+}
+
+void SkTMaskGamma_build_correcting_lut_experimental_contrast(uint8_t table[256], U8CPU srcI, SkScalar contrast,
+                                       const SkColorSpaceLuminance& srcConvert, SkScalar srcGamma,
+                                       const SkColorSpaceLuminance& dstConvert, SkScalar dstGamma) {
+    SkTMaskGamma_build_correcting_lut_t<true>(table, srcI, contrast, srcConvert, srcGamma,
+                                              dstConvert, dstGamma);
 }

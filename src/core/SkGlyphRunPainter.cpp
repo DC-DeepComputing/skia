@@ -166,7 +166,7 @@ SkGlyphRunListPainterCPU::SkGlyphRunListPainterCPU(const SkSurfaceProps& props,
                                                    SkColorType colorType,
                                                    SkColorSpace* cs)
         : fDeviceProps{props}
-        , fBitmapFallbackProps{SkSurfaceProps{props.flags(), kUnknown_SkPixelGeometry}}
+        , fBitmapFallbackProps{SkSurfaceProps{props.flags(), kUnknown_SkPixelGeometry,  props.textContrast(), props.textGamma()}}
         , fColorType{colorType}
         , fScalerContextFlags{compute_scaler_context_flags(cs)} {}
 

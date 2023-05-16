@@ -8,6 +8,7 @@
 #ifndef SkSurfaceProps_DEFINED
 #define SkSurfaceProps_DEFINED
 
+#include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
 
@@ -58,6 +59,8 @@ public:
         // If set, all rendering will have dithering enabled
         // Currently this only impacts GPU backends
         kAlwaysDither_Flag              = 1 << 2,
+-        // Windows-only; uses a different formula for applying text-contrast.
+-        kUseExperimentalContrast_Flag   = 1 << 3,
     };
     /** Deprecated alias used by Chromium. Will be removed. */
     static const Flags kUseDistanceFieldFonts_Flag = kUseDeviceIndependentFonts_Flag;
@@ -65,6 +68,7 @@ public:
     /** No flags, unknown pixel geometry. */
     SkSurfaceProps();
     SkSurfaceProps(uint32_t flags, SkPixelGeometry);
+    SkSurfaceProps(uint32_t flags, SkPixelGeometry, SkScalar textContrast, SkScalar textGamma);
 
     SkSurfaceProps(const SkSurfaceProps&);
     SkSurfaceProps& operator=(const SkSurfaceProps&);
@@ -75,6 +79,8 @@ public:
 
     uint32_t flags() const { return fFlags; }
     SkPixelGeometry pixelGeometry() const { return fPixelGeometry; }
+    SkScalar textContrast() const { return fTextContrast; }
+    SkScalar textGamma() const { return fTextGamma; }
 
     bool isUseDeviceIndependentFonts() const {
         return SkToBool(fFlags & kUseDeviceIndependentFonts_Flag);
@@ -85,7 +91,8 @@ public:
     }
 
     bool operator==(const SkSurfaceProps& that) const {
-        return fFlags == that.fFlags && fPixelGeometry == that.fPixelGeometry;
+       return fFlags == that.fFlags && fPixelGeometry == that.fPixelGeometry &&
+               fTextContrast == that.fTextContrast && fTextGamma == that.fTextGamma;
     }
 
     bool operator!=(const SkSurfaceProps& that) const {
@@ -95,6 +102,8 @@ public:
 private:
     uint32_t        fFlags;
     SkPixelGeometry fPixelGeometry;
+    SkScalar fTextContrast;
+    SkScalar fTextGamma;
 };
 
 #endif
