@@ -463,6 +463,16 @@ FunctionDeclaration* FunctionDeclaration::Convert(const Context& context,
                                                   std::vector<std::unique_ptr<Variable>> parameters,
                                                   Position returnTypePos,
                                                   const Type* returnType) {
+    // If requested, apply the `noinline` modifier to every function. This allows us to test Runtime
+    // Effects without any inlining, even when the code is later added to a paint.
+    Modifiers updatedModifiers;
+    if (context.fConfig->fSettings.fForceNoInline) {
+        updatedModifiers = *modifiers;
+        updatedModifiers.fFlags &= ~Modifiers::kInline_Flag;
+        updatedModifiers.fFlags |= Modifiers::kNoInline_Flag;
+        modifiers = &updatedModifiers;
+    }
+
     bool isMain = (name == "main");
 
     FunctionDeclaration* decl = nullptr;
