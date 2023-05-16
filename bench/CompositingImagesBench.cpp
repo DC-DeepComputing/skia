@@ -12,9 +12,12 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkSurface.h"
-#include "include/gpu/GrDirectContext.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkRandom.h"
+
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#endif
 
 using namespace skia_private;
 
@@ -220,10 +223,9 @@ protected:
                 }
             }
             // Prevent any batching between composited "frames".
-            auto surface = canvas->getSurface();
-            if (surface) {
-                surface->flush();
-            }
+#if defined(SK_GANESH)
+            skgpu::ganesh::Flush(canvas->getSurface());
+#endif
         }
         canvas->restore();
     }

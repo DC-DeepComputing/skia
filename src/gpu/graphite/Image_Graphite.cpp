@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/Texture.h"
 
 namespace skgpu::graphite {
@@ -105,7 +106,8 @@ sk_sp<SkImage> Image::makeColorTypeAndColorSpace(Recorder* recorder,
     }
 
     s->getCanvas()->drawImage(this, 0, 0);
-    return s->asImage();
+    auto gs = static_cast<Surface*>(s.get());
+    return gs->asImage();
 }
 
 } // namespace skgpu::graphite
