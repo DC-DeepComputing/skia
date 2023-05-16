@@ -45,6 +45,8 @@ extern "C" {
 }
 #endif
 
+bool gCreateProtectedContext = false;
+
 namespace sk_gpu_test {
 GrContextFactory::GrContextFactory() { }
 
@@ -132,7 +134,8 @@ GrDirectContext* GrContextFactory::get(ContextType type, ContextOverrides overri
     return this->getContextInfo(type, overrides).directContext();
 }
 
-ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOverrides overrides,
+ContextInfo GrContextFactory::getContextInfoInternal(ContextType type,
+                                                     ContextOverrides overrides,
                                                      GrDirectContext* shareContext,
                                                      uint32_t shareIndex) {
     // (shareIndex != 0) -> (shareContext != nullptr)
