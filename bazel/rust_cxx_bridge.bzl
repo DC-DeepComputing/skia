@@ -15,7 +15,7 @@ load(
     "skia_filegroup",
 )
 
-def rust_cxx_bridge(name, src, deps = [], visibility = []):
+def rust_cxx_bridge(name, src, deps = [], visibility = [], crate_features = []):
     """Creates rules for CXX C++/Rust bridging.
 
     Takes a Rust source file to generate binding code from a section that is marked with `#[cxx::bridge]`.
@@ -28,17 +28,23 @@ def rust_cxx_bridge(name, src, deps = [], visibility = []):
     """
     out_h = "gen/%s.h" % src
     out_cc = "gen/%s.cc" % src
+    args = [
+        "$(location %s)" % src,
+        "-o",
+        "$(location %s)" % out_h,
+        "-o",
+        "$(location %s)" % out_cc,
+    ]
+
+    for f in crate_features:
+        args.append("--cfg")
+        args.append("feature=\"%s\"" % f)
+
     run_binary(
         name = "%s/generated" % name,
         srcs = [src],
         outs = [out_h, out_cc],
-        args = [
-            "$(location %s)" % src,
-            "-o",
-            "$(location %s)" % out_h,
-            "-o",
-            "$(location %s)" % out_cc,
-        ],
+        args = args,
         tool = "@cxxbridge_cmd//:cxxbridge",
     )
 

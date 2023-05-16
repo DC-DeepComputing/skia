@@ -173,6 +173,14 @@ def git_repos_from_deps(ws = "@"):
         remote = "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools.git",
     )
 
+    # TODO: uncomment this
+    #new_git_repository(
+    #    name = "vello",
+    #    build_file = ws + "//bazel/external/vello:BUILD.bazel",
+    #    commit = "b0303ccf98df15a8b196272720d364a56f7304ba",
+    #    remote = "https://skia.googlesource.com/external/github.com/linebender/vello.git",
+    #)
+
     new_git_repository(
         name = "vulkan_headers",
         build_file = ws + "//bazel/external/vulkan_headers:BUILD.bazel",

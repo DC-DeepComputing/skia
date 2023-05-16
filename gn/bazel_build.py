@@ -13,7 +13,10 @@ import sys
 
 target = sys.argv[1]
 output = sys.argv[2]
-subprocess.run(["bazelisk", "build", target], check=True)
+#subprocess.run(["bazelisk", "build", target ], check=True)
+
+# TODO: need to pass additional flags, like --release and other build configs (like use_dawn/use_metal)
+subprocess.run(["bazelisk", "build", target, "--host_platform=//bazel/platform:mac_arm64_hermetic", "--config=release"], check=True)
 
 expected_output = os.path.join(os.getcwd(), os.path.basename(output))
 if not os.path.exists(expected_output):
@@ -26,3 +29,4 @@ else:
         os.remove(expected_output)
         shutil.copyfile(output, expected_output)
         os.chmod(expected_output, 0o755)
+

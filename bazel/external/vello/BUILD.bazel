@@ -1,0 +1,53 @@
+# This file will be copied into //third_party/externals/vello via the new_local_repository
+# rule in WORKSPACE.bazel, so all files should be relative to that path.
+load("//bazel:rust_build_script.bzl", "rust_build_script")
+load("@rules_rust//rust:defs.bzl", "rust_library")
+
+rust_library(
+    name = "vello_encoding",
+    srcs = glob(["crates/encoding/src/**/*.rs"]),
+    deps = [
+        "@vello_deps//:bytemuck",
+        "@vello_deps//:peniko",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+rust_library(
+    name = "vello_shaders",
+    #crate_features = ["msl", "wgsl"], # TODO: need to conditionalize these
+    crate_features = ["msl"], # TODO: need to conditionalize these
+    srcs = glob(["crates/shaders/src/**/*.rs"]),
+    deps = [":vello_shaders_build_script"],
+    visibility = ["//visibility:public"],
+)
+
+# TODO: cargo_build_script works fine here but my custom rust_build_script can't get included
+rust_build_script(
+    name = "vello_shaders_build_script",
+    #crate_features = ["msl", "wgsl"], # TODO: need to conditionalize these
+    crate_features = ["msl"], # TODO: need to conditionalize these
+    env = {
+        "WORKSPACE_DIR": "$(location Cargo.toml)" # TODO
+    },
+    srcs = [
+        "crates/shaders/build.rs",
+    ],
+    data = glob([
+        "Cargo.toml",  # Used to obtain WORKSPACE_DIR
+        "crates/shaders/src/compile/mod.rs",
+        "crates/shaders/src/compile/msl.rs",
+        "crates/shaders/src/compile/permutations.rs",
+        "crates/shaders/src/compile/preprocess.rs",
+        "crates/shaders/src/types.rs",
+        "shader/permutations",
+        "shader/**/*.wgsl",
+    ]),
+    deps = [
+        "@vello_deps//:naga",
+        "@vello_deps//:regex",
+        "@vello_deps//:thiserror",
+    ]
+)
+
+# TODO: need a config flag for shaders features that propagate to build.rs

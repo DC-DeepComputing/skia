@@ -22,28 +22,66 @@
 # These commands will place the artifacts under `third_party/vello/target`.
 
 import("../third_party.gni")
+import("../../gn/skia.gni")
 
-_build_root = ""
-if (is_mac && target_cpu == "arm64") {
-  _build_root = "./target/aarch64-apple-darwin"
-} else {
-  _build_root = "./target"
-}
+if (skia_enable_vello_shaders) {
+  action("compile_vello_ffi") {
+    script = "../../gn/bazel_build.py"
+    sources = [ "BUILD.bazel" ]
+    outputs = [ "$root_out_dir/libvello_ffi.a" ]
+    args = [
+      "//third_party/vello:vello_ffi",
+      "../../bazel-bin/third_party/vello/libvello_ffi.a",
+    ]
+  }
 
-third_party("cpp") {
-  public_include_dirs = [
-    "include/",
-    "$_build_root/cxxbridge",
-  ]
-
-  sources = [
-    "$_build_root/cxxbridge/vello_cpp/src/lib.rs.cc",
-    "$_build_root/cxxbridge/vello_cpp/src/lib.rs.h",
-  ]
-
-  if (is_debug) {
-    libs = [ "$_build_root/debug/libvello_cpp.a" ]
-  } else {
-    libs = [ "$_build_root/release/libvello_cpp.a" ]
+  action("compile_vello_rust") {
+    script = "../../gn/bazel_build.py"
+    sources = [ "BUILD.bazel" ]
+    outputs = [ "$root_out_dir/libvello_rust.a" ]
+    args = [
+      "//third_party/vello:vello_rust",
+      "../../bazel-bin/third_party/vello/libvello_rust.a",
+    ]
   }
 }
+
+third_party("vello") {
+  public_include_dirs = [
+    "../../bazel-bin/",
+  ]
+  libs = [
+    "$root_out_dir/libvello_ffi.a",
+    "$root_out_dir/libvello_rust.a",
+  ]
+  deps = [
+    ":compile_vello_ffi",
+    ":compile_vello_rust",
+  ]
+}
+
+#_build_root = ""
+#if (is_mac && target_cpu == "arm64") {
+#  _build_root = "./target/aarch64-apple-darwin"
+#} else {
+#  _build_root = "./target"
+#}
+#
+# TODO(rename)
+#third_party("cargo") {
+#  public_include_dirs = [
+#    "include/",
+#    "$_build_root/cxxbridge",
+#  ]
+#
+#  sources = [
+#    "$_build_root/cxxbridge/vello_cpp/src/lib.rs.cc",
+#    "$_build_root/cxxbridge/vello_cpp/src/lib.rs.h",
+#  ]
+#
+#  if (is_debug) {
+#    libs = [ "$_build_root/debug/libvello_cpp.a" ]
+#  } else {
+#    libs = [ "$_build_root/release/libvello_cpp.a" ]
+#  }
+#}

@@ -278,7 +278,7 @@ http_archive(
     ],
 )
 
-load("@rules_rust//crate_universe:defs.bzl", "crates_repository")
+load("@rules_rust//crate_universe:defs.bzl", "crates_repository", "crate")
 
 # This finds all the dependencies needed to build cxxbridge_cmd...
 crates_repository(
@@ -333,6 +333,25 @@ crates_repository(
 load("@fontations//:defs.bzl", fontations_crates = "crate_repositories")
 
 fontations_crates()
+
+# vello TODO: explanation
+crates_repository(
+    name = "vello_deps",
+    cargo_lockfile = "//bazel/external/vello:Cargo.lock",
+    manifests = ["//bazel/external/vello:Cargo.toml"],
+    annotations = {
+        "bytemuck": [crate.annotation(
+            crate_features = ["derive"],
+        )],
+        "naga": [crate.annotation(
+            crate_features = ["wgsl-in", "msl-out", "validate"],
+        )],
+    },
+)
+
+load("@vello_deps//:defs.bzl", vello_deps = "crate_repositories")
+
+vello_deps()
 
 ###############################################################
 
@@ -414,6 +433,13 @@ local_repository(
 local_repository(
     name = "expat_config",
     path = "bazel/external/expat/config",
+)
+
+# TODO: this is a temporary hack for bazel to pick up my local copy of vello
+new_local_repository(
+    name = "vello",
+    build_file = "//bazel/external/vello:BUILD.bazel",
+    path = "/Users/armansito/work/vello",
 )
 
 load("//bazel:cipd_install.bzl", "cipd_install")
