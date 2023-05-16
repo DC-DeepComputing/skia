@@ -36,6 +36,8 @@
 // In the past, FT_GlyphSlot_Own_Bitmap was defined in this header file.
 #include <freetype/ftsynth.h>
 
+#include <src/ports/libfreetype.wasm.h>
+
 namespace {
 [[maybe_unused]] static inline const constexpr bool kSkShowTextBlitCoverage = false;
 }
@@ -595,6 +597,8 @@ bool colrv1_configure_skpaint(FT_Face face,
                               const SkColor foregroundColor,
                               const FT_COLR_Paint& colrPaint,
                               SkPaint* paint) {
+        LOG("In colrv1_configure_skpaint ");
+
     auto fetchColorStops = [&face, &palette, &foregroundColor](
                                                const FT_ColorStopIterator& colorStopIterator,
                                                std::vector<SkScalar>& stops,
@@ -1231,6 +1235,8 @@ bool colrv1_traverse_paint(SkCanvas* canvas,
     SK_AT_SCOPE_EXIT(activePaints->remove(opaquePaint));
 
     FT_COLR_Paint paint;
+    LOG("In colrv1_traverse_paint ");
+
     if (!FT_Get_Paint(face, opaquePaint, &paint)) {
         return false;
     }
@@ -1322,6 +1328,7 @@ bool colrv1_traverse_paint(SkCanvas* canvas,
 }
 
 SkPath GetClipBoxPath(FT_Face face, uint16_t glyphId, bool untransformed) {
+    LOG("In GetClipBoxPath ");
     SkPath resultPath;
     SkUniqueFTSize unscaledFtSize = nullptr;
     FT_Size oldSize = face->size;
@@ -1391,6 +1398,8 @@ bool colrv1_start_glyph(SkCanvas* canvas,
                         uint16_t glyphId,
                         FT_Color_Root_Transform rootTransform,
                         VisitedSet* activePaints) {
+    LOG("In colrv1_start_glyph ");
+
     FT_OpaquePaint opaquePaint{nullptr, 1};
     if (!FT_Get_Color_Glyph_Paint(face, glyphId, rootTransform, &opaquePaint)) {
         return false;
@@ -1422,6 +1431,8 @@ bool colrv1_traverse_paint_bounds(SkMatrix* ctm,
                                   FT_Face face,
                                   FT_OpaquePaint opaquePaint,
                                   VisitedSet* activePaints) {
+    LOG("In colrv1_traverse_paint_bounds ");
+
     // Cycle detection, see section "5.7.11.1.9 Color glyphs as a directed acyclic graph".
     if (activePaints->contains(opaquePaint)) {
         return false;
@@ -1525,6 +1536,7 @@ bool colrv1_start_glyph_bounds(SkMatrix *ctm,
                                uint16_t glyphId,
                                FT_Color_Root_Transform rootTransform,
                                VisitedSet* activePaints) {
+    LOG("In colrv1_start_glyph_bounds ");
     FT_OpaquePaint opaquePaint{nullptr, 1};
     return FT_Get_Color_Glyph_Paint(face, glyphId, rootTransform, &opaquePaint) &&
            colrv1_traverse_paint_bounds(ctm, bounds, face, opaquePaint, activePaints);
@@ -1562,6 +1574,8 @@ bool SkScalerContext_FreeType_Base::drawCOLRv0Glyph(FT_Face face,
                                                     uint32_t loadGlyphFlags,
                                                     SkSpan<SkColor> palette,
                                                     SkCanvas* canvas) {
+        LOG("In SkScalerContext_FreeType_Base::drawCOLRv0Glyph ");
+
     if (this->isSubpixel()) {
         canvas->translate(SkFixedToScalar(glyph.getSubXFixed()),
                           SkFixedToScalar(glyph.getSubYFixed()));
@@ -1633,8 +1647,12 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
                                                        const SkGlyph& glyph,
                                                        const SkMatrix& bitmapTransform)
 {
+        LOG("In SkScalerContext_FreeType_Base::generateGlyphImage");
+
     switch ( face->glyph->format ) {
         case FT_GLYPH_FORMAT_OUTLINE: {
+            printf(" ? OUTLINE GLYPH?\n");
+
             FT_Outline* outline = &face->glyph->outline;
 
             int dx = 0, dy = 0;
@@ -1766,6 +1784,7 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
         } break;
 
         case FT_GLYPH_FORMAT_BITMAP: {
+            printf(" ? BITMAP GLYPH?\n");
             FT_Pixel_Mode pixel_mode = static_cast<FT_Pixel_Mode>(face->glyph->bitmap.pixel_mode);
             SkMask::Format maskFormat = static_cast<SkMask::Format>(glyph.fMaskFormat);
 
@@ -1965,6 +1984,9 @@ public:
 
 bool generateGlyphPathStatic(FT_Face face, SkPath* path) {
     SkFTGeometrySink sink{path};
+    LOG("In generateGlyphPathStatic ");
+    // UNUSED
+
     if (face->glyph->format != FT_GLYPH_FORMAT_OUTLINE ||
         FT_Outline_Decompose(&face->glyph->outline, &SkFTGeometrySink::Funcs, &sink))
     {
@@ -1980,6 +2002,8 @@ bool generateFacePathStatic(FT_Face face, SkGlyphID glyphID, uint32_t loadGlyphF
     loadGlyphFlags |= FT_LOAD_NO_BITMAP; // Ignore embedded bitmaps.
     loadGlyphFlags &= ~FT_LOAD_RENDER;  // Don't scan convert.
     loadGlyphFlags &= ~FT_LOAD_COLOR;  // Ignore SVG.
+        LOG("Load_Glyph");
+    // Unused
     if (FT_Load_Glyph(face, glyphID, loadGlyphFlags)) {
         path->reset();
         return false;
@@ -1997,6 +2021,9 @@ bool generateFacePathCOLRv1(FT_Face face, SkGlyphID glyphID, SkPath* path) {
     flags |= FT_LOAD_NO_HINTING;
     flags |= FT_LOAD_NO_AUTOHINT;
     flags |= FT_LOAD_IGNORE_TRANSFORM;
+    LOG("In generateFacePathCOLRv1 ");
+    // Unused
+
 
     SkUniqueFTSize unscaledFtSize([face]() -> FT_Size {
         FT_Size size;
@@ -2030,6 +2057,7 @@ bool generateFacePathCOLRv1(FT_Face face, SkGlyphID glyphID, SkPath* path) {
         }
 
         err = FT_Load_Glyph(face, glyphID, flags);
+       LOG("Load Glyph");
         if (err != 0) {
             path->reset();
             return false;
