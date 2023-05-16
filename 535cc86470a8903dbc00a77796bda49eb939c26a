@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4df9984_bb841dc5",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-16T17:49:31Z",
+      "side": 1,
+      "message": "We use IWYU (https://include-what-you-use.org/) and have a CQ check enforcing that its demands are met, so our #includes generally sort themselves out. This CPP does still use `vector`s implicitly in a few places, e.g. a Program contains a vector of elements:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/ir/SkSLProgram.h;l\u003d65;drc\u003dde876b056989c9dbb57c8d41b492b7303a0bf27f",
+      "parentUuid": "dde575d1_55880871",
+      "revId": "535cc86470a8903dbc00a77796bda49eb939c26a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "947256d6_cb888794",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-05-16T17:44:06Z",
       "side": 1,
       "message": "Include stil needed?",
+      "revId": "535cc86470a8903dbc00a77796bda49eb939c26a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee279d59_654e014d",
+        "filename": "src/sksl/dsl/DSLFunction.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-16T17:49:31Z",
+      "side": 1,
+      "message": "Yes, it calls `ThreadContext::ProgramElements().push_back` which is a vector.",
+      "parentUuid": "947256d6_cb888794",
       "revId": "535cc86470a8903dbc00a77796bda49eb939c26a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
