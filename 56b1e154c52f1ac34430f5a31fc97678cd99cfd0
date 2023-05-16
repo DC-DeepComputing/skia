@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71978f4e_35c3ee1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-16T16:58:56Z",
+      "side": 1,
+      "message": "Looks like the errors are with infra not this CL.",
+      "revId": "56b1e154c52f1ac34430f5a31fc97678cd99cfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ee43af_3afb0c1d",
+        "filename": "tools/gpu/gl/egl/CreatePlatformGLTestContext_egl.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-16T16:58:56Z",
+      "side": 1,
+      "message": "Maybe: if (createProtected \u0026\u0026 !strstr(...\n\nThen you wouldn\u0027t output an error on a device that doesn\u0027t support protected_content when you haven\u0027t requested it.",
+      "range": {
+        "startLine": 163,
+        "startChar": 12,
+        "endLine": 163,
+        "endChar": 18
+      },
+      "revId": "56b1e154c52f1ac34430f5a31fc97678cd99cfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
