@@ -55,13 +55,6 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
     fPosition = pos;
 
     const Context& context = ThreadContext::Context();
-    if (context.fConfig->fSettings.fForceNoInline) {
-        // Apply the `noinline` modifier to every function. This allows us to test Runtime
-        // Effects without any inlining, even when the code is later added to a paint.
-        modifiers.fModifiers.fFlags &= ~Modifiers::kInline_Flag;
-        modifiers.fModifiers.fFlags |= Modifiers::kNoInline_Flag;
-    }
-
     std::vector<std::unique_ptr<Variable>> paramVars;
     paramVars.reserve(params.size());
     for (DSLParameter* param : params) {
