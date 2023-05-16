@@ -18,7 +18,6 @@
 #include "src/sksl/dsl/DSLType.h"
 #include "src/sksl/dsl/DSLVar.h"
 #include "src/sksl/ir/SkSLBlock.h"
-#include "src/sksl/ir/SkSLNop.h"
 #include "src/sksl/ir/SkSLProgramElement.h"
 #include "src/sksl/ir/SkSLStatement.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
@@ -32,40 +31,37 @@ namespace SkSL {
 
 namespace dsl {
 
-SkSL::Variable* DSLWriter::Var(DSLVarBase& var) {
-    // fInitialized is true if we have attempted to create a var, whether or not we actually
-    // succeeded. If it's true, we don't want to try again, to avoid reporting the same error
-    // multiple times.
-    if (!var.fInitialized) {
-        // We haven't even attempted to create a var yet, so fVar and fDeclaration ought to be null
-        SkASSERT(!var.fVar);
-        SkASSERT(!var.fDeclaration);
+void DSLWriter::Var(DSLVarBase& var) {
+    SkASSERT(var.fStorage != SkSL::VariableStorage::kParameter);  // use CreateParameterVar instead
 
-        var.fInitialized = true;
-        std::unique_ptr<SkSL::Variable> skslvar = SkSL::Variable::Convert(ThreadContext::Context(),
-                                                                          var.fPosition,
-                                                                          var.fModifiersPos,
-                                                                          var.fModifiers,
-                                                                          &var.fType.skslType(),
-                                                                          var.fNamePosition,
-                                                                          var.fName,
-                                                                          var.fStorage);
-        if (var.fStorage != SkSL::VariableStorage::kParameter) {
-            var.fDeclaration = VarDeclaration::Convert(ThreadContext::Context(),
-                                                       std::move(skslvar),
-                                                       var.fInitialValue.releaseIfPossible());
-            if (var.fDeclaration) {
-                var.fVar = var.fDeclaration->as<VarDeclaration>().var();
-            }
-        }
+    // We haven't even attempted to create a var yet; fVar and fDeclaration ought to be null.
+    SkASSERT(!var.fVar);
+    SkASSERT(!var.fDeclaration);
+
+    const Context& context = ThreadContext::Context();
+
+    std::unique_ptr<SkSL::Variable> skslvar = SkSL::Variable::Convert(context,
+                                                                      var.fPosition,
+                                                                      var.fModifiersPos,
+                                                                      var.fModifiers,
+                                                                      &var.fType.skslType(),
+                                                                      var.fNamePosition,
+                                                                      var.fName,
+                                                                      var.fStorage);
+
+    var.fDeclaration = VarDeclaration::Convert(context,
+                                               std::move(skslvar),
+                                               var.fInitialValue.releaseIfPossible());
+    if (var.fDeclaration) {
+        var.fVar = var.fDeclaration->as<VarDeclaration>().var();
     }
-    return var.fVar;
 }
 
 std::unique_ptr<SkSL::Variable> DSLWriter::CreateParameterVar(DSLParameter& var) {
-    // This should only be called on undeclared parameter variables, but we allow the creation to go
-    // ahead regardless so we don't have to worry about null pointers potentially sneaking in and
-    // breaking things. DSLFunction is responsible for reporting errors for invalid parameters.
+    SkASSERT(!var.fVar);
+    SkASSERT(!var.fDeclaration);
+    SkASSERT(!var.fInitialValue.hasValue());
+
     return SkSL::Variable::Convert(ThreadContext::Context(),
                                    var.fPosition,
                                    var.fModifiersPos,
@@ -76,34 +72,42 @@ std::unique_ptr<SkSL::Variable> DSLWriter::CreateParameterVar(DSLParameter& var)
                                    var.fStorage);
 }
 
-std::unique_ptr<SkSL::Statement> DSLWriter::Declaration(DSLVarBase& var) {
-    Var(var);
-    if (!var.fDeclaration) {
-        // We should have already reported an error before ending up here, just clean up the
-        // initial value so it doesn't assert and return a nop.
-        var.fInitialValue.releaseIfPossible();
-        return SkSL::Nop::Make();
-    }
-    return std::move(var.fDeclaration);
-}
-
 void DSLWriter::AddVarDeclaration(DSLStatement& existing, DSLVar& additional) {
-    if (existing.fStatement->is<Block>()) {
-        SkSL::Block& block = existing.fStatement->as<Block>();
-        SkASSERT(!block.isScope());
-        block.children().push_back(Declaration(additional));
-    } else if (existing.fStatement->is<VarDeclaration>()) {
-        Position pos = existing.fStatement->fPosition;
-        StatementArray stmts;
-        stmts.reserve_back(2);
-        stmts.push_back(std::move(existing.fStatement));
-        stmts.push_back(Declaration(additional));
-        existing.fStatement = SkSL::Block::Make(pos, std::move(stmts),
-                                                Block::Kind::kCompoundStatement);
-    } else if (existing.fStatement->isEmpty()) {
-        // If the variable declaration generated an error, we can end up with a Nop statement here.
-        existing.fStatement = Declaration(additional);
+    Var(additional);
+    if (!additional.fDeclaration) {
+        // The additional variable couldn't be declared; nothing needs to change.
+        return;
     }
+
+    std::unique_ptr<Statement> stmt = existing.releaseIfPossible();
+    if (!stmt || stmt->isEmpty()) {
+        // If the variable declaration generated an error, we can end up with a Nop statement here.
+        // Jettison the existing statement, and keep the new declaration.
+        existing = DSLStatement(std::move(additional.fDeclaration));
+        return;
+    }
+
+    if (stmt->is<Block>()) {
+        SkSL::Block& block = stmt->as<Block>();
+        if (!block.isScope()) {
+            // The existing statement is a Block without curly braces; append the additional
+            // declaration to the end.
+            block.children().push_back(std::move(additional.fDeclaration));
+            existing = DSLStatement(std::move(stmt));
+            return;
+        }
+    }
+
+    // The statement was not a Block; create a compound-statement block to hold the existing
+    // statement alongside the additional one.
+    Position pos = stmt->fPosition;
+    StatementArray stmts;
+    stmts.reserve_back(2);
+    stmts.push_back(std::move(stmt));
+    stmts.push_back(std::move(additional.fDeclaration));
+    existing = DSLStatement(
+            SkSL::Block::Make(pos, std::move(stmts), Block::Kind::kCompoundStatement),
+            pos);
 }
 
 void DSLWriter::Reset() {

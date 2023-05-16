@@ -94,10 +94,10 @@ public:
     }
 
     static void Declare(DSLGlobalVar& var, Position pos) {
-        std::unique_ptr<SkSL::Statement> stmt = DSLWriter::Declaration(var);
-        if (stmt && !stmt->isEmpty()) {
+        DSLWriter::Var(var);
+        if (var.fDeclaration && !var.fDeclaration->isEmpty()) {
             ThreadContext::ProgramElements().push_back(
-                    std::make_unique<SkSL::GlobalVarDeclaration>(std::move(stmt)));
+                    std::make_unique<SkSL::GlobalVarDeclaration>(std::move(var.fDeclaration)));
         }
     }
 };
