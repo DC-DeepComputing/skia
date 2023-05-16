@@ -32,6 +32,7 @@ struct SkScalerContextRec;
    behind the NTDDI_VERSION are forward (backward?) declared here in case dwrite_3.h did not declare
    them. */
 interface IDWriteFontFace4;
+interface IDWriteFontFace7;
 
 static SkFontStyle get_style(IDWriteFont* font) {
     int weight = font->GetWeight();
@@ -90,6 +91,7 @@ public:
     SkTScopedComPtr<IDWriteFontFace1> fDWriteFontFace1;
     SkTScopedComPtr<IDWriteFontFace2> fDWriteFontFace2;
     SkTScopedComPtr<IDWriteFontFace4> fDWriteFontFace4;
+    SkTScopedComPtr<IDWriteFontFace7> fDWriteFontFace7;
     bool fIsColorFont;
 
     std::unique_ptr<SkFontArguments::Palette::Override> fRequestedPaletteEntryOverrides;
@@ -97,6 +99,7 @@ public:
 
     size_t fPaletteEntryCount;
     std::unique_ptr<SkColor[]> fPalette;
+    std::unique_ptr<DWRITE_COLOR_F[]> fDWPalette;
 
     static sk_sp<DWriteFontTypeface> Make(
         IDWriteFactory* factory,
