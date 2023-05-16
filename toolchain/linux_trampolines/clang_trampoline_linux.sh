@@ -90,6 +90,7 @@ supported_files_or_dirs=(
   "src/core/SkScalar.cpp"
   "src/core/SkStream.cpp"
   "src/core/SkString.cpp"
+  "src/core/SkStrike"
   "src/core/SkWriteBuffer.cpp"
   "src/core/SkWritePixelsRec.cpp"
   "src/core/SkYUVAInfo.cpp"

@@ -27,6 +27,7 @@
 #include "src/text/StrikeForGPU.h"
 #include "src/text/gpu/Glyph.h"
 #include "src/text/gpu/GlyphVector.h"
+#include "src/text/gpu/SDFTControl.h"
 #include "src/text/gpu/SubRunAllocator.h"
 
 #if defined(SK_GANESH)  // Ganesh Support
