@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0c63056_50c595d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-05-16T13:35:58Z",
+      "side": 1,
+      "message": "I uploaded a new patchset. It only doesn\u0027t inline method for dawn, since chrome doesn\u0027t compile other backends. not inline for other backends, will cause link error too.",
+      "revId": "900c28040022dadbb4813dde1d0056514d876e97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
