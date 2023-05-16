@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf826ca2_044d2bc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-16T13:29:14Z",
+      "side": 1,
+      "message": "Ripped out the CRC-based CityHash128 as well (Chromium did the same thing in their copy).",
+      "revId": "0fed9dd8b1a6a8477e81792fa13841fd093ec06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
