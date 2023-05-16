@@ -16,6 +16,24 @@
       "message": "nit: `sk_sp\u003cskottie::PropertyObserver\u003e \u003d nullptr`, to document that it\u0027s optional",
       "revId": "c2a93842220018c66097577e4add3f4385a6b42a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f1e3787_734263b3",
+        "filename": "modules/skottie/utils/SkottieUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-16T17:04:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af5ee6ee_4750c4d9",
+      "revId": "c2a93842220018c66097577e4add3f4385a6b42a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
