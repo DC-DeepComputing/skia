@@ -82,12 +82,6 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
                                                std::move(paramVars),
                                                pos,
                                                &returnType.skslType());
-    if (fDecl) {
-        for (size_t i = 0; i < params.size(); ++i) {
-            params[i]->fVar = fDecl->parameters()[i];
-            params[i]->fInitialized = true;
-        }
-    }
 }
 
 void DSLFunction::prototype() {
@@ -139,6 +133,12 @@ DSLExpression DSLFunction::call(ExpressionArray args, Position pos) {
     std::unique_ptr<SkSL::Expression> result =
             SkSL::FunctionCall::Convert(ThreadContext::Context(), pos, *fDecl, std::move(args));
     return DSLExpression(std::move(result), pos);
+}
+
+void DSLFunction::addParametersToSymbolTable(const Context& context) {
+    if (fDecl) {
+        fDecl->addParametersToSymbolTable(context);
+    }
 }
 
 }  // namespace SkSL::dsl

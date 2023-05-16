@@ -40,6 +40,8 @@ public:
 
     void prototype();
 
+    void addParametersToSymbolTable(const Context& context);
+
     /**
      * Invokes the function with the given arguments.
      */
