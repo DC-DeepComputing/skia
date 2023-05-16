@@ -16,6 +16,29 @@
       "message": "This addresses the transparency issues, thank you for catching that.",
       "revId": "476f2f05d88cdc5c3851b4ffee6e4194238ce3e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27cabb8e_af379a21",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-16T16:36:27Z",
+      "side": 1,
+      "message": "Can we do something like:\n\n   for ( ; textureIndex \u003c 4; ++textureIndex) {\n      imgData.fTextureProxies[textureIndex[ \u003d ...\n      \n?",
+      "range": {
+        "startLine": 511,
+        "startChar": 0,
+        "endLine": 513,
+        "endChar": 44
+      },
+      "revId": "476f2f05d88cdc5c3851b4ffee6e4194238ce3e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
