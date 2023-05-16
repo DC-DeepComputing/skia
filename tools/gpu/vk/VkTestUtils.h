@@ -52,4 +52,3 @@ namespace sk_gpu_test {
 
 #endif
 #endif
-
