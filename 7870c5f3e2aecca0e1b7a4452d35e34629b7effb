@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d6b383d_4b22c14b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-16T17:13:54Z",
+      "side": 1,
+      "message": "Hmm, it seems our favorite perlin noise shader is causing some issues with this CL when used in `feTurbulence` in chrome",
+      "revId": "7870c5f3e2aecca0e1b7a4452d35e34629b7effb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9ef7b76_02b09362",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-05-16T15:56:47Z",
       "side": 1,
       "message": "Maybe /* bounds */ ?",
+      "range": {
+        "startLine": 36,
+        "startChar": 43,
+        "endLine": 36,
+        "endChar": 49
+      },
+      "revId": "7870c5f3e2aecca0e1b7a4452d35e34629b7effb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51e554df_74f1a73b",
+        "filename": "src/effects/imagefilters/SkShaderImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-16T17:13:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9ef7b76_02b09362",
       "range": {
         "startLine": 36,
         "startChar": 43,
@@ -47,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34f08cfc_bf28823c",
+        "filename": "src/effects/imagefilters/SkShaderImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-16T17:13:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f79c9dfc_a7f3626d",
+      "range": {
+        "startLine": 51,
+        "startChar": 58,
+        "endLine": 51,
+        "endChar": 61
+      },
+      "revId": "7870c5f3e2aecca0e1b7a4452d35e34629b7effb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf748715_a48ba441",
@@ -60,6 +125,30 @@
       "writtenOn": "2023-05-16T15:56:47Z",
       "side": 1,
       "message": "the usual here and below",
+      "range": {
+        "startLine": 55,
+        "startChar": 39,
+        "endLine": 56,
+        "endChar": 45
+      },
+      "revId": "7870c5f3e2aecca0e1b7a4452d35e34629b7effb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bc63566_ca59efcc",
+        "filename": "src/effects/imagefilters/SkShaderImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-16T17:13:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf748715_a48ba441",
       "range": {
         "startLine": 55,
         "startChar": 39,
