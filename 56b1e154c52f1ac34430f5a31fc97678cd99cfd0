@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c708bd2_e7dd3719",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-16T17:53:23Z",
+      "side": 1,
+      "message": "Right - afaict the bot failures are unrelated to this CL.",
+      "parentUuid": "71978f4e_35c3ee1e",
+      "revId": "56b1e154c52f1ac34430f5a31fc97678cd99cfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46ee43af_3afb0c1d",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-05-16T16:58:56Z",
       "side": 1,
       "message": "Maybe: if (createProtected \u0026\u0026 !strstr(...\n\nThen you wouldn\u0027t output an error on a device that doesn\u0027t support protected_content when you haven\u0027t requested it.",
+      "range": {
+        "startLine": 163,
+        "startChar": 12,
+        "endLine": 163,
+        "endChar": 18
+      },
+      "revId": "56b1e154c52f1ac34430f5a31fc97678cd99cfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ec054df_1c9df194",
+        "filename": "tools/gpu/gl/egl/CreatePlatformGLTestContext_egl.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-16T17:53:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46ee43af_3afb0c1d",
       "range": {
         "startLine": 163,
         "startChar": 12,
