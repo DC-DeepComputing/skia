@@ -15,6 +15,7 @@
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkLocalMatrixImageFilter.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkRectPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkSpecialSurface.h"
 #include "src/core/SkValidationUtils.h"
@@ -563,7 +564,17 @@ skif::LayerSpace<SkIRect> SkImageFilter_Base::onGetInputLayerBounds(
 
 skif::LayerSpace<SkIRect> SkImageFilter_Base::onGetOutputLayerBounds(
         const skif::Mapping& mapping, const skif::LayerSpace<SkIRect>& contentBounds) const {
-    // Call old functions for now; eventually this will be a pure virtual
+    // Call old functions for now; eventually this will be a pure virtual. The old functions for
+    // filters that affected transparent black were often not overridden, in which case they would
+    // just return 'contentBounds' instead of being infinite. New filters assume that unbounded
+    // filters also report infinite bounds.
+    if (this->onAffectsTransparentBlack()) {
+        if (this->cropRectIsSet()) {
+            return mapping.paramToLayer(skif::ParameterSpace<SkRect>(fCropRect.rect())).roundOut();
+        } else {
+            return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
+        }
+    }
     SkIRect aggregate = this->onFilterBounds(SkIRect(contentBounds), mapping.layerMatrix(),
                                              kForward_MapDirection, nullptr);
     SkIRect output = this->onFilterNodeBounds(aggregate, mapping.layerMatrix(),
