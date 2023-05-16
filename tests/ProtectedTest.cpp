@@ -86,11 +86,13 @@ sk_sp<SkSurface> create_protected_sksurface(GrDirectContext* dContext,
         GrBackendTexture backendTex = SkSurfaces::GetBackendTexture(
                 surface.get(), SkSurfaces::BackendHandleAccess::kFlushRead);
         REPORTER_ASSERT(reporter, backendTex.isValid());
+        SkDebugf("S: %d %d\n", backendTex.isProtected(), isProtected);
         REPORTER_ASSERT(reporter, backendTex.isProtected() == isProtected);
     } else {
         GrBackendRenderTarget backendRT = SkSurfaces::GetBackendRenderTarget(
                 surface.get(), SkSurfaces::BackendHandleAccess::kFlushRead);
         REPORTER_ASSERT(reporter, backendRT.isValid());
+        SkDebugf("RT: %d %d\n", backendRT.isProtected(), isProtected);
         REPORTER_ASSERT(reporter, backendRT.isProtected() == isProtected);
     }
 
@@ -112,6 +114,7 @@ void check_image_be_protection(SkImage* image,
     }
 
     REPORTER_ASSERT(reporter, beTex.isValid());
+    SkDebugf("S: %d %d\n", beTex.isProtected(), expectingProtected);
     REPORTER_ASSERT(reporter, beTex.isProtected() == expectingProtected);
 }
 
@@ -148,15 +151,27 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
 
     if (!context_supports_protected(dContext)) {
         // Protected content not supported
+        SkDebugf("Protected content not supported by %s\n", GrBackendApiToStr(dContext->backend()));
         return;
     }
 
+    SkDebugf("Protected content _IS_ supported by %s\n", GrBackendApiToStr(dContext->backend()));
+
+    SkDebugf("Surfaces\n");
     for (bool textureable : { true, false }) {
         for (bool isProtected : { true, false }) {
             sk_sp<SkSurface> surface = create_protected_sksurface(dContext, reporter, textureable,
                                                                   isProtected);
+            if (!surface) {
+                continue;
+            }
 
             sk_sp<SkImage> image = surface->makeImageSnapshot();
+            if (!image) {
+                ERRORF(reporter, "Could not makeImageSnapshot from a %s surface.",
+                       isProtected ? "protected" : "unprotected");
+                continue;
+            }
 
             dContext->submit(/* syncCpu= */ true);
 
@@ -164,10 +179,12 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
         }
     }
 
+    SkDebugf("Images\n");
     for (bool isProtected : { true, false }) {
         create_protected_skimage(dContext, reporter, isProtected);
     }
 
+    SkDebugf("BackendTextures\n");
     for (bool renderable : { true, false }) {
         for (bool isProtected : { true, false }) {
             GrBackendTexture beTex = dContext->createBackendTexture(16,
@@ -179,6 +196,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
                                                                     GrProtected(isProtected));
 
             REPORTER_ASSERT(reporter, beTex.isValid());
+            SkDebugf("S: %d %d\n", beTex.isProtected(), isProtected);
             REPORTER_ASSERT(reporter, beTex.isProtected() == isProtected);
         }
     }

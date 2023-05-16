@@ -1659,7 +1659,8 @@ bool GrVkGpu::createVkImageForBackendSurface(VkFormat vkFormat,
                                              GrProtected isProtected) {
     SkASSERT(texturable == GrTexturable::kYes || renderable == GrRenderable::kYes);
 
-    if (fProtectedContext != isProtected) {
+    if (isProtected == skgpu::Protected::kYes && fProtectedContext == skgpu::Protected::kNo) {
+        SkDebugf("here a\n");
         return false;
     }
 
@@ -1706,7 +1707,7 @@ bool GrVkGpu::createVkImageForBackendSurface(VkFormat vkFormat,
     imageDesc.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     imageDesc.fUsageFlags = usageFlags;
     imageDesc.fMemProps = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-    imageDesc.fIsProtected = fProtectedContext;
+    imageDesc.fIsProtected = isProtected;
 
     if (!GrVkImage::InitImageInfo(this, imageDesc, info)) {
         SkDebugf("Failed to init image info\n");
@@ -1782,30 +1783,36 @@ GrBackendTexture GrVkGpu::onCreateBackendTexture(SkISize dimensions,
                                                  std::string_view label) {
     const GrVkCaps& caps = this->vkCaps();
 
-    if (fProtectedContext != isProtected) {
+    if (isProtected == skgpu::Protected::kYes && fProtectedContext == skgpu::Protected::kNo) {
+        SkDebugf("1\n");
         return {};
     }
 
     VkFormat vkFormat;
     if (!format.asVkFormat(&vkFormat)) {
+        SkDebugf("2\n");
         return {};
     }
 
     // TODO: move the texturability check up to GrGpu::createBackendTexture and just assert here
     if (!caps.isVkFormatTexturable(vkFormat)) {
+        SkDebugf("3\n");
         return {};
     }
 
     if (skgpu::VkFormatNeedsYcbcrSampler(vkFormat)) {
+        SkDebugf("4\n");
         return {};
     }
 
     GrVkImageInfo info;
     if (!this->createVkImageForBackendSurface(vkFormat, dimensions, 1, GrTexturable::kYes,
                                               renderable, mipmapped, &info, isProtected)) {
+        SkDebugf("5\n");
         return {};
     }
 
+    SkDebugf("6\n");
     return GrBackendTexture(dimensions.width(), dimensions.height(), info);
 }
 
