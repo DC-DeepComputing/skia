@@ -14,6 +14,7 @@
 
 #include <cmath>
 
+#if 0
 static void fuzz_quad_real_roots(double A, double B, double C) {
     double roots[2];
     const int numSolutions = SkQuads::RootsReal(A, B, C, roots);
@@ -32,7 +33,49 @@ static void fuzz_quad_real_roots(double A, double B, double C) {
         SkASSERT_RELEASE(!sk_doubles_nearly_equal_ulps(roots[0], roots[1]));
     }
 }
+#else
 
+// Return the relative error of actual and approximation as a factor of machine error.
+static double relative_error(double actual, double approximation) {
+    constexpr double kMachineError = std::numeric_limits<double>::epsilon();
+
+    double normalizationFactor = std::max(actual, std::numeric_limits<double>::min());
+    return abs(approximation - actual) / abs(normalizationFactor) / kMachineError;
+}
+
+static void fuzz_quad_real_roots(double root0, double root1, double scale) {
+    // Produce the quadratic equation for scale * (x - root0) * (x - root1) == 0
+    // (x - r0)(x-r1) = x*x - r0*x - r1*x + r1 * r2
+    double A = scale;
+    double B = scale * (-root0 - root1);
+    double C = scale * root0 * root1;
+
+    // Underflow in the calculation
+    if (C == 0.0 && (root0 != 0.0 && root1 != 0.0)) {
+        return;
+    }
+
+    double roots[2];
+    const int numSolutions = SkQuads::RootsReal(A, B, C, roots);
+
+    if (scale == 0.0) {
+        SkASSERT_RELEASE(numSolutions == 1);
+    } else if (root0 == root1 || scale * root0 * root1 == 0.0) {
+        SkASSERT_RELEASE(numSolutions == 1);
+
+        // Check relative error
+        SkASSERT_RELEASE(relative_error(root0, roots[0]) <= 2.0);
+    } else {
+        SkASSERT_RELEASE(numSolutions == 2);
+
+        auto [answerLow, answerHi] = std::minmax(root0, root1);
+        auto [resultLow, resultHi] = std::minmax(roots[0], roots[1]);
+
+        SkASSERT_RELEASE(relative_error(answerLow, resultLow) <= 2.0);
+        SkASSERT_RELEASE(relative_error(answerHi, resultHi) <= 2.0);
+    }
+}
+#endif
 static void fuzz_cubic_real_roots(double A, double B, double C, double D) {
     double roots[3];
     const int numSolutions = SkCubics::RootsReal(A, B, C, D, roots);
@@ -91,7 +134,31 @@ static void fuzz_cubic_roots_binary_search(double A, double B, double C, double 
     }
 }
 
+DEF_FUZZ(QuadRoots, fuzz) {
+    double root0, root1, scale;
+    fuzz->next(&root0);
+    fuzz->next(&root1);
+    fuzz->next(&scale);
+
+    // Only allow finite parameters.
+    if (0.0 * root0 * root1 * scale != 0) {
+        return;
+    }
+
+    fuzz_quad_real_roots(root0, root1, scale);
+}
+
 DEF_FUZZ(CubicQuadRoots, fuzz) {
+    double root0, root1, scale;
+    fuzz->next(&root0);
+    fuzz->next(&root1);
+    fuzz->next(&scale);
+
+    // Only allow finite parameters.
+    if (0.0 * root0 * root1 * scale == 0.0) {
+        fuzz_quad_real_roots(root0, root1, scale);
+    }
+
     double A, B, C, D;
     fuzz->next(&A);
     fuzz->next(&B);
@@ -103,7 +170,7 @@ DEF_FUZZ(CubicQuadRoots, fuzz) {
 //             A, sk_bit_cast<uint64_t>(A), B, sk_bit_cast<uint64_t>(B),
 //             C, sk_bit_cast<uint64_t>(C), D, sk_bit_cast<uint64_t>(D));
 
-    fuzz_quad_real_roots(A, B, C);
+    // fuzz_quad_real_roots(A, B, C);
 
     fuzz_cubic_real_roots(A, B, C, D);
 
