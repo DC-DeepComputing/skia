@@ -1174,7 +1174,7 @@ struct Task {
             gDefinitelyThreadSafeWork->add([task,name,bitmap,data]{
                 std::unique_ptr<SkStreamAsset> ownedData(data);
 
-                std::unique_ptr<HashAndEncode> hashAndEncode;
+//                std::unique_ptr<HashAndEncode> hashAndEncode;
 
                 SkString md5;
                 if (!FLAGS_writePath.isEmpty() || !FLAGS_readPath.isEmpty()) {
@@ -1183,8 +1183,8 @@ struct Task {
                         hash.writeStream(data, data->getLength());
                         data->rewind();
                     } else {
-                        hashAndEncode = std::make_unique<HashAndEncode>(bitmap);
-                        hashAndEncode->feedHash(&hash);
+  //                      hashAndEncode = std::make_unique<HashAndEncode>(bitmap);
+//                        hashAndEncode->feedHash(&hash);
                     }
                     SkMD5::Digest digest = hash.finish();
                     for (int i = 0; i < 16; i++) {
@@ -1250,7 +1250,7 @@ struct Task {
                         WriteToDisk(task, md5, ext, data, data->getLength(), nullptr, nullptr);
                         SkASSERT(bitmap.drawsNothing());
                     } else if (!bitmap.drawsNothing()) {
-                        WriteToDisk(task, md5, ext, nullptr, 0, &bitmap, hashAndEncode.get());
+                        WriteToDisk(task, md5, ext, nullptr, 0, &bitmap, nullptr); //hashAndEncode.get());
                     }
                 }
 
@@ -1424,13 +1424,13 @@ struct Task {
         }
         if (bitmap) {
             SkASSERT(hashAndEncode);
-            if (!hashAndEncode->encodePNG(&file,
-                                          result.md5.c_str(),
-                                          FLAGS_key,
-                                          FLAGS_properties)) {
-                fail(SkStringPrintf("Can't encode PNG to %s.\n", path.c_str()));
-                return;
-            }
+//            if (!hashAndEncode->encodePNG(&file,
+//                                          result.md5.c_str(),
+//                                          FLAGS_key,
+//                                          FLAGS_properties)) {
+//                fail(SkStringPrintf("Can't encode PNG to %s.\n", path.c_str()));
+//                return;
+//            }
         } else {
             if (!file.writeStream(data, len)) {
                 fail(SkStringPrintf("Can't write to %s.\n", path.c_str()));

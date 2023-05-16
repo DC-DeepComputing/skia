@@ -44,7 +44,9 @@ protected:
             , fFeatures(features)
             , fOwnsContext(ownsContext)
             , fDebugCallback(debugCallback)
-            , fDestroyDebugReportCallbackEXT(destroyCallback) {}
+            , fDestroyDebugReportCallbackEXT(destroyCallback) {
+        SkDebugf("here\n");
+    }
 
     GrVkBackendContext                  fVk;
     const skgpu::VulkanExtensions*      fExtensions;
