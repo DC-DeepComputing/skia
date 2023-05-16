@@ -61,5 +61,5 @@ void DSLExpression::setPosition(Position pos) {
     fExpression->fPosition = pos;
 }
 
-} // namespace dsl
-} // namespace SkSL
+}  // namespace dsl
+}  // namespace SkSL

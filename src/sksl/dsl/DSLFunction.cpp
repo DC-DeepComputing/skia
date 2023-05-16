@@ -18,7 +18,6 @@
 #include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/dsl/DSLModifiers.h"
 #include "src/sksl/dsl/DSLType.h"
-#include "src/sksl/dsl/DSLVar.h"
 #include "src/sksl/dsl/priv/DSLWriter.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLExpression.h"
@@ -58,8 +57,6 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
     TArray<std::unique_ptr<Variable>> paramVars;
     paramVars.reserve(params.size());
     for (DSLParameter* param : params) {
-        SkASSERT(!param->fInitialValue.hasValue());
-        SkASSERT(!param->fDeclaration);
         std::unique_ptr<SkSL::Variable> paramVar = DSLWriter::CreateParameterVar(*param);
         if (!paramVar) {
             return;
