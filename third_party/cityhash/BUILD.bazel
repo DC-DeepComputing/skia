@@ -1,0 +1,24 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+skia_cc_library(
+    name = "cityhash",
+    srcs = [
+        "city.cc",
+    ],
+    copts = [
+        # Suppress some warnings in this (third party) code
+        #
+        "-Wno-shadow",
+    ],
+    includes = [
+        ".",
+    ],
+    textual_hdrs = [
+        "city.h",
+    ],
+    visibility = ["//:__subpackages__"],
+)

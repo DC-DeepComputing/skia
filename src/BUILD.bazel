@@ -129,6 +129,7 @@ skia_cc_deps(
     deps = [
         "//modules/skcms",
         "//src/codec:deps",
+        "//src/core:deps",
         "//src/encode:deps",
         "//src/opts:deps",
         "//src/ports:deps",

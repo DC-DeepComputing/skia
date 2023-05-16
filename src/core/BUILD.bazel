@@ -1,4 +1,10 @@
-load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_filegroup", "split_srcs_and_hdrs")
+load(
+    "//bazel:skia_rules.bzl",
+    "exports_files_legacy",
+    "skia_cc_deps",
+    "skia_filegroup",
+    "split_srcs_and_hdrs"
+)
 
 licenses(["notice"])
 
@@ -493,4 +499,10 @@ skia_filegroup(
         "SkStringUtils.cpp",
     ],
     visibility = ["//src:__pkg__"],
+)
+
+skia_cc_deps(
+    name = "deps",
+    visibility = ["//src:__pkg__"],
+    deps = ["//third_party/cityhash"],
 )

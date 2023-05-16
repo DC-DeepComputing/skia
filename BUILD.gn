@@ -708,7 +708,10 @@ if (skia_compile_modules) {
     sources += skia_sksl_sources
     sources += skia_sksl_gpu_sources
     include_dirs = [ "." ]
-    deps = [ ":run_sksllex" ]
+    deps = [
+      ":run_sksllex",
+      "//third_party/cityhash",
+    ]
   }
 
   sksl_minify_path = "$root_out_dir/"
@@ -842,6 +845,7 @@ if (skia_compile_sksl_tests) {
     deps = [
       ":run_sksllex",
       ":skvm_jit",
+      "//third_party/cityhash",
       "//third_party/externals/dawn/src/tint:libtint",
       "//third_party/externals/spirv-tools:spvtools",
       "//third_party/externals/spirv-tools:spvtools_val",

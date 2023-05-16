@@ -17,13 +17,13 @@
 #include "src/base/SkUtils.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/core/SkChecksum.h"
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkFilterColorProgram.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMatrixProvider.h"
-#include "src/core/SkOpts.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -729,8 +729,8 @@ sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
         }
 
         explicit Key(const SkString& sksl)
-            : skslHashA(SkOpts::hash(sksl.c_str(), sksl.size(), 0))
-            , skslHashB(SkOpts::hash(sksl.c_str(), sksl.size(), 1)) {}
+            : skslHashA(SkChecksum::Hash(sksl.c_str(), sksl.size(), 0))
+            , skslHashB(SkChecksum::Hash(sksl.c_str(), sksl.size(), 1)) {}
     };
     SK_END_REQUIRE_DENSE
 
@@ -793,7 +793,7 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
                                  std::vector<Child>&& children,
                                  std::vector<SkSL::SampleUsage>&& sampleUsages,
                                  uint32_t flags)
-        : fHash(SkOpts::hash_fn(baseProgram->fSource->c_str(), baseProgram->fSource->size(), 0))
+        : fHash(SkChecksum::Hash(baseProgram->fSource->c_str(), baseProgram->fSource->size()))
         , fBaseProgram(std::move(baseProgram))
         , fMain(main)
         , fUniforms(std::move(uniforms))
@@ -812,12 +812,12 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
         SkSL::Version maxVersionAllowed;
     };
     static_assert(sizeof(Options) == sizeof(KnownOptions));
-    fHash = SkOpts::hash_fn(&options.forceUnoptimized,
-                      sizeof(options.forceUnoptimized), fHash);
-    fHash = SkOpts::hash_fn(&options.allowPrivateAccess,
-                      sizeof(options.allowPrivateAccess), fHash);
-    fHash = SkOpts::hash_fn(&options.maxVersionAllowed,
-                      sizeof(options.maxVersionAllowed), fHash);
+    fHash = SkChecksum::Hash(&options.forceUnoptimized,
+                             sizeof(options.forceUnoptimized), fHash);
+    fHash = SkChecksum::Hash(&options.allowPrivateAccess,
+                             sizeof(options.allowPrivateAccess), fHash);
+    fHash = SkChecksum::Hash(&options.maxVersionAllowed,
+                             sizeof(options.maxVersionAllowed), fHash);
 
     fFilterColorProgram = SkFilterColorProgram::Make(this);
 }

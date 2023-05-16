@@ -543,8 +543,8 @@ namespace skvm {
     }
 
     uint64_t Builder::hash() const {
-        uint32_t lo = SkOpts::hash(fProgram.data(), fProgram.size() * sizeof(Instruction), 0),
-                 hi = SkOpts::hash(fProgram.data(), fProgram.size() * sizeof(Instruction), 1);
+        uint32_t lo = SkChecksum::Hash(fProgram.data(), fProgram.size() * sizeof(Instruction), 0),
+                 hi = SkChecksum::Hash(fProgram.data(), fProgram.size() * sizeof(Instruction), 1);
         return (uint64_t)lo | (uint64_t)hi << 32;
     }
 
@@ -562,7 +562,7 @@ namespace skvm {
     }
 
     uint32_t InstructionHash::operator()(const Instruction& inst, uint32_t seed) const {
-        return SkOpts::hash(&inst, sizeof(inst), seed);
+        return SkChecksum::Hash(&inst, sizeof(inst), seed);
     }
 
 
