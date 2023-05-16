@@ -7,6 +7,7 @@
 
 #include "include/gpu/graphite/Recording.h"
 
+#include "include/private/SkChecksum.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
@@ -19,6 +20,7 @@
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
+#include <iterator>
 #include <unordered_set>
 
 using namespace skia_private;
@@ -46,6 +48,10 @@ bool Recording::isTargetProxyInstantiated() const {
     return fTargetProxyData->lazyProxy()->isInstantiated();
 }
 #endif
+
+std::size_t Recording::ProxyHash::operator()(const sk_sp<TextureProxy> &proxy) const {
+    return SkGoodHash()(proxy.get());
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 bool RecordingPriv::hasNonVolatileLazyProxies() const {
