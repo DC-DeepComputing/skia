@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df16dad8_03e4a5ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-05-16T16:52:00Z",
+      "side": 1,
+      "message": "Cary, here is the algorithm I came up with for doing ulps comparison which handles all the edge cases, and handles subnormalized numbers properly. What do you think?",
+      "revId": "e1d368cec3b3ac572de7210b84c8a39cd1d6aea2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
