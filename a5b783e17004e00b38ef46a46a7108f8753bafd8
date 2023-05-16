@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c52dff98_2c667e73",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-16T14:57:02Z",
+      "side": 1,
+      "message": "I\u0027ll be investigating a better way to pack this.",
+      "range": {
+        "startLine": 813,
+        "startChar": 8,
+        "endLine": 814,
+        "endChar": 55
+      },
+      "revId": "a5b783e17004e00b38ef46a46a7108f8753bafd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
