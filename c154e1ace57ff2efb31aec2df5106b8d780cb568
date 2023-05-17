@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1518870_d35c16fa",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-17T20:39:51Z",
+      "side": 1,
+      "message": "How about: `if (SkRect::Make(srcSubset) \u003d\u003d srcRect) {` ?",
+      "range": {
+        "startLine": 784,
+        "startChar": 0,
+        "endLine": 785,
+        "endChar": 85
+      },
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
