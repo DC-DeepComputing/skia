@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "184a81d0_c66d797b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-17T17:56:46Z",
+      "side": 1,
+      "message": "D3D will use toHLSL() or to maybe toDXIL().",
+      "range": {
+        "startLine": 13,
+        "startChar": 80,
+        "endLine": 13,
+        "endChar": 83
+      },
+      "revId": "7b477b6fc7f3019020fcf6b6a3c5137281ac338a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c37bc239_c1554e9b",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 10
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-17T17:56:46Z",
+      "side": 1,
+      "message": "This is in src/gpu/* so you don\u0027t need to add the Priv suffix on this unless there\u0027s another .h that\u0027s public with a similar name. In any case, the Sk prefix is a little confusing in this directory. How about changing this to PipelineUtils.{cpp,h} so we can put other shared pipeline-related things in there if needed?",
+      "range": {
+        "startLine": 131,
+        "startChar": 3,
+        "endLine": 131,
+        "endChar": 32
+      },
+      "revId": "7b477b6fc7f3019020fcf6b6a3c5137281ac338a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c668b9e_4220c0ff",
+        "filename": "src/gpu/graphite/SkSLSPIRVUtilsPriv.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-17T17:56:46Z",
+      "side": 1,
+      "message": "I\u0027m not thrilled about compiling this for other backends but I\u0027m not sure how to handle it other than going through a lot of GN/Bazel rigmarole for a shared Dawn/Vulkan group. Doesn\u0027t seem worth it for one small routine.",
+      "revId": "7b477b6fc7f3019020fcf6b6a3c5137281ac338a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
