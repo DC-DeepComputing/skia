@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "744808e5_f634b012",
+        "filename": "tests/android.bzl",
+        "patchSetId": 16
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-17T14:02:31Z",
+      "side": 1,
+      "message": "This is why I want to leave Python on the table as an option for this script.",
+      "parentUuid": "caee82a2_687d3b05",
+      "range": {
+        "startLine": 356,
+        "startChar": 6,
+        "endLine": 356,
+        "endChar": 10
+      },
+      "revId": "844fdac97d6aee52c50ad5c639dcf3b7500ef2d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f317f158_a1fb8189",
