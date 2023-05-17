@@ -39,6 +39,30 @@
       },
       "revId": "ea5e30d61fd7cf0c44299dfea725c14d48fad456",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1ec44e5_a502e6e0",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteUtils.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-17T17:04:41Z",
+      "side": 1,
+      "message": "I was a little wary about this, so I looked into where these checks were first added and found https://crbug.com/skia/11918 -- if we unexpectedly ran into a need to set the version option then, I figure we might again, so maybe we may as well keep this for now.",
+      "parentUuid": "e823c928_2a3cf3e2",
+      "range": {
+        "startLine": 74,
+        "startChar": 8,
+        "endLine": 74,
+        "endChar": 55
+      },
+      "revId": "ea5e30d61fd7cf0c44299dfea725c14d48fad456",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
