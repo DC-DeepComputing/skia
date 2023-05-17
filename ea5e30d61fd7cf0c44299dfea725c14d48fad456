@@ -63,6 +63,30 @@
       },
       "revId": "ea5e30d61fd7cf0c44299dfea725c14d48fad456",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5ec4dd1_b608d60c",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteUtils.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-17T17:09:12Z",
+      "side": 1,
+      "message": "I\u0027d forgotten about that, good catch.",
+      "parentUuid": "a1ec44e5_a502e6e0",
+      "range": {
+        "startLine": 74,
+        "startChar": 8,
+        "endLine": 74,
+        "endChar": 55
+      },
+      "revId": "ea5e30d61fd7cf0c44299dfea725c14d48fad456",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
