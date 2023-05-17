@@ -1076,14 +1076,15 @@ void ClipStack::clipShape(const Transform& localToDevice,
     }
 }
 
-std::pair<Clip, CompressedPaintersOrder> ClipStack::applyClipToDraw(
-        const BoundsManager* boundsManager,
-        const Transform& localToDevice,
-        const Geometry& geometry,
-        const SkStrokeRec& style,
-        PaintersDepth z) {
-    static const std::pair<Clip, CompressedPaintersOrder> kClippedOut =
-            {{Rect::InfiniteInverted(), SkIRect::MakeEmpty()}, DrawOrder::kNoIntersection};
+std::tuple<Clip, ClipStack::ClipStackNeedsUpdate, ClipStack::ShapeInDeviceSpace>
+ClipStack::applyClipToDraw(const Transform& localToDevice,
+                           const Geometry& geometry,
+                           const SkStrokeRec& style,
+                           SkTCopyOnFirstWrite<Shape>& styledShape) const {
+    static const std::tuple<Clip, ClipStackNeedsUpdate, ShapeInDeviceSpace> kClippedOut = {
+            {Rect::InfiniteInverted(), SkIRect::MakeEmpty()},
+            ClipStackNeedsUpdate::kNo,
+            ShapeInDeviceSpace::kNo};
 
     const SaveRecord& cs = this->currentSaveRecord();
     if (cs.state() == ClipState::kEmpty) {
@@ -1096,7 +1097,6 @@ std::pair<Clip, CompressedPaintersOrder> ClipStack::applyClipToDraw(
 
     // When 'style' isn't fill, 'shape' describes the pre-stroke shape so we can't use it to check
     // against clip elements and so 'styledShape' will be set to the bounds post-stroking.
-    SkTCopyOnFirstWrite<Shape> styledShape;
     if (geometry.isShape()) {
         styledShape.init(geometry.shape());
     } else {
@@ -1112,12 +1112,12 @@ std::pair<Clip, CompressedPaintersOrder> ClipStack::applyClipToDraw(
     }
 
     Rect drawBounds; // defined in device space
-    bool shapeInDeviceSpace = false;
+    ShapeInDeviceSpace styledShapeInDeviceSpace = ShapeInDeviceSpace::kNo;
     if (styledShape->inverted()) {
         // Inverse-filled shapes always fill the entire device (restricted to the clip).
         drawBounds = deviceBounds;
         styledShape.writable()->setRect(drawBounds);
-        shapeInDeviceSpace = true;
+        styledShapeInDeviceSpace = ShapeInDeviceSpace::kYes;
     } else {
         // Discard fills and strokes that cannot produce any coverage: an empty fill, or a
         // zero-length stroke that has butt caps. Otherwise the stroke style applies to a vertical
@@ -1151,7 +1151,7 @@ std::pair<Clip, CompressedPaintersOrder> ClipStack::applyClipToDraw(
             // and the associated transform must be kIdentity since drawBounds has been mapped by
             // localToDevice already.
             styledShape.writable()->setRect(drawBounds);
-            shapeInDeviceSpace = true;
+            styledShapeInDeviceSpace = ShapeInDeviceSpace::kYes;
         }
         // TODO: b/273924867 incorporate any outset required for analytic AA, too.
 
@@ -1163,8 +1163,10 @@ std::pair<Clip, CompressedPaintersOrder> ClipStack::applyClipToDraw(
         // Either the draw is off screen, so it's clipped out regardless of the state of the
         // SaveRecord, or there are no elements to apply to the draw. In both cases, 'drawBounds'
         // has the correct value, the scissor is the device bounds (ignored if clipped-out), and
-        // we can return kNoIntersection for the painter's order.
-        return {Clip{drawBounds, deviceBounds.asSkIRect()}, DrawOrder::kNoIntersection};
+        // we don't need to update the element state.
+        return {Clip{drawBounds, deviceBounds.asSkIRect()},
+                ClipStackNeedsUpdate::kNo,
+                styledShapeInDeviceSpace};
     }
 
     // We don't evaluate Simplify() on the SaveRecord and the draw because a reduced version of
@@ -1179,21 +1181,39 @@ std::pair<Clip, CompressedPaintersOrder> ClipStack::applyClipToDraw(
     Rect scissor = cs.scissor(deviceBounds, drawBounds).makeRoundOut();
     drawBounds.intersect(scissor);
     if (drawBounds.isEmptyNegativeOrNaN() || cs.innerBounds().contains(drawBounds)) {
-        // Like above, in both cases drawBounds holds the right value and can return kNoIntersection
-        return {Clip{drawBounds, scissor.asSkIRect()}, DrawOrder::kNoIntersection};
+        // Like above, in both cases drawBounds holds the right value and we don't need to update
+        // the element state.
+        return {Clip{drawBounds, scissor.asSkIRect()},
+                ClipStackNeedsUpdate::kNo,
+                styledShapeInDeviceSpace};
     }
+
+    return {Clip{drawBounds, scissor.asSkIRect()},
+            ClipStackNeedsUpdate::kYes,
+            styledShapeInDeviceSpace};
+}
+
+std::optional<CompressedPaintersOrder> ClipStack::updateForDraw(
+        const BoundsManager* boundsManager,
+        const Transform& localToDevice,
+        const Rect& drawBounds,
+        const Shape& styledShape,
+        ShapeInDeviceSpace styledShapeInDeviceSpace,
+        PaintersDepth z) {
+    const SaveRecord& cs = this->currentSaveRecord();
 
     // If we made it here, the clip stack affects the draw in a complex way so iterate each element.
     // A draw is a transformed shape that "intersects" the clip. We use empty inner bounds because
     // there's currently no way to re-write the draw as the clip's geometry, so there's no need to
     // check if the draw contains the clip (vice versa is still checked and represents an unclipped
     // draw so is very useful to identify).
-    TransformedShape draw{shapeInDeviceSpace ? kIdentity : localToDevice,
-                          *styledShape,
-                          /*outerBounds=*/drawBounds,
-                          /*innerBounds=*/Rect::InfiniteInverted(),
-                          /*op=*/SkClipOp::kIntersect,
-                          /*containsChecksOnlyBounds=*/true};
+    TransformedShape draw{
+            styledShapeInDeviceSpace == ShapeInDeviceSpace::kYes ? kIdentity : localToDevice,
+            styledShape,
+            /*outerBounds=*/drawBounds,
+            /*innerBounds=*/Rect::InfiniteInverted(),
+            /*op=*/SkClipOp::kIntersect,
+            /*containsChecksOnlyBounds=*/true};
 
     CompressedPaintersOrder maxClipOrder = DrawOrder::kNoIntersection;
     int i = fElements.count();
@@ -1207,14 +1227,13 @@ std::pair<Clip, CompressedPaintersOrder> ClipStack::applyClipToDraw(
 
         auto [clippedOut, order] = e.updateForDraw(boundsManager, draw, z);
         if (clippedOut) {
-            drawBounds = Rect::InfiniteInverted();
-            break;
+            return std::nullopt;
         } else {
             maxClipOrder = std::max(order, maxClipOrder);
         }
     }
 
-    return {Clip{drawBounds, scissor.asSkIRect()}, maxClipOrder};
+    return maxClipOrder;
 }
 
 void ClipStack::recordDeferredClipDraws() {

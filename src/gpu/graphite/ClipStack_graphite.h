@@ -10,6 +10,7 @@
 
 #include "include/core/SkClipOp.h"
 #include "src/base/SkTBlockList.h"
+#include "src/base/SkTLazy.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/Transform_graphite.h"
@@ -66,27 +67,49 @@ public:
     void clipShape(const Transform& localToDevice, const Shape& shape, SkClipOp op);
     void clipShader(sk_sp<SkShader> shader);
 
+    enum class ShapeInDeviceSpace {
+        kNo,
+        kYes,
+    };
+
+    enum class ClipStackNeedsUpdate {
+        kNo,
+        kYes,
+    };
+
     // Apply the clip stack to the draw described by the provided transform, shape, and stroke.
-    // The provided 'z' value is the depth value that the draw will use if it's not clipped out
-    // entirely. Applying clips to a draw is a mostly lazy operation except for what is returned:
+    // Applying clips to a draw is a mostly lazy operation except for what is returned:
     //  - The Clip's scissor is set to 'conservativeBounds()'.
     //  - The Clip stores the draw's clipped bounds, taking into account its transform, styling, and
     //    the above scissor.
-    //  - The CompressedPaintersOrder is the largest order that will be used by any of the clip
-    //    elements that affect the draw.
-    //
-    // In addition to computing these values, the clip stack updates per-clip element state for
-    // later rendering. Clip shapes that affect draws are later recorded into the Device's
-    // DrawContext with their own painter's order chosen to sort earlier than all affected draws
-    // but using a Z value greater than affected draws. This ensures that the draws fail the depth
-    // test for clipped-out pixels.
+    //  - The input shape with any necessary stroking for clipping is returned via 'outStyledShape',
+    //    to be passed along to updateForDraw if necessary.
+    //  - Returns whether the ClipStack elements need to be updated with updateForDraw.
+    //  - Returns whether the returned styled shape is in device space.
     //
     // If the draw is clipped out, the returned draw bounds will be empty.
-    std::pair<Clip, CompressedPaintersOrder> applyClipToDraw(const BoundsManager*,
-                                                             const Transform&,
-                                                             const Geometry&,
-                                                             const SkStrokeRec&,
-                                                             PaintersDepth z);
+    std::tuple<Clip, ClipStackNeedsUpdate, ShapeInDeviceSpace> applyClipToDraw(
+            const Transform&,
+            const Geometry&,
+            const SkStrokeRec&,
+            SkTCopyOnFirstWrite<Shape>& outStyledShape) const;
+
+    // Updates per-clip element state for later rendering. The provided 'z' value is the depth value
+    // that the latest draw will use if it's not clipped out entirely.
+    //
+    // Clip shapes that affect draws will be recorded into the Device's DrawContext with their own
+    // painter's order chosen to sort earlier than all affected draws but using a Z value greater
+    // than affected draws. This ensures that the draws fail the depth test for clipped-out pixels.
+    //
+    // The returned CompressedPaintersOrder is the largest order that will be used by any of the
+    // clip elements that affect the draw. If the draw is clipped out entirely, nullopt is returned.
+    std::optional<CompressedPaintersOrder> updateForDraw(
+            const BoundsManager* boundsManager,
+            const Transform& localToDevice,
+            const Rect& drawBounds,
+            const Shape& styledShape,
+            ShapeInDeviceSpace styledShapeInDeviceSpace,
+            PaintersDepth z);
 
     void recordDeferredClipDraws();
 

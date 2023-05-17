@@ -951,9 +951,9 @@ void Device::drawGeometry(const Transform& localToDevice,
         this->flushPendingWorkToRecorder();
     }
 
-    DrawOrder order(fCurrentDepth.next());
-    auto [clip, clipOrder] = fClip.applyClipToDraw(
-            fColorDepthBoundsManager.get(), localToDevice, geometry, style, order.depth());
+    SkTCopyOnFirstWrite<Shape> styledShape;
+    auto [clip, clipStackNeedsUpdate, shapeInDeviceSpace] =
+            fClip.applyClipToDraw(localToDevice, geometry, style, styledShape);
     if (clip.drawBounds().isEmptyNegativeOrNaN()) {
         // Clipped out, so don't record anything
         return;
@@ -983,18 +983,6 @@ void Device::drawGeometry(const Transform& localToDevice,
     }
 #endif
 
-    // A draw's order always depends on the clips that must be drawn before it
-    order.dependsOnPaintersOrder(clipOrder);
-
-    // A primitive blender should be ignored if there is no primitive color to blend against.
-    // Additionally, if a renderer emits a primitive color, then a null primitive blender should
-    // be interpreted as SrcOver blending mode.
-    if (!renderer->emitsPrimitiveColor()) {
-        primitiveBlender = nullptr;
-    } else if (!SkToBool(primitiveBlender)) {
-        primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
-    }
-
     // Figure out what dst color requirements we have, if any.
     DstReadRequirement dstReadReq = DstReadRequirement::kNone;
     const SkBlenderBase* blender = as_BB(paint.getBlender());
@@ -1006,6 +994,34 @@ void Device::drawGeometry(const Transform& localToDevice,
     // If this paint needs to copy the dst surface for reading, flush pending work.
     if (dstReadReq == DstReadRequirement::kTextureCopy) {
         this->flushPendingWorkToRecorder();
+    }
+
+    // Update clip stack if necessary.
+    DrawOrder order(fCurrentDepth.next());
+    std::optional<CompressedPaintersOrder> clipOrder = DrawOrder::kNoIntersection;
+    if (clipStackNeedsUpdate == ClipStack::ClipStackNeedsUpdate::kYes) {
+        clipOrder = fClip.updateForDraw(fColorDepthBoundsManager.get(),
+                                        localToDevice,
+                                        clip.drawBounds(),
+                                        *styledShape,
+                                        shapeInDeviceSpace,
+                                        order.depth());
+        if (!clipOrder) {
+            // Clipped out, so don't record anything
+            return;
+        }
+    }
+
+    // A draw's order always depends on the clips that must be drawn before it
+    order.dependsOnPaintersOrder(*clipOrder);
+
+    // A primitive blender should be ignored if there is no primitive color to blend against.
+    // Additionally, if a renderer emits a primitive color, then a null primitive blender should
+    // be interpreted as SrcOver blending mode.
+    if (!renderer->emitsPrimitiveColor()) {
+        primitiveBlender = nullptr;
+    } else if (!SkToBool(primitiveBlender)) {
+        primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
     }
 
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
