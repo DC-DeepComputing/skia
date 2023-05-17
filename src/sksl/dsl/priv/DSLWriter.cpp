@@ -90,15 +90,6 @@ void DSLWriter::AddVarDeclaration(DSLStatement& existing, DSLVar& additional) {
                                                          Declaration(additional)));
 }
 
-void DSLWriter::Reset() {
-    SkSL::Context& context = ThreadContext::Context();
-
-    SymbolTable::Pop(&context.fSymbolTable);
-    SymbolTable::Push(&context.fSymbolTable);
-    ThreadContext::ProgramElements().clear();
-    context.fModifiersPool->clear();
-}
-
 } // namespace dsl
 
 } // namespace SkSL
