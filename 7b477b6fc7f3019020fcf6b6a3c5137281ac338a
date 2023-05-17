@@ -145,6 +145,24 @@
       "parentUuid": "3c668b9e_4220c0ff",
       "revId": "7b477b6fc7f3019020fcf6b6a3c5137281ac338a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "614489b6_6bcb1e74",
+        "filename": "src/gpu/graphite/SkSLSPIRVUtilsPriv.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-17T21:03:15Z",
+      "side": 1,
+      "message": "I think it\u0027s fine as is. We\u0027re already compiling SkSLCompiler::toSPIRV when we don\u0027t need it, this is just a small wrapper around that, and it should be linked out if it\u0027s not used. If we run into compile time issues we can take another look at it, but it should be tiny.",
+      "parentUuid": "9d856ef6_174b4968",
+      "revId": "7b477b6fc7f3019020fcf6b6a3c5137281ac338a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
