@@ -691,6 +691,7 @@ static void push_brd_srcs(Path path, bool gray) {
         }
     }
 }
+
 #endif // SK_ENABLE_ANDROID_UTILS
 
 static void push_codec_srcs(Path path) {
