@@ -261,6 +261,12 @@ func (p parts) bazelTestParts() (taskDriver string, config string, host string, 
 	return p["task_driver"], p["config"], p["host"], p["cross"]
 }
 
+// testPrebuiltBazelTargetOnDevice returns all parts from the TestPrebuiltBazelTargetOnDevice
+// schema. All parts are required.
+func (p parts) testPrebuiltBazelTargetOnDevice() (kind, label string) {
+	return p["label"], p["config"]
+}
+
 // TODO(borenet): The below really belongs in its own file, probably next to the
 // builder_name_schema.json file.
 
