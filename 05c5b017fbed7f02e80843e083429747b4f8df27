@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3f40768_b3e80199",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-05-17T20:08:02Z",
+      "side": 1,
+      "message": "This should be\nBug: oss-fuzz:57716\n\nhttps://bugs.chromium.org/p/oss-fuzz/issues/detail?id\u003d57716",
+      "revId": "05c5b017fbed7f02e80843e083429747b4f8df27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
