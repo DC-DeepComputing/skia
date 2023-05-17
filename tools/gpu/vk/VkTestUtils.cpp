@@ -447,6 +447,7 @@ static bool setup_features(skgpu::VulkanGetProc getProc, VkInstance inst, VkPhys
 
     if (isProtected) {
         if (!protectedMemoryFeatures->protectedMemory) {
+            SkDebugf("Vk: Protected Context requested but not supported\n");
             return false;
         }
     }
