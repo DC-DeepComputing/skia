@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45664b93_9a4e3ebc",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-17T17:17:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4343b005_7ee9ce31",
+      "range": {
+        "startLine": 220,
+        "startChar": 15,
+        "endLine": 220,
+        "endChar": 23
+      },
+      "revId": "dde2ec8f25c9569239192c7e1e6513c7d363d2e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9d74266_6d2d3d7a",
