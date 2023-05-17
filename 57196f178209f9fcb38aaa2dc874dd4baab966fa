@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c69b6228_75f3a5b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-17T20:26:30Z",
+      "side": 1,
+      "message": "lgtm % a couple comments",
+      "revId": "57196f178209f9fcb38aaa2dc874dd4baab966fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e82c37f3_e7a8de7b",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-17T20:26:30Z",
+      "side": 1,
+      "message": "This makes sense though the branch logic takes some thinking to fully grasp. Consider:\n\n    // Return a program only if it successfully compiles and optimizes.\n    bool success \u003d false;\n    if (this-\u003efinalize(*result)) {\n        success \u003d this-\u003eoptimize(*result);\n    }",
+      "range": {
+        "startLine": 262,
+        "startChar": 4,
+        "endLine": 269,
+        "endChar": 5
+      },
+      "revId": "57196f178209f9fcb38aaa2dc874dd4baab966fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fcad68d_098fc784",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-17T20:26:30Z",
+      "side": 1,
+      "message": "Is this declared as a unique pointer so that it\u0027s \"optional\", i.e. `nullptr` means no program? I\u0027m wondering if `std::optional\u003cstd::string\u003e` (or alternately just `std::string` while treating an empty string as the \"null\" value) would be more suitable here as that would save an allocation and the extra pointer indirection.\n\nThis doesn\u0027t need to block this CL (and I realize that this signature is used in `SkSL::Program`s constructor). I\u0027m mostly curious why the source isn\u0027t stored directly as a `std::string`.",
+      "range": {
+        "startLine": 208,
+        "startChar": 50,
+        "endLine": 208,
+        "endChar": 78
+      },
+      "revId": "57196f178209f9fcb38aaa2dc874dd4baab966fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
