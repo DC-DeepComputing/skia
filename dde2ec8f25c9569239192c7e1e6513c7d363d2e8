@@ -63,6 +63,29 @@
       },
       "revId": "dde2ec8f25c9569239192c7e1e6513c7d363d2e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9d74266_6d2d3d7a",
+        "filename": "src/cityhash/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-17T17:02:03Z",
+      "side": 1,
+      "message": "I guess because there is only one .cc file and one .h file, we don\u0027t really need the split_srcs_and_hdrs. We can just lis the files here in the filegroups.",
+      "range": {
+        "startLine": 20,
+        "startChar": 10,
+        "endLine": 20,
+        "endChar": 23
+      },
+      "revId": "dde2ec8f25c9569239192c7e1e6513c7d363d2e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
