@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81a5599a_479df5df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-17T17:44:13Z",
+      "side": 1,
+      "message": "These two are just about moving things around in preparation for adding COLRv1 to the mix.",
+      "revId": "1ec54f9623b5dc34d05986340f9ad73ca360163a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
