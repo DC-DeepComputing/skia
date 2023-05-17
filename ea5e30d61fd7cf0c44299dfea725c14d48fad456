@@ -16,6 +16,29 @@
       "message": "I got the Metal 2.3 requirement for framebuffer fetch from the Metal spec, and I got the MacOS requirement for Metal 2.3 from a file \"MTLLibrary.h\" which was referenced in compiler errors when I initially got the define guards wrong.",
       "revId": "ea5e30d61fd7cf0c44299dfea725c14d48fad456",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e823c928_2a3cf3e2",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteUtils.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-17T16:20:45Z",
+      "side": 1,
+      "message": "I think this is fine for now but as you mentioned I think we could avoid setting this option and just let it be the default value.",
+      "range": {
+        "startLine": 74,
+        "startChar": 8,
+        "endLine": 74,
+        "endChar": 55
+      },
+      "revId": "ea5e30d61fd7cf0c44299dfea725c14d48fad456",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
