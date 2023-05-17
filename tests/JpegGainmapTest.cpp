@@ -450,7 +450,7 @@ DEF_TEST(AndroidCodec_xmpHdrgmAsFieldValue, r) {
     std::vector<sk_sp<SkData>> app1Params;
     app1Params.push_back(SkData::MakeWithoutCopy(xmpData, sizeof(xmpData) - 1));
 
-    auto xmp = SkJpegXmp::Make(app1Params);
+    auto xmp = skjpeg_make_xmp(app1Params);
     REPORTER_ASSERT(r, xmp);
 
     SkGainmapInfo info;
@@ -476,7 +476,7 @@ DEF_TEST(AndroidCodec_xmpHdrgmAsDescriptionPropertyAttributes, r) {
     std::vector<sk_sp<SkData>> app1Params;
     app1Params.push_back(SkData::MakeWithoutCopy(xmpData, sizeof(xmpData) - 1));
 
-    auto xmp = SkJpegXmp::Make(app1Params);
+    auto xmp = skjpeg_make_xmp(app1Params);
     REPORTER_ASSERT(r, xmp);
 
     SkGainmapInfo info;
@@ -526,7 +526,7 @@ DEF_TEST(AndroidCodec_xmpHdrgmList, r) {
     std::vector<sk_sp<SkData>> app1Params;
     app1Params.push_back(SkData::MakeWithoutCopy(xmpData, sizeof(xmpData) - 1));
 
-    auto xmp = SkJpegXmp::Make(app1Params);
+    auto xmp = skjpeg_make_xmp(app1Params);
     REPORTER_ASSERT(r, xmp);
 
     SkGainmapInfo info;
@@ -582,7 +582,7 @@ DEF_TEST(AndroidCodec_xmpContainerTypedNode, r) {
     std::vector<sk_sp<SkData>> app1Params;
     app1Params.push_back(SkData::MakeWithoutCopy(xmpData, sizeof(xmpData) - 1));
 
-    auto xmp = SkJpegXmp::Make(app1Params);
+    auto xmp = skjpeg_make_xmp(app1Params);
     REPORTER_ASSERT(r, xmp);
 
     size_t offset = 999;
@@ -625,7 +625,7 @@ DEF_TEST(AndroidCodec_xmpContainerTypedNodeRdfEquivalent, r) {
     std::vector<sk_sp<SkData>> app1Params;
     app1Params.push_back(SkData::MakeWithoutCopy(xmpData, sizeof(xmpData) - 1));
 
-    auto xmp = SkJpegXmp::Make(app1Params);
+    auto xmp = skjpeg_make_xmp(app1Params);
     REPORTER_ASSERT(r, xmp);
 
     size_t offset = 999;

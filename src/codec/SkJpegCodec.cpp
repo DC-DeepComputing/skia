@@ -1115,14 +1115,14 @@ bool SkGetJpegInfo(const void* data, size_t len,
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 // Collect and parse the primary and extended XMP metadata.
-static std::unique_ptr<SkJpegXmp> get_xmp_metadata(const SkJpegMarkerList& markerList) {
+static std::unique_ptr<SkXmp> get_xmp_metadata(const SkJpegMarkerList& markerList) {
     std::vector<sk_sp<SkData>> decoderApp1Params;
     for (const auto& marker : markerList) {
         if (marker.marker == kXMPMarker) {
             decoderApp1Params.push_back(marker.data);
         }
     }
-    return SkJpegXmp::Make(decoderApp1Params);
+    return skjpeg_make_xmp(decoderApp1Params);
 }
 
 // Extract the SkJpegMultiPictureParameters from this image (if they exist) along with the segment
@@ -1199,7 +1199,7 @@ static bool extract_gainmap(SkJpegSourceMgr* decoderSource,
         }
         app1Params.push_back(std::move(parameters));
     }
-    auto xmp = SkJpegXmp::Make(app1Params);
+    auto xmp = skjpeg_make_xmp(app1Params);
     if (!xmp) {
         return false;
     }
@@ -1227,7 +1227,7 @@ static bool get_gainmap_info(const SkJpegMarkerList& markerList,
                              SkGainmapInfo* info,
                              std::unique_ptr<SkStream>* gainmapImageStream) {
     // The GContainer and APP15-based HDRGM formats require XMP metadata. Extract it now.
-    std::unique_ptr<SkJpegXmp> xmp = get_xmp_metadata(markerList);
+    std::unique_ptr<SkXmp> xmp = get_xmp_metadata(markerList);
 
     // Attempt to locate the gainmap from the container XMP.
     size_t containerGainmapOffset = 0;
