@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aad2991_c7696cf4",
+        "filename": "bazel/platform/BUILD.bazel",
+        "patchSetId": 16
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-17T03:11:36Z",
+      "side": 1,
+      "message": "Not strictly necessary. It just seems like a nice way to group together multiple constraints associated with an OS/CPU. I say let\u0027s stick to this scheme unless we have a good reason not to. We can always move away from it later.",
+      "parentUuid": "e3457708_7c4d733b",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 8
+      },
+      "revId": "844fdac97d6aee52c50ad5c639dcf3b7500ef2d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e3acc56_dd7e5258",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "caee82a2_687d3b05",
+        "filename": "tests/android.bzl",
+        "patchSetId": 16
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-17T03:11:36Z",
+      "side": 1,
+      "message": "Left a TODO.\n\nNote that cross-compiling C++ and Go at the same time might prove tricky. For example, this invocation fails (using an arbitrary Go target):\n\n```\n$ bazel build //infra/bots/task_drivers/bazel_build --config\u003dlinux_rbe --platforms\u003d//bazel/platform:pixel_5,@io_bazel_rules_go//go/toolchain:linux_amd64\n...\nERROR: \n.../skia/infra/bots/task_drivers/bazel_build/BUILD.bazel:19:10: GoLink infra/bots/task_drivers/bazel_build/bazel_build_/bazel_build failed: (Exit 1): builder failed: error executing command bazel-out/k8-opt-exec-81C6BA4F/bin/external/go_sdk_linux_amd64/builder \u0027-param\u003dbazel-out/k8-fastbuild/bin/infra/bots/task_drivers/bazel_build/bazel_build_/bazel_build-0.params\u0027 -- -linkmode internal ... (remaining 1 argument skipped)\nruntime.gcdata: missing Go type information for global symbol .dynsym: size 24\nlink: error running subcommand external/go_sdk_linux_amd64/pkg/tool/linux_amd64/link: exit status 2\nTarget //infra/bots/task_drivers/bazel_build:bazel_build failed to build\n```\n\nIf we depend on a Go program to run an Android test, I anticipate we\u0027ll run into similar issues. I need to investigate what\u0027s going on in the above error.",
+      "parentUuid": "0e3acc56_dd7e5258",
+      "range": {
+        "startLine": 356,
+        "startChar": 6,
+        "endLine": 356,
+        "endChar": 10
+      },
+      "revId": "844fdac97d6aee52c50ad5c639dcf3b7500ef2d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f317f158_a1fb8189",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-05-16T12:53:31Z",
       "side": 1,
       "message": "nit: let\u0027s define new rules in their own .bzl file. I find that easier when I need to go find the implementation/documentation to read, since I don\u0027t have to find which file the rule is imported from, I can just start typing the rule name in my file search bar.",
+      "range": {
+        "startLine": 417,
+        "startChar": 0,
+        "endLine": 417,
+        "endChar": 15
+      },
+      "revId": "844fdac97d6aee52c50ad5c639dcf3b7500ef2d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fcfcd17_b87c885b",
+        "filename": "tests/android.bzl",
+        "patchSetId": 16
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-17T03:11:36Z",
+      "side": 1,
+      "message": "Done.\n\nNote that I also renamed `adb_test_runner` to just `adb_test` and made it an actual test rule. This removes the need for the `sh_test` wrapper here: https://skia-review.googlesource.com/c/skia/+/668876/16/tests/android.bzl#272.",
+      "parentUuid": "f317f158_a1fb8189",
       "range": {
         "startLine": 417,
         "startChar": 0,
