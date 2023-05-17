@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fc2cedf_949959a4",
+        "filename": "modules/sksg/src/SkSGScene.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-05-17T18:22:05Z",
+      "side": 0,
+      "message": "Without this, sksg::Scene is kinda useless, it just forwards everything to the render node.\n\nI\u0027ll see if we can remove it completely in a followup.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 0
+      },
+      "revId": "69a9133a14495e808ab0a33d769f6841be8d26d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
