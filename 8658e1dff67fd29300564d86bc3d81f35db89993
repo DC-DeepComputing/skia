@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7270989b_b1f9a74b",
+        "filename": "src/sksl/ir/SkSLBlock.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-17T12:52:50Z",
+      "side": 1,
+      "message": "This comment came from the old code, but it\u0027s not quite accurate, right? All we know is that the existing statement isn\u0027t a CompooundStatement Block, but it might be some other Block? Or is that impossible, because this is only used in the context of multiple-var-declarations?",
+      "range": {
+        "startLine": 90,
+        "startChar": 30,
+        "endLine": 90,
+        "endChar": 45
+      },
+      "revId": "8658e1dff67fd29300564d86bc3d81f35db89993",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
