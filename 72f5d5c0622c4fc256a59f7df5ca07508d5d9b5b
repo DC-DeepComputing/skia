@@ -22,6 +22,30 @@
       },
       "revId": "72f5d5c0622c4fc256a59f7df5ca07508d5d9b5b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f458177f_4faca0ee",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-17T15:39:08Z",
+      "side": 1,
+      "message": "For sure. For now this just follows the same pattern as sampling for the dst color.",
+      "parentUuid": "09fd7924_f1ba3023",
+      "range": {
+        "startLine": 592,
+        "startChar": 0,
+        "endLine": 592,
+        "endChar": 33
+      },
+      "revId": "72f5d5c0622c4fc256a59f7df5ca07508d5d9b5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
