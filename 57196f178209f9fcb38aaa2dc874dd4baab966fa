@@ -43,6 +43,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "bdaca4c2_e64501fb",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-17T20:31:29Z",
+      "side": 1,
+      "message": "Or even \n```\nsuccess \u003d this-\u003efinalize(*result) \u0026\u0026 \n          this-\u003eoptimize(*result)\n```\n?\nI think you\u0027re right, it could be simpler and easier to understand at the same time. I don\u0027t want to make logic changes in this CL; it\u0027s just moving around code, not changing how it works.",
+      "parentUuid": "e82c37f3_e7a8de7b",
+      "range": {
+        "startLine": 262,
+        "startChar": 4,
+        "endLine": 269,
+        "endChar": 5
+      },
+      "revId": "57196f178209f9fcb38aaa2dc874dd4baab966fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "8fcad68d_098fc784",
         "filename": "src/sksl/SkSLCompiler.h",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2023-05-17T20:26:30Z",
       "side": 1,
       "message": "Is this declared as a unique pointer so that it\u0027s \"optional\", i.e. `nullptr` means no program? I\u0027m wondering if `std::optional\u003cstd::string\u003e` (or alternately just `std::string` while treating an empty string as the \"null\" value) would be more suitable here as that would save an allocation and the extra pointer indirection.\n\nThis doesn\u0027t need to block this CL (and I realize that this signature is used in `SkSL::Program`s constructor). I\u0027m mostly curious why the source isn\u0027t stored directly as a `std::string`.",
+      "range": {
+        "startLine": 208,
+        "startChar": 50,
+        "endLine": 208,
+        "endChar": 78
+      },
+      "revId": "57196f178209f9fcb38aaa2dc874dd4baab966fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "497be2b2_524685d3",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-17T20:31:29Z",
+      "side": 1,
+      "message": "I honestly don\u0027t remember. I think it\u0027s probably been that way since I joined. \nI\u0027d be totally fine with changing it to `optional` in a separate CL if that\u0027s all it\u0027s used for.",
+      "parentUuid": "8fcad68d_098fc784",
       "range": {
         "startLine": 208,
         "startChar": 50,
