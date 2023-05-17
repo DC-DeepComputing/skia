@@ -9,51 +9,39 @@
 #define SKSL_DSLWRITER
 
 #include "include/core/SkTypes.h"
+#include "src/sksl/ir/SkSLStatement.h"
 
+#include <cstdint>
 #include <memory>
+#include <string_view>
 
 namespace SkSL {
 
+struct Modifiers;
+class Position;
+class Type;
 class Variable;
-class Statement;
+enum class VariableStorage : int8_t;
 
 namespace dsl {
 
-struct DSLParameter;
-class DSLStatement;
-struct DSLVarBase;
-struct DSLVar;
+class DSLExpression;
 
-/**
- * Various utility methods needed by DSL code.
- */
-class DSLWriter {
-public:
-    /**
-     * Returns the SkSL variable corresponding to a DSL var.
-     */
-    static SkSL::Variable* Var(DSLVarBase& var);
-
-    /**
-     * Creates an SkSL variable corresponding to a DSLParameter.
-     */
-    static std::unique_ptr<SkSL::Variable> CreateParameterVar(DSLParameter& var);
-
-    /**
-     * Returns the SkSL declaration corresponding to a DSLVar.
-     */
-    static std::unique_ptr<SkSL::Statement> Declaration(DSLVarBase& var);
-
-    /**
-     * Adds a new declaration into an existing declaration statement. This either turns the original
-     * declaration into an unscoped block or, if it already was, appends a new statement to the end
-     * of it.
-     */
-    static void AddVarDeclaration(DSLStatement& existing, DSLVar& additional);
+struct DSLVarDecl {
+    std::unique_ptr<SkSL::Statement> fDeclaration;
+    SkSL::Variable* fVar = nullptr;
 };
 
-} // namespace dsl
+DSLVarDecl Var(Position overallPos,
+               Position modifiersPos,
+               const Modifiers& modifiers,
+               const Type& type,
+               Position namePos,
+               std::string_view name,
+               VariableStorage storage,
+               DSLExpression initialValue);
 
-} // namespace SkSL
+}  // namespace dsl
+}  // namespace SkSL
 
 #endif
