@@ -9,9 +9,7 @@
 #define SKSL_THREADCONTEXT
 
 #include "include/core/SkTypes.h"
-#include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLErrorReporter.h"
-#include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
@@ -23,8 +21,10 @@
 namespace SkSL {
 
 class Compiler;
+class Context;
 class ModifiersPool;
 class Pool;
+class Position;
 class ProgramElement;
 class Variable;
 enum class ProgramKind : int8_t;
@@ -81,22 +81,6 @@ public:
      * Returns a struct containing information about the RTAdjust variable.
      */
     static RTAdjustData& RTAdjustState();
-
-    /**
-     * Returns the ErrorReporter associated with the current thread. This object will be notified
-     * when any DSL errors occur.
-     */
-    static ErrorReporter& GetErrorReporter() {
-        return *Context().fErrors;
-    }
-
-    static void SetErrorReporter(ErrorReporter* errorReporter);
-
-    /**
-     * Notifies the current ErrorReporter that an error has occurred. The default error handler
-     * prints the message to stderr and aborts.
-     */
-    static void ReportError(std::string_view msg, Position pos = Position{});
 
     static ThreadContext& Instance();
 

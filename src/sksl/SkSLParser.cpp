@@ -138,10 +138,10 @@ public:
     Checkpoint(Parser* p) : fParser(p) {
         fPushbackCheckpoint = fParser->fPushback;
         fLexerCheckpoint = fParser->fLexer.getCheckpoint();
-        fOldErrorReporter = &dsl::GetErrorReporter();
+        fOldErrorReporter = this->errorReporter();
         fOldEncounteredFatalError = fParser->fEncounteredFatalError;
         SkASSERT(fOldErrorReporter);
-        dsl::SetErrorReporter(&fErrorReporter);
+        this->errorReporter() = &fErrorReporter;
     }
 
     ~Checkpoint() {
@@ -153,7 +153,7 @@ public:
         // Parser errors should have been fatal, but we can encounter other errors like type
         // mismatches despite accepting the parse. Forward those messages to the actual error
         // handler now.
-        fErrorReporter.forwardErrors();
+        fErrorReporter.forwardErrors(this->errorReporter());
     }
 
     void rewind() {
@@ -163,6 +163,10 @@ public:
         fParser->fEncounteredFatalError = fOldEncounteredFatalError;
     }
 
+    SkSL::ErrorReporter*& errorReporter() {
+        return fParser->fCompiler.context().fErrors;
+    }
+
 private:
     class ForwardingErrorReporter : public ErrorReporter {
     public:
@@ -170,9 +174,9 @@ private:
             fErrors.push_back({std::string(msg), pos});
         }
 
-        void forwardErrors() {
+        void forwardErrors(ErrorReporter* reporter) {
             for (Error& error : fErrors) {
-                dsl::GetErrorReporter().error(error.fPos, error.fMsg);
+                reporter->error(error.fPos, error.fMsg);
             }
         }
 
@@ -187,7 +191,7 @@ private:
 
     void restoreErrorReporter() {
         SkASSERT(fOldErrorReporter);
-        dsl::SetErrorReporter(fOldErrorReporter);
+        this->errorReporter() = fOldErrorReporter;
         fOldErrorReporter = nullptr;
     }
 
@@ -372,7 +376,7 @@ void Parser::error(Token token, std::string_view msg) {
 }
 
 void Parser::error(Position position, std::string_view msg) {
-    GetErrorReporter().error(position, msg);
+    fCompiler.context().fErrors->error(position, msg);
 }
 
 Position Parser::rangeFrom(Position start) {
@@ -389,11 +393,11 @@ Position Parser::rangeFrom(Token start) {
 std::unique_ptr<Program> Parser::program() {
     ErrorReporter* errorReporter = &fCompiler.errorReporter();
     Start(&fCompiler, fKind, fSettings);
-    SetErrorReporter(errorReporter);
+    fCompiler.context().fErrors = errorReporter;
     errorReporter->setSource(*fText);
     this->declarations();
     std::unique_ptr<Program> result;
-    if (!GetErrorReporter().errorCount()) {
+    if (fCompiler.context().fErrors->errorCount() == 0) {
         result = fCompiler.releaseProgram(std::move(fText));
     }
     errorReporter->setSource(std::string_view());
@@ -404,7 +408,7 @@ std::unique_ptr<Program> Parser::program() {
 std::unique_ptr<SkSL::Module> Parser::moduleInheritingFrom(const SkSL::Module* parent) {
     ErrorReporter* errorReporter = &fCompiler.errorReporter();
     StartModule(&fCompiler, fKind, fSettings, parent);
-    SetErrorReporter(errorReporter);
+    fCompiler.context().fErrors = errorReporter;
     errorReporter->setSource(*fText);
     this->declarations();
     this->symbolTable()->takeOwnershipOfString(std::move(*fText));
