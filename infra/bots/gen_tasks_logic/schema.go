@@ -261,6 +261,18 @@ func (p parts) bazelTestParts() (taskDriver string, config string, host string, 
 	return p["task_driver"], p["config"], p["host"], p["cross"]
 }
 
+// bazelBuildGeneratedTargetParts returns all parts from the BazelBuildGeneratedTarget schema. All
+// parts are required.
+func (p parts) bazelBuildGeneratedTargetParts() (kind, label string) {
+	return p["kind"], p["label"]
+}
+
+// bazelTestGeneratedTargetParts returns all parts from the BazelTestGeneratedTarget schema. All
+// parts are required.
+func (p parts) bazelTestGeneratedTargetParts() (kind, label string) {
+	return p["kind"], p["label"]
+}
+
 // TODO(borenet): The below really belongs in its own file, probably next to the
 // builder_name_schema.json file.
 
