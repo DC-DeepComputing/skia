@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d894c5e8_bc55606c",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-17T18:20:28Z",
+      "side": 0,
+      "message": "The diffs in the golden output are caused by the removal of this line; I am fine with the output either way.",
+      "range": {
+        "startLine": 694,
+        "startChar": 4,
+        "endLine": 694,
+        "endChar": 45
+      },
+      "revId": "1cf18ec5aaa69f87edde924abbe03d9ad897ece6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
