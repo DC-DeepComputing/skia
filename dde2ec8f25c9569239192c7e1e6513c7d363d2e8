@@ -16,6 +16,29 @@
       "message": "Adding Kevin for my tweaks to exporter_tool. Canaries don\u0027t seem to be running, but I\u0027m hoping that this solves the issue I had with Flutter, and will also work for G3.",
       "revId": "dde2ec8f25c9569239192c7e1e6513c7d363d2e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6b25f4f_18b9f2ce",
+        "filename": "bazel/skia_rules.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-17T16:54:56Z",
+      "side": 1,
+      "message": "I\u0027ll need to send a G3 CL because G3 has its own version of this.",
+      "range": {
+        "startLine": 220,
+        "startChar": 15,
+        "endLine": 220,
+        "endChar": 23
+      },
+      "revId": "dde2ec8f25c9569239192c7e1e6513c7d363d2e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
