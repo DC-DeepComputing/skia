@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95ac2bfc_6a0a997e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-17T17:29:46Z",
+      "side": 1,
+      "message": "PTAL at the fixes in PS13.",
+      "revId": "4612fb0a772d88ace416dc04e75a6dd195c1e3ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1ec4c2d_9e0555e6",
+        "filename": "gm/composecolorfilter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-17T17:29:46Z",
+      "side": 1,
+      "message": "This reproduces the layout test failure in the last column w/o my changes to SkComposeImageFilter.",
+      "range": {
+        "startLine": 106,
+        "startChar": 14,
+        "endLine": 106,
+        "endChar": 25
+      },
+      "revId": "4612fb0a772d88ace416dc04e75a6dd195c1e3ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53456a31_01e74e62",
+        "filename": "src/effects/imagefilters/SkComposeImageFilter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-17T17:29:46Z",
+      "side": 1,
+      "message": "This was the issue with chrome\u0027s use of the perlin noise shader. They combined a CFIF that had a null input with a ::Shader using the ::Compose image filter. Without this, the base image filter class assumed that it still used the source image and then `filterImage()` would automatically return an empty image since we had a mismatch between an empty source (since ::Shader now doesn\u0027t use any) and thinking we needed a source.",
+      "range": {
+        "startLine": 32,
+        "startChar": 24,
+        "endLine": 32,
+        "endChar": 75
+      },
+      "revId": "4612fb0a772d88ace416dc04e75a6dd195c1e3ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
