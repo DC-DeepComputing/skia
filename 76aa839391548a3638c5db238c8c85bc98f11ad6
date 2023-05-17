@@ -16,6 +16,98 @@
       "message": "Why does this need to return a reference? Do you expect the pointer stored in context() to be mutated via this getter? Could this getter be const?",
       "revId": "76aa839391548a3638c5db238c8c85bc98f11ad6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8119a5c4_482c5b1c",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-17T22:58:33Z",
+      "side": 1,
+      "message": "\u0026`fParser-\u003efCompiler.errorContext()`?",
+      "range": {
+        "startLine": 167,
+        "startChar": 15,
+        "endLine": 167,
+        "endChar": 51
+      },
+      "revId": "76aa839391548a3638c5db238c8c85bc98f11ad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00d974b4_175ac931",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-17T22:58:33Z",
+      "side": 1,
+      "message": "Should this get assigned via fCompiler.errorReporter() for symmetry with the getter above?",
+      "range": {
+        "startLine": 396,
+        "startChar": 4,
+        "endLine": 396,
+        "endChar": 47
+      },
+      "revId": "76aa839391548a3638c5db238c8c85bc98f11ad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b6a242d_7d5b200f",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-17T22:58:33Z",
+      "side": 1,
+      "message": "Is this expected to return the same value as `errorReporter` above? If so, use that? Otherwise could this also use `fCompiler.errorReporter()`?",
+      "range": {
+        "startLine": 400,
+        "startChar": 8,
+        "endLine": 400,
+        "endChar": 35
+      },
+      "revId": "76aa839391548a3638c5db238c8c85bc98f11ad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebcc988b_9f9edd4e",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-17T22:58:33Z",
+      "side": 1,
+      "message": "Should this get assigned via `fCompiler.errorReporter()` for symmetry with the getter above?",
+      "range": {
+        "startLine": 411,
+        "startChar": 4,
+        "endLine": 411,
+        "endChar": 31
+      },
+      "revId": "76aa839391548a3638c5db238c8c85bc98f11ad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
