@@ -19,7 +19,6 @@
 #include "src/sksl/dsl/DSLModifiers.h"
 #include "src/sksl/dsl/DSLType.h"
 #include "src/sksl/dsl/DSLVar.h"
-#include "src/sksl/dsl/priv/DSLWriter.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
@@ -30,7 +29,6 @@
 #include "src/sksl/ir/SkSLStatement.h"
 #include "src/sksl/ir/SkSLVariable.h"
 
-#include <cstddef>
 #include <memory>
 #include <string>
 #include <utility>
@@ -56,19 +54,24 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
                        SkSpan<DSLParameter*> params, Position pos) {
     fPosition = pos;
 
+    const Context& context = ThreadContext::Context();
     TArray<std::unique_ptr<Variable>> paramVars;
     paramVars.reserve(params.size());
     for (DSLParameter* param : params) {
-        SkASSERT(!param->fInitialValue.hasValue());
-        SkASSERT(!param->fDeclaration);
-        std::unique_ptr<SkSL::Variable> paramVar = DSLWriter::CreateParameterVar(*param);
-        if (!paramVar) {
+        paramVars.push_back(SkSL::Variable::Convert(context,
+                                                    param->fPosition,
+                                                    param->fModifiersPos,
+                                                    param->fModifiers,
+                                                    &param->fType.skslType(),
+                                                    param->fNamePosition,
+                                                    param->fName,
+                                                    SkSL::VariableStorage::kParameter));
+        if (paramVars.back() == nullptr) {
             return;
         }
-        paramVars.push_back(std::move(paramVar));
     }
     SkASSERT(SkToSizeT(paramVars.size()) == params.size());
-    fDecl = SkSL::FunctionDeclaration::Convert(ThreadContext::Context(),
+    fDecl = SkSL::FunctionDeclaration::Convert(context,
                                                pos,
                                                modifiers.fPosition,
                                                &modifiers.fModifiers,
@@ -76,12 +79,6 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
                                                std::move(paramVars),
                                                pos,
                                                &returnType.skslType());
-    if (fDecl) {
-        for (size_t i = 0; i < params.size(); ++i) {
-            params[i]->fVar = fDecl->parameters()[i];
-            params[i]->fInitialized = true;
-        }
-    }
 }
 
 void DSLFunction::prototype() {
@@ -133,6 +130,12 @@ DSLExpression DSLFunction::call(ExpressionArray args, Position pos) {
     std::unique_ptr<SkSL::Expression> result =
             SkSL::FunctionCall::Convert(ThreadContext::Context(), pos, *fDecl, std::move(args));
     return DSLExpression(std::move(result), pos);
+}
+
+void DSLFunction::addParametersToSymbolTable(const Context& context) {
+    if (fDecl) {
+        fDecl->addParametersToSymbolTable(context);
+    }
 }
 
 }  // namespace SkSL::dsl
