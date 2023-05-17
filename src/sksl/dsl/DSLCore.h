@@ -23,8 +23,6 @@ struct ProgramSettings;
 
 namespace dsl {
 
-struct DSLGlobalVar;
-
 /**
  * Starts DSL output on the current thread using the specified compiler. This must be called
  * prior to any other DSL functions.
@@ -57,11 +55,6 @@ ErrorReporter& GetErrorReporter();
  * Installs an ErrorReporter which will be notified of any errors that occur during DSL calls.
  */
 void SetErrorReporter(ErrorReporter* errorReporter);
-
-/**
- * Declares a global variable.
- */
-void Declare(DSLGlobalVar& var, Position pos = {});
 
 } // namespace dsl
 
