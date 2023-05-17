@@ -34,6 +34,7 @@ sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
                                                        GrRenderable::kYes,
                                                        isProtected);
     if (!mbet) {
+        SkDebugf("mbet failed\n");
         return nullptr;
     }
     return SkSurfaces::WrapBackendTexture(dContext,
