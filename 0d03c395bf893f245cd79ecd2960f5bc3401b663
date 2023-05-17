@@ -39,6 +39,30 @@
       },
       "revId": "0d03c395bf893f245cd79ecd2960f5bc3401b663",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b62fd7de_9eddd39e",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-17T13:01:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c6038c2_ef47247a",
+      "range": {
+        "startLine": 546,
+        "startChar": 40,
+        "endLine": 546,
+        "endChar": 50
+      },
+      "revId": "0d03c395bf893f245cd79ecd2960f5bc3401b663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
