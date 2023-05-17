@@ -12,15 +12,9 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLModifiersPool.h"  // IWYU pragma: keep
 #include "src/sksl/SkSLPool.h"
-#include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLThreadContext.h"
-#include "src/sksl/dsl/DSLVar.h"
-#include "src/sksl/dsl/priv/DSLWriter.h"
 #include "src/sksl/ir/SkSLProgram.h"
-#include "src/sksl/ir/SkSLProgramElement.h"
-#include "src/sksl/ir/SkSLStatement.h"
-#include "src/sksl/ir/SkSLVarDeclarations.h"
 
 #include <type_traits>
 #include <utility>
@@ -92,34 +86,10 @@ public:
         SkASSERT(!compiler.fContext->fSymbolTable);
         return success ? std::move(result) : nullptr;
     }
-
-    static void Declare(DSLGlobalVar& var, Position pos) {
-        std::unique_ptr<SkSL::Statement> stmt = DSLWriter::Declaration(var);
-        if (stmt && !stmt->isEmpty()) {
-            ThreadContext::ProgramElements().push_back(
-                    std::make_unique<SkSL::GlobalVarDeclaration>(std::move(stmt)));
-        }
-    }
 };
 
 std::unique_ptr<SkSL::Program> ReleaseProgram(std::unique_ptr<std::string> source) {
     return DSLCore::ReleaseProgram(std::move(source));
-}
-
-// Logically, we'd want the variable's initial value to appear on here in Declare, since that
-// matches how we actually write code (and in fact that was what our first attempt looked like).
-// Unfortunately, C++ doesn't guarantee execution order between arguments, and Declare() can appear
-// as a function argument in constructs like Block(Declare(x, 0), foo(x)). If these are executed out
-// of order, we will evaluate the reference to x before we evaluate Declare(x, 0), and thus the
-// variable's initial value is unknown at the point of reference. There are probably some other
-// issues with this as well, but it is particularly dangerous when x is const, since SkSL will
-// expect its value to be known when it is referenced and will end up asserting, dereferencing a
-// null pointer, or possibly doing something else awful.
-//
-// So, we put the initial value onto the Var itself instead of the Declare to guarantee that it is
-// always executed in the correct order.
-void Declare(DSLGlobalVar& var, Position pos) {
-    DSLCore::Declare(var, pos);
 }
 
 }  // namespace SkSL::dsl
