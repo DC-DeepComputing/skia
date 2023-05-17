@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09fd7924_f1ba3023",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-17T13:48:46Z",
+      "side": 1,
+      "message": "We should be able to clean this up with the shader node clean up that eventually I will finish documenting...",
+      "range": {
+        "startLine": 592,
+        "startChar": 0,
+        "endLine": 592,
+        "endChar": 33
+      },
+      "revId": "72f5d5c0622c4fc256a59f7df5ca07508d5d9b5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
