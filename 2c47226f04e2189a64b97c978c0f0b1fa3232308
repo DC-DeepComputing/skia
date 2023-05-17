@@ -22,6 +22,30 @@
       },
       "revId": "2c47226f04e2189a64b97c978c0f0b1fa3232308",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0a49e87_021881e4",
+        "filename": "src/cityhash/city.cc",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-17T17:22:35Z",
+      "side": 1,
+      "message": "Looks like they only use it in the 128-bit hash, which I wasn\u0027t planning to call.",
+      "parentUuid": "acec2122_578d9e17",
+      "range": {
+        "startLine": 106,
+        "startChar": 4,
+        "endLine": 106,
+        "endChar": 23
+      },
+      "revId": "2c47226f04e2189a64b97c978c0f0b1fa3232308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
