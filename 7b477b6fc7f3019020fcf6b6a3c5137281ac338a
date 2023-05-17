@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c751f50c_8acb3c0a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-17T19:56:13Z",
+      "side": 1,
+      "message": "Ah, I see - I had just noticed we reference SPIR-V in D3D in Ganesh, but looking more closely, we only use the SPIRVUniformHandler (\"Spirv-Cross uses the descriptor set as the space in HLSL\").",
+      "parentUuid": "184a81d0_c66d797b",
+      "range": {
+        "startLine": 13,
+        "startChar": 80,
+        "endLine": 13,
+        "endChar": 83
+      },
+      "revId": "7b477b6fc7f3019020fcf6b6a3c5137281ac338a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0419bb89_b4a6029c",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 10
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e4f9d9d_54483900",
+        "filename": "gn/graphite.gni",
+        "patchSetId": 10
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-17T19:56:13Z",
+      "side": 1,
+      "message": "Can/will do depending on your response to my question on your other comment. 👍",
+      "parentUuid": "c37bc239_c1554e9b",
+      "range": {
+        "startLine": 131,
+        "startChar": 3,
+        "endLine": 131,
+        "endChar": 32
+      },
+      "revId": "7b477b6fc7f3019020fcf6b6a3c5137281ac338a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c668b9e_4220c0ff",
         "filename": "src/gpu/graphite/SkSLSPIRVUtilsPriv.cpp",
         "patchSetId": 10
@@ -77,6 +125,24 @@
       "writtenOn": "2023-05-17T17:56:46Z",
       "side": 1,
       "message": "I\u0027m not thrilled about compiling this for other backends but I\u0027m not sure how to handle it other than going through a lot of GN/Bazel rigmarole for a shared Dawn/Vulkan group. Doesn\u0027t seem worth it for one small routine.",
+      "revId": "7b477b6fc7f3019020fcf6b6a3c5137281ac338a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d856ef6_174b4968",
+        "filename": "src/gpu/graphite/SkSLSPIRVUtilsPriv.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-17T19:56:13Z",
+      "side": 1,
+      "message": "I agree. I had the same inner turmoil about compiling this for Metal. The third option is just having repeat code w/ slightly different naming to avoid naming conflicts within Dawn \u0026 Vulkan. Would that be more appealing than a universally-compiled PipelineUtils?",
+      "parentUuid": "3c668b9e_4220c0ff",
       "revId": "7b477b6fc7f3019020fcf6b6a3c5137281ac338a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
