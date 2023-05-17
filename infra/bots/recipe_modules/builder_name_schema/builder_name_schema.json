@@ -20,6 +20,12 @@
         "cross"
       ]
     },
+    "TestPrebuiltBazelTargetOnDevice": {
+      "keys": [
+        "label",
+        "config"
+      ]
+    },
     "Build": {
       "keys": [
         "os",
