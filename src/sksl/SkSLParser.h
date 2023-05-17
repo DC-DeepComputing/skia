@@ -39,6 +39,7 @@ class SymbolTable;
 enum class ProgramKind : int8_t;
 struct Module;
 struct Program;
+class Variable;
 
 /**
  * Consumes .sksl text and invokes DSL functions to instantiate the program.
@@ -167,8 +168,7 @@ private:
 
     dsl::DSLType structDeclaration();
 
-    skia_private::TArray<dsl::DSLGlobalVar> structVarDeclaration(
-            Position start, const dsl::DSLModifiers& modifiers);
+    void structVarDeclaration(Position start, const dsl::DSLModifiers& modifiers);
 
     bool allowUnsizedArrays() {
         return ProgramConfig::IsCompute(fKind) || ProgramConfig::IsFragment(fKind) ||
@@ -286,7 +286,7 @@ private:
 
     std::shared_ptr<SymbolTable>& symbolTable();
 
-    void addToSymbolTable(dsl::DSLVarBase& var, Position pos = {});
+    void addToSymbolTable(Variable* var);
 
     class Checkpoint {
     public:
