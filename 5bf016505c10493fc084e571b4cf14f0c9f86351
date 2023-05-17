@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce8a6c68_2ed78945",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-17T20:21:34Z",
+      "side": 1,
+      "message": "Note that the Canary-G3 succeeded this time.",
+      "revId": "5bf016505c10493fc084e571b4cf14f0c9f86351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
