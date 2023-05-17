@@ -35,11 +35,11 @@ wgpu::TextureFormat DawnDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlag
 
 bool SkSLToSPIRV(SkSL::Compiler*,
                  const std::string& sksl,
-                 SkSL::ProgramKind kind,
-                 const SkSL::ProgramSettings& settings,
+                 SkSL::ProgramKind,
+                 const SkSL::ProgramSettings&,
                  std::string* spirv,
-                 SkSL::Program::Interface* outInterface,
-                 ShaderErrorHandler* errorHandler);
+                 SkSL::Program::Interface*,
+                 ShaderErrorHandler*);
 
 wgpu::ShaderModule DawnCompileSPIRVShaderModule(const DawnSharedContext* sharedContext,
                                                 const std::string& spirv,
