@@ -19,7 +19,6 @@
 #include "src/sksl/dsl/DSLModifiers.h"
 #include "src/sksl/dsl/DSLType.h"
 #include "src/sksl/dsl/DSLVar.h"
-#include "src/sksl/dsl/priv/DSLWriter.h"
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
@@ -55,19 +54,24 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
                        SkSpan<DSLParameter*> params, Position pos) {
     fPosition = pos;
 
+    const Context& context = ThreadContext::Context();
     TArray<std::unique_ptr<Variable>> paramVars;
     paramVars.reserve(params.size());
     for (DSLParameter* param : params) {
-        SkASSERT(!param->fInitialValue.hasValue());
-        SkASSERT(!param->fDeclaration);
-        std::unique_ptr<SkSL::Variable> paramVar = DSLWriter::CreateParameterVar(*param);
-        if (!paramVar) {
+        paramVars.push_back(SkSL::Variable::Convert(context,
+                                                    param->fPosition,
+                                                    param->fModifiersPos,
+                                                    param->fModifiers,
+                                                    &param->fType.skslType(),
+                                                    param->fNamePosition,
+                                                    param->fName,
+                                                    SkSL::VariableStorage::kParameter));
+        if (paramVars.back() == nullptr) {
             return;
         }
-        paramVars.push_back(std::move(paramVar));
     }
     SkASSERT(SkToSizeT(paramVars.size()) == params.size());
-    fDecl = SkSL::FunctionDeclaration::Convert(ThreadContext::Context(),
+    fDecl = SkSL::FunctionDeclaration::Convert(context,
                                                pos,
                                                modifiers.fPosition,
                                                &modifiers.fModifiers,
