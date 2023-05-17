@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3790c8f_432ddc79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-17T15:27:27Z",
+      "side": 1,
+      "message": "This resolves the issue of clipping when doing a flush for a dst read, but it does feel a little awkward to me to be returning all this stuff from applyClipToDraw() just to pass along to the new updateForDraw() method. Also, I\u0027m not sure if this will help address b/273924867.",
+      "revId": "461cf377638dfac97dcb44e912e654ba52ad3402",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
