@@ -524,7 +524,7 @@ bool Compiler::toSPIRV(Program& program, OutputStream& out) {
     ProgramSettings settings;
     settings.fUseMemoryPool = false;
     dsl::Start(this, program.fConfig->fKind, settings);
-    dsl::SetErrorReporter(&fErrorReporter);
+    fContext->fErrors = &fErrorReporter;
     fContext->fSymbolTable = program.fSymbols;
 #ifdef SK_ENABLE_SPIRV_VALIDATION
     StringStream buffer;

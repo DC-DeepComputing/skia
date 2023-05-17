@@ -7,6 +7,8 @@
 
 #include "src/sksl/ir/SkSLSymbolTable.h"
 
+#include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLType.h"
@@ -96,8 +98,9 @@ void SymbolTable::addWithoutOwnership(Symbol* symbol) {
         }
     }
 
-    ThreadContext::ReportError("symbol '" + std::string(symbol->name()) + "' was already defined",
-                               symbol->fPosition);
+    ThreadContext::Context().fErrors->error(
+            symbol->fPosition,
+            "symbol '" + std::string(symbol->name()) + "' was already defined");
 }
 
 void SymbolTable::injectWithoutOwnership(Symbol* symbol) {

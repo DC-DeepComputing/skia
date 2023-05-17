@@ -8,6 +8,7 @@
 #include "src/sksl/SkSLThreadContext.h"
 
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLModifiersPool.h"
 #include "src/sksl/SkSLPool.h"
 #include "src/sksl/SkSLPosition.h"
@@ -77,15 +78,6 @@ SkSL::Context& ThreadContext::Context() {
 
 ThreadContext::RTAdjustData& ThreadContext::RTAdjustState() {
     return Instance().fRTAdjust;
-}
-
-void ThreadContext::SetErrorReporter(ErrorReporter* errorReporter) {
-    SkASSERT(errorReporter);
-    Context().fErrors = errorReporter;
-}
-
-void ThreadContext::ReportError(std::string_view msg, Position pos) {
-    GetErrorReporter().error(pos, msg);
 }
 
 void ThreadContext::DefaultErrorReporter::handleError(std::string_view msg, Position pos) {
