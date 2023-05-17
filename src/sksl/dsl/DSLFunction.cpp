@@ -105,18 +105,18 @@ void DSLFunction::define(DSLStatement block, Position pos) {
     // reserved for actual intrinsics.)
     const Context& context = ThreadContext::Context();
     if (is_intrinsic_in_module(context, fDecl->name())) {
-        ThreadContext::ReportError(
+        context.fErrors->error(
+                fDecl->fPosition,
                 SkSL::String::printf("Intrinsic function '%.*s' should not have a definition",
                                      (int)fDecl->name().size(),
-                                     fDecl->name().data()),
-                fDecl->fPosition);
+                                     fDecl->name().data()));
         return;
     }
 
     if (fDecl->definition()) {
-        ThreadContext::ReportError(SkSL::String::printf("function '%s' was already defined",
-                                                        fDecl->description().c_str()),
-                                   fDecl->fPosition);
+        context.fErrors->error(fDecl->fPosition,
+                               SkSL::String::printf("function '%s' was already defined",
+                                                    fDecl->description().c_str()));
         return;
     }
     std::unique_ptr<FunctionDefinition> function = FunctionDefinition::Convert(

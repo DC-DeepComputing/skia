@@ -79,15 +79,6 @@ ThreadContext::RTAdjustData& ThreadContext::RTAdjustState() {
     return Instance().fRTAdjust;
 }
 
-void ThreadContext::SetErrorReporter(ErrorReporter* errorReporter) {
-    SkASSERT(errorReporter);
-    Context().fErrors = errorReporter;
-}
-
-void ThreadContext::ReportError(std::string_view msg, Position pos) {
-    GetErrorReporter().error(pos, msg);
-}
-
 void ThreadContext::DefaultErrorReporter::handleError(std::string_view msg, Position pos) {
     SK_ABORT("error: %.*s\nNo SkSL error reporter configured, treating this as a fatal error\n",
              (int)msg.length(), msg.data());

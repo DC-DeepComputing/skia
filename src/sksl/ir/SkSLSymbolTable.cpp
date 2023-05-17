@@ -96,8 +96,9 @@ void SymbolTable::addWithoutOwnership(Symbol* symbol) {
         }
     }
 
-    ThreadContext::ReportError("symbol '" + std::string(symbol->name()) + "' was already defined",
-                               symbol->fPosition);
+    ThreadContext::Context().fErrors->error(
+            symbol->fPosition,
+            "symbol '" + std::string(symbol->name()) + "' was already defined");
 }
 
 void SymbolTable::injectWithoutOwnership(Symbol* symbol) {

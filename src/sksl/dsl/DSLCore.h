@@ -43,17 +43,6 @@ void StartModule(SkSL::Compiler* compiler,
  */
 void End();
 
-/**
- * Returns the ErrorReporter which will be notified of any errors that occur during compilation. The
- * default error reporter aborts on any error.
- */
-ErrorReporter& GetErrorReporter();
-
-/**
- * Installs an ErrorReporter which will be notified of any errors that occur during compilation.
- */
-void SetErrorReporter(ErrorReporter* errorReporter);
-
 }  // namespace dsl
 }  // namespace SkSL
 

@@ -82,22 +82,6 @@ public:
      */
     static RTAdjustData& RTAdjustState();
 
-    /**
-     * Returns the ErrorReporter associated with the current thread. This object will be notified
-     * when any DSL errors occur.
-     */
-    static ErrorReporter& GetErrorReporter() {
-        return *Context().fErrors;
-    }
-
-    static void SetErrorReporter(ErrorReporter* errorReporter);
-
-    /**
-     * Notifies the current ErrorReporter that an error has occurred. The default error handler
-     * prints the message to stderr and aborts.
-     */
-    static void ReportError(std::string_view msg, Position pos = Position{});
-
     static ThreadContext& Instance();
 
     static void SetInstance(std::unique_ptr<ThreadContext> instance);
