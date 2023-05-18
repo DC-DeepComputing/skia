@@ -93,6 +93,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "968949bc_edf38fcd",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 2366,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T15:51:11Z",
+      "side": 1,
+      "message": "We have some tests that specifically target Android 12, see https://skia.googlesource.com/skia/+/ac47a05bf253bda651d1004f3fd0daff06d11f53/infra/bots/gen_tasks_logic/gen_tasks_logic.go#885.",
+      "parentUuid": "7beffc80_9d56b37f",
+      "range": {
+        "startLine": 2366,
+        "startChar": 42,
+        "endLine": 2366,
+        "endChar": 69
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18f8ca94_d6735750",
@@ -141,6 +165,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "806a1b3d_9529da36",
+        "filename": "infra/bots/recipe_modules/builder_name_schema/builder_name_schema.json",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T15:51:11Z",
+      "side": 1,
+      "message": "IIRC in one of our chats we were unsure about reusing BazelTest because this isn\u0027t actually running `bazel test`. Are you still OK reusing BazelTest?",
+      "parentUuid": "35451955_e645372f",
+      "range": {
+        "startLine": 23,
+        "startChar": 5,
+        "endLine": 23,
+        "endChar": 36
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "af17e031_5c5e8b3d",
         "filename": "infra/bots/task_drivers/test_prebuilt_bazel_target_on_device/test_prebuilt_bazel_target_on_device.go",
         "patchSetId": 15
@@ -152,6 +200,24 @@
       "writtenOn": "2023-05-18T15:39:55Z",
       "side": 1,
       "message": "This taskdriver has a long name that I do not think is necessary. It puts too many details in an executable name that could change.\n\nWhat about native_device or native_android or android_device or something like that?",
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e938670_37a8b169",
+        "filename": "infra/bots/task_drivers/test_prebuilt_bazel_target_on_device/test_prebuilt_bazel_target_on_device.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T15:51:11Z",
+      "side": 1,
+      "message": "How about `bazel_precompiled_test`?",
+      "parentUuid": "af17e031_5c5e8b3d",
       "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
