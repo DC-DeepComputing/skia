@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13ca024a_5e1e5bd7",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-18T17:22:08Z",
+      "side": 1,
+      "message": "`TaggedSrc` and `TaggedSink` are derived from `unique_ptr`, so they trigger the warning, but you can\u0027t just replace this with an assignment. Also, this is DM, so I don\u0027t care.",
+      "revId": "8c080d29df2e96db8c295d4e3ce8b9549558be41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
