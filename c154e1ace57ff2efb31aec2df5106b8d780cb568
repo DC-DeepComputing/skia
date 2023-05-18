@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bac7b1e3_ba51bb0b",
+        "filename": "gm/arithmode.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-18T20:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c9a2188_95e1dd0b",
+      "range": {
+        "startLine": 125,
+        "startChar": 34,
+        "endLine": 125,
+        "endChar": 39
+      },
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6dfd08d_9148a587",
@@ -54,6 +78,24 @@
       "writtenOn": "2023-05-18T17:15:39Z",
       "side": 1,
       "message": "This variant seems like it could go",
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eeb45f2_cdb1c080",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-18T20:01:20Z",
+      "side": 1,
+      "message": "Let\u0027s revisit that when the dust settles. This was the original factory function for the image-image filter, so I\u0027m not sure how many places will need to be migrated.",
+      "parentUuid": "b6dfd08d_9148a587",
       "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -94,6 +136,48 @@
       "writtenOn": "2023-05-18T17:15:39Z",
       "side": 1,
       "message": "This seems poorly named (I know this isn\u0027t from your change). Maybe can_layer_be_drawn_as_sprite.",
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "519c1d2a_2e0ee549",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1087,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-18T20:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9fff41a_04701f25",
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b7e24da_c225a800",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1087,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-18T20:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76c5ce22_c62e2b9d",
+      "range": {
+        "startLine": 1087,
+        "startChar": 27,
+        "endLine": 1087,
+        "endChar": 33
+      },
       "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -145,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2e7cf06_a0efff43",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-18T20:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "641d154a_6d213a3c",
+      "range": {
+        "startLine": 784,
+        "startChar": 0,
+        "endLine": 785,
+        "endChar": 85
+      },
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3da6f52f_17a33a13",
@@ -168,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6151cd56_e27c488d",
+        "filename": "src/effects/imagefilters/SkImageImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-18T20:01:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3da6f52f_17a33a13",
+      "range": {
+        "startLine": 39,
+        "startChar": 89,
+        "endLine": 39,
+        "endChar": 94
+      },
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f8ecd76_213d0f31",
@@ -181,6 +313,30 @@
       "writtenOn": "2023-05-18T17:15:39Z",
       "side": 1,
       "message": "This is sub-optimal indenting. Here and below.",
+      "range": {
+        "startLine": 2128,
+        "startChar": 0,
+        "endLine": 2129,
+        "endChar": 70
+      },
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1530ada_e31955dd",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-18T20:01:20Z",
+      "side": 1,
+      "message": "I tweaked them a bit but I cannot find a good indenting for these lines. I think it\u0027ll be a bit better when the tests are updated to use getInputBound() and getOutputBounds()",
+      "parentUuid": "2f8ecd76_213d0f31",
       "range": {
         "startLine": 2128,
         "startChar": 0,
