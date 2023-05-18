@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ac49d37_f36a0afd",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-18T16:24:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c6e00003_1b1d1efc",
+      "revId": "76aa839391548a3638c5db238c8c85bc98f11ad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8119a5c4_482c5b1c",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-05-17T22:58:33Z",
       "side": 1,
       "message": "\u0026`fParser-\u003efCompiler.errorContext()`?",
+      "range": {
+        "startLine": 167,
+        "startChar": 15,
+        "endLine": 167,
+        "endChar": 51
+      },
+      "revId": "76aa839391548a3638c5db238c8c85bc98f11ad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6525276f_7e364e05",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-18T16:24:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8119a5c4_482c5b1c",
       "range": {
         "startLine": 167,
         "startChar": 15,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa877a6b_283a0174",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-18T16:24:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "00d974b4_175ac931",
+      "range": {
+        "startLine": 396,
+        "startChar": 4,
+        "endLine": 396,
+        "endChar": 47
+      },
+      "revId": "76aa839391548a3638c5db238c8c85bc98f11ad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b6a242d_7d5b200f",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d13fdbe_7ee4be54",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-18T16:24:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9b6a242d_7d5b200f",
+      "range": {
+        "startLine": 400,
+        "startChar": 8,
+        "endLine": 400,
+        "endChar": 35
+      },
+      "revId": "76aa839391548a3638c5db238c8c85bc98f11ad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebcc988b_9f9edd4e",
@@ -100,6 +190,30 @@
       "writtenOn": "2023-05-17T22:58:33Z",
       "side": 1,
       "message": "Should this get assigned via `fCompiler.errorReporter()` for symmetry with the getter above?",
+      "range": {
+        "startLine": 411,
+        "startChar": 4,
+        "endLine": 411,
+        "endChar": 31
+      },
+      "revId": "76aa839391548a3638c5db238c8c85bc98f11ad6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ab31d7b_fa817b65",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-18T16:24:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ebcc988b_9f9edd4e",
       "range": {
         "startLine": 411,
         "startChar": 4,
