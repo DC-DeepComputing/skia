@@ -1084,11 +1084,15 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec, SaveLayerStrategy stra
             skif::DeviceSpace<SkIRect> output =
                     as_IFB(filter)->getOutputBounds(newLayerMapping, emptyInput);
             if (SkIRect::Intersects(SkIRect(output), priorDevice->devClipBounds())) {
+                const bool use_nn = draw_layer_as_sprite(newLayerMapping.layerToDevice(),
+                                                         SkIRect(output).size());
+
+                SkSamplingOptions sampling{use_nn ? SkFilterMode::kNearest : SkFilterMode::kLinear};
                 priorDevice->drawFilteredImage(newLayerMapping,
                                                /*src=*/nullptr,
                                                image_filter_color_type(priorDevice->imageInfo()),
                                                filter,
-                                               /*sampling=*/{},
+                                               sampling,
                                                restorePaint);
             }
         }
