@@ -3678,7 +3678,8 @@
         "--out_path=bazel_output",
         "--bazel_bin_subdir=tests",
         "--bazel_arg=--config=linux_rbe",
-        "--bazel_arg=--jobs=100"
+        "--bazel_arg=--jobs=100",
+        "--bazel_arg=--adb_test_runner_target_platform=linux_arm64"
       ],
       "dependencies": [
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
@@ -72573,8 +72574,8 @@
         "--task_id=<(TASK_ID)",
         "--task_name=TestPrebuiltBazelTargetOnDevice-android_codec_test-pixel_5",
         "--workdir=.",
-        "--command=tests/android_codec_test",
-        "--command_workdir=bazel_output"
+        "--command=bazel_output/tests/android_codec_test",
+        "--command_workdir=bazel_output/tests/android_codec_test.runfiles/skia"
       ],
       "dependencies": [
         "BazelBuild-android_codec_test-pixel_5-linux_x64",
