@@ -257,8 +257,8 @@ func (p parts) bazelBuildParts() (label string, config string, host string, cros
 
 // bazelTestParts returns all parts from the BazelTest schema. task_driver, config, and host are
 // required; cross is optional.
-func (p parts) bazelTestParts() (taskDriver string, config string, host string, cross string) {
-	return p["task_driver"], p["config"], p["host"], p["cross"]
+func (p parts) bazelTestParts() (taskDriver string, label string, config string, host string, cross string) {
+	return p["task_driver"], p["label"], p["config"], p["host"], p["cross"]
 }
 
 // TODO(borenet): The below really belongs in its own file, probably next to the

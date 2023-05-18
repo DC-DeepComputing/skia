@@ -60,29 +60,29 @@
         "BazelBuild-tests-vulkan_ganesh-linux_x64"
       ]
     },
-    "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
       "tasks": [
-        "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64"
+        "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64"
       ]
     },
-    "BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64": {
       "tasks": [
-        "BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64"
+        "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64"
       ]
     },
-    "BazelTest-cpu_tests-cpu_only_debug_rbe-linux_x64": {
+    "BazelTest-cpu_tests-tests-cpu_only_debug_rbe-linux_x64": {
       "tasks": [
-        "BazelTest-cpu_tests-cpu_only_debug_rbe-linux_x64"
+        "BazelTest-cpu_tests-tests-cpu_only_debug_rbe-linux_x64"
       ]
     },
-    "BazelTest-cpu_tests-cpu_only_release_rbe-linux_x64": {
+    "BazelTest-cpu_tests-tests-cpu_only_release_rbe-linux_x64": {
       "tasks": [
-        "BazelTest-cpu_tests-cpu_only_release_rbe-linux_x64"
+        "BazelTest-cpu_tests-tests-cpu_only_release_rbe-linux_x64"
       ]
     },
-    "BazelTest-toolchain_layering_check-release-linux_x64": {
+    "BazelTest-toolchain_layering_check-experimental_bazel_test_client-release-linux_x64": {
       "tasks": [
-        "BazelTest-toolchain_layering_check-release-linux_x64"
+        "BazelTest-toolchain_layering_check-experimental_bazel_test_client-release-linux_x64"
       ]
     },
     "Build-Debian10-Clang-arm-Debug-Android": {
@@ -4152,7 +4152,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4170,7 +4170,8 @@
         "./canvaskit_gold",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64",
+        "--task_name=BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64",
+        "--test_label=//modules/canvaskit:canvaskit_js_tests",
         "--test_config=ck_full_cpu_release_chrome",
         "--workdir=.",
         "--goldctl_path=./cipd_bin_packages/goldctl",
@@ -4203,7 +4204,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4221,7 +4222,8 @@
         "./canvaskit_gold",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64",
+        "--task_name=BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64",
+        "--test_label=//modules/canvaskit:canvaskit_js_tests",
         "--test_config=ck_full_webgl2_release_chrome",
         "--workdir=.",
         "--goldctl_path=./cipd_bin_packages/goldctl",
@@ -4254,7 +4256,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-cpu_tests-cpu_only_debug_rbe-linux_x64": {
+    "BazelTest-cpu_tests-tests-cpu_only_debug_rbe-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4267,7 +4269,8 @@
         "./cpu_tests",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-cpu_tests-cpu_only_debug_rbe-linux_x64",
+        "--task_name=BazelTest-cpu_tests-tests-cpu_only_debug_rbe-linux_x64",
+        "--test_label=//tests/...",
         "--test_config=cpu_only_debug_rbe",
         "--workdir=."
       ],
@@ -4290,7 +4293,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-cpu_tests-cpu_only_release_rbe-linux_x64": {
+    "BazelTest-cpu_tests-tests-cpu_only_release_rbe-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4303,7 +4306,8 @@
         "./cpu_tests",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-cpu_tests-cpu_only_release_rbe-linux_x64",
+        "--task_name=BazelTest-cpu_tests-tests-cpu_only_release_rbe-linux_x64",
+        "--test_label=//tests/...",
         "--test_config=cpu_only_release_rbe",
         "--workdir=."
       ],
@@ -4326,7 +4330,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-toolchain_layering_check-release-linux_x64": {
+    "BazelTest-toolchain_layering_check-experimental_bazel_test_client-release-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
         {
@@ -4339,7 +4343,8 @@
         "./toolchain_layering_check",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-toolchain_layering_check-release-linux_x64",
+        "--task_name=BazelTest-toolchain_layering_check-experimental_bazel_test_client-release-linux_x64",
+        "--test_label=//experimental/bazel_test/client:client_lib",
         "--test_config=release",
         "--workdir=."
       ],
@@ -93420,20 +93425,20 @@
     "BazelBuild-skia_public-release-linux_x64": {},
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {},
     "BazelBuild-tests-enforce_iwyu-linux_x64": {},
-    "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64": {
       "location_regexes": [
         "modules/canvaskit/.*"
       ]
     },
-    "BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64": {
       "location_regexes": [
         "modules/canvaskit/.*"
       ]
     },
-    "BazelTest-cpu_tests-cpu_only_debug_rbe-linux_x64": {
+    "BazelTest-cpu_tests-tests-cpu_only_debug_rbe-linux_x64": {
       "experimental": true
     },
-    "BazelTest-cpu_tests-cpu_only_release_rbe-linux_x64": {
+    "BazelTest-cpu_tests-tests-cpu_only_release_rbe-linux_x64": {
       "experimental": true
     },
     "Build-Debian10-Clang-arm-Debug-Android": {},
