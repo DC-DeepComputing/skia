@@ -212,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9e0f8aa_c1ef933c",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 15
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T20:22:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18f8ca94_d6735750",
+      "range": {
+        "startLine": 29,
+        "startChar": 12,
+        "endLine": 29,
+        "endChar": 43
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35451955_e645372f",
@@ -404,6 +428,24 @@
       "side": 1,
       "message": "Works for me",
       "parentUuid": "5e938670_37a8b169",
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bab764b8_49410262",
+        "filename": "infra/bots/task_drivers/test_prebuilt_bazel_target_on_device/test_prebuilt_bazel_target_on_device.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T20:22:41Z",
+      "side": 1,
+      "message": "Done, though I had to name it `bazel_test_precompiled` because Gazelle assumes anything ending with `_test.go` is a Go test.",
+      "parentUuid": "5f9f6380_30ffe9ad",
       "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
