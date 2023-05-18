@@ -20,6 +20,86 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c9a2188_95e1dd0b",
+        "filename": "gm/arithmode.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-18T17:15:39Z",
+      "side": 1,
+      "message": "Do we care to remove \u0027rect\u0027s use as a hint? Here and below",
+      "range": {
+        "startLine": 125,
+        "startChar": 34,
+        "endLine": 125,
+        "endChar": 39
+      },
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6dfd08d_9148a587",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-18T17:15:39Z",
+      "side": 1,
+      "message": "This variant seems like it could go",
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76c5ce22_c62e2b9d",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1087,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-18T17:15:39Z",
+      "side": 1,
+      "message": "useNN ?",
+      "range": {
+        "startLine": 1087,
+        "startChar": 27,
+        "endLine": 1087,
+        "endChar": 33
+      },
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9fff41a_04701f25",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1087,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-18T17:15:39Z",
+      "side": 1,
+      "message": "This seems poorly named (I know this isn\u0027t from your change). Maybe can_layer_be_drawn_as_sprite.",
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b1518870_d35c16fa",
         "filename": "src/core/SkImageFilterTypes.cpp",
         "patchSetId": 8
@@ -36,6 +116,76 @@
         "startChar": 0,
         "endLine": 785,
         "endChar": 85
+      },
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "641d154a_6d213a3c",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-18T17:15:39Z",
+      "side": 1,
+      "message": "I\u0027m a bit surprised we don\u0027t already have an isIRect helper somewhere",
+      "parentUuid": "b1518870_d35c16fa",
+      "range": {
+        "startLine": 784,
+        "startChar": 0,
+        "endLine": 785,
+        "endChar": 85
+      },
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3da6f52f_17a33a13",
+        "filename": "src/effects/imagefilters/SkImageImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-18T17:15:39Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 39,
+        "startChar": 89,
+        "endLine": 39,
+        "endChar": 94
+      },
+      "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f8ecd76_213d0f31",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2129,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-18T17:15:39Z",
+      "side": 1,
+      "message": "This is sub-optimal indenting. Here and below.",
+      "range": {
+        "startLine": 2128,
+        "startChar": 0,
+        "endLine": 2129,
+        "endChar": 70
       },
       "revId": "c154e1ace57ff2efb31aec2df5106b8d780cb568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
