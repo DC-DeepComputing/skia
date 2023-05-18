@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e057bf4f_9abc4c03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-18T11:12:51Z",
+      "side": 1,
+      "message": "lgtm overall. I think we can move `skjpeg_make_xmp` to just be a static file in SkJpegCodec.cpp",
+      "revId": "548839d567b063973e78d0f6baec80c166f64e5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0b658dd_b7d1ddee",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-18T11:12:51Z",
+      "side": 1,
+      "message": "I\u0027d make `skjpeg_make_xmp` be static function here.",
+      "revId": "548839d567b063973e78d0f6baec80c166f64e5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54851473_f6ee9fb7",
+        "filename": "tests/JpegGainmapTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-18T11:12:51Z",
+      "side": 1,
+      "message": "I think if you just delete the `\"http://ns.adobe.com/xap/1.0/\\0\"` line, then you can use SkXmp::Make directly.",
+      "revId": "548839d567b063973e78d0f6baec80c166f64e5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
