@@ -57,6 +57,30 @@
       },
       "revId": "2c322383044e4ee20815bd1d353adc0180f6b9f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55e6a954_5e779ac5",
+        "filename": "src/ports/fontations/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T13:22:31Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ff7bece2_17c98b39",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 32
+      },
+      "revId": "2c322383044e4ee20815bd1d353adc0180f6b9f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
