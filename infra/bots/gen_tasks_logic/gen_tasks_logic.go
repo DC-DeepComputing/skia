@@ -2213,8 +2213,10 @@ func (b *jobBuilder) bazelBuild() {
 			if labelAndBazelBinSubdir.bazelBinSubdir != "" {
 				// We assume that builds which require storing a subset of //bazel-bin to CAS are Android
 				// builds. We want such builds to use RBE, and we want to download all built artifacts.
+				// Also, we need the adb_test runner to be cross-compiled to run on a Raspberry Pi.
 				cmd = append(cmd, "--bazel_arg=--config=linux_rbe")
 				cmd = append(cmd, "--bazel_arg=--jobs=100")
+				cmd = append(cmd, "--bazel_arg=--adb_test_runner_target_platform=linux_arm64")
 			} else {
 				// We want all Linux Bazel Builds to use RBE
 				cmd = append(cmd, "--bazel_arg=--config=for_linux_x64_with_rbe")

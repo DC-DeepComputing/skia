@@ -3678,7 +3678,8 @@
         "--out_path=bazel_output",
         "--bazel_bin_subdir=tests",
         "--bazel_arg=--config=linux_rbe",
-        "--bazel_arg=--jobs=100"
+        "--bazel_arg=--jobs=100",
+        "--bazel_arg=--adb_test_runner_target_platform=linux_arm64"
       ],
       "dependencies": [
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
