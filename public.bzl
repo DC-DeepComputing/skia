@@ -378,7 +378,7 @@ BASE_SRCS_ALL = [
     "src/core/SkBlitter_A8.h",
     "src/core/SkBlitter_ARGB32.cpp",
     "src/core/SkBlitter_Sprite.cpp",
-    "src/core/SkBlurMF.cpp",
+    "src/core/SkBlurMaskFilterImpl.cpp",
     "src/core/SkBlurMask.cpp",
     "src/core/SkBlurMask.h",
     "src/core/SkCachedData.cpp",

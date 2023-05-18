@@ -40,6 +40,7 @@
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrFPArgs.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
+#include "src/gpu/ganesh/GrFragmentProcessors.h"
 #include "src/gpu/ganesh/GrPaint.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
@@ -483,9 +484,8 @@ static inline bool skpaint_to_grpaint_impl(
         }
     }
 
-    SkMaskFilterBase* maskFilter = as_MFB(skPaint.getMaskFilter());
-    if (maskFilter) {
-        if (auto mfFP = maskFilter->asFragmentProcessor(fpArgs, ctm)) {
+    if (auto maskFilter = skPaint.getMaskFilter()) {
+        if (auto mfFP = GrFragmentProcessors::Make(maskFilter, fpArgs, ctm)) {
             grPaint->setCoverageFragmentProcessor(std::move(mfFP));
         }
     }

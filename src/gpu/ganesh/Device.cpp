@@ -73,6 +73,7 @@
 #include "src/gpu/ganesh/GrColorInfo.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
+#include "src/gpu/ganesh/GrFragmentProcessors.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
 #include "src/gpu/ganesh/GrPaint.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
@@ -608,9 +609,9 @@ void Device::drawRRect(const SkRRect& rrect, const SkPaint& paint) {
     ASSERT_SINGLE_OWNER
     GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::ganesh::Device", "drawRRect", fContext.get());
 
-    SkMaskFilterBase* mf = as_MFB(paint.getMaskFilter());
+    auto mf = paint.getMaskFilter();
     if (mf) {
-        if (mf->hasFragmentProcessor()) {
+        if (GrFragmentProcessors::IsSupported(mf)) {
             mf = nullptr; // already handled in SkPaintToGrPaint
         }
     }

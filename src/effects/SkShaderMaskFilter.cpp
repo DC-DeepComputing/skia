@@ -41,6 +41,7 @@ public:
     SkShaderMF(sk_sp<SkShader> shader) : fShader(std::move(shader)) {}
 
     SkMask::Format getFormat() const override { return SkMask::kA8_Format; }
+    SkMaskFilterBase::Type type() const override { return SkMaskFilterBase::Type::kShader; }
 
     bool filterMask(SkMask* dst, const SkMask& src, const SkMatrix&,
                     SkIPoint* margin) const override;
