@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cffec421_5f6ab7e0",
+        "filename": "tests/android.bzl",
+        "patchSetId": 14
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T01:19:14Z",
+      "side": 1,
+      "message": "We do need to support skipping unit tests, see e.g. https://skia.googlesource.com/skia/+/caff30d16ae7411fb6a7a192d4ac8aa112d2b31d/infra/bots/gen_tasks_logic/dm_flags.go#417.",
+      "parentUuid": "74247f87_4ecb1313",
+      "range": {
+        "startLine": 158,
+        "startChar": 12,
+        "endLine": 159,
+        "endChar": 57
+      },
+      "revId": "310609b71990676af4f44d872946e4ac2ff135f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de53bf95_aa41c513",
