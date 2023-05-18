@@ -155,8 +155,16 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
         for (bool isProtected : { true, false }) {
             sk_sp<SkSurface> surface = create_protected_sksurface(dContext, reporter, textureable,
                                                                   isProtected);
+            if (!surface) {
+                continue;
+            }
 
             sk_sp<SkImage> image = surface->makeImageSnapshot();
+            if (!image) {
+                ERRORF(reporter, "Could not makeImageSnapshot from a %s surface.",
+                       isProtected ? "protected" : "unprotected");
+                continue;
+            }
 
             dContext->submit(/* syncCpu= */ true);
 
@@ -180,6 +188,11 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
 
             REPORTER_ASSERT(reporter, beTex.isValid());
             REPORTER_ASSERT(reporter, beTex.isProtected() == isProtected);
+
+            dContext->flushAndSubmit(/* syncCpu= */ true);
+            if (beTex.isValid()) {
+                dContext->deleteBackendTexture(beTex);
+            }
         }
     }
 }
