@@ -16,6 +16,52 @@
       "message": "Note that the Canary-G3 succeeded this time.",
       "revId": "5bf016505c10493fc084e571b4cf14f0c9f86351",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f3fc651_be869935",
+        "filename": "include/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T12:06:05Z",
+      "side": 1,
+      "message": "This is where the select statement should go based on gpu backend.",
+      "range": {
+        "startLine": 38,
+        "startChar": 19,
+        "endLine": 38,
+        "endChar": 26
+      },
+      "revId": "5bf016505c10493fc084e571b4cf14f0c9f86351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4281e43b_6fc65c18",
+        "filename": "include/android/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T12:06:05Z",
+      "side": 1,
+      "message": "This select should not be here, or it will not be possible to use in :skia_vulkan (which cannot set flags)",
+      "range": {
+        "startLine": 23,
+        "startChar": 19,
+        "endLine": 23,
+        "endChar": 34
+      },
+      "revId": "5bf016505c10493fc084e571b4cf14f0c9f86351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
