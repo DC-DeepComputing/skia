@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4248b4e4_0958f3da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T15:41:38Z",
+      "side": 1,
+      "message": "PTAL: All clients except Flutter have passed, which had an issue with cityhash (unrelated to this CL)",
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
