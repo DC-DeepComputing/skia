@@ -25,6 +25,8 @@
   {"name": "BazelBuild-tests-cpu_only-linux_x64"},
   {"name": "BazelBuild-tests-gl_ganesh-linux_x64"},
   {"name": "BazelBuild-tests-vulkan_ganesh-linux_x64"},
+  {"name": "BazelBuild-android_codec_test-pixel_5-linux_x64"},
+  {"name": "TestPrebuiltBazelTargetOnDevice-android_codec_test-pixel_5"},
   {"name": "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_cpu_release_chrome-linux_x64",
     "cq_config": {"location_regexes": ["modules/canvaskit/.*"]}
   },
