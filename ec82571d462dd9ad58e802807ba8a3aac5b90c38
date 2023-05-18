@@ -51,6 +51,24 @@
       "parentUuid": "35cc8e1a_978f9a8a",
       "revId": "ec82571d462dd9ad58e802807ba8a3aac5b90c38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c3df670_1f036ca3",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-18T18:24:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a2e3071_4d8fdc47",
+      "revId": "ec82571d462dd9ad58e802807ba8a3aac5b90c38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
