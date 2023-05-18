@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24656c94_2b19a61e",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 2142,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T15:39:55Z",
+      "side": 1,
+      "message": "nit: maybe call this savedOutputDir or something to help express what we plan to do with this directory.",
+      "range": {
+        "startLine": 2142,
+        "startChar": 1,
+        "endLine": 2142,
+        "endChar": 15
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e120610_4fd29a6b",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 2193,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T15:39:55Z",
+      "side": 1,
+      "message": "nit: put this comment on the line above",
+      "range": {
+        "startLine": 2193,
+        "startChar": 68,
+        "endLine": 2193,
+        "endChar": 72
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58bde5e6_8c09f897",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 2216,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T15:39:55Z",
+      "side": 1,
+      "message": "Did you try --remote_download_toplevel ? We probably don\u0027t need to download all the produced .o files, just the final results.",
+      "range": {
+        "startLine": 2216,
+        "startChar": 62,
+        "endLine": 2216,
+        "endChar": 70
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7beffc80_9d56b37f",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 2366,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T15:39:55Z",
+      "side": 1,
+      "message": "Question for followup: why do we have some on an older version at all?",
+      "range": {
+        "startLine": 2366,
+        "startChar": 42,
+        "endLine": 2366,
+        "endChar": 69
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18f8ca94_d6735750",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 15
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T15:39:55Z",
+      "side": 1,
+      "message": "BazelTest-native_device-pixel_5-android_codec_test, as per my later suggestion of not adding a new Schema",
+      "range": {
+        "startLine": 29,
+        "startChar": 12,
+        "endLine": 29,
+        "endChar": 43
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35451955_e645372f",
+        "filename": "infra/bots/recipe_modules/builder_name_schema/builder_name_schema.json",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T15:39:55Z",
+      "side": 1,
+      "message": "I don\u0027t see the value in adding a new schema here. Can we just augment BazelTest with label, maybe as an optional key?",
+      "range": {
+        "startLine": 23,
+        "startChar": 5,
+        "endLine": 23,
+        "endChar": 36
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af17e031_5c5e8b3d",
+        "filename": "infra/bots/task_drivers/test_prebuilt_bazel_target_on_device/test_prebuilt_bazel_target_on_device.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T15:39:55Z",
+      "side": 1,
+      "message": "This taskdriver has a long name that I do not think is necessary. It puts too many details in an executable name that could change.\n\nWhat about native_device or native_android or android_device or something like that?",
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
