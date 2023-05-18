@@ -1,0 +1,12 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_test")
+
+go_test(
+    name = "bazel_precompiled_test_test",
+    srcs = ["bazel_precompiled_test.go"],
+    deps = [
+        "@org_skia_go_infra//go/common",
+        "@org_skia_go_infra//go/exec",
+        "@org_skia_go_infra//task_driver/go/lib/os_steps",
+        "@org_skia_go_infra//task_driver/go/td",
+    ],
+)
