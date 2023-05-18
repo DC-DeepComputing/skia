@@ -61,9 +61,15 @@ static bool check_rect(GrDirectContext* dContext,
     readback.alloc(dstInfo);
 
     readback.erase(~expectedValue);
+    SkDebugf("a\n");
     if (!sdc->readPixels(dContext, readback, {rect.fLeft, rect.fTop})) {
         return false;
     }
+    SkDebugf("b\n");
+
+    dContext->flushAndSubmit(/* syncCpu= */ true);
+
+    SkDebugf("b\n");
 
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
@@ -163,7 +169,7 @@ static void clear_op_test(skiatest::Reporter* reporter, GrDirectContext* dContex
     SkASSERT(sdc);
 
     // Test a inset clear followed by same color full clear
-    sdc->clear(mid1Rect, kColor1f);
+    sdc->clear(mid1Rect, kColor2f);
     sdc->clear(fullRect, kColor1f);
     if (!check_rect(dContext, sdc.get(), fullRect, kColor1, &actualValue, &failX, &failY)) {
         ERRORF(reporter, "Expected 0x%08x but got 0x%08x at (%d, %d).", kColor1, actualValue,
@@ -173,13 +179,18 @@ static void clear_op_test(skiatest::Reporter* reporter, GrDirectContext* dContex
     sdc = newSDC(dContext, kW, kH);
     SkASSERT(sdc);
 
+    SkDebugf("1\n");
     // Test a full clear followed by a different color inset clear
     sdc->clear(fullRect, kColor1f);
+    SkDebugf("2\n");
     sdc->clear(mid1Rect, kColor2f);
+    SkDebugf("3\n");
     if (!check_rect(dContext, sdc.get(), mid1Rect, kColor2, &actualValue, &failX, &failY)) {
         ERRORF(reporter, "Expected 0x%08x but got 0x%08x at (%d, %d).", kColor2, actualValue,
                failX, failY);
     }
+    SkDebugf("4\n");
+
     if (!check_rect(dContext, sdc.get(), outerLeftEdge, kColor1, &actualValue, &failX, &failY) ||
         !check_rect(dContext, sdc.get(), outerTopEdge, kColor1, &actualValue, &failX, &failY) ||
         !check_rect(dContext, sdc.get(), outerRightEdge, kColor1, &actualValue, &failX, &failY) ||

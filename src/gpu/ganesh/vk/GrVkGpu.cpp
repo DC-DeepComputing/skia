@@ -1659,7 +1659,7 @@ bool GrVkGpu::createVkImageForBackendSurface(VkFormat vkFormat,
                                              GrProtected isProtected) {
     SkASSERT(texturable == GrTexturable::kYes || renderable == GrRenderable::kYes);
 
-    if (fProtectedContext != isProtected) {
+    if (isProtected == skgpu::Protected::kYes && !this->protectedContext()) {
         return false;
     }
 
@@ -1706,7 +1706,7 @@ bool GrVkGpu::createVkImageForBackendSurface(VkFormat vkFormat,
     imageDesc.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     imageDesc.fUsageFlags = usageFlags;
     imageDesc.fMemProps = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-    imageDesc.fIsProtected = fProtectedContext;
+    imageDesc.fIsProtected = isProtected;
 
     if (!GrVkImage::InitImageInfo(this, imageDesc, info)) {
         SkDebugf("Failed to init image info\n");
@@ -1782,7 +1782,7 @@ GrBackendTexture GrVkGpu::onCreateBackendTexture(SkISize dimensions,
                                                  std::string_view label) {
     const GrVkCaps& caps = this->vkCaps();
 
-    if (fProtectedContext != isProtected) {
+    if (isProtected == skgpu::Protected::kYes && !this->protectedContext()) {
         return {};
     }
 
