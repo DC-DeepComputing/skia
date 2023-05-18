@@ -16,6 +16,24 @@
       "message": "@kjlubick@google.com are there other bots I should run?",
       "revId": "dea792f268107fc929da45263e2fe79c6a6d7f07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3147b42a_00cee57f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T12:09:23Z",
+      "side": 1,
+      "message": "The standard compile jobs make sure the targets can be built.\n\nWe will need to land a change to https://github.com/skia-dev/oss-fuzz/blob/25946a544856413d31d9cbb3a366a4aef5a8fd60/projects/skia/build.sh#L154 after landing this.",
+      "parentUuid": "dc9cbd11_c20cbb42",
+      "revId": "dea792f268107fc929da45263e2fe79c6a6d7f07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
