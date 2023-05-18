@@ -51,6 +51,15 @@ public:
         hash ^= hash >> 16;
         return hash;
     }
+
+    /**
+     * This is a hast, high-quality 32-bit hash. We make no guarantees about this remaining stable
+     * over time, or being consistent across devices.
+     *
+     * For now, this is a 64-bit wyhash, truncated to 32-bits.
+     * See: https://github.com/wangyi-fudan/wyhash
+     */
+    static uint32_t Hash(const void* data, size_t bytes, uint32_t seed = 0);
 };
 
 // SkGoodHash should usually be your first choice in hashing data.
