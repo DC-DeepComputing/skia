@@ -56,7 +56,7 @@ public:
     }
 
     void onTransformProperty(const char node_name[],
-                             const LazyHandle<TransformPropertyHandle>& transform_handle) override {
+                            const LazyHandle<TransformPropertyHandle>& transform_handle) override {
         transform_handle_ = transform_handle();
     }
 

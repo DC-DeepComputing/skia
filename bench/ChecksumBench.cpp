@@ -12,9 +12,14 @@
 #include "src/core/SkMD5.h"
 #include "src/core/SkOpts.h"
 
+extern uint32_t wyhash32(const void* key, uint64_t len, uint32_t seed);
+extern uint32_t wyhash64(const void* key, size_t len, uint32_t seed);
+
 enum ChecksumType {
     kMD5_ChecksumType,
     kHash_ChecksumType,
+    kWyhash32_ChecksumType,
+    kWyhash64_ChecksumType,
 };
 
 class ComputeChecksumBench : public Benchmark {
@@ -42,6 +47,8 @@ protected:
         switch (fType) {
             case kMD5_ChecksumType: return "compute_md5";
             case kHash_ChecksumType: return "compute_hash";
+            case kWyhash32_ChecksumType: return "compute_wyhash32";
+            case kWyhash64_ChecksumType: return "compute_wyhash64";
 
             default: SK_ABORT("Invalid Type");
         }
@@ -62,6 +69,18 @@ protected:
                     sk_ignore_unused_variable(result);
                 }
             }break;
+            case kWyhash32_ChecksumType: {
+                for (int i = 0; i < loops; i++) {
+                    volatile uint32_t result = wyhash32(fData, sizeof(fData), 0);
+                    sk_ignore_unused_variable(result);
+                }
+            }break;
+            case kWyhash64_ChecksumType: {
+                for (int i = 0; i < loops; i++) {
+                    volatile uint32_t result = wyhash64(fData, sizeof(fData), 0);
+                    sk_ignore_unused_variable(result);
+                }
+            }break;
         }
 
     }
@@ -74,3 +93,5 @@ private:
 
 DEF_BENCH( return new ComputeChecksumBench(kMD5_ChecksumType); )
 DEF_BENCH( return new ComputeChecksumBench(kHash_ChecksumType); )
+DEF_BENCH( return new ComputeChecksumBench(kWyhash32_ChecksumType); )
+DEF_BENCH( return new ComputeChecksumBench(kWyhash64_ChecksumType); )
