@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14211446_07821948",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-05-18T21:57:49Z",
+      "side": 1,
+      "message": "Looks like this is blocking the Android roll due to a test crashing from a null pointer dereference. The failure occurs on a `gainmapStream-\u003egetMemoryBase()` call when the stream should be valid IIUC, since it was filled by a call to `SkAndroidCodec::getAndroidGainmap(...)` that returned `true`.\n\nMy hunch is there\u0027s a typo in true vs. false? But I haven\u0027t read the rest of the code so want to check with y\u0027all to be sure",
+      "revId": "1b8ff701e6f90d4ac78e5f16523b938731803b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "682e7717_f0589cd9",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-05-18T21:57:49Z",
+      "side": 1,
+      "message": "Should this still `return false`?",
+      "revId": "1b8ff701e6f90d4ac78e5f16523b938731803b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
