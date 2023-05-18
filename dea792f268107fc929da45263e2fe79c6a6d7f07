@@ -34,6 +34,24 @@
       "parentUuid": "dc9cbd11_c20cbb42",
       "revId": "dea792f268107fc929da45263e2fe79c6a6d7f07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a509cb69_586a7938",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T13:20:03Z",
+      "side": 1,
+      "message": "Here is that follow-up PR https://github.com/google/oss-fuzz/pull/10348",
+      "parentUuid": "3147b42a_00cee57f",
+      "revId": "dea792f268107fc929da45263e2fe79c6a6d7f07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
