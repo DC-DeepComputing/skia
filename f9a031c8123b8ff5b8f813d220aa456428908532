@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ece56736_82924f7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T16:55:25Z",
+      "side": 1,
+      "message": "Comment removed by: Leandro Lovisolo; Reason: Typed by accident",
+      "revId": "f9a031c8123b8ff5b8f813d220aa456428908532",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

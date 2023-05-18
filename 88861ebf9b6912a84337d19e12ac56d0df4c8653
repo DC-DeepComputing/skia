@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3829448_fd690a20",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 2142,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T16:55:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24656c94_2b19a61e",
+      "range": {
+        "startLine": 2142,
+        "startChar": 1,
+        "endLine": 2142,
+        "endChar": 15
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e120610_4fd29a6b",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ac309b2_dd4cc412",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 2193,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T16:55:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e120610_4fd29a6b",
+      "range": {
+        "startLine": 2193,
+        "startChar": 68,
+        "endLine": 2193,
+        "endChar": 72
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58bde5e6_8c09f897",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-05-18T15:39:55Z",
       "side": 1,
       "message": "Did you try --remote_download_toplevel ? We probably don\u0027t need to download all the produced .o files, just the final results.",
+      "range": {
+        "startLine": 2216,
+        "startChar": 62,
+        "endLine": 2216,
+        "endChar": 70
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c523c7b_65c0af52",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 2216,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T16:55:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58bde5e6_8c09f897",
       "range": {
         "startLine": 2216,
         "startChar": 62,
@@ -201,6 +273,30 @@
       "side": 1,
       "message": "Yes.",
       "parentUuid": "806a1b3d_9529da36",
+      "range": {
+        "startLine": 23,
+        "startChar": 5,
+        "endLine": 23,
+        "endChar": 36
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd83e217_ec1bb468",
+        "filename": "infra/bots/recipe_modules/builder_name_schema/builder_name_schema.json",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-18T16:55:25Z",
+      "side": 1,
+      "message": "How about adding a mandatory `label` part?\n\n```\n    \"BazelTest\": {\n      \"keys\": [\n        \"task_driver\",\n        \"label\",  // \u003c- New mandatory part.\n        \"config\",\n        \"host\"\n      ],\n      \"optional_keys\": [\n        \"cross\"\n      ]\n    },\n```\n\nThe task I\u0027m adding in this CL would then become `BazelTest-bazel_precompiled_test-android_codec_test-pixel_5-linux_x64`.\n\nThe rationale is that all existing task drivers already target a specific label, but the label is hardcoded into each task driver. Specifically:\n\n- `canvaskit_gold.go` tests `//modules/canvaskit:canvaskit_js_tests`.\n- `cpu_tests.go` tests `//tests/...`.\n- `toolchain_layering_check.go` builds `//experimental/bazel_test/client:client_lib`.\n\nSo under this proposal, we would make the labels explicit by pushing them to `gen_tasks_logic.go` and passing them to the task drivers via a new flag.\n\nAs an example, task `BazelTest-cpu_tests-cpu_only_debug_rbe-linux_x64` would become `BazelTest-cpu_tests-tests-cpu_only_debug_rbe-linux_x64`, where `tests` maps to `//tests/...`.",
+      "parentUuid": "616d5f01_fe1bbf71",
       "range": {
         "startLine": 23,
         "startChar": 5,
