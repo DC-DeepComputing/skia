@@ -1079,16 +1079,20 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec, SaveLayerStrategy stra
         // produce output, or that the filter DAG has no references to the dynamic source image.
         // In this case it still has an output that we need to render, but do so now since there is
         // no new layer pushed on the stack and the paired restore() will be a no-op.
-        if (filter) {
+        if (filter && !priorDevice->isNoPixelsDevice()) {
             skif::ParameterSpace<SkRect> emptyInput{SkRect::MakeEmpty()};
             skif::DeviceSpace<SkIRect> output =
                     as_IFB(filter)->getOutputBounds(newLayerMapping, emptyInput);
             if (SkIRect::Intersects(SkIRect(output), priorDevice->devClipBounds())) {
+                const bool use_nn = draw_layer_as_sprite(newLayerMapping.layerToDevice(),
+                                                         SkIRect(output).size());
+
+                SkSamplingOptions sampling{use_nn ? SkFilterMode::kNearest : SkFilterMode::kLinear};
                 priorDevice->drawFilteredImage(newLayerMapping,
                                                /*src=*/nullptr,
                                                image_filter_color_type(priorDevice->imageInfo()),
                                                filter,
-                                               /*sampling=*/{},
+                                               sampling,
                                                restorePaint);
             }
         }
