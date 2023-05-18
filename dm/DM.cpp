@@ -481,6 +481,7 @@ static constexpr bool kMemcpyOK = true;
 static TArray<TaggedSrc,  kMemcpyOK>* gSrcs  = new TArray<TaggedSrc,  kMemcpyOK>;
 static TArray<TaggedSink, kMemcpyOK>* gSinks = new TArray<TaggedSink, kMemcpyOK>;
 
+#if 0
 static bool in_shard() {
     static int N = 0;
     return N++ % FLAGS_shards == FLAGS_shard;
@@ -689,8 +690,10 @@ static void push_brd_srcs(Path path, bool gray) {
         }
     }
 }
+#endif
 #endif // SK_ENABLE_ANDROID_UTILS
 
+#if 0
 static void push_codec_srcs(Path path) {
     sk_sp<SkData> encoded(SkData::MakeFromFileName(path.c_str()));
     if (!encoded) {
@@ -862,6 +865,7 @@ static void push_codec_srcs(Path path) {
 #endif
     }
 }
+#endif
 
 template <typename T>
 void gather_file_srcs(const CommandLineFlags::StringArray& flags,
@@ -886,6 +890,7 @@ void gather_file_srcs(const CommandLineFlags::StringArray& flags,
 }
 
 static bool gather_srcs() {
+#if 0
     for (skiagm::GMFactory f : skiagm::GMRegistry::Range()) {
         push_src("gm", "", new GMSrc(f));
     }
@@ -922,6 +927,7 @@ static bool gather_srcs() {
         push_src("colorImage", "decode_native", new ColorCodecSrc(colorImage, false));
         push_src("colorImage", "decode_to_dst", new ColorCodecSrc(colorImage,  true));
     }
+#endif
 
     return true;
 }
@@ -1172,7 +1178,7 @@ struct Task {
             gDefinitelyThreadSafeWork->add([task,name,bitmap,data]{
                 std::unique_ptr<SkStreamAsset> ownedData(data);
 
-                std::unique_ptr<HashAndEncode> hashAndEncode;
+//                std::unique_ptr<HashAndEncode> hashAndEncode;
 
                 SkString md5;
                 if (!FLAGS_writePath.isEmpty() || !FLAGS_readPath.isEmpty()) {
@@ -1181,8 +1187,8 @@ struct Task {
                         hash.writeStream(data, data->getLength());
                         data->rewind();
                     } else {
-                        hashAndEncode = std::make_unique<HashAndEncode>(bitmap);
-                        hashAndEncode->feedHash(&hash);
+  //                      hashAndEncode = std::make_unique<HashAndEncode>(bitmap);
+//                        hashAndEncode->feedHash(&hash);
                     }
                     SkMD5::Digest digest = hash.finish();
                     for (int i = 0; i < 16; i++) {
@@ -1248,7 +1254,7 @@ struct Task {
                         WriteToDisk(task, md5, ext, data, data->getLength(), nullptr, nullptr);
                         SkASSERT(bitmap.drawsNothing());
                     } else if (!bitmap.drawsNothing()) {
-                        WriteToDisk(task, md5, ext, nullptr, 0, &bitmap, hashAndEncode.get());
+//                        WriteToDisk(task, md5, ext, nullptr, 0, &bitmap, hashAndEncode.get());
                     }
                 }
 
@@ -1422,13 +1428,13 @@ struct Task {
         }
         if (bitmap) {
             SkASSERT(hashAndEncode);
-            if (!hashAndEncode->encodePNG(&file,
-                                          result.md5.c_str(),
-                                          FLAGS_key,
-                                          FLAGS_properties)) {
-                fail(SkStringPrintf("Can't encode PNG to %s.\n", path.c_str()));
-                return;
-            }
+//            if (!hashAndEncode->encodePNG(&file,
+//                                          result.md5.c_str(),
+//                                          FLAGS_key,
+//                                          FLAGS_properties)) {
+//                fail(SkStringPrintf("Can't encode PNG to %s.\n", path.c_str()));
+//                return;
+//            }
         } else {
             if (!file.writeStream(data, len)) {
                 fail(SkStringPrintf("Can't write to %s.\n", path.c_str()));
@@ -1468,6 +1474,32 @@ static void gather_tests() {
         return;
     }
     for (const skiatest::Test& test : skiatest::TestRegistry::Range()) {
+        if (!strcmp(test.fName, "GLBackendAllocationTest")) {
+            gGaneshTests->push_back(test);
+            continue;
+        }
+
+        if (!strcmp(test.fName, "Protected_SmokeTest")) {
+            gGaneshTests->push_back(test);
+            continue;
+        }
+
+        if (!strcmp(test.fName, "Protected_readPixelsFromSurfaces")) {
+            gGaneshTests->push_back(test);
+            continue;
+        }
+
+        if (!strcmp(test.fName, "Protected_asyncRescaleAndReadPixelsFromSurfaces")) {
+            gGaneshTests->push_back(test);
+            continue;
+        }
+
+        if (!strcmp(test.fName, "Protected_DrawsToUnprotectedSurfaces")) {
+            gGaneshTests->push_back(test);
+            continue;
+        }
+
+#if 0
         if (!in_shard()) {
             continue;
         }
@@ -1481,6 +1513,7 @@ static void gather_tests() {
         } else if (test.fTestType == TestType::kCPU && FLAGS_cpu) {
             gCPUTests->push_back(test);
         }
+#endif
     }
 }
 

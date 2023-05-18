@@ -1817,6 +1817,7 @@ GrGLuint GrGLGpu::createCompressedTexture2D(
 
     if (GrProtected::kYes == isProtected) {
         if (this->glCaps().supportsProtected()) {
+            SkDebugf("Setting Protected Bit\n");
             GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
         } else {
             GL_CALL(DeleteTextures(1, &id));
