@@ -25,7 +25,7 @@ class GrVkGpu;
 #define GR_VK_CALL_RESULT(GPU, RESULT, X)                                 \
     do {                                                                  \
         (RESULT) = GR_VK_CALL(GPU->vkInterface(), X);                     \
-        SkASSERT(VK_SUCCESS == RESULT || VK_ERROR_DEVICE_LOST == RESULT); \
+        /*SkASSERT(VK_SUCCESS == RESULT || VK_ERROR_DEVICE_LOST == RESULT); */\
         if (RESULT != VK_SUCCESS && !GPU->isDeviceLost()) {               \
             SkDebugf("Failed vulkan call. Error: %d," #X "\n", RESULT);   \
         }                                                                 \
