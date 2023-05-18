@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53924d20_337f48b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-18T14:03:40Z",
+      "side": 1,
+      "message": "It looks like this may have caused a performance regression: https://perf.skia.org/e/?begin\u003d1684158419\u0026end\u003d1684172327\u0026keys\u003dX2c5c8491bd7dae7b84495314eb928dd8\u0026selected\u003dcommit%3D66321%26name%3D%252Carch%253Dx86_64%252Cbench_type%253DBRD%252Ccompiler%253DClang%252Cconfig%253Dnonrendering%252Ccpu_or_gpu%253DCPU%252Ccpu_or_gpu_value%253DAVX2%252Cmodel%253DMacBookPro11.5%252Cname%253DBRD_test0.jpg_BottomRight_565_0.250%252Cos%253DMac10.13%252Csource_type%253Dimage%252Csub_result%253Dmin_ms%252Ctest%253DBRD_test0.jpg_BottomRight_565_0.250_640_480%252C\u0026xbaroffset\u003d66321\n\nPTAL?",
+      "revId": "11cc9e6c402115afacdf22db01c6e3a4ef8f7a81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
