@@ -189,6 +189,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "616d5f01_fe1bbf71",
+        "filename": "infra/bots/recipe_modules/builder_name_schema/builder_name_schema.json",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T16:11:19Z",
+      "side": 1,
+      "message": "Yes.",
+      "parentUuid": "806a1b3d_9529da36",
+      "range": {
+        "startLine": 23,
+        "startChar": 5,
+        "endLine": 23,
+        "endChar": 36
+      },
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "af17e031_5c5e8b3d",
         "filename": "infra/bots/task_drivers/test_prebuilt_bazel_target_on_device/test_prebuilt_bazel_target_on_device.go",
         "patchSetId": 15
@@ -218,6 +242,24 @@
       "side": 1,
       "message": "How about `bazel_precompiled_test`?",
       "parentUuid": "af17e031_5c5e8b3d",
+      "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f9f6380_30ffe9ad",
+        "filename": "infra/bots/task_drivers/test_prebuilt_bazel_target_on_device/test_prebuilt_bazel_target_on_device.go",
+        "patchSetId": 15
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-18T16:11:19Z",
+      "side": 1,
+      "message": "Works for me",
+      "parentUuid": "5e938670_37a8b169",
       "revId": "88861ebf9b6912a84337d19e12ac56d0df4c8653",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
