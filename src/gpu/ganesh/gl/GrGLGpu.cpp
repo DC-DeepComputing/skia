@@ -1817,6 +1817,7 @@ GrGLuint GrGLGpu::createCompressedTexture2D(
 
     if (GrProtected::kYes == isProtected) {
         if (this->glCaps().supportsProtected()) {
+            SkDebugf("Setting Protected Bit Compressed\n");
             GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
         } else {
             GL_CALL(DeleteTextures(1, &id));
@@ -1860,8 +1861,10 @@ GrGLuint GrGLGpu::createTexture(SkISize dimensions,
         set_initial_texture_params(this->glInterface(), this->glCaps(), target);
     }
 
+    SkDebugf("protected %d supports %d\n", (int) isProtected, this->glCaps().supportsProtected());
     if (GrProtected::kYes == isProtected) {
         if (this->glCaps().supportsProtected()) {
+            SkDebugf("Setting Protected Bit Non-Compressed\n");
             GL_CALL(TexParameteri(target, GR_GL_TEXTURE_PROTECTED_EXT, GR_GL_TRUE));
         } else {
             GL_CALL(DeleteTextures(1, &id));
