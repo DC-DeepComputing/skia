@@ -1422,13 +1422,13 @@ struct Task {
         }
         if (bitmap) {
             SkASSERT(hashAndEncode);
-            if (!hashAndEncode->encodePNG(&file,
-                                          result.md5.c_str(),
-                                          FLAGS_key,
-                                          FLAGS_properties)) {
-                fail(SkStringPrintf("Can't encode PNG to %s.\n", path.c_str()));
-                return;
-            }
+//            if (!hashAndEncode->encodePNG(&file,
+//                                          result.md5.c_str(),
+//                                          FLAGS_key,
+//                                          FLAGS_properties)) {
+//                fail(SkStringPrintf("Can't encode PNG to %s.\n", path.c_str()));
+//                return;
+//            }
         } else {
             if (!file.writeStream(data, len)) {
                 fail(SkStringPrintf("Can't write to %s.\n", path.c_str()));
