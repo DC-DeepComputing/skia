@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "80687e8d_e2c64c20",
+        "filename": ".bazelrc",
+        "patchSetId": 11
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4f2ef39_72ab41f0",
+      "range": {
+        "startLine": 90,
+        "startChar": 19,
+        "endLine": 90,
+        "endChar": 50
+      },
+      "revId": "1cee0bcbb755fdc1b6b4dab3939758be91fb0790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "91b95728_37924e87",
         "filename": "tests/adb_test.bzl",
         "patchSetId": 11
@@ -70,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69eae5fd_f84d45fb",
+        "filename": "tests/adb_test.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:39Z",
+      "side": 1,
+      "message": "Rewrote this part with examples and a link to the Bazel code that generates `HOST_CONSTRAINTS`. I also simplified this code a bit after looking at the Bazel source code and learning how said constant is generated.",
+      "parentUuid": "68883d9c_65b41a0d",
+      "range": {
+        "startLine": 14,
+        "startChar": 14,
+        "endLine": 14,
+        "endChar": 17
+      },
+      "revId": "1cee0bcbb755fdc1b6b4dab3939758be91fb0790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1bebf142_52e1ae43",
@@ -83,6 +131,30 @@
       "writtenOn": "2023-05-19T13:36:53Z",
       "side": 1,
       "message": "Since these are shorthand anyway, can we use linux_x64 to make it more visually distinct from linux_arm64?",
+      "range": {
+        "startLine": 30,
+        "startChar": 9,
+        "endLine": 30,
+        "endChar": 20
+      },
+      "revId": "1cee0bcbb755fdc1b6b4dab3939758be91fb0790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9642b1a8_ccaf6532",
+        "filename": "tests/adb_test_runner/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bebf142_52e1ae43",
       "range": {
         "startLine": 30,
         "startChar": 9,
@@ -116,6 +188,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e6f285b_c000cbb0",
+        "filename": "tests/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 11
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16447020_a6a9e230",
+      "range": {
+        "startLine": 18,
+        "startChar": 23,
+        "endLine": 18,
+        "endChar": 28
+      },
+      "revId": "1cee0bcbb755fdc1b6b4dab3939758be91fb0790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0452089c_50618400",
@@ -129,6 +225,30 @@
       "writtenOn": "2023-05-19T13:36:53Z",
       "side": 1,
       "message": "nit: Don\u0027t use all uppercase for constants. pixel5 and pixel7 should be fine",
+      "range": {
+        "startLine": 24,
+        "startChar": 1,
+        "endLine": 24,
+        "endChar": 8
+      },
+      "revId": "1cee0bcbb755fdc1b6b4dab3939758be91fb0790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4006fbbd_e998aa3d",
+        "filename": "tests/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 11
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0452089c_50618400",
       "range": {
         "startLine": 24,
         "startChar": 1,
@@ -164,6 +284,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4f604faa_9dab48e5",
+        "filename": "tests/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:39Z",
+      "side": 1,
+      "message": "Done. Note that Bazel isn\u0027t invoked at any point though.",
+      "parentUuid": "194416d9_d71d57a1",
+      "range": {
+        "startLine": 60,
+        "startChar": 11,
+        "endLine": 60,
+        "endChar": 18
+      },
+      "revId": "1cee0bcbb755fdc1b6b4dab3939758be91fb0790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9f65691c_88fdaac5",
         "filename": "tests/adb_test_runner/adb_test_runner.go",
         "patchSetId": 11
@@ -175,6 +319,30 @@
       "writtenOn": "2023-05-19T13:36:53Z",
       "side": 1,
       "message": "Possible future optimization:\n - Tar the resources separately from the test binary so we don\u0027t have to push the resources if they didn\u0027t change.",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 19
+      },
+      "revId": "1cee0bcbb755fdc1b6b4dab3939758be91fb0790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a78faa1_3500f508",
+        "filename": "tests/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 11
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:39Z",
+      "side": 1,
+      "message": "Ack.\n\nNote that this program currently deletes the binary and resources after the test finishes. IIUC your proposed optimization would require caching the static resources on the device for use by subsequent tests.\n\nFrom my experiments with Pixel 5 and Pixel 7 phones, uploading the resources is pretty much instantaneous, so I don\u0027t think caching the resources would be worth it. But it might be slower on other devices, or if we need to upload things other than the `//resources` directory, so your proposal is something to keep in mind.",
+      "parentUuid": "9f65691c_88fdaac5",
       "range": {
         "startLine": 95,
         "startChar": 12,
@@ -208,6 +376,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f93c674_11f6bc64",
+        "filename": "tests/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 11
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e39448c_537430db",
+      "range": {
+        "startLine": 131,
+        "startChar": 5,
+        "endLine": 131,
+        "endChar": 8
+      },
+      "revId": "1cee0bcbb755fdc1b6b4dab3939758be91fb0790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07d7b0b0_d31bf6b4",
@@ -221,6 +413,30 @@
       "writtenOn": "2023-05-19T13:36:53Z",
       "side": 1,
       "message": "Can we include timestamps so we get a sense of how long each command takes? This way if we have bottlenecks or steps that take longer than we anticipated, we can more easily measure that.",
+      "range": {
+        "startLine": 132,
+        "startChar": 5,
+        "endLine": 132,
+        "endChar": 11
+      },
+      "revId": "1cee0bcbb755fdc1b6b4dab3939758be91fb0790",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d5fa8c0_4b58a472",
+        "filename": "tests/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 11
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07d7b0b0_d31bf6b4",
       "range": {
         "startLine": 132,
         "startChar": 5,
