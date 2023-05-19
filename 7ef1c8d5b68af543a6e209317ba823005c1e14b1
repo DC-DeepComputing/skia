@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6657ce9d_1f31b20c",
+        "filename": "resources/sksl/shared/TernaryComplexNesting.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:32:09Z",
+      "side": 1,
+      "message": "Thank you for adding this test. I recommend adding one more case in which the condition of the ternary is itself a ternary expression. That will demonstrate inserting an if statement into the surrounding block (rather than the child blocks) and referencing the scratch variable from the condition expression.",
+      "range": {
+        "startLine": 12,
+        "startChar": 13,
+        "endLine": 12,
+        "endChar": 44
+      },
+      "revId": "7ef1c8d5b68af543a6e209317ba823005c1e14b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
