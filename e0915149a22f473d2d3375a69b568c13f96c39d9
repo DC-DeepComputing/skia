@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bd6f4e1_c93a0dce",
+        "filename": "src/effects/SkShaderMaskFilterImpl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T15:58:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "442a52a1_ce210d76",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 28
+      },
+      "revId": "e0915149a22f473d2d3375a69b568c13f96c39d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27a3d555_5e2510a0",
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "Yes, that\u0027s the plan so far to decouple more ganesh things out of src/core and src/shaders",
       "parentUuid": "ccd28434_c29d8924",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 30
+      },
+      "revId": "e0915149a22f473d2d3375a69b568c13f96c39d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0610af98_03eae3e9",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T15:58:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2adf95d4_cecf76da",
       "range": {
         "startLine": 18,
         "startChar": 10,
