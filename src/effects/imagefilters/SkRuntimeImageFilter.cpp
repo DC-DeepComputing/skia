@@ -76,8 +76,7 @@ private:
     skif::LayerSpace<SkIRect> onGetInputLayerBounds(
             const skif::Mapping&,
             const skif::LayerSpace<SkIRect>& desiredOutput,
-            const skif::LayerSpace<SkIRect>& contentBounds,
-            VisitChildren) const override;
+            const skif::LayerSpace<SkIRect>& contentBounds) const override;
 
     skif::LayerSpace<SkIRect> onGetOutputLayerBounds(
             const skif::Mapping&,
@@ -219,7 +218,7 @@ skif::FilterResult SkRuntimeImageFilter::onFilterImage(const skif::Context& ctx)
 
     skif::FilterResult::Builder builder{ctx};
     for (int i = 0; i < inputCount; ++i) {
-        builder.add(this->filterInput(i, ctx));
+        builder.add(this->getChildOutput(i, ctx));
     }
     return builder.eval([&](SkSpan<sk_sp<SkShader>> inputs) {
         // lock the mutation of the builder and creation of the shader so that the builder's state
@@ -244,13 +243,8 @@ skif::FilterResult SkRuntimeImageFilter::onFilterImage(const skif::Context& ctx)
 skif::LayerSpace<SkIRect> SkRuntimeImageFilter::onGetInputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& desiredOutput,
-        const skif::LayerSpace<SkIRect>& contentBounds,
-        VisitChildren recurse) const {
-    if (recurse == VisitChildren::kNo) {
-        return desiredOutput;
-    } else {
-        return this->visitInputLayerBounds(mapping, desiredOutput, contentBounds);
-    }
+        const skif::LayerSpace<SkIRect>& contentBounds) const {
+    return this->getChildInputLayerBounds(0, mapping, desiredOutput, contentBounds);
 }
 
 skif::LayerSpace<SkIRect> SkRuntimeImageFilter::onGetOutputLayerBounds(

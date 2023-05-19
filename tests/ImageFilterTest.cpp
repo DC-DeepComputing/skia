@@ -1971,6 +1971,13 @@ DEF_TEST(OffsetImageFilterBounds, reporter) {
     REPORTER_ASSERT(reporter, boundsForward == expectedForward);
 
     SkIRect expectedReverse = SkRect::Make(src).makeOffset(-srcOffset.fX, -srcOffset.fY).roundOut();
+
+    // Intersect 'expectedReverse' with the source because we are passing &src in as the known
+    // input bounds, which is the bounds of non-transparent pixels that can be moved by the offset.
+    // While the ::Offset filter could show all pixels inside 'expectedReverse' given that 'src'
+    // is also the target device output of the filter, the required input can be made tighter.
+    SkAssertResult(expectedReverse.intersect(src));
+
     SkIRect boundsReverse = offset->filterBounds(src, SkMatrix::I(),
                                                  SkImageFilter::kReverse_MapDirection, &src);
     REPORTER_ASSERT(reporter, boundsReverse == expectedReverse);
@@ -1986,15 +1993,22 @@ DEF_TEST(OffsetImageFilterBoundsNoOverflow, reporter) {
                                   SkImageFilters::Offset(bigOffset, bigOffset, nullptr));
     SkIRect boundsForward = filter->filterBounds(src, SkMatrix::I(),
                                                  SkImageFilter::kForward_MapDirection, nullptr);
-    SkIRect boundsReverse = filter->filterBounds(src, SkMatrix::I(),
-                                                 SkImageFilter::kReverse_MapDirection, nullptr);
     // NOTE: isEmpty() will return true even if the l/r or t/b didn't overflow but the dimensions
     // would overflow an int32. However, when isEmpty64() is false, it means the actual edge coords
     // are valid, which is good enough for our purposes (and gfx::Rect has its own strategies for
     // ensuring such a rectangle doesn't get accidentally treated as empty during chromium's
     // conversions).
     REPORTER_ASSERT(reporter, !boundsForward.isEmpty64());
-    REPORTER_ASSERT(reporter, !boundsReverse.isEmpty64());
+
+    // filterBounds() with kReverse and a null input rect defaults to using 'src' as the content
+    // bounds. If this is the only source of non-transparent pixels, the two Offsets will move them
+    // well outside the target device output of 'src', so analysis can guarantee nothing is needed.
+    // This is only possible for the input bounds query because it knows both the possible input
+    // and the target output; the forward-bounds mapping only knows the input bounds in which case
+    // the possible output is quite large.
+    SkIRect boundsReverse = filter->filterBounds(src, SkMatrix::I(),
+                                                 SkImageFilter::kReverse_MapDirection, nullptr);
+    REPORTER_ASSERT(reporter, boundsReverse.isEmpty64());
 }
 
 static void test_arithmetic_bounds(skiatest::Reporter* reporter, float k1, float k2, float k3,
