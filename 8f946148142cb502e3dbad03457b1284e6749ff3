@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e885df4_fcec75cc",
+        "filename": "tests/ClearTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-19T19:50:13Z",
+      "side": 1,
+      "message": "inset+1 and w-inset-1? I think that avoids checking the four corners twice.",
+      "range": {
+        "startLine": 120,
+        "startChar": 17,
+        "endLine": 120,
+        "endChar": 22
+      },
+      "revId": "8f946148142cb502e3dbad03457b1284e6749ff3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
