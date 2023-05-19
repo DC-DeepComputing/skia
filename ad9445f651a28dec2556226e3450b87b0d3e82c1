@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0a15bea_6678ebad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T16:22:24Z",
+      "side": 1,
+      "message": "lgtm % comments",
+      "revId": "ad9445f651a28dec2556226e3450b87b0d3e82c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "571d5a19_812fe8e8",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T16:22:24Z",
+      "side": 1,
+      "message": "Maybe follow this comment up with \"Otherwise omit the left expression entirely as it has no effect.\" ?",
+      "revId": "ad9445f651a28dec2556226e3450b87b0d3e82c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea5ecec8_b558ee8f",
+        "filename": "tests/sksl/shared/Matrices.wgsl",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T16:22:24Z",
+      "side": 1,
+      "message": "I suggest adding another test that exercises comma expressions where the left side has no side effect (perhaps including a case with 3 commas, such as this one, where the middle expression has no side effects).",
+      "revId": "ad9445f651a28dec2556226e3450b87b0d3e82c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
