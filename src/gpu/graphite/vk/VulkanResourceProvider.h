@@ -17,6 +17,7 @@ namespace skgpu::graphite {
 
 class VulkanCommandBuffer;
 class VulkanDescriptorSet;
+class VulkanImageView;
 class VulkanSharedContext;
 
 class VulkanResourceProvider final : public ResourceProvider {
@@ -25,6 +26,7 @@ public:
     ~VulkanResourceProvider() override;
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;
+    sk_sp<VulkanImageView> findOrCreateImageView(const Texture*);
 
 private:
     const VulkanSharedContext* vulkanSharedContext();

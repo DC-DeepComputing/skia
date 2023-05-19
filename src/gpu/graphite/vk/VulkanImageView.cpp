@@ -12,11 +12,11 @@
 
 namespace skgpu::graphite {
 
-sk_sp<const VulkanImageView> VulkanImageView::Make(VulkanSharedContext* sharedContext,
-                                                   VkImage image,
-                                                   VkFormat format,
-                                                   Type viewType,
-                                                   uint32_t miplevels) {
+sk_sp<VulkanImageView> VulkanImageView::Make(const VulkanSharedContext* sharedContext,
+                                             VkImage image,
+                                             VkFormat format,
+                                             Type viewType,
+                                             uint32_t miplevels) {
     void* pNext = nullptr;
     // TODO: add SamplerYcbcrConversion setup
 
@@ -46,7 +46,7 @@ sk_sp<const VulkanImageView> VulkanImageView::Make(VulkanSharedContext* sharedCo
         return nullptr;
     }
 
-    return sk_sp<const VulkanImageView>(new VulkanImageView(sharedContext, imageView));
+    return sk_sp<VulkanImageView>(new VulkanImageView(sharedContext, imageView));
 }
 
 VulkanImageView::VulkanImageView(const VulkanSharedContext* sharedContext, VkImageView imageView)

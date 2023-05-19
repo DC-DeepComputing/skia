@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
+#include "src/gpu/graphite/vk/VulkanImageView.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
@@ -187,4 +188,42 @@ VulkanDescriptorSet* VulkanResourceProvider::findOrCreateDescriptorSet(
     descSet = fResourceCache->findAndRefResource(firstSetKey, skgpu::Budgeted::kNo);
     return descSet ? static_cast<VulkanDescriptorSet*>(descSet) : nullptr;
 }
+
+sk_sp<VulkanImageView> VulkanResourceProvider::findOrCreateImageView(const Texture* texture) {
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+
+    // For now we only key on the VkImage handle.
+    // In the future we will key on other parameters, depending on the type of view requested.
+    GraphiteResourceKey key;
+    GraphiteResourceKey::Builder builder(&key, kType, 2, Shareable::kYes);
+
+    const VulkanTexture* vulkanTexture = static_cast<const VulkanTexture*>(texture);
+    VkImage vkImage = vulkanTexture->vkImage();
+    uint64_t imageKey = reinterpret_cast<std::uintptr_t>(vkImage);
+    builder[0] = imageKey >> 32;
+    builder[1] = imageKey & 0xffffffff;
+    builder.finish();
+
+    if (Resource* resource = fResourceCache->findAndRefResource(key, Budgeted::kNo)) {
+        return sk_sp<VulkanImageView>(static_cast<VulkanImageView*>(resource));
+    }
+
+    VulkanTextureInfo vkTexInfo;
+    texture->textureInfo().getVulkanTextureInfo(&vkTexInfo);
+    const VulkanSharedContext* vulkanContext =
+        static_cast<const VulkanSharedContext*>(this->sharedContext());
+    VulkanImageView::Type viewType = VkFormatStencilBits(vkTexInfo.fFormat) != 0
+                                     ? VulkanImageView::Type::kStencil
+                                     : VulkanImageView::Type::kColor;
+    // TODO: set miplevels properly
+    sk_sp<VulkanImageView> imageView = VulkanImageView::Make(vulkanContext,
+                                                             vkImage,
+                                                             vkTexInfo.fFormat,
+                                                             viewType,
+                                                             /*mipLevels=*/1);
+    imageView->setKey(key);
+    fResourceCache->insertResource(imageView.get());
+    return imageView;
+}
+
 } // namespace skgpu::graphite

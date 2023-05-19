@@ -22,11 +22,11 @@ public:
         kStencil
     };
 
-    static sk_sp<const VulkanImageView> Make(VulkanSharedContext* sharedContext,
-                                             VkImage image,
-                                             VkFormat format,
-                                             Type viewType,
-                                             uint32_t miplevels);
+    static sk_sp<VulkanImageView> Make(const VulkanSharedContext* sharedContext,
+                                       VkImage image,
+                                       VkFormat format,
+                                       Type viewType,
+                                       uint32_t miplevels);
 
     VkImageView imageView() const { return fImageView; }
 
