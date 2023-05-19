@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0157f138_89b0fcee",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-19T16:45:36Z",
+      "side": 1,
+      "message": "The rewrite is always necessary if the `this-\u003eassembleExpression(right)` could ever generate extra freestanding statements, since we need those statements wrapped in an if-block. I\u0027m using `HasSideEffects` here as a stand-in for that check, which might not be a 100% accurate mapping. I should probably make a dedicated function for that.",
+      "parentUuid": "ddb2854e_9b7897c2",
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c645e90f_e8b0855b",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 6
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2ae1db3_9f2a0493",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-19T16:45:36Z",
+      "side": 1,
+      "message": "That\u0027s what `assembleExpression(left)` will do. If the expression is simple, it returns it verbatim. If the expression is complex, it emits statements (generating the scratch variable) and returns a proxy that stands in for the expression (the scratch variable\u0027s name).",
+      "parentUuid": "c645e90f_e8b0855b",
+      "range": {
+        "startLine": 914,
+        "startChar": 8,
+        "endLine": 914,
+        "endChar": 30
+      },
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d6797e5a_cac6df66",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 6
@@ -54,6 +96,30 @@
       "writtenOn": "2023-05-19T16:35:41Z",
       "side": 1,
       "message": "Same as above, should the result of left_expression get stored in a scratch variable before writing out the `if` keyword?",
+      "range": {
+        "startLine": 940,
+        "startChar": 11,
+        "endLine": 940,
+        "endChar": 40
+      },
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cdbab42_06ce1c83",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-19T16:45:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d6797e5a_cac6df66",
       "range": {
         "startLine": 940,
         "startChar": 11,
