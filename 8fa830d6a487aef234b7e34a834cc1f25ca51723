@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04764a30_cbc30fa4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T18:32:00Z",
+      "side": 1,
+      "message": "This will need to be staged similarly to other image filters into chrome, but here is the CL pre-staging.",
+      "revId": "8fa830d6a487aef234b7e34a834cc1f25ca51723",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
