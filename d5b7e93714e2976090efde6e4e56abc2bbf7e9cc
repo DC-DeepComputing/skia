@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d844849_3f13d437",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T17:09:49Z",
+      "side": 1,
+      "message": "lgtm!",
+      "revId": "d5b7e93714e2976090efde6e4e56abc2bbf7e9cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d253036a_e595543b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T17:09:49Z",
+      "side": 1,
+      "message": "wdyt about passing `dstReadReq` into `needsFlushBeforeDraw`?",
+      "range": {
+        "startLine": 968,
+        "startChar": 18,
+        "endLine": 968,
+        "endChar": 38
+      },
+      "revId": "d5b7e93714e2976090efde6e4e56abc2bbf7e9cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
