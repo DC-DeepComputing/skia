@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bfec9488_6de72278",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-19T16:38:36Z",
+      "side": 1,
+      "message": "Now I\u0027m thinking (unrelated to commas) we will need to do more here. `FuncA() + FuncB();` at the top level is legal SkSL--the addition is a no-op, but the function calls are not. I\u0027ll need to make sure we emit `FuncA(); FuncB();` in WGSL.",
+      "parentUuid": "f3364818_9eb90739",
+      "revId": "ad9445f651a28dec2556226e3450b87b0d3e82c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea5ecec8_b558ee8f",
         "filename": "tests/sksl/shared/Matrices.wgsl",
         "patchSetId": 4
