@@ -88,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f0cf7e6_2cf1bfd1",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-19T19:52:52Z",
+      "side": 1,
+      "message": "WDYT\n\n    // If the operator is \u0026\u0026 or ||, we need to handle short-circuiting properly. Specifically, we\n    // sometimes need to emit extra statements to paper over functionality that WGSL lacks, like\n    // assignment in the middle of an expression. We need to guard those extra statements, to ensure\n    // that they don\u0027t occur if the expression evaluation is short-circuited. Converting the\n    // expression into an if-else block keeps the short-circuit property intact even when extra\n    // statements are involved.\n    // If the RHS doesn\u0027t have any side effects, then it\u0027s safe to just leave the expression as-is,\n    // since we know that any possible extra statements are non-side-effecting.",
+      "parentUuid": "9148d7a2_798c5197",
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c645e90f_e8b0855b",
