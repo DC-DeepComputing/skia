@@ -253,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89462d02_82fe3c47",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T18:15:13Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a3c5eeab_1ad66a96",
+      "range": {
+        "startLine": 56,
+        "startChar": 11,
+        "endLine": 56,
+        "endChar": 15
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dea4908d_1f5a3cf4",
