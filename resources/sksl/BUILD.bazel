@@ -1043,6 +1043,7 @@ skia_filegroup(
 skia_filegroup(
     name = "sksl_wgsl_tests",
     srcs = [
+        "wgsl/AnonymousParameter.sksl",
         "wgsl/BuiltinFragmentStageIO.sksl",
         "wgsl/BuiltinVertexStageIO.vert",
         "wgsl/CastMat2x2ToMat3x3.sksl",
