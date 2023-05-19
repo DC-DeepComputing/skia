@@ -41,13 +41,6 @@ static constexpr uint8_t kICCSig[] = {
         'I', 'C', 'C', '_', 'P', 'R', 'O', 'F', 'I', 'L', 'E', '\0',
 };
 
-// HDR gainmap segment marker and signature.
-static constexpr uint32_t kGainmapMarker = kJpegMarkerAPP0 + 15;
-static constexpr uint32_t kGainmapMarkerIndexSize = 2;
-static constexpr uint8_t kGainmapSig[] = {
-        'H', 'D', 'R', '_', 'G', 'A', 'I', 'N', '_', 'M', 'A', 'P', '\0',
-};
-
 // XMP segment marker and signature.
 static constexpr uint32_t kXMPMarker = kJpegMarkerAPP0 + 1;
 static constexpr uint8_t kXMPStandardSig[] = {
@@ -60,6 +53,7 @@ static constexpr uint8_t kXMPExtendedSig[] = {
 // EXIF segment marker and signature.
 static constexpr uint32_t kExifMarker = kJpegMarkerAPP0 + 1;
 static constexpr uint32_t kExifHeaderSize = 14;
+static constexpr uint32_t kExifMarkerIndexSize = 0;
 constexpr uint8_t kExifSig[] = {'E', 'x', 'i', 'f', '\0'};
 
 // MPF segment marker and signature.
