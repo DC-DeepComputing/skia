@@ -233,8 +233,8 @@ private:
     // return a retry error code? or does drawGeometry() handle all the fallbacks, knowing that
     // a particular shape type needs to be pre-chopped?
     // TODO: Move this into a RendererSelector object provided by the Context.
-    const Renderer* chooseRenderer(const Geometry&,
-                                   const Clip&,
+    const Renderer* chooseRenderer(const Transform& localToDevice,
+                                   const Geometry&,
                                    const SkStrokeRec&,
                                    bool requireMSAA) const;
 
