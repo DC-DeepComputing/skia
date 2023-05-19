@@ -33,6 +33,24 @@
       "message": "I\u0027ve been mulling over this for the last day, since this implements the approach that was outlined in b/280793619 pretty directly, and fixes the immediate problem around dst read flushes breaking clipping.\n\nBut since we also need to choose the renderer before the call to the new `applyClipToDraw` in order to fix b/273924867, since we need to know if the renderer uses coverage *before* we calculate the draw bounds that applyClipToDraw computes.\n\nI think the simpler approach at this point is to revert the changes to ClipStack, and update `Device::chooseRenderer` to not take a `Clip` object. Instead, it can take the `Geometry` and the `Transform`, and if we get down to the `preferWedges` calculation, we do a simple draw bounds calculation for the heuristic along the lines of:\n\n    Rect drawBounds \u003d transform.mapRect(shape.bounds());\n    if (!drawBounds.intersect(fClipStack-\u003econservativeBounds()) {\n        return nullptr;\n    }\n    // Use drawBounds\u0027s area in the heuristic instead of the old clip.bounds().area()\n    \nSince we only need this heuristic when it\u0027s a filled path using an MSAA renderer, the complexities of the final draw bounds calculations in `applyClipToDraw` fall away and should produce something very close to this. A single mapRect() and intersection that are possible redundant with the ClipStack\u0027s calculations are unlikely to show up in a profiler. And since it\u0027s just a visible pixel area heuristic for the renderer choice, any mismatch between these estimated bounds and the final bounds doesn\u0027t really matter.\n\nWDYT?",
       "revId": "461cf377638dfac97dcb44e912e654ba52ad3402",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b55ec8d0_8d005c72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-05-19T17:03:25Z",
+      "side": 1,
+      "message": "Done with changes per offline discussion",
+      "parentUuid": "a9c0d679_c6f6e6d6",
+      "revId": "461cf377638dfac97dcb44e912e654ba52ad3402",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
