@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d90b3d07_d11184b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T18:38:22Z",
+      "side": 1,
+      "message": "Surprise, this will also need to be staged, but the canary diffs look benign.",
+      "revId": "bd0662059ad32fab9eb717290b818e25ef2f9f3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
