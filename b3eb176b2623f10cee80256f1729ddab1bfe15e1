@@ -181,6 +181,121 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c19708f9_0744c743",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:13Z",
+      "side": 1,
+      "message": "Nit: I suspect this isn\u0027t necessary.",
+      "range": {
+        "startLine": 21,
+        "startChar": 45,
+        "endLine": 21,
+        "endChar": 72
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d626a5cb_3bae4d31",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:13Z",
+      "side": 1,
+      "message": "Ubernit: `tool_input_manifests` (didn\u0027t know what \"mfs\" stood for until I looked up `ctx.resolve_tools`).",
+      "range": {
+        "startLine": 28,
+        "startChar": 28,
+        "endLine": 28,
+        "endChar": 31
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "296cc15b_5fb662f5",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:13Z",
+      "side": 1,
+      "message": "Nit: `RunCxxbridgeCmd` or something more clearly related to this rule.",
+      "range": {
+        "startLine": 35,
+        "startChar": 20,
+        "endLine": 35,
+        "endChar": 29
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d2e4ad1_c006a4a8",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:13Z",
+      "side": 1,
+      "message": "Can be omitted as it defaults to `False` (https://bazel.build/rules/lib/builtins/actions.html#run).",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 38
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bf959e8_6eb4db7e",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T17:54:13Z",
+      "side": 1,
+      "message": "Is this necessary? I\u0027m not sure if this is a potential source of non-hermeticity (https://bazel.build/rules/lib/builtins/configuration.html#default_shell_env).",
+      "range": {
+        "startLine": 37,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 49
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0a583ac7_09b0901d",
         "filename": "bazel/rust_cxx_bridge.bzl",
         "patchSetId": 5
