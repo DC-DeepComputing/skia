@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10c3a3ce_161029f3",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "I was referring to Bazel\u0027s restrictions around parent directory traversal in external repositories. I removed the adjective. The reference to the comments in `bazel/external/vello/BUILD.bazel` below should hopefully provide more context if the reader is curious.",
+      "parentUuid": "431dba24_67bebde9",
+      "range": {
+        "startLine": 339,
+        "startChar": 87,
+        "endLine": 339,
+        "endChar": 95
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd046112_879a83b8",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-05-19T13:51:16Z",
       "side": 1,
       "message": "nit: comma after script",
+      "range": {
+        "startLine": 340,
+        "startChar": 71,
+        "endLine": 340,
+        "endChar": 77
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "987278a7_0d9374f0",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd046112_879a83b8",
       "range": {
         "startLine": 340,
         "startChar": 71,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07afef51_98818fff",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d48e9303_b8f40c6d",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 14
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6be599b1_38af909e",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-05-19T13:51:16Z",
       "side": 1,
       "message": "Trailing + [] not needed",
+      "range": {
+        "startLine": 55,
+        "startChar": 7,
+        "endLine": 55,
+        "endChar": 8
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0ca5ffe_591f83e9",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6be599b1_38af909e",
       "range": {
         "startLine": 55,
         "startChar": 7,
@@ -135,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a3c5eeab_1ad66a96",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "I agree that this can be error-prone though with Rust the convention is for all Rust files under `src/` to be automatically referenced in the build (assuming they are also referenced via `mod` statements at module boundaries). vello_shaders and vello_encoding both follow the conventional crate structure and I expect everything that matches this glob to be valid Rust sources. I used bazel/externals/cxx/BUILD.bazel.skia as precedent.\n\nThe exception is for `cargo_build_script` where I enumerated the rust build.rs file and the various rust sources that it includes as explicit data dependencies, since that falls outside the category of a \"conventional crate structure\". Build scripts aren\u0027t crates after all. I still listed all the vello shader files as a glob as there are many of them, however they follow the project convention of \"`.wgsl` files under the top-level `shader/` directory\".",
+      "parentUuid": "9921268f_1bfc7845",
+      "range": {
+        "startLine": 56,
+        "startChar": 11,
+        "endLine": 56,
+        "endChar": 15
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dea4908d_1f5a3cf4",
         "filename": "bazel/external/vello/BUILD.bazel",
         "patchSetId": 5
@@ -146,6 +266,30 @@
       "writtenOn": "2023-05-19T13:51:16Z",
       "side": 1,
       "message": "Trailing +[] not needed",
+      "range": {
+        "startLine": 69,
+        "startChar": 7,
+        "endLine": 69,
+        "endChar": 8
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c8cb671_22d1a285",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dea4908d_1f5a3cf4",
       "range": {
         "startLine": 69,
         "startChar": 7,
@@ -202,6 +346,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e85fa16_6d9d7b22",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done. I had this in here because the implementation of `run_binary` did so (https://github.com/bazelbuild/bazel-skylib/blob/caf2bc1ae197aea45aee80c2fd8845937097f00a/rules/run_binary.bzl). It\u0027s probably not necessary.",
+      "parentUuid": "c19708f9_0744c743",
+      "range": {
+        "startLine": 21,
+        "startChar": 45,
+        "endLine": 21,
+        "endChar": 72
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7079ba8_31f7d9df",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8823e7cc_c1dea6a5",
+      "range": {
+        "startLine": 21,
+        "startChar": 12,
+        "endLine": 21,
+        "endChar": 27
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d626a5cb_3bae4d31",
@@ -215,6 +407,30 @@
       "writtenOn": "2023-05-19T17:54:13Z",
       "side": 1,
       "message": "Ubernit: `tool_input_manifests` (didn\u0027t know what \"mfs\" stood for until I looked up `ctx.resolve_tools`).",
+      "range": {
+        "startLine": 28,
+        "startChar": 28,
+        "endLine": 28,
+        "endChar": 31
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6ddf509_150c9dc9",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d626a5cb_3bae4d31",
       "range": {
         "startLine": 28,
         "startChar": 28,
@@ -248,6 +464,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a400718_9a39a97d",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "296cc15b_5fb662f5",
+      "range": {
+        "startLine": 35,
+        "startChar": 20,
+        "endLine": 35,
+        "endChar": 29
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d2e4ad1_c006a4a8",
@@ -261,6 +501,30 @@
       "writtenOn": "2023-05-19T17:54:13Z",
       "side": 1,
       "message": "Can be omitted as it defaults to `False` (https://bazel.build/rules/lib/builtins/actions.html#run).",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 38
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ab5d2ac_19b8432e",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d2e4ad1_c006a4a8",
       "range": {
         "startLine": 36,
         "startChar": 8,
@@ -294,6 +558,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f083bed_9a2b6500",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "I\u0027m guessing it\u0027s not since the build seems to work without it. I cargo-culted this from the implementation of `run_binary` (https://github.com/bazelbuild/bazel-skylib/blob/caf2bc1ae197aea45aee80c2fd8845937097f00a/rules/run_binary.bzl) which is what the macro below used originally. Not having this is a behavior change but it\u0027s probably not necessary to have it to begin with.",
+      "parentUuid": "0bf959e8_6eb4db7e",
+      "range": {
+        "startLine": 37,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 49
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a583ac7_09b0901d",
@@ -317,6 +605,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffb8d6fa_1e37cdeb",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a583ac7_09b0901d",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 17
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91b40843_db8cd2de",
@@ -330,6 +642,30 @@
       "writtenOn": "2023-05-19T13:51:16Z",
       "side": 1,
       "message": "This is technically a Skia-provided alias. Probably better to use the \"native Bazel\" `--compilation_mode\u003dopt`",
+      "range": {
+        "startLine": 27,
+        "startChar": 23,
+        "endLine": 27,
+        "endChar": 29
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c7289ae_e2dbdeeb",
+        "filename": "third_party/vello/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T18:12:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91b40843_db8cd2de",
       "range": {
         "startLine": 27,
         "startChar": 23,
