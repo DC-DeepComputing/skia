@@ -188,4 +188,14 @@ SK_API GrBackendRenderTarget GetBackendRenderTarget(SkSurface*, BackendHandleAcc
 
 }  // namespace SkSurfaces
 
+namespace skgpu::ganesh {
+// Clients should strive to call GrDirectContext::flush directly. However, there exist some
+// places where the GrDirectContext is hard to find, these helpers allow for the flushing of the
+// provided surface. This is a no-op if the surface is nullptr or not GPU backed.
+SK_API GrSemaphoresSubmitted Flush(sk_sp<SkSurface>);
+SK_API GrSemaphoresSubmitted Flush(SkSurface*);
+SK_API void FlushAndSubmit(sk_sp<SkSurface>);
+SK_API void FlushAndSubmit(SkSurface*);
+}  // namespace skgpu::ganesh
+
 #endif
