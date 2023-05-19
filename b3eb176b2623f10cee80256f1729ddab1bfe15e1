@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a630552e_e8940a82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "+Drott as an FYI about a (hopefully not breaking) change to the rust bridge code.",
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "431dba24_67bebde9",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "What do you mean by \"hermetic repository rules\"? \"repository rules\" are actually designed to be non-hermetic. Do you mean the automatically generated Rust Bazel rules?",
+      "range": {
+        "startLine": 339,
+        "startChar": 87,
+        "endLine": 339,
+        "endChar": 95
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd046112_879a83b8",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "nit: comma after script",
+      "range": {
+        "startLine": 340,
+        "startChar": 71,
+        "endLine": 340,
+        "endChar": 77
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d48e9303_b8f40c6d",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "nit: Add a reminder comment how you turn these config_settings on via the Bazel command line.",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 14
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6be599b1_38af909e",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "Trailing + [] not needed",
+      "range": {
+        "startLine": 55,
+        "startChar": 7,
+        "endLine": 55,
+        "endChar": 8
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9921268f_1bfc7845",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "We should avoid using globs due to them being error-prone and can bring in more things than we need. Can this just be a list of files?\n\nIf we *must* use globs, please add allow_empty\u003dFalse so if there\u0027s a typo in the glob and it matches nothing, Bazel treats that as an error.",
+      "range": {
+        "startLine": 56,
+        "startChar": 11,
+        "endLine": 56,
+        "endChar": 15
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dea4908d_1f5a3cf4",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "Trailing +[] not needed",
+      "range": {
+        "startLine": 69,
+        "startChar": 7,
+        "endLine": 69,
+        "endChar": 8
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8823e7cc_c1dea6a5",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "I like to add comments like\n`# https://bazel.build/rules/lib/builtins/ctx#expand_location`\nTo make lookup of these bazel functions easier (also to help distinguish between the multiple types of \"context\" that exist in Bazel).",
+      "range": {
+        "startLine": 21,
+        "startChar": 12,
+        "endLine": 21,
+        "endChar": 27
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a583ac7_09b0901d",
+        "filename": "bazel/rust_cxx_bridge.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "Can we define new rules in their own file with the same name? It\u0027s fine to have many macros in a given file, but rules tend to be more involved and I prefer them to be more organized.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 17
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91b40843_db8cd2de",
+        "filename": "third_party/vello/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "This is technically a Skia-provided alias. Probably better to use the \"native Bazel\" `--compilation_mode\u003dopt`",
+      "range": {
+        "startLine": 27,
+        "startChar": 23,
+        "endLine": 27,
+        "endChar": 29
+      },
+      "revId": "b3eb176b2623f10cee80256f1729ddab1bfe15e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

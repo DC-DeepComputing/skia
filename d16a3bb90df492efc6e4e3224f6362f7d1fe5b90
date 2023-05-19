@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e076a75f_e1d82010",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cdda7aad_2081fcfd",
+      "range": {
+        "startLine": 17,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 72
+      },
+      "revId": "d16a3bb90df492efc6e4e3224f6362f7d1fe5b90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff65dcc8_f0503292",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-05-19T02:55:40Z",
       "side": 1,
       "message": "Having a rule for this is not strictly necessary but I included one for completeness.",
+      "revId": "d16a3bb90df492efc6e4e3224f6362f7d1fe5b90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85360a13_f24dcc23",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:51:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ff65dcc8_f0503292",
       "revId": "d16a3bb90df492efc6e4e3224f6362f7d1fe5b90",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
