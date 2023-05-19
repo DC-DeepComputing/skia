@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddb2854e_9b7897c2",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T16:35:41Z",
+      "side": 1,
+      "message": "In WGSL the `\u0026\u0026` and `||` operators are defined as short-circuiting: https://www.w3.org/TR/WGSL/#logical-expr. So this rewrite is only necessary if the right-hand side expression itself needs to be rewritten as multiple statements.\n\nOf course it doesn\u0027t necessarily hurt to always rewrite them to be sure. I suggest elaborating in the comments about the WGSL language behavior and why we need to rewrite all binary \u0026\u0026/|| operators this way.",
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c645e90f_e8b0855b",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T16:35:41Z",
+      "side": 1,
+      "message": "Should this write `leftExpr` into a scratch variable before writing out the if statement, in case the `leftExpr` itself had to turn into multiple statements (e.g. because it contained a ternary)? This code will need to handle that case eventually.",
+      "range": {
+        "startLine": 914,
+        "startChar": 8,
+        "endLine": 914,
+        "endChar": 30
+      },
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6797e5a_cac6df66",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T16:35:41Z",
+      "side": 1,
+      "message": "Same as above, should the result of left_expression get stored in a scratch variable before writing out the `if` keyword?",
+      "range": {
+        "startLine": 940,
+        "startChar": 11,
+        "endLine": 940,
+        "endChar": 40
+      },
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
