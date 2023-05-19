@@ -16,6 +16,23 @@
       "message": "LGTM as a band-aid so we can see what\u0027s wrong.\nWe probably want to ensure the script stops as soon as any step fails, though. Can we do `RUN thing || die`?",
       "revId": "025e1df1551c27fa129c10a7fb154ae3ae5b58c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acb44517_b3e126dc",
+        "filename": "docker/skia-release/Dockerfile",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:50:06Z",
+      "side": 1,
+      "message": "As a follow-up I want to improve this step to not take 30 minutes (sometimes? always?)",
+      "revId": "025e1df1551c27fa129c10a7fb154ae3ae5b58c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
