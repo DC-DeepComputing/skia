@@ -1,6 +1,40 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "151bc952_84481248",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T17:10:21Z",
+      "side": 1,
+      "message": "lgtm % adding a test for the left-hand-side hoisting case.",
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fae831b_792d6c9a",
+        "filename": "resources/sksl/wgsl/LogicalOrShortCircuit.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T17:10:21Z",
+      "side": 1,
+      "message": "I suggest adding a test that embeds a ternary on the left hand side (e.g. `(((x \u003d\u003d 1) ? y : x) \u003d\u003d z) || ...`) or any other expression that generates additional statements.",
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ddb2854e_9b7897c2",
@@ -32,6 +66,24 @@
       "side": 1,
       "message": "The rewrite is always necessary if the `this-\u003eassembleExpression(right)` could ever generate extra freestanding statements, since we need those statements wrapped in an if-block. I\u0027m using `HasSideEffects` here as a stand-in for that check, which might not be a 100% accurate mapping. I should probably make a dedicated function for that.",
       "parentUuid": "ddb2854e_9b7897c2",
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9148d7a2_798c5197",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T17:10:21Z",
+      "side": 1,
+      "message": "That makes sense. I would still elaborate in the comments about the reasons for the rewrite, for example `If the operator is \u0026\u0026 or ||, we need to handle short-circuiting properly in case either side of the expression needed to generate extra statements`. Otherwise short-circuiting still works in the simple case.",
+      "parentUuid": "0157f138_89b0fcee",
       "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -73,6 +125,30 @@
       "side": 1,
       "message": "That\u0027s what `assembleExpression(left)` will do. If the expression is simple, it returns it verbatim. If the expression is complex, it emits statements (generating the scratch variable) and returns a proxy that stands in for the expression (the scratch variable\u0027s name).",
       "parentUuid": "c645e90f_e8b0855b",
+      "range": {
+        "startLine": 914,
+        "startChar": 8,
+        "endLine": 914,
+        "endChar": 30
+      },
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "607e32eb_94544d52",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T17:10:21Z",
+      "side": 1,
+      "message": "Ah, somehow I missed that. sgtm.\n\nIt would be good to validate this with a test case that has ternary expressions on both sides of the binary boolean expression.",
+      "parentUuid": "b2ae1db3_9f2a0493",
       "range": {
         "startLine": 914,
         "startChar": 8,
