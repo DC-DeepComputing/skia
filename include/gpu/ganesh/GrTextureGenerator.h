@@ -11,6 +11,7 @@
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/gl/GrGLTypes.h"
 #include "include/private/base/SkAPI.h"
 
 #include <cstdint>
@@ -63,6 +64,26 @@ public:
 protected:
     GrTextureGenerator(const SkImageInfo& info, uint32_t uniqueId = kNeedNewImageUniqueID);
 };
+
+#ifdef SK_GL
+class GrExternalGLTexture {
+public:
+    virtual ~GrExternalGLTexture() = default;
+    virtual GrGLTextureInfo getTextureInfo() = 0;
+    virtual void dispose() = 0;
+};
+
+class SK_API GrExternalGLTextureGenerator : public GrTextureGenerator {
+public:
+    GrExternalGLTextureGenerator(const SkImageInfo& info);
+
+    GrSurfaceProxyView onGenerateTexture(GrRecordingContext*,
+                                         const SkImageInfo&,
+                                         skgpu::Mipmapped,
+                                         GrImageTexGenPolicy) override;
+    virtual std::unique_ptr<GrExternalGLTexture> generateExternalTexture() = 0;
+};
+#endif
 
 namespace SkImages {
 /**
