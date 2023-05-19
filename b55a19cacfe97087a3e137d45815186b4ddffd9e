@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28f28dc1_071cf284",
+        "filename": "tests/make_adb_test_tarball/make_adb_test_tarball.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:33:05Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "fb728c1d_78ff4738",
+      "range": {
+        "startLine": 6,
+        "startChar": 79,
+        "endLine": 6,
+        "endChar": 82
+      },
+      "revId": "b55a19cacfe97087a3e137d45815186b4ddffd9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71c65ace_3663a3e3",
