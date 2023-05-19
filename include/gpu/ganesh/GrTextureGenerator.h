@@ -10,6 +10,7 @@
 
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkRefCnt.h"
+#include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrTypes.h"
 #include "include/private/base/SkAPI.h"
 
@@ -62,6 +63,24 @@ public:
 
 protected:
     GrTextureGenerator(const SkImageInfo& info, uint32_t uniqueId = kNeedNewImageUniqueID);
+};
+
+class GrExternalTexture {
+public:
+    virtual ~GrExternalTexture() = default;
+    virtual GrBackendTexture getBackendTexture() = 0;
+    virtual void dispose() = 0;
+};
+
+class SK_API GrExternalTextureGenerator : public GrTextureGenerator {
+public:
+    GrExternalTextureGenerator(const SkImageInfo& info);
+
+    GrSurfaceProxyView onGenerateTexture(GrRecordingContext*,
+                                         const SkImageInfo&,
+                                         skgpu::Mipmapped,
+                                         GrImageTexGenPolicy) override;
+    virtual std::unique_ptr<GrExternalTexture> generateExternalTexture(skgpu::Mipmapped mipMapped) = 0;
 };
 
 namespace SkImages {
