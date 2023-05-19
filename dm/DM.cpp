@@ -1665,5 +1665,15 @@ int main(int argc, char** argv) {
     SkGraphics::PurgeAllCaches();
     info("Finished!\n");
 
+    extern std::atomic<size_t> kTotalHashSizes[];
+    extern std::atomic<size_t> kTotalHashCounts[];
+    for (int i = 0; i < 5; i++) {
+        printf("Bucket %d: %zu : %zu bytes (%g avg bytes)\n",
+               i,
+               kTotalHashCounts[i].load(),
+               kTotalHashSizes[i].load(),
+               kTotalHashSizes[i].load() / (double)kTotalHashCounts[i].load());
+    }
+
     return 0;
 }

@@ -146,3 +146,16 @@ namespace SkOpts {
         once(init);
     }
 }  // namespace SkOpts
+
+std::atomic<size_t> kTotalHashSizes[5] = { 0 };
+std::atomic<size_t> kTotalHashCounts[5] = { 0 };
+
+void incHashSize(size_t size) {
+    int bucket =
+        size <= 4 ? 0 :
+        size <= 8 ? 1 :
+        size <= 16 ? 2 :
+        size <= 32 ? 3 : 4;
+    kTotalHashCounts[bucket].fetch_add(1);
+    kTotalHashSizes[bucket].fetch_add(size);
+}

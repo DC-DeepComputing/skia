@@ -107,9 +107,15 @@
     }
 #endif
 
+extern void incHashSize(size_t size);
+
 namespace SK_OPTS_NS {
 
     inline uint32_t hash_fn(const void* data, size_t len, uint32_t seed) {
+#if !defined(SKSL_STANDALONE)
+        incHashSize(len);
+#endif
+
         auto ptr = (const uint8_t*)data;
 
         // Handle the bulk with a few data-parallel independent hashes,
