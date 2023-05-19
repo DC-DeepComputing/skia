@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0543bac_592d3ddb",
+        "filename": "resources/sksl/wgsl/LogicalOrShortCircuit.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-19T20:13:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fae831b_792d6c9a",
+      "revId": "addfe89c2be09e5f329c3bda4411499a38a6a986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ddb2854e_9b7897c2",
