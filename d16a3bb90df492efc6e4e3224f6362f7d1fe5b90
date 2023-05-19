@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdda7aad_2081fcfd",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T02:55:40Z",
+      "side": 1,
+      "message": "One possible solution to this is to move Vello\u0027s shaders into crates/shaders. I haven\u0027t confirmed this but barring this issue we could compile both crates without any of the rules below.",
+      "range": {
+        "startLine": 17,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 72
+      },
+      "revId": "d16a3bb90df492efc6e4e3224f6362f7d1fe5b90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff65dcc8_f0503292",
+        "filename": "bazel/external/vello/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T02:55:40Z",
+      "side": 1,
+      "message": "Having a rule for this is not strictly necessary but I included one for completeness.",
+      "revId": "d16a3bb90df492efc6e4e3224f6362f7d1fe5b90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
