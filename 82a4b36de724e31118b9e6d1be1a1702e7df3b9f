@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fb1e1da_263c5833",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-19T20:55:30Z",
+      "side": 1,
+      "message": "The Canary-G3 task failed but apparently for reasons unrelated to this change, AFAICT. This CL should be easy to revert if something goes wrong, so landing as-is.",
+      "revId": "82a4b36de724e31118b9e6d1be1a1702e7df3b9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
