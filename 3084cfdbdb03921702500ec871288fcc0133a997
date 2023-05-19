@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd426013_06a99563",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-19T18:40:13Z",
+      "side": 1,
+      "message": "Still in progress but wanted to make I\u0027m not off-base with this. Does it make sense to store these in the ResourceCache? In Ganesh they were attached to the Textures, but it would be more flexible if we allowed multiple views on a single image, including compatible formats.",
+      "revId": "3084cfdbdb03921702500ec871288fcc0133a997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
