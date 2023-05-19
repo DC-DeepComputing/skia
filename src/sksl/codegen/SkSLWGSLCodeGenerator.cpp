@@ -883,6 +883,16 @@ std::string WGSLCodeGenerator::assembleBinaryExpression(const BinaryExpression& 
     const Expression& right = *b.right();
     Operator op = b.getOperator();
 
+    // The comma operator isn't supported natively in WGSL; if it has any side effects, emit the
+    // left-expression as a separate statement.
+    if (op.kind() == OperatorKind::COMMA) {
+        if (Analysis::HasSideEffects(left)) {
+            this->write(this->assembleExpression(left, Precedence::kStatement));
+            this->writeLine(";");
+        }
+        return this->assembleExpression(right, parentPrecedence);
+    }
+
     // The equality and comparison operators are only supported for scalar and vector types.
     if (op.isEquality() && !left.type().isScalar() && !left.type().isVector()) {
         if (left.type().isMatrix()) {
@@ -902,10 +912,10 @@ std::string WGSLCodeGenerator::assembleBinaryExpression(const BinaryExpression& 
     // The equality operators ('=='/'!=') in WGSL apply component-wise to vectors and result in a
     // vector. We need to reduce the value to a boolean.
     if (left.type().isVector()) {
-        if (op.kind() == Operator::Kind::EQEQ) {
+        if (op.kind() == OperatorKind::EQEQ) {
             expr = "all";
             needParens = true;
-        } else if (op.kind() == Operator::Kind::NEQ) {
+        } else if (op.kind() == OperatorKind::NEQ) {
             expr = "any";
             needParens = true;
         }

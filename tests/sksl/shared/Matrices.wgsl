@@ -59,6 +59,13 @@ fn test_half_b() -> bool {
     ok = ok && mat4x4f32_eq_mat4x4f32(m11, mat4x4<f32>(vec4<f32>(9.0, 20.0, 20.0, 20.0), vec4<f32>(20.0, 9.0, 20.0, 20.0), vec4<f32>(20.0, 20.0, 9.0, 20.0), vec4<f32>(20.0, 20.0, 20.0, 9.0)));
     return ok;
 }
+fn test_comma_b() -> bool {
+    var x: mat2x2<f32>;
+    var y: mat2x2<f32>;
+    x = mat2x2<f32>(vec2<f32>(1.0, 2.0), vec2<f32>(3.0, 4.0));
+    y = mat2x2<f32>(vec2<f32>(1.0, 2.0), vec2<f32>(3.0, 4.0));
+    return mat2x2f32_eq_mat2x2f32(x, y);
+}
 fn main(coords: vec2<f32>) -> vec4<f32> {
     var _0_ok: bool = true;
     var _1_m1: mat2x2<f32> = mat2x2<f32>(vec2<f32>(1.0, 2.0), vec2<f32>(3.0, 4.0));
@@ -77,7 +84,7 @@ fn main(coords: vec2<f32>) -> vec4<f32> {
     _8_m11 -= _7_m10;
     _0_ok = _0_ok && mat4x4f32_eq_mat4x4f32(_8_m11, mat4x4<f32>(vec4<f32>(9.0, 20.0, 20.0, 20.0), vec4<f32>(20.0, 9.0, 20.0, 20.0), vec4<f32>(20.0, 20.0, 9.0, 20.0), vec4<f32>(20.0, 20.0, 20.0, 9.0)));
     var _skTemp0: vec4<f32>;
-    if _0_ok && test_half_b() {
+    if (_0_ok && test_half_b()) && test_comma_b() {
         _skTemp0 = _globalUniforms.colorGreen;
     } else {
         _skTemp0 = _globalUniforms.colorRed;
