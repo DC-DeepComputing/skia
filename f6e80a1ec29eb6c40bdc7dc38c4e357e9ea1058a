@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec0d71cd_c55b5597",
+        "filename": "bench/CompositingImagesBench.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:33:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fee6712_414d2012",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 6
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c358a10f_16cb7a16",
@@ -71,6 +95,30 @@
       "writtenOn": "2023-05-19T14:35:25Z",
       "side": 1,
       "message": "What happens if we remove this flush? W/o deeply understanding this GM it seems unnecessary since later `makeImageSnapshots()` should all trigger internal flushes as needed.",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 6
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05f964a5_4f452687",
+        "filename": "gm/kawase_blur_rt.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:33:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c358a10f_16cb7a16",
       "range": {
         "startLine": 122,
         "startChar": 0,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80e1dc65_2fc81012",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:33:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b06b189d_e8283908",
+      "range": {
+        "startLine": 632,
+        "startChar": 0,
+        "endLine": 632,
+        "endChar": 35
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f4dd384_a1eb9658",
@@ -117,6 +189,30 @@
       "writtenOn": "2023-05-19T14:35:25Z",
       "side": 1,
       "message": "nit: \"these helpers\"",
+      "range": {
+        "startLine": 193,
+        "startChar": 53,
+        "endLine": 193,
+        "endChar": 64
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30ae05e1_f401f176",
+        "filename": "include/gpu/ganesh/SkSurfaceGanesh.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:33:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f4dd384_a1eb9658",
       "range": {
         "startLine": 193,
         "startChar": 53,
@@ -150,6 +246,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d109fda3_a590d57c",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:33:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c061530d_44246ee6",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 33
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43f5c573_682eb970",
@@ -173,6 +293,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea9653a2_649387c5",
+        "filename": "tools/sk_app/Window.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:33:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43f5c573_682eb970",
+      "range": {
+        "startLine": 100,
+        "startChar": 8,
+        "endLine": 100,
+        "endChar": 59
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77bb45fc_c5362a1f",
@@ -186,6 +330,30 @@
       "writtenOn": "2023-05-19T14:35:25Z",
       "side": 1,
       "message": "See not regarding flushing in benchmarks, but it applies here for the timing reported by viewer\u0027s `s` stats feature.",
+      "range": {
+        "startLine": 1712,
+        "startChar": 0,
+        "endLine": 1714,
+        "endChar": 6
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af197b1e_deb7cc84",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1714,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:33:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77bb45fc_c5362a1f",
       "range": {
         "startLine": 1712,
         "startChar": 0,
