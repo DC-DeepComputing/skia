@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8f968e2_36b02bbb",
+        "filename": "src/effects/SkShaderMaskFilterImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:57:03Z",
+      "side": 1,
+      "message": "FYI, this only registers the `CreateProc` with the name \"SkShaderMaskFilterImpl\" which means older SKPs that were created before the rename of the class won\u0027t deseriliaze. You have to manually register the old class name too:\n\n    SkFlattenable::Register(\"SkShaderMF\", SkShaderMaskFilterImpl::CreateProc);",
+      "range": {
+        "startLine": 98,
+        "startChar": 50,
+        "endLine": 98,
+        "endChar": 73
+      },
+      "revId": "e0915149a22f473d2d3375a69b568c13f96c39d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b726e90c_12f71264",
+        "filename": "src/effects/SkShaderMaskFilterImpl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:57:03Z",
+      "side": 1,
+      "message": "Why do we need to expose this class in a header? Rob and I have had an ongoing refactor of moving our internal subclasses of effects into the CPP file that implements the factory function.\n\nI see this is public so that GrFragmentProcessors::Make() is able to cast to it, but carrying this pattern forward for all of our effects makes me uncomfortable. Is this the plan we settled on for separating out the public Sk types with the backend representations?\n\nAlso, if it matters, there\u0027s only one remaining place that uses SkShaderMaskFilter and then hopefully it can just be deleted entirely.",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 28
+      },
+      "revId": "e0915149a22f473d2d3375a69b568c13f96c39d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27a3d555_5e2510a0",
+        "filename": "src/gpu/ganesh/GrBlurUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:57:03Z",
+      "side": 1,
+      "message": "nit newline between ours and library headers",
+      "range": {
+        "startLine": 84,
+        "startChar": 1,
+        "endLine": 84,
+        "endChar": 8
+      },
+      "revId": "e0915149a22f473d2d3375a69b568c13f96c39d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccd28434_c29d8924",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:57:03Z",
+      "side": 1,
+      "message": "Will we be moving the `SkShader-\u003easFragmentProcessor` and similar into this header too?",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 30
+      },
+      "revId": "e0915149a22f473d2d3375a69b568c13f96c39d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
