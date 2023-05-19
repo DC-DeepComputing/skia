@@ -224,6 +224,12 @@ private:
     // Writes a scratch variable into the program and returns its name (e.g. `_skTemp123`).
     std::string writeScratchVar(const Type& type);
 
+    // Adds a pointer to an lvalue into the program, e.g.:
+    //     var _skTemp123: ptr<function, f32> = &(myArray[index]);
+    // The expression must be properly addressable; for instance, swizzles will not work.
+    // The returned name is a dereference of the scratch pointer (e.g. `(*_skTemp123)`).
+    std::string writeScratchPtr(const Expression& lvalue);
+
     // Generic recursive ProgramElement visitor.
     void writeProgramElement(const ProgramElement& e);
     void writeGlobalVarDeclaration(const GlobalVarDeclaration& d);
