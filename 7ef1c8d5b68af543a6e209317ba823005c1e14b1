@@ -22,6 +22,30 @@
       },
       "revId": "7ef1c8d5b68af543a6e209317ba823005c1e14b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0006d222_1fc437f4",
+        "filename": "resources/sksl/shared/TernaryComplexNesting.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-19T19:10:13Z",
+      "side": 1,
+      "message": "I\u0027m not entirely sure what sort of test you are looking for.\n\nI tried a few more test cases but none of them seemed to generate any novel results compared to the existing case, or demonstrate any unique behavior... e.g. https://paste.googleplex.com/5415938034761728 seems to address your request but AFAICS it\u0027s just doing the same basic pattern and the test case is very hard to reason about. I don\u0027t want to make tests that are so complex that I can\u0027t understand them.\n\nIf you can think of a specific case, happy to add it of course.",
+      "parentUuid": "6657ce9d_1f31b20c",
+      "range": {
+        "startLine": 12,
+        "startChar": 13,
+        "endLine": 12,
+        "endChar": 44
+      },
+      "revId": "7ef1c8d5b68af543a6e209317ba823005c1e14b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
