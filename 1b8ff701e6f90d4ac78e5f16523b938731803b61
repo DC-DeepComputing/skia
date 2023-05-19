@@ -51,6 +51,24 @@
       "parentUuid": "682e7717_f0589cd9",
       "revId": "1b8ff701e6f90d4ac78e5f16523b938731803b61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9982463e_749ab03c",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-19T10:14:32Z",
+      "side": 1,
+      "message": "Thanks, sent out https://skia-review.googlesource.com/c/skia/+/700576 with the fix.\n\nFYI, this Android test will continue to fail (just less explosively).",
+      "parentUuid": "0f7c4db9_5f85e6b0",
+      "revId": "1b8ff701e6f90d4ac78e5f16523b938731803b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
