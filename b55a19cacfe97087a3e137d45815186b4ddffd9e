@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8f10dd5_2ea52e32",
+        "filename": "tests/make_adb_test_tarball/make_adb_test_tarball.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:28:45Z",
+      "side": 1,
+      "message": "(That was something we want, right?)",
+      "parentUuid": "1ca45430_a88933a7",
+      "range": {
+        "startLine": 6,
+        "startChar": 79,
+        "endLine": 6,
+        "endChar": 82
+      },
+      "revId": "b55a19cacfe97087a3e137d45815186b4ddffd9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "71c65ace_3663a3e3",
         "filename": "tests/make_adb_test_tarball/make_adb_test_tarball.go",
         "patchSetId": 10
