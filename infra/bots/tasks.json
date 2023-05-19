@@ -26739,6 +26739,8 @@
           "cache/vpython"
         ]
       },
+      "execution_timeout_ns": 3600000000000,
+      "io_timeout_ns": 3600000000000,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Housekeeper-PerCommit-CreateDockerImage_Skia_WASM_Release": {
@@ -26852,6 +26854,8 @@
           "cache/vpython"
         ]
       },
+      "execution_timeout_ns": 3600000000000,
+      "io_timeout_ns": 3600000000000,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Housekeeper-PerCommit-InfraTests_Linux": {
