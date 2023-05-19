@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7d6f74b_e86dd004",
+        "filename": "tests/android.bzl",
+        "patchSetId": 10
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:20:48Z",
+      "side": 1,
+      "message": "Do we not want this to be for the exec platform?",
+      "range": {
+        "startLine": 228,
+        "startChar": 8,
+        "endLine": 228,
+        "endChar": 13
+      },
+      "revId": "b55a19cacfe97087a3e137d45815186b4ddffd9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ca45430_a88933a7",
+        "filename": "tests/make_adb_test_tarball/make_adb_test_tarball.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:20:48Z",
+      "side": 1,
+      "message": "Add that there is a design goal of not being tied to infra code for faster builds and less frequent syncs/cache busting",
+      "range": {
+        "startLine": 6,
+        "startChar": 79,
+        "endLine": 6,
+        "endChar": 82
+      },
+      "revId": "b55a19cacfe97087a3e137d45815186b4ddffd9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71c65ace_3663a3e3",
+        "filename": "tests/make_adb_test_tarball/make_adb_test_tarball.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T13:20:48Z",
+      "side": 1,
+      "message": "Why do we need to set the ModTime? All the other make sense, but why do we need to preserve the modtime? Can we just leave it blank?",
+      "range": {
+        "startLine": 93,
+        "startChar": 16,
+        "endLine": 93,
+        "endChar": 23
+      },
+      "revId": "b55a19cacfe97087a3e137d45815186b4ddffd9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
