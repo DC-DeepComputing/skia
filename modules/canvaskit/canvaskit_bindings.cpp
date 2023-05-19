@@ -2169,7 +2169,9 @@ EMSCRIPTEN_BINDINGS(Skia) {
             return SkSurfaces::WrapPixels(imageInfo, pixels, rowBytes, nullptr);
         }), allow_raw_pointers())
         .function("_flush", optional_override([](SkSurface& self) {
-            self.flushAndSubmit(false);
+#ifdef CK_ENABLE_WEBGL
+            skgpu::ganesh::FlushAndSubmit(&self);
+#endif
         }))
         .function("_getCanvas", &SkSurface::getCanvas, allow_raw_pointers())
         .function("imageInfo", optional_override([](SkSurface& self)->SimpleImageInfo {
