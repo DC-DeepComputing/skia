@@ -70,6 +70,30 @@
       },
       "revId": "7ef1c8d5b68af543a6e209317ba823005c1e14b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72795fc1_e1f9da09",
+        "filename": "resources/sksl/shared/TernaryComplexNesting.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-19T20:16:31Z",
+      "side": 1,
+      "message": "Yep the line 24 case is the one I was looking for. I think there is value in having a unit test that exercises the logic for each subexpression of a ternary (and similarly for if statements).",
+      "parentUuid": "d8fcd779_d953de54",
+      "range": {
+        "startLine": 12,
+        "startChar": 13,
+        "endLine": 12,
+        "endChar": 44
+      },
+      "revId": "7ef1c8d5b68af543a6e209317ba823005c1e14b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
