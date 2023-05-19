@@ -189,18 +189,18 @@ private:
     // necessary setup code directly into the program as necessary.
     std::string assembleExpression(const Expression& e, Precedence parentPrecedence);
     std::string assembleBinaryExpression(const BinaryExpression& b, Precedence parentPrecedence);
-    std::string assembleFieldAccess(const FieldAccess& f);
-    std::string assembleFunctionCall(const FunctionCall&);
-    std::string assembleIndexExpression(const IndexExpression& i);
-    std::string assembleLiteral(const Literal& l);
+    std::string assembleFieldAccess(const FieldAccess& f, Precedence parentPrecedence);
+    std::string assembleFunctionCall(const FunctionCall&, Precedence parentPrecedence);
+    std::string assembleIndexExpression(const IndexExpression& i, Precedence parentPrecedence);
+    std::string assembleLiteral(const Literal& l, Precedence parentPrecedence);
     std::string assemblePrefixExpression(const PrefixExpression& p, Precedence parentPrecedence);
-    std::string assembleSwizzle(const Swizzle& swizzle);
+    std::string assembleSwizzle(const Swizzle& swizzle, Precedence parentPrecedence);
     std::string assembleTernaryExpression(const TernaryExpression& t, Precedence parentPrecedence);
-    std::string assembleVariableReference(const VariableReference& r);
-    std::string assembleName(std::string_view name);
+    std::string assembleVariableReference(const VariableReference& r, Precedence parentPrecedence);
 
     // Constructor expressions
-    std::string assembleAnyConstructor(const AnyConstructor& c, Precedence parentPrecedence);
+    std::string assembleAnyConstructor(const AnyConstructor& c,
+                                       Precedence parentPrecedence);
     std::string assembleConstructorCompound(const ConstructorCompound& c,
                                             Precedence parentPrecedence);
     std::string assembleConstructorCompoundVector(const ConstructorCompound& c,
@@ -211,6 +211,9 @@ private:
                                                   Precedence parentPrecedence);
     std::string assembleConstructorMatrixResize(const ConstructorMatrixResize& c,
                                                 Precedence parentPrecedence);
+
+    // Expression helpers
+    std::string assembleName(std::string_view name);
 
     // Matrix constructor helpers.
     bool isMatrixConstructorHelperNeeded(const ConstructorCompound& c);

@@ -850,28 +850,28 @@ std::string WGSLCodeGenerator::assembleExpression(const Expression& e,
                                                          parentPrecedence);
 
         case Expression::Kind::kFieldAccess:
-            return this->assembleFieldAccess(e.as<FieldAccess>());
+            return this->assembleFieldAccess(e.as<FieldAccess>(), parentPrecedence);
 
         case Expression::Kind::kFunctionCall:
-            return this->assembleFunctionCall(e.as<FunctionCall>());
+            return this->assembleFunctionCall(e.as<FunctionCall>(), parentPrecedence);
 
         case Expression::Kind::kIndex:
-            return this->assembleIndexExpression(e.as<IndexExpression>());
+            return this->assembleIndexExpression(e.as<IndexExpression>(), parentPrecedence);
 
         case Expression::Kind::kLiteral:
-            return this->assembleLiteral(e.as<Literal>());
+            return this->assembleLiteral(e.as<Literal>(), parentPrecedence);
 
         case Expression::Kind::kPrefix:
             return this->assemblePrefixExpression(e.as<PrefixExpression>(), parentPrecedence);
 
         case Expression::Kind::kSwizzle:
-            return this->assembleSwizzle(e.as<Swizzle>());
+            return this->assembleSwizzle(e.as<Swizzle>(), parentPrecedence);
 
         case Expression::Kind::kTernary:
             return this->assembleTernaryExpression(e.as<TernaryExpression>(), parentPrecedence);
 
         case Expression::Kind::kVariableReference:
-            return this->assembleVariableReference(e.as<VariableReference>());
+            return this->assembleVariableReference(e.as<VariableReference>(), parentPrecedence);
 
         default:
             SkDEBUGFAILF("unsupported expression (kind: %d) %s",
@@ -1030,7 +1030,8 @@ std::string WGSLCodeGenerator::assembleBinaryExpression(const BinaryExpression& 
     return expr;
 }
 
-std::string WGSLCodeGenerator::assembleFieldAccess(const FieldAccess& f) {
+std::string WGSLCodeGenerator::assembleFieldAccess(const FieldAccess& f,
+                                                   Precedence parentPrecedence) {
     std::string expr;
 
     const Field* field = &f.base()->type().fields()[f.fieldIndex()];
@@ -1054,11 +1055,14 @@ std::string WGSLCodeGenerator::assembleFieldAccess(const FieldAccess& f) {
             // uniform/storage block global declaration.
         }
     }
-    expr += field->fName;
-    return expr;
+
+    // WGSL does not support arbitrary expressions at statement-level.
+    return (parentPrecedence != Precedence::kStatement) ? expr + std::string(field->fName)
+                                                        : std::string();
 }
 
-std::string WGSLCodeGenerator::assembleFunctionCall(const FunctionCall& c) {
+std::string WGSLCodeGenerator::assembleFunctionCall(const FunctionCall& c,
+                                                    Precedence parentPrecedence) {
     const FunctionDeclaration& func = c.function();
 
     // TODO(skia:13092): Handle intrinsic call as many of them need to be rewritten.
@@ -1117,12 +1121,22 @@ std::string WGSLCodeGenerator::assembleFunctionCall(const FunctionCall& c) {
     return expr;
 }
 
-std::string WGSLCodeGenerator::assembleIndexExpression(const IndexExpression& i) {
-    return this->assembleExpression(*i.base(), Precedence::kPostfix) + "[" +
-           this->assembleExpression(*i.index(), Precedence::kExpression) + "]";
+std::string WGSLCodeGenerator::assembleIndexExpression(const IndexExpression& i,
+                                                       Precedence parentPrecedence) {
+    std::string base = this->assembleExpression(*i.base(), Precedence::kPostfix);
+    std::string idx = this->assembleExpression(*i.index(), Precedence::kExpression);
+
+    // WGSL does not support arbitrary expressions at statement-level.
+    return (parentPrecedence != Precedence::kStatement) ? base + "[" + idx + "]"
+                                                        : std::string();
 }
 
-std::string WGSLCodeGenerator::assembleLiteral(const Literal& l) {
+std::string WGSLCodeGenerator::assembleLiteral(const Literal& l, Precedence parentPrecedence) {
+    if (parentPrecedence == Precedence::kStatement) {
+        // WGSL does not support arbitrary expressions at statement-level.
+        return {};
+    }
+
     const Type& type = l.type();
     if (type.isFloat() || type.isBoolean()) {
         return l.description(OperatorPrecedence::kExpression);
@@ -1183,17 +1197,22 @@ std::string WGSLCodeGenerator::assemblePrefixExpression(const PrefixExpression& 
         expr.push_back(')');
     }
 
-    return expr;
+    // WGSL does not support arbitrary expressions at statement-level.
+    return (parentPrecedence != Precedence::kStatement) ? expr
+                                                        : std::string();
 }
 
-std::string WGSLCodeGenerator::assembleSwizzle(const Swizzle& swizzle) {
+std::string WGSLCodeGenerator::assembleSwizzle(const Swizzle& swizzle,
+                                               Precedence parentPrecedence) {
     std::string expr = this->assembleExpression(*swizzle.base(), Precedence::kPostfix);
     expr.push_back('.');
     for (int c : swizzle.components()) {
         SkASSERT(c >= 0 && c <= 3);
         expr.push_back("xyzw"[c]);
     }
-    return expr;
+    // WGSL does not support arbitrary expressions at statement-level.
+    return (parentPrecedence != Precedence::kStatement) ? expr
+                                                        : std::string();
 }
 
 std::string WGSLCodeGenerator::writeScratchVar(const Type& type) {
@@ -1220,10 +1239,6 @@ std::string WGSLCodeGenerator::writeScratchPtr(const Expression& lvalue) {
 std::string WGSLCodeGenerator::assembleTernaryExpression(const TernaryExpression& t,
                                                          Precedence parentPrecedence) {
     std::string expr;
-    bool needParens = Precedence::kTernary >= parentPrecedence;
-    if (needParens) {
-        expr.push_back('(');
-    }
 
     // The trivial case is when neither branch has side effects and evaluate to a scalar or vector
     // type. This can be represented with a call to the WGSL `select` intrinsic although it doesn't
@@ -1232,6 +1247,11 @@ std::string WGSLCodeGenerator::assembleTernaryExpression(const TernaryExpression
         !Analysis::HasSideEffects(*t.test()) &&
         !Analysis::HasSideEffects(*t.ifTrue()) &&
         !Analysis::HasSideEffects(*t.ifFalse())) {
+        bool needParens = Precedence::kTernary >= parentPrecedence;
+        if (needParens) {
+            expr.push_back('(');
+        }
+
         expr += "select(";
         expr += this->assembleExpression(*t.ifFalse(), Precedence::kTernary);
         expr += ", ";
@@ -1282,54 +1302,61 @@ std::string WGSLCodeGenerator::assembleTernaryExpression(const TernaryExpression
 
         this->writeLine("}");
     }
-    return expr;
+
+    // WGSL does not support arbitrary expressions at statement-level.
+    return (parentPrecedence != Precedence::kStatement) ? expr
+                                                        : std::string();
 }
 
-std::string WGSLCodeGenerator::assembleVariableReference(const VariableReference& r) {
-    // TODO(skia:13092): Correctly handle RTflip for built-ins.
-    const Variable& v = *r.variable();
-
-    // Insert a conversion expression if this is a built-in variable whose type differs from the
-    // SkSL.
+std::string WGSLCodeGenerator::assembleVariableReference(const VariableReference& r,
+                                                         Precedence parentPrecedence) {
     std::string expr;
-    std::optional<std::string_view> conversion = needs_builtin_type_conversion(v);
-    if (conversion.has_value()) {
-        expr += *conversion;
-        expr.push_back('(');
-    }
+    // WGSL does not support arbitrary expressions at statement-level.
+    if (parentPrecedence != Precedence::kStatement) {
+        // TODO(skia:13092): Correctly handle RTflip for built-ins.
+        const Variable& v = *r.variable();
 
-    bool needsDeref = false;
-    bool isSynthesizedOutParamArg = fOutParamArgVars.contains(&v);
-
-    // When a variable is referenced in the context of a synthesized out-parameter helper argument,
-    // two special rules apply:
-    //     1. If it's accessed via a pipeline I/O or global uniforms struct, it should instead
-    //        be referenced by name (since it's actually referring to a function parameter).
-    //     2. Its type should be treated as a pointer and should be dereferenced as such.
-    if (v.storage() == Variable::Storage::kGlobal && !isSynthesizedOutParamArg) {
-        if (v.modifiers().fFlags & Modifiers::kIn_Flag) {
-            expr += "_stageIn.";
-        } else if (v.modifiers().fFlags & Modifiers::kOut_Flag) {
-            expr += "(*_stageOut).";
-        } else if (is_in_global_uniforms(v)) {
-            expr += "_globalUniforms.";
+        // Insert a conversion expression if this is a built-in variable whose type differs from the
+        // SkSL.
+        std::optional<std::string_view> conversion = needs_builtin_type_conversion(v);
+        if (conversion.has_value()) {
+            expr += *conversion;
+            expr.push_back('(');
         }
-    } else if ((v.storage() == Variable::Storage::kParameter &&
-                v.modifiers().fFlags & Modifiers::kOut_Flag) ||
-               isSynthesizedOutParamArg) {
-        // This is an out-parameter and its type is a pointer, which we need to dereference.
-        // We wrap the dereference in parentheses in case the value is used in an access expression
-        // later.
-        needsDeref = true;
-        expr += "(*";
-    }
 
-    expr += this->assembleName(v.mangledName());
-    if (needsDeref) {
-        expr.push_back(')');
-    }
-    if (conversion.has_value()) {
-        expr.push_back(')');
+        bool needsDeref = false;
+        bool isSynthesizedOutParamArg = fOutParamArgVars.contains(&v);
+
+        // When a variable is referenced in the context of a synthesized out-parameter helper
+        // argument, two special rules apply:
+        //     1. If it's accessed via a pipeline I/O or global uniforms struct, it should instead
+        //        be referenced by name (since it's actually referring to a function parameter).
+        //     2. Its type should be treated as a pointer and should be dereferenced as such.
+        if (v.storage() == Variable::Storage::kGlobal && !isSynthesizedOutParamArg) {
+            if (v.modifiers().fFlags & Modifiers::kIn_Flag) {
+                expr += "_stageIn.";
+            } else if (v.modifiers().fFlags & Modifiers::kOut_Flag) {
+                expr += "(*_stageOut).";
+            } else if (is_in_global_uniforms(v)) {
+                expr += "_globalUniforms.";
+            }
+        } else if ((v.storage() == Variable::Storage::kParameter &&
+                    v.modifiers().fFlags & Modifiers::kOut_Flag) ||
+                   isSynthesizedOutParamArg) {
+            // This is an out-parameter and its type is a pointer, which we need to dereference.
+            // We wrap the dereference in parentheses in case the value is used in an access
+            // expression later.
+            needsDeref = true;
+            expr += "(*";
+        }
+
+        expr += this->assembleName(v.mangledName());
+        if (needsDeref) {
+            expr.push_back(')');
+        }
+        if (conversion.has_value()) {
+            expr.push_back(')');
+        }
     }
     return expr;
 }
@@ -1343,8 +1370,10 @@ std::string WGSLCodeGenerator::assembleAnyConstructor(const AnyConstructor& c,
         expr += separator();
         expr += this->assembleExpression(*e, Precedence::kSequence);
     }
-    expr.push_back(')');
-    return expr;
+
+    // WGSL does not support arbitrary expressions at statement-level.
+    return (parentPrecedence != Precedence::kStatement) ? expr + ")"
+                                                        : std::string();
 }
 
 std::string WGSLCodeGenerator::assembleConstructorCompound(const ConstructorCompound& c,
@@ -1387,13 +1416,15 @@ std::string WGSLCodeGenerator::assembleConstructorCompoundVector(const Construct
                         returnType.c_str(),
                         returnType.c_str());
             }
-            std::string expr = name;
-            expr.push_back('(');
-            expr += this->assembleExpression(arg, Precedence::kSequence);
-            expr.push_back(')');
-            return expr;
+            std::string expr = this->assembleExpression(arg, Precedence::kSequence);
+
+            // WGSL does not support arbitrary expressions at statement-level.
+            return (parentPrecedence != Precedence::kStatement) ? name + "(" + expr + ")"
+                                                                : std::string();
         }
     }
+
+    // Other than the vec4(mat2x2) case, we can use the any-constructor path.
     return this->assembleAnyConstructor(c, parentPrecedence);
 }
 
@@ -1411,8 +1442,10 @@ std::string WGSLCodeGenerator::assembleConstructorCompoundMatrix(const Construct
             expr += separator();
             expr += this->assembleExpression(*arg, Precedence::kSequence);
         }
-        expr.push_back(')');
-        return expr;
+
+        // WGSL does not support arbitrary expressions at statement-level.
+        return (parentPrecedence != Precedence::kStatement) ? expr + ")"
+                                                            : std::string();
     }
 
     // WGSL doesn't allow creating matrices by passing in scalars and vectors in a jumble; it
@@ -1444,8 +1477,9 @@ std::string WGSLCodeGenerator::assembleConstructorCompoundMatrix(const Construct
             scalarCount = 0;
         }
     }
-    expr.push_back(')');
-    return expr;
+    // WGSL does not support arbitrary expressions at statement-level.
+    return (parentPrecedence != Precedence::kStatement) ? expr + ")"
+                                                        : std::string();
 }
 
 std::string WGSLCodeGenerator::assembleConstructorDiagonalMatrix(const ConstructorDiagonalMatrix& c,
@@ -1473,20 +1507,21 @@ std::string WGSLCodeGenerator::assembleConstructorDiagonalMatrix(const Construct
         }
         fExtraFunctions.printf(");\n}\n");
     }
-    std::string expr = name;
-    expr.push_back('(');
-    expr += this->assembleExpression(*c.argument(), Precedence::kSequence);
-    expr.push_back(')');
-    return expr;
+    std::string expr = this->assembleExpression(*c.argument(), Precedence::kSequence);
+
+    // WGSL does not support arbitrary expressions at statement-level.
+    return (parentPrecedence != Precedence::kStatement) ? name + "(" + expr + ")"
+                                                        : std::string();
 }
 
 std::string WGSLCodeGenerator::assembleConstructorMatrixResize(const ConstructorMatrixResize& c,
                                                                Precedence parentPrecedence) {
-    std::string expr = this->getMatrixConstructorHelper(c);
-    expr.push_back('(');
-    expr += this->assembleExpression(*c.argument(), Precedence::kSequence);
-    expr.push_back(')');
-    return expr;
+    std::string name = this->getMatrixConstructorHelper(c);
+    std::string expr = this->assembleExpression(*c.argument(), Precedence::kSequence);
+
+    // WGSL does not support arbitrary expressions at statement-level.
+    return (parentPrecedence != Precedence::kStatement) ? name + "(" + expr + ")"
+                                                        : std::string();
 }
 
 bool WGSLCodeGenerator::isMatrixConstructorHelperNeeded(const ConstructorCompound& c) {
