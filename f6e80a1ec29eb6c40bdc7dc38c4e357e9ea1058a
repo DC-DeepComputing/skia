@@ -16,6 +16,184 @@
       "message": "PTAL: All clients except Flutter have passed, which had an issue with cityhash (unrelated to this CL)",
       "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28d85f0d_5a6a1c2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:35:25Z",
+      "side": 1,
+      "message": "Overall this lgtm, but the removal of `surface-\u003eflush()` will break timings for graphite\u0027s viewer/nanobench integration. More details in inline comments.",
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fee6712_414d2012",
+        "filename": "bench/CompositingImagesBench.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:35:25Z",
+      "side": 1,
+      "message": "This (and the very similar explicit flushes in the other benchmarks and Viewer) will break timing when running on the graphite backend.\n\nGraphite\u0027s timings had been relying on `surface-\u003eflush()` to get down to to the `Surface_Graphite::onFlush`, which has now been moved to `skgpu::graphite::Flush` that is never called. This will bias the viewer reported stats by pushing more work to the final flushAndSubmit that isn\u0027t wrapped in any timing, and for benchmarks, it\u0027ll mean that clears at the start of a loop will just delete the previously recorded commands and so we will think graphite is super fast.\n\nSince these functions are no-ops when the surface doesn\u0027t fit, I think it would make sense to add \n\n    #if defined(SK_GRAPHITE)\n        skgpu::graphite::Flush(canvas-\u003egetSurface());\n    #endif\n    \n as well, although that gets pretty verbose. Is it possible to have a single `skgpu::Flush(SkSurface*)` that does the right thing for both graphite and ganesh while still meeting the modular goals? It wouldn\u0027t have to be a public API, it\u0027s really just to help migration for tests, viewer, and nanobench.",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 6
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c358a10f_16cb7a16",
+        "filename": "gm/kawase_blur_rt.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:35:25Z",
+      "side": 1,
+      "message": "What happens if we remove this flush? W/o deeply understanding this GM it seems unnecessary since later `makeImageSnapshots()` should all trigger internal flushes as needed.",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 6
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b06b189d_e8283908",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:35:25Z",
+      "side": 1,
+      "message": "Can we move this to SkSurfaces::ResolveMSAA() since it\u0027s a Ganesh-only function?",
+      "range": {
+        "startLine": 632,
+        "startChar": 0,
+        "endLine": 632,
+        "endChar": 35
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f4dd384_a1eb9658",
+        "filename": "include/gpu/ganesh/SkSurfaceGanesh.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:35:25Z",
+      "side": 1,
+      "message": "nit: \"these helpers\"",
+      "range": {
+        "startLine": 193,
+        "startChar": 53,
+        "endLine": 193,
+        "endChar": 64
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c061530d_44246ee6",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:35:25Z",
+      "side": 1,
+      "message": "I\u0027d rather not expose the Device of a surface. Can we add Flush() as a friend?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 33
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43f5c573_682eb970",
+        "filename": "tools/sk_app/Window.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:35:25Z",
+      "side": 1,
+      "message": "nit: `this-\u003edirectContext()`, but also shouldn\u0027t `if (auto dContext \u003d this-\u003edirectContext()) {` be sufficient?",
+      "range": {
+        "startLine": 100,
+        "startChar": 8,
+        "endLine": 100,
+        "endChar": 59
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77bb45fc_c5362a1f",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1714,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-19T14:35:25Z",
+      "side": 1,
+      "message": "See not regarding flushing in benchmarks, but it applies here for the timing reported by viewer\u0027s `s` stats feature.",
+      "range": {
+        "startLine": 1712,
+        "startChar": 0,
+        "endLine": 1714,
+        "endChar": 6
+      },
+      "revId": "f6e80a1ec29eb6c40bdc7dc38c4e357e9ea1058a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
