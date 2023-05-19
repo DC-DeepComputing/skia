@@ -46,6 +46,30 @@
       },
       "revId": "7ef1c8d5b68af543a6e209317ba823005c1e14b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8fcd779_d953de54",
+        "filename": "resources/sksl/shared/TernaryComplexNesting.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-19T19:11:27Z",
+      "side": 1,
+      "message": "(See L24 of the gpaste for the new case)",
+      "parentUuid": "0006d222_1fc437f4",
+      "range": {
+        "startLine": 12,
+        "startChar": 13,
+        "endLine": 12,
+        "endChar": 44
+      },
+      "revId": "7ef1c8d5b68af543a6e209317ba823005c1e14b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
