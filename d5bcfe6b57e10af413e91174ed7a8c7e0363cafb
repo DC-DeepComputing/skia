@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7951aaa_bb05033b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-19T19:11:52Z",
+      "side": 1,
+      "message": "ptal -- this has a Chrome-side over in:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/4546221",
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
