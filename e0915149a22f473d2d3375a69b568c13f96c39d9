@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67070f33_ef21d32d",
+        "filename": "src/effects/SkShaderMaskFilterImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:43:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8f968e2_36b02bbb",
+      "range": {
+        "startLine": 98,
+        "startChar": 50,
+        "endLine": 98,
+        "endChar": 73
+      },
+      "revId": "e0915149a22f473d2d3375a69b568c13f96c39d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b726e90c_12f71264",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-19T14:57:03Z",
       "side": 1,
       "message": "Why do we need to expose this class in a header? Rob and I have had an ongoing refactor of moving our internal subclasses of effects into the CPP file that implements the factory function.\n\nI see this is public so that GrFragmentProcessors::Make() is able to cast to it, but carrying this pattern forward for all of our effects makes me uncomfortable. Is this the plan we settled on for separating out the public Sk types with the backend representations?\n\nAlso, if it matters, there\u0027s only one remaining place that uses SkShaderMaskFilter and then hopefully it can just be deleted entirely.",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 28
+      },
+      "revId": "e0915149a22f473d2d3375a69b568c13f96c39d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "442a52a1_ce210d76",
+        "filename": "src/effects/SkShaderMaskFilterImpl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:43:42Z",
+      "side": 1,
+      "message": "This is similar to what we\u0027ve done with Surfaces and Images \n(e.g. https://github.com/google/skia/commit/78b8b95fdb15ab84d7c734fb2674a3504c6d13e5)\n\nOf note, this header is a private one (with no intention of making it public). I wasn\u0027t planning on making other header files unless we needed to downcast Sk*Base to the specific type for some reason.\n\nDeleting SkShaderMaskFilter works for me as well.",
+      "parentUuid": "b726e90c_12f71264",
       "range": {
         "startLine": 25,
         "startChar": 6,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbb0c756_261c64b1",
+        "filename": "src/gpu/ganesh/GrBlurUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:43:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27a3d555_5e2510a0",
+      "range": {
+        "startLine": 84,
+        "startChar": 1,
+        "endLine": 84,
+        "endChar": 8
+      },
+      "revId": "e0915149a22f473d2d3375a69b568c13f96c39d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccd28434_c29d8924",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-05-19T14:57:03Z",
       "side": 1,
       "message": "Will we be moving the `SkShader-\u003easFragmentProcessor` and similar into this header too?",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 30
+      },
+      "revId": "e0915149a22f473d2d3375a69b568c13f96c39d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2adf95d4_cecf76da",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-19T15:43:42Z",
+      "side": 1,
+      "message": "Yes, that\u0027s the plan so far to decouple more ganesh things out of src/core and src/shaders",
+      "parentUuid": "ccd28434_c29d8924",
       "range": {
         "startLine": 18,
         "startChar": 10,
