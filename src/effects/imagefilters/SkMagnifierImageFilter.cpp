@@ -227,9 +227,7 @@ void SkMagnifierImageFilter::flatten(SkWriteBuffer& buffer) const {
 
 #ifdef SK_ENABLE_SKSL
 static sk_sp<SkShader> make_magnifier_shader(
-        const skif::Context& context,
-        const skif::FilterResult& input,
-        const SkSamplingOptions& sampling,
+        sk_sp<SkShader> input,
         const skif::LayerSpace<SkRect>& lensBounds,
         const skif::LayerSpace<SkRect>& srcRect,
         const skif::LayerSpace<SkSize>& inset) {
@@ -263,21 +261,8 @@ static sk_sp<SkShader> make_magnifier_shader(
         "}"
     );
 
-    // TODO: FilterResult or FilterBuilder should hide the details of turning a FilterResult into
-    // an SkShader (and possibly wrap binding the input for an SkRuntimeEffect, too).
-    SkIPoint inputOrigin;
-    sk_sp<SkSpecialImage> inputImage = input.imageAndOffset(context, &inputOrigin);
-    if (!inputImage) {
-        return nullptr;
-    }
-    sk_sp<SkShader> inputShader = inputImage->asShader(
-            SkTileMode::kDecal, sampling, SkMatrix::Translate(inputOrigin.fX, inputOrigin.fY));
-    if (!inputShader) {
-        return nullptr;
-    }
-
     SkRuntimeShaderBuilder builder(sk_ref_sp(effect));
-    builder.child("src") = std::move(inputShader);
+    builder.child("src") = std::move(input);
 
     SkASSERT(inset.width() > 0.f && inset.height() > 0.f);
     auto zoomXform = skif::LayerSpace<SkMatrix>::RectToRect(lensBounds, srcRect);
@@ -533,25 +518,17 @@ skif::FilterResult SkMagnifierImageFilter::onFilterImage(const skif::Context& co
     }
 
 #ifdef SK_ENABLE_SKSL
-    // TODO: FilterResult will eventually have a builder API to hide a lot of this boilerplate,
-    // since it will likely be the same for many other image filter implementations. The magnifier
-    // filter is just the first port to FilterResult that doesn't rely on applying meta transforms.
-    skif::LayerSpace<SkIRect> outputBounds = lensBounds.roundOut();
-    sk_sp<SkSpecialSurface> surf = context.makeSurface(SkISize(outputBounds.size()));
-    if (!surf) {
-        return {};
-    }
 
-    SkCanvas* canvas = surf->getCanvas();
-    canvas->translate(-outputBounds.left(), -outputBounds.top());
-    SkPaint paint;
-    paint.setBlendMode(SkBlendMode::kSrc);
-    paint.setShader(make_magnifier_shader(context, childOutput, fSampling,
-                                          lensBounds, srcRect, inset));
-
-    canvas->drawPaint(paint);
-
-    return {surf->makeImageSnapshot(), outputBounds.topLeft()};
+    using ShaderFlags = skif::FilterResult::ShaderFlags;
+    skif::FilterResult::Builder builder{context};
+    builder.add(childOutput);
+    return builder.eval([&](SkSpan<sk_sp<SkShader>> inputs) {
+            // If the input resolved to a null shader, the magnified output will be transparent too
+            return inputs[0] ? make_magnifier_shader(inputs[0], lensBounds, srcRect, inset)
+                             : nullptr;
+        },
+        ShaderFlags::kExplicitOutputBounds | ShaderFlags::kNonLinearSampling,
+        lensBounds.roundOut(), fSampling);
 #endif
 }
 
