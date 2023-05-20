@@ -70,8 +70,7 @@ private:
     skif::LayerSpace<SkIRect> onGetInputLayerBounds(
             const skif::Mapping&,
             const skif::LayerSpace<SkIRect>& desiredOutput,
-            const skif::LayerSpace<SkIRect>& contentBounds,
-            VisitChildren) const override;
+            const skif::LayerSpace<SkIRect>& contentBounds) const override;
 
     skif::LayerSpace<SkIRect> onGetOutputLayerBounds(
             const skif::Mapping&,
@@ -213,7 +212,7 @@ skif::FilterResult SkRuntimeImageFilter::onFilterImage(const skif::Context& ctx)
 
     skif::FilterResult::Builder builder{ctx};
     for (int i = 0; i < inputCount; ++i) {
-        builder.add(this->filterInput(i, ctx));
+        builder.add(this->getChildOutput(i, ctx));
     }
     return builder.eval([&](SkSpan<sk_sp<SkShader>> inputs) {
         // lock the mutation of the builder and creation of the shader so that the builder's state
@@ -238,12 +237,18 @@ skif::FilterResult SkRuntimeImageFilter::onFilterImage(const skif::Context& ctx)
 skif::LayerSpace<SkIRect> SkRuntimeImageFilter::onGetInputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& desiredOutput,
-        const skif::LayerSpace<SkIRect>& contentBounds,
-        VisitChildren recurse) const {
-    if (recurse == VisitChildren::kNo) {
-        return desiredOutput;
+        const skif::LayerSpace<SkIRect>& contentBounds) const {
+    const int inputCount = this->countInputs();
+    if (inputCount <= 0) {
+        return skif::LayerSpace<SkIRect>::Empty();
     } else {
-        return this->visitInputLayerBounds(mapping, desiredOutput, contentBounds);
+        // Union of all child input bounds so that one source image can provide for all of them.
+        skif::LayerSpace<SkIRect> merged =
+                this->getChildInputLayerBounds(0, mapping, desiredOutput, contentBounds);
+        for (int i = 1; i < inputCount; ++i) {
+            merged.join(this->getChildInputLayerBounds(i, mapping, desiredOutput, contentBounds));
+        }
+        return merged;
     }
 }
 
