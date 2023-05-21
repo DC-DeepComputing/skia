@@ -898,9 +898,16 @@ SkSpan<sk_sp<SkShader>> FilterResult::Builder::createInputShaders(
     return SkSpan<sk_sp<SkShader>>(fInputShaders);
 }
 
-LayerSpace<SkIRect> FilterResult::Builder::outputBounds(SkEnumBitMask<ShaderFlags> flags) const {
+LayerSpace<SkIRect> FilterResult::Builder::outputBounds(
+        SkEnumBitMask<ShaderFlags> flags,
+        std::optional<LayerSpace<SkIRect>> explicitBounds) const {
+    // Explicit bounds should only be provided if-and-only-if kExplicitOutputBounds flag is set.
+    SkASSERT(explicitBounds.has_value() == (flags & ShaderFlags::kExplicitOutputBounds));
+
     LayerSpace<SkIRect> output = LayerSpace<SkIRect>::Empty();
-    if (flags & ShaderFlags::kOutputFillsInputUnion) {
+    if (flags & ShaderFlags::kExplicitOutputBounds) {
+        output = *explicitBounds;
+    } else if (flags & ShaderFlags::kOutputFillsInputUnion) {
         // The union of all inputs' layer bounds
         if (fInputs.size() > 0) {
             output = fInputs[0].layerBounds();
@@ -946,7 +953,7 @@ FilterResult FilterResult::Builder::merge() {
     }
 
     const LayerSpace<SkIRect> outputBounds =
-            this->outputBounds(ShaderFlags::kOutputFillsInputUnion);
+            this->outputBounds(ShaderFlags::kOutputFillsInputUnion, std::nullopt);
     AutoSurface surface{fContext, outputBounds, /*renderInParameterSpace=*/false};
     if (surface) {
         for (const FilterResult& input : fInputs) {
