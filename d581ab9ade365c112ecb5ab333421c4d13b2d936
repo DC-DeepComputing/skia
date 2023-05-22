@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43914ef0_8e5d17e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2023-05-22T23:58:49Z",
+      "side": 1,
+      "message": "There\u0027s probably a more idiomatic way to achieve this - happy to revise this CL if needed.",
+      "revId": "d581ab9ade365c112ecb5ab333421c4d13b2d936",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
