@@ -25,9 +25,7 @@
 
 namespace skgpu::graphite {
 
-namespace { // Anonymous namespace
-
-VkDescriptorSetLayout desc_type_count_to_desc_set_layout(
+VkDescriptorSetLayout VulkanResourceProvider::DescTypeAndCountToVkDescSetLayout(
         const VulkanSharedContext* ctxt,
         SkSpan<DescTypeAndCount> requestedDescriptors) {
 
@@ -70,8 +68,6 @@ VkDescriptorSetLayout desc_type_count_to_desc_set_layout(
     }
     return layout;
 }
-
-} // Anonymous namespace
 
 VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                SingleOwner* singleOwner,
@@ -159,7 +155,7 @@ VulkanDescriptorSet* VulkanResourceProvider::findOrCreateDescriptorSet(
     // If we did not find an existing avilable desc set, allocate sets with the appropriate layout
     // and add them to the cache.
     auto pool = VulkanDescriptorPool::Make(this->vulkanSharedContext(), requestedDescriptors);
-    VkDescriptorSetLayout layout = desc_type_count_to_desc_set_layout(
+    VkDescriptorSetLayout layout = DescTypeAndCountToVkDescSetLayout(
             this->vulkanSharedContext(),
             requestedDescriptors);
 
