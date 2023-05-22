@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cce0f46_91a566b3",
+        "filename": "bench/ChecksumBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-05-22T17:10:28Z",
+      "side": 1,
+      "message": "Can you add 96 to represent the font descriptor checksum?",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 58
+      },
+      "revId": "4f6fe284ebe4c50d15a14757fb6d4d934e96cd33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
