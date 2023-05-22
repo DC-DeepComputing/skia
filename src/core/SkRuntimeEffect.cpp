@@ -56,6 +56,7 @@
 #include "src/gpu/ganesh/effects/GrMatrixEffect.h"
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
+#include "src/gpu/ganesh/GrFragmentProcessors.h"
 #endif
 
 #if defined(SK_GRAPHITE)
@@ -886,10 +887,10 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
             childFPs.push_back(std::move(childFP));
         } else if (type == ChildType::kBlender) {
             // Convert a SkBlender into a child FP.
-            auto childFP = as_BB(child.blender())->asFragmentProcessor(
-                    /*srcFP=*/nullptr,
-                    GrFragmentProcessor::DestColor(),
-                    childArgs);
+            auto childFP = GrFragmentProcessors::Make(as_BB(child.blender()),
+                                                      /*srcFP=*/nullptr,
+                                                      GrFragmentProcessor::DestColor(),
+                                                      childArgs);
             if (!childFP) {
                 return GrFPFailure(std::move(inputFP));
             }
@@ -1478,6 +1479,8 @@ public:
 
     SkRuntimeEffect* asRuntimeEffect() const override { return fEffect.get(); }
 
+    SkBlenderBase::Type type() const override { return SkBlenderBase::Type::kRuntime; }
+
     bool onAppendStages(const SkStageRec& rec) const override {
 #ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
         if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {
@@ -1525,32 +1528,6 @@ public:
         return SkSL::ProgramToSkVM(*fEffect->fBaseProgram, fEffect->fMain, p,/*debugTrace=*/nullptr,
                                    SkSpan(uniform), /*device=*/zeroCoord, /*local=*/zeroCoord,
                                    src, dst, &callbacks);
-    }
-#endif
-
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(
-            std::unique_ptr<GrFragmentProcessor> srcFP,
-            std::unique_ptr<GrFragmentProcessor> dstFP,
-            const GrFPArgs& args) const override {
-        if (!SkRuntimeEffectPriv::CanDraw(args.fContext->priv().caps(), fEffect.get())) {
-            return nullptr;
-        }
-
-        sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
-                fEffect->uniforms(),
-                fUniforms,
-                args.fDstColorInfo->colorSpace());
-        SkASSERT(uniforms);
-        auto [success, fp] = make_effect_fp(fEffect,
-                                            "runtime_blender",
-                                            std::move(uniforms),
-                                            std::move(srcFP),
-                                            std::move(dstFP),
-                                            SkSpan(fChildren),
-                                            args);
-
-        return success ? std::move(fp) : nullptr;
     }
 #endif
 

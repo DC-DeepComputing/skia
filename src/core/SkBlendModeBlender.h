@@ -25,19 +25,16 @@ class SkBlendModeBlender : public SkBlenderBase {
 public:
     SkBlendModeBlender(SkBlendMode mode) : fMode(mode) {}
 
+    SkBlenderBase::Type type() const override { return SkBlenderBase::Type::kBlendMode; }
+
+    SkBlendMode mode() const { return fMode; }
+
     SK_FLATTENABLE_HOOKS(SkBlendModeBlender)
 
 private:
     using INHERITED = SkBlenderBase;
 
     std::optional<SkBlendMode> asBlendMode() const final { return fMode; }
-
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(
-            std::unique_ptr<GrFragmentProcessor> srcFP,
-            std::unique_ptr<GrFragmentProcessor> dstFP,
-            const GrFPArgs& fpArgs) const override;
-#endif
 
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
