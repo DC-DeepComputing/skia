@@ -1,0 +1,77 @@
+/*
+ * Copyright 2023 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+#ifndef SkRuntimeBlender_DEFINED
+#define SkRuntimeBlender_DEFINED
+
+#include "include/core/SkData.h"
+#include "include/core/SkFlattenable.h"
+#include "include/core/SkRefCnt.h"
+#include "include/effects/SkRuntimeEffect.h"
+#include "include/private/base/SkSpan_impl.h"
+#include "src/core/SkBlenderBase.h"
+
+#include <memory>
+#include <utility>
+#include <vector>
+
+class GrFragmentProcessor;
+class SkReadBuffer;
+class SkWriteBuffer;
+struct SkStageRec;
+struct GrFPArgs;
+
+// For friend function below
+namespace GrFragmentProcessors {
+    std::unique_ptr<GrFragmentProcessor> Make(const SkBlenderBase*,
+        std::unique_ptr<GrFragmentProcessor>,
+        std::unique_ptr<GrFragmentProcessor>,
+        const GrFPArgs&);
+}
+
+class SkRuntimeBlender : public SkBlenderBase {
+public:
+    SkRuntimeBlender(sk_sp<SkRuntimeEffect> effect,
+                     sk_sp<const SkData> uniforms,
+                     SkSpan<SkRuntimeEffect::ChildPtr> children)
+            : fEffect(std::move(effect))
+            , fUniforms(std::move(uniforms))
+            , fChildren(children.begin(), children.end()) {}
+
+    SkRuntimeEffect* asRuntimeEffect() const override { return fEffect.get(); }
+
+    SkBlenderBase::Type type() const override { return SkBlenderBase::Type::kRuntime; }
+
+    bool onAppendStages(const SkStageRec& rec) const override;
+
+#ifdef SK_ENABLE_SKVM
+    skvm::Color onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
+                          const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
+                          SkArenaAlloc* alloc) const override;
+#endif
+
+#if defined(SK_GRAPHITE)
+    void addToKey(const skgpu::graphite::KeyContext& keyContext,
+                  skgpu::graphite::PaintParamsKeyBuilder* builder,
+                  skgpu::graphite::PipelineDataGatherer* gatherer) const override;
+#endif
+
+    void flatten(SkWriteBuffer& buffer) const override;
+
+    SK_FLATTENABLE_HOOKS(SkRuntimeBlender)
+
+private:
+    sk_sp<SkRuntimeEffect> fEffect;
+    sk_sp<const SkData> fUniforms;
+    std::vector<SkRuntimeEffect::ChildPtr> fChildren;
+
+    friend std::unique_ptr<GrFragmentProcessor> GrFragmentProcessors::Make(const SkBlenderBase*,
+        std::unique_ptr<GrFragmentProcessor>,
+        std::unique_ptr<GrFragmentProcessor>,
+        const GrFPArgs&);
+};
+
+#endif
