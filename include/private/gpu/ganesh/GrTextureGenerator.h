@@ -10,6 +10,7 @@
 
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkRefCnt.h"
+#include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrTypes.h"
 #include "include/private/base/SkAPI.h"
 
@@ -51,6 +52,8 @@ public:
                                        skgpu::Mipmapped mipmapped,
                                        GrImageTexGenPolicy);
 
+    // External clients should override GrExternalTextureGenerator instead of trying to implement
+    // this (which uses private Skia types)
     virtual GrSurfaceProxyView onGenerateTexture(GrRecordingContext*, const SkImageInfo&,
                                                  skgpu::Mipmapped, GrImageTexGenPolicy) = 0;
 
@@ -63,15 +66,5 @@ public:
 protected:
     GrTextureGenerator(const SkImageInfo& info, uint32_t uniqueId = kNeedNewImageUniqueID);
 };
-
-namespace SkImages {
-/**
- *   Like SkImages::DeferredFromGenerator except allows for the use of SkGaneshTextureGenerator.
- *
- *   @param gen producer of textures
- *   @return    created SkImage, or nullptr
- */
-SK_API sk_sp<SkImage> DeferredFromTextureGenerator(std::unique_ptr<GrTextureGenerator> gen);
-}
 
 #endif  // GrTextureGenerator_DEFINED
