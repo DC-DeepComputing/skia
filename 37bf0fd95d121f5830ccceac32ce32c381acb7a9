@@ -204,6 +204,30 @@
       },
       "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8685324_45b9bad6",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-22T19:45:12Z",
+      "side": 1,
+      "message": "They don\u0027t, but I was surprised that this is needed now, if it wasn\u0027t needed before.\n\nOkay, I see now - it\u0027s because we\u0027re checking the format here now, requiring us to do another read.",
+      "parentUuid": "32057918_08309fb6",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 5
+      },
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
