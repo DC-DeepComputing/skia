@@ -180,6 +180,30 @@
       },
       "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32057918_08309fb6",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-22T15:26:34Z",
+      "side": 1,
+      "message": "Android tests failed without it. I guess their streams don\u0027t support peeking?",
+      "parentUuid": "300a55aa_e31558ee",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 5
+      },
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
