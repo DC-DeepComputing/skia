@@ -17,25 +17,27 @@ class VulkanSharedContext;
 
 class VulkanImageView : public Resource {
 public:
-    enum class Type {
-        kColor,
-        kStencil
+    enum class Usage {
+        kShaderInput,
+        kAttachment
     };
 
-    static sk_sp<const VulkanImageView> Make(VulkanSharedContext* sharedContext,
-                                             VkImage image,
-                                             VkFormat format,
-                                             Type viewType,
-                                             uint32_t miplevels);
+    static sk_sp<VulkanImageView> Make(const VulkanSharedContext* sharedContext,
+                                       VkImage image,
+                                       VkFormat format,
+                                       Usage usage,
+                                       uint32_t miplevels);
 
     VkImageView imageView() const { return fImageView; }
+    Usage usage() const { return fUsage; }
 
 private:
-    VulkanImageView(const VulkanSharedContext* sharedContext, VkImageView imageView);
+    VulkanImageView(const VulkanSharedContext* sharedContext, VkImageView imageView, Usage usage);
 
     void freeGpuData() override;
 
     VkImageView  fImageView;
+    Usage fUsage;
     // TODO: track associated SamplerYcbcrConversion
 };
 
