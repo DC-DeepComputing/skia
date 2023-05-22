@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "338a09da_ec2fb43b",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-22T19:50:27Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s that, it\u0027s that I forgot to put break; after each statement. Fixed.",
+      "parentUuid": "e0224e81_d97895e8",
+      "range": {
+        "startLine": 30,
+        "startChar": 7,
+        "endLine": 30,
+        "endChar": 41
+      },
+      "revId": "1a64e9484a8010c81301a42db7b0396e666f44f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5388ec90_f8c832a6",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-05-22T19:39:03Z",
       "side": 1,
       "message": "Are the aspect flags only used for exposure, or does the backend those flags assigned properly for that format to work as intended? Are you suggesting we just remove the VK_IMAGE_ASPECT_DEPTH_BIT flag and only use VK_IMAGE_ASPECT_STENCIL_BIT?",
+      "range": {
+        "startLine": 32,
+        "startChar": 12,
+        "endLine": 32,
+        "endChar": 95
+      },
+      "revId": "1a64e9484a8010c81301a42db7b0396e666f44f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84c7a106_76b55908",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-22T19:50:27Z",
+      "side": 1,
+      "message": "It\u0027s for attachments, and needed to work properly. If we want to read/write depth to a depth-stencil texture I believe we need the depth bit, but I\u0027m not sure whether it matters if we want to only use it for stencil. I can\u0027t see that coming up though.",
+      "parentUuid": "5388ec90_f8c832a6",
       "range": {
         "startLine": 32,
         "startChar": 12,
