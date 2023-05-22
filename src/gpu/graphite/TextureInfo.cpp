@@ -79,15 +79,37 @@ bool TextureInfo::operator==(const TextureInfo& that) const {
     }
 }
 
+SkString TextureInfo::debugString() const {
+    SkString ret;
+    switch (fBackend) {
 #ifdef SK_DAWN
-bool TextureInfo::getDawnTextureInfo(DawnTextureInfo* info) const {
-    if (!this->isValid() || fBackend != BackendApi::kDawn) {
-        return false;
-    }
-    *info = DawnTextureSpecToTextureInfo(fDawnSpec, fSampleCount, fMipmapped);
-    return true;
-}
+        case BackendApi::kDawn:
+            ret.appendf("Dawn(%s,", fDawnSpec.debugString().c_str());
+            break;
 #endif
+#ifdef SK_METAL
+        case BackendApi::kMetal:
+            ret.appendf("Metal(%s,", fMtlSpec.debugString().c_str());
+            break;
+#endif
+#ifdef SK_VULKAN
+        case BackendApi::kVulkan:
+            ret.appendf("Vulkan(%s,", fVkSpec.debugString().c_str());
+            break;
+#endif
+        case BackendApi::kMock:
+            ret += "Mock(";
+            break;
+        default:
+            ret += "Invalid(";
+            break;
+    }
+    ret.appendf("sampleCount=%u,mipmapped=%d,protected=%d)",
+                fSampleCount,
+                static_cast<int>(fMipmapped),
+                static_cast<int>(fProtected));
+    return ret;
+}
 
 } // namespace skgpu::graphite
 
