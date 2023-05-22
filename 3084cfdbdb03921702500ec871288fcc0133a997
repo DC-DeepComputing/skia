@@ -34,6 +34,24 @@
       "parentUuid": "bd426013_06a99563",
       "revId": "3084cfdbdb03921702500ec871288fcc0133a997",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43af72bd_c3c267f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-22T15:52:05Z",
+      "side": 1,
+      "message": "My thinking is that we don\u0027t know what kind of view a consumer might want. Right now we store an framebuffer/attachment view and a texture/sampled view. But someone might want a sampled view with a compatible format, or a view into a multiplanar format that accesses only one plane. I do see the point of not using the resource cache -- it didn\u0027t feel right to me either. If an Image is destroyed we would have orphaned ImageViews. I suppose one solution is to keep the current setup and then if a client class wants to make its own speciality views it can be in charge of maintaining lifetime.",
+      "parentUuid": "a413f763_1924a419",
+      "revId": "3084cfdbdb03921702500ec871288fcc0133a997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
