@@ -7,15 +7,22 @@
 
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 
+#include "include/private/base/SkTArray.h"
+#include "src/gpu/graphite/Descriptors.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
+#include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/vk/VulkanResourceProvider.h"
+#include "src/gpu/graphite/vk/VulkanSampler.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
 
 using namespace skia_private;
 
 namespace skgpu::graphite {
+
+class VulkanDescriptorSet;
 
 std::unique_ptr<VulkanCommandBuffer> VulkanCommandBuffer::Make(
         const VulkanSharedContext* sharedContext,
@@ -74,10 +81,6 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkCommandPool pool,
         , fPrimaryCommandBuffer(primaryCommandBuffer)
         , fSharedContext(sharedContext)
         , fResourceProvider(resourceProvider) {
-
-    // TODO: Remove this line. It is only here to hide compiler warnings/errors about unused
-    // member variables.
-    (void) fResourceProvider;
     // When making a new command buffer, we automatically begin the command buffer
     this->begin();
 }
@@ -105,6 +108,7 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     VULKAN_CALL_ERRCHECK(fSharedContext->interface(), ResetCommandPool(fSharedContext->device(),
                                                                        fPool,
                                                                        0));
+    fBoundUniformBuffersDirty = true;
 }
 
 bool VulkanCommandBuffer::setNewCommandBufferResources() {
@@ -322,7 +326,7 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kBindTexturesAndSamplers: {
                 auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
-                this->bindTextureAndSamplers(*drawPass, *bts);
+                this->writeTextureAndSamplerDescSet(*drawPass, *bts);
                 break;
             }
             case DrawPassCommands::Type::kSetScissor: {
@@ -375,16 +379,101 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
     }
 }
 
-void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline*) {
+void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
     // TODO: Implement
+    fActiveGraphicsPipeline = static_cast<const VulkanGraphicsPipeline*>(graphicsPipeline);
 }
 
 void VulkanCommandBuffer::setBlendConstants(float* blendConstants) {
     // TODO: Implement
 }
 
-void VulkanCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlot) {
-    // TODO: Implement
+void VulkanCommandBuffer::bindUniformBuffer(const BindBufferInfo& info, UniformSlot slot) {
+    unsigned int bufferIndex = 0;
+    switch (slot) {
+        case UniformSlot::kRenderStep:
+            bufferIndex = VulkanGraphicsPipeline::kRenderStepUniformBufferIndex;
+            break;
+        case UniformSlot::kPaint:
+            bufferIndex = VulkanGraphicsPipeline::kPaintUniformBufferIndex;
+            break;
+        default:
+            SkASSERT(false);
+    }
+
+    fUniformBuffersToBind[bufferIndex] = info;
+    fBoundUniformBuffersDirty = true;
+}
+
+void VulkanCommandBuffer::syncUniformBuffers() {
+    if (!fBoundUniformBuffersDirty) {
+        return;
+    }
+    fBoundUniformBuffersDirty = false;
+
+
+    STArray<3, DescTypeAndCount> descriptors;
+    // We always bind at least one uniform buffer descriptor for intrinsic uniforms.
+    uint32_t numBuffers = 1;
+    descriptors[0].type = DescriptorType::kUniformBuffer;
+    descriptors[0].count = 1;
+
+    if (fActiveGraphicsPipeline->hasStepUniforms() &&
+            fUniformBuffersToBind[VulkanGraphicsPipeline::kRenderStepUniformBufferIndex]) {
+        descriptors[numBuffers].type = DescriptorType::kUniformBuffer;
+        descriptors[numBuffers].count = 1;
+        ++numBuffers;
+    }
+    if (fActiveGraphicsPipeline->hasFragment() &&
+            fUniformBuffersToBind[VulkanGraphicsPipeline::kPaintUniformBufferIndex]) {
+        descriptors[numBuffers].type = DescriptorType::kUniformBuffer;
+        descriptors[numBuffers].count = 1;
+        ++numBuffers;
+    }
+
+    VulkanDescriptorSet* set = fResourceProvider->findOrCreateDescriptorSet(
+            SkSpan<DescTypeAndCount>{&descriptors.front(), numBuffers});
+
+    if (!set) {
+        SKGPU_LOG_E("Unable to find or create descriptor set");
+    } else {
+        std::vector<VkWriteDescriptorSet> writeDescriptorSets;
+        for (uint32_t i = 0; i < numBuffers; i++) {
+            VkDescriptorBufferInfo bufferInfo;
+            memset(&bufferInfo, 0, sizeof(VkDescriptorBufferInfo));
+            auto vulkanBuffer = static_cast<const VulkanBuffer*>(fUniformBuffersToBind[i].fBuffer);
+            bufferInfo.buffer = vulkanBuffer->vkBuffer();
+            bufferInfo.offset = fUniformBuffersToBind[i].fOffset;
+            bufferInfo.range = vulkanBuffer->size();
+
+            VkWriteDescriptorSet writeInfo;
+            memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
+            writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            writeInfo.pNext = nullptr;
+            writeInfo.dstSet = *set->descriptorSet();
+            writeInfo.dstBinding = i;
+            writeInfo.dstArrayElement = 0;
+            writeInfo.descriptorCount = 1;
+            writeInfo.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+            writeInfo.pImageInfo = nullptr;
+            writeInfo.pBufferInfo = &bufferInfo;
+            writeInfo.pTexelBufferView = nullptr;
+
+            writeDescriptorSets[i] = writeInfo;
+        }
+
+        VULKAN_CALL(fSharedContext->interface(),
+                    UpdateDescriptorSets(fSharedContext->device(),
+                                         numBuffers,
+                                         &writeDescriptorSets[0],
+                                         /*descriptorCopyCount=*/0,
+                                         /*pDescriptorCopies=*/nullptr));
+
+        // Changes to descriptor sets in lower slot numbers disrupt later set bindings. Currently,
+        // the descriptor set which houses uniform buffers is at a lower slot than the texture /
+        // sampler set, so rebinding uniform buffers necessitates re-binding any texture/samplers.
+        this->bindTextureSamplersForDraw();
+    }
 }
 
 void VulkanCommandBuffer::bindDrawBuffers(const BindBufferInfo& vertices,
@@ -406,10 +495,82 @@ void VulkanCommandBuffer::bindIndexBuffer(const Buffer* indexBuffer, size_t offs
 void VulkanCommandBuffer::bindIndirectBuffer(const Buffer* indirectBuffer, size_t offset) {
     // TODO: Implement
 }
-void VulkanCommandBuffer::bindTextureAndSamplers(const DrawPass& drawPass,
-        const DrawPassCommands::BindTexturesAndSamplers& command) {
-    // TODO: Implement
+
+void VulkanCommandBuffer::writeTextureAndSamplerDescSet(
+        const DrawPass& drawPass, const DrawPassCommands::BindTexturesAndSamplers& command) {
+    // Store the passed-in texture and samplers, and only bind them once we know it is time to draw.
+    // This is to avoid binding the texture/sampler descriptor set prior to the uniform desc. set,
+    // since when we change the uniform desc. set which
+
+    // Query resource provider to obtain a descriptor set for the texture/samplers
+    std::vector<DescTypeAndCount> descriptors;
+    for (int i = 0; i < command.fNumTexSamplers; i++) {
+        descriptors.push_back({DescriptorType::kCombinedTextureSampler, 1});
+    }
+    VulkanDescriptorSet* set = fResourceProvider->findOrCreateDescriptorSet(
+            SkSpan<DescTypeAndCount>{&descriptors.front(), descriptors.size()});
+
+    if (!set) {
+        SKGPU_LOG_E("Unable to find or create descriptor set");
+    } else {
+        // Populate the descriptor set with texture/sampler descriptors
+        std::vector<VkWriteDescriptorSet> writeDescriptorSets;
+        for (int i = 0; i < command.fNumTexSamplers; ++i) {
+            auto texture = static_cast<const VulkanTexture*>(
+                    drawPass.getTexture(command.fTextureIndices[i]));
+            auto sampler = static_cast<const VulkanSampler*>(
+                    drawPass.getSampler(command.fSamplerIndices[i]));
+
+            VkDescriptorImageInfo textureInfo;
+            memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
+            textureInfo.sampler = sampler->vkSampler();
+            textureInfo.imageView = VK_NULL_HANDLE; // TODO: Obtain texture view from VulkanImage.
+            textureInfo.imageLayout = texture->currentLayout();
+
+            VkWriteDescriptorSet writeInfo;
+            memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
+            writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            writeInfo.pNext = nullptr;
+            writeInfo.dstSet = *set->descriptorSet();
+            writeInfo.dstBinding = i;
+            writeInfo.dstArrayElement = 0;
+            writeInfo.descriptorCount = 1;
+            writeInfo.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+            writeInfo.pImageInfo = &textureInfo;
+            writeInfo.pBufferInfo = nullptr;
+            writeInfo.pTexelBufferView = nullptr;
+
+            writeDescriptorSets[i] = writeInfo;
+        }
+
+        VULKAN_CALL(fSharedContext->interface(),
+                UpdateDescriptorSets(fSharedContext->device(),
+                                     command.fNumTexSamplers,
+                                     &writeDescriptorSets[0],
+                                     /*descriptorCopyCount=*/0,
+                                     /*pDescriptorCopies=*/nullptr));
+
+        // Store the updated descriptor set to be actually bound later on. This avoids binding and
+        // potentially having to re-bind in cases where earlier descriptor sets change while going
+        // through drawpass commands.
+        fTextureSamplerDescSetToBind = *(set->descriptorSet());
+    }
 }
+
+void VulkanCommandBuffer::bindTextureSamplersForDraw() {
+    if (fTextureSamplerDescSetToBind != VK_NULL_HANDLE) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdBindDescriptorSets(fPrimaryCommandBuffer,
+                                          VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                          fActiveGraphicsPipeline->layout(),
+                                          VulkanGraphicsPipeline::kTextureBindDescSetIndex,
+                                          /*setCount=*/1,
+                                          &fTextureSamplerDescSetToBind,
+                                          /*dynamicOffsetCount=*/0,
+                                          /*dynamicOffsets=*/nullptr));
+    }
+}
+
 void VulkanCommandBuffer::setScissor(unsigned int left, unsigned int top, unsigned int width,
                                      unsigned int height) {
     // TODO: Implement
@@ -418,6 +579,7 @@ void VulkanCommandBuffer::setScissor(unsigned int left, unsigned int top, unsign
 void VulkanCommandBuffer::draw(PrimitiveType type,
                                unsigned int baseVertex,
                                unsigned int vertexCount) {
+    this->syncUniformBuffers();
     // TODO: Implement
 }
 
@@ -425,26 +587,31 @@ void VulkanCommandBuffer::drawIndexed(PrimitiveType type,
                                       unsigned int baseIndex,
                                       unsigned int indexCount,
                                       unsigned int baseVertex) {
+    this->syncUniformBuffers();
     // TODO: Implement
 }
 
 void VulkanCommandBuffer::drawInstanced(PrimitiveType type,
                     unsigned int baseVertex, unsigned int vertexCount,
                     unsigned int baseInstance, unsigned int instanceCount) {
+    this->syncUniformBuffers();
     // TODO: Implement
 }
 
 void VulkanCommandBuffer::drawIndexedInstanced(PrimitiveType type, unsigned int baseIndex,
                             unsigned int indexCount, unsigned int baseVertex,
                             unsigned int baseInstance, unsigned int instanceCount) {
+    this->syncUniformBuffers();
     // TODO: Implement
 }
 
 void VulkanCommandBuffer::drawIndirect(PrimitiveType type) {
+    this->syncUniformBuffers();
     // TODO: Implement
 }
 
 void VulkanCommandBuffer::drawIndexedIndirect(PrimitiveType type) {
+    this->syncUniformBuffers();
     // TODO: Implement
 }
 
