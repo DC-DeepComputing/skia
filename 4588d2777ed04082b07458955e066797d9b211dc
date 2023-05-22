@@ -22,6 +22,30 @@
       },
       "revId": "4588d2777ed04082b07458955e066797d9b211dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d4a0082_85d2a200",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 1244,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-22T14:32:49Z",
+      "side": 1,
+      "message": "I don\u0027t think that works for tests, only GMs",
+      "parentUuid": "afba3af2_de758404",
+      "range": {
+        "startLine": 1244,
+        "startChar": 7,
+        "endLine": 1244,
+        "endChar": 10
+      },
+      "revId": "4588d2777ed04082b07458955e066797d9b211dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
