@@ -10,7 +10,9 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/vk/VulkanTypes.h"
+#include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/vk/VulkanImageView.h"
 
 #include <utility>
 
@@ -69,6 +71,8 @@ public:
     VkImageLayout currentLayout() const;
     uint32_t currentQueueFamilyIndex() const;
 
+    const VulkanImageView* getImageView(VulkanImageView::Usage);
+
     // Helpers to use for setting the layout of the VkImage
     static VkPipelineStageFlags LayoutToPipelineSrcStageFlags(const VkImageLayout layout);
     static VkAccessFlags LayoutToSrcAccessMask(const VkImageLayout layout);
@@ -87,6 +91,8 @@ private:
 
     VkImage fImage;
     VulkanAlloc fMemoryAlloc;
+
+    skia_private::TArray<sk_sp<const VulkanImageView>> fImageViews;
 };
 
 } // namespace skgpu::graphite
