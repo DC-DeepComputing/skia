@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72a03403_3bf7ec21",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-22T16:47:03Z",
+      "side": 1,
+      "message": "Note: taking the address of a composite member (e.g. struct field) via a let-declared alias is not allowed. Something to keep in mind in codegen. For example:\n\n    struct Foo {\n        a: f32,\n    }\n    struct SSBO {\n        foos: array\u003cFoo\u003e,\n    }\n    @group(0) @binding(0) var\u003cstorage, read_write\u003e ssbo: SSBO;\n    \n    ...\n    \n    var foo \u003d ssbo.foos[0];\n    let tmp \u003d \u0026foo.a;  // --\u003e allowed\n    \n    ...\n    \n    let foo \u003d ssbo.foos[0];\n    let tmp \u003d \u0026foo.a;  // --\u003e not allowed",
+      "range": {
+        "startLine": 229,
+        "startChar": 57,
+        "endLine": 229,
+        "endChar": 79
+      },
+      "revId": "bec7fc5e4f58a47ac44cb83684ec8ff4b326b692",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "267ad8c6_19ca2624",
+        "filename": "tests/sksl/shared/LogicalAndShortCircuit.wgsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-22T16:47:03Z",
+      "side": 1,
+      "message": "It looks like we emit an extra block in some cases. It\u0027s not necessary but should be harmless.",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 9
+      },
+      "revId": "bec7fc5e4f58a47ac44cb83684ec8ff4b326b692",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
