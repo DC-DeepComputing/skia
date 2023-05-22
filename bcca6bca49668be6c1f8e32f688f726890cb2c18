@@ -16,6 +16,24 @@
       "message": "Hi Aditya, is this safe to re-enable now? Thanks!",
       "revId": "bcca6bca49668be6c1f8e32f688f726890cb2c18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4717441e_c2360989",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19579
+      },
+      "writtenOn": "2023-05-22T18:22:52Z",
+      "side": 1,
+      "message": "should be. we have just enabled LTO for riscv64 on android and it went fine.",
+      "parentUuid": "f4e40082_7ee40bfe",
+      "revId": "bcca6bca49668be6c1f8e32f688f726890cb2c18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
