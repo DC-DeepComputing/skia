@@ -16,6 +16,52 @@
       "message": "Trying another approach to this, PTAL.",
       "revId": "1a64e9484a8010c81301a42db7b0396e666f44f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0224e81_d97895e8",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T19:39:03Z",
+      "side": 1,
+      "message": "Add [[fallthrough]] here to mark this switch case fallthrough as intentional so it\u0027s not flagged later on (I forget which roller or compilation process checks for it, but I recall one of them does).",
+      "range": {
+        "startLine": 30,
+        "startChar": 7,
+        "endLine": 30,
+        "endChar": 41
+      },
+      "revId": "1a64e9484a8010c81301a42db7b0396e666f44f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5388ec90_f8c832a6",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T19:39:03Z",
+      "side": 1,
+      "message": "Are the aspect flags only used for exposure, or does the backend those flags assigned properly for that format to work as intended? Are you suggesting we just remove the VK_IMAGE_ASPECT_DEPTH_BIT flag and only use VK_IMAGE_ASPECT_STENCIL_BIT?",
+      "range": {
+        "startLine": 32,
+        "startChar": 12,
+        "endLine": 32,
+        "endChar": 95
+      },
+      "revId": "1a64e9484a8010c81301a42db7b0396e666f44f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
