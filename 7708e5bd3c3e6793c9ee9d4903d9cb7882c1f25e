@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc485e45_84081158",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-22T15:35:58Z",
+      "side": 1,
+      "message": "The main gold diffs are either inherited from the Merge CL, or are in the `rtif_distort` case. Before this CL, the runtime image filters were incorrectly using clamp mode instead of decal, which had the effect of hiding boundaries from the DDL bots (for this particular runtime filter).\n\nNow it uses decal, but because runtime image filters don\u0027t participate in input bounds negotiation, the shader only ever sees the input clipped to the DDL, etc. We could switch to adding a 1-2px outset for runtime image filters but that would only help for bilerp and small kernels. `rtif_distort` has a +/-4px sample radius. Any thoughts?",
+      "revId": "7708e5bd3c3e6793c9ee9d4903d9cb7882c1f25e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
