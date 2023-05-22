@@ -16,6 +16,24 @@
       "message": "Still in progress but wanted to make I\u0027m not off-base with this. Does it make sense to store these in the ResourceCache? In Ganesh they were attached to the Textures, but it would be more flexible if we allowed multiple views on a single image, including compatible formats.",
       "revId": "3084cfdbdb03921702500ec871288fcc0133a997",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a413f763_1924a419",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T14:59:20Z",
+      "side": 1,
+      "message": "I understand having multiple views per texture would be better - but could views be re-used or shared between different images? If not, I\u0027m not sure what benefit we get from adding them on to the rsrc cache over just having a VulkanTexture house multiple imageviews.",
+      "parentUuid": "bd426013_06a99563",
+      "revId": "3084cfdbdb03921702500ec871288fcc0133a997",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
