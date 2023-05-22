@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a38c3459_cb6265f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-22T17:26:10Z",
+      "side": 1,
+      "message": "I do not want to attempt to fix this in Skia by hard coding font names. That would be up to an application, not a library. In Skia there is a real need to separate the font factories from the font collections (SkFontMgr tries to do both and it is a pain) and when doing so the collections can provide fallback that isn\u0027t as primitive or bad as the current interface.\n\nIn the meantime, it is possible for applications to do this sort of hardcoded thing outside of Skia already.",
+      "revId": "431835d40ef25448e81bf6eaa2bef2e722c7ebd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
