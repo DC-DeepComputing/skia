@@ -377,7 +377,9 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
                                            kPremul_SkAlphaType);
 
         if (fImage->isAlphaOnly()) {
-            fp = GrBlendFragmentProcessor::Make<SkBlendMode::kDstIn>(std::move(fp), nullptr);
+            // DstIn (d*sa)
+            fp = GrBlendFragmentProcessor::Make<SkBlendMode::kDstIn>(/* src= */ std::move(fp),
+                                                                     /* dst= */ nullptr);
         }
     }
 
@@ -401,6 +403,9 @@ void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                                 keyContext.dstColorInfo().alphaType());
 
         // TODO: add alpha-only image handling here
+        if (fImage->isAlphaOnly()) {
+            SkDebugf("foo\n");
+        }
     }
 
     auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),

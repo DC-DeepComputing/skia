@@ -363,7 +363,7 @@ std::string GetSkSLFS(const ResourceBindingRequirements& bindingReqs,
     const char* shadingSsboIndexVar = useStorageBuffers ? "shadingSsboIndexVar" : nullptr;
     ShaderInfo shaderInfo(rteDict, shadingSsboIndexVar);
 
-    dict->getShaderInfo(paintID, &shaderInfo);
+    dict->getShaderInfo1(paintID, &shaderInfo);
     *blendInfo = shaderInfo.blendInfo();
     *requiresLocalCoordsVarying = shaderInfo.needsLocalCoords();
 

@@ -136,11 +136,21 @@ bool create_img_shader_paint(sk_sp<SkImage> image,
         SKGPU_LOG_W("Couldn't create subset image shader");
         return false;
     }
-    if (imageIsAlphaOnly && paint->getShader()) {
+    if (imageIsAlphaOnly) {
+        sk_sp<SkShader> paintShader;
+
+        if (paint->getShader()) {
+            paintShader = paint->refShader();
+        } else {
+            paintShader = SkShaders::Color(paint->getColor4f(), nullptr);
+        }
+
         // Compose the image shader with the paint's shader. Alpha images+shaders should output the
         // texture's alpha multiplied by the shader's color. DstIn (d*sa) will achieve this with
-        // the source image and dst shader (MakeBlend takes dst first, src second).
-        imgShader = SkShaders::Blend(SkBlendMode::kDstIn, paint->refShader(), std::move(imgShader));
+        // the source image and dst shader.
+        imgShader = SkShaders::Blend(SkBlendMode::kDstIn,
+                                     /* dst= */ std::move(paintShader),
+                                     /* src= */ std::move(imgShader));
     }
 
     paint->setStyle(SkPaint::kFill_Style);

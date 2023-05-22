@@ -18,6 +18,8 @@ class SkColorFilter;
 
 sk_sp<SkColorFilter> SkLumaColorFilter::Make() {
 
+    return nullptr;
+#if 0
     static const SkRuntimeEffect* effect = SkMakeCachedRuntimeEffect(
         SkRuntimeEffect::MakeForColorFilter,
         "half4 main(half4 inColor) {"
@@ -27,6 +29,8 @@ sk_sp<SkColorFilter> SkLumaColorFilter::Make() {
     SkASSERT(effect);
 
     return effect->makeColorFilter(SkData::MakeEmpty());
+#endif
+
 }
 #else // SK_ENABLE_SKSL
 sk_sp<SkColorFilter> SkLumaColorFilter::Make() {
