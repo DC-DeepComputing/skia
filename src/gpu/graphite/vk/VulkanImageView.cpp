@@ -12,16 +12,32 @@
 
 namespace skgpu::graphite {
 
-sk_sp<const VulkanImageView> VulkanImageView::Make(VulkanSharedContext* sharedContext,
+sk_sp<const VulkanImageView> VulkanImageView::Make(const VulkanSharedContext* sharedContext,
                                                    VkImage image,
                                                    VkFormat format,
-                                                   Type viewType,
+                                                   Usage usage,
                                                    uint32_t miplevels) {
     void* pNext = nullptr;
     // TODO: add SamplerYcbcrConversion setup
 
     VkImageView imageView;
     // Create the VkImageView
+    VkImageAspectFlags aspectFlags;
+    if (Usage::kAttachment == usage) {
+        switch (format) {
+        case VK_FORMAT_S8_UINT:
+            aspectFlags = VK_IMAGE_ASPECT_STENCIL_BIT;
+        case VK_FORMAT_D24_UNORM_S8_UINT:
+        case VK_FORMAT_D32_SFLOAT_S8_UINT:
+            // TODO: Not sure if this is correct. Do we always want to expose the depth values?
+            aspectFlags = VK_IMAGE_ASPECT_STENCIL_BIT | VK_IMAGE_ASPECT_DEPTH_BIT;
+        default:
+            aspectFlags = VK_IMAGE_ASPECT_COLOR_BIT;
+        }
+        miplevels = 1;
+    } else {
+        aspectFlags = VK_IMAGE_ASPECT_COLOR_BIT;
+    }
     VkImageViewCreateInfo viewInfo = {
         VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,               // sType
         pNext,                                                  // pNext
@@ -33,11 +49,8 @@ sk_sp<const VulkanImageView> VulkanImageView::Make(VulkanSharedContext* sharedCo
           VK_COMPONENT_SWIZZLE_IDENTITY,
           VK_COMPONENT_SWIZZLE_IDENTITY,
           VK_COMPONENT_SWIZZLE_IDENTITY },                      // components
-        { VK_IMAGE_ASPECT_COLOR_BIT, 0, miplevels, 0, 1 },      // subresourceRange
+        { aspectFlags, 0, miplevels, 0, 1 },                    // subresourceRange
     };
-    if (Type::kStencil == viewType) {
-        viewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_STENCIL_BIT;
-    }
 
     VkResult result;
     VULKAN_CALL_RESULT(sharedContext->interface(), result,
@@ -46,13 +59,15 @@ sk_sp<const VulkanImageView> VulkanImageView::Make(VulkanSharedContext* sharedCo
         return nullptr;
     }
 
-    return sk_sp<const VulkanImageView>(new VulkanImageView(sharedContext, imageView));
+    return sk_sp<VulkanImageView>(new VulkanImageView(sharedContext, imageView, usage));
 }
 
-VulkanImageView::VulkanImageView(const VulkanSharedContext* sharedContext, VkImageView imageView)
-    : Resource(sharedContext, Ownership::kOwned, skgpu::Budgeted::kYes, /*gpuMemorySize=*/0)
-    , fImageView(imageView) {
-}
+VulkanImageView::VulkanImageView(const VulkanSharedContext* sharedContext,
+                                 VkImageView imageView,
+                                 Usage usage)
+    : Resource(sharedContext, Ownership::kOwned, skgpu::Budgeted::kNo, /*gpuMemorySize=*/0)
+    , fImageView(imageView)
+    , fUsage(usage) {}
 
 void VulkanImageView::freeGpuData() {
     auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
