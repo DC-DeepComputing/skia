@@ -52,6 +52,24 @@
       "parentUuid": "e00b5ee5_e12dfe63",
       "revId": "a83d9510533dc5bcc5cac63eec665be431a5847e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "daca11e3_ab6f4ff5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-22T16:00:45Z",
+      "side": 1,
+      "message": "It\u0027s fine, you can reassign it to anyone :)",
+      "tag": "mailMessageId\u003d\u003cCANBPXuAex9NW2Gq2jAxSyx_4OdRxPWABVXAw-V\u003d4f+Y+DPUcqg@mail.gmail.com\u003e",
+      "revId": "a83d9510533dc5bcc5cac63eec665be431a5847e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
