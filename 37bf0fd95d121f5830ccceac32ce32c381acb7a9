@@ -157,6 +157,29 @@
       "parentUuid": "ce598157_de57b932",
       "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "300a55aa_e31558ee",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-22T15:19:58Z",
+      "side": 1,
+      "message": "Why do we need this now?",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 5
+      },
+      "revId": "37bf0fd95d121f5830ccceac32ce32c381acb7a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
