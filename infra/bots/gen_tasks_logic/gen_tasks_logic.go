@@ -1333,6 +1333,10 @@ func (b *jobBuilder) compile() string {
 				if b.extraConfig("iOS") {
 					b.asset("provisioning_profile_ios")
 				}
+				if b.extraConfig("Vello") {
+					// All of our current Mac compile machines are x64 Mac only.
+					b.usesBazel("mac_x64")
+				}
 			}
 		})
 	}
