@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "956882c7_3aeb8af2",
+        "filename": "tests/ChecksumTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-22T19:55:40Z",
+      "side": 0,
+      "message": "This is no longer true. I see no reason that this was important before.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 54
+      },
+      "revId": "2da2925761945e6f094cb4831cc3b275de4457e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
