@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "986c15ac_9ce78566",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-22T17:43:25Z",
+      "side": 1,
+      "message": "PS8 splits out Hash32 and Hash64. I also took the chance to make SkChecksum a namesapce, rather than a class.",
+      "revId": "5eed6f706d1a4ba1886bdb899d1ab9fbc2e5d8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
