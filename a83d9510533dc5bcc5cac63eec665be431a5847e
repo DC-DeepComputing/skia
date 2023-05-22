@@ -16,6 +16,24 @@
       "message": "I believe this new version of destcolor is testing the same code path in Ganesh, and I found it to be very helpful for testing in Graphite. But, I also understand the value of being 100% sure we\u0027re testing a specific code path in Ganesh, so I\u0027m totally open to not submitting this.",
       "revId": "a83d9510533dc5bcc5cac63eec665be431a5847e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e00b5ee5_e12dfe63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-22T15:54:31Z",
+      "side": 1,
+      "message": "I\u0027m out this week, but I\u0027m totally fine with changing previously Ganesh-specific tests to have broader coverage if it makes sense to do so.",
+      "tag": "mailMessageId\u003d\u003cCANBPXuBGxGMBihyTnn16iHfAk3ZUyJUnwknqM5Ec3xL6O4XQ-w@mail.gmail.com\u003e",
+      "revId": "a83d9510533dc5bcc5cac63eec665be431a5847e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
