@@ -258,12 +258,12 @@ const ShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
     return nullptr;
 }
 
-void ShaderCodeDictionary::getShaderInfo(UniquePaintParamsID uniqueID,
+void ShaderCodeDictionary::getShaderInfo1(UniquePaintParamsID uniqueID,
                                          ShaderInfo* info) const {
     auto entry = this->lookup(uniqueID);
 
     entry->paintParamsKey().toShaderInfo(this, info);
-    info->setBlendInfo(entry->blendInfo());
+    info->setBlendInfo1(entry->blendInfo());
 }
 
 //--------------------------------------------------------------------------------------------------

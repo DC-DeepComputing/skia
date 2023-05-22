@@ -175,7 +175,7 @@ public:
         SkASSERT(!this->isLocked());
     }
 
-    void setBlendInfo(const skgpu::BlendInfo& blendInfo) {
+    void setBlendInfo2(const skgpu::BlendInfo& blendInfo) {
         fBlendInfo = blendInfo;
     }
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }

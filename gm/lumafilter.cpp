@@ -38,6 +38,7 @@ static SkScalar kInset  = 10;
 static SkColor  kColor1 = SkColorSetARGB(0xff, 0xff, 0xff, 0);
 static SkColor  kColor2 = SkColorSetARGB(0xff, 0x82, 0xff, 0);
 
+#if 0
 static void draw_label(SkCanvas* canvas, const char* label,
                        const SkPoint& offset) {
     SkFont font(ToolUtils::create_portable_typeface());
@@ -49,6 +50,7 @@ static void draw_label(SkCanvas* canvas, const char* label,
     canvas->drawSimpleText(label, len, SkTextEncoding::kUTF8, offset.x() - width / 2, offset.y(),
                            font, SkPaint());
 }
+#endif
 
 static void draw_scene(SkCanvas* canvas, const sk_sp<SkColorFilter>& filter, SkBlendMode mode,
                        const sk_sp<SkShader>& s1, const sk_sp<SkShader>& s2) {
@@ -58,10 +60,14 @@ static void draw_scene(SkCanvas* canvas, const sk_sp<SkColorFilter>& filter, SkB
 
     c = bounds;
     c.fRight = bounds.centerX();
-    paint.setARGB(0x20, 0, 0, 0xff);
-    canvas->drawRect(bounds, paint);
+//    paint.setARGB(0x20, 0, 0, 0xff);
+//    canvas->drawRect(bounds, paint);
 
-    canvas->saveLayer(&bounds, nullptr);
+//    canvas->saveLayer(&bounds, nullptr);
+
+    //SkPaint p2;
+    //p2.setColor(0x0);
+    //canvas->drawRect(bounds, p2);
 
     r = bounds;
     r.inset(kInset, 0);
@@ -76,6 +82,7 @@ static void draw_scene(SkCanvas* canvas, const sk_sp<SkColorFilter>& filter, SkB
         canvas->restore();
     }
 
+#if 0
     SkPaint xferPaint;
     xferPaint.setBlendMode(mode);
     canvas->saveLayer(&bounds, &xferPaint);
@@ -95,7 +102,8 @@ static void draw_scene(SkCanvas* canvas, const sk_sp<SkColorFilter>& filter, SkB
     }
 
     canvas->restore();
-    canvas->restore();
+#endif
+    //canvas->restore();
 }
 
 class LumaFilterGM : public skiagm::GM {
@@ -123,6 +131,8 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
+        canvas->clear(0x88000000);
+
         SkBlendMode modes[] = {
             SkBlendMode::kSrcOver,
             SkBlendMode::kDstOver,
@@ -135,16 +145,16 @@ protected:
             const sk_sp<SkShader>& fShader1;
             const sk_sp<SkShader>& fShader2;
         } shaders[] = {
-            { nullptr, nullptr },
-            { nullptr, fGr2 },
+//            { nullptr, nullptr },
+//            { nullptr, fGr2 },
             { fGr1, nullptr },
-            { fGr1, fGr2 },
+//            { fGr1, fGr2 },
         };
 
         SkScalar gridStep = kSize + 2 * kInset;
         for (size_t i = 0; i < std::size(modes); ++i) {
-            draw_label(canvas, SkBlendMode_Name(modes[i]),
-                       SkPoint::Make(gridStep * (0.5f + i), 20));
+//            draw_label(canvas, SkBlendMode_Name(modes[i]),
+//                       SkPoint::Make(gridStep * (0.5f + i), 20));
         }
 
         for (size_t i = 0; i < std::size(shaders); ++i) {

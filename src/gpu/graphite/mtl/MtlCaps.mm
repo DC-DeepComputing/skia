@@ -400,6 +400,7 @@ void MtlCaps::initFormatTable() {
             ctInfo.fColorType = kR8_unorm_SkColorType;
             ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
         }
+#if 0
         // Format: R8Unorm, Surface: kAlpha_8
         {
             auto& ctInfo = info->fColorTypeInfos[ctIdx++];
@@ -408,6 +409,7 @@ void MtlCaps::initFormatTable() {
             ctInfo.fReadSwizzle = skgpu::Swizzle("000r");
             ctInfo.fWriteSwizzle = skgpu::Swizzle("a000");
         }
+#endif
         // Format: R8Unorm, Surface: kGray_8
         {
             auto& ctInfo = info->fColorTypeInfos[ctIdx++];
@@ -517,7 +519,7 @@ void MtlCaps::initFormatTable() {
 
     std::fill_n(fColorTypeToFormatTable, kSkColorTypeCnt, MTLPixelFormatInvalid);
 
-    this->setColorType(kAlpha_8_SkColorType,          { MTLPixelFormatR8Unorm,
+    this->setColorType(kAlpha_8_SkColorType,          { /*MTLPixelFormatR8Unorm, */
                                                         MTLPixelFormatA8Unorm });
     if (@available(macOS 11.0, iOS 8.0, *)) {
         if (this->isApple()) {

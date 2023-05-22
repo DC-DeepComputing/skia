@@ -152,7 +152,7 @@ public:
     }
     const char* ssboIndex() const { return fSsboIndex; }
 
-    void setBlendInfo(const skgpu::BlendInfo& blendInfo) {
+    void setBlendInfo1(const skgpu::BlendInfo& blendInfo) {
         fBlendInfo = blendInfo;
     }
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
@@ -230,7 +230,7 @@ public:
         return this->getEntry(SkTo<int>(codeSnippetID));
     }
 
-    void getShaderInfo(UniquePaintParamsID, ShaderInfo*) const;
+    void getShaderInfo1(UniquePaintParamsID, ShaderInfo*) const;
 
     int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect);
 

@@ -630,14 +630,14 @@ void BlendModeBlock::BeginBlock(const KeyContext& keyContext,
     auto dict = keyContext.dict();
 
     if (bm <= SkBlendMode::kLastCoeffMode) {
-        builder->setBlendInfo(get_blend_info(bm));
+        builder->setBlendInfo2(get_blend_info(bm));
 
         builder->beginBlock(BuiltInCodeSnippetID::kFixedFunctionBlender);
         static_assert(SkTFitsIn<uint8_t>(SkBlendMode::kLastMode));
         builder->addByte(static_cast<uint8_t>(bm));
     } else {
         // TODO: set up the correct blend info
-        builder->setBlendInfo({});
+        builder->setBlendInfo2({});
 
         if (gatherer) {
             add_shaderbasedblender_uniform_data(dict, bm, gatherer);

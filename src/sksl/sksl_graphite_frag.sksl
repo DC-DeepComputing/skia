@@ -283,7 +283,6 @@ $pure float2 $tile_grad(int tileMode, float2 t) {
 $pure half4 $colorize_grad_4(float4 colorsParam[4], float offsetsParam[4], float2 t) {
     if (t.y < 0) {
         return half4(0);
-
     } else if (t.x <= offsetsParam[0]) {
         return half4(colorsParam[0]);
     } else if (t.x < offsetsParam[1]) {
@@ -516,7 +515,8 @@ $pure half4 sk_linear_grad_4_shader(float2 coords,
                                     int tileMode) {
     float2 t = $linear_grad_layout(point0Param, point1Param, coords);
     t = $tile_grad(tileMode, t);
-    return $colorize_grad_4(colorsParam, offsetsParam, t);
+    half4 tmp = $colorize_grad_4(colorsParam, offsetsParam, t);
+    return half4(tmp.r, 0.0, 0.0, 0.5);
 }
 
 $pure half4 sk_linear_grad_8_shader(float2 coords,
