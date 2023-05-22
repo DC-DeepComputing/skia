@@ -22,6 +22,30 @@
       },
       "revId": "2da2925761945e6f094cb4831cc3b275de4457e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46fe4a25_27b0cc85",
+        "filename": "tests/ChecksumTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-05-22T20:04:03Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "956882c7_3aeb8af2",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 54
+      },
+      "revId": "2da2925761945e6f094cb4831cc3b275de4457e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
