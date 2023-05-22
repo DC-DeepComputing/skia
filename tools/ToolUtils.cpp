@@ -580,6 +580,9 @@ sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
         GrDirectContext* dContext = canvas->recordingContext()->asDirectContext();
         const GrCaps* caps = dContext->priv().caps();
 
+        SkDebugf("MakeTextureImage img %d %d - caps %d\n",
+                 orig->width(), orig->height(), caps->maxTextureSize());
+
         if (orig->width() >= caps->maxTextureSize() || orig->height() >= caps->maxTextureSize()) {
             // Ganesh is able to tile large SkImage draws. Always forcing SkImages to be uploaded
             // prevents this feature from being tested by our tools. For now, leave excessively

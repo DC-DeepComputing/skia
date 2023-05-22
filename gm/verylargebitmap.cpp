@@ -26,6 +26,13 @@
 #include "include/effects/SkGradientShader.h"
 #include "tools/ToolUtils.h"
 
+#if defined(SK_GANESH)
+#include "include/gpu/GrRecordingContext.h"
+#endif
+
+static constexpr int kPad = 10;
+static constexpr int kCellSize = 128;
+
 static void draw(SkCanvas* canvas, int width, int height, SkColor colors[2]) {
     const SkPoint center = { SkIntToScalar(width)/2, SkIntToScalar(height)/2 };
     const SkScalar radius = 40;
@@ -38,6 +45,9 @@ static void draw(SkCanvas* canvas, int width, int height, SkColor colors[2]) {
 
 static sk_sp<SkImage> make_raster_image(int width, int height, SkColor colors[2]) {
     auto surface(SkSurfaces::Raster(SkImageInfo::MakeN32Premul(width, height)));
+    if (!surface) {
+        return nullptr;
+    }
     draw(surface->getCanvas(), width, height, colors);
     return surface->makeImageSnapshot();
 }
@@ -55,9 +65,52 @@ static sk_sp<SkImage> make_picture_image(int width, int height, SkColor colors[2
 
 typedef sk_sp<SkImage> (*ImageMakerProc)(int width, int height, SkColor colors[2]);
 
+static int gimme(SkCanvas* canvas, SkImage* img) {
+
+#if defined(SK_GANESH)
+    if (GrRecordingContext* rContext = canvas->recordingContext(); rContext) {
+        return rContext->maxTextureSize();
+//        if (img->width() >= rContext->maxTextureSize() ||
+//            img->height() >= rContext->maxTextureSize()) {
+//            return true;
+//        }
+    }
+#endif
+#if defined(SK_GRAPHITE)
+    if (skgpu::graphite::Recorder* recorder = canvas->recorder(); recorder) {
+        return recorder->maxTextureSize();
+//        if (img->width() >= recorder->maxTextureSize() ||
+//            img->height() >= recorder->maxTextureSize()) {
+//            return true;
+//        }
+    }
+#endif
+
+    return 1 << 11;
+//    return false;
+}
+
+static void draw_too_big(SkCanvas* canvas, sk_sp<SkImage> img) {
+
+
+}
+
 static void show_image(SkCanvas* canvas, int width, int height, SkColor colors[2],
                        ImageMakerProc proc) {
-    sk_sp<SkImage> image = ToolUtils::MakeTextureImage(canvas, proc(width, height, colors));
+
+    SkDebugf("--------- %dx%d == %d\n", width, height, width*height);
+    sk_sp<SkImage> tmpImg = proc(width, height, colors);
+    if (!tmpImg) {
+        return;
+    }
+
+    int max = gimme(canvas, tmpImg.get());
+    SkDebugf("maxTextureSize: %d\n", max);
+//        draw_too_big(canvas, std::move(tmpImg));
+//        return;
+//    }
+
+    sk_sp<SkImage> image = ToolUtils::MakeTextureImage(canvas, std::move(tmpImg));
     if (!image) {
         return;
     }
@@ -74,7 +127,7 @@ static void show_image(SkCanvas* canvas, int width, int height, SkColor colors[2
     canvas->restore();
     canvas->drawRect(dstRect, borderPaint);
 
-    dstRect.offset(SkIntToScalar(150), 0);
+    dstRect.offset(kCellSize + kPad, 0);
     int hw = width / 2;
     int hh = height / 2;
     SkRect subset = SkRect::MakeLTRB(hw - 64, hh - 32, hw + 64, hh + 32);
@@ -82,7 +135,7 @@ static void show_image(SkCanvas* canvas, int width, int height, SkColor colors[2
                           SkCanvas::kStrict_SrcRectConstraint);
     canvas->drawRect(dstRect, borderPaint);
 
-    dstRect.offset(SkIntToScalar(150), 0);
+    dstRect.offset(kCellSize + kPad, 0);
     canvas->drawImageRect(image, dstRect, SkSamplingOptions(), nullptr);
     canvas->drawRect(dstRect, borderPaint);
 }
@@ -97,37 +150,43 @@ public:
 private:
     SkString onShortName() override { return SkString(fName); }
 
-    SkISize onISize() override { return {500, 600}; }
+    SkISize onISize() override { return { 3*kCellSize + 4*kPad, 5*kCellSize + 6*kPad }; }
 
     void onDraw(SkCanvas* canvas) override {
-        int veryBig = 65*1024; // 64K < size
-        int big = 33*1024;     // 32K < size < 64K
-        // smaller than many max texture sizes, but large enough to gpu-tile for memory reasons.
-        int medium = 5*1024;
-        int small = 150;
+        const int maxTexSize = gimme(canvas, nullptr);
+
+        int veryBig = 2*maxTexSize;
+        int big = maxTexSize;
+        int medium = maxTexSize / 2;
+        int small = 128;
 
         SkColor colors[2];
 
-        canvas->translate(SkIntToScalar(10), SkIntToScalar(10));
+        canvas->translate(kPad, kPad);
         colors[0] = SK_ColorRED;
         colors[1] = SK_ColorGREEN;
         show_image(canvas, small, small, colors, fProc);
-        canvas->translate(0, SkIntToScalar(150));
+        canvas->translate(0, kCellSize + kPad);
 
         colors[0] = SK_ColorBLUE;
         colors[1] = SK_ColorMAGENTA;
         show_image(canvas, big, small, colors, fProc);
-        canvas->translate(0, SkIntToScalar(150));
+        canvas->translate(0, kCellSize + kPad);
 
         colors[0] = SK_ColorMAGENTA;
         colors[1] = SK_ColorYELLOW;
         show_image(canvas, medium, medium, colors, fProc);
-        canvas->translate(0, SkIntToScalar(150));
+        canvas->translate(0, kCellSize + kPad);
 
         colors[0] = SK_ColorGREEN;
         colors[1] = SK_ColorYELLOW;
         // This used to be big enough that we didn't draw on CPU, but now we do.
         show_image(canvas, veryBig, small, colors, fProc);
+        canvas->translate(0, kCellSize + kPad);
+
+        colors[0] = SK_ColorCYAN;
+        colors[1] = SK_ColorBLUE;
+        show_image(canvas, big, big, colors, fProc);
     }
 };
 

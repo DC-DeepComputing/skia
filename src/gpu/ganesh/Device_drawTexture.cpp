@@ -168,6 +168,7 @@ SkIRect determine_clipped_src_rect(int width, int height,
     return clippedSrcIRect;
 }
 
+//$$
 // tileSize and clippedSubset are valid if true is returned
 bool should_tile_image_id(GrRecordingContext* context,
                           SkISize rtSize,
@@ -185,12 +186,14 @@ bool should_tile_image_id(GrRecordingContext* context,
         *clippedSubset = determine_clipped_src_rect(rtSize.width(), rtSize.height(), clip, ctm,
                                                     srcToDst, imageSize, src);
         *tileSize = determine_tile_size(*clippedSubset, maxTileSize);
+        SkDebugf("forced to tile\n");
         return true;
     }
 
     // If the image would only produce 4 tiles of the smaller size, don't bother tiling it.
     const size_t area = imageSize.width() * imageSize.height();
     if (area < 4 * kBmpSmallTileSize * kBmpSmallTileSize) {
+        SkDebugf("not tiling bc only a 4x split");
         return false;
     }
 
@@ -203,6 +206,7 @@ bool should_tile_image_id(GrRecordingContext* context,
     // Instead, we will just upload the entire image to be on the safe side and not tile.
     auto direct = context->asDirectContext();
     if (!direct) {
+        SkDebugf("no tiling due to no dContext\n");
         return false;
     }
 
@@ -570,6 +574,7 @@ void draw_image(GrRecordingContext* rContext,
     }
 }
 
+//$$
 void draw_tiled_bitmap(GrRecordingContext* rContext,
                        skgpu::ganesh::SurfaceDrawContext* sdc,
                        const GrClip* clip,
@@ -633,6 +638,10 @@ void draw_tiled_bitmap(GrRecordingContext* rContext,
             // Image subsets always make a copy of the pixels and lose the association with the
             // original's SkPixelRef.
             if (SkBitmap subsetBmp; bitmap.extractSubset(&subsetBmp, iTileR)) {
+                SkDebugf("w %d h %d - %d %d %d %d\n",
+                         iTileR.width(), iTileR.height(),
+                         iTileR.fLeft, iTileR.fTop, iTileR.fRight, iTileR.fBottom);
+
                 auto image = SkMakeImageFromRasterBitmap(subsetBmp, kNever_SkCopyPixelsMode);
                 // We should have already handled bitmaps larger than the max texture size.
                 SkASSERT(image->width()  <= rContext->priv().caps()->maxTextureSize() &&
