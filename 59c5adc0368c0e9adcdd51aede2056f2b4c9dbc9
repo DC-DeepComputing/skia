@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "274d6bf3_0529a06d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T20:19:47Z",
+      "side": 1,
+      "message": "OK, these changes should make it such that the texture/sampler desc. set isn\u0027t actually bound until after the uniform buffer(s) are bound in the lower slot #. LMKWYT :)",
+      "revId": "59c5adc0368c0e9adcdd51aede2056f2b4c9dbc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

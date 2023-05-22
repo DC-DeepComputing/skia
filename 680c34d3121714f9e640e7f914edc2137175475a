@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ff9991d_9752d05c",
+        "filename": "src/gpu/graphite/Descriptors.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T20:19:47Z",
+      "side": 1,
+      "message": "Yes, for the SkSpan. The assignments don\u0027t fit on the same line as the ctor declaration, but I moved the count assignment on to the same line as the type one and indented twice.",
+      "parentUuid": "7864199b_11bec053",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 21
+      },
+      "revId": "680c34d3121714f9e640e7f914edc2137175475a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "821893ef_901898d0",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-05-18T16:39:53Z",
       "side": 1,
       "message": "Do we have to rebind if the uniform buffer doesn\u0027t change? I thought in Vulkan we could rebind the pipeline and the descriptor sets would remain valid. The only reason for a rebind that I\u0027m aware of is if you change a descriptor set with a low slot number -- then you need to rebind all the following ones.",
+      "range": {
+        "startLine": 384,
+        "startChar": 4,
+        "endLine": 384,
+        "endChar": 37
+      },
+      "revId": "680c34d3121714f9e640e7f914edc2137175475a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2348140a_5ebca7ac",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T20:19:47Z",
+      "side": 1,
+      "message": "You would be correct. Removed\nIt seems like so long as 2 pipelines have the same pipeline layout, no descriptor sets needs to be re-bound. So, the sets can stay bound until they need to be changed (which a draw command would indicate), or once we are ready to draw and some later sets are just no longer needed and, I believe, can just be ignored.",
+      "parentUuid": "821893ef_901898d0",
       "range": {
         "startLine": 384,
         "startChar": 4,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4ddd92a_b239fba3",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T20:19:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9edb7dd8_81c5e3ef",
+      "range": {
+        "startLine": 467,
+        "startChar": 40,
+        "endLine": 467,
+        "endChar": 50
+      },
+      "revId": "680c34d3121714f9e640e7f914edc2137175475a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f29adc7_cfcacc3d",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-05-18T16:39:53Z",
       "side": 1,
       "message": "Nit: line these args up or put them on the same line indented?",
+      "range": {
+        "startLine": 493,
+        "startChar": 49,
+        "endLine": 494,
+        "endChar": 64
+      },
+      "revId": "680c34d3121714f9e640e7f914edc2137175475a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7679b2a7_1dedf86f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T20:19:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f29adc7_cfcacc3d",
       "range": {
         "startLine": 493,
         "startChar": 49,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1160203b_65aefa4e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T20:19:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7dd0fe6d_b5d01738",
+      "range": {
+        "startLine": 517,
+        "startChar": 61,
+        "endLine": 517,
+        "endChar": 98
+      },
+      "revId": "680c34d3121714f9e640e7f914edc2137175475a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4539a5bb_e57aabf3",
@@ -146,6 +266,30 @@
       "writtenOn": "2023-05-18T16:39:53Z",
       "side": 1,
       "message": "Nit: indent inside parenthesis",
+      "range": {
+        "startLine": 538,
+        "startChar": 36,
+        "endLine": 538,
+        "endChar": 60
+      },
+      "revId": "680c34d3121714f9e640e7f914edc2137175475a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5467610_1a17784f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T20:19:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4539a5bb_e57aabf3",
       "range": {
         "startLine": 538,
         "startChar": 36,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7296f29_1c0a561f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T20:19:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64855292_7628634b",
+      "range": {
+        "startLine": 546,
+        "startChar": 40,
+        "endLine": 546,
+        "endChar": 71
+      },
+      "revId": "680c34d3121714f9e640e7f914edc2137175475a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57ffecdd_874da772",
@@ -202,6 +370,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3aee6622_cb81daf4",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T20:19:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57ffecdd_874da772",
+      "range": {
+        "startLine": 168,
+        "startChar": 7,
+        "endLine": 168,
+        "endChar": 17
+      },
+      "revId": "680c34d3121714f9e640e7f914edc2137175475a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d34c296c_6c92f4ef",
@@ -215,6 +407,30 @@
       "writtenOn": "2023-05-18T16:39:53Z",
       "side": 1,
       "message": "You might want to swap these because of what I said above. With this order, if you bind the textures/samplers in-stream and then bind the uniform buffers, I believe it will invalidate the texture/sampler set.",
+      "range": {
+        "startLine": 28,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 70
+      },
+      "revId": "680c34d3121714f9e640e7f914edc2137175475a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c27c40b4_29c86e20",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-22T20:19:47Z",
+      "side": 1,
+      "message": "Acknowledged - as discussed offline, we can keep this order the same and just make sure we bind texture/sampler desc. sets *after* we\u0027ve bound the uniform desc. set.",
+      "parentUuid": "d34c296c_6c92f4ef",
       "range": {
         "startLine": 28,
         "startChar": 3,
