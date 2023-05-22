@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -641,7 +642,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(CharacterizationFBO0nessTest,
     sk_sp<GrContextThreadSafeProxy> proxy = context->threadSafeProxy();
     const size_t resourceCacheLimit = context->getResourceCacheLimit();
 
-    GrBackendFormat format = GrBackendFormat::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_2D);
+    GrBackendFormat format = GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_2D);
 
     int availableSamples = caps->getRenderTargetSampleCount(4, format);
     if (availableSamples <= 1) {
@@ -1261,7 +1262,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(DDLTextureFlagsTest,
 
     for (GrGLenum target : { GR_GL_TEXTURE_EXTERNAL, GR_GL_TEXTURE_RECTANGLE, GR_GL_TEXTURE_2D } ) {
         for (auto mipmapped : { GrMipmapped::kNo, GrMipmapped::kYes }) {
-            GrBackendFormat format = GrBackendFormat::MakeGL(GR_GL_RGBA8, target);
+            GrBackendFormat format = GrBackendFormats::MakeGL(GR_GL_RGBA8, target);
 
             sk_sp<SkImage> image = SkImages::PromiseTextureFrom(
                     recorder.getCanvas()->recordingContext()->threadSafeProxy(),

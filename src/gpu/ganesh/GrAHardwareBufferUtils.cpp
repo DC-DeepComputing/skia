@@ -28,6 +28,7 @@
 #include "include/gpu/gl/GrGLTypes.h"
 #include "src/gpu/ganesh/gl/GrGLDefines_impl.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #endif
 
 #ifdef SK_VULKAN
@@ -79,24 +80,24 @@ GrBackendFormat GetBackendFormat(GrDirectContext* dContext, AHardwareBuffer* har
             //TODO: find out if we can detect, which graphic buffers support GR_GL_TEXTURE_2D
             case AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM:
             case AHARDWAREBUFFER_FORMAT_R8G8B8X8_UNORM:
-                return GrBackendFormat::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_EXTERNAL);
+                return GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_EXTERNAL);
             case AHARDWAREBUFFER_FORMAT_R16G16B16A16_FLOAT:
-                return GrBackendFormat::MakeGL(GR_GL_RGBA16F, GR_GL_TEXTURE_EXTERNAL);
+                return GrBackendFormats::MakeGL(GR_GL_RGBA16F, GR_GL_TEXTURE_EXTERNAL);
             case AHARDWAREBUFFER_FORMAT_R5G6B5_UNORM:
-                return GrBackendFormat::MakeGL(GR_GL_RGB565, GR_GL_TEXTURE_EXTERNAL);
+                return GrBackendFormats::MakeGL(GR_GL_RGB565, GR_GL_TEXTURE_EXTERNAL);
             case AHARDWAREBUFFER_FORMAT_R10G10B10A2_UNORM:
-                return GrBackendFormat::MakeGL(GR_GL_RGB10_A2, GR_GL_TEXTURE_EXTERNAL);
+                return GrBackendFormats::MakeGL(GR_GL_RGB10_A2, GR_GL_TEXTURE_EXTERNAL);
             case AHARDWAREBUFFER_FORMAT_R8G8B8_UNORM:
-                return GrBackendFormat::MakeGL(GR_GL_RGB8, GR_GL_TEXTURE_EXTERNAL);
+                return GrBackendFormats::MakeGL(GR_GL_RGB8, GR_GL_TEXTURE_EXTERNAL);
 #if __ANDROID_API__ >= 33
             case AHARDWAREBUFFER_FORMAT_R8_UNORM:
-                return GrBackendFormat::MakeGL(GR_GL_R8, GR_GL_TEXTURE_EXTERNAL);
+                return GrBackendFormats::MakeGL(GR_GL_R8, GR_GL_TEXTURE_EXTERNAL);
 #endif
             default:
                 if (requireKnownFormat) {
                     return GrBackendFormat();
                 } else {
-                    return GrBackendFormat::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_EXTERNAL);
+                    return GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_EXTERNAL);
                 }
         }
 #else // SK_GL

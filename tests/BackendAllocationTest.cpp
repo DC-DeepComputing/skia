@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
@@ -853,7 +854,7 @@ DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
         for (GrTextureType textureType : {GrTextureType::k2D, GrTextureType::kRectangle}) {
             GrGLenum target = textureType == GrTextureType::k2D ? GR_GL_TEXTURE_2D
                                                                 : GR_GL_TEXTURE_RECTANGLE;
-            GrBackendFormat format = GrBackendFormat::MakeGL(combo.fFormat, target);
+            GrBackendFormat format = GrBackendFormats::MakeGL(combo.fFormat, target);
             if (!glCaps->isFormatTexturable(format, textureType)) {
                 continue;
             }

@@ -14,6 +14,7 @@
 #include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 
 #define GPUGL static_cast<GrGLGpu*>(this->getGpu())
 #define GL_CALL(X) GR_GL_CALL(GPUGL->glInterface(), X)
@@ -140,7 +141,7 @@ GrBackendTexture GrGLTexture::getBackendTexture() const {
 }
 
 GrBackendFormat GrGLTexture::backendFormat() const {
-    return GrBackendFormat::MakeGL(GrGLFormatToEnum(fFormat),
+    return GrBackendFormats::MakeGL(GrGLFormatToEnum(fFormat),
                                    target_from_texture_type(this->textureType()));
 }
 
