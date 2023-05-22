@@ -3662,8 +3662,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -3694,7 +3694,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -3708,8 +3708,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -3737,7 +3737,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -3748,8 +3748,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -3777,7 +3777,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -3788,8 +3788,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -3817,7 +3817,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -3828,8 +3828,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -3857,7 +3857,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -3868,8 +3868,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -3897,7 +3897,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -3908,8 +3908,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -3937,7 +3937,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -3948,8 +3948,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -3977,7 +3977,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -3988,8 +3988,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -4017,7 +4017,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -4028,8 +4028,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -4057,7 +4057,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -4068,8 +4068,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -4097,7 +4097,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -4108,8 +4108,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -4137,7 +4137,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -4148,8 +4148,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -4177,7 +4177,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -4188,8 +4188,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         },
         {
@@ -4229,7 +4229,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -4240,8 +4240,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         },
         {
@@ -4281,7 +4281,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -4292,8 +4292,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -4318,7 +4318,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -4329,8 +4329,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -4355,7 +4355,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -4364,13 +4364,6 @@
     },
     "BazelTest-precompiled-android_codec_test-pixel_5-linux_arm64": {
       "casSpec": "bazel",
-      "cipd_packages": [
-        {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
-          "version": "version:0"
-        }
-      ],
       "command": [
         "./bazel_test_precompiled",
         "--project_id=skia-swarming-bots",
@@ -4390,11 +4383,6 @@
         "device_os:SP2A.220305.012",
         "pool:Skia"
       ],
-      "env_prefixes": {
-        "PATH": [
-          "bazelisk"
-        ]
-      },
       "idempotent": true,
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
@@ -4403,8 +4391,8 @@
       "casSpec": "bazel",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -4429,7 +4417,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -26492,8 +26480,8 @@
       "casSpec": "task-drivers",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -26512,7 +26500,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true
@@ -26521,8 +26509,8 @@
       "casSpec": "task-drivers",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -26541,7 +26529,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true
@@ -26550,8 +26538,8 @@
       "casSpec": "task-drivers",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -26570,7 +26558,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true
@@ -26579,8 +26567,8 @@
       "casSpec": "task-drivers",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -26599,7 +26587,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true
@@ -26691,8 +26679,8 @@
           "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
         },
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -26721,7 +26709,7 @@
       ],
       "env_prefixes": {
         "PATH": [
-          "bazelisk"
+          "bazelisk_linux_amd64"
         ]
       },
       "service_account": "skia-external-housekeeper@skia-swarming-bots.iam.gserviceaccount.com"
@@ -27255,8 +27243,8 @@
           "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
         },
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -27303,7 +27291,7 @@
         "PATH": [
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
-          "bazelisk",
+          "bazelisk_linux_amd64",
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin"
         ],
@@ -27367,8 +27355,8 @@
           "version": "git_revision:4f585e471d9b3ba86b2ac0ec0cdefaa8fdb67024"
         },
         {
-          "name": "skia/bots/bazelisk",
-          "path": "bazelisk",
+          "name": "skia/bots/bazelisk_linux_amd64",
+          "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
@@ -27407,7 +27395,7 @@
         "PATH": [
           "cipd_bin_packages",
           "cipd_bin_packages/bin",
-          "bazelisk",
+          "bazelisk_linux_amd64",
           "cipd_bin_packages/cpython3",
           "cipd_bin_packages/cpython3/bin"
         ],
