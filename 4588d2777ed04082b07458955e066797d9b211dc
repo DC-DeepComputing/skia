@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afba3af2_de758404",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 1244,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-22T14:20:44Z",
+      "side": 1,
+      "message": "angle_d3d9_es2 ?",
+      "range": {
+        "startLine": 1244,
+        "startChar": 7,
+        "endLine": 1244,
+        "endChar": 10
+      },
+      "revId": "4588d2777ed04082b07458955e066797d9b211dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
