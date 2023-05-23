@@ -16,6 +16,24 @@
       "message": "Make sure no one (like Chromium) was relying on this.",
       "revId": "adbe9aa7d720430e08da25b1357521b45b4e3027",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48bdfa37_7f8b9e8c",
+        "filename": "src/ports/SkJpegInfo_none.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T17:13:46Z",
+      "side": 0,
+      "message": "Might need a manual roll or to create a new gni file list:\nhttps://source.chromium.org/chromium/chromium/src/+/main:skia/BUILD.gn;l\u003d596;drc\u003de2711ede4a606828a76255b4a1e353dea62a7a07",
+      "parentUuid": "abc78c29_94055262",
+      "revId": "adbe9aa7d720430e08da25b1357521b45b4e3027",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
