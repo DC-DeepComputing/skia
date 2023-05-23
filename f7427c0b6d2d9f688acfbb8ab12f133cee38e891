@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2200c99_7025d374",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-23T20:09:26Z",
+      "side": 1,
+      "message": "Aside from removing the comment, lgtm",
+      "revId": "f7427c0b6d2d9f688acfbb8ab12f133cee38e891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e50807e7_55aa198b",
