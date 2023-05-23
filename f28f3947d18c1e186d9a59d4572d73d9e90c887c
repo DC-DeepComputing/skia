@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a2a9bf3_56bdbc58",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-23T19:14:38Z",
+      "side": 1,
+      "message": "It seems odd to still put `pdf` in this name, since now the implementation isn\u0027t hiding in PDF.",
+      "range": {
+        "startLine": 154,
+        "startChar": 14,
+        "endLine": 154,
+        "endChar": 17
+      },
+      "revId": "f28f3947d18c1e186d9a59d4572d73d9e90c887c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62c71de6_095f70e2",
+        "filename": "gn/pdf.gni",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-23T19:14:38Z",
+      "side": 1,
+      "message": "Seems odd to have these still here. I see there isn\u0027t a `gn/ports.gni` to stick this in (I mean, almost everything in `src/ports` is really just an implementation of something in `src/core` and the organization is misleading...)\n\nI suppose this is really more of a comment for https://skia-review.googlesource.com/c/skia/+/702221 where it makes this odd naming more obvious (since it\u0027s less tied to the currently existing tangle).",
+      "revId": "f28f3947d18c1e186d9a59d4572d73d9e90c887c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
