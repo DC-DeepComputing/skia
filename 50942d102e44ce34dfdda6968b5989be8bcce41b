@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4ad2b21_34d46bf7",
+        "filename": "src/gpu/graphite/ProxyCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-23T16:56:36Z",
+      "side": 1,
+      "message": "wdyt about purgeAll ?",
+      "range": {
+        "startLine": 41,
+        "startChar": 9,
+        "endLine": 41,
+        "endChar": 14
+      },
+      "revId": "50942d102e44ce34dfdda6968b5989be8bcce41b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
