@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b6cd2b0_745e7d4a",
+        "filename": "src/core/SkOpts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T14:30:38Z",
+      "side": 1,
+      "message": "I appreciate you finding and updating the docs.",
+      "range": {
+        "startLine": 26,
+        "startChar": 28,
+        "endLine": 26,
+        "endChar": 35
+      },
+      "revId": "561b0830658b1bb6629ada6ded587392f2605cb8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8356eb01_f3d699ec",
+        "filename": "src/opts/SkOpts_sse42.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T14:30:38Z",
+      "side": 1,
+      "message": "Is someone still using this file?",
+      "range": {
+        "startLine": 8,
+        "startChar": 3,
+        "endLine": 8,
+        "endChar": 16
+      },
+      "revId": "561b0830658b1bb6629ada6ded587392f2605cb8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
