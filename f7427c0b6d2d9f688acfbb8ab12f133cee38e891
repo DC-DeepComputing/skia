@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "651df40a_1108990b",
+        "filename": "BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T21:12:28Z",
+      "side": 1,
+      "message": "No, pdf has two choices for getting Jpeg metadata, one if we have libjpeg, one if we do not. Decoding jpeg in general is agnostic to this (and must be getting jpeg metadata a different way)",
+      "parentUuid": "6277ec29_c5e38e83",
+      "revId": "f7427c0b6d2d9f688acfbb8ab12f133cee38e891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e50807e7_55aa198b",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 7
