@@ -16,6 +16,29 @@
       "message": "There\u0027s probably a more idiomatic way to achieve this - happy to revise this CL if needed.",
       "revId": "d581ab9ade365c112ecb5ab333421c4d13b2d936",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9791155_f3a01c85",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-23T14:45:20Z",
+      "side": 1,
+      "message": "The name `debugString()` makes me think it should be guarded by `ifdef SK_DEBUG`, which is not the case because we need it for all the validation messages.\n\nSometimes skia uses `dump()`, although that\u0027s a little vague. I\u0027d probably vote for `asString()` or `toString()`",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 33
+      },
+      "revId": "d581ab9ade365c112ecb5ab333421c4d13b2d936",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
