@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98bbd2a4_bf94444f",
+        "filename": "src/gpu/mtl/MtlUtils.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-23T17:13:49Z",
+      "side": 1,
+      "message": "I didn\u0027t think about it until now -- this file is in gpu so we shouldn\u0027t be including graphite headers in it. One solution might be to push PipelineUtils up to gpu and share the SPIRV code with Ganesh as well.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 43
+      },
+      "revId": "08202648be6076e1234c49e0d756a5c436730f93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3f66fcf_b0c6b040",
         "filename": "src/gpu/mtl/MtlUtils.mm",
         "patchSetId": 4
