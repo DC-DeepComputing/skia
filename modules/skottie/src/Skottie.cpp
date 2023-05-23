@@ -157,7 +157,9 @@ AnimationBuilder::AnimationInfo AnimationBuilder::parse(const skjson::ObjectValu
 
     this->parseAssets(jroot["assets"]);
     this->parseFonts(jroot["fonts"], jroot["chars"]);
-    fSlotsRoot = jroot["slots"];
+    if (this->fSlotManager) {
+        this->fSlotManager->fSlotsRoot = jroot["slots"];
+    }
 
     auto root = CompositionBuilder(*this, fCompSize, jroot).build(*this);
 
