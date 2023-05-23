@@ -16,6 +16,24 @@
       "message": "I suppose what I\u0027m trying to get at is either\n\n1. `SkGetJpegInfo` be in `pdf` and keep all the PDF specific naming and the build rules in pdf\u0027s BUILD.bazel and gn/pdf.gni\n\n2. `SkGetJpegInfo` be in `ports` and be its own thing that PDF (and anybody else) can depend on with it\u0027s own build rules and names which have nothing to do with PDF.",
       "revId": "67f21fdedee723a20d80d2392cab41973695bef4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3923aee9_9bd40b31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-23T19:24:30Z",
+      "side": 1,
+      "message": "In other words, this change (at Patchset 2) is fine, but only if https://skia-review.googlesource.com/c/skia/+/702138 is updated to not move anything into `ports/` but instead just moves everything into `pdf/`",
+      "parentUuid": "5d120e5e_d5619a5c",
+      "revId": "67f21fdedee723a20d80d2392cab41973695bef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
