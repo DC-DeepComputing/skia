@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "871c6eed_518d3174",
+        "filename": "include/gpu/ganesh/GrExternalTextureGenerator.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-23T16:16:02Z",
+      "side": 1,
+      "message": "... or just remove the `mipMapped` parameter name.",
+      "parentUuid": "98af72a3_be94cadf",
+      "range": {
+        "startLine": 40,
+        "startChar": 47,
+        "endLine": 40,
+        "endChar": 70
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0fbe1e43_1ccca617",
         "filename": "include/private/gpu/ganesh/GrTextureGenerator.h",
         "patchSetId": 14
@@ -129,6 +153,30 @@
       "writtenOn": "2023-05-23T13:33:29Z",
       "side": 1,
       "message": "I have a small preference for static functions instead of an anonymous namespace, but am not sure which one is \"official\" style since both exist.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 9
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6ffae31_e8a744a8",
+        "filename": "src/gpu/ganesh/image/GrTextureGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-23T16:16:02Z",
+      "side": 1,
+      "message": "Some skia code uses anonymous namespaces, but the common/standard style in our code is to use static functions. Skia uses `snake_case` for static function names, also.",
+      "parentUuid": "6fb41dbe_88bb7ae9",
       "range": {
         "startLine": 32,
         "startChar": 0,
