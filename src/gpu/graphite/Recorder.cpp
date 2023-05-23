@@ -128,6 +128,8 @@ Recorder::~Recorder() {
     fStrikeCache->freeAll();
 }
 
+int Recorder::maxTextureSize() const { return fSharedContext->caps()->maxTextureSize(); }
+
 BackendApi Recorder::backend() const { return fSharedContext->backend(); }
 
 std::unique_ptr<Recording> Recorder::snap() {

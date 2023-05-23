@@ -580,6 +580,9 @@ sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
         GrDirectContext* dContext = canvas->recordingContext()->asDirectContext();
         const GrCaps* caps = dContext->priv().caps();
 
+        SkDebugf("MakeTextureImage img %d %d - caps %d\n",
+                 orig->width(), orig->height(), caps->maxTextureSize());
+
         if (orig->width() >= caps->maxTextureSize() || orig->height() >= caps->maxTextureSize()) {
             // Ganesh is able to tile large SkImage draws. Always forcing SkImages to be uploaded
             // prevents this feature from being tested by our tools. For now, leave excessively
@@ -683,6 +686,7 @@ SkSpan<const SkFontArguments::VariationPosition::Coordinate> VariationSliders::g
 
 #if defined(SK_GRAPHITE)
 
+//$$
 // Currently, we give each new Recorder its own ImageProvider. This means we don't have to deal
 // w/ any threading issues.
 // TODO: We should probably have this class generate and report some cache stats
