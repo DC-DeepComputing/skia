@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d120e5e_d5619a5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-23T19:21:33Z",
+      "side": 1,
+      "message": "I suppose what I\u0027m trying to get at is either\n\n1. `SkGetJpegInfo` be in `pdf` and keep all the PDF specific naming and the build rules in pdf\u0027s BUILD.bazel and gn/pdf.gni\n\n2. `SkGetJpegInfo` be in `ports` and be its own thing that PDF (and anybody else) can depend on with it\u0027s own build rules and names which have nothing to do with PDF.",
+      "revId": "67f21fdedee723a20d80d2392cab41973695bef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
