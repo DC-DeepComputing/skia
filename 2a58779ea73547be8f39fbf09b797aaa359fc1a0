@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccde21ff_5e123bf1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-23T12:55:54Z",
+      "side": 1,
+      "message": "Had to add SK_SPI to the new hash functions (they\u0027re used in skparagraph/skottie/etc...)",
+      "revId": "2a58779ea73547be8f39fbf09b797aaa359fc1a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
