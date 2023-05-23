@@ -33,6 +33,24 @@
       "message": "Didn\u0027t look at the layout previously. I know this is only being used by PDF, but that\u0027s something of an unrelated dependency issue. Seems this would be easier if this header file were right in `src/ports` (or `src/codec`). There\u0027s no reason for `ports` to need to depend on `pdf` to get this header (there\u0027s nothing PDF in here).",
       "revId": "2fb08845fb8d82609e3c22d2d3e66a4b29cb9b93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "643fe287_60d88aab",
+        "filename": "src/pdf/SkJpegInfo.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T18:33:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3419ccf0_ae865069",
+      "revId": "2fb08845fb8d82609e3c22d2d3e66a4b29cb9b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
