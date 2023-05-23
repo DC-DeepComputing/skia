@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58cf040b_c5fda01d",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-23T16:58:47Z",
+      "side": 1,
+      "message": "This one looks like it can remain `static` (file local). In fact it looks like maybe `SkCodecPriv.h` doesn\u0027t need to declare it (now or previously, and with a different signature)?",
+      "revId": "d5d5faf1e2b9e9d289610fb552af340c4c8d3eae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f8df37_f35ea2a1",
+        "filename": "src/codec/SkJpegPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-23T16:58:47Z",
+      "side": 1,
+      "message": "`SkCodecPriv.h` seems to have a declaration of `is_orientation_marker` that is different (but might be unused and unimplemented). We should remove that one, and I\u0027m not sure this one is needed either?",
+      "revId": "d5d5faf1e2b9e9d289610fb552af340c4c8d3eae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e48ef86_2321c5f5",
+        "filename": "src/codec/SkJpegPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-23T16:58:47Z",
+      "side": 1,
+      "message": "Can we put these in a namespace, or maybe as static on a class or something?",
+      "revId": "d5d5faf1e2b9e9d289610fb552af340c4c8d3eae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

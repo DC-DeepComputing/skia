@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abc78c29_94055262",
+        "filename": "src/ports/SkJpegInfo_none.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-23T16:58:47Z",
+      "side": 0,
+      "message": "Make sure no one (like Chromium) was relying on this.",
+      "revId": "adbe9aa7d720430e08da25b1357521b45b4e3027",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
