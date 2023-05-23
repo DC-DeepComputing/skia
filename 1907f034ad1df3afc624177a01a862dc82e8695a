@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd21c9c1_d654d1d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-05-23T13:37:33Z",
+      "side": 1,
+      "message": "Client ICU finalize logic was off. As a result of it we added 2 fake ending placeholders instead of one. Apparently it didn\u0027t break anything but it was wrong.",
+      "revId": "1907f034ad1df3afc624177a01a862dc82e8695a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
