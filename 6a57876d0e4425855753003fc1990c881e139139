@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b79a4d6_bd686f15",
+        "filename": "include/BUILD.bazel",
+        "patchSetId": 14
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T13:33:29Z",
+      "side": 0,
+      "message": "Let\u0027s also add the moved include/private/gpu/GrTextureGenerator.h to this list",
+      "range": {
+        "startLine": 89,
+        "startChar": 28,
+        "endLine": 89,
+        "endChar": 46
+      },
+      "revId": "6a57876d0e4425855753003fc1990c881e139139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8b0f98f_5c88ecf3",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T13:33:29Z",
+      "side": 0,
+      "message": "These comments would be nice to preserve",
+      "range": {
+        "startLine": 882,
+        "startChar": 28,
+        "endLine": 882,
+        "endChar": 35
+      },
+      "revId": "6a57876d0e4425855753003fc1990c881e139139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "633a47dc_a10b5aa2",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T13:33:29Z",
+      "side": 0,
+      "message": "I think this is still needed after calling makeTexture (please also keep the comment). If not here, then at least in the superclass (so clients don\u0027t have to remember to do this).",
+      "range": {
+        "startLine": 891,
+        "startChar": 32,
+        "endLine": 891,
+        "endChar": 44
+      },
+      "revId": "6a57876d0e4425855753003fc1990c881e139139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

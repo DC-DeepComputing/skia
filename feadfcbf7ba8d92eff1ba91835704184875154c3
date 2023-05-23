@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98af72a3_be94cadf",
+        "filename": "include/gpu/ganesh/GrExternalTextureGenerator.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T13:33:29Z",
+      "side": 1,
+      "message": "nit: linebreak before method name to keep cols under 100 wide.",
+      "range": {
+        "startLine": 40,
+        "startChar": 47,
+        "endLine": 40,
+        "endChar": 70
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fbe1e43_1ccca617",
+        "filename": "include/private/gpu/ganesh/GrTextureGenerator.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T13:33:29Z",
+      "side": 1,
+      "message": "It\u0027s not clear to me why this include is now needed.",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 17
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "763e8f84_e2f9b69d",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T13:33:29Z",
+      "side": 1,
+      "message": "skia style is to prefix these with f, not underscore.",
+      "range": {
+        "startLine": 876,
+        "startChar": 13,
+        "endLine": 876,
+        "endChar": 25
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ca9a585_aaeb34d4",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T13:33:29Z",
+      "side": 1,
+      "message": "nit: wrap to 100 cols",
+      "range": {
+        "startLine": 901,
+        "startChar": 78,
+        "endLine": 901,
+        "endChar": 114
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5563841c_c9861c1d",
+        "filename": "relnotes/skimagegenerator_grexternaltexturegenerator.md",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T13:33:29Z",
+      "side": 1,
+      "message": "Maybe add `GrTextureGenerator` has been removed from the public API in favor of `GrExternalTextureGenerator`.",
+      "range": {
+        "startLine": 3,
+        "startChar": 38,
+        "endLine": 3,
+        "endChar": 42
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fb41dbe_88bb7ae9",
+        "filename": "src/gpu/ganesh/image/GrTextureGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T13:33:29Z",
+      "side": 1,
+      "message": "I have a small preference for static functions instead of an anonymous namespace, but am not sure which one is \"official\" style since both exist.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 9
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ea1f517_7947276f",
+        "filename": "src/gpu/ganesh/image/GrTextureGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T13:33:29Z",
+      "side": 1,
+      "message": "I\u0027m puzzled about needing to wrap this in a unique_ptr. Why is this necessary (and can you leave a comment to remind us in the future)?",
+      "range": {
+        "startLine": 34,
+        "startChar": 24,
+        "endLine": 34,
+        "endChar": 34
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
