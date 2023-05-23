@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bbe2a16_c471c619",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-23T17:23:14Z",
+      "side": 1,
+      "message": "Code change lgtm. Fine with tweaking the build here or in a different CL to keep things working.",
+      "revId": "2fb08845fb8d82609e3c22d2d3e66a4b29cb9b93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
