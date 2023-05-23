@@ -13,6 +13,7 @@
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/base/SkRectMemcpy.h"
+#include "src/gpu/PipelineUtils.h"
 #include "src/gpu/dawn/DawnUtilsPriv.h"
 #include "src/gpu/ganesh/GrDataUtils.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -1010,22 +1011,14 @@ std::string GrDawnGpu::SkSLToSPIRV(const char* shaderString,
     settings.fRTFlipOffset = rtFlipOffset;
     settings.fRTFlipBinding = 0;
     settings.fRTFlipSet = 0;
-    std::unique_ptr<SkSL::Program> program = this->shaderCompiler()->convertProgram(
-        kind,
-        shaderString,
-        settings);
-    if (!program) {
-        errorHandler->compileError(shaderString, this->shaderCompiler()->errorText().c_str());
-        return "";
-    }
-    if (interface) {
-        *interface = program->fInterface;
-    }
-    std::string code;
-    if (!this->shaderCompiler()->toSPIRV(*program, &code)) {
-        errorHandler->compileError(shaderString, this->shaderCompiler()->errorText().c_str());
-        return "";
-    }
+    std::string outSpirv;
+    SkSLToSPIRV(this->shaderCompiler(),
+                shaderString,
+                kind,
+                settings,
+                &outSpirv,
+                interface,
+                errorHandler)
     return code;
 }
 
