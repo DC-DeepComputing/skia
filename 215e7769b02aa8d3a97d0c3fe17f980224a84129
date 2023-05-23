@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e13f9899_d649abd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-23T14:19:02Z",
+      "side": 1,
+      "message": "After discussion with the Skia GPU group this situation is not of great concern to Graphite, so unilaterally moving it to Debug level is fine.",
+      "revId": "215e7769b02aa8d3a97d0c3fe17f980224a84129",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
