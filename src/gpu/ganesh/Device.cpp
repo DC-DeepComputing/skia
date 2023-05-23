@@ -952,7 +952,8 @@ void Device::drawImageRect(const SkImage* image,
                            SkCanvas::SrcRectConstraint constraint) {
     ASSERT_SINGLE_OWNER
     GrAA aa = fSurfaceDrawContext->chooseAA(paint);
-    GrQuadAAFlags aaFlags = (aa == GrAA::kYes) ? GrQuadAAFlags::kAll : GrQuadAAFlags::kNone;
+    SkCanvas::QuadAAFlags aaFlags = (aa == GrAA::kYes) ? SkCanvas::kAll_QuadAAFlags
+                                                       : SkCanvas::kNone_QuadAAFlags;
     this->drawImageQuad(image, src, &dst, nullptr, aaFlags, nullptr, sampling, paint, constraint);
 }
 
