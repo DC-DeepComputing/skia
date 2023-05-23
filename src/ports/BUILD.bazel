@@ -256,6 +256,24 @@ skia_filegroup(
     }),
 )
 
+selects.config_setting_group(
+    name = "pdf_with_jpeg",
+    match_all = [
+        "//src/pdf:enable_pdf_backend_true",
+        "//src/codec:jpeg_decode_codec",
+    ],
+)
+
+skia_filegroup(
+    name = "jpeg_info",
+    srcs = select({
+        ":pdf_with_jpeg": ["SkJpegInfo_libjpegturbo.cpp"],
+        "//src/pdf:enable_pdf_backend_false": [],
+        # pdf_without_jpeg
+        "//conditions:default": ["SkJpegInfo_none.cpp"],
+    }),
+)
+
 skia_filegroup(
     name = "srcs",
     srcs = [
@@ -264,6 +282,7 @@ skia_filegroup(
         ":fontmgr_factory",
         ":global_init",
         ":image_generator",
+        ":jpeg_info",
         ":load_dynamic_library",
         ":malloc",
         ":osfile",

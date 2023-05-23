@@ -20,7 +20,6 @@
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTemplates.h"
-#include "include/private/base/SkTo.h"
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegConstants.h"
@@ -62,7 +61,7 @@ bool SkJpegCodec::IsJpeg(const void* buffer, size_t bytesRead) {
     return bytesRead >= sizeof(kJpegSig) && !memcmp(buffer, kJpegSig, sizeof(kJpegSig));
 }
 
-static bool is_orientation_marker(jpeg_marker_struct* marker, SkEncodedOrigin* orientation) {
+bool is_orientation_marker(jpeg_marker_struct* marker, SkEncodedOrigin* orientation) {
     if (kExifMarker != marker->marker || marker->data_length < kExifHeaderSize) {
         return false;
     }
@@ -77,7 +76,7 @@ static bool is_orientation_marker(jpeg_marker_struct* marker, SkEncodedOrigin* o
             orientation);
 }
 
-static SkEncodedOrigin get_exif_orientation(jpeg_decompress_struct* dinfo) {
+SkEncodedOrigin get_exif_orientation(jpeg_decompress_struct* dinfo) {
     SkEncodedOrigin orientation;
     for (jpeg_marker_struct* marker = dinfo->marker_list; marker; marker = marker->next) {
         if (is_orientation_marker(marker, &orientation)) {
@@ -1076,45 +1075,7 @@ SkCodec::Result SkJpegCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
 }
 
 // This function is declared in SkJpegInfo.h, used by SkPDF.
-bool SkGetJpegInfo(const void* data, size_t len,
-                   SkISize* size,
-                   SkEncodedInfo::Color* colorType,
-                   SkEncodedOrigin* orientation) {
-    if (!SkJpegCodec::IsJpeg(data, len)) {
-        return false;
-    }
 
-    SkMemoryStream stream(data, len);
-    JpegDecoderMgr decoderMgr(&stream);
-    // libjpeg errors will be caught and reported here
-    skjpeg_error_mgr::AutoPushJmpBuf jmp(decoderMgr.errorMgr());
-    if (setjmp(jmp)) {
-        return false;
-    }
-    decoderMgr.init();
-    jpeg_decompress_struct* dinfo = decoderMgr.dinfo();
-    jpeg_save_markers(dinfo, kExifMarker, 0xFFFF);
-    jpeg_save_markers(dinfo, kICCMarker, 0xFFFF);
-    jpeg_save_markers(dinfo, kMpfMarker, 0xFFFF);
-    jpeg_save_markers(dinfo, kGainmapMarker, 0xFFFF);
-    if (JPEG_HEADER_OK != jpeg_read_header(dinfo, true)) {
-        return false;
-    }
-    SkEncodedInfo::Color encodedColorType;
-    if (!decoderMgr.getEncodedColor(&encodedColorType)) {
-        return false;  // Unable to interpret the color channels as colors.
-    }
-    if (colorType) {
-        *colorType = encodedColorType;
-    }
-    if (orientation) {
-        *orientation = get_exif_orientation(dinfo);
-    }
-    if (size) {
-        *size = {SkToS32(dinfo->image_width), SkToS32(dinfo->image_height)};
-    }
-    return true;
-}
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 // Collect and parse the primary and extended XMP metadata.
