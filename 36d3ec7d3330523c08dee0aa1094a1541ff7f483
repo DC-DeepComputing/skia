@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e74b5d9b_a08857ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-05-23T19:01:59Z",
+      "side": 1,
+      "message": "The name of the method is unresolvedCodePoints, not unresolvedComments.\nOtherwise it seems fine to me.",
+      "revId": "36d3ec7d3330523c08dee0aa1094a1541ff7f483",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
