@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ebd8f96_1c83c652",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-23T18:30:07Z",
+      "side": 1,
+      "message": "LGTM other than the Bazel file fixes.",
+      "revId": "cf11b277d80bc1124e70803b13dbed42fea2503d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72cfb47c_47139cc9",
+        "filename": "src/gpu/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-23T18:30:07Z",
+      "side": 1,
+      "message": "Alphabetical? Update the GN file?",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 35,
+        "endChar": 22
+      },
+      "revId": "cf11b277d80bc1124e70803b13dbed42fea2503d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
