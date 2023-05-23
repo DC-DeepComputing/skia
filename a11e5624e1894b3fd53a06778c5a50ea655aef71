@@ -51,6 +51,24 @@
       "message": "I think I need to spend some time mocking up a pattern for this that avoids putting all the code in a big if-else chain. I feel like this pattern is going to break down once we get to SkShader or SkColorFilter. (Maybe? Maybe not?).\n\nI\u0027m picturing something like:\n\n```\ntypedef std::unique_ptr\u003cGrFragmentProcessor\u003e (*BlenderFPProc)(const SkBlenderBase*, ... srcFP, ... dstFP, ... args);\nvoid RegisterFPFactory(SkBlenderBase::Type, BlenderFPProc) { ... }\n\n// Then, later, we can just look up the proc by the type\n\n// Alternately, don\u0027t even have the \"register\", just use a switch. This ensures that we always handle every sub-type:\nBlenderFPProc get_blender_fp_factory(SkBlenderBase::Type type) {\n    switch(type) {\n        case kBlendMode: return makefp_from_mode_blender;\n    }\n}\n\n// etc...\n```",
       "revId": "a11e5624e1894b3fd53a06778c5a50ea655aef71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad0c1dae_bdbb87e4",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-23T19:58:55Z",
+      "side": 1,
+      "message": "... oops, I forgot to finish one of my sentences: \"This ensures that all sub-types are handled\".",
+      "parentUuid": "93a21350_8e7fad36",
+      "revId": "a11e5624e1894b3fd53a06778c5a50ea655aef71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
