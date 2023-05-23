@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0828110_dc1d15b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-23T13:41:28Z",
+      "side": 1,
+      "message": "This suppression worked. The canary went red from `andriod_optional_gpu_tests` and WebGL flakiness. The issues that triggered the revert are gone.",
+      "revId": "36ab5a9485634d0a62dd2b6576f55b73f88808bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
