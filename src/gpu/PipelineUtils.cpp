@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/graphite/PipelineUtils.h"
+#include "src/gpu/PipelineUtils.h"
 
 namespace skgpu::graphite {
 
