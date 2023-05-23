@@ -10,7 +10,9 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/vk/VulkanTypes.h"
+#include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/vk/VulkanImageView.h"
 
 #include <utility>
 
@@ -50,7 +52,7 @@ public:
 
     VkImage vkImage() const { return fImage; }
 
-   void setImageLayout(VulkanCommandBuffer* buffer,
+    void setImageLayout(VulkanCommandBuffer* buffer,
                        VkImageLayout newLayout,
                        VkAccessFlags dstAccessMask,
                        VkPipelineStageFlags dstStageMask,
@@ -68,6 +70,8 @@ public:
 
     VkImageLayout currentLayout() const;
     uint32_t currentQueueFamilyIndex() const;
+
+    const VulkanImageView* getImageView(VulkanImageView::Usage);
 
     // Helpers to use for setting the layout of the VkImage
     static VkPipelineStageFlags LayoutToPipelineSrcStageFlags(const VkImageLayout layout);
@@ -87,6 +91,8 @@ private:
 
     VkImage fImage;
     VulkanAlloc fMemoryAlloc;
+
+    skia_private::STArray<2, std::unique_ptr<const VulkanImageView>> fImageViews;
 };
 
 } // namespace skgpu::graphite
