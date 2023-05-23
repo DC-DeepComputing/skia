@@ -17,7 +17,7 @@
 #include "include/core/SkTypes.h"
 #include "include/docs/SkPDFDocument.h"
 #include "include/private/SkEncodedInfo.h"
-#include "src/pdf/SkJpegInfo.h"
+#include "src/ports/SkJpegInfo.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 
