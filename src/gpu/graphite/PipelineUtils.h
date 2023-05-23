@@ -24,6 +24,11 @@ static constexpr bool gPrintSKSL  = true;
 #else
 static constexpr bool gPrintSKSL  = false;
 #endif
+#ifdef SK_PRINT_NATIVE_SHADERS
+static const bool gPrintBackendSL = true;
+#else
+static const bool gPrintBackendSL = false;
+#endif
 
 // SkSL->SPIR-V is only needed by Dawn + Vulkan backends, but seeing as this is a small wrapper
 // function, it's fine to be here even if not all backends end up using it.
