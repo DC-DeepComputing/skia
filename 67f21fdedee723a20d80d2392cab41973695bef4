@@ -34,6 +34,24 @@
       "parentUuid": "5d120e5e_d5619a5c",
       "revId": "67f21fdedee723a20d80d2392cab41973695bef4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc7dcce4_03774054",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T19:46:46Z",
+      "side": 1,
+      "message": "Follow-on CL will move things to pdf",
+      "parentUuid": "3923aee9_9bd40b31",
+      "revId": "67f21fdedee723a20d80d2392cab41973695bef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
