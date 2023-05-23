@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fb9084e_55f87581",
+        "filename": "include/gpu/ganesh/GrExternalTextureGenerator.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 20009
+      },
+      "writtenOn": "2023-05-23T17:25:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "871c6eed_518d3174",
+      "range": {
+        "startLine": 40,
+        "startChar": 47,
+        "endLine": 40,
+        "endChar": 70
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fbe1e43_1ccca617",
@@ -61,6 +85,30 @@
       "writtenOn": "2023-05-23T13:33:29Z",
       "side": 1,
       "message": "It\u0027s not clear to me why this include is now needed.",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 17
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "767bed47_a763c36f",
+        "filename": "include/private/gpu/ganesh/GrTextureGenerator.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 20009
+      },
+      "writtenOn": "2023-05-23T17:25:33Z",
+      "side": 1,
+      "message": "It probably isn\u0027t needed. I\u0027m going to delete it and see if iwyu complains at me",
+      "parentUuid": "0fbe1e43_1ccca617",
       "range": {
         "startLine": 13,
         "startChar": 10,
@@ -94,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e41cddce_630b893d",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 20009
+      },
+      "writtenOn": "2023-05-23T17:25:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "763e8f84_e2f9b69d",
+      "range": {
+        "startLine": 876,
+        "startChar": 13,
+        "endLine": 876,
+        "endChar": 25
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ca9a585_aaeb34d4",
@@ -117,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ed84258_eefefc62",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 20009
+      },
+      "writtenOn": "2023-05-23T17:25:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ca9a585_aaeb34d4",
+      "range": {
+        "startLine": 901,
+        "startChar": 78,
+        "endLine": 901,
+        "endChar": 114
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5563841c_c9861c1d",
@@ -130,6 +226,30 @@
       "writtenOn": "2023-05-23T13:33:29Z",
       "side": 1,
       "message": "Maybe add `GrTextureGenerator` has been removed from the public API in favor of `GrExternalTextureGenerator`.",
+      "range": {
+        "startLine": 3,
+        "startChar": 38,
+        "endLine": 3,
+        "endChar": 42
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41494e97_0884ee8b",
+        "filename": "relnotes/skimagegenerator_grexternaltexturegenerator.md",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 20009
+      },
+      "writtenOn": "2023-05-23T17:25:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5563841c_c9861c1d",
       "range": {
         "startLine": 3,
         "startChar": 38,
@@ -187,6 +307,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bf5a2d9_52473da3",
+        "filename": "src/gpu/ganesh/image/GrTextureGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 20009
+      },
+      "writtenOn": "2023-05-23T17:25:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6ffae31_e8a744a8",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 9
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ea1f517_7947276f",
@@ -200,6 +344,30 @@
       "writtenOn": "2023-05-23T13:33:29Z",
       "side": 1,
       "message": "I\u0027m puzzled about needing to wrap this in a unique_ptr. Why is this necessary (and can you leave a comment to remind us in the future)?",
+      "range": {
+        "startLine": 34,
+        "startChar": 24,
+        "endLine": 34,
+        "endChar": 34
+      },
+      "revId": "feadfcbf7ba8d92eff1ba91835704184875154c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bafb5177_2033839d",
+        "filename": "src/gpu/ganesh/image/GrTextureGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 20009
+      },
+      "writtenOn": "2023-05-23T17:25:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ea1f517_7947276f",
       "range": {
         "startLine": 34,
         "startChar": 24,
