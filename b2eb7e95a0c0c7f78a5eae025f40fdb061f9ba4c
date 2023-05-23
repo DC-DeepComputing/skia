@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9df8a80_f13b7a3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-23T13:11:30Z",
+      "side": 1,
+      "message": "Temp +1 for G3 canary.",
+      "revId": "b2eb7e95a0c0c7f78a5eae025f40fdb061f9ba4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
