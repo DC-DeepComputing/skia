@@ -257,6 +257,29 @@ skia_filegroup(
 )
 
 skia_filegroup(
+    name = "jpeg_info_libjpeg",
+    srcs = ["SkJpegInfo_libjpegturbo.cpp"],
+)
+
+skia_filegroup(
+    name = "jpeg_info_none",
+    srcs = ["SkJpegInfo_none.cpp"],
+)
+
+skia_filegroup(
+    name = "jpeg_info_hdrs",
+    srcs = ["SkJpegInfo.h"],
+)
+
+skia_filegroup(
+    name = "jpeg_info",
+    srcs = select({
+        "//src/codec:jpeg_decode_codec": [":jpeg_info_libjpeg"],
+        "//conditions:default": [":jpeg_info_none"],
+    }),
+)
+
+skia_filegroup(
     name = "srcs",
     srcs = [
         ":discardable_memory_pool",
@@ -264,6 +287,7 @@ skia_filegroup(
         ":fontmgr_factory",
         ":global_init",
         ":image_generator",
+        ":jpeg_info",
         ":load_dynamic_library",
         ":malloc",
         ":osfile",
@@ -275,7 +299,10 @@ skia_filegroup(
 
 skia_filegroup(
     name = "private_hdrs",
-    srcs = ["SkOSLibrary.h"] + select({
+    srcs = [
+        "SkOSLibrary.h",
+        ":jpeg_info_hdrs",
+    ] + select({
         ":uses_freetype": [
             "SkFontHost_FreeType_common.h",
             "SkFontMgr_custom.h",

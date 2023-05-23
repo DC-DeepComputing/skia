@@ -18,10 +18,10 @@
 #include "include/private/base/SkTo.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/pdf/SkDeflate.h"
-#include "src/pdf/SkJpegInfo.h"
 #include "src/pdf/SkPDFDocumentPriv.h"
 #include "src/pdf/SkPDFTypes.h"
 #include "src/pdf/SkPDFUtils.h"
+#include "src/ports/SkJpegInfo.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
