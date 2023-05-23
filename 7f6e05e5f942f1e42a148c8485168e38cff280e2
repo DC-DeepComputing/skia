@@ -34,6 +34,24 @@
       "parentUuid": "6c2fd73b_1a3ca896",
       "revId": "7f6e05e5f942f1e42a148c8485168e38cff280e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbd62147_80caa6dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T21:08:53Z",
+      "side": 1,
+      "message": "SkCodec does not depend on pdf after this change.",
+      "parentUuid": "d407f689_6a00c9a8",
+      "revId": "7f6e05e5f942f1e42a148c8485168e38cff280e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
