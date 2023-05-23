@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3f66fcf_b0c6b040",
+        "filename": "src/gpu/mtl/MtlUtils.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-23T17:11:18Z",
+      "side": 1,
+      "message": "WDYT about adding a `gPrintBackendSL` or similar name that is used for MSL, WGSL, SPIR-V etc. for each backend but is then controlled in PipelineUtils?",
+      "range": {
+        "startLine": 186,
+        "startChar": 12,
+        "endLine": 186,
+        "endChar": 21
+      },
+      "revId": "08202648be6076e1234c49e0d756a5c436730f93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
