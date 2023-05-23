@@ -111,6 +111,7 @@ size_t SkImageInfo::computeByteSize(size_t rowBytes) const {
     // signed 32-bit offset from the base. If we ever make an image larger than that, overflow can
     // cause us to read/write memory that starts 2GB *before* the buffer. (crbug.com/1264705)
     constexpr size_t kMaxSigned32BitSize = SK_MaxS32;
+    SkDebugf("bytes %zu max %zu\n", bytes, kMaxSigned32BitSize);
     return (safe.ok() && (bytes <= kMaxSigned32BitSize)) ? bytes : SIZE_MAX;
 }
 

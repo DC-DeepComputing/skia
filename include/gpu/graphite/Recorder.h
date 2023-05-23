@@ -142,6 +142,8 @@ public:
     bool deviceIsRegistered(Device*);
 #endif
 
+    int maxTextureSize() const;
+
 private:
     friend class Context; // For ctor
     friend class Device; // For registering and deregistering Devices;
