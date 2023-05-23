@@ -114,6 +114,10 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
     return view.refProxy();
 }
 
+void ProxyCache::purge() {
+    fCache.reset();
+}
+
 void ProxyCache::processInvalidKeyMsgs() {
     TArray<skgpu::UniqueKeyInvalidatedMsg_Graphite> invalidKeyMsgs;
     fInvalidUniqueKeyInbox.poll(&invalidKeyMsgs);

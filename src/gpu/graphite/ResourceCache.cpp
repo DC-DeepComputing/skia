@@ -48,6 +48,10 @@ void ResourceCache::shutdown() {
         SkAutoMutexExclusive locked(fReturnMutex);
         fIsShutdown = true;
     }
+    if (fProxyCache) {
+        fProxyCache->purge();
+    }
+
     this->processReturnedResources();
 
     while (fNonpurgeableResources.size()) {
