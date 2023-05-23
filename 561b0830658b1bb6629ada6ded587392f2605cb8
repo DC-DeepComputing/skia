@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "301d068e_c37ff2e8",
+        "filename": "src/core/SkOpts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-23T15:02:25Z",
+      "side": 1,
+      "message": "Absolutely! These docs were so good, I wanted to make sure they still made sense (referred to things that exist) for future readers.",
+      "parentUuid": "2b6cd2b0_745e7d4a",
+      "range": {
+        "startLine": 26,
+        "startChar": 28,
+        "endLine": 26,
+        "endChar": 35
+      },
+      "revId": "561b0830658b1bb6629ada6ded587392f2605cb8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8356eb01_f3d699ec",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-23T14:30:38Z",
       "side": 1,
       "message": "Is someone still using this file?",
+      "range": {
+        "startLine": 8,
+        "startChar": 3,
+        "endLine": 8,
+        "endChar": 16
+      },
+      "revId": "561b0830658b1bb6629ada6ded587392f2605cb8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09af8984_9fcb62fe",
+        "filename": "src/opts/SkOpts_sse42.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-23T15:02:25Z",
+      "side": 1,
+      "message": "Yes, there are references to these files in the chromium and pdfium GN files, as well as gn_to_bp (and maybe some stuff on the Android side of the fence?) Not sure of all the spots yet.",
+      "parentUuid": "8356eb01_f3d699ec",
       "range": {
         "startLine": 8,
         "startChar": 3,
