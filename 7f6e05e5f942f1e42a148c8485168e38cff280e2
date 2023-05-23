@@ -16,6 +16,24 @@
       "message": "Everything is in PDF now",
       "revId": "7f6e05e5f942f1e42a148c8485168e38cff280e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d407f689_6a00c9a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-23T21:05:34Z",
+      "side": 1,
+      "message": "Why the change back? I find it weird that SkCodec stuff depends on code living in `pdf`. If anything, I\u0027d expect this to go the other direction (`pdf` depending on `codec`).",
+      "parentUuid": "6c2fd73b_1a3ca896",
+      "revId": "7f6e05e5f942f1e42a148c8485168e38cff280e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
