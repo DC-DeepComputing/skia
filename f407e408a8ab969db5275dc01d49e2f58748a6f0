@@ -16,6 +16,69 @@
       "message": "One remaining question, but otherwise LGTM. We can always return back to the small TODO if needed.",
       "revId": "f407e408a8ab969db5275dc01d49e2f58748a6f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a30a978b_183dfe62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-23T17:23:35Z",
+      "side": 1,
+      "message": "From our offline discussion, this approach is good but will need VulkanImageView to no longer extend Resource. The VulkanTexture will use its command buffer refs when a view is in use, and it will hold the image views by unique pointer so it\u0027s the sole owner.",
+      "revId": "f407e408a8ab969db5275dc01d49e2f58748a6f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cc67db1_0a98324f",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-23T17:23:35Z",
+      "side": 1,
+      "message": "nit: I think push_back() returns what it creates, so we can do `return fImageViews.push_back().get();`, unless I am misremembering.",
+      "range": {
+        "startLine": 390,
+        "startChar": 16,
+        "endLine": 390,
+        "endChar": 25
+      },
+      "revId": "f407e408a8ab969db5275dc01d49e2f58748a6f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d636d6a4_720faaa6",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-23T17:23:35Z",
+      "side": 1,
+      "message": "STArray\u003c2, ...\u003e if we want 2 usages pre-allocated and stored inline?",
+      "range": {
+        "startLine": 95,
+        "startChar": 18,
+        "endLine": 95,
+        "endChar": 24
+      },
+      "revId": "f407e408a8ab969db5275dc01d49e2f58748a6f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

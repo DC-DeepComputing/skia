@@ -134,6 +134,30 @@
       },
       "revId": "1a64e9484a8010c81301a42db7b0396e666f44f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29735077_8f0e584f",
+        "filename": "src/gpu/graphite/vk/VulkanImageView.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-23T17:23:35Z",
+      "side": 1,
+      "message": "Talking with Jim, this sounds like the correct aspect to use for DS formats.",
+      "parentUuid": "cbaf8b94_c3b3896b",
+      "range": {
+        "startLine": 32,
+        "startChar": 12,
+        "endLine": 32,
+        "endChar": 95
+      },
+      "revId": "1a64e9484a8010c81301a42db7b0396e666f44f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
