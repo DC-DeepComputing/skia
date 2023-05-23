@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "758b6a2b_f03633f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-23T18:33:37Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/702138 is going to need a Chromium side change, so this should unstick things sooner",
+      "revId": "01782602db23b50b0f85bbd1bdab3e2f49d29901",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
