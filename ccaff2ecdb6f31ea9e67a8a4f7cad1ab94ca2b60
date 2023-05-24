@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aeca3db4_48aba04c",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-24T17:06:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1b3f988_4b5ecb0f",
+      "range": {
+        "startLine": 750,
+        "startChar": 44,
+        "endLine": 750,
+        "endChar": 45
+      },
+      "revId": "ccaff2ecdb6f31ea9e67a8a4f7cad1ab94ca2b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbd6a981_0b202166",
@@ -61,6 +85,30 @@
       "writtenOn": "2023-05-24T15:19:42Z",
       "side": 1,
       "message": "control ?",
+      "range": {
+        "startLine": 815,
+        "startChar": 34,
+        "endLine": 815,
+        "endChar": 42
+      },
+      "revId": "ccaff2ecdb6f31ea9e67a8a4f7cad1ab94ca2b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "453c480b_60146f40",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-24T17:06:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbd6a981_0b202166",
       "range": {
         "startLine": 815,
         "startChar": 34,
@@ -94,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3023c998_9d7c8a14",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-24T17:06:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "656d6900_bfec21b0",
+      "range": {
+        "startLine": 822,
+        "startChar": 38,
+        "endLine": 822,
+        "endChar": 60
+      },
+      "revId": "ccaff2ecdb6f31ea9e67a8a4f7cad1ab94ca2b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "725c78ab_a88101cc",
@@ -107,6 +179,30 @@
       "writtenOn": "2023-05-24T15:19:42Z",
       "side": 1,
       "message": "Maybe this should be named something like \u0027fSkSLShaderBuilderLock\u0027 and \u0027fSkSLShaderBuilder\u0027. There are too many Builders making Shaders.",
+      "range": {
+        "startLine": 221,
+        "startChar": 8,
+        "endLine": 221,
+        "endChar": 26
+      },
+      "revId": "ccaff2ecdb6f31ea9e67a8a4f7cad1ab94ca2b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a95264f_bd4708bf",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-24T17:06:44Z",
+      "side": 1,
+      "message": "I renamed it `fRuntimeEffectBuilder` and `fRuntimeEffectLock`.",
+      "parentUuid": "725c78ab_a88101cc",
       "range": {
         "startLine": 221,
         "startChar": 8,
@@ -140,6 +236,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be70e644_1c48e476",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-24T17:06:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68c29a47_b8d0727a",
+      "range": {
+        "startLine": 251,
+        "startChar": 29,
+        "endLine": 251,
+        "endChar": 36
+      },
+      "revId": "ccaff2ecdb6f31ea9e67a8a4f7cad1ab94ca2b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f197fbd_45a1ebb8",
@@ -153,6 +273,24 @@
       "writtenOn": "2023-05-24T15:19:42Z",
       "side": 1,
       "message": "/* src */ and, maybe, some comment like:\n// Can\u0027t predict what the RT Shader will generate\n\n?",
+      "revId": "ccaff2ecdb6f31ea9e67a8a4f7cad1ab94ca2b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4b79345_01919e06",
+        "filename": "src/effects/imagefilters/SkRuntimeImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-24T17:06:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f197fbd_45a1ebb8",
       "revId": "ccaff2ecdb6f31ea9e67a8a4f7cad1ab94ca2b60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },

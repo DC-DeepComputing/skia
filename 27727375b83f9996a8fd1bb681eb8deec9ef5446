@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c08e6ce_26744b92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-24T17:06:44Z",
+      "side": 1,
+      "message": "After discussing with Rob, I pulled the sample radius change to a parent CL: https://skia-review.googlesource.com/c/skia/+/702916",
+      "revId": "27727375b83f9996a8fd1bb681eb8deec9ef5446",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
