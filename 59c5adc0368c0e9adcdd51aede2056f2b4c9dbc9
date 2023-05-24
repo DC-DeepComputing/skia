@@ -39,6 +39,30 @@
       },
       "revId": "59c5adc0368c0e9adcdd51aede2056f2b4c9dbc9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7c727d4_79978c47",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-24T21:11:28Z",
+      "side": 1,
+      "message": "You\u0027re totally right. I had thought something similar about the method name which inspired me to rename a couple of other things (+ add some comments) to hopefully improve clarity. LMKWYT :)",
+      "parentUuid": "a9b805af_e2ca6978",
+      "range": {
+        "startLine": 478,
+        "startChar": 14,
+        "endLine": 478,
+        "endChar": 40
+      },
+      "revId": "59c5adc0368c0e9adcdd51aede2056f2b4c9dbc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
