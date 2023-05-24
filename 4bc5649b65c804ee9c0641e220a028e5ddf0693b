@@ -16,6 +16,29 @@
       "message": "+1 to the new API, but I\u0027ll defer to Ben on making sure the naming and bazel config matches his expectations.",
       "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1347e7b5_1bcc1684",
+        "filename": "src/ports/SkTypeface_fontations_factory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-24T15:56:22Z",
+      "side": 1,
+      "message": "This needs to be able to fail and return an empty `sk_sp` at the very least. In other words, this should not call `new` and instead call some factory function which checks that the SkTypeface_Fontations can actually be created in a useable state before creating one and returning it.",
+      "range": {
+        "startLine": 13,
+        "startChar": 29,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
