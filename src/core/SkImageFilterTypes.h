@@ -19,6 +19,8 @@
 #include "src/core/SkEnumBitMask.h"
 #include "src/core/SkSpecialImage.h"
 
+#include <optional>
+
 class GrRecordingContext;
 enum GrSurfaceOrigin : int;
 class SkImage;
@@ -744,8 +746,9 @@ public:
         kSampleInParameterSpace = 1 << 0,
         kForceResolveInputs     = 1 << 1,
         kNonLinearSampling      = 1 << 2,
-        kOutputFillsInputUnion  = 1 << 3
-        // TODO: Add options for input intersection, first input only, and explicitly provided.
+        kOutputFillsInputUnion  = 1 << 3,
+        kExplicitOutputBounds   = 1 << 4
+        // TODO: Add options for input intersection, first input only.
     };
     SK_DECL_BITMASK_OPS_FRIENDS(ShaderFlags)
 
@@ -823,8 +826,9 @@ public:
     template <typename ShaderFn>
     FilterResult eval(ShaderFn shaderFn,
                       SkEnumBitMask<ShaderFlags> flags,
+                      std::optional<LayerSpace<SkIRect>> explicitOutput = {},
                       const SkSamplingOptions& xtraSampling = kDefaultSampling) {
-        auto outputBounds = this->outputBounds(flags);
+        auto outputBounds = this->outputBounds(flags, explicitOutput);
         if (outputBounds.isEmpty()) {
             return {};
         }
@@ -837,7 +841,8 @@ private:
     SkSpan<sk_sp<SkShader>> createInputShaders(SkEnumBitMask<ShaderFlags> flags,
                                                const SkSamplingOptions& sampling);
 
-    LayerSpace<SkIRect> outputBounds(SkEnumBitMask<ShaderFlags> flags) const;
+    LayerSpace<SkIRect> outputBounds(SkEnumBitMask<ShaderFlags> flags,
+                                     std::optional<LayerSpace<SkIRect>> explicitBounds) const;
 
     FilterResult drawShader(sk_sp<SkShader> shader,
                             SkEnumBitMask<ShaderFlags> flags,
