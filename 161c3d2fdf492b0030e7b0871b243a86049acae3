@@ -16,6 +16,24 @@
       "message": "Does this fail? Since this is adding `index` it seems like there are even more ways for this to fail (not just bad font data but also and index that doesn\u0027t exist). The current structure of doing everything in the constructor is going to become an issue due to Skia needing to be able to work without exceptions. Anyhow, doesn\u0027t need to be worked on right now, but will be a bit of restructuring that will need to happen at some point.\n\nI point this out due to the fact that with this change it is now possible to create one of these which effectively doesn\u0027t work at all, but will still open a stream and return an index, which seems a bit awkward.",
       "revId": "161c3d2fdf492b0030e7b0871b243a86049acae3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8881c560_290b31c6",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-24T16:00:47Z",
+      "side": 1,
+      "message": "Ack, thanks, yes, let\u0027s discuss this in a 1:1 to decide what pattern we should follow here.",
+      "parentUuid": "c5dd0039_bd7eb427",
+      "revId": "161c3d2fdf492b0030e7b0871b243a86049acae3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
