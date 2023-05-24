@@ -16,6 +16,29 @@
       "message": "OK, these changes should make it such that the texture/sampler desc. set isn\u0027t actually bound until after the uniform buffer(s) are bound in the lower slot #. LMKWYT :)",
       "revId": "59c5adc0368c0e9adcdd51aede2056f2b4c9dbc9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9b805af_e2ca6978",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-24T18:43:49Z",
+      "side": 1,
+      "message": "I think you need a dirty bit for this as well -- otherwise if the uniform buffers don\u0027t change but the texture/samplers do, the new texture/samplers won\u0027t get bound. Maybe change the name of this method to syncDescriptorSets()?",
+      "range": {
+        "startLine": 478,
+        "startChar": 14,
+        "endLine": 478,
+        "endChar": 40
+      },
+      "revId": "59c5adc0368c0e9adcdd51aede2056f2b4c9dbc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

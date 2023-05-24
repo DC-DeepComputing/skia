@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64e4afbe_f10c59bc",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-24T18:43:49Z",
+      "side": 1,
+      "message": "Sg, but you might want to put a comment here reminding to set uniform buffers dirty if the pipeline layout changes.",
+      "parentUuid": "2348140a_5ebca7ac",
+      "range": {
+        "startLine": 384,
+        "startChar": 4,
+        "endLine": 384,
+        "endChar": 37
+      },
+      "revId": "680c34d3121714f9e640e7f914edc2137175475a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9edb7dd8_81c5e3ef",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 11
