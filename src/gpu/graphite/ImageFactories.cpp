@@ -141,6 +141,75 @@ sk_sp<SkImage> PromiseTextureFrom(Recorder* recorder,
     return sk_make_sp<Image>(view, colorInfo);
 }
 
+SK_API sk_sp<SkImage> PromiseTextureFromYUVA(skgpu::graphite::Recorder* recorder,
+                                             const YUVABackendTextureInfo& backendTextureInfo,
+                                             sk_sp<SkColorSpace> imageColorSpace,
+                                             skgpu::graphite::Volatile isVolatile,
+                                             GraphitePromiseImageFulfillProc fulfillProc,
+                                             GraphitePromiseImageReleaseProc imageReleaseProc,
+                                             GraphitePromiseTextureReleaseProc textureReleaseProc,
+                                             GraphitePromiseImageContext imageContexts[]) {
+    if (!backendTextureInfo.isValid()) {
+        return nullptr;
+    }
+
+    SkISize planeDimensions[SkYUVAInfo::kMaxPlanes];
+    int n = backendTextureInfo.yuvaInfo().planeDimensions(planeDimensions);
+
+    // Our contract is that we will always call the release proc even on failure.
+    // We use the helper to convey the context, so we need to ensure make doesn't fail.
+    textureReleaseProc = textureReleaseProc ? textureReleaseProc : [](void*) {};
+
+    sk_sp<skgpu::RefCntedCallback> releaseHelpers[4];
+    for (int i = 0; i < n; ++i) {
+        releaseHelpers[i] = skgpu::RefCntedCallback::Make(textureReleaseProc, imageContexts[i]);
+    }
+
+    if (!recorder) {
+        SKGPU_LOG_W("Null Recorder");
+        return nullptr;
+    }
+
+    SkAlphaType at =
+            backendTextureInfo.yuvaInfo().hasAlpha() ? kPremul_SkAlphaType : kOpaque_SkAlphaType;
+    SkImageInfo info = SkImageInfo::Make(
+            backendTextureInfo.yuvaInfo().dimensions(), kAssumedColorType, at, imageColorSpace);
+    if (!SkImageInfoIsValid(info)) {
+        SKGPU_LOG_W("Invalid SkImageInfo");
+        return nullptr;
+    }
+
+// TODO?
+    const Caps* caps = recorder->priv().caps();
+//    if (!caps->areColorTypeAndTextureInfoCompatible(colorInfo.colorType(), textureInfo)) {
+//        SKGPU_LOG_W("Incompatible SkColorType and TextureInfo");
+//        return nullptr;
+//    }
+
+    // Make a lazy proxy for each plane and wrap in a view.
+    TextureProxyView views[4];
+    for (int i = 0; i < n; ++i) {
+        sk_sp<TextureProxy> proxy =
+                Image::MakePromiseImageLazyProxy(planeDimensions[i],
+                                                 backendTextureInfo.planeFormat(i),
+                                                 isVolatile,
+                                                 fulfillProc,
+                                                 std::move(releaseHelpers[i]),
+                                                 textureReleaseProc);
+        if (!proxy) {
+            return nullptr;
+        }
+        skgpu::Swizzle swizzle = caps->getReadSwizzle(imageInfo.colorInfo().colorType(),
+                                                      textureInfo);
+        views[i] = TextureProxyView(std::move(proxy), swizzle);
+    }
+
+    YUVATextureProxies yuvaTextureProxies(recorder, backendTextureInfo.yuvaInfo(), views);
+    SkASSERT(yuvaTextureProxies.isValid());
+
+    return sk_make_sp<Image_YUVA>(yuvaTextureProxies, imageColorSpace);
+}
+
 sk_sp<SkImage> SubsetTextureFrom(skgpu::graphite::Recorder* recorder,
                                  const SkImage* img,
                                  const SkIRect& subset,
