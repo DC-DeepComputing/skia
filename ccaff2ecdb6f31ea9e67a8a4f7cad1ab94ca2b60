@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dca1f85_5cf4c47d",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-24T16:18:05Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f1b3f988_4b5ecb0f",
+      "range": {
+        "startLine": 750,
+        "startChar": 44,
+        "endLine": 750,
+        "endChar": 45
+      },
+      "revId": "ccaff2ecdb6f31ea9e67a8a4f7cad1ab94ca2b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbd6a981_0b202166",
