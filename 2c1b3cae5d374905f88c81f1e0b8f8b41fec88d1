@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a679cf8_c34c47a5",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-24T17:16:56Z",
+      "side": 1,
+      "message": "I think this is misleading/conservative. Maybe something like: `maximum absolute offset in \u0027x\u0027 or \u0027y\u0027`",
+      "range": {
+        "startLine": 382,
+        "startChar": 61,
+        "endLine": 382,
+        "endChar": 79
+      },
+      "revId": "2c1b3cae5d374905f88c81f1e0b8f8b41fec88d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
