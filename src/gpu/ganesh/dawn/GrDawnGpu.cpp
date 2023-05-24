@@ -1011,17 +1011,17 @@ std::string GrDawnGpu::SkSLToSPIRV(const char* shaderString,
     settings.fRTFlipOffset = rtFlipOffset;
     settings.fRTFlipBinding = 0;
     settings.fRTFlipSet = 0;
-    std::string outSpirv;
+    std::string outSPIRV;
     if (!skgpu::SkSLToSPIRV(this->shaderCompiler(),
-                            shaderString,
+                            {shaderString},
                             kind,
                             settings,
-                            &outSpirv,
+                            &outSPIRV,
                             interface,
-                            errorHandler)) {
+                            this->getContext()->priv().getShaderErrorHandler())) {
         return "";
     }
-    return outSpirv;
+    return outSPIRV;
 }
 
 wgpu::ShaderModule GrDawnGpu::createShaderModule(const std::string& spirvSource) {
