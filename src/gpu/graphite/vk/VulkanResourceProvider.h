@@ -12,6 +12,8 @@
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/DescriptorTypes.h"
+#include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
+#include <map>
 
 namespace skgpu::graphite {
 
@@ -21,6 +23,9 @@ class VulkanSharedContext;
 
 class VulkanResourceProvider final : public ResourceProvider {
 public:
+    static VkDescriptorSetLayout DescTypeAndCountToVkDescSetLayout(const VulkanSharedContext* ctxt,
+                                                                   SkSpan<DescTypeAndCount>);
+
     VulkanResourceProvider(SharedContext* sharedContext, SingleOwner*, uint32_t recorderID);
     ~VulkanResourceProvider() override;
 
@@ -45,6 +50,8 @@ private:
     void onDeleteBackendTexture(BackendTexture&) override {}
 
     VulkanDescriptorSet* findOrCreateDescriptorSet(SkSpan<DescTypeAndCount>);
+
+    friend class VulkanCommandBuffer;
 };
 
 } // namespace skgpu::graphite
