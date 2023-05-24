@@ -5,9 +5,9 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/graphite/PipelineUtils.h"
+#include "src/gpu/PipelineUtils.h"
 
-namespace skgpu::graphite {
+namespace skgpu {
 
 bool SkSLToSPIRV(SkSL::Compiler* compiler,
                  const std::string& sksl,
@@ -39,4 +39,4 @@ bool SkSLToSPIRV(SkSL::Compiler* compiler,
     return true;
 }
 
-} // namespace skgpu::graphite
+} // namespace skgpu
