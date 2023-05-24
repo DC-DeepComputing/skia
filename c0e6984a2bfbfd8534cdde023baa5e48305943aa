@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b76f5214_68f14ae5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-24T20:19:40Z",
+      "side": 1,
+      "message": "This lgtm, one suggestion below...",
+      "revId": "c0e6984a2bfbfd8534cdde023baa5e48305943aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac6f6782_99d92fe0",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-24T20:19:40Z",
+      "side": 1,
+      "message": "Rather than have two copies of this (even temporarily), could we just make the one in GrFragmentProcessors be declared in the header, and update the other call-sites in this file?",
+      "revId": "c0e6984a2bfbfd8534cdde023baa5e48305943aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
