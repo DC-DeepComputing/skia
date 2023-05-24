@@ -1011,17 +1011,23 @@ std::string GrDawnGpu::SkSLToSPIRV(const char* shaderString,
     settings.fRTFlipOffset = rtFlipOffset;
     settings.fRTFlipBinding = 0;
     settings.fRTFlipSet = 0;
-    std::string outSpirv;
-    if (!skgpu::SkSLToSPIRV(this->shaderCompiler(),
-                            shaderString,
-                            kind,
-                            settings,
-                            &outSpirv,
-                            interface,
-                            errorHandler)) {
+    std::unique_ptr<SkSL::Program> program = this->shaderCompiler()->convertProgram(
+        kind,
+        shaderString,
+        settings);
+    if (!program) {
+        errorHandler->compileError(shaderString, this->shaderCompiler()->errorText().c_str());
         return "";
     }
-    return outSpirv;
+    if (interface) {
+        *interface = program->fInterface;
+    }
+    std::string code;
+    if (!this->shaderCompiler()->toSPIRV(*program, &code)) {
+        errorHandler->compileError(shaderString, this->shaderCompiler()->errorText().c_str());
+        return "";
+    }
+    return code;
 }
 
 wgpu::ShaderModule GrDawnGpu::createShaderModule(const std::string& spirvSource) {
