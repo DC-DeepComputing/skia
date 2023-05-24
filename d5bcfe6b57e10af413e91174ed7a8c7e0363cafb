@@ -114,6 +114,29 @@
       },
       "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bd39e85_067edcc0",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-24T18:12:36Z",
+      "side": 1,
+      "message": "Yes, thanks Leon. Looks like there will be a merge conflict to resolve after https://skia-review.googlesource.com/c/skia/+/702138",
+      "range": {
+        "startLine": 1140,
+        "startChar": 44,
+        "endLine": 1140,
+        "endChar": 62
+      },
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
