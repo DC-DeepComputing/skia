@@ -363,13 +363,13 @@ Vector Mapping::map<Vector>(const Vector& geom, const SkMatrix& matrix) {
 template<>
 SkISize Mapping::map<SkISize>(const SkISize& geom, const SkMatrix& matrix) {
     SkIVector v = map_as_vector(geom.fWidth, geom.fHeight, matrix);
-    return SkISize::Make(v.fX, v.fY);
+    return SkISize::Make(std::abs(v.fX), std::abs(v.fY));
 }
 
 template<>
 SkSize Mapping::map<SkSize>(const SkSize& geom, const SkMatrix& matrix) {
     SkVector v = map_as_vector(geom.fWidth, geom.fHeight, matrix);
-    return SkSize::Make(v.fX, v.fY);
+    return SkSize::Make(SkScalarAbs(v.fX), SkScalarAbs(v.fY));
 }
 
 template<>
