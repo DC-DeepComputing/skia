@@ -86,6 +86,24 @@
       "message": "Should move or remove this comment, as I don\u0027t think it applies to the next function in the file.",
       "revId": "f7427c0b6d2d9f688acfbb8ab12f133cee38e891",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38f88f02_091920f4",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-24T18:21:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e50807e7_55aa198b",
+      "revId": "f7427c0b6d2d9f688acfbb8ab12f133cee38e891",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
