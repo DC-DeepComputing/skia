@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aa8617e_293f6132",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-24T14:49:28Z",
+      "side": 1,
+      "message": "LGTM.\n\nFYI to Android Gardener about gn_to_bp.py changes",
+      "revId": "ef3391f864fb3eba25579543287bdff19ffbf9cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
