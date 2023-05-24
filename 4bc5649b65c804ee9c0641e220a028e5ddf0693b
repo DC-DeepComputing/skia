@@ -39,6 +39,30 @@
       },
       "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93af1c38_743bb5c0",
+        "filename": "src/ports/SkTypeface_fontations_factory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-24T16:04:17Z",
+      "side": 1,
+      "message": "Also, before making this typeface public, need to add it to `SkTypeface::{annon}::decoders()` and make sure that `SkTypeface_Fontations::onGetFontDescriptor` is calling `setFactoryId`.",
+      "parentUuid": "1347e7b5_1bcc1684",
+      "range": {
+        "startLine": 13,
+        "startChar": 29,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
