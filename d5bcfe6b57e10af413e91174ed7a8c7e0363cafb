@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b9218bf_317fe097",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-24T17:48:33Z",
+      "side": 1,
+      "message": "Sorry for the delay! I was out sick last week, and I finally had a chance to look at this today.",
+      "parentUuid": "e7951aaa_bb05033b",
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27484cb2_525961b3",
