@@ -20,6 +20,8 @@ public:
     Image_YUVA(uint32_t uniqueID,
                YUVATextureProxies proxies,
                sk_sp<SkColorSpace>);
+    Image_YUVA(YUVATextureProxies proxies,
+               sk_sp<SkColorSpace>);
 
     ~Image_YUVA() override {}
 

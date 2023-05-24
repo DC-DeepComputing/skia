@@ -50,5 +50,23 @@ Image_YUVA::Image_YUVA(uint32_t uniqueID,
     SkASSERT(fYUVAProxies.isValid());
 }
 
+Image_YUVA::Image_YUVA(YUVATextureProxies proxies,
+                       sk_sp<SkColorSpace> imageColorSpace)
+        : Image_Base(SkImageInfo::Make(proxies.yuvaInfo().dimensions(),
+                                       kAssumedColorType,
+                                       // If an alpha channel is present we always use kPremul. This
+                                       // is because, although the planar data is always un-premul,
+                                       // the final interleaved RGBA sample produced in the shader
+                                       // is premul (and similar if flattened).
+                                       proxies.yuvaInfo().hasAlpha() ? kPremul_SkAlphaType
+                                                                     : kOpaque_SkAlphaType,
+                                       std::move(imageColorSpace)),
+                     kNeedNewImageUniqueID)
+        , fYUVAProxies(std::move(proxies)) {
+    // The caller should have checked this, just verifying.
+    SkASSERT(fYUVAProxies.isValid());
+}
+
+
 }  // namespace skgpu::graphite
 
