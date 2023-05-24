@@ -16,11 +16,7 @@ bool SkSLToSPIRV(SkSL::Compiler* compiler,
                  std::string* spirv,
                  SkSL::Program::Interface* outInterface,
                  ShaderErrorHandler* errorHandler) {
-#ifdef SK_DEBUG
-    std::string src = SkShaderUtils::PrettyPrint(sksl);
-#else
     const std::string& src = sksl;
-#endif
     std::unique_ptr<SkSL::Program> program = compiler->convertProgram(programKind,
                                                                       src,
                                                                       settings);
