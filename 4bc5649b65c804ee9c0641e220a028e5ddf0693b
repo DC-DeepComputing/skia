@@ -63,6 +63,30 @@
       },
       "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aba1141_b7f6b4e4",
+        "filename": "src/ports/SkTypeface_fontations_factory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-24T16:04:23Z",
+      "side": 1,
+      "message": "Ok, will refactor. We have information about whether the Fontations side `FontRef`  was successfully instantiated which checks basic SFNT format conformity and detects a confusion of TTC vs. (T|O)TF.",
+      "parentUuid": "1347e7b5_1bcc1684",
+      "range": {
+        "startLine": 13,
+        "startChar": 29,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
