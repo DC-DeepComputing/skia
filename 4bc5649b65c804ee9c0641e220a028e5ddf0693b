@@ -87,6 +87,30 @@
       },
       "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d58f9f3_919c8d58",
+        "filename": "src/ports/SkTypeface_fontations_factory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-24T16:05:11Z",
+      "side": 1,
+      "message": "\u003e need to add it to [...]\n\nAck, thanks for the quick review.",
+      "parentUuid": "4aba1141_b7f6b4e4",
+      "range": {
+        "startLine": 13,
+        "startChar": 29,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
