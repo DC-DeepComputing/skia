@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1b3f988_4b5ecb0f",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-24T15:04:57Z",
+      "side": 1,
+      "message": "Chrome canary complained about this `;` on just one bot. A little odd that no one else picked up on it. But otherwise there\u0027s no staging that\u0027s required, so hurray!",
+      "range": {
+        "startLine": 750,
+        "startChar": 44,
+        "endLine": 750,
+        "endChar": 45
+      },
+      "revId": "ccaff2ecdb6f31ea9e67a8a4f7cad1ab94ca2b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
