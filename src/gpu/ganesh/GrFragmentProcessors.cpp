@@ -125,13 +125,12 @@ static GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
     return GrFPSuccess(std::move(fp));
 }
 
-static std::unique_ptr<GrFragmentProcessor>
-        make_fp_from_runtime_blender(const SkBlenderBase* blender,
-                                     std::unique_ptr<GrFragmentProcessor> srcFP,
-                                     std::unique_ptr<GrFragmentProcessor> dstFP,
-                                     const GrFPArgs& fpArgs) {
-    SkASSERT(blender);
-    auto rtb = static_cast<const SkRuntimeBlender*>(blender);
+static std::unique_ptr<GrFragmentProcessor> make_blender_fp(
+        const SkRuntimeBlender* rtb,
+        std::unique_ptr<GrFragmentProcessor> srcFP,
+        std::unique_ptr<GrFragmentProcessor> dstFP,
+        const GrFPArgs& fpArgs) {
+    SkASSERT(rtb);
     if (!SkRuntimeEffectPriv::CanDraw(fpArgs.fContext->priv().caps(), rtb->effect().get())) {
         return nullptr;
     }
@@ -153,27 +152,31 @@ static std::unique_ptr<GrFragmentProcessor>
     return success ? std::move(fp) : nullptr;
 }
 
-static std::unique_ptr<GrFragmentProcessor>
-        make_fp_from_blendmode_blender(const SkBlenderBase* blender,
-                                       std::unique_ptr<GrFragmentProcessor> srcFP,
-                                       std::unique_ptr<GrFragmentProcessor> dstFP) {
-    SkASSERT(blender);
-    auto mode = static_cast<const SkBlendModeBlender*>(blender)->mode();
-    return GrBlendFragmentProcessor::Make(std::move(srcFP), std::move(dstFP), mode);
-}
-
-std::unique_ptr<GrFragmentProcessor> Make(const SkBlenderBase* bm,
+static std::unique_ptr<GrFragmentProcessor> make_blender_fp(
+        const SkBlendModeBlender* blender,
         std::unique_ptr<GrFragmentProcessor> srcFP,
         std::unique_ptr<GrFragmentProcessor> dstFP,
         const GrFPArgs& fpArgs) {
-    if (!bm) {
+    SkASSERT(blender);
+    return GrBlendFragmentProcessor::Make(std::move(srcFP), std::move(dstFP), blender->mode());
+}
+
+std::unique_ptr<GrFragmentProcessor> Make(const SkBlenderBase* blender,
+                                          std::unique_ptr<GrFragmentProcessor> srcFP,
+                                          std::unique_ptr<GrFragmentProcessor> dstFP,
+                                          const GrFPArgs& fpArgs) {
+    if (!blender) {
         return nullptr;
     }
-    switch (bm->type()) {
-        case SkBlenderBase::Type::kBlendMode:
-            return make_fp_from_blendmode_blender(bm, std::move(srcFP), std::move(dstFP));
-        case SkBlenderBase::Type::kRuntime:
-            return make_fp_from_runtime_blender(bm, std::move(srcFP), std::move(dstFP), fpArgs);
+    switch (blender->type()) {
+#define M(t)                                                                \
+    case SkBlenderBase::BlenderType::k##t:                                  \
+        return make_blender_fp(static_cast<const Sk##t##Blender*>(blender), \
+                               std::move(srcFP),                            \
+                               std::move(dstFP),                            \
+                               fpArgs);
+        SK_ALL_BLENDERS(M)
+#undef M
     }
     SkUNREACHABLE;
 }

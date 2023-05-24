@@ -28,6 +28,10 @@ class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 }
 
+#define SK_ALL_BLENDERS(M) \
+    M(BlendMode)           \
+    M(Runtime)
+
 /**
  * Encapsulates a blend function, including non-public APIs.
  * Blends combine a source color (the result of our paint) and destination color (from the canvas)
@@ -69,12 +73,13 @@ public:
     static SkFlattenable::Type GetFlattenableType() { return kSkBlender_Type; }
     SkFlattenable::Type getFlattenableType() const override { return GetFlattenableType(); }
 
-    enum class Type {
-        kBlendMode,
-        kRuntime,
+    enum class BlenderType {
+    #define M(type) k ## type,
+        SK_ALL_BLENDERS(M)
+    #undef M
     };
 
-    virtual Type type() const = 0;
+    virtual BlenderType type() const = 0;
 
 private:
 #if defined(SK_ENABLE_SKVM)

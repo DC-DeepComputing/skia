@@ -22,8 +22,7 @@ class SkBlendModeBlender : public SkBlenderBase {
 public:
     SkBlendModeBlender(SkBlendMode mode) : fMode(mode) {}
 
-    SkBlenderBase::Type type() const override { return SkBlenderBase::Type::kBlendMode; }
-
+    BlenderType type() const override { return BlenderType::kBlendMode; }
     SkBlendMode mode() const { return fMode; }
 
     SK_FLATTENABLE_HOOKS(SkBlendModeBlender)

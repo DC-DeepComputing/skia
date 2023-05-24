@@ -32,7 +32,7 @@ public:
 
     SkRuntimeEffect* asRuntimeEffect() const override { return fEffect.get(); }
 
-    SkBlenderBase::Type type() const override { return SkBlenderBase::Type::kRuntime; }
+    BlenderType type() const override { return BlenderType::kRuntime; }
 
     bool onAppendStages(const SkStageRec& rec) const override;
 
