@@ -16,6 +16,86 @@
       "message": "ptal -- this has a Chrome-side over in:\nhttps://chromium-review.googlesource.com/c/chromium/src/+/4546221",
       "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "588bb992_edb04f97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-24T17:47:51Z",
+      "side": 1,
+      "message": "Can you add tests?",
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27484cb2_525961b3",
+        "filename": "include/private/SkJpegMetadataDecoder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-24T17:47:51Z",
+      "side": 1,
+      "message": "I\u0027m not familiar with how this works - might they actually want the data if it\u0027s present? It\u0027s funny to me that this one is different from the two above, which just give you the data, without a boolean query.",
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e02c8e39_7457d30b",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-24T17:47:51Z",
+      "side": 1,
+      "message": "I think you meant to delete this word?",
+      "range": {
+        "startLine": 157,
+        "startChar": 30,
+        "endLine": 157,
+        "endChar": 32
+      },
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00d99582_7c9a12b4",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-24T17:47:51Z",
+      "side": 1,
+      "message": "Why did this get switched from `true` to `false`? Don\u0027t we need to copy the data for the ICCProfile?",
+      "range": {
+        "startLine": 282,
+        "startChar": 68,
+        "endLine": 282,
+        "endChar": 73
+      },
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

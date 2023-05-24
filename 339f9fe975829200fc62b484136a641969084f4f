@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d29fa24_d5862677",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-24T17:47:51Z",
+      "side": 0,
+      "message": "Adding @kjlubick@google.com, who is modifying this in I30d268c995beebed89e9fd30cd6a32bf8088492e. I think this function is also used by pdf? (In this CL it got moved and the signature changed.)",
+      "revId": "339f9fe975829200fc62b484136a641969084f4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
