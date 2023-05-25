@@ -53,6 +53,8 @@ namespace {
             return c;
         }
 
+        SkColorFilterBase::Type type() const override { return kNoop; }
+
         bool appendStages(const SkStageRec&, bool) const override { return true; }
 
         // Only created here, should never be flattened / unflattened.

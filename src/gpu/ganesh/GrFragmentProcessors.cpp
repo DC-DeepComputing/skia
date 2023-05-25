@@ -180,6 +180,65 @@ std::unique_ptr<GrFragmentProcessor> Make(const SkBlenderBase* blender,
     SkUNREACHABLE;
 }
 
+//static GrFPResult make_compose_fp(std::unique_ptr<GrFragmentProcessor> inputFP,
+//                                  GrRecordingContext* context,
+//                                  const GrColorInfo& dstColorInfo,
+//                                  const SkSurfaceProps& props) {
+//    // Unfortunately, we need to clone the input before we know we need it. This lets us return
+//    // the original FP if either internal color filter fails.
+//    auto inputClone = inputFP ? inputFP->clone() : nullptr;
+//
+//    auto [innerSuccess, innerFP] =
+//            fInner->asFragmentProcessor(std::move(inputFP), context, dstColorInfo, props);
+//    if (!innerSuccess) {
+//        return GrFPFailure(std::move(inputClone));
+//    }
+//
+//    auto [outerSuccess, outerFP] =
+//            fOuter->asFragmentProcessor(std::move(innerFP), context, dstColorInfo, props);
+//    if (!outerSuccess) {
+//        return GrFPFailure(std::move(inputClone));
+//    }
+//
+//    return GrFPSuccess(std::move(outerFP));
+//}
+
+// colorspacexform
+//GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
+//                               GrRecordingContext* context,
+//                               const GrColorInfo& dstColorInfo,
+//                               const SkSurfaceProps& props) const override {
+//    // wish our caller would let us know if our input was opaque...
+//    constexpr SkAlphaType alphaType = kPremul_SkAlphaType;
+//    return GrFPSuccess(GrColorSpaceXformEffect::Make(
+//            std::move(inputFP), fSrc.get(), alphaType, fDst.get(), alphaType));
+//    SkUNREACHABLE;
+//}
+
+// Working format
+//#if defined(SK_GANESH)
+//    GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
+//                                   GrRecordingContext* context,
+//                                   const GrColorInfo& dstColorInfo,
+//                                   const SkSurfaceProps& props) const override {
+//        sk_sp<SkColorSpace> dstCS = dstColorInfo.refColorSpace();
+//        if (!dstCS) { dstCS = SkColorSpace::MakeSRGB(); }
+//
+//        SkAlphaType workingAT;
+//        sk_sp<SkColorSpace> workingCS = this->workingFormat(dstCS, &workingAT);
+//
+//        GrColorInfo dst = {dstColorInfo.colorType(), dstColorInfo.alphaType(), dstCS},
+//                working = {dstColorInfo.colorType(), workingAT, workingCS};
+//
+//        auto [ok, fp] = as_CFB(fChild)->asFragmentProcessor(
+//                GrColorSpaceXformEffect::Make(std::move(inputFP), dst,working), context, working,
+//                                              props);
+//
+//        return ok ? GrFPSuccess(GrColorSpaceXformEffect::Make(std::move(fp), working,dst))
+//                  : GrFPFailure(std::move(fp));
+//    }
+//#endif
+
 bool IsSupported(const SkMaskFilter* maskfilter) {
     if (!maskfilter) {
         return false;

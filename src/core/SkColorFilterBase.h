@@ -48,21 +48,35 @@ public:
     */
     virtual bool onIsAlphaUnchanged() const { return false; }
 
-#if defined(SK_GANESH)
-    /**
-     *  A subclass may implement this factory function to work with the GPU backend. It returns
-     *  a GrFragmentProcessor that implements the color filter in GPU shader code.
-     *
-     *  The fragment processor receives a input FP that generates a premultiplied input color, and
-     *  produces a premultiplied output color.
-     *
-     *  A GrFPFailure indicates that the color filter isn't implemented for the GPU backend.
-     */
-    virtual GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
-                                           GrRecordingContext* context,
-                                           const GrColorInfo& dstColorInfo,
-                                           const SkSurfaceProps& props) const;
-#endif
+    enum class Type {
+        kColorSpaceXform,
+        kCompose,
+        kGaussian,
+        kMatrix,
+        kMode,
+        kNoop,
+        kRuntime,
+        kTable,
+        kWorkingFormat,
+    };
+
+    virtual Type type() const = 0;
+
+//#if defined(SK_GANESH)
+//    /**
+//     *  A subclass may implement this factory function to work with the GPU backend. It returns
+//     *  a GrFragmentProcessor that implements the color filter in GPU shader code.
+//     *
+//     *  The fragment processor receives a input FP that generates a premultiplied input color, and
+//     *  produces a premultiplied output color.
+//     *
+//     *  A GrFPFailure indicates that the color filter isn't implemented for the GPU backend.
+//     */
+//    virtual GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
+//                                           GrRecordingContext* context,
+//                                           const GrColorInfo& dstColorInfo,
+//                                           const SkSurfaceProps& props) const;
+//#endif
 
     bool affectsTransparentBlack() const {
         return this->filterColor(SK_ColorTRANSPARENT) != SK_ColorTRANSPARENT;
