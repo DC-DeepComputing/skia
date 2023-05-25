@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b74a04b1_24691f77",
+        "filename": "src/pdf/SkJpegInfo_none.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-25T09:12:41Z",
+      "side": 1,
+      "message": "I\u0027m trying to make `SkJpegSegmentScan` and `SkJpegMetadataDecoder` be independent of libjpeg.\n\nThis seems to be doing a lot of what is done in those files, so it might be a good idea to merge these. I can take that on if you\u0027d like.\n\n(Eventually ... for now land this as-is).",
+      "revId": "c593b6524b8b50610cd705e4faa228cca9998cb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
