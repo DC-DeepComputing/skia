@@ -200,6 +200,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "da8afadc_93db812d",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-25T16:37:38Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "42dec146_6ab16984",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "796b9eb0_79413355",
         "filename": "tests/BUILD.bazel",
         "patchSetId": 4
