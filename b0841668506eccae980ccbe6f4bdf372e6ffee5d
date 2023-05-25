@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "752ae4be_7aac8d14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-25T16:29:11Z",
+      "side": 1,
+      "message": "I am not very familiar with the testing infra so I am not sure I can competently review this. If this enables a way to only switch from RBE to local compilation instead of disabling a test group, I am in favour of this change, hence non-owner LGTM. Curious to hear what Ben thinks.",
+      "revId": "b0841668506eccae980ccbe6f4bdf372e6ffee5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
