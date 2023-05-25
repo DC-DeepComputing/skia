@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acd3796e_b23182d3",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6acd8528_dc0ed88a",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06a4f484_cb18a15d",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-25T14:56:34Z",
       "side": 1,
       "message": "Can ImageAsset be fw-declared too?  You may need to un-inline the default SlotManager destructor, which is a good idea regardless.",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2772297_4767fcd4",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "I don\u0027t think so? We want sk_sp\u0027s to them, so we need its inheritance information which IIUC cannot be forward declared.",
+      "parentUuid": "06a4f484_cb18a15d",
       "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -81,6 +117,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18f1c4af_84c796af",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "I wanted to keep getColor and getText different from the existing property manager calls names for clarity, especially since we\u0027ll probably surface this through ManagedAnimation which already has those names. I\u0027ll keep it as is.",
+      "parentUuid": "83a608bb_be49c724",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 41
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14efa00a_5c08fdb8",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "On second thought, should we instead just be returning an ImageAsset? It seems like it would more helpful to hold onto than an SkImage, and more consistent. I\u0027ll make the changes but replace SkImage with an skresources::ImageAsset, take a look and lmk what you think.",
+      "parentUuid": "87d5c22c_e5c93285",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 41
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32426d68_f28409a0",
@@ -94,6 +178,30 @@
       "writtenOn": "2023-05-25T14:56:34Z",
       "side": 1,
       "message": "I also prefer STL types, but they do yield more bloated code than Skia containers.  So we tend to begrudgingly stick to Skia equivalents:\n\n  std::vector -\u003e TArray\n  std::pair -\u003e struct ValuePair { ... }\n  std::unordered_map -\u003e THashMap\n  std::string -\u003e SkString",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 74
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d238829_b372e0db",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "Begrudgingly done (although I do like our implementation of SkTHashMap::find more)",
+      "parentUuid": "32426d68_f28409a0",
       "range": {
         "startLine": 60,
         "startChar": 0,
@@ -121,6 +229,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f384c239_5ee0484f",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "Makes sense, done.",
+      "parentUuid": "002dfb42_112737f5",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ba8524b_4b768f63",
@@ -134,6 +260,30 @@
       "writtenOn": "2023-05-25T14:56:34Z",
       "side": 1,
       "message": "No need to check, we should always have a slot manager.",
+      "range": {
+        "startLine": 160,
+        "startChar": 8,
+        "endLine": 160,
+        "endChar": 26
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a2d209b_75f3a7f0",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ba8524b_4b768f63",
       "range": {
         "startLine": 160,
         "startChar": 8,
@@ -167,6 +317,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03c13c11_ce601e4e",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4337282d_0d60259c",
+      "range": {
+        "startLine": 161,
+        "startChar": 8,
+        "endLine": 161,
+        "endChar": 14
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66c86af7_1e941234",
@@ -180,6 +354,30 @@
       "writtenOn": "2023-05-25T14:56:34Z",
       "side": 1,
       "message": "We always have a slot manager, no need to check?",
+      "range": {
+        "startLine": 195,
+        "startChar": 15,
+        "endLine": 195,
+        "endChar": 27
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e88f075f_e8f9582d",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "Resolved when moving fSlotsRoot back to Builder.",
+      "parentUuid": "66c86af7_1e941234",
       "range": {
         "startLine": 195,
         "startChar": 15,
@@ -213,6 +411,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cc45ee9_b09c3bce",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "Done. We can provide a builder flag to enable the SlotManager, but that might muddy the use (the SlotManager is useless if made after the animation is built, which may not be clear) through the API.",
+      "parentUuid": "e27eead0_dca27c78",
+      "range": {
+        "startLine": 263,
+        "startChar": 48,
+        "endLine": 263,
+        "endChar": 73
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e4a2643_9e682b7b",
@@ -226,6 +448,24 @@
       "writtenOn": "2023-05-25T14:56:34Z",
       "side": 1,
       "message": "We also need to trigger a revalidation as the last step, which means SlotManager should also store a reference to the SceneGraphRevalidator (landed recently).",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41fedaee_38abe31f",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "Ah that\u0027s right, done.",
+      "parentUuid": "0e4a2643_9e682b7b",
       "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -247,6 +487,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9940735d_112e8672",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "446610f3_1e2ca85f",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df7b9a01_21d2102b",
@@ -260,6 +518,24 @@
       "writtenOn": "2023-05-25T14:56:34Z",
       "side": 1,
       "message": "Also needs revalidation.",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e6c9292_3d6b837d",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-25T20:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df7b9a01_21d2102b",
       "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
