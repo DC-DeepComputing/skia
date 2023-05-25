@@ -13,6 +13,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
+#include "include/private/base/SkTArray.h"
 #include "src/base/SkSafeMath.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkSamplingPriv.h"
@@ -176,7 +177,7 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                      const SkIRect& clippedSrcIRect,
                      const SkPaint& paint,
                      SkCanvas::QuadAAFlags origAAFlags,
-                     SkCanvas::SrcRectConstraint constraint,
+                     const SkCanvas::SrcRectConstraint constraint,
                      SkSamplingOptions sampling,
                      SkTileMode tileMode,
                      DrawImageProc drawImage) {
@@ -187,6 +188,8 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
 
     int nx = bitmap.width() / tileSize;
     int ny = bitmap.height() / tileSize;
+
+    skia_private::TArray<SkCanvas::ImageSetEntry> imgSet(nx * ny);
 
     for (int x = 0; x <= nx; x++) {
         for (int y = 0; y <= ny; y++) {
@@ -251,23 +254,40 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                 tileR.offset(-offset.fX, -offset.fY);
                 SkMatrix offsetSrcToDst = srcToDst;
                 offsetSrcToDst.preTranslate(offset.fX, offset.fY);
-                drawImage(rContext,
-                          sdc,
-                          clip,
+                drawImage(rContext,               // noop
+                          sdc,                    // noop
+                          clip,                   // noop
                           matrixProvider,
-                          paint,
-                          image.get(),
-                          tileR,
-                          rectToDraw,
-                          nullptr,
+                          paint,                  //
+                          image.get(),            //
+                          tileR,                  //
+                          rectToDraw,             //
+                          /* dstClip= */ nullptr, //
                           offsetSrcToDst,
-                          static_cast<SkCanvas::QuadAAFlags>(aaFlags),
-                          constraint,
-                          sampling,
+                          static_cast<SkCanvas::QuadAAFlags>(aaFlags),  //
+                          constraint,             //
+                          sampling,               //
                           tileMode);
+
+                imgSet.push_back(SkCanvas::ImageSetEntry(std::move(image),
+                                                         tileR,
+                                                         rectToDraw,
+                                                         -1,
+                                                         /* alpha= */ 1.0f,
+                                                         aaFlags,
+                                                         /* hasClip= */ false));
             }
         }
     }
+
+    SkCanvas* canvas;
+    canvas->experimental_DrawEdgeAAImageSet(imgSet.data(),
+                                            imgSet.size(),
+                                            /* dstClips= */ nullptr,
+                                            /* preViewMatrices= */ nullptr,
+                                            sampling,
+                                            &paint,
+                                            constraint);
 }
 
 } // namespace skgpu
