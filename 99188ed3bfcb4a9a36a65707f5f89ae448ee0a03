@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e777fa54_c7054d98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-25T17:47:28Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/699217 handled the max sample radius in the bounds functions, but as part of that rebase, I forgot to apply it to the skif::Context passed to the new `getChildOutput` function.\n\nThe GMs for `rtif_distort` aren\u0027t expected to change because the runtime image filter used a null input, and that dynamic source image is sized directly by the getInputLayerBounds() function that had been rebased/updated correctly.",
+      "revId": "99188ed3bfcb4a9a36a65707f5f89ae448ee0a03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
