@@ -135,6 +135,30 @@
       },
       "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fdf0557_7982328e",
+        "filename": "src/ports/SkTypeface_fontations_factory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-25T14:37:17Z",
+      "side": 1,
+      "message": "Also, tests added for instantiation behavior, demonstrating failure with empty and garbage data, and success for data appearing as an SFNT or TTC.",
+      "parentUuid": "aacaeb00_8a0f00e0",
+      "range": {
+        "startLine": 13,
+        "startChar": 29,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
