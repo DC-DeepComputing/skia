@@ -170,7 +170,11 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
     }
 
     // TODO: Generate depth-stencil state, blend info
-    return VulkanGraphicsPipeline::Make(this->vulkanSharedContext());
+    return VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
+                                        vsModule,
+                                        step->vertexAttributes(),
+                                        step->instanceAttributes(),
+                                        fsModule);
 }
 
 sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
