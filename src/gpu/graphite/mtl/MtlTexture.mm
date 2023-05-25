@@ -15,6 +15,8 @@
 #include "src/gpu/graphite/mtl/MtlSharedContext.h"
 #include "src/gpu/mtl/MtlUtilsPriv.h"
 
+int gTextureCount = 0;
+
 namespace skgpu::graphite {
 
 sk_cfp<id<MTLTexture>> MtlTexture::MakeMtlTexture(const MtlSharedContext* sharedContext,
@@ -88,6 +90,8 @@ sk_cfp<id<MTLTexture>> MtlTexture::MakeMtlTexture(const MtlSharedContext* shared
     }
 #endif
 
+    ++gTextureCount;
+
     return texture;
 }
 
@@ -130,6 +134,7 @@ sk_sp<Texture> MtlTexture::MakeWrapped(const MtlSharedContext* sharedContext,
 
 void MtlTexture::freeGpuData() {
     fTexture.reset();
+    --gTextureCount;
 }
 
 } // namespace skgpu::graphite
