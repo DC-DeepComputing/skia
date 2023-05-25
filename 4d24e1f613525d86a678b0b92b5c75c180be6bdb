@@ -22,6 +22,30 @@
       },
       "revId": "4d24e1f613525d86a678b0b92b5c75c180be6bdb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f8cce1a_17ca2a85",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 784,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-25T14:04:38Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "bdabe1e9_5a8dd232",
+      "range": {
+        "startLine": 784,
+        "startChar": 18,
+        "endLine": 784,
+        "endChar": 62
+      },
+      "revId": "4d24e1f613525d86a678b0b92b5c75c180be6bdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
