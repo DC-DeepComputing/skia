@@ -136,7 +136,12 @@ DEF_GANESH_TEST(VkProtectedContext_CreateNonprotectedTextureInProtectedContext,
         protectedTestHelper->directContext()->createBackendTexture(
             kW, kH, kRGBA_8888_SkColorType, GrMipmapped::kNo, GrRenderable::kNo,
             GrProtected::kNo);
-    REPORTER_ASSERT(reporter, !backendTex.isValid());
+    REPORTER_ASSERT(reporter, backendTex.isValid());
+
+    protectedTestHelper->directContext()->flushAndSubmit(/* syncCpu= */ true);
+    if (backendTex.isValid()) {
+        protectedTestHelper->directContext()->deleteBackendTexture(backendTex);
+    }
 }
 
 DEF_GANESH_TEST(VkProtectedContext_CreateProtectedTextureInNonprotectedContext,
