@@ -16,6 +16,75 @@
       "message": "This should get renderpasses going. It\u0027s a temporary measure until I get to the full renderPass caching framework.",
       "revId": "c5f386cc9a0a7bb64de7d10a18b3f34f7c30d641",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5385a877_0f317be6",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-25T14:06:14Z",
+      "side": 1,
+      "message": "Remove this cast that\u0027s not being assigned to anything.",
+      "range": {
+        "startLine": 356,
+        "startChar": 0,
+        "endLine": 356,
+        "endChar": 63
+      },
+      "revId": "c5f386cc9a0a7bb64de7d10a18b3f34f7c30d641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6462faee_0ca3e423",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-25T14:06:14Z",
+      "side": 1,
+      "message": "nit: Indent the cases",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 21
+      },
+      "revId": "c5f386cc9a0a7bb64de7d10a18b3f34f7c30d641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2668f2d3_0d5855ff",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-25T14:06:14Z",
+      "side": 1,
+      "message": "Same here",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 21
+      },
+      "revId": "c5f386cc9a0a7bb64de7d10a18b3f34f7c30d641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
