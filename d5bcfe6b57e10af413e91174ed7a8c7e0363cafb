@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a4379e4_2fa1b441",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-25T14:36:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbfdac68_5ce08848",
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27484cb2_525961b3",
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "This is used as an early-out (if there\u0027s no MPF then there\u0027s no gainmap).\n\nRenamed this to `mightHaveGainmapImage`.",
       "parentUuid": "27484cb2_525961b3",
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8a662fa_ab448487",
+        "filename": "include/private/SkJpegMetadataDecoder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-25T14:36:24Z",
+      "side": 1,
+      "message": "lgtm!",
+      "parentUuid": "f25a4f94_f6a37109",
       "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -200,6 +236,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aba68b42_45f6beb3",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-25T14:36:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "124a55a7_de746f4f",
+      "range": {
+        "startLine": 282,
+        "startChar": 68,
+        "endLine": 282,
+        "endChar": 73
+      },
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bd39e85_067edcc0",
@@ -237,6 +297,30 @@
       "side": 1,
       "message": "I can wait for that to land and rebase on top of it.\n\nFrom the look of it, we can probably change the SkJpegInfo stuff to use SkJpegMetadataDecoder and SkJpegSegmentScan (and then we won\u0027t need the separate libjpeg implementation).",
       "parentUuid": "4bd39e85_067edcc0",
+      "range": {
+        "startLine": 1140,
+        "startChar": 44,
+        "endLine": 1140,
+        "endChar": 62
+      },
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b416f9c1_627f5c8c",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-25T14:36:24Z",
+      "side": 1,
+      "message": "Sgtm.",
+      "parentUuid": "e179bc08_de2568da",
       "range": {
         "startLine": 1140,
         "startChar": 44,

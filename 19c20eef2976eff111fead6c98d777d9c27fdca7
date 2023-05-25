@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6610af6e_a0a0840a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-25T14:36:24Z",
+      "side": 1,
+      "message": "nit: call*",
+      "range": {
+        "startLine": 10,
+        "startChar": 60,
+        "endLine": 10,
+        "endChar": 61
+      },
+      "revId": "19c20eef2976eff111fead6c98d777d9c27fdca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b39c5652_049ec113",
@@ -14,6 +37,23 @@
       "writtenOn": "2023-05-25T10:42:01Z",
       "side": 1,
       "message": "Thanks! I\u0027ve updated the patch, but I\u0027ll wait for kjlubick\u0027s patch to land and rebase on it.",
+      "revId": "19c20eef2976eff111fead6c98d777d9c27fdca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfa7fb50_6c26da9a",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-25T14:36:24Z",
+      "side": 1,
+      "message": "nit: I think this code is now self-explanatory (and the comment is out of date).",
       "revId": "19c20eef2976eff111fead6c98d777d9c27fdca7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
