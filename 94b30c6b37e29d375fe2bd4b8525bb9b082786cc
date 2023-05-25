@@ -71,6 +71,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52222982_ace634b0",
+        "filename": "include/ports/SkTypeface_fontations_factory.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-25T16:22:31Z",
+      "side": 1,
+      "message": "Renamed header containing external Make function to `SkTypeface_fontations.h`, file in `src/ports/` to `SkTypeface_fontations_priv.h`.",
+      "parentUuid": "2df534df_8d536d2a",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c0724d8a_65f6a17e",
         "filename": "include/ports/SkTypeface_fontations_factory.h",
         "patchSetId": 4
@@ -94,6 +112,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "590f792d_86dbe5b5",
+        "filename": "include/ports/SkTypeface_fontations_factory.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-25T16:22:31Z",
+      "side": 1,
+      "message": "Using `SkTypeface_Make_Fontations`.",
+      "parentUuid": "c0724d8a_65f6a17e",
+      "range": {
+        "startLine": 17,
+        "startChar": 25,
+        "endLine": 17,
+        "endChar": 51
+      },
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "73e18467_6c772628",
         "filename": "include/ports/SkTypeface_fontations_factory.h",
         "patchSetId": 4
@@ -105,6 +147,30 @@
       "writtenOn": "2023-05-25T15:50:04Z",
       "side": 1,
       "message": "This should take `SkFontArguments`. Even if it doesn\u0027t respect all the settings yet that\u0027s fine. The entire point of `SkFontArguments` is to be able to add more arguments to these factory functions without needing to a ton of typing plumbing a new argument around or update users immediately as part of the same change.",
+      "range": {
+        "startLine": 18,
+        "startChar": 52,
+        "endLine": 18,
+        "endChar": 69
+      },
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c37bec1_e708bfa6",
+        "filename": "include/ports/SkTypeface_fontations_factory.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-25T16:22:31Z",
+      "side": 1,
+      "message": "Changed signature and tests to use `SkFontArguments`.",
+      "parentUuid": "73e18467_6c772628",
       "range": {
         "startLine": 18,
         "startChar": 52,
@@ -145,6 +211,24 @@
       "writtenOn": "2023-05-25T15:45:48Z",
       "side": 1,
       "message": "I think we\u0027ll want to land http://review.skia.org/703366 and then add tags \u003d [\"manual\"] along with a comment that the rust toolchain does not seem to work on RBE fully",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d081f303_1ffe0929",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-25T16:22:31Z",
+      "side": 1,
+      "message": "Thanks for creating that workaround. Is my understanding correct that this would disable the test from running on bots? If that\u0027s the case, after temporarily disabling it, what\u0027s the mid-term avenue for running the tests on a bot? We\u0027ve had a couple of Bazel rule changes related to the Rust infra which caused build breaks. I\u0027d be happy if we can step-by-step run more on the bots as well to avoid that.",
+      "parentUuid": "796b9eb0_79413355",
       "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
