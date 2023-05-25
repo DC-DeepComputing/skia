@@ -111,6 +111,30 @@
       },
       "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aacaeb00_8a0f00e0",
+        "filename": "src/ports/SkTypeface_fontations_factory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-25T14:30:47Z",
+      "side": 1,
+      "message": "Registration added, entry added to decoders (but see issue skia:14338), factoryId defined and set in `onGetDescriptor()`, instantiation failure handled in new `makeFromStream()` method, which is then used for the factory method as well.",
+      "parentUuid": "6d58f9f3_919c8d58",
+      "range": {
+        "startLine": 13,
+        "startChar": 29,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "4bc5649b65c804ee9c0641e220a028e5ddf0693b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
