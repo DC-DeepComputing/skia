@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "db68a17d_d9e52e85",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-25T15:20:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5906a8a6_9c86ad8c",
+      "range": {
+        "startLine": 13,
+        "startChar": 32,
+        "endLine": 13,
+        "endChar": 50
+      },
+      "revId": "0f410d0956deab31d47be852f55c7d1840a851b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "1d4bc043_e8f37347",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 16
@@ -54,6 +78,30 @@
       "writtenOn": "2023-05-25T14:35:59Z",
       "side": 1,
       "message": "Maybe recordTextureAndSamplerDescSet just to match the buffer one a little more? WDYT?",
+      "range": {
+        "startLine": 332,
+        "startChar": 22,
+        "endLine": 332,
+        "endChar": 51
+      },
+      "revId": "0f410d0956deab31d47be852f55c7d1840a851b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32ce26d0_06a82b70",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-25T15:20:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30efd9fe_9518a263",
       "range": {
         "startLine": 332,
         "startChar": 22,
