@@ -17,6 +17,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkYUVAInfo.h"
+#include "include/private/SkJpegMetadataDecoder.h"
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTemplates.h"
@@ -31,7 +32,6 @@
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
 #include "include/private/SkGainmapInfo.h"
-#include "include/private/SkJpegMetadataDecoder.h"
 #include "src/codec/SkJpegMultiPicture.h"
 #include "src/codec/SkJpegSegmentScan.h"
 #include "src/codec/SkJpegXmp.h"
@@ -62,38 +62,8 @@ bool SkJpegCodec::IsJpeg(const void* buffer, size_t bytesRead) {
     return bytesRead >= sizeof(kJpegSig) && !memcmp(buffer, kJpegSig, sizeof(kJpegSig));
 }
 
-static bool is_orientation_marker(jpeg_marker_struct* marker, SkEncodedOrigin* orientation) {
-    if (kExifMarker != marker->marker || marker->data_length < kExifHeaderSize) {
-        return false;
-    }
-
-    if (0 != memcmp(marker->data, kExifSig, sizeof(kExifSig))) {
-        return false;
-    }
-
-    // Account for 'E', 'x', 'i', 'f', '\0', '<fill byte>'.
-    constexpr size_t kOffset = 6;
-    return SkParseEncodedOrigin(marker->data + kOffset, marker->data_length - kOffset,
-            orientation);
-}
-
-static SkEncodedOrigin get_exif_orientation(jpeg_decompress_struct* dinfo) {
-    SkEncodedOrigin orientation;
-    for (jpeg_marker_struct* marker = dinfo->marker_list; marker; marker = marker->next) {
-        if (is_orientation_marker(marker, &orientation)) {
-            return orientation;
-        }
-    }
-
-    return kDefault_SkEncodedOrigin;
-}
-
 // A helper structure to convert jpeg_marker_struct (and similar representations) to.
-struct SkJpegMarker {
-    SkJpegMarker(uint8_t marker, sk_sp<SkData> data) : marker(marker), data(std::move(data)) {}
-    uint8_t marker = 0;
-    sk_sp<SkData> data;
-};
+using SkJpegMarker = SkJpegMetadataDecoder::Segment;
 using SkJpegMarkerList = std::vector<SkJpegMarker>;
 
 SkJpegMarkerList get_sk_marker_list(jpeg_decompress_struct* dinfo) {
@@ -105,11 +75,31 @@ SkJpegMarkerList get_sk_marker_list(jpeg_decompress_struct* dinfo) {
     return markerList;
 }
 
+/**
+ * Return true if the specified SkJpegMarker has marker |targetMarker| and begins with the specified
+ * signature.
+ */
+static bool marker_has_signature(const SkJpegMarker& marker,
+                                 const uint32_t targetMarker,
+                                 const uint8_t* signature,
+                                 size_t signatureSize) {
+    if (targetMarker != marker.fMarker) {
+        return false;
+    }
+    if (marker.fData->size() <= signatureSize) {
+        return false;
+    }
+    if (memcmp(marker.fData->bytes(), signature, signatureSize) != 0) {
+        return false;
+    }
+    return true;
+}
+
 /*
  * Return metadata with a specific marker and signature.
  *
  * Search for segments that start with the specified targetMarker, followed by the specified
- * signature.
+ * signature, followed by (optional) padding.
  *
  * Some types of metadata (e.g, ICC profiles) are too big to fit into a single segment's data (which
  * is limited to 64k), and come in multiple parts. For this type of data, bytesInIndex is >0. After
@@ -118,6 +108,13 @@ SkJpegMarkerList get_sk_marker_list(jpeg_decompress_struct* dinfo) {
  * stitch them together and return the combined result. Return failure if parts are absent, there
  * are duplicate parts, or parts disagree on the total number of parts.
  *
+ * Visually, each segment is:
+ * [|signatureSize| bytes containing |signature|]
+ * [|signaturePadding| bytes that are unexamined]
+ * [|bytesInIndex] bytes listing the segment index for multi-segment metadata]
+ * [|bytesInIndex] bytes listing the segment count for multi-segment metadata]
+ * [the returned data]
+ *
  * If alwaysCopyData is true, then return a copy of the data. If alwaysCopyData is false, then
  * return a direct reference to the data pointed to by dinfo, if possible.
  */
@@ -125,11 +122,12 @@ static sk_sp<SkData> read_metadata(const SkJpegMarkerList& markerList,
                                    const uint32_t targetMarker,
                                    const uint8_t* signature,
                                    size_t signatureSize,
-                                   size_t bytesInIndex = 0,
-                                   bool alwaysCopyData = false) {
-    // Compute the total size of the entire header (signature plus index plus count), since we'll
-    // use it often.
-    const size_t headerSize = signatureSize + 2 * bytesInIndex;
+                                   size_t signaturePadding,
+                                   size_t bytesInIndex,
+                                   bool alwaysCopyData) {
+    // Compute the total size of the entire header (signature plus padding plus index plus count),
+    // since we'll use it often.
+    const size_t headerSize = signatureSize + signaturePadding + 2 * bytesInIndex;
 
     // A map from part index to the data in each part.
     std::vector<sk_sp<SkData>> parts;
@@ -145,16 +143,20 @@ static sk_sp<SkData> read_metadata(const SkJpegMarkerList& markerList,
 
     // Iterate through the image's segments.
     for (const auto& marker : markerList) {
-        const uint8_t* data = marker.data->bytes();
-        const size_t dataLength = marker.data->size();
-        // Skip segments that don't have the right marker, signature, or are too small.
-        if (targetMarker != marker.marker || dataLength <= headerSize ||
-            memcmp(data, signature, signatureSize) != 0) {
+        // Skip segments that don't have the right marker or signature.
+        if (!marker_has_signature(marker, targetMarker, signature, signatureSize)) {
+            continue;
+        }
+
+        // Skip segments that are too small to include the index and count.
+        const size_t dataLength = marker.fData->size();
+        if (dataLength <= headerSize) {
             continue;
         }
 
         // Read this part's index and count as big-endian (if they are present, otherwise hard-code
         // them to 1).
+        const uint8_t* data = marker.fData->bytes();
         uint32_t partIndex = 0;
         uint32_t partCount = 0;
         if (bytesInIndex == 0) {
@@ -162,8 +164,9 @@ static sk_sp<SkData> read_metadata(const SkJpegMarkerList& markerList,
             partCount = 1;
         } else {
             for (size_t i = 0; i < bytesInIndex; ++i) {
-                partIndex = (partIndex << 8) + data[signatureSize + i];
-                partCount = (partCount << 8) + data[signatureSize + bytesInIndex + i];
+                const size_t offset = signatureSize + signaturePadding;
+                partIndex = (partIndex << 8) + data[offset + i];
+                partCount = (partCount << 8) + data[offset + bytesInIndex + i];
             }
         }
 
@@ -239,18 +242,12 @@ static sk_sp<SkData> read_metadata(const SkJpegMarkerList& markerList,
     return result;
 }
 
-static std::unique_ptr<SkEncodedInfo::ICCProfile> read_color_profile(
-        jpeg_decompress_struct* dinfo) {
-    auto iccData = read_metadata(get_sk_marker_list(dinfo),
-                                 kICCMarker,
-                                 kICCSig,
-                                 sizeof(kICCSig),
-                                 kICCMarkerIndexSize,
-                                 /*alwaysCopyData=*/true);
-    if (!iccData) {
-        return nullptr;
+static SkEncodedOrigin get_exif_orientation(sk_sp<SkData> exifData) {
+    SkEncodedOrigin origin = kDefault_SkEncodedOrigin;
+    if (exifData && SkParseEncodedOrigin(exifData->bytes(), exifData->size(), &origin)) {
+        return origin;
     }
-    return SkEncodedInfo::ICCProfile::Make(std::move(iccData));
+    return kDefault_SkEncodedOrigin;
 }
 
 SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
@@ -297,8 +294,15 @@ SkCodec::Result SkJpegCodec::ReadHeader(SkStream* stream, SkCodec** codecOut,
             return kInvalidInput;
         }
 
-        SkEncodedOrigin orientation = get_exif_orientation(dinfo);
-        auto profile = read_color_profile(dinfo);
+        auto metadataDecoder = SkJpegMetadataDecoder::Make(get_sk_marker_list(dinfo));
+
+        SkEncodedOrigin orientation =
+                get_exif_orientation(metadataDecoder->getExifMetadata(/*copyData=*/false));
+
+        std::unique_ptr<SkEncodedInfo::ICCProfile> profile;
+        if (auto iccProfileData = metadataDecoder->getICCProfileData(/*copyData=*/true)) {
+            profile = SkEncodedInfo::ICCProfile::Make(std::move(iccProfileData));
+        }
         if (profile) {
             auto type = profile->profile()->data_color_space;
             switch (decoderMgr->dinfo()->jpeg_color_space) {
@@ -1110,7 +1114,8 @@ bool SkGetJpegInfo(const void* data, size_t len,
         *colorType = encodedColorType;
     }
     if (orientation) {
-        *orientation = get_exif_orientation(dinfo);
+        auto metadataDecoder = SkJpegMetadataDecoder::Make(get_sk_marker_list(dinfo));
+        *orientation = get_exif_orientation(metadataDecoder->getExifMetadata(/*copyData=*/false));
     }
     if (size) {
         *size = {SkToS32(dinfo->image_width), SkToS32(dinfo->image_height)};
@@ -1125,15 +1130,16 @@ bool SkGetJpegInfo(const void* data, size_t len,
 static std::unique_ptr<SkJpegXmp> get_xmp_metadata(const SkJpegMarkerList& markerList) {
     std::vector<sk_sp<SkData>> decoderApp1Params;
     for (const auto& marker : markerList) {
-        if (marker.marker == kXMPMarker) {
-            decoderApp1Params.push_back(marker.data);
+        if (marker.fMarker == kXMPMarker) {
+            decoderApp1Params.push_back(marker.fData);
         }
     }
     return SkJpegXmp::Make(decoderApp1Params);
 }
 
-// Extract the SkJpegMultiPictureParameters from this image (if they exist) along with the segment
-// that the parameters came from.
+// Extract the SkJpegMultiPictureParameters from this image (if they exist). If |sourceMgr| and
+// |outMpParamsSegment| are non-nullptr, then also return the SkJpegSegment that the parameters came
+// from (and return nullptr if one cannot be found).
 static std::unique_ptr<SkJpegMultiPictureParameters> find_mp_params(
         const SkJpegMarkerList& markerList,
         SkJpegSourceMgr* sourceMgr,
@@ -1144,17 +1150,26 @@ static std::unique_ptr<SkJpegMultiPictureParameters> find_mp_params(
     // Search though the libjpeg segments until we find a segment that parses as MP parameters. Keep
     // track of how many segments with the MPF marker we skipped over to get there.
     for (const auto& marker : markerList) {
-        if (marker.marker != kMpfMarker) {
+        if (marker.fMarker != kMpfMarker) {
             continue;
         }
-        mpParams = SkJpegMultiPictureParameters::Make(marker.data);
+        mpParams = SkJpegMultiPictureParameters::Make(marker.fData);
         if (mpParams) {
             break;
         }
         ++skippedSegmentCount;
     }
+    if (!mpParams) {
+        return nullptr;
+    }
 
-    // Now, find the segment for that corresponds to the libjpeg marker.
+    // If |sourceMgr| is not specified, then do not try to find the SkJpegSegment.
+    if (!sourceMgr) {
+        SkASSERT(!outMpParamsSegment);
+        return mpParams;
+    }
+
+    // Now, find the SkJpegSegmentScanner segment that corresponds to the libjpeg marker.
     // TODO(ccameron): It may be preferable to make SkJpegSourceMgr save segments with certain
     // markers to avoid this strangeness.
     for (const auto& segment : sourceMgr->getAllSegments()) {
@@ -1316,6 +1331,7 @@ static bool get_gainmap_info(const SkJpegMarkerList& markerList,
                                          kGainmapMarker,
                                          kGainmapSig,
                                          sizeof(kGainmapSig),
+                                         /*signaturePadding=*/0,
                                          kGainmapMarkerIndexSize,
                                          /*alwaysCopyData=*/true);
         if (gainmapData) {
@@ -1337,9 +1353,40 @@ bool SkJpegCodec::onGetGainmapInfo(SkGainmapInfo* info,
     return get_gainmap_info(markerList, fDecoderMgr->getSourceMgr(), info, gainmapImageStream);
 }
 
+#else
+bool SkJpegCodec::onGetGainmapInfo(SkGainmapInfo* info,
+                                   std::unique_ptr<SkStream>* gainmapImageStream) {
+    return false;
+}
+#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
+
 class SkJpegMetadataDecoderImpl : public SkJpegMetadataDecoder {
 public:
     SkJpegMetadataDecoderImpl(SkJpegMarkerList markerList) : fMarkerList(std::move(markerList)) {}
+
+    sk_sp<SkData> getExifMetadata(bool copyData) const override {
+        return read_metadata(fMarkerList,
+                             kExifMarker,
+                             kExifSig,
+                             sizeof(kExifSig),
+                             /*signaturePadding=*/1,
+                             /*bytesInIndex=*/0,
+                             copyData);
+    }
+
+    sk_sp<SkData> getICCProfileData(bool copyData) const override {
+        return read_metadata(fMarkerList,
+                             kICCMarker,
+                             kICCSig,
+                             sizeof(kICCSig),
+                             /*signaturePadding=*/0,
+                             kICCMarkerIndexSize,
+                             copyData);
+    }
+
+    bool hasMultiPictureFormatMetadata() const override {
+        return find_mp_params(fMarkerList, nullptr, nullptr) != nullptr;
+    }
 
     bool findGainmapImage(sk_sp<SkData> baseImageData,
                           sk_sp<SkData>& outGainmapImageData,
@@ -1373,13 +1420,6 @@ std::unique_ptr<SkJpegMetadataDecoder> SkJpegMetadataDecoder::Make(std::vector<S
     }
     return std::make_unique<SkJpegMetadataDecoderImpl>(std::move(markerList));
 }
-#else
-bool SkJpegCodec::onGetGainmapInfo(SkGainmapInfo* info,
-                                   std::unique_ptr<SkStream>* gainmapImageStream) {
-    return false;
-}
-#endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
-
 
 namespace SkJpegDecoder {
 bool IsJpeg(const void* data, size_t len) {
