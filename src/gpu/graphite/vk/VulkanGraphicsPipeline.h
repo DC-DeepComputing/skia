@@ -11,6 +11,9 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
+// TODO: Explore using fwd declarations for all of the following.
+#include "include/core/SkSpan.h"
+#include "src/gpu/graphite/Attribute.h"
 
 namespace skgpu::graphite {
 
@@ -18,8 +21,11 @@ class VulkanSharedContext;
 
 class VulkanGraphicsPipeline final : public GraphicsPipeline {
 public:
-    static sk_sp<VulkanGraphicsPipeline> Make(const VulkanSharedContext*
-                                              /* TODO: fill out argument list */);
+    static sk_sp<VulkanGraphicsPipeline> Make(const VulkanSharedContext* sharedContext,
+                                              VkShaderModule vertexShader,
+                                              SkSpan<const Attribute> vertexAttrs,
+                                              SkSpan<const Attribute> instanceAttrs,
+                                              VkShaderModule fragShader);
 
     ~VulkanGraphicsPipeline() override {}
 
