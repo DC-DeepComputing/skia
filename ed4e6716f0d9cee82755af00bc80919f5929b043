@@ -1,0 +1,267 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6acd8528_dc0ed88a",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "I think this can be forward declared.",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06a4f484_cb18a15d",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "Can ImageAsset be fw-declared too?  You may need to un-inline the default SlotManager destructor, which is a good idea regardless.",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87d5c22c_e5c93285",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "The getters should be const.\n\nAlso, ideally getImageSlot should return a `const sk_sp\u003cSkImage\u003e\u0026`, so that we don\u0027t increment the refcount upfront - the client can decide whether to ref for ownership transfer (by converting to a non-const sk_sp\u003c\u003e) or use as const\u0026 for temp access.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 41
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83a608bb_be49c724",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "naming nit: these are already methods of SlotManager, the \"Slot\" bit seems just a bit redundant.  Up to you.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 41
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32426d68_f28409a0",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "I also prefer STL types, but they do yield more bloated code than Skia containers.  So we tend to begrudgingly stick to Skia equivalents:\n\n  std::vector -\u003e TArray\n  std::pair -\u003e struct ValuePair { ... }\n  std::unordered_map -\u003e THashMap\n  std::string -\u003e SkString",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 74
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "002dfb42_112737f5",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "This is kind of iffy, because the JSON dom is only valid during parsing while the SlotManager will presumably persist -- so we end up with a dangling pointer.\n\nI don\u0027t see it being used by the SlotManager itself, just AnimationBuilder for parsing initial slot values.  Maybe it should stay in AnimationBuilder for now?",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ba8524b_4b768f63",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "No need to check, we should always have a slot manager.",
+      "range": {
+        "startLine": 160,
+        "startChar": 8,
+        "endLine": 160,
+        "endChar": 26
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4337282d_0d60259c",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "The skia style is a bit funny when it comes to `this` prefixes: we use them for methods, to differentiate from free functions, but not for field access (presumably the \u0027f\u0027 prefix is sufficient).",
+      "range": {
+        "startLine": 161,
+        "startChar": 8,
+        "endLine": 161,
+        "endChar": 14
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66c86af7_1e941234",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "We always have a slot manager, no need to check?",
+      "range": {
+        "startLine": 195,
+        "startChar": 15,
+        "endLine": 195,
+        "endChar": 27
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e27eead0_dca27c78",
+        "filename": "modules/skottie/src/SkottiePriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "We may need to revisit whether we want to always allocate a slot manager, depending on how much overhead it adds for animations which don\u0027t use slots, or don\u0027t care about updating slot values.\n\nLet\u0027s move the initialization to the constructor for now, it looks a bit out of place here.",
+      "range": {
+        "startLine": 263,
+        "startChar": 48,
+        "endLine": 263,
+        "endChar": 73
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e4a2643_9e682b7b",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "We also need to trigger a revalidation as the last step, which means SlotManager should also store a reference to the SceneGraphRevalidator (landed recently).",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "446610f3_1e2ca85f",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "// TODO",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df7b9a01_21d2102b",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-25T14:56:34Z",
+      "side": 1,
+      "message": "Also needs revalidation.",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
