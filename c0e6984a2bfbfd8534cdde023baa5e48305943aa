@@ -33,6 +33,24 @@
       "message": "Rather than have two copies of this (even temporarily), could we just make the one in GrFragmentProcessors be declared in the header, and update the other call-sites in this file?",
       "revId": "c0e6984a2bfbfd8534cdde023baa5e48305943aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5dcb9ac_d9c8570c",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-25T14:13:40Z",
+      "side": 1,
+      "message": "Done, although I\u0027m bending the style rules since it meant to be a temporary addition to that namespace. (less renaming later)",
+      "parentUuid": "ac6f6782_99d92fe0",
+      "revId": "c0e6984a2bfbfd8534cdde023baa5e48305943aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
