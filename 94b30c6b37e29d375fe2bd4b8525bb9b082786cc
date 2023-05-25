@@ -249,6 +249,24 @@
       "parentUuid": "796b9eb0_79413355",
       "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03002803_7b2844b7",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-25T17:00:39Z",
+      "side": 1,
+      "message": "Right now the issue is that we cannot compile the test on the CI.\n\nWe don\u0027t run any of the Bazel tests on the CI except the ones in \"cpu_only_tests\".\n\nI would need to investigate why the rust rules aren\u0027t working with RBE, patch that upstream (if it is a bug on their end and not us holding it wrong) and then re-enable the test compilation. As far as running the test goes, we just have to add a job via some configuration once we know it compiles and want to test it.",
+      "parentUuid": "d081f303_1ffe0929",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
