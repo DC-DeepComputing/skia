@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4df346d3_56501f74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-05-25T16:14:27Z",
+      "side": 1,
+      "message": "+1 from me.\n\nI am actively working on CFF now so we\u0027ll hopefully be able to handle those fonts ahead of schedule.",
+      "revId": "456532c85710dc2cfde9695a23869da85493a605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
