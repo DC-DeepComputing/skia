@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb7ac707_c9388056",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-25T17:05:10Z",
+      "side": 1,
+      "message": "Can\u0027t really comment much on the infra side of things, but this looks good from the fonts side of things.",
+      "revId": "07eebee12dcc518ab7a03c6bcf968a8596f4d36d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
