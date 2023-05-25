@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "837d7169_0f51a26a",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-25T09:29:30Z",
+      "side": 1,
+      "message": "Unfortunately this broke the viewer Bazel build:\n\n```\n$ bazel build -c dbg --sandbox_base\u003d/dev/shm  --with_fontations //tools/viewer\nINFO: Analyzed target //tools/viewer:viewer (1 packages loaded, 30 targets configured).\nINFO: Found 1 target...\nERROR: /usr/local/google/home/drott/dev/skia/tools/viewer/BUILD.bazel:8:21: Compiling tools/viewer/Viewer.cpp failed: (Exit 1): clang_trampoline_linux.sh failed: error executing command toolchain/linux_trampolines/clang_trampoline_linux.sh -MD -MF bazel-out/k8-dbg-ST-387e0d3c9343/bin/tools/viewer/_objs/viewer_native_binary/Viewer.d ... (remaining 177 arguments skipped)\n\nUse --sandbox_debug to see verbose messages from the sandbox and retain the sandbox build root for debugging\ntools/viewer/Viewer.cpp:10:10: fatal error: \u0027bench/GpuTools.h\u0027 file not found\n#include \"bench/GpuTools.h\"\n         ^~~~~~~~~~~~~~~~~~\n```",
+      "revId": "037719930ce77dcb8e84974ebc7798abd59b5253",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
