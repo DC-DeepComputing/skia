@@ -16,6 +16,167 @@
       "message": "PTAL :)",
       "revId": "25df5532b8458ebea4a02c5c0de625dc0f73e6f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5e76bf5_a95feda8",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-25T16:52:58Z",
+      "side": 1,
+      "message": "I believe this is correct.",
+      "range": {
+        "startLine": 99,
+        "startChar": 47,
+        "endLine": 99,
+        "endChar": 84
+      },
+      "revId": "25df5532b8458ebea4a02c5c0de625dc0f73e6f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b19d925c_bbb0c89d",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-25T16:52:58Z",
+      "side": 1,
+      "message": "I think you want MtlGraphicsPipeline::kVertexBufferIndex. We always bind the vertex buffer to 0 and the instance buffer to 1.",
+      "range": {
+        "startLine": 100,
+        "startChar": 27,
+        "endLine": 100,
+        "endChar": 40
+      },
+      "revId": "25df5532b8458ebea4a02c5c0de625dc0f73e6f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d96619e_578cc8ab",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-25T16:52:58Z",
+      "side": 1,
+      "message": "MtlGraphicsPipeline::kInstanceBufferIndex",
+      "range": {
+        "startLine": 111,
+        "startChar": 27,
+        "endLine": 111,
+        "endChar": 42
+      },
+      "revId": "25df5532b8458ebea4a02c5c0de625dc0f73e6f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5e28281_d74a958d",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-25T16:52:58Z",
+      "side": 1,
+      "message": "kVertexBufferIndex",
+      "range": {
+        "startLine": 120,
+        "startChar": 16,
+        "endLine": 120,
+        "endChar": 29
+      },
+      "revId": "25df5532b8458ebea4a02c5c0de625dc0f73e6f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01515458_d94f60ed",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-25T16:52:58Z",
+      "side": 1,
+      "message": "kInstanceBufferIndex",
+      "range": {
+        "startLine": 127,
+        "startChar": 16,
+        "endLine": 127,
+        "endChar": 31
+      },
+      "revId": "25df5532b8458ebea4a02c5c0de625dc0f73e6f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce95fe13_8b121380",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-25T16:52:58Z",
+      "side": 1,
+      "message": "This feels like work that could be done in setup_vertex_input_state, matching the pushing of bindingDescs at line 118.",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 75
+      },
+      "revId": "25df5532b8458ebea4a02c5c0de625dc0f73e6f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd00266e_3d01bd39",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-25T16:52:58Z",
+      "side": 1,
+      "message": "Suggestion: Since you\u0027re passing the modules in VulkanGraphicsPipeline::Make() now I\u0027d move this in there so it doesn\u0027t get lost. Then when you set the modules in the VkPipelineShaderStageCreateInfo structs it can get deleted.",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 0
+      },
+      "revId": "25df5532b8458ebea4a02c5c0de625dc0f73e6f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
