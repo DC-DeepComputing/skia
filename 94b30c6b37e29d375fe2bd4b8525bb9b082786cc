@@ -16,6 +16,40 @@
       "message": "Discussed the bazel-enforce-iwyu bot failure with @kjlubick and they said they\u0027d look into a workaround for fixing Rust RBE build issues. Thanks, Kevin.",
       "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2860e1e_2ddac2c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-25T15:17:48Z",
+      "side": 1,
+      "message": "Not sure yet what\u0027s up with the IWYU job failure (looks like something internal) and Gold seems to think this made a bunch of gms draw nothing, but many of those gms are completely unrelated (don\u0027t even draw text), so that may be something else.",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42dec146_6ab16984",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-25T15:17:48Z",
+      "side": 1,
+      "message": "Also in the `optional(\"typeface_fontations\")` in Skia\u0027s top level `BUILD.gn`.",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
