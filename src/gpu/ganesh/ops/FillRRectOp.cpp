@@ -33,6 +33,27 @@ namespace skgpu::ganesh::FillRRectOp {
 
 namespace {
 
+// Note: Just checking m.restStaysRect is not sufficient
+bool skews_are_relevant(const SkMatrix& m) {
+    SkASSERT(!m.hasPerspective());
+
+    if (m[SkMatrix::kMSkewX] == 0.0f && m[SkMatrix::kMSkewY] == 0.0f) {
+        return false;
+    }
+
+    // TODO: could we get away with a cheaper matrix norm?
+    double kTol = SK_ScalarNearlyZero * SK_ScalarNearlyZero;
+    double scaleX  = m[SkMatrix::kMScaleX];
+    double skewXSq = m[SkMatrix::kMSkewX] * (double) m[SkMatrix::kMSkewX];
+    double scaleY  = m[SkMatrix::kMScaleY];
+    double skewYSq = m[SkMatrix::kMSkewY] * (double) m[SkMatrix::kMSkewY];
+
+    // The squared Frobineus norm of the upper left 2x2
+    double sqrdNorm = scaleX * scaleX + skewXSq + scaleY * scaleY + skewYSq;
+
+    return skewXSq > kTol * sqrdNorm || skewYSq > kTol * sqrdNorm;
+}
+
 class FillRRectOpImpl final : public GrMeshDrawOp {
 private:
     using Helper = GrSimpleMeshDrawOpHelper;
@@ -75,6 +96,10 @@ public:
 
     GrProcessorSet::Analysis finalize(const GrCaps&, const GrAppliedClip*, GrClampType) override;
     CombineResult onCombineIfPossible(GrOp*, SkArenaAlloc*, const GrCaps&) override;
+
+#if GR_TEST_UTILS
+    SkString onDumpInfo() const override;
+#endif
 
     void visitProxies(const GrVisitProxyFunc& func) const override {
         if (fProgramInfo) {
@@ -259,8 +284,8 @@ GrDrawOp::ClipResult FillRRectOpImpl::clipToShape(skgpu::ganesh::SurfaceDrawCont
             }
             clipToView.preConcat(clipMatrix);
             SkASSERT(!clipToView.hasPerspective());
-            if (!SkScalarNearlyZero(clipToView.getSkewX()) ||
-                !SkScalarNearlyZero(clipToView.getSkewY())) {
+
+            if (skews_are_relevant(clipToView)) {
                 // A rect in "clipMatrix" space is not a rect in "viewMatrix" space.
                 return ClipResult::kFail;
             }
@@ -354,6 +379,24 @@ GrOp::CombineResult FillRRectOpImpl::onCombineIfPossible(GrOp* op,
     fInstanceCount += that->fInstanceCount;
     return CombineResult::kMerged;
 }
+
+#if GR_TEST_UTILS
+SkString FillRRectOpImpl::onDumpInfo() const {
+    SkString str = SkStringPrintf("# instances: %u\n", fInstanceCount);
+    str += fHelper.dumpInfo();
+    int i = 0;
+    for (Instance* tmp = fHeadInstance; tmp; tmp = tmp->fNext, ++i) {
+        str.appendf("%d: Color: [%.2f, %.2f, %.2f, %.2f] ",
+                    i, tmp->fColor.fR, tmp->fColor.fG, tmp->fColor.fB, tmp->fColor.fA);
+        SkMatrix m = tmp->fViewMatrix;
+        str.appendf("ViewMatrix: [%.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f] ",
+                    m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]);
+        SkRect r = tmp->fRRect.rect();
+        str.appendf("Rect: [%f %f %f %f]\n", r.fLeft, r.fTop, r.fRight, r.fBottom);
+    }
+    return str;
+}
+#endif
 
 class FillRRectOpImpl::Processor final : public GrGeometryProcessor {
 public:
