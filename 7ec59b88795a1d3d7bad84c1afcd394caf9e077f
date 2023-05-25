@@ -16,6 +16,52 @@
       "message": "I\u0027ll check in on this CL tomorrow afternoon to see if I can check it in.",
       "revId": "7ec59b88795a1d3d7bad84c1afcd394caf9e077f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faed818f_cb6b03c2",
+        "filename": "src/base/SkQuads.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-25T14:49:41Z",
+      "side": 1,
+      "message": "I don\u0027t quite understand this calculation. Say I have b2 \u003d 1.1 and ac \u003d 1.0. Then roughDeterminant \u003d 0.1, which has no cancellation, but 3*roughD \u003c b2+ac so we fall into the extra precision case. Are we just being super conservative here? Where does the 3 come from?",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 56
+      },
+      "revId": "7ec59b88795a1d3d7bad84c1afcd394caf9e077f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c066f2b_03b7d70f",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-25T14:49:41Z",
+      "side": 1,
+      "message": "Nit: discriminant",
+      "range": {
+        "startLine": 26,
+        "startChar": 40,
+        "endLine": 26,
+        "endChar": 53
+      },
+      "revId": "7ec59b88795a1d3d7bad84c1afcd394caf9e077f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
