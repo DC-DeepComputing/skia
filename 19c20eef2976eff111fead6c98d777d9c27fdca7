@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b39c5652_049ec113",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-25T10:42:01Z",
+      "side": 1,
+      "message": "Thanks! I\u0027ve updated the patch, but I\u0027ll wait for kjlubick\u0027s patch to land and rebase on it.",
+      "revId": "19c20eef2976eff111fead6c98d777d9c27fdca7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bbfdac68_5ce08848",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-25T10:42:01Z",
+      "side": 1,
+      "message": "Lots!\n\nI updated the patch so that SkJpegCodec uses SkJpegMetadataDecoder interface for color profile and XMP data, and I merged the MPF paths (which are still a bit odd), so now all of the Jpeg decode tests are testing SkJpegMetadataDecoder.\n\nI\u0027m going to follow this up with a patch that will move SkJpegMetadataDecoderImpl out of this file and into its own separate file (it\u0027ll require cleaning up a bit of the XMP stuff). That way we can have the metadata parsing be completely independent of libjpeg.",
+      "parentUuid": "588bb992_edb04f97",
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "27484cb2_525961b3",
         "filename": "include/private/SkJpegMetadataDecoder.h",
         "patchSetId": 6
@@ -72,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f25a4f94_f6a37109",
+        "filename": "include/private/SkJpegMetadataDecoder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-25T10:42:01Z",
+      "side": 1,
+      "message": "This is used as an early-out (if there\u0027s no MPF then there\u0027s no gainmap).\n\nRenamed this to `mightHaveGainmapImage`.",
+      "parentUuid": "27484cb2_525961b3",
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e02c8e39_7457d30b",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 6
@@ -83,6 +119,30 @@
       "writtenOn": "2023-05-24T17:47:51Z",
       "side": 1,
       "message": "I think you meant to delete this word?",
+      "range": {
+        "startLine": 157,
+        "startChar": 30,
+        "endLine": 157,
+        "endChar": 32
+      },
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a33a0a1_07017626",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-25T10:42:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e02c8e39_7457d30b",
       "range": {
         "startLine": 157,
         "startChar": 30,
@@ -118,6 +178,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "124a55a7_de746f4f",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-25T10:42:01Z",
+      "side": 1,
+      "message": "I can\u0027t remember a reason why, so I think it was a mistake (maybe from copying the exif code above).",
+      "parentUuid": "00d99582_7c9a12b4",
+      "range": {
+        "startLine": 282,
+        "startChar": 68,
+        "endLine": 282,
+        "endChar": 73
+      },
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bd39e85_067edcc0",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 6
@@ -129,6 +213,30 @@
       "writtenOn": "2023-05-24T18:12:36Z",
       "side": 1,
       "message": "Yes, thanks Leon. Looks like there will be a merge conflict to resolve after https://skia-review.googlesource.com/c/skia/+/702138",
+      "range": {
+        "startLine": 1140,
+        "startChar": 44,
+        "endLine": 1140,
+        "endChar": 62
+      },
+      "revId": "d5bcfe6b57e10af413e91174ed7a8c7e0363cafb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e179bc08_de2568da",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-25T10:42:01Z",
+      "side": 1,
+      "message": "I can wait for that to land and rebase on top of it.\n\nFrom the look of it, we can probably change the SkJpegInfo stuff to use SkJpegMetadataDecoder and SkJpegSegmentScan (and then we won\u0027t need the separate libjpeg implementation).",
+      "parentUuid": "4bd39e85_067edcc0",
       "range": {
         "startLine": 1140,
         "startChar": 44,
