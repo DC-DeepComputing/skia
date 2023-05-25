@@ -50,6 +50,23 @@
       "message": "Also in the `optional(\"typeface_fontations\")` in Skia\u0027s top level `BUILD.gn`.",
       "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "796b9eb0_79413355",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-25T15:45:48Z",
+      "side": 1,
+      "message": "I think we\u0027ll want to land http://review.skia.org/703366 and then add tags \u003d [\"manual\"] along with a comment that the rust toolchain does not seem to work on RBE fully",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
