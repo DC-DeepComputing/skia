@@ -35,6 +35,86 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f4833e2_148ddcf1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-25T15:50:04Z",
+      "side": 1,
+      "message": "Other than that, this lgtm",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2df534df_8d536d2a",
+        "filename": "include/ports/SkTypeface_fontations_factory.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-25T15:50:04Z",
+      "side": 1,
+      "message": "SkFontMgr has `_factory.cpp` in order to facilitate a default SkFontMgr, but there are no `_factory.h` files because the actual `SkFontMgr_New_Foo` are in the `include/ports/SkFontMgr_foo.h` headers. So in theory this should be `SkTypeface_fontations.h`, but Skia wants all the header names to be unique, so that doesn\u0027t work, does it? The other ports get away with it by the public headers being more generic (and possibly less well named), like `include/ports/SkTypeface_win.h` as the public header and `src/ports/SkTypeface_win_dw.h` as the internal header name.\n\nI\u0027d hate to create yet more churn on this CL, but one Chromium starts using this file it will be more difficult to rename. I feel like this public header should get the \"better\" name of `SkTypeface_fontations.h` and maybe the internal one in `src/ports` should be `SkTypeface_fontations_priv.h` or something (I really dislike the `impl` and `priv` things, but visibility in headers is silly).",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0724d8a_65f6a17e",
+        "filename": "include/ports/SkTypeface_fontations_factory.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-25T15:50:04Z",
+      "side": 1,
+      "message": "I\u0027d complain about the inconsistency of this name, but we\u0027re already so inconsistent that making it consistent with anything else would be inconsistent at this point. Though generally Skia tries to make all top level functions like this start with `Sk`. Maybe we should use the existing pattern on SkFontMgr (like `SkFontMgr_New_Android`) and name this function `SkTypeface_New_Fontations`. Though maybe breaking with that and being `SkTypeface_Make_Fontations` would be more consistent with the `Make` terminology used in SkTypeface?\n\nSkia started out with `Create` everywhere, but those all returned raw pointers because it was all C++03. To have a different name when updating to smart pointers `Make` was the replacement. But early on some things used `New`. So now there is a mix of `Create`, `Make`, and `New`. An English thesaurus is quite thick.",
+      "range": {
+        "startLine": 17,
+        "startChar": 25,
+        "endLine": 17,
+        "endChar": 51
+      },
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73e18467_6c772628",
+        "filename": "include/ports/SkTypeface_fontations_factory.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-25T15:50:04Z",
+      "side": 1,
+      "message": "This should take `SkFontArguments`. Even if it doesn\u0027t respect all the settings yet that\u0027s fine. The entire point of `SkFontArguments` is to be able to add more arguments to these factory functions without needing to a ton of typing plumbing a new argument around or update users immediately as part of the same change.",
+      "range": {
+        "startLine": 18,
+        "startChar": 52,
+        "endLine": 18,
+        "endChar": 69
+      },
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42dec146_6ab16984",
