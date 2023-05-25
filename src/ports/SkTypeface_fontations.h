@@ -23,8 +23,14 @@ class SkTypeface_Fontations : public SkTypeface {
 public:
     SkTypeface_Fontations(std::unique_ptr<SkStreamAsset> font_data, uint32_t ttcIndex = 0);
 
+    bool hasValidBridgeFontRef() const;
     const fontations_ffi::BridgeFontRef& getBridgeFontRef() { return *fBridgeFontRef; }
 
+    static constexpr SkTypeface::FactoryId FactoryId = SkSetFourByteTag('f','n','t','a');
+
+    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>, const SkFontArguments&);
+
+    struct Register { Register(); };
 protected:
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override;
     sk_sp<SkTypeface> onMakeClone(const SkFontArguments& args) const override {
@@ -36,7 +42,7 @@ protected:
     std::unique_ptr<SkAdvancedTypefaceMetrics> onGetAdvancedMetrics() const override {
         return nullptr;
     }
-    void onGetFontDescriptor(SkFontDescriptor*, bool*) const override {}
+    void onGetFontDescriptor(SkFontDescriptor*, bool*) const override;
     void onCharsToGlyphs(const SkUnichar* chars, int count, SkGlyphID glyphs[]) const override;
     int onCountGlyphs() const override;
     void getPostScriptGlyphNames(SkString*) const override {}
