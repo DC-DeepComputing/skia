@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dab07ba2_6fcb449a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-26T18:22:58Z",
+      "side": 1,
+      "message": "I don\u0027t know that I\u0027ve ever built SkQP before. Right now I\u0027m getting the error:\n\n```\n+ ninja -C /usr/local/google/home/scroggo/skia/out/skqp/x64 libskqp_app.so \nninja: Entering directory `/usr/local/google/home/scroggo/skia/out/skqp/x64\u0027\n[5/5] link libskqp_app.so\nTraceback (most recent call last):\n  File \"/usr/local/google/home/scroggo/skia/tools/skqp/make_universal_apk.py\", line 59, in \u003cmodule\u003e\n    main()\n  File \"/usr/local/google/home/scroggo/skia/tools/skqp/make_universal_apk.py\", line 56, in main\n    make_apk(options)\n  File \"/usr/local/google/home/scroggo/skia/tools/skqp/make_universal_apk.py\", line 48, in make_apk\n    create_apk.create_apk(opts)\n  File \"/usr/local/google/home/scroggo/skia/tools/skqp/create_apk.py\", line 194, in create_apk\n    create_apk_impl(opts)\n  File \"/usr/local/google/home/scroggo/skia/tools/skqp/create_apk.py\", line 163, in create_apk_impl\n    accept_android_license(opts.android_home)\n  File \"/usr/local/google/home/scroggo/skia/tools/skqp/create_apk.py\", line 105, in accept_android_license\n    proc \u003d subprocess.Popen(\n  File \"/usr/lib/python3.10/subprocess.py\", line 971, in __init__\n    self._execute_child(args, executable, preexec_fn, close_fds,\n  File \"/usr/lib/python3.10/subprocess.py\", line 1847, in _execute_child\n    raise child_exception_type(errno_num, err_msg, err_filename)\nFileNotFoundError: [Errno 2] No such file or directory: \u0027/usr/local/google/home/scroggo/Android/Sdk/tools/bin/sdkmanager\u0027\n```\n\nI *think* `ANDROID_HOME` is pointing to the right place. The instructions in the `README` seem to be out of date; the `#command-tools` at the end of https://developer.android.com/studio/#command-tools doesn\u0027t seem to have any effect. But I\u0027ve downloaded AndroidStudio, run `./studio.sh`, and installed the \"Android SDK Command-line Tools\" from the UI. If `ANDROID_HOME` is supposed to point to the SDK, \u0027/usr/local/google/home/scroggo/Android/Sdk` is where I put that.\n\nBut I don\u0027t see `tools/bin/sdkmanager` anywhere, and honestly I don\u0027t know where that string came from in the scripts.\n\nAny idea what\u0027s going wrong?",
+      "revId": "2099c925d0c97cc83aea9cbd1134a286416e2b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f6cca73_3646c3a8",
+        "filename": "tests/SkDSLRuntimeEffectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-26T18:22:58Z",
+      "side": 1,
+      "message": "Is this correct?",
+      "range": {
+        "startLine": 283,
+        "startChar": 35,
+        "endLine": 283,
+        "endChar": 62
+      },
+      "revId": "2099c925d0c97cc83aea9cbd1134a286416e2b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
