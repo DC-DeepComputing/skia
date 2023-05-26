@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61c3567e_9c879af8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-26T15:34:11Z",
+      "side": 1,
+      "message": "I\u0027m all for removing this if we can! Do we happen to know when it looks like this was fixed? It would be nice to be able to tell people that stuff isn\u0027t going to work on old xcode clangs if it was fixed relatively recently.",
+      "revId": "1b9dc27f11aec5505fb8823447b763eeae5da7d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
