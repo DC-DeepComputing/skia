@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5afbc5b_cbff0828",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-26T15:27:43Z",
+      "side": 1,
+      "message": "FYI: Michael is also looking at changing the interface for table color filters. That work might collide with this?",
+      "revId": "80c066ae4fcbaab1d69e53a9b6cfe319c5170732",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
