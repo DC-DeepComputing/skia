@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkMatrixColorFilter.h"
+
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkUnPreMultiply.h"
 #include "include/effects/SkColorMatrix.h"
@@ -33,53 +35,13 @@ static bool is_alpha_unchanged(const float matrix[20]) {
         && SkScalarNearlyZero (srcA[4]);
 }
 
-class SkColorFilter_Matrix final : public SkColorFilterBase {
-public:
-    enum class Domain : uint8_t { kRGBA, kHSLA };
-
-    explicit SkColorFilter_Matrix(const float array[20], Domain);
-
-    bool appendStages(const SkStageRec& rec, bool shaderIsOpaque) const override;
-
-    bool onIsAlphaUnchanged() const override { return fAlphaIsUnchanged; }
-
-#if defined(SK_GANESH)
-    GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
-                                   GrRecordingContext*,
-                                   const GrColorInfo&,
-                                   const SkSurfaceProps&) const override;
-#endif
-#if defined(SK_GRAPHITE)
-    void addToKey(const skgpu::graphite::KeyContext&,
-                  skgpu::graphite::PaintParamsKeyBuilder*,
-                  skgpu::graphite::PipelineDataGatherer*) const override;
-#endif
-
-private:
-    friend void ::SkRegisterMatrixColorFilterFlattenable();
-    SK_FLATTENABLE_HOOKS(SkColorFilter_Matrix)
-
-    void flatten(SkWriteBuffer&) const override;
-    bool onAsAColorMatrix(float matrix[20]) const override;
-
-#if defined(SK_ENABLE_SKVM)
-    skvm::Color onProgram(skvm::Builder*, skvm::Color,
-                          const SkColorInfo& dst,
-                          skvm::Uniforms* uniforms, SkArenaAlloc*) const override;
-#endif
-
-    float  fMatrix[20];
-    bool   fAlphaIsUnchanged;
-    Domain fDomain;
-};
-
-SkColorFilter_Matrix::SkColorFilter_Matrix(const float array[20], Domain domain)
+SkMatrixColorFilter::SkMatrixColorFilter(const float array[20], Domain domain)
         : fAlphaIsUnchanged(is_alpha_unchanged(array))
         , fDomain(domain) {
     memcpy(fMatrix, array, 20 * sizeof(float));
 }
 
-void SkColorFilter_Matrix::flatten(SkWriteBuffer& buffer) const {
+void SkMatrixColorFilter::flatten(SkWriteBuffer& buffer) const {
     SkASSERT(sizeof(fMatrix)/sizeof(float) == 20);
     buffer.writeScalarArray(fMatrix, 20);
 
@@ -87,7 +49,7 @@ void SkColorFilter_Matrix::flatten(SkWriteBuffer& buffer) const {
     buffer.writeBool(fDomain == Domain::kRGBA);
 }
 
-sk_sp<SkFlattenable> SkColorFilter_Matrix::CreateProc(SkReadBuffer& buffer) {
+sk_sp<SkFlattenable> SkMatrixColorFilter::CreateProc(SkReadBuffer& buffer) {
     float matrix[20];
     if (!buffer.readScalarArray(matrix, 20)) {
         return nullptr;
@@ -98,14 +60,14 @@ sk_sp<SkFlattenable> SkColorFilter_Matrix::CreateProc(SkReadBuffer& buffer) {
                    : SkColorFilters::HSLAMatrix(matrix);
 }
 
-bool SkColorFilter_Matrix::onAsAColorMatrix(float matrix[20]) const {
+bool SkMatrixColorFilter::onAsAColorMatrix(float matrix[20]) const {
     if (matrix) {
         memcpy(matrix, fMatrix, 20 * sizeof(float));
     }
     return true;
 }
 
-bool SkColorFilter_Matrix::appendStages(const SkStageRec& rec, bool shaderIsOpaque) const {
+bool SkMatrixColorFilter::appendStages(const SkStageRec& rec, bool shaderIsOpaque) const {
     const bool willStayOpaque = shaderIsOpaque && fAlphaIsUnchanged,
                          hsla = fDomain == Domain::kHSLA;
 
@@ -120,7 +82,7 @@ bool SkColorFilter_Matrix::appendStages(const SkStageRec& rec, bool shaderIsOpaq
 }
 
 #if defined(SK_ENABLE_SKVM)
-skvm::Color SkColorFilter_Matrix::onProgram(skvm::Builder* p, skvm::Color c,
+skvm::Color SkMatrixColorFilter::onProgram(skvm::Builder* p, skvm::Color c,
                                             const SkColorInfo& /*dst*/,
                                             skvm::Uniforms* uniforms, SkArenaAlloc*) const {
     auto apply_matrix = [&](auto xyzw) {
@@ -187,7 +149,7 @@ static std::unique_ptr<GrFragmentProcessor> hsl_to_rgb(std::unique_ptr<GrFragmen
                           GrSkSLFP::OptFlags::kPreservesOpaqueInput);
 }
 
-GrFPResult SkColorFilter_Matrix::asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> fp,
+GrFPResult SkMatrixColorFilter::asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> fp,
                                                      GrRecordingContext*,
                                                      const GrColorInfo&,
                                                      const SkSurfaceProps&) const {
@@ -214,7 +176,7 @@ GrFPResult SkColorFilter_Matrix::asFragmentProcessor(std::unique_ptr<GrFragmentP
 #endif // defined(SK_GANESH)
 
 #if defined(SK_GRAPHITE)
-void SkColorFilter_Matrix::addToKey(const skgpu::graphite::KeyContext& keyContext,
+void SkMatrixColorFilter::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                     skgpu::graphite::PaintParamsKeyBuilder* builder,
                                     skgpu::graphite::PipelineDataGatherer* gatherer) const {
     using namespace skgpu::graphite;
@@ -230,29 +192,31 @@ void SkColorFilter_Matrix::addToKey(const skgpu::graphite::KeyContext& keyContex
 ///////////////////////////////////////////////////////////////////////////////
 
 static sk_sp<SkColorFilter> MakeMatrix(const float array[20],
-                                       SkColorFilter_Matrix::Domain domain) {
+                                       SkMatrixColorFilter::Domain domain) {
     if (!sk_floats_are_finite(array, 20)) {
         return nullptr;
     }
-    return sk_make_sp<SkColorFilter_Matrix>(array, domain);
+    return sk_make_sp<SkMatrixColorFilter>(array, domain);
 }
 
 sk_sp<SkColorFilter> SkColorFilters::Matrix(const float array[20]) {
-    return MakeMatrix(array, SkColorFilter_Matrix::Domain::kRGBA);
+    return MakeMatrix(array, SkMatrixColorFilter::Domain::kRGBA);
 }
 
 sk_sp<SkColorFilter> SkColorFilters::Matrix(const SkColorMatrix& cm) {
-    return MakeMatrix(cm.fMat.data(), SkColorFilter_Matrix::Domain::kRGBA);
+    return MakeMatrix(cm.fMat.data(), SkMatrixColorFilter::Domain::kRGBA);
 }
 
 sk_sp<SkColorFilter> SkColorFilters::HSLAMatrix(const float array[20]) {
-    return MakeMatrix(array, SkColorFilter_Matrix::Domain::kHSLA);
+    return MakeMatrix(array, SkMatrixColorFilter::Domain::kHSLA);
 }
 
 sk_sp<SkColorFilter> SkColorFilters::HSLAMatrix(const SkColorMatrix& cm) {
-    return MakeMatrix(cm.fMat.data(), SkColorFilter_Matrix::Domain::kHSLA);
+    return MakeMatrix(cm.fMat.data(), SkMatrixColorFilter::Domain::kHSLA);
 }
 
 void SkRegisterMatrixColorFilterFlattenable() {
-    SK_REGISTER_FLATTENABLE(SkColorFilter_Matrix);
+    SK_REGISTER_FLATTENABLE(SkMatrixColorFilter);
+    // Previous name
+    SkFlattenable::Register("SkColorFilter_Matrix", SkMatrixColorFilter::CreateProc);
 }
