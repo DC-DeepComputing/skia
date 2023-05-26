@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e3bec51_beb6d3e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-26T14:09:51Z",
+      "side": 1,
+      "message": "It looks like `bazel/rbe/gce_linux/cc/BUILD` and `gn/skia/BUILD.gn` both set `-fno-omit-frame-pointer`?",
+      "revId": "405ce5c3efa3de2230553231dcc7a1ac699d5bea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
