@@ -16,6 +16,29 @@
       "message": "Thanks, updated!",
       "revId": "467e23d939dbf5a07357954b8da84b49bebeaf46",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05910c44_afebe46f",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-26T21:07:49Z",
+      "side": 1,
+      "message": "Please make this\n\n```\n#else\n        return false;\n#endif\n```\n\nI\u0027m kind of surprised this didn\u0027t cause a build failure, but it seems it could if we changed a setting. (Unreachable statement.)",
+      "range": {
+        "startLine": 1343,
+        "startChar": 0,
+        "endLine": 1344,
+        "endChar": 21
+      },
+      "revId": "467e23d939dbf5a07357954b8da84b49bebeaf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
