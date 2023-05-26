@@ -114,6 +114,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0dc08ab6_a328b84e",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T15:46:14Z",
+      "side": 1,
+      "message": "Add some words here re \u0027explicitOutput\u0027 ?",
+      "range": {
+        "startLine": 829,
+        "startChar": 47,
+        "endLine": 829,
+        "endChar": 48
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c38f042_5db529c8",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T15:46:14Z",
+      "side": 1,
+      "message": "explicitOutputBounds ?",
+      "range": {
+        "startLine": 861,
+        "startChar": 72,
+        "endLine": 861,
+        "endChar": 86
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20cd69d3_840dae4b",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T15:46:14Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "76e63849_83737dc3",
         "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
         "patchSetId": 15
