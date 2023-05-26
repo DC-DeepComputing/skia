@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47b10100_9b3be3a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-05-26T13:01:54Z",
+      "side": 1,
+      "message": "This is currently unused. This has been tested with https://crrev.com/c/4566568. Awaiting for analyze_includes.py owner to return on 5/31 to discuss ways to make it usable for non-chromium projects.\n\nFYI I\u0027m pretty sure analyze_includes.py\u0027s re\u0027s are coupled to GN\u0027s build output. I intend to make a similar change for our Bazel build files.",
+      "revId": "cfdde57b8244b3d343c6f394ddd583737aafc2af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
