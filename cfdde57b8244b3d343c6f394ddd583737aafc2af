@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41e68d7d_b7f41fd2",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-05-26T14:17:22Z",
+      "side": 1,
+      "message": "Thx for your input Ben. I intentionally left off the goma check because I don\u0027t believe that our GN config files use Goma. Maybe I\u0027m wrong here?? Setting `use_goma \u003d true` does not do a goma build and will fail with an `Undefined identifier` if that check is added. To avoid the error I\u0027d need to define use_goma in `BUILDCONFIG.gn` - which would be odd since it won\u0027t be used. There\u0027s a whole lot that I don\u0027t know about GN, so please LMK if that check should be added.\n\nRegarding the output. The plan is to create a dashboard like go/chrome-includes. This isn\u0027t for IWYU checking, but for reducing the \"total build size\" to improve build times.",
+      "parentUuid": "4ce86768_f5d968d2",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 37,
+        "endChar": 15
+      },
+      "revId": "cfdde57b8244b3d343c6f394ddd583737aafc2af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3697902d_c917b9ac",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 2
