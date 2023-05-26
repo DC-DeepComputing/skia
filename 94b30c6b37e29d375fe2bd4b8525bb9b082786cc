@@ -267,6 +267,24 @@
       "parentUuid": "d081f303_1ffe0929",
       "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "424d9060_35c43c05",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-05-26T08:10:50Z",
+      "side": 1,
+      "message": "\u003e I think we\u0027ll want to land http://review.skia.org/703366 and then add tags \u003d [\"manual\"] along with a comment that the rust toolchain does not seem to work on RBE fully\n\nTag and comment added, with a TODO referencing newly filed https://bugs.chromium.org/p/skia/issues/detail?id\u003d14342. While there\u0027s no immediate rush with it, I assigned that to you Kevin and would be happy if you could at some point look into enabling this test on the bots.",
+      "parentUuid": "03002803_7b2844b7",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
