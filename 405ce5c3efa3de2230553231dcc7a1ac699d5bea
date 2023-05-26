@@ -34,6 +34,24 @@
       "parentUuid": "7e3bec51_beb6d3e5",
       "revId": "405ce5c3efa3de2230553231dcc7a1ac699d5bea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f2e8fb5_3311cbb3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-26T14:33:19Z",
+      "side": 1,
+      "message": "Yeah, interesting. Mostly I\u0027m trying to understand why John added all this in the first place. There is the claim that it makes a large difference, but I don\u0027t see any concrete descriptions of what that difference is. Did this just make the debug builds faster so the testing didn\u0027t get bogged down? Maybe this was related to https://bugs.llvm.org/show_bug.cgi?id\u003d9825 (I think that was fixed in clang 10+)? Anyhow, I just feel like I\u0027m looking a Chesterson\u0027s Fence and want to know why it is there even though I don\u0027t see a reason for it at the moment.",
+      "parentUuid": "70bdf7b1_479c912e",
+      "revId": "405ce5c3efa3de2230553231dcc7a1ac699d5bea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
