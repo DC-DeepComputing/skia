@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c71df3e0_1b207f71",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-26T17:58:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c6053d3_233d3564",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a309726f_fd237206",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-26T13:46:53Z",
       "side": 1,
       "message": "We only need to revalidate once, at the end -- move out of the loop.",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f29ac355_b9da4618",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-26T17:58:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a309726f_fd237206",
       "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04ebd513_573c3791",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-26T17:58:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f6a0d7f_46e1fdcd",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40614557_dd8335c3",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-05-26T13:46:53Z",
       "side": 1,
       "message": "Can the group be empty?  If so, we should also check for that before accessing at(0).",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9de17bec_9fbc775e",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-26T17:58:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40614557_dd8335c3",
       "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -109,6 +181,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "079a67e0_07b165bc",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-26T17:58:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c63320c_752f4085",
+      "range": {
+        "startLine": 58,
+        "startChar": 60,
+        "endLine": 58,
+        "endChar": 64
+      },
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f85f0a23_e5b28e55",
@@ -126,6 +222,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0fde4b1_a623c412",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-26T17:58:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f85f0a23_e5b28e55",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b32ceb8e_156aa3ad",
@@ -139,6 +253,24 @@
       "writtenOn": "2023-05-26T13:46:53Z",
       "side": 1,
       "message": "nit: ditto",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3f58d21_01ea844e",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-26T17:58:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b32ceb8e_156aa3ad",
       "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

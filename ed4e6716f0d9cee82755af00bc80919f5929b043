@@ -183,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe0c1e38_8586fb2a",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-05-26T17:58:38Z",
+      "side": 1,
+      "message": "Getters are now const, since we can return a nullptr for getImageSlot (if the key is not found) we won\u0027t be able pass a ref. Done.",
+      "parentUuid": "14efa00a_5c08fdb8",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 41
+      },
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32426d68_f28409a0",
