@@ -34,6 +34,24 @@
       "parentUuid": "c5dd0039_bd7eb427",
       "revId": "161c3d2fdf492b0030e7b0871b243a86049acae3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97d41d39_720250ff",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-05-26T11:46:44Z",
+      "side": 1,
+      "message": "This seems to be partially addressed in https://skia-review.googlesource.com/c/skia/+/702877 where we have a fallible `Make` Method that checks for a valid sfnt table structure.",
+      "parentUuid": "8881c560_290b31c6",
+      "revId": "161c3d2fdf492b0030e7b0871b243a86049acae3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
