@@ -16,6 +16,24 @@
       "message": "Even more interestingly `In x64 compilers, /Oy and /Oy- are not available.` But yeah, this appears to force the frame pointer on x86.",
       "revId": "e648bf802cd2f5c016a07e29c92f61084e01b2d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95d74aa3_6d002755",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-26T14:58:45Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "f0d1db78_dde411b1",
+      "revId": "e648bf802cd2f5c016a07e29c92f61084e01b2d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
