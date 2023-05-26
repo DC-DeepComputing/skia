@@ -285,6 +285,24 @@
       "parentUuid": "03002803_7b2844b7",
       "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14f306e9_9438b3c7",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 4
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-26T13:01:47Z",
+      "side": 1,
+      "message": "I have uploaded a patch that skips the test compilation via a different route. I think this will actually speed up the CI job a bit by doing fewer extraneous compile steps.",
+      "parentUuid": "424d9060_35c43c05",
+      "revId": "94b30c6b37e29d375fe2bd4b8525bb9b082786cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
