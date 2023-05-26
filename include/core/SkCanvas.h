@@ -1628,7 +1628,7 @@ public:
         int fMatrixIndex = -1; // Index into the preViewMatrices arg, or < 0
         float fAlpha = 1.f;
         unsigned fAAFlags = kNone_QuadAAFlags; // QuadAAFlags
-        bool fHasClip = false; // True to use next 4 points in dstClip arg as quad
+        bool fHasClip = false; // True to use next 4 points in dstClips arg as quad
     };
 
     /**

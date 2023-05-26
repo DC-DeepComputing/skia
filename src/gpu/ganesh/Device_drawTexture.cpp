@@ -568,7 +568,8 @@ void Device::drawImageQuad(const SkImage* image,
                                        constraint,
                                        sampling,
                                        tileMode,
-                                       draw_image);
+                                       draw_image,
+                                       this);
                 return;
             }
         }
@@ -625,7 +626,7 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
     SkBlendMode mode = paint.getBlendMode_or(SkBlendMode::kSrcOver);
 
     AutoTArray<GrTextureSetEntry> textures(count);
-    // We accumulate compatible proxies until we find an an incompatible one or reach the end and
+    // We accumulate compatible proxies until we find an incompatible one or reach the end and
     // issue the accumulated 'n' draws starting at 'base'. 'p' represents the number of proxy
     // switches that occur within the 'n' entries.
     int base = 0, n = 0, p = 0;

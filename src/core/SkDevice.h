@@ -339,12 +339,14 @@ protected:
     virtual void drawEdgeAAQuad(const SkRect& rect, const SkPoint clip[4],
                                 SkCanvas::QuadAAFlags aaFlags, const SkColor4f& color,
                                 SkBlendMode mode);
+public:
     // Default impl uses drawImageRect per entry, being anti-aliased only when an entry's edge flags
     // are all set. If there's a clip region, it will be applied using clipPath().
     virtual void drawEdgeAAImageSet(const SkCanvas::ImageSetEntry[], int count,
                                     const SkPoint dstClips[], const SkMatrix preViewMatrices[],
                                     const SkSamplingOptions&, const SkPaint&,
                                     SkCanvas::SrcRectConstraint);
+protected:
 
     virtual void drawDrawable(SkCanvas*, SkDrawable*, const SkMatrix*);
 
