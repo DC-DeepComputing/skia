@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbb31957_d393f9cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-26T15:37:18Z",
+      "side": 1,
+      "message": "... on second look, I think this CL is fine/desirable (once the G3 CL lands). The other refactor of the factory semantics can still proceed after this.",
+      "revId": "358c1d0812df945372e539da270afeb3883bc860",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
