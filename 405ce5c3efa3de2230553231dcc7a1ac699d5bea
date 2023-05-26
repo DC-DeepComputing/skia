@@ -52,6 +52,24 @@
       "parentUuid": "70bdf7b1_479c912e",
       "revId": "405ce5c3efa3de2230553231dcc7a1ac699d5bea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efdd1019_9e4c1464",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-26T14:51:19Z",
+      "side": 1,
+      "message": "Right. I actually chatted with John about this - he\u0027s going to double-check, but we suspect it was a just a mistake in which disassembly he was looking at.",
+      "parentUuid": "0f2e8fb5_3311cbb3",
+      "revId": "405ce5c3efa3de2230553231dcc7a1ac699d5bea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
