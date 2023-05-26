@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "29e4d4ef_463009a7",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T15:34:42Z",
+      "side": 1,
+      "message": "Ack - maybe add a TODO ?",
+      "parentUuid": "6b5d4c83_3702ad8e",
+      "range": {
+        "startLine": 750,
+        "startChar": 8,
+        "endLine": 750,
+        "endChar": 40
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb7e08ef_e1d76cb0",
         "filename": "src/core/SkImageFilterTypes.h",
         "patchSetId": 15
@@ -54,6 +78,30 @@
       "writtenOn": "2023-05-26T01:41:29Z",
       "side": 1,
       "message": "When `asShader()` first landed, I was assuming that the FilterResult\u0027s layer bounds were equivalent to the sampling bounds. This is generally pretty close to true, unless the non-transparent source image\u0027s bounds or a crop restrict the image\u0027s layer bounds relative to what had been requested by the parent filter.\n\nDepending on the nature of that filter, it may still need to evaluate every pixel for it\u0027s output and will sample the original desired output of the child. If this isn\u0027t conveyed to the asShader(), it won\u0027t know to resolve the internal image if there is cropping at play.\n\nThe good news is that in the future, with dry-run filter evaluations, this \u0027sampleBounds\u0027 argument is exactly what we want to collect every time we convert the context\u0027s source image to a shader in order to track the bounds that are calculated redundantly in `getInputLayerBounds()`. My hope is that that function can go away and all the bounds logic will shake out naturally from the details of each filter\u0027s `onFilterImage()` implementation.",
+      "range": {
+        "startLine": 779,
+        "startChar": 29,
+        "endLine": 779,
+        "endChar": 68
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b7adb46_6d3b05c0",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T15:34:42Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fb7e08ef_e1d76cb0",
       "range": {
         "startLine": 779,
         "startChar": 29,
