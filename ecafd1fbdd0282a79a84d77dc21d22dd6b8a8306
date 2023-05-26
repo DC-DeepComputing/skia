@@ -175,6 +175,70 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4a08a5b_30b0f29a",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T17:12:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "20cd69d3_840dae4b",
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c2a6a55_29558b05",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T17:12:21Z",
+      "side": 1,
+      "message": "Is this right ?",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 94
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9933d4d_67042cdf",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T17:12:21Z",
+      "side": 1,
+      "message": "\u0027end\u0027 doesn\u0027t seem to help me here - maybe \u0027anonymous\u0027 ?",
+      "range": {
+        "startLine": 131,
+        "startChar": 5,
+        "endLine": 131,
+        "endChar": 8
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76e63849_83737dc3",
