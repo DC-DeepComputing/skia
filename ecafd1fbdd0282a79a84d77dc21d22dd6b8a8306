@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb6e2528_60adb0d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-26T01:41:29Z",
+      "side": 1,
+      "message": "The canary layout tests look reasonable to me, so this will need to be staged like before after your main reviews are done.",
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b5d4c83_3702ad8e",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-26T01:41:29Z",
+      "side": 1,
+      "message": "Initially I added the flag because I anticipated lots of different default strategies, e.g. union, intersect, filling-output, etc. and figured kExplicit flag would parallel that.\n\nHowever, it\u0027s starting to look like the cases that could use intersect or first-input only conditionally use those (so explicit bounds are cleaner), and the union-cases from the legacy impl. really are more correctly meant to be desired-output-filling.\n\nI am planning to leave this for now, but once all the image filters are ported over, I will do a consolidation pass on the ShaderFlags that are actually used and the function signature for Builder::add() and Builder::eval().",
+      "range": {
+        "startLine": 750,
+        "startChar": 8,
+        "endLine": 750,
+        "endChar": 40
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb7e08ef_e1d76cb0",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-26T01:41:29Z",
+      "side": 1,
+      "message": "When `asShader()` first landed, I was assuming that the FilterResult\u0027s layer bounds were equivalent to the sampling bounds. This is generally pretty close to true, unless the non-transparent source image\u0027s bounds or a crop restrict the image\u0027s layer bounds relative to what had been requested by the parent filter.\n\nDepending on the nature of that filter, it may still need to evaluate every pixel for it\u0027s output and will sample the original desired output of the child. If this isn\u0027t conveyed to the asShader(), it won\u0027t know to resolve the internal image if there is cropping at play.\n\nThe good news is that in the future, with dry-run filter evaluations, this \u0027sampleBounds\u0027 argument is exactly what we want to collect every time we convert the context\u0027s source image to a shader in order to track the bounds that are calculated redundantly in `getInputLayerBounds()`. My hope is that that function can go away and all the bounds logic will shake out naturally from the details of each filter\u0027s `onFilterImage()` implementation.",
+      "range": {
+        "startLine": 779,
+        "startChar": 29,
+        "endLine": 779,
+        "endChar": 68
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76e63849_83737dc3",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-26T01:41:29Z",
+      "side": 1,
+      "message": "Both the old blend and arithmetic filters had very similar workflows for handling union vs intersect vs fg-only vs bg-only vs empty. They treated the infinite-bounds case as union and relied on onAffectsTransparentBlack() and super-class logic to correct the value reported to the final caller.\n\nI\u0027d like onAffectsTransparentBlack() to go away and bounds queries are the source of truth, so this updated function calls out the infinite bounds cases explicitly.",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 89
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "058f436d_5ab95f38",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-26T01:41:29Z",
+      "side": 1,
+      "message": "Nit: remove this, but assuming they do use src-over alpha blending, then the correct aggregate bounds is the union, which we get automatically from the initial values of `transparentOutsideFG` and `transparentOutsideBG`.",
+      "range": {
+        "startLine": 369,
+        "startChar": 0,
+        "endLine": 369,
+        "endChar": 88
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15a43ce4_ec39d7fb",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1497,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-26T01:41:29Z",
+      "side": 1,
+      "message": "This test case hadn\u0027t really been testing anything meaningful because the canvas was never being reset from the earlier draws, so while it should have been a no-op you couldn\u0027t really test it.",
+      "range": {
+        "startLine": 1497,
+        "startChar": 39,
+        "endLine": 1497,
+        "endChar": 50
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf3a30e5_b9d5f91b",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1832,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-26T01:41:29Z",
+      "side": 1,
+      "message": "`Blend(Src, /*bg\u003d*/nullptr, /*fg\u003d*/nullptr)` is always equal to the foreground, which now returns the `fg` unmodified, or null in this case. But that currently conflicts with the API requirements of `makeWithFilter()` that fails if the image filter is null.\n\nTo be consistent, makeWithFilter() should probably just return itself, but having that be consistent across the different SkImage subclasses right now is more than I want to take on.",
+      "range": {
+        "startLine": 1832,
+        "startChar": 52,
+        "endLine": 1832,
+        "endChar": 60
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b592bfd_667d8cad",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1946,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-26T01:41:29Z",
+      "side": 1,
+      "message": "These 3 new lines were cases that the old bounds logic had just been reporting as union, so not incorrect, but not as optimal as it could be.",
+      "range": {
+        "startLine": 1946,
+        "startChar": 0,
+        "endLine": 1946,
+        "endChar": 77
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
