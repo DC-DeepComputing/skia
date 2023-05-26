@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c219d74e_aa3edaee",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-26T13:35:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "85d268ce_a22b2868",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 37,
+        "endChar": 15
+      },
+      "revId": "cfdde57b8244b3d343c6f394ddd583737aafc2af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3697902d_c917b9ac",
