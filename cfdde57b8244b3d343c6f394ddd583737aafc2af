@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4ce86768_f5d968d2",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-26T13:53:38Z",
+      "side": 1,
+      "message": "Generally we only put stuff in `BUILDCONFIG.gn` if it is also in https://source.chromium.org/chromium/chromium/src/+/main:build/config/BUILDCONFIG.gn for compatibility with the other projects that use Chromium\u0027s build for their own builds. Chromium appears to set `show_includes` in `build/config/compiler/BUILD.gn`, which does seem to get dragged into `build/config/BUILDCONFIG.gn` on the line `\"//build/config/compiler:compiler\",`. So I suppose it\u0027s fine to pollute this global space for compatibility.\n\nThere also appears to be a sticky bit with https://source.chromium.org/chromium/chromium/src/+/main:build/config/compiler/BUILD.gn;l\u003d836;drc\u003dd1ebde1eddba5ca2dac6382f3f769ae6c6280e19 that doesn\u0027t appear to be addressed in this change? Does this matter for Skia?\n\nIs there a plan for actually looking at the output? We had (may still have?) a docs builder that built documentation, but no one ever looked at it. Maybe something hooked up to Perf?\n\nSkia has been moving toward enforcing include what you use on everything, which is slightly different but overlapping in many ways. This would possibly point out header files that should be split up in a way that include what you use wouldn\u0027t point out, but it appears a lot of the win in Chromium was just removing lots of unneeded includes which include what you use already covers. I assume that in proposing this you\u0027ve already run through the process locally, has this detected anything interesting?",
+      "parentUuid": "85d268ce_a22b2868",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 37,
+        "endChar": 15
+      },
+      "revId": "cfdde57b8244b3d343c6f394ddd583737aafc2af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3697902d_c917b9ac",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 2
