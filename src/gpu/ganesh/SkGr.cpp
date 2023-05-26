@@ -475,9 +475,9 @@ static inline bool skpaint_to_grpaint_impl(
             SkColorSpace* dstCS = dstColorInfo.colorSpace();
             grPaint->setColor4f(colorFilter->filterColor4f(origColor, dstCS, dstCS).premul());
         } else {
-            auto [success, fp] = as_CFB(colorFilter)->asFragmentProcessor(std::move(paintFP),
-                                                                          context, dstColorInfo,
-                                                                          surfaceProps);
+            auto [success, fp] = GrFragmentProcessors::Make(context, colorFilter,
+                                                            std::move(paintFP), dstColorInfo,
+                                                            surfaceProps);
             if (!success) {
                 return false;
             }
