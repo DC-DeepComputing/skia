@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4bbd5ba6_0c2a193b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2023-05-26T19:12:23Z",
+      "side": 1,
+      "message": "If you cherrypick this change into Android T does `atest CtsSkQPTestCases` run as expected?  I did have the ability to get it building independently working before so I\u0027m not exactly sure what is going wrong now.",
+      "parentUuid": "dab07ba2_6fcb449a",
+      "revId": "2099c925d0c97cc83aea9cbd1134a286416e2b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f6cca73_3646c3a8",
         "filename": "tests/SkDSLRuntimeEffectTest.cpp",
         "patchSetId": 2
@@ -31,6 +49,30 @@
       "writtenOn": "2023-05-26T18:22:58Z",
       "side": 1,
       "message": "Is this correct?",
+      "range": {
+        "startLine": 283,
+        "startChar": 35,
+        "endLine": 283,
+        "endChar": 62
+      },
+      "revId": "2099c925d0c97cc83aea9cbd1134a286416e2b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14a7145a_8c959c1f",
+        "filename": "tests/SkDSLRuntimeEffectTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2023-05-26T19:12:23Z",
+      "side": 1,
+      "message": "Yes, but if you just want to skip it then you could also use kNever",
+      "parentUuid": "5f6cca73_3646c3a8",
       "range": {
         "startLine": 283,
         "startChar": 35,
