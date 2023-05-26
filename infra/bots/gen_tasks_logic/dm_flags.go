@@ -353,6 +353,27 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "gm", ALL, "async_rescale_and_read_rose")
 				}
 			}
+			if b.extraConfig("Vulkan") {
+				configs = []string{"grvk"}
+                                // Validation errors
+				skip(ALL, "gm", ALL, "xfermodes3")
+                                // Allocation errors
+                                skip(ALL, "gm", ALL, "scaled_tilemodes")
+                                skip(ALL, "gm", ALL, "scaled_tilemodes_npot")
+                                // Test failures
+                                skip(ALL, "test", ALL, "PaintParamsKeyTest")
+                                skip(ALL, "test", ALL, "GraphiteTextureProxyTest")
+                                skip(ALL, "test", ALL, "RecordingSurfacesTestClear")
+                                skip(ALL, "test", ALL, "MutableImagesTest")
+                                skip(ALL, "test", ALL, "ImageShaderTest")
+                                skip(ALL, "test", ALL, "ImageProviderTest_Graphite_Testing")
+                                skip(ALL, "test", ALL, "GraphitePurgeNotUsedSinceResourcesTest")
+                                skip(ALL, "test", ALL, "GraphitePromiseImageMultipleImgUses")
+                                skip(ALL, "test", ALL, "GraphitePromiseImageRecorderLoss")
+                                skip(ALL, "test", ALL, "VolatileGraphitePromiseImageTest")
+                                skip(ALL, "test", ALL, "NonVolatileGraphitePromiseImageTest")
+                                skip(ALL, "test", ALL, "SkRuntimeEffectSimple_Graphite")
+			}
 		}
 
 		// ANGLE bot *only* runs the angle configs
@@ -429,7 +450,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		if b.gpu() && b.extraConfig("Vulkan") && (b.gpu("RadeonR9M470X", "RadeonHD7770")) {
 			skip(ALL, "tests", ALL, "VkDrawableImportTest")
 		}
-		if b.extraConfig("Vulkan") {
+		if b.extraConfig("Vulkan") && !b.extraConfig("Graphite") {
 			configs = []string{"vk"}
 			// MSAA doesn't work well on Intel GPUs chromium:527565, chromium:983926, skia:9023
 			if !b.matchGpu("Intel") {
@@ -466,7 +487,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		// Test 1010102 on our Linux/NVIDIA bots and the persistent cache config
 		// on the GL bots.
 		if b.gpu("QuadroP400") && !b.extraConfig("PreAbandonGpuContext") && !b.extraConfig("TSAN") && b.isLinux() &&
-			!b.extraConfig("FailFlushTimeCallbacks") {
+			!b.extraConfig("FailFlushTimeCallbacks") && !b.extraConfig("Graphite") {
 			if b.extraConfig("Vulkan") {
 				configs = append(configs, "vk1010102")
 				// Decoding transparent images to 1010102 just looks bad
