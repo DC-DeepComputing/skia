@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f259f49_098e19e3",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-26T13:46:53Z",
+      "side": 1,
+      "message": "It actually does work, but only if you don\u0027t do anything interesting with the type inline.  This usually means explicitly uninlining all constructors and the destructor.  E.g. sksg::Group is fwdeclared here: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skottie/src/text/TextAdapter.h;drc\u003da5c66fdd422c7fb01b446160e4f4af6d85e04d63;l\u003d23",
+      "parentUuid": "f2772297_4767fcd4",
+      "revId": "ed4e6716f0d9cee82755af00bc80919f5929b043",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "87d5c22c_e5c93285",

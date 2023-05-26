@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c6053d3_233d3564",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-26T13:46:53Z",
+      "side": 1,
+      "message": "This can be const, since we\u0027re only initializing in ctor.",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a309726f_fd237206",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-26T13:46:53Z",
+      "side": 1,
+      "message": "We only need to revalidate once, at the end -- move out of the loop.",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f6a0d7f_46e1fdcd",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-26T13:46:53Z",
+      "side": 1,
+      "message": "Ditto.",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40614557_dd8335c3",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-26T13:46:53Z",
+      "side": 1,
+      "message": "Can the group be empty?  If so, we should also check for that before accessing at(0).",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27b6beb2_5a734944",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-26T13:46:53Z",
+      "side": 1,
+      "message": "Yeah, we definitely want a `sp_sp\u003cImageAsset\u003e` return type, otherwise we\u0027re in undefined behavior territory.",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c63320c_752f4085",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-26T13:46:53Z",
+      "side": 1,
+      "message": "std::move(node)",
+      "range": {
+        "startLine": 58,
+        "startChar": 60,
+        "endLine": 58,
+        "endChar": 64
+      },
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f85f0a23_e5b28e55",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-26T13:46:53Z",
+      "side": 1,
+      "message": "nit: I would just inline, I think this should work:\n\n    fColorMap[slotID].push_back({colorValue, std::move(node)});",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b32ceb8e_156aa3ad",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-05-26T13:46:53Z",
+      "side": 1,
+      "message": "nit: ditto",
+      "revId": "9c3f6cf5aa3e63bc41a09ea8bb602b691fae9540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
