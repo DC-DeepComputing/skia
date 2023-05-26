@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "src/effects/SkTableColorFilter.h"
+
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorFilter.h"
