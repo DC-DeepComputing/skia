@@ -16,6 +16,24 @@
       "message": "I\u0027m all for removing this if we can! Do we happen to know when it looks like this was fixed? It would be nice to be able to tell people that stuff isn\u0027t going to work on old xcode clangs if it was fixed relatively recently.",
       "revId": "1b9dc27f11aec5505fb8823447b763eeae5da7d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "515a20ed_175bf0e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-26T16:04:55Z",
+      "side": 1,
+      "message": "I can\u0027t tell - there\u0027s no real information on this problem that I can dig up. I did find the code for the vzeroupper pass in their open-source clang repo [1], and it already has logic to avoid prefixing things like _chkstk (according to the comments). It\u0027s possible that the actual fix came when they fixed the properties of chkstk_darwin at some point (so the vzeroupper pass knew to ignore it).  I also realized that we were only doing the workaround on debug builds, so we\u0027ve been relying on optimized functions having small enough stacks that the bug didn\u0027t trigger anyway.",
+      "parentUuid": "61c3567e_9c879af8",
+      "revId": "1b9dc27f11aec5505fb8823447b763eeae5da7d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
