@@ -139,6 +139,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e924607_209bdcfe",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-05-26T14:42:28Z",
+      "side": 1,
+      "message": "Yeah, this is fine for now. I don\u0027t expect to run this configuration in goma anyway. I realize this isn\u0027t for iwyu checking, but enforcing iwyu is complimentary in that it also brings down the number of total includes and points out when includes are awkward. This tool would detect headers that are included a lot. Essentially iwyu detects all the papercuts while this tool creates a high level map. They\u0027re fairly complimentary that way. That being said, I am still interested in if this tool has already been used to point out any existing issues in Skia.",
+      "parentUuid": "41e68d7d_b7f41fd2",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 37,
+        "endChar": 15
+      },
+      "revId": "cfdde57b8244b3d343c6f394ddd583737aafc2af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3697902d_c917b9ac",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 2
