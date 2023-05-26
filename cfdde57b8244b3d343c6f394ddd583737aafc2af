@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85d268ce_a22b2868",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-05-26T13:33:44Z",
+      "side": 1,
+      "message": "Yes - same name(1).\n\n(1) https://source.chromium.org/chromium/chromium/src/+/main:build/config/compiler/BUILD.gn;l\u003d170;drc\u003dd1ebde1eddba5ca2dac6382f3f769ae6c6280e19",
+      "parentUuid": "ccf25649_46249b62",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 37,
+        "endChar": 15
+      },
+      "revId": "cfdde57b8244b3d343c6f394ddd583737aafc2af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3697902d_c917b9ac",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 2
@@ -54,6 +78,30 @@
       "writtenOn": "2023-05-26T13:05:22Z",
       "side": 1,
       "message": "Can you include an example of this output in the commit message for reference?",
+      "range": {
+        "startLine": 188,
+        "startChar": 23,
+        "endLine": 188,
+        "endChar": 30
+      },
+      "revId": "cfdde57b8244b3d343c6f394ddd583737aafc2af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96e4e916_33aa60a2",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-05-26T13:33:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3697902d_c917b9ac",
       "range": {
         "startLine": 188,
         "startChar": 23,
