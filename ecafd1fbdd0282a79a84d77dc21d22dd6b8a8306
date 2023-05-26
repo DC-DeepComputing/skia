@@ -218,6 +218,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "34081ffb_391b9fab",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T17:47:08Z",
+      "side": 1,
+      "message": "Okay I agree the logic is correct - maybe:\n// An arbitrary runtime blender or an arithmetic runtime blender with k3 !\u003d 0 affect transparent black\n?",
+      "parentUuid": "8c2a6a55_29558b05",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 94
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e9933d4d_67042cdf",
         "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
         "patchSetId": 15
@@ -241,6 +265,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aaab3a68_2b014f6d",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T17:47:08Z",
+      "side": 1,
+      "message": "Do we want to assert here ?",
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b6f71c5_28a28a50",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T17:47:08Z",
+      "side": 1,
+      "message": "is ?",
+      "range": {
+        "startLine": 219,
+        "startChar": 59,
+        "endLine": 219,
+        "endChar": 62
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "76e63849_83737dc3",
         "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
         "patchSetId": 15
@@ -257,6 +321,29 @@
         "startChar": 0,
         "endLine": 341,
         "endChar": 89
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "991b3846_488d808a",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-26T17:47:08Z",
+      "side": 1,
+      "message": "other ?",
+      "range": {
+        "startLine": 352,
+        "startChar": 65,
+        "endLine": 352,
+        "endChar": 67
       },
       "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
