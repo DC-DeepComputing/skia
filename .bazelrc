@@ -156,6 +156,7 @@ build:linux_rbe --config=remote
 # if at all.
 build:linux_rbe --extra_toolchains=//bazel/rbe/gce_linux/java:all
 build:linux_rbe --extra_toolchains=//bazel/rbe/gce_linux/config:cc-toolchain
+build:linux_rbe --extra_toolchains=@rust_linux_x86_64_toolchains//:toolchain_for_x86_64-unknown-linux-gnu
 # Make the Linux platform available for selection as an Execution platform (if it is not already,
 # e.g. on a Linux host)
 build:linux_rbe --extra_execution_platforms=//bazel/platform:linux_x64_hermetic
