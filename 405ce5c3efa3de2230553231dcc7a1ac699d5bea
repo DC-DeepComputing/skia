@@ -16,6 +16,24 @@
       "message": "It looks like `bazel/rbe/gce_linux/cc/BUILD` and `gn/skia/BUILD.gn` both set `-fno-omit-frame-pointer`?",
       "revId": "405ce5c3efa3de2230553231dcc7a1ac699d5bea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70bdf7b1_479c912e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-26T14:15:49Z",
+      "side": 1,
+      "message": "The BUILD.gn line is inside a big `if (sanitize !\u003d \"\")` (see my comment below, about preferring good stacks on sanitizer builds vs. performance from omitting frame pointers).\n\nThe bazel one won\u0027t interact with this GN change, but I do wonder why we\u0027re doing that. I\u0027ll ping Kevin to understand what that\u0027s about.",
+      "parentUuid": "7e3bec51_beb6d3e5",
+      "revId": "405ce5c3efa3de2230553231dcc7a1ac699d5bea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
