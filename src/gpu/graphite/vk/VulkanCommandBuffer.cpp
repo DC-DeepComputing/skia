@@ -426,7 +426,7 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kBindUniformBuffer: {
                 auto bub = static_cast<DrawPassCommands::BindUniformBuffer*>(cmdPtr);
-                this->recordBufferBindingInfo(bub->fInfo, bub->fSlot);
+//                this->recordBufferBindingInfo(bub->fInfo, bub->fSlot);
                 break;
             }
             case DrawPassCommands::Type::kBindDrawBuffers: {
@@ -437,7 +437,7 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kBindTexturesAndSamplers: {
                 auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
-                this->recordTextureAndSamplerDescSet(*drawPass, *bts);
+//                this->recordTextureAndSamplerDescSet(*drawPass, *bts);
                 break;
             }
             case DrawPassCommands::Type::kSetScissor: {
@@ -519,7 +519,7 @@ void VulkanCommandBuffer::recordBufferBindingInfo(const BindBufferInfo& info, Un
 }
 
 void VulkanCommandBuffer::syncDescriptorSets() {
-    if (fBindUniformBuffers) {
+ /*   if (fBindUniformBuffers) {
         this->bindUniformBuffers();
         // Changes to descriptor sets in lower slot numbers disrupt later set bindings. Currently,
         // the descriptor set which houses uniform buffers is at a lower slot than the texture /
@@ -528,7 +528,7 @@ void VulkanCommandBuffer::syncDescriptorSets() {
     }
     if (fBindTextureSamplers) {
         this->bindTextureSamplers();
-    }
+    }*/
 }
 
 void VulkanCommandBuffer::bindUniformBuffers() {

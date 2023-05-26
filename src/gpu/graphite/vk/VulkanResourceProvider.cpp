@@ -97,7 +97,7 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
-    SkSL::Program::Interface vsInterface, fsInterface;
+/*    SkSL::Program::Interface vsInterface, fsInterface;
     SkSL::ProgramSettings settings;
 
     settings.fForceNoRTFlip = true; // TODO: Confirm
@@ -170,7 +170,7 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
                 DestroyShaderModule(this->vulkanSharedContext()->device(), vsModule, nullptr));
     VULKAN_CALL(this->vulkanSharedContext()->interface(),
                 DestroyShaderModule(this->vulkanSharedContext()->device(), fsModule, nullptr));
-
+*/
 
     // TODO: Generate depth-stencil state, blend info
     return VulkanGraphicsPipeline::Make(this->vulkanSharedContext());
