@@ -16,6 +16,24 @@
       "message": "... on second look, I think this CL is fine/desirable (once the G3 CL lands). The other refactor of the factory semantics can still proceed after this.",
       "revId": "358c1d0812df945372e539da270afeb3883bc860",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9bfcfbc_5d54badc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-26T15:50:12Z",
+      "side": 1,
+      "message": "Yep, no reason to block this cleanup on me finishing the color table work. Chromium is still using the deprecated factories, so they need to be updated. There has been some work to move over to a `cc::ColorFilter` type, which might remove some of their direct references to `SkTableColorFilter`.\n\nAnd it looks like it did, other than the CL didn\u0027t clean up the headers they don\u0027t need anymore.",
+      "parentUuid": "dbb31957_d393f9cd",
+      "revId": "358c1d0812df945372e539da270afeb3883bc860",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
