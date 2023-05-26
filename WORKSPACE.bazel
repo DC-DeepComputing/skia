@@ -243,7 +243,7 @@ http_archive(
     ],
 )
 
-load("@rules_rust//rust:repositories.bzl", "rules_rust_dependencies", "rust_register_toolchains")
+load("@rules_rust//rust:repositories.bzl", "rules_rust_dependencies", "rust_register_toolchains", "rust_repository_set")
 
 # https://github.com/bazelbuild/rules_rust/blob/eaf51386596523af4d9d5b1b5d2dcc6fe39a8465/rust/repositories.bzl#L48
 rules_rust_dependencies()
