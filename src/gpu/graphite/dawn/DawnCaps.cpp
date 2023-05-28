@@ -135,6 +135,9 @@ TextureInfo DawnCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampled
     info.fMipmapped   = Mipmapped::kNo;
     info.fFormat      = singleSpec.fFormat;
     info.fUsage       = wgpu::TextureUsage::RenderAttachment;
+    if (discardable == Discardable::kYes && fSupportsTransientAttachments) {
+        info.fUsage |= wgpu::TextureUsage::TransientAttachment;
+    }
     return info;
 }
 
@@ -147,6 +150,9 @@ TextureInfo DawnCaps::getDefaultDepthStencilTextureInfo(
     info.fMipmapped   = Mipmapped::kNo;
     info.fFormat      = DawnDepthStencilFlagsToFormat(depthStencilType);
     info.fUsage       = wgpu::TextureUsage::RenderAttachment;
+    if (fSupportsTransientAttachments) {
+        info.fUsage |= wgpu::TextureUsage::TransientAttachment;
+    }
     return info;
 }
 
@@ -246,6 +252,8 @@ void DawnCaps::initCaps(const wgpu::Device& device) {
 
     // TODO: support clamp to border.
     fClampToBorderSupport = false;
+
+    fSupportsTransientAttachments = device.HasFeature(wgpu::FeatureName::TransientAttachments);
 }
 
 void DawnCaps::initShaderCaps() {
@@ -568,7 +576,7 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     // amounts in the asserts must be less than or equal to 32.
     SkASSERT(samplesKey                             < (1u << 3));
     SkASSERT(static_cast<uint32_t>(isMipped)        < (1u << 1));
-    SkASSERT(static_cast<uint32_t>(dawnSpec.fUsage) < (1u << 5));
+    SkASSERT(static_cast<uint32_t>(dawnSpec.fUsage) < (1u << 6));
 
     // We need two uint32_ts for dimensions, 1 for format, and 1 for the rest of the key;
     static int kNum32DataCnt = 2 + 1 + 1;
@@ -580,7 +588,7 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
     builder[2] = formatKey;
     builder[3] = (samplesKey                                   << 0) |
                  (static_cast<uint32_t>(isMipped)              << 3) |
-                 (static_cast<uint32_t>(dawnSpec.fUsage)       << 4);
+                 (static_cast<uint32_t>(dawnSpec.fUsage)       << 5);
 }
 
 size_t DawnCaps::bytesPerPixel(const TextureInfo& info) const {

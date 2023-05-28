@@ -169,6 +169,7 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
     msaaInfo.getDawnTextureInfo(&dawnMsaaLoadTextureInfo);
     dawnMsaaLoadTextureInfo.fSampleCount = 1;
     dawnMsaaLoadTextureInfo.fUsage |= wgpu::TextureUsage::TextureBinding;
+    dawnMsaaLoadTextureInfo.fUsage &= ~wgpu::TextureUsage::TransientAttachment;
 
     auto texture = this->findOrCreateDiscardableMSAAAttachment(dimensions, dawnMsaaLoadTextureInfo);
 
