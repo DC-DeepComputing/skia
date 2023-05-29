@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "625a7af4_442106cb",
+        "filename": "include/private/SkJpegMetadataDecoder.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-29T08:04:39Z",
+      "side": 1,
+      "message": "BTW, I think that the long-term scheme will be to create an SkStream interface to [blink::SegmentReader](https://source.chromium.org/chromium/chromium/src/+/refs/heads/main:third_party/blink/renderer/platform/image-decoders/segment_reader.h;l\u003d33;drc\u003d10c56a7c2d1f9bf623a1bbdd506683a430594267) and pass that to `findGainmapImage`. If allocating that SkStream is effectively-free, then I will hopefully be able to remove the `mightHaveGainmapImage`.\n\n(Those various clean-ups will likely be targeting M117 or M118 ... after the original release).",
+      "revId": "467e23d939dbf5a07357954b8da84b49bebeaf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "05910c44_afebe46f",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 12
@@ -31,6 +48,30 @@
       "writtenOn": "2023-05-26T21:07:49Z",
       "side": 1,
       "message": "Please make this\n\n```\n#else\n        return false;\n#endif\n```\n\nI\u0027m kind of surprised this didn\u0027t cause a build failure, but it seems it could if we changed a setting. (Unreachable statement.)",
+      "range": {
+        "startLine": 1343,
+        "startChar": 0,
+        "endLine": 1344,
+        "endChar": 21
+      },
+      "revId": "467e23d939dbf5a07357954b8da84b49bebeaf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9bb3f9_68144c03",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-29T08:04:39Z",
+      "side": 1,
+      "message": "Huh! Yeah, that\u0027s odd!",
+      "parentUuid": "05910c44_afebe46f",
       "range": {
         "startLine": 1343,
         "startChar": 0,
