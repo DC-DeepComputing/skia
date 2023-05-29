@@ -18,7 +18,8 @@ namespace skiagm {
 
 namespace {
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
-const char kTestFontName[] = "fonts/Roboto-Regular.ttf";
+// const char kTestFontName[] = "fonts/Roboto-Regular.ttf";
+const char kTestFontName[] = "fonts/RobotoFlex[GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght].ttf";
 const SkScalar kDumpFontSize = 20.0f;
 
 // TODO(drott): Test these dumps is in a unit test instead of dumping them to GM surface.

@@ -5,7 +5,7 @@ use cxx;
 use font_types::{GlyphId, Pen};
 use read_fonts::{FileRef, FontRef, ReadError, TableProvider};
 use skrifa::{
-    instance::{LocationRef, Size},
+    instance::{LocationRef, NormalizedCoord, Size},
     metrics::{GlyphMetrics, Metrics},
     scale::Context,
     string::{LocalizedStrings, StringId},
@@ -70,7 +70,11 @@ fn get_path(
 ) -> bool {
     font_ref.0.as_ref().map_or(false, |f| {
         let mut cx = Context::new();
-        let mut scaler = cx.new_scaler().size(Size::new(size)).build(f);
+        let mut scaler = cx
+            .new_scaler()
+            .size(Size::new(size))
+            .variation_settings(&[("wght", 720.0), ("wdth", 120.0)])
+            .build(f);
         let mut pen_dump = PathWrapperPen {
             path_wrapper: path_wrapper,
         };
@@ -190,6 +194,15 @@ fn font_ref_is_valid(bridge_font_ref: &BridgeFontRef) -> bool {
     bridge_font_ref.0.is_some()
 }
 
+use crate::ffi::SkiaDesignCoordinate;
+
+fn resolve_into_normalized_coords(
+    font_ref: &BridgeFontRef,
+    design_coords: &[SkiaDesignCoordinate],
+) -> Vec<i16> {
+    Vec::<i16>::default()
+}
+
 struct BridgeFontRef<'a>(Option<FontRef<'a>>);
 
 struct BridgeLocalizedStrings<'a> {
@@ -218,6 +231,11 @@ mod ffi {
     struct BridgeLocalizedName {
         string: String,
         language: String,
+    }
+
+    struct SkiaDesignCoordinate {
+        tag: u32,
+        value: f32,
     }
 
     extern "Rust" {
@@ -255,6 +273,11 @@ mod ffi {
             bridge_localized_strings: &mut BridgeLocalizedStrings,
             out_localized_name: &mut BridgeLocalizedName,
         ) -> bool;
+
+        fn resolve_into_normalized_coords(
+            font_ref: &BridgeFontRef,
+            design_coords: &[SkiaDesignCoordinate],
+        ) -> Vec<i16>;
 
     }
 
