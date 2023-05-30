@@ -14,6 +14,17 @@ import sys
 target = sys.argv[1]
 output = sys.argv[2]
 
+print("Invoking from ", os.getcwd())
+
+print("parent dir")
+subprocess.run(["ls", "-l", ".."])
+print("grandparent dir")
+subprocess.run(["ls", "-l", "../.."])
+print("great-grandparent dir")
+subprocess.run(["ls", "-l", "../../.."])
+print("great-great-grandparent dir")
+subprocess.run(["ls", "-l", "../../../.."])
+
 # Forward the remaining args to the bazel invocation
 subprocess.run(["bazelisk", "build", target ] + sys.argv[3:], check=True)
 
