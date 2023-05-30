@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9bdc8497_dd3ba4f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-30T15:36:07Z",
+      "side": 1,
+      "message": "I had to make some changes to get it to pass in `tm-qpr-dev` - just to remove an unused function and tests whose `.sksl` files don\u0027t exist in `T`. But now it\u0027s running and passing on my device.\n\n@johnstiles@google.com, any advice on building within a Skia checkout?",
+      "parentUuid": "4bbd5ba6_0c2a193b",
+      "revId": "2099c925d0c97cc83aea9cbd1134a286416e2b45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f6cca73_3646c3a8",
         "filename": "tests/SkDSLRuntimeEffectTest.cpp",
         "patchSetId": 2
