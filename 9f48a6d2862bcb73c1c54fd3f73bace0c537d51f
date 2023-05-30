@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "009f363e_4a8b0485",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "PS 16 shows comment fixes. PS17 has the staging with the define guard for chrome. Because I had deleted SkArithmeticImageFilter.cpp, that old class has just been defined in the legacy section of SkBlendImageFilter.cpp and the flattenable registration was updated a bit.",
+      "revId": "9f48a6d2862bcb73c1c54fd3f73bace0c537d51f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

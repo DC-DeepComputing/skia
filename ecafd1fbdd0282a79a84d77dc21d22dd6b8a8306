@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5d5392b_86d92d26",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29e4d4ef_463009a7",
+      "range": {
+        "startLine": 750,
+        "startChar": 8,
+        "endLine": 750,
+        "endChar": 40
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb7e08ef_e1d76cb0",
@@ -112,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67ff546c_859839ee",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b7adb46_6d3b05c0",
+      "range": {
+        "startLine": 779,
+        "startChar": 29,
+        "endLine": 779,
+        "endChar": 68
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0dc08ab6_a328b84e",
@@ -135,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fabc0241_254fcf96",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0dc08ab6_a328b84e",
+      "range": {
+        "startLine": 829,
+        "startChar": 47,
+        "endLine": 829,
+        "endChar": 48
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c38f042_5db529c8",
@@ -148,6 +220,30 @@
       "writtenOn": "2023-05-26T15:46:14Z",
       "side": 1,
       "message": "explicitOutputBounds ?",
+      "range": {
+        "startLine": 861,
+        "startChar": 72,
+        "endLine": 861,
+        "endChar": 86
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5b8290e_d8da865e",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 861,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c38f042_5db529c8",
       "range": {
         "startLine": 861,
         "startChar": 72,
@@ -240,6 +336,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1b845dc_386832c3",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34081ffb_391b9fab",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 94
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9933d4d_67042cdf",
@@ -253,6 +373,30 @@
       "writtenOn": "2023-05-26T17:12:21Z",
       "side": 1,
       "message": "\u0027end\u0027 doesn\u0027t seem to help me here - maybe \u0027anonymous\u0027 ?",
+      "range": {
+        "startLine": 131,
+        "startChar": 5,
+        "endLine": 131,
+        "endChar": 8
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b309b2ca_9ae0d1c1",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9933d4d_67042cdf",
       "range": {
         "startLine": 131,
         "startChar": 5,
@@ -280,6 +424,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f35f68e_38f5cf6f",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Sure, but I\u0027ll still have it return null for release builds.",
+      "parentUuid": "aaab3a68_2b014f6d",
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b6f71c5_28a28a50",
@@ -293,6 +455,30 @@
       "writtenOn": "2023-05-26T17:47:08Z",
       "side": 1,
       "message": "is ?",
+      "range": {
+        "startLine": 219,
+        "startChar": 59,
+        "endLine": 219,
+        "endChar": 62
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "881ce0e0_c4c2149d",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b6f71c5_28a28a50",
       "range": {
         "startLine": 219,
         "startChar": 59,
@@ -326,6 +512,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "830fdd02_fc4d5836",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "76e63849_83737dc3",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 89
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "991b3846_488d808a",
@@ -339,6 +549,30 @@
       "writtenOn": "2023-05-26T17:47:08Z",
       "side": 1,
       "message": "other ?",
+      "range": {
+        "startLine": 352,
+        "startChar": 65,
+        "endLine": 352,
+        "endChar": 67
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3327680_d969f6f8",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "991b3846_488d808a",
       "range": {
         "startLine": 352,
         "startChar": 65,
@@ -372,6 +606,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c955edf_ea19854c",
+        "filename": "src/effects/imagefilters/SkBlendImageFilter.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "058f436d_5ab95f38",
+      "range": {
+        "startLine": 369,
+        "startChar": 0,
+        "endLine": 369,
+        "endChar": 88
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15a43ce4_ec39d7fb",
@@ -385,6 +643,30 @@
       "writtenOn": "2023-05-26T01:41:29Z",
       "side": 1,
       "message": "This test case hadn\u0027t really been testing anything meaningful because the canvas was never being reset from the earlier draws, so while it should have been a no-op you couldn\u0027t really test it.",
+      "range": {
+        "startLine": 1497,
+        "startChar": 39,
+        "endLine": 1497,
+        "endChar": 50
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f02ef6a1_d273faa0",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1497,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "15a43ce4_ec39d7fb",
       "range": {
         "startLine": 1497,
         "startChar": 39,
@@ -418,6 +700,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ea810d4_5460a3df",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1832,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cf3a30e5_b9d5f91b",
+      "range": {
+        "startLine": 1832,
+        "startChar": 52,
+        "endLine": 1832,
+        "endChar": 60
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b592bfd_667d8cad",
@@ -431,6 +737,30 @@
       "writtenOn": "2023-05-26T01:41:29Z",
       "side": 1,
       "message": "These 3 new lines were cases that the old bounds logic had just been reporting as union, so not incorrect, but not as optimal as it could be.",
+      "range": {
+        "startLine": 1946,
+        "startChar": 0,
+        "endLine": 1946,
+        "endChar": 77
+      },
+      "revId": "ecafd1fbdd0282a79a84d77dc21d22dd6b8a8306",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82cfe95f_65a5c67f",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1946,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T14:07:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9b592bfd_667d8cad",
       "range": {
         "startLine": 1946,
         "startChar": 0,
