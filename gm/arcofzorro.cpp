@@ -6,6 +6,7 @@
  */
 
 #include "gm/gm.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
@@ -14,6 +15,42 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "src/base/SkRandom.h"
+
+#include "include/core/SkPathBuilder.h"
+
+namespace {
+
+void forward(SkPathBuilder* builder, int curAngle, int length) {
+    int foo = curAngle % 360;
+    switch (curAngle) {
+
+    }
+    builder->rLineTo(0, 0);
+
+}
+
+void create_hilbert_path(SkPathBuilder* builder, int depth, int length,
+                         int curAngle, int turnAmount) {
+    if (depth == 0) {
+        return;
+    }
+
+    curAngle += turnAmount;
+    create_hilbert_path(builder, depth-1, length, curAngle, -turnAmount);
+    forward(builder, curAngle, length);
+    curAngle -= turnAmount;
+    create_hilbert_path(builder, depth-1, length, curAngle, turnAmount);
+    forward(builder, curAngle, length);
+    create_hilbert_path(builder, depth-1, length, curAngle, turnAmount);
+    curAngle -= turnAmount;
+    forward(builder, curAngle, length);
+    create_hilbert_path(builder, depth-1, length, curAngle, -turnAmount);
+    curAngle += turnAmount;
+
+    // left B forward right A forward A right forward B left
+}
+
+} // anonymous namespace
 
 namespace skiagm {
 
@@ -33,55 +70,39 @@ protected:
     }
 
     SkISize onISize() override {
-        return SkISize::Make(1000, 1000);
+        return SkISize::Make(1024, 1024);
+    }
+
+    void onOnceBeforeDraw() override {
+        SkBitmap bm;
+
+        bm.allocN32Pixels(1024, 1024, true);
+
+        SkCanvas canvas(bm);
+
+        SkPathBuilder builder;
+
+        builder.moveTo(0, 0);
+        create_hilbert_path(&builder, 4, 1, 0, 90);
+
+        SkPath path = builder.snapshot();
+
+        SkPaint paint;
+        paint.setStyle(SkPaint::kStroke_Style);
+        paint.setStrokeWidth(1.0f);
+
+        canvas.drawPath(path, paint);
+
+        fImg = bm.asImage();
     }
 
     void onDraw(SkCanvas* canvas) override {
-        SkRandom rand;
-
-        SkRect rect = SkRect::MakeXYWH(10, 10, 200, 200);
-
-        SkPaint p;
-
-        p.setStyle(SkPaint::kStroke_Style);
-        p.setStrokeWidth(35);
-        int xOffset = 0, yOffset = 0;
-        int direction = 0;
-
-        for (float arc = 134.0f; arc < 136.0f; arc += 0.01f) {
-            SkColor color = rand.nextU();
-            color |= 0xff000000;
-            p.setColor(color);
-
-            canvas->save();
-            canvas->translate(SkIntToScalar(xOffset), SkIntToScalar(yOffset));
-            canvas->drawArc(rect, 0, arc, false, p);
-            canvas->restore();
-
-            switch (direction) {
-            case 0:
-                xOffset += 10;
-                if (xOffset >= 700) {
-                    direction = 1;
-                }
-                break;
-            case 1:
-                xOffset -= 10;
-                yOffset += 10;
-                if (xOffset < 50) {
-                    direction = 2;
-                }
-                break;
-            case 2:
-                xOffset += 10;
-                break;
-            }
-        }
-
+        canvas->drawImage(fImg, 0, 0);
     }
 
 private:
-    using INHERITED = GM;
+    sk_sp<SkImage> fImg;
+
 };
 
 //////////////////////////////////////////////////////////////////////////////
