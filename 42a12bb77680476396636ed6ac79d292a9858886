@@ -34,6 +34,24 @@
       "parentUuid": "59d7bbac_a4650019",
       "revId": "42a12bb77680476396636ed6ac79d292a9858886",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdf3ef67_3babdb44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-30T20:13:51Z",
+      "side": 1,
+      "message": "The warnings on P400 are sadly not unusual and can be ignored.\nI downloaded the stdout (250MB!) and it has the same failures at bottom:\n\n```\nFailures:\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Vectors_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Vectors_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Vectors_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Vectors_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Types_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Types_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Types_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Types_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Structs_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Structs_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Structs_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Structs_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Arrays_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Arrays_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Arrays_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:178\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLRecursiveComparison_Arrays_GPU, Vulkan]\n8 failures\n8 failures\nCommand exited with code 1\n#######################################\n```",
+      "parentUuid": "951613cc_fa72971e",
+      "revId": "42a12bb77680476396636ed6ac79d292a9858886",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
