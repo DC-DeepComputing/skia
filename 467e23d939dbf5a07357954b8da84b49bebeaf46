@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c97f7f6_ff559f6f",
+        "filename": "include/private/SkJpegMetadataDecoder.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-30T14:34:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "625a7af4_442106cb",
+      "revId": "467e23d939dbf5a07357954b8da84b49bebeaf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05910c44_afebe46f",
