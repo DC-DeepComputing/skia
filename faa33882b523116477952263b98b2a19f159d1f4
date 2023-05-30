@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c048d0e_38e2409c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T21:18:26Z",
+      "side": 1,
+      "message": "Adding John and Brian to weigh in on the behavioral change of `SkBlenders::Arithmetic`. With this CL it calls `saturate` on the expression before clamping RGB to be within the alpha. Without that saturate, Mali T880 and 860 seemed to generate some very bad blending, instead of handling the saturate that you\u0027d expect when doing HW blending.\n\nIIRC, `SkBlenders::Arithmetic` was intended to be used to match `SkImageFilters::Arithmetic` and their SkSL is identical except the old image filter\u0027s GrSkSLFP used the saturate. But since `SkBlenders::Arithmetic` has been out in the wild, users (not the big 4, though) might be relying on no saturation. Should we add a variant or just put it in the release notes?",
+      "revId": "faa33882b523116477952263b98b2a19f159d1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
