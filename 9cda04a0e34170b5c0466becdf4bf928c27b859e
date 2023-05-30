@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "742c44c0_a1c346c9",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-30T20:25:13Z",
+      "side": 0,
+      "message": "^ tests were CPU-only when this was branch was created, because it requires proper NaN support",
+      "range": {
+        "startLine": 419,
+        "startChar": 10,
+        "endLine": 419,
+        "endChar": 17
+      },
+      "revId": "9cda04a0e34170b5c0466becdf4bf928c27b859e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
