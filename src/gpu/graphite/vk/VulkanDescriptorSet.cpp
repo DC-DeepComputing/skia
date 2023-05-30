@@ -14,16 +14,28 @@ namespace skgpu::graphite {
 
 sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* ctxt,
                                                      sk_sp<VulkanDescriptorPool> pool,
-                                                     const VkDescriptorSetLayout* layout) {
+                                                     VkDescriptorSetLayout* layout) {
     VkDescriptorSet descSet;
 
     VkDescriptorSetAllocateInfo dsAllocateInfo;
     memset(&dsAllocateInfo, 0, sizeof(VkDescriptorSetAllocateInfo));
     dsAllocateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     dsAllocateInfo.pNext = nullptr;
-    dsAllocateInfo.descriptorPool = *(pool->descPool());
-    dsAllocateInfo.descriptorSetCount = VulkanDescriptorPool::kMaxNumSets;
+
+    SkASSERT(pool->descPool() != nullptr && *(pool->descPool()) != VK_NULL_HANDLE);
+
+    dsAllocateInfo.descriptorPool = *(pool->descPool()); //sus!!!!
+    dsAllocateInfo.descriptorSetCount = 1;
+
+    SkASSERT(layout != nullptr && *layout != VK_NULL_HANDLE);
+
+    // VkDescriptorSetLayout* layoutArr [VulkanDescriptorPool::kMaxNumSets];
+    // std::fill_n(layoutArr, VulkanDescriptorPool::kMaxNumSets, layout);
     dsAllocateInfo.pSetLayouts = layout;
+
+    SkASSERT(ctxt);
+    SkASSERT(ctxt->interface());
+    // SkASSERT(dsAllocateInfo != VK_NULL_HANDLE);
 
     VkResult result;
     VULKAN_CALL_RESULT(ctxt->interface(),
