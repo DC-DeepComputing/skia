@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0888d25b_bc28a763",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 1336,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-05-30T18:59:14Z",
+      "side": 1,
+      "message": "Don\u0027t we also have `Build-Mac-Clang-arm64-Release-Graphite_Metal` and friends? I would like to eventually test rendering certain GMs on Apple silicon using the vello shaders so having an arm64 build story would be nice.",
+      "range": {
+        "startLine": 1336,
+        "startChar": 6,
+        "endLine": 1336,
+        "endChar": 64
+      },
+      "revId": "01397fb9259d8a40942e3cfc3010bb286420f762",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
