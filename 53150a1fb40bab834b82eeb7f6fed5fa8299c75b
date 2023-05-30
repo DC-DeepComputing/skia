@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "190a4ace_69184bcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-30T19:30:47Z",
+      "side": 1,
+      "message": "Canaries look fine (just a patch error from Chromium, all others passed)",
+      "parentUuid": "6d759e5a_7ba4a0f2",
+      "revId": "53150a1fb40bab834b82eeb7f6fed5fa8299c75b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45e1beab_0fc67452",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-05-30T18:42:02Z",
       "side": 1,
       "message": "nit: weird indent (probably triggered by the SkDEBUGCODE above)",
+      "range": {
+        "startLine": 318,
+        "startChar": 12,
+        "endLine": 319,
+        "endChar": 95
+      },
+      "revId": "53150a1fb40bab834b82eeb7f6fed5fa8299c75b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9df1cab4_ed1a29af",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-30T19:30:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45e1beab_0fc67452",
       "range": {
         "startLine": 318,
         "startChar": 12,
