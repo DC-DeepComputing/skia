@@ -364,7 +364,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     // Format: RG8Unorm
     {
         info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RG8Unorm)];
-        info->fFlags = FormatInfo::kTexturable_Flag;
+        info->fFlags = FormatInfo::kAllFlags;
         info->fColorTypeInfoCount = 1;
         info->fColorTypeInfos.reset(new ColorTypeInfo[info->fColorTypeInfoCount]());
         int ctIdx = 0;
