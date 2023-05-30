@@ -103,10 +103,10 @@ def make_symlinked_subdir(target, working_dir):
 
 def accept_android_license(android_home):
     proc = subprocess.Popen(
-            [android_home + '/tools/bin/sdkmanager', '--licenses'],
+            [android_home + '/cmdline-tools/latest/bin/sdkmanager', '--licenses'],
             stdin=subprocess.PIPE)
     while proc.poll() is None:
-        proc.stdin.write('y\n')
+        proc.stdin.write('y\n'.encode('utf-8'))
         time.sleep(1)
 
 # pylint: disable=bad-whitespace
