@@ -21,6 +21,7 @@ public:
     inline static constexpr unsigned int kIntrinsicUniformBufferIndex = 0;
     inline static constexpr unsigned int kRenderStepUniformBufferIndex = 1;
     inline static constexpr unsigned int kPaintUniformBufferIndex = 2;
+    inline static constexpr unsigned int kNumUniformBuffers = 3;
 
     // For now, rigidly assign all uniform buffer descriptors to be in one descriptor set in binding
     // 0 and all texture/samplers to be in binding 1.
@@ -41,7 +42,7 @@ public:
 
     // TODO: Implement.
     bool hasStepUniforms() const { return false; }
-    bool hasFragment() const { return false; }
+    bool hasFragment() const { return true; }
 
 private:
     VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext
