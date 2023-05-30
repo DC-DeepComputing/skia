@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14cf3ab2_daa1c29f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-30T14:20:56Z",
+      "side": 1,
+      "message": "Not sure who the best colorfilter reviewer is, so I guessed and added Michael",
+      "revId": "53150a1fb40bab834b82eeb7f6fed5fa8299c75b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
