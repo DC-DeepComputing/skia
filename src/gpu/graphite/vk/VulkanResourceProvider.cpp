@@ -41,18 +41,19 @@ VkDescriptorSetLayout VulkanResourceProvider::DescTypeAndCountToVkDescSetLayout(
     VkDescriptorSetLayout layout;
     skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
 
-    for (size_t i = 0, j = 0; i < requestedDescriptors.size(); i++) {
+    for (size_t i = 0; i < requestedDescriptors.size(); i++) {
         if (requestedDescriptors[i].count != 0) {
-            VkDescriptorSetLayoutBinding* layoutBinding = &bindingLayouts.at(j++);
-            memset(layoutBinding, 0, sizeof(VkDescriptorSetLayoutBinding));
-            layoutBinding->binding = 0;
-            layoutBinding->descriptorType =
+            VkDescriptorSetLayoutBinding layoutBinding;
+            memset(&layoutBinding, 0, sizeof(VkDescriptorSetLayoutBinding));
+            layoutBinding.binding = 0;
+            layoutBinding.descriptorType =
                     VulkanDescriptorSet::DsTypeEnumToVkDs(requestedDescriptors[i].type);
-            layoutBinding->descriptorCount = requestedDescriptors[i].count;
+            layoutBinding.descriptorCount = requestedDescriptors[i].count;
             // TODO: Obtain layout binding stage flags from visibility (vertex or shader)
-            layoutBinding->stageFlags = 0;
+            layoutBinding.stageFlags = 0;
             // TODO: Optionally set immutableSamplers here.
-            layoutBinding->pImmutableSamplers = nullptr;
+            layoutBinding.pImmutableSamplers = nullptr;
+            bindingLayouts.push_back(layoutBinding);
         }
     }
 
@@ -212,23 +213,28 @@ VulkanDescriptorSet* VulkanResourceProvider::findOrCreateDescriptorSet(
     static const int kNum32DataCnt = (kDescriptorTypeCount * 2) + 1;
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
-    Resource* descSet = nullptr;
-    // Search for available descriptor sets by assembling the last part of the key with a unique set
+    // Resource* descSet = nullptr;
+    // Search for available descriptor sets by assembling a key based upon the set's structure with a unique set
     // ID (which ranges from 0 to kMaxNumSets - 1). Start the search at 0 and continue until an
     // available set is found.
-    // TODO(nicolettep): Explore ways to optimize this traversal.
+    // TODO(nicolettep): Explore ways to optimize this traversal. Could cache stored keys from
+    // traversing; compact type + count. Take order into account.
     for (uint32_t i = 0; i < VulkanDescriptorPool::kMaxNumSets; i++) {
         GraphiteResourceKey::Builder builder(&key, kType, kNum32DataCnt, Shareable::kNo);
         // Assemble the base component of a descriptor set key which is determined by the type and
-        // quantity of requested descriptors.
-        for (size_t j = 0, k = 0; k < requestedDescriptors.size(); j = j + 2, k++) {
-            builder[j+1] = static_cast<uint32_t>(requestedDescriptors[k].type);
-            builder[j] = requestedDescriptors[k].count;
+        // quantity of requested descriptors. TODO: Optimize, document key structure.
+        for (uint8_t j = 0; j < kDescriptorTypeCount; j = j + 2) {
+            builder[j] = static_cast<uint32_t>(static_cast<DescriptorType>(j));
+            builder[j+1] = 0;
+        }
+        for (size_t k = 0; k < requestedDescriptors.size(); k++) {
+            auto desc = requestedDescriptors[k];
+            builder[static_cast<uint32_t>(desc.type) + 1] = desc.count;
         }
         builder[kNum32DataCnt - 1] = i;
         builder.finish();
 
-        if ((descSet = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kNo))) {
+        if (auto descSet = fResourceCache->findAndRefResource(key, skgpu::Budgeted::kNo)) {
             // A non-null resource pointer indicates we have found an available descriptor set.
             return static_cast<VulkanDescriptorSet*>(descSet);
         }
@@ -247,23 +253,29 @@ VulkanDescriptorSet* VulkanResourceProvider::findOrCreateDescriptorSet(
     // Allocate the maximum number of sets so they can be easily accessed as needed from the cache.
     for (int i = 0; i < VulkanDescriptorPool::kMaxNumSets ; i++) {
         GraphiteResourceKey::Builder builder(&key, kType, kNum32DataCnt, Shareable::kNo);
-        descSet = VulkanDescriptorSet::Make(this->vulkanSharedContext(), pool, &layout).get();
+        auto descSet = VulkanDescriptorSet::Make(this->vulkanSharedContext(), pool, &layout);
+        SkASSERT(descSet);
         // Assemble the base component of a descriptor set key which is determined by the type and
         // quantity of requested descriptors.
-        for (size_t j = 0, k = 0; k < requestedDescriptors.size(); j = j + 2, k++) {
-            builder[j+1] = static_cast<uint32_t>(requestedDescriptors[k].type);
-            builder[j] = requestedDescriptors[k].count;
+        for (uint8_t j = 0; j < kDescriptorTypeCount; j = j + 2) {
+            builder[j] = static_cast<uint32_t>(static_cast<DescriptorType>(j));
+            builder[j+1] = 0;
+        }
+        for (size_t k = 0; k < requestedDescriptors.size(); k++) {
+            auto desc = requestedDescriptors[k];
+            builder[static_cast<uint32_t>(desc.type) + 1] = desc.count;
         }
         builder[kNum32DataCnt - 1] = i;
         builder.finish();
         descSet->setKey(key);
-        fResourceCache->insertResource(descSet);
+        // if (descSet->)descSet->unref();
+        fResourceCache->insertResource(descSet.get());
         if (i == 0) {
             firstSetKey = key;
         }
         key.reset();
     }
-    descSet = fResourceCache->findAndRefResource(firstSetKey, skgpu::Budgeted::kNo);
+    auto descSet = fResourceCache->findAndRefResource(firstSetKey, skgpu::Budgeted::kNo);
     return descSet ? static_cast<VulkanDescriptorSet*>(descSet) : nullptr;
 }
 } // namespace skgpu::graphite
