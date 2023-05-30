@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22f4f6bd_b23b9805",
+        "filename": "tests/BazelTestRunner.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-30T18:22:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f71b8837_d79501e4",
+      "range": {
+        "startLine": 14,
+        "startChar": 1,
+        "endLine": 14,
+        "endChar": 8
+      },
+      "revId": "6baf248ef5fd4c18702672a07eaa9510adf95249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83b1c14c_901a00ba",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-30T18:11:43Z",
       "side": 1,
       "message": "Can we do UTC instead of GMT (which I think are practically the same?)",
+      "range": {
+        "startLine": 129,
+        "startChar": 49,
+        "endLine": 129,
+        "endChar": 52
+      },
+      "revId": "6baf248ef5fd4c18702672a07eaa9510adf95249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a79894bc_cf219273",
+        "filename": "tests/BazelTestRunner.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-30T18:22:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83b1c14c_901a00ba",
       "range": {
         "startLine": 129,
         "startChar": 49,
