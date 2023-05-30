@@ -33,6 +33,24 @@
       "message": "This seems fine to me. If the results were ugly without the saturate, it\u0027s unlikely anyone relied on them. I think just mentioning it in the release notes is appropriate.",
       "revId": "faa33882b523116477952263b98b2a19f159d1f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b764a8bd_67b14dff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-05-30T21:28:21Z",
+      "side": 1,
+      "message": "In this case, most HWs had no real difference w/ or w/o the saturate, but the T880s and T860s were drastically incorrect without the saturate.\n\nI think the only way a user would be expecting something different w/o the saturate would be if they were using the arithmetic blender in SkShaders::Blend, and then further modifying the out-of-gamut values to eventually get into gamut. If they were only using the blender as the final blend, they probably never encountered it.\n\nI will add a release note to call it out, though.",
+      "parentUuid": "bd4e0c86_5ae85ed7",
+      "revId": "faa33882b523116477952263b98b2a19f159d1f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
