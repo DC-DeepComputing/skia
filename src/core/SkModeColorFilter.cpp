@@ -5,17 +5,23 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkModeColorFilter.h"
+
+#include "include/core/SkAlphaType.h"
+#include "include/core/SkBlendMode.h"
 #include "include/core/SkColorFilter.h"
+#include "include/core/SkColorSpace.h"
+#include "include/core/SkRefCnt.h"
 #include "include/private/SkColorData.h"
-#include "src/base/SkArenaAlloc.h"
 #include "src/core/SkBlendModePriv.h"
-#include "src/core/SkBlitRow.h"
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkEffectPriv.h"
+#include "src/core/SkPicturePriv.h"
 #include "src/core/SkRasterPipeline.h"
+#include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkReadBuffer.h"
-#include "src/core/SkVM.h"
 #include "src/core/SkValidationUtils.h"
 #include "src/core/SkWriteBuffer.h"
 
@@ -32,44 +38,6 @@ static SkRGBA4f<kDstAT> map_color(const SkColor4f& c, SkColorSpace* src, SkColor
                            dst, kDstAT).apply(color.vec());
     return color;
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////
-
-class SkModeColorFilter final : public SkColorFilterBase {
-public:
-    SkModeColorFilter(const SkColor4f& color, SkBlendMode mode);
-
-    bool appendStages(const SkStageRec& rec, bool shaderIsOpaque) const override;
-
-    bool onIsAlphaUnchanged() const override;
-
-#if defined(SK_GANESH)
-    GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
-                                   GrRecordingContext*,
-                                   const GrColorInfo&,
-                                   const SkSurfaceProps&) const override;
-#endif
-#if defined(SK_GRAPHITE)
-    void addToKey(const skgpu::graphite::KeyContext&,
-                  skgpu::graphite::PaintParamsKeyBuilder*,
-                  skgpu::graphite::PipelineDataGatherer*) const override;
-#endif
-
-private:
-    friend void ::SkRegisterModeColorFilterFlattenable();
-    SK_FLATTENABLE_HOOKS(SkModeColorFilter)
-
-    void flatten(SkWriteBuffer&) const override;
-    bool onAsAColorMode(SkColor*, SkBlendMode*) const override;
-
-#if defined(SK_ENABLE_SKVM)
-    skvm::Color onProgram(skvm::Builder*, skvm::Color,
-                          const SkColorInfo&, skvm::Uniforms*, SkArenaAlloc*) const override;
-#endif
-
-    SkColor4f   fColor; // always stored in sRGB
-    SkBlendMode fMode;
-};
 
 SkModeColorFilter::SkModeColorFilter(const SkColor4f& color,
                                      SkBlendMode mode)
@@ -137,49 +105,6 @@ skvm::Color SkModeColorFilter::onProgram(skvm::Builder* p, skvm::Color c,
 }
 #endif
 
-///////////////////////////////////////////////////////////////////////////////
-#if defined(SK_GANESH)
-#include "src/gpu/Blend.h"
-#include "src/gpu/ganesh/GrColorInfo.h"
-#include "src/gpu/ganesh/GrFragmentProcessor.h"
-#include "src/gpu/ganesh/SkGr.h"
-#include "src/gpu/ganesh/effects/GrBlendFragmentProcessor.h"
-
-GrFPResult SkModeColorFilter::asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
-                                                  GrRecordingContext*,
-                                                  const GrColorInfo& dstColorInfo,
-                                                  const SkSurfaceProps& props) const {
-    if (fMode == SkBlendMode::kDst) {
-        // If the blend mode is "dest," the blend color won't factor into it at all.
-        // We can return the input FP as-is.
-        return GrFPSuccess(std::move(inputFP));
-    }
-
-    SkDEBUGCODE(const bool fpHasConstIO = !inputFP || inputFP->hasConstantOutputForConstantInput();)
-
-    SkPMColor4f color = map_color(fColor, sk_srgb_singleton(), dstColorInfo.colorSpace());
-
-    auto colorFP = GrFragmentProcessor::MakeColor(color);
-    auto xferFP = GrBlendFragmentProcessor::Make(std::move(colorFP), std::move(inputFP), fMode);
-
-    if (xferFP == nullptr) {
-        // This is only expected to happen if the blend mode is "dest" and the input FP is null.
-        // Since we already did an early-out in the "dest" blend mode case, we shouldn't get here.
-        SkDEBUGFAIL("GrBlendFragmentProcessor::Make returned null unexpectedly");
-        return GrFPFailure(nullptr);
-    }
-
-    // With a solid color input this should always be able to compute the blended color
-    // (at least for coeff modes).
-    // Occasionally, we even do better than we started; specifically, in "src" blend mode, we end up
-    // ditching the input FP entirely, which turns a non-constant operation into a constant one.
-    SkASSERT(fMode > SkBlendMode::kLastCoeffMode ||
-             xferFP->hasConstantOutputForConstantInput() >= fpHasConstIO);
-
-    return GrFPSuccess(std::move(xferFP));
-}
-
-#endif
 
 #if defined(SK_GRAPHITE)
 void SkModeColorFilter::addToKey(const skgpu::graphite::KeyContext& keyContext,
