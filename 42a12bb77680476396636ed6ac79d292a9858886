@@ -16,6 +16,24 @@
       "message": "[Test failures](https://logs.chromium.org/logs/skia/62867294434caa11/+/steps/dm/0/stdout) in `Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Release-All-Android_Vulkan` in `SkSLRecursiveComparison_Vectors_GPU`.",
       "revId": "42a12bb77680476396636ed6ac79d292a9858886",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "951613cc_fa72971e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-30T20:11:35Z",
+      "side": 1,
+      "message": "Sorry, I didn\u0027t mean to send that already. @johnstiles@google.com, can you take a look at the SkSL test failures?\n\nThere\u0027s also some compile failures on Mac, but I can look into these. And there are failures in `Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan`, but the page crashed before I could read them. But there are lots of warnings like\n\n```\nVulkan warning [Validation]: code: 0: Validation Warning: [ VUID_Undefined ] Object 0: handle \u003d 0xe25ac90, type \u003d VK_OBJECT_TYPE_DEVICE; | MessageID \u003d 0x79de34d4 | Device Extension VK_KHR_copy_commands2 is not supported by this layer.  Using this extension may adversely affect validation results and/or produce undefined behavior.\n```",
+      "parentUuid": "59d7bbac_a4650019",
+      "revId": "42a12bb77680476396636ed6ac79d292a9858886",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
