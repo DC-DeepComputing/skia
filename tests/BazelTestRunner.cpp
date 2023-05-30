@@ -9,6 +9,10 @@
  * exit code will be 0.
  */
 
+#include <ctime>
+#include <functional>
+#include <iomanip>
+#include <sstream>
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
@@ -117,6 +121,26 @@ TestHarness CurrentTestHarness() {
     return TestHarness::kBazelTestRunner;
 }
 
+std::string now() {
+    std::time_t t = std::time(nullptr);
+    std::tm *now = std::gmtime(&t);
+
+    std::ostringstream oss;
+    oss << std::put_time(now, "%Y-%m-%d %H:%M:%S GMT");
+    return oss.str();
+}
+
+void maybeRunTest(const char* name, std::function<void()> testFn) {
+    if (FLAGS_skip.contains(name)) {
+        SkDebugf("[%s] Skipping %s\n", now().c_str(), name);
+        return;
+    }
+
+    SkDebugf("[%s] Running %s\n", now().c_str(), name);
+    testFn();
+    SkDebugf("[%s]\tDone\n", now().c_str());
+}
+
 int main(int argc, char** argv) {
 #ifdef SK_BUILD_FOR_ANDROID
     extern bool gSkDebugToStdOut; // If true, sends SkDebugf to stdout as well.
@@ -128,14 +152,9 @@ int main(int argc, char** argv) {
     BazelReporter reporter;
     for (skiatest::Test test : skiatest::TestRegistry::Range()) {
         if (test.fTestType == skiatest::TestType::kCPU) {
-            if (FLAGS_skip.contains(test.fName)) {
-                SkDebugf("Skipping %s\n", test.fName);
-                continue;
-            }
-
-            SkDebugf("Running %s\n", test.fName);
-            test.cpu(&reporter);
-            SkDebugf("\tDone\n");
+            maybeRunTest(test.fName, [&]() {
+                test.cpu(&reporter);
+            });
         }
     }
 
@@ -152,14 +171,9 @@ int main(int argc, char** argv) {
     grCtxOptions.fReduceOpsTaskSplitting = GrContextOptions::Enable::kNo;
     for (skiatest::Test test : skiatest::TestRegistry::Range()) {
         if (test.fTestType == skiatest::TestType::kGanesh) {
-            if (FLAGS_skip.contains(test.fName)) {
-                SkDebugf("Skipping %s\n", test.fName);
-                continue;
-            }
-
-            SkDebugf("Running %s\n", test.fName);
-            test.ganesh(&reporter, grCtxOptions);
-            SkDebugf("\tDone\n");
+            maybeRunTest(test.fName, [&]() {
+                test.ganesh(&reporter, grCtxOptions);
+            });
         }
     }
 #endif
