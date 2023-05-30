@@ -8,26 +8,29 @@
 #ifndef GrRecordingContext_DEFINED
 #define GrRecordingContext_DEFINED
 
+#include "include/core/SkColorType.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkString.h" // IWYU pragma: keep
 #include "include/core/SkTypes.h"
+#include "include/gpu/GrBackendSurface.h"
+#include "include/gpu/GrTypes.h"
 #include "include/private/base/SkTArray.h"
+#include "include/private/gpu/ganesh/GrContext_Base.h"
 #include "include/private/gpu/ganesh/GrImageContext.h"
 
-#if GR_GPU_STATS && GR_TEST_UTILS
 #include <map>
+#include <memory>
 #include <string>
-#endif
 
 class GrAuditTrail;
-class GrBackendFormat;
+class GrContextThreadSafeProxy;
+class GrDirectContext;
 class GrDrawingManager;
 class GrOnFlushCallbackObject;
-class GrMemoryPool;
 class GrProgramDesc;
 class GrProgramInfo;
 class GrProxyProvider;
 class GrRecordingContextPriv;
-class GrSurfaceProxy;
 class GrThreadSafeCache;
 class SkArenaAlloc;
 class SkCapabilities;
@@ -37,10 +40,6 @@ namespace sktext::gpu {
 class SubRunAllocator;
 class TextBlobRedrawCoordinator;
 }
-
-#if GR_TEST_UTILS
-class SkString;
-#endif
 
 class GrRecordingContext : public GrImageContext {
 public:
