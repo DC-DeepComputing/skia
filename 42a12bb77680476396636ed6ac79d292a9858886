@@ -70,6 +70,24 @@
       "parentUuid": "bdf3ef67_3babdb44",
       "revId": "42a12bb77680476396636ed6ac79d292a9858886",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb1802c7_6567300a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-05-30T20:57:17Z",
+      "side": 1,
+      "message": "\u003e I\u0027d just bring those four tests back to being CPU-only.\n\nThat sounds like the right approach to me, thanks!\n\nI have a speculative fix for the [build failures](https://logs.chromium.org/logs/skia/62868699e4d87d11/+/steps/ninja/0/stdout). Running the try-bots to verify.",
+      "parentUuid": "57fc1ded_f23b63cf",
+      "revId": "42a12bb77680476396636ed6ac79d292a9858886",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
