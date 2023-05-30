@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "273f6036_c0f6f4d7",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-30T14:34:48Z",
+      "side": 1,
+      "message": "Hmm, OK, thanks for the info. I only have a shallow understanding of the different variable declaration types right now so I will need to dig a little deeper on that at some point.",
+      "parentUuid": "72a03403_3bf7ec21",
+      "range": {
+        "startLine": 229,
+        "startChar": 57,
+        "endLine": 229,
+        "endChar": 79
+      },
+      "revId": "bec7fc5e4f58a47ac44cb83684ec8ff4b326b692",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "267ad8c6_19ca2624",
         "filename": "tests/sksl/shared/LogicalAndShortCircuit.wgsl",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-22T16:47:03Z",
       "side": 1,
       "message": "It looks like we emit an extra block in some cases. It\u0027s not necessary but should be harmless.",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 9
+      },
+      "revId": "bec7fc5e4f58a47ac44cb83684ec8ff4b326b692",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "381380dd_e5ddcd9c",
+        "filename": "tests/sksl/shared/LogicalAndShortCircuit.wgsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-05-30T14:34:48Z",
+      "side": 1,
+      "message": "Yes, that was done intentionally at http://review.skia.org/700221 in order to make sure that temp variables always have a properly-scoped home.",
+      "parentUuid": "267ad8c6_19ca2624",
       "range": {
         "startLine": 25,
         "startChar": 8,
