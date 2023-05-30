@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f71b8837_d79501e4",
+        "filename": "tests/BazelTestRunner.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-30T18:11:43Z",
+      "side": 1,
+      "message": "Nit: put platform includes after the endif on line 29",
+      "range": {
+        "startLine": 14,
+        "startChar": 1,
+        "endLine": 14,
+        "endChar": 8
+      },
+      "revId": "6baf248ef5fd4c18702672a07eaa9510adf95249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83b1c14c_901a00ba",
+        "filename": "tests/BazelTestRunner.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-30T18:11:43Z",
+      "side": 1,
+      "message": "Can we do UTC instead of GMT (which I think are practically the same?)",
+      "range": {
+        "startLine": 129,
+        "startChar": 49,
+        "endLine": 129,
+        "endChar": 52
+      },
+      "revId": "6baf248ef5fd4c18702672a07eaa9510adf95249",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
