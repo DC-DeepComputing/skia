@@ -14,15 +14,16 @@ namespace skgpu::graphite {
 
 sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* ctxt,
                                                      sk_sp<VulkanDescriptorPool> pool,
-                                                     const VkDescriptorSetLayout* layout) {
+                                                     VkDescriptorSetLayout* layout) {
+    SkASSERT(pool->descPool() && *(pool->descPool()) != VK_NULL_HANDLE);
+    SkASSERT(layout != nullptr && *layout != VK_NULL_HANDLE);
     VkDescriptorSet descSet;
-
     VkDescriptorSetAllocateInfo dsAllocateInfo;
     memset(&dsAllocateInfo, 0, sizeof(VkDescriptorSetAllocateInfo));
     dsAllocateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     dsAllocateInfo.pNext = nullptr;
     dsAllocateInfo.descriptorPool = *(pool->descPool());
-    dsAllocateInfo.descriptorSetCount = VulkanDescriptorPool::kMaxNumSets;
+    dsAllocateInfo.descriptorSetCount = 1;
     dsAllocateInfo.pSetLayouts = layout;
 
     VkResult result;

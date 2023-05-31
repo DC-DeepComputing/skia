@@ -28,7 +28,7 @@ class VulkanDescriptorSet : public Resource {
 public:
     static sk_sp<VulkanDescriptorSet> Make(const VulkanSharedContext*,
                                            sk_sp<VulkanDescriptorPool>,
-                                           const VkDescriptorSetLayout*);
+                                           VkDescriptorSetLayout*);
 
     static VkDescriptorType DsTypeEnumToVkDs(DescriptorType type);
 
