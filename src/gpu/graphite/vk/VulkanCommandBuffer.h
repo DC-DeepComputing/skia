@@ -14,6 +14,8 @@
 #include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 
+#include <array>
+
 namespace skgpu::graphite {
 
 class VulkanResourceProvider;
@@ -175,7 +177,10 @@ private:
     // Track whether certain descriptor sets need to be bound
     bool fBindUniformBuffers = false;
     bool fBindTextureSamplers = false;
-    skia_private::TArray<BindBufferInfo> fUniformBuffersToBind;
+
+    BindBufferInfo fInstrinsicUniformBufferInfo;
+    std::array<BindBufferInfo, VulkanGraphicsPipeline::kNumUniformBuffers> fUniformBuffersToBind
+            = {nullptr, 0};
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
 };
 
