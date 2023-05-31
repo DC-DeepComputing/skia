@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dbd15cf_72b9909b",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-05-31T08:19:31Z",
+      "side": 1,
+      "message": "Done, I\u0027ve deleted SkJpegXmp as a result",
+      "parentUuid": "a0b658dd_b7d1ddee",
+      "revId": "548839d567b063973e78d0f6baec80c166f64e5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54851473_f6ee9fb7",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-05-18T11:12:51Z",
       "side": 1,
       "message": "I think if you just delete the `\"http://ns.adobe.com/xap/1.0/\\0\"` line, then you can use SkXmp::Make directly.",
+      "revId": "548839d567b063973e78d0f6baec80c166f64e5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d29acdac_23a274ab",
+        "filename": "tests/JpegGainmapTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-05-31T08:19:31Z",
+      "side": 1,
+      "message": "Done and moved the tests to SkXmpTest.cpp",
+      "parentUuid": "54851473_f6ee9fb7",
       "revId": "548839d567b063973e78d0f6baec80c166f64e5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
