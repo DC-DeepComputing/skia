@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ec11253_c8885921",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-31T16:29:48Z",
+      "side": 1,
+      "message": "Left a TODO.",
+      "parentUuid": "3cc08d47_2941a7f2",
+      "range": {
+        "startLine": 365,
+        "startChar": 13,
+        "endLine": 365,
+        "endChar": 29
+      },
+      "revId": "7b5a18ede80df3d5323857374aa9641488ed21d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "154bef19_0ad89471",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9a5b1aa_5dc67844",
+        "filename": "tests/skia_binary_with_cmdline_flags_test.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-31T16:29:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "154bef19_0ad89471",
+      "range": {
+        "startLine": 5,
+        "startChar": 46,
+        "endLine": 5,
+        "endChar": 49
+      },
+      "revId": "7b5a18ede80df3d5323857374aa9641488ed21d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7fec7bc_74c0743e",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-05-31T12:41:38Z",
       "side": 1,
       "message": "nit: Link to docs of declare_file, since it\u0027s a mildly odd name",
+      "range": {
+        "startLine": 24,
+        "startChar": 30,
+        "endLine": 24,
+        "endChar": 42
+      },
+      "revId": "7b5a18ede80df3d5323857374aa9641488ed21d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dcb30f8_adc37958",
+        "filename": "tests/skia_binary_with_cmdline_flags_test.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-31T16:29:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7fec7bc_74c0743e",
       "range": {
         "startLine": 24,
         "startChar": 30,
