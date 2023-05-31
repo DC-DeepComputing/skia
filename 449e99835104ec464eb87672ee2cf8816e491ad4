@@ -16,6 +16,29 @@
       "message": "WDYT?",
       "revId": "449e99835104ec464eb87672ee2cf8816e491ad4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93810b1f_01120083",
+        "filename": "tests/RecordDrawTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-05-31T17:46:50Z",
+      "side": 1,
+      "message": ".data().\nor if you want to be fancy std::data(bounds).\n\nOr super fancy, make SkRecordFillBounds take a span.\n\nHere and below.",
+      "range": {
+        "startLine": 157,
+        "startChar": 90,
+        "endLine": 157,
+        "endChar": 93
+      },
+      "revId": "449e99835104ec464eb87672ee2cf8816e491ad4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
