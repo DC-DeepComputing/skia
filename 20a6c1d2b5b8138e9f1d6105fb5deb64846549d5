@@ -46,6 +46,30 @@
       },
       "revId": "20a6c1d2b5b8138e9f1d6105fb5deb64846549d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d82e7fcf_4d78ad4a",
+        "filename": "tests/skia_android_unit_test.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-31T16:57:41Z",
+      "side": 1,
+      "message": "Let\u0027s avoid the dictionary and macros for now. I was just curious what would break.\n\nWe can revisit the idea when we add more devices.",
+      "parentUuid": "22127d6c_00d7a471",
+      "range": {
+        "startLine": 138,
+        "startChar": 30,
+        "endLine": 138,
+        "endChar": 37
+      },
+      "revId": "20a6c1d2b5b8138e9f1d6105fb5deb64846549d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
