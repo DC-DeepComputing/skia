@@ -2096,12 +2096,6 @@ def go_repositories():
         sum = "h1:UBcNElsrwanuuMsnGSlYmtmgbb23qDR5dG+6X6Oo89I=",
         version = "v1.6.0",
     )
-    go_repository(
-        name = "com_github_skia_dev_go2ts",
-        importpath = "github.com/skia-dev/go2ts",
-        sum = "h1:cTflp+oiI0TKby7RON1gpS9zo2dandTalrztiePTPFk=",
-        version = "v1.5.1-0.20230417182405-5516e12180e9",
-    )
 
     go_repository(
         name = "com_github_skia_dev_google_api_go_client",
@@ -2876,8 +2870,8 @@ def go_repositories():
     go_repository(
         name = "net_starlark_go",
         importpath = "go.starlark.net",
-        sum = "h1:+FNtrFTmVw0YZGpBGX56XDee331t6JAXeK2bcyhLOOc=",
-        version = "v0.0.0-20200306205701-8dd3e2ee1dd5",
+        sum = "h1:VdD38733bfYv5tUZwEIskMM93VanwNIi5bIKnDrJdEY=",
+        version = "v0.0.0-20230525235612-a134d8f9ddca",
     )
 
     go_repository(
@@ -3007,14 +3001,14 @@ def go_repositories():
     go_repository(
         name = "org_golang_x_sys",
         importpath = "golang.org/x/sys",
-        sum = "h1:kHVeDEnfKn3T238CvrUcz6KeEsFHVaKh4kMTt6Wsysg=",
-        version = "v0.0.0-20220405210540-1e041c57c461",
+        sum = "h1:0A+M6Uqn+Eje4kHMK80dtF3JCXC4ykBgQG4Fe06QRhQ=",
+        version = "v0.0.0-20220715151400-c0bba94af5f8",
     )
     go_repository(
         name = "org_golang_x_term",
         importpath = "golang.org/x/term",
-        sum = "h1:JGgROgKl9N8DuW20oFS5gxc+lE67/N3FcwmBPMe7ArY=",
-        version = "v0.0.0-20210927222741-03fcf44c2211",
+        sum = "h1:CBpWXWQpIRjzmkkA+M7q9Fqnwd2mZr3AFqexg8YTfoM=",
+        version = "v0.0.0-20220526004731-065cf7ba2467",
     )
     go_repository(
         name = "org_golang_x_text",
