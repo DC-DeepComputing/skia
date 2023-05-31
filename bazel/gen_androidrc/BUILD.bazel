@@ -1,0 +1,24 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+go_library(
+    name = "gen_androidrc_lib",
+    srcs = ["gen_androidrc.go"],
+    importpath = "go.skia.org/skia/bazel/gen_androidrc",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@net_starlark_go//starlark",
+        "@org_skia_go_infra//go/skerr",
+        "@org_skia_go_infra//go/sklog",
+    ],
+)
+
+go_binary(
+    name = "gen_androidrc",
+    embed = [":gen_androidrc_lib"],
+    visibility = ["//visibility:public"],
+)
