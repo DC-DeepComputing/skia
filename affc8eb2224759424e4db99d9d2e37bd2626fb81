@@ -16,6 +16,24 @@
       "message": "This assert made no sense (it dates back to when the RTree took the rects by pointer-to-auto-malloc, or something like that).",
       "revId": "affc8eb2224759424e4db99d9d2e37bd2626fb81",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8715e39c_be75def6",
+        "filename": "bench/RTreeBench.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-05-31T19:35:34Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "59da6593_c99e9efd",
+      "revId": "affc8eb2224759424e4db99d9d2e37bd2626fb81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

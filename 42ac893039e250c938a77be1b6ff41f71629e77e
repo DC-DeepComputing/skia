@@ -16,6 +16,29 @@
       "message": "This might work?",
       "revId": "42ac893039e250c938a77be1b6ff41f71629e77e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eb49986_2b29eef2",
+        "filename": "tests/RTreeTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-05-31T19:35:34Z",
+      "side": 1,
+      "message": ".data().",
+      "range": {
+        "startLine": 94,
+        "startChar": 42,
+        "endLine": 94,
+        "endChar": 47
+      },
+      "revId": "42ac893039e250c938a77be1b6ff41f71629e77e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
