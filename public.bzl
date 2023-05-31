@@ -544,6 +544,7 @@ BASE_SRCS_ALL = [
     "src/core/SkOpts.cpp",
     "src/core/SkOpts.h",
     "src/core/SkOpts_erms.cpp",
+    "src/core/SkOpts_x86_ssse3.cpp",
     "src/core/SkOrderedReadBuffer.h",
     "src/core/SkOverdrawCanvas.cpp",
     "src/core/SkPaint.cpp",

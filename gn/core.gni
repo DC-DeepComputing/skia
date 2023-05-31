@@ -440,6 +440,7 @@ skia_core_sources = [
   "$_src/core/SkOpts.cpp",
   "$_src/core/SkOpts.h",
   "$_src/core/SkOpts_erms.cpp",
+  "$_src/core/SkOpts_x86_ssse3.cpp",
   "$_src/core/SkOverdrawCanvas.cpp",
   "$_src/core/SkPaint.cpp",
   "$_src/core/SkPaintDefaults.h",
