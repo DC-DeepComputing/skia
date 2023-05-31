@@ -20,6 +20,37 @@
 
 #define TEST(name) { name, #name }
 
+static void testDegenerates(skiatest::Reporter* reporter, const char* filename) {
+    SkPath doubleback;
+    SkPath simple;
+
+    doubleback.lineTo(1, 0);
+    REPORTER_ASSERT(reporter, Simplify(doubleback, &simple));
+    REPORTER_ASSERT(reporter, simple.isEmpty());
+
+    doubleback.reset();
+    doubleback.lineTo(1, 0);
+    doubleback.lineTo(2, 0);
+    REPORTER_ASSERT(reporter, Simplify(doubleback, &simple));
+    REPORTER_ASSERT(reporter, simple.isEmpty());
+
+    doubleback.reset();
+    doubleback.lineTo(-1, 0);
+    doubleback.lineTo(-1, 1);
+    doubleback.lineTo(-1, 0);
+    REPORTER_ASSERT(reporter, Simplify(doubleback, &simple));
+    REPORTER_ASSERT(reporter, simple.isEmpty());
+
+    doubleback.reset();
+    doubleback.lineTo(1, 0);
+    doubleback.lineTo(1, 0);
+    doubleback.lineTo(1, 1);
+    doubleback.lineTo(1, 1);
+    doubleback.lineTo(1, 0);
+    REPORTER_ASSERT(reporter, Simplify(doubleback, &simple));
+    REPORTER_ASSERT(reporter, simple.isEmpty());
+}
+
 static void testLine1(skiatest::Reporter* reporter, const char* filename) {
     SkPath path;
     path.moveTo(2,0);
@@ -9924,6 +9955,7 @@ static TestDesc tests[] = {
     TEST(testLine3),
     TEST(testLine2),
     TEST(testLine1),
+    TEST(testDegenerates),
 };
 
 static const size_t testCount = std::size(tests);
