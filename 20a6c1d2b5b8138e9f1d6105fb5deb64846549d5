@@ -22,6 +22,30 @@
       },
       "revId": "20a6c1d2b5b8138e9f1d6105fb5deb64846549d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22127d6c_00d7a471",
+        "filename": "tests/skia_android_unit_test.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-05-31T16:31:49Z",
+      "side": 1,
+      "message": "\u003e As we want to add more devices, how many places do we have to make edits?\n\nRight now, these are the steps required to add a new device:\n\n1. Define a new constraint, e.g. `//bazel/devices:pixel_7` (https://skia.googlesource.com/skia/+/7a606c46706424ecef53dae0c1b2a4e557b5a4fb/bazel/devices/BUILD.bazel#17).\n\n2. Add the new constraint to the `//bazel/devices:has_android_device` config setting (https://skia.googlesource.com/skia/+/7a606c46706424ecef53dae0c1b2a4e557b5a4fb/bazel/devices/BUILD.bazel#22).\n\n3. Define a new platform that uses said constraint, e.g. `//bazel/platform:pixel_7` (https://skia.googlesource.com/skia/+/7a606c46706424ecef53dae0c1b2a4e557b5a4fb/bazel/platform/BUILD.bazel#81).\n\n4. Define a new config in `//bazel/buildrc` to use the new platform, e.g. `--config\u003dpixel_7` (https://skia.googlesource.com/skia/+/7a606c46706424ecef53dae0c1b2a4e557b5a4fb/bazel/buildrc#58).\n\n5. Add the device constraint to the above `select()` so we can turn it into a plaintext device name. This device name is passed to `adb_test_runner.go`.\n\n6. If required, add any device-specific setup steps to `adb_test_runner.go`.\n\n\u003e What if we omitted the default conditions so Bazel finds these for us instead of having the default condition mask a location we didn\u0027t fix?\n\nDo you mean removing the `//conditions:default` case? The problem with this is that `bazel build //tests/...` would break. Example error message after commenting out `//conditions:default`:\n\n```\n$ bazel build //tests/... --config\u003dlinux_rbe\n...\nERROR: ... configurable attribute \"device\" in //tests:android_pathops_test doesn\u0027t\nmatch this configuration. Would a default condition help?\n...\n```\n\nHere\u0027s an idea.\n\nLet\u0027s define a dictionary of Android device names to their platform constraints in a new `//bazel/android_devices.bzl` file, e.g.:\n\n```\nANDROID_DEVICES \u003d {\n    \"pixel_5\": [@platforms//cpu:arm64],\n    \"pixel_7\": [@platforms//cpu:arm64],\n    \"some_old_phone\": [@platforms//cpu:arm32],\n    ...\n}\n```\n\nThen, let\u0027s generate all Android constraints in `//bazel/devices/BUILD.bazel` and all Android-specific platforms in `//bazel/platform/BUILD.bazel` via macros that use the `ANDROID_DEVICES` dictionary. Same for the `//bazel/devices:has_android_device` config setting and the above `select()` statement.\n\nThis way, adding a new device would only require adding a new entry to the `ANDROID_DEVICES` dictionary and a new config in `//bazel/buildrc` file. Perhaps we could automate the latter with a Go program that parses `ANDROID_DEVICES` and generates a `//bazel/androidrc` file which we would include from `//.buildrc`.\n\nWDYT?",
+      "parentUuid": "5cff891c_f71cb9e1",
+      "range": {
+        "startLine": 138,
+        "startChar": 30,
+        "endLine": 138,
+        "endChar": 37
+      },
+      "revId": "20a6c1d2b5b8138e9f1d6105fb5deb64846549d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
