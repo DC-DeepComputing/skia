@@ -65,6 +65,16 @@ namespace SkSL {
 class TraceHook;
 }
 
+#define SK_OPTS_TARGET_SSSE3 0x01
+#define SK_OPTS_TARGET_AVX   0x02
+#define SK_OPTS_TARGET_HSW   0x04
+#define SK_OPTS_TARGET_SKX   0x08
+
+// We need to know if we're building with clang-cl
+#if defined(__clang__) && defined(_MSC_VER)
+#define SK_COMPILER_CLANG_CL
+#endif
+
 namespace SkOpts {
     // Call to replace pointers to portable functions with pointers to CPU-specific functions.
     // Thread-safe and idempotent.
