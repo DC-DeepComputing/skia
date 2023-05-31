@@ -16,6 +16,247 @@
       "message": "Most of this is all the unit tests -- the actual image creation code is pretty compact.",
       "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d30b6d43_63d16d70",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "Do we still need this in Graphite ?",
+      "range": {
+        "startLine": 129,
+        "startChar": 23,
+        "endLine": 129,
+        "endChar": 49
+      },
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2599c0cd_58bcbf2b",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "Do we really want to do mipmapped YUV image drawing?",
+      "range": {
+        "startLine": 133,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 79
+      },
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7828734b_2eaa8580",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "texture(s) ?",
+      "range": {
+        "startLine": 137,
+        "startChar": 64,
+        "endLine": 137,
+        "endChar": 71
+      },
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae730ea1_886f80aa",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "texture(s) ? and the instance for \u0027textureRelease\u0027 ?",
+      "range": {
+        "startLine": 140,
+        "startChar": 73,
+        "endLine": 140,
+        "endChar": 80
+      },
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d975390b_208c7719",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "numPlanes ?",
+      "range": {
+        "startLine": 163,
+        "startChar": 8,
+        "endLine": 163,
+        "endChar": 9
+      },
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b89b9768_3a824db1",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "It seems like this block could be moved above the \u0027planeDimensions\u0027 call",
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fbfada3_c8d7ba7b",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "SkYUVAInfo::kMaxPlanes ?",
+      "range": {
+        "startLine": 182,
+        "startChar": 32,
+        "endLine": 182,
+        "endChar": 33
+      },
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0873b436_777d2763",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "std::move ?",
+      "range": {
+        "startLine": 198,
+        "startChar": 65,
+        "endLine": 198,
+        "endChar": 80
+      },
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e461a18c_d4aa2f64",
+        "filename": "src/gpu/graphite/YUVATextureProxies.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "We\u0027ve already checked this above",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 9
+      },
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd8233ef_f09d0962",
+        "filename": "tests/graphite/GraphiteYUVAPromiseImageTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "2023",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f38a2c0_a7b83f37",
+        "filename": "tests/graphite/GraphiteYUVAPromiseImageTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-05-31T17:07:04Z",
+      "side": 1,
+      "message": "got to here",
+      "revId": "aeaacfef22b0cb6fd3d4fab2d8b9bc549ab01476",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
