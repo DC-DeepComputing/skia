@@ -1074,6 +1074,10 @@ skia_filegroup(
         # Shared tests that are supported so far:
         "runtime/GlobalVariables.rts",
         "runtime/GLSLTypeNames.rts",
+        "runtime/LargeProgram_FlatLoop.rts",
+        "runtime/LargeProgram_NestedLoops.rts",
+        "runtime/LargeProgram_SplitLoops.rts",
+        "runtime/LargeProgram_ZeroIterFor.rts",
         "shared/ArrayConstructors.sksl",
         "shared/ArrayFollowedByScalar.sksl",
         "shared/ArrayIndexTypes.sksl",
