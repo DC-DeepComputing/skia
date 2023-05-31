@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "906fc74d_f4b32b0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-31T08:33:32Z",
+      "side": 1,
+      "message": "lgtm with the one suggestion to move the validation that the XMP standard and XMP extended match (the standard has a valid GUID which matches the md5 hash of the extended) to be contained inside SkXmp.\n\nI listed the places to change with [RE: moving GUID validation], but feel free to not make that change, and I can do it whenever I get to cleaning up the SkJpegMetadata (I\u0027ll land it after you land this patch).",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8ac2d0b_1e46018f",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-31T08:33:32Z",
+      "side": 1,
+      "message": "[RE: moving GUID validation]: We wouldn\u0027t expose this function.",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0db91f87_f8e1a2de",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1125,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-31T08:33:32Z",
+      "side": 1,
+      "message": "[RE: moving GUID validation]: Move the GUID validation out from this function and into `SkXmp::Make` (part 1)",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3401c8b3_ecee0015",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1233,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-31T08:33:32Z",
+      "side": 1,
+      "message": "[RE: moving GUID validation]: Move the GUID validation out from this function and into `SkXmp::Make` (part 2)",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a50f539_c7ec612c",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-05-31T08:33:32Z",
+      "side": 1,
+      "message": "[RE: moving GUID validation]: Do the GUID validation here.",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
