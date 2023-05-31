@@ -396,6 +396,10 @@ sksl_spirv_tests = [
 sksl_wgsl_tests = [
   "runtime/GLSLTypeNames.rts",
   "runtime/GlobalVariables.rts",
+  "runtime/LargeProgram_FlatLoop.rts",
+  "runtime/LargeProgram_NestedLoops.rts",
+  "runtime/LargeProgram_SplitLoops.rts",
+  "runtime/LargeProgram_ZeroIterFor.rts",
   "shared/ArrayConstructors.sksl",
   "shared/ArrayFollowedByScalar.sksl",
   "shared/ArrayIndexTypes.sksl",
