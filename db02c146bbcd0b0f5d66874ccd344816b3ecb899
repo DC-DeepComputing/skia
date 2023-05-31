@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a2d3720_819bbbb3",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-05-31T18:00:54Z",
+      "side": 1,
+      "message": "Try {{nullptr, 0}};",
+      "range": {
+        "startLine": 183,
+        "startChar": 14,
+        "endLine": 183,
+        "endChar": 26
+      },
+      "revId": "db02c146bbcd0b0f5d66874ccd344816b3ecb899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
