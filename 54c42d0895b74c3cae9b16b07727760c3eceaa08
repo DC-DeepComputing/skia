@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c257d3b8_9fd90ea3",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-31T17:21:47Z",
+      "side": 1,
+      "message": "My compiler yelled at me for not having this included, so I added it.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "54c42d0895b74c3cae9b16b07727760c3eceaa08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ebe52b9_a2e7bf4d",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-31T17:21:47Z",
+      "side": 1,
+      "message": "My compiler yelled at me for not having this included, so I added it.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 17
+      },
+      "revId": "54c42d0895b74c3cae9b16b07727760c3eceaa08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2421bb7_7d2d2a8c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-05-31T17:21:47Z",
+      "side": 1,
+      "message": "Do you have any advice for determining the intrinsic uniform buffer\u0027s AccessPattern (GPU-only or not)?",
+      "range": {
+        "startLine": 89,
+        "startChar": 46,
+        "endLine": 89,
+        "endChar": 95
+      },
+      "revId": "ee0abb14fc7b355e0c9646f6c1e528042061dbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
