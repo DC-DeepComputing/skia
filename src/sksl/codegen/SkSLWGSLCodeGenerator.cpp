@@ -1258,10 +1258,7 @@ std::string WGSLCodeGenerator::assemblePostfixExpression(const PostfixExpression
 std::string WGSLCodeGenerator::assembleSwizzle(const Swizzle& swizzle) {
     std::string expr = this->assembleExpression(*swizzle.base(), Precedence::kPostfix);
     expr.push_back('.');
-    for (int c : swizzle.components()) {
-        SkASSERT(c >= 0 && c <= 3);
-        expr.push_back("xyzw"[c]);
-    }
+    expr += Swizzle::MaskString(swizzle.components());
     return expr;
 }
 
