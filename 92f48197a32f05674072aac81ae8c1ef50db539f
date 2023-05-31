@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a14604d8_d5a92564",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-31T17:22:38Z",
+      "side": 1,
+      "message": "Sure, let\u0027s try it.",
+      "revId": "92f48197a32f05674072aac81ae8c1ef50db539f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c42ce58_07c3d858",
+        "filename": "bazel/devices/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-31T17:22:38Z",
+      "side": 1,
+      "message": "I did not know you could do this in a BUILD.bazel file",
+      "range": {
+        "startLine": 17,
+        "startChar": 8,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "92f48197a32f05674072aac81ae8c1ef50db539f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
