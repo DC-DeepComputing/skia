@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c07f92e_f4c2067b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-05-31T09:24:31Z",
+      "side": 1,
+      "message": "As discussed via chat, it\u0027s a nice suggestion but it would be a little bit more involved than suggested since the guid is also used while reading the extended xmp at SkJpegCodec.cpp#1162 so we agreed to leave it as is for now.",
+      "parentUuid": "906fc74d_f4b32b0f",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8ac2d0b_1e46018f",
