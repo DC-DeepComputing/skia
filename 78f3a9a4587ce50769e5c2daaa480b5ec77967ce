@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d5afa22_f876e021",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-31T12:59:16Z",
+      "side": 1,
+      "message": "This is probably fine, but looking at this code again ... yikes. This behaves so differently to other blends. (eg, when rendering to F16/F32, this still enforces that values remain normalized, which seems unnecessary. That was true even without the saturate, because the pmClamp will clamp to 1, even when it\u0027s disabled. Sigh.)",
+      "revId": "78f3a9a4587ce50769e5c2daaa480b5ec77967ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
