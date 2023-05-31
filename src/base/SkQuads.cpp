@@ -91,6 +91,26 @@ double SkQuads::Discriminant(const double a, const double b, const double c) {
     return discriminant;
 }
 
+SkQuads::RootResult SkQuads::Roots(double A, double B, double C) {
+    SkASSERT(A != 0);
+
+    const double discriminant = Discriminant(A, B, C);
+
+    if (discriminant == 0) {
+        const double root = B / A;
+        return {discriminant, root, root};
+    }
+
+    if (discriminant > 0) {
+        const double D = sqrt(discriminant);
+        const double R = B > 0 ? B + D : B - D;
+        return {discriminant, R / A, C / R};
+    }
+
+    // The discriminant is negative or is not finite.
+    return {discriminant, NAN, NAN};
+}
+
 int SkQuads::RootsReal(const double A, const double B, const double C, double solution[2]) {
     if (close_to_linear(A, B)) {
         return solve_linear(B, C, solution);
