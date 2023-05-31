@@ -34,6 +34,24 @@
       "parentUuid": "0f21e97a_9adbd883",
       "revId": "15d23355d6294acc11f4dca634652f52ed41229c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84a7405f_8d54c236",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-05-31T14:09:42Z",
+      "side": 1,
+      "message": "Yes, I do like the idea of moving the color filters into a dedicated directory. We\u0027ve done that for other groups in the past (gradients, image, shaders) - color filters are actually the odd duck here, so let\u0027s do that.\n\nAlso agreed that it\u0027s a shame to undo prior work, but I don\u0027t feel real strongly about that one - there\u0027s no real intrinsic benefit to not having the headers -- other than putting everything for a single class in a single file. Of course, this kind of refactoring makes that a non-starter, so I think landing on a single h/cpp pair per-class is a principled organization.",
+      "parentUuid": "0f21e97a_9adbd883",
+      "revId": "15d23355d6294acc11f4dca634652f52ed41229c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
