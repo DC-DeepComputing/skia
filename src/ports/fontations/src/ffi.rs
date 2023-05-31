@@ -5,11 +5,12 @@ use cxx;
 use font_types::{GlyphId, Pen};
 use read_fonts::{FileRef, FontRef, ReadError, TableProvider};
 use skrifa::{
-    instance::{LocationRef, Size},
+    instance::{LocationRef, NormalizedCoord, Size},
     metrics::{GlyphMetrics, Metrics},
     scale::Context,
+    setting::Setting,
     string::{LocalizedStrings, StringId},
-    MetadataProvider,
+    MetadataProvider, Tag,
 };
 use std::pin::Pin;
 
@@ -66,11 +67,17 @@ fn get_path(
     font_ref: &BridgeFontRef,
     glyph_id: u16,
     size: f32,
+    coords: &BridgeNormalizedCoords,
     path_wrapper: Pin<&mut SkPathWrapper>,
 ) -> bool {
+    println!("Coords length: {}", coords.0.len());
     font_ref.0.as_ref().map_or(false, |f| {
         let mut cx = Context::new();
-        let mut scaler = cx.new_scaler().size(Size::new(size)).build(f);
+        let mut scaler = cx
+            .new_scaler()
+            .size(Size::new(size))
+            .normalized_coords(coords.0.clone())
+            .build(f);
         let mut pen_dump = PathWrapperPen {
             path_wrapper: path_wrapper,
         };
@@ -190,7 +197,49 @@ fn font_ref_is_valid(bridge_font_ref: &BridgeFontRef) -> bool {
     bridge_font_ref.0.is_some()
 }
 
+use crate::ffi::SkiaDesignCoordinate;
+
+fn u32tag_to_tag<'a>(tag: &'a u32) -> Tag {
+    Tag::from_be_bytes([
+        ((tag >> 24) & 0xFF) as u8,
+        ((tag >> 16) & 0xFF) as u8,
+        ((tag >> 8) & 0xFF) as u8,
+        ((tag >> 0) & 0xFF) as u8,
+    ])
+}
+
+fn resolve_into_normalized_coords(
+    font_ref: &BridgeFontRef,
+    design_coords: &[SkiaDesignCoordinate],
+) -> Box<BridgeNormalizedCoords> {
+    let variation_tuples: Vec<_> = design_coords
+        .into_iter()
+        .map(|coord| Setting::<f32>::from((u32tag_to_tag(&coord.tag), coord.value)))
+        .collect();
+    println!("Var tuples length: {}", variation_tuples.len());
+    font_ref.0.as_ref().map_or(
+        Box::new(BridgeNormalizedCoords(Vec::<NormalizedCoord>::default())),
+        |f| {
+            let mut cx = Context::new();
+            let scaler = cx
+                .new_scaler()
+                .size(Size::new(12.0))
+                .variation_settings(&variation_tuples)
+                .build(f);
+            let normalized_coords = scaler.normalized_coords();
+            println!(
+                "variation_tuples: {:?} norm coords length: {}",
+                variation_tuples,
+                normalized_coords.len()
+            );
+            Box::new(BridgeNormalizedCoords(normalized_coords.to_vec()))
+        },
+    )
+}
+
 struct BridgeFontRef<'a>(Option<FontRef<'a>>);
+
+struct BridgeNormalizedCoords(Vec<NormalizedCoord>);
 
 struct BridgeLocalizedStrings<'a> {
     #[allow(dead_code)]
@@ -220,6 +269,11 @@ mod ffi {
         language: String,
     }
 
+    struct SkiaDesignCoordinate {
+        tag: u32,
+        value: f32,
+    }
+
     extern "Rust" {
 
         type BridgeFontRef<'a>;
@@ -238,6 +292,7 @@ mod ffi {
             font_ref: &BridgeFontRef,
             glyph_id: u16,
             size: f32,
+            coords: &BridgeNormalizedCoords,
             path_wrapper: Pin<&mut SkPathWrapper>,
         ) -> bool;
         fn advance_width_or_zero(font_ref: &BridgeFontRef, size: f32, glyph_id: u16) -> f32;
@@ -255,6 +310,12 @@ mod ffi {
             bridge_localized_strings: &mut BridgeLocalizedStrings,
             out_localized_name: &mut BridgeLocalizedName,
         ) -> bool;
+
+        type BridgeNormalizedCoords;
+        fn resolve_into_normalized_coords(
+            font_ref: &BridgeFontRef,
+            design_coords: &[SkiaDesignCoordinate],
+        ) -> Box<BridgeNormalizedCoords>;
 
     }
 

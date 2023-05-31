@@ -30,6 +30,19 @@ rust::Box<::fontations_ffi::BridgeFontRef> make_bridge_font_ref(sk_sp<SkData> fo
     rust::Slice<const uint8_t> slice{fontData->bytes(), fontData->size()};
     return fontations_ffi::make_font_ref(slice, index);
 }
+
+rust::Box<fontations_ffi::BridgeNormalizedCoords> make_normalized_coords(
+        fontations_ffi::BridgeFontRef const& bridgeFontRef, const SkFontArguments& args) {
+    std::unique_ptr<fontations_ffi::SkiaDesignCoordinate[]> designCoords(
+            new fontations_ffi::SkiaDesignCoordinate[args.getVariationDesignPosition().coordinateCount]);
+    for (int i = 0; i < args.getVariationDesignPosition().coordinateCount; ++i) {
+      designCoords[i].tag = args.getVariationDesignPosition().coordinates[i].axis;
+      designCoords[i].value = args.getVariationDesignPosition().coordinates[i].value;
+    }
+    rust::Slice<const fontations_ffi::SkiaDesignCoordinate> coordinates(
+            designCoords.get(), args.getVariationDesignPosition().coordinateCount);
+    return resolve_into_normalized_coords(bridgeFontRef, coordinates);
+}
 }  // namespace
 
 SK_API sk_sp<SkTypeface> SkTypeface_Make_Fontations(std::unique_ptr<SkStreamAsset> fontData,
@@ -38,17 +51,17 @@ SK_API sk_sp<SkTypeface> SkTypeface_Make_Fontations(std::unique_ptr<SkStreamAsse
 }
 
 SkTypeface_Fontations::SkTypeface_Fontations(std::unique_ptr<SkStreamAsset> font_data,
-                                             uint32_t ttcIndex)
+                                             const SkFontArguments& args)
         : SkTypeface(SkFontStyle(), true)
         , fFontData(streamToData(font_data))
-        , fTtcIndex(ttcIndex)
-        , fBridgeFontRef(make_bridge_font_ref(fFontData, fTtcIndex)) {}
+        , fTtcIndex(args.getCollectionIndex())
+        , fBridgeFontRef(make_bridge_font_ref(fFontData, fTtcIndex))
+        , fBridgeNormalizedCoords(make_normalized_coords(*fBridgeFontRef, args)) {}
 
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                                         const SkFontArguments& args) {
     // TODO(crbug.com/skia/14337): Handle more than the collection index.
-    sk_sp<SkTypeface_Fontations> probeTypeface(
-            new SkTypeface_Fontations(std::move(stream), args.getCollectionIndex()));
+    sk_sp<SkTypeface_Fontations> probeTypeface(new SkTypeface_Fontations(std::move(stream), args));
     return probeTypeface->hasValidBridgeFontRef() ? probeTypeface : nullptr;
 }
 
@@ -122,8 +135,10 @@ public:
                               const SkScalerContextEffects& effects,
                               const SkDescriptor* desc)
             : SkScalerContext(face, effects, desc)
-            , fBridgeFontRef(static_cast<SkTypeface_Fontations*>(this->getTypeface())
-                                     ->getBridgeFontRef()) {
+            , fBridgeFontRef(
+                      static_cast<SkTypeface_Fontations*>(this->getTypeface())->getBridgeFontRef())
+            , fBridgeNormalizedCoords(static_cast<SkTypeface_Fontations*>(this->getTypeface())
+                                              ->getBridgeNormalizedCoords()) {
         fRec.getSingleMatrix(&fMatrix);
         this->forceGenerateImageFromPath();
     }
@@ -165,8 +180,11 @@ protected:
         }
         fontations_ffi::SkPathWrapper pathWrapper;
 
-        if (!fontations_ffi::get_path(
-                    fBridgeFontRef, glyph.getGlyphID(), scale.y(), pathWrapper)) {
+        if (!fontations_ffi::get_path(fBridgeFontRef,
+                                      glyph.getGlyphID(),
+                                      scale.y(),
+                                      fBridgeNormalizedCoords,
+                                      pathWrapper)) {
             return false;
         }
 
@@ -197,6 +215,7 @@ private:
     SkMatrix fMatrix;
     sk_sp<SkData> fFontData = nullptr;
     const fontations_ffi::BridgeFontRef& fBridgeFontRef;
+    const fontations_ffi::BridgeNormalizedCoords& fBridgeNormalizedCoords;
 };
 
 std::unique_ptr<SkStreamAsset> SkTypeface_Fontations::onOpenStream(int* ttcIndex) const {
