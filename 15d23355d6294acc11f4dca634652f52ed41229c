@@ -16,6 +16,24 @@
       "message": "What do others think about moving the CPP/H files for the color filter subclasses into `src/effects/colorfilters`. That would parallel `src/effects/imagefilters` and makes it easy to find all implementations together. \n\nSkColorFilter.cpp and SkColorFilterBase would stay in src/core potentially, but I could also see SkColorFilterBase going to src/effects/colorfilters.\n\nI\u0027m sad to see Rob\u0027s work to consolidate all the color filter subclasses into internal CPP files, but that had been a design goal before we needed to break out the asFragmentProcessor functionality. And I don\u0027t see a way around that unless we move the data fields into a union/variant that\u0027s on SkColorFilterBase and make type non-virtual.",
       "revId": "15d23355d6294acc11f4dca634652f52ed41229c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d27afc46_3b0ebd4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-31T14:08:40Z",
+      "side": 1,
+      "message": "I like the move to src/effects/colorfilters. I had been tempted to move files somewhere in this CL, but kept it focused.",
+      "parentUuid": "0f21e97a_9adbd883",
+      "revId": "15d23355d6294acc11f4dca634652f52ed41229c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
