@@ -94,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dbffa20_2ad07196",
+        "filename": "src/core/SkModeColorFilter.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-31T14:34:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33d5f17d_8dfc5b5f",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 23
+      },
+      "revId": "15d23355d6294acc11f4dca634652f52ed41229c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8d52332_5ec4fc36",
@@ -107,6 +131,30 @@
       "writtenOn": "2023-05-31T14:10:16Z",
       "side": 1,
       "message": "I know this is where it used to be defined, but I think it\u0027s strange to have one color filter implementation isolated in `src/utils`. Its only use within skia is for the SkShadowUtils that\u0027s in src/utils, so that\u0027s probably how it started, but you create it using SkColorFilterPriv, which is in src/core, so I\u0027d think we should have this defined alongside all the other private color filters (src/core or src/effects/colorfilters, etc).",
+      "range": {
+        "startLine": 38,
+        "startChar": 6,
+        "endLine": 38,
+        "endChar": 27
+      },
+      "revId": "15d23355d6294acc11f4dca634652f52ed41229c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54fffe33_a40bb20b",
+        "filename": "src/utils/SkGaussianColorFilter.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-31T14:34:38Z",
+      "side": 1,
+      "message": "I agree. I can send a follow-up CL with the relocation of this and others.",
+      "parentUuid": "d8d52332_5ec4fc36",
       "range": {
         "startLine": 38,
         "startChar": 6,
