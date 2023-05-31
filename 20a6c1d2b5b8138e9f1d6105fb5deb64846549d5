@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cff891c_f71cb9e1",
+        "filename": "tests/skia_android_unit_test.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-31T12:46:06Z",
+      "side": 1,
+      "message": "As we want to add more devices, how many places do we have to make edits? What if we omitted the default conditions so Bazel finds these for us instead of having the default condition mask a location we didn\u0027t fix?",
+      "range": {
+        "startLine": 138,
+        "startChar": 30,
+        "endLine": 138,
+        "endChar": 37
+      },
+      "revId": "20a6c1d2b5b8138e9f1d6105fb5deb64846549d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
