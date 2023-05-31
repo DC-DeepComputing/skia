@@ -6,14 +6,205 @@
  */
 
 #include "gm/gm.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "src/base/SkMathPriv.h"
 #include "src/base/SkRandom.h"
+
+#include "include/effects/SkGradientShader.h"
+
+namespace {
+
+class HilbertGenerator {
+public:
+    HilbertGenerator(float desiredSize, int desiredDepth)
+            : fDesiredSize(desiredSize)
+            , fDesiredDepth(desiredDepth)
+            , fLength(fDesiredSize / ((0x1 << fDesiredDepth) - 1.0f))
+            , fDesiredWidth(2.0f * fLength / 3.0f)
+            , fActualBounds(SkRect::MakeEmpty())
+            , fCurPos(SkPoint::Make(0.0f, 0.0f))
+            , fCurDir(0)
+            , fExpectedLen(fLength * ((0x1 << (2*fDesiredDepth)) - 1.0f))
+            , fCurLen(0.0f) {
+    }
+
+    float lineWidth() const { return fDesiredWidth; }
+
+    void draw(SkCanvas* canvas) {
+        this->recursiveDraw(canvas, /* curDepth= */ 0, /* turnRight= */ true);
+
+        SkScalarNearlyEqual(fExpectedLen, fCurLen, 0.01f);
+        SkScalarNearlyEqual(fDesiredSize, fActualBounds.width(), 0.01f);
+        SkScalarNearlyEqual(fDesiredSize, fActualBounds.height(), 0.01f);
+    }
+
+private:
+    void turn90(bool turnRight) {
+        fCurDir += turnRight ? 90 : -90;
+        if (fCurDir >= 360) {
+            fCurDir = 0;
+        } else if (fCurDir < 0) {
+            fCurDir = 270;
+        }
+
+        SkASSERT(fCurDir == 0 || fCurDir == 90 || fCurDir == 180 || fCurDir == 270);
+    }
+
+#if 0
+        void curve(SkCanvas* canvas) {
+            SkRect r;
+            SkPaint paint;
+            paint.setColor(SK_ColorRED);
+
+            canvas->drawArc(r, 0, 360, /* useCenter= */ false, paint);
+        }
+#endif
+
+    void line(SkCanvas* canvas) {
+
+        SkPoint before = fCurPos;
+
+        SkRect r;
+        switch (fCurDir) {
+            case 0:
+                r.fLeft = fCurPos.fX;
+                r.fTop = fCurPos.fY - fDesiredWidth / 2.0f;
+                r.fRight = fCurPos.fX + fLength;
+                r.fBottom = fCurPos.fY + fDesiredWidth / 2.0f;
+                fCurPos.fX += fLength;
+                break;
+            case 90:
+                r.fLeft = fCurPos.fX - fDesiredWidth / 2.0f;
+                r.fTop = fCurPos.fY - fLength;
+                r.fRight = fCurPos.fX + fDesiredWidth / 2.0f;
+                r.fBottom = fCurPos.fY;
+                fCurPos.fY -= fLength;
+                break;
+            case 180:
+                r.fLeft = fCurPos.fX - fLength;
+                r.fTop = fCurPos.fY - fDesiredWidth / 2.0f;
+                r.fRight = fCurPos.fX;
+                r.fBottom = fCurPos.fY + fDesiredWidth / 2.0f;
+                fCurPos.fX -= fLength;
+                break;
+            case 270:
+                r.fLeft = fCurPos.fX - fDesiredWidth / 2.0f;
+                r.fTop = fCurPos.fY;
+                r.fRight = fCurPos.fX + fDesiredWidth / 2.0f;
+                r.fBottom = fCurPos.fY + fLength;
+                fCurPos.fY += fLength;
+                break;
+            default:
+                return;
+        }
+
+        SkPoint pts[2] = { before, fCurPos };
+
+        SkColor4f colors[2] = {
+            this->getColor(fCurLen),
+            this->getColor(fCurLen + fLength),
+        };
+
+        fCurLen += fLength;
+        if (fActualBounds.isEmpty()) {
+            fActualBounds = r;
+        } else {
+            fActualBounds.join(r);
+        }
+
+        SkPaint paint;
+        paint.setColor(SK_ColorBLUE);
+        paint.setShader(SkGradientShader::MakeLinear(pts, colors, /* colorSpace= */ nullptr,
+                                                     /* pos= */ nullptr, 2, SkTileMode::kClamp));
+        canvas->drawRect(r, paint);
+    }
+
+    void recursiveDraw(SkCanvas* canvas, int curDepth, bool turnRight) {
+        if (curDepth >= fDesiredDepth) {
+            return;
+        }
+
+        this->turn90(turnRight);
+        this->recursiveDraw(canvas, curDepth + 1, !turnRight);
+        this->line(canvas);
+        this->turn90(!turnRight);
+        this->recursiveDraw(canvas, curDepth + 1, turnRight);
+        this->line(canvas);
+        this->recursiveDraw(canvas, curDepth + 1, turnRight);
+        this->turn90(!turnRight);
+        this->line(canvas);
+        this->recursiveDraw(canvas, curDepth + 1, !turnRight);
+        this->turn90(turnRight);
+    }
+
+    SkColor4f getColor(float curLen) {
+        static const SkColor4f kColors[] = {
+                SkColors::kBlack,
+                SkColors::kBlue,
+                SkColors::kCyan,
+                SkColors::kGreen,
+                SkColors::kYellow,
+                SkColors::kRed,
+                SkColors::kWhite,
+        };
+
+        static const float kStops[] = {
+                0.0f,
+                1.0f/6.0f,
+                2.0f/6.0f,
+                0.5f,
+                4.0f/6.0f,
+                5.0f/6.0f,
+                1.0f,
+        };
+        static_assert(std::size(kColors) == std::size(kStops));
+
+        float t = curLen / fExpectedLen;
+        if (t <= 0.0f) {
+            return kColors[0];
+        } else if (t >= 1.0f) {
+            return kColors[std::size(kColors)-1];
+        }
+
+        for (unsigned int i = 0; i < std::size(kColors)-1; ++i) {
+            if (kStops[i] <= t && t <= kStops[i+1]) {
+                t = (t - kStops[i]) / (kStops[i+1] - kStops[i]);
+                SkASSERT(0.0f <= t && t <= 1.0f);
+                return { kColors[i].fR * (1 - t) + kColors[i+1].fR * t,
+                         kColors[i].fG * (1 - t) + kColors[i+1].fG * t,
+                         kColors[i].fB * (1 - t) + kColors[i+1].fB * t,
+                         kColors[i].fA * (1 - t) + kColors[i+1].fA * t };
+
+            }
+        }
+
+        return SkColors::kBlack;
+    }
+
+    const float fDesiredSize;
+    const int fDesiredDepth;
+    const float fLength;            // length of a line segment
+    const float fDesiredWidth;
+
+    SkRect fActualBounds;
+
+    // The "turtle" state
+    SkPoint fCurPos;
+    int fCurDir;
+
+    const float fExpectedLen;
+    float fCurLen;
+};
+
+} // anonymous namespace
 
 namespace skiagm {
 
@@ -21,9 +212,18 @@ namespace skiagm {
 // the 'drawArc' code near a singularly of its processing (i.e., near the
 // edge of one of its underlying quads).
 class ArcOfZorroGM : public GM {
+    static const int kSize = 1024;
+    static const int kDesiredDepth = 5;
+    // 1024(10) -> 18
+    // 512(9)   -> 8
+    // 256(8)   -> 6
+    // 128(7)   -> 2
+    int kLineWidth = 18;
+    int kPad = kLineWidth;
+
 public:
     ArcOfZorroGM() {
-        this->setBGColor(0xFFCCCCCC);
+        this->setBGColor(SK_ColorDKGRAY);
     }
 
 protected:
@@ -33,55 +233,31 @@ protected:
     }
 
     SkISize onISize() override {
-        return SkISize::Make(1000, 1000);
+        return SkISize::Make(kSize, kSize);
+    }
+
+    void onOnceBeforeDraw() override {
+        SkBitmap bm;
+
+        bm.allocN32Pixels(kSize, kSize, true);
+
+        SkCanvas canvas(bm);
+
+        HilbertGenerator gen(/* desiredSize= */ kSize - 2*kPad, kDesiredDepth);
+
+        canvas.translate(gen.lineWidth(), kSize - gen.lineWidth());
+        gen.draw(&canvas);
+
+        fImg = bm.asImage();
     }
 
     void onDraw(SkCanvas* canvas) override {
-        SkRandom rand;
-
-        SkRect rect = SkRect::MakeXYWH(10, 10, 200, 200);
-
-        SkPaint p;
-
-        p.setStyle(SkPaint::kStroke_Style);
-        p.setStrokeWidth(35);
-        int xOffset = 0, yOffset = 0;
-        int direction = 0;
-
-        for (float arc = 134.0f; arc < 136.0f; arc += 0.01f) {
-            SkColor color = rand.nextU();
-            color |= 0xff000000;
-            p.setColor(color);
-
-            canvas->save();
-            canvas->translate(SkIntToScalar(xOffset), SkIntToScalar(yOffset));
-            canvas->drawArc(rect, 0, arc, false, p);
-            canvas->restore();
-
-            switch (direction) {
-            case 0:
-                xOffset += 10;
-                if (xOffset >= 700) {
-                    direction = 1;
-                }
-                break;
-            case 1:
-                xOffset -= 10;
-                yOffset += 10;
-                if (xOffset < 50) {
-                    direction = 2;
-                }
-                break;
-            case 2:
-                xOffset += 10;
-                break;
-            }
-        }
-
+        canvas->drawImage(fImg, 0, 0);
     }
 
 private:
-    using INHERITED = GM;
+    sk_sp<SkImage> fImg;
+
 };
 
 //////////////////////////////////////////////////////////////////////////////
