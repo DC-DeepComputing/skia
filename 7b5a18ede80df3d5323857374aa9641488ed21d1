@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cc08d47_2941a7f2",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-31T12:41:38Z",
+      "side": 1,
+      "message": "suggestion: for organization, we might want to make a skip_tests.bzl that defines a bunch of lists, one per device. That way, it\u0027s easy for devs to add/remove them",
+      "range": {
+        "startLine": 365,
+        "startChar": 13,
+        "endLine": 365,
+        "endChar": 29
+      },
+      "revId": "7b5a18ede80df3d5323857374aa9641488ed21d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "154bef19_0ad89471",
+        "filename": "tests/skia_binary_with_cmdline_flags_test.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-31T12:41:38Z",
+      "side": 1,
+      "message": "nit: Add a comment to the bazel docs of which type of context this is (since I can never remember which is which)",
+      "range": {
+        "startLine": 5,
+        "startChar": 46,
+        "endLine": 5,
+        "endChar": 49
+      },
+      "revId": "7b5a18ede80df3d5323857374aa9641488ed21d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7fec7bc_74c0743e",
+        "filename": "tests/skia_binary_with_cmdline_flags_test.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-05-31T12:41:38Z",
+      "side": 1,
+      "message": "nit: Link to docs of declare_file, since it\u0027s a mildly odd name",
+      "range": {
+        "startLine": 24,
+        "startChar": 30,
+        "endLine": 24,
+        "endChar": 42
+      },
+      "revId": "7b5a18ede80df3d5323857374aa9641488ed21d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
