@@ -209,6 +209,7 @@ CORE_FILES = [
     "SkOpts.cpp",
     "SkOpts.h",
     "SkOpts_erms.cpp",
+    "SkOpts_x86_ssse3.cpp",
     "SkOverdrawCanvas.cpp",
     "SkPaint.cpp",
     "SkPaintDefaults.h",
