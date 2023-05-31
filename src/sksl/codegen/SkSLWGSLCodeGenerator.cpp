@@ -34,6 +34,7 @@
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLExpressionStatement.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
+#include "src/sksl/ir/SkSLForStatement.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
@@ -741,7 +742,10 @@ void WGSLCodeGenerator::writeStatement(const Statement& s) {
             this->writeBlock(s.as<Block>());
             break;
         case Statement::Kind::kExpression:
-            this->writeExpressionStatement(s.as<ExpressionStatement>());
+            this->writeExpressionStatement(*s.as<ExpressionStatement>().expression());
+            break;
+        case Statement::Kind::kFor:
+            this->writeForStatement(s.as<ForStatement>());
             break;
         case Statement::Kind::kIf:
             this->writeIfStatement(s.as<IfStatement>());
@@ -783,10 +787,83 @@ void WGSLCodeGenerator::writeBlock(const Block& b) {
     }
 }
 
-void WGSLCodeGenerator::writeExpressionStatement(const ExpressionStatement& s) {
-    if (Analysis::HasSideEffects(*s.expression())) {
-        this->write(this->assembleExpression(*s.expression(), Precedence::kStatement));
+void WGSLCodeGenerator::writeExpressionStatement(const Expression& expr) {
+    // TODO(): we need to
+    if (Analysis::HasSideEffects(expr)) {
+        this->write(this->assembleExpression(expr, Precedence::kStatement));
         this->write(";");
+    }
+}
+
+void WGSLCodeGenerator::writeForStatement(const ForStatement& s) {
+    if (s.initializer()) {
+        this->writeLine("{");
+        fIndentation++;
+        this->writeStatement(*s.initializer());
+        this->writeLine();
+    }
+
+
+    // Generate a loop structure like this:
+    //   {
+    //       initializer-statement;
+    //       loop {
+    //           if test-expression {
+    //               body-statement;
+    //           } else {
+    //               break;
+    //           }
+    //           continuing {
+    //               next-expression;
+    //           }
+    //       }
+    //   }
+    // This is already quite deep, and in practice it actually tends to be even larger, as the
+    // body-statement almost always contributes an extra block.
+    this->writeLine("loop {");
+    fIndentation++;
+
+    if (s.test()) {
+        std::string testExpr = this->assembleExpression(*s.test(), Precedence::kExpression);
+        this->write("if ");
+        this->write(testExpr);
+        this->writeLine(" {");
+
+        fIndentation++;
+        this->writeStatement(*s.statement());
+        this->finishLine();
+        fIndentation--;
+
+        this->writeLine("} else {");
+
+        fIndentation++;
+        this->writeLine("break;");
+        fIndentation--;
+
+        this->writeLine("}");
+    }
+    else {
+        this->writeStatement(*s.statement());
+        this->finishLine();
+    }
+
+    if (s.next()) {
+        this->writeLine("continuing {");
+        fIndentation++;
+        this->writeExpressionStatement(*s.next());
+        this->finishLine();
+        fIndentation--;
+        this->writeLine("}");
+    }
+
+    // This matches an open-brace at the top of the loop.
+    fIndentation--;
+    this->writeLine("}");
+
+    if (s.initializer()) {
+        // This matches an open-brace before the initializer-statement.
+        fIndentation--;
+        this->writeLine("}");
     }
 }
 
