@@ -34,6 +34,144 @@
       "parentUuid": "58e3c92d_26835133",
       "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c26678ea_fcebd6c1",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-01T15:48:32Z",
+      "side": 1,
+      "message": "Why switch to vector? STArray allows for prealloc and you can still push_back().",
+      "range": {
+        "startLine": 541,
+        "startChar": 4,
+        "endLine": 541,
+        "endChar": 15
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b5183f0_5c0fdba8",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-01T15:48:32Z",
+      "side": 1,
+      "message": "STArray?",
+      "range": {
+        "startLine": 566,
+        "startChar": 8,
+        "endLine": 566,
+        "endChar": 19
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9233d4a0_61d08399",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-01T15:48:32Z",
+      "side": 1,
+      "message": "Could use VkWriteDescriptorSet\u0026 writeInfo \u003d writeDescriptorSets.push_back();",
+      "range": {
+        "startLine": 577,
+        "startChar": 16,
+        "endLine": 577,
+        "endChar": 46
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d8e0170_3dcb3e6a",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-01T15:48:32Z",
+      "side": 1,
+      "message": "fIntrinsicUniformBufferInfo",
+      "range": {
+        "startLine": 181,
+        "startChar": 19,
+        "endLine": 181,
+        "endChar": 47
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f296f63_acc31802",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-01T15:48:32Z",
+      "side": 1,
+      "message": "Again, you could do\n    VkDescriptorPoolSize\u0026 poolSize \u003d poolSizes.push_back();\nand then fill in the data using that reference.",
+      "range": {
+        "startLine": 41,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 38
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4b3b68b_cbe16a33",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-01T15:48:32Z",
+      "side": 1,
+      "message": "Could we jam some default value in here to get dm running until you finish up Pipeline creation?",
+      "range": {
+        "startLine": 54,
+        "startChar": 37,
+        "endLine": 54,
+        "endChar": 54
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
