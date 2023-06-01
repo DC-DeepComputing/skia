@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9fa97931_fdf620ab",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T14:38:58Z",
+      "side": 1,
+      "message": "A savvy future reader is going to want to replace all of this with `using`... consider linking to the bug report here explaining why we have to spell it out manually.",
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f18e57c4_71e68b63",
         "filename": "src/base/SkVx.h",
         "patchSetId": 1
@@ -31,6 +48,75 @@
       "writtenOn": "2023-06-01T14:31:30Z",
       "side": 1,
       "message": "These are the `VecStorage\u003c4,T\u003e` constructors (lines 90-94)",
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b79dc11_a12cf572",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T14:38:58Z",
+      "side": 1,
+      "message": "What is preventing this from becoming a helper/ctor in VecStorage? I can see the N differs between implementations but that doesn\u0027t seem insurmountable...",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 0
+      },
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de40d8fe_59f35bf9",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T14:38:58Z",
+      "side": 1,
+      "message": "WDYT: `sk_unaligned_load` instead, if we\u0027re allowing Skia headers now?",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 17
+      },
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7be44ddf_4a4effb6",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T14:38:58Z",
+      "side": 1,
+      "message": "WDYT: `sk_unaligned_store`?",
+      "range": {
+        "startLine": 205,
+        "startChar": 8,
+        "endLine": 205,
+        "endChar": 14
+      },
       "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
