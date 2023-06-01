@@ -136,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5f588d3_429f41b9",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T17:30:37Z",
+      "side": 1,
+      "message": "... apparently, the answer was \"yes\". I\u0027ve removed the offending test: https://skia-review.googlesource.com/c/skia/+/706020/2/tests/SkVxTest.cpp",
+      "parentUuid": "8a6e94ef_0acfa408",
+      "range": {
+        "startLine": 132,
+        "startChar": 33,
+        "endLine": 132,
+        "endChar": 63
+      },
+      "revId": "905fd65f76609c1b22b8b4a9112d1bf894eb13c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c3d29c8_9fd1122e",
