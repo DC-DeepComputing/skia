@@ -153,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "303831cb_8b84b46a",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T16:04:23Z",
+      "side": 1,
+      "message": "It might still be possible in a templated helper function, but we don\u0027t need to address it in this CL necessarily.",
+      "parentUuid": "1e75c290_a07aee77",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 0
+      },
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de40d8fe_59f35bf9",
@@ -190,6 +214,30 @@
       "side": 1,
       "message": "Yeah, good idea. I\u0027m going to do that in a second CL. (I can also remove the bespoke bit_pun here, and replace it with sk_bit_cast).",
       "parentUuid": "de40d8fe_59f35bf9",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 17
+      },
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80c5285b_33ff7a4b",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T16:04:23Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "774bd578_56658328",
       "range": {
         "startLine": 200,
         "startChar": 0,
