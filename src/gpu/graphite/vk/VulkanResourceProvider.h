@@ -24,6 +24,9 @@ public:
     VulkanResourceProvider(SharedContext* sharedContext, SingleOwner*, uint32_t recorderID);
     ~VulkanResourceProvider() override;
 
+    static VkDescriptorSetLayout DescTypeAndCountToVkDescSetLayout(const VulkanSharedContext* ctxt,
+                                                                   SkSpan<DescTypeAndCount>);
+
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;
 
 private:

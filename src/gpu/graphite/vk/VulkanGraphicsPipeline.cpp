@@ -9,7 +9,13 @@
 
 #include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/Attribute.h"
+#include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
+
+#include <vector> // TODO: Make sure this is still needed if things move around.
+
+// TODO: Remove this include. Adding it temporarily to utilize DescTypeAndCountToVkDescSetLayout().
+#include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 
 namespace skgpu::graphite {
 
@@ -446,7 +452,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         DepthStencilSettings stencilSettings,
         PrimitiveType primitiveType,
         int numTexturesAndSamplers,
-        const BlendInfo& blendInfo) {
+        const BlendInfo& blendInfo,
+        bool hasRenderStepUniforms) {
 
     VkPipelineVertexInputStateCreateInfo vertexInputInfo;
     skia_private::STArray<2, VkVertexInputBindingDescription, true> bindingDescs;
@@ -485,35 +492,73 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     setup_shader_stage_info(VK_SHADER_STAGE_VERTEX_BIT,
                             vertexShader,
                             &vertexShaderStageInfo);
-    VkPipelineShaderStageCreateInfo fragShaderStageInfo;
-    setup_shader_stage_info(VK_SHADER_STAGE_FRAGMENT_BIT,
-                            fragShader,
-                            &fragShaderStageInfo);
+    bool hasFragmentShader = fragShader != VK_NULL_HANDLE;
+    if (hasFragmentShader) {
+        VkPipelineShaderStageCreateInfo fragShaderStageInfo;
+        setup_shader_stage_info(VK_SHADER_STAGE_FRAGMENT_BIT,
+                                fragShader,
+                                &fragShaderStageInfo);
+    }
+
+    // Determine descriptor set layouts based upon the number of uniform buffers & texture/samplers.
+    // TODO: Consider moving this logic into VulkanResourceProvider.
+    std::vector<VkDescriptorSetLayout> setLayouts; // TODO - Consider different container.
+    std::vector<DescTypeAndCount> neededDescriptors;
+    // We always have at least one intrinsic uniform buffer.
+    // TODO: Rebase + use ctor for DescTypeAndCount.
+    DescTypeAndCount uniformDescriptor;
+    uniformDescriptor.type = DescriptorType::kUniformBuffer;
+    uniformDescriptor.count = 1;
+    neededDescriptors.push_back(uniformDescriptor);
+    if (hasRenderStepUniforms) {
+        neededDescriptors.push_back(uniformDescriptor);
+    }
+    if (hasFragmentShader) {
+        neededDescriptors.push_back(uniformDescriptor);
+    }
+    VkDescriptorSetLayout uniformSetLayout =
+            VulkanResourceProvider::DescTypeAndCountToVkDescSetLayout(sharedContext,
+                                                                      {neededDescriptors});
+    setLayouts.push_back(uniformSetLayout);
+
+    if (numTexturesAndSamplers > 0) {
+        neededDescriptors.clear();
+        // TODO: Rebase + use ctor for DescTypeAndCount.
+        DescTypeAndCount textureSamplerDescriptor;
+        textureSamplerDescriptor.type = DescriptorType::kCombinedTextureSampler;
+        textureSamplerDescriptor.count = 1;
+        for (int i = 0; i < numTexturesAndSamplers; i++) {
+            neededDescriptors.push_back(textureSamplerDescriptor);
+        }
+        VkDescriptorSetLayout textureSamplerSetLayout =
+                VulkanResourceProvider::DescTypeAndCountToVkDescSetLayout(sharedContext,
+                                                                          {neededDescriptors});
+        setLayouts.push_back(textureSamplerSetLayout);
+    }
 
 
-    // VkPipelineLayoutCreateInfo layoutCreateInfo;
-    // memset(&layoutCreateInfo, 0, sizeof(VkPipelineLayoutCreateFlags));
-    // layoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    // layoutCreateInfo.pNext = nullptr;
-    // layoutCreateInfo.flags = 0;
-    // // TODO: Generate descriptor sets.
-    // layoutCreateInfo.setLayoutCount = 0;
-    // layoutCreateInfo.pSetLayouts = VK_NULL_HANDLE;
-    // // TODO: Add support for push constants.
-    // layoutCreateInfo.pushConstantRangeCount = 0;
-    // layoutCreateInfo.pPushConstantRanges = nullptr;
+    VkPipelineLayoutCreateInfo layoutCreateInfo;
+    memset(&layoutCreateInfo, 0, sizeof(VkPipelineLayoutCreateFlags));
+    layoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    layoutCreateInfo.pNext = nullptr;
+    layoutCreateInfo.flags = 0;
+    layoutCreateInfo.setLayoutCount = setLayouts.size();
+    layoutCreateInfo.pSetLayouts = &setLayouts.at(0);
+    // TODO: Add support for push constants.
+    layoutCreateInfo.pushConstantRangeCount = 0;
+    layoutCreateInfo.pPushConstantRanges = nullptr;
 
-    // VkPipelineLayout pipelineLayout;
-    // VkResult result;
-    // VULKAN_CALL_RESULT(sharedContext->interface(),
-    //                    result,
-    //                    CreatePipelineLayout(sharedContext->device(),
-    //                                         &layoutCreateInfo,
-    //                                         /*const VkAllocationCallbacks*=*/nullptr,
-    //                                         &pipelineLayout));
-    // if (result != VK_SUCCESS) {
-    //     return nullptr;
-    // }
+    VkPipelineLayout pipelineLayout;
+    VkResult result;
+    VULKAN_CALL_RESULT(sharedContext->interface(),
+                       result,
+                       CreatePipelineLayout(sharedContext->device(),
+                                            &layoutCreateInfo,
+                                            /*const VkAllocationCallbacks*=*/nullptr,
+                                            &pipelineLayout));
+    if (result != VK_SUCCESS) {
+        return nullptr;
+    }
 
     // VkGraphicsPipelineCreateInfo pipelineCreateInfo;
     // memset(&pipelineCreateInfo, 0, sizeof(VkGraphicsPipelineCreateInfo));
@@ -538,8 +583,13 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     // pipelineCreateInfo.basePipelineIndex = -1;
 
 
-    return sk_sp<VulkanGraphicsPipeline>(new VulkanGraphicsPipeline(sharedContext));
+    return sk_sp<VulkanGraphicsPipeline>(new VulkanGraphicsPipeline(sharedContext, pipelineLayout));
 }
+
+VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
+                                               VkPipelineLayout pipelineLayout)
+    : GraphicsPipeline(sharedContext)
+    , fPipelineLayout(pipelineLayout) { }
 
 void VulkanGraphicsPipeline::freeGpuData() {
 }
