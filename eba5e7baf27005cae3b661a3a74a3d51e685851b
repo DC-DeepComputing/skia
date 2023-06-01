@@ -71,6 +71,92 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c9fd446_06b5f68b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "Added a couple of people to cc who are likely to have thoughts. Feel free to make yourselves reviewers!",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b04897ea_88a404e1",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "It looks like we already have some `SK_API`s in `include/private`, but this seems odd to me. I thought the former meant it should be used outside of Skia, but maybe I\u0027m misunderstanding. The latter means it should only be used internally.",
+      "range": {
+        "startLine": 23,
+        "startChar": 6,
+        "endLine": 23,
+        "endChar": 12
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0579afb3_19fff201",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "What is the difference between these two?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 73
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42184b06_74a0ea10",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "Why is this specific to JPEG? If it is, it seems like the method should include `Jpeg` in the name? Or it doesn\u0027t belong on the virtual interface, and should instead be on a Jpeg implementation?",
+      "range": {
+        "startLine": 40,
+        "startChar": 19,
+        "endLine": 40,
+        "endChar": 37
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8ac2d0b_1e46018f",
@@ -84,6 +170,63 @@
       "writtenOn": "2023-05-31T08:33:32Z",
       "side": 1,
       "message": "[RE: moving GUID validation]: We wouldn\u0027t expose this function.",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "645d6be4_df170efb",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "nit: My personal preference is not to update random parts of the file you aren\u0027t meaningfully changing. It makes the history harder to follow, and it makes this code review larger than it needs to be. (Lastly, if we reverted this CL due to XMP problems, it would revert this other cleanup unnecessarily.)",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56aefbdd_d2ee2674",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "This is quite an addition - close to 200 lines! I wonder if we should be using a separate file?\n\nOh wait - this used to be in a separate file. Why move it here? It looks like you\u0027re making the old file more generic, and this code is JPEG specific, but it still seems like it could be in its own new file?",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c79b628_288f287e",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "How are we ensuring that the lifetime is adequate?",
+      "range": {
+        "startLine": 1101,
+        "startChar": 23,
+        "endLine": 1101,
+        "endChar": 38
+      },
       "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -107,6 +250,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dce59710_41bb68bd",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1127,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "Please move this closer to where it\u0027s used - i.e. after the next `if` block.",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "636c8bed_b95507a1",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1207,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "I haven\u0027t dug into this code too closely, but why do we split them into parts, stitch them back together, and require them to be contiguous?",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3401c8b3_ecee0015",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 5
@@ -118,6 +295,46 @@
       "writtenOn": "2023-05-31T08:33:32Z",
       "side": 1,
       "message": "[RE: moving GUID validation]: Move the GUID validation out from this function and into `SkXmp::Make` (part 2)",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0176ce57_9249ed9e",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "This looks to be an implementation.",
+      "range": {
+        "startLine": 347,
+        "startChar": 6,
+        "endLine": 347,
+        "endChar": 15
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1513528f_e744ff0e",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-01T18:50:30Z",
+      "side": 1,
+      "message": "Is this intended to be subclassed further? If not, can you make it `final`?",
       "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
