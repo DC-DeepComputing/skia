@@ -90,6 +90,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d45c4fa0_b840abae",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-01T18:56:03Z",
+      "side": 1,
+      "message": "Does this have to be in include/private? Could it be in src/codec (only to be used internally by Skia?)",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b04897ea_88a404e1",
         "filename": "include/private/SkXmp.h",
         "patchSetId": 5
