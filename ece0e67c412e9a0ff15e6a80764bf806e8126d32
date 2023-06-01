@@ -33,6 +33,24 @@
       "message": "The minimum OS requirement for Graphite Metal is 10.14.",
       "revId": "ece0e67c412e9a0ff15e6a80764bf806e8126d32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b48cd0b_67bbd5d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-06-01T16:58:53Z",
+      "side": 1,
+      "message": "Thanks Jim.",
+      "parentUuid": "488e08e5_70421dd8",
+      "revId": "ece0e67c412e9a0ff15e6a80764bf806e8126d32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
