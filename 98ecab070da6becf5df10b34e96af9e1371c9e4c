@@ -16,6 +16,52 @@
       "message": "Assuming we want this change, I still wasn\u0027t sure if this was the best place for this test. I\u0027m also not sure what the most appropriate CtsEnforcement argument would be here; comments suggest kNextRelease for all new unit tests, but it doesn\u0027t seem very common in our existing tests.",
       "revId": "98ecab070da6becf5df10b34e96af9e1371c9e4c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05b93d12_8a313b9b",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T20:18:24Z",
+      "side": 1,
+      "message": "I\u0027m not even sure if a comment is necessary here; we almost always represent coordinates as float. Using half here was probably just unintentional.",
+      "range": {
+        "startLine": 319,
+        "startChar": 0,
+        "endLine": 321,
+        "endChar": 0
+      },
+      "revId": "98ecab070da6becf5df10b34e96af9e1371c9e4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a96008ff_ec41fb7d",
+        "filename": "tests/BlendTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T20:18:24Z",
+      "side": 1,
+      "message": "`at the edge of the left intersection between the two rectangles`?",
+      "range": {
+        "startLine": 204,
+        "startChar": 24,
+        "endLine": 204,
+        "endChar": 61
+      },
+      "revId": "98ecab070da6becf5df10b34e96af9e1371c9e4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
