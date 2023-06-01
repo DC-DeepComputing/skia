@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3ba740e_a810b4b3",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-01T19:08:45Z",
+      "side": 1,
+      "message": "This indentation seems off",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 89
+      },
+      "revId": "d195caf3e5c7443f255b9e0d3ed1ad15b32d9ab1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
