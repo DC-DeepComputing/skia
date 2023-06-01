@@ -316,6 +316,8 @@ bool GrGLSLProgramBuilder::emitAndInstallDstTexture() {
 
         // Declare a _dstColor global variable which samples from the dest-texture sampler at the
         // top of the fragment shader.
+        // Use float2 instead of half2 for the intermediate calculations here, otherwise we can hit
+        // precision issues with large coordinates (skbug.com/14347).
         const char* dstTextureCoordsName;
         fUniformHandles.fDstTextureCoordsUni = this->uniformHandler()->addUniform(
                 /*owner=*/nullptr,
@@ -325,14 +327,14 @@ bool GrGLSLProgramBuilder::emitAndInstallDstTexture() {
                 &dstTextureCoordsName);
         fFS.codeAppend("// Read color from copy of the destination\n");
         if (dstTextureProxy->textureType() == GrTextureType::k2D) {
-            fFS.codeAppendf("half2 _dstTexCoord = (half2(sk_FragCoord.xy) - %s.xy) * %s.zw;\n",
+            fFS.codeAppendf("float2 _dstTexCoord = (sk_FragCoord.xy - %s.xy) * %s.zw;\n",
                     dstTextureCoordsName, dstTextureCoordsName);
             if (fDstTextureOrigin == kBottomLeft_GrSurfaceOrigin) {
                 fFS.codeAppend("_dstTexCoord.y = 1.0 - _dstTexCoord.y;\n");
             }
         } else {
             SkASSERT(dstTextureProxy->textureType() == GrTextureType::kRectangle);
-            fFS.codeAppendf("half2 _dstTexCoord = (half2(sk_FragCoord.xy) - %s.xy);\n",
+            fFS.codeAppendf("float2 _dstTexCoord = sk_FragCoord.xy - %s.xy;\n",
                     dstTextureCoordsName);
             if (fDstTextureOrigin == kBottomLeft_GrSurfaceOrigin) {
                 // When the texture type is kRectangle, instead of a scale stored in the zw of the
