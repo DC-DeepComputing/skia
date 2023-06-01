@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1804722e_41d4a2db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T15:46:14Z",
+      "side": 1,
+      "message": "OK. I started to question the value of VecStorage. It was added to assist with the swizzle methods on some specializations, but at this point it seemed simpler to just remove it. I think that addresses some of the other issues, but let me know what you think.",
+      "revId": "905fd65f76609c1b22b8b4a9112d1bf894eb13c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

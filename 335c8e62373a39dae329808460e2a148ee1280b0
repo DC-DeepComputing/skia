@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c71fc710_898a1458",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T15:46:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "15889406_21911cc9",
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fa97931_fdf620ab",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-06-01T14:38:58Z",
       "side": 1,
       "message": "A savvy future reader is going to want to replace all of this with `using`... consider linking to the bug report here explaining why we have to spell it out manually.",
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53788e5c_4ca67721",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T15:46:14Z",
+      "side": 1,
+      "message": "I removed VecStorage entirely, so this is less of a concern. I did a comment explaining why we have the different specializations, though.",
+      "parentUuid": "9fa97931_fdf620ab",
       "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c84934e0_7a0220b1",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T15:46:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f18e57c4_71e68b63",
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b79dc11_a12cf572",
@@ -65,6 +119,30 @@
       "writtenOn": "2023-06-01T14:38:58Z",
       "side": 1,
       "message": "What is preventing this from becoming a helper/ctor in VecStorage? I can see the N differs between implementations but that doesn\u0027t seem insurmountable...",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 0
+      },
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e75c290_a07aee77",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T15:46:14Z",
+      "side": 1,
+      "message": "I think this is less feasible, now that there\u0027s no base class to lean on?",
+      "parentUuid": "7b79dc11_a12cf572",
       "range": {
         "startLine": 189,
         "startChar": 0,
@@ -100,6 +178,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "774bd578_56658328",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T15:46:14Z",
+      "side": 1,
+      "message": "Yeah, good idea. I\u0027m going to do that in a second CL. (I can also remove the bespoke bit_pun here, and replace it with sk_bit_cast).",
+      "parentUuid": "de40d8fe_59f35bf9",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 17
+      },
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7be44ddf_4a4effb6",
         "filename": "src/base/SkVx.h",
         "patchSetId": 1
@@ -111,6 +213,30 @@
       "writtenOn": "2023-06-01T14:38:58Z",
       "side": 1,
       "message": "WDYT: `sk_unaligned_store`?",
+      "range": {
+        "startLine": 205,
+        "startChar": 8,
+        "endLine": 205,
+        "endChar": 14
+      },
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3101ab77_0696ab8a",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T15:46:14Z",
+      "side": 1,
+      "message": "Yup, coming in next CL.",
+      "parentUuid": "7be44ddf_4a4effb6",
       "range": {
         "startLine": 205,
         "startChar": 8,
@@ -134,6 +260,24 @@
       "writtenOn": "2023-06-01T14:31:30Z",
       "side": 1,
       "message": "These are the `VecStorage\u003c2,T\u003e` constructors (lines 120-121)",
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bef1057_ea20d4b6",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T15:46:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "06c80fc2_9c283fdc",
       "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
