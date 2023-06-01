@@ -140,12 +140,124 @@ static void setup_vertex_input_state(
     vertexInputInfo->pVertexAttributeDescriptions = attributeDesc;
 }
 
+static VkPrimitiveTopology primitive_type_to_vk_topology(PrimitiveType primitiveType) {
+    switch (primitiveType) {
+        case PrimitiveType::kTriangles:
+            return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+        case PrimitiveType::kTriangleStrip:
+            return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
+        case PrimitiveType::kPoints:
+            return VK_PRIMITIVE_TOPOLOGY_POINT_LIST;
+    }
+    SkUNREACHABLE;
+}
+
+static void setup_input_assembly_state(PrimitiveType primitiveType,
+                                       VkPipelineInputAssemblyStateCreateInfo* inputAssemblyInfo) {
+    memset(inputAssemblyInfo, 0, sizeof(VkPipelineInputAssemblyStateCreateInfo));
+    inputAssemblyInfo->sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+    inputAssemblyInfo->pNext = nullptr;
+    inputAssemblyInfo->flags = 0;
+    inputAssemblyInfo->primitiveRestartEnable = false;
+    inputAssemblyInfo->topology = primitive_type_to_vk_topology(primitiveType);
+}
+
+static VkStencilOp stencil_op_to_vk_stencil_op(StencilOp op) {
+    static const VkStencilOp gTable[] = {
+        VK_STENCIL_OP_KEEP,                 // kKeep
+        VK_STENCIL_OP_ZERO,                 // kZero
+        VK_STENCIL_OP_REPLACE,              // kReplace
+        VK_STENCIL_OP_INVERT,               // kInvert
+        VK_STENCIL_OP_INCREMENT_AND_WRAP,   // kIncWrap
+        VK_STENCIL_OP_DECREMENT_AND_WRAP,   // kDecWrap
+        VK_STENCIL_OP_INCREMENT_AND_CLAMP,  // kIncClamp
+        VK_STENCIL_OP_DECREMENT_AND_CLAMP,  // kDecClamp
+    };
+    static_assert(std::size(gTable) == kStencilOpCount);
+    static_assert(0 == (int)StencilOp::kKeep);
+    static_assert(1 == (int)StencilOp::kZero);
+    static_assert(2 == (int)StencilOp::kReplace);
+    static_assert(3 == (int)StencilOp::kInvert);
+    static_assert(4 == (int)StencilOp::kIncWrap);
+    static_assert(5 == (int)StencilOp::kDecWrap);
+    static_assert(6 == (int)StencilOp::kIncClamp);
+    static_assert(7 == (int)StencilOp::kDecClamp);
+    SkASSERT(op < (StencilOp)kStencilOpCount);
+    return gTable[(int)op];
+}
+
+static VkCompareOp compare_op_to_vk_compare_op(CompareOp op) {
+    static const VkCompareOp gTable[] = {
+        VK_COMPARE_OP_ALWAYS,              // kAlways
+        VK_COMPARE_OP_NEVER,               // kNever
+        VK_COMPARE_OP_GREATER,             // kGreater
+        VK_COMPARE_OP_GREATER_OR_EQUAL,    // kGEqual
+        VK_COMPARE_OP_LESS,                // kLess
+        VK_COMPARE_OP_LESS_OR_EQUAL,       // kLEqual
+        VK_COMPARE_OP_EQUAL,               // kEqual
+        VK_COMPARE_OP_NOT_EQUAL,           // kNotEqual
+    };
+    static_assert(std::size(gTable) == kCompareOpCount);
+    static_assert(0 == (int)CompareOp::kAlways);
+    static_assert(1 == (int)CompareOp::kNever);
+    static_assert(2 == (int)CompareOp::kGreater);
+    static_assert(3 == (int)CompareOp::kGEqual);
+    static_assert(4 == (int)CompareOp::kLess);
+    static_assert(5 == (int)CompareOp::kLEqual);
+    static_assert(6 == (int)CompareOp::kEqual);
+    static_assert(7 == (int)CompareOp::kNotEqual);
+    SkASSERT(op < (CompareOp)kCompareOpCount);
+
+    return gTable[(int)op];
+}
+
+static void setup_stencil_op_state(VkStencilOpState* opState,
+                                   const DepthStencilSettings::Face& face,
+                                   uint32_t referenceValue) {
+    opState->failOp = stencil_op_to_vk_stencil_op(face.fStencilFailOp);
+    opState->passOp = stencil_op_to_vk_stencil_op(face.fDepthStencilPassOp);
+    opState->depthFailOp = stencil_op_to_vk_stencil_op(face.fDepthFailOp);
+    opState->compareOp = compare_op_to_vk_compare_op(face.fCompareOp);
+    opState->compareMask = face.fReadMask; // TODO - check this.
+    opState->writeMask = face.fWriteMask;
+    opState->reference = referenceValue;
+}
+
+static void setup_depth_stencil_state(const DepthStencilSettings& stencilSettings,
+                                      VkPipelineDepthStencilStateCreateInfo* stencilInfo) {
+    SkASSERT(stencilSettings.fDepthTestEnabled ||
+             stencilSettings.fDepthCompareOp == CompareOp::kAlways);
+
+    memset(stencilInfo, 0, sizeof(VkPipelineDepthStencilStateCreateInfo));
+    stencilInfo->sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+    stencilInfo->pNext = nullptr;
+    stencilInfo->flags = 0;
+    stencilInfo->depthTestEnable = stencilSettings.fDepthTestEnabled;
+    stencilInfo->depthWriteEnable = stencilSettings.fDepthWriteEnabled;
+    stencilInfo->depthCompareOp = compare_op_to_vk_compare_op(stencilSettings.fDepthCompareOp);
+    stencilInfo->depthBoundsTestEnable = VK_FALSE; // Default value TODO - Confirm
+    stencilInfo->stencilTestEnable = stencilSettings.fStencilTestEnabled;
+    if (stencilSettings.fStencilTestEnabled) {
+        setup_stencil_op_state(&stencilInfo->front,
+                               stencilSettings.fFrontStencil,
+                               stencilSettings.fStencilReferenceValue);
+        setup_stencil_op_state(&stencilInfo->back,
+                               stencilSettings.fBackStencil,
+                               stencilSettings.fStencilReferenceValue);
+    }
+    stencilInfo->minDepthBounds = 0.0f;
+    stencilInfo->maxDepthBounds = 1.0f;
+}
+
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         const VulkanSharedContext* sharedContext,
         VkShaderModule vertexShader,
         SkSpan<const Attribute> vertexAttrs,
         SkSpan<const Attribute> instanceAttrs,
-        VkShaderModule fragShader) {
+        VkShaderModule fragShader,
+        DepthStencilSettings stencilSettings,
+        PrimitiveType primitiveType) {
+
     VkPipelineVertexInputStateCreateInfo vertexInputInfo;
     skia_private::STArray<2, VkVertexInputBindingDescription, true> bindingDescs;
     skia_private::STArray<16, VkVertexInputAttributeDescription> attributeDesc;
@@ -155,6 +267,86 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     VkVertexInputAttributeDescription* pAttribs =
             attributeDesc.push_back_n(static_cast<int>(totalAttributeCnt));
     setup_vertex_input_state(vertexAttrs, instanceAttrs, &vertexInputInfo, &bindingDescs, pAttribs);
+
+    VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
+    setup_input_assembly_state(primitiveType, &inputAssemblyInfo);
+
+    VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
+    setup_depth_stencil_state(stencilSettings, &depthStencilInfo);
+
+    // VkPipelineViewportStateCreateInfo viewportInfo;
+    // setup_viewport_scissor_state(&viewportInfo);
+
+    // TODO: Set up volor blend attachment & state creation
+    //     VkPipelineMultisampleStateCreateInfo multisampleInfo;
+    // setup_multisample_state(numSamples, gpu->caps(), &multisampleInfo);
+
+    // // We will only have one color attachment per pipeline.
+    // VkPipelineColorBlendAttachmentState attachmentStates[1];
+    // VkPipelineColorBlendStateCreateInfo colorBlendInfo;
+    // setup_color_blend_state(blendInfo, &colorBlendInfo, attachmentStates);
+
+    // VkPipelineRasterizationStateCreateInfo rasterInfo;
+    // setup_raster_state(isWireframe, gpu->caps(), &rasterInfo);
+
+
+     // TODO: Make into helper function. Create shader stage structs for vertex & frag shader.
+    // VkPipelineShaderStageCreateInfo shaderStageInfo;
+    // memset(&shaderStageInfo, 0, sizeof(VkPipelineShaderStageCreateInfo));
+    // shaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    // shaderStageInfo.pNext = nullptr;
+    // shaderStageInfo.flags = 0;
+    // shaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT; //do for both stages
+    // shaderStageInfo.module = VK_NULL_HANDLE; // pass in module(s)
+    // shaderStageInfo.pName = "main";
+    // shaderStageInfo.pSpecializationInfo = nullptr;
+
+    // VkPipelineLayoutCreateInfo layoutCreateInfo;
+    // memset(&layoutCreateInfo, 0, sizeof(VkPipelineLayoutCreateFlags));
+    // layoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    // layoutCreateInfo.pNext = nullptr;
+    // layoutCreateInfo.flags = 0;
+    // // TODO: Generate descriptor sets.
+    // layoutCreateInfo.setLayoutCount = 0;
+    // layoutCreateInfo.pSetLayouts = VK_NULL_HANDLE;
+    // // TODO: Add support for push constants.
+    // layoutCreateInfo.pushConstantRangeCount = 0;
+    // layoutCreateInfo.pPushConstantRanges = nullptr;
+
+    // VkPipelineLayout pipelineLayout;
+    // VkResult result;
+    // VULKAN_CALL_RESULT(sharedContext->interface(),
+    //                    result,
+    //                    CreatePipelineLayout(sharedContext->device(),
+    //                                         &layoutCreateInfo,
+    //                                         /*const VkAllocationCallbacks*=*/nullptr,
+    //                                         &pipelineLayout));
+    // if (result != VK_SUCCESS) {
+    //     return nullptr;
+    // }
+
+    // VkGraphicsPipelineCreateInfo pipelineCreateInfo;
+    // memset(&pipelineCreateInfo, 0, sizeof(VkGraphicsPipelineCreateInfo));
+    // pipelineCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+    // pipelineCreateInfo.pNext = nullptr;
+    // pipelineCreateInfo.flags = 0;
+    // pipelineCreateInfo.stageCount = shaderStageCount;
+    // pipelineCreateInfo.pStages = shaderStageInfo;
+    // pipelineCreateInfo.pVertexInputState = &vertexInputInfo;
+    // pipelineCreateInfo.pInputAssemblyState = &inputAssemblyInfo;
+    // pipelineCreateInfo.pTessellationState = nullptr;
+    // pipelineCreateInfo.pViewportState = &viewportInfo;
+    // pipelineCreateInfo.pRasterizationState = &rasterInfo;
+    // pipelineCreateInfo.pMultisampleState = &multisampleInfo;
+    // pipelineCreateInfo.pDepthStencilState = &depthStencilInfo;
+    // pipelineCreateInfo.pColorBlendState = &colorBlendInfo;
+    // pipelineCreateInfo.pDynamicState = &dynamicInfo;
+    // pipelineCreateInfo.layout = layout;
+    // pipelineCreateInfo.renderPass = compatibleRenderPass;
+    // pipelineCreateInfo.subpass = subpass;
+    // pipelineCreateInfo.basePipelineHandle = VK_NULL_HANDLE;
+    // pipelineCreateInfo.basePipelineIndex = -1;
+
 
     return sk_sp<VulkanGraphicsPipeline>(new VulkanGraphicsPipeline(sharedContext));
 }
