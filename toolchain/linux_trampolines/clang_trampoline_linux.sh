@@ -57,6 +57,7 @@ supported_files_or_dirs=(
   "src/core/SkCubicMap.cpp"
   "src/core/SkData.cpp"
   "src/core/SkDataTable.cpp"
+  "src/core/SkDef"
   "src/core/SkDraw"
   "src/core/SkEdgeBuilder.cpp"
   "src/core/SkEdgeClipper.cpp"

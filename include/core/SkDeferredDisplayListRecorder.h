@@ -8,19 +8,26 @@
 #ifndef SkDeferredDisplayListRecorder_DEFINED
 #define SkDeferredDisplayListRecorder_DEFINED
 
-#include "include/core/SkDeferredDisplayList.h"
-#include "include/core/SkImage.h"
-#include "include/core/SkImageInfo.h"
-#include "include/core/SkRefCnt.h"
-#include "include/core/SkSurfaceCharacterization.h"
 #include "include/core/SkTypes.h"
 
+#if defined(SK_GANESH)
+#include "include/core/SkDeferredDisplayList.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkSurfaceCharacterization.h"
+#include "include/gpu/GrTypes.h"
+
 class GrBackendFormat;
-class GrBackendTexture;
 class GrRecordingContext;
+class GrRenderTargetProxy;
 class GrYUVABackendTextureInfo;
 class SkCanvas;
+class SkColorSpace;
+class SkImage;
+class SkPromiseImageTexture;
 class SkSurface;
+enum SkAlphaType : int;
+enum SkColorType : int;
+
 
 /*
  * This class is intended to be used as:
@@ -50,7 +57,6 @@ public:
 
     sk_sp<SkDeferredDisplayList> detach();
 
-#if defined(SK_GANESH)
     using PromiseImageTextureContext = void*;
     using PromiseImageTextureFulfillProc =
             sk_sp<SkPromiseImageTexture> (*)(PromiseImageTextureContext);
@@ -77,7 +83,7 @@ public:
                                           PromiseImageTextureReleaseProc textureReleaseProc,
                                           PromiseImageTextureContext textureContexts[]);
 #endif // SK_MAKE_PROMISE_TEXTURE_DISABLE_LEGACY_API
-#endif // defined(SK_GANESH)
+
 
 private:
     SkDeferredDisplayListRecorder(const SkDeferredDisplayListRecorder&) = delete;
@@ -86,13 +92,12 @@ private:
     bool init();
 
     const SkSurfaceCharacterization             fCharacterization;
-
-#if defined(SK_GANESH)
     sk_sp<GrRecordingContext>                   fContext;
     sk_sp<GrRenderTargetProxy>                  fTargetProxy;
     sk_sp<SkDeferredDisplayList::LazyProxyData> fLazyProxyData;
     sk_sp<SkSurface>                            fSurface;
-#endif
 };
+
+#endif // defined(SK_GANESH)
 
 #endif

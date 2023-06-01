@@ -7,38 +7,33 @@
 
 #include "include/core/SkDeferredDisplayListRecorder.h"
 
+#if defined(SK_GANESH)
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkDeferredDisplayList.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceCharacterization.h"
-#include "src/core/SkMessageBus.h"
-
-#if !defined(SK_GANESH)
-SkDeferredDisplayListRecorder::SkDeferredDisplayListRecorder(const SkSurfaceCharacterization&) {}
-
-SkDeferredDisplayListRecorder::~SkDeferredDisplayListRecorder() {}
-
-bool SkDeferredDisplayListRecorder::init() { return false; }
-
-SkCanvas* SkDeferredDisplayListRecorder::getCanvas() { return nullptr; }
-
-sk_sp<SkDeferredDisplayList> SkDeferredDisplayListRecorder::detach() { return nullptr; }
-
-#else
-
-#include "include/core/SkPromiseImageTexture.h"
+#include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrRecordingContext.h"
-#include "include/gpu/GrYUVABackendTextures.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
+#include "include/private/base/SkTo.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/SkBackingFit.h"
+#include "src/gpu/ganesh/Device_v1.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrRenderTargetProxy.h"
-#include "src/gpu/ganesh/GrTexture.h"
-#include "src/gpu/ganesh/SkGr.h"
-#include "src/gpu/ganesh/image/SkImage_Ganesh.h"
-#include "src/gpu/ganesh/image/SkImage_GaneshYUVA.h"
+#include "src/gpu/ganesh/GrSurface.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
+#include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
 #include "src/gpu/ganesh/surface/SkSurface_Ganesh.h"
+
+#include <functional>
+#include <utility>
+
+class GrResourceProvider;
 
 SkDeferredDisplayListRecorder::SkDeferredDisplayListRecorder(const SkSurfaceCharacterization& c)
         : fCharacterization(c) {
@@ -258,4 +253,4 @@ sk_sp<SkImage> SkDeferredDisplayListRecorder::makeYUVAPromiseTexture(
 }
 #endif // !SK_MAKE_PROMISE_TEXTURE_DISABLE_LEGACY_API
 
-#endif
+#endif // defined(SK_GANESH)
