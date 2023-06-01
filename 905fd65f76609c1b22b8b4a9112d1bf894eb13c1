@@ -39,6 +39,29 @@
       },
       "revId": "905fd65f76609c1b22b8b4a9112d1bf894eb13c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67bdd7f5_9afe60bf",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T16:00:49Z",
+      "side": 1,
+      "message": "Is there ever a case where we want this to silently continue without asserting?\nWe don\u0027t need to change it here (preexisting behavior) but this seems like a spooky thing to allow.",
+      "range": {
+        "startLine": 132,
+        "startChar": 33,
+        "endLine": 132,
+        "endChar": 63
+      },
+      "revId": "905fd65f76609c1b22b8b4a9112d1bf894eb13c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
