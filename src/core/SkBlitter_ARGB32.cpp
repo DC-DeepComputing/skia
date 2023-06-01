@@ -1081,8 +1081,8 @@ static void drive(SkPMColor* dst, const SkPMColor* src, const uint8_t* cov, int 
 
     auto apply = [kernel](U32 dst, U32 src, U8 cov) -> U32 {
         U8x4 cov_splat = skvx::shuffle<0,0,0,0, 1,1,1,1, 2,2,2,2, 3,3,3,3>(cov);
-        return skvx::bit_pun<U32>(kernel(skvx::bit_pun<U8x4>(dst),
-                                         skvx::bit_pun<U8x4>(src),
+        return sk_bit_cast<U32>(kernel(sk_bit_cast<U8x4>(dst),
+                                         sk_bit_cast<U8x4>(src),
                                          cov_splat));
     };
     while (n >= 4) {
