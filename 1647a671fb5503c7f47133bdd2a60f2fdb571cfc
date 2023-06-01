@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45319caf_350b732f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-01T18:28:31Z",
+      "side": 1,
+      "message": "Do we not need to do a \"if (buffer)\" check here (and then an unbind in the else) ?\n\nI guess, if so, do we then remove the \"if (vertexBuffer)\" checks in bindVertexBuffers?",
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f986f666_74ff7e18",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-01T18:28:31Z",
+      "side": 1,
+      "message": "Do we want this to be an enum class ?",
+      "range": {
+        "startLine": 95,
+        "startChar": 68,
+        "endLine": 95,
+        "endChar": 76
+      },
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
