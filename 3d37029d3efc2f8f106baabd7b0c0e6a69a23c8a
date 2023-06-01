@@ -16,6 +16,24 @@
       "message": "TArray?",
       "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ee5a53a_e6e173c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-01T14:33:13Z",
+      "side": 1,
+      "message": "Ignore, UI error.",
+      "parentUuid": "58e3c92d_26835133",
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
