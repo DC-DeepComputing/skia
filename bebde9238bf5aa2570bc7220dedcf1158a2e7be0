@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60361e03_7ebb524d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-01T18:11:34Z",
+      "side": 1,
+      "message": "Other than the decal fringing issue we discussed offline, this is ready to go. I am planning to handle the decal sampling in FilterResult::asShader in a pre-CL, so I don\u0027t expect this to change and can be reviewed.",
+      "revId": "bebde9238bf5aa2570bc7220dedcf1158a2e7be0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
