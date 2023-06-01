@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15889406_21911cc9",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T14:31:30Z",
+      "side": 1,
+      "message": "This is the only constructor in the general case (from line 82).",
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f18e57c4_71e68b63",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T14:31:30Z",
+      "side": 1,
+      "message": "These are the `VecStorage\u003c4,T\u003e` constructors (lines 90-94)",
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06c80fc2_9c283fdc",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T14:31:30Z",
+      "side": 1,
+      "message": "These are the `VecStorage\u003c2,T\u003e` constructors (lines 120-121)",
+      "revId": "335c8e62373a39dae329808460e2a148ee1280b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
