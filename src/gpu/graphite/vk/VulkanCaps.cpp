@@ -90,6 +90,13 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
         this->applyDriverCorrectnessWorkarounds(physDevProperties);
     }
 
+    if (physDevProperties.vendorID == kAMD_VkVendor) {
+        // AMD advertises support for MAX_UINT vertex attributes but in reality only supports 32.
+        fMaxVertexAttributes = 32;
+    } else {
+        fMaxVertexAttributes = physDevProperties.limits.maxVertexInputAttributes;
+    }
+
     this->finishInitialization(contextOptions);
 }
 

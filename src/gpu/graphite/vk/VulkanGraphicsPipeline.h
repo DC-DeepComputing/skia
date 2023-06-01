@@ -9,12 +9,14 @@
 #define skgpu_graphite_VulkanGraphicsPipeline_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 
 namespace skgpu::graphite {
 
 class VulkanSharedContext;
+class Attribute;
 
 class VulkanGraphicsPipeline final : public GraphicsPipeline {
 public:
@@ -28,9 +30,11 @@ public:
     inline static constexpr unsigned int kUniformBufferDescSetIndex = 0;
     inline static constexpr unsigned int kTextureBindDescSetIndex = 1;
 
-
-    static sk_sp<VulkanGraphicsPipeline> Make(const VulkanSharedContext*
-                                              /* TODO: fill out argument list */);
+    static sk_sp<VulkanGraphicsPipeline> Make(const VulkanSharedContext* sharedContext,
+                                              VkShaderModule vertexShader,
+                                              SkSpan<const Attribute> vertexAttrs,
+                                              SkSpan<const Attribute> instanceAttrs,
+                                              VkShaderModule fragShader);
 
     ~VulkanGraphicsPipeline() override {}
 
