@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ef5906e_c96f74c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T20:20:48Z",
+      "side": 1,
+      "message": "I\u0027m not picky about where the test lives, but you might ping Skia GPU and see if anyone has a better location.\n\n`kNextRelease` is appropriate. Where do you see otherwise?",
+      "parentUuid": "b2c43d96_c4f79dd9",
+      "revId": "98ecab070da6becf5df10b34e96af9e1371c9e4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05b93d12_8a313b9b",
