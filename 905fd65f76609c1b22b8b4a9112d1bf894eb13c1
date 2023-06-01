@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7bd4429_c0569ade",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T17:33:45Z",
+      "side": 1,
+      "message": "I might have just been overthinking it.",
+      "parentUuid": "71f00e98_471ae013",
+      "range": {
+        "startLine": 121,
+        "startChar": 18,
+        "endLine": 121,
+        "endChar": 42
+      },
+      "revId": "905fd65f76609c1b22b8b4a9112d1bf894eb13c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67bdd7f5_9afe60bf",
