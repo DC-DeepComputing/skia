@@ -25,14 +25,14 @@ protected:
         // which will write data we don't care to serialize or decode.
     }
 
-    bool appendStages(const SkStageRec&, const MatrixRec&) const override { return false; }
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override { return false; }
 
 #if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord,
                         skvm::Coord,
                         skvm::Color,
-                        const MatrixRec&,
+                        const SkShaders::MatrixRec&,
                         const SkColorInfo&,
                         skvm::Uniforms*,
                         SkArenaAlloc*) const override;
@@ -50,7 +50,7 @@ skvm::Color SkEmptyShader::program(skvm::Builder*,
                                    skvm::Coord,
                                    skvm::Coord,
                                    skvm::Color,
-                                   const MatrixRec&,
+                                   const SkShaders::MatrixRec&,
                                    const SkColorInfo&,
                                    skvm::Uniforms*,
                                    SkArenaAlloc*) const {

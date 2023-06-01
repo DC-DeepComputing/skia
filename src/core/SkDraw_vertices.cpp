@@ -116,7 +116,7 @@ public:
                 int index0, int index1, int index2);
 
 protected:
-    bool appendStages(const SkStageRec& rec, const MatrixRec&) const override {
+    bool appendStages(const SkStageRec& rec, const SkShaders::MatrixRec&) const override {
         rec.fPipeline->append(SkRasterPipelineOp::seed_shader);
         if (fUsePersp) {
             rec.fPipeline->append(SkRasterPipelineOp::matrix_perspective, &fM33);
@@ -130,7 +130,7 @@ protected:
                         skvm::Coord,
                         skvm::Coord,
                         skvm::Color,
-                        const MatrixRec&,
+                        const SkShaders::MatrixRec&,
                         const SkColorInfo&,
                         skvm::Uniforms*,
                         SkArenaAlloc*) const override;
@@ -162,7 +162,7 @@ skvm::Color SkTriColorShader::program(skvm::Builder* b,
                                       skvm::Coord device,
                                       skvm::Coord local,
                                       skvm::Color,
-                                      const MatrixRec&,
+                                      const SkShaders::MatrixRec&,
                                       const SkColorInfo&,
                                       skvm::Uniforms* uniforms,
                                       SkArenaAlloc* alloc) const {

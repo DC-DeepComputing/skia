@@ -388,12 +388,12 @@ void SkGradientShaderBase::AppendGradientFillStages(SkRasterPipeline* p,
     }
 }
 
-bool SkGradientShaderBase::appendStages(const SkStageRec& rec, const MatrixRec& mRec) const {
+bool SkGradientShaderBase::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec& mRec) const {
     SkRasterPipeline* p = rec.fPipeline;
     SkArenaAlloc* alloc = rec.fAlloc;
     SkRasterPipeline_DecalTileCtx* decal_ctx = nullptr;
 
-    std::optional<MatrixRec> newMRec = mRec.apply(rec, fPtsToUnit);
+    std::optional<SkShaders::MatrixRec> newMRec = mRec.apply(rec, fPtsToUnit);
     if (!newMRec.has_value()) {
         return false;
     }
@@ -600,7 +600,7 @@ skvm::Color SkGradientShaderBase::program(skvm::Builder* p,
                                           skvm::Coord device,
                                           skvm::Coord local,
                                           skvm::Color /*paint*/,
-                                          const MatrixRec& mRec,
+                                          const SkShaders::MatrixRec& mRec,
                                           const SkColorInfo& dstInfo,
                                           skvm::Uniforms* uniforms,
                                           SkArenaAlloc* alloc) const {

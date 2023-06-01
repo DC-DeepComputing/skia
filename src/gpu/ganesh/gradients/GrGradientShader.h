@@ -20,13 +20,13 @@
 namespace GrGradientShader {
     std::unique_ptr<GrFragmentProcessor> MakeGradientFP(const SkGradientShaderBase& shader,
                                                         const GrFPArgs& args,
-                                                        const SkShaderBase::MatrixRec&,
+                                                        const SkShaders::MatrixRec&,
                                                         std::unique_ptr<GrFragmentProcessor> layout,
                                                         const SkMatrix* overrideMatrix = nullptr);
 
     std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
                                                     const GrFPArgs& args,
-                                                    const SkShaderBase::MatrixRec&);
+                                                    const SkShaders::MatrixRec&);
 
 #if GR_TEST_UTILS
     /** Helper struct that stores (and populates) parameters to construct a random gradient.

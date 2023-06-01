@@ -14,14 +14,6 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/SkShaderBase.h"
 
-#if defined(SK_GANESH)
-#include "include/effects/SkRuntimeEffect.h"
-#include "include/gpu/GrRecordingContext.h"
-#include "src/gpu/ganesh/GrFPArgs.h"
-#include "src/gpu/ganesh/GrFragmentProcessor.h"
-#include "src/gpu/ganesh/effects/GrSkSLFP.h"
-#endif
-
 #if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
@@ -32,10 +24,6 @@ public:
     SkShader_CoordClamp(sk_sp<SkShader> shader, const SkRect& subset)
             : fShader(std::move(shader)), fSubset(subset) {}
 
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
-                                                             const MatrixRec&) const override;
-#endif
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
                   skgpu::graphite::PaintParamsKeyBuilder*,
@@ -45,13 +33,13 @@ public:
 protected:
     SkShader_CoordClamp(SkReadBuffer&);
     void flatten(SkWriteBuffer&) const override;
-    bool appendStages(const SkStageRec&, const MatrixRec&) const override;
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 #if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec&,
+                        const SkShaders::MatrixRec&,
                         const SkColorInfo& dst,
                         skvm::Uniforms*,
                         SkArenaAlloc*) const override;
@@ -79,8 +67,8 @@ void SkShader_CoordClamp::flatten(SkWriteBuffer& buffer) const {
     buffer.writeRect(fSubset);
 }
 
-bool SkShader_CoordClamp::appendStages(const SkStageRec& rec, const MatrixRec& mRec) const {
-    std::optional<MatrixRec> childMRec = mRec.apply(rec);
+bool SkShader_CoordClamp::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec& mRec) const {
+    std::optional<SkShaders::MatrixRec> childMRec = mRec.apply(rec);
     if (!childMRec.has_value()) {
         return false;
     }
@@ -98,11 +86,11 @@ skvm::Color SkShader_CoordClamp::program(skvm::Builder* p,
                                          skvm::Coord device,
                                          skvm::Coord local,
                                          skvm::Color paint,
-                                         const MatrixRec& mRec,
+                                         const SkShaders::MatrixRec& mRec,
                                          const SkColorInfo& cinfo,
                                          skvm::Uniforms* uniforms,
                                          SkArenaAlloc* alloc) const {
-    std::optional<MatrixRec> childMRec = mRec.apply(p, &local, uniforms);
+    std::optional<SkShaders::MatrixRec> childMRec = mRec.apply(p, &local, uniforms);
     if (!childMRec.has_value()) {
         return {};
     }
@@ -119,40 +107,6 @@ skvm::Color SkShader_CoordClamp::program(skvm::Builder* p,
     return as_SB(fShader)->program(p, device, local, paint, *childMRec, cinfo, uniforms, alloc);
 }
 #endif
-
-#if defined(SK_GANESH)
-std::unique_ptr<GrFragmentProcessor> SkShader_CoordClamp::asFragmentProcessor(
-        const GrFPArgs& args, const MatrixRec& mRec) const {
-    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-            "uniform shader c;"
-            "uniform float4 s;"
-            "half4 main(float2 p) {"
-                "return c.eval(clamp(p, s.LT, s.RB));"
-            "}");
-
-    auto fp = as_SB(fShader)->asFragmentProcessor(args, mRec.applied());
-    if (!fp) {
-        return nullptr;
-    }
-
-    GrSkSLFP::OptFlags flags = GrSkSLFP::OptFlags::kNone;
-    if (fp->compatibleWithCoverageAsAlpha()) {
-        flags |= GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha;
-    }
-    if (fp->preservesOpaqueInput()) {
-        flags |= GrSkSLFP::OptFlags::kPreservesOpaqueInput;
-    }
-    fp = GrSkSLFP::Make(effect,
-                        "clamp_fp",
-                        /*inputFP=*/nullptr,
-                        flags,
-                        "c", std::move(fp),
-                        "s", fSubset);
-    bool success;
-    std::tie(success, fp) = mRec.apply(std::move(fp));
-    return success ? std::move(fp) : nullptr;
-}
-#endif  // defined(SK_GANESH)
 
 #if defined(SK_GRAPHITE)
 void SkShader_CoordClamp::addToKey(const skgpu::graphite::KeyContext& keyContext,

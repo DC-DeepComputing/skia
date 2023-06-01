@@ -24,9 +24,14 @@ class SkData;
 class SkMaskFilter;
 class SkMatrix;
 class SkSurfaceProps;
+class SkShader;
 struct GrFPArgs;
 
 using GrFPResult = std::tuple<bool, std::unique_ptr<GrFragmentProcessor>>;
+
+namespace SkShaders {
+    class MatrixRec;
+}
 
 namespace GrFragmentProcessors {
 /**
@@ -57,6 +62,30 @@ std::unique_ptr<GrFragmentProcessor> Make(const SkMaskFilter*,
                                           const SkMatrix& ctm);
 
 bool IsSupported(const SkMaskFilter*);
+
+/**
+ * Call on the root SkShader to produce a GrFragmentProcessor.
+ *
+ * The returned GrFragmentProcessor expects an unpremultiplied input color and produces a
+ * premultiplied output.
+ */
+std::unique_ptr<GrFragmentProcessor> Make(const SkShader*,
+                                          const GrFPArgs&,
+                                          const SkMatrix& ctm);
+std::unique_ptr<GrFragmentProcessor> Make(const SkShader*,
+                                          const GrFPArgs&,
+                                          const SkShaders::MatrixRec&);
+///**
+// * Produces an FP that muls its input coords by the inverse of the pending matrix and then
+// * samples the passed FP with those coordinates. 'postInv' is an additional matrix to
+// * post-apply to the inverted pending matrix. If the pending matrix is not invertible the
+// * GrFPResult's bool will be false and the passed FP will be returned to the caller in the
+// * GrFPResult.
+// */
+//GrFPResult SK_WARN_UNUSED_RESULT Apply(const MatrixRec&,
+//                                       std::unique_ptr<GrFragmentProcessor>,
+//                                       const SkMatrix& postInv = {});
+
 
 // TODO(kjlubick, brianosman) remove this after all related effects have been migrated
 GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,

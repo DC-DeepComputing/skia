@@ -10,12 +10,6 @@
 #include "src/core/SkVM.h"
 #include "src/shaders/SkLocalMatrixShader.h"
 
-#if defined(SK_GANESH)
-#include "src/gpu/ganesh/GrFPArgs.h"
-#include "src/gpu/ganesh/GrFragmentProcessor.h"
-#include "src/gpu/ganesh/effects/GrMatrixEffect.h"
-#endif
-
 #if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/KeyContext.h"
 #include "src/gpu/graphite/KeyHelpers.h"
@@ -30,13 +24,6 @@ SkShaderBase::GradientType SkLocalMatrixShader::asGradient(GradientInfo* info,
     }
     return type;
 }
-
-#if defined(SK_GANESH)
-std::unique_ptr<GrFragmentProcessor> SkLocalMatrixShader::asFragmentProcessor(
-        const GrFPArgs& args, const MatrixRec& mRec) const {
-    return as_SB(fWrappedShader)->asFragmentProcessor(args, mRec.concat(fLocalMatrix));
-}
-#endif
 
 #if defined(SK_GRAPHITE)
 void SkLocalMatrixShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
@@ -97,7 +84,7 @@ SkImage* SkLocalMatrixShader::onIsAImage(SkMatrix* outMatrix, SkTileMode* mode) 
     return image;
 }
 
-bool SkLocalMatrixShader::appendStages(const SkStageRec& rec, const MatrixRec& mRec) const {
+bool SkLocalMatrixShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec& mRec) const {
     return as_SB(fWrappedShader)->appendStages(rec, mRec.concat(fLocalMatrix));
 }
 
@@ -106,7 +93,7 @@ skvm::Color SkLocalMatrixShader::program(skvm::Builder* p,
                                          skvm::Coord device,
                                          skvm::Coord local,
                                          skvm::Color paint,
-                                         const MatrixRec& mRec,
+                                         const SkShaders::MatrixRec& mRec,
                                          const SkColorInfo& dst,
                                          skvm::Uniforms* uniforms,
                                          SkArenaAlloc* alloc) const {
@@ -160,15 +147,10 @@ public:
         return as_SB(fProxyShader)->asGradient(info, localMatrix);
     }
 
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
-                                                             const MatrixRec&) const override;
-#endif
-
 protected:
     void flatten(SkWriteBuffer&) const override { SkASSERT(false); }
 
-    bool appendStages(const SkStageRec& rec, const MatrixRec&) const override {
+    bool appendStages(const SkStageRec& rec, const SkShaders::MatrixRec&) const override {
         return as_SB(fProxyShader)->appendRootStages(rec, fCTM);
     }
 
@@ -177,7 +159,7 @@ protected:
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec& mRec,
+                        const SkShaders::MatrixRec& mRec,
                         const SkColorInfo& dst,
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc* alloc) const override {
@@ -193,27 +175,6 @@ private:
 
     using INHERITED = SkShaderBase;
 };
-
-
-#if defined(SK_GANESH)
-std::unique_ptr<GrFragmentProcessor> SkCTMShader::asFragmentProcessor(const GrFPArgs& args,
-                                                                      const MatrixRec& mRec) const {
-    SkMatrix ctmInv;
-    if (!fCTM.invert(&ctmInv)) {
-        return nullptr;
-    }
-
-    auto base = as_SB(fProxyShader)->asRootFragmentProcessor(args, fCTM);
-    if (!base) {
-        return nullptr;
-    }
-
-    // In order for the shader to be evaluated with the original CTM, we explicitly evaluate it
-    // at sk_FragCoord, and pass that through the inverse of the original CTM. This avoids requiring
-    // local coords for the shader and mapping from the draw's local to device and then back.
-    return GrFragmentProcessor::DeviceSpace(GrMatrixEffect::Make(ctmInv, std::move(base)));
-}
-#endif
 
 sk_sp<SkFlattenable> SkCTMShader::CreateProc(SkReadBuffer& buffer) {
     SkASSERT(false);

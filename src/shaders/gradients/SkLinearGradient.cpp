@@ -89,19 +89,6 @@ SkShaderBase::GradientType SkLinearGradient::asGradient(GradientInfo* info,
     return GradientType::kLinear;
 }
 
-/////////////////////////////////////////////////////////////////////
-
-#if defined(SK_GANESH)
-
-#include "src/gpu/ganesh/gradients/GrGradientShader.h"
-
-std::unique_ptr<GrFragmentProcessor> SkLinearGradient::asFragmentProcessor(
-        const GrFPArgs& args, const MatrixRec& mRec) const {
-    return GrGradientShader::MakeLinear(*this, args, mRec);
-}
-
-#endif
-
 #if defined(SK_GRAPHITE)
 void SkLinearGradient::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                 skgpu::graphite::PaintParamsKeyBuilder* builder,

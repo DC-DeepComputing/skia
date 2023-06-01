@@ -98,14 +98,14 @@ protected:
 
     bool onAsLuminanceColor(SkColor*) const override;
 
-    bool appendStages(const SkStageRec&, const MatrixRec&) const override;
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 
 #if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec&,
+                        const SkShaders::MatrixRec&,
                         const SkColorInfo& dstCS,
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc* alloc) const override;

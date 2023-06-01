@@ -37,10 +37,6 @@ public:
     SkRadialGradient(const SkPoint& center, SkScalar radius, const Descriptor&);
 
     GradientType asGradient(GradientInfo* info, SkMatrix* matrix) const override;
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
-                                                             const MatrixRec&) const override;
-#endif
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
                   skgpu::graphite::PaintParamsKeyBuilder*,
@@ -119,29 +115,6 @@ skvm::F32 SkRadialGradient::transformT(skvm::Builder* p, skvm::Uniforms*,
                                        skvm::Coord coord, skvm::I32* mask) const {
     return sqrt(coord.x*coord.x + coord.y*coord.y);
 }
-#endif
-
-/////////////////////////////////////////////////////////////////////
-
-#if defined(SK_GANESH)
-
-#include "src/core/SkRuntimeEffectPriv.h"
-#include "src/gpu/ganesh/effects/GrSkSLFP.h"
-#include "src/gpu/ganesh/gradients/GrGradientShader.h"
-
-std::unique_ptr<GrFragmentProcessor>
-SkRadialGradient::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
-    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-        "half4 main(float2 coord) {"
-            "return half4(half(length(coord)), 1, 0, 0);" // y = 1 for always valid
-        "}"
-    );
-    // The radial gradient never rejects a pixel so it doesn't change opacity
-    auto fp = GrSkSLFP::Make(effect, "RadialLayout", /*inputFP=*/nullptr,
-                             GrSkSLFP::OptFlags::kPreservesOpaqueInput);
-    return GrGradientShader::MakeGradientFP(*this, args, mRec, std::move(fp));
-}
-
 #endif
 
 #if defined(SK_GRAPHITE)

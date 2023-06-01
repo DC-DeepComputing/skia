@@ -21,24 +21,15 @@
 #include "src/shaders/SkShaderBase.h"
 #include "src/shaders/SkTransformShader.h"
 
-#if defined(SK_GANESH)
-#include "src/gpu/ganesh/GrFragmentProcessor.h"
-#include "src/gpu/ganesh/effects/GrMatrixEffect.h"
-#endif
-
 #if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/KeyHelpers.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
-SkShaderBase::SkShaderBase() = default;
+namespace SkShaders {
+MatrixRec::MatrixRec(const SkMatrix& ctm) : fCTM(ctm) {}
 
-SkShaderBase::~SkShaderBase() = default;
-
-SkShaderBase::MatrixRec::MatrixRec(const SkMatrix& ctm) : fCTM(ctm) {}
-
-std::optional<SkShaderBase::MatrixRec>
-SkShaderBase::MatrixRec::apply(const SkStageRec& rec, const SkMatrix& postInv) const {
+std::optional<MatrixRec> MatrixRec::apply(const SkStageRec& rec, const SkMatrix& postInv) const {
     SkMatrix total = fPendingLocalMatrix;
     if (!fCTMApplied) {
         total = SkMatrix::Concat(fCTM, total);
@@ -60,8 +51,8 @@ SkShaderBase::MatrixRec::apply(const SkStageRec& rec, const SkMatrix& postInv) c
 }
 
 #if defined(SK_ENABLE_SKVM)
-std::optional<SkShaderBase::MatrixRec>
-SkShaderBase::MatrixRec::apply(skvm::Builder* p,
+std::optional<MatrixRec>
+MatrixRec::apply(skvm::Builder* p,
                                skvm::Coord* local,
                                skvm::Uniforms* uniforms,
                                const SkMatrix& postInv) const {
@@ -82,23 +73,17 @@ SkShaderBase::MatrixRec::apply(skvm::Builder* p,
                      /*ctmApplied=*/true};
 }
 #endif
-#if defined(SK_GANESH)
-GrFPResult SkShaderBase::MatrixRec::apply(std::unique_ptr<GrFragmentProcessor> fp,
-                                          const SkMatrix& postInv) const {
-    // FP matrices work differently than SkRasterPipeline and SkVM. The starting coordinates
-    // provided to the root SkShader's FP are already in local space. So we never apply the inverse
-    // CTM.
+
+std::tuple<SkMatrix, bool> MatrixRec::applyForFragmentProcessor(const SkMatrix& postInv) const {
     SkASSERT(!fCTMApplied);
     SkMatrix total;
     if (!fPendingLocalMatrix.invert(&total)) {
-        return {false, std::move(fp)};
+        return {SkMatrix::I(), false};
     }
-    total = SkMatrix::Concat(postInv, total);
-    // GrMatrixEffect returns 'fp' if total worked out to identity.
-    return {true, GrMatrixEffect::Make(total, std::move(fp))};
+    return {SkMatrix::Concat(postInv, total), true};
 }
 
-SkShaderBase::MatrixRec SkShaderBase::MatrixRec::applied() const {
+MatrixRec MatrixRec::applied() const {
     // We mark the CTM as "not applied" because we *never* apply the CTM for FPs. Their starting
     // coords are local, not device, coords.
     return MatrixRec{fCTM,
@@ -107,15 +92,20 @@ SkShaderBase::MatrixRec SkShaderBase::MatrixRec::applied() const {
                      fTotalMatrixIsValid,
                      /*ctmApplied=*/false};
 }
-#endif
 
-SkShaderBase::MatrixRec SkShaderBase::MatrixRec::concat(const SkMatrix& m) const {
+MatrixRec MatrixRec::concat(const SkMatrix& m) const {
     return {fCTM,
             SkShaderBase::ConcatLocalMatrices(fTotalLocalMatrix, m),
             SkShaderBase::ConcatLocalMatrices(fPendingLocalMatrix, m),
             fTotalMatrixIsValid,
             fCTMApplied};
 }
+
+}  // namespace SkShaders
+
+SkShaderBase::SkShaderBase() = default;
+
+SkShaderBase::~SkShaderBase() = default;
 
 void SkShaderBase::flatten(SkWriteBuffer& buffer) const { this->INHERITED::flatten(buffer); }
 
@@ -180,18 +170,6 @@ SkImage* SkShader::isAImage(SkMatrix* localMatrix, SkTileMode xy[2]) const {
     return as_SB(this)->onIsAImage(localMatrix, xy);
 }
 
-#if defined(SK_GANESH)
-std::unique_ptr<GrFragmentProcessor>
-SkShaderBase::asRootFragmentProcessor(const GrFPArgs& args, const SkMatrix& ctm) const {
-    return this->asFragmentProcessor(args, MatrixRec(ctm));
-}
-
-std::unique_ptr<GrFragmentProcessor> SkShaderBase::asFragmentProcessor(const GrFPArgs&,
-                                                                       const MatrixRec&) const {
-    return nullptr;
-}
-#endif
-
 sk_sp<SkShader> SkShaderBase::makeAsALocalMatrixShader(SkMatrix*) const {
     return nullptr;
 }
@@ -209,10 +187,10 @@ void SkShaderBase::addToKey(const skgpu::graphite::KeyContext& keyContext,
 #endif
 
 bool SkShaderBase::appendRootStages(const SkStageRec& rec, const SkMatrix& ctm) const {
-    return this->appendStages(rec, MatrixRec(ctm));
+    return this->appendStages(rec, SkShaders::MatrixRec(ctm));
 }
 
-bool SkShaderBase::appendStages(const SkStageRec& rec, const MatrixRec& mRec) const {
+bool SkShaderBase::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec& mRec) const {
     // SkShader::Context::shadeSpan() handles the paint opacity internally,
     // but SkRasterPipelineBlitter applies it as a separate stage.
     // We skip the internal shadeSpan() step by forcing the paint opaque.
@@ -289,7 +267,7 @@ skvm::Color SkShaderBase::rootProgram(skvm::Builder* p,
                                    device,
                                    /*local=*/device,
                                    paint,
-                                   MatrixRec(ctm),
+                                   SkShaders::MatrixRec(ctm),
                                    tweaked,
                                    uniforms,
                                    alloc)) {

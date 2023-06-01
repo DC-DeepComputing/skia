@@ -33,10 +33,6 @@ public:
             , fSrc(std::move(src))
             , fMode(mode) {}
 
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
-                                                             const MatrixRec&) const override;
-#endif
 
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
@@ -47,14 +43,14 @@ public:
 protected:
     SkShader_Blend(SkReadBuffer&);
     void flatten(SkWriteBuffer&) const override;
-    bool appendStages(const SkStageRec&, const MatrixRec&) const override;
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 
 #if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec& mRec,
+                        const SkShaders::MatrixRec& mRec,
                         const SkColorInfo& dst,
                         skvm::Uniforms*,
                         SkArenaAlloc*) const override;
@@ -101,7 +97,7 @@ void SkShader_Blend::flatten(SkWriteBuffer& buffer) const {
 
 // Returns the output of e0, and leaves the output of e1 in r,g,b,a
 static float* append_two_shaders(const SkStageRec& rec,
-                                 const SkShaderBase::MatrixRec& mRec,
+                                 const SkShaders::MatrixRec& mRec,
                                  SkShader* s0,
                                  SkShader* s1) {
     struct Storage {
@@ -131,7 +127,7 @@ static float* append_two_shaders(const SkStageRec& rec,
     return storage->fRes0;
 }
 
-bool SkShader_Blend::appendStages(const SkStageRec& rec, const MatrixRec& mRec) const {
+bool SkShader_Blend::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec& mRec) const {
     float* res0 = append_two_shaders(rec, mRec, fDst.get(), fSrc.get());
     if (!res0) {
         return false;
@@ -147,7 +143,7 @@ skvm::Color SkShader_Blend::program(skvm::Builder* p,
                                     skvm::Coord device,
                                     skvm::Coord local,
                                     skvm::Color paint,
-                                    const MatrixRec& mRec,
+                                    const SkShaders::MatrixRec& mRec,
                                     const SkColorInfo& cinfo,
                                     skvm::Uniforms* uniforms,
                                     SkArenaAlloc* alloc) const {
@@ -157,25 +153,6 @@ skvm::Color SkShader_Blend::program(skvm::Builder* p,
         return p->blend(fMode, s,d);
     }
     return {};
-}
-#endif
-
-#if defined(SK_GANESH)
-
-#include "include/gpu/GrRecordingContext.h"
-#include "src/gpu/ganesh/GrFPArgs.h"
-#include "src/gpu/ganesh/GrFragmentProcessor.h"
-#include "src/gpu/ganesh/effects/GrBlendFragmentProcessor.h"
-
-std::unique_ptr<GrFragmentProcessor>
-SkShader_Blend::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
-    auto fpA = as_SB(fDst)->asFragmentProcessor(args, mRec);
-    auto fpB = as_SB(fSrc)->asFragmentProcessor(args, mRec);
-    if (!fpA || !fpB) {
-        // This is unexpected. Both src and dst shaders should be valid. Just fail.
-        return nullptr;
-    }
-    return GrBlendFragmentProcessor::Make(std::move(fpB), std::move(fpA), fMode);
 }
 #endif
 

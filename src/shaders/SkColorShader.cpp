@@ -40,11 +40,6 @@ public:
 
     GradientType asGradient(GradientInfo* info, SkMatrix* localMatrix) const override;
 
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
-                                                             const MatrixRec&) const override;
-#endif
-
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
                   skgpu::graphite::PaintParamsKeyBuilder*,
@@ -62,14 +57,14 @@ private:
         return true;
     }
 
-    bool appendStages(const SkStageRec&, const MatrixRec&) const override;
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 
 #if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec&,
+                        const SkShaders::MatrixRec&,
                         const SkColorInfo& dst,
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc*) const override;
@@ -85,10 +80,6 @@ public:
     bool isOpaque()   const override { return fColor.isOpaque(); }
     bool isConstant() const override { return true; }
 
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
-                                                             const MatrixRec&) const override;
-#endif
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
                   skgpu::graphite::PaintParamsKeyBuilder*,
@@ -100,14 +91,14 @@ private:
     SK_FLATTENABLE_HOOKS(SkColor4Shader)
 
     void flatten(SkWriteBuffer&) const override;
-    bool appendStages(const SkStageRec&, const MatrixRec&) const override;
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 
 #if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec&,
+                        const SkShaders::MatrixRec&,
                         const SkColorInfo& dst,
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc*) const override;
@@ -173,7 +164,7 @@ void SkColor4Shader::flatten(SkWriteBuffer& buffer) const {
     }
 }
 
-bool SkColorShader::appendStages(const SkStageRec& rec, const MatrixRec&) const {
+bool SkColorShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec&) const {
     SkColor4f color = SkColor4f::FromColor(fColor);
     SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
                            rec.fDstCS,          kUnpremul_SkAlphaType).apply(color.vec());
@@ -181,7 +172,7 @@ bool SkColorShader::appendStages(const SkStageRec& rec, const MatrixRec&) const 
     return true;
 }
 
-bool SkColor4Shader::appendStages(const SkStageRec& rec, const MatrixRec&) const {
+bool SkColor4Shader::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec&) const {
     SkColor4f color = fColor;
     SkColorSpaceXformSteps(fColorSpace.get(), kUnpremul_SkAlphaType,
                            rec.fDstCS,        kUnpremul_SkAlphaType).apply(color.vec());
@@ -194,7 +185,7 @@ skvm::Color SkColorShader::program(skvm::Builder* p,
                                    skvm::Coord /*device*/,
                                    skvm::Coord /*local*/,
                                    skvm::Color /*paint*/,
-                                   const MatrixRec&,
+                                   const SkShaders::MatrixRec&,
                                    const SkColorInfo& dst,
                                    skvm::Uniforms* uniforms,
                                    SkArenaAlloc*) const {
@@ -208,7 +199,7 @@ skvm::Color SkColor4Shader::program(skvm::Builder* p,
                                     skvm::Coord /*device*/,
                                     skvm::Coord /*local*/,
                                     skvm::Color /*paint*/,
-                                    const MatrixRec&,
+                                    const SkShaders::MatrixRec&,
                                     const SkColorInfo& dst,
                                     skvm::Uniforms* uniforms,
                                     SkArenaAlloc*) const {
@@ -218,30 +209,6 @@ skvm::Color SkColor4Shader::program(skvm::Builder* p,
     return p->uniformColor(color, uniforms);
 }
 #endif  // defined(SK_ENABLE_SKVM)
-
-#if defined(SK_GANESH)
-
-#include "src/gpu/ganesh/GrColorInfo.h"
-#include "src/gpu/ganesh/GrColorSpaceXform.h"
-#include "src/gpu/ganesh/GrFPArgs.h"
-#include "src/gpu/ganesh/GrFragmentProcessor.h"
-#include "src/gpu/ganesh/SkGr.h"
-
-std::unique_ptr<GrFragmentProcessor> SkColorShader::asFragmentProcessor(const GrFPArgs& args,
-                                                                        const MatrixRec&) const {
-    return GrFragmentProcessor::MakeColor(SkColorToPMColor4f(fColor, *args.fDstColorInfo));
-}
-
-std::unique_ptr<GrFragmentProcessor> SkColor4Shader::asFragmentProcessor(const GrFPArgs& args,
-                                                                         const MatrixRec&) const {
-    SkColorSpaceXformSteps steps{ fColorSpace.get(),                kUnpremul_SkAlphaType,
-                                  args.fDstColorInfo->colorSpace(), kUnpremul_SkAlphaType };
-    SkColor4f color = fColor;
-    steps.apply(color.vec());
-    return GrFragmentProcessor::MakeColor(color.premul());
-}
-
-#endif
 
 #if defined(SK_GRAPHITE)
 void SkColorShader::addToKey(const skgpu::graphite::KeyContext& keyContext,

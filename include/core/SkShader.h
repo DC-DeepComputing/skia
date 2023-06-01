@@ -78,16 +78,13 @@ private:
     using INHERITED = SkFlattenable;
 };
 
-class SK_API SkShaders {
-public:
-    static sk_sp<SkShader> Empty();
-    static sk_sp<SkShader> Color(SkColor);
-    static sk_sp<SkShader> Color(const SkColor4f&, sk_sp<SkColorSpace>);
-    static sk_sp<SkShader> Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src);
-    static sk_sp<SkShader> Blend(sk_sp<SkBlender>, sk_sp<SkShader> dst, sk_sp<SkShader> src);
-    static sk_sp<SkShader> CoordClamp(sk_sp<SkShader>, const SkRect& subset);
-private:
-    SkShaders() = delete;
+namespace SkShaders {
+SK_API sk_sp<SkShader> Empty();
+SK_API sk_sp<SkShader> Color(SkColor);
+SK_API sk_sp<SkShader> Color(const SkColor4f&, sk_sp<SkColorSpace>);
+SK_API sk_sp<SkShader> Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src);
+SK_API sk_sp<SkShader> Blend(sk_sp<SkBlender>, sk_sp<SkShader> dst, sk_sp<SkShader> src);
+SK_API sk_sp<SkShader> CoordClamp(sk_sp<SkShader>, const SkRect& subset);
 };
 
 #endif

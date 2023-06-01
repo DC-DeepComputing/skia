@@ -293,7 +293,7 @@ bool RuntimeEffectRPCallbacks::appendShader(int index) {
             return as_SB(shader)->appendStages(fStage, fMatrix);
         }
         // For a non-passthrough sample, we need to explicitly mark the total-matrix as invalid.
-        SkShaderBase::MatrixRec nonPassthroughMatrix = fMatrix;
+        SkShaders::MatrixRec nonPassthroughMatrix = fMatrix;
         nonPassthroughMatrix.markTotalMatrixInvalid();
         return as_SB(shader)->appendStages(fStage, nonPassthroughMatrix);
     }
@@ -982,40 +982,6 @@ public:
 
     bool isOpaque() const override { return fEffect->alwaysOpaque(); }
 
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs& args,
-                                                             const MatrixRec& mRec) const override {
-        if (!SkRuntimeEffectPriv::CanDraw(args.fContext->priv().caps(), fEffect.get())) {
-            return nullptr;
-        }
-
-        sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
-                fEffect->uniforms(),
-                this->uniformData(args.fDstColorInfo->colorSpace()),
-                args.fDstColorInfo->colorSpace());
-        SkASSERT(uniforms);
-
-        bool success;
-        std::unique_ptr<GrFragmentProcessor> fp;
-        std::tie(success, fp) = GrFragmentProcessors::make_effect_fp(fEffect,
-                                                                     "runtime_shader",
-                                                                     std::move(uniforms),
-                                                                     /*inputFP=*/nullptr,
-                                                                     /*destColorFP=*/nullptr,
-                                                                     SkSpan(fChildren),
-                                                                     args);
-        if (!success) {
-            return nullptr;
-        }
-
-        std::tie(success, fp) = mRec.apply(std::move(fp));
-        if (!success) {
-            return nullptr;
-        }
-        return fp;
-    }
-#endif
-
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext& keyContext,
                   skgpu::graphite::PaintParamsKeyBuilder* builder,
@@ -1038,7 +1004,7 @@ public:
     }
 #endif
 
-    bool appendStages(const SkStageRec& rec, const MatrixRec& mRec) const override {
+    bool appendStages(const SkStageRec& rec, const SkShaders::MatrixRec& mRec) const override {
 #ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
         if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {
             // SkRP has support for many parts of #version 300 already, but for now, we restrict its
@@ -1046,7 +1012,7 @@ public:
             return false;
         }
         if (const SkSL::RP::Program* program = fEffect->getRPProgram(fDebugTrace.get())) {
-            std::optional<MatrixRec> newMRec = mRec.apply(rec);
+            std::optional<SkShaders::MatrixRec> newMRec = mRec.apply(rec);
             if (!newMRec.has_value()) {
                 return false;
             }
@@ -1069,7 +1035,7 @@ public:
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec& mRec,
+                        const SkShaders::MatrixRec& mRec,
                         const SkColorInfo& colorInfo,
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc* alloc) const override {
@@ -1085,7 +1051,7 @@ public:
 
         // Ensure any pending transform is applied before running the runtime shader's code, which
         // gets to use and manipulate the coordinates.
-        std::optional<MatrixRec> newMRec = mRec.apply(p, &local, uniforms);
+        std::optional<SkShaders::MatrixRec> newMRec = mRec.apply(p, &local, uniforms);
         if (!newMRec.has_value()) {
             return {};
         }

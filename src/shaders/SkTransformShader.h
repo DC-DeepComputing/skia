@@ -28,7 +28,7 @@ public:
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color color,
-                        const MatrixRec& mRec,
+                        const SkShaders::MatrixRec& mRec,
                         const SkColorInfo& dst,
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc* alloc) const override;
@@ -36,7 +36,7 @@ public:
 
     // Adds a pipestage to multiply the incoming coords in 'r' and 'g' by the matrix. The child
     // shader is called with no pending local matrix and the total transform as unknowable.
-    bool appendStages(const SkStageRec& rec, const MatrixRec&) const override;
+    bool appendStages(const SkStageRec& rec, const SkShaders::MatrixRec&) const override;
 
     // Change the matrix used by the generated SkRasterpipeline or SkVM.
     bool update(const SkMatrix& matrix);
