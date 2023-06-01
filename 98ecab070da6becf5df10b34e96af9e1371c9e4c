@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11df6eca_a0e52282",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T20:41:38Z",
+      "side": 1,
+      "message": "I\u0027m guessing most tests are created via copy-paste of an existing test, and the author is not changing the enforcement enum, but `kNextRelease` is appropriate.",
+      "parentUuid": "03a50bf9_7b7f909e",
+      "revId": "98ecab070da6becf5df10b34e96af9e1371c9e4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05b93d12_8a313b9b",
