@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "caa6043b_97dc441e",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T17:47:14Z",
+      "side": 1,
+      "message": "Are you thinking what I\u0027m thinking?",
+      "range": {
+        "startLine": 236,
+        "startChar": 5,
+        "endLine": 236,
+        "endChar": 12
+      },
+      "revId": "8eb781c6bfb83678488ce0770e40e17e3cdf0ad3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
