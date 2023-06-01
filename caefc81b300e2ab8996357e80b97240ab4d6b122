@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3de2535a_3a986da5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-01T17:24:52Z",
+      "side": 1,
+      "message": "Several proposed fixes in https://skia-review.googlesource.com/c/skia/+/706020",
+      "revId": "caefc81b300e2ab8996357e80b97240ab4d6b122",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
