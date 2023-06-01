@@ -22,6 +22,30 @@
       },
       "revId": "ee0abb14fc7b355e0c9646f6c1e528042061dbdd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5581759c_3ee00754",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-01T13:39:26Z",
+      "side": 1,
+      "message": "I think this is fine for now but in a future CL we should look into implementing this with a push constant or an inline uniform block, like we do with Metal.",
+      "parentUuid": "f2421bb7_7d2d2a8c",
+      "range": {
+        "startLine": 89,
+        "startChar": 46,
+        "endLine": 89,
+        "endChar": 95
+      },
+      "revId": "ee0abb14fc7b355e0c9646f6c1e528042061dbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
