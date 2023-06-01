@@ -16,6 +16,29 @@
       "message": "OK. I started to question the value of VecStorage. It was added to assist with the swizzle methods on some specializations, but at this point it seemed simpler to just remove it. I think that addresses some of the other issues, but let me know what you think.",
       "revId": "905fd65f76609c1b22b8b4a9112d1bf894eb13c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "240cd92d_35e43fbd",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-01T15:59:31Z",
+      "side": 1,
+      "message": "I think they need to be exactly equal, or else the memcpy on L132 will fail?",
+      "range": {
+        "startLine": 121,
+        "startChar": 18,
+        "endLine": 121,
+        "endChar": 42
+      },
+      "revId": "905fd65f76609c1b22b8b4a9112d1bf894eb13c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
