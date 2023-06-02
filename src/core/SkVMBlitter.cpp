@@ -77,7 +77,7 @@ namespace {
                             skvm::Coord /*device*/,
                             skvm::Coord /*local*/,
                             skvm::Color /*paint*/,
-                            const MatrixRec&,
+                            const SkShaders::MatrixRec&,
                             const SkColorInfo& dst,
                             skvm::Uniforms* uniforms,
                             SkArenaAlloc*) const override {
@@ -106,7 +106,7 @@ namespace {
                             skvm::Coord device,
                             skvm::Coord local,
                             skvm::Color paint,
-                            const MatrixRec& mRec,
+                            const SkShaders::MatrixRec& mRec,
                             const SkColorInfo& dst,
                             skvm::Uniforms* uniforms,
                             SkArenaAlloc* alloc) const override {

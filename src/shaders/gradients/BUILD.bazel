@@ -5,7 +5,6 @@ licenses(["notice"])
 exports_files_legacy()
 
 GRADIENT_FILES = [
-    "SkGradientShader.cpp",
     "SkGradientShaderBase.cpp",
     "SkGradientShaderBase.h",
     "SkLinearGradient.cpp",

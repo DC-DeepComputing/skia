@@ -33,6 +33,7 @@
 #include "src/base/SkTLazy.h"
 #include "src/gpu/ganesh/GrColorInfo.h"
 #include "src/gpu/ganesh/GrFPArgs.h"
+#include "src/gpu/ganesh/GrFragmentProcessors.h"
 #include "src/shaders/SkShaderBase.h"
 #include "tests/Test.h"
 
@@ -446,7 +447,7 @@ static void test_unsorted_degenerate(skiatest::Reporter* r) {
     auto context = GrDirectContext::MakeMock(&options);
 
     GrFPArgs args(context.get(), &dstColorInfo, props);
-    as_SB(gradient)->asRootFragmentProcessor(args, SkMatrix::I());
+    GrFragmentProcessors::Make(gradient.get(), args, SkMatrix::I());
 }
 
 // "Interesting" fuzzer values.

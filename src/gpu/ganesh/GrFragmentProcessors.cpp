@@ -42,6 +42,7 @@
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrFPArgs.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
+#include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/effects/GrBlendFragmentProcessor.h"
 #include "src/gpu/ganesh/effects/GrColorTableEffect.h"
@@ -60,7 +61,7 @@ static std::unique_ptr<GrFragmentProcessor>
                                         const SkMatrix& ctm) {
     SkASSERT(maskfilter);
     auto shaderMF = static_cast<const SkShaderMaskFilterImpl*>(maskfilter);
-    auto fp = as_SB(shaderMF->shader())->asFragmentProcessor(args, SkShaderBase::MatrixRec(ctm));
+    auto fp = Make(shaderMF->shader().get(), args, ctm);
     return GrFragmentProcessor::MulInputByChildAlpha(std::move(fp));
 }
 
@@ -83,6 +84,23 @@ std::unique_ptr<GrFragmentProcessor> Make(const SkMaskFilter* maskfilter,
     SkUNREACHABLE;
 }
 
+bool IsSupported(const SkMaskFilter* maskfilter) {
+    if (!maskfilter) {
+        return false;
+    }
+    auto mfb = as_MFB(maskfilter);
+    switch (mfb->type()) {
+        case SkMaskFilterBase::Type::kShader:
+            return true;
+        case SkMaskFilterBase::Type::kBlur:
+        case SkMaskFilterBase::Type::kEmboss:
+        case SkMaskFilterBase::Type::kSDF:
+        case SkMaskFilterBase::Type::kTable:
+            return false;
+    }
+    SkUNREACHABLE;
+}
+
 using ChildType = SkRuntimeEffect::ChildType;
 
 GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
@@ -97,9 +115,9 @@ GrFPResult make_effect_fp(sk_sp<SkRuntimeEffect> effect,
         std::optional<ChildType> type = child.type();
         if (type == ChildType::kShader) {
             // Convert a SkShader into a child FP.
-            SkShaderBase::MatrixRec mRec(SkMatrix::I());
+            SkShaders::MatrixRec mRec(SkMatrix::I());
             mRec.markTotalMatrixInvalid();
-            auto childFP = as_SB(child.shader())->asFragmentProcessor(childArgs, mRec);
+            auto childFP = Make(child.shader(), childArgs, mRec);
             if (!childFP) {
                 return GrFPFailure(std::move(inputFP));
             }
@@ -418,20 +436,545 @@ GrFPResult Make(GrRecordingContext* ctx,
     SkUNREACHABLE;
 }
 
-bool IsSupported(const SkMaskFilter* maskfilter) {
-    if (!maskfilter) {
-        return false;
+//std::unique_ptr<GrFragmentProcessor>
+//SkShader_Blend::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
+//    auto fpA = as_SB(fDst)->asFragmentProcessor(args, mRec);
+//    auto fpB = as_SB(fSrc)->asFragmentProcessor(args, mRec);
+//    if (!fpA || !fpB) {
+//        // This is unexpected. Both src and dst shaders should be valid. Just fail.
+//        return nullptr;
+//    }
+//    return GrBlendFragmentProcessor::Make(std::move(fpB), std::move(fpA), fMode);
+//}
+
+//std::unique_ptr<GrFragmentProcessor>
+//SkColorFilterShader::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
+//    auto shaderFP = as_SB(fShader)->asFragmentProcessor(args, mRec);
+//    if (!shaderFP) {
+//        return nullptr;
+//    }
+//
+//    // TODO I guess, but it shouldn't come up as used today.
+//    SkASSERT(fAlpha == 1.0f);
+//
+//    auto [success, fp] = GrFragmentProcessors::Make(args.fContext,
+//                                                    fFilter.get(),
+//                                                    std::move(shaderFP),
+//                                                    *args.fDstColorInfo,
+//                                                    args.fSurfaceProps);
+//    // If the filter FP could not be created, we still want to return the shader FP, so checking
+//    // success can be omitted here.
+//    return std::move(fp);
+//}
+
+//std::unique_ptr<GrFragmentProcessor> SkColorShader::asFragmentProcessor(const GrFPArgs& args,
+//                                                                        const MatrixRec&) const {
+//    return GrFragmentProcessor::MakeColor(SkColorToPMColor4f(fColor, *args.fDstColorInfo));
+//}
+//
+//std::unique_ptr<GrFragmentProcessor> SkColor4Shader::asFragmentProcessor(const GrFPArgs& args,
+//                                                                         const MatrixRec&) const {
+//    SkColorSpaceXformSteps steps{ fColorSpace.get(),                kUnpremul_SkAlphaType,
+//                                  args.fDstColorInfo->colorSpace(), kUnpremul_SkAlphaType };
+//    SkColor4f color = fColor;
+//    steps.apply(color.vec());
+//    return GrFragmentProcessor::MakeColor(color.premul());
+//}
+
+
+
+//std::unique_ptr<GrFragmentProcessor> SkShader_CoordClamp::asFragmentProcessor(
+//        const GrFPArgs& args, const MatrixRec& mRec) const {
+//    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+//            "uniform shader c;"
+//            "uniform float4 s;"
+//            "half4 main(float2 p) {"
+//                "return c.eval(clamp(p, s.LT, s.RB));"
+//            "}");
+//
+//    auto fp = as_SB(fShader)->asFragmentProcessor(args, mRec.applied());
+//    if (!fp) {
+//        return nullptr;
+//    }
+//
+//    GrSkSLFP::OptFlags flags = GrSkSLFP::OptFlags::kNone;
+//    if (fp->compatibleWithCoverageAsAlpha()) {
+//        flags |= GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha;
+//    }
+//    if (fp->preservesOpaqueInput()) {
+//        flags |= GrSkSLFP::OptFlags::kPreservesOpaqueInput;
+//    }
+//    fp = GrSkSLFP::Make(effect,
+//                        "clamp_fp",
+//                        /*inputFP=*/nullptr,
+//                        flags,
+//                        "c", std::move(fp),
+//                        "s", fSubset);
+//    bool success;
+//    std::tie(success, fp) = mRec.apply(std::move(fp));
+//    return success ? std::move(fp) : nullptr;
+//}
+
+//std::unique_ptr<GrFragmentProcessor>
+//SkImageShader::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
+//    SkTileMode tileModes[2] = {fTileModeX, fTileModeY};
+//    const SkRect* subset = needs_subset(fImage.get(), fSubset) ? &fSubset : nullptr;
+//    auto fp = skgpu::ganesh::AsFragmentProcessor(
+//            args.fContext, fImage, fSampling, tileModes, SkMatrix::I(), subset);
+//    if (!fp) {
+//        return nullptr;
+//    }
+//
+//    bool success;
+//    std::tie(success, fp) = mRec.apply(std::move(fp));
+//    if (!success) {
+//        return nullptr;
+//    }
+//
+//    if (!fRaw) {
+//        fp = GrColorSpaceXformEffect::Make(std::move(fp),
+//                                           fImage->colorSpace(),
+//                                           fImage->alphaType(),
+//                                           args.fDstColorInfo->colorSpace(),
+//                                           kPremul_SkAlphaType);
+//
+//        if (fImage->isAlphaOnly()) {
+//            fp = GrBlendFragmentProcessor::Make<SkBlendMode::kDstIn>(std::move(fp), nullptr);
+//        }
+//    }
+//
+//    return fp;
+//}
+
+//std::unique_ptr<GrFragmentProcessor> SkLocalMatrixShader::asFragmentProcessor(
+//        const GrFPArgs& args, const MatrixRec& mRec) const {
+//    return as_SB(fWrappedShader)->asFragmentProcessor(args, mRec.concat(fLocalMatrix));
+//}
+
+//std::unique_ptr<GrFragmentProcessor> SkCTMShader::asFragmentProcessor(const GrFPArgs& args,
+//                                                                      const MatrixRec& mRec) const {
+//    SkMatrix ctmInv;
+//    if (!fCTM.invert(&ctmInv)) {
+//        return nullptr;
+//    }
+//
+//    auto base = as_SB(fProxyShader)->asRootFragmentProcessor(args, fCTM);
+//    if (!base) {
+//        return nullptr;
+//    }
+//
+//    // In order for the shader to be evaluated with the original CTM, we explicitly evaluate it
+//    // at sk_FragCoord, and pass that through the inverse of the original CTM. This avoids requiring
+//    // local coords for the shader and mapping from the draw's local to device and then back.
+//    return GrFragmentProcessor::DeviceSpace(GrMatrixEffect::Make(ctmInv, std::move(base)));
+//}
+
+//std::unique_ptr<GrFragmentProcessor> SkPerlinNoiseShaderImpl::asFragmentProcessor(
+//        const GrFPArgs& args, const MatrixRec& mRec) const {
+//    SkASSERT(args.fContext);
+//    SkASSERT(fNumOctaves);
+//
+//    const SkMatrix& totalMatrix = mRec.totalMatrix();
+//
+//    // Either we don't stitch tiles, or we have a valid tile size
+//    SkASSERT(!fStitchTiles || !fTileSize.isEmpty());
+//
+//    auto paintingData = std::make_unique<SkPerlinNoiseShaderImpl::PaintingData>(fTileSize,
+//                                                                                fSeed,
+//                                                                                fBaseFrequencyX,
+//                                                                                fBaseFrequencyY,
+//                                                                                totalMatrix);
+//
+//    // Like shadeSpan, we start from device space. We will account for that below with a device
+//    // space effect.
+//
+//    auto context = args.fContext;
+//
+//    const SkBitmap& permutationsBitmap = paintingData->getPermutationsBitmap();
+//    const SkBitmap& noiseBitmap        = paintingData->getNoiseBitmap();
+//
+//    auto permutationsView = std::get<0>(GrMakeCachedBitmapProxyView(
+//            context,
+//            permutationsBitmap,
+//            /*label=*/"PerlinNoiseShader_FragmentProcessor_PermutationsView"));
+//    auto noiseView = std::get<0>(GrMakeCachedBitmapProxyView(
+//            context, noiseBitmap, /*label=*/"PerlinNoiseShader_FragmentProcessor_NoiseView"));
+//
+//    if (permutationsView && noiseView) {
+//        return GrFragmentProcessor::DeviceSpace(
+//                GrMatrixEffect::Make(SkMatrix::Translate(1 - totalMatrix.getTranslateX(),
+//                                                         1 - totalMatrix.getTranslateY()),
+//                                     GrPerlinNoise2Effect::Make(fType,
+//                                                                fNumOctaves,
+//                                                                fStitchTiles,
+//                                                                std::move(paintingData),
+//                                                                std::move(permutationsView),
+//                                                                std::move(noiseView),
+//                                                                *context->priv().caps())));
+//    }
+//    return nullptr;
+//}
+
+
+//std::unique_ptr<GrFragmentProcessor> SkPictureShader::asFragmentProcessor(
+//        const GrFPArgs& args, const MatrixRec& mRec) const {
+//    auto ctx = args.fContext;
+//    SkColorType dstColorType = GrColorTypeToSkColorType(args.fDstColorInfo->colorType());
+//    if (dstColorType == kUnknown_SkColorType) {
+//        dstColorType = kRGBA_8888_SkColorType;
+//    }
+//
+//    auto dstCS = ref_or_srgb(args.fDstColorInfo->colorSpace());
+//
+//    auto info = CachedImageInfo::Make(fTile,
+//                                      mRec.totalMatrix(),
+//                                      dstColorType,
+//                                      dstCS.get(),
+//                                      ctx->priv().caps()->maxTextureSize(),
+//                                      args.fSurfaceProps);
+//    if (!info.success) {
+//        return nullptr;
+//    }
+//
+//    // Gotta be sure the GPU can support our requested colortype (might be FP16)
+//    if (!ctx->colorTypeSupportedAsSurface(info.imageInfo.colorType())) {
+//        info.imageInfo = info.imageInfo.makeColorType(kRGBA_8888_SkColorType);
+//    }
+//
+//    static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
+//    skgpu::UniqueKey key;
+//    std::tuple keyData = {
+//        dstCS->toXYZD50Hash(),
+//        dstCS->transferFnHash(),
+//        static_cast<uint32_t>(dstColorType),
+//        fPicture->uniqueID(),
+//        fTile,
+//        info.tileScale,
+//        info.props
+//    };
+//    skgpu::UniqueKey::Builder builder(&key, kDomain, sizeof(keyData)/sizeof(uint32_t),
+//                                      "Picture Shader Image");
+//    memcpy(&builder[0], &keyData, sizeof(keyData));
+//    builder.finish();
+//
+//    GrProxyProvider* provider = ctx->priv().proxyProvider();
+//    GrSurfaceProxyView view;
+//    if (auto proxy = provider->findOrCreateProxyByUniqueKey(key)) {
+//        view = GrSurfaceProxyView(proxy, kTopLeft_GrSurfaceOrigin, skgpu::Swizzle());
+//    } else {
+//        const int msaaSampleCount = 0;
+//        const bool createWithMips = false;
+//        auto image = info.makeImage(SkSurfaces::RenderTarget(ctx,
+//                                                             skgpu::Budgeted::kYes,
+//                                                             info.imageInfo,
+//                                                             msaaSampleCount,
+//                                                             kTopLeft_GrSurfaceOrigin,
+//                                                             &info.props,
+//                                                             createWithMips),
+//                                    fPicture.get());
+//        if (!image) {
+//            return nullptr;
+//        }
+//
+//        auto [v, ct] = skgpu::ganesh::AsView(ctx, image, GrMipmapped::kNo);
+//        view = std::move(v);
+//        provider->assignUniqueKeyToProxy(key, view.asTextureProxy());
+//    }
+//
+//    const GrSamplerState sampler(static_cast<GrSamplerState::WrapMode>(fTmx),
+//                                 static_cast<GrSamplerState::WrapMode>(fTmy),
+//                                 fFilter);
+//    auto fp = GrTextureEffect::Make(std::move(view),
+//                                    kPremul_SkAlphaType,
+//                                    SkMatrix::I(),
+//                                    sampler,
+//                                    *ctx->priv().caps());
+//    SkMatrix scale = SkMatrix::Scale(info.tileScale.width(), info.tileScale.height());
+//    bool success;
+//    std::tie(success, fp) = mRec.apply(std::move(fp), scale);
+//    return success ? std::move(fp) : nullptr;
+//}
+
+// SkRuntimeShader
+//std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs& args,
+//                                                         const MatrixRec& mRec) const override {
+//    if (!SkRuntimeEffectPriv::CanDraw(args.fContext->priv().caps(), fEffect.get())) {
+//        return nullptr;
+//    }
+//
+//    sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
+//            fEffect->uniforms(),
+//            this->uniformData(args.fDstColorInfo->colorSpace()),
+//            args.fDstColorInfo->colorSpace());
+//    SkASSERT(uniforms);
+//
+//    bool success;
+//    std::unique_ptr<GrFragmentProcessor> fp;
+//    std::tie(success, fp) = GrFragmentProcessors::make_effect_fp(fEffect,
+//                                                                 "runtime_shader",
+//                                                                 std::move(uniforms),
+//                                                                 /*inputFP=*/nullptr,
+//                                                                 /*destColorFP=*/nullptr,
+//                                                                 SkSpan(fChildren),
+//                                                                 args);
+//    if (!success) {
+//        return nullptr;
+//    }
+//
+//    std::tie(success, fp) = mRec.apply(std::move(fp));
+//    if (!success) {
+//        return nullptr;
+//    }
+//    return fp;
+//}
+
+// #include "src/gpu/ganesh/gradients/GrGradientShader.h"
+//std::unique_ptr<GrFragmentProcessor> SkLinearGradient::asFragmentProcessor(
+//        const GrFPArgs& args, const MatrixRec& mRec) const {
+//    return GrGradientShader::MakeLinear(*this, args, mRec);
+//}
+
+//#include "src/core/SkRuntimeEffectPriv.h"
+//#include "src/gpu/ganesh/effects/GrSkSLFP.h"
+//#include "src/gpu/ganesh/gradients/GrGradientShader.h"
+//
+//std::unique_ptr<GrFragmentProcessor>
+//SkRadialGradient::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
+//    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+//        "half4 main(float2 coord) {"
+//            "return half4(half(length(coord)), 1, 0, 0);" // y = 1 for always valid
+//        "}"
+//    );
+//    // The radial gradient never rejects a pixel so it doesn't change opacity
+//    auto fp = GrSkSLFP::Make(effect, "RadialLayout", /*inputFP=*/nullptr,
+//                             GrSkSLFP::OptFlags::kPreservesOpaqueInput);
+//    return GrGradientShader::MakeGradientFP(*this, args, mRec, std::move(fp));
+//}
+
+//#include "src/core/SkRuntimeEffectPriv.h"
+//#include "src/gpu/ganesh/GrCaps.h"
+//#include "src/gpu/ganesh/GrRecordingContextPriv.h"
+//#include "src/gpu/ganesh/effects/GrSkSLFP.h"
+//#include "src/gpu/ganesh/gradients/GrGradientShader.h"
+//
+//std::unique_ptr<GrFragmentProcessor> SkSweepGradient::asFragmentProcessor(
+//        const GrFPArgs& args, const MatrixRec& mRec) const {
+//    // On some devices they incorrectly implement atan2(y,x) as atan(y/x). In actuality it is
+//    // atan2(y,x) = 2 * atan(y / (sqrt(x^2 + y^2) + x)). So to work around this we pass in (sqrt(x^2
+//    // + y^2) + x) as the second parameter to atan2 in these cases. We let the device handle the
+//    // undefined behavior of the second paramenter being 0 instead of doing the divide ourselves and
+//    // using atan instead.
+//    int useAtanWorkaround =
+//            args.fContext->priv().caps()->shaderCaps()->fAtan2ImplementedAsAtanYOverX;
+//    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+//        "uniform half bias;"
+//        "uniform half scale;"
+//        "uniform int useAtanWorkaround;"  // specialized
+//
+//        "half4 main(float2 coord) {"
+//            "half angle = bool(useAtanWorkaround)"
+//                    "? half(2 * atan(-coord.y, length(coord) - coord.x))"
+//                    ": half(atan(-coord.y, -coord.x));"
+//
+//            // 0.1591549430918 is 1/(2*pi), used since atan returns values [-pi, pi]
+//            "half t = (angle * 0.1591549430918 + 0.5 + bias) * scale;"
+//            "return half4(t, 1, 0, 0);" // y = 1 for always valid
+//        "}"
+//    );
+//
+//    // The sweep gradient never rejects a pixel so it doesn't change opacity
+//    auto fp = GrSkSLFP::Make(effect, "SweepLayout", /*inputFP=*/nullptr,
+//                             GrSkSLFP::OptFlags::kPreservesOpaqueInput,
+//                             "bias", fTBias,
+//                             "scale", fTScale,
+//                             "useAtanWorkaround", GrSkSLFP::Specialize(useAtanWorkaround));
+//    return GrGradientShader::MakeGradientFP(*this, args, mRec, std::move(fp));
+//}
+
+//#include "src/core/SkRuntimeEffectPriv.h"
+//#include "src/gpu/ganesh/effects/GrSkSLFP.h"
+//#include "src/gpu/ganesh/gradients/GrGradientShader.h"
+//
+//std::unique_ptr<GrFragmentProcessor>
+//SkTwoPointConicalGradient::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
+//    // The 2 point conical gradient can reject a pixel so it does change opacity even if the input
+//    // was opaque. Thus, all of these layout FPs disable that optimization.
+//    std::unique_ptr<GrFragmentProcessor> fp;
+//    SkTLazy<SkMatrix> matrix;
+//    switch (this->getType()) {
+//        case SkTwoPointConicalGradient::Type::kStrip: {
+//            static const SkRuntimeEffect* kEffect =
+//                SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+//                        "uniform half r0_2;"
+//                        "half4 main(float2 p) {"
+//                            "half v = 1;" // validation flag,set to negative to discard fragment later
+//                            "float t = r0_2 - p.y * p.y;"
+//                            "if (t >= 0) {"
+//                                "t = p.x + sqrt(t);"
+//                            "} else {"
+//                                "v = -1;"
+//                            "}"
+//                            "return half4(half(t), v, 0, 0);"
+//                        "}"
+//                    );
+//            float r0 = this->getStartRadius() / this->getCenterX1();
+//            fp = GrSkSLFP::Make(kEffect, "TwoPointConicalStripLayout", /*inputFP=*/nullptr,
+//                                GrSkSLFP::OptFlags::kNone,
+//                                "r0_2", r0 * r0);
+//        } break;
+//
+//        case SkTwoPointConicalGradient::Type::kRadial: {
+//            static const SkRuntimeEffect* kEffect =
+//                SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+//                        "uniform half r0;"
+//                        "uniform half lengthScale;"
+//                        "half4 main(float2 p) {"
+//                            "half v = 1;" // validation flag,set to negative to discard fragment later
+//                            "float t = length(p) * lengthScale - r0;"
+//                            "return half4(half(t), v, 0, 0);"
+//                        "}"
+//                    );
+//            float dr = this->getDiffRadius();
+//            float r0 = this->getStartRadius() / dr;
+//            bool isRadiusIncreasing = dr >= 0;
+//            fp = GrSkSLFP::Make(kEffect, "TwoPointConicalRadialLayout", /*inputFP=*/nullptr,
+//                                GrSkSLFP::OptFlags::kNone,
+//                                "r0", r0,
+//                                "lengthScale", isRadiusIncreasing ? 1.0f : -1.0f);
+//
+//            // GPU radial matrix is different from the original matrix, since we map the diff radius
+//            // to have |dr| = 1, so manually compute the final gradient matrix here.
+//
+//            // Map center to (0, 0)
+//            matrix.set(SkMatrix::Translate(-this->getStartCenter().fX,
+//                                           -this->getStartCenter().fY));
+//            // scale |diffRadius| to 1
+//            matrix->postScale(1 / dr, 1 / dr);
+//        } break;
+//
+//        case SkTwoPointConicalGradient::Type::kFocal: {
+//            static const SkRuntimeEffect* kEffect =
+//                SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
+//                        // Optimization flags, all specialized:
+//                        "uniform int isRadiusIncreasing;"
+//                        "uniform int isFocalOnCircle;"
+//                        "uniform int isWellBehaved;"
+//                        "uniform int isSwapped;"
+//                        "uniform int isNativelyFocal;"
+//
+//                        "uniform half invR1;"  // 1/r1
+//                        "uniform half fx;"     // focalX = r0/(r0-r1)
+//
+//                        "half4 main(float2 p) {"
+//                            "float t = -1;"
+//                            "half v = 1;" // validation flag,set to negative to discard fragment later
+//
+//                            "float x_t = -1;"
+//                            "if (bool(isFocalOnCircle)) {"
+//                                "x_t = dot(p, p) / p.x;"
+//                            "} else if (bool(isWellBehaved)) {"
+//                                "x_t = length(p) - p.x * invR1;"
+//                            "} else {"
+//                                "float temp = p.x * p.x - p.y * p.y;"
+//
+//                                // Only do sqrt if temp >= 0; this is significantly slower than
+//                                // checking temp >= 0 in the if statement that checks r(t) >= 0.
+//                                // But GPU may break if we sqrt a negative float. (Although I
+//                                // haven't observed that on any devices so far, and the old
+//                                // approach also does sqrt negative value without a check.) If
+//                                // the performance is really critical, maybe we should just
+//                                // compute the area where temp and x_t are always valid and drop
+//                                // all these ifs.
+//                                "if (temp >= 0) {"
+//                                    "if (bool(isSwapped) || !bool(isRadiusIncreasing)) {"
+//                                        "x_t = -sqrt(temp) - p.x * invR1;"
+//                                    "} else {"
+//                                        "x_t = sqrt(temp) - p.x * invR1;"
+//                                    "}"
+//                                "}"
+//                            "}"
+//
+//                            // The final calculation of t from x_t has lots of static
+//                            // optimizations but only do them when x_t is positive (which
+//                            // can be assumed true if isWellBehaved is true)
+//                            "if (!bool(isWellBehaved)) {"
+//                                // This will still calculate t even though it will be ignored
+//                                // later in the pipeline to avoid a branch
+//                                "if (x_t <= 0.0) {"
+//                                    "v = -1;"
+//                                "}"
+//                            "}"
+//                            "if (bool(isRadiusIncreasing)) {"
+//                                "if (bool(isNativelyFocal)) {"
+//                                    "t = x_t;"
+//                                "} else {"
+//                                    "t = x_t + fx;"
+//                                "}"
+//                            "} else {"
+//                                "if (bool(isNativelyFocal)) {"
+//                                    "t = -x_t;"
+//                                "} else {"
+//                                    "t = -x_t + fx;"
+//                                "}"
+//                            "}"
+//
+//                            "if (bool(isSwapped)) {"
+//                                "t = 1 - t;"
+//                            "}"
+//
+//                            "return half4(half(t), v, 0, 0);"
+//                        "}"
+//                    );
+//
+//            const SkTwoPointConicalGradient::FocalData& focalData = this->getFocalData();
+//            bool isRadiusIncreasing = (1 - focalData.fFocalX) > 0,
+//                    isFocalOnCircle    = focalData.isFocalOnCircle(),
+//                    isWellBehaved      = focalData.isWellBehaved(),
+//                    isSwapped          = focalData.isSwapped(),
+//                    isNativelyFocal    = focalData.isNativelyFocal();
+//
+//            fp = GrSkSLFP::Make(kEffect, "TwoPointConicalFocalLayout", /*inputFP=*/nullptr,
+//                                GrSkSLFP::OptFlags::kNone,
+//                                "isRadiusIncreasing", GrSkSLFP::Specialize<int>(isRadiusIncreasing),
+//                                "isFocalOnCircle",    GrSkSLFP::Specialize<int>(isFocalOnCircle),
+//                                "isWellBehaved",      GrSkSLFP::Specialize<int>(isWellBehaved),
+//                                "isSwapped",          GrSkSLFP::Specialize<int>(isSwapped),
+//                                "isNativelyFocal",    GrSkSLFP::Specialize<int>(isNativelyFocal),
+//                                "invR1", 1.0f / focalData.fR1,
+//                                "fx", focalData.fFocalX);
+//        } break;
+//    }
+//    return GrGradientShader::MakeGradientFP(*this,
+//                                            args,
+//                                            mRec,
+//                                            std::move(fp),
+//                                            matrix.getMaybeNull());
+//}
+
+std::unique_ptr<GrFragmentProcessor> Make(const SkShader* shader,
+                                          const GrFPArgs& args,
+                                          const SkMatrix& ctm) {
+    return Make(shader, args, SkShaders::MatrixRec(ctm));
+}
+
+std::unique_ptr<GrFragmentProcessor> Make(const SkShader* shader,
+                                          const GrFPArgs& args,
+                                          const SkShaders::MatrixRec& mRec) {
+    if (!shader) {
+        return nullptr;
     }
-    auto mfb = as_MFB(maskfilter);
-    switch (mfb->type()) {
-        case SkMaskFilterBase::Type::kShader:
-            return true;
-        case SkMaskFilterBase::Type::kBlur:
-        case SkMaskFilterBase::Type::kEmboss:
-        case SkMaskFilterBase::Type::kSDF:
-        case SkMaskFilterBase::Type::kTable:
-            return false;
+    auto base = as_SB(shader);
+    switch (base->type()) {
+#define M(type)                                                           \
+    case SkShaderBase::ShaderType::k##type:                               \
+        return make_shader_fp(static_cast<const Sk##type##Shader*>(base), \
+                              args,                                       \
+                              mrec);
+        SK_ALL_SHADERS(M)
+#undef M
     }
     SkUNREACHABLE;
 }
+
+
 }  // namespace GrFragmentProcessors

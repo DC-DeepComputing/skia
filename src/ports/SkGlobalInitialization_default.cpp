@@ -59,10 +59,10 @@
      */
     void SkFlattenable::PrivateInitializer::InitEffects() {
         // Shaders.
+        SkRegisterBlendShaderFlattenable();
         SkRegisterColor4ShaderFlattenable();
         SK_REGISTER_FLATTENABLE(SkColorFilterShader);
         SkRegisterColorShaderFlattenable();
-        SkRegisterComposeShaderFlattenable();
         SkRegisterCoordClampShaderFlattenable();
         SkRegisterEmptyShaderFlattenable();
         SK_REGISTER_FLATTENABLE(SkLocalMatrixShader);

@@ -65,7 +65,6 @@ skia_effects_sources = [
   "$_src/effects/SkTableMaskFilter.cpp",
   "$_src/effects/SkTrimPE.h",
   "$_src/effects/SkTrimPathEffect.cpp",
-  "$_src/shaders/gradients/SkGradientShader.cpp",
   "$_src/shaders/gradients/SkGradientShaderBase.cpp",
   "$_src/shaders/gradients/SkGradientShaderBase.h",
   "$_src/shaders/gradients/SkLinearGradient.cpp",

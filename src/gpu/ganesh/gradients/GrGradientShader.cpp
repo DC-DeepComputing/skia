@@ -752,11 +752,29 @@ static std::unique_ptr<GrFragmentProcessor> make_interpolated_to_dst(
 
 namespace GrGradientShader {
 
+/**
+ * Produces an FP that muls its input coords by the inverse of the pending matrix and then
+ * samples the passed FP with those coordinates. 'postInv' is an additional matrix to
+ * post-apply to the inverted pending matrix. If the pending matrix is not invertible the
+ * GrFPResult's bool will be false and the passed FP will be returned to the caller in the
+ * GrFPResult.
+ */
+static GrFPResult apply_matrix(std::unique_ptr<GrFragmentProcessor> fp,
+                               const SkShaders::MatrixRec& rec,
+                               const SkMatrix& postInv) {
+    auto [total, ok] = rec.applyForFragmentProcessor(postInv);
+    if (!ok) {
+        return {false, std::move(fp)};
+    }
+    // GrMatrixEffect returns 'fp' if total worked out to identity.
+    return {true, GrMatrixEffect::Make(total, std::move(fp))};
+}
+
 // Combines the colorizer and layout with an appropriately configured top-level effect based on the
 // gradient's tile mode
 std::unique_ptr<GrFragmentProcessor> MakeGradientFP(const SkGradientShaderBase& shader,
                                                     const GrFPArgs& args,
-                                                    const SkShaderBase::MatrixRec& mRec,
+                                                    const SkShaders::MatrixRec& mRec,
                                                     std::unique_ptr<GrFragmentProcessor> layout,
                                                     const SkMatrix* overrideMatrix) {
     // No shader is possible if a layout couldn't be created, e.g. a layout-specific Make() returned
@@ -771,7 +789,7 @@ std::unique_ptr<GrFragmentProcessor> MakeGradientFP(const SkGradientShaderBase& 
         overrideMatrix = &shader.getGradientMatrix();
     }
     bool success;
-    std::tie(success, layout) = mRec.apply(std::move(layout), *overrideMatrix);
+    std::tie(success, layout) = apply_matrix(std::move(layout), mRec, *overrideMatrix);
     if (!success) {
         return nullptr;
     }
@@ -852,7 +870,7 @@ std::unique_ptr<GrFragmentProcessor> MakeGradientFP(const SkGradientShaderBase& 
 
 std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
                                                 const GrFPArgs& args,
-                                                const SkShaderBase::MatrixRec& mRec) {
+                                                const SkShaders::MatrixRec& mRec) {
     // We add a tiny delta to t. When gradient stops are set up so that a hard stop in a vertically
     // or horizontally oriented gradient falls exactly at a column or row of pixel centers we can
     // get slightly different interpolated t values along the column/row. By adding the delta

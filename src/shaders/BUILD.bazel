@@ -12,7 +12,7 @@ SHADER_FILES = [
     "SkColorFilterShader.cpp",
     "SkColorFilterShader.h",
     "SkColorShader.cpp",
-    "SkComposeShader.cpp",
+    "SkBlendShader.cpp",
     "SkEmptyShader.cpp",
     "SkGainmapShader.cpp",
     "SkImageShader.cpp",

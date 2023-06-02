@@ -1,0 +1,120 @@
+/*
+ * Copyright 2023 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef SkColorFilterShader_DEFINED
+#define SkColorFilterShader_DEFINED
+
+#include "include/core/SkColorSpace.h"
+#include "include/core/SkFlattenable.h"
+#include "src/base/SkArenaAlloc.h"
+#include "src/base/SkUtils.h"
+#include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkRasterPipeline.h"
+#include "src/core/SkReadBuffer.h"
+#include "src/core/SkVM.h"
+#include "src/core/SkWriteBuffer.h"
+#include "src/shaders/SkShaderBase.h"
+
+#if defined(SK_GRAPHITE)
+#include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
+#endif
+
+/** \class SkColorShader
+    A Shader that represents a single color. In general, this effect can be
+    accomplished by just using the color field on the paint, but if an
+    actual shader object is needed, this provides that feature.
+*/
+class SkColorShader : public SkShaderBase {
+public:
+    /** Create a ColorShader that ignores the color in the paint, and uses the
+        specified color. Note: like all shaders, at draw time the paint's alpha
+        will be respected, and is applied to the specified color.
+    */
+    explicit SkColorShader(SkColor c);
+
+    bool isOpaque() const override;
+    bool isConstant() const override { return true; }
+
+    ShaderType type() const override { return ShaderType::kColor; }
+
+
+    GradientType asGradient(GradientInfo* info, SkMatrix* localMatrix) const override;
+
+#if defined(SK_GRAPHITE)
+    void addToKey(const skgpu::graphite::KeyContext&,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
+                  skgpu::graphite::PipelineDataGatherer*) const override;
+#endif
+
+private:
+    friend void ::SkRegisterColorShaderFlattenable();
+    SK_FLATTENABLE_HOOKS(SkColorShader)
+
+    void flatten(SkWriteBuffer&) const override;
+
+    bool onAsLuminanceColor(SkColor* lum) const override {
+        *lum = fColor;
+        return true;
+    }
+
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
+
+#if defined(SK_ENABLE_SKVM)
+    skvm::Color program(skvm::Builder*,
+                        skvm::Coord device,
+                        skvm::Coord local,
+                        skvm::Color paint,
+                        const SkShaders::MatrixRec&,
+                        const SkColorInfo& dst,
+                        skvm::Uniforms* uniforms,
+                        SkArenaAlloc*) const override;
+#endif
+
+    SkColor fColor;
+};
+
+class SkColor4Shader : public SkShaderBase {
+public:
+    SkColor4Shader(const SkColor4f&, sk_sp<SkColorSpace>);
+
+    bool isOpaque()   const override { return fColor.isOpaque(); }
+    bool isConstant() const override { return true; }
+
+    ShaderType type() const override { return ShaderType::kColor4; }
+
+
+#if defined(SK_GRAPHITE)
+    void addToKey(const skgpu::graphite::KeyContext&,
+                  skgpu::graphite::PaintParamsKeyBuilder*,
+                  skgpu::graphite::PipelineDataGatherer*) const override;
+#endif
+
+private:
+    friend void ::SkRegisterColor4ShaderFlattenable();
+    SK_FLATTENABLE_HOOKS(SkColor4Shader)
+
+    void flatten(SkWriteBuffer&) const override;
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
+
+#if defined(SK_ENABLE_SKVM)
+    skvm::Color program(skvm::Builder*,
+                        skvm::Coord device,
+                        skvm::Coord local,
+                        skvm::Color paint,
+                        const SkShaders::MatrixRec&,
+                        const SkColorInfo& dst,
+                        skvm::Uniforms* uniforms,
+                        SkArenaAlloc*) const override;
+#endif
+
+    sk_sp<SkColorSpace> fColorSpace;
+    const SkColor4f     fColor;
+};
+
+#endif
