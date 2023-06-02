@@ -21,6 +21,7 @@
 #include "src/core/SkVMBlitter.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/shaders/SkColorFilterShader.h"
+#include "src/shaders/SkEmptyShader.h"
 
 #include <cinttypes>
 
@@ -62,7 +63,7 @@ namespace {
         const char* getTypeName() const override { return "NoopColorFilter"; }
     };
 
-    struct SpriteShader : public SkShaderBase {
+    struct SpriteShader : public SkEmptyShader {
         explicit SpriteShader(SkPixmap sprite) : fSprite(sprite) {}
 
         SkPixmap fSprite;
@@ -77,7 +78,7 @@ namespace {
                             skvm::Coord /*device*/,
                             skvm::Coord /*local*/,
                             skvm::Color /*paint*/,
-                            const MatrixRec&,
+                            const SkShaders::MatrixRec&,
                             const SkColorInfo& dst,
                             skvm::Uniforms* uniforms,
                             SkArenaAlloc*) const override {
@@ -91,7 +92,7 @@ namespace {
         }
     };
 
-    struct DitherShader : public SkShaderBase {
+    struct DitherShader : public SkEmptyShader {
         explicit DitherShader(sk_sp<SkShader> shader) : fShader(std::move(shader)) {}
 
         sk_sp<SkShader> fShader;
@@ -106,7 +107,7 @@ namespace {
                             skvm::Coord device,
                             skvm::Coord local,
                             skvm::Color paint,
-                            const MatrixRec& mRec,
+                            const SkShaders::MatrixRec& mRec,
                             const SkColorInfo& dst,
                             skvm::Uniforms* uniforms,
                             SkArenaAlloc* alloc) const override {

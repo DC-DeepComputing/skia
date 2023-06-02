@@ -16,7 +16,7 @@
 #include "src/gpu/graphite/PaintParamsKey.h"
 #endif
 
-#include "src/shaders/gradients/SkGradientShaderBase.h"
+#include "src/shaders/gradients/SkGradientBaseShader.h"
 
 namespace {
 
@@ -32,15 +32,11 @@ SkMatrix rad_to_unit_matrix(const SkPoint& center, SkScalar radius) {
 }  // namespace
 
 /////////////////////////////////////////////////////////////////////
-class SkRadialGradient final : public SkGradientShaderBase {
+class SkRadialGradient final : public SkGradientBaseShader {
 public:
     SkRadialGradient(const SkPoint& center, SkScalar radius, const Descriptor&);
 
     GradientType asGradient(GradientInfo* info, SkMatrix* matrix) const override;
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
-                                                             const MatrixRec&) const override;
-#endif
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
                   skgpu::graphite::PaintParamsKeyBuilder*,
@@ -66,7 +62,7 @@ private:
 };
 
 SkRadialGradient::SkRadialGradient(const SkPoint& center, SkScalar radius, const Descriptor& desc)
-    : SkGradientShaderBase(desc, rad_to_unit_matrix(center, radius))
+    : SkGradientBaseShader(desc, rad_to_unit_matrix(center, radius))
     , fCenter(center)
     , fRadius(radius) {
 }
@@ -104,7 +100,7 @@ sk_sp<SkFlattenable> SkRadialGradient::CreateProc(SkReadBuffer& buffer) {
 }
 
 void SkRadialGradient::flatten(SkWriteBuffer& buffer) const {
-    this->SkGradientShaderBase::flatten(buffer);
+    this->SkGradientBaseShader::flatten(buffer);
     buffer.writePoint(fCenter);
     buffer.writeScalar(fRadius);
 }
@@ -119,29 +115,6 @@ skvm::F32 SkRadialGradient::transformT(skvm::Builder* p, skvm::Uniforms*,
                                        skvm::Coord coord, skvm::I32* mask) const {
     return sqrt(coord.x*coord.x + coord.y*coord.y);
 }
-#endif
-
-/////////////////////////////////////////////////////////////////////
-
-#if defined(SK_GANESH)
-
-#include "src/core/SkRuntimeEffectPriv.h"
-#include "src/gpu/ganesh/effects/GrSkSLFP.h"
-#include "src/gpu/ganesh/gradients/GrGradientShader.h"
-
-std::unique_ptr<GrFragmentProcessor>
-SkRadialGradient::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
-    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-        "half4 main(float2 coord) {"
-            "return half4(half(length(coord)), 1, 0, 0);" // y = 1 for always valid
-        "}"
-    );
-    // The radial gradient never rejects a pixel so it doesn't change opacity
-    auto fp = GrSkSLFP::Make(effect, "RadialLayout", /*inputFP=*/nullptr,
-                             GrSkSLFP::OptFlags::kPreservesOpaqueInput);
-    return GrGradientShader::MakeGradientFP(*this, args, mRec, std::move(fp));
-}
-
 #endif
 
 #if defined(SK_GRAPHITE)
@@ -167,7 +140,7 @@ sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar rad
     if (radius < 0) {
         return nullptr;
     }
-    if (!SkGradientShaderBase::ValidGradient(colors, colorCount, mode, interpolation)) {
+    if (!SkGradientBaseShader::ValidGradient(colors, colorCount, mode, interpolation)) {
         return nullptr;
     }
     if (1 == colorCount) {
@@ -177,15 +150,15 @@ sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar rad
         return nullptr;
     }
 
-    if (SkScalarNearlyZero(radius, SkGradientShaderBase::kDegenerateThreshold)) {
+    if (SkScalarNearlyZero(radius, SkGradientBaseShader::kDegenerateThreshold)) {
         // Degenerate gradient optimization, and no special logic needed for clamped radial gradient
-        return SkGradientShaderBase::MakeDegenerateGradient(colors, pos, colorCount,
+        return SkGradientBaseShader::MakeDegenerateGradient(colors, pos, colorCount,
                                                             std::move(colorSpace), mode);
     }
 
-    SkGradientShaderBase::ColorStopOptimizer opt(colors, pos, colorCount, mode);
+    SkGradientBaseShader::ColorStopOptimizer opt(colors, pos, colorCount, mode);
 
-    SkGradientShaderBase::Descriptor desc(opt.fColors, std::move(colorSpace), opt.fPos,
+    SkGradientBaseShader::Descriptor desc(opt.fColors, std::move(colorSpace), opt.fPos,
                                           opt.fCount, mode, interpolation);
     return SkLocalMatrixShader::MakeWrapped<SkRadialGradient>(localMatrix, center, radius, desc);
 }

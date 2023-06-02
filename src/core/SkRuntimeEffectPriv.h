@@ -190,7 +190,7 @@ inline SkRuntimeEffect* SkMakeRuntimeEffect(
 class RuntimeEffectRPCallbacks : public SkSL::RP::Callbacks {
 public:
     RuntimeEffectRPCallbacks(const SkStageRec& s,
-                             const SkShaderBase::MatrixRec& m,
+                             const SkShaders::MatrixRec& m,
                              SkSpan<const SkRuntimeEffect::ChildPtr> c,
                              SkSpan<const SkSL::SampleUsage> u)
             : fStage(s), fMatrix(m), fChildren(c), fSampleUsages(u) {}
@@ -209,7 +209,7 @@ private:
     void applyColorSpaceXform(const SkColorSpaceXformSteps& tempXform, const void* color);
 
     const SkStageRec& fStage;
-    const SkShaderBase::MatrixRec& fMatrix;
+    const SkShaders::MatrixRec& fMatrix;
     SkSpan<const SkRuntimeEffect::ChildPtr> fChildren;
     SkSpan<const SkSL::SampleUsage> fSampleUsages;
 };
@@ -222,7 +222,7 @@ public:
                              skvm::Uniforms* uniforms,
                              SkArenaAlloc* alloc,
                              const std::vector<SkRuntimeEffect::ChildPtr>& children,
-                             const SkShaderBase::MatrixRec& mRec,
+                             const SkShaders::MatrixRec& mRec,
                              skvm::Color inColor,
                              const SkColorInfo& colorInfo)
             : fBuilder(builder)
@@ -247,7 +247,7 @@ public:
     skvm::Uniforms* fUniforms;
     SkArenaAlloc* fAlloc;
     const std::vector<SkRuntimeEffect::ChildPtr>& fChildren;
-    const SkShaderBase::MatrixRec& fMRec;
+    const SkShaders::MatrixRec& fMRec;
     const skvm::Color fInColor;
     const SkColorInfo& fColorInfo;
 };
