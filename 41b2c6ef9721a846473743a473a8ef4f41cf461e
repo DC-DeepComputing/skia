@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "41b2c6ef9721a846473743a473a8ef4f41cf461e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06329200_872d82fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-02T14:41:07Z",
+      "side": 1,
+      "message": "lgtm, just one suggestion to reduce boilerplate",
+      "revId": "41b2c6ef9721a846473743a473a8ef4f41cf461e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfce06d5_0746ad6c",
+        "filename": "src/gpu/graphite/Image_YUVA_Graphite.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-02T14:41:07Z",
+      "side": 1,
+      "message": "```suggestion\n        : Image_YUVA(kNeedNewImageUniqueID,\n                     std::move(proxies),\n                     std::move(imageColorSpace)) {} \n```\n\n... or even just remove this constructor, and pass kNeedNewImageUniqueID in the factory below?",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 1
+      },
+      "revId": "41b2c6ef9721a846473743a473a8ef4f41cf461e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
