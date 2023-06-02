@@ -37,6 +37,93 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "066210bd_28065ced",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-02T14:13:49Z",
+      "side": 1,
+      "message": "I don\u0027t mind whether we keep the `if (buffer)` in the caller method or within this one. Whatever you decide, maybe just keep it consistent b/w bindInputBuffer, bindIndexBuffer, etc. \n\nI don\u0027t think we need to explicitly unbind in an else block though since, by this point, we haven\u0027t actually bound the buffer anyhow and if the assertion fails we won\u0027t even reach where we attempt to do so.",
+      "parentUuid": "45319caf_350b732f",
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d8d7c7b_bb9bd6f0",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-02T14:13:49Z",
+      "side": 1,
+      "message": "nit: Is there a reason you\u0027ve ordered the asserts this way instead of (vkBuffer !\u003d VK_NULL_HANDLE)?",
+      "range": {
+        "startLine": 625,
+        "startChar": 13,
+        "endLine": 625,
+        "endChar": 40
+      },
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19e2a705_ea1825f3",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-02T14:13:49Z",
+      "side": 1,
+      "message": "nit: Add `/*bindingCount\u003d*/` so it\u0027s more immediately clear what the `1` is for/doing",
+      "range": {
+        "startLine": 630,
+        "startChar": 41,
+        "endLine": 630,
+        "endChar": 43
+      },
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e414b5f_527ef169",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-02T14:13:49Z",
+      "side": 1,
+      "message": "nit: Put \u0027offset\u0027 on its own line as well",
+      "range": {
+        "startLine": 645,
+        "startChar": 81,
+        "endLine": 645,
+        "endChar": 89
+      },
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f986f666_74ff7e18",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
         "patchSetId": 1
