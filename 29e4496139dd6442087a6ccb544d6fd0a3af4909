@@ -22,6 +22,30 @@
       },
       "revId": "29e4496139dd6442087a6ccb544d6fd0a3af4909",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66721917_d73fd4fe",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 961,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-02T19:00:49Z",
+      "side": 1,
+      "message": "It gets logged in fFormatProperties, which is again checked in getDefaultDepthStencilTextureInfo(), so we shouldn\u0027t be able to create one of these invalid formats.",
+      "parentUuid": "ad63b00e_43a389df",
+      "range": {
+        "startLine": 958,
+        "startChar": 0,
+        "endLine": 961,
+        "endChar": 5
+      },
+      "revId": "29e4496139dd6442087a6ccb544d6fd0a3af4909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
