@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd3a7744_f2a2e2cc",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-02T18:18:03Z",
+      "side": 1,
+      "message": "Is this the correct color ptr we should be tracking/modifying? I noticed another fColor in an Adapter that gets bound to jpaint[\"c\"].",
+      "range": {
+        "startLine": 172,
+        "startChar": 61,
+        "endLine": 172,
+        "endChar": 86
+      },
+      "revId": "526ab1093b164f92e410dc68fd080bf294aa21f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
