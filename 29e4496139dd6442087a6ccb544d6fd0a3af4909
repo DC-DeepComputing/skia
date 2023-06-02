@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad63b00e_43a389df",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 961,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-02T18:48:16Z",
+      "side": 1,
+      "message": "Is there anything we\u0027d want to do or log if this is not supported? Otherwise LGTM",
+      "range": {
+        "startLine": 958,
+        "startChar": 0,
+        "endLine": 961,
+        "endChar": 5
+      },
+      "revId": "29e4496139dd6442087a6ccb544d6fd0a3af4909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
