@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "948452c9_0500609d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-06-02T18:00:56Z",
+      "side": 1,
+      "message": "There is still one machine running the old 1002:1636-31.0.12027.7000, but the rest (maybe a dozen) are all at the new *.9001 driver version.",
+      "revId": "9f42c3bc2cd3629efdabb873b64461d56f95e34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
