@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "997ac669_bd91a3fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-02T16:26:13Z",
+      "side": 1,
+      "message": "Having the data structure store the last query doesn\u0027t feel quite right -- it feels like the calling class should track that. Why not have findRect() return the LocationRecord? That said, I\u0027m also concerned about inadvertently doing two queries in a row before trying to insert -- which *would* be an argument for keeping the last query. Then you could return false or some other error code from findRect() if there\u0027s already a LocationRecord stored. WDYT?",
+      "revId": "b306f2911c6ad5d81a5c433d6288bf371e5461bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aca7b8df_f35e88ef",
+        "filename": "src/gpu/RectanizerSkyline.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-02T16:26:13Z",
+      "side": 1,
+      "message": "Why not SkIRect?",
+      "range": {
+        "startLine": 62,
+        "startChar": 11,
+        "endLine": 62,
+        "endChar": 17
+      },
+      "revId": "b306f2911c6ad5d81a5c433d6288bf371e5461bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
