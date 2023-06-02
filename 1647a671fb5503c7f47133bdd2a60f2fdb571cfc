@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc36e627_96393bd5",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-02T14:15:29Z",
+      "side": 1,
+      "message": "Done, though there\u0027s no way to do an unbind that I can tell.",
+      "parentUuid": "45319caf_350b732f",
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d8d7c7b_bb9bd6f0",
@@ -135,6 +153,30 @@
       "writtenOn": "2023-06-01T18:28:31Z",
       "side": 1,
       "message": "Do we want this to be an enum class ?",
+      "range": {
+        "startLine": 95,
+        "startChar": 68,
+        "endLine": 95,
+        "endChar": 76
+      },
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "801e02f1_f84b2423",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-02T14:15:29Z",
+      "side": 1,
+      "message": "Maybe -- we\u0027re not really doing that in any other backend for the buffer indices. I might do a overall CL.",
+      "parentUuid": "f986f666_74ff7e18",
       "range": {
         "startLine": 95,
         "startChar": 68,
