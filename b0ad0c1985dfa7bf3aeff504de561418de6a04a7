@@ -33,6 +33,23 @@
       "message": "Hi, please take a look, thanks!\nThis CL does some rename for Dawn.",
       "revId": "b0ad0c1985dfa7bf3aeff504de561418de6a04a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb0098e4_ee868b57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18329
+      },
+      "writtenOn": "2023-06-02T02:23:43Z",
+      "side": 1,
+      "message": "Thanks for review! I don\u0027t have permission to dry-run or submit this CL, please help me on submitting...",
+      "revId": "b0ad0c1985dfa7bf3aeff504de561418de6a04a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
