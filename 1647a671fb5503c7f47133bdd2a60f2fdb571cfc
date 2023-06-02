@@ -94,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d2058c1_d0de364b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-02T14:22:52Z",
+      "side": 1,
+      "message": "This was copied from some older code which used this style. In theory this ordering catches issues where you accidentally write vkBuffer\u003dVK_NULL_HANDLE vs vkBuffer\u003d\u003dVK_NULL_HANDLE (and using it for the !\u003d case makes it consistent) but it\u0027s not really necessary now. Fixed.",
+      "parentUuid": "5d8d7c7b_bb9bd6f0",
+      "range": {
+        "startLine": 625,
+        "startChar": 13,
+        "endLine": 625,
+        "endChar": 40
+      },
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19e2a705_ea1825f3",
@@ -117,6 +141,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a67662b8_eadaff72",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-02T14:22:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19e2a705_ea1825f3",
+      "range": {
+        "startLine": 630,
+        "startChar": 41,
+        "endLine": 630,
+        "endChar": 43
+      },
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e414b5f_527ef169",
@@ -130,6 +178,30 @@
       "writtenOn": "2023-06-02T14:13:49Z",
       "side": 1,
       "message": "nit: Put \u0027offset\u0027 on its own line as well",
+      "range": {
+        "startLine": 645,
+        "startChar": 81,
+        "endLine": 645,
+        "endChar": 89
+      },
+      "revId": "1647a671fb5503c7f47133bdd2a60f2fdb571cfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cbe76ea_56456b4d",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-02T14:22:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e414b5f_527ef169",
       "range": {
         "startLine": 645,
         "startChar": 81,
