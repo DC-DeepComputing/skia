@@ -51,6 +51,24 @@
       "parentUuid": "948452c9_0500609d",
       "revId": "9f42c3bc2cd3629efdabb873b64461d56f95e34e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81ab6a73_4d910ecb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-06-02T20:10:38Z",
+      "side": 1,
+      "message": "I ran the install_win_gpu_drivers.yml ansible playbook, limiting to skia-e-win-263, and that host was downgraded to `AMD (1002) | 1002:1636 | 1002:1636-30.0.15021.1001`. I think we should land this CL and then update the GCS bucket later. WDYT?",
+      "parentUuid": "94c4dd9a_f8b5a3e5",
+      "revId": "9f42c3bc2cd3629efdabb873b64461d56f95e34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
