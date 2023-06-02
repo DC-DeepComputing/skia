@@ -328,6 +328,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5e0f3d5_efeaa02c",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-02T17:46:19Z",
+      "side": 1,
+      "message": "No, I wouldn\u0027t skip it. A separate commit would be fine, but if presubmit requires it, then it\u0027s fine to include.",
+      "parentUuid": "62c5f17d_0dc9cefd",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56aefbdd_d2ee2674",
@@ -359,6 +377,24 @@
       "side": 1,
       "message": "ccameron@ suggested moving this code here, but I can move it back x)\nIf you look at patchset 1 it was left in the same file https://skia-review.googlesource.com/c/skia/+/699656/1\nShould I revert then?",
       "parentUuid": "56aefbdd_d2ee2674",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28631996_b874d31d",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-02T17:46:19Z",
+      "side": 1,
+      "message": "I would lean towards its own new file.",
+      "parentUuid": "4ad46009_a64b6edc",
       "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
