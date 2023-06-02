@@ -33,6 +33,24 @@
       "message": "Returning to WIP. Will attempt to reinstall old drivers to be more friendly to developers.",
       "revId": "9f42c3bc2cd3629efdabb873b64461d56f95e34e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94c4dd9a_f8b5a3e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-02T18:12:12Z",
+      "side": 1,
+      "message": "I launched Test-Win10-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Debug-All-Vulkan (https://task-scheduler.skia.org/job/I07ri9vdLBTLEECggN2K) just to confirm that Swarming likes the new dimension value.",
+      "parentUuid": "948452c9_0500609d",
+      "revId": "9f42c3bc2cd3629efdabb873b64461d56f95e34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
