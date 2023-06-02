@@ -18,7 +18,8 @@ namespace skiagm {
 
 namespace {
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
-const char kTestFontName[] = "fonts/Roboto-Regular.ttf";
+// const char kTestFontName[] = "fonts/Roboto-Regular.ttf";
+const char kTestFontName[] = "fonts/RobotoFlex[GRAD,XOPQ,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght].ttf";
 const SkScalar kDumpFontSize = 20.0f;
 
 // TODO(drott): Test these dumps is in a unit test instead of dumping them to GM surface.
@@ -75,8 +76,13 @@ public:
 
 protected:
     void onOnceBeforeDraw() override {
-        fTypeface =
-                SkTypeface_Make_Fontations(GetResourceAsStream(kTestFontName), SkFontArguments());
+        SkFontArguments::VariationPosition::Coordinate coordinates[] = {
+                {SkSetFourByteTag('w', 'g', 'h', 't'), 120.0},
+                {SkSetFourByteTag('w', 'd', 't', 'h'), 120.0}};
+        SkFontArguments args;
+        args.setVariationDesignPosition(
+                SkFontArguments::VariationPosition{coordinates, std::size(coordinates)});
+        fTypeface = SkTypeface_Make_Fontations(GetResourceAsStream(kTestFontName), args);
     }
 
     SkString onShortName() override { return SkString("typeface_fontations"); }
