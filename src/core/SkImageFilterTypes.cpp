@@ -1017,14 +1017,14 @@ FilterResult::Builder::~Builder() = default;
 
 SkSpan<sk_sp<SkShader>> FilterResult::Builder::createInputShaders(
         SkEnumBitMask<ShaderFlags> flags,
-        const SkSamplingOptions& sampling,
         const LayerSpace<SkIRect>& outputBounds) {
     fInputShaders.reserve(fInputs.size());
     for (const SampledFilterResult& input : fInputs) {
         // Assume the input shader will be evaluated once per pixel in the output unless otherwise
         // specified when the FilterResult was added to the builder.
         auto sampleBounds = input.fSampleBounds ? *input.fSampleBounds : outputBounds;
-        fInputShaders.push_back(input.fImage.asShader(fContext, sampling, flags, sampleBounds));
+        fInputShaders.push_back(input.fImage.asShader(
+                fContext, input.fSampling, flags | input.fFlags, sampleBounds));
     }
     return SkSpan<sk_sp<SkShader>>(fInputShaders);
 }
@@ -1080,7 +1080,9 @@ FilterResult FilterResult::Builder::merge() {
     if (fInputs.empty()) {
         return {};
     } else if (fInputs.size() == 1) {
-        SkASSERT(!fInputs[0].fSampleBounds.has_value());
+        SkASSERT(!fInputs[0].fSampleBounds.has_value() &&
+                 fInputs[0].fSampling == kDefaultSampling &&
+                 fInputs[0].fFlags == ShaderFlags::kNone);
         return fInputs[0].fImage;
     }
 
@@ -1089,7 +1091,9 @@ FilterResult FilterResult::Builder::merge() {
     AutoSurface surface{fContext, outputBounds, /*renderInParameterSpace=*/false};
     if (surface) {
         for (const SampledFilterResult& input : fInputs) {
-            SkASSERT(!input.fSampleBounds.has_value());
+            SkASSERT(!input.fSampleBounds.has_value() &&
+                     input.fSampling == kDefaultSampling &&
+                     input.fFlags == ShaderFlags::kNone);
             surface->save();
             input.fImage.draw(surface.canvas());
             surface->restore();
