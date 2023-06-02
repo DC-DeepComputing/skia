@@ -195,6 +195,10 @@ public:
         return fSlotsRoot;
     }
 
+    void trackColorValue(SkString slotID, SkColor* c, sk_sp<sksg::Node> node) const {
+        fSlotManager->trackColorValue(slotID, c, std::move(node));
+    }
+
 private:
     friend class CompositionBuilder;
     friend class CustomFont;

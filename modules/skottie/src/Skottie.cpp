@@ -93,6 +93,8 @@ public:
         this->bind(abuilder, jobject["o"], fOpacity);
     }
 
+    SkScalar* getOpacityPtr() { return &fOpacity; }
+
 private:
     void onSync() override {
         this->node()->setOpacity(fOpacity * 0.01f);
@@ -114,7 +116,14 @@ sk_sp<sksg::RenderNode> AnimationBuilder::attachOpacity(const skjson::ObjectValu
     if (adapter->isStatic()) {
         adapter->seek(0);
     }
-    const auto dispatched = this->dispatchOpacityProperty(adapter->node(), jobject["o"]);
+    auto dispatched = this->dispatchOpacityProperty(adapter->node(), jobject["o"]);
+    const skjson::ObjectValue* opacityProp = jobject["o"];
+    if (const skjson::StringValue* slotID = (*opacityProp)["sid"]) {
+        fSlotManager->trackScalarValue(SkString(slotID->begin()),
+                                       adapter->getOpacityPtr(),
+                                       adapter->node());
+        dispatched = true;
+    }
     if (adapter->isStatic()) {
         if (!dispatched && adapter->node()->getOpacity() >= 1) {
             // No obeservable effects - we can discard.

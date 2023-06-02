@@ -61,6 +61,7 @@ private:
 class Color : public PaintNode {
 public:
     static sk_sp<Color> Make(SkColor c);
+    SkColor* getColorPtr() {return &fColor;}
 
     SG_ATTRIBUTE(Color, SkColor, fColor)
 
