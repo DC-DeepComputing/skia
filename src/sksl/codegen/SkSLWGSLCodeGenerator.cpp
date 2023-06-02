@@ -967,7 +967,10 @@ std::unique_ptr<WGSLCodeGenerator::LValue> WGSLCodeGenerator::makeLValue(const E
         return std::make_unique<PointerLValue>(
                 this->variableReferenceNameForLValue(e.as<VariableReference>()));
     }
-
+    if (e.is<FieldAccess>() || e.is<IndexExpression>()) {
+        return std::make_unique<PointerLValue>(
+                this->assembleExpression(e, Precedence::kAssignment));
+    }
     // TODO(johnstiles): support more lvalue types
     fContext.fErrors->error(e.fPosition, "unsupported lvalue type");
     return nullptr;
@@ -1297,8 +1300,13 @@ std::string WGSLCodeGenerator::assembleFunctionCall(const FunctionCall& c,
 }
 
 std::string WGSLCodeGenerator::assembleIndexExpression(const IndexExpression& i) {
-    return this->assembleExpression(*i.base(), Precedence::kPostfix) + "[" +
-           this->assembleExpression(*i.index(), Precedence::kExpression) + "]";
+    // Put the index value into a let-expression. (We skip this step if it's extremely simple--a
+    // constant, or a variable--just to avoid bloating the output.)
+    std::string idx = this->assembleExpression(*i.index(), Precedence::kExpression);
+    if (!Analysis::IsCompileTimeConstant(*i.index()) && !i.index()->is<VariableReference>()) {
+        idx = this->writeScratchLet(idx);
+    }
+    return this->assembleExpression(*i.base(), Precedence::kPostfix) + "[" + idx + "]";
 }
 
 std::string WGSLCodeGenerator::assembleLiteral(const Literal& l) {
