@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a7a6686_05ecb07a",
+        "filename": "tests/QuadRootsTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-02T16:35:25Z",
+      "side": 1,
+      "message": "Extra comment?",
+      "range": {
+        "startLine": 34,
+        "startChar": 8,
+        "endLine": 34,
+        "endChar": 55
+      },
+      "revId": "a21134ae7487a81e3dd66f3095efa21dec4403ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
