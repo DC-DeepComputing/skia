@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d18b52c5_1ea4c134",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-02T20:21:24Z",
+      "side": 1,
+      "message": "I cheated a bit here because 1) these shaders don\u0027t have any existing fragment processor implementation and 2) SkVM is going away soon.",
+      "range": {
+        "startLine": 66,
+        "startChar": 33,
+        "endLine": 66,
+        "endChar": 46
+      },
+      "revId": "f51f107e42894b755e474dd42f43ed40402d9100",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
