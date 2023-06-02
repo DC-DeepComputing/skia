@@ -320,7 +320,7 @@ bool GrGLSLProgramBuilder::emitAndInstallDstTexture() {
         fUniformHandles.fDstTextureCoordsUni = this->uniformHandler()->addUniform(
                 /*owner=*/nullptr,
                 kFragment_GrShaderFlag,
-                SkSLType::kHalf4,
+                SkSLType::kFloat4,
                 "DstTextureCoords",
                 &dstTextureCoordsName);
         fFS.codeAppend("// Read color from copy of the destination\n");
