@@ -180,6 +180,7 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                      SkSamplingOptions sampling,
                      SkTileMode tileMode,
                      DrawImageProc drawImage) {
+    SkDebugf("---------- here\n");
     if (sampling.isAniso()) {
         sampling = SkSamplingPriv::AnisoFallback(/* imageIsMipped= */ false);
     }
