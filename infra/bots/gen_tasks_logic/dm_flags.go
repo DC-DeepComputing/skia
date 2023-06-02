@@ -1099,7 +1099,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.matchGpu("Mali400") {
-		skip(ALL, "tests", ALL, "BlendRequiringDstReadWithLargeCoordinates")
 		skip(ALL, "tests", ALL, "SkSLCross")
 		skip(ALL, "tests", ALL, "SkSLMatrixSwizzleStore_GPU")
 	}
