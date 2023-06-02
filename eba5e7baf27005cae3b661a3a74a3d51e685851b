@@ -113,6 +113,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "759219c4_6195d87c",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "The background behind this change is that I\u0027m implementing a prototype in Chromium to support AVIF hdr images using gain maps, as was done for jpeg, see https://bugs.chromium.org/p/chromium/issues/detail?id\u003d1404000\n\nFor this I need to extract the gain map metadata from some xmp, so I\u0027m refactoring SkJpegXmp into a slightly more generic SkXmp. I do need to use it in blink, i.e. outside of Skia, which is why it needs to HAVE SK_API, and ccameron@ suggested putting the header in include/private, as is done with SkjpegMetadataDecoder.h which is also used in blink.\n\nTo be fully transparent this is a prototype and the way in which gain maps and their metadata will be added to avif files has not been finalized and is likely to change. In particular, it probably won\u0027t use xmp, so it\u0027s possible that this change won\u0027t be needed in the long term (at least as far as AVIF is concerned). Therefore if there is a strong reason to avoid making this semi public, we could also reconsider implenting the prototype.",
+      "parentUuid": "d45c4fa0_b840abae",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b04897ea_88a404e1",
         "filename": "include/private/SkXmp.h",
         "patchSetId": 5
@@ -124,6 +148,30 @@
       "writtenOn": "2023-06-01T18:50:30Z",
       "side": 1,
       "message": "It looks like we already have some `SK_API`s in `include/private`, but this seems odd to me. I thought the former meant it should be used outside of Skia, but maybe I\u0027m misunderstanding. The latter means it should only be used internally.",
+      "range": {
+        "startLine": 23,
+        "startChar": 6,
+        "endLine": 23,
+        "endChar": 12
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb1dc1f_8d34c589",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "See my reply in SkXmp.h",
+      "parentUuid": "b04897ea_88a404e1",
       "range": {
         "startLine": 23,
         "startChar": 6,
@@ -159,6 +207,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "990c0d0f_d0c8a7b1",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "I think they are two slightly different specs for gain map metadata. This code was simply moved from SkJpegXmp and I\u0027m not the original author so I don\u0027t know the details.",
+      "parentUuid": "0579afb3_19fff201",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 73
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "42184b06_74a0ea10",
         "filename": "include/private/SkXmp.h",
         "patchSetId": 5
@@ -170,6 +242,30 @@
       "writtenOn": "2023-06-01T18:50:30Z",
       "side": 1,
       "message": "Why is this specific to JPEG? If it is, it seems like the method should include `Jpeg` in the name? Or it doesn\u0027t belong on the virtual interface, and should instead be on a Jpeg implementation?",
+      "range": {
+        "startLine": 40,
+        "startChar": 19,
+        "endLine": 40,
+        "endChar": 37
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92f72afb_ca46026e",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "Same this would be a question for @ccameron@google.com who is the original author, I\u0027m not sure if it could/should be made more generic or if a different name would be better.",
+      "parentUuid": "42184b06_74a0ea10",
       "range": {
         "startLine": 40,
         "startChar": 19,
@@ -216,6 +312,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62c5f17d_0dc9cefd",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "The presubmit forced me to do this.\n\n** Presubmit ERRORS: 3 **\nDiffs found after running \"buildifier --mode\u003dfix --lint\u003dwarn src/codec/BUILD.bazel\":\n\nCan I skip the presubmit? Or I can send a seperate commit before this one to format the file.",
+      "parentUuid": "645d6be4_df170efb",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56aefbdd_d2ee2674",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 5
@@ -233,6 +347,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4ad46009_a64b6edc",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "ccameron@ suggested moving this code here, but I can move it back x)\nIf you look at patchset 1 it was left in the same file https://skia-review.googlesource.com/c/skia/+/699656/1\nShould I revert then?",
+      "parentUuid": "56aefbdd_d2ee2674",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c79b628_288f287e",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 5
@@ -244,6 +376,30 @@
       "writtenOn": "2023-06-01T18:50:30Z",
       "side": 1,
       "message": "How are we ensuring that the lifetime is adequate?",
+      "range": {
+        "startLine": 1101,
+        "startChar": 23,
+        "endLine": 1101,
+        "endChar": 38
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca10985c_718389ae",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "I added a comment that the input must outlive the returned value. This is mostly not my code but it seems like it\u0027s used correctly (we pass the SkData immediately to SkXmp which parses it into an SkDom, at which point the original data is no longer needed).",
+      "parentUuid": "2c79b628_288f287e",
       "range": {
         "startLine": 1101,
         "startChar": 23,
@@ -288,6 +444,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37d4d2e9_3ed6705c",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1127,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dce59710_41bb68bd",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "636c8bed_b95507a1",
@@ -301,6 +475,24 @@
       "writtenOn": "2023-06-01T18:50:30Z",
       "side": 1,
       "message": "I haven\u0027t dug into this code too closely, but why do we split them into parts, stitch them back together, and require them to be contiguous?",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c88d3b67_e9a34ce1",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1207,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "This is not my code by afaik it\u0027s based on the xmp spec that states that \"When written into the JPEG file, the serialized text for the ExtendedXMP can be further split as necessary into a series of roughly 65400 byte chunks\"\nSo this code stitches the chunks together.",
+      "parentUuid": "636c8bed_b95507a1",
       "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -345,6 +537,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e6d6bf4_b99bb9f5",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0176ce57_9249ed9e",
+      "range": {
+        "startLine": 347,
+        "startChar": 6,
+        "endLine": 347,
+        "endChar": 15
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1513528f_e744ff0e",
@@ -358,6 +574,24 @@
       "writtenOn": "2023-06-01T18:50:30Z",
       "side": 1,
       "message": "Is this intended to be subclassed further? If not, can you make it `final`?",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf36299f_cc0dc67d",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-02T08:57:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1513528f_e744ff0e",
       "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
