@@ -172,6 +172,30 @@
       },
       "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6078afaf_d03f2c02",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-02T14:39:45Z",
+      "side": 1,
+      "message": "Nm, we\u0027ll just turn on the bots when drawing is working fully.",
+      "parentUuid": "b4b3b68b_cbe16a33",
+      "range": {
+        "startLine": 54,
+        "startChar": 37,
+        "endLine": 54,
+        "endChar": 54
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
