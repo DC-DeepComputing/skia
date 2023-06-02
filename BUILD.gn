@@ -1155,7 +1155,6 @@ optional("jpeg_decode") {
       ":jpeg_mpf",
       ":xml",
     ]
-    sources += [ "src/codec/SkJpegXmp.cpp" ]
   }
 }
 
