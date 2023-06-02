@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include "src/core/SkIPoint16.h"
 #include "src/gpu/RectanizerSkyline.h"
 
 #include <algorithm>
@@ -13,6 +12,22 @@
 namespace skgpu {
 
 bool RectanizerSkyline::addRect(int width, int height, SkIPoint16* loc) {
+    if (!this->findRect(width, height)) {
+        loc->fX = 0;
+        loc->fY = 0;
+        return false;
+    }
+    Region result;
+    if (!this->insertFoundRect(&result)) {
+        loc->fX = 0;
+        loc->fY = 0;
+        return false;
+    }
+    *loc = result.fPos;
+    return true;
+}
+
+bool RectanizerSkyline::findRect(int width, int height) {
     if ((unsigned)width > (unsigned)this->width() ||
         (unsigned)height > (unsigned)this->height()) {
         return false;
@@ -36,19 +51,32 @@ bool RectanizerSkyline::addRect(int width, int height, SkIPoint16* loc) {
         }
     }
 
-    // add rectangle to skyline
     if (-1 != bestIndex) {
-        this->addSkylineLevel(bestIndex, bestX, bestY, width, height);
-        loc->fX = bestX;
-        loc->fY = bestY;
-
-        fAreaSoFar += width*height;
+        fLastFound.emplace(SkIPoint16::Make(bestX, bestY), width, height, bestIndex);
         return true;
     }
 
-    loc->fX = 0;
-    loc->fY = 0;
+    fLastFound.reset();
     return false;
+}
+
+bool RectanizerSkyline::insertFoundRect(Region* result) {
+    SkASSERT(result);
+    if (!fLastFound) {
+        return false;
+    }
+
+    unsigned w = fLastFound->fWidth;
+    unsigned h = fLastFound->fHeight;
+    this->addSkylineLevel(fLastFound->fIndex, fLastFound->fPos.x(), fLastFound->fPos.y(), w, h);
+
+    fAreaSoFar += w * h;
+    result->fPos = fLastFound->fPos;
+    result->fWidth = w;
+    result->fHeight = h;
+    fLastFound.reset();
+
+    return true;
 }
 
 bool RectanizerSkyline::rectangleFits(int skylineIndex, int width, int height, int* ypos) const {

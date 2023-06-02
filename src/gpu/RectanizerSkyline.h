@@ -9,7 +9,10 @@
 #define skgpu_RectanizerSkyline_DEFINED
 
 #include "include/private/base/SkTDArray.h"
+#include "src/core/SkIPoint16.h"
 #include "src/gpu/Rectanizer.h"
+
+#include <optional>
 
 namespace skgpu {
 
@@ -29,6 +32,7 @@ public:
         fAreaSoFar = 0;
         fSkyline.clear();
         fSkyline.push_back(SkylineSegment{0, 0, this->width()});
+        fLastFound.reset();
     }
 
     bool addRect(int w, int h, SkIPoint16* loc) final;
@@ -36,6 +40,31 @@ public:
     float percentFull() const final {
         return fAreaSoFar / ((float)this->width() * this->height());
     }
+
+    // `findRect()` and `insertFoundRect()` define a two-step process for finding an available slot
+    // and making an insertion that mutates the Rectanizer without repeating the slot search.
+    //
+    // `findRect()` returns true if there is enough space for a rectangle with the given dimensions
+    // and records its metadata internally, overwriting any previous record that was stored
+    // following a prior call to `findRect()`. Returns false if there is no available space for
+    // the requested dimensions and clears any internal record.
+    //
+    // `insertFoundRect` performs an insertion at a previously found slot location using the
+    // internally stored record. It returns false if the most recent call to `findRect()` did not
+    // find valid location. Otherwise, makes the insertion, populates `result` with the
+    // Rectanizer-relative bounds of the inserted region.
+    //
+    // After a successful call to `findRect()`, the internally stored record is only valid until the
+    // next call to `findRect`, `insertFoundRect`, `addRect`, or `reset` as they all clear any
+    // internal record. Thus a found record can only be inserted once.
+    bool findRect(int width, int height);
+
+    struct Region {
+        SkIPoint16 fPos;
+        unsigned fWidth;
+        unsigned fHeight;
+    };
+    bool insertFoundRect(Region* result);
 
 private:
     struct SkylineSegment {
@@ -47,6 +76,17 @@ private:
     SkTDArray<SkylineSegment> fSkyline;
 
     int32_t fAreaSoFar;
+
+    struct LocationRecord {
+        SkIPoint16 fPos;
+        unsigned fWidth = 0;
+        unsigned fHeight = 0;
+        int fIndex = -1;
+
+        LocationRecord(SkIPoint16 pos, unsigned w, unsigned h, int index)
+                : fPos(pos), fWidth(w), fHeight(h), fIndex(index) {}
+    };
+    std::optional<LocationRecord> fLastFound;
 
     // Can a width x height rectangle fit in the free space represented by
     // the skyline segments >= 'skylineIndex'? If so, return true and fill in
