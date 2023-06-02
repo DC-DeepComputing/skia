@@ -36,6 +36,7 @@ supported_files_or_dirs=(
   "src/gpu/ganesh/surface/"
   "src/image/"
   "src/pathops/"
+  "src/shaders/"
   "src/sksl/"
   "src/svg/"
   "src/text/"

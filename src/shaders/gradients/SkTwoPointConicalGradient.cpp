@@ -10,7 +10,7 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/SkLocalMatrixShader.h"
-#include "src/shaders/gradients/SkGradientShaderBase.h"
+#include "src/shaders/gradients/SkGradientBaseShader.h"
 
 #include <utility>
 
@@ -22,7 +22,7 @@
 
 // Please see https://skia.org/dev/design/conical for how our shader works.
 
-class SkTwoPointConicalGradient final : public SkGradientShaderBase {
+class SkTwoPointConicalGradient final : public SkGradientBaseShader {
 public:
     // See https://skia.org/dev/design/conical for what focal data means and how our shader works.
     // We make it public so the GPU shader can also use it.
@@ -60,10 +60,6 @@ public:
                                   const Descriptor&, const SkMatrix* localMatrix);
 
     GradientType asGradient(GradientInfo* info, SkMatrix* localMatrix) const override;
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
-                                                             const MatrixRec&) const override;
-#endif
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
                   skgpu::graphite::PaintParamsKeyBuilder*,
@@ -192,7 +188,7 @@ SkTwoPointConicalGradient::SkTwoPointConicalGradient(
         const SkPoint& start, SkScalar startRadius,
         const SkPoint& end, SkScalar endRadius,
         const Descriptor& desc, Type type, const SkMatrix& gradientMatrix, const FocalData& data)
-    : SkGradientShaderBase(desc, gradientMatrix)
+    : SkGradientBaseShader(desc, gradientMatrix)
     , fCenter1(start)
     , fCenter2(end)
     , fRadius1(startRadius)
@@ -255,7 +251,7 @@ sk_sp<SkFlattenable> SkTwoPointConicalGradient::CreateProc(SkReadBuffer& buffer)
 }
 
 void SkTwoPointConicalGradient::flatten(SkWriteBuffer& buffer) const {
-    this->SkGradientShaderBase::flatten(buffer);
+    this->SkGradientBaseShader::flatten(buffer);
     buffer.writePoint(fCenter1);
     buffer.writePoint(fCenter2);
     buffer.writeScalar(fRadius1);
@@ -373,172 +369,6 @@ skvm::F32 SkTwoPointConicalGradient::transformT(skvm::Builder* p, skvm::Uniforms
 }
 #endif
 
-/////////////////////////////////////////////////////////////////////
-
-#if defined(SK_GANESH)
-
-#include "src/core/SkRuntimeEffectPriv.h"
-#include "src/gpu/ganesh/effects/GrSkSLFP.h"
-#include "src/gpu/ganesh/gradients/GrGradientShader.h"
-
-std::unique_ptr<GrFragmentProcessor>
-SkTwoPointConicalGradient::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
-    // The 2 point conical gradient can reject a pixel so it does change opacity even if the input
-    // was opaque. Thus, all of these layout FPs disable that optimization.
-    std::unique_ptr<GrFragmentProcessor> fp;
-    SkTLazy<SkMatrix> matrix;
-    switch (this->getType()) {
-        case SkTwoPointConicalGradient::Type::kStrip: {
-            static const SkRuntimeEffect* kEffect =
-                SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-                        "uniform half r0_2;"
-                        "half4 main(float2 p) {"
-                            "half v = 1;" // validation flag,set to negative to discard fragment later
-                            "float t = r0_2 - p.y * p.y;"
-                            "if (t >= 0) {"
-                                "t = p.x + sqrt(t);"
-                            "} else {"
-                                "v = -1;"
-                            "}"
-                            "return half4(half(t), v, 0, 0);"
-                        "}"
-                    );
-            float r0 = this->getStartRadius() / this->getCenterX1();
-            fp = GrSkSLFP::Make(kEffect, "TwoPointConicalStripLayout", /*inputFP=*/nullptr,
-                                GrSkSLFP::OptFlags::kNone,
-                                "r0_2", r0 * r0);
-        } break;
-
-        case SkTwoPointConicalGradient::Type::kRadial: {
-            static const SkRuntimeEffect* kEffect =
-                SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-                        "uniform half r0;"
-                        "uniform half lengthScale;"
-                        "half4 main(float2 p) {"
-                            "half v = 1;" // validation flag,set to negative to discard fragment later
-                            "float t = length(p) * lengthScale - r0;"
-                            "return half4(half(t), v, 0, 0);"
-                        "}"
-                    );
-            float dr = this->getDiffRadius();
-            float r0 = this->getStartRadius() / dr;
-            bool isRadiusIncreasing = dr >= 0;
-            fp = GrSkSLFP::Make(kEffect, "TwoPointConicalRadialLayout", /*inputFP=*/nullptr,
-                                GrSkSLFP::OptFlags::kNone,
-                                "r0", r0,
-                                "lengthScale", isRadiusIncreasing ? 1.0f : -1.0f);
-
-            // GPU radial matrix is different from the original matrix, since we map the diff radius
-            // to have |dr| = 1, so manually compute the final gradient matrix here.
-
-            // Map center to (0, 0)
-            matrix.set(SkMatrix::Translate(-this->getStartCenter().fX,
-                                           -this->getStartCenter().fY));
-            // scale |diffRadius| to 1
-            matrix->postScale(1 / dr, 1 / dr);
-        } break;
-
-        case SkTwoPointConicalGradient::Type::kFocal: {
-            static const SkRuntimeEffect* kEffect =
-                SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-                        // Optimization flags, all specialized:
-                        "uniform int isRadiusIncreasing;"
-                        "uniform int isFocalOnCircle;"
-                        "uniform int isWellBehaved;"
-                        "uniform int isSwapped;"
-                        "uniform int isNativelyFocal;"
-
-                        "uniform half invR1;"  // 1/r1
-                        "uniform half fx;"     // focalX = r0/(r0-r1)
-
-                        "half4 main(float2 p) {"
-                            "float t = -1;"
-                            "half v = 1;" // validation flag,set to negative to discard fragment later
-
-                            "float x_t = -1;"
-                            "if (bool(isFocalOnCircle)) {"
-                                "x_t = dot(p, p) / p.x;"
-                            "} else if (bool(isWellBehaved)) {"
-                                "x_t = length(p) - p.x * invR1;"
-                            "} else {"
-                                "float temp = p.x * p.x - p.y * p.y;"
-
-                                // Only do sqrt if temp >= 0; this is significantly slower than
-                                // checking temp >= 0 in the if statement that checks r(t) >= 0.
-                                // But GPU may break if we sqrt a negative float. (Although I
-                                // haven't observed that on any devices so far, and the old
-                                // approach also does sqrt negative value without a check.) If
-                                // the performance is really critical, maybe we should just
-                                // compute the area where temp and x_t are always valid and drop
-                                // all these ifs.
-                                "if (temp >= 0) {"
-                                    "if (bool(isSwapped) || !bool(isRadiusIncreasing)) {"
-                                        "x_t = -sqrt(temp) - p.x * invR1;"
-                                    "} else {"
-                                        "x_t = sqrt(temp) - p.x * invR1;"
-                                    "}"
-                                "}"
-                            "}"
-
-                            // The final calculation of t from x_t has lots of static
-                            // optimizations but only do them when x_t is positive (which
-                            // can be assumed true if isWellBehaved is true)
-                            "if (!bool(isWellBehaved)) {"
-                                // This will still calculate t even though it will be ignored
-                                // later in the pipeline to avoid a branch
-                                "if (x_t <= 0.0) {"
-                                    "v = -1;"
-                                "}"
-                            "}"
-                            "if (bool(isRadiusIncreasing)) {"
-                                "if (bool(isNativelyFocal)) {"
-                                    "t = x_t;"
-                                "} else {"
-                                    "t = x_t + fx;"
-                                "}"
-                            "} else {"
-                                "if (bool(isNativelyFocal)) {"
-                                    "t = -x_t;"
-                                "} else {"
-                                    "t = -x_t + fx;"
-                                "}"
-                            "}"
-
-                            "if (bool(isSwapped)) {"
-                                "t = 1 - t;"
-                            "}"
-
-                            "return half4(half(t), v, 0, 0);"
-                        "}"
-                    );
-
-            const SkTwoPointConicalGradient::FocalData& focalData = this->getFocalData();
-            bool isRadiusIncreasing = (1 - focalData.fFocalX) > 0,
-                    isFocalOnCircle    = focalData.isFocalOnCircle(),
-                    isWellBehaved      = focalData.isWellBehaved(),
-                    isSwapped          = focalData.isSwapped(),
-                    isNativelyFocal    = focalData.isNativelyFocal();
-
-            fp = GrSkSLFP::Make(kEffect, "TwoPointConicalFocalLayout", /*inputFP=*/nullptr,
-                                GrSkSLFP::OptFlags::kNone,
-                                "isRadiusIncreasing", GrSkSLFP::Specialize<int>(isRadiusIncreasing),
-                                "isFocalOnCircle",    GrSkSLFP::Specialize<int>(isFocalOnCircle),
-                                "isWellBehaved",      GrSkSLFP::Specialize<int>(isWellBehaved),
-                                "isSwapped",          GrSkSLFP::Specialize<int>(isSwapped),
-                                "isNativelyFocal",    GrSkSLFP::Specialize<int>(isNativelyFocal),
-                                "invR1", 1.0f / focalData.fR1,
-                                "fx", focalData.fFocalX);
-        } break;
-    }
-    return GrGradientShader::MakeGradientFP(*this,
-                                            args,
-                                            mRec,
-                                            std::move(fp),
-                                            matrix.getMaybeNull());
-}
-
-#endif
-
 #if defined(SK_GRAPHITE)
 void SkTwoPointConicalGradient::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                          skgpu::graphite::PaintParamsKeyBuilder* builder,
@@ -577,20 +407,20 @@ sk_sp<SkShader> SkGradientShader::MakeTwoPointConical(const SkPoint& start,
     if (startRadius < 0 || endRadius < 0) {
         return nullptr;
     }
-    if (!SkGradientShaderBase::ValidGradient(colors, colorCount, mode, interpolation)) {
+    if (!SkGradientBaseShader::ValidGradient(colors, colorCount, mode, interpolation)) {
         return nullptr;
     }
-    if (SkScalarNearlyZero((start - end).length(), SkGradientShaderBase::kDegenerateThreshold)) {
+    if (SkScalarNearlyZero((start - end).length(), SkGradientBaseShader::kDegenerateThreshold)) {
         // If the center positions are the same, then the gradient is the radial variant of a 2 pt
         // conical gradient, an actual radial gradient (startRadius == 0), or it is fully degenerate
         // (startRadius == endRadius).
         if (SkScalarNearlyEqual(startRadius, endRadius,
-                                SkGradientShaderBase::kDegenerateThreshold)) {
+                                SkGradientBaseShader::kDegenerateThreshold)) {
             // Degenerate case, where the interpolation region area approaches zero. The proper
             // behavior depends on the tile mode, which is consistent with the default degenerate
             // gradient behavior, except when mode = clamp and the radii > 0.
             if (mode == SkTileMode::kClamp &&
-                endRadius > SkGradientShaderBase::kDegenerateThreshold) {
+                endRadius > SkGradientBaseShader::kDegenerateThreshold) {
                 // The interpolation region becomes an infinitely thin ring at the radius, so the
                 // final gradient will be the first color repeated from p=0 to 1, and then a hard
                 // stop switching to the last color at p=1.
@@ -600,10 +430,10 @@ sk_sp<SkShader> SkGradientShader::MakeTwoPointConical(const SkPoint& start,
                                   circlePos, 3, mode, interpolation, localMatrix);
             } else {
                 // Otherwise use the default degenerate case
-                return SkGradientShaderBase::MakeDegenerateGradient(colors, pos, colorCount,
+                return SkGradientBaseShader::MakeDegenerateGradient(colors, pos, colorCount,
                                                                     std::move(colorSpace), mode);
             }
-        } else if (SkScalarNearlyZero(startRadius, SkGradientShaderBase::kDegenerateThreshold)) {
+        } else if (SkScalarNearlyZero(startRadius, SkGradientBaseShader::kDegenerateThreshold)) {
             // We can treat this gradient as radial, which is faster. If we got here, we know
             // that endRadius is not equal to 0, so this produces a meaningful gradient
             return MakeRadial(start, endRadius, colors, std::move(colorSpace), pos, colorCount,
@@ -618,9 +448,9 @@ sk_sp<SkShader> SkGradientShader::MakeTwoPointConical(const SkPoint& start,
     }
     EXPAND_1_COLOR(colorCount);
 
-    SkGradientShaderBase::ColorStopOptimizer opt(colors, pos, colorCount, mode);
+    SkGradientBaseShader::ColorStopOptimizer opt(colors, pos, colorCount, mode);
 
-    SkGradientShaderBase::Descriptor desc(opt.fColors, std::move(colorSpace), opt.fPos,
+    SkGradientBaseShader::Descriptor desc(opt.fColors, std::move(colorSpace), opt.fPos,
                                           opt.fCount, mode, interpolation);
     return SkTwoPointConicalGradient::Create(start, startRadius, end, endRadius, desc, localMatrix);
 }
