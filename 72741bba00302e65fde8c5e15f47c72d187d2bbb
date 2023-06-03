@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbd7a145_3dea7e99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-03T06:34:14Z",
+      "side": 1,
+      "message": "I was split between this vs generalizing AtlasManager to manage PathAtlas variants alongside DrawAtlases. I went with adding a new higher-level grouping and leaving AtlasManager as text-specific (it\u0027s currently defined under src/gpu/graphite/text/). I\u0027m happy to explore this or alternatives instead if you prefer.",
+      "revId": "72741bba00302e65fde8c5e15f47c72d187d2bbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
