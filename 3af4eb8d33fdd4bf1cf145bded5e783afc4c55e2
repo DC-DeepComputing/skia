@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0bdf3ef_d44dcde8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-03T17:52:51Z",
+      "side": 1,
+      "message": "Great that the SPIR-V-like approach for handling LValue is working out nicely. LGTM % one comment about dead code.",
+      "revId": "3af4eb8d33fdd4bf1cf145bded5e783afc4c55e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75c10a2d_1bb573fc",
+        "filename": "gn/compile_sksl_tests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-03T17:52:51Z",
+      "side": 1,
+      "message": "Did you intend to leave this in as commented out?",
+      "revId": "3af4eb8d33fdd4bf1cf145bded5e783afc4c55e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
