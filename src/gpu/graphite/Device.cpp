@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/ImageUtils.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PathAtlas.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/RendererProvider.h"
@@ -182,6 +183,23 @@ bool is_simple_shape(const Shape& shape, SkStrokeRec::Style type) {
              (shape.isLine() && type != SkStrokeRec::kFill_Style) ||
              (shape.isRRect() && (type != SkStrokeRec::kStroke_Style ||
                                   SkRRectPriv::AllCornersCircular(shape.rrect()))));
+}
+
+Rect device_bounds_for_shape(const Shape& shape,
+                             const Transform& localToDevice,
+                             const SkStrokeRec& style) {
+    // TODO(b/273924867): Outset bounds here to account for analytic AA?
+    Rect bounds = shape.bounds();
+    if (!style.isHairlineStyle()) {
+        bounds.outset(style.getInflationRadius());
+    }
+    bounds = localToDevice.mapRect(bounds);
+    // Hairlines get an extra pixel *after* transforming to device space
+    if (style.isHairlineStyle()) {
+        bounds.outset(0.5f);
+    }
+    // TODO(b/273924867): Add outset to bounds here to account for analytic AA?
+    return bounds;
 }
 
 } // anonymous namespace
@@ -925,8 +943,9 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
 
-    // TODO: The tessellating path renderers haven't implemented perspective yet, so transform to
-    // device space so we draw something approximately correct (barring local coord issues).
+    // TODO: The tessellating and atlas path renderers haven't implemented perspective yet, so
+    // transform to device space so we draw something approximately correct (barring local coord
+    // issues).
     if (geometry.isShape() && localToDevice.type() == Transform::Type::kProjection &&
         !is_simple_shape(geometry.shape(), style.getStyle())) {
         SkPath devicePath = geometry.shape().asPath();
@@ -946,11 +965,26 @@ void Device::drawGeometry(const Transform& localToDevice,
     SkASSERT(!SkToBool(paint.getPathEffect()) || (flags & DrawFlags::kIgnorePathEffect));
     SkASSERT(!SkToBool(paint.getMaskFilter()) || (flags & DrawFlags::kIgnoreMaskFilter));
 
-    const Renderer* renderer =
+    auto [renderer, pathAtlas] =
             this->chooseRenderer(localToDevice, geometry, style, /*requireMSAA=*/false);
     if (!renderer) {
         SKGPU_LOG_W("Skipping draw with no supported renderer.");
         return;
+    }
+
+    // For atlas draws, track atlas allocation in case we need to flush pending draws to free up
+    // atlas space.
+    std::optional<Rect> deviceSpaceMaskBounds;  // The cover bounds of the rectangle to draw
+    bool atlasIsFull = false;
+    if (pathAtlas != nullptr) {
+        // If the atlas path renderer was chosen, we need to determine the correct cover bounds by
+        // taking stroke style into account.
+        // TODO(b/283876923): For an inverse fill the bounds of the shape for the atlas and the
+        // bounds of the mask are not the same. AtlasShape will be changed to store the correct draw
+        // bounds to handle that case.
+        deviceSpaceMaskBounds = device_bounds_for_shape(geometry.shape(), localToDevice, style);
+        skvx::float2 size = deviceSpaceMaskBounds->size();
+        atlasIsFull = !pathAtlas->findRegion(size.x(), size.y());
     }
 
     // Figure out what dst color requirements we have, if any.
@@ -964,8 +998,10 @@ void Device::drawGeometry(const Transform& localToDevice,
     // Decide if we have any reason to flush pending work. We only want to flush once, before
     // calculating clipping, since otherwise clip operations for the current draw will be flushed.
     SkStrokeRec::Style styleType = style.getStyle();
-    const int numNewDraws = style.getStyle() == SkStrokeRec::kStrokeAndFill_Style ? 2 : 1;
-    if (this->needsFlushBeforeDraw(numNewDraws, dstReadReq)) {
+    // When using a tessellating path renderer a stroke-and-fill is rendered using two draws. When
+    // drawing from an atlas we issue a single draw as the atlas mask covers both styles.
+    const int numNewDraws = !pathAtlas && (styleType == SkStrokeRec::kStrokeAndFill_Style) ? 2 : 1;
+    if (atlasIsFull || this->needsFlushBeforeDraw(numNewDraws, dstReadReq)) {
         this->flushPendingWorkToRecorder();
     }
 
@@ -1025,20 +1061,57 @@ void Device::drawGeometry(const Transform& localToDevice,
         order.dependsOnStencil(setIndex);
     }
 
-    if (styleType == SkStrokeRec::kStroke_Style ||
-        styleType == SkStrokeRec::kHairline_Style ||
-        styleType == SkStrokeRec::kStrokeAndFill_Style) {
-        // For stroke-and-fill, 'renderer' is used for the fill and we always use the
-        // TessellatedStrokes renderer; for stroke and hairline, 'renderer' is used.
-        StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
-        fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style
-                               ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
-                               : renderer,
-                        localToDevice, geometry, clip, order, &shading, &stroke);
-    }
-    if (styleType == SkStrokeRec::kFill_Style ||
-        styleType == SkStrokeRec::kStrokeAndFill_Style) {
-        fDC->recordDraw(renderer, localToDevice, geometry, clip, order, &shading, nullptr);
+    // If the atlas path renderer was chosen, then schedule the shape to be rendered into the atlas
+    // and record a single AtlashShape draw.
+    if (pathAtlas != nullptr) {
+        SkASSERT(deviceSpaceMaskBounds.has_value());
+
+        if (atlasIsFull) {
+            // The atlas was full before but a flush should have cleared up space. Search for a new
+            // slot for the mask.
+            skvx::float2 size = deviceSpaceMaskBounds->size();
+            if (!pathAtlas->findRegion(size.x(), size.y())) {
+                SKGPU_LOG_E("Shape is too large for path atlas!");
+                // TODO: this can happen if the atlas is not large enough. We may want to grow the
+                // atlas or fall back to a non-atlas method.
+                return;
+            }
+        }
+
+        // Schedule the shape to be rendered into the atlas slot we found earlier.
+        // TODO(b/283876964): Here we should pass clip.drawBounds() to addShape so that the atlas
+        // doesn't needlessly contain invisible portions of the mask.
+        Rect atlasBounds;
+        if (!pathAtlas->addShape(recorder(),
+                                 deviceSpaceMaskBounds->x(),
+                                 deviceSpaceMaskBounds->y(),
+                                 geometry.shape(),
+                                 localToDevice,
+                                 style,
+                                 &atlasBounds)) {
+            SKGPU_LOG_E("Failed to prepare atlas entry for draw");
+            return;
+        }
+        // Record the draw as a fill since stroking is handled by the atlas render.
+        Geometry atlasShape(
+                AtlasShape(geometry.shape(), *deviceSpaceMaskBounds, atlasBounds, pathAtlas));
+        fDC->recordDraw(renderer, localToDevice, atlasShape, clip, order, &shading, nullptr);
+    } else {
+        if (styleType == SkStrokeRec::kStroke_Style ||
+            styleType == SkStrokeRec::kHairline_Style ||
+            styleType == SkStrokeRec::kStrokeAndFill_Style) {
+            // For stroke-and-fill, 'renderer' is used for the fill and we always use the
+            // TessellatedStrokes renderer; for stroke and hairline, 'renderer' is used.
+            StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
+            fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style
+                                   ? fRecorder->priv().rendererProvider()->tessellatedStrokes()
+                                   : renderer,
+                            localToDevice, geometry, clip, order, &shading, &stroke);
+        }
+        if (styleType == SkStrokeRec::kFill_Style ||
+            styleType == SkStrokeRec::kStrokeAndFill_Style) {
+            fDC->recordDraw(renderer, localToDevice, geometry, clip, order, &shading, nullptr);
+        }
     }
 
     // TODO: If 'fullyOpaque' is true, it might be useful to store the draw bounds and Z in a
@@ -1065,10 +1138,10 @@ void Device::drawClipShape(const Transform& localToDevice,
     // A clip draw's state is almost fully defined by the ClipStack. The only thing we need
     // to account for is selecting a Renderer and tracking the stencil buffer usage.
     Geometry geometry{shape};
-    const Renderer* renderer = this->chooseRenderer(localToDevice,
-                                                    geometry,
-                                                    DefaultFillStyle(),
-                                                    /*requireMSAA=*/true);
+    auto [renderer, pathAtlas] = this->chooseRenderer(localToDevice,
+                                                      geometry,
+                                                      DefaultFillStyle(),
+                                                      /*requireMSAA=*/true);
     if (!renderer) {
         SKGPU_LOG_W("Skipping clip with no supported path renderer.");
         return;
@@ -1077,6 +1150,21 @@ void Device::drawClipShape(const Transform& localToDevice,
                                                                  clip.drawBounds());
         order.dependsOnStencil(setIndex);
     }
+
+    // TODO(b/283876964): Support assigning clips to the compute renderer.
+    //
+    // When rendering coverage masks the GPU compute atlas renderer can apply anti-aliased
+    // clipping without using the depth buffer or hardware MSAA. In cases where the visible
+    // geometry is purely rendered in compute we could avoid recording a depth-only draw and
+    // instead pass the clip shape into the vello encoder as the depth samples would effectively
+    // undo the analytic AA. Conversely, if a clip draw has to be recorded (e.g. because some shapes
+    // are being drawn using a tessellating path renderer) then there's no need to record the clip
+    // in the atlas.
+    if (pathAtlas != nullptr) {
+        SKGPU_LOG_W("Clip draws with a path atlas not yet supported.");
+        return;
+    }
+
     // Anti-aliased clipping requires the renderer to use MSAA to modify the depth per sample, so
     // analytic coverage renderers cannot be used.
     SkASSERT(!renderer->emitsCoverage() && renderer->requiresMSAA());
@@ -1100,32 +1188,46 @@ void Device::drawClipShape(const Transform& localToDevice,
 
 // TODO: Currently all Renderers are always defined, but with config options and caps that may not
 // be the case, in which case chooseRenderer() will have to go through compatible choices.
-const Renderer* Device::chooseRenderer(const Transform& localToDevice,
-                                       const Geometry& geometry,
-                                       const SkStrokeRec& style,
-                                       bool requireMSAA) const {
+std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& localToDevice,
+                                                              const Geometry& geometry,
+                                                              const SkStrokeRec& style,
+                                                              bool requireMSAA) const {
     const RendererProvider* renderers = fRecorder->priv().rendererProvider();
     SkStrokeRec::Style type = style.getStyle();
 
     if (geometry.isSubRun()) {
         SkASSERT(!requireMSAA);
-        return geometry.subRunData().subRun()->renderer(renderers);
+        return {geometry.subRunData().subRun()->renderer(renderers), nullptr};
     } else if (geometry.isVertices()) {
         SkVerticesPriv info(geometry.vertices()->priv());
-        return renderers->vertices(info.mode(), info.hasColors(), info.hasTexCoords());
+        return {renderers->vertices(info.mode(), info.hasColors(), info.hasTexCoords()), nullptr};
     } else if (geometry.isEdgeAAQuad()) {
         SkASSERT(!requireMSAA && style.isFillStyle());
-        return renderers->analyticRRect(); // handled by the same system as rects and round rects
+        // handled by the same system as rects and round rects
+        return {renderers->analyticRRect(), nullptr};
     } else if (!geometry.isShape()) {
         // We must account for new Geometry types with specific Renderers
-        return nullptr;
+        return {nullptr, nullptr};
     }
 
     const Shape& shape = geometry.shape();
     // We can't use this renderer if we require MSAA for an effect (i.e. clipping or stroke+fill).
     if (!requireMSAA && is_simple_shape(shape, type)) {
-        return renderers->analyticRRect();
+        return {renderers->analyticRRect(), nullptr};
     }
+
+#ifdef SK_ENABLE_VELLO_SHADERS
+    // Prefer the compute atlas if it is supported. This currently implicitly filters out clip draws
+    // as they require MSAA. Eventually we may want to route clip shapes to the atlas as well but
+    // not if hardware MSAA is required.
+    // TODO: There may be reasons to prefer tessellation, e.g. if the shape is large and hardware
+    // MSAA looks acceptable.
+    if (!requireMSAA && fRecorder->priv().atlasProvider()->computePathAtlas()) {
+        // TODO: vello can't do correct strokes yet. Maybe this shouldn't get selected for stroke
+        // renders until all stroke styles are supported?
+        return {renderers->atlasShape(), fRecorder->priv().atlasProvider()->computePathAtlas()};
+    }
+#endif
 
     // If we got here, it requires tessellated path rendering or an MSAA technique applied to a
     // simple shape (so we interpret them as paths to reduce the number of pipelines we need).
@@ -1144,7 +1246,7 @@ const Renderer* Device::chooseRenderer(const Transform& localToDevice,
         // stenciling first with the HW stroke tessellator and then covering their bounds, but
         // inverse-filled strokes are not well-specified in our public canvas behavior so we may be
         // able to remove it.
-        return renderers->tessellatedStrokes();
+        return {renderers->tessellatedStrokes(), nullptr};
     }
 
     // 'type' could be kStrokeAndFill, but in that case chooseRenderer() is meant to return the
@@ -1152,7 +1254,7 @@ const Renderer* Device::chooseRenderer(const Transform& localToDevice,
     if (shape.convex() && !shape.inverted()) {
         // TODO: Ganesh doesn't have a curve+middle-out triangles option for convex paths, but it
         // would be pretty trivial to spin up.
-        return renderers->convexTessellatedWedges();
+        return {renderers->convexTessellatedWedges(), nullptr};
     } else {
         Rect drawBounds = localToDevice.mapRect(shape.bounds());
         drawBounds.intersect(fClip.conservativeBounds());
@@ -1168,9 +1270,9 @@ const Renderer* Device::chooseRenderer(const Transform& localToDevice,
                 drawBounds.area() <= (256 * 256);
 
         if (preferWedges) {
-            return renderers->stencilTessellatedWedges(shape.fillType());
+            return {renderers->stencilTessellatedWedges(shape.fillType()), nullptr};
         } else {
-            return renderers->stencilTessellatedCurvesAndTris(shape.fillType());
+            return {renderers->stencilTessellatedCurvesAndTris(shape.fillType()), nullptr};
         }
     }
 }
@@ -1191,6 +1293,9 @@ void Device::flushPendingWorkToRecorder() {
     if (uploadTask) {
         fRecorder->priv().add(std::move(uploadTask));
     }
+
+    // Process atlas renders that use compute passes before snapping a compute task.
+    fDC->recordPathAtlasDispatches(fRecorder);
 
     fClip.recordDeferredClipDraws();
 
