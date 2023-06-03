@@ -29,6 +29,8 @@ PathAtlas::~PathAtlas() = default;
 
 bool PathAtlas::findRegion(float maskWidth, float maskHeight) {
     // Add a 1 pixel-wide border around the shape bounds when allocating the atlas slot.
+    // TODO(b/273924867) Should this outset get applied in drawGeometry as is planned for
+    // applyClipToDraw?
     return fRectanizer.findRect(maskWidth + 2, maskHeight + 2);
 }
 
