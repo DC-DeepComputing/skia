@@ -12,6 +12,7 @@
 #include "src/base/SkAutoMalloc.h"
 #include "src/codec/SkMasks.h"
 #include "src/core/SkDistanceFieldGen.h"
+#include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/DrawAtlas.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
@@ -303,7 +304,7 @@ std::tuple<bool, int> GlyphVector::regenerateAtlas(int begin, int end,
                                                    skgpu::MaskFormat maskFormat,
                                                    int srcPadding,
                                                    skgpu::graphite::Recorder* recorder) {
-    auto atlasManager = recorder->priv().atlasManager();
+    auto atlasManager = recorder->priv().atlasProvider()->textAtlasManager();
     auto tokenTracker = recorder->priv().tokenTracker();
 
     // TODO: this is not a great place for this -- need a better way to init atlases when needed
