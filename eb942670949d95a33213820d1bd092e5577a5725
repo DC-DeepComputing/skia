@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e11a4235_22d24996",
+        "filename": "src/gpu/RectanizerSkyline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-05T15:43:23Z",
+      "side": 1,
+      "message": "wdyt about:\n\n    SkIRect result;\n    if (!this-\u003efindRect(width, height) || !this-\u003einsertFoundRect(\u0026result)) {\n        loc-\u003efX \u003d 0;\n        loc-\u003efY \u003d 0;\n        return false;\n    }",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 5
+      },
+      "revId": "eb942670949d95a33213820d1bd092e5577a5725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d19770f_6a0dac09",
+        "filename": "src/gpu/RectanizerSkyline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-05T15:43:23Z",
+      "side": 1,
+      "message": "assert `!fLastFound.hasValue()`?",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 5
+      },
+      "revId": "eb942670949d95a33213820d1bd092e5577a5725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f5ca10a_a27d3514",
+        "filename": "src/gpu/RectanizerSkyline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-05T15:43:23Z",
+      "side": 1,
+      "message": "assert as well?",
+      "range": {
+        "startLine": 69,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 5
+      },
+      "revId": "eb942670949d95a33213820d1bd092e5577a5725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

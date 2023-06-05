@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cb597cc_16af35aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-05T15:43:23Z",
+      "side": 1,
+      "message": "This seems like the right balance to me as well. I proposed asserting that findRect9) and insertFoundRect() are called in the expected pattern (given the docs say they *must* be called a certain way).\n\nDown the line, I could also see having a `discardQuery` or similar to reset `fLastFound` in the event you did the query but don\u0027t actually want to insert with a follow-up `findRect`. Right now we don\u0027t need that though.",
+      "parentUuid": "59f5e8dd_c4e8c691",
+      "revId": "b306f2911c6ad5d81a5c433d6288bf371e5461bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aca7b8df_f35e88ef",
