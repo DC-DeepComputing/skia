@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d54733c2_87716f83",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-05T20:46:01Z",
+      "side": 1,
+      "message": "Seems like this could be defined in the header.",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 52
+      },
+      "revId": "aab687055f254ea6c6b6b0d454038aeeb2e03610",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
