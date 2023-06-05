@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "759d4a62_771c3be6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-05T13:23:54Z",
+      "side": 1,
+      "message": "I presume it\u0027s intentional to have one of the bugs locked down so I cannot view it?",
+      "revId": "8880aa06a54cdc2493dc503f154c80bdf8809499",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
