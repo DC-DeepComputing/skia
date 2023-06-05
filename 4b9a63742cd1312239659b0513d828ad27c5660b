@@ -46,6 +46,30 @@
       },
       "revId": "4b9a63742cd1312239659b0513d828ad27c5660b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2993a24_45f2e33f",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-05T19:29:45Z",
+      "side": 1,
+      "message": "b/285189802 hopefully captures some of the next steps",
+      "parentUuid": "7a7d4178_dc07fba6",
+      "range": {
+        "startLine": 275,
+        "startChar": 50,
+        "endLine": 277,
+        "endChar": 23
+      },
+      "revId": "4b9a63742cd1312239659b0513d828ad27c5660b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
