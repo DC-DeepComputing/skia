@@ -417,6 +417,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c342cfaf_31e16f6b",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-05T13:03:25Z",
+      "side": 1,
+      "message": "No problem. I\u0027ve moved back the code to SkJpegXmp.cpp, and added some more tests.\nBut as a resut SkXmp.cpp shows as a new file and makes it look like there is a lot of new code (which was actually moved from SkJpegXmp.cpp). Same for the tests even though most of them come from JpegGainmapTest.cpp",
+      "parentUuid": "43b4ad97_47c1a09f",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c79b628_288f287e",
