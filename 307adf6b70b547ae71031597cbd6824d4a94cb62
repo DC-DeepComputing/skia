@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86871d8c_e63bea99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-05T13:34:14Z",
+      "side": 1,
+      "message": "While this didn\u0027t address the issue for displacement map layout tests, it does address the issue I was seeing in viewer when zooming in on decal-tiled, renderpass-elided image filters, so I think it\u0027s still worth doing.",
+      "revId": "307adf6b70b547ae71031597cbd6824d4a94cb62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
