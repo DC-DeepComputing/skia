@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35a6da87_77faccf8",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1321,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-05T22:36:46Z",
+      "side": 0,
+      "message": "👍",
+      "parentUuid": "f4dfa0ed_7cf62b48",
+      "range": {
+        "startLine": 1321,
+        "startChar": 25,
+        "endLine": 1321,
+        "endChar": 72
+      },
+      "revId": "ee99efaae487ba1be035f66b31516f3ed8bb76ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aebbb14a_b5f6538f",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-05T22:12:37Z",
       "side": 0,
       "message": "We never added to this set anywhere.",
+      "range": {
+        "startLine": 303,
+        "startChar": 44,
+        "endLine": 303,
+        "endChar": 60
+      },
+      "revId": "ee99efaae487ba1be035f66b31516f3ed8bb76ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d070d10b_89bdbfbf",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-05T22:36:46Z",
+      "side": 0,
+      "message": "This was going to be used in the old approach but I don\u0027t think this is needed anymore.",
+      "parentUuid": "aebbb14a_b5f6538f",
       "range": {
         "startLine": 303,
         "startChar": 44,

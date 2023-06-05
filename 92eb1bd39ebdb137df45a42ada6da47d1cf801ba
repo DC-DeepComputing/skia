@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ccbaf87_5b07fdb7",
+        "filename": "tests/sksl/shared/OutParamsTricky.wgsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-05T22:36:46Z",
+      "side": 1,
+      "message": "Does it make sense to rename this test to `OutParamsSwizzle`? Is there anything \"tricky\" this is testing besides the swizzle? Either way IWBN for the name to be a bit more specific.",
+      "revId": "92eb1bd39ebdb137df45a42ada6da47d1cf801ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
