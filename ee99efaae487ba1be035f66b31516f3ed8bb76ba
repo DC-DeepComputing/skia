@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4dfa0ed_7cf62b48",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1321,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-05T22:12:37Z",
+      "side": 0,
+      "message": "It seems like we already add a `(*...)` when writing a variable reference that is an out-param.",
+      "range": {
+        "startLine": 1321,
+        "startChar": 25,
+        "endLine": 1321,
+        "endChar": 72
+      },
+      "revId": "ee99efaae487ba1be035f66b31516f3ed8bb76ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aebbb14a_b5f6538f",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-05T22:12:37Z",
+      "side": 0,
+      "message": "We never added to this set anywhere.",
+      "range": {
+        "startLine": 303,
+        "startChar": 44,
+        "endLine": 303,
+        "endChar": 60
+      },
+      "revId": "ee99efaae487ba1be035f66b31516f3ed8bb76ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
