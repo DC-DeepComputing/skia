@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3ff8687_10c9a775",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-05T17:24:40Z",
+      "side": 1,
+      "message": "^ replaced here",
+      "range": {
+        "startLine": 1642,
+        "startChar": 8,
+        "endLine": 1642,
+        "endChar": 12
+      },
+      "revId": "c7a508fb1d4156533b1138345785b1c70b44ba9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
