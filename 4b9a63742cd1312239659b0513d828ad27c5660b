@@ -22,6 +22,30 @@
       },
       "revId": "4b9a63742cd1312239659b0513d828ad27c5660b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a7d4178_dc07fba6",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-05T18:20:24Z",
+      "side": 1,
+      "message": "Correct, and we really should.\n\nThis seems tricky to accomplish across flushes in the current setup, since BufferManager relinquishes ownership of its buffer objects on flush. The VelloRenderer could potentially hold on to static buffers and reuse them across different renders but that requires a guarantee that any two successive recordings of these dispatches won\u0027t execute concurrently (so, if they share command buffer submissions then they must be synchronized with a barrier). Maybe this holds generally across flushes?",
+      "parentUuid": "dc99fb5c_ccc546c3",
+      "range": {
+        "startLine": 275,
+        "startChar": 50,
+        "endLine": 277,
+        "endChar": 23
+      },
+      "revId": "4b9a63742cd1312239659b0513d828ad27c5660b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
