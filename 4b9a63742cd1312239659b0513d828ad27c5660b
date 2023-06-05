@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc99fb5c_ccc546c3",
+        "filename": "src/gpu/graphite/compute/VelloRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-05T15:35:31Z",
+      "side": 1,
+      "message": "We also don\u0027t share them between render passes, right?",
+      "range": {
+        "startLine": 275,
+        "startChar": 50,
+        "endLine": 277,
+        "endChar": 23
+      },
+      "revId": "4b9a63742cd1312239659b0513d828ad27c5660b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
