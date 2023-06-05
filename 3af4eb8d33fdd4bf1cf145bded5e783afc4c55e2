@@ -33,6 +33,24 @@
       "message": "Did you intend to leave this in as commented out?",
       "revId": "3af4eb8d33fdd4bf1cf145bded5e783afc4c55e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "391448d2_bd10bc97",
+        "filename": "gn/compile_sksl_tests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-05T12:05:02Z",
+      "side": 1,
+      "message": "Yeah... I end up adding this print every few weeks, so I figured I\u0027d just keep it around. :)",
+      "parentUuid": "75c10a2d_1bb573fc",
+      "revId": "3af4eb8d33fdd4bf1cf145bded5e783afc4c55e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
