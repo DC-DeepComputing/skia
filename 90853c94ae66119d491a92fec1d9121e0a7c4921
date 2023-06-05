@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecf4e878_84a95b6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-06-05T15:58:54Z",
+      "side": 1,
+      "message": "Added a few suggestions to simplify some code. Otherwise, LGTM!",
+      "revId": "90853c94ae66119d491a92fec1d9121e0a7c4921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f24ddba_64bac29e",
