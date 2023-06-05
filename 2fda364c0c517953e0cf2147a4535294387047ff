@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d43f5b90_3fd836df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-05T13:32:18Z",
+      "side": 1,
+      "message": "Hmm, the decal shader fix and switching to NN didn\u0027t address the missing row/column of pixels in some of the layout tests, so I think there\u0027s a bug in the sizing logic. Will pick this back up in a bit.",
+      "revId": "2fda364c0c517953e0cf2147a4535294387047ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
