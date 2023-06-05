@@ -17,6 +17,10 @@
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkSamplingPriv.h"
 
+#if GR_TEST_UTILS
+int gNumTilesDrawn = 0;
+#endif
+
 //////////////////////////////////////////////////////////////////////////////
 //  Helper functions for tiling a large SkBitmap
 
@@ -124,6 +128,8 @@ bool ShouldTileImage(SkIRect conservativeClipBounds,
                      size_t cacheSize,
                      int* tileSize,
                      SkIRect* clippedSubset) {
+
+
     // if it's larger than the max tile size, then we have no choice but tiling.
     if (imageSize.width() > maxTileSize || imageSize.height() > maxTileSize) {
         *clippedSubset = determine_clipped_src_rect(conservativeClipBounds, ctm,
@@ -188,6 +194,10 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
     int nx = bitmap.width() / tileSize;
     int ny = bitmap.height() / tileSize;
 
+#if GR_TEST_UTILS
+    gNumTilesDrawn = 0;
+#endif
+
     for (int x = 0; x <= nx; x++) {
         for (int y = 0; y <= ny; y++) {
             SkRect tileR;
@@ -225,11 +235,13 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                 clamped_outset_with_offset(&iTileR, outset, &offset, iClampRect);
             }
 
-            // We must subset as a bitmap and then turn into an SkImage if we want caching to work.
-            // Image subsets always make a copy of the pixels and lose the association with the
-            // original's SkPixelRef.
+            // We must subset as a bitmap and then turn it into an SkImage if we want caching to
+            // work. Image subsets always make a copy of the pixels and lose the association with
+            // the original's SkPixelRef.
             if (SkBitmap subsetBmp; bitmap.extractSubset(&subsetBmp, iTileR)) {
-                auto image = SkMakeImageFromRasterBitmap(subsetBmp, kNever_SkCopyPixelsMode);
+                sk_sp<SkImage> image = SkMakeImageFromRasterBitmap(subsetBmp,
+                                                                   kNever_SkCopyPixelsMode);
+//                image = TextureFromImage(dContext, std::move(image), ??, ??);
 
                 unsigned aaFlags = SkCanvas::kNone_QuadAAFlags;
                 // Preserve the original edge AA flags for the exterior tile edges.
@@ -265,6 +277,10 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                           constraint,
                           sampling,
                           tileMode);
+
+#if GR_TEST_UTILS
+                ++gNumTilesDrawn;
+#endif
             }
         }
     }
