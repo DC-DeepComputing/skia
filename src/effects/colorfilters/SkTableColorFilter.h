@@ -8,6 +8,7 @@
 #define SkTableColorFilter_DEFINED
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkColorTable.h"
 #include "include/core/SkFlattenable.h"
 #include "include/private/base/SkDebug.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
@@ -37,10 +38,9 @@ class PipelineDataGatherer;
 
 class SkTableColorFilter final : public SkColorFilterBase {
 public:
-    SkTableColorFilter(const uint8_t tableA[],
-                       const uint8_t tableR[],
-                       const uint8_t tableG[],
-                       const uint8_t tableB[]);
+    SkTableColorFilter(sk_sp<SkColorTable> table) : fTable(table) {
+        SkASSERT(fTable);
+    }
 
     SkColorFilterBase::Type type() const override { return SkColorFilterBase::Type::kTable; }
 
@@ -62,13 +62,13 @@ public:
 
     void flatten(SkWriteBuffer& buffer) const override;
 
-    SkBitmap bitmap() const { return fBitmap; }
+    const SkBitmap& bitmap() const { return fTable->bitmap(); }
 
 private:
     friend void ::SkRegisterTableColorFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkTableColorFilter)
 
-    SkBitmap fBitmap;
+    sk_sp<SkColorTable> fTable;
 };
 
 #endif
