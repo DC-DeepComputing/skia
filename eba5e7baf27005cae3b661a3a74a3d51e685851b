@@ -401,6 +401,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "43b4ad97_47c1a09f",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-06-05T12:32:16Z",
+      "side": 1,
+      "message": "Sorry for the whiplash.\n\nI\u0027m planning to move all of the code to pull out the standard and extended XMP into `SkJpegMetadataDecoder` soon, but it will require some unrelated refactoring (in particular, the `SkJpegMetadataDecoder` will have the GUID as an output parameter rather than an input parameter).\n\nSo I\u0027m fine with this being wherever is most convenient and has the fewest diffs for this patch.",
+      "parentUuid": "28631996_b874d31d",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c79b628_288f287e",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 5
