@@ -25,6 +25,9 @@
 #include "tools/ToolUtils.h"
 #include "tools/timer/TimeUtils.h"
 
+#include "src/core/SkMatrixPriv.h"
+#include "src/effects/imagefilters/SkCropImageFilter.h"
+
 #include <utility>
 
 #define WIDTH 500
@@ -110,14 +113,18 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        this->drawRow(canvas, 16.f); // fish eye distortion
+        this->drawRow(canvas, 16.f, 0.f); // fish eye distortion
         canvas->translate(0.f, 256.f);
-        this->drawRow(canvas, 0.f);  // no distortion, just zoom
+        this->drawRow(canvas, 1.f, 0.f);  // no distortion, just zoom
+        canvas->translate(0.f, 256.f);
+        this->drawRow(canvas, 16.f, -30.f);
+        canvas->translate(0.f, 256.f);
+        this->drawRow(canvas, 1.f, -30.f);
     }
 
 private:
 
-    void drawRow(SkCanvas* canvas, float inset) {
+    void drawRow(SkCanvas* canvas, float inset, float yOffset) {
         // Draw the magnifier two ways: backdrop filtered and then through a saveLayer with a
         // regular filter. Lastly draw the un-filtered input. Relevant bounds are displayed on
         // top of the rendering:
@@ -144,52 +151,86 @@ private:
         // linearly scaled region is termed the 'srcRect' and is adjusted
         // dynamically if parts of 'widgetBounds' are offscreen.
         SkRect widgetBounds = {16.f, 24.f, 220.f, 248.f};
-        widgetBounds.offset(fX, fY); // animating helps highlight magnifier behavior
+        widgetBounds.offset(fX, fY + yOffset); // animating helps highlight magnifier behavior
 
         constexpr float kZoomAmount = 2.5f;
 
         // The available content for backdrops, which clips the widgetBounds as it animates.
         constexpr SkRect kOutBounds = {0.f, 0.f, 256.f, 256.f};
 
+        auto canvasBounds = [&]() {
+            SkRect canvasBounds;
+            SkAssertResult(SkMatrixPriv::InverseMapRect(canvas->getTotalMatrix(), &canvasBounds,
+                SkRect::Make(canvas->imageInfo().bounds())));
+            if (!canvasBounds.intersect(kOutBounds)) {
+                canvasBounds = kOutBounds;
+            }
+            return canvasBounds;
+        };
+
         // The filter responds to any crop (explicit or from missing backdrop content). Compute
         // the corresponding clipped bounds and source bounds for visualization purposes.
-        SkPoint zoomCenter = widgetBounds.center();
-        SkRect clippedWidget = widgetBounds;
-        SkAssertResult(clippedWidget.intersect(kOutBounds));
-        zoomCenter = {SkTPin(zoomCenter.fX, clippedWidget.fLeft, clippedWidget.fRight),
-                      SkTPin(zoomCenter.fY, clippedWidget.fTop, clippedWidget.fBottom)};
-        zoomCenter = zoomCenter * (1.f - 1.f / kZoomAmount);
-        SkRect srcRect = {clippedWidget.fLeft   / kZoomAmount + zoomCenter.fX,
-                          clippedWidget.fTop    / kZoomAmount + zoomCenter.fY,
-                          clippedWidget.fRight  / kZoomAmount + zoomCenter.fX,
-                          clippedWidget.fBottom / kZoomAmount + zoomCenter.fY};
+        auto zoomUpdate = [&]() {
+            SkPoint zoomCenter = widgetBounds.center();
+            SkRect clippedWidget = widgetBounds;
+            // if (inset > 0.f) {
+            if (!clippedWidget.intersect(canvasBounds())) {
+                return std::make_pair(SkRect::MakeEmpty(), SkRect::MakeEmpty());
+            }
+            // }
+            zoomCenter = {SkTPin(zoomCenter.fX, clippedWidget.fLeft, clippedWidget.fRight),
+                        SkTPin(zoomCenter.fY, clippedWidget.fTop, clippedWidget.fBottom)};
+            zoomCenter = zoomCenter * (1.f - 1.f / kZoomAmount);
+            SkRect srcRect = {clippedWidget.fLeft   / kZoomAmount + zoomCenter.fX,
+                            clippedWidget.fTop    / kZoomAmount + zoomCenter.fY,
+                            clippedWidget.fRight  / kZoomAmount + zoomCenter.fX,
+                            clippedWidget.fBottom / kZoomAmount + zoomCenter.fY};
+            return std::make_pair(clippedWidget, srcRect);
+        };
+
+
+        auto croppedMagnifier = [&](sk_sp<SkImageFilter> in) {
+            sk_sp<SkImageFilter> contentCrop = SkMakeCropImageFilter(canvasBounds(), nullptr);
+            return SkImageFilters::Compose(in, contentCrop);
+        };
+
+
+
+        sk_sp<SkImageFilter> input = SkImageFilters::Offset(0.f, yOffset, nullptr);
 
         // Internally, the magnifier filter performs equivalent calculations but responds to the
         // canvas matrix and available input automatically.
         sk_sp<SkImageFilter> magnifier =
                 SkImageFilters::Magnifier(widgetBounds, kZoomAmount, inset,
-                                          SkFilterMode::kLinear, nullptr, kOutBounds);
+                                          SkFilterMode::kLinear, std::move(input));
 
         // Draw once as a backdrop filter
-        canvas->save();
+        canvas->save(); {
             canvas->clipRect(kOutBounds);
+
+            auto [clippedWidget, srcRect] = zoomUpdate();
+
             draw_content(canvas, 32.f, 350);
-            canvas->saveLayer({nullptr, nullptr, magnifier.get(), 0});
+            auto m = croppedMagnifier(magnifier);
+            canvas->saveLayer({nullptr, nullptr, m.get(), 0});
             canvas->restore();
 
             drawBorder(widgetBounds, SK_ColorBLACK, 2.f);
             if (inset > 0.f) {
                 drawBorder(clippedWidget, SK_ColorRED, 2.f, inset);
             }
-        canvas->restore();
+            // drawBorder(canvasBounds(), SK_ColorBLUE, 2.f, 4.f);
+        canvas->restore(); }
 
         // Draw once as a regular filter
-        canvas->save();
+        canvas->save(); {
             canvas->translate(256.f, 0.f);
             canvas->clipRect(kOutBounds);
 
+            auto [clippedWidget, srcRect] = zoomUpdate();
+
             SkPaint paint;
-            paint.setImageFilter(magnifier);
+            paint.setImageFilter(croppedMagnifier(magnifier));
             canvas->saveLayer(nullptr, &paint);
                 draw_content(canvas, 32.f, 350);
             canvas->restore();
@@ -198,17 +239,24 @@ private:
             if (inset > 0.f) {
                 drawBorder(clippedWidget, SK_ColorRED, 2.f, inset);
             }
-        canvas->restore();
+            // drawBorder(canvasBounds(), SK_ColorBLUE, 2.f, 4.f);
+        canvas->restore(); }
 
         // Draw once unfiltered
-        canvas->save();
+        canvas->save(); {
             canvas->translate(512.f, 0.f);
             canvas->clipRect(kOutBounds);
+
             draw_content(canvas, 32.f, 350);
 
+            drawBorder(widgetBounds, SK_ColorGRAY, 1.f);
+
+            widgetBounds.offset(0.f, -yOffset);
             drawBorder(widgetBounds, SK_ColorBLACK, 2.f);
-            drawBorder(srcRect, SK_ColorBLUE, 2.f, inset / kZoomAmount);
-        canvas->restore();
+            auto [clippedWidget, srcRect] = zoomUpdate();
+            drawBorder(srcRect.makeOffset(0.f, 0.F), SK_ColorBLUE, 2.f, inset / kZoomAmount);
+            // drawBorder(canvasBounds(), SK_ColorBLUE, 2.f, 4.f);
+        canvas->restore(); }
     }
 
 private:
