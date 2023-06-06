@@ -435,6 +435,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "818817af_c763299c",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-06T19:05:43Z",
+      "side": 1,
+      "message": "Friendly ping, I assume you want to take another look at the change? I have a +1 from Chris but he mentioned that he\u0027s not a real owner of the project and that I should get a +1 from the Skia team before submitting.\n\nIt seems like a lot of new changes but I\u0027m mostly just moving code around.The only real new code in the latest patchset is the SkJpegXmp_readExtendedXmp test (extended xmp wasn\u0027t being tested before it seems).\n\nI\u0027m wondering if there\u0027s some pushback on having SkXmp have SK_API and be in include/private or are we in agreement on this?\n\nThanks!",
+      "parentUuid": "c342cfaf_31e16f6b",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c79b628_288f287e",
