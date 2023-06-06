@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe5d502_03f1c0f7",
+        "filename": "src/gpu/graphite/BackendSemaphore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-06T19:57:49Z",
+      "side": 1,
+      "message": "So I copied this from BackendTexture, but upon looking at it more closely, it makes no sense. BackendTexture doesn\u0027t use this value either. GrBackendTexture will copy the data, but mark the end result as invalid. GrBackendSemaphore doesn\u0027t really have a notion of validity and will just copy the data directly but assert if it\u0027s already initialized but the backends differ.\n\nSo what I\u0027m thinking is that BackendTexture should be fixed so that it copies the data in this case but sets the valid bit in fInfo to false, and BackendSemaphore will use the same pattern.",
+      "range": {
+        "startLine": 25,
+        "startChar": 5,
+        "endLine": 27,
+        "endChar": 5
+      },
+      "revId": "c73cf2b29db4900234a58caa455ae974fb9ac071",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
