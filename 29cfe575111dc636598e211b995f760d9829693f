@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "857d47cf_6fb79474",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-06T22:31:56Z",
+      "side": 1,
+      "message": "That\u0027s unfortunate.",
+      "range": {
+        "startLine": 14,
+        "startChar": 23,
+        "endLine": 18,
+        "endChar": 9
+      },
+      "revId": "29cfe575111dc636598e211b995f760d9829693f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
