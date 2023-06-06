@@ -9,7 +9,7 @@ void draw(SkCanvas* canvas) {
             SkBlendMode::kDifference,
             SkGradientShader::MakeRadial(SkPoint::Make(128.0f, 128.0f), 180.0f, colors, nullptr, 2,
                                          SkTileMode::kClamp, 0, nullptr),
-            SkPerlinNoiseShader::MakeTurbulence(0.025f, 0.025f, 2, 0.0f, nullptr)));
+            SkShaders::MakeTurbulence(0.025f, 0.025f, 2, 0.0f, nullptr)));
     canvas->drawPaint(paint);
 }
 }  // END FIDDLE

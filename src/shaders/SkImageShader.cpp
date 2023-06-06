@@ -98,12 +98,11 @@ static SkTileMode optimize(SkTileMode tm, int dimension) {
 #endif
 }
 
-// TODO: currently this only *always* used in asFragmentProcessor(), which is excluded on no-gpu
-// builds. No-gpu builds only use needs_subset() in asserts, so release+no-gpu doesn't use it, which
-// can cause builds to fail if unused warnings are treated as errors.
-[[maybe_unused]] static bool needs_subset(SkImage* img, const SkRect& subset) {
+#if defined(SK_DEBUG)
+static bool needs_subset(SkImage* img, const SkRect& subset) {
     return subset != SkRect::Make(img->dimensions());
 }
+#endif
 
 SkImageShader::SkImageShader(sk_sp<SkImage> img,
                              const SkRect& subset,
@@ -367,48 +366,6 @@ sk_sp<SkShader> SkImageShader::MakeSubset(sk_sp<SkImage> image,
                                                            clampAsIfUnpremul);
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-#if defined(SK_GANESH)
-
-#include "src/gpu/ganesh/GrColorInfo.h"
-#include "src/gpu/ganesh/GrFPArgs.h"
-#include "src/gpu/ganesh/effects/GrBlendFragmentProcessor.h"
-#include "src/gpu/ganesh/image/GrImageUtils.h"
-
-std::unique_ptr<GrFragmentProcessor>
-SkImageShader::asFragmentProcessor(const GrFPArgs& args, const MatrixRec& mRec) const {
-    SkTileMode tileModes[2] = {fTileModeX, fTileModeY};
-    const SkRect* subset = needs_subset(fImage.get(), fSubset) ? &fSubset : nullptr;
-    auto fp = skgpu::ganesh::AsFragmentProcessor(
-            args.fContext, fImage, fSampling, tileModes, SkMatrix::I(), subset);
-    if (!fp) {
-        return nullptr;
-    }
-
-    bool success;
-    std::tie(success, fp) = mRec.apply(std::move(fp));
-    if (!success) {
-        return nullptr;
-    }
-
-    if (!fRaw) {
-        fp = GrColorSpaceXformEffect::Make(std::move(fp),
-                                           fImage->colorSpace(),
-                                           fImage->alphaType(),
-                                           args.fDstColorInfo->colorSpace(),
-                                           kPremul_SkAlphaType);
-
-        if (fImage->isAlphaOnly()) {
-            fp = GrBlendFragmentProcessor::Make<SkBlendMode::kDstIn>(std::move(fp), nullptr);
-        }
-    }
-
-    return fp;
-}
-
-#endif
-
 #if defined(SK_GRAPHITE)
 
 void SkImageShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
@@ -658,7 +615,7 @@ static SkSamplingOptions tweak_sampling(SkSamplingOptions sampling, const SkMatr
     return SkSamplingOptions(filter, sampling.mipmap);
 }
 
-bool SkImageShader::appendStages(const SkStageRec& rec, const MatrixRec& mRec) const {
+bool SkImageShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec& mRec) const {
     SkASSERT(!needs_subset(fImage.get(), fSubset));  // TODO(skbug.com/12784)
 
     // We only support certain sampling options in stages so far
@@ -943,7 +900,7 @@ skvm::Color SkImageShader::program(skvm::Builder* p,
                                    skvm::Coord device,
                                    skvm::Coord origLocal,
                                    skvm::Color paint,
-                                   const MatrixRec& mRec,
+                                   const SkShaders::MatrixRec& mRec,
                                    const SkColorInfo& dst,
                                    skvm::Uniforms* uniforms,
                                    SkArenaAlloc* alloc) const {

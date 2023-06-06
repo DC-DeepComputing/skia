@@ -33,7 +33,7 @@ static SkMatrix pts_to_unit_matrix(const SkPoint pts[2]) {
 ///////////////////////////////////////////////////////////////////////////////
 
 SkLinearGradient::SkLinearGradient(const SkPoint pts[2], const Descriptor& desc)
-    : SkGradientShaderBase(desc, pts_to_unit_matrix(pts))
+    : SkGradientBaseShader(desc, pts_to_unit_matrix(pts))
     , fStart(pts[0])
     , fEnd(pts[1]) {
 }
@@ -89,19 +89,6 @@ SkShaderBase::GradientType SkLinearGradient::asGradient(GradientInfo* info,
     return GradientType::kLinear;
 }
 
-/////////////////////////////////////////////////////////////////////
-
-#if defined(SK_GANESH)
-
-#include "src/gpu/ganesh/gradients/GrGradientShader.h"
-
-std::unique_ptr<GrFragmentProcessor> SkLinearGradient::asFragmentProcessor(
-        const GrFPArgs& args, const MatrixRec& mRec) const {
-    return GrGradientShader::MakeLinear(*this, args, mRec);
-}
-
-#endif
-
 #if defined(SK_GRAPHITE)
 void SkLinearGradient::addToKey(const skgpu::graphite::KeyContext& keyContext,
                                 skgpu::graphite::PaintParamsKeyBuilder* builder,
@@ -125,7 +112,7 @@ sk_sp<SkShader> SkGradientShader::MakeLinear(const SkPoint pts[2],
     if (!pts || !SkScalarIsFinite((pts[1] - pts[0]).length())) {
         return nullptr;
     }
-    if (!SkGradientShaderBase::ValidGradient(colors, colorCount, mode, interpolation)) {
+    if (!SkGradientBaseShader::ValidGradient(colors, colorCount, mode, interpolation)) {
         return nullptr;
     }
     if (1 == colorCount) {
@@ -136,18 +123,18 @@ sk_sp<SkShader> SkGradientShader::MakeLinear(const SkPoint pts[2],
     }
 
     if (SkScalarNearlyZero((pts[1] - pts[0]).length(),
-                           SkGradientShaderBase::kDegenerateThreshold)) {
+                           SkGradientBaseShader::kDegenerateThreshold)) {
         // Degenerate gradient, the only tricky complication is when in clamp mode, the limit of
         // the gradient approaches two half planes of solid color (first and last). However, they
         // are divided by the line perpendicular to the start and end point, which becomes undefined
         // once start and end are exactly the same, so just use the end color for a stable solution.
-        return SkGradientShaderBase::MakeDegenerateGradient(colors, pos, colorCount,
+        return SkGradientBaseShader::MakeDegenerateGradient(colors, pos, colorCount,
                                                             std::move(colorSpace), mode);
     }
 
-    SkGradientShaderBase::ColorStopOptimizer opt(colors, pos, colorCount, mode);
+    SkGradientBaseShader::ColorStopOptimizer opt(colors, pos, colorCount, mode);
 
-    SkGradientShaderBase::Descriptor desc(opt.fColors, std::move(colorSpace), opt.fPos,
+    SkGradientBaseShader::Descriptor desc(opt.fColors, std::move(colorSpace), opt.fPos,
                                           opt.fCount, mode, interpolation);
     return SkLocalMatrixShader::MakeWrapped<SkLinearGradient>(localMatrix, pts, desc);
 }

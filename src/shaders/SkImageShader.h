@@ -56,16 +56,21 @@ public:
 
     bool isOpaque() const override;
 
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
-                                                             const MatrixRec&) const override;
-#endif
+    ShaderType type() const override { return ShaderType::kImage; }
+
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
                   skgpu::graphite::PaintParamsKeyBuilder*,
                   skgpu::graphite::PipelineDataGatherer*) const override;
 #endif
     static SkM44 CubicResamplerMatrix(float B, float C);
+
+    SkTileMode tileModeX() const { return fTileModeX; }
+    SkTileMode tileModeY() const { return fTileModeY; }
+    sk_sp<SkImage> image() const { return fImage; }
+    SkSamplingOptions sampling() const { return fSampling; }
+    SkRect subset() const { return fSubset; }
+    bool isRaw() const { return fRaw; }
 
 private:
     SK_FLATTENABLE_HOOKS(SkImageShader)
@@ -76,14 +81,14 @@ private:
 #endif
     SkImage* onIsAImage(SkMatrix*, SkTileMode*) const override;
 
-    bool appendStages(const SkStageRec&, const MatrixRec&) const override;
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 
 #if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec&,
+                        const SkShaders::MatrixRec&,
                         const SkColorInfo& dst,
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc*) const override;

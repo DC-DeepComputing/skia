@@ -26,7 +26,7 @@ class SkRasterPipeline;
 class SkReadBuffer;
 class SkWriteBuffer;
 
-class SkGradientShaderBase : public SkShaderBase {
+class SkGradientBaseShader : public SkShaderBase {
 public:
     using Interpolation = SkGradientShader::Interpolation;
 
@@ -60,8 +60,11 @@ public:
         skia_private::STArray<16, SkScalar , true> fPositionStorage;
     };
 
-    SkGradientShaderBase(const Descriptor& desc, const SkMatrix& ptsToUnit);
-    ~SkGradientShaderBase() override;
+    SkGradientBaseShader(const Descriptor& desc, const SkMatrix& ptsToUnit);
+    ~SkGradientBaseShader() override;
+
+    ShaderType type() const final { return ShaderType::kGradientBase; }
+
 
     bool isOpaque() const override;
 
@@ -98,14 +101,14 @@ protected:
 
     bool onAsLuminanceColor(SkColor*) const override;
 
-    bool appendStages(const SkStageRec&, const MatrixRec&) const override;
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 
 #if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec&,
+                        const SkShaders::MatrixRec&,
                         const SkColorInfo& dstCS,
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc* alloc) const override;
@@ -174,14 +177,12 @@ private:
     skia_private::AutoSTMalloc<kInlineStorageSize, uint8_t> fStorage;
 
     bool                                        fColorsAreOpaque;
-
-    using INHERITED = SkShaderBase;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 
 struct SkColor4fXformer {
-    SkColor4fXformer(const SkGradientShaderBase* shader, SkColorSpace* dst);
+    SkColor4fXformer(const SkGradientBaseShader* shader, SkColorSpace* dst);
 
     skia_private::STArray<4, SkPMColor4f, true> fColors;
     sk_sp<SkColorSpace> fIntermediateColorSpace;
@@ -193,9 +194,9 @@ struct SkColorConverter {
     skia_private::STArray<2, SkColor4f, true> fColors4f;
 };
 
+void SkRegisterConicalGradientShaderFlattenable();
 void SkRegisterLinearGradientShaderFlattenable();
 void SkRegisterRadialGradientShaderFlattenable();
 void SkRegisterSweepGradientShaderFlattenable();
-void SkRegisterTwoPointConicalGradientShaderFlattenable();
 
 #endif

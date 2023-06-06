@@ -15,6 +15,7 @@
 class SkArenaAlloc;
 class SkBitmap;
 class SkPicture;
+class SkSurface;
 
 /*
  * An SkPictureShader can be used to draw SkPicture-based patterns.
@@ -27,10 +28,6 @@ public:
     static sk_sp<SkShader> Make(sk_sp<SkPicture>, SkTileMode, SkTileMode, SkFilterMode,
                                 const SkMatrix*, const SkRect*);
 
-#if defined(SK_GANESH)
-    std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&,
-                                                             const MatrixRec&) const override;
-#endif
 #if defined(SK_GRAPHITE)
     void addToKey(const skgpu::graphite::KeyContext&,
                   skgpu::graphite::PaintParamsKeyBuilder*,
@@ -39,16 +36,41 @@ public:
 
     SkPictureShader(sk_sp<SkPicture>, SkTileMode, SkTileMode, SkFilterMode, const SkRect*);
 
+    ShaderType type() const override { return ShaderType::kPicture; }
+
+    sk_sp<SkPicture> picture() const { return fPicture; }
+    SkRect tile() const { return fTile; }
+    SkTileMode tileModeX() const { return fTmx; }
+    SkTileMode tileModeY() const { return fTmy; }
+    SkFilterMode filter() const { return fFilter; }
+
+    struct CachedImageInfo {
+        bool success;
+        SkSize tileScale;      // Additional scale factors to apply when sampling image.
+        SkMatrix matrixForDraw;  // Matrix used to produce an image from the picture
+        SkImageInfo imageInfo;
+        SkSurfaceProps props;
+
+        static CachedImageInfo Make(const SkRect &bounds,
+                                    const SkMatrix &totalM,
+                                    SkColorType dstColorType,
+                                    SkColorSpace *dstColorSpace,
+                                    const int maxTextureSize,
+                                    const SkSurfaceProps &propsIn);
+
+        sk_sp<SkImage> makeImage(sk_sp<SkSurface> surf, const SkPicture* pict) const;
+    };
+
 protected:
     SkPictureShader(SkReadBuffer&);
     void flatten(SkWriteBuffer&) const override;
-    bool appendStages(const SkStageRec&, const MatrixRec&) const override;
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 #if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec&,
+                        const SkShaders::MatrixRec&,
                         const SkColorInfo& dst,
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc* alloc) const override;
@@ -69,8 +91,6 @@ private:
     SkRect              fTile;
     SkTileMode          fTmx, fTmy;
     SkFilterMode        fFilter;
-
-    using INHERITED = SkShaderBase;
 };
 
 #endif // SkPictureShader_DEFINED

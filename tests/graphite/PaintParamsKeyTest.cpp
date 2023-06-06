@@ -255,7 +255,6 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_gradient_shader(
                                                       colors, offsets, 2, tm);
             o = PrecompileShaders::TwoPointConicalGradient();
             break;
-        case SkShaderBase::GradientType::kNone:
         case SkShaderBase::GradientType::kColor:
             SkASSERT(0);
             break;
