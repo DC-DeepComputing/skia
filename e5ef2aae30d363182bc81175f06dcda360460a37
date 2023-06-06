@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "00f85190_f703e377",
+        "filename": "resources/sksl/shared/OutParamsDoubleSwizzle.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-06T18:00:57Z",
+      "side": 1,
+      "message": "`swizzle_lvalue` done",
+      "parentUuid": "efa2d21b_f16a9c3f",
+      "range": {
+        "startLine": 5,
+        "startChar": 6,
+        "endLine": 5,
+        "endChar": 12
+      },
+      "revId": "e5ef2aae30d363182bc81175f06dcda360460a37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "963b06c6_20edfedf",
         "filename": "resources/sksl/shared/OutParamsDoubleSwizzle.sksl",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-06T17:34:51Z",
       "side": 1,
       "message": "I think this swizzle optimizes away. I\u0027m guessing the interesting part of this test is the assignment to the swizzle so maybe this part is not that interesting and it\u0027s OK to leave as is (since the `in` argument is already a swizzle).",
+      "range": {
+        "startLine": 6,
+        "startChar": 21,
+        "endLine": 6,
+        "endChar": 23
+      },
+      "revId": "e5ef2aae30d363182bc81175f06dcda360460a37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1f63ef3_a7c5f39e",
+        "filename": "resources/sksl/shared/OutParamsDoubleSwizzle.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-06T18:00:57Z",
+      "side": 1,
+      "message": "Right. When this test was written, `myHalf2.xy` did not optimize away, so the identity swizzle was meaningful. Technically it\u0027s not really doing much now, but that\u0027s neither here nor there.",
+      "parentUuid": "963b06c6_20edfedf",
       "range": {
         "startLine": 6,
         "startChar": 21,
