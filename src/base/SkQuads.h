@@ -8,6 +8,8 @@
 #ifndef SkQuads_DEFINED
 #define SkQuads_DEFINED
 
+#include "include/private/base/SkSpan_impl.h"
+
 /**
  * Utilities for dealing with quadratic formulas with one variable:
  *   f(t) = A*t^2 + B*t + C
@@ -52,6 +54,9 @@ public:
      * The method used to calculate the roots is from
      *    "On the Cost of Floating-Point Computation Without Extra-Precise Arithmetic"
      * by W. Kahan.
+     *
+     * If the roots are imaginary then nan is returned.
+     * If the roots can't be represented as double then inf is returned.
      */
     static RootResult Roots(double A, double B, double C);
 
@@ -61,6 +66,20 @@ public:
      * in the provided array.
      */
     static int RootsReal(double A, double B, double C, double solution[2]);
+
+    /**
+     * Given
+     *    A0*t^2 -2*B0*t + C0 = 0 and A1*t^2 - 2*B1*t + C1 = 0,
+     *
+     * Find the t where A0*t^2 - 2*B0*t + C = 0, then return A1*t^2 + - 2*B1*t + C1 where t is on
+     * [0, 1].
+     *
+     * Returns a span with the intersections. Nan is returned for imaginary intersections, and inf
+     * is returned for intersections outside the range of double.
+     */
+    static SkSpan<double> Intersect(
+        double A0, double B0, double C0,
+        double A1, double B1, double C1, double toIntersect, double intersectionsStorage[2]);
 
     /**
      * Evaluates the quadratic function with the 3 provided coefficients and the
