@@ -148,3 +148,42 @@ DEF_TEST(FMA, reporter) {
     REPORTER_ASSERT(reporter, x == 0);
     REPORTER_ASSERT(reporter, y == -exp2(-62));
 }
+
+// If this test fails, then the function sk_double_to_float needs to be re-engineered.
+DEF_TEST(StaticCastDoubleToFloat, reporter) {
+    const double one = 1.0;
+    const double infinity = std::numeric_limits<double>::infinity();
+
+    // Because the exponent 1.0f is 0, then machine epsilon is 1 ulp.
+    const float floatUlp = std::numeric_limits<float>::epsilon();
+
+    // A double that is right in between float 1 and float 1 + ulp.
+    const double onePlusHalfUlp = one + floatUlp * 0.5;
+
+    // Conversion should use round to even rounding it down to float 1. It's rounding down
+    // because the binary form
+    // 0b0'11111111110'0000'0000000000'0000000000'1000000000'0000000000'0000000000
+    //                                          ---
+    // The last digit in the float portion of the double is a 0 followed by the half ulp.
+    REPORTER_ASSERT(reporter, 1.0f == static_cast<float>(onePlusHalfUlp));
+
+    // One more double ulp should round to 1 + 1 float ulp showing the break over point.
+    REPORTER_ASSERT(reporter, 1.0f + floatUlp ==
+            static_cast<float>(std::nexttoward(onePlusHalfUlp, infinity)));
+
+    // Create the number so that the round to even rounds up.
+    // 0b0'11111111110'0000'0000000000'0000000001'0000000000'0000000000'0000000000
+    const double onePlus1Ulp = one + floatUlp;
+
+    // Create an odd floating number to force the round up.
+    // 0b0'11111111110'0000'0000000000'0000000001'1000000000'0000000000'0000000000
+    const double onePlus1andAHalfUlp = onePlus1Ulp + floatUlp * 0.5;
+
+    // You can see this rounded up to 1 + 2Ulps instead of rounding down to 1 + 1Ulp.
+    REPORTER_ASSERT(reporter, 1.0f + 2.0f * floatUlp == static_cast<float>(onePlus1andAHalfUlp));
+
+    // Decrease the number by a double ulp, and it should round down demonstrating the break over
+    // point.
+    REPORTER_ASSERT(reporter, 1.0f + floatUlp ==
+        static_cast<float>(std::nexttoward(onePlus1andAHalfUlp, -infinity)));
+}
