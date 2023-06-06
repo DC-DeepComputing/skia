@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkPoint.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkFloatingPoint.h"
@@ -19,6 +20,7 @@
 #include <cstdint>
 #include <iterator>
 #include <string>
+
 
 static void testQuadRootsReal(skiatest::Reporter* reporter, std::string name,
                                double A, double B, double C,
@@ -265,3 +267,40 @@ DEF_TEST(QuadRoots_Fibonacci, reporter) {
     }
 }
 
+DEF_TEST(QuadRoots_Intersect, reporter) {
+    const SkPoint p0{-10, 10};
+    const SkPoint p1{0, -10};
+    const SkPoint p2{10, 10};
+
+    const SkPoint pA = p0 - p1*2 + p2;
+    const SkPoint pB = p0 - p1;
+    const SkPoint pC = p0;
+
+    double storage[2];
+    auto intersect = [&](double toIntersect) {
+        return SkQuads::Intersect(pA.fY, pB.fY, pC.fY, pA.fX, pB.fX, pC.fX, toIntersect, storage);
+    };
+
+    // Check extremes.
+    {
+        auto intersections = intersect(0);
+        REPORTER_ASSERT(reporter, intersections.size() == 2);
+        REPORTER_ASSERT(reporter, intersections[0] == 0 && intersections[1] == 0);
+    }
+    {
+        auto intersections = intersect(10);
+        REPORTER_ASSERT(reporter, intersections.size() == 2);
+        const double smaller = std::min(intersections[0], intersections[1]);
+        const double bigger = std::max(intersections[0], intersections[1]);
+        REPORTER_ASSERT(reporter, smaller == -10 && bigger == 10);
+    }
+
+    // Check in the middle.
+    for (int i = 1; i < 10; ++i) {
+        auto intersections = intersect(i);
+        REPORTER_ASSERT(reporter, intersections.size() == 2);
+        const double smaller = std::min(intersections[0], intersections[1]);
+        const double bigger = std::max(intersections[0], intersections[1]);
+        REPORTER_ASSERT(reporter, smaller >= -10 && bigger <= 10);
+    }
+}
