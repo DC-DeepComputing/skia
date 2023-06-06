@@ -16,6 +16,24 @@
       "message": "Does it make sense to rename this test to `OutParamsSwizzle`? Is there anything \"tricky\" this is testing besides the swizzle? Either way IWBN for the name to be a bit more specific.",
       "revId": "92eb1bd39ebdb137df45a42ada6da47d1cf801ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be09387f_40ec1de6",
+        "filename": "tests/sksl/shared/OutParamsTricky.wgsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-06T16:59:56Z",
+      "side": 1,
+      "message": "http://review.skia.org/319920\nI think you\u0027re right, the only tricky thing here is a \"challenging double swizzle.\" I\u0027ll make that change.",
+      "parentUuid": "3ccbaf87_5b07fdb7",
+      "revId": "92eb1bd39ebdb137df45a42ada6da47d1cf801ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
