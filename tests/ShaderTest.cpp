@@ -68,7 +68,7 @@ DEF_TEST(ComposeShaderSingle, reporter) {
     p.setShader(
         SkShaders::Blend(SkBlendMode::kClear,
         SkShaders::Empty(),
-        SkPerlinNoiseShader::MakeFractalNoise(1.0f, 1.0f, 2, 0.0f)));
+        SkShaders::MakeFractalNoise(1.0f, 1.0f, 2, 0.0f)));
     SkRRect rr;
     SkVector rd[] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}};
     rr.setRectRadii({0, 0, 0, 0}, rd);

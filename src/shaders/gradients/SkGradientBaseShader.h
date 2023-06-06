@@ -8,25 +8,34 @@
 #ifndef SkGradientShaderPriv_DEFINED
 #define SkGradientShaderPriv_DEFINED
 
-#include "include/effects/SkGradientShader.h"
-
+#include "include/core/SkColor.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkScalar.h"
+#include "include/effects/SkGradientShader.h"
+#include "include/private/SkColorData.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTemplates.h"
-#include "src/core/SkVM.h"
 #include "src/shaders/SkShaderBase.h"
 
 #if defined(SK_GRAPHITE)
 #include "src/gpu/graphite/KeyHelpers.h"
 #endif
 
+#include <cstddef>
+#include <cstdint>
+
 class SkArenaAlloc;
-class SkColorSpace;
 class SkRasterPipeline;
 class SkReadBuffer;
+class SkShader;
 class SkWriteBuffer;
+enum class SkTileMode;
+struct SkStageRec;
 
-class SkGradientShaderBase : public SkShaderBase {
+class SkGradientBaseShader : public SkShaderBase {
 public:
     using Interpolation = SkGradientShader::Interpolation;
 
@@ -60,8 +69,11 @@ public:
         skia_private::STArray<16, SkScalar , true> fPositionStorage;
     };
 
-    SkGradientShaderBase(const Descriptor& desc, const SkMatrix& ptsToUnit);
-    ~SkGradientShaderBase() override;
+    SkGradientBaseShader(const Descriptor& desc, const SkMatrix& ptsToUnit);
+    ~SkGradientBaseShader() override;
+
+    ShaderType type() const final { return ShaderType::kGradientBase; }
+
 
     bool isOpaque() const override;
 
@@ -98,14 +110,14 @@ protected:
 
     bool onAsLuminanceColor(SkColor*) const override;
 
-    bool appendStages(const SkStageRec&, const MatrixRec&) const override;
+    bool appendStages(const SkStageRec&, const SkShaders::MatrixRec&) const override;
 
 #if defined(SK_ENABLE_SKVM)
     skvm::Color program(skvm::Builder*,
                         skvm::Coord device,
                         skvm::Coord local,
                         skvm::Color paint,
-                        const MatrixRec&,
+                        const SkShaders::MatrixRec&,
                         const SkColorInfo& dstCS,
                         skvm::Uniforms* uniforms,
                         SkArenaAlloc* alloc) const override;
@@ -174,14 +186,12 @@ private:
     skia_private::AutoSTMalloc<kInlineStorageSize, uint8_t> fStorage;
 
     bool                                        fColorsAreOpaque;
-
-    using INHERITED = SkShaderBase;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 
 struct SkColor4fXformer {
-    SkColor4fXformer(const SkGradientShaderBase* shader, SkColorSpace* dst);
+    SkColor4fXformer(const SkGradientBaseShader* shader, SkColorSpace* dst);
 
     skia_private::STArray<4, SkPMColor4f, true> fColors;
     sk_sp<SkColorSpace> fIntermediateColorSpace;
@@ -193,9 +203,9 @@ struct SkColorConverter {
     skia_private::STArray<2, SkColor4f, true> fColors4f;
 };
 
+void SkRegisterConicalGradientShaderFlattenable();
 void SkRegisterLinearGradientShaderFlattenable();
 void SkRegisterRadialGradientShaderFlattenable();
 void SkRegisterSweepGradientShaderFlattenable();
-void SkRegisterTwoPointConicalGradientShaderFlattenable();
 
 #endif
