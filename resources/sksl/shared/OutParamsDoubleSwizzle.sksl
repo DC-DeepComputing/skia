@@ -3,7 +3,7 @@
 uniform half4 colorGreen, colorRed;
 
 half2 tricky(half x, half y, inout half2 color, half z) {
-    color.xy = color.yx;
+    color.yx = color.xy;
     return half2(x + y, z);
 }
 

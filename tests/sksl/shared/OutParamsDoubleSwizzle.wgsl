@@ -11,7 +11,7 @@ struct _GlobalUniforms {
 };
 @binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
 fn tricky_h2hhh2h(x: f32, y: f32, color: ptr<function, vec2<f32>>, z: f32) -> vec2<f32> {
-    (*color) = (*color).yx;
+    (*color) = ((*color)).yx;
     return vec2<f32>(x + y, z);
 }
 fn func_vh4(color: ptr<function, vec4<f32>>) {
