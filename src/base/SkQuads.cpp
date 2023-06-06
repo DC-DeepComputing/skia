@@ -150,3 +150,37 @@ double SkQuads::EvalAt(double A, double B, double C, double t) {
     // Use fused-multiply-add to reduce the amount of round-off error between terms.
     return std::fma(std::fma(A, t, B), t, C);
 }
+
+SkSpan<double> SkQuads::Intersect(double A0, double B0, double C0,
+                                  double A1, double B1, double C1,
+                                  double toIntersect, double intersectionsStorage[2]) {
+    auto [discriminant, r0, r1] = Roots(A0, B0, C0 - toIntersect);
+
+    int intersectionCount = 0;
+
+    // Pin to 0 or 1 if within half a float ulp of 0 or 1.
+    auto pinTRange = [] (double t) {
+        // The ULPs around 0 are tiny compared to the ULPs around 1. Shift to 1 to use the same
+        // size ULPs.
+        if (sk_double_to_float(t + 1.0) == 1.0f) {
+            return 0.0;
+        } else if (sk_double_to_float(t) == 1.0f) {
+            return 1.0;
+        }
+        return t;
+    };
+
+    // Round the roots to the nearest float to generate the values t. Valid t's are on the
+    // domain [0, 1].
+    const double t0 = pinTRange(r0);
+    if (0 <= t0 && t0 <= 1) {
+        intersectionsStorage[intersectionCount++] = EvalAt(A1, -2 * B1, C1, t0);
+    }
+
+    const double t1 = pinTRange(r1);
+    if (0 <= t1 && t1 <= 1) {
+        intersectionsStorage[intersectionCount++] = EvalAt(A1, -2 * B1, C1, t1);
+    }
+
+    return SkSpan{intersectionsStorage, intersectionCount};
+}
