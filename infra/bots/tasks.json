@@ -93079,6 +93079,11 @@
     "Housekeeper-PerCommit-CheckGeneratedFiles": {},
     "Housekeeper-PerCommit-InfraTests_Linux": {},
     "Housekeeper-PerCommit-RunGnToBp": {},
+    "Perf-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Graphite_Metal": {
+      "location_regexes": [
+        "(tests|src/gpu)/graphite/.*"
+      ]
+    },
     "Perf-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite_Metal": {
       "location_regexes": [
         "(tests|src/gpu)/graphite/.*"
