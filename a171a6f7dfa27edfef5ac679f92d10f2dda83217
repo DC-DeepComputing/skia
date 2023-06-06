@@ -22,6 +22,30 @@
       },
       "revId": "a171a6f7dfa27edfef5ac679f92d10f2dda83217",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f720904d_5ad3ed3a",
+        "filename": "src/core/SkColorTable.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-06T00:57:26Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "555fe3aa_8b4a759e",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 2
+      },
+      "revId": "a171a6f7dfa27edfef5ac679f92d10f2dda83217",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
