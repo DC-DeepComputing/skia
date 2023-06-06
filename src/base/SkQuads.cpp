@@ -10,6 +10,7 @@
 #include "include/private/base/SkFloatingPoint.h"
 
 #include <cmath>
+#include <tuple>
 
 // Solve 0 = M * x + B. If M is 0, there are no solutions, unless B is also 0,
 // in which case there are infinite solutions, so we just return 1 of them.
@@ -142,3 +143,47 @@ int SkQuads::RootsReal(const double A, const double B, const double C, double so
     solution[0] = r0; solution[1] = r1;
     return 2;
 }
+
+SkSpan<double> SkQuads::Intersect(double A0, double B0, double C0,
+                                  double A1, double B1, double C1, double b, double cs[2]) {
+    auto [discriminant, root0, root1] = Roots(A0, B0, C0 - b);
+
+    if (!std::isfinite(discriminant) || discriminant < 0) {
+        return {};
+    }
+
+    int tCount = 0;
+    if (std::isfinite(root0) && 0 <= root0 && root0 <= 1) {
+        cs[tCount++] = EvalAt(A1, -2 * B1, C1, root0);
+    }
+
+    if (std::isfinite(root1) && 0 <= root1 && root1 <= 1) {
+        cs[tCount++] = EvalAt(A1, -2 * B1, C1, root1);
+    }
+
+    return {cs, tCount};
+}
+
+static SkQuads::Point operator+ (SkQuads::Point a, SkQuads::Point b) {
+    return {a.x + b.x, a.y + b.y};
+}
+
+static SkQuads::Point operator- (SkQuads::Point a, SkQuads::Point b) {
+    return {a.x - b.x, a.y - b.y};
+}
+
+static SkQuads::Point operator* (float s, SkQuads::Point a) {
+    return {s * a.x, s * a.y};
+}
+
+SkSpan<double> SkQuads::VerticalIntersect(Point p0, Point p1, Point p2, double y, double xs[2]) {
+    const Point pA = p0 - 2 * p1 + p2;
+    // Remember we are generating the polynomial in the form A*t^2 -2*B*t + C, so the factor of 2
+    // is not needed.
+    const Point pB = p0 - p1;
+    const Point pC = p0;
+
+    return Intersect(pA.y, pB.y, pC.y, pA.x, pB.x, pC.x, y, xs);
+}
+
+
