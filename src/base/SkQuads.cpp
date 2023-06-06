@@ -142,3 +142,19 @@ int SkQuads::RootsReal(const double A, const double B, const double C, double so
     solution[0] = r0; solution[1] = r1;
     return 2;
 }
+
+SkSpan<double> SkQuads::Intersect(double A0, double B0, double C0,
+                                  double A1, double B1, double C1, double b, double cs[2]) {
+    auto [discriminant, root0, root1] = Roots(A0, B0, C0 - b);
+
+    int tCount = 0;
+    if (0 <= root0 && root0 <= 1) {
+        cs[tCount++] = EvalAt(A1, -2 * B1, C1, root0);
+    }
+
+    if (0 <= root1 && root1 <= 1) {
+        cs[tCount++] = EvalAt(A1, -2 * B1, C1, root1);
+    }
+
+    return {cs, tCount};
+}
