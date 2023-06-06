@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a7a02b2_b451187f",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-06-06T06:56:44Z",
+      "side": 1,
+      "message": "If I try that I get `Location is not an iterator`, but\n`.normalized_coords(coords.0.into_iter())` works.",
+      "parentUuid": "6f24ddba_64bac29e",
+      "range": {
+        "startLine": 78,
+        "startChar": 12,
+        "endLine": 78,
+        "endChar": 61
+      },
+      "revId": "90853c94ae66119d491a92fec1d9121e0a7c4921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b167dcae_70372357",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-06-05T15:53:19Z",
       "side": 1,
       "message": "Rust has a handy method for this: `tag.to_be_bytes()` Also, I think it would be fine to take tag by value here.",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 34
+      },
+      "revId": "90853c94ae66119d491a92fec1d9121e0a7c4921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "094fad4d_111044a2",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-06-06T06:56:44Z",
+      "side": 1,
+      "message": "Changed to take the parameter by value. But I don\u0027t understand the other part of your comment. I have a `u32` tag coming from Skia and wwant to make a `font-types` `Tag` from it. How would I use an existing function to split the u32?",
+      "parentUuid": "b167dcae_70372357",
       "range": {
         "startLine": 203,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ca2bcc2_25525730",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-06-06T06:56:44Z",
+      "side": 1,
+      "message": "Removed, thanks.",
+      "parentUuid": "ee915bab_3ca0fe41",
+      "range": {
+        "startLine": 216,
+        "startChar": 21,
+        "endLine": 216,
+        "endChar": 34
+      },
+      "revId": "90853c94ae66119d491a92fec1d9121e0a7c4921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "150a3c24_e6fd7a31",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0abfc6cb_c5684ed6",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-06-06T06:56:44Z",
+      "side": 1,
+      "message": "Yes, thanks for your patience, I still need to get those idioms to muscle memory - good point.",
+      "parentUuid": "150a3c24_e6fd7a31",
+      "range": {
+        "startLine": 217,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 5
+      },
+      "revId": "90853c94ae66119d491a92fec1d9121e0a7c4921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bf49237_b6c7934c",
@@ -123,6 +219,30 @@
       "writtenOn": "2023-06-05T15:53:19Z",
       "side": 1,
       "message": "I don\u0027t think it should be done in this CL but at some point we\u0027ll likely want to consider combining these into a single type.",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 40
+      },
+      "revId": "90853c94ae66119d491a92fec1d9121e0a7c4921",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd0f2cb6_edb2eadc",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-06-06T06:56:44Z",
+      "side": 1,
+      "message": "Might be, yes. I think this becomes a more important question when I implement `makeClone()` - do you mean something like making a struct that combines the two into one type, do denote that they belong together to represent font instance state?\n\nWith the `makeClone()` implementation, I am thinking `BridgeFontRef` could remain the same and only BridgeNormalizedCoords would change.",
+      "parentUuid": "4bf49237_b6c7934c",
       "range": {
         "startLine": 226,
         "startChar": 0,
