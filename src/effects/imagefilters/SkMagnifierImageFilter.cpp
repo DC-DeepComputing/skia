@@ -255,7 +255,7 @@ static sk_sp<SkShader> make_magnifier_shader(
 
             // Saturate before squaring so that negative weights are clamped to 0 before squaring
             "weight = saturate(weight);"
-            "return src.eval(mix(coord, zoomCoord, weight*weight));"
+            "return src.eval(mix(coord, zoomCoord, weight*weight)) + half4(0.25, 0, 0, 0.25);"
         "}"
     );
 
@@ -309,7 +309,7 @@ static std::unique_ptr<GrFragmentProcessor> make_magnifier_fp(
                 "weight = min(min(delta_squared.x, delta_squared.y), 1.0);"
             "}"
 
-            "return src.eval(mix(coord, zoom_coord, weight));"
+            "return src.eval(mix(coord, zoom_coord, weight)) + half4(0.25, 0, 0, 0.25);"
         "}"
     );
     SkV4 boundsUniform = {static_cast<float>(bounds.x()),
@@ -465,19 +465,6 @@ skif::FilterResult SkMagnifierImageFilter::onFilterImage(const skif::Context& co
     skif::LayerSpace<SkRect> lensBounds = context.mapping().paramToLayer(fLensBounds);
     skif::LayerSpace<SkPoint> zoomCenter = lensBounds.center();
 
-    skif::FilterResult childOutput =
-            this->getChildOutput(0, context.withNewDesiredOutput(lensBounds.roundOut()));
-    // If lensBounds is not partially off screen, 'childOutput' should exactly match the layer-space
-    // lens bounds. However, when this is used as a backdrop filter, or if there was a crop on the
-    // input, this may not be the case. Stylistically, this filter adjusts the lens bounds and
-    // zoomed-in content such that the non-linear inset does not extend beyond what was provided.
-    // This avoids zooming in on a clamped texture boundary.
-    if (!lensBounds.intersect(skif::LayerSpace<SkRect>(childOutput.layerBounds()))) {
-        return {};
-    }
-    // Clamp the zoom center to be within the childOutput image
-    zoomCenter = lensBounds.clamp(zoomCenter);
-
     // The zoom we want to apply in layer-space is equal to
     // mapping.paramToLayer(SkMatrix::Scale(fZoomAmount)).decomposeScale(&layerZoom).
     // Because this filter only supports scale+translate matrices, the paramToLayer transform of
@@ -499,6 +486,7 @@ skif::FilterResult SkMagnifierImageFilter::onFilterImage(const skif::Context& co
             lensBounds.right() * invZoom + zoomCenter.x()*(1.f - invZoom),
             lensBounds.bottom()* invZoom + zoomCenter.y()*(1.f - invZoom)}};
 
+
     // When there is no SkSL support, or there's a 0 inset, the magnifier is equivalent to a
     // rect->rect transform and crop.
 #ifdef SK_ENABLE_SKSL
@@ -511,8 +499,70 @@ skif::FilterResult SkMagnifierImageFilter::onFilterImage(const skif::Context& co
         // child filter. Since srcRect is dependent on the clipped lensBounds from what the child
         // actually produced, we can't just request an unclipped srcRect initially.
         auto zoomXform = skif::LayerSpace<SkMatrix>::RectToRect(srcRect, lensBounds);
-        return childOutput.applyCrop(context, srcRect.roundOut())
-                          .applyTransform(context, zoomXform, fSampling);
+
+        skif::FilterResult childOutput =
+                this->getChildOutput(0, context.withNewDesiredOutput(lensBounds.roundOut()));
+        // if (!srcRect.intersect(skif::LayerSpace<SkRect>(childOutput.layerBounds()))) {
+        //     return {};
+        // }
+        // lensBounds = zoomXform.mapRect(srcRect);
+        // zoomCenter = lensBounds.clamp(zoomCenter);
+
+        // srcRect = skif::LayerSpace<SkRect>{{
+        //     lensBounds.left()  * invZoom + zoomCenter.x()*(1.f - invZoom),
+        //     lensBounds.top()   * invZoom + zoomCenter.y()*(1.f - invZoom),
+        //     lensBounds.right() * invZoom + zoomCenter.x()*(1.f - invZoom),
+        //     lensBounds.bottom()* invZoom + zoomCenter.y()*(1.f - invZoom)}};
+        // zoomXform = skif::LayerSpace<SkMatrix>::RectToRect(srcRect, lensBounds);
+        return childOutput.applyTransform(context, zoomXform, fSampling)
+                          .applyCrop(context, lensBounds.roundOut());
+    }
+
+    skif::FilterResult childOutput =
+            this->getChildOutput(0, context.withNewDesiredOutput(lensBounds.roundOut()));
+    // If lensBounds is not partially off screen, 'childOutput' should exactly match the layer-space
+    // lens bounds. However, when this is used as a backdrop filter, or if there was a crop on the
+    // input, this may not be the case. Stylistically, this filter adjusts the lens bounds and
+    // zoomed-in content such that the non-linear inset does not extend beyond what was provided.
+    // This avoids zooming in on a clamped texture boundary.
+
+    // if (!lensBounds.intersect(skif::LayerSpace<SkRect>(childOutput.layerBounds()))) {
+    //     return {};
+    // }
+    // Clamp the zoom center to be within the childOutput image
+    // zoomCenter = lensBounds.clamp(zoomCenter);
+    zoomCenter = skif::LayerSpace<SkRect>(childOutput.layerBounds()).clamp(zoomCenter);
+
+    srcRect = skif::LayerSpace<SkRect>{{
+            lensBounds.left()  * invZoom + zoomCenter.x()*(1.f - invZoom),
+            lensBounds.top()   * invZoom + zoomCenter.y()*(1.f - invZoom),
+            lensBounds.right() * invZoom + zoomCenter.x()*(1.f - invZoom),
+            lensBounds.bottom()* invZoom + zoomCenter.y()*(1.f - invZoom)}};
+    skif::LayerSpace<SkRect> fitRect{childOutput.layerBounds()};
+
+    auto visibleLens = lensBounds;
+    SkAssertResult(visibleLens.intersect(skif::LayerSpace<SkRect>(context.desiredOutput())));
+    if (!fitRect.contains(visibleLens)) {
+        // We need to pick a new srcRect such that srcRect is contained within fitRect and fills
+        // visibleLens, while maintaining the aspect ratio of the original srcRect -> lensBounds.
+        auto zoomXform = skif::LayerSpace<SkMatrix>::RectToRect(lensBounds, srcRect);
+        auto visibleSrcRect = zoomXform.mapRect(visibleLens);
+
+        // Now adjust to fit -> there's something here that is working well in almost all cases,
+        // but I haven't tested the 0 inset (1px inset looks good). The only issue is with backdrop
+        // when both sides get clipped we end up losing the aspect ratio.
+
+        // Then we also are currently losing the dynamic lensBounds affect. I think it should adapt
+        // to visibleBounds vs. childOutput.
+        float width = std::min(visibleSrcRect.width(), fitRect.width());
+        float height = std::min(visibleSrcRect.height(), fitRect.height());
+        float left = visibleSrcRect.left() < fitRect.left() ? fitRect.left() :
+                std::min(visibleSrcRect.right(), fitRect.right()) - width;
+        float top = visibleSrcRect.top() < fitRect.top() ? fitRect.top() :
+                std::min(visibleSrcRect.bottom(), fitRect.bottom()) - height;
+
+        lensBounds = visibleLens;
+        srcRect = skif::LayerSpace<SkRect>(SkRect::MakeXYWH(left, top, width, height));
     }
 
 #ifdef SK_ENABLE_SKSL
