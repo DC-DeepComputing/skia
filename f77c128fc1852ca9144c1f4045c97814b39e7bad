@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fc2c2d1_6c7a2a46",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-06T17:31:34Z",
+      "side": 1,
+      "message": "Do we need a default ctor?",
+      "revId": "f77c128fc1852ca9144c1f4045c97814b39e7bad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43681e75_e28f2fa4",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-06T17:31:34Z",
+      "side": 1,
+      "message": "nit: `explicit ImageAssetProxy(...)`",
+      "revId": "f77c128fc1852ca9144c1f4045c97814b39e7bad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4186e15f_320b5357",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-06T17:31:34Z",
+      "side": 1,
+      "message": "nit: let\u0027s constify this\n\n    const sk_sp\u003cskresources::ImageAsset\u003e\u0026 getImageAsset() const {",
+      "revId": "f77c128fc1852ca9144c1f4045c97814b39e7bad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffb98d59_09d226dd",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-06T17:31:34Z",
+      "side": 1,
+      "message": "nit: `std::move(imageAsset)`",
+      "range": {
+        "startLine": 104,
+        "startChar": 45,
+        "endLine": 104,
+        "endChar": 55
+      },
+      "revId": "f77c128fc1852ca9144c1f4045c97814b39e7bad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
