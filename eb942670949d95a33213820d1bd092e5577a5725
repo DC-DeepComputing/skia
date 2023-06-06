@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed18499_32e27b81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-06T18:44:58Z",
+      "side": 1,
+      "message": "Thank you for the reviews. I\u0027m going to hold off on landing this and might actually abandon it.\n\nIt turns out, to correctly store a clipped shape and make sure it\u0027s packed to the clip bounds in the atlas, we need to calculate the clip bounds before searching for space in the atlas. So we are going to have to split `ClipStack::applyClipToDraw` into two methods (a non-mutating method for calculating bounds pre-flush, and another to update the clip elements post-flush). If we have to do that anyway, then the existing `Rectanizer::addRect` should be sufficient. Another benefit of this approach is that a shape that gets clipped out can get discarded before a flush.\n\nSo the new algorithm I have in mind looks like this (in pseudocode):\n\n    let clip \u003d fClip.calculateBounds(localToDevice, geometry, style);\n    if clip.drawBounds.isEmptyNegativeOrNaN() {\n        return;  // clipped out\n    }\n    // Flush if its required for dst-reads or any other reason\n    if this-\u003eneedsFlushBeforeDraw(...) {\n        this-\u003eflushPendingWorkToRecorder();\n    }\n    bool atlasIsFull \u003d !pathAtlas-\u003eaddShape(clip.drawBounds, clip.maskBounds, ...);\n    if atlasIsFull {\n        // This should never happen if we ran the flush above, which would have cleared the atlas.\n        this-\u003eflushPendingWorkToRecorder();\n        pathAtlas-\u003eaddShape(clip.drawBounds, clip.maskBounds, geometry...)\n    }\n    let clipOrder \u003d fClip.updateClipsForDraw(..., clipBounds,...);",
+      "revId": "eb942670949d95a33213820d1bd092e5577a5725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e11a4235_22d24996",
