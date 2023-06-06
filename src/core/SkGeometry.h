@@ -10,6 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "src/base/SkVx.h"
 
@@ -544,6 +545,32 @@ private:
     };
     skia_private::AutoSTMalloc<kPointCount, SkPoint> fStorage;
     int fQuadCount; // #quads for current usage
+};
+
+class SkBezierQuad {
+public:
+    static SkSpan<const SkScalar> IntersectWithHorizontalLine(
+            SkSpan<const SkPoint> controlPoints, SkScalar yIntercept,
+            SkScalar intersectionStorage[2]);
+
+    /**
+     * Given
+     *    AY*t^2 -2*BY*t + CY = 0 and AX*t^2 - 2*BX*t + CX = 0,
+     *
+     * Find the t where AY*t^2 - 2*BY*t + CY - y = 0, then return AX*t^2 + - 2*BX*t + CX
+     * where t is on [0, 1].
+     *
+     * - y - is the height of the line which intersects the quadratic.
+     * - intersectionStorage - is the array to hold the return data pointed to in the span.
+     *
+     * Returns a span with the intersections of yIntercept, and the quadratic formed by A, B,
+     * and C.
+     */
+    static SkSpan<const SkScalar> Intersect(
+            double AX, double BX, double CX,
+            double AY, double BY, double CY,
+            double yIntercept,
+            SkScalar intersectionStorage[2]);
 };
 
 #endif
