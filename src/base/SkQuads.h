@@ -8,6 +8,7 @@
 #ifndef SkQuads_DEFINED
 #define SkQuads_DEFINED
 
+#include "include/private/base/SkSpan_impl.h"
 /**
  * Utilities for dealing with quadratic formulas with one variable:
  *   f(t) = A*t^2 + B*t + C
@@ -61,6 +62,20 @@ public:
      * in the provided array.
      */
     static int RootsReal(double A, double B, double C, double solution[2]);
+
+    /**
+* Given
+*    A*t^2 -2*B*t + C = 0,
+*/
+    static SkSpan<double> Intersect(
+        double A0, double B0, double C0, double A1, double B1, double C1, double b, double cs[2]);
+
+    struct Point {
+        float x;
+        float y;
+    };
+
+    static SkSpan<double> VerticalIntersect(Point p0, Point p1, Point p2, double y, double xs[2]);
 
     /**
      * Evaluates the quadratic function with the 3 provided coefficients and the

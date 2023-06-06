@@ -14,22 +14,24 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSerialProcs.h"
 #include "include/private/base/SkFloatingPoint.h"
+#include "include/private/base/SkSpan_impl.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
+#include "src/base/SkQuads.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkScalerContext.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsPoint.h"
-#include "src/pathops/SkPathOpsQuad.h"
 #include "src/text/StrikeForGPU.h"
 
 #include <cstring>
 #include <optional>
 #include <tuple>
 #include <utility>
+
 
 using namespace skia_private;
 using namespace skglyph;
@@ -456,24 +458,27 @@ static std::tuple<SkScalar, SkScalar> calculate_path_gap(
 
     // Handle all the different verbs for the path.
     SkPoint pts[4];
-    auto addLine = [&expandGap, &pts](SkScalar offset) {
+    auto addLine = [&](SkScalar offset) {
         SkScalar t = sk_ieee_float_divide(offset - pts[0].fY, pts[1].fY - pts[0].fY);
         if (0 <= t && t < 1) {   // this handles divide by zero above
             expandGap(pts[0].fX + t * (pts[1].fX - pts[0].fX));
         }
     };
 
-    auto addQuad = [&expandGap, &pts](SkScalar offset) {
-        SkDQuad quad;
-        quad.set(pts);
-        double roots[2];
-        int count = quad.horizontalIntersect(offset, roots);
-        while (--count >= 0) {
-            expandGap(quad.ptAtT(roots[count]).asSkPoint().fX);
+    auto toPt = [](SkPoint p) {
+        return SkQuads::Point{p.fX, p.fY};
+    };
+
+    auto addQuad = [&](SkScalar offset) {
+        double intersectionsStorage[2];
+        auto intersections = SkQuads::VerticalIntersect(
+                toPt(pts[0]), toPt(pts[1]), toPt(pts[2]), offset, intersectionsStorage);
+        for (double x : intersections) {
+            expandGap(SkDoubleToScalar(x));
         }
     };
 
-    auto addCubic = [&expandGap, &pts](SkScalar offset) {
+    auto addCubic = [&](SkScalar offset) {
         SkDCubic cubic;
         cubic.set(pts);
         double roots[3];
