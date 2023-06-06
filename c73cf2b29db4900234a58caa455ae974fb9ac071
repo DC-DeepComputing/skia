@@ -22,6 +22,30 @@
       },
       "revId": "c73cf2b29db4900234a58caa455ae974fb9ac071",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd40bb9d_6573cbc4",
+        "filename": "src/gpu/graphite/BackendSemaphore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-06T19:59:49Z",
+      "side": 1,
+      "message": "Though that\u0027s still odd, in that you can take a valid Backend*, copy to it from another backend type and make it invalid, and then copy to it again and suddenly it\u0027s valid again...",
+      "parentUuid": "3fe5d502_03f1c0f7",
+      "range": {
+        "startLine": 25,
+        "startChar": 5,
+        "endLine": 27,
+        "endChar": 5
+      },
+      "revId": "c73cf2b29db4900234a58caa455ae974fb9ac071",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
