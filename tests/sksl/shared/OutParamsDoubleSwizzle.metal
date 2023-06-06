@@ -24,7 +24,7 @@ void _skOutParamHelper1_func_vh4(thread half4& result) {
     result = _var0;
 }
 half2 tricky_h2hhh2h(half x, half y, thread half2& color, half z) {
-    color = color.yx;
+    color.yx = color;
     return half2(x + y, z);
 }
 void func_vh4(thread half4& color) {
