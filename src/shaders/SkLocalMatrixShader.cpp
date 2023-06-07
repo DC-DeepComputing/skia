@@ -6,7 +6,6 @@
  */
 
 #include "src/base/SkTLazy.h"
-#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkVM.h"
 #include "src/shaders/SkLocalMatrixShader.h"
 
