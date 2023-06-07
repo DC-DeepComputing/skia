@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e8994d3_038f9ff0",
+        "filename": "src/gpu/ganesh/GrFragmentProcessors.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-07T18:06:21Z",
+      "side": 1,
+      "message": "I don\u0027t want to hold up this CL (or make it more complicated), but I\u0027d like to do a follow-up pass of moving logic into the \"real\" FP factories. It\u0027s strange now, because we have certain kinds of effects where the logic is distributed between the make_shader_fp in this file, and the GrWhateverEffect::Make elsewhere.",
+      "revId": "0394d3fe66b9c9c0dd71fef044ca49407160527a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
