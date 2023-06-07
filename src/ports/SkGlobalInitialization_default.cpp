@@ -37,10 +37,10 @@
     #include "src/shaders/SkLocalMatrixShader.h"
     #include "src/shaders/SkPictureShader.h"
     #include "src/shaders/SkShaderBase.h"
-    #include "src/shaders/gradients/SkGradientShaderBase.h"
+#include "src/shaders/gradients/SkGradientBaseShader.h"
 
-    #include "include/effects/SkImageFilters.h"
-    #include "src/core/SkLocalMatrixImageFilter.h"
+#include "include/effects/SkImageFilters.h"
+#include "src/core/SkLocalMatrixImageFilter.h"
 
 #ifdef SK_ENABLE_SKSL
     #include "include/effects/SkRuntimeEffect.h"
@@ -59,18 +59,18 @@
      */
     void SkFlattenable::PrivateInitializer::InitEffects() {
         // Shaders.
+        SkRegisterBlendShaderFlattenable();
         SkRegisterColor4ShaderFlattenable();
         SK_REGISTER_FLATTENABLE(SkColorFilterShader);
         SkRegisterColorShaderFlattenable();
-        SkRegisterComposeShaderFlattenable();
         SkRegisterCoordClampShaderFlattenable();
         SkRegisterEmptyShaderFlattenable();
         SK_REGISTER_FLATTENABLE(SkLocalMatrixShader);
         SK_REGISTER_FLATTENABLE(SkPictureShader);
+        SkRegisterConicalGradientShaderFlattenable();
         SkRegisterLinearGradientShaderFlattenable();
         SkRegisterRadialGradientShaderFlattenable();
         SkRegisterSweepGradientShaderFlattenable();
-        SkRegisterTwoPointConicalGradientShaderFlattenable();
         SkRegisterPerlinNoiseShaderFlattenable();
         SkShaderBase::RegisterFlattenables();
 
