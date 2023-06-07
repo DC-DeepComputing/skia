@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9974eb84_7b190a46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-07T01:15:43Z",
+      "side": 1,
+      "message": "The chrome tests had been failing because they were using a local matrix image filter with a zero matrix, wrapping a color filter image filter. This CL updated the factory to return null as an error for a non-invertible matrix instead of making up behavior (treat inv as identity) in computeFastBounds().\n\nhttps://chromium-review.googlesource.com/c/chromium/src/+/4595772 fixes the chrome tests to use better local matrices.",
+      "revId": "51fd32887445272af4b3de1f6dff61429f49b218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
