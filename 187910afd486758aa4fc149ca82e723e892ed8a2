@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4dac66a_6acc7e8c",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-07T20:07:16Z",
+      "side": 1,
+      "message": "Now that I understand what is going on, I have some more educated suggestions.\n\nBecause this is pretty specific to dealing with Bezier curves, can we move this to src/base/SkBezierCurves in a new class/namespace SkBezierQuad? That is probably a better home for this (where this file is more pure quadratic formulas).\n\nThen, to make the function more ergonomic, could we have the inputs just be the X,Y coordinates and do the conversion to A, B, and C for the caller?\n\nRationale: the one caller (SkGlyph) has to do the conversion from points to A, B, C anyway and that feels more like an implementation detail than an API necessity. \n\nsuggested new comment: \"Given a quadratic bezier curve from (X0, Y0) to (X2, Y2), and a control point (X1, Y1), this function can find where it intersects a horizontal line at Y \u003d toIntersect, filling in the 0, 1, or 2 t values at which the curve intersects the horizontal line.\n\nIt returns a Span with those intersections using the provided memory from intersectionsStorage.",
+      "range": {
+        "startLine": 71,
+        "startChar": 7,
+        "endLine": 71,
+        "endChar": 12
+      },
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cc97d0e_28c5008b",
+        "filename": "tests/QuadRootsTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-07T20:07:16Z",
+      "side": 1,
+      "message": "suggestion: link to https://www.desmos.com/calculator/iwya1qcw9y where I\u0027ve plotted this curve to help future test readers",
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f443cc7_35d065c8",
+        "filename": "tests/QuadRootsTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-07T20:07:16Z",
+      "side": 1,
+      "message": "I would feel better about this assertion if it checked some specific values in between. \n\nFor example, when toIntersect \u003d 3.6, t \u003d 0.2 and 0.8 (as visualized on https://www.desmos.com/calculator/iwya1qcw9y)\n\nI would also feel better if there were a few more interesting curves to test. See above in QuadRootsReal_ActualQuadratics for a possible pattern to avoid boilerplate and help assert the inputs result in the outputs that Mathematica or another reliable source corroborate.",
+      "range": {
+        "startLine": 304,
+        "startChar": 24,
+        "endLine": 304,
+        "endChar": 64
+      },
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

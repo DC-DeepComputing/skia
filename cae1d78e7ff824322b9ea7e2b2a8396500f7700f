@@ -172,6 +172,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2742348b_5f4b9f24",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-07T20:07:16Z",
+      "side": 1,
+      "message": "This might make for a good comment in the code somewhere.",
+      "parentUuid": "4492dbe2_475699a0",
+      "range": {
+        "startLine": 72,
+        "startChar": 10,
+        "endLine": 72,
+        "endChar": 29
+      },
+      "revId": "cae1d78e7ff824322b9ea7e2b2a8396500f7700f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3aa9aa20_8ba51172",
