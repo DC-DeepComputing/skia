@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdba2c0e_7eddbd22",
+        "filename": "include/gpu/graphite/BackendSemaphore.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-07T14:58:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdb2c603_462c1f91",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 39
+      },
+      "revId": "c73cf2b29db4900234a58caa455ae974fb9ac071",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fe5d502_03f1c0f7",
@@ -109,6 +133,30 @@
       "side": 1,
       "message": "At least in Ganesh the D3D type isn\u0027t trivial. I don\u0027t think it\u0027s worth any complication -- I think I\u0027ll just change it to an assert like in GrBackendSemaphore.",
       "parentUuid": "4a7e4378_d0c9abf2",
+      "range": {
+        "startLine": 25,
+        "startChar": 5,
+        "endLine": 27,
+        "endChar": 5
+      },
+      "revId": "c73cf2b29db4900234a58caa455ae974fb9ac071",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ef1643b_05f76013",
+        "filename": "src/gpu/graphite/BackendSemaphore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-07T14:58:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c634f5f_903c6e68",
       "range": {
         "startLine": 25,
         "startChar": 5,
