@@ -7,6 +7,8 @@
 #ifndef SkCubics_DEFINED
 #define SkCubics_DEFINED
 
+#include "include/private/base/SkSpan_impl.h"
+
 /**
  * Utilities for dealing with cubic formulas with one variable:
  *   f(t) = A*t^3 + B*t^2 + C*t + d

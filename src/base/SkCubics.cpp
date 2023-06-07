@@ -27,7 +27,7 @@ static bool nearly_equal(double x, double y) {
 // When the A coefficient of a cubic is close to 0, there can be floating point error
 // that arises from computing a very large root. In those cases, we would rather be
 // precise about the smaller 2 roots, so we have this arbitrary cutoff for when A is
-// really small or small compared to B.
+// tiny compared to B.
 static bool close_to_a_quadratic(double A, double B) {
     if (sk_double_nearly_zero(B)) {
         return sk_double_nearly_zero(A);
@@ -239,3 +239,4 @@ int SkCubics::BinarySearchRootsValidT(double A, double B, double C, double D,
     }
     return foundRoots;
 }
+
