@@ -95,7 +95,8 @@ fn FalseFalse_b() -> bool {
   }
   return bool();
 }
-fn main(_skAnonymous3: vec2<f32>) -> vec4<f32> {
+fn main(_skParam0: vec2<f32>) -> vec4<f32> {
+  let _skAnonymous3 = _skParam0;
   {
     var _0_TrueTrue: bool;
     var _2_y: i32 = 1;
