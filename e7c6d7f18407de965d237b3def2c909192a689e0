@@ -22,6 +22,30 @@
       },
       "revId": "e7c6d7f18407de965d237b3def2c909192a689e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b8da879_7b6cf339",
+        "filename": "src/gpu/TiledTextureUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-07T15:11:46Z",
+      "side": 1,
+      "message": "There were two issues:\n 1) in DDL mode large textures can be drawn in parallel resulting in TSAN errors\n 2) unrelated, the Mac10.13 bots generated very noisy images and needed to be removed\n \nThe addition of an atomic here isn\u0027t worrying me since, I believe, in it final iteration this API will have a helper object that can store the number of tiles drawn rather than having this clunky global.",
+      "parentUuid": "09b8ba7b_da1d1aa7",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 16
+      },
+      "revId": "e7c6d7f18407de965d237b3def2c909192a689e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
