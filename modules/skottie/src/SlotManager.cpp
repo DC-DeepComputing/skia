@@ -31,7 +31,11 @@ void skottie::SlotManager::setScalarSlot(SlotID slotID, SkScalar s) {
     if (valueGroup) {
         for (auto& sPair : *valueGroup) {
             *(sPair.value) = s;
-            sPair.node->invalidate();
+            if (sPair.node) {
+                sPair.node->invalidate();
+            } else if (sPair.adapter) {
+                sPair.adapter->onSync();
+            }
         }
         fRevalidator->revalidate();
     }
@@ -55,14 +59,20 @@ SkScalar skottie::SlotManager::getScalarSlot (SlotID slotID) const {
 
 void skottie::SlotManager::trackColorValue(SlotID slotID, SkColor* colorValue,
                                            sk_sp<sksg::Node> node) {
-    fColorMap[slotID].push_back({colorValue, std::move(node)});
+    fColorMap[slotID].push_back({colorValue, std::move(node), nullptr});
 }
 
 void skottie::SlotManager::trackImageValue(SlotID slotID, sk_sp<skresources::ImageAsset> imageAsset,
                                            sk_sp<sksg::Node> node) {
 
 }
+
 void skottie::SlotManager::trackScalarValue(SlotID slotID, SkScalar* scalarValue,
                                             sk_sp<sksg::Node> node) {
-    fScalarMap[slotID].push_back({scalarValue, std::move(node)});
+    fScalarMap[slotID].push_back({scalarValue, std::move(node), nullptr});
+}
+
+void skottie::SlotManager::trackScalarValue(SlotID slotID, SkScalar* scalarValue,
+                                            sk_sp<internal::AnimatablePropertyContainer> adapter) {
+    fScalarMap[slotID].push_back({scalarValue, nullptr, adapter});
 }
