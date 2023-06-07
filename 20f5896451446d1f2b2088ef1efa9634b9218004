@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca88878d_c85b99e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-06-07T09:02:23Z",
+      "side": 1,
+      "message": "PTAL, let me know if you\u0027d like the minor formatting updates to be separated out into an extra CL.",
+      "revId": "20f5896451446d1f2b2088ef1efa9634b9218004",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
