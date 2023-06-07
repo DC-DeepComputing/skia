@@ -20,6 +20,7 @@ namespace skottie {
 namespace internal {
 class AnimationBuilder;
 class SceneGraphRevalidator;
+class AnimatablePropertyContainer;
 } // namespace internal
 
 using namespace skia_private;
@@ -55,14 +56,30 @@ private:
     void trackColorValue(SlotID,    SkColor*,                       sk_sp<sksg::Node>);
     void trackImageValue(SlotID,    sk_sp<skresources::ImageAsset>, sk_sp<sksg::Node>);
     void trackScalarValue(SlotID,   SkScalar*,                      sk_sp<sksg::Node>);
+    void trackScalarValue(SlotID, SkScalar*, sk_sp<skottie::internal::AnimatablePropertyContainer>);
 
     TArray<SlotInfo> fSlotInfos;
 
+
+    // ValuePair tracks a pointer to a value to change, and a means to invalidate the render tree.
+    // For the latter, we can take either a node in the scene graph that directly the scene graph,
+    // or an adapter which takes the value passed and interprets it before pushing to the scene
+    // (clamping, normalizing, etc.)
+    // Only one should be set, it is UB to create a ValuePair with both a node and an adapter.
     template <typename T>
     struct ValuePair
     {
         T value;
         sk_sp<sksg::Node> node;
+        sk_sp<skottie::internal::AnimatablePropertyContainer> adapter;
+
+        ValuePair(T _value, sk_sp<sksg::Node> _node,
+                  sk_sp<skottie::internal::AnimatablePropertyContainer> _adapter) {
+            value = _value;
+            node = _node;
+            adapter = _adapter;
+            SkASSERT(!node != !adapter);
+        }
     };
 
     template <typename T>
