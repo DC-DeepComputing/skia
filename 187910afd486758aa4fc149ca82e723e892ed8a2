@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "92cf2ed2_d886c263",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-07T21:29:00Z",
+      "side": 1,
+      "message": "Sure, that\u0027s fine. I think the method docs would read better (i.e. be more concrete) if we pretend it\u0027s XY with maybe a note that YX would work to get a vertical intersection.",
+      "parentUuid": "dae936e3_f5675e1a",
+      "range": {
+        "startLine": 71,
+        "startChar": 7,
+        "endLine": 71,
+        "endChar": 12
+      },
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6cc97d0e_28c5008b",
         "filename": "tests/QuadRootsTest.cpp",
         "patchSetId": 9
