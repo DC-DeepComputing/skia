@@ -10,9 +10,11 @@
 #define GrGradientBitmapCache_DEFINED
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkColor.h"
 #include "include/private/SkColorData.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkNoncopyable.h"
+#include "src/shaders/gradients/SkGradientShaderBase.h"
 
 class GrGradientBitmapCache : SkNoncopyable {
 public:
@@ -21,8 +23,16 @@ public:
 
     // Assumes colors are compatible with the specified alphaType (e.g. if it's premul then colors
     // are already premultiplied). Thread safe.
-    void getGradient(const SkPMColor4f* colors, const SkScalar* positions, int count,
-                     SkColorType colorType, SkAlphaType alphaType, SkBitmap* bitmap);
+    void getGradient(const SkPMColor4f* colors,
+                     const SkScalar* positions,
+                     int count,
+                     bool colorsAreOpaque,
+                     const SkGradientShaderBase::Interpolation& interpolation,
+                     const SkColorSpace* intermediateColorSpace,
+                     const SkColorSpace* dstColorSpace,
+                     SkColorType colorType,
+                     SkAlphaType alphaType,
+                     SkBitmap* bitmap);
 
 private:
     SkMutex fMutex;
@@ -41,7 +51,13 @@ private:
     bool find(const void* buffer, size_t len, SkBitmap*) const;
     void add(const void* buffer, size_t len, const SkBitmap&);
 
-    void fillGradient(const SkPMColor4f* colors, const SkScalar* positions, int count,
+    void fillGradient(const SkPMColor4f* colors,
+                      const SkScalar* positions,
+                      int count,
+                      bool colorsAreOpaque,
+                      const SkGradientShaderBase::Interpolation& interpolation,
+                      const SkColorSpace* intermediateColorSpace,
+                      const SkColorSpace* dstColorSpace,
                       SkBitmap* bitmap);
 
 #ifdef SK_DEBUG

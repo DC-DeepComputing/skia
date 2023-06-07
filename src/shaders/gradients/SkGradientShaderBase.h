@@ -142,7 +142,11 @@ public:
                                          SkArenaAlloc* alloc,
                                          const SkPMColor4f* colors,
                                          const SkScalar* positions,
-                                         int count);
+                                         int count,
+                                         bool colorsAreOpaque,
+                                         const Interpolation& interpolation,
+                                         const SkColorSpace* intermediateColorSpace,
+                                         const SkColorSpace* dstColorSpace);
 
     SkScalar getPos(int i) const {
         SkASSERT(i < fColorCount);

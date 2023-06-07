@@ -8,6 +8,7 @@
 
 #include "src/gpu/ganesh/gradients/GrGradientBitmapCache.h"
 
+#include "include/private/SkColorData.h"
 #include "include/private/base/SkFloatBits.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTemplates.h"
@@ -127,15 +128,29 @@ void GrGradientBitmapCache::add(const void* buffer, size_t len, const SkBitmap& 
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void GrGradientBitmapCache::fillGradient(const SkPMColor4f* colors, const SkScalar* positions,
-                                         int count, SkBitmap* bitmap) {
+void GrGradientBitmapCache::fillGradient(const SkPMColor4f* colors,
+                                         const SkScalar* positions,
+                                         int count,
+                                         bool colorsAreOpaque,
+                                         const SkGradientShaderBase::Interpolation& interpolation,
+                                         const SkColorSpace* intermediateColorSpace,
+                                         const SkColorSpace* dstColorSpace,
+                                         SkBitmap* bitmap) {
     SkArenaAlloc alloc(/*firstHeapAllocation=*/0);
     SkRasterPipeline p(&alloc);
     SkRasterPipeline_MemoryCtx ctx = { bitmap->getPixels(), 0 };
 
     p.append(SkRasterPipelineOp::seed_shader);
     p.append_matrix(&alloc, SkMatrix::Scale(1.0f / bitmap->width(), 1.0f));
-    SkGradientShaderBase::AppendGradientFillStages(&p, &alloc, colors, positions, count);
+    SkGradientShaderBase::AppendGradientFillStages(&p,
+                                                   &alloc,
+                                                   colors,
+                                                   positions,
+                                                   count,
+                                                   colorsAreOpaque,
+                                                   interpolation,
+                                                   intermediateColorSpace,
+                                                   dstColorSpace);
     p.append_store(bitmap->colorType(), &ctx);
     p.run(0, 0, bitmap->width(), 1);
 }
@@ -143,6 +158,10 @@ void GrGradientBitmapCache::fillGradient(const SkPMColor4f* colors, const SkScal
 void GrGradientBitmapCache::getGradient(const SkPMColor4f* colors,
                                         const SkScalar* positions,
                                         int count,
+                                        bool colorsAreOpaque,
+                                        const SkGradientShaderBase::Interpolation& interpolation,
+                                        const SkColorSpace* intermediateColorSpace,
+                                        const SkColorSpace* dstColorSpace,
                                         SkColorType colorType,
                                         SkAlphaType alphaType,
                                         SkBitmap* bitmap) {
@@ -177,7 +196,14 @@ void GrGradientBitmapCache::getGradient(const SkPMColor4f* colors,
     if (!this->find(storage.get(), size, bitmap)) {
         SkImageInfo info = SkImageInfo::Make(fResolution, 1, colorType, alphaType);
         bitmap->allocPixels(info);
-        this->fillGradient(colors, positions, count, bitmap);
+        this->fillGradient(colors,
+                           positions,
+                           count,
+                           colorsAreOpaque,
+                           interpolation,
+                           intermediateColorSpace,
+                           dstColorSpace,
+                           bitmap);
         bitmap->setImmutable();
         this->add(storage.get(), size, *bitmap);
     }
