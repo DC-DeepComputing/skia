@@ -33,6 +33,24 @@
       "message": "I\u0027m working on testing the adapter approach we discussed in a follow-up CL (tracking an adapter instead of a node)",
       "revId": "850c5b519d9e453779d411716e9e817dd5fa0745",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee06fcd3_ae684628",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-07T21:15:15Z",
+      "side": 1,
+      "message": "I lied, it was pretty simple to implement so I added it to this CL.",
+      "parentUuid": "f68c9286_f6a357da",
+      "revId": "850c5b519d9e453779d411716e9e817dd5fa0745",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
