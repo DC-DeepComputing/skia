@@ -8,18 +8,18 @@
 #ifndef DDLTileHelper_DEFINED
 #define DDLTileHelper_DEFINED
 
-#include "include/core/SkDeferredDisplayList.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkSurfaceCharacterization.h"
 #include "include/private/base/SkTemplates.h"
+#include "include/private/chromium/GrDeferredDisplayList.h"
 
 class DDLPromiseImageHelper;
 class PromiseImageCallbackContext;
 class SkCanvas;
 class SkData;
-class SkDeferredDisplayListRecorder;
+class GrDeferredDisplayListRecorder;
 class SkImage;
 class SkPicture;
 class SkSurface;
@@ -69,7 +69,7 @@ public:
         }
         SkIVector padOffset() const { return { fPaddingOutsets.fLeft, fPaddingOutsets.fTop }; }
 
-        SkDeferredDisplayList* ddl() { return fDisplayList.get(); }
+        GrDeferredDisplayList* ddl() { return fDisplayList.get(); }
 
         sk_sp<SkImage> makePromiseImageForDst(sk_sp<GrContextThreadSafeProxy>);
         void dropCallbackContext() { fCallbackContext.reset(); }
@@ -97,7 +97,7 @@ public:
         // TODO: fix the ref-order so we don't need 'fTileSurface' here
         sk_sp<SkSurface>              fTileSurface;
 
-        sk_sp<SkDeferredDisplayList>  fDisplayList;
+        sk_sp<GrDeferredDisplayList>  fDisplayList;
     };
 
     DDLTileHelper(GrDirectContext*,
@@ -115,7 +115,7 @@ public:
 
     // Create the DDL that will compose all the tile images into a final result.
     void createComposeDDL();
-    const sk_sp<SkDeferredDisplayList>& composeDDL() const { return fComposeDDL; }
+    const sk_sp<GrDeferredDisplayList>& composeDDL() const { return fComposeDDL; }
 
     // For each tile, create its DDL and then draw it - all on a single thread. This is to allow
     // comparison w/ just drawing the SKP directly (i.e., drawAllTilesDirectly). The
@@ -142,7 +142,7 @@ private:
     skia_private::AutoTArray<TileData>   fTiles;        // 'fNumXDivisions' x
     // 'fNumYDivisions'
 
-    sk_sp<SkDeferredDisplayList>           fComposeDDL;
+    sk_sp<GrDeferredDisplayList>           fComposeDDL;
 
     const SkSurfaceCharacterization        fDstCharacterization;
 };

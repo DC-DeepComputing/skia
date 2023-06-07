@@ -24,8 +24,8 @@ class SkColorSpace;
 
 /** \class SkSurfaceCharacterization
     A surface characterization contains all the information Ganesh requires to makes its internal
-    rendering decisions. When passed into a SkDeferredDisplayListRecorder it will copy the
-    data and pass it on to the SkDeferredDisplayList if/when it is created. Note that both of
+    rendering decisions. When passed into a GrDeferredDisplayListRecorder it will copy the
+    data and pass it on to the GrDeferredDisplayList if/when it is created. Note that both of
     those objects (the Recorder and the DisplayList) will take a ref on the
     GrContextThreadSafeProxy and SkColorSpace objects.
 */
@@ -121,7 +121,7 @@ private:
     friend class SkSurface_Ganesh;           // for 'set' & 'config'
     friend class GrVkSecondaryCBDrawContext; // for 'set' & 'config'
     friend class GrContextThreadSafeProxy; // for private ctor
-    friend class SkDeferredDisplayListRecorder; // for 'config'
+    friend class GrDeferredDisplayListRecorder; // for 'config'
     friend class SkSurface; // for 'config'
 
     SkDEBUGCODE(void validate() const;)

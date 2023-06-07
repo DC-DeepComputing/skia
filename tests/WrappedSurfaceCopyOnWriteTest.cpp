@@ -10,7 +10,6 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
-#include "include/core/SkDeferredDisplayListRecorder.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
@@ -23,6 +22,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
 #include "include/private/SkColorData.h"
+#include "include/private/chromium/GrDeferredDisplayListRecorder.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkCanvasPriv.h"
@@ -91,7 +91,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(WrappedSurfaceCopyOnWrite,
 
     SkSurfaceCharacterization characterization;
     REPORTER_ASSERT(reporter, surf->characterize(&characterization));
-    SkDeferredDisplayListRecorder recorder(characterization);
+    GrDeferredDisplayListRecorder recorder(characterization);
 
     // Using an image from a direct context on a recording context should trigger using the copy.
     surf = makeDirectBackendSurface();

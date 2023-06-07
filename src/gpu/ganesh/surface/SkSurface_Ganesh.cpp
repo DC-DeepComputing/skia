@@ -10,9 +10,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
-#include "include/core/SkDeferredDisplayList.h"
 #include "include/core/SkImage.h"
-#include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
@@ -26,6 +24,7 @@
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/base/SkTo.h"
+#include "include/private/chromium/GrDeferredDisplayList.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkSurfacePriv.h"
@@ -394,7 +393,10 @@ bool SkSurface_Ganesh::onIsCompatible(const SkSurfaceCharacterization& character
            characterization.surfaceProps() == fDevice->surfaceProps();
 }
 
-bool SkSurface_Ganesh::onDraw(sk_sp<const SkDeferredDisplayList> ddl, SkIPoint offset) {
+bool SkSurface_Ganesh::draw(const GrDeferredDisplayList* ddl, int xOffset, int yOffset) {
+    if (xOffset != 0 || yOffset != 0) {
+        return false; // the offsets currently aren't supported
+    }
     if (!ddl || !this->isCompatible(ddl->characterization())) {
         return false;
     }
@@ -406,7 +408,8 @@ bool SkSurface_Ganesh::onDraw(sk_sp<const SkDeferredDisplayList> ddl, SkIPoint o
 
     GrSurfaceProxyView view = fDevice->readSurfaceView();
 
-    direct->priv().createDDLTask(std::move(ddl), view.asRenderTargetProxyRef(), offset);
+    direct->priv().createDDLTask(sk_ref_sp(ddl), view.asRenderTargetProxyRef(),
+                                 { xOffset, yOffset });
     return true;
 }
 

@@ -7,14 +7,14 @@
 
 #include "src/gpu/ganesh/GrDDLTask.h"
 
-#include "include/core/SkDeferredDisplayList.h"
-#include "src/core/SkDeferredDisplayListPriv.h"
+#include "include/private/chromium/GrDeferredDisplayList.h"
+#include "src/gpu/ganesh/GrDeferredDisplayListPriv.h"
 #include "src/gpu/ganesh/GrRenderTargetProxy.h"
 #include "src/gpu/ganesh/GrResourceAllocator.h"
 
 GrDDLTask::GrDDLTask(GrDrawingManager* drawingMgr,
                      sk_sp<GrRenderTargetProxy> ddlTarget,
-                     sk_sp<const SkDeferredDisplayList> ddl,
+                     sk_sp<const GrDeferredDisplayList> ddl,
                      SkIPoint offset)
         : fDDL(std::move(ddl))
         , fDDLTarget(std::move(ddlTarget))

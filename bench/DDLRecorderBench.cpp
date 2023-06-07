@@ -10,9 +10,9 @@
 #include "bench/Benchmark.h"
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkDeferredDisplayListRecorder.h"
 #include "include/core/SkSurfaceCharacterization.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/private/chromium/GrDeferredDisplayListRecorder.h"
 
 static SkSurfaceCharacterization create_characterization(GrDirectContext* direct) {
     size_t maxResourceBytes = direct->getResourceCacheLimit();
@@ -77,7 +77,7 @@ private:
 
         SkSurfaceCharacterization c = create_characterization(context);
 
-        fRecorder = std::make_unique<SkDeferredDisplayListRecorder>(c);
+        fRecorder = std::make_unique<GrDeferredDisplayListRecorder>(c);
     }
 
     // We defer the clean up of the DDLs so it is done outside of the timing loop
@@ -85,8 +85,8 @@ private:
         fDDLs.clear();
     }
 
-    std::unique_ptr<SkDeferredDisplayListRecorder>      fRecorder = nullptr;
-    std::vector<sk_sp<SkDeferredDisplayList>>           fDDLs;
+    std::unique_ptr<GrDeferredDisplayListRecorder>      fRecorder = nullptr;
+    std::vector<sk_sp<GrDeferredDisplayList>>           fDDLs;
 
     using INHERITED = Benchmark;
 };

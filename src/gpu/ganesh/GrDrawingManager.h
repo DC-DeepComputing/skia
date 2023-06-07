@@ -35,7 +35,7 @@ class GrResourceAllocator;
 class GrSemaphore;
 class GrSurfaceProxyView;
 class GrTextureResolveRenderTask;
-class SkDeferredDisplayList;
+class GrDeferredDisplayList;
 namespace skgpu {
 namespace ganesh {
 class OpsTask;
@@ -174,8 +174,8 @@ public:
     skgpu::ganesh::OpsTask* getLastOpsTask(const GrSurfaceProxy*) const;
     void setLastRenderTask(const GrSurfaceProxy*, GrRenderTask*);
 
-    void moveRenderTasksToDDL(SkDeferredDisplayList* ddl);
-    void createDDLTask(sk_sp<const SkDeferredDisplayList>,
+    void moveRenderTasksToDDL(GrDeferredDisplayList* ddl);
+    void createDDLTask(sk_sp<const GrDeferredDisplayList>,
                        sk_sp<GrRenderTargetProxy> newDest,
                        SkIPoint offset);
 

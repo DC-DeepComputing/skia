@@ -7,12 +7,12 @@
 
 #include "include/private/chromium/GrVkSecondaryCBDrawContext.h"
 
-#include "include/core/SkDeferredDisplayList.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkSurfaceCharacterization.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/vk/GrVkTypes.h"
+#include "include/private/chromium/GrDeferredDisplayList.h"
 #include "src/core/SkSurfacePriv.h"
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -185,9 +185,9 @@ bool GrVkSecondaryCBDrawContext::isCompatible(
 }
 
 #ifndef SK_DDL_IS_UNIQUE_POINTER
-bool GrVkSecondaryCBDrawContext::draw(sk_sp<const SkDeferredDisplayList> ddl) {
+bool GrVkSecondaryCBDrawContext::draw(sk_sp<const GrDeferredDisplayList> ddl) {
 #else
-bool GrVkSecondaryCBDrawContext::draw(const SkDeferredDisplayList* ddl) {
+bool GrVkSecondaryCBDrawContext::draw(const GrDeferredDisplayList* ddl) {
 #endif
     if (!ddl || !this->isCompatible(ddl->characterization())) {
         return false;

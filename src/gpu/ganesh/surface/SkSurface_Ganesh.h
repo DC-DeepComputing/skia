@@ -22,7 +22,7 @@ class GrRecordingContext;
 class SkCanvas;
 class SkCapabilities;
 class SkColorSpace;
-class SkDeferredDisplayList;
+class GrDeferredDisplayList;
 class SkImage;
 class SkPaint;
 class SkPixmap;
@@ -34,7 +34,6 @@ namespace ganesh {
 class Device;
 }
 }  // namespace skgpu
-struct SkIPoint;
 struct SkIRect;
 struct SkISize;
 
@@ -86,7 +85,7 @@ public:
                 SkScalar y,
                 const SkSamplingOptions&,
                 const SkPaint* paint) override;
-    bool onDraw(sk_sp<const SkDeferredDisplayList>, SkIPoint offset) override;
+    bool draw(const GrDeferredDisplayList*, int xOffset, int yOffset) override;
 
     sk_sp<const SkCapabilities> onCapabilities() override;
 
