@@ -4729,6 +4729,17 @@ SI U16 div255_accurate(U16 v) {
 #endif
 }
 
+/**
+ * approx_mul_div255 is generally faster than div255_accurate(x*y) and gives less-surprising
+ * rounding behavior than div255 on non-NEON platforms (although still +-1 error) when used in
+ * blend equations.
+*/
+SI U16 approx_mul_div255(U16 x, U16 y) {
+    // All of (x*y+x)/256, (x*y+y)/256, and (x*y+255)/256 meet the criteria above.
+    // We happen to have historically picked (x*y+x)/256. NOTE: (x*y+255)/256 = div255(x*y)
+    return (x*y + x)/256;
+}
+
 SI U16 inv(U16 v) { return 255-v; }
 
 SI U16 if_then_else(I16 c, U16 t, U16 e) { return (t & c) | (e & ~c); }
@@ -5017,16 +5028,16 @@ STAGE_PP(swap_src_dst, NoCtx) {
     BLEND_MODE(clear)    { return 0; }
     BLEND_MODE(srcatop)  { return div255( s*da + d*inv(sa) ); }
     BLEND_MODE(dstatop)  { return div255( d*sa + s*inv(da) ); }
-    BLEND_MODE(srcin)    { return div255( s*da ); }
-    BLEND_MODE(dstin)    { return div255( d*sa ); }
-    BLEND_MODE(srcout)   { return div255( s*inv(da) ); }
-    BLEND_MODE(dstout)   { return div255( d*inv(sa) ); }
-    BLEND_MODE(srcover)  { return s + div255( d*inv(sa) ); }
-    BLEND_MODE(dstover)  { return d + div255( s*inv(da) ); }
-    BLEND_MODE(modulate) { return div255( s*d ); }
+    BLEND_MODE(srcin)    { return approx_mul_div255( s, da ); }
+    BLEND_MODE(dstin)    { return approx_mul_div255( d, sa ); }
+    BLEND_MODE(srcout)   { return approx_mul_div255( s, inv(da) ); }
+    BLEND_MODE(dstout)   { return approx_mul_div255( d, inv(sa) ); }
+    BLEND_MODE(srcover)  { return s + approx_mul_div255( d, inv(sa) ); }
+    BLEND_MODE(dstover)  { return d + approx_mul_div255( s, inv(da) ); }
+    BLEND_MODE(modulate) { return approx_mul_div255( s, d ); }
     BLEND_MODE(multiply) { return div255( s*inv(da) + d*inv(sa) + s*d ); }
     BLEND_MODE(plus_)    { return min(s+d, 255); }
-    BLEND_MODE(screen)   { return s + d - div255( s*d ); }
+    BLEND_MODE(screen)   { return s + approx_mul_div255( d, inv(s) ); }
     BLEND_MODE(xor_)     { return div255( s*inv(da) + d*inv(sa) ); }
 #undef BLEND_MODE
 
