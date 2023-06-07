@@ -13,17 +13,23 @@ struct _GlobalUniforms {
 struct S {
   i: i32,
 };
-fn fnGreen_h4bf2(b: bool, _skAnonymous0: vec2<f32>) -> vec4<f32> {
+fn fnGreen_h4bf2(_skParam0: bool, _skParam1: vec2<f32>) -> vec4<f32> {
+  let b = _skParam0;
+  let _skAnonymous0 = _skParam1;
   {
     return _globalUniforms.colorGreen;
   }
 }
-fn fnRed_h4ifS(_skAnonymous1: i32, f: f32, _skAnonymous2: S) -> vec4<f32> {
+fn fnRed_h4ifS(_skParam0: i32, _skParam1: f32, _skParam2: S) -> vec4<f32> {
+  let _skAnonymous1 = _skParam0;
+  let f = _skParam1;
+  let _skAnonymous2 = _skParam2;
   {
     return _globalUniforms.colorRed;
   }
 }
-fn main(coords: vec2<f32>) -> vec4<f32> {
+fn main(_skParam0: vec2<f32>) -> vec4<f32> {
+  let coords = _skParam0;
   {
     var _skTemp3: vec4<f32>;
     if bool(_globalUniforms.colorGreen.y) {
