@@ -87,6 +87,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "629503c3_36d56792",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-07T16:20:29Z",
+      "side": 1,
+      "message": "I\u0027ve removed `approx_mul_div255` and switched to `div255_accurate` for the blends that used `approx_scale` in the legacy xfermode code. I got cold feet just switching all of them to the accurate division, and I also figured it\u0027d be too conservative to only update the X-out and X-in blend modes.",
+      "parentUuid": "dacb4c32_24293cdd",
+      "revId": "3783059543da26aea71391e6a2388bf1d46b0069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2caa58e_703cf45c",
@@ -100,6 +118,30 @@
       "writtenOn": "2023-06-07T13:10:16Z",
       "side": 1,
       "message": "It\u0027s not clear what \"above\" is referring to here.\nIn the source code, \"above\" was referring to this statement:\n\n```\n// approx_scale(x,y) approximates div255(cast\u003cuint16_t\u003e(x)*cast\u003cuint16_t\u003e(y)) within a bit,\n// and is always perfect when x or y is 0 or 255.\n```\n\nWe could just rephrase this? Maybe a bit verbose, but there\u0027s a lot to unpack here.\n\n```\n// All of (x*y+x)/256, (x*y+y)/256, and (x*y+255)/256 are good approximations\n// of div255_accurate(x*y). They are accurate +/- 1 bit of error, and are always\n// perfect when x or y is 0 or 255.\n```",
+      "range": {
+        "startLine": 4738,
+        "startChar": 58,
+        "endLine": 4738,
+        "endChar": 81
+      },
+      "revId": "3783059543da26aea71391e6a2388bf1d46b0069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72d068ee_18ec158a",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 4738,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-07T16:20:29Z",
+      "side": 1,
+      "message": "good suggestion, but n/a",
+      "parentUuid": "b2caa58e_703cf45c",
       "range": {
         "startLine": 4738,
         "startChar": 58,
