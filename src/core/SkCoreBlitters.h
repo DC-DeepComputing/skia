@@ -15,6 +15,7 @@
 #include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkShaderBase.h"
 
+class SkRasterPipeline;
 class SkSurfaceProps;
 
 class SkRasterBlitter : public SkBlitter {
