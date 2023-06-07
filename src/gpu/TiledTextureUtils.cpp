@@ -196,6 +196,11 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
     gNumTilesDrawn.store(0, std::memory_order_relaxed);
 #endif
 
+    SkDebugf("srcToDst: \n%f %f %f\n%f %f %f\n%f %f %f\n",
+             srcToDst[0], srcToDst[1], srcToDst[2],
+             srcToDst[3], srcToDst[4], srcToDst[5],
+             srcToDst[6], srcToDst[7], srcToDst[8]);
+
     for (int x = 0; x <= nx; x++) {
         for (int y = 0; y <= ny; y++) {
             SkRect tileR;
@@ -216,6 +221,10 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                                             SkIntToScalar(iTileR.fTop));
             SkRect rectToDraw = tileR;
             srcToDst.mapRect(&rectToDraw);
+
+            SkIRect beforeR = iTileR;
+            SkVector beforeV = offset;
+
             if (sampling.filter != SkFilterMode::kNearest || sampling.useCubic) {
                 SkIRect iClampRect;
 
@@ -232,6 +241,12 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                 int outset = sampling.useCubic ? kBicubicFilterTexelPad : 1;
                 clamped_outset_with_offset(&iTileR, outset, &offset, iClampRect);
             }
+
+            SkDebugf("Before %d %d %d %d %f %f -> after %d %d %d %d %f %f\n",
+                     beforeR.fLeft, beforeR.fTop, beforeR.fRight, beforeR.fBottom,
+                     beforeV.fX, beforeV.fY,
+                     iTileR.fLeft, iTileR.fTop, iTileR.fRight, iTileR.fBottom,
+                     offset.fX, offset.fY);
 
             // We must subset as a bitmap and then turn it into an SkImage if we want caching to
             // work. Image subsets always make a copy of the pixels and lose the association with
@@ -257,15 +272,26 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
 
                 // now offset it to make it "local" to our tmp bitmap
                 tileR.offset(-offset.fX, -offset.fY);
+                SkRect newSrcRect = tileR;
                 SkMatrix offsetSrcToDst = srcToDst;
                 offsetSrcToDst.preTranslate(offset.fX, offset.fY);
+
+                SkDebugf("newSrc %d %d newSrcRect %f %f %f %f w %f h %f destRect %f %f\n",
+                         subsetBmp.width(), subsetBmp.height(),
+                         newSrcRect.fLeft, newSrcRect.fTop, newSrcRect.fRight, newSrcRect.fBottom,
+                         newSrcRect.width(), newSrcRect.height(),
+                         rectToDraw.width(), rectToDraw.height());
+
+                SkASSERT(SkScalarNearlyEqual(newSrcRect.width(), rectToDraw.width()));
+                SkASSERT(SkScalarNearlyEqual(newSrcRect.height(), rectToDraw.height()));
+
                 drawImage(rContext,
                           sdc,
                           clip,
                           matrixProvider,
                           paint,
                           image.get(),
-                          tileR,
+                          newSrcRect,
                           rectToDraw,
                           nullptr,
                           offsetSrcToDst,
