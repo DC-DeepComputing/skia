@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f88a3c2_b71b7ef7",
+        "filename": "src/gpu/graphite/BackendTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-07T16:11:15Z",
+      "side": 0,
+      "message": "I looked through the history for this CL. Originally Greg would clean up the Metal texture if valid was false, but he changed his approach and didn\u0027t remove this variable. I believe his intent was that you can overwrite the BackendTexture data regardless of mixing backends, but I added the assert just to make sure we don\u0027t.",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 33
+      },
+      "revId": "a01f49f539abacb1577d0e3fc9374ee41f8d0238",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
