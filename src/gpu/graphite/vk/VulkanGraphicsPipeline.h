@@ -9,18 +9,23 @@
 #define skgpu_graphite_VulkanGraphicsPipeline_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/Blend.h"
+#include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 
 namespace skgpu::graphite {
 
 class VulkanSharedContext;
+class Attribute;
 
 class VulkanGraphicsPipeline final : public GraphicsPipeline {
 public:
     inline static constexpr unsigned int kIntrinsicUniformBufferIndex = 0;
     inline static constexpr unsigned int kRenderStepUniformBufferIndex = 1;
     inline static constexpr unsigned int kPaintUniformBufferIndex = 2;
+    inline static constexpr unsigned int kNumUniformBuffers = 3;
 
     // For now, rigidly assign all uniform buffer descriptors to be in one descriptor set in binding
     // 0 and all texture/samplers to be in binding 1.
@@ -32,8 +37,18 @@ public:
     inline static constexpr unsigned int kInstanceBufferIndex = 1;
     inline static constexpr unsigned int kNumInputBuffers = 2;
 
-    static sk_sp<VulkanGraphicsPipeline> Make(const VulkanSharedContext*
-                                              /* TODO: fill out argument list */);
+    static sk_sp<VulkanGraphicsPipeline> Make(const VulkanSharedContext* sharedContext,
+                                              VkShaderModule vertexShader,
+                                              SkSpan<const Attribute> vertexAttrs,
+                                              SkSpan<const Attribute> instanceAttrs,
+                                              VkShaderModule fragShader,
+                                              DepthStencilSettings,
+                                              PrimitiveType,
+                                              int numTexturesAndSamplers,
+                                              const BlendInfo&,
+                                              bool hasRenderStepUniforms,
+                                              uint32_t numSamples);
+
 
     ~VulkanGraphicsPipeline() override {}
 
@@ -42,18 +57,29 @@ public:
         return fPipelineLayout;
     }
 
-    // TODO: Implement.
-    bool hasStepUniforms() const { return false; }
-    bool hasFragment() const { return false; }
+    bool hasStepUniforms() const { return fHasStepUniforms; }
+    bool hasFragment() const { return fHasFragment; }
+
+    uint32_t numTextureSamplers() const { return fNumTextureSamplers; }
 
 private:
-    VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext
-                           /* TODO: fill out argument list */)
-        : GraphicsPipeline(sharedContext) { }
+    VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
+                           VkPipelineLayout,
+                           bool hasStepUniforms,
+                           bool hasFragmentShader,
+                           uint32_t numTextureSamplers);
 
     void freeGpuData() override;
 
-    VkPipelineLayout  fPipelineLayout;
+    VkPipelineLayout  fPipelineLayout = VK_NULL_HANDLE;
+
+    // #ifdef SK_DEBUG
+
+    // #endif
+
+    bool fHasStepUniforms;
+    bool fHasFragment;
+    uint32_t fNumTextureSamplers;
 };
 
 } // namespace skgpu::graphite

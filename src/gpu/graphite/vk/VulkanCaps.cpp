@@ -47,12 +47,14 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     // give the minimum max size across all configs. So for simplicity we will use that for now.
     fMaxTextureSize = std::min(physDevProperties.limits.maxImageDimension2D, (uint32_t)INT_MAX);
 
-    fRequiredUniformBufferAlignment = 1;
+    fRequiredUniformBufferAlignment = 256;//1;
     fRequiredStorageBufferAlignment = 1;
     fRequiredTransferBufferAlignment = 4;
 
-    fResourceBindingReqs.fUniformBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
+    //     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
+    fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140; // normally: Layout::kStd430;
+    // fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
     fResourceBindingReqs.fDistinctIndexRanges = false;
 
@@ -88,6 +90,13 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
 
     if (!contextOptions.fDisableDriverCorrectnessWorkarounds) {
         this->applyDriverCorrectnessWorkarounds(physDevProperties);
+    }
+
+    if (physDevProperties.vendorID == kAMD_VkVendor) {
+        // AMD advertises support for MAX_UINT vertex attributes but in reality only supports 32.
+        fMaxVertexAttributes = 32;
+    } else {
+        fMaxVertexAttributes = physDevProperties.limits.maxVertexInputAttributes;
     }
 
     this->finishInitialization(contextOptions);

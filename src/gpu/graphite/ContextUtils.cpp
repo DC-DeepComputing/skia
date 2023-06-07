@@ -428,6 +428,9 @@ FragSkSLInfo GetSkSLFS(const Caps* caps,
                                      useStorageBuffers,
                                      /*numTexturesAndSamplersUsed=*/&result.fNumTexturesAndSamplers,
                                      writeSwizzle);
+    if (result.fNumTexturesAndSamplers != 0) {
+        bool test = true;
+    }
 
     // Extract blend info after integrating the RenderStep into the final fragment shader in case
     // that changes the HW blending choice to handle analytic coverage.
