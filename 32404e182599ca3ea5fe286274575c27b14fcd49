@@ -93,6 +93,30 @@
       },
       "revId": "32404e182599ca3ea5fe286274575c27b14fcd49",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c2a5de6_e1d54bb5",
+        "filename": "tests/sksl/shared/SwizzleAsLValue.wgsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-07T19:07:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a379e24_0ba6a3d2",
+      "range": {
+        "startLine": 14,
+        "startChar": 2,
+        "endLine": 14,
+        "endChar": 32
+      },
+      "revId": "32404e182599ca3ea5fe286274575c27b14fcd49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
