@@ -11,7 +11,8 @@ struct _GlobalUniforms {
   testMatrix2x2: mat2x2<f32>,
 };
 @binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
-fn main(_skAnonymous0: vec2<f32>) -> vec4<f32> {
+fn main(_skParam0: vec2<f32>) -> vec4<f32> {
+  let _skAnonymous0 = _skParam0;
   {
     var ok: bool = true;
     var i: i32 = 5;
