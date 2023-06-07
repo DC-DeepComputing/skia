@@ -287,6 +287,7 @@ void draw_image(GrRecordingContext* rContext,
     const SkMatrix& ctm(matrixProvider.localToDevice());
     auto ib = as_IB(image);
     if (tm == SkTileMode::kClamp && !ib->isYUVA() && can_use_draw_texture(paint, sampling)) {
+        SkDebugf("drawTexture ---------\n");
         // We've done enough checks above to allow us to pass ClampNearest() and not check for
         // scaling adjustments.
         auto [view, ct] = skgpu::ganesh::AsView(rContext, image, GrMipmapped::kNo);
@@ -340,6 +341,7 @@ void draw_image(GrRecordingContext* rContext,
         SkMatrix combinedMatrix;
         combinedMatrix.setConcat(ctm, srcToDst);
         if (can_ignore_linear_filtering_subset(src, combinedMatrix, sdc->numSamples())) {
+            SkDebugf("-------- dropping\n");
             restrictToSubset = false;
         }
     }
