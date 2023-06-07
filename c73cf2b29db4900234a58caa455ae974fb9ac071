@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cdb2c603_462c1f91",
+        "filename": "include/gpu/graphite/BackendSemaphore.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-07T13:05:30Z",
+      "side": 1,
+      "message": "I don\u0027t see these definitions, are they going to be defined in backend specific files in another CL?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 39
+      },
+      "revId": "c73cf2b29db4900234a58caa455ae974fb9ac071",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3fe5d502_03f1c0f7",
         "filename": "src/gpu/graphite/BackendSemaphore.cpp",
         "patchSetId": 2
@@ -38,6 +61,30 @@
       "side": 1,
       "message": "Though that\u0027s still odd, in that you can take a valid Backend*, copy to it from another backend type and make it invalid, and then copy to it again and suddenly it\u0027s valid again...",
       "parentUuid": "3fe5d502_03f1c0f7",
+      "range": {
+        "startLine": 25,
+        "startChar": 5,
+        "endLine": 27,
+        "endChar": 5
+      },
+      "revId": "c73cf2b29db4900234a58caa455ae974fb9ac071",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a7e4378_d0c9abf2",
+        "filename": "src/gpu/graphite/BackendSemaphore.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-07T13:05:30Z",
+      "side": 1,
+      "message": "Yeah, this is odd. I guess the pattern is that a BackendSemaphore/Texture\u0027s backend API can never change, so copying/assigning between backend APIs just leaves it in an invalid state. Given that, I agree with your first comment that the code should be checking `valid` to avoid copying the data fields.\n\nIf all the backend types were trivial, then I think we could relax that restriction and just say the backend semaphore state is completely copied, including the API type. If they aren\u0027t trivial and we have to destruct the prior backend\u0027s types, it would work but would require rewriting everything to follow the pattern in `Geometry` or `Shape`. I don\u0027t know if that\u0027s worth it given the objects ought to all be the same backend in a given process.",
+      "parentUuid": "bd40bb9d_6573cbc4",
       "range": {
         "startLine": 25,
         "startChar": 5,
