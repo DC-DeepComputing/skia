@@ -35,7 +35,7 @@ fn main(_stageOut: ptr<function, FSOut>) {
         (*_stageOut).sk_FragColor = (*_stageOut).sk_FragColor + 0.25;
       }
       continuing {
-        break if !((*_stageOut).sk_FragColor.x < 0.75);
+        break if 0.75 < (*_stageOut).sk_FragColor.x;
       }
     }
     {
@@ -54,7 +54,7 @@ fn main(_stageOut: ptr<function, FSOut>) {
         }
         continuing {
           i = i + i32(1);
-          break if !(i < 10);
+          break if 10 < i;
         }
       }
     }
