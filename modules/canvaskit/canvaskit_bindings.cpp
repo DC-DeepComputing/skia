@@ -1935,7 +1935,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                                 int tileW, int tileH)->sk_sp<SkShader> {
             // if tileSize is empty (e.g. tileW <= 0 or tileH <= 0, it will be ignored.
             SkISize tileSize = SkISize::Make(tileW, tileH);
-            return SkPerlinNoiseShader::MakeFractalNoise(baseFreqX, baseFreqY,
+            return SkShaders::MakeFractalNoise(baseFreqX, baseFreqY,
                                                          numOctaves, seed, &tileSize);
         }))
          // Here and in other gradient functions, cPtr is a pointer to an array of data
@@ -2015,7 +2015,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                                 int tileW, int tileH)->sk_sp<SkShader> {
             // if tileSize is empty (e.g. tileW <= 0 or tileH <= 0, it will be ignored.
             SkISize tileSize = SkISize::Make(tileW, tileH);
-            return SkPerlinNoiseShader::MakeTurbulence(baseFreqX, baseFreqY,
+            return SkShaders::MakeTurbulence(baseFreqX, baseFreqY,
                                                        numOctaves, seed, &tileSize);
         }))
         .class_function("_MakeTwoPointConicalGradient", optional_override([](
