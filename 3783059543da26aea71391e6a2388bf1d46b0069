@@ -16,6 +16,46 @@
       "message": "When testing against the chrome bug, `div255_accurate` also behaved correctly, so we could just update the blends to use that instead of `div255` and avoid adding a new function.\n\nHowever, SkVx::div255 and ::approx_scale are only used by Sk4px and the ARGB legacy blitter, both of which could maybe go away soon. Then RP would be the only place for these functions. At that point, having `approx_mul_div255` seems acceptable to me.",
       "revId": "3783059543da26aea71391e6a2388bf1d46b0069",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b4c67c5_28a7f18c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-07T13:10:16Z",
+      "side": 1,
+      "message": "Would like brianosman@\u0027s opinion as well, but this seems reasonable to me as long as it doesn\u0027t show up in a profile.",
+      "revId": "3783059543da26aea71391e6a2388bf1d46b0069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2caa58e_703cf45c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 4738,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-07T13:10:16Z",
+      "side": 1,
+      "message": "It\u0027s not clear what \"above\" is referring to here.\nIn the source code, \"above\" was referring to this statement:\n\n```\n// approx_scale(x,y) approximates div255(cast\u003cuint16_t\u003e(x)*cast\u003cuint16_t\u003e(y)) within a bit,\n// and is always perfect when x or y is 0 or 255.\n```\n\nWe could just rephrase this? Maybe a bit verbose, but there\u0027s a lot to unpack here.\n\n```\n// All of (x*y+x)/256, (x*y+y)/256, and (x*y+255)/256 are good approximations\n// of div255_accurate(x*y). They are accurate +/- 1 bit of error, and are always\n// perfect when x or y is 0 or 255.\n```",
+      "range": {
+        "startLine": 4738,
+        "startChar": 58,
+        "endLine": 4738,
+        "endChar": 81
+      },
+      "revId": "3783059543da26aea71391e6a2388bf1d46b0069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
