@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "34e2afab_d65b5ef2",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-07T18:21:36Z",
+      "side": 1,
+      "message": "Do we want to explicitly mention that this means the images must be already instantiated?",
+      "revId": "e56b57f835cec9f4e1bee98d51d819f34cebced2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8fc0ded4_62674b8b",
         "filename": "src/gpu/graphite/ImageFactories.cpp",
         "patchSetId": 3
@@ -31,6 +48,41 @@
       "writtenOn": "2023-06-07T18:16:32Z",
       "side": 1,
       "message": "Moved this down here to match the order in the .h file.",
+      "revId": "e56b57f835cec9f4e1bee98d51d819f34cebced2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d728e78_b3700b9c",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-07T18:21:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8fc0ded4_62674b8b",
+      "revId": "e56b57f835cec9f4e1bee98d51d819f34cebced2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c35ce4cc_7f77db24",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-07T18:21:36Z",
+      "side": 1,
+      "message": "Missing \u0027 \u0027 ?",
       "revId": "e56b57f835cec9f4e1bee98d51d819f34cebced2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
