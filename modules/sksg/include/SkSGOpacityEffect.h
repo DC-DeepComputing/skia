@@ -10,6 +10,12 @@
 
 #include "modules/sksg/include/SkSGEffectNode.h"
 
+namespace skottie {
+namespace internal {
+    class AnimationBuilder;
+} // namespace internal
+} // namespace skottie
+
 namespace sksg {
 
 /**
@@ -33,6 +39,7 @@ protected:
     SkRect onRevalidate(InvalidationController*, const SkMatrix&) override;
 
 private:
+    friend class skottie::internal::AnimationBuilder;
     float fOpacity;
 
     using INHERITED = EffectNode;
