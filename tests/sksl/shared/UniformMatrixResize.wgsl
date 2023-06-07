@@ -24,13 +24,12 @@ fn main(_skParam0: vec2<f32>) -> vec4<f32> {
     var _skTemp2: bool;
     let _skTemp3 = resizeMatrix_f22();
     let _skTemp4 = _skTemp3;
-    let _skTemp5 = mat2x2<f32>(1.0, 2.0, 4.0, 5.0);
-    if (all(_skTemp4[0] == _skTemp5[0]) && all(_skTemp4[1] == _skTemp5[1])) {
-      let _skTemp6 = resizeMatrix_f22();
-      let _skTemp7 = _skTemp6;
-      let _skTemp8 = mat3x3<f32>(_skTemp7[0][0], _skTemp7[0][1], 0.0, _skTemp7[1][0], _skTemp7[1][1], 0.0, 0.0, 0.0, 1.0);
-      let _skTemp9 = mat3x3<f32>(1.0, 2.0, 0.0, 4.0, 5.0, 0.0, 0.0, 0.0, 1.0);
-      _skTemp2 = (all(_skTemp8[0] == _skTemp9[0]) && all(_skTemp8[1] == _skTemp9[1]) && all(_skTemp8[2] == _skTemp9[2]));
+    if (all(_skTemp4[0] == mat2x2<f32>(1.0, 2.0, 4.0, 5.0)[0]) && all(_skTemp4[1] == mat2x2<f32>(1.0, 2.0, 4.0, 5.0)[1])) {
+      let _skTemp5 = resizeMatrix_f22();
+      let _skTemp6 = _skTemp5;
+      let _skTemp7 = mat3x3<f32>(_skTemp6[0][0], _skTemp6[0][1], 0.0, _skTemp6[1][0], _skTemp6[1][1], 0.0, 0.0, 0.0, 1.0);
+      let _skTemp8 = mat3x3<f32>(1.0, 2.0, 0.0, 4.0, 5.0, 0.0, 0.0, 0.0, 1.0);
+      _skTemp2 = (all(_skTemp7[0] == _skTemp8[0]) && all(_skTemp7[1] == _skTemp8[1]) && all(_skTemp7[2] == _skTemp8[2]));
     } else {
       _skTemp2 = false;
     }
