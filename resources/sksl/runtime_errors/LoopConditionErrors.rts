@@ -17,7 +17,7 @@ void cond_param_val(int p) { for (int i = 0; i < p; ++i) {} }
 
 /*%%*
 missing condition
-invalid condition
+expected loop index on left hand side of condition
 invalid condition
 expected loop index on left hand side of condition
 expected loop index on left hand side of condition
