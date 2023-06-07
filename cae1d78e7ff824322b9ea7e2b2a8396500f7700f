@@ -61,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68635818_f63a5965",
+        "filename": "src/base/SkQuads.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-07T18:00:41Z",
+      "side": 1,
+      "message": "Sorry, I get it now. This is using the SkSpan(T* ptr, Integer size) constructor. Maybe explicitly add in the SkSpan to make that more apparent?",
+      "parentUuid": "52145e97_3d496e3d",
+      "range": {
+        "startLine": 160,
+        "startChar": 4,
+        "endLine": 160,
+        "endChar": 10
+      },
+      "revId": "cae1d78e7ff824322b9ea7e2b2a8396500f7700f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff599210_5e67d969",
         "filename": "src/base/SkQuads.h",
         "patchSetId": 7
