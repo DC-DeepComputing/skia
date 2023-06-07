@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0b99c6bc_144eef9e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-07T19:03:59Z",
+      "side": 1,
+      "message": "Let-declarations are just assigning a new WGSL name to an SSA ID. Since the expression is just a function parameter, there\u0027s no actual work here. It doesn\u0027t need to make any SPIR-V ops. It\u0027s got an SSA ID already, and we\u0027re just telling WGSL to associate a new name with the existing SSA ID.",
+      "parentUuid": "b5e2c206_9af65093",
+      "range": {
+        "startLine": 13,
+        "startChar": 34,
+        "endLine": 14,
+        "endChar": 22
+      },
+      "revId": "32404e182599ca3ea5fe286274575c27b14fcd49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "40813438_42adda7e",
         "filename": "tests/sksl/shared/SwizzleAsLValue.wgsl",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-07T18:51:46Z",
       "side": 1,
       "message": "The alias is not necessary for an unnamed variable though I\u0027m not sure if eliminating it is worth the extra computation.",
+      "range": {
+        "startLine": 14,
+        "startChar": 2,
+        "endLine": 14,
+        "endChar": 32
+      },
+      "revId": "32404e182599ca3ea5fe286274575c27b14fcd49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a379e24_0ba6a3d2",
+        "filename": "tests/sksl/shared/SwizzleAsLValue.wgsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-07T19:03:59Z",
+      "side": 1,
+      "message": "Good point, that seems easy enough to fix",
+      "parentUuid": "40813438_42adda7e",
       "range": {
         "startLine": 14,
         "startChar": 2,
