@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50405218_ff49a975",
+        "filename": "src/effects/imagefilters/SkMagnifierImageFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-07T20:48:04Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this comment",
+      "range": {
+        "startLine": 514,
+        "startChar": 0,
+        "endLine": 519,
+        "endChar": 44
+      },
+      "revId": "5b01cd14243b031fb0084cc7b92786cae2980701",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
