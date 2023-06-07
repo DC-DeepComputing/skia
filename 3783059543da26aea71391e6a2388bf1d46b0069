@@ -52,6 +52,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8d00d16_75e4e20a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-07T14:42:06Z",
+      "side": 1,
+      "message": "Just to clarify: Even though it\u0027s been around for a while, it seems like the new code has the odd behavior of not being symmetric? (I\u0027m assuming the +-1 rounding differences occur at different places, depending on the value of x? So even for blend modes that should be symmetric, we\u0027re going to get different results if we swap s and d?)",
+      "revId": "3783059543da26aea71391e6a2388bf1d46b0069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2caa58e_703cf45c",
