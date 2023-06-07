@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f94a7c2_a8808731",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-07T12:57:16Z",
+      "side": 1,
+      "message": "When testing against the chrome bug, `div255_accurate` also behaved correctly, so we could just update the blends to use that instead of `div255` and avoid adding a new function.\n\nHowever, SkVx::div255 and ::approx_scale are only used by Sk4px and the ARGB legacy blitter, both of which could maybe go away soon. Then RP would be the only place for these functions. At that point, having `approx_mul_div255` seems acceptable to me.",
+      "revId": "3783059543da26aea71391e6a2388bf1d46b0069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
