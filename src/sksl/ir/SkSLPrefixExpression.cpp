@@ -15,6 +15,7 @@
 #include "src/sksl/SkSLErrorReporter.h"
 #include "src/sksl/SkSLOperator.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLConstructorArray.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
 #include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
@@ -147,6 +148,35 @@ static std::unique_ptr<Expression> logical_not_operand(const Context& context,
             if (prefix.getOperator().kind() == Operator::Kind::LOGICALNOT) {
                 prefix.operand()->fPosition = pos;
                 return std::move(prefix.operand());
+            }
+            break;
+        }
+        case Expression::Kind::kBinary: {
+            BinaryExpression& binary = operand->as<BinaryExpression>();
+            switch (binary.getOperator().kind()) {
+                case OperatorKind::LT:
+                case OperatorKind::LTEQ:
+                case OperatorKind::GT:
+                case OperatorKind::GTEQ:
+                    // Convert `!(a < b)` into `(b < a)`.
+                    return BinaryExpression::Make(context, pos, std::move(binary.right()),
+                                                  binary.getOperator(), std::move(binary.left()),
+                                                  &binary.type());
+
+                case OperatorKind::EQEQ:
+                    // Convert `!(a == b)` into `(a != b)`.
+                    return BinaryExpression::Make(context, pos, std::move(binary.left()),
+                                                  OperatorKind::NEQ, std::move(binary.right()),
+                                                  &binary.type());
+
+                case OperatorKind::NEQ:
+                    // Convert `!(a != b)` into `(a == b)`.
+                    return BinaryExpression::Make(context, pos, std::move(binary.left()),
+                                                  OperatorKind::EQEQ, std::move(binary.right()),
+                                                  &binary.type());
+
+                default:
+                    break;
             }
             break;
         }
