@@ -10,6 +10,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkPoint_impl.h"
+#include "src/base/SkCubics.h"
 #include "src/base/SkQuads.h"
 
 #include <cstddef>
@@ -119,6 +120,10 @@ struct Point {
     double x, y;
 };
 
+Point operator- (Point a) {
+    return {-a.x, -a.y};
+}
+
 Point operator+ (Point a, Point b) {
     return {a.x + b.x, a.y + b.y};
 }
@@ -131,6 +136,41 @@ Point operator* (double s, Point a) {
     return {s * a.x, s * a.y};
 }
 }  // namespace
+
+SkSpan<const float>
+SkBezierCubic::IntersectWithHorizontalLine(
+        SkSpan<const SkPoint> controlPoints, float yIntercept, float* intersectionStorage) {
+    SkASSERT(controlPoints.size() >= 4);
+    const Point P0 = controlPoints[0],
+                P1 = controlPoints[1],
+                P2 = controlPoints[2],
+                P3 = controlPoints[3];
+
+    const Point A =   -P0 + 3*P1 - 3*P2 + P3,
+                B =  3*P0 - 6*P1 + 3*P2,
+                C = -3*P0 + 3*P1,
+                D =    P0;
+
+    return Intersect(A.x, B.x, C.x, D.x, A.y, B.y, C.y, D.y, yIntercept, intersectionStorage);
+}
+
+SkSpan<const float>
+SkBezierCubic::Intersect(double AX, double BX, double CX, double DX,
+                         double AY, double BY, double CY, double DY,
+                         float toIntersect, float intersectionsStorage[3]) {
+    double roots[3];
+    SkSpan<double> ts = SkSpan(roots,
+                               SkCubics::RootsReal(AY, BY, CY, DY - toIntersect, roots));
+
+    int intersectionCount = 0;
+    for (double t : ts) {
+        if (0 <= t && t <= 1) {
+            intersectionsStorage[intersectionCount++] = SkCubics::EvalAt(AX, BX, CX, DX, t);
+        }
+    }
+
+    return {intersectionsStorage, intersectionCount};
+}
 
 SkSpan<const float>
 SkBezierQuad::IntersectWithHorizontalLine(SkSpan<const SkPoint> controlPoints, float yIntercept,
@@ -184,3 +224,4 @@ SkSpan<const float> SkBezierQuad::Intersect(
 
     return SkSpan{intersectionStorage, intersectionCount};
 }
+
