@@ -489,6 +489,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea39a1a7_d194bd3b",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-07T14:42:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "64a6c099_84d41be2",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c79b628_288f287e",
