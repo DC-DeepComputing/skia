@@ -231,6 +231,25 @@ SK_API sk_sp<SkImage> TextureFromYUVATextures(
         TextureReleaseProc = nullptr,
         ReleaseContext = nullptr);
 
+/** Creates an SkImage from YUV[A] planar SkImages associated with the recorder.
+
+    The images should have kGraphite type. The resulting SkImage will not take a ref on
+    the given SkImages but will take a ref on the underlying TextureProxies. The releaseProcs,
+    if any, for those Textures will be the ones set when the given SkImages were created.
+
+     @param recorder            The recorder.
+     @param yuvaInfo            Structure describing the YUVA format
+     @param images              A set of SkImages containing YUVA data
+     @param imageColorSpace     Range of colors of the resulting image after conversion to RGB;
+                                may be nullptr
+     @return                    created SkImage, or nullptr
+ */
+SK_API sk_sp<SkImage> TextureFromYUVAImages(
+        skgpu::graphite::Recorder* recorder,
+        const SkYUVAInfo& yuvaInfo,
+        SkSpan<sk_sp<SkImage>> images,
+        sk_sp<SkColorSpace> imageColorSpace);
+
 /** Returns subset of this image as a texture-backed image.
 
     Returns nullptr if any of the following are true:
