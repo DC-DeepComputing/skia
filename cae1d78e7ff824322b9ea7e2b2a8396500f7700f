@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e46a493_4c181df5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-07T19:39:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaf9037c_35c5600f",
+      "revId": "cae1d78e7ff824322b9ea7e2b2a8396500f7700f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52145e97_3d496e3d",
@@ -83,6 +101,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "605abb3f_db689403",
+        "filename": "src/base/SkQuads.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-07T19:39:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68635818_f63a5965",
+      "range": {
+        "startLine": 160,
+        "startChar": 4,
+        "endLine": 160,
+        "endChar": 10
+      },
+      "revId": "cae1d78e7ff824322b9ea7e2b2a8396500f7700f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff599210_5e67d969",
@@ -106,6 +148,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4492dbe2_475699a0",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-07T19:39:03Z",
+      "side": 1,
+      "message": "All the constants from the quadratic formula are remove so, its AC instead of 4AC and /A instead of /2A. Removing the constants allows you to calculate the round off error of the multiplies more easily using FMA. So, the rounding error for A * C is let AC \u003d A * C, FMA(A, C, AC). This is the key to calculating the discriminant with only two bits of rounding error.",
+      "parentUuid": "ff599210_5e67d969",
+      "range": {
+        "startLine": 72,
+        "startChar": 10,
+        "endLine": 72,
+        "endChar": 29
+      },
+      "revId": "cae1d78e7ff824322b9ea7e2b2a8396500f7700f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3aa9aa20_8ba51172",
@@ -119,6 +185,30 @@
       "writtenOn": "2023-06-07T17:58:19Z",
       "side": 1,
       "message": "It\u0027s not clear from this what \"toIntersect and instersectionsStorage\" do, nor what the return value is.",
+      "range": {
+        "startLine": 77,
+        "startChar": 31,
+        "endLine": 77,
+        "endChar": 44
+      },
+      "revId": "cae1d78e7ff824322b9ea7e2b2a8396500f7700f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eea97a1_2f3f636e",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-07T19:39:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3aa9aa20_8ba51172",
       "range": {
         "startLine": 77,
         "startChar": 31,
