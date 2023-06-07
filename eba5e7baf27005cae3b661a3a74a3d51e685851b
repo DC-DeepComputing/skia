@@ -473,6 +473,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64a6c099_84d41be2",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-07T13:49:02Z",
+      "side": 1,
+      "message": "If we had started from scratch, I\u0027d suggest include/private/chromium (the need for this code to be used by clients is really limited to chromium because all others are using Skia\u0027s codecs). Regardless, there are several related classes already in include/private, so I think it\u0027s okay. We can look at moving it as a follow-up (or hiding it again, depending on how the AVIF work goes).",
+      "parentUuid": "3d961a98_e4d2611d",
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c79b628_288f287e",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 5
