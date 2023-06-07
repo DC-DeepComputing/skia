@@ -22,6 +22,30 @@
       },
       "revId": "526ab1093b164f92e410dc68fd080bf294aa21f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e95929a_edaf2824",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-07T15:18:22Z",
+      "side": 1,
+      "message": "Discussed offline. Done",
+      "parentUuid": "fd3a7744_f2a2e2cc",
+      "range": {
+        "startLine": 172,
+        "startChar": 61,
+        "endLine": 172,
+        "endChar": 86
+      },
+      "revId": "526ab1093b164f92e410dc68fd080bf294aa21f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
