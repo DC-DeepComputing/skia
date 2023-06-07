@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb0ad75b_74fc8757",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-07T17:58:19Z",
+      "side": 1,
+      "message": "Please add some tests for the new intersect function",
+      "revId": "cae1d78e7ff824322b9ea7e2b2a8396500f7700f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52145e97_3d496e3d",
+        "filename": "src/base/SkQuads.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-07T17:58:19Z",
+      "side": 1,
+      "message": "Should this really be a span of doubles or a tuple\u003cdouble*, int\u003e?",
+      "range": {
+        "startLine": 160,
+        "startChar": 4,
+        "endLine": 160,
+        "endChar": 10
+      },
+      "revId": "cae1d78e7ff824322b9ea7e2b2a8396500f7700f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff599210_5e67d969",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-07T17:58:19Z",
+      "side": 1,
+      "message": "Why is the polynomial in this form? I see it aligns with ::Discriminant and ::Roots, but why is this form better?\n\nI browsed through https://people.eecs.berkeley.edu/~wkahan/Qdrtcs.pdf and I only seemed to see \"suppose you have a quadratic of this form\" and not explain why.",
+      "range": {
+        "startLine": 72,
+        "startChar": 10,
+        "endLine": 72,
+        "endChar": 29
+      },
+      "revId": "cae1d78e7ff824322b9ea7e2b2a8396500f7700f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3aa9aa20_8ba51172",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-07T17:58:19Z",
+      "side": 1,
+      "message": "It\u0027s not clear from this what \"toIntersect and instersectionsStorage\" do, nor what the return value is.",
+      "range": {
+        "startLine": 77,
+        "startChar": 31,
+        "endLine": 77,
+        "endChar": 44
+      },
+      "revId": "cae1d78e7ff824322b9ea7e2b2a8396500f7700f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
