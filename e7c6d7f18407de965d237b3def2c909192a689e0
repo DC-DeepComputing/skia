@@ -46,6 +46,30 @@
       },
       "revId": "e7c6d7f18407de965d237b3def2c909192a689e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f1057ca_5259398f",
+        "filename": "src/gpu/TiledTextureUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-07T15:49:43Z",
+      "side": 1,
+      "message": "Yeah, my only concern is that two tests might try to access this concurrently, and their expected values would be off. I\u0027m fine leaving it for now.",
+      "parentUuid": "5b8da879_7b6cf339",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 16
+      },
+      "revId": "e7c6d7f18407de965d237b3def2c909192a689e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
