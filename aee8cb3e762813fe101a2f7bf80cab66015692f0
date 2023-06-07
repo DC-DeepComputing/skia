@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "320599ac_6d82064d",
+        "filename": "src/gpu/graphite/render/AtlasShapeRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-07T13:35:11Z",
+      "side": 1,
+      "message": "These are not actually the `stepLocalCoords` that we want to pass down to the fragment shader for SkPaint shading. Those coordinates need to be relative to the original full local-to-device matrix, whereas these coordinates are relative to how we decomposed the transform into the atlas.\n\nThis made me realize that the BitmapTextRenderStep has the same problem, because it sets `stepLocalCoords` based on its transform decomposition as well. We haven\u0027t seen it in gold GMs because the `shadertext3` GM uses very large glyphs that trigger path rendering. When you downscale it until it fits in the atlas, then you can see the local coords shift to be aligned with the text atlas mask and not the original coordinate space.\n\nThe `CoverBoundsRenderStep` avoids this issue by drawing regular fills with the local bounds and full transform, and then for inverse fills it draws a device space rect and remembers the inverse transform.",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 65
+      },
+      "revId": "aee8cb3e762813fe101a2f7bf80cab66015692f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
