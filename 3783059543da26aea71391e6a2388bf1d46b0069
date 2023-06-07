@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dacb4c32_24293cdd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-07T13:59:18Z",
+      "side": 1,
+      "message": "This seems fine, but a couple thoughts:\n1) I don\u0027t see the legacy ARGB blitter going away (it\u0027s just too fast).\n2) I think I\u0027d be even happier to just use div255_accurate - it can\u0027t be that much slower, right?",
+      "revId": "3783059543da26aea71391e6a2388bf1d46b0069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2caa58e_703cf45c",
