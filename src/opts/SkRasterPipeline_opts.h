@@ -5017,16 +5017,16 @@ STAGE_PP(swap_src_dst, NoCtx) {
     BLEND_MODE(clear)    { return 0; }
     BLEND_MODE(srcatop)  { return div255( s*da + d*inv(sa) ); }
     BLEND_MODE(dstatop)  { return div255( d*sa + s*inv(da) ); }
-    BLEND_MODE(srcin)    { return div255( s*da ); }
-    BLEND_MODE(dstin)    { return div255( d*sa ); }
-    BLEND_MODE(srcout)   { return div255( s*inv(da) ); }
-    BLEND_MODE(dstout)   { return div255( d*inv(sa) ); }
-    BLEND_MODE(srcover)  { return s + div255( d*inv(sa) ); }
-    BLEND_MODE(dstover)  { return d + div255( s*inv(da) ); }
-    BLEND_MODE(modulate) { return div255( s*d ); }
+    BLEND_MODE(srcin)    { return div255_accurate( s*da ); }
+    BLEND_MODE(dstin)    { return div255_accurate( d*sa ); }
+    BLEND_MODE(srcout)   { return div255_accurate( s*inv(da) ); }
+    BLEND_MODE(dstout)   { return div255_accurate( d*inv(sa) ); }
+    BLEND_MODE(srcover)  { return s + div255_accurate( d*inv(sa) ); }
+    BLEND_MODE(dstover)  { return d + div255_accurate( s*inv(da) ); }
+    BLEND_MODE(modulate) { return div255_accurate( s*d ); }
     BLEND_MODE(multiply) { return div255( s*inv(da) + d*inv(sa) + s*d ); }
     BLEND_MODE(plus_)    { return min(s+d, 255); }
-    BLEND_MODE(screen)   { return s + d - div255( s*d ); }
+    BLEND_MODE(screen)   { return s + div255_accurate( d*inv(s) ); }
     BLEND_MODE(xor_)     { return div255( s*inv(da) + d*inv(sa) ); }
 #undef BLEND_MODE
 
