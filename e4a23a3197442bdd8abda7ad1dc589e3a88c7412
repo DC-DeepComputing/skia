@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e2fcabc_6433a49a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-08T17:24:48Z",
+      "side": 1,
+      "message": "Yes, we\u0027re going to have to synthesize an intermediate element struct with explicit padding for this case and not just for scalars but for any element type that doesn\u0027t implicitly satisfy a 16-byte stride.\n\nI kind of wish WGSL would have handled this internally with implicit padding or a less intrusive idiom like SPIR-V\u0027s `ArrayStride` decoration (which is how our codegen handles it).",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 57
+      },
+      "revId": "e4a23a3197442bdd8abda7ad1dc589e3a88c7412",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
