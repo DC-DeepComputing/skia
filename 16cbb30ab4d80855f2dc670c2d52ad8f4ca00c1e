@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bd15e7d_f575d4cf",
+        "filename": "tests/SkSpanTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-08T22:46:42Z",
+      "side": 1,
+      "message": "Should we also include a test with a `const vector\u003cint\u003e`? I\u0027m pretty sure it will work, considering initializer lists do, but it seems like a nice way to confirm that it stays working going forward.",
+      "revId": "16cbb30ab4d80855f2dc670c2d52ad8f4ca00c1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
