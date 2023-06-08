@@ -303,6 +303,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8a8cd431_f29701d4",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2023-06-08T17:11:39Z",
+      "side": 1,
+      "message": "Yeah, HDRGainMap is one XMP, and HDRGM is another. I\u0027m going to give them better names in the future.",
+      "parentUuid": "b1c9e7c8_9cf44c92",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 73
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "42184b06_74a0ea10",
         "filename": "include/private/SkXmp.h",
         "patchSetId": 5
