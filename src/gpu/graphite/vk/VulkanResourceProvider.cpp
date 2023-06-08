@@ -174,7 +174,8 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
                                         step->depthStencilSettings(),
                                         step->primitiveType(),
                                         fsSkSLInfo.fNumTexturesAndSamplers,
-                                        fsSkSLInfo.fBlendInfo);
+                                        fsSkSLInfo.fBlendInfo,
+                                        !step->uniforms().empty());
 }
 
 sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const ComputePipelineDesc&) {

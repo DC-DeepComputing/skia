@@ -44,7 +44,8 @@ public:
                                               DepthStencilSettings,
                                               PrimitiveType,
                                               int numTexturesAndSamplers,
-                                              const BlendInfo&);
+                                              const BlendInfo&,
+                                              bool hasRenderStepUniforms);
 
     ~VulkanGraphicsPipeline() override {}
 
@@ -58,9 +59,7 @@ public:
     bool hasFragment() const { return false; }
 
 private:
-    VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext
-                           /* TODO: fill out argument list */)
-        : GraphicsPipeline(sharedContext) { }
+    VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext, VkPipelineLayout);
 
     void freeGpuData() override;
 
