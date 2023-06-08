@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60492fd1_fd85b6cf",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-08T18:56:09Z",
+      "side": 1,
+      "message": "Discussed offline, it\u0027s fine.",
+      "parentUuid": "91f8d583_565933b3",
+      "revId": "e56b57f835cec9f4e1bee98d51d819f34cebced2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fc0ded4_62674b8b",

@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e02da8ef_40ff5775",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-08T18:56:09Z",
+      "side": 1,
+      "message": "Sorry Florin, you seem to be the only Owner around. PTAL.",
+      "revId": "81e230843a20e43f2b902d8ef81a05a9c9b890b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eaf3170b_f5a0bf65",
