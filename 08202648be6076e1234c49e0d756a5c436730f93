@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f97b64dd_7b3b1ff9",
+        "filename": "src/gpu/mtl/MtlUtils.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-08T11:46:41Z",
+      "side": 1,
+      "message": "Yep, great catch. I took a stab at moving this \u0026 having ganesh utilize the utilities / shader printing variables.",
+      "parentUuid": "6e2075b1_240b9d95",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 43
+      },
+      "revId": "08202648be6076e1234c49e0d756a5c436730f93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3f66fcf_b0c6b040",
@@ -61,6 +85,30 @@
       "writtenOn": "2023-05-23T17:11:18Z",
       "side": 1,
       "message": "WDYT about adding a `gPrintBackendSL` or similar name that is used for MSL, WGSL, SPIR-V etc. for each backend but is then controlled in PipelineUtils?",
+      "range": {
+        "startLine": 186,
+        "startChar": 12,
+        "endLine": 186,
+        "endChar": 21
+      },
+      "revId": "08202648be6076e1234c49e0d756a5c436730f93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2dae4b6_612d0244",
+        "filename": "src/gpu/mtl/MtlUtils.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-08T11:46:41Z",
+      "side": 1,
+      "message": "Great idea; done!",
+      "parentUuid": "f3f66fcf_b0c6b040",
       "range": {
         "startLine": 186,
         "startChar": 12,
