@@ -46,6 +46,30 @@
       },
       "revId": "dbbc5532189060af6d846def8dc917bb7a8f5a9b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "674c596b_b7416212",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 20134
+      },
+      "writtenOn": "2023-06-08T16:12:35Z",
+      "side": 1,
+      "message": "Okay I\u0027ve woken up and read this again, and I withdraw my notes.\n\nI like chad\u0027s version, but it does change the behaviour slightly. Absent any additional information I think that failing in the case where the provided buffer is not large enough for the requested data is preferable to truncating the data, but if there\u0027s some particular reason to prefer truncation than that\u0027s okay, but it might be worth documentation?",
+      "parentUuid": "a0965a1a_0e57fc18",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 186,
+        "endChar": 75
+      },
+      "revId": "dbbc5532189060af6d846def8dc917bb7a8f5a9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
