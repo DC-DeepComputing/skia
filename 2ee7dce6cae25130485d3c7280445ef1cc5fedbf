@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e61de5b_3fd3b1b7",
+        "filename": "src/core/SkBlendModePriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-08T20:59:32Z",
+      "side": 1,
+      "message": "Up for consideration: maybe `SkBlendFastPath`? I think the `Mode` in there makes it a little more hard to understand.",
+      "range": {
+        "startLine": 36,
+        "startChar": 11,
+        "endLine": 36,
+        "endChar": 30
+      },
+      "revId": "2ee7dce6cae25130485d3c7280445ef1cc5fedbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
