@@ -258,69 +258,71 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
                 for (int rot : { 0, 45 }) {
                     for (auto constraint : { SkCanvas::kStrict_SrcRectConstraint,
                                              SkCanvas::kFast_SrcRectConstraint }) {
-                        if (difficult_case(sampling, scale, rot, constraint)) {
-                            continue;
+                        for (float clipFraction : { 0.0f, 0.25f, 0.5f, 0.75f, 1.0f }) {
+                            if (difficult_case(sampling, scale, rot, constraint)) {
+                                continue;
+                            }
+                            SkRect destRect = SkRect::MakeWH(srcRect.width()/scale,
+                                                             srcRect.height()/scale);
+
+                            SkMatrix m = SkMatrix::RotateDeg(rot, destRect.center());
+                            SkIRect rotatedRect = m.mapRect(destRect).roundOut();
+                            rotatedRect.outset(2, 2);   // outset to capture the constraint's effect
+
+                            auto destII = SkImageInfo::Make(rotatedRect.width(),
+                                                            rotatedRect.height(),
+                                                            kRGBA_8888_SkColorType,
+                                                            kPremul_SkAlphaType);
+
+                            SkBitmap expected, actual;
+                            expected.allocPixels(destII);
+                            actual.allocPixels(destII);
+
+                            sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(dContext,
+                                                                             skgpu::Budgeted::kNo,
+                                                                             destII);
+                            SkCanvas* canvas = surf->getCanvas();
+
+                            canvas->translate(-rotatedRect.fLeft, -rotatedRect.fTop);
+                            if (sampling.useCubic || sampling.filter != SkFilterMode::kNearest) {
+                                // NN sampling doesn't deal well w/ the (0.5, 0.5) offset but the
+                                // other sampling modes need it to exercise strict vs. fast
+                                // constraint in non-rotated draws
+                                canvas->translate(0.5f, 0.5f);
+                            }
+                            canvas->concat(m);
+
+                            // First, draw w/o tiling
+                            gOverrideMaxTextureSize = 0;
+                            gNumTilesDrawn.store(0, std::memory_order_relaxed);
+
+                            canvas->clear(SK_ColorBLACK);
+                            canvas->drawImageRect(img, srcRect, destRect, sampling, nullptr,
+                                                  constraint);
+                            SkAssertResult(surf->readPixels(expected, 0, 0));
+                            int actualNumTilesDrawn = gNumTilesDrawn.load(std::memory_order_acquire);
+                            REPORTER_ASSERT(reporter, actualNumTilesDrawn == 0);
+
+                            // Then, force 4x4 tiling
+                            gOverrideMaxTextureSize = kOverrideMaxTextureSize;
+
+                            canvas->clear(SK_ColorBLACK);
+                            canvas->drawImageRect(img, srcRect, destRect, sampling, nullptr,
+                                                  constraint);
+                            SkAssertResult(surf->readPixels(actual, 0, 0));
+
+                            actualNumTilesDrawn = gNumTilesDrawn.load(std::memory_order_acquire);
+                            REPORTER_ASSERT(reporter, actualNumTilesDrawn == kExpectedNumTiles);
+
+                            REPORTER_ASSERT(reporter, check_pixels(reporter, expected, actual,
+                                                                   gen.fTag, sampling, scale, rot,
+                                                                   constraint));
+
+                            potentially_write_to_png("expected", gen.fTag, sampling, scale, rot,
+                                                     constraint, expected);
+                            potentially_write_to_png("actual", gen.fTag, sampling, scale, rot,
+                                                     constraint, actual);
                         }
-                        SkRect destRect = SkRect::MakeWH(srcRect.width()/scale,
-                                                         srcRect.height()/scale);
-
-                        SkMatrix m = SkMatrix::RotateDeg(rot, destRect.center());
-                        SkIRect rotatedRect = m.mapRect(destRect).roundOut();
-                        rotatedRect.outset(2, 2);   // outset to capture the constraint's effect
-
-                        auto destII = SkImageInfo::Make(rotatedRect.width(),
-                                                        rotatedRect.height(),
-                                                        kRGBA_8888_SkColorType,
-                                                        kPremul_SkAlphaType);
-
-                        SkBitmap expected, actual;
-                        expected.allocPixels(destII);
-                        actual.allocPixels(destII);
-
-                        sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(dContext,
-                                                                            skgpu::Budgeted::kNo,
-                                                                            destII);
-                        SkCanvas* canvas = surface->getCanvas();
-
-                        canvas->translate(-rotatedRect.fLeft, -rotatedRect.fTop);
-                        if (sampling.useCubic || sampling.filter != SkFilterMode::kNearest) {
-                            // NN sampling doesn't deal well w/ the (0.5, 0.5) offset but the other
-                            // sampling modes need it to exercise strict vs. fast constraint
-                            // in non-rotated draws
-                            canvas->translate(0.5f, 0.5f);
-                        }
-                        canvas->concat(m);
-
-                        // First, draw w/o tiling
-                        gOverrideMaxTextureSize = 0;
-                        gNumTilesDrawn.store(0, std::memory_order_relaxed);
-
-                        canvas->clear(SK_ColorBLACK);
-                        canvas->drawImageRect(img, srcRect, destRect, sampling, nullptr,
-                                              constraint);
-                        SkAssertResult(surface->readPixels(expected, 0, 0));
-                        int actualNumTilesDrawn = gNumTilesDrawn.load(std::memory_order_acquire);
-                        REPORTER_ASSERT(reporter, actualNumTilesDrawn == 0);
-
-                        // Then, force 4x4 tiling
-                        gOverrideMaxTextureSize = kOverrideMaxTextureSize;
-
-                        canvas->clear(SK_ColorBLACK);
-                        canvas->drawImageRect(img, srcRect, destRect, sampling, nullptr,
-                                              constraint);
-                        SkAssertResult(surface->readPixels(actual, 0, 0));
-
-                        actualNumTilesDrawn = gNumTilesDrawn.load(std::memory_order_acquire);
-                        REPORTER_ASSERT(reporter, actualNumTilesDrawn == kExpectedNumTiles);
-
-                        REPORTER_ASSERT(reporter, check_pixels(reporter, expected, actual,
-                                                               gen.fTag, sampling, scale, rot,
-                                                               constraint));
-
-                        potentially_write_to_png("expected", gen.fTag, sampling, scale, rot,
-                                                 constraint, expected);
-                        potentially_write_to_png("actual", gen.fTag, sampling, scale, rot,
-                                                 constraint, actual);
                     }
                 }
             }
