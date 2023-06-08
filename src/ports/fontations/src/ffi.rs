@@ -177,6 +177,28 @@ fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool {
     }
 }
 
+fn table_data(font_ref: &BridgeFontRef, tag: u32, offset: usize, data: &mut [u8]) -> usize {
+    let table_data = font_ref
+        .0
+        .as_ref()
+        .and_then(|f| f.table_data(u32tag_to_tag(tag)));
+    if let Some(table_data) = table_data {
+        let mut slice_length = std::cmp::max(table_data.len() - offset, 0);
+        if data.len() > 0 && slice_length > 0 {
+            slice_length = std::cmp::min(slice_length, data.len());
+            // Slice target buffer in case the chunk to be read is smaller than the target
+            // buffer due to a specified offset.
+            data.get_mut(0..slice_length).unwrap().copy_from_slice(
+                &table_data
+                    .read_array::<u8>(offset..(offset + slice_length))
+                    .unwrap(),
+            );
+        }
+        return slice_length;
+    }
+    0usize
+}
+
 fn make_font_ref_internal<'a>(font_data: &'a [u8], index: u32) -> Result<FontRef<'a>, ReadError> {
     match FileRef::new(font_data) {
         Ok(file_ref) => match file_ref {
@@ -286,6 +308,8 @@ mod ffi {
         fn num_glyphs(font_ref: &BridgeFontRef) -> u16;
         fn family_name(font_ref: &BridgeFontRef) -> String;
         fn postscript_name(font_ref: &BridgeFontRef, out_string: &mut String) -> bool;
+
+        fn table_data(font_ref: &BridgeFontRef, tag: u32, offset: usize, data: &mut [u8]) -> usize;
 
         type BridgeLocalizedStrings<'a>;
         unsafe fn get_localized_strings<'a>(
