@@ -16,6 +16,24 @@
       "message": "A followup to thread https://chat.google.com/room/AAAABiWIgTc/4UCy6J5qN6c",
       "revId": "18d2020c66672ca2137ad7ed046101f2a50d2cc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa27a469_82b35e94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-08T13:34:05Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ae0712ab_c6560c7d",
+      "revId": "18d2020c66672ca2137ad7ed046101f2a50d2cc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
