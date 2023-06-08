@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8372ffb5_1184c5c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-08T20:50:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d7489d00_f83204c1",
+      "revId": "2ad55cf4d1209aa32df0f98c3130317a2e803dd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8718028e_5789fae6",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "711896db_04465c56",
+        "filename": "src/pdf/SkPDFMakeCIDGlyphWidthsArray.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-08T20:50:39Z",
+      "side": 1,
+      "message": "heh, yes, the other functions in here do that, but this one didn\u0027t. I just added the \"Or0\" to make it clear what happened when there was no mode. Done.",
+      "parentUuid": "8718028e_5789fae6",
+      "range": {
+        "startLine": 30,
+        "startChar": 9,
+        "endLine": 30,
+        "endChar": 20
+      },
+      "revId": "2ad55cf4d1209aa32df0f98c3130317a2e803dd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ad802f5_83dffe8d",
@@ -54,6 +96,30 @@
       "writtenOn": "2023-06-08T19:13:05Z",
       "side": 1,
       "message": "Can we not use `TArray` in the PDF code? It seems like you could get rid of `numIntAdvances` if you used `TArray\u003cSkScalar\u003e` and a `reserve_exact`.",
+      "range": {
+        "startLine": 101,
+        "startChar": 4,
+        "endLine": 101,
+        "endChar": 77
+      },
+      "revId": "2ad55cf4d1209aa32df0f98c3130317a2e803dd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "732b647d_5b3d0666",
+        "filename": "src/pdf/SkPDFMakeCIDGlyphWidthsArray.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-08T20:50:39Z",
+      "side": 1,
+      "message": "Why? We don\u0027t need this to change size. After finding the mode, this is re-purposed to contain all the glyph advances converted to pdf advances which uses all the space anyway. If we wanted to `reserve_exact` on the number of integer advances we would still need a `numIntAdvances` to know what to pass `reserve_exact`.",
+      "parentUuid": "3ad802f5_83dffe8d",
       "range": {
         "startLine": 101,
         "startChar": 4,
