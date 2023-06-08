@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3919110_f4458ae1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-08T19:14:16Z",
+      "side": 1,
+      "message": "LGTM modulo cleaning up the comments associated with the comments below.",
+      "revId": "bd22c31ec776d3574bf1b4b305342b22d1a48c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06ba5655_ebcadc53",
@@ -31,6 +48,30 @@
       "writtenOn": "2023-06-08T15:27:52Z",
       "side": 1,
       "message": "Could you please confirm if the `VkStencilOpState` compare mask the `readMask` of the face?",
+      "range": {
+        "startLine": 213,
+        "startChar": 4,
+        "endLine": 213,
+        "endChar": 64
+      },
+      "revId": "bd22c31ec776d3574bf1b4b305342b22d1a48c75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4edef0a_6583a707",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-08T19:14:16Z",
+      "side": 1,
+      "message": "Yes, that sounds right.",
+      "parentUuid": "06ba5655_ebcadc53",
       "range": {
         "startLine": 213,
         "startChar": 4,
