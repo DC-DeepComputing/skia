@@ -21,7 +21,7 @@ class SurfaceFillContext;
 }  // namespace skgpu::ganesh
 #endif
 
-// This declaration must match the one in SkDeferredDisplayList.h
+// This declaration must match the one in GrDeferredDisplayList.h
 #if defined(SK_GANESH)
 class GrRenderTargetProxy;
 #else
