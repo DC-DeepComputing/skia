@@ -22,6 +22,30 @@
       },
       "revId": "dbbc5532189060af6d846def8dc917bb7a8f5a9b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0965a1a_0e57fc18",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 20134
+      },
+      "writtenOn": "2023-06-08T16:01:06Z",
+      "side": 1,
+      "message": "Maybe I\u0027m missing something, but `copy_from_slice` requires that the two slices have equal length. Is that guaranteed anywhere?\n\nI wonder if this API should be a two-step process, where the caller first determines the length of the relevant data, ensures they have an appropriately sized buffer, and then calls again to copy the data?",
+      "parentUuid": "f427b524_36bc3ee6",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 186,
+        "endChar": 75
+      },
+      "revId": "dbbc5532189060af6d846def8dc917bb7a8f5a9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
