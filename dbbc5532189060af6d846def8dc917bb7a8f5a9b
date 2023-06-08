@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9a45e351_26e38d8b",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 12759
+      },
+      "writtenOn": "2023-06-08T16:25:11Z",
+      "side": 1,
+      "message": "naively, if we are filling in get table data perhaps we shold also populate get table tags? - feels odd to have one and not the other",
+      "revId": "dbbc5532189060af6d846def8dc917bb7a8f5a9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f427b524_36bc3ee6",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 2
@@ -62,6 +79,30 @@
       "side": 1,
       "message": "Okay I\u0027ve woken up and read this again, and I withdraw my notes.\n\nI like chad\u0027s version, but it does change the behaviour slightly. Absent any additional information I think that failing in the case where the provided buffer is not large enough for the requested data is preferable to truncating the data, but if there\u0027s some particular reason to prefer truncation than that\u0027s okay, but it might be worth documentation?",
       "parentUuid": "a0965a1a_0e57fc18",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 186,
+        "endChar": 75
+      },
+      "revId": "dbbc5532189060af6d846def8dc917bb7a8f5a9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83e01de6_4cf5a9e1",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 12759
+      },
+      "writtenOn": "2023-06-08T16:25:11Z",
+      "side": 1,
+      "message": "It\u0027s interesting to see how we all write this; I think I\u0027d land on something like this (untested as well):\n\n```\nfn table_data(font_ref: \u0026BridgeFontRef, tag: u32, offset: usize, data: \u0026mut [u8]) -\u003e usize {    \n    let table_data \u003d font_ref\n        .0\n        .as_ref()\n        .and_then(|f| f.table_data(u32tag_to_tag(tag)))\n        .map(|d| d.as_ref()) \n        .unwrap_or_default();\n\n    // probably best not to take more bytes than we actually have, or more than fit in data\n    let slice_length \u003d std::cmp::min(table_data.len().saturating_sub(offset), data.len());\n\n    if let Some(table_bytes) \u003d table_data.get_mut(offset..offset + slice_length) {\n        // Slice target buffer in case the chunk to be read is smaller than the target\n        // buffer due to a specified offset.\n        data.get_mut(0..slice_length).unwrap().copy_from_slice(table_bytes);\n        slice_length\n    } else {\n        0usize\n    }\n}\n```",
+      "parentUuid": "674c596b_b7416212",
       "range": {
         "startLine": 186,
         "startChar": 8,
