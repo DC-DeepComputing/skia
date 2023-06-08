@@ -7,12 +7,16 @@
 
 #include "include/core/SkBlendMode.h"
 
+#include "include/core/SkColor.h"
+#include "include/core/SkPaint.h"
 #include "include/private/SkColorData.h"
 #include "src/base/SkVx.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
 #include "src/core/SkRasterPipelineOpList.h"
+
+#include <optional>
 
 bool SkBlendMode_ShouldPreScaleCoverage(SkBlendMode mode, bool rgb_coverage) {
     // The most important things we do here are:
@@ -195,4 +199,43 @@ const char* SkBlendMode_Name(SkBlendMode bm) {
         case SkBlendMode::kLuminosity: return "Luminosity";
     }
     SkUNREACHABLE;
+}
+
+static bool just_solid_color(const SkPaint& p) {
+    return SK_AlphaOPAQUE == p.getAlpha() && !p.getColorFilter() && !p.getShader();
+}
+
+SkBlendModeFastPath CheckFastPath(const SkPaint& paint, bool dstIsOpaque) {
+    const auto bm = paint.asBlendMode();
+    if (!bm) {
+        return SkBlendModeFastPath::kNormal;
+    }
+    switch (bm.value()) {
+        case SkBlendMode::kSrcOver:
+            return SkBlendModeFastPath::kSrcOver;
+        case SkBlendMode::kSrc:
+            if (just_solid_color(paint)) {
+                return SkBlendModeFastPath::kSrcOver;
+            }
+            return SkBlendModeFastPath::kNormal;
+        case SkBlendMode::kDst:
+            return SkBlendModeFastPath::kSkipDrawing;
+        case SkBlendMode::kDstOver:
+            if (dstIsOpaque) {
+                return SkBlendModeFastPath::kSkipDrawing;
+            }
+            return SkBlendModeFastPath::kNormal;
+        case SkBlendMode::kSrcIn:
+            if (dstIsOpaque && just_solid_color(paint)) {
+                return SkBlendModeFastPath::kSrcOver;
+            }
+            return SkBlendModeFastPath::kNormal;
+        case SkBlendMode::kDstIn:
+            if (just_solid_color(paint)) {
+                return SkBlendModeFastPath::kSkipDrawing;
+            }
+            return SkBlendModeFastPath::kNormal;
+        default:
+            return SkBlendModeFastPath::kNormal;
+    }
 }
