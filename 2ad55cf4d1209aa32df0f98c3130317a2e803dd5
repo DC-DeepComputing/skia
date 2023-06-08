@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7489d00_f83204c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-08T19:13:05Z",
+      "side": 1,
+      "message": "I honestly don\u0027t know this code well enough to give this a proper review, but I can give it a RSLGTM.",
+      "revId": "2ad55cf4d1209aa32df0f98c3130317a2e803dd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8718028e_5789fae6",
+        "filename": "src/pdf/SkPDFMakeCIDGlyphWidthsArray.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-08T19:13:05Z",
+      "side": 1,
+      "message": "Since it\u0027s an internal-linkage function, maybe `find_mode_or_0`?\nTBH I don\u0027t understand what this function is meant to do, and the name isn\u0027t helping much. A comment up top would be nice.",
+      "range": {
+        "startLine": 30,
+        "startChar": 9,
+        "endLine": 30,
+        "endChar": 20
+      },
+      "revId": "2ad55cf4d1209aa32df0f98c3130317a2e803dd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ad802f5_83dffe8d",
+        "filename": "src/pdf/SkPDFMakeCIDGlyphWidthsArray.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-08T19:13:05Z",
+      "side": 1,
+      "message": "Can we not use `TArray` in the PDF code? It seems like you could get rid of `numIntAdvances` if you used `TArray\u003cSkScalar\u003e` and a `reserve_exact`.",
+      "range": {
+        "startLine": 101,
+        "startChar": 4,
+        "endLine": 101,
+        "endChar": 77
+      },
+      "revId": "2ad55cf4d1209aa32df0f98c3130317a2e803dd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
