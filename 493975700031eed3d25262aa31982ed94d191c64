@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6c6b46e_a06efb3f",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-08T14:45:20Z",
+      "side": 0,
+      "message": "I didn\u0027t initially expect the code here to boil down so dramatically, but I worked it step by step and eventually it all melted away.",
+      "range": {
+        "startLine": 429,
+        "startChar": 8,
+        "endLine": 432,
+        "endChar": 9
+      },
+      "revId": "493975700031eed3d25262aa31982ed94d191c64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

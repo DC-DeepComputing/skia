@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "730e3df5_95095f62",
+        "filename": "src/core/SkPictureData.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-08T14:45:20Z",
+      "side": 1,
+      "message": "we confirm that the array is zero-sized here",
+      "range": {
+        "startLine": 365,
+        "startChar": 21,
+        "endLine": 365,
+        "endChar": 38
+      },
+      "revId": "cb538d9e80b6b1778d5e7e197188912e8de5f485",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
