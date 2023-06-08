@@ -173,6 +173,8 @@ public:
     // Returns whether a draw buffer can be mapped.
     bool drawBufferCanBeMapped() const { return fDrawBufferCanBeMapped; }
 
+    bool msaaRenderToSingleSampledSupport() const { return fMSAARenderToSingleSampledSupport; }
+
     // Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
     // passed in SkColorType and TextureInfo.
     skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
@@ -255,6 +257,7 @@ protected:
     bool fStorageBufferSupport = false;
     bool fStorageBufferPreferred = false;
     bool fDrawBufferCanBeMapped = true;
+    bool fMSAARenderToSingleSampledSupport = false;
 
     ResourceBindingRequirements fResourceBindingReqs;
 

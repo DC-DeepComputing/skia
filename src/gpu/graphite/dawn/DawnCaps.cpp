@@ -109,6 +109,10 @@ TextureInfo DawnCaps::getDefaultSampledTextureInfo(SkColorType colorType,
                                wgpu::TextureUsage::CopySrc;
     if (renderable == Renderable::kYes) {
         usage |= wgpu::TextureUsage::RenderAttachment;
+
+        if (fMSAARenderToSingleSampledSupport) {
+            usage |= wgpu::TextureUsage::MSAARenderToSingleSampledAttachment;
+        }
     }
 
     wgpu::TextureFormat format = this->getFormatFromColorType(colorType);
@@ -135,6 +139,11 @@ TextureInfo DawnCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampled
     info.fMipmapped   = Mipmapped::kNo;
     info.fFormat      = singleSpec.fFormat;
     info.fUsage       = wgpu::TextureUsage::RenderAttachment;
+
+    if (fTransientAttachmentSupport) {
+        info.fUsage |= wgpu::TextureUsage::TransientAttachment;
+    }
+
     return info;
 }
 
@@ -147,6 +156,11 @@ TextureInfo DawnCaps::getDefaultDepthStencilTextureInfo(
     info.fMipmapped   = Mipmapped::kNo;
     info.fFormat      = DawnDepthStencilFlagsToFormat(depthStencilType);
     info.fUsage       = wgpu::TextureUsage::RenderAttachment;
+
+    if (fTransientAttachmentSupport) {
+        info.fUsage |= wgpu::TextureUsage::TransientAttachment;
+    }
+
     return info;
 }
 
@@ -246,6 +260,11 @@ void DawnCaps::initCaps(const wgpu::Device& device) {
 
     // TODO: support clamp to border.
     fClampToBorderSupport = false;
+
+    fMSAARenderToSingleSampledSupport =
+            device.HasFeature(wgpu::FeatureName::MSAARenderToSingleSampled);
+    
+    fTransientAttachmentSupport = device.HasFeature(wgpu::FeatureName::TransientAttachments);
 }
 
 void DawnCaps::initShaderCaps() {
@@ -567,9 +586,9 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
 
     // Confirm all the below parts of the key can fit in a single uint32_t. The sum of the shift
     // amounts in the asserts must be less than or equal to 32.
-    SkASSERT(samplesKey                             < (1u << 3));
-    SkASSERT(static_cast<uint32_t>(isMipped)        < (1u << 1));
-    SkASSERT(static_cast<uint32_t>(dawnSpec.fUsage) < (1u << 5));
+    SkASSERT(samplesKey                             < (1u << 3));  // sample key is first 3 bits
+    SkASSERT(static_cast<uint32_t>(isMipped)        < (1u << 1));  // isMapped is 4th bit
+    SkASSERT(static_cast<uint32_t>(dawnSpec.fUsage) < (1u << 28)); // usage is remaining 28 bits
 
     // We need two uint32_ts for dimensions, 1 for format, and 1 for the rest of the key;
     static int kNum32DataCnt = 2 + 1 + 1;
