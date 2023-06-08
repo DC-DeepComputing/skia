@@ -11,8 +11,6 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
-#include "include/core/SkDeferredDisplayList.h"
-#include "include/core/SkDeferredDisplayListRecorder.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPromiseImageTexture.h"
@@ -31,8 +29,10 @@
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "src/core/SkDeferredDisplayListPriv.h"
+#include "include/private/chromium/GrDeferredDisplayList.h"
+#include "include/private/chromium/GrDeferredDisplayListRecorder.h"
 #include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrDeferredDisplayListPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
@@ -216,11 +216,11 @@ public:
     }
 
     // Create a DDL whose characterization captures the current settings
-    sk_sp<SkDeferredDisplayList> createDDL(GrDirectContext* dContext) const {
+    sk_sp<GrDeferredDisplayList> createDDL(GrDirectContext* dContext) const {
         SkSurfaceCharacterization c = this->createCharacterization(dContext);
         SkAssertResult(c.isValid());
 
-        SkDeferredDisplayListRecorder r(c);
+        GrDeferredDisplayListRecorder r(c);
         SkCanvas* canvas = r.getCanvas();
         if (!canvas) {
             return nullptr;
@@ -396,7 +396,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
     SkBitmap bitmap;
     bitmap.allocPixels(imageInfo);
 
-    sk_sp<SkDeferredDisplayList> ddl;
+    sk_sp<GrDeferredDisplayList> ddl;
 
     // First, create a DDL using the stock SkSurface parameters
     {
@@ -413,7 +413,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
             return;
         }
 
-        REPORTER_ASSERT(reporter, s->draw(ddl));
+        REPORTER_ASSERT(reporter, skgpu::ganesh::DrawDDL(s, ddl));
         s->readPixels(imageInfo, bitmap.getPixels(), bitmap.rowBytes(), 0, 0);
 
         dContext->flush();
@@ -431,7 +431,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
             continue;
         }
 
-        REPORTER_ASSERT(reporter, !s->draw(ddl),
+        REPORTER_ASSERT(reporter, !skgpu::ganesh::DrawDDL(s, ddl),
                         "DDLSurfaceCharacterizationTest failed on parameter: %d\n", i);
         dContext->flush();
     }
@@ -445,22 +445,22 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
         size_t maxResourceBytes = dContext->getResourceCacheLimit();
 
         dContext->setResourceCacheLimit(maxResourceBytes/2);
-        REPORTER_ASSERT(reporter, !s->draw(ddl));
+        REPORTER_ASSERT(reporter, !skgpu::ganesh::DrawDDL(s, ddl));
 
         // DDL TODO: once proxies/ops can be de-instantiated we can re-enable these tests.
         // For now, DDLs are drawn once.
 #if 0
         // resource limits >= those at characterization time are accepted
         context->setResourceCacheLimits(2*maxResourceCount, maxResourceBytes);
-        REPORTER_ASSERT(reporter, s->draw(ddl));
+        REPORTER_ASSERT(reporter, skgpu::ganesh::DrawDDL(s, ddl));
         s->readPixels(imageInfo, bitmap.getPixels(), bitmap.rowBytes(), 0, 0);
 
         context->setResourceCacheLimits(maxResourceCount, 2*maxResourceBytes);
-        REPORTER_ASSERT(reporter, s->draw(ddl));
+        REPORTER_ASSERT(reporter, skgpu::ganesh::DrawDDL(s, ddl));
         s->readPixels(imageInfo, bitmap.getPixels(), bitmap.rowBytes(), 0, 0);
 
         context->setResourceCacheLimits(maxResourceCount, maxResourceBytes);
-        REPORTER_ASSERT(reporter, s->draw(ddl));
+        REPORTER_ASSERT(reporter, skgpu::ganesh::DrawDDL(s, ddl));
         s->readPixels(imageInfo, bitmap.getPixels(), bitmap.rowBytes(), 0, 0);
 #endif
 
@@ -474,7 +474,8 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
 
         sk_sp<SkSurface> s = params.make(dContext);
         if (s) {
-            REPORTER_ASSERT(reporter, !s->draw(ddl)); // bc the DDL was made w/ textureability
+            // bc the DDL was made w/ textureability
+            REPORTER_ASSERT(reporter, !skgpu::ganesh::DrawDDL(s, ddl));
 
             dContext->flush();
         }
@@ -715,7 +716,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(CharacterizationVkSCBnessTest,
     SkSurfaceCharacterization characterization = params.createCharacterization(dContext);
     REPORTER_ASSERT(reporter, characterization.isValid());
 
-    sk_sp<SkDeferredDisplayList> ddl = params.createDDL(dContext);
+    sk_sp<GrDeferredDisplayList> ddl = params.createDDL(dContext);
     REPORTER_ASSERT(reporter, ddl.get());
 
     sk_sp<GrVkSecondaryCBDrawContext> scbDrawContext = params.makeVkSCB(dContext);
@@ -766,7 +767,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLNonTextureabilityTest,
     bitmap.allocPixels(imageInfo);
 
     for (bool textureability : { true, false }) {
-        sk_sp<SkDeferredDisplayList> ddl;
+        sk_sp<GrDeferredDisplayList> ddl;
 
         // First, create a DDL w/o textureability (and thus no mipmaps). TODO: once we have
         // reusable DDLs, move this outside of the loop.
@@ -795,7 +796,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLNonTextureabilityTest,
             continue;
         }
 
-        REPORTER_ASSERT(reporter, s->draw(ddl));
+        REPORTER_ASSERT(reporter, skgpu::ganesh::DrawDDL(s, ddl));
         s->readPixels(imageInfo, bitmap.getPixels(), bitmap.rowBytes(), 0, 0);
 
         context->flush();
@@ -929,7 +930,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLWrapBackendTest,
     SkSurfaceCharacterization c;
     SkAssertResult(s->characterize(&c));
 
-    SkDeferredDisplayListRecorder recorder(c);
+    GrDeferredDisplayListRecorder recorder(c);
 
     SkCanvas* canvas = recorder.getCanvas();
     SkASSERT(canvas);
@@ -969,13 +970,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLInvalidRecorder,
         SkAssertResult(s->characterize(&characterization));
 
         // never calling getCanvas means the backing surface is never allocated
-        SkDeferredDisplayListRecorder recorder(characterization);
+        GrDeferredDisplayListRecorder recorder(characterization);
     }
 
     {
         SkSurfaceCharacterization invalid;
 
-        SkDeferredDisplayListRecorder recorder(invalid);
+        GrDeferredDisplayListRecorder recorder(invalid);
 
         const SkSurfaceCharacterization c = recorder.characterization();
         REPORTER_ASSERT(reporter, !c.isValid());
@@ -1131,10 +1132,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLSkSurfaceFlush,
     FulfillInfo fulfillInfo;
     fulfillInfo.fTex = SkPromiseImageTexture::Make(mbet->texture());
 
-    sk_sp<SkDeferredDisplayList> ddl;
+    sk_sp<GrDeferredDisplayList> ddl;
 
     {
-        SkDeferredDisplayListRecorder recorder(characterization);
+        GrDeferredDisplayListRecorder recorder(characterization);
 
         GrBackendFormat format = context->defaultBackendFormat(kRGBA_8888_SkColorType,
                                                                GrRenderable::kNo);
@@ -1162,7 +1163,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLSkSurfaceFlush,
 
     context->flushAndSubmit();
 
-    s->draw(ddl);
+    REPORTER_ASSERT(reporter, skgpu::ganesh::DrawDDL(s, ddl));
 
     GrFlushInfo flushInfo;
     context->flush(s, SkSurfaces::BackendSurfaceAccess::kPresent, flushInfo);
@@ -1194,7 +1195,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLMultipleDDLs, reporter, ctxInfo, CtsEn
     SkSurfaceCharacterization characterization;
     SkAssertResult(s->characterize(&characterization));
 
-    SkDeferredDisplayListRecorder recorder(characterization);
+    GrDeferredDisplayListRecorder recorder(characterization);
 
     SkCanvas* canvas1 = recorder.getCanvas();
 
@@ -1203,7 +1204,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLMultipleDDLs, reporter, ctxInfo, CtsEn
     canvas1->save();
     canvas1->clipRect(SkRect::MakeXYWH(8, 8, 16, 16));
 
-    sk_sp<SkDeferredDisplayList> ddl1 = recorder.detach();
+    sk_sp<GrDeferredDisplayList> ddl1 = recorder.detach();
 
     SkCanvas* canvas2 = recorder.getCanvas();
 
@@ -1211,7 +1212,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLMultipleDDLs, reporter, ctxInfo, CtsEn
     p.setColor(SK_ColorGREEN);
     canvas2->drawRect(SkRect::MakeWH(32, 32), p);
 
-    sk_sp<SkDeferredDisplayList> ddl2 = recorder.detach();
+    sk_sp<GrDeferredDisplayList> ddl2 = recorder.detach();
 
     REPORTER_ASSERT(reporter, ddl1->priv().lazyProxyData());
     REPORTER_ASSERT(reporter, ddl2->priv().lazyProxyData());
@@ -1220,8 +1221,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLMultipleDDLs, reporter, ctxInfo, CtsEn
     // lazy proxy are all different between the two DDLs
     REPORTER_ASSERT(reporter, ddl1->priv().lazyProxyData() != ddl2->priv().lazyProxyData());
 
-    s->draw(ddl1);
-    s->draw(ddl2);
+    skgpu::ganesh::DrawDDL(s, ddl1);
+    skgpu::ganesh::DrawDDL(s, ddl2);
 
     // Make sure the clipRect from DDL1 didn't percolate into DDL2
     s->readPixels(ii, bitmap.getPixels(), bitmap.rowBytes(), 0, 0);
@@ -1257,7 +1258,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(DDLTextureFlagsTest,
     SkSurfaceCharacterization characterization;
     SkAssertResult(s->characterize(&characterization));
 
-    SkDeferredDisplayListRecorder recorder(characterization);
+    GrDeferredDisplayListRecorder recorder(characterization);
 
     for (GrGLenum target : { GR_GL_TEXTURE_EXTERNAL, GR_GL_TEXTURE_RECTANGLE, GR_GL_TEXTURE_2D } ) {
         for (auto mipmapped : { GrMipmapped::kNo, GrMipmapped::kYes }) {

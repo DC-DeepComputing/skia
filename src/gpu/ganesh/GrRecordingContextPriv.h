@@ -17,7 +17,7 @@
 #include "src/text/gpu/SDFTControl.h"
 
 class GrImageInfo;
-class SkDeferredDisplayList;
+class GrDeferredDisplayList;
 namespace skgpu {
     class Swizzle;
 }
@@ -63,7 +63,7 @@ public:
 
     GrThreadSafeCache* threadSafeCache() { return this->context()->threadSafeCache(); }
 
-    void moveRenderTasksToDDL(SkDeferredDisplayList*);
+    void moveRenderTasksToDDL(GrDeferredDisplayList*);
 
     /**
      * Registers an object for flush-related callbacks. (See GrOnFlushCallbackObject.)

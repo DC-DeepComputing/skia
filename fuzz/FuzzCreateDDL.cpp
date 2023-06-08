@@ -6,13 +6,13 @@
  */
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkDeferredDisplayList.h"
-#include "include/core/SkDeferredDisplayListRecorder.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceCharacterization.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "include/private/chromium/GrDeferredDisplayList.h"
+#include "include/private/chromium/GrDeferredDisplayListRecorder.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
 #include "tools/gpu/GrContextFactory.h"
@@ -22,14 +22,14 @@
 #include <tuple>
 
 /**
- * The fuzzer aims to fuzz the use of SkDeferredDisplayList. It mainly consists of
+ * The fuzzer aims to fuzz the use of GrDeferredDisplayList. It mainly consists of
  * three parts.
  * 1. In create_surface_characterization, (make_characterization) Create SkSurfaceCharacterization
  * by using GrDirectContext of kGL_ContextType as it can be applied on all platform, and
  * (make_surface) create a GPU backend surface of the same GrDirectContext
- * 2. (make_ddl) Create SkDeferredDisplayListRecorder from the SkSurfaceCharacterization, and test
+ * 2. (make_ddl) Create GrDeferredDisplayListRecorder from the SkSurfaceCharacterization, and test
  * the recoder's corresponding canvas.
- * 3. (make_ddl, draw_ddl) Create SkDeferredDisplayList from the SkDeferredDisplayRecorder and draw
+ * 3. (make_ddl, draw_ddl) Create GrDeferredDisplayList from the SkDeferredDisplayRecorder and draw
  * the ddl on a GPU backend surface.
  */
 
@@ -156,9 +156,9 @@ static SkSurfaceCharacterization make_characterization(Fuzz* fuzz, GrDirectConte
     return c;
 }
 
-static sk_sp<SkDeferredDisplayList> make_ddl(Fuzz* fuzz, GrDirectContext* dContext,
+static sk_sp<GrDeferredDisplayList> make_ddl(Fuzz* fuzz, GrDirectContext* dContext,
                                              const SkSurfaceCharacterization& c) {
-    SkDeferredDisplayListRecorder r(c);
+    GrDeferredDisplayListRecorder r(c);
     SkCanvas* canvas = r.getCanvas();
     if (!canvas) {
         SkDebugf("Could not create canvas for backend %s", GrBackendApiToStr(dContext->backend()));
@@ -181,8 +181,8 @@ static sk_sp<SkSurface> make_surface(Fuzz* fuzz, GrDirectContext* dContext, cons
     return surface;
 }
 
-static bool draw_ddl(sk_sp<SkSurface> surface, sk_sp<SkDeferredDisplayList> ddl) {
-    return surface->draw(std::move(ddl));
+static bool draw_ddl(sk_sp<SkSurface> surface, sk_sp<const GrDeferredDisplayList> ddl) {
+    return skgpu::ganesh::DrawDDL(surface, ddl);
 }
 
 using SurfaceAndChar = std::tuple<sk_sp<SkSurface>, SkSurfaceCharacterization>;
@@ -222,7 +222,7 @@ DEF_FUZZ(CreateDDL, fuzz) {
         return;
     }
 
-    sk_sp<SkDeferredDisplayList> ddl = make_ddl(fuzz, dContext, c);
+    sk_sp<GrDeferredDisplayList> ddl = make_ddl(fuzz, dContext, c);
     if (!ddl) {
         SkDebugf("Could not create ddl %s", GrBackendApiToStr(dContext->backend()));
         return;

@@ -13,7 +13,6 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
-#include "include/core/SkDeferredDisplayList.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"

@@ -9,9 +9,7 @@
 #define SkSurface_Base_DEFINED
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkDeferredDisplayList.h" // IWYU pragma: keep
 #include "include/core/SkImage.h"
-#include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
@@ -162,9 +160,6 @@ public:
 
     virtual bool onCharacterize(SkSurfaceCharacterization*) const { return false; }
     virtual bool onIsCompatible(const SkSurfaceCharacterization&) const { return false; }
-    virtual bool onDraw(sk_sp<const SkDeferredDisplayList>, SkIPoint offset) {
-        return false;
-    }
 
     // TODO: Remove this (make it pure virtual) after updating Android (which has a class derived
     // from SkSurface_Base).
