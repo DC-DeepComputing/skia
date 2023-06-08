@@ -360,10 +360,12 @@ private:
         // The next two values don't matter unless fIsOval or fIsRRect are true.
         fRRectOrOvalIsCCW = false;
         fRRectOrOvalStartIdx = 0xAC;
-        if (numPoints > 0)
-            fPoints.reserve_back(numPoints);
-        if (numVerbs > 0)
-            fVerbs.reserve_back(numVerbs);
+        if (numPoints > 0) {
+            fPoints.reserve_exact(numPoints);
+        }
+        if (numVerbs > 0) {
+            fVerbs.reserve_exact(numVerbs);
+        }
         SkDEBUGCODE(fEditorsAttached.store(0);)
         SkDEBUGCODE(this->validate();)
     }
@@ -378,7 +380,7 @@ private:
     // called, if dirty, by getBounds()
     void computeBounds() const {
         SkDEBUGCODE(this->validate();)
-        // TODO(mtklein): remove fBoundsIsDirty and fIsFinite,
+        // TODO: remove fBoundsIsDirty and fIsFinite,
         // using an inverted rect instead of fBoundsIsDirty and always recalculating fIsFinite.
         SkASSERT(fBoundsIsDirty);
 
@@ -425,17 +427,15 @@ private:
     void resetToSize(int verbCount, int pointCount, int conicCount,
                      int reserveVerbs = 0, int reservePoints = 0) {
         commonReset();
-        // Use reserve_back() so the arrays are sized to exactly fit the data.
-        const int pointDelta = pointCount + reservePoints - fPoints.size();
-        if (pointDelta > 0) {
-            fPoints.reserve_back(pointDelta);
-        }
+        // Use reserve_exact() so the arrays are sized to exactly fit the data.
+        const int newPoints = pointCount + reservePoints;
+        fPoints.reserve_exact(newPoints);
         fPoints.resize_back(pointCount);
-        const int verbDelta = verbCount + reserveVerbs - fVerbs.size();
-        if (verbDelta > 0) {
-            fVerbs.reserve_back(verbDelta);
-        }
+
+        const int newVerbs = verbCount + reserveVerbs;
+        fVerbs.reserve_exact(newVerbs);
         fVerbs.resize_back(verbCount);
+
         fConicWeights.resize_back(conicCount);
         SkDEBUGCODE(this->validate();)
     }
