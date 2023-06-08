@@ -10,17 +10,17 @@
 #include <algorithm>
 #include <memory>
 
-#include "include/core/SkDeferredDisplayList.h"
 #include "include/gpu/GrBackendSemaphore.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
+#include "include/private/chromium/GrDeferredDisplayList.h"
 #include "src/base/SkTInternalLList.h"
-#include "src/core/SkDeferredDisplayListPriv.h"
 #include "src/gpu/ganesh/GrBufferTransferRenderTask.h"
 #include "src/gpu/ganesh/GrBufferUpdateRenderTask.h"
 #include "src/gpu/ganesh/GrClientMappedBufferManager.h"
 #include "src/gpu/ganesh/GrCopyRenderTask.h"
 #include "src/gpu/ganesh/GrDDLTask.h"
+#include "src/gpu/ganesh/GrDeferredDisplayListPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrMemoryPool.h"
@@ -568,7 +568,7 @@ skgpu::ganesh::OpsTask* GrDrawingManager::getLastOpsTask(const GrSurfaceProxy* p
     return task ? task->asOpsTask() : nullptr;
 }
 
-void GrDrawingManager::moveRenderTasksToDDL(SkDeferredDisplayList* ddl) {
+void GrDrawingManager::moveRenderTasksToDDL(GrDeferredDisplayList* ddl) {
     SkDEBUGCODE(this->validate());
 
     // no renderTask should receive a new command after this
@@ -593,7 +593,7 @@ void GrDrawingManager::moveRenderTasksToDDL(SkDeferredDisplayList* ddl) {
     SkDEBUGCODE(this->validate());
 }
 
-void GrDrawingManager::createDDLTask(sk_sp<const SkDeferredDisplayList> ddl,
+void GrDrawingManager::createDDLTask(sk_sp<const GrDeferredDisplayList> ddl,
                                      sk_sp<GrRenderTargetProxy> newDest,
                                      SkIPoint offset) {
     SkDEBUGCODE(this->validate());
