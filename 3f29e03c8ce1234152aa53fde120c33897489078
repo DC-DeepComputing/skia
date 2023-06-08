@@ -46,6 +46,30 @@
       },
       "revId": "3f29e03c8ce1234152aa53fde120c33897489078",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6d4a973_0a44dcb2",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-08T23:49:37Z",
+      "side": 1,
+      "message": "LGTM!",
+      "parentUuid": "8fae5abc_ac6af2f3",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 0
+      },
+      "revId": "3f29e03c8ce1234152aa53fde120c33897489078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
