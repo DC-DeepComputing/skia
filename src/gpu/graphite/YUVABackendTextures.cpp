@@ -32,7 +32,7 @@ int num_channels(uint32_t ChannelMasks) {
 
 YUVABackendTextureInfo::YUVABackendTextureInfo(const Recorder* recorder,
                                                const SkYUVAInfo& yuvaInfo,
-                                               const TextureInfo textureInfo[kMaxPlanes],
+                                               SkSpan<const TextureInfo> textureInfo,
                                                Mipmapped mipmapped)
         : fYUVAInfo(yuvaInfo)
         , fMipmapped(mipmapped) {
@@ -77,7 +77,7 @@ SkYUVAInfo::YUVALocations YUVABackendTextureInfo::toYUVALocations() const {
 
 YUVABackendTextures::YUVABackendTextures(const Recorder* recorder,
                                          const SkYUVAInfo& yuvaInfo,
-                                         const BackendTexture textures[kMaxPlanes])
+                                         SkSpan<const BackendTexture> textures)
         : fYUVAInfo(yuvaInfo) {
     if (!yuvaInfo.isValid()) {
         SkASSERT(!this->isValid());

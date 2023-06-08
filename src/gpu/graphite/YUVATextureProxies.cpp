@@ -17,7 +17,7 @@ namespace skgpu::graphite {
 
 YUVATextureProxies::YUVATextureProxies(const Recorder* recorder,
                                        const SkYUVAInfo& yuvaInfo,
-                                       sk_sp<TextureProxy> proxies[SkYUVAInfo::kMaxPlanes])
+                                       SkSpan<sk_sp<TextureProxy>> proxies)
         : fYUVAInfo(yuvaInfo) {
     int n = yuvaInfo.numPlanes();
     if (n == 0) {
@@ -52,7 +52,7 @@ YUVATextureProxies::YUVATextureProxies(const Recorder* recorder,
 
 YUVATextureProxies::YUVATextureProxies(const Recorder* recorder,
                                        const SkYUVAInfo& yuvaInfo,
-                                       TextureProxyView views[SkYUVAInfo::kMaxPlanes])
+                                       SkSpan<TextureProxyView> views)
         : fYUVAInfo(yuvaInfo) {
     uint32_t pixmapChannelMasks[SkYUVAInfo::kMaxPlanes];
     int n = yuvaInfo.numPlanes();
