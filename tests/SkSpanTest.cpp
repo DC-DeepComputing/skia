@@ -81,6 +81,11 @@ DEF_TEST(SkSpanDeduceParam, reporter) {
     {
         std::vector<int> v = {{1, 2, 3}};
         REPORTER_ASSERT(reporter, test_span_parameter(v));
+        REPORTER_ASSERT(reporter, test_span_parameter(std::move(v)));
+    }
+
+    {
+        REPORTER_ASSERT(reporter, test_span_parameter(std::vector<int>{1,2,3}));
     }
 
     {
