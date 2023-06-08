@@ -68,8 +68,10 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(std::optional<wgpu::B
 #endif
     });
 
-    std::array<wgpu::FeatureName, 1> features = {
+    std::array<wgpu::FeatureName, 3> features = {
         wgpu::FeatureName::DepthClipControl,
+        wgpu::FeatureName::MSAARenderToSingleSampled,
+        wgpu::FeatureName::TransientAttachments,
     };
     wgpu::DeviceDescriptor desc;
     desc.requiredFeaturesCount = features.size();

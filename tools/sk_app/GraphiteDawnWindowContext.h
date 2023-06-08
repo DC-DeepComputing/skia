@@ -34,7 +34,9 @@ protected:
 
     void onSwapBuffers() override;
 
-    static constexpr wgpu::TextureUsage kTextureUsage = wgpu::TextureUsage::RenderAttachment;
+    static constexpr wgpu::TextureUsage kTextureUsage =
+            wgpu::TextureUsage::RenderAttachment |
+            wgpu::TextureUsage::MSAARenderToSingleSampledAttachment;
 
     wgpu::TextureFormat                     fSwapChainFormat;
     std::unique_ptr<dawn::native::Instance> fInstance;
