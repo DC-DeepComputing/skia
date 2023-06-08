@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fd6e27b_39cfd9ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2023-06-08T14:18:04Z",
+      "side": 1,
+      "message": "Just one suggestion - feel free to ignore since it\u0027s just a nit.",
+      "revId": "81e230843a20e43f2b902d8ef81a05a9c9b890b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaf3170b_f5a0bf65",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2023-06-08T14:18:04Z",
+      "side": 1,
+      "message": "nit: instead of a span, should we use an array of size SkYUVAInfo::kMaxPlanes to make this consistent with other YUV related APIs?",
+      "range": {
+        "startLine": 253,
+        "startChar": 8,
+        "endLine": 253,
+        "endChar": 30
+      },
+      "revId": "81e230843a20e43f2b902d8ef81a05a9c9b890b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
