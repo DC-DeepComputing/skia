@@ -77,6 +77,25 @@ skia_cc_library(
     }),
 )
 
+# This target builds the PathKit(1) library.
+#
+# (1) https://skia.org/docs/user/modules/pathkit/
+skia_cc_library(
+    name = "pathkit",
+    srcs = [
+        "//src:pathkit_srcs",
+    ],
+    hdrs = [
+        "//include:private_hdrs",
+        "//include:public_hdrs",
+        "//src:private_hdrs",
+    ],
+    deps = [
+        "//modules/skcms",
+        "@skia_user_config//:user_config",
+    ],
+)
+
 ####################################################################
 # Experimental public buffet targets below
 

@@ -44,6 +44,7 @@ gazelle_update_repo:
 known_good_builds:
 	bazelisk build //:skia_public
 	bazelisk build //:skia_internal
+	bazelisk build //:pathkit
 	bazelisk build //experimental/bazel_test/...
 	bazelisk run //experimental/bazel_test:bazel_test_exe
 	bazelisk build //example:hello_world_gl
@@ -60,6 +61,7 @@ known_good_builds:
 rbe_known_good_builds:
 	bazelisk build //:skia_public --config=for_linux_x64_with_rbe --remote_download_minimal
 	bazelisk build //:skia_internal --config=for_linux_x64_with_rbe --remote_download_minimal
+	bazelisk build //:pathkit --config=for_linux_x64_with_rbe --remote_download_minimal
 	bazelisk build //experimental/bazel_test:bazel_test_exe --config=for_linux_x64_with_rbe --remote_download_minimal
 	bazelisk build //example:hello_world_gl --config=for_linux_x64_with_rbe --remote_download_minimal
 	bazelisk build //example:hello_world_vulkan --config=for_linux_x64_with_rbe --remote_download_minimal

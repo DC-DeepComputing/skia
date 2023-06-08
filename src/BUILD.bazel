@@ -70,6 +70,19 @@ skia_filegroup(
 )
 
 skia_filegroup(
+    name = "pathkit_srcs",
+    srcs = [
+        ":pathops",
+        "//src/base:pathkit_srcs",
+        "//src/core:pathkit_srcs",
+        "//src/effects:pathkit_srcs",
+        "//src/ports:pathkit_srcs",
+        "//src/utils:pathkit_srcs",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+skia_filegroup(
     name = "objc_srcs",
     srcs = select({
         "//src/gpu:has_gpu_backend": ["//src/gpu:objc_srcs"],

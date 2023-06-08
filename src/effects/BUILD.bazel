@@ -57,3 +57,12 @@ skia_filegroup(
     ],
     visibility = ["//src:__pkg__"],
 )
+
+skia_filegroup(
+    name = "pathkit_srcs",
+    srcs = [
+        "SkDashPathEffect.cpp",
+        "SkTrimPathEffect.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)

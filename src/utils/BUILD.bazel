@@ -146,3 +146,12 @@ skia_filegroup(
     }),
     visibility = ["//src:__pkg__"],
 )
+
+skia_filegroup(
+    name = "pathkit_srcs",
+    srcs = [
+        "SkParse.cpp",
+        "SkParsePath.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)

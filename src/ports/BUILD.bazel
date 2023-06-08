@@ -365,3 +365,12 @@ skia_cc_library(
     visibility = ["//:__pkg__"],
     deps = ["//src:base"],
 )
+
+skia_filegroup(
+    name = "pathkit_srcs",
+    srcs = [
+        "SkDebug_stdio.cpp",
+        "SkMemory_malloc.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
