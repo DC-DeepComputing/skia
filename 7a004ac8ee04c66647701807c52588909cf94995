@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8037d145_2a9f1dfd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-08T15:50:26Z",
+      "side": 1,
+      "message": "Graphics pipeline review #3",
+      "revId": "7a004ac8ee04c66647701807c52588909cf94995",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "516a745a_4c5d29cb",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-08T15:50:26Z",
+      "side": 1,
+      "message": "Note: I believe this will be handled with a `VulkanCommandBuffer::setViewport` method when we call `onAddRenderPass(...)` (there\u0027s a TODO there). Please LMK if this is incorrect.",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 91
+      },
+      "revId": "7a004ac8ee04c66647701807c52588909cf94995",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3794ba9_daa1578a",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-08T15:50:26Z",
+      "side": 1,
+      "message": "Note: I believe this is handled with VulkanCommandBuffer::setScissor as a result of DrawPassCommands::Type::kSetScissor. Please chime in if that understanding is erroneous.",
+      "range": {
+        "startLine": 254,
+        "startChar": 0,
+        "endLine": 254,
+        "endChar": 90
+      },
+      "revId": "7a004ac8ee04c66647701807c52588909cf94995",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
