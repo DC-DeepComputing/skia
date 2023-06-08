@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f427b524_36bc3ee6",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-06-08T15:09:24Z",
+      "side": 1,
+      "message": "I worry about the potential overflow if `offset \u003e table_data.len()`.\n\nI\u0027d write this as (untested):\n```rust\nlet sliced_table_data \u003d font_ref\n    .0\n    .as_ref()\n    .and_then(|f| f.table_data(u32tag_to_tag(tag)))\n    // convert FontData to \u0026[u8]\n    .map(|d| d.as_ref()) \n    .and_then(|bytes| bytes.get(offset..))\n    // this leaves us with any empty slice if any of the above fails,\n    // resulting in copying nothing and returning 0 below\n    .unwrap_or_default(); \nif let Some(sliced_data) \u003d data.get_mut(..sliced_table_data.len()) {\n    sliced_data.copy_from_slice(sliced_table_data);\n    sliced_data.len()\n} else {\n    0\n}\n```\nThis also avoids any potential panics.",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 186,
+        "endChar": 75
+      },
+      "revId": "dbbc5532189060af6d846def8dc917bb7a8f5a9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
