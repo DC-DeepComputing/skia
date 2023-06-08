@@ -8,17 +8,17 @@
 #include "tools/DDLTileHelper.h"
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkDeferredDisplayListRecorder.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceCharacterization.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "include/private/chromium/GrDeferredDisplayListRecorder.h"
 #include "src/base/SkRandom.h"
-#include "src/core/SkDeferredDisplayListPriv.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrDeferredDisplayListPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
 #include "tools/DDLPromiseImageHelper.h"
@@ -52,7 +52,7 @@ void DDLTileHelper::TileData::createDDL(const SkPicture* picture) {
     auto recordingChar = fPlaybackChar.createResized(fClip.width(), fClip.height());
     SkASSERT(recordingChar.isValid());
 
-    SkDeferredDisplayListRecorder recorder(recordingChar);
+    GrDeferredDisplayListRecorder recorder(recordingChar);
 
     // DDL TODO: the DDLRecorder's rContext isn't initialized until getCanvas is called.
     // Maybe set it up in the ctor?
@@ -72,7 +72,7 @@ void DDLTileHelper::TileData::createDDL(const SkPicture* picture) {
 void DDLTileHelper::createComposeDDL() {
     SkASSERT(!fComposeDDL);
 
-    SkDeferredDisplayListRecorder recorder(fDstCharacterization);
+    GrDeferredDisplayListRecorder recorder(fDstCharacterization);
 
     SkCanvas* recordingCanvas = recorder.getCanvas();
 
@@ -107,7 +107,7 @@ void DDLTileHelper::TileData::precompile(GrDirectContext* direct) {
 
     SkASSERT(fDisplayList);
 
-    SkDeferredDisplayList::ProgramIterator iter(direct, fDisplayList.get());
+    GrDeferredDisplayList::ProgramIterator iter(direct, fDisplayList.get());
     for (; !iter.done(); iter.next()) {
         iter.compile();
     }

@@ -28,13 +28,19 @@ class SkBitmap;
 class SkCanvas;
 class SkCapabilities;
 class SkColorSpace;
-class SkDeferredDisplayList;
+
 class SkPaint;
 class SkSurface;
 class SkSurfaceCharacterization;
 enum GrSurfaceOrigin : int;
 struct SkIRect;
 struct SkISize;
+
+#if !defined(SK_DISABLE_LEGACY_DISPLAYLIST) && defined(SK_GANESH)
+#include "include/private/chromium/GrDeferredDisplayList.h"  // IWYU pragma: keep
+#else
+class GrDeferredDisplayList;
+#endif
 
 namespace skgpu::graphite {
 class Recorder;
@@ -170,7 +176,7 @@ public:
     /** Is this surface compatible with the provided characterization?
 
         This method can be used to determine if an existing SkSurface is a viable destination
-        for an SkDeferredDisplayList.
+        for an GrDeferredDisplayList.
 
         @param characterization  The characterization for which a compatibility check is desired
         @return                  true if this surface is compatible with the characterization;
@@ -616,7 +622,7 @@ public:
 
     /** Initializes SkSurfaceCharacterization that can be used to perform GPU back-end
         processing in a separate thread. Typically this is used to divide drawing
-        into multiple tiles. SkDeferredDisplayListRecorder records the drawing commands
+        into multiple tiles. GrDeferredDisplayListRecorder records the drawing commands
         for each tile.
 
         Return true if SkSurface supports characterization. raster surface returns false.
@@ -628,7 +634,7 @@ public:
     */
     bool characterize(SkSurfaceCharacterization* characterization) const;
 
-    /** Draws the deferred display list created via a SkDeferredDisplayListRecorder.
+    /** Draws the deferred display list created via a GrDeferredDisplayListRecorder.
         If the deferred display list is not compatible with this SkSurface, the draw is skipped
         and false is return.
 
@@ -644,9 +650,18 @@ public:
 
         example: https://fiddle.skia.org/c/@Surface_draw_2
     */
-    bool draw(sk_sp<const SkDeferredDisplayList> deferredDisplayList,
+    virtual bool draw(const GrDeferredDisplayList* deferredDisplayList,
+                      int xOffset = 0,
+                      int yOffset = 0) = 0;
+
+#if !defined(SK_DISABLE_LEGACY_DISPLAYLIST) && defined(SK_GANESH)
+    bool draw(sk_sp<const GrDeferredDisplayList> deferredDisplayList,
               int xOffset = 0,
-              int yOffset = 0);
+              int yOffset = 0) {
+        return this->draw(deferredDisplayList.get(), xOffset, yOffset);
+    }
+#endif
+
 
 protected:
     SkSurface(int width, int height, const SkSurfaceProps* surfaceProps);

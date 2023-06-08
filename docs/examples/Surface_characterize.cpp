@@ -19,10 +19,10 @@ void draw(SkCanvas* canvas) {
          return;
     }
     // start of threadable work
-    SkDeferredDisplayListRecorder recorder(characterization);
+    GrDeferredDisplayListRecorder recorder(characterization);
     SkCanvas* subCanvas = recorder.getCanvas();
     subCanvas->clear(SK_ColorGREEN);
-    sk_sp<SkDeferredDisplayList> displayList = recorder.detach();
+    sk_sp<GrDeferredDisplayList> displayList = recorder.detach();
     // end of threadable work
     gpuSurface->draw(displayList);
     sk_sp<SkImage> img = gpuSurface->makeImageSnapshot();

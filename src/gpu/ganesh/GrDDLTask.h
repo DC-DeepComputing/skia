@@ -23,7 +23,7 @@ class GrDDLTask final : public GrRenderTask {
 public:
     GrDDLTask(GrDrawingManager*,
               sk_sp<GrRenderTargetProxy> ddlTarget,
-              sk_sp<const SkDeferredDisplayList>,
+              sk_sp<const GrDeferredDisplayList>,
               SkIPoint offset);
 
     ~GrDDLTask() override;
@@ -65,7 +65,7 @@ private:
     void visitProxies_debugOnly(const GrVisitProxyFunc&) const override {}
 #endif
 
-    sk_sp<const SkDeferredDisplayList> fDDL;
+    sk_sp<const GrDeferredDisplayList> fDDL;
     sk_sp<GrRenderTargetProxy>         fDDLTarget;
     SkIPoint                           fOffset;
 

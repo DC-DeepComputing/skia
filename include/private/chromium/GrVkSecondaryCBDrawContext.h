@@ -21,7 +21,7 @@ namespace skgpu::ganesh {
 class Device;
 }
 class SkCanvas;
-class SkDeferredDisplayList;
+class GrDeferredDisplayList;
 struct SkImageInfo;
 class SkSurfaceCharacterization;
 class SkSurfaceProps;
@@ -110,9 +110,9 @@ public:
     bool characterize(SkSurfaceCharacterization* characterization) const;
 
 #ifndef SK_DDL_IS_UNIQUE_POINTER
-    bool draw(sk_sp<const SkDeferredDisplayList> deferredDisplayList);
+    bool draw(sk_sp<const GrDeferredDisplayList> deferredDisplayList);
 #else
-    bool draw(const SkDeferredDisplayList* deferredDisplayList);
+    bool draw(const GrDeferredDisplayList* deferredDisplayList);
 #endif
 
     bool isCompatible(const SkSurfaceCharacterization& characterization) const;
