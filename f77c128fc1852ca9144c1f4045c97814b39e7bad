@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b679a689_cbcd3ca1",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-08T15:06:13Z",
+      "side": 1,
+      "message": "Hmm, this is bringing up some readability errors that want to improve const correctness. Is it because technically it should read\n`sk_sp\u003cconst ImageAsset\u003e ... `\nIt makes sense, the sk_sp doesn\u0027t benefit from the const qualifier, but we want to make sure the thing it is pointing to is?",
+      "parentUuid": "d4ad3ffa_91c15ca7",
+      "revId": "f77c128fc1852ca9144c1f4045c97814b39e7bad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ffb98d59_09d226dd",
         "filename": "modules/skottie/src/SlotManager.cpp",
         "patchSetId": 3
