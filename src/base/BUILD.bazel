@@ -93,3 +93,24 @@ skia_filegroup(
     ],
     visibility = ["//src:__pkg__"],
 )
+
+skia_filegroup(
+    name = "pathkit_srcs",
+    srcs = [
+        "SkArenaAlloc.cpp",
+        "SkBezierCurves.cpp",
+        "SkContainers.cpp",
+        "SkCubics.cpp",
+        "SkFloatingPoint.cpp",
+        "SkMalloc.cpp",
+        "SkMathPriv.cpp",
+        "SkQuads.cpp",
+        "SkSafeMath.cpp",
+        "SkSemaphore.cpp",
+        "SkTDArray.cpp",
+        "SkThreadID.cpp",
+        "SkUTF.cpp",
+        "SkUtils.cpp",
+    ],
+    visibility = ["//src:__pkg__"],
+)
