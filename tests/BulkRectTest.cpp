@@ -37,6 +37,7 @@
 #include "src/gpu/ganesh/GrSamplerState.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
+#include "src/gpu/ganesh/GrXferProcessor.h"
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
 #include "src/gpu/ganesh/ops/FillRectOp.h"
@@ -118,7 +119,7 @@ static void fillrectop_creation_test(skiatest::Reporter* reporter, GrDirectConte
     }
 
     GrPaint paint;
-    paint.setXPFactory(SkBlendMode_AsXPFactory(blendMode));
+    paint.setXPFactory(GrXPFactory::FromBlendMode(blendMode));
 
     skgpu::ganesh::FillRectOp::AddFillRectOps(sdc.get(),
                                               nullptr,
