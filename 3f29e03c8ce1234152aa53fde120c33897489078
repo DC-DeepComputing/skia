@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da63a797_06cedad6",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-08T13:19:06Z",
+      "side": 1,
+      "message": "This is a pretty significant behavioral change! Was it intentional? \n\n`reserve_back` already adds in the current size of the container, so with this change, we are now asking for `reserve_exact(pts.size() + pts.size() + extraPtCount)`.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 0
+      },
+      "revId": "3f29e03c8ce1234152aa53fde120c33897489078",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
