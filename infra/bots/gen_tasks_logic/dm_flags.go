@@ -357,7 +357,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				// Crashes and failures
 				// https://skbug.com/14105
 				skip(ALL, "test", ALL, "BackendTextureTest")
-				skip(ALL, "test", ALL, "GraphitePurgeNotUsedSinceResourcesTest")
 				skip(ALL, "test", ALL, "MakeColorSpace_Test")
 				skip(ALL, "test", ALL, "PaintParamsKeyTest")
 			}
