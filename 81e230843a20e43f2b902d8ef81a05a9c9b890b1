@@ -39,6 +39,30 @@
       },
       "revId": "81e230843a20e43f2b902d8ef81a05a9c9b890b1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc9fc444_63dfe912",
+        "filename": "include/gpu/graphite/Image.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2023-06-08T14:20:30Z",
+      "side": 1,
+      "message": "Actually nvm - it will be more work on the Chromium side too to have to copy over the plane SkImages from a std::vector to an array just for passing it to the function",
+      "parentUuid": "eaf3170b_f5a0bf65",
+      "range": {
+        "startLine": 253,
+        "startChar": 8,
+        "endLine": 253,
+        "endChar": 30
+      },
+      "revId": "81e230843a20e43f2b902d8ef81a05a9c9b890b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
