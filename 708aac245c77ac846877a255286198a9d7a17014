@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8db8c38_e06bc7f2",
+        "filename": "src/gpu/graphite/YUVABackendTextures.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-08T18:28:21Z",
+      "side": 1,
+      "message": "Missing \"*this \u003d {};\" here too?",
+      "revId": "708aac245c77ac846877a255286198a9d7a17014",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd5d232e_f3fb3eb4",
+        "filename": "src/gpu/graphite/YUVABackendTextures.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-08T18:28:21Z",
+      "side": 1,
+      "message": "Aren\u0027t we missing a \"*this \u003d {};\" here?",
+      "revId": "708aac245c77ac846877a255286198a9d7a17014",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
