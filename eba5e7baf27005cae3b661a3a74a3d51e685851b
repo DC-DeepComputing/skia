@@ -135,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b09b7c78_83e76f46",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-08T17:08:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "759219c4_6195d87c",
+      "range": {
+        "startLine": 2,
+        "startChar": 18,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b04897ea_88a404e1",
@@ -182,6 +206,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdde9566_8e5b1e63",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-08T17:08:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "edb1dc1f_8d34c589",
+      "range": {
+        "startLine": 23,
+        "startChar": 6,
+        "endLine": 23,
+        "endChar": 12
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0579afb3_19fff201",
@@ -219,6 +267,30 @@
       "side": 1,
       "message": "I think they are two slightly different specs for gain map metadata. This code was simply moved from SkJpegXmp and I\u0027m not the original author so I don\u0027t know the details.",
       "parentUuid": "0579afb3_19fff201",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 73
+      },
+      "revId": "eba5e7baf27005cae3b661a3a74a3d51e685851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1c9e7c8_9cf44c92",
+        "filename": "include/private/SkXmp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-08T17:08:37Z",
+      "side": 1,
+      "message": "@ccameron@google.com, can you speak to this? Maybe this needs to be addressed in a follow-up CL?",
+      "parentUuid": "990c0d0f_d0c8a7b1",
       "range": {
         "startLine": 33,
         "startChar": 0,
