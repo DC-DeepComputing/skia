@@ -128,6 +128,30 @@
       },
       "revId": "2ad55cf4d1209aa32df0f98c3130317a2e803dd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5c7d32a_2f4f90c5",
+        "filename": "src/pdf/SkPDFMakeCIDGlyphWidthsArray.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-08T20:53:30Z",
+      "side": 1,
+      "message": "I meant\n```\n    TArray\u003cSkScalar\u003e advances;\n    advances.reserve_exact(glyphs.size());\n\n    for (const SkGlyph* glyph : glyphs) {\n        SkScalar currentAdvance \u003d from_font_units(glyph-\u003eadvanceX(), emSize);\n        if ((int32_t)currentAdvance \u003d\u003d currentAdvance) {\n            advances.push_back(currentAdvance);\n        }\n    }\n\n    std::sort(advances.begin(), advances.end());\n```\n\nSame effect AFAICS, but more C++-idiomatic?",
+      "parentUuid": "732b647d_5b3d0666",
+      "range": {
+        "startLine": 101,
+        "startChar": 4,
+        "endLine": 101,
+        "endChar": 77
+      },
+      "revId": "2ad55cf4d1209aa32df0f98c3130317a2e803dd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
