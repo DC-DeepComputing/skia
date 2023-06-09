@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66c7d6e3_e711e115",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6250
+      },
+      "writtenOn": "2023-06-09T14:44:17Z",
+      "side": 1,
+      "message": "Eric: PTAL. Thanks!\n\nFYI: I added bin/ninja to .gitignore to stop the Housekeeper bot from getting tripped up by untracked files.",
+      "revId": "3eb0547f8ce0a5d70ce14bffdd724c896af520b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
