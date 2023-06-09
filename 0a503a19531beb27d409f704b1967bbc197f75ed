@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93632915_213a0760",
+        "filename": "include/core/SkDeferredDisplayList.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-09T14:47:42Z",
+      "side": 1,
+      "message": "We probably shouldn\u0027t mess w/ the copyright notice.\n\nHere and below",
+      "range": {
+        "startLine": 2,
+        "startChar": 4,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1983b327_799c3631",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-09T14:47:42Z",
+      "side": 1,
+      "message": "If we want to keep these in order, these should probably move up",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 27
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c88b5e87_0368fe99",
+        "filename": "include/core/SkSurfaceCharacterization.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-09T14:47:42Z",
+      "side": 1,
+      "message": "Do we actually need these lines here?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 68
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b2c7690_54f7215b",
+        "filename": "include/gpu/GrContextThreadSafeProxy.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-09T14:47:42Z",
+      "side": 1,
+      "message": "Misplaced now",
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63b48c77_992c8ddb",
+        "filename": "include/private/chromium/GrDeferredDisplayList.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-09T14:47:42Z",
+      "side": 1,
+      "message": "Now, this copyright header I think we can change",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
