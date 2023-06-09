@@ -111,6 +111,30 @@
       },
       "revId": "dbbc5532189060af6d846def8dc917bb7a8f5a9b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df75b372_762f7ae6",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-09T13:39:01Z",
+      "side": 1,
+      "message": "Colin wrote:\n\u003e  but if there\u0027s some particular reason to prefer truncation than that\u0027s okay, but it might be worth documentation?\n\nThere is reason for truncation: `SkTypeface::getTableData()` expects that behaviour. I documented that now as a function level comment. \n\nChad\u0027s proposal does not work as is as it would not return the potentially-to-be-read length if the data buffer is zero-sized. \nBut what I took from Chad\u0027s proposal is to build the `u8` slice with table data or an empty slice up front, to avoid later unwrapping and to keep nesting level low. \nThe idea of \n`.map(|d| d.as_ref()) `\nunfortunately does not work as the compiler does not like returning \"data that the function owns\". My solution is to get the a default `FontData` and store its `as_ref()` result into a variable. I didn\u0027t find a shorter form that wouldn\u0027t raise complaints. For example I can\u0027t chain the `.as_ref()` to the `unwrap_or_default()`, as the compiler explains that the temporary would be freed before returning.\n\nColin:\n\u003e Maybe I\u0027m missing something, but copy_from_slice requires that the two slices have equal length. Is that guaranteed anywhere?\n\nThe new shape of the implementation should make that clear that target and source buffer have the same size, otherwise the copy is not attempted. \n\nSo, with that, hope I\u0027ve addressed the points I was able to extract from your review comments. Perhaps this version works, PTAL.",
+      "parentUuid": "83e01de6_4cf5a9e1",
+      "range": {
+        "startLine": 186,
+        "startChar": 8,
+        "endLine": 186,
+        "endChar": 75
+      },
+      "revId": "dbbc5532189060af6d846def8dc917bb7a8f5a9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
