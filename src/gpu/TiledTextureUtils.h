@@ -46,7 +46,7 @@ typedef void (*DrawImageProc)(GrRecordingContext* rContext,
                               const SkImage* image,
                               const SkRect& src,
                               const SkRect& dst,
-                               const SkPoint dstClip[4],
+                              const SkPoint dstClip[4],
                               const SkMatrix& srcToDst,
                               SkCanvas::QuadAAFlags aaFlags,
                               SkCanvas::SrcRectConstraint constraint,
@@ -67,7 +67,8 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                      SkCanvas::SrcRectConstraint constraint,
                      SkSamplingOptions sampling,
                      SkTileMode tileMode,
-                     DrawImageProc drawImageFn);
+                     DrawImageProc drawImageFn,
+                     SkBaseDevice*);
 
 } // namespace skgpu
 
