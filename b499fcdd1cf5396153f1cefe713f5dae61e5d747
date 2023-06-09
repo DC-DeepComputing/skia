@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87f3321a_b1d755f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-09T20:43:32Z",
+      "side": 1,
+      "message": "I\u0027m going to wait a bit before landing this to make sure the chrome changes that stopped using it are properly stuck.",
+      "revId": "b499fcdd1cf5396153f1cefe713f5dae61e5d747",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
