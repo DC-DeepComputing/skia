@@ -175,6 +175,7 @@ GLOBIGNORE+="tests/CodecTest.cpp:"\
 "tests/FontationsTest.cpp:"\
 "tests/FCITest.cpp:"\
 "tests/JpegGainmapTest.cpp:"\
+"tests/SkJpegXmpTest.cpp:"\
 "tests/TypefaceMacTest.cpp:"\
 "tests/SkVMTest.cpp:"
 
