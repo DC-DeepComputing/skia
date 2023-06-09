@@ -12,6 +12,7 @@
 #include "src/gpu/ganesh/GrRenderTask.h"
 
 class GrRenderTargetProxy;
+class GrDeferredDisplayList;
 
 /**
  * This render task isolates the DDL's tasks from the rest of the DAG. This means that
@@ -23,8 +24,7 @@ class GrDDLTask final : public GrRenderTask {
 public:
     GrDDLTask(GrDrawingManager*,
               sk_sp<GrRenderTargetProxy> ddlTarget,
-              sk_sp<const SkDeferredDisplayList>,
-              SkIPoint offset);
+              sk_sp<const GrDeferredDisplayList>);
 
     ~GrDDLTask() override;
 
@@ -65,9 +65,8 @@ private:
     void visitProxies_debugOnly(const GrVisitProxyFunc&) const override {}
 #endif
 
-    sk_sp<const SkDeferredDisplayList> fDDL;
+    sk_sp<const GrDeferredDisplayList> fDDL;
     sk_sp<GrRenderTargetProxy>         fDDLTarget;
-    SkIPoint                           fOffset;
 
     typedef GrRenderTask INHERITED;
 };

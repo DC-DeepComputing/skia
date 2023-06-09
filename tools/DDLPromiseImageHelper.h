@@ -9,7 +9,6 @@
 #define PromiseImageHelper_DEFINED
 
 #include "include/core/SkBitmap.h"
-#include "include/core/SkDeferredDisplayListRecorder.h"
 #include "include/core/SkPromiseImageTexture.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkYUVAPixmaps.h"
@@ -19,6 +18,7 @@
 #include "src/core/SkCachedData.h"
 
 class GrDirectContext;
+class GrContextThreadSafeProxy;
 class SkImage;
 class SkMipmap;
 class SkPicture;
