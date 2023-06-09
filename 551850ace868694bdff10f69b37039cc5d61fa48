@@ -16,6 +16,24 @@
       "message": "PS: From Rod\u0027s comment I took the `saturating_sub()` idea.",
       "revId": "551850ace868694bdff10f69b37039cc5d61fa48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9c796fc_aeeeb6da",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-09T13:40:42Z",
+      "side": 1,
+      "message": "PPS: `onGetTableTags()` will follow in a separate CL.",
+      "parentUuid": "838b17eb_805e12b1",
+      "revId": "551850ace868694bdff10f69b37039cc5d61fa48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
