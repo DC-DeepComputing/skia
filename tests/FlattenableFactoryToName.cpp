@@ -33,13 +33,8 @@ static void test_flattenable(skiatest::Reporter* r,
 }
 
 DEF_TEST(FlattenableFactoryToName, r) {
-    SkIRect rects[2];
-    rects[0] = SkIRect::MakeXYWH(0, 150, 500, 200);
-    rects[1] = SkIRect::MakeXYWH(150, 0, 200, 500);
-    SkRegion region;
-    region.setRects(rects, 2);
-    sk_sp<SkImageFilter> filter(SkImageFilters::AlphaThreshold(region, 0.2f, 0.7f, nullptr));
-    test_flattenable(r, filter.get(), "SkImageFilters::AlphaThreshold()");
+    sk_sp<SkImageFilter> filter(SkImageFilters::Blur(0.2f, 0.7f, nullptr));
+    test_flattenable(r, filter.get(), "SkImageFilters::Blur()");
 
     SkBitmap bm;
     bm.allocN32Pixels(8, 8);
