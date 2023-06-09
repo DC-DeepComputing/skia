@@ -6,14 +6,22 @@
  */
 
 #include "gm/gm.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "src/base/SkMathPriv.h"
 #include "src/base/SkRandom.h"
+
+#include "tools/ToolUtils.h"
+
+//#include "include/effects/SkGradientShader.h"
+//#include "include/gpu/GrContextOptions.h"
 
 namespace skiagm {
 
@@ -21,9 +29,14 @@ namespace skiagm {
 // the 'drawArc' code near a singularly of its processing (i.e., near the
 // edge of one of its underlying quads).
 class ArcOfZorroGM : public GM {
+    static const int kSize = 1024;
+    static const int kDesiredDepth = 5;
+    static const int kDesiredLineWidth = 16;
+    int kPad = kDesiredLineWidth;
+
 public:
     ArcOfZorroGM() {
-        this->setBGColor(0xFFCCCCCC);
+        this->setBGColor(SK_ColorDKGRAY);
     }
 
 protected:
@@ -33,55 +46,34 @@ protected:
     }
 
     SkISize onISize() override {
-        return SkISize::Make(1000, 1000);
+        return SkISize::Make(kSize, kSize);
+    }
+
+    void onOnceBeforeDraw() override {
+        SkBitmap bm;
+
+        bm.allocN32Pixels(kSize, kSize, true);
+
+        SkCanvas canvas(bm);
+
+        int desiredDrawSize = kSize - 2*kPad;
+        ToolUtils::HilbertGenerator gen(desiredDrawSize, kDesiredLineWidth, kDesiredDepth);
+
+        canvas.translate(kPad, kSize - kPad);
+        gen.draw(&canvas);
+
+        fImg = bm.asImage();
     }
 
     void onDraw(SkCanvas* canvas) override {
-        SkRandom rand;
+        SkSamplingOptions sampling = SkSamplingOptions(SkCubicResampler::Mitchell());
 
-        SkRect rect = SkRect::MakeXYWH(10, 10, 200, 200);
-
-        SkPaint p;
-
-        p.setStyle(SkPaint::kStroke_Style);
-        p.setStrokeWidth(35);
-        int xOffset = 0, yOffset = 0;
-        int direction = 0;
-
-        for (float arc = 134.0f; arc < 136.0f; arc += 0.01f) {
-            SkColor color = rand.nextU();
-            color |= 0xff000000;
-            p.setColor(color);
-
-            canvas->save();
-            canvas->translate(SkIntToScalar(xOffset), SkIntToScalar(yOffset));
-            canvas->drawArc(rect, 0, arc, false, p);
-            canvas->restore();
-
-            switch (direction) {
-            case 0:
-                xOffset += 10;
-                if (xOffset >= 700) {
-                    direction = 1;
-                }
-                break;
-            case 1:
-                xOffset -= 10;
-                yOffset += 10;
-                if (xOffset < 50) {
-                    direction = 2;
-                }
-                break;
-            case 2:
-                xOffset += 10;
-                break;
-            }
-        }
-
+        canvas->drawImage(fImg, 0, 0, sampling);
     }
 
 private:
-    using INHERITED = GM;
+    sk_sp<SkImage> fImg;
+
 };
 
 //////////////////////////////////////////////////////////////////////////////
