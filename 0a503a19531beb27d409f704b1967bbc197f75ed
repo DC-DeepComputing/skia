@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71e26afe_fdf6bd91",
+        "filename": "include/core/SkDeferredDisplayList.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93632915_213a0760",
+      "range": {
+        "startLine": 2,
+        "startChar": 4,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1983b327_799c3631",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-09T14:47:42Z",
       "side": 1,
       "message": "If we want to keep these in order, these should probably move up",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 27
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c72c8c12_53f7f25e",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1983b327_799c3631",
       "range": {
         "startLine": 34,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abe29e91_bf9796e3",
+        "filename": "include/core/SkSurfaceCharacterization.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Some of them are probably not needed, but it makes rolling into Chrome easier.\n\nBesides, this whole file will go away after I migrate Chrome\u0027s callsites.",
+      "parentUuid": "c88b5e87_0368fe99",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 68
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b2c7690_54f7215b",
@@ -87,6 +159,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d022d06f_c0b1a04c",
+        "filename": "include/gpu/GrContextThreadSafeProxy.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b2c7690_54f7215b",
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63b48c77_992c8ddb",
@@ -100,6 +190,30 @@
       "writtenOn": "2023-06-09T14:47:42Z",
       "side": 1,
       "message": "Now, this copyright header I think we can change",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c052e47a_75174309",
+        "filename": "include/private/chromium/GrDeferredDisplayList.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63b48c77_992c8ddb",
       "range": {
         "startLine": 2,
         "startChar": 3,
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbf8d31a_ed38a426",
+        "filename": "include/private/chromium/GrDeferredDisplayList.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90fe3e5f_f24865d0",
+      "range": {
+        "startLine": 99,
+        "startChar": 56,
+        "endLine": 99,
+        "endChar": 70
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65f63ae0_13d84c7e",
@@ -150,6 +288,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4500ef7_8b5e843e",
+        "filename": "include/private/chromium/GrDeferredDisplayList.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65f63ae0_13d84c7e",
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a73c552_94effc71",
@@ -163,6 +319,30 @@
       "writtenOn": "2023-06-09T15:20:49Z",
       "side": 1,
       "message": "We might as well remove xOffset and yOffset. There are no plans to finish the feature.",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 37
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86129b53_19b69f46",
+        "filename": "include/private/chromium/GrDeferredDisplayList.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a73c552_94effc71",
       "range": {
         "startLine": 116,
         "startChar": 0,
@@ -196,6 +376,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ad72a0b_431c9e25",
+        "filename": "include/private/chromium/GrDeferredDisplayListRecorder.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db3aeff7_96d30a23",
+      "range": {
+        "startLine": 31,
+        "startChar": 9,
+        "endLine": 31,
+        "endChar": 11
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61c3df80_bca10143",
@@ -209,6 +413,30 @@
       "writtenOn": "2023-06-09T15:20:49Z",
       "side": 1,
       "message": "Update to new API",
+      "range": {
+        "startLine": 35,
+        "startChar": 51,
+        "endLine": 35,
+        "endChar": 66
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20e988dd_c9c068f7",
+        "filename": "include/private/chromium/GrDeferredDisplayListRecorder.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61c3df80_bca10143",
       "range": {
         "startLine": 35,
         "startChar": 51,
@@ -242,6 +470,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c4be852_0676f2ac",
+        "filename": "include/private/chromium/GrVkSecondaryCBDrawContext.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "242b8ce1_eb5f8d6f",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec07a581_28e4d7e8",
@@ -255,6 +507,30 @@
       "writtenOn": "2023-06-09T15:20:49Z",
       "side": 1,
       "message": "This seems like it should go in its own CL",
+      "range": {
+        "startLine": 1013,
+        "startChar": 0,
+        "endLine": 1023,
+        "endChar": 20
+      },
+      "revId": "0a503a19531beb27d409f704b1967bbc197f75ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcdecec6_b2bddfe7",
+        "filename": "src/gpu/ganesh/dawn/GrDawnGpu.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T16:10:21Z",
+      "side": 1,
+      "message": "I think this was a mergepasta. Reverted and good catch!",
+      "parentUuid": "ec07a581_28e4d7e8",
       "range": {
         "startLine": 1013,
         "startChar": 0,
