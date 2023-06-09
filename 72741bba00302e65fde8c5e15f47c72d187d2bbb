@@ -50,6 +50,29 @@
       "message": "include/ lgtm",
       "revId": "72741bba00302e65fde8c5e15f47c72d187d2bbb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7222559_a50e1421",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-09T16:54:03Z",
+      "side": 1,
+      "message": "Probably should rename this class to TextAtlasManager just to be clear. Not needed for this CL though.",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 16
+      },
+      "revId": "72741bba00302e65fde8c5e15f47c72d187d2bbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
