@@ -65,39 +65,39 @@ DEF_SIMPLE_GM(imagefilterscropexpand, canvas, 730, 650) {
 
     SkPaint paint;
     canvas->translate(MARGIN, MARGIN);
-    for (int outset = -15; outset <= 20; outset += 5) {
+    for (int outset = -5; outset <= 0; outset += 5) {
         canvas->save();
         SkIRect bigRect = cropRect;
         bigRect.outset(outset, outset);
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::ColorFilter(cfAlphaTrans, noopCropped,  &bigRect));
+     //    draw(canvas, checkerboard, bigRect,
+     //         SkImageFilters::ColorFilter(cfAlphaTrans, noopCropped,  &bigRect));
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::Blur(0.3f, 0.3f,  noopCropped, &bigRect));
+     //    draw(canvas, checkerboard, bigRect,
+     //         SkImageFilters::Blur(0.3f, 0.3f,  noopCropped, &bigRect));
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::Blur(8.0f, 8.0f,  noopCropped, &bigRect));
+     //    draw(canvas, checkerboard, bigRect,
+     //         SkImageFilters::Blur(8.0f, 8.0f,  noopCropped, &bigRect));
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::Dilate(2, 2, noopCropped, &bigRect));
+     //    draw(canvas, checkerboard, bigRect,
+     //         SkImageFilters::Dilate(2, 2, noopCropped, &bigRect));
 
         draw(canvas, checkerboard, bigRect,
              SkImageFilters::Erode(2, 2, noopCropped, &bigRect));
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::DropShadow(10, 10, 3, 3, SK_ColorBLUE, noopCropped, &bigRect));
+     //    draw(canvas, checkerboard, bigRect,
+     //         SkImageFilters::DropShadow(10, 10, 3, 3, SK_ColorBLUE, noopCropped, &bigRect));
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kR, 12,
-                                             gradientCircleSource, noopCropped, &bigRect));
+     //    draw(canvas, checkerboard, bigRect,
+     //         SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kR, 12,
+     //                                         gradientCircleSource, noopCropped, &bigRect));
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::Offset(SkIntToScalar(-8), SkIntToScalar(16), noopCropped, &bigRect));
+     //    draw(canvas, checkerboard, bigRect,
+     //         SkImageFilters::Offset(SkIntToScalar(-8), SkIntToScalar(16), noopCropped, &bigRect));
 
-        draw(canvas, checkerboard, bigRect,
-             SkImageFilters::PointLitDiffuse(pointLocation, SK_ColorWHITE, surfaceScale, kd,
-                                             noopCropped, &bigRect));
+     //    draw(canvas, checkerboard, bigRect,
+     //         SkImageFilters::PointLitDiffuse(pointLocation, SK_ColorWHITE, surfaceScale, kd,
+     //                                         noopCropped, &bigRect));
 
         canvas->restore();
         canvas->translate(0, SkIntToScalar(80));
@@ -152,7 +152,7 @@ namespace {
 
         SkPaint paint;
         paint.setImageFilter(std::move(filter));
-        canvas->saveLayer(&rect, &paint);
+        canvas->saveLayer(nullptr, &paint);
         canvas->drawImage(image, 0, 0);
         canvas->restore();
 
