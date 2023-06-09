@@ -1,0 +1,17 @@
+/*#pragma settings RewriteSwitchStatements*/
+
+uniform half4 colorGreen, colorRed;
+
+half4 main(float2 coords) {
+    bool ok;
+
+    switch (int(colorGreen.g)) {
+        case 0:  bool a;
+        case 1:  int b = 1, c;
+        case 2:  { float d = float(b); c = int(d); }
+        case 3:  a = bool(c);
+        case 4:  ok = a;
+    }
+
+    return ok ? colorGreen : colorRed;
+}
