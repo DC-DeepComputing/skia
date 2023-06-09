@@ -4,7 +4,7 @@
   return bool();
   ^^^^^^
 
-:107:3 warning: code is unreachable
+:98:3 warning: code is unreachable
   return bool();
   ^^^^^^
 
@@ -38,15 +38,12 @@ fn for_inside_body_b() -> bool {
     {
       var x: i32 = 0;
       loop {
-        if x <= 10 {
-          {
-            return true;
-          }
-        } else {
-          break;
+        {
+          return true;
         }
         continuing {
           x = x + i32(1);
+          break if !(x <= 10);
         }
       }
     }
@@ -58,14 +55,11 @@ fn after_for_body_b() -> bool {
     {
       var x: i32 = 0;
       loop {
-        if x <= 10 {
-          {
-          }
-        } else {
-          break;
+        {
         }
         continuing {
           x = x + i32(1);
+          break if !(x <= 10);
         }
       }
     }
@@ -77,19 +71,16 @@ fn for_with_double_sided_conditional_return_b() -> bool {
     {
       var x: i32 = 0;
       loop {
-        if x <= 10 {
-          {
-            if (_globalUniforms.unknownInput == 1.0) {
-              return true;
-            } else {
-              return true;
-            }
+        {
+          if (_globalUniforms.unknownInput == 1.0) {
+            return true;
+          } else {
+            return true;
           }
-        } else {
-          break;
         }
         continuing {
           x = x + i32(1);
+          break if !(x <= 10);
         }
       }
     }
@@ -118,7 +109,8 @@ fn if_else_chain_b() -> bool {
   }
   return bool();
 }
-fn main(coords: vec2<f32>) -> vec4<f32> {
+fn main(_skParam0: vec2<f32>) -> vec4<f32> {
+  let coords = _skParam0;
   {
     var _skTemp0: vec4<f32>;
     var _skTemp1: bool;

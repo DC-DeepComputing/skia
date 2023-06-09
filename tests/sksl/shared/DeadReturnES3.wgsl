@@ -131,22 +131,20 @@ fn test_loop_break_b() -> bool {
     {
       var x: i32 = 0;
       loop {
-        if x <= 1 {
-          {
-            break;
-          }
-        } else {
+        {
           break;
         }
         continuing {
           x = x + i32(1);
+          break if !(x <= 1);
         }
       }
     }
     return true;
   }
 }
-fn main(xy: vec2<f32>) -> vec4<f32> {
+fn main(_skParam0: vec2<f32>) -> vec4<f32> {
+  let xy = _skParam0;
   {
     var _skTemp0: vec4<f32>;
     var _skTemp1: bool;
