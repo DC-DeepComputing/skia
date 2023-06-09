@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "982560a7_2fa0ea35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9224
+      },
+      "writtenOn": "2023-06-09T14:39:46Z",
+      "side": 1,
+      "message": "ptal. adding a simple null check\n\n(not sure skia ownership works..)",
+      "revId": "407ca53e35a924515918f71eff0771355f0876ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
