@@ -43,6 +43,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "29453dfe_2f936073",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-09T15:53:16Z",
+      "side": 1,
+      "message": "That\u0027s correct, but in order for it to work you\u0027ll need to set up the dynamic state for the pipeline using something like setup_dynamic_state() in GrVkPipeline.cpp. Same for the scissor and blend constants.",
+      "parentUuid": "516a745a_4c5d29cb",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 91
+      },
+      "revId": "7a004ac8ee04c66647701807c52588909cf94995",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d3794ba9_daa1578a",
         "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
         "patchSetId": 6
