@@ -425,13 +425,11 @@ protected:
     struct CreateInfo {
         CreateInfo(const SkImageInfo& info,
                    SkPixelGeometry geo,
+                   SkScalar textContrast,
+                   SkScalar textGamma,
                    TileUsage tileUsage,
                    SkRasterHandleAllocator* allocator)
-            : fInfo(info)
-            , fTileUsage(tileUsage)
-            , fPixelGeometry(geo)
-            , fAllocator(allocator)
-        {}
+                : fInfo(info), fTileUsage(tileUsage), fPixelGeometry(geo), fAllocator(allocator) {}
 
         const SkImageInfo        fInfo;
         const TileUsage          fTileUsage;

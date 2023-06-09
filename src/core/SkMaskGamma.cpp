@@ -73,9 +73,18 @@ static float apply_contrast(float srca, float contrast) {
     return srca + ((1.0f - srca) * contrast * srca);
 }
 
-void SkTMaskGamma_build_correcting_lut(uint8_t table[256], U8CPU srcI, SkScalar contrast,
-                                       const SkColorSpaceLuminance& srcConvert, SkScalar srcGamma,
-                                       const SkColorSpaceLuminance& dstConvert, SkScalar dstGamma) {
+static float apply_experimental_contrast(float srca, float contrast) {
+    return (srca * (contrast + 1.0f)) / (srca * contrast + 1.0f);
+}
+
+void SkTMaskGamma_build_correcting_lut_t(uint8_t table[256],
+                                         U8CPU srcI,
+                                         SkScalar contrast,
+                                         const SkColorSpaceLuminance& srcConvert,
+                                         SkScalar srcGamma,
+                                         const SkColorSpaceLuminance& dstConvert,
+                                         SkScalar dstGamma,
+                                         bool use_experimental_contrast) {
     const float src = (float)srcI / 255.0f;
     const float linSrc = srcConvert.toLuma(srcGamma, src);
     //Guess at the dst. The perceptual inverse provides smaller visual
@@ -94,7 +103,9 @@ void SkTMaskGamma_build_correcting_lut(uint8_t table[256], U8CPU srcI, SkScalar 
         float ii = 0.0f;
         for (int i = 0; i < 256; ++i, ii += 1.0f) {
             float rawSrca = ii / 255.0f;
-            float srca = apply_contrast(rawSrca, adjustedContrast);
+            float srca = use_experimental_contrast
+                                 ? apply_contrast(rawSrca, adjustedContrast)
+                                 : apply_experimental_contrast(rawSrca, adjustedContrast);
             table[i] = SkToU8(sk_float_round2int(255.0f * srca));
         }
     } else {
@@ -106,7 +117,9 @@ void SkTMaskGamma_build_correcting_lut(uint8_t table[256], U8CPU srcI, SkScalar 
             // When this happens the table[255] == 0x0 instead of 0xff.
             // See http://code.google.com/p/chromium/issues/detail?id=146466
             float rawSrca = ii / 255.0f;
-            float srca = apply_contrast(rawSrca, adjustedContrast);
+            float srca = use_experimental_contrast
+                                 ? apply_contrast(rawSrca, adjustedContrast)
+                                 : apply_experimental_contrast(rawSrca, adjustedContrast);
             SkASSERT(srca <= 1.0f);
             float dsta = 1.0f - srca;
 
@@ -122,4 +135,22 @@ void SkTMaskGamma_build_correcting_lut(uint8_t table[256], U8CPU srcI, SkScalar 
             table[i] = SkToU8(sk_float_round2int(255.0f * result));
         }
     }
+}
+
+void SkTMaskGamma_build_correcting_lut(uint8_t table[256],
+                                       U8CPU srcI,
+                                       SkScalar contrast,
+                                       const SkColorSpaceLuminance& srcConvert,
+                                       SkScalar srcGamma,
+                                       const SkColorSpaceLuminance& dstConvert,
+                                       SkScalar dstGamma,
+                                       bool use_experimental_contrast) {
+    SkTMaskGamma_build_correcting_lut_t(table,
+                                        srcI,
+                                        contrast,
+                                        srcConvert,
+                                        srcGamma,
+                                        dstConvert,
+                                        dstGamma,
+                                        use_experimental_contrast);
 }

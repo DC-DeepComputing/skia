@@ -77,9 +77,14 @@ template<> /*static*/ inline U8CPU sk_t_scale255<8>(U8CPU base) {
 
 template <int R_LUM_BITS, int G_LUM_BITS, int B_LUM_BITS> class SkTMaskPreBlend;
 
-void SkTMaskGamma_build_correcting_lut(uint8_t table[256], U8CPU srcI, SkScalar contrast,
-                                       const SkColorSpaceLuminance& srcConvert, SkScalar srcGamma,
-                                       const SkColorSpaceLuminance& dstConvert, SkScalar dstGamma);
+void SkTMaskGamma_build_correcting_lut(uint8_t table[256],
+                                       U8CPU srcI,
+                                       SkScalar contrast,
+                                       const SkColorSpaceLuminance& srcConvert,
+                                       SkScalar srcGamma,
+                                       const SkColorSpaceLuminance& dstConvert,
+                                       SkScalar dstGamma,
+                                       bool use_experimental_contrast);
 
 /**
  * A regular mask contains linear alpha values. A gamma correcting mask
@@ -108,14 +113,24 @@ public:
      * @param paint The color space in which the paint color was chosen.
      * @param device The color space of the target device.
      */
-    SkTMaskGamma(SkScalar contrast, SkScalar paintGamma, SkScalar deviceGamma) : fIsLinear(false) {
+    SkTMaskGamma(SkScalar contrast,
+                 SkScalar paintGamma,
+                 SkScalar deviceGamma,
+                 bool use_experimental_contrast)
+            : fIsLinear(false) {
         const SkColorSpaceLuminance& paintConvert = SkColorSpaceLuminance::Fetch(paintGamma);
         const SkColorSpaceLuminance& deviceConvert = SkColorSpaceLuminance::Fetch(deviceGamma);
+
         for (U8CPU i = 0; i < (1 << MAX_LUM_BITS); ++i) {
             U8CPU lum = sk_t_scale255<MAX_LUM_BITS>(i);
-            SkTMaskGamma_build_correcting_lut(fGammaTables[i], lum, contrast,
-                                              paintConvert, paintGamma,
-                                              deviceConvert, deviceGamma);
+            SkTMaskGamma_build_correcting_lut(fGammaTables[i],
+                                              lum,
+                                              contrast,
+                                              paintConvert,
+                                              paintGamma,
+                                              deviceConvert,
+                                              deviceGamma,
+                                              use_experimental_contrast);
         }
     }
 
