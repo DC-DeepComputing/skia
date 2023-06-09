@@ -283,6 +283,18 @@ void draw_image(GrRecordingContext* rContext,
                 SkCanvas::SrcRectConstraint constraint,
                 SkSamplingOptions sampling,
                 SkTileMode tm = SkTileMode::kClamp) {
+
+#if 0
+    SkDebugf("draw_image %p src %.2f %.2f %.2f %.2f dst %.2f %.2f %.2f %.2f\n",
+             clip,
+             src.fLeft, src.fTop, src.fRight, src.fBottom,
+             dst.fLeft, dst.fTop, dst.fRight, dst.fBottom);
+    SkDebugf("%.2f %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n",
+             srcToDst[0], srcToDst[1], srcToDst[2],
+             srcToDst[3], srcToDst[4], srcToDst[5],
+             srcToDst[6], srcToDst[7], srcToDst[8]);
+#endif
+
     GrQuadAAFlags aaFlags = SkToGrQuadAAFlags(canvasAAFlags);
     const SkMatrix& ctm(matrixProvider.localToDevice());
     auto ib = as_IB(image);
@@ -581,7 +593,8 @@ void Device::drawImageQuad(const SkImage* image,
                                        constraint,
                                        sampling,
                                        tileMode,
-                                       draw_image);
+                                       draw_image,
+                                       this);
                 return;
             }
         }
@@ -638,7 +651,7 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
     SkBlendMode mode = paint.getBlendMode_or(SkBlendMode::kSrcOver);
 
     AutoTArray<GrTextureSetEntry> textures(count);
-    // We accumulate compatible proxies until we find an an incompatible one or reach the end and
+    // We accumulate compatible proxies until we find an incompatible one or reach the end and
     // issue the accumulated 'n' draws starting at 'base'. 'p' represents the number of proxy
     // switches that occur within the 'n' entries.
     int base = 0, n = 0, p = 0;
