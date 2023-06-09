@@ -1,33 +1,36 @@
+WORKSPACE_DIR=../..
+PATHKIT_BIN_DIR=${WORKSPACE_DIR}/out/pathkit
+
 debug:
 	./compile.sh debug
 	- rm -rf build/
 	mkdir  -p ./build/wasm ./build/asmjs
-	cp ../../out/pathkit/pathkit.js     ./build/wasm/pathkit.js
-	cp ../../out/pathkit/pathkit.wasm   ./build/wasm/pathkit.wasm
+	cp ${PATHKIT_BIN_DIR}/pathkit.js     ./build/wasm/pathkit.js
+	cp ${PATHKIT_BIN_DIR}/pathkit.wasm   ./build/wasm/pathkit.wasm
 
 	./compile.sh asm.js debug
-	cp ../../out/pathkit/pathkit.js     ./build/asmjs/pathkit.js
+	cp ${PATHKIT_BIN_DIR}/pathkit.js     ./build/asmjs/pathkit.js
 
 release:
 	./compile.sh
 	- rm -rf build/
 	mkdir  -p ./build/wasm ./build/asmjs
-	cp ../../out/pathkit/pathkit.js     ./build/wasm/pathkit.js
-	cp ../../out/pathkit/pathkit.wasm   ./build/wasm/pathkit.wasm
+	cp ${PATHKIT_BIN_DIR}/pathkit.js     ./build/wasm/pathkit.js
+	cp ${PATHKIT_BIN_DIR}/pathkit.wasm   ./build/wasm/pathkit.wasm
 
 	./compile.sh asm.js
-	cp ../../out/pathkit/pathkit.js     ./build/asmjs/pathkit.js
-	cp ../../out/pathkit/pathkit.js.mem ./build/asmjs/pathkit.js.mem
+	cp ${PATHKIT_BIN_DIR}/pathkit.js     ./build/asmjs/pathkit.js
+	cp ${PATHKIT_BIN_DIR}/pathkit.js.mem ./build/asmjs/pathkit.js.mem
 
 npm:
 	rm -rf ./npm-wasm/bin ./npm-asmjs/bin
 	mkdir -p ./npm-wasm/bin ./npm-asmjs/bin
 	./compile.sh
-	cp ../../out/pathkit/pathkit.js   ./npm-wasm/bin
-	cp ../../out/pathkit/pathkit.wasm ./npm-wasm/bin
+	cp ${PATHKIT_BIN_DIR}/pathkit.js   ./npm-wasm/bin
+	cp ${PATHKIT_BIN_DIR}/pathkit.wasm ./npm-wasm/bin
 	./compile.sh asm.js
-	cp ../../out/pathkit/pathkit.js     ./npm-asmjs/bin/pathkit.js
-	cp ../../out/pathkit/pathkit.js.mem ./npm-asmjs/bin/pathkit.js.mem
+	cp ${PATHKIT_BIN_DIR}/pathkit.js     ./npm-asmjs/bin/pathkit.js
+	cp ${PATHKIT_BIN_DIR}/pathkit.js.mem ./npm-asmjs/bin/pathkit.js.mem
 	cp CHANGELOG.md ./npm-wasm
 	cp CHANGELOG.md ./npm-asmjs
 
