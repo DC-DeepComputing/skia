@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcfa2a73_4def13d4",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2114,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-09T18:33:07Z",
+      "side": 1,
+      "message": "constrains ?",
+      "range": {
+        "startLine": 2114,
+        "startChar": 53,
+        "endLine": 2114,
+        "endChar": 64
+      },
+      "revId": "c8a14d74e53baadc57a2979bc2c0ed507126b96a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
