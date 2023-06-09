@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7d73d56_4f7654f5",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 823,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-09T15:48:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7637fd23_cb8d6027",
+      "range": {
+        "startLine": 823,
+        "startChar": 41,
+        "endLine": 823,
+        "endChar": 54
+      },
+      "revId": "bebde9238bf5aa2570bc7220dedcf1158a2e7be0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2405dde_203d55cf",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0e83b6e_7f4ab15b",
+        "filename": "src/effects/imagefilters/SkDisplacementMapImageFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-09T15:48:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2405dde_203d55cf",
+      "range": {
+        "startLine": 75,
+        "startChar": 75,
+        "endLine": 75,
+        "endChar": 77
+      },
+      "revId": "bebde9238bf5aa2570bc7220dedcf1158a2e7be0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ace86ff_9fb9d91e",
@@ -77,6 +125,24 @@
       "writtenOn": "2023-06-01T19:34:08Z",
       "side": 1,
       "message": "I\u0027m a bit surprised we don\u0027t check if the buffer isValid here",
+      "revId": "bebde9238bf5aa2570bc7220dedcf1158a2e7be0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0dc283c_1262a340",
+        "filename": "src/effects/imagefilters/SkDisplacementMapImageFilter.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-09T15:48:39Z",
+      "side": 1,
+      "message": "You don\u0027t have to in SkFlattenable code. The outer code will check if the buffer is valid after CreateProc returns and automatically ignore what ever is returned.",
+      "parentUuid": "4ace86ff_9fb9d91e",
       "revId": "bebde9238bf5aa2570bc7220dedcf1158a2e7be0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

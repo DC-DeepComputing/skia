@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b0146c1_775d21e9",
+        "filename": "src/effects/imagefilters/SkDisplacementMapImageFilter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-09T15:48:39Z",
+      "side": 0,
+      "message": "These truncates were the cause of the more significant image diffs I was seeing in the layout tests. IMO the new code (and the old GPU code that used nearest-neighbor) has the correct behavior.\n\nIn the feDisplacementMap-filterUnits.svg test, there are 6 displacement map filters, all using feFlood to specify a solid color for both the color and displacement inputs. This results in a constant translation of the color image, and transparency in the output image when the displacement vector would access outside the original color image. The most different filter was the bottom right, which had an output image (considering X only for simplicity) of x\u003d240 to x\u003d340. The color and displacement images were fully defined on this same image range with a flood color of (50%, 50%, 50%, 1).\n\n50% is first mapped to 8-bit colors, so it\u0027s actually not directly representable in float anymore, and the flood color is actually `~.501`. By default filters are then converted to linear sRGB, so the actual values stored in the displacement map image are roughly `~.216`. This represents a displacement of `~ -28.4` after evaluating `scale*(d - 0.5)`, which is the equation that the SVG spec defines.\n\nThe SVG test draws a 1px stroke centered on the pixel boundary of x\u003d287 (so it covers x\u003d286 up to 288 (exclusive)). Looking at sampling that pixel, we have a starting coordinate of x\u003d287.5 (for it\u0027s pixel center). Subtracting 28.4 will sample the color image at 239.1, which is outside the x\u003d240 edge and should be transparent. The old CPU implementation was iterating over integer pixels, so it added an extra 1/2 to `scaleAdj`, which meant that `displX \u003d ~ -27.9`. This was then truncated before adding to the original coordinate and we end up sampling x\u003d240, which is contained in the color image. Had it truncated after adding, we\u0027d have `trunc(287 - 27.9) \u003d trunc(239.1) \u003d 239)`.\n\nSwitching to correct nearest neighbor sampling thus appears like a row or column of pixels are lost. And for more complex displacements, it appears as though the whole image is shifting by a pixel.\n\nIf we continue this example, and consider x\u003d288, the color sampled position for the pixel center of x\u003d288.5 is roughly 240.1. This is inside the color image but right on the pixel boundary between the color and transparency. With nearest neighbor, it still selects the solid color. If we switch to bilinear filtering, it should actually be a mix of transparent black and the color, which is why on some layout test runs with bilerp enabled, it looked like we were losing almost 1.5px of displacement relative to the legacy CPU implementation.\n\nI don\u0027t know the source of these tests, but my guess is that the legacy CPU implementation\u0027s output was used to define the stroke rects that show where the displacement is meant to end up. In actuality, it\u0027s just baking a bug in the implementation\u0027s nearest-neighbor code. But even with good NN sampling, it hides the fact that the inputs for this image filter are not actually nice numbers and a fractional offset should result in fractional transparency at the boundaries.\n\nFor now, I\u0027m keeping the displacement map hard-coded to kNearest to reduce the change in the behavior. It\u0027s easy to switch to kLinear later on, and we ought to expose it as a parameter to the factory. The SVG spec even states that eventually the SVG element can define the sampling method, in which case chrome will need to plumb that all the way down to the factory. For now, since the main goal is to update filters off of the legacy code paths, I\u0027m going to write a bug and move on.",
+      "range": {
+        "startLine": 253,
+        "startChar": 49,
+        "endLine": 253,
+        "endChar": 67
+      },
+      "revId": "307adf6b70b547ae71031597cbd6824d4a94cb62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
