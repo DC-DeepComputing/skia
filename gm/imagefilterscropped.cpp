@@ -36,7 +36,16 @@ static void draw_paint(SkCanvas* canvas, const SkRect& r, sk_sp<SkImageFilter> i
     canvas->save();
     canvas->clipRect(r);
     canvas->drawPaint(paint);
+
+
     canvas->restore();
+
+    SkPaint s;
+    s.setStyle(SkPaint::kStroke_Style);
+    s.setStrokeWidth(1.f);
+    s.setColor(SK_ColorRED);
+    canvas->drawRect(r, s);
+    canvas->drawRect(SkRect::MakeXYWH(10, 10, 44, 44), s);
 }
 
 static void draw_path(SkCanvas* canvas, const SkRect& r, sk_sp<SkImageFilter> imf) {
@@ -128,8 +137,10 @@ protected:
 
         sk_sp<SkImageFilter> cfOffset(SkImageFilters::ColorFilter(cf, std::move(offset)));
 
-        sk_sp<SkImageFilter> erodeX(SkImageFilters::Erode(8, 0, nullptr, &cropRect));
-        sk_sp<SkImageFilter> erodeY(SkImageFilters::Erode(0, 8, nullptr, &cropRect));
+        // These are composed with an outer erode along the other axis, so don't add a cropRect to
+        // them or it will interfere with the second filter evaluation.
+        sk_sp<SkImageFilter> erodeX(SkImageFilters::Erode(8, 0, nullptr));
+        sk_sp<SkImageFilter> erodeY(SkImageFilters::Erode(0, 8, nullptr));
 
         sk_sp<SkImageFilter> filters[] = {
             nullptr,
