@@ -1177,6 +1177,8 @@ TINT_SRCS = [
     "src/tint/type/multisampled_texture.h",
     "src/tint/type/node.cc",
     "src/tint/type/node.h",
+    "src/tint/type/numeric_scalar.cc",
+    "src/tint/type/numeric_scalar.h",
     "src/tint/type/pointer.cc",
     "src/tint/type/pointer.h",
     "src/tint/type/reference.cc",
