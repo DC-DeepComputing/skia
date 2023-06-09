@@ -18,7 +18,7 @@
 
 static void test(skiatest::Reporter* r,
                  const char* src,
-                 SkSL::ProgramKind kind = SkSL::ProgramKind::kFragment) {
+                 SkSL::ProgramKind kind = SkSL::ProgramKind::kRuntimeShader) {
     SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Default());
     SkSL::ProgramSettings settings;
     std::unique_ptr<SkSL::Program> program = compiler.convertProgram(kind, std::string(src),
@@ -38,8 +38,46 @@ DEF_TEST(SkSLGLSLTestbed, r) {
     // Add in your SkSL here.
     test(r,
          R"__SkSL__(
-             void main() {
-                 sk_FragColor = half4(0);
-             }
+uniform half4 colorGreen, colorRed;
+
+bool switch_fallthrough(int value) {
+    bool ok = false;
+    switch (value) {
+        case 2:  break;
+        case 1:
+        case 0:  ok = true; break;
+        default: break;
+    }
+    return ok;
+}
+
+bool switch_fallthrough_twice(int value) {
+    bool ok = false;
+    switch (value) {
+        case 0:  break;
+        case 1:
+        case 2:
+        case 3:  ok = true; break;
+        default: break;
+    }
+    return ok;
+}
+
+bool switch_fallthrough_with_vardecls(int value) {
+    switch (value) {
+        case 0:  bool a;
+        case 1:  bool b = true;
+        case 2:  a = b;
+        case 3:  return a; break;
+    }
+    return false;
+}
+
+half4 main(float2 coords) {
+    int x = int(colorGreen.g);
+    return (switch_fallthrough(x) &&
+            switch_fallthrough_twice(x) &&
+            switch_fallthrough_with_vardecls(x)) ? colorGreen : colorRed;
+}
          )__SkSL__");
 }

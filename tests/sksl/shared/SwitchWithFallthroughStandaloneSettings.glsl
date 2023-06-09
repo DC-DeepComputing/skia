@@ -17,6 +17,22 @@ bool switch_fallthrough_twice_bi(int value) {
     }
     return ok;
 }
+bool switch_fallthrough_with_vardecls_bi(int value) {
+    {
+        bool a;
+        bool b;
+        switch (value) {
+            case 0:
+            case 1:
+                b = true;
+            case 2:
+                a = b;
+            case 3:
+                return a;
+        }
+    }
+    return false;
+}
 vec4 main() {
     int x = int(colorGreen.y);
     bool _0_ok = false;
@@ -30,5 +46,5 @@ vec4 main() {
         default:
             break;
     }
-    return _0_ok && switch_fallthrough_twice_bi(x) ? colorGreen : colorRed;
+    return (_0_ok && switch_fallthrough_twice_bi(x)) && switch_fallthrough_with_vardecls_bi(x) ? colorGreen : colorRed;
 }

@@ -25,7 +25,19 @@ bool switch_fallthrough_twice(int value) {
     return ok;
 }
 
+bool switch_fallthrough_with_vardecls(int value) {
+    switch (value) {
+        case 0:  bool a;
+        case 1:  bool b = true;
+        case 2:  a = b;
+        case 3:  return a; break;
+    }
+    return false;
+}
+
 half4 main(float2 coords) {
     int x = int(colorGreen.g);
-    return (switch_fallthrough(x) && switch_fallthrough_twice(x)) ? colorGreen : colorRed;
+    return (switch_fallthrough(x) &&
+            switch_fallthrough_twice(x) &&
+            switch_fallthrough_with_vardecls(x)) ? colorGreen : colorRed;
 }
