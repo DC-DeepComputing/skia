@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4317deef_751b6df6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-09T17:54:39Z",
+      "side": 1,
+      "message": "It looks like 5 of the 6 Paths tests actually went down slightly. Good news then?",
+      "revId": "6ff1893cb304b118430354fb4ce59a9a587a9f82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
