@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f68c2180_e8252105",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T15:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee4c9240_2f0fff2a",
+      "range": {
+        "startLine": 745,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 0
+      },
+      "revId": "c88a75a6670f398ccda009238c964726e9cc10c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81879d4b_6f3a50d5",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fe1c474_09e294a1",
+        "filename": "src/gpu/ganesh/GrCanvas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T15:05:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81879d4b_6f3a50d5",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 1
+      },
+      "revId": "c88a75a6670f398ccda009238c964726e9cc10c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e837d52d_a8b214db",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-06-09T14:58:38Z",
       "side": 1,
       "message": "Is this right?",
+      "range": {
+        "startLine": 50,
+        "startChar": 17,
+        "endLine": 50,
+        "endChar": 21
+      },
+      "revId": "c88a75a6670f398ccda009238c964726e9cc10c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1856aa4d_dd244521",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-09T15:05:43Z",
+      "side": 1,
+      "message": "Yes, this is set up to match any of these strings a a prefix. So this will match SkCanvas.cpp, SkCanvas_Raster.cpp, SkCanvasPriv.cpp, etc.\n\nNote on line 47 and 48 how I\u0027ve enforced IWYU on SkA* and SkB* as a way to make incremental progress.",
+      "parentUuid": "e837d52d_a8b214db",
       "range": {
         "startLine": 50,
         "startChar": 17,
