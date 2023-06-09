@@ -1545,10 +1545,10 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
         initContext(direct);
     }
 
-    const int maxDimension = direct->priv().caps()->maxTextureSize();
-    if (maxDimension < std::max(src.size().width(), src.size().height())) {
-        return Result::Skip("Src too large to create a texture.\n");
-    }
+//    const int maxDimension = direct->priv().caps()->maxTextureSize();
+//    if (maxDimension < std::max(src.size().width(), src.size().height())) {
+//        return Result::Skip("Src too large to create a texture.\n");
+//    }
 
     sk_sp<SkSurface> surface = this->createDstSurface(direct, src.size());
     if (!surface) {
