@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30369ef5_a9271d80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2023-06-10T18:57:08Z",
+      "side": 1,
+      "message": "This is the change being discussed in the Android thread that I\u0027ve put you on. Unfortunately both Leon and Brian (who have been doing these reviews) are OOO (and this would need to land on Monday).",
+      "revId": "4db84a90350d3dccfcefd62bb653d45fec016671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
