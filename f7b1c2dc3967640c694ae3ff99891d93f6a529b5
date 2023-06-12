@@ -52,6 +52,24 @@
       "parentUuid": "50850865_647e2cc0",
       "revId": "f7b1c2dc3967640c694ae3ff99891d93f6a529b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2d0bc24_734c4694",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-12T15:06:20Z",
+      "side": 1,
+      "message": "Thanks a lot for the details. I\u0027ve created https://skia-review.googlesource.com/c/skia/+/710756 with fixes for these errors (hopefully), but for expat I simply added \u0027copts \u003d [\"-Wno-format\"]\u0027 which might not be the best solution as pointed out by John.\nAlso note that I have not tested the changes beyond running the try jobs and running tests locally. I tried the \"Reproducing the task locally\" instructions on the swarming page but couldn\u0027t get the \u0027swarming reproduce\u0027 command to work.",
+      "parentUuid": "3423b8ae_ef6137f4",
+      "revId": "f7b1c2dc3967640c694ae3ff99891d93f6a529b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
