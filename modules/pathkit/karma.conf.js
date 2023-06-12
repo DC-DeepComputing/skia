@@ -1,6 +1,7 @@
+// This is the legacy (non-Bazel) test setup.
 const isDocker = require('is-docker')();
 
-module.exports = function(config) {
+module.exports = function (config) {
   // Set the default values to be what are needed when testing the
   // WebAssembly build locally.
   let cfg = {
@@ -10,8 +11,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      { pattern: 'build/wasm/pathkit.wasm', included:false, served:true},
-      { pattern: 'tests/*.json', included:false, served:true},
+      { pattern: 'build/wasm/pathkit.wasm', included: false, served: true },
+      { pattern: 'tests/*.json', included: false, served: true },
       'tests/testReporter.js',
       'build/wasm/pathkit.js',
       'tests/pathkitinit.js',
@@ -58,7 +59,7 @@ module.exports = function(config) {
   if (isDocker) {
     // See https://hackernoon.com/running-karma-tests-with-headless-chrome-inside-docker-ae4aceb06ed3
     cfg.browsers = ['ChromeHeadlessNoSandbox'],
-    cfg.customLaunchers = {
+      cfg.customLaunchers = {
         ChromeHeadlessNoSandbox: {
           base: 'ChromeHeadless',
           flags: [
@@ -73,14 +74,14 @@ module.exports = function(config) {
             '--disable-dev-shm-usage',
           ],
         },
-    };
+      };
   }
 
   if (process.env.ASM_JS) {
     console.log('asm.js is under test');
     cfg.files = [
-      { pattern: 'build/asmjs/pathkit.js.mem', included:false, served:true},
-      { pattern: 'tests/*.json', included:false, served:true},
+      { pattern: 'build/asmjs/pathkit.js.mem', included: false, served: true },
+      { pattern: 'tests/*.json', included: false, served: true },
       'tests/testReporter.js',
       'build/asmjs/pathkit.js',
       'tests/pathkitinit.js',
