@@ -82,7 +82,7 @@ PromiseImageCallbackContext::~PromiseImageCallbackContext() {
 void PromiseImageCallbackContext::setBackendTexture(const GrBackendTexture& backendTexture) {
     SkASSERT(!fPromiseImageTexture);
     SkASSERT(fBackendFormat == backendTexture.getBackendFormat());
-    fPromiseImageTexture = SkPromiseImageTexture::Make(backendTexture);
+    fPromiseImageTexture = GrPromiseImageTexture::Make(backendTexture);
 }
 
 void PromiseImageCallbackContext::destroyBackendTexture() {

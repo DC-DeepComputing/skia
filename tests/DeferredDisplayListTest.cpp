@@ -13,7 +13,6 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkPromiseImageTexture.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
@@ -26,6 +25,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrTypes.h"
+#include "include/gpu/ganesh/GrPromiseImageTexture.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/chromium/GrDeferredDisplayList.h"
@@ -1095,12 +1095,12 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLCreateCharacterizationFailures,
 // Test that flushing a DDL via SkSurface::flush works
 
 struct FulfillInfo {
-    sk_sp<SkPromiseImageTexture> fTex;
+    sk_sp<GrPromiseImageTexture> fTex;
     bool fFulfilled = false;
     bool fReleased  = false;
 };
 
-static sk_sp<SkPromiseImageTexture> tracking_fulfill_proc(void* context) {
+static sk_sp<GrPromiseImageTexture> tracking_fulfill_proc(void* context) {
     FulfillInfo* info = (FulfillInfo*) context;
     info->fFulfilled = true;
     return info->fTex;
@@ -1130,7 +1130,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLSkSurfaceFlush,
     }
 
     FulfillInfo fulfillInfo;
-    fulfillInfo.fTex = SkPromiseImageTexture::Make(mbet->texture());
+    fulfillInfo.fTex = GrPromiseImageTexture::Make(mbet->texture());
 
     sk_sp<GrDeferredDisplayList> ddl;
 
@@ -1238,7 +1238,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLMultipleDDLs, reporter, ctxInfo, CtsEn
 
 #ifdef SK_GL
 
-static sk_sp<SkPromiseImageTexture> noop_fulfill_proc(void*) {
+static sk_sp<GrPromiseImageTexture> noop_fulfill_proc(void*) {
     SkASSERT(0);
     return nullptr;
 }

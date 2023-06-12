@@ -10,10 +10,10 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkExecutor.h"
-#include "include/core/SkPromiseImageTexture.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
+#include "include/gpu/ganesh/GrPromiseImageTexture.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/base/SkDeque.h"
@@ -77,7 +77,7 @@ public:
     std::atomic<State> fState{State::kInitial};
     std::atomic<bool> fDrawn{false};
 
-    sk_sp<SkPromiseImageTexture> fTexture;
+    sk_sp<GrPromiseImageTexture> fTexture;
 };
 
 static constexpr int kPromiseImageCount = 8;
@@ -100,7 +100,7 @@ public:
 
     void run();
 
-    sk_sp<SkPromiseImageTexture> fulfillPromiseImage(PromiseImageInfo&);
+    sk_sp<GrPromiseImageTexture> fulfillPromiseImage(PromiseImageInfo&);
     void releasePromiseImage(PromiseImageInfo&);
 private:
     void initPromiseImage(int index);
@@ -120,7 +120,7 @@ private:
     SkTaskGroup fRecordingTaskGroup{*fRecordingExecutor};
     SkThreadID fGpuThread = kIllegalThreadID;
     SkThreadID fMainThread = SkGetThreadID();
-    std::queue<sk_sp<SkPromiseImageTexture>> fReusableTextures;
+    std::queue<sk_sp<GrPromiseImageTexture>> fReusableTextures;
     sk_gpu_test::GrContextFactory fContextFactory;
 };
 
@@ -150,7 +150,7 @@ DDLFuzzer::DDLFuzzer(Fuzz* fuzz, ContextType contextType) : fFuzz(fuzz) {
     }
 }
 
-sk_sp<SkPromiseImageTexture> DDLFuzzer::fulfillPromiseImage(PromiseImageInfo& promiseImage) {
+sk_sp<GrPromiseImageTexture> DDLFuzzer::fulfillPromiseImage(PromiseImageInfo& promiseImage) {
     using State = PromiseImageInfo::State;
     if (!this->isOnGPUThread()) {
         fFuzz->signalBug();
@@ -192,7 +192,7 @@ sk_sp<SkPromiseImageTexture> DDLFuzzer::fulfillPromiseImage(PromiseImageInfo& pr
         fContext->checkAsyncWorkCompletion();
     }
 
-    promiseImage.fTexture = SkPromiseImageTexture::Make(backendTex);
+    promiseImage.fTexture = GrPromiseImageTexture::Make(backendTex);
 
     return promiseImage.fTexture;
 }
@@ -223,7 +223,7 @@ void DDLFuzzer::releasePromiseImage(PromiseImageInfo& promiseImage) {
     promiseImage.fTexture = nullptr;
 }
 
-static sk_sp<SkPromiseImageTexture> fuzz_promise_image_fulfill(void* ctxIn) {
+static sk_sp<GrPromiseImageTexture> fuzz_promise_image_fulfill(void* ctxIn) {
     PromiseImageInfo& fuzzPromiseImage = *(PromiseImageInfo*)ctxIn;
     return fuzzPromiseImage.fFuzzer->fulfillPromiseImage(fuzzPromiseImage);
 }
@@ -288,7 +288,7 @@ void DDLFuzzer::run() {
 
     fGpuTaskGroup.add([=] {
         while (!fReusableTextures.empty()) {
-            sk_sp<SkPromiseImageTexture> gpuTexture = std::move(fReusableTextures.front());
+            sk_sp<GrPromiseImageTexture> gpuTexture = std::move(fReusableTextures.front());
             fContext->deleteBackendTexture(gpuTexture->backendTexture());
             fReusableTextures.pop();
         }

@@ -21,13 +21,13 @@ class GrBackendFormat;
 class GrBackendTexture;
 class GrContextThreadSafeProxy;
 class GrDirectContext;
+class GrPromiseImageTexture;
 class GrRecordingContext;
 class GrYUVABackendTextureInfo;
 class GrYUVABackendTextures;
 class SkColorSpace;
 class SkData;
 class SkPixmap;
-class SkPromiseImageTexture;
 class SkYUVAPixmaps;
 enum SkAlphaType : int;
 enum SkColorType : int;
@@ -264,7 +264,7 @@ SK_API sk_sp<SkImage> TextureFromYUVATextures(GrRecordingContext* context,
                                               const GrYUVABackendTextures& yuvaTextures);
 
 using PromiseImageTextureContext = void*;
-using PromiseImageTextureFulfillProc = sk_sp<SkPromiseImageTexture> (*)(PromiseImageTextureContext);
+using PromiseImageTextureFulfillProc = sk_sp<GrPromiseImageTexture> (*)(PromiseImageTextureContext);
 using PromiseImageTextureReleaseProc = void (*)(PromiseImageTextureContext);
 
 /** Create a new GPU-backed SkImage that is very similar to an SkImage created by BorrowTextureFrom.
