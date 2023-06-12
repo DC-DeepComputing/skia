@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccfb5b78_c3bdaa12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-12T04:54:35Z",
+      "side": 1,
+      "message": "This is not meant to be submitted but can serve as a test bed that allows April to implement compute shader based image filters in an interactive viewer slide.",
+      "revId": "f33abbb650a680b912423eee39bb61efcc06ad5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
