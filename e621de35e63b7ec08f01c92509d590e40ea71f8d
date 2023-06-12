@@ -16,6 +16,24 @@
       "message": "Is there a Bazel equivalent I need to fix?",
       "revId": "e621de35e63b7ec08f01c92509d590e40ea71f8d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d71dfde1_c82a193a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-12T17:06:43Z",
+      "side": 1,
+      "message": "If grep didn\u0027t show it in a .bzl file, then no.",
+      "parentUuid": "6296e1a6_f10183a4",
+      "revId": "e621de35e63b7ec08f01c92509d590e40ea71f8d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
