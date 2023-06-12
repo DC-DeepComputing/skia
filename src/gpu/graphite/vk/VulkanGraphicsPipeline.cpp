@@ -80,9 +80,7 @@ static void setup_vertex_input_state(
         skia_private::STArray<2, VkVertexInputBindingDescription, true>* bindingDescs,
         skia_private::STArray<16, VkVertexInputAttributeDescription>* attributeDescs,
         uint32_t maxVertexAttributes) {
-    uint32_t totalAttributeCount = vertexAttrs.size() + instanceAttrs.size();
-    SkASSERT(totalAttributeCount <= maxVertexAttributes);
-
+    SkASSERT(vertexAttrs.size() + instanceAttrs.size() <= maxVertexAttributes);
     // Setup attribute & binding descriptions
     int attribIndex = 0;
     size_t vertexAttributeOffset = 0;
