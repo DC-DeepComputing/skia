@@ -90,6 +90,10 @@ sk_sp<SkImage> AdoptTextureFrom(Recorder* recorder,
     sk_sp<TextureProxy> proxy(new TextureProxy(std::move(texture)));
 
     skgpu::Swizzle swizzle = caps->getReadSwizzle(ct, backendTex.info());
+    // If the color type is alpha-only, propagate the alpha value to the other channels.
+    if (SkColorTypeIsAlphaOnly(ct)) {
+        swizzle = skgpu::Swizzle::Concat(swizzle, skgpu::Swizzle("aaaa"));
+    }
     TextureProxyView view(std::move(proxy), swizzle);
     return sk_make_sp<skgpu::graphite::Image>(kNeedNewImageUniqueID, view, info);
 }
