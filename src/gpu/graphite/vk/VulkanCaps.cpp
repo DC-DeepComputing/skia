@@ -1133,9 +1133,18 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
         static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain =
             UniqueKey::GenerateDomain();
 
-        // TODO: set proper key size
-        UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 1, "GraphicsPipeline");
-        // TODO: fill in key data here
+        // 5 uint32_t's (render step id, paint id, uint64 renderpass desc, uint16 write swizzle key)
+        UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 5, "GraphicsPipeline");
+        // add graphicspipelinedesc key
+        builder[0] = pipelineDesc.renderStepID();
+        builder[1] = pipelineDesc.paintParamsID().asUInt();
+
+        // add renderpassdesc key
+        uint64_t renderPassKey = this->getRenderPassDescKey(renderPassDesc);
+        builder[2] = renderPassKey & 0xFFFFFFFF;
+        builder[3] = (renderPassKey >> 32) & 0xFFFFFFFF;
+        builder[4] = renderPassDesc.fWriteSwizzle.asKey();
+
         builder.finish();
     }
 
