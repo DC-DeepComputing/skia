@@ -39,6 +39,30 @@
       },
       "revId": "dae844434ff7b09955684e72444414fb531c545c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5b42dae_4a3a2da8",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-12T19:50:22Z",
+      "side": 1,
+      "message": "Good call, assertions aren\u0027t error handling.",
+      "parentUuid": "5f2a622f_ea76537f",
+      "range": {
+        "startLine": 83,
+        "startChar": 58,
+        "endLine": 83,
+        "endChar": 77
+      },
+      "revId": "dae844434ff7b09955684e72444414fb531c545c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
