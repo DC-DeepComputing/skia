@@ -22,6 +22,30 @@
       },
       "revId": "ff9e3c16ceb13fed210ecb1ca8d61db69d1af298",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e26e488d_652cb0f8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-12T20:03:38Z",
+      "side": 1,
+      "message": "LGTM; in the future, please try to keep fix-forwards as tightly scoped/minimally-changing as possible. The goal should be to bandaid the problem without any ripple effects. If the change is more than just a tiny tweak, you\u0027re better off just reverting entirely and then relanding later.",
+      "parentUuid": "95dd45ee_f7c5d457",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 143
+      },
+      "revId": "ff9e3c16ceb13fed210ecb1ca8d61db69d1af298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
