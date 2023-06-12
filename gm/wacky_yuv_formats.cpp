@@ -788,6 +788,9 @@ protected:
             case Type::kFromGenerator:
                 name += "_imggen";
                 break;
+            case Type::kFromImages:
+                name += "_fromimages";
+                break;
         }
 
         return name;
@@ -1008,6 +1011,11 @@ DEF_GM(return new WackyYUVFormatsGM(/* target cs */ false,
 DEF_GM(return new WackyYUVFormatsGM(/* target cs */ false,
                                     /* subset */ false,
                                     WackyYUVFormatsGM::Type::kFromPixmaps);)
+#if defined(SK_GRAPHITE)
+DEF_GM(return new WackyYUVFormatsGM(/* target cs */ false,
+                                    /* subset */ false,
+                                    WackyYUVFormatsGM::Type::kFromImages);)
+#endif
 
 class YUVMakeColorSpaceGM : public GM {
 public:
