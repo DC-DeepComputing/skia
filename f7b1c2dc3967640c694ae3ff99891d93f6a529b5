@@ -70,6 +70,24 @@
       "parentUuid": "3423b8ae_ef6137f4",
       "revId": "f7b1c2dc3967640c694ae3ff99891d93f6a529b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "182bc7e7_2845a609",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-12T15:09:13Z",
+      "side": 1,
+      "message": "I added the tryjobs to that CL using the \"Choose Tryjobs\" button.",
+      "parentUuid": "a2d0bc24_734c4694",
+      "revId": "f7b1c2dc3967640c694ae3ff99891d93f6a529b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
