@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25d6ee37_7e301c11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-12T19:54:50Z",
+      "side": 1,
+      "message": "Now if too many attributes are requested, the Make(...) call will return a nullptr. Higher level graphite code then decides how to handle the failed creation. Added a log message so the reason for the failure is easy to locate when debugging.",
+      "revId": "dae844434ff7b09955684e72444414fb531c545c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f2a622f_ea76537f",
@@ -54,6 +71,30 @@
       "writtenOn": "2023-06-12T19:50:22Z",
       "side": 1,
       "message": "Good call, assertions aren\u0027t error handling.",
+      "parentUuid": "5f2a622f_ea76537f",
+      "range": {
+        "startLine": 83,
+        "startChar": 58,
+        "endLine": 83,
+        "endChar": 77
+      },
+      "revId": "dae844434ff7b09955684e72444414fb531c545c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2c453be_a20e1e4a",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-12T19:54:50Z",
+      "side": 1,
+      "message": "Hmm, STArray does determine a max. capacity and die if we attempt to go beyond it. We also only perform an SkASSERT within the ganesh equivalent of this class. It is supremely unlikely we would ever encounter that use case anyhow, but it\u0027s better to be 100% sure \u0026 safe.\n\nI removed the `maxVertexAttributes` parameter and instead now perform this check within `VulkanGraphicsPipeline::Make`, returning a nullptr if we violate this limit (which has a TODO to be handled appropriately upstream within graphite https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/graphite/ResourceProvider.cpp#57).",
       "parentUuid": "5f2a622f_ea76537f",
       "range": {
         "startLine": 83,
