@@ -51,6 +51,24 @@
       "message": "As we discussed offline, you\u0027ll want to update the affected SkSL golden files so that they continue to compile. You can find these under `resources/sksl`, for example this particular file is generated from `resources/sksl/compute/Desaturate.sksl`.",
       "revId": "31587f96575b8142f5efd9e6cfe62aa99ee6f686",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ce49f1d_a2932f6e",
+        "filename": "tests/sksl/compute/Desaturate.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20149
+      },
+      "writtenOn": "2023-06-12T22:23:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9de8e1b9_ab171bab",
+      "revId": "31587f96575b8142f5efd9e6cfe62aa99ee6f686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
