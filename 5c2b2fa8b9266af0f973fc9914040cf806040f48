@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4292fc7_42f54b1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-12T19:44:41Z",
+      "side": 1,
+      "message": "If you want the SupportedTextureFormats function to be somewhere else or be called something else, that\u0027s fine. I just made up a location and name.",
+      "revId": "5c2b2fa8b9266af0f973fc9914040cf806040f48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
