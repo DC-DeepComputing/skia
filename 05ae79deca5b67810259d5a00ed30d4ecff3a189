@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f6c6375_0d9c458b",
+        "filename": "bazel/external/expat/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-12T18:07:09Z",
+      "side": 1,
+      "message": "GN is configured to ignore warnings in *all* third_party rules. Bazel lacks such a blanket mechanism.\n\nhttps://github.com/google/skia/blob/673db113b560015e4e9e943ca44b1a13b5e67022/third_party/third_party.gni#L91\n\nThis looks fine to me.",
+      "parentUuid": "78568b1f_33ce0e78",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "364e4727_7b50d49f",
