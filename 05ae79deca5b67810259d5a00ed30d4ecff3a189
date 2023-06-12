@@ -139,6 +139,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2af9778c_f28917ab",
+        "filename": "bazel/external/expat/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-12T18:20:38Z",
+      "side": 1,
+      "message": "Does this mean we need to set the defines below? Are those platform specific defines?",
+      "parentUuid": "9633d8fd_9cb2b481",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "364e4727_7b50d49f",
         "filename": "tests/SkJpegXmpTest.cpp",
         "patchSetId": 3
