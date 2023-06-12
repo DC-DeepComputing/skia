@@ -16,6 +16,23 @@
       "message": "PTAL, is this okay to land now? (as_bytes() improvement will be incorporated separately after making a roll commit).",
       "revId": "0e0872d8f902b927085a1c39983b36516ae2dd8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a8f9c96_df9a2c53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-06-12T13:21:27Z",
+      "side": 1,
+      "message": "LGTM!",
+      "revId": "0e0872d8f902b927085a1c39983b36516ae2dd8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
