@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b398df8e_28fcc11f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2023-06-12T13:10:20Z",
+      "side": 1,
+      "message": "Thanks for making this change. I think the code is significantly more clear without the boilerplate and the chaining. LGTM!",
+      "revId": "9d7b2e5eb83ccaf07b001e540841353565f0c979",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
