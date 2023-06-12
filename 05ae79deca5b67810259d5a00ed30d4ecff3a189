@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f77dab76_c074fd45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-12T15:08:26Z",
+      "side": 1,
+      "message": "I manually added\nBazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64\nBuild-Debian10-Clang-arm64-Debug-Android_API30\nBuild-Win-Clang-x86_64-Release-Shared\n\nvia the \"Choose Tryjobs\" button on Gerrit to test the three failures I saw on the CI",
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
