@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "35e103f1_1009d489",
+        "filename": "bazel/external/expat/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-12T17:59:19Z",
+      "side": 1,
+      "message": "I think that it\u0027s because of the changes in src/BUILD.bazel\nPreviously, //src/xml:deps was only depended on conditionally",
+      "parentUuid": "6b8e0b5a_6d8af33e",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "364e4727_7b50d49f",
         "filename": "tests/SkJpegXmpTest.cpp",
         "patchSetId": 3
@@ -54,6 +78,30 @@
       "writtenOn": "2023-06-12T15:53:55Z",
       "side": 1,
       "message": "`i \u003d 24; i \u003e\u003d 0; i -\u003d 8`",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 31
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d5747df_89c6f4ce",
+        "filename": "tests/SkJpegXmpTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-12T17:59:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "364e4727_7b50d49f",
       "range": {
         "startLine": 47,
         "startChar": 8,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d21d91b_74f57aca",
+        "filename": "tests/SkJpegXmpTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-12T17:59:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d184ca90_8d1737de",
+      "range": {
+        "startLine": 48,
+        "startChar": 45,
+        "endLine": 48,
+        "endChar": 58
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b47efc1c_cf07e294",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-06-12T15:56:52Z",
       "side": 1,
       "message": "Why do we convert to `vector\u003cchar\u003e` here and then back to `std::string` below?\n\nAppending the guid doesn\u0027t require it.\n`append_uint32` doesn\u0027t require it (it could just as easily take a `std::string` and work the same).",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 48
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d40179_9a958974",
+        "filename": "tests/SkJpegXmpTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-12T17:59:19Z",
+      "side": 1,
+      "message": "Added a comment. It\u0027s because of the pesky \u0027\\0\u0027 character which std::string will interpret as the end of the string if you\u0027re not careful.",
+      "parentUuid": "b47efc1c_cf07e294",
       "range": {
         "startLine": 76,
         "startChar": 4,
