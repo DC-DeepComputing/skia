@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95dd45ee_f7c5d457",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-12T19:58:20Z",
+      "side": 1,
+      "message": "Going ahead and submitting to CQ seeing as this should address the comment concerns and this is blocking some release builds. Easy to cancel the submission or update any nits in a follow-up.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 143
+      },
+      "revId": "ff9e3c16ceb13fed210ecb1ca8d61db69d1af298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
