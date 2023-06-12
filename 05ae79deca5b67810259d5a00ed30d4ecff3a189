@@ -204,6 +204,30 @@
       },
       "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01974776_a826b3af",
+        "filename": "tests/SkJpegXmpTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-12T18:01:23Z",
+      "side": 1,
+      "message": "I think that comment is untrue. `std::string` has no notion of a zero-terminator at all. You can easily use `std::string` with arbitrary binary data and it will work.",
+      "parentUuid": "13d40179_9a958974",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 48
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
