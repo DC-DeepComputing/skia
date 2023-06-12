@@ -124,6 +124,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7b61743_658842d1",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-12T22:25:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b679a689_cbcd3ca1",
+      "revId": "f77c128fc1852ca9144c1f4045c97814b39e7bad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffb98d59_09d226dd",
