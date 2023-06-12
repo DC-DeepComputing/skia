@@ -737,6 +737,9 @@ void WGSLCodeGenerator::writeFunction(const FunctionDefinition& f) {
     fHasUnconditionalReturn = false;
     fConditionalScopeDepth = 0;
 
+    SkASSERT(!fAtFunctionScope);
+    fAtFunctionScope = true;
+
     this->writeFunctionDeclaration(decl);
     this->writeLine(" {");
     ++fIndentation;
@@ -779,6 +782,9 @@ void WGSLCodeGenerator::writeFunction(const FunctionDefinition& f) {
         // that calls the user-defined main.
         this->writeEntryPoint(f);
     }
+
+    SkASSERT(fAtFunctionScope);
+    fAtFunctionScope = false;
 }
 
 void WGSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& decl) {
@@ -1173,9 +1179,12 @@ void WGSLCodeGenerator::writeVarDeclaration(const VarDeclaration& varDecl) {
             varDecl.value() ? this->assembleExpression(*varDecl.value(), Precedence::kAssignment)
                             : std::string();
 
-    bool isConst = varDecl.var()->modifiers().fFlags & Modifiers::kConst_Flag;
-    if (isConst) {
-        this->write("let ");
+    if (varDecl.var()->modifiers().fFlags & Modifiers::kConst_Flag) {
+        // Use `const` at global scope, or if the value is a compile-time constant.
+        SkASSERTF(varDecl.value(), "a constant variable must specify a value");
+        this->write((!fAtFunctionScope || Analysis::IsCompileTimeConstant(*varDecl.value()))
+                            ? "const "
+                            : "let ");
     } else {
         this->write("var ");
     }
@@ -1186,8 +1195,6 @@ void WGSLCodeGenerator::writeVarDeclaration(const VarDeclaration& varDecl) {
     if (varDecl.value()) {
         this->write(" = ");
         this->write(initialValue);
-    } else if (isConst) {
-        SkDEBUGFAILF("A let-declared constant must specify a value");
     }
 
     this->write(";");
@@ -1700,7 +1707,7 @@ std::string WGSLCodeGenerator::writeScratchVar(const Type& type, const std::stri
 
 std::string WGSLCodeGenerator::writeScratchLet(const std::string& expr) {
     std::string scratchVarName = "_skTemp" + std::to_string(fScratchCount++);
-    this->write("let ");
+    this->write(fAtFunctionScope ? "let " : "const ");
     this->write(scratchVarName);
     this->write(" = ");
     this->write(expr);
