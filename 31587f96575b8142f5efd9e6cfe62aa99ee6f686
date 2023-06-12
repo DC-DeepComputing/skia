@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f45b14c_fa7b59b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-12T17:55:14Z",
+      "side": 1,
+      "message": "Let\u0027s make this a bit more detailed and polished, for example:\n\n   [sksl] Rename compute shader texture intrinsics\n   \n   Added the \u0027texture\u0027 prefix to the compute shader intrinsics that\n   operate on textures.\n   \n   Bug: skia:14360",
+      "revId": "31587f96575b8142f5efd9e6cfe62aa99ee6f686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9de8e1b9_ab171bab",
+        "filename": "tests/sksl/compute/Desaturate.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-12T17:55:14Z",
+      "side": 1,
+      "message": "As we discussed offline, you\u0027ll want to update the affected SkSL golden files so that they continue to compile. You can find these under `resources/sksl`, for example this particular file is generated from `resources/sksl/compute/Desaturate.sksl`.",
+      "revId": "31587f96575b8142f5efd9e6cfe62aa99ee6f686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
