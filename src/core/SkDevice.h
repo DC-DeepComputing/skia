@@ -42,6 +42,9 @@ class Context;
 struct ContextInfo;
 class Mapping;
 }
+namespace skgpu {
+class TiledTextureUtils;
+}
 namespace skgpu::ganesh {
 class Device;
 }
@@ -475,6 +478,7 @@ private:
     friend class SkDrawBase;
     friend class SkSurface_Raster;
     friend class DeviceTestingAccess;
+    friend class skgpu::TiledTextureUtils;
 
     void simplifyGlyphRunRSXFormAndRedraw(SkCanvas*,
                                           const sktext::GlyphRunList&,
