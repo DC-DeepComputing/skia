@@ -22,6 +22,30 @@
       },
       "revId": "513a17d7d12c95f233d234739788e90382f483d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1144028c_17e1c715",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-12T15:27:52Z",
+      "side": 1,
+      "message": "Yes, I would imagine so.",
+      "parentUuid": "1565562b_0f9b897b",
+      "range": {
+        "startLine": 537,
+        "startChar": 12,
+        "endLine": 537,
+        "endChar": 18
+      },
+      "revId": "513a17d7d12c95f233d234739788e90382f483d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
