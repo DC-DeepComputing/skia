@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa0064f2_00d2c535",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-12T21:11:10Z",
+      "side": 1,
+      "message": "I added explicit instructions on how to use the Intersect function for horizontal and vertical lines.",
+      "parentUuid": "92cf2ed2_d886c263",
+      "range": {
+        "startLine": 71,
+        "startChar": 7,
+        "endLine": 71,
+        "endChar": 12
+      },
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cc97d0e_28c5008b",
@@ -89,6 +113,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2c686ac_a5c30738",
+        "filename": "tests/QuadRootsTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-12T21:11:10Z",
+      "side": 1,
+      "message": "I added an extensive tests to check the parametric parameter t for Intersect. Intersect uses Roots and EvalAt, both have unit tests. The tricky part is bounding t correctly.",
+      "parentUuid": "6cc97d0e_28c5008b",
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f443cc7_35d065c8",
@@ -102,6 +144,30 @@
       "writtenOn": "2023-06-07T20:07:16Z",
       "side": 1,
       "message": "I would feel better about this assertion if it checked some specific values in between. \n\nFor example, when toIntersect \u003d 3.6, t \u003d 0.2 and 0.8 (as visualized on https://www.desmos.com/calculator/iwya1qcw9y)\n\nI would also feel better if there were a few more interesting curves to test. See above in QuadRootsReal_ActualQuadratics for a possible pattern to avoid boilerplate and help assert the inputs result in the outputs that Mathematica or another reliable source corroborate.",
+      "range": {
+        "startLine": 304,
+        "startChar": 24,
+        "endLine": 304,
+        "endChar": 64
+      },
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be019cf2_59b6387d",
+        "filename": "tests/QuadRootsTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-12T21:11:10Z",
+      "side": 1,
+      "message": "I think the new test should cover hundreds of cases. The tests are self verifying due to the construction of A, B, C from the roots themselves.",
+      "parentUuid": "8f443cc7_35d065c8",
       "range": {
         "startLine": 304,
         "startChar": 24,
