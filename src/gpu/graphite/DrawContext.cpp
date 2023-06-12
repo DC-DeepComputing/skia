@@ -141,6 +141,11 @@ void DrawContext::recordPathAtlasDispatches(Recorder* recorder) {
 #endif  // SK_ENABLE_VELLO_SHADERS
 }
 
+void DrawContext::recordExplicitDispatchGroup(std::unique_ptr<DispatchGroup> group) {
+    SkASSERT(group);
+    fDispatchGroups.push_back(std::move(group));
+}
+
 void DrawContext::snapDrawPass(Recorder* recorder) {
     if (fPendingDraws->drawCount() == 0 && fPendingLoadOp != LoadOp::kClear) {
         return;
