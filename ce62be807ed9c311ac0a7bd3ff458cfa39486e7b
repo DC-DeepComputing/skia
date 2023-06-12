@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04a69aa4_47460aae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-12T14:42:50Z",
+      "side": 1,
+      "message": "This has to wait for https://chromium-review.googlesource.com/c/chromium/src/+/4518224 to land in chrome, but then there are no known usages of the old magnifier implementation.",
+      "revId": "ce62be807ed9c311ac0a7bd3ff458cfa39486e7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
