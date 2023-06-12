@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d405f9c_1b1ef555",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-12T11:03:28Z",
+      "side": 1,
+      "message": "Apologies for the trouble. Where can I see what the breakage was so I can fix it?",
+      "revId": "f7b1c2dc3967640c694ae3ff99891d93f6a529b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
