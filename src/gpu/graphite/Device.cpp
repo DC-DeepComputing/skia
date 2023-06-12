@@ -29,6 +29,7 @@
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureUtils.h"
+#include "src/gpu/graphite/compute/DispatchGroup.h"
 #include "src/gpu/graphite/geom/BoundsManager.h"
 #include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/IntersectionTree.h"
@@ -455,6 +456,45 @@ void Device::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                              ReadPixelsContext context) {
     // TODO: implement for Graphite
     callback(context, nullptr);
+}
+
+void Device::drawComputeFilteredImage(const sk_sp<SkImage>& image,
+                                      SkScalar left,
+                                      SkScalar top,
+                                      const ComputeStep* computeStep) {
+    auto [srcImage, sampling] =
+            skgpu::graphite::GetGraphiteBacked(this->recorder(), image.get(), SkSamplingOptions());
+    if (!srcImage) {
+        SKGPU_LOG_W("Device::drawImageRect: Creation of Graphite-backed image failed");
+        return;
+    }
+
+    SkASSERT(as_IB(srcImage)->isGraphiteBacked());
+    sk_sp<TextureProxy> src = static_cast<Image*>(srcImage.get())->textureProxyView().refProxy();
+
+    // The destination texture.
+    sk_sp<TextureProxy> target = TextureProxy::MakeStorage(recorder()->priv().caps(),
+                                                           image->dimensions(),
+                                                           image->colorType(),
+                                                           skgpu::Budgeted::kYes);
+
+    DrawParams placeholder(Transform::Identity(), {}, {}, DrawOrder({}), nullptr);
+    DispatchGroup::Builder builder(this->recorder());
+    builder.assignSharedTexture(std::move(src), 0);
+    builder.assignSharedTexture(target, 1);
+    builder.appendStep(computeStep, placeholder, 0);
+    fDC->recordExplicitDispatchGroup(builder.finalize());
+
+    sk_sp<SkImage> targetImage = sk_sp<Image>(new Image(kNeedNewImageUniqueID,
+                                                        TextureProxyView(std::move(target)),
+                                                        this->imageInfo().colorInfo()));
+    SkPaint paint;
+    this->drawImageRect(targetImage.get(),
+                        nullptr,
+                        SkRect::MakeXYWH(left, top, image->width(), image->height()),
+                        SkSamplingOptions(),
+                        paint,
+                        SkCanvas::kFast_SrcRectConstraint);
 }
 
 bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
