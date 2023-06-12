@@ -544,6 +544,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                             /*const VkAllocationCallbacks*=*/nullptr,
                                             &pipelineLayout));
     if (result != VK_SUCCESS) {
+        SkDebugf("Failed to create pipeline layout. Error: %d\n", result);
         return nullptr;
     }
 
@@ -573,22 +574,53 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     pipelineCreateInfo.basePipelineHandle = VK_NULL_HANDLE;
     pipelineCreateInfo.basePipelineIndex = -1;
 
+    VkPipeline vkPipeline;
+    {
+        // TODO: Check for SK_ENABLE_SCOPED_LSAN_SUPPRESSIONS.
+        // TODO: Add trace event encapsulating pipeline creation.
+        // TODO: Create real pipeline cache.
+        VkPipelineCache cache = VK_NULL_HANDLE;
+        VULKAN_CALL_RESULT(sharedContext->interface(),
+                           result,
+                           CreateGraphicsPipelines(sharedContext->device(),
+                                                   cache,
+                                                   1,
+                                                   &pipelineCreateInfo,
+                                                   nullptr,
+                                                   &vkPipeline));
+    }
+    if (result != VK_SUCCESS) {
+        SkDebugf("Failed to create pipeline. Error: %d\n", result);
+        return nullptr;
+    }
     return sk_sp<VulkanGraphicsPipeline>(new VulkanGraphicsPipeline(sharedContext,
                                                                     pipelineLayout,
+                                                                    vkPipeline,
                                                                     hasFragmentShader,
                                                                     hasRenderStepUniforms));
 }
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                                                VkPipelineLayout pipelineLayout,
+                                               VkPipeline pipeline,
                                                bool hasFragment,
                                                bool hasStepUniforms)
     : GraphicsPipeline(sharedContext)
     , fPipelineLayout(pipelineLayout)
+    , fPipeline(pipeline)
     , fHasFragment(hasFragment)
     , fHasStepUniforms(hasStepUniforms) { }
 
 void VulkanGraphicsPipeline::freeGpuData() {
+    auto sharedCtxt = static_cast<const VulkanSharedContext*>(this->sharedContext());
+    if (fPipeline != VK_NULL_HANDLE) {
+        VULKAN_CALL(sharedCtxt->interface(),
+            DestroyPipeline(sharedCtxt->device(), fPipeline, nullptr));
+    }
+    if (fPipelineLayout != VK_NULL_HANDLE) {
+        VULKAN_CALL(sharedCtxt->interface(),
+                    DestroyPipelineLayout(sharedCtxt->device(), fPipelineLayout, nullptr));
+    }
 }
 
 } // namespace skgpu::graphite
