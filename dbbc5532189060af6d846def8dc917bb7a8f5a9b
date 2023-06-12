@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4893803a_4af53bfd",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-12T12:16:41Z",
+      "side": 1,
+      "message": "See above, `onGetTableTags()` will follow in a separate CL.",
+      "parentUuid": "9a45e351_26e38d8b",
+      "revId": "dbbc5532189060af6d846def8dc917bb7a8f5a9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f427b524_36bc3ee6",
         "filename": "src/ports/fontations/src/ffi.rs",
         "patchSetId": 2

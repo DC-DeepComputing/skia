@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "883485c2_6ffba504",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-12T12:16:41Z",
+      "side": 1,
+      "message": "PTAL, is this okay to land now? (as_bytes() improvement will be incorporated separately after making a roll commit).",
+      "revId": "0e0872d8f902b927085a1c39983b36516ae2dd8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
