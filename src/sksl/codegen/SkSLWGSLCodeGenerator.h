@@ -189,6 +189,8 @@ private:
     void writeReturnStatement(const ReturnStatement& s);
     void writeSwitchStatement(const SwitchStatement& s);
     void writeSwitchCases(SkSpan<const SwitchCase* const> cases);
+    void writeEmulatedSwitchFallthroughCases(SkSpan<const SwitchCase* const> cases,
+                                             std::string_view switchValue);
     void writeSwitchCaseList(SkSpan<const SwitchCase* const> cases);
     void writeVarDeclaration(const VarDeclaration& varDecl);
 
