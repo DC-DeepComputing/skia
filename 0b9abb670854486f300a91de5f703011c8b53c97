@@ -39,6 +39,30 @@
       },
       "revId": "0b9abb670854486f300a91de5f703011c8b53c97",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c8eac73_959e82b7",
+        "filename": "tests/FloatingPointTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-12T19:01:38Z",
+      "side": 1,
+      "message": "Does this test work if the rounding mode is set to something other than nearest?",
+      "parentUuid": "dd5b877b_9a1c0a21",
+      "range": {
+        "startLine": 153,
+        "startChar": 1,
+        "endLine": 153,
+        "endChar": 2
+      },
+      "revId": "0b9abb670854486f300a91de5f703011c8b53c97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
