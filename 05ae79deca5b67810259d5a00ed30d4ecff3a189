@@ -16,6 +16,29 @@
       "message": "I manually added\nBazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64\nBuild-Debian10-Clang-arm64-Debug-Android_API30\nBuild-Win-Clang-x86_64-Release-Shared\n\nvia the \"Choose Tryjobs\" button on Gerrit to test the three failures I saw on the CI",
       "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b8e0b5a_6d8af33e",
+        "filename": "bazel/external/expat/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-12T15:47:04Z",
+      "side": 1,
+      "message": "What changed to make this broken?\nI think this is pretty spooky and shouldn\u0027t be needed for this CL; I want to understand it better.",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
