@@ -16,6 +16,29 @@
       "message": "Thank you for bringing my attention to this problem! PTAL :)",
       "revId": "dae844434ff7b09955684e72444414fb531c545c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f2a622f_ea76537f",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-12T19:05:23Z",
+      "side": 1,
+      "message": "I notice maxVertexAttributes isn\u0027t used elsewhere in this function. Is there a risk of overflowing a buffer if this assert isn\u0027t here (e.g. release mode)?",
+      "range": {
+        "startLine": 83,
+        "startChar": 58,
+        "endLine": 83,
+        "endChar": 77
+      },
+      "revId": "dae844434ff7b09955684e72444414fb531c545c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
