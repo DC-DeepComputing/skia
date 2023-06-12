@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b95334a2_45c5f547",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-12T21:48:47Z",
+      "side": 1,
+      "message": "Repeating some earlier comments that might have gotten missed:\n\nBecause this is pretty specific to dealing with Bezier curves, can we move this to src/base/SkBezierCurves in a new class/namespace SkBezierQuad? That is probably a better home for this (where this file is more pure quadratic formulas).\n\nThen, to make the function more ergonomic, could we have the inputs just be the X,Y coordinates and do the conversion to A, B, and C for the caller?",
+      "parentUuid": "fa0064f2_00d2c535",
+      "range": {
+        "startLine": 71,
+        "startChar": 7,
+        "endLine": 71,
+        "endChar": 12
+      },
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6cc97d0e_28c5008b",
         "filename": "tests/QuadRootsTest.cpp",
         "patchSetId": 9
@@ -127,6 +151,24 @@
       "side": 1,
       "message": "I added an extensive tests to check the parametric parameter t for Intersect. Intersect uses Roots and EvalAt, both have unit tests. The tricky part is bounding t correctly.",
       "parentUuid": "6cc97d0e_28c5008b",
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62e77f23_f7f6c7c2",
+        "filename": "tests/QuadRootsTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-12T21:48:47Z",
+      "side": 1,
+      "message": "Did you not like the Desmos link?",
+      "parentUuid": "c2c686ac_a5c30738",
       "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
