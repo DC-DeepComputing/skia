@@ -553,35 +553,33 @@ void Device::drawImageQuad(const SkImage* image,
         }
         int tileSize;
         SkIRect clippedSubset;
-        if (skgpu::ShouldTileImage(clip ? clip->getConservativeBounds()
-                                        : SkIRect::MakeSize(fSurfaceDrawContext->dimensions()),
-                                   image->dimensions(),
-                                   ctm,
-                                   srcToDst,
-                                   &src,
-                                   maxTileSize,
-                                   cacheSize,
-                                   &tileSize,
-                                   &clippedSubset)) {
+        if (skgpu::TiledTextureUtils::ShouldTileImage(
+                                       clip ? clip->getConservativeBounds()
+                                            : SkIRect::MakeSize(fSurfaceDrawContext->dimensions()),
+                                       image->dimensions(),
+                                       ctm,
+                                       srcToDst,
+                                       &src,
+                                       maxTileSize,
+                                       cacheSize,
+                                       &tileSize,
+                                       &clippedSubset)) {
             // Extract pixels on the CPU, since we have to split into separate textures before
             // sending to the GPU if tiling.
             if (SkBitmap bm; as_IB(image)->getROPixels(nullptr, &bm)) {
                 // This is the funnel for all paths that draw tiled bitmaps/images.
-                skgpu::DrawTiledBitmap(fContext.get(),
-                                       fSurfaceDrawContext.get(),
-                                       clip,
-                                       bm,
-                                       tileSize,
-                                       matrixProvider,
-                                       srcToDst,
-                                       src,
-                                       clippedSubset,
-                                       paint,
-                                       aaFlags,
-                                       constraint,
-                                       sampling,
-                                       tileMode,
-                                       draw_image);
+                skgpu::TiledTextureUtils::DrawTiledBitmap(bm,
+                                                          tileSize,
+                                                          matrixProvider,
+                                                          srcToDst,
+                                                          src,
+                                                          clippedSubset,
+                                                          paint,
+                                                          aaFlags,
+                                                          constraint,
+                                                          sampling,
+                                                          tileMode,
+                                                          this);
                 return;
             }
         }
@@ -638,7 +636,7 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
     SkBlendMode mode = paint.getBlendMode_or(SkBlendMode::kSrcOver);
 
     AutoTArray<GrTextureSetEntry> textures(count);
-    // We accumulate compatible proxies until we find an an incompatible one or reach the end and
+    // We accumulate compatible proxies until we find an incompatible one or reach the end and
     // issue the accumulated 'n' draws starting at 'base'. 'p' represents the number of proxy
     // switches that occur within the 'n' entries.
     int base = 0, n = 0, p = 0;
