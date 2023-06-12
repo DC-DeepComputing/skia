@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9633d8fd_9cb2b481",
+        "filename": "bazel/external/expat/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-12T18:14:36Z",
+      "side": 1,
+      "message": "OK, that explains why GN isn\u0027t failing, but I don\u0027t think that means it is safe. Using the wrong format specifiers can very easily lead to a crash, and expat has #defines to control which format specifiers we get. I believe we haven\u0027t set those #defines so we\u0027re just getting arbitrary results.",
+      "parentUuid": "3f6c6375_0d9c458b",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "364e4727_7b50d49f",
         "filename": "tests/SkJpegXmpTest.cpp",
         "patchSetId": 3
