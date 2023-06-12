@@ -50,6 +50,7 @@ cc_library(
     name = "expat",
     srcs = EXPAT_SRCS,
     hdrs = EXPAT_HDRS,
+    copts = ["-Wno-format"],
     defines = [
         "XML_STATIC",
     ],
