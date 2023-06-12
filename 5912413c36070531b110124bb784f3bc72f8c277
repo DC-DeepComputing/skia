@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aafe0b99_39b985d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-06-12T12:46:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b473659c_f18bd47f",
+      "revId": "5912413c36070531b110124bb784f3bc72f8c277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adffbf86_c0bd5e9e",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-06-08T18:07:29Z",
       "side": 1,
       "message": "The pathkit rule should not go here, but in //modules/pathkit.\n\nUnlike the GN build, it should probably depend on //:skia_private instead of hard-coded file lists which are annoying to maintain.",
+      "range": {
+        "startLine": 84,
+        "startChar": 12,
+        "endLine": 84,
+        "endChar": 19
+      },
+      "revId": "5912413c36070531b110124bb784f3bc72f8c277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b1b3e42_926c8c19",
+        "filename": "BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-06-12T12:46:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adffbf86_c0bd5e9e",
       "range": {
         "startLine": 84,
         "startChar": 12,
