@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c8d5445_69c07053",
+        "filename": "tests/sksl/blend/BlendPlus.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-12T20:32:32Z",
+      "side": 1,
+      "message": "^ This will be addressed separately; WGSL doesn\u0027t have the same overloads for the `min` intrinsic that GLSL does.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 6
+      },
+      "revId": "b4dd88be217770d4e250c65a4de55bd1c19546e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
