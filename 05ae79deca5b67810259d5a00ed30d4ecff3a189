@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78568b1f_33ce0e78",
+        "filename": "bazel/external/expat/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-12T18:05:28Z",
+      "side": 1,
+      "message": "We don\u0027t disable the flag in gn at all. This might indicate that the gn build is configured properly and the bazel build is incorrectly set up. Perhaps the misconfiguration is not the fault of this CL but it\u0027s not safe to ignore the issue. @kjlubick@google.com WDYT?",
+      "parentUuid": "35e103f1_1009d489",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "364e4727_7b50d49f",
         "filename": "tests/SkJpegXmpTest.cpp",
         "patchSetId": 3
