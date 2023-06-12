@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb8ee09f_d466adf0",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-12T19:40:18Z",
+      "side": 1,
+      "message": "^",
+      "revId": "734a4fe1a87bf81b2ea740a4ca39a7e80918ccae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
