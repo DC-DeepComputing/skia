@@ -16,6 +16,24 @@
       "message": "Apologies for the trouble. Where can I see what the breakage was so I can fix it?",
       "revId": "f7b1c2dc3967640c694ae3ff99891d93f6a529b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50850865_647e2cc0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-12T12:12:19Z",
+      "side": 1,
+      "message": "status.skia.org is where we noticed the failures. Here are some selected issues.\n\nhttps://logs.chromium.org/logs/skia/62bb009a456efe11/+/steps/ninja/0/stdout\n```\n../../../../../../skia/tests/JpegGainmapTest.cpp:435:18: error: unused function \u0027render_gainmap_pixel\u0027 [-Werror,-Wunused-function]\nstatic SkColor4f render_gainmap_pixel(float renderHdrRatio,\n                 ^\n1 error generated.\n```\n\nhttps://logs.chromium.org/logs/skia/62badc37fdc44b11/+/steps/ninja/0/stdout\n```\nIn file included from ../../../../../../skia/src/codec/SkJpegXmp.cpp:8:\nIn file included from ../../../../../../skia\\src/codec/SkJpegXmp.h:12:\n../../../../../../skia\\include/private/SkXmp.h(25,13): error: definition of implicit copy assignment operator for \u0027SkXmp\u0027 is deprecated because it has a user-declared destructor [-Werror,-Wdeprecated-copy-with-dtor]\n    virtual ~SkXmp() \u003d default;\n            ^\n../../../../../../skia\\include/private/SkXmp.h(23,14): note: in implicit copy assignment operator for \u0027SkXmp\u0027 first required here\nclass SK_API SkXmp {\n             ^\n../../../../../../skia\\include/private/SkXmp.h(23,7): note: due to \u0027SkXmp\u0027 being dllexported\nclass SK_API SkXmp {\n```\n\nhttps://task-driver.skia.org/errors/PQWjeZRGBVyVRaxKk7C7/0\n```\nERROR: /mnt/pd0/bazel_cache/4da40b4cfe3751a969423105cdd1d1a0/external/expat/BUILD.bazel:49:11: Compiling expat/lib/xmlparse.c failed: (Exit 1): emcc.sh failed: error executing command external/emsdk/emscripten_toolchain/emcc.sh \u0027--sysroot\u003dexternal/emscripten_bin_linux/emscripten/cache/sysroot\u0027 -fdiagnostics-color -fno-strict-aliasing -funsigned-char -no-canonical-prefixes ... (remaining 34 arguments skipped)\nexternal/expat/expat/lib/xmlparse.c:7705:11: error: format specifies type \u0027int\u0027 but the argument has type \u0027ptrdiff_t\u0027 (aka \u0027long\u0027) [-Werror,-Wformat]\n          bytesMore, (account \u003d\u003d XML_ACCOUNT_DIRECT) ? \"DIR\" : \"EXP\",\n          ^~~~~~~~~\n1 error generated.\n```\n\nThe last error could be fixed (maybe?) in upstream expat, but more likely we should add \"-Wno-format\" to the copts of https://github.com/google/skia/blob/main/bazel/external/expat/BUILD.bazel#L50",
+      "parentUuid": "9d405f9c_1b1ef555",
+      "revId": "f7b1c2dc3967640c694ae3ff99891d93f6a529b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
