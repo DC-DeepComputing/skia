@@ -85,6 +85,29 @@
       },
       "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b47efc1c_cf07e294",
+        "filename": "tests/SkJpegXmpTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-12T15:56:52Z",
+      "side": 1,
+      "message": "Why do we convert to `vector\u003cchar\u003e` here and then back to `std::string` below?\n\nAppending the guid doesn\u0027t require it.\n`append_uint32` doesn\u0027t require it (it could just as easily take a `std::string` and work the same).",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 48
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
