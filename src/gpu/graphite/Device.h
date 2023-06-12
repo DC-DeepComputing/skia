@@ -23,6 +23,7 @@ class SkStrokeRec;
 
 namespace skgpu::graphite {
 
+class ComputeStep;
 class BoundsManager;
 class Clip;
 class Context;
@@ -87,6 +88,11 @@ public:
                                          SkImage::RescaleMode,
                                          SkImage::ReadPixelsCallback callback,
                                          SkImage::ReadPixelsContext context);
+
+    void drawComputeFilteredImage(const sk_sp<SkImage>& image,
+                                  SkScalar left,
+                                  SkScalar top,
+                                  const ComputeStep*);
 
     const Transform& localToDeviceTransform();
 
