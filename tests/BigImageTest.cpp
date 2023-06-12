@@ -316,6 +316,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
                             SkString label = create_label(gen.fTag, sampling, scale, rot,
                                                           constraint, numDesiredTiles);
 
+                            SkDebugf("%s\n", label.c_str());
+
                             SkCanvas* canvas = surface->getCanvas();
 
                             SkAutoCanvasRestore acr(canvas, /* doSave= */ true);

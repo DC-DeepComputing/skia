@@ -13,13 +13,18 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
+#include "include/private/base/SkTArray.h"
 #include "src/base/SkSafeMath.h"
+#include "src/core/SkDevice.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkSamplingPriv.h"
 
 #if GR_TEST_UTILS
 std::atomic<int>  gNumTilesDrawn{0};
 #endif
+
+#include "include/gpu/GrRecordingContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 
 //////////////////////////////////////////////////////////////////////////////
 //  Helper functions for tiling a large SkBitmap
@@ -180,10 +185,11 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                      const SkIRect& clippedSrcIRect,
                      const SkPaint& paint,
                      SkCanvas::QuadAAFlags origAAFlags,
-                     SkCanvas::SrcRectConstraint constraint,
+                     const SkCanvas::SrcRectConstraint constraint,
                      SkSamplingOptions sampling,
                      SkTileMode tileMode,
-                     DrawImageProc drawImage) {
+                     DrawImageProc drawImage,
+                     SkBaseDevice* device) {
     if (sampling.isAniso()) {
         sampling = SkSamplingPriv::AnisoFallback(/* imageIsMipped= */ false);
     }
@@ -195,6 +201,8 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
 #if GR_TEST_UTILS
     gNumTilesDrawn.store(0, std::memory_order_relaxed);
 #endif
+
+    skia_private::TArray<SkCanvas::ImageSetEntry> imgSet(nx * ny);
 
     for (int x = 0; x <= nx; x++) {
         for (int y = 0; y <= ny; y++) {
@@ -215,7 +223,9 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
             SkVector offset = SkPoint::Make(SkIntToScalar(iTileR.fLeft),
                                             SkIntToScalar(iTileR.fTop));
             SkRect rectToDraw = tileR;
-            srcToDst.mapRect(&rectToDraw);
+            if (!srcToDst.mapRect(&rectToDraw)) {
+                continue;
+            }
             if (sampling.filter != SkFilterMode::kNearest || sampling.useCubic) {
                 SkIRect iClampRect;
 
@@ -238,6 +248,9 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
             // the original's SkPixelRef.
             if (SkBitmap subsetBmp; bitmap.extractSubset(&subsetBmp, iTileR)) {
                 auto image = SkMakeImageFromRasterBitmap(subsetBmp, kNever_SkCopyPixelsMode);
+                // TODO: need a way to prevent recursion when recording
+                image = SkImages::TextureFromImage(GrAsDirectContext(rContext), image.get());
+//                image = image->makeTextureImage(rContext);
 
                 unsigned aaFlags = SkCanvas::kNone_QuadAAFlags;
                 // Preserve the original edge AA flags for the exterior tile edges.
@@ -259,27 +272,50 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                 tileR.offset(-offset.fX, -offset.fY);
                 SkMatrix offsetSrcToDst = srcToDst;
                 offsetSrcToDst.preTranslate(offset.fX, offset.fY);
-                drawImage(rContext,
-                          sdc,
-                          clip,
-                          matrixProvider,
-                          paint,
-                          image.get(),
-                          tileR,
-                          rectToDraw,
-                          nullptr,
-                          offsetSrcToDst,
-                          static_cast<SkCanvas::QuadAAFlags>(aaFlags),
-                          constraint,
-                          sampling,
-                          tileMode);
+//                SkDebugf("drawing tile %d %d\n", x, y);
 
 #if GR_TEST_UTILS
                 (void)gNumTilesDrawn.fetch_add(+1, std::memory_order_relaxed);
 #endif
+
+#if 0
+                drawImage(rContext,               // noop
+                          sdc,                    // noop
+                          clip,                   // noop
+                          matrixProvider,
+                          paint,                  //
+                          image.get(),            //
+                          tileR,                  //
+                          rectToDraw,             //
+                          /* dstClip= */ nullptr, //
+                          offsetSrcToDst,
+                          static_cast<SkCanvas::QuadAAFlags>(aaFlags),  //
+                          constraint,             //
+                          sampling,               //
+                          tileMode);
+
+#else
+                imgSet.push_back(SkCanvas::ImageSetEntry(std::move(image),
+                                                         tileR,
+                                                         rectToDraw,
+                                                         /* matrixIndex= */ -1,
+                                                         /* alpha= */ 1.0f,
+                                                         aaFlags,
+                                                         /* hasClip= */ false));
+#endif
             }
         }
     }
+
+#if 1
+    device->drawEdgeAAImageSet(imgSet.data(),
+                               imgSet.size(),
+                               /* dstClips= */ nullptr,
+                               /* preViewMatrices= */ nullptr,
+                               sampling,
+                               paint,
+                               constraint);
+#endif
 }
 
 } // namespace skgpu
