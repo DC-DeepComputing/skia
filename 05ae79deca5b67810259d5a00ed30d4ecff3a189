@@ -348,6 +348,30 @@
       },
       "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca1b9ad7_5df3feed",
+        "filename": "tests/SkJpegXmpTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-12T18:39:30Z",
+      "side": 1,
+      "message": "You\u0027re right I was able to simplify it after all. I *did* run into issues with the \"\\0\" character which is why I switched to a char vector, but actually it\u0027s only when it\u0027s in a string literal (e.g. const std::string sig \u003d \"http://ns.adobe.com/xmp/extension/\\0\"; won\u0027t include the \u0027\\0\u0027) and I extrapolated a bit too much from that. As soon as you have a std::string then it\u0027s fine.\nThey introduced std::literals::string_literals in c++14 to fix this.",
+      "parentUuid": "01974776_a826b3af",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 48
+      },
+      "revId": "05ae79deca5b67810259d5a00ed30d4ecff3a189",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
