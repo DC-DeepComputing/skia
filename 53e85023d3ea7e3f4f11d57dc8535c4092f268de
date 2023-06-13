@@ -76,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5862b1d_d49eff0d",
+        "filename": "tests/ShaderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-13T17:04:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2704e7cb_5cd4f2e1",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 96
+      },
+      "revId": "53e85023d3ea7e3f4f11d57dc8535c4092f268de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49e02aa6_6a689bfb",
