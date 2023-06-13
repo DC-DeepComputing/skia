@@ -46,6 +46,30 @@
       },
       "revId": "615bf90cdacd53af41be1422ba1a91cbce8bf024",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f5fa0eb_43fa6adc",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-13T17:50:44Z",
+      "side": 1,
+      "message": "I might try doing this a different way. Since we\u0027re adopting we should probably stick with the read swizzle specified in the Caps. I assume there\u0027s a reason it\u0027s \"r000\" instead of \"aaaa\" for R16Unorm.",
+      "parentUuid": "90edbc07_c0c7119c",
+      "range": {
+        "startLine": 93,
+        "startChar": 4,
+        "endLine": 96,
+        "endChar": 5
+      },
+      "revId": "615bf90cdacd53af41be1422ba1a91cbce8bf024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
