@@ -206,8 +206,8 @@ public:
     void drawEdgeAAQuad(const SkRect& rect, const SkPoint clip[4], SkCanvas::QuadAAFlags aaFlags,
                         const SkColor4f& color, SkBlendMode mode) override;
     void drawEdgeAAImageSet(const SkCanvas::ImageSetEntry[], int count, const SkPoint dstClips[],
-                            const SkMatrix[], const SkSamplingOptions&, const SkPaint&,
-                            SkCanvas::SrcRectConstraint) override;
+                            const SkMatrix preViewMatrices[], const SkSamplingOptions&,
+                            const SkPaint&, SkCanvas::SrcRectConstraint) override;
 
     sk_sp<SkSpecialImage> makeSpecial(const SkBitmap&) override;
     sk_sp<SkSpecialImage> makeSpecial(const SkImage*) override;
@@ -321,10 +321,10 @@ private:
                          const SkRect& dst,
                          const SkPoint dstClip[4],
                          SkCanvas::QuadAAFlags,
+                         const SkMatrix& localToDevice,
                          const SkSamplingOptions&,
                          const SkPaint&,
                          SkCanvas::SrcRectConstraint,
-                         const SkMatrixProvider&,
                          const SkMatrix& srcToDst,
                          SkTileMode tm) override;
 
