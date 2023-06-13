@@ -51,8 +51,10 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     fRequiredStorageBufferAlignment = 1;
     fRequiredTransferBufferAlignment = 4;
 
-    fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
+    //     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
+    fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140; // normally: Layout::kStd430;
+    // fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
     fResourceBindingReqs.fDistinctIndexRanges = false;
 

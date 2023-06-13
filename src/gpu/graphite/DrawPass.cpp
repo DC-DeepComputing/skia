@@ -699,6 +699,7 @@ void DrawPass::addResourceRefs(CommandBuffer* commandBuffer) const {
         commandBuffer->trackResource(fSampledTextures[i]->refTexture());
     }
     for (int i = 0; i < fSamplers.size(); ++i) {
+        // Suspicious here ....
         commandBuffer->trackResource(fSamplers[i]);
     }
 }

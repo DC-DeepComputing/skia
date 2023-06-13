@@ -25,6 +25,7 @@ public:
     inline static constexpr unsigned int kIntrinsicUniformBufferIndex = 0;
     inline static constexpr unsigned int kRenderStepUniformBufferIndex = 1;
     inline static constexpr unsigned int kPaintUniformBufferIndex = 2;
+    inline static constexpr unsigned int kNumUniformBuffers = 3;
 
     // For now, rigidly assign all uniform buffer descriptors to be in one descriptor set in binding
     // 0 and all texture/samplers to be in binding 1.
@@ -44,7 +45,8 @@ public:
                                               DepthStencilSettings,
                                               PrimitiveType,
                                               int numTexturesAndSamplers,
-                                              const BlendInfo&);
+                                              const BlendInfo&,
+                                              bool hasRenderStepUniforms);
 
     ~VulkanGraphicsPipeline() override {}
 
@@ -53,18 +55,29 @@ public:
         return fPipelineLayout;
     }
 
-    // TODO: Implement.
-    bool hasStepUniforms() const { return false; }
-    bool hasFragment() const { return false; }
+    bool hasStepUniforms() const { return fHasStepUniforms; }
+    bool hasFragment() const { return fHasFragment; }
+
+    uint32_t numTextureSamplers() const { return fNumTextureSamplers; }
 
 private:
-    VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext
-                           /* TODO: fill out argument list */)
-        : GraphicsPipeline(sharedContext) { }
+    VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
+                           VkPipelineLayout,
+                           bool hasStepUniforms,
+                           bool hasFragmentShader,
+                           uint32_t numTextureSamplers);
 
     void freeGpuData() override;
 
-    VkPipelineLayout  fPipelineLayout;
+    VkPipelineLayout  fPipelineLayout = VK_NULL_HANDLE;
+
+    // #ifdef SK_DEBUG
+
+    // #endif
+
+    bool fHasStepUniforms;
+    bool fHasFragment;
+    uint32_t fNumTextureSamplers;
 };
 
 } // namespace skgpu::graphite

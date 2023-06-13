@@ -30,7 +30,7 @@ public:
     sk_sp<Texture> createWrappedTexture(const BackendTexture&) override;
 
 private:
-    const VulkanSharedContext* vulkanSharedContext();
+    const VulkanSharedContext* vulkanSharedContext() const;
 
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
                                                    const GraphicsPipelineDesc&,
