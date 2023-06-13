@@ -22,6 +22,30 @@
       },
       "revId": "9c8c08751a05d68cf8dd4e3573b10b7f981e19cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74cbf18e_40dbca07",
+        "filename": "src/base/SkBezierCurves.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-13T15:07:40Z",
+      "side": 1,
+      "message": "Dang it. You are right. I didn\u0027t notice the namespace (class). I\u0027ll clean this up when I do the cubic version of underline.",
+      "parentUuid": "042a6178_34ce45c3",
+      "range": {
+        "startLine": 24,
+        "startChar": 6,
+        "endLine": 24,
+        "endChar": 19
+      },
+      "revId": "9c8c08751a05d68cf8dd4e3573b10b7f981e19cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
