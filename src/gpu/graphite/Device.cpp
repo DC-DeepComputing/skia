@@ -50,9 +50,11 @@
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/core/SkStrikeCache.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkVerticesPriv.h"
 #include "src/shaders/SkImageShader.h"
+#include "src/text/SlugImpl.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
@@ -1307,6 +1309,22 @@ TextureProxyView Device::readSurfaceView() const {
         return {};
     }
     return fDC->readSurfaceView(fRecorder->priv().caps());
+}
+
+sk_sp<sktext::Slug> Device::convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,
+                                                      const SkPaint& initialPaint,
+                                                      const SkPaint& drawingPaint) {
+    return sktext::SlugImpl::Make(this->asMatrixProvider(),
+                                  glyphRunList,
+                                  initialPaint,
+                                  drawingPaint,
+                                  this->strikeDeviceInfo(),
+                                  SkStrikeCache::GlobalStrikeCache());
+}
+
+void Device::drawSlug(SkCanvas* canvas, const sktext::Slug* slug, const SkPaint& drawingPaint) {
+    auto slugImpl = static_cast<const sktext::SlugImpl*>(slug);
+    slugImpl->subRuns()->draw(canvas, slugImpl->origin(), drawingPaint, slugImpl, this);
 }
 
 } // namespace skgpu::graphite
