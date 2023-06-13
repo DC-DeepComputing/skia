@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69cff353_1b772d33",
+        "filename": "src/codec/SkXmp.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-13T14:49:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56eb89b2_4b58e557",
+      "range": {
+        "startLine": 661,
+        "startChar": 8,
+        "endLine": 663,
+        "endChar": 26
+      },
+      "revId": "fbe6d86235279e49fb72c8861680a18d110faeb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "945a99c9_53abf699",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "682e5829_36092365",
+        "filename": "tests/JpegGainmapTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-13T14:49:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "945a99c9_53abf699",
+      "range": {
+        "startLine": 574,
+        "startChar": 20,
+        "endLine": 574,
+        "endChar": 23
+      },
+      "revId": "fbe6d86235279e49fb72c8861680a18d110faeb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "048b3abd_128d6cfb",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-06-12T19:52:32Z",
       "side": 1,
       "message": "Please label these with `/*width\u003d*/1, /*height\u003d*/1`",
+      "range": {
+        "startLine": 624,
+        "startChar": 12,
+        "endLine": 624,
+        "endChar": 13
+      },
+      "revId": "fbe6d86235279e49fb72c8861680a18d110faeb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03a25d96_bbb87eac",
+        "filename": "tests/JpegGainmapTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-13T14:49:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "048b3abd_128d6cfb",
       "range": {
         "startLine": 624,
         "startChar": 12,
