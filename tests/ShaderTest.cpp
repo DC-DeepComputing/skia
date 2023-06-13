@@ -19,7 +19,17 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkPerlinNoiseShader.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "tests/Test.h"
+
+#if defined(SK_GANESH)
+#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#endif
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Surface.h"
+#endif
 
 static void check_isaimage(skiatest::Reporter* reporter, SkShader* shader,
                            int expectedW, int expectedH,
@@ -73,3 +83,92 @@ DEF_TEST(ComposeShaderSingle, reporter) {
     rr.setRectRadii({0, 0, 0, 0}, rd);
     canvas.drawRRect(rr, p);
 }
+
+// Tests that nested blending will render as expected.
+static void test_nested_blends(skiatest::Reporter* reporter, SkSurface* surface) {
+    auto [redEffect, redError] = SkRuntimeEffect::MakeForShader(SkString(R"(
+        half4 main(float2 coord) {
+            return half4(1, 0, 0, 1);
+        }
+    )"));
+
+    auto [greenEffect, greenError] = SkRuntimeEffect::MakeForShader(SkString(R"(
+        half4 main(float2 coord) {
+            return half4(0, 1, 0, 1);
+        }
+    )"));
+
+    auto [blendEffect, blenderError] = SkRuntimeEffect::MakeForBlender(SkString(R"(
+        half4 main(half4 src, half4 dst) {
+            return (src + dst) * 0.5;
+        }
+    )"));
+
+    auto [nestedBlendEffect, nestedBlenderError] = SkRuntimeEffect::MakeForBlender(SkString(R"(
+        uniform blender child_blender;
+        half4 main(half4 src, half4 dst) {
+            return (child_blender.eval(src, dst) + dst) * 0.5;
+        }
+    )"));
+
+    sk_sp<SkShader> redShader = redEffect->makeShader(nullptr, {});
+    sk_sp<SkShader> greenShader = greenEffect->makeShader(nullptr, {});
+    sk_sp<SkBlender> blender = blendEffect->makeBlender(nullptr);
+    std::vector<SkRuntimeEffect::ChildPtr> children = {SkRuntimeEffect::ChildPtr(blender)};
+    sk_sp<SkBlender> nestedBlender = nestedBlendEffect->makeBlender(nullptr, children);
+
+    SkPaint paint;
+    paint.setShader(SkShaders::Blend(nestedBlender, greenShader, redShader));
+    paint.setBlender(blender);
+
+    // Do the drawing.
+    SkCanvas* canvas = surface->getCanvas();
+    canvas->drawPaint(paint);
+
+    // Read pixels.
+    SkBitmap bitmap;
+    SkPixmap pixmap;
+    bitmap.allocPixels(surface->imageInfo());
+    SkAssertResult(bitmap.peekPixels(&pixmap));
+    if (!surface->readPixels(pixmap, 0, 0)) {
+        ERRORF(reporter, "readPixels failed");
+        return;
+    }
+
+    // Check the resulting blended color.
+    // First, in the paint's shader, red and green are averaged in the child blender to get
+    // (0.5, 0.5, 0, 1), which is then averaged with green in the parent blender to get
+    // (0.25, 0.75, 0, 1). Then, in the paint's blender this is averaged with a transparent
+    // background to get (0.125, 0.375, 0, 0.5) and then unpremuled to get (0.25, 0.75, 0, 0.5).
+    SkColor color = pixmap.getColor(0, 0);
+    SkColor expected = 0x8040BF00;
+    REPORTER_ASSERT(
+            reporter, color == expected, "Wrong color, expected %08x, found %08x", expected, color);
+}
+
+#if defined(SK_GANESH)
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ShaderTestNestedBlendsGanesh,
+                                       reporter,
+                                       contextInfo,
+                                       CtsEnforcement::kNextRelease) {
+    SkImageInfo ii = SkImageInfo::Make(SkISize::Make(1, 1),
+                                       SkColorType::kRGBA_8888_SkColorType,
+                                       SkAlphaType::kPremul_SkAlphaType);
+    GrDirectContext* context = contextInfo.directContext();
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, ii);
+    test_nested_blends(reporter, surface.get());
+}
+#endif
+
+#if defined(SK_GRAPHITE)
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ShaderTestNestedBlendsGraphite, reporter, context) {
+    using namespace skgpu::graphite;
+
+    SkImageInfo ii = SkImageInfo::Make(SkISize::Make(1, 1),
+                                       SkColorType::kRGBA_8888_SkColorType,
+                                       SkAlphaType::kPremul_SkAlphaType);
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
+    test_nested_blends(reporter, surface.get());
+}
+#endif
