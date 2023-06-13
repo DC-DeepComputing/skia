@@ -516,16 +516,16 @@ private:
 
     // Assumes the src and dst rects have already been optimized to fit the proxy.
     // Only implemented by the gpu devices.
-    virtual void drawEdgeAAImage(const SkMatrixProvider&,
-                                 const SkPaint&,
-                                 const SkImage*,
+    virtual void drawEdgeAAImage(const SkImage*,
                                  const SkRect& src,
                                  const SkRect& dst,
                                  const SkPoint dstClip[4],
-                                 const SkMatrix& srcToDst,
                                  SkCanvas::QuadAAFlags,
+                                 const SkSamplingOptions&,
+                                 const SkPaint&,
                                  SkCanvas::SrcRectConstraint,
-                                 SkSamplingOptions,
+                                 const SkMatrixProvider&,
+                                 const SkMatrix& srcToDst,
                                  SkTileMode) {}
 
     friend class SkNoPixelsDevice;
