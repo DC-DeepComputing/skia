@@ -120,6 +120,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09427959_92f8aac9",
+        "filename": "src/base/SkQuads.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-13T14:43:45Z",
+      "side": 1,
+      "message": "I will add a layer to do the coefficient translation in a follow up on CL. I like this interface because it allows me to use a simple method to round trip roots using (x-r0)(x-r1) for testing.",
+      "parentUuid": "b95334a2_45c5f547",
+      "range": {
+        "startLine": 71,
+        "startChar": 7,
+        "endLine": 71,
+        "endChar": 12
+      },
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cc97d0e_28c5008b",
@@ -169,6 +193,24 @@
       "side": 1,
       "message": "Did you not like the Desmos link?",
       "parentUuid": "c2c686ac_a5c30738",
+      "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c52ad88c_bed33eb7",
+        "filename": "tests/QuadRootsTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-13T14:43:45Z",
+      "side": 1,
+      "message": "I was interested in probing difficult values for t. Desmos only gives the parametric X/Y. Desmos is nice, but I can\u0027t use it to program C++.",
+      "parentUuid": "62e77f23_f7f6c7c2",
       "revId": "187910afd486758aa4fc149ca82e723e892ed8a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
