@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8898bf9c_d9bdb1a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-06-13T20:33:39Z",
+      "side": 1,
+      "message": "I discovered that my @google.com account doesn\u0027t have voting privileges in Chromium\u0027s Gerrit, so I cannot approve CLs that add new deps to third_party/skia. OTOH @chromium.org works in Chromium... sigh.",
+      "revId": "bd8343377cee04304a765f3cb661bacb5c8ac182",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
