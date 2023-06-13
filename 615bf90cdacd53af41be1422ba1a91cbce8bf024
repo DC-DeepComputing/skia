@@ -22,6 +22,30 @@
       },
       "revId": "615bf90cdacd53af41be1422ba1a91cbce8bf024",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90edbc07_c0c7119c",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-13T14:42:24Z",
+      "side": 1,
+      "message": "I seems pretty harmless. I guess we could be more hard core and require the user to specify that they\u0027re using the \u0027a\u0027 channel of an alpha only texture.",
+      "parentUuid": "b9bce315_465d265f",
+      "range": {
+        "startLine": 93,
+        "startChar": 4,
+        "endLine": 96,
+        "endChar": 5
+      },
+      "revId": "615bf90cdacd53af41be1422ba1a91cbce8bf024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

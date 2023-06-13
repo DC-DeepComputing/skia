@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "9ba4c24edf8faf933bcc66906f18a1adc9c3efbc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24b2b849_e53cf9fb",
+        "filename": "gm/wacky_yuv_formats.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-13T14:42:24Z",
+      "side": 1,
+      "message": "I guess we should convert all these (or, at least, the new ones) to the official /* foo\u003d */ format",
+      "range": {
+        "startLine": 1015,
+        "startChar": 39,
+        "endLine": 1015,
+        "endChar": 48
+      },
+      "revId": "9ba4c24edf8faf933bcc66906f18a1adc9c3efbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57ec1d17_da7d1ec8",
+        "filename": "tools/gpu/YUVUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-13T14:42:24Z",
+      "side": 1,
+      "message": "I guess we should have a {} block surrounding this case too",
+      "range": {
+        "startLine": 427,
+        "startChar": 30,
+        "endLine": 427,
+        "endChar": 31
+      },
+      "revId": "9ba4c24edf8faf933bcc66906f18a1adc9c3efbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
