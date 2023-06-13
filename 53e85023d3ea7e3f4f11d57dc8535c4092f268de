@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e2de48b7_aaedb4c8",
+        "filename": "tests/ShaderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-13T16:39:54Z",
+      "side": 1,
+      "message": "This should probably be \u0027static\u0027 since it isn\u0027t in an anonymous namespace",
+      "revId": "53e85023d3ea7e3f4f11d57dc8535c4092f268de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2704e7cb_5cd4f2e1",
         "filename": "tests/ShaderTest.cpp",
         "patchSetId": 1
@@ -36,6 +53,29 @@
         "startChar": 0,
         "endLine": 142,
         "endChar": 96
+      },
+      "revId": "53e85023d3ea7e3f4f11d57dc8535c4092f268de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49e02aa6_6a689bfb",
+        "filename": "tests/ShaderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-13T16:39:54Z",
+      "side": 1,
+      "message": "It seems like the unit test should just have a \"using skgpu::graphite\" inside it rather than having the unit test in the namespace.",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 27
       },
       "revId": "53e85023d3ea7e3f4f11d57dc8535c4092f268de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
