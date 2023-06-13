@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45059652_1c5d79fb",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-13T18:01:08Z",
+      "side": 1,
+      "message": "Yes, I think this is correct if we want to match Dawn and Metal, in particular: https://source.chromium.org/chromium/chromium/src/+/main:third_party/dawn/src/dawn/native/vulkan/CommandBufferVk.cpp;l\u003d1156?q\u003dCmdDrawIndirect\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fdawn%2F.\n\nAfaik the Metal way to issue multiple indirect draws is to call the function multiple times (potentially at varying offsets of the same indirect buffer).",
+      "parentUuid": "de58baef_646bafbe",
+      "range": {
+        "startLine": 822,
+        "startChar": 46,
+        "endLine": 822,
+        "endChar": 47
+      },
+      "revId": "eef872f619505b91fa74658b209daecbcf3caa41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1aec2efa_5e374058",
