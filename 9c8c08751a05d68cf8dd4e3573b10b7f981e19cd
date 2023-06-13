@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "042a6178_34ce45c3",
+        "filename": "src/base/SkBezierCurves.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-13T14:52:25Z",
+      "side": 1,
+      "message": "I don\u0027t think we want this to be in BezierCubic, right? New class/namespace SkBezierQuad should be more correct",
+      "range": {
+        "startLine": 24,
+        "startChar": 6,
+        "endLine": 24,
+        "endChar": 19
+      },
+      "revId": "9c8c08751a05d68cf8dd4e3573b10b7f981e19cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
