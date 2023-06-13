@@ -17,6 +17,8 @@
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkSamplingPriv.h"
 
+#include "src/gpu/ganesh/Device.h"
+
 #if GR_TEST_UTILS
 std::atomic<int>  gNumTilesDrawn{0};
 #endif
@@ -175,6 +177,7 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                      const SkBitmap& bitmap,
                      int tileSize,
                      const SkMatrixProvider& matrixProvider,
+                     const SkMatrix* preViewMatrix,
                      const SkMatrix& srcToDst,
                      const SkRect& srcRect,
                      const SkIRect& clippedSrcIRect,
@@ -183,7 +186,8 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                      SkCanvas::SrcRectConstraint constraint,
                      SkSamplingOptions sampling,
                      SkTileMode tileMode,
-                     DrawImageProc drawImage) {
+                     DrawImageProc drawImage,
+                     skgpu::ganesh::Device* device) {
     if (sampling.isAniso()) {
         sampling = SkSamplingPriv::AnisoFallback(/* imageIsMipped= */ false);
     }
@@ -259,20 +263,34 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                 tileR.offset(-offset.fX, -offset.fY);
                 SkMatrix offsetSrcToDst = srcToDst;
                 offsetSrcToDst.preTranslate(offset.fX, offset.fY);
-                drawImage(rContext,
-                          sdc,
-                          clip,
-                          matrixProvider,
-                          paint,
-                          image.get(),
+
+#if 0
+                drawImage(rContext,        // good
+                          sdc,             // good
+                          clip,            // good
+                          matrixProvider,  // good
+                          paint,           // good
+                          image.get(),     // good
                           tileR,
                           rectToDraw,
-                          nullptr,
+                          /* dstClip */ nullptr,   // good
                           offsetSrcToDst,
-                          static_cast<SkCanvas::QuadAAFlags>(aaFlags),
+                          static_cast<SkCanvas::QuadAAFlags>(aaFlags),   // good
                           constraint,
-                          sampling,
+                          sampling,           // good
                           tileMode);
+#else
+                device->drawImageQuad(image.get(),
+                                      &tileR,
+                                      &rectToDraw,
+                                      /* dstClip= */ nullptr,
+                                      static_cast<SkCanvas::QuadAAFlags>(aaFlags),
+                                      preViewMatrix,
+                                      sampling,
+                                      paint,
+                                      constraint);
+#endif
+
 
 #if GR_TEST_UTILS
                 (void)gNumTilesDrawn.fetch_add(+1, std::memory_order_relaxed);

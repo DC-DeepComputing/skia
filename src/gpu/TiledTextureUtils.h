@@ -67,7 +67,8 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
                      SkCanvas::SrcRectConstraint constraint,
                      SkSamplingOptions sampling,
                      SkTileMode tileMode,
-                     DrawImageProc drawImageFn);
+                     DrawImageProc drawImageFn,
+                     SkBaseDevice*);
 
 } // namespace skgpu
 

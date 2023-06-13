@@ -518,14 +518,15 @@ void Device::drawImageQuad(const SkImage* image,
     // Get final CTM matrix
     SkPreConcatMatrixProvider matrixProvider(this->asMatrixProvider(),
                                              preViewMatrix ? *preViewMatrix : SkMatrix::I());
-    const SkMatrix& ctm(matrixProvider.localToDevice());
+    const SkMatrix& ctm2(matrixProvider.localToDevice());
 
     SkSamplingOptions sampling = origSampling;
-    if (sampling.mipmap != SkMipmapMode::kNone && can_disable_mipmap(ctm, srcToDst)) {
+    if (sampling.mipmap != SkMipmapMode::kNone && can_disable_mipmap(ctm2, srcToDst)) {
         sampling = SkSamplingOptions(sampling.filter);
     }
     const GrClip* clip = this->clip();
 
+#if 0
     if (!image->isTextureBacked()) {
         int tileFilterPad;
         if (sampling.useCubic) {
@@ -573,6 +574,7 @@ void Device::drawImageQuad(const SkImage* image,
                                        bm,
                                        tileSize,
                                        matrixProvider,
+                                       preViewMatrix,
                                        srcToDst,
                                        src,
                                        clippedSubset,
@@ -581,11 +583,13 @@ void Device::drawImageQuad(const SkImage* image,
                                        constraint,
                                        sampling,
                                        tileMode,
-                                       draw_image);
+                                       draw_image,
+                                       this);
                 return;
             }
         }
     }
+#endif
 
     draw_image(fContext.get(),
                fSurfaceDrawContext.get(),
@@ -599,7 +603,8 @@ void Device::drawImageQuad(const SkImage* image,
                srcToDst,
                aaFlags,
                constraint,
-               sampling);
+               sampling,
+               tileMode);
     return;
 }
 
