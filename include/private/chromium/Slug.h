@@ -68,4 +68,10 @@ private:
 };
 }  // namespace sktext::gpu
 
+namespace sktext {
+// TODO(kjlubick) Slug itself seems agnostic to GPU drawing, so it might make more sense to
+// move it up a namespace to sktext.
+using Slug = gpu::Slug;
+}
+
 #endif  // sktext_gpu_Slug_DEFINED
