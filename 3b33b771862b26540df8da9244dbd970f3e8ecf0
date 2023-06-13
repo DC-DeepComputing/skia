@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12fab07b_6e8e24f8",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-13T17:40:23Z",
+      "side": 1,
+      "message": "Explaining why this is a class method now (i.e., a summary of the saga) might be good for future spelunkers.",
+      "range": {
+        "startLine": 519,
+        "startChar": 17,
+        "endLine": 519,
+        "endChar": 32
+      },
+      "revId": "3b33b771862b26540df8da9244dbd970f3e8ecf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67abc49c_645f57d7",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-13T17:40:23Z",
+      "side": 1,
+      "message": "Indent 8?",
+      "range": {
+        "startLine": 556,
+        "startChar": 8,
+        "endLine": 556,
+        "endChar": 35
+      },
+      "revId": "3b33b771862b26540df8da9244dbd970f3e8ecf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
