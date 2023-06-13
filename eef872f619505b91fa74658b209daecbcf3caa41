@@ -16,6 +16,29 @@
       "message": "Pretty sure I got the ordering right on the arguments but please verify.",
       "revId": "eef872f619505b91fa74658b209daecbcf3caa41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "589540e0_680555ca",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-13T15:45:12Z",
+      "side": 1,
+      "message": "Metal and (hence) Dawn only allow one indirect draw at a time, so I\u0027m pretty sure this is correct. If drawCount \u003d\u003d 1, then the stride value doesn\u0027t matter.",
+      "range": {
+        "startLine": 822,
+        "startChar": 46,
+        "endLine": 822,
+        "endChar": 47
+      },
+      "revId": "eef872f619505b91fa74658b209daecbcf3caa41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
