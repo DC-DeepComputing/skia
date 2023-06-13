@@ -60,6 +60,7 @@
 #include "src/core/SkMeshPriv.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/core/SkStrikeCache.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkVerticesPriv.h"
 #include "src/gpu/SkBackingFit.h"
@@ -95,6 +96,8 @@
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/text/GlyphRun.h"
+#include "src/text/SlugImpl.h"
+#include "src/text/gpu/SubRunContainer.h"
 
 #include <atomic>
 #include <cstddef>
@@ -1392,6 +1395,38 @@ bool Device::android_utils_clipWithStencil() {
 
 SkStrikeDeviceInfo Device::strikeDeviceInfo() const {
     return {this->surfaceProps(), this->scalerContextFlags(), &fSDFTControl};
+}
+
+sk_sp<sktext::Slug>
+Device::convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,
+                                  const SkPaint& initialPaint,
+                                  const SkPaint& drawingPaint) {
+    return sktext::SlugImpl::Make(this->asMatrixProvider(),
+                                  glyphRunList,
+                                  initialPaint,
+                                  drawingPaint,
+                                  this->strikeDeviceInfo(),
+                                  SkStrikeCache::GlobalStrikeCache());
+}
+
+void Device::drawSlug(SkCanvas* canvas, const sktext::Slug* slug, const SkPaint& drawingPaint) {
+    SkASSERT(canvas);
+    SkASSERT(slug);
+    const sktext::SlugImpl* slugImpl = static_cast<const sktext::SlugImpl*>(slug);
+    auto matrixProvider = this->asMatrixProvider();
+#if defined(SK_DEBUG)
+    if (!fContext->priv().options().fSupportBilerpFromGlyphAtlas) {
+        // We can draw a slug if the atlas has padding or if the creation matrix and the
+        // drawing matrix are the same. If they are the same, then the Slug will use the direct
+        // drawing code and not use bi-lerp.
+        SkMatrix slugMatrix = slugImpl->initialPositionMatrix();
+        SkMatrix positionMatrix = matrixProvider.localToDevice();
+        positionMatrix.preTranslate(slugImpl->origin().x(), slugImpl->origin().y());
+        SkASSERT(slugMatrix == positionMatrix);
+    }
+#endif
+    slugImpl->subRuns()->draw(canvas, this->clip(), matrixProvider, slugImpl->origin(),
+                              drawingPaint, slugImpl, fSurfaceDrawContext.get());
 }
 
 }  // namespace skgpu::ganesh

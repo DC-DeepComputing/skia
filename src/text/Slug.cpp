@@ -11,13 +11,12 @@
 #include "include/core/SkPoint.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/text/SlugImpl.h"
 
 #include <atomic>
 class SkData;
 
 namespace sktext::gpu {
-
-sk_sp<Slug> SkMakeSlugFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client);
 
 sk_sp<Slug> Slug::ConvertBlob(
         SkCanvas* canvas, const SkTextBlob& blob, SkPoint origin, const SkPaint& paint) {
@@ -42,12 +41,12 @@ size_t Slug::serialize(void* buffer, size_t size) const {
 }
 
 sk_sp<Slug> Slug::MakeFromBuffer(SkReadBuffer& buffer) {
-    return SkMakeSlugFromBuffer(buffer, nullptr);
+    return SlugImpl::MakeFromBuffer(buffer, nullptr);
 }
 
 sk_sp<Slug> Slug::Deserialize(const void* data, size_t size, const SkStrikeClient* client) {
     SkReadBuffer buffer{data, size};
-    return SkMakeSlugFromBuffer(buffer, client);
+    return SlugImpl::MakeFromBuffer(buffer, client);
 }
 
 void Slug::draw(SkCanvas* canvas) const {

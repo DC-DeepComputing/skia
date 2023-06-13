@@ -340,4 +340,10 @@ public:
 };
 }  // namespace sktext::gpu
 
+namespace sktext {
+// TODO(kjlubick) SubRunAllocator itself seems agnostic to GPU drawing, so it might make more sense to
+// move it up a namespace to sktext.
+using SubRunAllocator = gpu::SubRunAllocator;
+}
+
 #endif // sktext_gpu_SubRunAllocator_DEFINED
