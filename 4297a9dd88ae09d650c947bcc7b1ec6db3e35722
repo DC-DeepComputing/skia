@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23fa08fd_5d2dfdf5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-13T16:22:29Z",
+      "side": 1,
+      "message": "Hi April, I just left a note about one more change you need to make to satisfy the failing try jobs.",
+      "revId": "4297a9dd88ae09d650c947bcc7b1ec6db3e35722",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0acf151_e8293bc0",
+        "filename": "tests/sksl/errors/ReadonlyWriteonly.glsl",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-13T16:22:29Z",
+      "side": 1,
+      "message": "The try jobs are failing because the printed output doesn\u0027t match the expected error output. To fix this you\u0027ll need to update the section at the bottom (marked by `/*%%*` and `*%%*/` lines with the expected error message changes: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/resources/sksl/errors/ReadonlyWriteonly.compute;l\u003d48?q\u003dReadonlyWriteonly.compute\u0026ss\u003dchromium%2Fchromium%2Fsrc.",
+      "revId": "4297a9dd88ae09d650c947bcc7b1ec6db3e35722",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
