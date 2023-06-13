@@ -42,6 +42,9 @@ class Context;
 struct ContextInfo;
 class Mapping;
 }
+namespace skgpu {
+class TiledTextureUtils;
+}
 namespace skgpu::ganesh {
 class Device;
 }
@@ -475,6 +478,7 @@ private:
     friend class SkDrawBase;
     friend class SkSurface_Raster;
     friend class DeviceTestingAccess;
+    friend class skgpu::TiledTextureUtils; // for drawEdgeAAImage
 
     void simplifyGlyphRunRSXFormAndRedraw(SkCanvas*,
                                           const sktext::GlyphRunList&,
@@ -509,6 +513,20 @@ private:
     }
 
     virtual SkImageFilterCache* getImageFilterCache() { return nullptr; }
+
+    // Assumes the src and dst rects have already been optimized to fit the proxy.
+    // Only implemented by the gpu devices.
+    virtual void drawEdgeAAImage(const SkMatrixProvider& matrixProvider,
+                                 const SkPaint& paint,
+                                 const SkImage* image,
+                                 const SkRect& src,
+                                 const SkRect& dst,
+                                 const SkPoint dstClip[4],
+                                 const SkMatrix& srcToDst,
+                                 SkCanvas::QuadAAFlags canvasAAFlags,
+                                 SkCanvas::SrcRectConstraint constraint,
+                                 SkSamplingOptions sampling,
+                                 SkTileMode tm) {}
 
     friend class SkNoPixelsDevice;
     friend class SkBitmapDevice;

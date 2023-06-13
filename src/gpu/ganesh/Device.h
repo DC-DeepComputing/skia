@@ -304,10 +304,27 @@ private:
 
     // If not null, dstClip must be contained inside dst and will also respect the edge AA flags.
     // If 'preViewMatrix' is not null, final CTM will be this->ctm() * preViewMatrix.
-    void drawImageQuad(const SkImage*, const SkRect* src, const SkRect* dst,
-                       const SkPoint dstClip[4], SkCanvas::QuadAAFlags aaFlags,
-                       const SkMatrix* preViewMatrix, const SkSamplingOptions&,
-                       const SkPaint&, SkCanvas::SrcRectConstraint);
+    void drawImageQuad(const SkImage*,
+                       const SkRect* src,
+                       const SkRect* dst,
+                       const SkPoint dstClip[4],
+                       SkCanvas::QuadAAFlags aaFlags,
+                       const SkMatrix* preViewMatrix,
+                       const SkSamplingOptions&,
+                       const SkPaint&,
+                       SkCanvas::SrcRectConstraint);
+
+    void drawEdgeAAImage(const SkMatrixProvider& matrixProvider,
+                         const SkPaint& paint,
+                         const SkImage* image,
+                         const SkRect& src,
+                         const SkRect& dst,
+                         const SkPoint dstClip[4],
+                         const SkMatrix& srcToDst,
+                         SkCanvas::QuadAAFlags canvasAAFlags,
+                         SkCanvas::SrcRectConstraint constraint,
+                         SkSamplingOptions sampling,
+                         SkTileMode tm) override;
 
     // FIXME(michaelludwig) - Should be removed in favor of using drawImageQuad with edge flags to
     // for every element in the SkLatticeIter.
