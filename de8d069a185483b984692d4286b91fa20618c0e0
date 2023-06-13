@@ -16,6 +16,24 @@
       "message": "I wonder if you need the is_empty? - iterating over no records should be fairly efficient and iterator laziness should save you from wasting the tag iter.",
       "revId": "de8d069a185483b984692d4286b91fa20618c0e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68472bae_89b4e090",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-13T09:03:52Z",
+      "side": 1,
+      "message": "Yep, removed this check.",
+      "parentUuid": "3c11ec21_16021b7e",
+      "revId": "de8d069a185483b984692d4286b91fa20618c0e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
