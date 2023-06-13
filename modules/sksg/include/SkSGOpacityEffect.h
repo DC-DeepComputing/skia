@@ -10,6 +10,12 @@
 
 #include "modules/sksg/include/SkSGEffectNode.h"
 
+namespace skottie {
+namespace internal {
+    class AnimationBuilder;
+} // namespace internal
+} // namespace skottie
+
 namespace sksg {
 
 /**
