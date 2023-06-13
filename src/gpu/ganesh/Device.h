@@ -309,6 +309,18 @@ private:
                        const SkMatrix* preViewMatrix, const SkSamplingOptions&,
                        const SkPaint&, SkCanvas::SrcRectConstraint);
 
+    void drawImage(const SkMatrixProvider& matrixProvider,
+                   const SkPaint& paint,
+                   const SkImage* image,
+                   const SkRect& src,
+                   const SkRect& dst,
+                   const SkPoint dstClip[4],
+                   const SkMatrix& srcToDst,
+                   SkCanvas::QuadAAFlags canvasAAFlags,
+                   SkCanvas::SrcRectConstraint constraint,
+                   SkSamplingOptions sampling,
+                   SkTileMode tm) override;  // SkTileMode::kClamp
+
     // FIXME(michaelludwig) - Should be removed in favor of using drawImageQuad with edge flags to
     // for every element in the SkLatticeIter.
     void drawViewLattice(GrSurfaceProxyView,
