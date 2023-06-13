@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7918577e_2f6819f9",
+        "filename": "src/effects/imagefilters/SkMorphologyImageFilter.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-13T19:38:46Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 78,
+        "startChar": 44,
+        "endLine": 78,
+        "endChar": 48
+      },
+      "revId": "1b74340332bd727960b1a954d5aeec0cfd0008a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8b886c7_3b304d0b",
+        "filename": "src/effects/imagefilters/SkMorphologyImageFilter.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-13T19:38:46Z",
+      "side": 1,
+      "message": "tab this over ?",
+      "revId": "1b74340332bd727960b1a954d5aeec0cfd0008a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00787096_42601636",
+        "filename": "src/effects/imagefilters/SkMorphologyImageFilter.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-13T19:38:46Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "1b74340332bd727960b1a954d5aeec0cfd0008a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f53d05bd_300c0936",
+        "filename": "src/effects/imagefilters/SkMorphologyImageFilter.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-13T19:38:46Z",
+      "side": 1,
+      "message": "This is some pretty zany syntax",
+      "range": {
+        "startLine": 357,
+        "startChar": 44,
+        "endLine": 357,
+        "endChar": 53
+      },
+      "revId": "1b74340332bd727960b1a954d5aeec0cfd0008a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
