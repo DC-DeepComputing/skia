@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef4ee5eb_64363edd",
+        "filename": "src/sksl/SkSLIntrinsicList.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-13T20:28:24Z",
+      "side": 1,
+      "message": "Please re-alphabetize the list",
+      "range": {
+        "startLine": 61,
+        "startChar": 19,
+        "endLine": 61,
+        "endChar": 32
+      },
+      "revId": "d5a453e41566655cc6aab39d6c793003525cd9f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
