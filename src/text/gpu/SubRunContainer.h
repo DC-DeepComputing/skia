@@ -80,16 +80,16 @@ class StrikeCache;
 //      * SDFTSubRun* - scaled distance field text handles largish single color glyphs that still
 //        can fit in the atlas; the sizes between direct SubRun, and path SubRun. The destination
 //        rectangles are in source space.
-class AtlasSubRun  {
+class AtlasSubRun {
 public:
     virtual ~AtlasSubRun() = default;
 
     virtual int glyphCount() const = 0;
     virtual skgpu::MaskFormat maskFormat() const = 0;
 
-#if defined(SK_GANESH)
     virtual size_t vertexStride(const SkMatrix& drawMatrix) const = 0;
 
+#if defined(SK_GANESH)
     virtual std::tuple<const GrClip*, GrOp::Owner> makeAtlasTextOp(
             const GrClip*,
             const SkMatrixProvider& viewMatrix,
