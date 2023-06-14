@@ -213,6 +213,7 @@ private:
     // the transform, clip, and DrawOrder (although Device still tracks stencil buffer usage).
     void drawClipShape(const Transform&, const Shape&, const Clip&, DrawOrder);
 
+    sktext::gpu::AtlasDrawDelegate atlasDelegate();
     // Handles primitive processing for atlas-based text
     void drawAtlasSubRun(const sktext::gpu::AtlasSubRun*,
                          SkPoint drawOrigin,
