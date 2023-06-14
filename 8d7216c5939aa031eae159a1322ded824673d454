@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fac4796_4027dc21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-14T12:38:18Z",
+      "side": 1,
+      "message": "JSYK: The rubber stamper\u0027s Bot-Commit+1 is sufficient to re-land this (once the chromium changes are landed)",
+      "revId": "8d7216c5939aa031eae159a1322ded824673d454",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
