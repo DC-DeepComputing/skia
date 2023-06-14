@@ -283,3 +283,19 @@ int SkTypeface_Fontations::onGetTableTags(SkFontTableTag tags[]) const {
     rust::Slice<uint32_t> copyToTags(tags, numTables);
     return fontations_ffi::table_tags(*fBridgeFontRef, copyToTags);
 }
+
+int SkTypeface_Fontations::onGetVariationDesignPosition(
+        SkFontArguments::VariationPosition::Coordinate coordinates[], int coordinateCount) const {
+    size_t numConfiguredAxes = fontations_ffi::axis_position(
+            *fBridgeNormalizedCoords, rust::Slice<fontations_ffi::SkiaDesignCoordinate>());
+    if (!coordinates) {
+      return numConfiguredAxes;
+    }
+    size_t coordinateSize = coordinateCount < 0 ? 0 : coordinateCount;
+    if (numConfiguredAxes > coordinateSize)
+      return -1;
+    rust::Slice<fontations_ffi::SkiaDesignCoordinate> copyToCoordinates(
+            reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(coordinates),
+            coordinateCount);
+    return fontations_ffi::axis_position(*fBridgeNormalizedCoords, copyToCoordinates);
+}
