@@ -347,8 +347,21 @@ void SurfaceDrawContext::drawGlyphRunList(SkCanvas* canvas,
     }
 
     sktext::gpu::TextBlobRedrawCoordinator* textBlobCache = fContext->priv().getTextBlobCache();
-    textBlobCache->drawGlyphRunList(
-            canvas, clip, viewMatrix, glyphRunList, paint, strikeDeviceInfo, this);
+
+    auto atlasCallback = [&](const sktext::gpu::AtlasSubRun* subRun,
+                             SkPoint drawOrigin,
+                             const SkPaint& paint,
+                             sk_sp<SkRefCnt> subRunStorage) {
+        auto[drawingClip, op] = subRun->makeAtlasTextOp(
+                clip, viewMatrix.localToDevice(), drawOrigin, paint, std::move(subRunStorage),
+                this);
+        if (op != nullptr) {
+            this->addDrawOp(drawingClip, std::move(op));
+        }
+    };
+
+    textBlobCache->drawGlyphRunList(canvas, viewMatrix.localToDevice(), glyphRunList, paint,
+        strikeDeviceInfo, atlasCallback);
 }
 
 void SurfaceDrawContext::drawPaint(const GrClip* clip,
