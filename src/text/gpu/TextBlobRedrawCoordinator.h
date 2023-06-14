@@ -49,23 +49,13 @@ namespace sktext::gpu {
 class TextBlobRedrawCoordinator {
 public:
     TextBlobRedrawCoordinator(uint32_t messageBusID);
-#if defined(SK_GANESH)
-    void drawGlyphRunList(SkCanvas* canvas,
-                          const GrClip* clip,
-                          const SkMatrixProvider& viewMatrix,
-                          const GlyphRunList& glyphRunList,
-                          const SkPaint& paint,
-                          SkStrikeDeviceInfo strikeDeviceInfo,
-                          skgpu::ganesh::SurfaceDrawContext* sdc);
-#endif
-#if defined(SK_GRAPHITE)
+
     void drawGlyphRunList(SkCanvas* canvas,
                           const SkMatrix& viewMatrix,
                           const GlyphRunList& glyphRunList,
                           const SkPaint& paint,
                           SkStrikeDeviceInfo strikeDeviceInfo,
-                          skgpu::graphite::Device* device);
-#endif
+                          AtlasDrawCallback);
 
     void freeAll() SK_EXCLUDES(fSpinLock);
 
@@ -109,7 +99,7 @@ private:
         skia_private::STArray<1, sk_sp<TextBlob>> fBlobs;
     };
 
-    sk_sp<TextBlob> findOrCreateBlob(const SkMatrixProvider& viewMatrix,
+    sk_sp<TextBlob> findOrCreateBlob(const SkMatrix& positionMatrix,
                                      const GlyphRunList& glyphRunList,
                                      const SkPaint& paint,
                                      SkStrikeDeviceInfo strikeDeviceInfo);

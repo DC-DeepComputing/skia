@@ -7,8 +7,10 @@
 
 #include "src/text/gpu/SubRunAllocator.h"
 
+#include "include/core/SkPoint.h"
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTFitsIn.h"
+#include "src/core/SkReadBuffer.h"
 
 #include <cstddef>
 #include <memory>
@@ -91,6 +93,22 @@ SubRunAllocator::SubRunAllocator(int firstHeapAllocation)
 
 void* SubRunAllocator::alignedBytes(int unsafeSize, int unsafeAlignment) {
     return fAlloc.alignedBytes(unsafeSize, unsafeAlignment);
+}
+
+// Returns the empty span if there is a problem reading the positions.
+SkSpan<SkPoint> MakePointsFromBuffer(SkReadBuffer& buffer, SubRunAllocator* alloc) {
+    uint32_t glyphCount = buffer.getArrayCount();
+
+    // Zero indicates a problem with serialization.
+    if (!buffer.validate(glyphCount != 0)) { return {}; }
+
+    // Check that the count will not overflow the arena.
+    if (!buffer.validate(glyphCount <= INT_MAX &&
+                         BagOfBytes::WillCountFit<SkPoint>(glyphCount))) { return {}; }
+
+    SkPoint* positionsData = alloc->makePODArray<SkPoint>(glyphCount);
+    if (!buffer.readPointArray(positionsData, glyphCount)) { return {}; }
+    return {positionsData, glyphCount};
 }
 
 }  // namespace sktext::gpu
