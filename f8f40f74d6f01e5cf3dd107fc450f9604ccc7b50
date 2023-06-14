@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f688e21_fbd85656",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-14T17:01:34Z",
+      "side": 1,
+      "message": "I forgot about this, resurrecting since the issue is still blocking.",
+      "revId": "f8f40f74d6f01e5cf3dd107fc450f9604ccc7b50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

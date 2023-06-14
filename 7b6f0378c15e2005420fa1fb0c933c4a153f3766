@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bacd63d3_f82a42fb",
+        "filename": "modules/skshaper/include/SkShaper.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-14T17:01:34Z",
+      "side": 1,
+      "message": "Ack.  At the moment though, SkShaper_HB only allocates a break iterator once, in MakeHarfbuzz, and does now update it based on LanguageRunIter info, right?\n\nWould you consider this approach as an incremental/temp fix to unblock clients which don\u0027t need language iterators and are fine with handling all breaks in the same locale?\n\nI\u0027m signing up to refactor when SkShaper starts using the lang run iterator for line breaks.",
+      "parentUuid": "5615a666_e7875ce2",
+      "revId": "7b6f0378c15e2005420fa1fb0c933c4a153f3766",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cb7bd265_033a6e91",
         "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
         "patchSetId": 3
