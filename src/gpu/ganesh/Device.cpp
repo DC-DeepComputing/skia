@@ -1425,8 +1425,20 @@ void Device::drawSlug(SkCanvas* canvas, const sktext::Slug* slug, const SkPaint&
         SkASSERT(slugMatrix == positionMatrix);
     }
 #endif
-    slugImpl->subRuns()->draw(canvas, this->clip(), matrixProvider, slugImpl->origin(),
-                              drawingPaint, slugImpl, fSurfaceDrawContext.get());
+    auto atlasCallback = [&](const sktext::gpu::AtlasSubRun* subRun,
+                             SkPoint drawOrigin,
+                             const SkPaint& paint,
+                             sk_sp<SkRefCnt> subRunStorage) {
+        auto[drawingClip, op] = subRun->makeAtlasTextOp(
+                this->clip(), matrixProvider.localToDevice(), drawOrigin, paint,
+                std::move(subRunStorage), fSurfaceDrawContext.get());
+        if (op != nullptr) {
+            fSurfaceDrawContext->addDrawOp(drawingClip, std::move(op));
+        }
+    };
+
+    slugImpl->subRuns()->draw(canvas, slugImpl->origin(),
+                              drawingPaint, slugImpl, atlasCallback);
 }
 
 }  // namespace skgpu::ganesh

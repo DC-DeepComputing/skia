@@ -242,25 +242,12 @@ bool TextBlob::canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) co
 
 const TextBlob::Key& TextBlob::key() const { return fKey; }
 
-#if defined(SK_GANESH)
-void TextBlob::draw(SkCanvas* canvas,
-                    const GrClip* clip,
-                    const SkMatrixProvider& viewMatrix,
-                    SkPoint drawOrigin,
-                    const SkPaint& paint,
-                    skgpu::ganesh::SurfaceDrawContext* sdc) {
-    fSubRuns->draw(canvas, clip, viewMatrix, drawOrigin, paint, this, sdc);
-}
-#endif
-
-#if defined(SK_GRAPHITE)
 void TextBlob::draw(SkCanvas* canvas,
                     SkPoint drawOrigin,
                     const SkPaint& paint,
-                    skgpu::graphite::Device* device) {
-    fSubRuns->draw(canvas, drawOrigin, paint, this, device);
+                    AtlasDrawCallback atlasCallback) {
+    fSubRuns->draw(canvas, drawOrigin, paint, this, atlasCallback);
 }
-#endif
 
 #if GR_TEST_UTILS
 struct SubRunContainerPeer {

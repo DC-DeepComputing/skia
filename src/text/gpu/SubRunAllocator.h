@@ -28,6 +28,9 @@
 #include <tuple>
 #include <utility>
 
+class SkReadBuffer;
+struct SkPoint;
+
 namespace sktext::gpu {
 
 // BagOfBytes parcels out bytes with a given size and alignment.
@@ -338,6 +341,9 @@ public:
     explicit STSubRunAllocator(size_t firstHeapAllocation = InlineStorageSize)
             : SubRunAllocator{this->data(), SkToInt(this->size()), SkToInt(firstHeapAllocation)} {}
 };
+
+// Returns the empty span if there is a problem reading the positions.
+SkSpan<SkPoint> MakePointsFromBuffer(SkReadBuffer&, SubRunAllocator*);
 }  // namespace sktext::gpu
 
 namespace sktext {

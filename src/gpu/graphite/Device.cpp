@@ -820,12 +820,18 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
                                 const sktext::GlyphRunList& glyphRunList,
                                 const SkPaint& initialPaint,
                                 const SkPaint& drawingPaint) {
+    auto atlasCallback = [&](const sktext::gpu::AtlasSubRun* subRun,
+                             SkPoint drawOrigin,
+                             const SkPaint& paint,
+                             sk_sp<SkRefCnt> subRunStorage) {
+        this->drawAtlasSubRun(subRun, drawOrigin, paint, subRunStorage);
+    };
     fRecorder->priv().textBlobCache()->drawGlyphRunList(canvas,
                                                         this->localToDevice(),
                                                         glyphRunList,
                                                         drawingPaint,
                                                         this->strikeDeviceInfo(),
-                                                        this);
+                                                        atlasCallback);
 }
 
 void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
@@ -1324,7 +1330,13 @@ sk_sp<sktext::Slug> Device::convertGlyphRunListToSlug(const sktext::GlyphRunList
 
 void Device::drawSlug(SkCanvas* canvas, const sktext::Slug* slug, const SkPaint& drawingPaint) {
     auto slugImpl = static_cast<const sktext::SlugImpl*>(slug);
-    slugImpl->subRuns()->draw(canvas, slugImpl->origin(), drawingPaint, slugImpl, this);
+    auto atlasCallback = [&](const sktext::gpu::AtlasSubRun* subRun,
+                             SkPoint drawOrigin,
+                             const SkPaint& paint,
+                             sk_sp<SkRefCnt> subRunStorage) {
+        this->drawAtlasSubRun(subRun, drawOrigin, paint, subRunStorage);
+    };
+    slugImpl->subRuns()->draw(canvas, slugImpl->origin(), drawingPaint, slugImpl, atlasCallback);
 }
 
 } // namespace skgpu::graphite
