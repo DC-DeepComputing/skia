@@ -119,15 +119,15 @@ void clamped_outset_with_offset(SkIRect* iRect, int outset, SkPoint* offset,
 namespace skgpu {
 
 // tileSize and clippedSubset are valid if true is returned
-bool ShouldTileImage(SkIRect conservativeClipBounds,
-                     const SkISize& imageSize,
-                     const SkMatrix& ctm,
-                     const SkMatrix& srcToDst,
-                     const SkRect* src,
-                     int maxTileSize,
-                     size_t cacheSize,
-                     int* tileSize,
-                     SkIRect* clippedSubset) {
+bool TiledTextureUtils::ShouldTileImage(SkIRect conservativeClipBounds,
+                                        const SkISize& imageSize,
+                                        const SkMatrix& ctm,
+                                        const SkMatrix& srcToDst,
+                                        const SkRect* src,
+                                        int maxTileSize,
+                                        size_t cacheSize,
+                                        int* tileSize,
+                                        SkIRect* clippedSubset) {
     // if it's larger than the max tile size, then we have no choice but tiling.
     if (imageSize.width() > maxTileSize || imageSize.height() > maxTileSize) {
         *clippedSubset = determine_clipped_src_rect(conservativeClipBounds, ctm,
@@ -169,21 +169,21 @@ bool ShouldTileImage(SkIRect conservativeClipBounds,
     return usedTileBytes * 2 < bmpSize;
 }
 
-void DrawTiledBitmap(GrRecordingContext* rContext,
-                     skgpu::ganesh::SurfaceDrawContext* sdc,
-                     const GrClip* clip,
-                     const SkBitmap& bitmap,
-                     int tileSize,
-                     const SkMatrixProvider& matrixProvider,
-                     const SkMatrix& srcToDst,
-                     const SkRect& srcRect,
-                     const SkIRect& clippedSrcIRect,
-                     const SkPaint& paint,
-                     SkCanvas::QuadAAFlags origAAFlags,
-                     SkCanvas::SrcRectConstraint constraint,
-                     SkSamplingOptions sampling,
-                     SkTileMode tileMode,
-                     DrawImageProc drawImage) {
+void TiledTextureUtils::DrawTiledBitmap(GrRecordingContext* rContext,
+                                        skgpu::ganesh::SurfaceDrawContext* sdc,
+                                        const GrClip* clip,
+                                        const SkBitmap& bitmap,
+                                        int tileSize,
+                                        const SkMatrixProvider& matrixProvider,
+                                        const SkMatrix& srcToDst,
+                                        const SkRect& srcRect,
+                                        const SkIRect& clippedSrcIRect,
+                                        const SkPaint& paint,
+                                        SkCanvas::QuadAAFlags origAAFlags,
+                                        SkCanvas::SrcRectConstraint constraint,
+                                        SkSamplingOptions sampling,
+                                        SkTileMode tileMode,
+                                        TiledTextureUtils::DrawImageProc drawImage) {
     if (sampling.isAniso()) {
         sampling = SkSamplingPriv::AnisoFallback(/* imageIsMipped= */ false);
     }
@@ -280,6 +280,120 @@ void DrawTiledBitmap(GrRecordingContext* rContext,
             }
         }
     }
+}
+
+void TiledTextureUtils::DrawImageQuad(SkBaseDevice* device,
+                                      const SkImage* image,
+                                      const SkRect& srcRect,
+                                      const SkRect& dstRect,
+                                      const SkPoint dstClip[4],
+                                      SkCanvas::QuadAAFlags aaFlags,
+                                      const SkMatrix* preViewMatrix,
+                                      const SkSamplingOptions& origSampling,
+                                      const SkPaint& paint,
+                                      SkCanvas::SrcRectConstraint constraint) {
+#if 0
+    SkRect src;
+    SkRect dst;
+    SkMatrix srcToDst;
+    ImageDrawMode mode = optimize_sample_area(SkISize::Make(image->width(), image->height()),
+                                              srcRect, dstRect, dstClip, &src, &dst, &srcToDst);
+    if (mode == ImageDrawMode::kSkip) {
+        return;
+    }
+
+    if (src.contains(image->bounds())) {
+        constraint = SkCanvas::kFast_SrcRectConstraint;
+    }
+    // Depending on the nature of image, it can flow through more or less optimal pipelines
+    SkTileMode tileMode = mode == ImageDrawMode::kDecal ? SkTileMode::kDecal : SkTileMode::kClamp;
+
+    // Get final CTM matrix
+    SkPreConcatMatrixProvider matrixProvider(this->asMatrixProvider(),
+                                             preViewMatrix ? *preViewMatrix : SkMatrix::I());
+    const SkMatrix& ctm(matrixProvider.localToDevice());
+
+    SkSamplingOptions sampling = origSampling;
+    if (sampling.mipmap != SkMipmapMode::kNone && can_disable_mipmap(ctm, srcToDst)) {
+        sampling = SkSamplingOptions(sampling.filter);
+    }
+    const GrClip* clip = this->clip();
+
+    if (!image->isTextureBacked()) {
+        int tileFilterPad;
+        if (sampling.useCubic) {
+            tileFilterPad = kBicubicFilterTexelPad;
+        } else if (sampling.filter == SkFilterMode::kLinear || sampling.isAniso()) {
+            // Aniso will fallback to linear filtering in the tiling case.
+            tileFilterPad = 1;
+        } else {
+            tileFilterPad = 0;
+        }
+
+        int maxTileSize = fContext->maxTextureSize() - 2*tileFilterPad;
+#if GR_TEST_UTILS
+        if (gOverrideMaxTextureSize) {
+            maxTileSize = gOverrideMaxTextureSize - 2 * tileFilterPad;
+        }
+#endif
+        size_t cacheSize = 0;
+        if (auto dContext = fContext->asDirectContext(); dContext) {
+            // NOTE: if the context is not a direct context, it doesn't have access to the resource
+            // cache, and theoretically, the resource cache's limits could be being changed on
+            // another thread, so even having access to just the limit wouldn't be a reliable
+            // test during recording here.
+            cacheSize = dContext->getResourceCacheLimit();
+        }
+        int tileSize;
+        SkIRect clippedSubset;
+        if (skgpu::ShouldTileImage(clip ? clip->getConservativeBounds()
+                                        : SkIRect::MakeSize(fSurfaceDrawContext->dimensions()),
+                                   image->dimensions(),
+                                   ctm,
+                                   srcToDst,
+                                   &src,
+                                   maxTileSize,
+                                   cacheSize,
+                                   &tileSize,
+                                   &clippedSubset)) {
+            // Extract pixels on the CPU, since we have to split into separate textures before
+            // sending to the GPU if tiling.
+            if (SkBitmap bm; as_IB(image)->getROPixels(nullptr, &bm)) {
+                // This is the funnel for all paths that draw tiled bitmaps/images.
+                skgpu::DrawTiledBitmap(fContext.get(),
+                                       fSurfaceDrawContext.get(),
+                                       clip,
+                                       bm,
+                                       tileSize,
+                                       matrixProvider,
+                                       srcToDst,
+                                       src,
+                                       clippedSubset,
+                                       paint,
+                                       aaFlags,
+                                       constraint,
+                                       sampling,
+                                       tileMode,
+                                       draw_image);
+                return;
+            }
+        }
+    }
+
+    draw_image(fContext.get(),
+               fSurfaceDrawContext.get(),
+               clip,
+               matrixProvider,
+               paint,
+               image,
+               src,
+               dst,
+               dstClip,
+               srcToDst,
+               aaFlags,
+               constraint,
+               sampling);
+#endif
 }
 
 } // namespace skgpu
