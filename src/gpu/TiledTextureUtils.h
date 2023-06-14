@@ -52,6 +52,18 @@ public:
                                 SkCanvas::SrcRectConstraint constraint,
                                 SkSamplingOptions sampling,
                                 SkTileMode tileMode);
+
+    static void DrawImageQuad(SkBaseDevice* device,
+                              const SkImage* image,
+                              const SkRect& srcRect,
+                              const SkRect& dstRect,
+                              const SkPoint dstClip[4],
+                              SkCanvas::QuadAAFlags aaFlags,
+                              const SkMatrix* preViewMatrix,
+                              const SkSamplingOptions& origSampling,
+                              const SkPaint& paint,
+                              SkCanvas::SrcRectConstraint constraint);
+
 };
 
 } // namespace skgpu

@@ -115,6 +115,72 @@ void clamped_outset_with_offset(SkIRect* iRect, int outset, SkPoint* offset,
     }
 }
 
+enum class ImageDrawMode {
+    // Src and dst have been restricted to the image content. May need to clamp, no need to decal.
+    kOptimized,
+    // Src and dst are their original sizes, requires use of a decal instead of plain clamping.
+    // This is used when a dst clip is provided and extends outside of the optimized dst rect.
+    kDecal,
+    // Src or dst are empty, or do not intersect the image content so don't draw anything.
+    kSkip
+};
+
+/**
+* Optimize the src rect sampling area within an image (sized 'width' x 'height') such that
+* 'outSrcRect' will be completely contained in the image's bounds. The corresponding rect
+* to draw will be output to 'outDstRect'. The mapping between src and dst will be cached in
+* 'srcToDst'. Outputs are not always updated when kSkip is returned.
+*
+* If 'origSrcRect' is null, implicitly use the image bounds. If 'origDstRect' is null, use the
+* original src rect. 'dstClip' should be null when there is no additional clipping.
+*/
+ImageDrawMode optimize_sample_area(const SkISize& image, const SkRect& origSrcRect,
+                                   const SkRect& origDstRect, const SkPoint dstClip[4],
+                                   SkRect* outSrcRect, SkRect* outDstRect,
+                                   SkMatrix* srcToDst) {
+    SkRect srcBounds = SkRect::MakeIWH(image.fWidth, image.fHeight);
+
+    SkRect src = origSrcRect;
+    SkRect dst = origDstRect;
+
+    if (src.isEmpty() || dst.isEmpty()) {
+        return ImageDrawMode::kSkip;
+    }
+
+    if (outDstRect) {
+        *srcToDst = SkMatrix::RectToRect(src, dst);
+    } else {
+        srcToDst->setIdentity();
+    }
+
+    if (!srcBounds.contains(src)) {
+        if (!src.intersect(srcBounds)) {
+            return ImageDrawMode::kSkip;
+        }
+        srcToDst->mapRect(&dst, src);
+
+        // Both src and dst have gotten smaller. If dstClip is provided, confirm it is still
+        // contained in dst, otherwise cannot optimize the sample area and must use a decal instead
+        if (dstClip) {
+            for (int i = 0; i < 4; ++i) {
+                if (!dst.contains(dstClip[i].fX, dstClip[i].fY)) {
+                    // Must resort to using a decal mode restricted to the clipped 'src', and
+                    // use the original dst rect (filling in src bounds as needed)
+                    *outSrcRect = src;
+                    *outDstRect = origDstRect;
+                    return ImageDrawMode::kDecal;
+                }
+            }
+        }
+    }
+
+    // The original src and dst were fully contained in the image, or there was no dst clip to
+    // worry about, or the clip was still contained in the restricted dst rect.
+    *outSrcRect = src;
+    *outDstRect = dst;
+    return ImageDrawMode::kOptimized;
+}
+
 } // anonymous namespace
 
 namespace skgpu {
@@ -169,6 +235,8 @@ bool TiledTextureUtils::ShouldTileImage(SkIRect conservativeClipBounds,
 
     return usedTileBytes * 2 < bmpSize;
 }
+
+
 
 void TiledTextureUtils::DrawTiledBitmap(SkBaseDevice* device,
                                         const SkBitmap& bitmap,
@@ -282,6 +350,120 @@ void TiledTextureUtils::DrawTiledBitmap(SkBaseDevice* device,
             }
         }
     }
+}
+
+void TiledTextureUtils::DrawImageQuad(SkBaseDevice* device,
+                                      const SkImage* image,
+                                      const SkRect& srcRect,
+                                      const SkRect& dstRect,
+                                      const SkPoint dstClip[4],
+                                      SkCanvas::QuadAAFlags aaFlags,
+                                      const SkMatrix* preViewMatrix,
+                                      const SkSamplingOptions& origSampling,
+                                      const SkPaint& paint,
+                                      SkCanvas::SrcRectConstraint constraint) {
+    SkRect src;
+    SkRect dst;
+    SkMatrix srcToDst;
+    ImageDrawMode mode = optimize_sample_area(SkISize::Make(image->width(), image->height()),
+                                              srcRect, dstRect, dstClip, &src, &dst, &srcToDst);
+    if (mode == ImageDrawMode::kSkip) {
+        return;
+    }
+
+#if 0
+    if (src.contains(image->bounds())) {
+        constraint = SkCanvas::kFast_SrcRectConstraint;
+    }
+    // Depending on the nature of image, it can flow through more or less optimal pipelines
+    SkTileMode tileMode = mode == ImageDrawMode::kDecal ? SkTileMode::kDecal : SkTileMode::kClamp;
+
+    // Get final CTM matrix
+    SkPreConcatMatrixProvider matrixProvider(this->asMatrixProvider(),
+                                             preViewMatrix ? *preViewMatrix : SkMatrix::I());
+    const SkMatrix& ctm(matrixProvider.localToDevice());
+
+    SkSamplingOptions sampling = origSampling;
+    if (sampling.mipmap != SkMipmapMode::kNone && can_disable_mipmap(ctm, srcToDst)) {
+        sampling = SkSamplingOptions(sampling.filter);
+    }
+    const GrClip* clip = this->clip();
+
+    if (!image->isTextureBacked()) {
+        int tileFilterPad;
+        if (sampling.useCubic) {
+            tileFilterPad = kBicubicFilterTexelPad;
+        } else if (sampling.filter == SkFilterMode::kLinear || sampling.isAniso()) {
+            // Aniso will fallback to linear filtering in the tiling case.
+            tileFilterPad = 1;
+        } else {
+            tileFilterPad = 0;
+        }
+
+        int maxTileSize = fContext->maxTextureSize() - 2*tileFilterPad;
+#if GR_TEST_UTILS
+        if (gOverrideMaxTextureSize) {
+            maxTileSize = gOverrideMaxTextureSize - 2 * tileFilterPad;
+        }
+#endif
+        size_t cacheSize = 0;
+        if (auto dContext = fContext->asDirectContext(); dContext) {
+            // NOTE: if the context is not a direct context, it doesn't have access to the resource
+            // cache, and theoretically, the resource cache's limits could be being changed on
+            // another thread, so even having access to just the limit wouldn't be a reliable
+            // test during recording here.
+            cacheSize = dContext->getResourceCacheLimit();
+        }
+        int tileSize;
+        SkIRect clippedSubset;
+        if (skgpu::ShouldTileImage(clip ? clip->getConservativeBounds()
+                                        : SkIRect::MakeSize(fSurfaceDrawContext->dimensions()),
+                                   image->dimensions(),
+                                   ctm,
+                                   srcToDst,
+                                   &src,
+                                   maxTileSize,
+                                   cacheSize,
+                                   &tileSize,
+                                   &clippedSubset)) {
+            // Extract pixels on the CPU, since we have to split into separate textures before
+            // sending to the GPU if tiling.
+            if (SkBitmap bm; as_IB(image)->getROPixels(nullptr, &bm)) {
+                // This is the funnel for all paths that draw tiled bitmaps/images.
+                skgpu::DrawTiledBitmap(fContext.get(),
+                                       fSurfaceDrawContext.get(),
+                                       clip,
+                                       bm,
+                                       tileSize,
+                                       matrixProvider,
+                                       srcToDst,
+                                       src,
+                                       clippedSubset,
+                                       paint,
+                                       aaFlags,
+                                       constraint,
+                                       sampling,
+                                       tileMode,
+                                       draw_image);
+                return;
+            }
+        }
+    }
+
+    draw_image(fContext.get(),
+               fSurfaceDrawContext.get(),
+               clip,
+               matrixProvider,
+               paint,
+               image,
+               src,
+               dst,
+               dstClip,
+               srcToDst,
+               aaFlags,
+               constraint,
+               sampling);
+#endif
 }
 
 } // namespace skgpu
