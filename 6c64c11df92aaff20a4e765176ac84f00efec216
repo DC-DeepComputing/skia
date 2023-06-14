@@ -16,6 +16,23 @@
       "message": "Add changelog entry",
       "revId": "6c64c11df92aaff20a4e765176ac84f00efec216",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00af6a11_cfa587ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-14T19:58:52Z",
+      "side": 1,
+      "message": "Thanks again",
+      "revId": "6c64c11df92aaff20a4e765176ac84f00efec216",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
