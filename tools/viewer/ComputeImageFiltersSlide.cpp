@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#if defined(SK_GRAPHITE)
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
@@ -14,6 +13,8 @@
 #include "src/gpu/graphite/compute/ComputeStep.h"
 #include "tools/Resources.h"
 #include "tools/viewer/ClickHandlerSlide.h"
+
+#if defined(SK_GRAPHITE)
 
 namespace {
 
@@ -75,6 +76,69 @@ public:
 
     WorkgroupSize calculateGlobalDispatchSize(const DP&) const override {
         return WorkgroupSize(kSrcDim / 32, kSrcDim / 32, 1);
+        // return WorkgroupSize(1, 1, 1);
+    }
+};
+
+class BlurFilter : public ComputeImageFilter {
+public:
+    BlurFilter() : ComputeImageFilter(
+        /*width=*/kSrcDim,
+        /*height=*/kSrcDim,
+        /*name=*/"BlurFilter_Compute",
+        /*localDispatchSize=*/{32, 32, 1},
+        /*resources=*/{
+            {
+                /*type=*/ResourceType::kTexture,
+                /*flow=*/DataFlow::kShared,
+                /*policy=*/ResourcePolicy::kNone,
+                /*slot=*/0,
+            },
+            {
+                /*type=*/ResourceType::kStorageTexture,
+                /*flow=*/DataFlow::kShared,
+                /*policy=*/ResourcePolicy::kNone,
+                /*slot=*/1,
+            }
+        }) {}
+    ~BlurFilter() override = default;
+
+    std::string computeSkSL(const RBR&, int) const override {
+        return R"(
+            layout(binding = 0) readonly texture2D src;
+            layout(binding = 1) writeonly texture2D dest;
+
+            void main() {
+                half4 srcColor = textureRead(src, sk_GlobalInvocationID.xy);
+
+                uint srcDim = 255;
+                uint boxWidth = 17; //hardcoded dimension of box blur's box
+                int blurRadius = int((boxWidth - 1) / 2);
+
+                half3 colorSum = half3(0,0,0);
+                uint2 neighbourXY = uint2(0,0);
+
+                for(int i=0-blurRadius; i<=blurRadius; ++i){
+                    for(int j=0-blurRadius; j<=blurRadius; ++j){
+                        neighbourXY = clamp(sk_GlobalInvocationID.xy + uint2(i, j), uint2(0), uint2(srcDim));
+                        srcColor = textureRead(src, neighbourXY);
+                        colorSum = colorSum + srcColor.rbg;
+                    }
+                }
+
+                half boxSize = half(boxWidth * boxWidth);
+                colorSum = half3(colorSum.x / boxSize,
+                                 colorSum.y / boxSize,
+                                 colorSum.z / boxSize);
+
+                textureWrite(dest, sk_GlobalInvocationID.xy, colorSum.rbg1);
+            }
+        )";
+    }
+
+    WorkgroupSize calculateGlobalDispatchSize(const DP&) const override {
+        return WorkgroupSize(kSrcDim / 32, kSrcDim / 32, 1);
+        // return WorkgroupSize(1, 1, 1);
     }
 };
 
@@ -119,16 +183,20 @@ private:
         canvas->clear(SK_ColorWHITE);
 
         SkPaint paint;
-        const char* captions[] = {"source", "grayscale"};
+        const char* captions[] = {"source", "grayscale", "blurr"};
         uint32_t dim = 256;
         uint32_t margin = 10;
         for (unsigned int i = 0; i < std::size(captions); i++) {
             if (i == 0) {
                 canvas->drawImage(
                         image, margin + i * (dim + margin), margin, SkSamplingOptions(), &paint);
-            } else {
+            } else if(i == 1) {
                 device->drawComputeFilteredImage(
                         image, margin + i * (dim + margin), margin, &fGrayscale);
+            }
+            else{
+                device->drawComputeFilteredImage(
+                        image, margin + i * (dim + margin), margin, &fBlur);
             }
 
             SkFont font(nullptr, 16);
@@ -140,6 +208,7 @@ private:
                                font,
                                captionPaint);
         }
+
     }
 
     bool onChar(SkUnichar c) override { return false; }
@@ -152,6 +221,7 @@ private:
 
 private:
     GrayscaleFilter fGrayscale;
+    BlurFilter fBlur;
 };
 
 }  // namespace
