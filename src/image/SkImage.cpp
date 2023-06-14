@@ -283,3 +283,85 @@ sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
     return makeColorTypeAndColorSpace(direct, targetColorType, targetColorSpace);
 }
 #endif
+
+#include "include/core/SkPathEffect.h"
+#include "src/gpu/TiledTextureUtils.h"
+
+// Dup of version in SkCanvas.pp
+// Clean-up the paint to match the drawing semantics for drawImage et al. (skbug.com/7804).
+static SkPaint clean_paint_for_drawImage(const SkPaint* paint) {
+    SkPaint cleaned;
+    if (paint) {
+        cleaned = *paint;
+        cleaned.setStyle(SkPaint::kFill_Style);
+        cleaned.setPathEffect(nullptr);
+    }
+    return cleaned;
+}
+
+namespace SkImages {
+
+void DrawTiledImage(SkCanvas* canvas,
+                    const SkImage* image,
+                    SkScalar x, SkScalar y,
+                    const SkSamplingOptions& sampling,
+                    const SkPaint* paint,
+                    SkCanvas::SrcRectConstraint constraint) {
+    if (!image) {
+        return;
+    }
+
+    SkRect src = SkRect::MakeIWH(image->width(), image->height());
+    SkRect dst = SkRect::MakeXYWH(x, y, image->width(), image->height());
+
+    DrawTiledImageRect(canvas, image, src, dst, sampling, paint, constraint);
+}
+
+void DrawTiledImageRect(SkCanvas* canvas,
+                        const SkImage* image,
+                        const SkRect& dst,
+                        const SkSamplingOptions& sampling,
+                        const SkPaint* paint,
+                        SkCanvas::SrcRectConstraint constraint) {
+    if (!image) {
+        return;
+    }
+
+    SkRect src = SkRect::MakeIWH(image->width(), image->height());
+
+    DrawTiledImageRect(canvas, image, src, dst, sampling, paint, constraint);
+}
+
+void DrawTiledImageRect(SkCanvas* canvas,
+                        const SkImage* image,
+                        const SkRect& src,
+                        const SkRect& dst,
+                        const SkSamplingOptions& sampling,
+                        const SkPaint* paint,
+                        SkCanvas::SrcRectConstraint constraint) {
+    if (!image) {
+        return;
+    }
+    // Add fillable
+
+
+    if (canvas->recordingContext() || canvas->recorder()) {
+        SkPaint realPaint = clean_paint_for_drawImage(paint);
+
+        skgpu::TiledTextureUtils::DrawImageQuad(nullptr,
+                                                image,
+                                                src,
+                                                dst,
+                                                /* dstClip= */ nullptr,
+                                                SkCanvas::QuadAAFlags::kAll_QuadAAFlags, // This is wrong!!!
+                                                /* preViewMatrix= */ nullptr,
+                                                sampling,
+                                                realPaint,
+                                                constraint);
+        return;
+    }
+
+    canvas->drawImageRect(image, src, dst, sampling, paint, constraint);
+}
+
+} // namespace SkImages

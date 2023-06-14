@@ -9,6 +9,7 @@
 #define SkImage_DEFINED
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -228,6 +229,28 @@ SK_API sk_sp<SkImage> RasterFromPixmap(const SkPixmap& pixmap,
 SK_API sk_sp<SkImage> RasterFromData(const SkImageInfo& info,
                                      sk_sp<SkData> pixels,
                                      size_t rowBytes);
+
+SK_API void DrawTiledImage(SkCanvas* canvas,
+                           const SkImage* image,
+                           SkScalar x, SkScalar y,
+                           const SkSamplingOptions& sampling = {},
+                           const SkPaint* paint = nullptr,
+                           SkCanvas::SrcRectConstraint = SkCanvas::kFast_SrcRectConstraint);
+
+SK_API void DrawTiledImageRect(SkCanvas* canvas,
+                               const SkImage* image,
+                               const SkRect& dst,
+                               const SkSamplingOptions& sampling = {},
+                               const SkPaint* paint = nullptr,
+                               SkCanvas::SrcRectConstraint = SkCanvas::kFast_SrcRectConstraint);
+
+SK_API void DrawTiledImageRect(SkCanvas* canvas,
+                               const SkImage* image,
+                               const SkRect& src,
+                               const SkRect& dst,
+                               const SkSamplingOptions& sampling = {},
+                               const SkPaint* paint = nullptr,
+                               SkCanvas::SrcRectConstraint = SkCanvas::kFast_SrcRectConstraint);
 
 }  // namespace SkImages
 
