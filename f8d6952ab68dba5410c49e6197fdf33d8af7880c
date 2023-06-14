@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9db2c5_d6d820af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-14T18:02:02Z",
+      "side": 1,
+      "message": "Chrome has updated their code to the new constructor so we can remove this one. PTAL.",
+      "revId": "f8d6952ab68dba5410c49e6197fdf33d8af7880c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
