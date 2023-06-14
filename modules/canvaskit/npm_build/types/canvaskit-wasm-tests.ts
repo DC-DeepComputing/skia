@@ -440,6 +440,8 @@ function paintTests(CK: CanvasKit, colorFilter?: ColorFilter, imageFilter?: Imag
     paint.setImageFilter(imageFilter);
     paint.setMaskFilter(maskFilter);
     paint.setPathEffect(pathEffect);
+    // @ts-expect-error
+    paint.setShader(colorFilter); // $ExpectError
     paint.setShader(shader);
     paint.setStrokeCap(CK.StrokeCap.Round);
     paint.setStrokeJoin(CK.StrokeJoin.Miter);
