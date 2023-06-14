@@ -69,6 +69,24 @@
       "parentUuid": "c274aae1_7dea2d56",
       "revId": "51fa5a7455bf62a602552e31ccce521774203bd9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f932c556_5b669885",
+        "filename": "resources/sksl/shared/SwitchWithFallthroughAndVarDecls.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-14T14:30:48Z",
+      "side": 1,
+      "message": "Oh, just expressing my dismay at this whole thing being necessary/legal (specifically having variable declaration/use spanning other cases). Nothing about what you wrote. 😊",
+      "parentUuid": "d6d9e0c5_82776913",
+      "revId": "51fa5a7455bf62a602552e31ccce521774203bd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
