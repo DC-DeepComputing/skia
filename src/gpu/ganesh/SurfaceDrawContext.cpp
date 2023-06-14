@@ -328,6 +328,21 @@ void SurfaceDrawContext::willReplaceOpsTask(OpsTask* prevTask, OpsTask* nextTask
 #endif
 }
 
+sktext::gpu::AtlasDrawDelegate SurfaceDrawContext::atlasDelegate(const GrClip* clip,
+                                                                 const SkMatrix& viewMatrix) {
+    return [&](const sktext::gpu::AtlasSubRun* subRun,
+                             SkPoint drawOrigin,
+                             const SkPaint& paint,
+                             sk_sp<SkRefCnt> subRunStorage) {
+        auto[drawingClip, op] = subRun->makeAtlasTextOp(
+                clip, viewMatrix, drawOrigin, paint, std::move(subRunStorage),
+                this);
+        if (op != nullptr) {
+            this->addDrawOp(drawingClip, std::move(op));
+        }
+    };
+}
+
 void SurfaceDrawContext::drawGlyphRunList(SkCanvas* canvas,
                                           const GrClip* clip,
                                           const SkMatrixProvider& viewMatrix,
@@ -347,8 +362,10 @@ void SurfaceDrawContext::drawGlyphRunList(SkCanvas* canvas,
     }
 
     sktext::gpu::TextBlobRedrawCoordinator* textBlobCache = fContext->priv().getTextBlobCache();
-    textBlobCache->drawGlyphRunList(
-            canvas, clip, viewMatrix, glyphRunList, paint, strikeDeviceInfo, this);
+
+    auto atlasDelegate = this->atlasDelegate(clip, viewMatrix.localToDevice());
+    textBlobCache->drawGlyphRunList(canvas, viewMatrix.localToDevice(), glyphRunList, paint,
+        strikeDeviceInfo, atlasDelegate);
 }
 
 void SurfaceDrawContext::drawPaint(const GrClip* clip,
