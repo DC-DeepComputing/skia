@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8e96b6e_2de3b061",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-14T18:30:31Z",
+      "side": 1,
+      "message": "Can you add an entry to CanvasKit\u0027s changelog?",
+      "revId": "3f0681c656d57e6b3523bf996b66dfa57f99602d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
