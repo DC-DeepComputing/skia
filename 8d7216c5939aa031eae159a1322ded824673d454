@@ -16,6 +16,23 @@
       "message": "JSYK: The rubber stamper\u0027s Bot-Commit+1 is sufficient to re-land this (once the chromium changes are landed)",
       "revId": "8d7216c5939aa031eae159a1322ded824673d454",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30b920a3_05681344",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-14T16:41:50Z",
+      "side": 1,
+      "message": "iOS-emulator is now passing \\o/: https://ci.chromium.org/p/chromium/builders/try/ios-simulator/1565725?\n\n(the canary run did have some GPU test failure, but I\u0027m pretty sure that\u0027s flaky/unrelated)",
+      "revId": "8d7216c5939aa031eae159a1322ded824673d454",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
