@@ -16,6 +16,23 @@
       "message": "Thanks, I pushed the review comments",
       "revId": "cd644839c1a095abe5a6fe862e70085f033a921a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75d0b4b1_e8e8dde8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-14T19:47:39Z",
+      "side": 1,
+      "message": "Could you also add an entry to Canvaskit\u0027s Changelog?",
+      "revId": "cd644839c1a095abe5a6fe862e70085f033a921a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
