@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4876909_2557c235",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2023-06-14T18:01:21Z",
+      "side": 1,
+      "message": "The goal of this PR is to refine the EmbindObject so that TypeScript can differentiate between opaque types such as Shader, ColorFilter, and so on.",
+      "revId": "a95255a2e7d236eb861b765787b8404d5def832b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
