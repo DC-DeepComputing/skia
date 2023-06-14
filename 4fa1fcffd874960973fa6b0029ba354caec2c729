@@ -22,6 +22,30 @@
       },
       "revId": "4fa1fcffd874960973fa6b0029ba354caec2c729",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "672cee23_9baf0fc5",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-14T16:57:39Z",
+      "side": 1,
+      "message": "I\u0027m more inclined to go with the Metal approach of passing in the RenderPassDesc and pulling what\u0027s needed out of there.",
+      "parentUuid": "a49e5374_235e8c9b",
+      "range": {
+        "startLine": 439,
+        "startChar": 30,
+        "endLine": 439,
+        "endChar": 44
+      },
+      "revId": "4fa1fcffd874960973fa6b0029ba354caec2c729",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
