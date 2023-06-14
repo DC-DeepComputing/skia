@@ -31,19 +31,22 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(
     // highly unexpected for us to exceed this limit in practice.
     skia_private::STArray<kDescriptorTypeCount, VkDescriptorPoolSize> poolSizes;
     for (size_t i = 0; i < requestedDescCounts.size(); i++) {
-        SkASSERT(requestedDescCounts[i].count > 0);
+        if (requestedDescCounts[i].count == 0) {
+            continue;
+        }
         if (requestedDescCounts[i].count > kMaxNumDescriptors) {
             SkDebugf("The number of descriptors requested, %d, exceeds the maximum allowed (%d).\n",
                      requestedDescCounts[i].count,
                      kMaxNumDescriptors);
             return nullptr;
         }
-        VkDescriptorPoolSize* poolSize = &poolSizes.at(i);
-        memset(poolSize, 0, sizeof(VkDescriptorPoolSize));
+        VkDescriptorPoolSize poolSize;
+        memset(&poolSize, 0, sizeof(VkDescriptorPoolSize));
         // Map each DescriptorSetType to the appropriate backend VkDescriptorType
-        poolSize->type = VulkanDescriptorSet::DsTypeEnumToVkDs(requestedDescCounts[i].type);
+        poolSize.type = VulkanDescriptorSet::DsTypeEnumToVkDs(requestedDescCounts[i].type);
         // Create a pool large enough to accommodate the maximum possible number of descriptor sets
-        poolSize->descriptorCount = requestedDescCounts[i].count * kMaxNumSets;
+        poolSize.descriptorCount = requestedDescCounts[i].count * kMaxNumSets;
+        poolSizes.push_back(poolSize);
     }
 
     VkDescriptorPoolCreateInfo createInfo;
@@ -52,15 +55,17 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(
     createInfo.pNext = nullptr;
     createInfo.flags = 0;
     createInfo.maxSets = kMaxNumSets;
-    createInfo.poolSizeCount = requestedDescCounts.size();
+    createInfo.poolSizeCount = poolSizes.size();
     createInfo.pPoolSizes = &poolSizes.front();
 
     VkDescriptorPool pool;
     VkResult result;
-    VULKAN_CALL_RESULT(context->interface(), result, CreateDescriptorPool(context->device(),
-                                                                          &createInfo,
-                                                                          nullptr,
-                                                                          &pool));
+    VULKAN_CALL_RESULT(context->interface(),
+                       result,
+                       CreateDescriptorPool(context->device(),
+                       &createInfo,
+                       /*const VkAllocationCallbacks*=*/nullptr,
+                       &pool));
     if (result != VK_SUCCESS) {
         return nullptr;
     }
