@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fd6a0bf_528b4d76",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1242,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-14T18:28:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2587c7d_5347d281",
+      "range": {
+        "startLine": 1242,
+        "startChar": 9,
+        "endLine": 1242,
+        "endChar": 28
+      },
+      "revId": "c695aad59a734d29ea9c450d1bff45ac31c6597d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb1831e4_ffbe684e",
@@ -54,6 +78,24 @@
       "writtenOn": "2023-06-14T18:07:53Z",
       "side": 1,
       "message": "nit: maybe mark this as `const`",
+      "revId": "c695aad59a734d29ea9c450d1bff45ac31c6597d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17b24afa_23cc8b82",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1246,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-14T18:28:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb1831e4_ffbe684e",
       "revId": "c695aad59a734d29ea9c450d1bff45ac31c6597d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
