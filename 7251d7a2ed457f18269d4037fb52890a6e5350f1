@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "219eaea8_5dfb3f4f",
+        "filename": "src/gpu/ganesh/SurfaceDrawContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-14T17:16:33Z",
+      "side": 1,
+      "message": "Make this a function that returns the function, and have change in device.cpp use it.",
+      "range": {
+        "startLine": 351,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 6
+      },
+      "revId": "7251d7a2ed457f18269d4037fb52890a6e5350f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8378fed6_153bd21b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-14T17:16:33Z",
+      "side": 1,
+      "message": "Can we make a common function that returns the atlasCallback.",
+      "range": {
+        "startLine": 824,
+        "startChar": 0,
+        "endLine": 829,
+        "endChar": 6
+      },
+      "revId": "7251d7a2ed457f18269d4037fb52890a6e5350f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fd5a165_d374338e",
+        "filename": "src/text/gpu/SubRunAllocator.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-14T17:16:33Z",
+      "side": 1,
+      "message": "This should live in SubRunContainer, and not live on SubRunAllocator.",
+      "range": {
+        "startLine": 99,
+        "startChar": 16,
+        "endLine": 99,
+        "endChar": 36
+      },
+      "revId": "7251d7a2ed457f18269d4037fb52890a6e5350f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "686379db_64eee31e",
+        "filename": "src/text/gpu/SubRunContainer.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-14T17:16:33Z",
+      "side": 1,
+      "message": "This is probably better called AtlasDrawDelegate, and where you have callback change to delegate at each call site.",
+      "revId": "7251d7a2ed457f18269d4037fb52890a6e5350f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
