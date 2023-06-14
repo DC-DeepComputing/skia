@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04e04364_16b7a1c4",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-14T19:33:01Z",
+      "side": 1,
+      "message": "Ditto for dispatchOpacityProperty?",
+      "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1773c67f_60df69b5",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-14T19:33:01Z",
+      "side": 1,
+      "message": "Would it make sense to push this down to dispatchColorProperty()?  We\u0027re already checking for sid there, seems like a good spot.",
+      "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c74bf6df_8d4edc94",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-14T19:33:01Z",
+      "side": 1,
+      "message": "Ditto.",
+      "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14136706_4a507337",
+        "filename": "modules/sksg/include/SkSGOpacityEffect.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-14T19:33:01Z",
+      "side": 1,
+      "message": "nit: `namespace skottie::internal {`",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 20
+      },
+      "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1518378_0f4922b5",
+        "filename": "modules/sksg/include/SkSGPaint.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-14T19:33:01Z",
+      "side": 1,
+      "message": "nit: `namespace skottie::internal {`",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 20
+      },
+      "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
