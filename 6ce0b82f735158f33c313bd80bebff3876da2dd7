@@ -22,6 +22,30 @@
       },
       "revId": "6ce0b82f735158f33c313bd80bebff3876da2dd7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a739e5ec_de695701",
+        "filename": "tests/sksl/intrinsics/InverseSqrt.wgsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-14T17:45:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d48f3681_589f1dce",
+      "range": {
+        "startLine": 3,
+        "startChar": 14,
+        "endLine": 3,
+        "endChar": 19
+      },
+      "revId": "6ce0b82f735158f33c313bd80bebff3876da2dd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
