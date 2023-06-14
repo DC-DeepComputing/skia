@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3781e86e_a52f4a4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-14T16:25:54Z",
+      "side": 1,
+      "message": "I believe the pre-instantiation of the images in the tiled draw was causing the Wembleys to OoM. With the dedicated Device entry point we don\u0027t actually have to pre-instantiate.",
+      "revId": "bc01747ac4eb0cb3e07dc7611997029eab468c0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
