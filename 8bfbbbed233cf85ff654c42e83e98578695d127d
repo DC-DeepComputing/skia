@@ -16,6 +16,23 @@
       "message": "Note that the big blocks of code for translating the gradients into Skia compatible color stops is mostly from the FreeType COLRv1 code, but it is ever so slightly different. We may want to figure out how to de-duplicate this, but at the moment we believe that it does the right thing.",
       "revId": "8bfbbbed233cf85ff654c42e83e98578695d127d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d15026f_65c2fc03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-14T18:40:09Z",
+      "side": 1,
+      "message": "How about repurposing the `gm/colrv1.cpp` to execute this? Could this be part of this CL? (Even though there\u0027s no bots for this yet?)",
+      "revId": "8bfbbbed233cf85ff654c42e83e98578695d127d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
