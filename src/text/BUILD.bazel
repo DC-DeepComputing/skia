@@ -11,19 +11,37 @@ TEXT_FILES = [
     "StrikeForGPU.h",
 ]
 
+# Slugs are only supported with Ganesh and Graphite (for now)
+SLUG_FILES = [
+    "Slug.cpp",
+    "SlugImpl.cpp",
+    "SlugImpl.h",
+]
+
 split_srcs_and_hdrs(
     name = "text",
     files = TEXT_FILES,
 )
 
+split_srcs_and_hdrs(
+    name = "slug",
+    files = SLUG_FILES,
+)
+
 skia_filegroup(
     name = "srcs",
-    srcs = [":text_srcs"],
+    srcs = [":text_srcs"] + select({
+        "//src/gpu:has_gpu_backend": [":slug_srcs"],
+        "//conditions:default": [],
+    }),
     visibility = ["//src:__pkg__"],
 )
 
 skia_filegroup(
     name = "private_hdrs",
-    srcs = [":text_hdrs"],
+    srcs = [":text_hdrs"] + select({
+        "//src/gpu:has_gpu_backend": [":slug_hdrs"],
+        "//conditions:default": [],
+    }),
     visibility = ["//src:__pkg__"],
 )
