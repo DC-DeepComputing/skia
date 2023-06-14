@@ -33,6 +33,24 @@
       "message": "How about repurposing the `gm/colrv1.cpp` to execute this? Could this be part of this CL? (Even though there\u0027s no bots for this yet?)",
       "revId": "8bfbbbed233cf85ff654c42e83e98578695d127d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "034af5b7_fa59da5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-14T18:46:14Z",
+      "side": 1,
+      "message": "`gm/colrv1.cpp` is already running all this if you have a DWrite.dll (and of course headers) new enough. That\u0027s what I\u0027ve been using locally to verify this implementation (and finding the clip issue).",
+      "parentUuid": "0d15026f_65c2fc03",
+      "revId": "8bfbbbed233cf85ff654c42e83e98578695d127d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
