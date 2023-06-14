@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `MakeSWCanvasSurface` now allows passing an `OffscreenCanvas` element.
+
 ## [0.38.2] - 2023-06-09
 
 ### Added
