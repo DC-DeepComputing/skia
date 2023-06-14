@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a49e5374_235e8c9b",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-14T16:55:20Z",
+      "side": 1,
+      "message": "Locally, I had this instead as taking in an int of `numSamples`, and having that determined from within the VulkanResourceProvider (which avoids passing in the RenderPassDesc itself). \n\nEither way is fine (Mtl and Dawn differ on this), but if we do decide to pass in the `RenderPassDesc`, we could certainly get rid of some of the parameters for the Make call and instead just extract what we need from the renderPassDesc.\n\nLMK if you have opinions either way.",
+      "range": {
+        "startLine": 439,
+        "startChar": 30,
+        "endLine": 439,
+        "endChar": 44
+      },
+      "revId": "4fa1fcffd874960973fa6b0029ba354caec2c729",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
