@@ -16,6 +16,63 @@
       "message": "A few notes at Patchset 1.\n\nNeed to respect antialiasing settings.\n\nNeed some ifdefs, availability checks, or forward declarations since not everyone has the required headers with the declarations yet. Requires Windows Kit 10.0.25357.0 or newer headers. Could also get working with DWriteCore.\n\nNo bot coverage yet. System DirectWrite support on V22H2 25346.1001 and newer. Again, might be able to test with DWriteCore.\n\nUsing DWrite.dll version 10.0.25346.1001 there appears to be an issue with variable clips. It looks like the clip rect is flipped at the wrong time, with the yMax and yMin deltas apparently reversed. The clips appear fine when the deltas are zero. This shows up in the colrv1_clipbox_CLIO_200.00 gm.\n\nIn addition it isn\u0027t entirely clear what should happen with an \"inverted\" clip box (when the deltas push the max less than the min).",
       "revId": "732e2be8a528744c62b35683e72d6e2364e56bf5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32157ada_24232e4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-14T07:42:15Z",
+      "side": 1,
+      "message": "Excellent work, great to see this! Codewise this looks good to me already. I am happy to take another look when you set it to ready for review.",
+      "revId": "732e2be8a528744c62b35683e72d6e2364e56bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdaf3b84_18e7d30d",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-14T07:42:15Z",
+      "side": 1,
+      "message": "I see this works with `SkFontArguments`-overriden palettes already, nice work.",
+      "revId": "732e2be8a528744c62b35683e72d6e2364e56bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b84bdc4_449b1732",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1234,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-14T07:42:15Z",
+      "side": 1,
+      "message": "TODO(bungeman): or TODO(crbug...)?",
+      "range": {
+        "startLine": 1234,
+        "startChar": 7,
+        "endLine": 1234,
+        "endChar": 12
+      },
+      "revId": "732e2be8a528744c62b35683e72d6e2364e56bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
