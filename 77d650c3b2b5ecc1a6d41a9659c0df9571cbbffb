@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98a7c411_98cd4011",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-14T18:39:12Z",
+      "side": 1,
+      "message": "Not sure if this comment is necessary.",
+      "range": {
+        "startLine": 444,
+        "startChar": 34,
+        "endLine": 444,
+        "endChar": 49
+      },
+      "revId": "77d650c3b2b5ecc1a6d41a9659c0df9571cbbffb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75d8570e_94886ef5",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-14T18:39:12Z",
+      "side": 1,
+      "message": "Add a comment explaining that the `T` type variable is necessary for the TypeScript compiler to differentiate between opaque types such as `Shader` and `ColorFilter`.",
+      "range": {
+        "startLine": 586,
+        "startChar": 0,
+        "endLine": 588,
+        "endChar": 0
+      },
+      "revId": "77d650c3b2b5ecc1a6d41a9659c0df9571cbbffb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "626e9ca5_96c29343",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-14T18:39:12Z",
+      "side": 1,
+      "message": "Maybe just `_type`?",
+      "range": {
+        "startLine": 590,
+        "startChar": 4,
+        "endLine": 590,
+        "endChar": 12
+      },
+      "revId": "77d650c3b2b5ecc1a6d41a9659c0df9571cbbffb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32767bac_df105a5d",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-14T18:39:12Z",
+      "side": 1,
+      "message": "Note that if you have a type such as\n\n```\ninterface Foo extends EmbindObject\u003c\"Foo\"\u003e {\n  doSomething(): void;\n}\n```\n\nthen `const myFooClone \u003d myFoo.clone()` will result in a `myFooClone` of type `EmbindObject\u003c\"Foo\"\u003e` rather than `Foo`, and therefore `myFooClone.doSomething()` will produce a compiler error.\n\nExample playground: https://www.typescriptlang.org/play?#code/JYOwLgpgTgZghgYwgAgKIFsBGoAmB5TAKwgTAB4AVZCAD0hBwGdlGwpQBzAPmQG8AoZEOQB9MAE8ADhABcyCgG5BwhABsA9iAgAKAJRyM2BgWKlKXJQF9+-UJFiIUAMXXrqdCA2aHcJkuQAiF3UAngFhZBx1AGV1dAgwAAtOPTkAN3VgHCsbBE1WZHRxYOQAXj5LZDhmYKU8kAKi4IBhDS0ywuLXADo1TR1dJSbXVv7uqNj4pJTB-iA\n\nWe discussed the possibility of removing `clone()` altogether. Would that be an option?",
+      "range": {
+        "startLine": 591,
+        "startChar": 13,
+        "endLine": 591,
+        "endChar": 28
+      },
+      "revId": "77d650c3b2b5ecc1a6d41a9659c0df9571cbbffb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
