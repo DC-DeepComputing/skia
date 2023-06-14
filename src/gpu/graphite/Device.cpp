@@ -44,6 +44,7 @@
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkConvertPixels.h"
+#include "src/core/SkDistanceFieldGen.h"
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkMatrixPriv.h"
@@ -55,6 +56,8 @@
 #include "src/core/SkVerticesPriv.h"
 #include "src/shaders/SkImageShader.h"
 #include "src/text/SlugImpl.h"
+#include "src/text/gpu/Glyph.h"
+#include "src/text/gpu/GlyphVector.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
@@ -835,14 +838,95 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
                                                         atlasCallback);
 }
 
+static std::tuple<bool, int> regenerate_atlas(skgpu::graphite::Recorder* recorder,
+                                              sktext::gpu::GlyphVector glyphVec,
+                                              int begin, int end,
+                                              skgpu::MaskFormat maskFormat,
+                                              int srcPadding) {
+    auto atlasManager = recorder->priv().atlasManager();
+    auto tokenTracker = recorder->priv().tokenTracker();
+
+    // TODO: this is not a great place for this -- need a better way to init atlases when needed
+    unsigned int numActiveProxies;
+    const sk_sp<skgpu::graphite::TextureProxy>* proxies =
+            atlasManager->getProxies(maskFormat, &numActiveProxies);
+    if (!proxies) {
+        SkDebugf("Could not allocate backing texture for atlas\n");
+        return {false, 0};
+    }
+
+    uint64_t currentAtlasGen = atlasManager->atlasGeneration(maskFormat);
+
+    glyphVec.packedGlyphIDToGlyph(recorder->priv().strikeCache());
+
+    if (glyphVec.atlasGeneration() != currentAtlasGen) {
+        // Calculate the texture coordinates for the vertexes during first use (fAtlasGeneration
+        // is set to kInvalidAtlasGeneration) or the atlas has changed in subsequent calls.
+        glyphVec.bulkUseUpdater().reset();
+
+        SkBulkGlyphMetricsAndImages metricsAndImages{glyphVec.textStrike()->strikeSpec()};
+
+        // Update the atlas information in the GrStrike.
+        auto glyphs = glyphVec.glyphsMutable().subspan(begin, end - begin);
+        int glyphsPlacedInAtlas = 0;
+        bool success = true;
+        for (sktext::gpu::Glyph* gpuGlyph : glyphs) {
+            SkASSERT(gpuGlyph != nullptr);
+
+            if (!atlasManager->hasGlyph(maskFormat, gpuGlyph)) {
+                const SkGlyph& skGlyph = *metricsAndImages.glyph(gpuGlyph->fPackedID);
+                auto code = atlasManager->addGlyphToAtlas(skGlyph, gpuGlyph, srcPadding);
+                if (code != DrawAtlas::ErrorCode::kSucceeded) {
+                    success = code != DrawAtlas::ErrorCode::kError;
+                    break;
+                }
+            }
+            atlasManager->addGlyphToBulkAndSetUseToken(
+                    &glyphVec.bulkUseUpdater(), maskFormat, gpuGlyph,
+                    tokenTracker->nextFlushToken());
+            glyphsPlacedInAtlas++;
+        }
+
+        // Update atlas generation if there are no more glyphs to put in the atlas.
+        if (success && begin + glyphsPlacedInAtlas == SkTo<int>(glyphVec.size())) {
+            // Need to get the freshest value of the atlas' generation because
+            // updateTextureCoordinates may have changed it.
+            glyphVec.setAtlasGeneration(atlasManager->atlasGeneration(maskFormat));
+        }
+
+        return {success, glyphsPlacedInAtlas};
+    } else {
+        // The atlas hasn't changed, so our texture coordinates are still valid.
+        if (end == SkTo<int>(glyphVec.size())) {
+            // The atlas hasn't changed and the texture coordinates are all still valid. Update
+            // all the plots used to the new use token.
+            atlasManager->setUseTokenBulk(glyphVec.bulkUseUpdater(),
+                                          tokenTracker->nextFlushToken(),
+                                          maskFormat);
+        }
+        return {true, end - begin};
+    }
+}
+
 void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
                              SkPoint drawOrigin,
                              const SkPaint& paint,
                              sk_sp<SkRefCnt> subRunStorage) {
+    SkASSERT(subRun);
+    constexpr int kDefaultPadding = 1;
     const int subRunEnd = subRun->glyphCount();
     for (int subRunCursor = 0; subRunCursor < subRunEnd;) {
         // For the remainder of the run, add any atlas uploads to the Recorder's AtlasManager
-        auto[ok, glyphsRegenerated] = subRun->regenerateAtlas(subRunCursor, subRunEnd, fRecorder);
+        int padding = kDefaultPadding;
+#if !defined(SK_DISABLE_SDF_TEXT)
+        if (subRun->subRunType() == sktext::gpu::SubRunType::kSDFT) {
+            padding = SK_DistanceFieldInset;
+        }
+#endif
+        // FIXME(kjlubick) SDFTSubRun should have padding of SK_DistanceFieldInset
+        auto[ok, glyphsRegenerated] = regenerate_atlas(fRecorder, std::move(subRun->glyphs()),
+                                                       subRunCursor, subRunEnd,
+                                                       subRun->maskFormat(), padding);
         // There was a problem allocating the glyph in the atlas. Bail.
         if (!ok) {
             return;
