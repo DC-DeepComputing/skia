@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac889f49_6e7d0f10",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-14T20:25:00Z",
+      "side": 1,
+      "message": "Weight is commented out below--is this done?",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 71
+      },
+      "revId": "d56b8ff8e0163683ae63015193332bb47657a216",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
