@@ -87,6 +87,24 @@
       "parentUuid": "d6d9e0c5_82776913",
       "revId": "51fa5a7455bf62a602552e31ccce521774203bd9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d24371b_45a1f7ef",
+        "filename": "resources/sksl/shared/SwitchWithFallthroughAndVarDecls.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-14T14:35:25Z",
+      "side": 1,
+      "message": "Well, I guess the good news is that we can untangle it in the front end, and spare our GPU drivers from the pain of this bad code.",
+      "parentUuid": "f932c556_5b669885",
+      "revId": "51fa5a7455bf62a602552e31ccce521774203bd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
