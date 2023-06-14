@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0193c46d_9928953e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-14T14:47:07Z",
+      "side": 1,
+      "message": "First of three steps to fix the linked chromium bug (handling interpolated color space with the texture colorizer).",
+      "revId": "962b598079831045ae0a11c0f5f1091bf9ef6e79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
