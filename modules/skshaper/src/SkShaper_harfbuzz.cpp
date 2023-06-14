@@ -37,6 +37,7 @@
 #include <cstring>
 #include <locale>
 #include <memory>
+#include <optional>
 #include <type_traits>
 #include <utility>
 
@@ -769,7 +770,8 @@ private:
               RunHandler*) const override;
 };
 
-static std::unique_ptr<SkShaper> MakeHarfBuzz(sk_sp<SkFontMgr> fontmgr, bool correct) {
+static std::unique_ptr<SkShaper> MakeHarfBuzz(sk_sp<SkFontMgr> fontmgr, const char* locale,
+                                              bool correct) {
     HBBuffer buffer(hb_buffer_create());
     if (!buffer) {
         SkDEBUGF("Could not create hb_buffer");
@@ -781,12 +783,17 @@ static std::unique_ptr<SkShaper> MakeHarfBuzz(sk_sp<SkFontMgr> fontmgr, bool cor
         return nullptr;
     }
 
-    const auto lname = std::locale().name();
-    auto lineIter = unicode->makeBreakIterator(lname.c_str(), SkUnicode::BreakType::kLines);
+    std::optional<std::string> default_locale;
+    if (!locale) {
+        default_locale.emplace(std::locale().name());
+        locale = default_locale->c_str();
+    }
+
+    auto lineIter = unicode->makeBreakIterator(locale, SkUnicode::BreakType::kLines);
     if (!lineIter) {
         return nullptr;
     }
-    auto graphIter = unicode->makeBreakIterator(lname.c_str(), SkUnicode::BreakType::kGraphemes);
+    auto graphIter = unicode->makeBreakIterator(locale, SkUnicode::BreakType::kGraphemes);
     if (!graphIter) {
         return nullptr;
     }
@@ -1522,11 +1529,13 @@ std::unique_ptr<SkShaper::ScriptRunIterator> SkShaper::MakeSkUnicodeHbScriptRunI
             utf8, utf8Bytes, hb_script_from_iso15924_tag((hb_tag_t)script));
 }
 
-std::unique_ptr<SkShaper> SkShaper::MakeShaperDrivenWrapper(sk_sp<SkFontMgr> fontmgr) {
-    return MakeHarfBuzz(std::move(fontmgr), true);
+std::unique_ptr<SkShaper> SkShaper::MakeShaperDrivenWrapper(sk_sp<SkFontMgr> fontmgr,
+                                                            const char* locale) {
+    return MakeHarfBuzz(std::move(fontmgr), locale, true);
 }
-std::unique_ptr<SkShaper> SkShaper::MakeShapeThenWrap(sk_sp<SkFontMgr> fontmgr) {
-    return MakeHarfBuzz(std::move(fontmgr), false);
+std::unique_ptr<SkShaper> SkShaper::MakeShapeThenWrap(sk_sp<SkFontMgr> fontmgr,
+                                                      const char* locale) {
+    return MakeHarfBuzz(std::move(fontmgr), locale, false);
 }
 std::unique_ptr<SkShaper> SkShaper::MakeShapeDontWrapOrReorder(std::unique_ptr<SkUnicode> unicode,
                                                                sk_sp<SkFontMgr> fontmgr) {
