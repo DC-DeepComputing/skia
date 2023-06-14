@@ -404,6 +404,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/gpu/tessellate:tessellate_srcs",
 				"//src/text/gpu:gpu_hdrs",
 				"//src/text/gpu:gpu_srcs",
+				"//src/text:slug_srcs",
+				"//src/text:slug_hdrs",
 			}},
 		{Var: "skia_shared_dawn_sources",
 			Rules: []string{
