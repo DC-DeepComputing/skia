@@ -154,7 +154,6 @@ public:
     void bindTextures(DrawPassCommands::List* commandList) {
         SkASSERT(fLastIndex < TextureBindingCache::kInvalidIndex);
         const TextureBinding& binding = fBindingCache.lookup(fLastIndex);
-
         auto [texIndices, samplerIndices] =
                 commandList->bindDeferredTexturesAndSamplers(binding.numTextures());
 
@@ -699,6 +698,7 @@ void DrawPass::addResourceRefs(CommandBuffer* commandBuffer) const {
         commandBuffer->trackResource(fSampledTextures[i]->refTexture());
     }
     for (int i = 0; i < fSamplers.size(); ++i) {
+        // Suspicious here ....
         commandBuffer->trackResource(fSamplers[i]);
     }
 }
