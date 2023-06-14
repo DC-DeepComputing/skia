@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb0303b5_81b735ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20044
+      },
+      "writtenOn": "2023-06-14T15:39:34Z",
+      "side": 1,
+      "message": "Thank you for the +1\nCould you submit the patch if you think it\u0027s ready? I don\u0027t seem to have the rights for it (\"Could not perform action: submit not permitted\")\nFingers crossed that nothing will break this time!",
+      "revId": "454aac0a1524054026a0e6c9c4c9dede2f1eb889",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
