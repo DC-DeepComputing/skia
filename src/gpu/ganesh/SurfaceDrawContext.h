@@ -22,6 +22,7 @@
 #include "src/gpu/ganesh/SurfaceFillContext.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
 #include "src/gpu/ganesh/ops/OpsTask.h"
+#include "src/text/gpu/SubRunContainer.h"
 
 class GrBackendSemaphore;
 class GrClip;
