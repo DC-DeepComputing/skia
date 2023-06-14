@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fc4908b_3579c754",
+        "filename": "src/gpu/ganesh/SurfaceDrawContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-14T20:40:16Z",
+      "side": 1,
+      "message": "Had to back this out for Ganesh because the clip and matrix were not properly captured in the closure when the function was returned.",
+      "parentUuid": "8d726be7_06b46524",
+      "range": {
+        "startLine": 351,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 6
+      },
+      "revId": "7251d7a2ed457f18269d4037fb52890a6e5350f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8378fed6_153bd21b",
