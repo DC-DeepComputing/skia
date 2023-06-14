@@ -33,6 +33,23 @@
       "message": "Could you also add an entry to Canvaskit\u0027s Changelog?",
       "revId": "cd644839c1a095abe5a6fe862e70085f033a921a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d05717c4_a74d26d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-14T19:49:19Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "cd644839c1a095abe5a6fe862e70085f033a921a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
