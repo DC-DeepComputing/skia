@@ -22,6 +22,7 @@
 #include "src/gpu/ganesh/SurfaceFillContext.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
 #include "src/gpu/ganesh/ops/OpsTask.h"
+#include "src/text/gpu/SubRunContainer.h"
 
 class GrBackendSemaphore;
 class GrClip;
@@ -493,7 +494,11 @@ public:
                           const sktext::GlyphRunList& glyphRunList,
                           SkStrikeDeviceInfo strikeDeviceInfo,
                           const SkPaint& paint);
-
+    /**
+     * Returns a delegate function which handles atlas slugs
+     */
+    sktext::gpu::AtlasDrawDelegate atlasDelegate(const GrClip* clip,
+                                                 const SkMatrix& viewMatrix);
     /**
      * Adds the necessary signal and wait semaphores and adds the passed in SkDrawable to the
      * command stream.
