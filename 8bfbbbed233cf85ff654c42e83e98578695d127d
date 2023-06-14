@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e1933cd_b7ea7889",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-14T18:37:43Z",
+      "side": 1,
+      "message": "Note that the big blocks of code for translating the gradients into Skia compatible color stops is mostly from the FreeType COLRv1 code, but it is ever so slightly different. We may want to figure out how to de-duplicate this, but at the moment we believe that it does the right thing.",
+      "revId": "8bfbbbed233cf85ff654c42e83e98578695d127d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

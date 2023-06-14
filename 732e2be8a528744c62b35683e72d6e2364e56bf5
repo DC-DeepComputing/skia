@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "faf31c68_33b34143",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-14T18:37:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cdaf3b84_18e7d30d",
+      "revId": "732e2be8a528744c62b35683e72d6e2364e56bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b84bdc4_449b1732",
@@ -65,6 +83,30 @@
       "writtenOn": "2023-06-14T07:42:15Z",
       "side": 1,
       "message": "TODO(bungeman): or TODO(crbug...)?",
+      "range": {
+        "startLine": 1234,
+        "startChar": 7,
+        "endLine": 1234,
+        "endChar": 12
+      },
+      "revId": "732e2be8a528744c62b35683e72d6e2364e56bf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "356fee63_731db813",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1234,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-14T18:37:43Z",
+      "side": 1,
+      "message": "Will looks into this later, there are like three or four of these comments now. This TODO is really a marker that this is part of a larger issue to plumb the color space down here.",
+      "parentUuid": "6b84bdc4_449b1732",
       "range": {
         "startLine": 1234,
         "startChar": 7,
