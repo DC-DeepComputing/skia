@@ -97,6 +97,10 @@ SkSpan<const Glyph*> GlyphVector::glyphs() const {
     return SkSpan(reinterpret_cast<const Glyph**>(fGlyphs.data()), fGlyphs.size());
 }
 
+SkSpan<Glyph*> GlyphVector::glyphsMutable() const {
+    return SkSpan(reinterpret_cast<Glyph**>(fGlyphs.data()), fGlyphs.size());
+}
+
 // packedGlyphIDToGlyph must be run in single-threaded mode.
 // If fSkStrike is not sk_sp<SkStrike> then the conversion to Glyph* has not happened.
 void GlyphVector::packedGlyphIDToGlyph(StrikeCache* cache) {

@@ -34,6 +34,9 @@ struct SkStrikeDeviceInfo;
 namespace sktext {
 class GlyphRunList;
 class StrikeForGPUCacheInterface;
+namespace gpu {
+class GlyphVector;
+}
 }
 
 namespace skgpu {
@@ -68,6 +71,18 @@ class RendererProvider;
 namespace sktext::gpu {
 class StrikeCache;
 
+enum SubRunType : int {
+    kBad = 0,  // Make this 0 to line up with errors from readInt.
+    kDirectMask,
+#if !defined(SK_DISABLE_SDF_TEXT)
+    kSDFT,
+#endif
+    kTransformMask,
+    kPath,
+    kDrawable,
+    kSubRunTypeCount,
+};
+
 // -- AtlasSubRun --------------------------------------------------------------------------------
 // AtlasSubRun is the API that AtlasTextOp uses to generate vertex data for drawing.
 //     There are three different ways AtlasSubRun is specialized.
@@ -88,6 +103,7 @@ public:
 
     virtual int glyphCount() const = 0;
     virtual skgpu::MaskFormat maskFormat() const = 0;
+    virtual GlyphVector& glyphs() const = 0;
 
 #if defined(SK_GANESH)
     virtual size_t vertexStride(const SkMatrix& drawMatrix) const = 0;
@@ -114,9 +130,6 @@ public:
 #endif
 
 #if defined(SK_GRAPHITE)
-    virtual std::tuple<bool, int> regenerateAtlas(
-            int begin, int end, skgpu::graphite::Recorder*) const = 0;
-
     // returns bounds of the stored data and matrix to transform it to device space
     virtual std::tuple<skgpu::graphite::Rect, skgpu::graphite::Transform> boundsAndDeviceMatrix(
             const skgpu::graphite::Transform& localToDevice, SkPoint drawOrigin) const = 0;
@@ -132,6 +145,7 @@ public:
 #endif
 
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;
+    virtual SubRunType subRunType() const = 0;
 };
 
 using AtlasDrawDelegate = std::function<void(const sktext::gpu::AtlasSubRun* subRun,
@@ -168,9 +182,8 @@ public:
     // * Don't use this API. It is only to support testing.
     virtual const AtlasSubRun* testingOnly_atlasSubRun() const = 0;
 
-protected:
-    enum SubRunType : int;
     virtual SubRunType subRunType() const = 0;
+protected:
     virtual void doFlatten(SkWriteBuffer& buffer) const = 0;
 
 private:
