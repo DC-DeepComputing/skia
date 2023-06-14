@@ -16,6 +16,29 @@
       "message": "First of three steps to fix the linked chromium bug (handling interpolated color space with the texture colorizer).",
       "revId": "962b598079831045ae0a11c0f5f1091bf9ef6e79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56567a49_33d49c98",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-14T19:13:16Z",
+      "side": 1,
+      "message": "nit: not quite in line with the other `-\u003e`",
+      "range": {
+        "startLine": 475,
+        "startChar": 12,
+        "endLine": 475,
+        "endChar": 23
+      },
+      "revId": "962b598079831045ae0a11c0f5f1091bf9ef6e79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
