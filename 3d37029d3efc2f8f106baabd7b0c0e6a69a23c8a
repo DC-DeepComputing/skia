@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1e6af54_35412b63",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-15T15:18:44Z",
+      "side": 1,
+      "message": "Changed to using `TArray` so the reserve count can be determined at runtime, then simply use `push_back_n` to add `numBuffers` uniform descriptors.",
+      "parentUuid": "c26678ea_fcebd6c1",
+      "range": {
+        "startLine": 541,
+        "startChar": 4,
+        "endLine": 541,
+        "endChar": 15
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b5183f0_5c0fdba8",
@@ -72,6 +96,30 @@
       "writtenOn": "2023-06-01T15:48:32Z",
       "side": 1,
       "message": "STArray?",
+      "range": {
+        "startLine": 566,
+        "startChar": 8,
+        "endLine": 566,
+        "endChar": 19
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bdcf012_892ce7bf",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-15T15:18:44Z",
+      "side": 1,
+      "message": "Changed to `TArray` so the reserve count can be set depending upon the `numBuffers` at runtime",
+      "parentUuid": "8b5183f0_5c0fdba8",
       "range": {
         "startLine": 566,
         "startChar": 8,
@@ -105,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95539d50_328464c1",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-15T15:18:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9233d4a0_61d08399",
+      "range": {
+        "startLine": 577,
+        "startChar": 16,
+        "endLine": 577,
+        "endChar": 46
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d8e0170_3dcb3e6a",
@@ -128,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1866c997_252ed389",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-15T15:18:44Z",
+      "side": 1,
+      "message": "Thanks for catching this, if I had noticed later it would have bugged me endlessly. Replaced all usages. I realized it\u0027s from copy/pasting from DawnCommandBuffer... I\u0027ll have to fix that at some point.",
+      "parentUuid": "9d8e0170_3dcb3e6a",
+      "range": {
+        "startLine": 181,
+        "startChar": 19,
+        "endLine": 181,
+        "endChar": 47
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f296f63_acc31802",
@@ -141,6 +237,30 @@
       "writtenOn": "2023-06-01T15:48:32Z",
       "side": 1,
       "message": "Again, you could do\n    VkDescriptorPoolSize\u0026 poolSize \u003d poolSizes.push_back();\nand then fill in the data using that reference.",
+      "range": {
+        "startLine": 41,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 38
+      },
+      "revId": "3d37029d3efc2f8f106baabd7b0c0e6a69a23c8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3284da71_e33a583c",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-15T15:18:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f296f63_acc31802",
       "range": {
         "startLine": 41,
         "startChar": 8,
