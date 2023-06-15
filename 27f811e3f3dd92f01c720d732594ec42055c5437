@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ed9ddc0_569d2fcb",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-15T18:11:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04e04364_16b7a1c4",
+      "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1773c67f_60df69b5",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c08a71b_43e05c03",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-15T18:11:45Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "1773c67f_60df69b5",
+      "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c74bf6df_8d4edc94",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-06-14T19:33:01Z",
       "side": 1,
       "message": "Ditto.",
+      "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dc51328_26d9c424",
+        "filename": "modules/skottie/src/layers/shapelayer/FillStroke.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-15T18:11:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c74bf6df_8d4edc94",
       "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -75,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a111475d_f1ae8c11",
+        "filename": "modules/sksg/include/SkSGOpacityEffect.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-15T18:11:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14136706_4a507337",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 20
+      },
+      "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1518378_0f4922b5",
@@ -88,6 +166,30 @@
       "writtenOn": "2023-06-14T19:33:01Z",
       "side": 1,
       "message": "nit: `namespace skottie::internal {`",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 20
+      },
+      "revId": "27f811e3f3dd92f01c720d732594ec42055c5437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6a7d74e_f84c4529",
+        "filename": "modules/sksg/include/SkSGPaint.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-15T18:11:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1518378_0f4922b5",
       "range": {
         "startLine": 16,
         "startChar": 0,
