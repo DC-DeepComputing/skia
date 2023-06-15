@@ -27,9 +27,7 @@ class SkWriteBuffer;
 #if defined(SK_GANESH)
 class GrMeshDrawTarget;
 #endif
-#if defined(SK_GRAPHITE)
 namespace skgpu::graphite { class Recorder; }
-#endif
 
 namespace sktext::gpu {
 class Glyph;
@@ -77,13 +75,13 @@ public:
             GrMeshDrawTarget*);
 #endif
 
-#if defined(SK_GRAPHITE)
+    // This function is implemented in graphite/text/AtlasManager.cpp, so calling it will
+    // result in linktime issues for non-Graphite builds.
     std::tuple<bool, int> regenerateAtlas(
             int begin, int end,
             skgpu::MaskFormat maskFormat,
             int srcPadding,
             skgpu::graphite::Recorder*);
-#endif
 
     static size_t GlyphVectorSize(size_t count) {
         return sizeof(Variant) * count;

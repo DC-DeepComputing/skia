@@ -55,6 +55,7 @@
 #include "src/core/SkVerticesPriv.h"
 #include "src/shaders/SkImageShader.h"
 #include "src/text/GlyphRun.h"
+#include "src/text/gpu/GlyphVector.h"
 #include "src/text/gpu/SlugImpl.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
@@ -839,14 +840,16 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
                                                         this->atlasDelegate());
 }
 
-void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
+void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* sr,
                              SkPoint drawOrigin,
                              const SkPaint& paint,
                              sk_sp<SkRefCnt> subRunStorage) {
+    auto subRun = const_cast<sktext::gpu::AtlasSubRun*>(sr);
     const int subRunEnd = subRun->glyphCount();
     for (int subRunCursor = 0; subRunCursor < subRunEnd;) {
         // For the remainder of the run, add any atlas uploads to the Recorder's AtlasManager
-        auto[ok, glyphsRegenerated] = subRun->regenerateAtlas(subRunCursor, subRunEnd, fRecorder);
+        auto[ok, glyphsRegenerated] = subRun->glyphVector().regenerateAtlas(subRunCursor,
+            subRunEnd, subRun->maskFormat(), subRun->glyphPadding(), fRecorder);
         // There was a problem allocating the glyph in the atlas. Bail.
         if (!ok) {
             return;

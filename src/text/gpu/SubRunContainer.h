@@ -57,15 +57,18 @@ class SurfaceDrawContext;
 #include "src/gpu/graphite/geom/Transform_graphite.h"
 
 namespace skgpu::graphite {
-class Device;
 class DrawWriter;
 class Recorder;
 class Renderer;
 class RendererProvider;
 }
 #endif
+namespace skgpu::graphite {
+class Device;
+}
 
 namespace sktext::gpu {
+class GlyphVector;
 class StrikeCache;
 
 // -- AtlasSubRun --------------------------------------------------------------------------------
@@ -88,6 +91,7 @@ public:
 
     virtual int glyphCount() const = 0;
     virtual skgpu::MaskFormat maskFormat() const = 0;
+    virtual int glyphPadding() const = 0;
 
 #if defined(SK_GANESH)
     virtual size_t vertexStride(const SkMatrix& drawMatrix) const = 0;
@@ -114,9 +118,6 @@ public:
 #endif
 
 #if defined(SK_GRAPHITE)
-    virtual std::tuple<bool, int> regenerateAtlas(
-            int begin, int end, skgpu::graphite::Recorder*) const = 0;
-
     // returns bounds of the stored data and matrix to transform it to device space
     virtual std::tuple<skgpu::graphite::Rect, skgpu::graphite::Transform> boundsAndDeviceMatrix(
             const skgpu::graphite::Transform& localToDevice, SkPoint drawOrigin) const = 0;
@@ -132,6 +133,11 @@ public:
 #endif
 
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;
+
+private:
+    friend class ::skgpu::graphite::Device;
+
+    virtual GlyphVector& glyphVector() = 0;
 };
 
 using AtlasDrawDelegate = std::function<void(const sktext::gpu::AtlasSubRun* subRun,
