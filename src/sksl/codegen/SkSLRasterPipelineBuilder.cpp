@@ -1748,6 +1748,13 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 pipeline->push_back({ProgramOp::store_device_xy01, SlotA()});
                 break;
 
+            case BuilderOp::store_immutable_value: {
+                float* dst = SlotA();
+                for (int index = 0; index < N; ++index) {
+                    dst[index] = sk_bit_cast<float>(inst.fImmA);
+                }
+                break;
+            }
             case BuilderOp::load_src:
                 pipeline->push_back({ProgramOp::load_src, SlotA()});
                 break;
@@ -2309,321 +2316,336 @@ void Program::dump(SkWStream* out) const {
     // same name, which can make a dump hard to read.
     TArray<std::string> slotName = build_unique_slot_name_list(fDebugTrace);
 
+    // Here are some common helper functions for assembling a human-readable dump.
+    // - Interpret the context value as a branch offset.
+    auto BranchOffset = [&](const SkRasterPipeline_BranchCtx* ctx, int index) -> std::string {
+        // The context's offset field contains a label ID
+        int labelID = ctx->offset;
+        SkASSERT(labelToStageMap.find(labelID));
+        int labelIndex = labelToStageMap[labelID];
+        return SkSL::String::printf("%+d (label %d at #%d)",
+                                    labelIndex - index, labelID, labelIndex + 1);
+    };
+
+    // - Prints a 32-bit immediate value of unknown type (int/float).
+    auto Imm = [&](float immFloat, bool showAsFloat = true) -> std::string {
+        // Special case exact zero as "0" for readability (vs `0x00000000 (0.0)`).
+        if (sk_bit_cast<int32_t>(immFloat) == 0) {
+            return "0";
+        }
+        // Start with `0x3F800000` as a baseline.
+        uint32_t immUnsigned;
+        memcpy(&immUnsigned, &immFloat, sizeof(uint32_t));
+        auto text = SkSL::String::printf("0x%08X", immUnsigned);
+
+        // Extend it to `0x3F800000 (1.0)` for finite floating point values.
+        if (showAsFloat && std::isfinite(immFloat)) {
+            text += " (";
+            text += skstd::to_string(immFloat);
+            text += ")";
+        }
+        return text;
+    };
+
+    // - Interprets the context pointer as a 32-bit immediate value of unknown type (int/float).
+    auto ImmCtx = [&](const void* ctx, bool showAsFloat = true) -> std::string {
+        float f;
+        memcpy(&f, &ctx, sizeof(float));
+        return Imm(f, showAsFloat);
+    };
+
+    // - Prints `1` for single slots and `1..3` for ranges of slots.
+    auto AsRange = [](int first, int count) -> std::string {
+        std::string text = std::to_string(first);
+        if (count > 1) {
+            text += ".." + std::to_string(first + count - 1);
+        }
+        return text;
+    };
+
+    // - Generates a reasonable name for a range of slots, e.g.:
+    // `val`: slot range points at one variable, named val
+    // `val(0..1)`: slot range points at the first and second slot of val (which has 3+ slots)
+    // `foo, bar`: slot range fully covers two variables, named foo and bar
+    // `foo(3), bar(0)`: slot range covers the fourth slot of foo and the first slot of bar
+    auto SlotName = [&](SkSpan<const SlotDebugInfo> debugInfo,
+                        SkSpan<const std::string> names,
+                        SlotRange range) -> std::string {
+        SkASSERT(range.index >= 0 && (range.index + range.count) <= (int)debugInfo.size());
+
+        std::string text;
+        auto separator = SkSL::String::Separator();
+        while (range.count > 0) {
+            const SlotDebugInfo& slotInfo = debugInfo[range.index];
+            text += separator();
+            text += names.empty() ? slotInfo.name : names[range.index];
+
+            // Figure out how many slots we can chomp in this iteration.
+            int entireVariable = slotInfo.columns * slotInfo.rows;
+            int slotsToChomp = std::min(range.count, entireVariable - slotInfo.componentIndex);
+            // If we aren't consuming an entire variable, from first slot to last...
+            if (slotsToChomp != entireVariable) {
+                // ... decorate it with a range suffix.
+                text += "(" + AsRange(slotInfo.componentIndex, slotsToChomp) + ")";
+            }
+            range.index += slotsToChomp;
+            range.count -= slotsToChomp;
+        }
+
+        return text;
+    };
+
+    // - Attempts to interpret the passed-in pointer as a uniform range.
+    auto UniformPtrCtx = [&](const float* ptr, int numSlots) -> std::string {
+        const float* end = ptr + numSlots;
+        if (ptr >= uniforms.begin() && end <= uniforms.end()) {
+            int uniformIdx = ptr - uniforms.begin();
+            if (fDebugTrace) {
+                // Handle pointers to named uniform slots.
+                std::string name = SlotName(fDebugTrace->fUniformInfo, /*names=*/{},
+                                            {uniformIdx, numSlots});
+                if (!name.empty()) {
+                    return name;
+                }
+            }
+            // Handle pointers to uniforms (when no debug info exists).
+            return "u" + AsRange(uniformIdx, numSlots);
+        }
+        return {};
+    };
+
+    // - Attempts to interpret the passed-in pointer as a value slot range.
+    auto ValuePtrCtx = [&](const float* ptr, int numSlots) -> std::string {
+        const float* end = ptr + (N * numSlots);
+        if (ptr >= slots.values.begin() && end <= slots.values.end()) {
+            int valueIdx = ptr - slots.values.begin();
+            SkASSERT((valueIdx % N) == 0);
+            valueIdx /= N;
+            if (fDebugTrace) {
+                // Handle pointers to named value slots.
+                std::string name = SlotName(fDebugTrace->fSlotInfo, slotName,
+                                            {valueIdx, numSlots});
+                if (!name.empty()) {
+                    return name;
+                }
+            }
+            // Handle pointers to value slots (when no debug info exists).
+            return "v" + AsRange(valueIdx, numSlots);
+        }
+        return {};
+    };
+
+    // - Interprets the context value as a pointer to `count` immediate values.
+    auto MultiImmCtx = [&](const float* ptr, int count) -> std::string {
+        // If this is a uniform, print it by name.
+        if (std::string text = UniformPtrCtx(ptr, count); !text.empty()) {
+            return text;
+        }
+        // Emit a single unbracketed immediate.
+        if (count == 1) {
+            return Imm(*ptr);
+        }
+        // Emit a list like `[0x00000000 (0.0), 0x3F80000 (1.0)]`.
+        std::string text = "[";
+        auto separator = SkSL::String::Separator();
+        while (count--) {
+            text += separator();
+            text += Imm(*ptr++);
+        }
+        return text + "]";
+    };
+
+    // - Interprets the context value as a generic pointer.
+    auto PtrCtx = [&](const void* ctx, int numSlots) -> std::string {
+        const float *ctxAsSlot = static_cast<const float*>(ctx);
+        // Check for uniform and value pointers.
+        if (std::string uniform = UniformPtrCtx(ctxAsSlot, numSlots); !uniform.empty()) {
+            return uniform;
+        }
+        if (std::string value = ValuePtrCtx(ctxAsSlot, numSlots); !value.empty()) {
+            return value;
+        }
+        // Handle pointers to temporary stack slots.
+        if (ctxAsSlot >= slots.stack.begin() && ctxAsSlot < slots.stack.end()) {
+            int stackIdx = ctxAsSlot - slots.stack.begin();
+            SkASSERT((stackIdx % N) == 0);
+            return "$" + AsRange(stackIdx / N, numSlots);
+        }
+        // This pointer is out of our expected bounds; this generally isn't expected to happen.
+        return "ExternalPtr(" + AsRange(0, numSlots) + ")";
+    };
+
+    // - Converts an RP offset to a pointer.
+    auto OffsetToPtr = [&](SkRPOffset offset) -> std::byte* {
+        return (std::byte*)slots.values.data() + offset;
+    };
+
+    // - Interprets a slab offset as a slot range.
+    auto OffsetCtx = [&](SkRPOffset offset, int numSlots) -> std::string {
+        return PtrCtx(OffsetToPtr(offset), numSlots);
+    };
+
+    // - Interprets the context value as a pointer to two adjacent values.
+    auto AdjacentPtrCtx = [&](const void* ctx,
+                              int numSlots) -> std::tuple<std::string, std::string> {
+        const float *ctxAsSlot = static_cast<const float*>(ctx);
+        return std::make_tuple(PtrCtx(ctxAsSlot, numSlots),
+                               PtrCtx(ctxAsSlot + (N * numSlots), numSlots));
+    };
+
+    // - Interprets a slab offset as two adjacent slot ranges.
+    auto AdjacentOffsetCtx = [&](SkRPOffset offset,
+                                 int numSlots) -> std::tuple<std::string, std::string> {
+        return AdjacentPtrCtx((std::byte*)slots.values.data() + offset, numSlots);
+    };
+
+    // - Interprets the context value as a pointer to three adjacent values.
+    auto Adjacent3PtrCtx = [&](const void* ctx, int numSlots) ->
+                              std::tuple<std::string, std::string, std::string> {
+        const float *ctxAsSlot = static_cast<const float*>(ctx);
+        return std::make_tuple(PtrCtx(ctxAsSlot, numSlots),
+                               PtrCtx(ctxAsSlot + (N * numSlots), numSlots),
+                               PtrCtx(ctxAsSlot + (2 * N * numSlots), numSlots));
+    };
+
+    // - Interprets a slab offset as three adjacent slot ranges.
+    auto Adjacent3OffsetCtx = [&](SkRPOffset offset, int numSlots) ->
+                                 std::tuple<std::string, std::string, std::string> {
+        return Adjacent3PtrCtx((std::byte*)slots.values.data() + offset, numSlots);
+    };
+
+    // - Interprets the context value as a BinaryOp structure for copy_n_slots (numSlots is
+    // dictated by the op itself).
+    auto BinaryOpCtx = [&](const void* v,
+                           int numSlots) -> std::tuple<std::string, std::string> {
+        auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipeline_BinaryOpCtx*)v);
+        return std::make_tuple(OffsetCtx(ctx.dst, numSlots),
+                               OffsetCtx(ctx.src, numSlots));
+    };
+
+    // - Interprets the context value as a BinaryOp structure for copy_n_uniforms (numSlots is
+    // dictated by the op itself).
+    auto CopyUniformCtx = [&](const void* v,
+                              int numSlots) -> std::tuple<std::string, std::string> {
+        const auto *ctx = static_cast<const SkRasterPipeline_UniformCtx*>(v);
+        return std::make_tuple(PtrCtx(ctx->dst, numSlots),
+                               MultiImmCtx(ctx->src, numSlots));
+    };
+
+    // - Interprets the context value as a BinaryOp structure (numSlots is inferred from the
+    // distance between pointers).
+    auto AdjacentBinaryOpCtx = [&](const void* v) -> std::tuple<std::string, std::string> {
+        auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipeline_BinaryOpCtx*)v);
+        int numSlots = (ctx.src - ctx.dst) / (N * sizeof(float));
+        return AdjacentOffsetCtx(ctx.dst, numSlots);
+    };
+
+    // - Interprets the context value as a TernaryOp structure (numSlots is inferred from `delta`).
+    auto AdjacentTernaryOpCtx = [&](const void* v) ->
+                                   std::tuple<std::string, std::string, std::string> {
+        auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipeline_TernaryOpCtx*)v);
+        int numSlots = ctx.delta / (sizeof(float) * N);
+        return Adjacent3OffsetCtx(ctx.dst, numSlots);
+    };
+
+    // - Stringizes a span of swizzle offsets to the textual equivalent (`xyzw`).
+    auto SwizzleOffsetSpan = [&](const auto offsets) {
+        std::string src;
+        for (uint16_t offset : offsets) {
+            if (offset == (0 * N * sizeof(float))) {
+                src.push_back('x');
+            } else if (offset == (1 * N * sizeof(float))) {
+                src.push_back('y');
+            } else if (offset == (2 * N * sizeof(float))) {
+                src.push_back('z');
+            } else if (offset == (3 * N * sizeof(float))) {
+                src.push_back('w');
+            } else {
+                src.push_back('?');
+            }
+        }
+        return src;
+    };
+
+    // - Determines the effective width of a swizzle op. When we decode a swizzle, we don't know
+    // the slot width of the original value; that's not preserved in the instruction encoding.
+    // (e.g., myFloat4.y would be indistinguishable from myFloat2.y.) We do our best to make a
+    // readable dump using the data we have.
+    auto SwizzleWidth = [&](const auto offsets) {
+        size_t highestComponent = *std::max_element(offsets.begin(), offsets.end()) /
+                                  (N * sizeof(float));
+        size_t swizzleWidth = offsets.size();
+        return std::max(swizzleWidth, highestComponent + 1);
+    };
+
+    // - Stringizes a swizzled pointer.
+    auto SwizzlePtr = [&](const void* ptr, const auto offsets) {
+        return "(" + PtrCtx(ptr, SwizzleWidth(SkSpan(offsets))) + ")." +
+               SwizzleOffsetSpan(SkSpan(offsets));
+    };
+
+    // - Interprets the context value as a Swizzle structure.
+    auto SwizzleCtx = [&](ProgramOp op, const void* v) -> std::tuple<std::string, std::string> {
+        auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipeline_SwizzleCtx*)v);
+        int destSlots = (int)op - (int)BuilderOp::swizzle_1 + 1;
+        return std::make_tuple(
+                OffsetCtx(ctx.dst, destSlots),
+                SwizzlePtr(OffsetToPtr(ctx.dst), SkSpan(ctx.offsets, destSlots)));
+    };
+
+    // - Interprets the context value as a SwizzleCopy structure.
+    auto SwizzleCopyCtx = [&](ProgramOp op,
+                              const void* v) -> std::tuple<std::string, std::string> {
+        const auto* ctx = static_cast<const SkRasterPipeline_SwizzleCopyCtx*>(v);
+        int destSlots = (int)op - (int)BuilderOp::swizzle_copy_slot_masked + 1;
+
+        return std::make_tuple(SwizzlePtr(ctx->dst, SkSpan(ctx->offsets, destSlots)),
+                               PtrCtx(ctx->src, destSlots));
+    };
+
+    // - Interprets the context value as a Shuffle structure.
+    auto ShuffleCtx = [&](const void* v) -> std::tuple<std::string, std::string> {
+        const auto* ctx = static_cast<const SkRasterPipeline_ShuffleCtx*>(v);
+
+        std::string dst = PtrCtx(ctx->ptr, ctx->count);
+        std::string src = "(" + dst + ")[";
+        for (int index = 0; index < ctx->count; ++index) {
+            if (ctx->offsets[index] % (N * sizeof(float))) {
+                src.push_back('?');
+            } else {
+                src += std::to_string(ctx->offsets[index] / (N * sizeof(float)));
+            }
+            src.push_back(' ');
+        }
+        src.back() = ']';
+        return std::make_tuple(dst, src);
+    };
+
+    // - Interprets the context value as a packed ConstantCtx structure.
+    auto ConstantCtx = [&](const void* v,
+                           int slots,
+                           bool showAsFloat = true) -> std::tuple<std::string, std::string> {
+        auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipeline_ConstantCtx*)v);
+        return std::make_tuple(OffsetCtx(ctx.dst, slots),
+                               Imm(ctx.value, showAsFloat));
+    };
+
+    // Emit all of the program's immutable data.
+    const char* spacer = "";
+    for (const Instruction& inst : fInstructions) {
+        if (inst.fOp == BuilderOp::store_immutable_value) {
+            out->writeText(SlotName(fDebugTrace->fSlotInfo, slotName, {inst.fSlotA, 1}).c_str());
+            out->writeText(" = Immutable ");
+            out->writeText(Imm(sk_bit_cast<float>(inst.fImmA)).c_str());
+            out->writeText("\n");
+            spacer = "\n";
+        }
+    }
+    out->writeText(spacer);
+
     // Emit the program's instruction list.
     for (int index = 0; index < stages.size(); ++index) {
         const Stage& stage = stages[index];
-
-        // Interpret the context value as a branch offset.
-        auto BranchOffset = [&](const SkRasterPipeline_BranchCtx* ctx) -> std::string {
-            // The context's offset field contains a label ID
-            int labelID = ctx->offset;
-            SkASSERT(labelToStageMap.find(labelID));
-            int labelIndex = labelToStageMap[labelID];
-            return SkSL::String::printf("%+d (label %d at #%d)",
-                                        labelIndex - index, labelID, labelIndex + 1);
-        };
-
-        // Print a 32-bit immediate value of unknown type (int/float).
-        auto Imm = [&](float immFloat, bool showAsFloat = true) -> std::string {
-            // Special case exact zero as "0" for readability (vs `0x00000000 (0.0)`).
-            if (sk_bit_cast<int32_t>(immFloat) == 0) {
-                return "0";
-            }
-            // Start with `0x3F800000` as a baseline.
-            uint32_t immUnsigned;
-            memcpy(&immUnsigned, &immFloat, sizeof(uint32_t));
-            auto text = SkSL::String::printf("0x%08X", immUnsigned);
-
-            // Extend it to `0x3F800000 (1.0)` for finite floating point values.
-            if (showAsFloat && std::isfinite(immFloat)) {
-                text += " (";
-                text += skstd::to_string(immFloat);
-                text += ")";
-            }
-            return text;
-        };
-
-        // Interpret the context pointer as a 32-bit immediate value of unknown type (int/float).
-        auto ImmCtx = [&](const void* ctx, bool showAsFloat = true) -> std::string {
-            float f;
-            memcpy(&f, &ctx, sizeof(float));
-            return Imm(f, showAsFloat);
-        };
-
-        // Print `1` for single slots and `1..3` for ranges of slots.
-        auto AsRange = [](int first, int count) -> std::string {
-            std::string text = std::to_string(first);
-            if (count > 1) {
-                text += ".." + std::to_string(first + count - 1);
-            }
-            return text;
-        };
-
-        // Come up with a reasonable name for a range of slots, e.g.:
-        // `val`: slot range points at one variable, named val
-        // `val(0..1)`: slot range points at the first and second slot of val (which has 3+ slots)
-        // `foo, bar`: slot range fully covers two variables, named foo and bar
-        // `foo(3), bar(0)`: slot range covers the fourth slot of foo and the first slot of bar
-        auto SlotName = [&](SkSpan<const SlotDebugInfo> debugInfo,
-                            SkSpan<const std::string> names,
-                            SlotRange range) -> std::string {
-            SkASSERT(range.index >= 0 && (range.index + range.count) <= (int)debugInfo.size());
-
-            std::string text;
-            auto separator = SkSL::String::Separator();
-            while (range.count > 0) {
-                const SlotDebugInfo& slotInfo = debugInfo[range.index];
-                text += separator();
-                text += names.empty() ? slotInfo.name : names[range.index];
-
-                // Figure out how many slots we can chomp in this iteration.
-                int entireVariable = slotInfo.columns * slotInfo.rows;
-                int slotsToChomp = std::min(range.count, entireVariable - slotInfo.componentIndex);
-                // If we aren't consuming an entire variable, from first slot to last...
-                if (slotsToChomp != entireVariable) {
-                    // ... decorate it with a range suffix.
-                    text += "(" + AsRange(slotInfo.componentIndex, slotsToChomp) + ")";
-                }
-                range.index += slotsToChomp;
-                range.count -= slotsToChomp;
-            }
-
-            return text;
-        };
-
-        // Attempts to interpret the passed-in pointer as a uniform range.
-        auto UniformPtrCtx = [&](const float* ptr, int numSlots) -> std::string {
-            const float* end = ptr + numSlots;
-            if (ptr >= uniforms.begin() && end <= uniforms.end()) {
-                int uniformIdx = ptr - uniforms.begin();
-                if (fDebugTrace) {
-                    // Handle pointers to named uniform slots.
-                    std::string name = SlotName(fDebugTrace->fUniformInfo, /*names=*/{},
-                                                {uniformIdx, numSlots});
-                    if (!name.empty()) {
-                        return name;
-                    }
-                }
-                // Handle pointers to uniforms (when no debug info exists).
-                return "u" + AsRange(uniformIdx, numSlots);
-            }
-            return {};
-        };
-
-        // Attempts to interpret the passed-in pointer as a value slot range.
-        auto ValuePtrCtx = [&](const float* ptr, int numSlots) -> std::string {
-            const float* end = ptr + (N * numSlots);
-            if (ptr >= slots.values.begin() && end <= slots.values.end()) {
-                int valueIdx = ptr - slots.values.begin();
-                SkASSERT((valueIdx % N) == 0);
-                valueIdx /= N;
-                if (fDebugTrace) {
-                    // Handle pointers to named value slots.
-                    std::string name = SlotName(fDebugTrace->fSlotInfo, slotName,
-                                                {valueIdx, numSlots});
-                    if (!name.empty()) {
-                        return name;
-                    }
-                }
-                // Handle pointers to value slots (when no debug info exists).
-                return "v" + AsRange(valueIdx, numSlots);
-            }
-            return {};
-        };
-
-        // Interpret the context value as a pointer to `count` immediate values.
-        auto MultiImmCtx = [&](const float* ptr, int count) -> std::string {
-            // If this is a uniform, print it by name.
-            if (std::string text = UniformPtrCtx(ptr, count); !text.empty()) {
-                return text;
-            }
-            // Emit a single unbracketed immediate.
-            if (count == 1) {
-                return Imm(*ptr);
-            }
-            // Emit a list like `[0x00000000 (0.0), 0x3F80000 (1.0)]`.
-            std::string text = "[";
-            auto separator = SkSL::String::Separator();
-            while (count--) {
-                text += separator();
-                text += Imm(*ptr++);
-            }
-            return text + "]";
-        };
-
-        // Interpret the context value as a generic pointer.
-        auto PtrCtx = [&](const void* ctx, int numSlots) -> std::string {
-            const float *ctxAsSlot = static_cast<const float*>(ctx);
-            // Check for uniform and value pointers.
-            if (std::string uniform = UniformPtrCtx(ctxAsSlot, numSlots); !uniform.empty()) {
-                return uniform;
-            }
-            if (std::string value = ValuePtrCtx(ctxAsSlot, numSlots); !value.empty()) {
-                return value;
-            }
-            // Handle pointers to temporary stack slots.
-            if (ctxAsSlot >= slots.stack.begin() && ctxAsSlot < slots.stack.end()) {
-                int stackIdx = ctxAsSlot - slots.stack.begin();
-                SkASSERT((stackIdx % N) == 0);
-                return "$" + AsRange(stackIdx / N, numSlots);
-            }
-            // This pointer is out of our expected bounds; this generally isn't expected to happen.
-            return "ExternalPtr(" + AsRange(0, numSlots) + ")";
-        };
-
-        // Converts an RP offset to a pointer.
-        auto OffsetToPtr = [&](SkRPOffset offset) -> std::byte* {
-            return (std::byte*)slots.values.data() + offset;
-        };
-
-        // Interprets a slab offset as a slot range.
-        auto OffsetCtx = [&](SkRPOffset offset, int numSlots) -> std::string {
-            return PtrCtx(OffsetToPtr(offset), numSlots);
-        };
-
-        // Interpret the context value as a pointer to two adjacent values.
-        auto AdjacentPtrCtx = [&](const void* ctx,
-                                  int numSlots) -> std::tuple<std::string, std::string> {
-            const float *ctxAsSlot = static_cast<const float*>(ctx);
-            return std::make_tuple(PtrCtx(ctxAsSlot, numSlots),
-                                   PtrCtx(ctxAsSlot + (N * numSlots), numSlots));
-        };
-
-        // Interprets a slab offset as two adjacent slot ranges.
-        auto AdjacentOffsetCtx = [&](SkRPOffset offset,
-                                     int numSlots) -> std::tuple<std::string, std::string> {
-            return AdjacentPtrCtx((std::byte*)slots.values.data() + offset, numSlots);
-        };
-
-        // Interpret the context value as a pointer to three adjacent values.
-        auto Adjacent3PtrCtx = [&](const void* ctx, int numSlots) ->
-                                  std::tuple<std::string, std::string, std::string> {
-            const float *ctxAsSlot = static_cast<const float*>(ctx);
-            return std::make_tuple(PtrCtx(ctxAsSlot, numSlots),
-                                   PtrCtx(ctxAsSlot + (N * numSlots), numSlots),
-                                   PtrCtx(ctxAsSlot + (2 * N * numSlots), numSlots));
-        };
-
-        // Interprets a slab offset as three adjacent slot ranges.
-        auto Adjacent3OffsetCtx = [&](SkRPOffset offset, int numSlots) ->
-                                     std::tuple<std::string, std::string, std::string> {
-            return Adjacent3PtrCtx((std::byte*)slots.values.data() + offset, numSlots);
-        };
-
-        // Interpret the context value as a BinaryOp structure for copy_n_slots (numSlots is
-        // dictated by the op itself).
-        auto BinaryOpCtx = [&](const void* v,
-                               int numSlots) -> std::tuple<std::string, std::string> {
-            auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipeline_BinaryOpCtx*)v);
-            return std::make_tuple(OffsetCtx(ctx.dst, numSlots),
-                                   OffsetCtx(ctx.src, numSlots));
-        };
-
-        // Interpret the context value as a BinaryOp structure for copy_n_uniforms (numSlots is
-        // dictated by the op itself).
-        auto CopyUniformCtx = [&](const void* v,
-                                  int numSlots) -> std::tuple<std::string, std::string> {
-            const auto *ctx = static_cast<const SkRasterPipeline_UniformCtx*>(v);
-            return std::make_tuple(PtrCtx(ctx->dst, numSlots),
-                                   MultiImmCtx(ctx->src, numSlots));
-        };
-
-        // Interpret the context value as a BinaryOp structure (numSlots is inferred from the
-        // distance between pointers).
-        auto AdjacentBinaryOpCtx = [&](const void* v) -> std::tuple<std::string, std::string> {
-            auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipeline_BinaryOpCtx*)v);
-            int numSlots = (ctx.src - ctx.dst) / (N * sizeof(float));
-            return AdjacentOffsetCtx(ctx.dst, numSlots);
-        };
-
-        // Interpret the context value as a TernaryOp structure (numSlots is inferred from `delta`).
-        auto AdjacentTernaryOpCtx = [&](const void* v) ->
-                                       std::tuple<std::string, std::string, std::string> {
-            auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipeline_TernaryOpCtx*)v);
-            int numSlots = ctx.delta / (sizeof(float) * N);
-            return Adjacent3OffsetCtx(ctx.dst, numSlots);
-        };
-
-        // Stringize a span of swizzle offsets to the textual equivalent (`xyzw`).
-        auto SwizzleOffsetSpan = [&](const auto offsets) {
-            std::string src;
-            for (uint16_t offset : offsets) {
-                if (offset == (0 * N * sizeof(float))) {
-                    src.push_back('x');
-                } else if (offset == (1 * N * sizeof(float))) {
-                    src.push_back('y');
-                } else if (offset == (2 * N * sizeof(float))) {
-                    src.push_back('z');
-                } else if (offset == (3 * N * sizeof(float))) {
-                    src.push_back('w');
-                } else {
-                    src.push_back('?');
-                }
-            }
-            return src;
-        };
-
-        // When we decode a swizzle, we don't know the slot width of the original value; that's not
-        // preserved in the instruction encoding. (e.g., myFloat4.y would be indistinguishable from
-        // myFloat2.y.) We do our best to make a readable dump using the data we have.
-        auto SwizzleWidth = [&](const auto offsets) {
-            size_t highestComponent = *std::max_element(offsets.begin(), offsets.end()) /
-                                      (N * sizeof(float));
-            size_t swizzleWidth = offsets.size();
-            return std::max(swizzleWidth, highestComponent + 1);
-        };
-
-        // Stringize a swizzled pointer.
-        auto SwizzlePtr = [&](const void* ptr, const auto offsets) {
-            return "(" + PtrCtx(ptr, SwizzleWidth(SkSpan(offsets))) + ")." +
-                   SwizzleOffsetSpan(SkSpan(offsets));
-        };
-
-        // Interpret the context value as a Swizzle structure.
-        auto SwizzleCtx = [&](ProgramOp op, const void* v) -> std::tuple<std::string, std::string> {
-            auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipeline_SwizzleCtx*)v);
-            int destSlots = (int)op - (int)BuilderOp::swizzle_1 + 1;
-            return std::make_tuple(
-                    OffsetCtx(ctx.dst, destSlots),
-                    SwizzlePtr(OffsetToPtr(ctx.dst), SkSpan(ctx.offsets, destSlots)));
-        };
-
-        // Interpret the context value as a SwizzleCopy structure.
-        auto SwizzleCopyCtx = [&](ProgramOp op,
-                                  const void* v) -> std::tuple<std::string, std::string> {
-            const auto* ctx = static_cast<const SkRasterPipeline_SwizzleCopyCtx*>(v);
-            int destSlots = (int)op - (int)BuilderOp::swizzle_copy_slot_masked + 1;
-
-            return std::make_tuple(SwizzlePtr(ctx->dst, SkSpan(ctx->offsets, destSlots)),
-                                   PtrCtx(ctx->src, destSlots));
-        };
-
-        // Interpret the context value as a Shuffle structure.
-        auto ShuffleCtx = [&](const void* v) -> std::tuple<std::string, std::string> {
-            const auto* ctx = static_cast<const SkRasterPipeline_ShuffleCtx*>(v);
-
-            std::string dst = PtrCtx(ctx->ptr, ctx->count);
-            std::string src = "(" + dst + ")[";
-            for (int index = 0; index < ctx->count; ++index) {
-                if (ctx->offsets[index] % (N * sizeof(float))) {
-                    src.push_back('?');
-                } else {
-                    src += std::to_string(ctx->offsets[index] / (N * sizeof(float)));
-                }
-                src.push_back(' ');
-            }
-            src.back() = ']';
-            return std::make_tuple(dst, src);
-        };
-
-        // Interpret the context value as a packed ConstantCtx structure.
-        auto ConstantCtx = [&](const void* v,
-                               int slots,
-                               bool showAsFloat = true) -> std::tuple<std::string, std::string> {
-            auto ctx = SkRPCtxUtils::Unpack((const SkRasterPipeline_ConstantCtx*)v);
-            return std::make_tuple(OffsetCtx(ctx.dst, slots),
-                                   Imm(ctx.value, showAsFloat));
-        };
 
         std::string opArg1, opArg2, opArg3, opSwizzle;
         using POp = ProgramOp;
@@ -2994,12 +3016,12 @@ void Program::dump(SkWStream* out) const {
             case POp::branch_if_all_lanes_active:
             case POp::branch_if_any_lanes_active:
             case POp::branch_if_no_lanes_active:
-                opArg1 = BranchOffset(static_cast<SkRasterPipeline_BranchCtx*>(stage.ctx));
+                opArg1 = BranchOffset(static_cast<SkRasterPipeline_BranchCtx*>(stage.ctx), index);
                 break;
 
             case POp::branch_if_no_active_lanes_eq: {
                 const auto* ctx = static_cast<SkRasterPipeline_BranchIfEqualCtx*>(stage.ctx);
-                opArg1 = BranchOffset(ctx);
+                opArg1 = BranchOffset(ctx, index);
                 opArg2 = PtrCtx(ctx->ptr, 1);
                 opArg3 = Imm(sk_bit_cast<float>(ctx->value));
                 break;
