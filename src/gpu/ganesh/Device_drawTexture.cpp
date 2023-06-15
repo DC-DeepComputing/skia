@@ -110,73 +110,6 @@ bool can_ignore_linear_filtering_subset(const SkRect& srcSubset,
 //////////////////////////////////////////////////////////////////////////////
 //  Helper functions for drawing an image with ganesh::SurfaceDrawContext
 
-enum class ImageDrawMode {
-    // Src and dst have been restricted to the image content. May need to clamp, no need to decal.
-    kOptimized,
-    // Src and dst are their original sizes, requires use of a decal instead of plain clamping.
-    // This is used when a dst clip is provided and extends outside of the optimized dst rect.
-    kDecal,
-    // Src or dst are empty, or do not intersect the image content so don't draw anything.
-    kSkip
-};
-
-/**
- * Optimize the src rect sampling area within an image (sized 'width' x 'height') such that
- * 'outSrcRect' will be completely contained in the image's bounds. The corresponding rect
- * to draw will be output to 'outDstRect'. The mapping between src and dst will be cached in
- * 'srcToDst'. Outputs are not always updated when kSkip is returned.
- *
- * If 'origSrcRect' is null, implicitly use the image bounds. If 'origDstRect' is null, use the
- * original src rect. 'dstClip' should be null when there is no additional clipping.
- */
-ImageDrawMode optimize_sample_area(const SkISize& image, const SkRect* origSrcRect,
-                                   const SkRect* origDstRect, const SkPoint dstClip[4],
-                                   SkRect* outSrcRect, SkRect* outDstRect,
-                                   SkMatrix* srcToDst) {
-    SkRect srcBounds = SkRect::MakeIWH(image.fWidth, image.fHeight);
-
-    SkRect src = origSrcRect ? *origSrcRect : srcBounds;
-    SkRect dst = origDstRect ? *origDstRect : src;
-
-    if (src.isEmpty() || dst.isEmpty()) {
-        return ImageDrawMode::kSkip;
-    }
-
-    if (outDstRect) {
-        *srcToDst = SkMatrix::RectToRect(src, dst);
-    } else {
-        srcToDst->setIdentity();
-    }
-
-    if (origSrcRect && !srcBounds.contains(src)) {
-        if (!src.intersect(srcBounds)) {
-            return ImageDrawMode::kSkip;
-        }
-        srcToDst->mapRect(&dst, src);
-
-        // Both src and dst have gotten smaller. If dstClip is provided, confirm it is still
-        // contained in dst, otherwise cannot optimize the sample area and must use a decal instead
-        if (dstClip) {
-            for (int i = 0; i < 4; ++i) {
-                if (!dst.contains(dstClip[i].fX, dstClip[i].fY)) {
-                    // Must resort to using a decal mode restricted to the clipped 'src', and
-                    // use the original dst rect (filling in src bounds as needed)
-                    *outSrcRect = src;
-                    *outDstRect = (origDstRect ? *origDstRect
-                                               : (origSrcRect ? *origSrcRect : srcBounds));
-                    return ImageDrawMode::kDecal;
-                }
-            }
-        }
-    }
-
-    // The original src and dst were fully contained in the image, or there was no dst clip to
-    // worry about, or the clip was still contained in the restricted dst rect.
-    *outSrcRect = src;
-    *outDstRect = dst;
-    return ImageDrawMode::kOptimized;
-}
-
 /**
  * Checks whether the paint is compatible with using SurfaceDrawContext::drawTexture. It is more
  * efficient than the SkImage general case.
@@ -489,6 +422,7 @@ void Device::drawSpecial(SkSpecialImage* special,
                           SkTileMode::kClamp);
 }
 
+#if 0
 void Device::drawImageQuad(const SkImage* image,
                            const SkRect* srcRect,
                            const SkRect* dstRect,
@@ -595,6 +529,7 @@ void Device::drawImageQuad(const SkImage* image,
                           srcToDst,
                           SkTileMode::kClamp);
 }
+#endif
 
 void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
                                 const SkPoint dstClips[], const SkMatrix preViewMatrices[],
@@ -614,12 +549,24 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
                 auto paintAlpha = paint.getAlphaf();
                 entryPaint.writable()->setAlphaf(paintAlpha * set[i].fAlpha);
             }
-            this->drawImageQuad(
-                    set[i].fImage.get(), &set[i].fSrcRect, &set[i].fDstRect,
-                    set[i].fHasClip ? dstClips + dstClipIndex : nullptr,
-                    static_cast<SkCanvas::QuadAAFlags>(set[i].fAAFlags),
-                    set[i].fMatrixIndex < 0 ? nullptr : preViewMatrices + set[i].fMatrixIndex,
-                    sampling, *entryPaint, constraint);
+            TiledTextureUtils::DrawImageQuad(nullptr,
+                                             set[i].fImage.get(),
+                                             set[i].fSrcRect,
+                                             set[i].fDstRect,
+                                             set[i].fHasClip ? dstClips + dstClipIndex : nullptr,
+                                             static_cast<SkCanvas::QuadAAFlags>(set[i].fAAFlags),
+                                             set[i].fMatrixIndex < 0
+                                                 ? nullptr
+                                                 : preViewMatrices + set[i].fMatrixIndex,
+                                             sampling,
+                                             *entryPaint,
+                                             constraint);
+//            this->drawImageQuad(
+//                    set[i].fImage.get(), &set[i].fSrcRect, &set[i].fDstRect,
+//                    set[i].fHasClip ? dstClips + dstClipIndex : nullptr,
+//                    static_cast<SkCanvas::QuadAAFlags>(set[i].fAAFlags),
+//                    set[i].fMatrixIndex < 0 ? nullptr : preViewMatrices + set[i].fMatrixIndex,
+//                    sampling, *entryPaint, constraint);
             dstClipIndex += 4 * set[i].fHasClip;
         }
         return;
@@ -694,11 +641,23 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
                 auto paintAlpha = paint.getAlphaf();
                 entryPaint.writable()->setAlphaf(paintAlpha * set[i].fAlpha);
             }
-            this->drawImageQuad(
-                    image, &set[i].fSrcRect, &set[i].fDstRect, clip,
-                    static_cast<SkCanvas::QuadAAFlags>(set[i].fAAFlags),
-                    set[i].fMatrixIndex < 0 ? nullptr : preViewMatrices + set[i].fMatrixIndex,
-                    sampling, *entryPaint, constraint);
+            skgpu::TiledTextureUtils::DrawImageQuad(nullptr,
+                                                    image,
+                                                    set[i].fSrcRect,
+                                                    set[i].fDstRect,
+                                                    clip,
+                                                    static_cast<SkCanvas::QuadAAFlags>(set[i].fAAFlags),
+                                                    set[i].fMatrixIndex < 0
+                                                        ? nullptr
+                                                        : preViewMatrices + set[i].fMatrixIndex,
+                                                    sampling,
+                                                    *entryPaint,
+                                                    constraint);
+//            this->drawImageQuad(
+//                    image, &set[i].fSrcRect, &set[i].fDstRect, clip,
+//                    static_cast<SkCanvas::QuadAAFlags>(set[i].fAAFlags),
+//                    set[i].fMatrixIndex < 0 ? nullptr : preViewMatrices + set[i].fMatrixIndex,
+//                    sampling, *entryPaint, constraint);
             continue;
         }
 

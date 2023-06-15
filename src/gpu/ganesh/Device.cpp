@@ -64,6 +64,7 @@
 #include "src/core/SkVerticesPriv.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
+#include "src/gpu/TiledTextureUtils.h"
 #include "src/gpu/ganesh/ClipStack.h"
 #include "src/gpu/ganesh/GrAuditTrail.h"
 #include "src/gpu/ganesh/GrBlurUtils.h"
@@ -952,8 +953,19 @@ void Device::drawImageRect(const SkImage* image,
     GrAA aa = fSurfaceDrawContext->chooseAA(paint);
     SkCanvas::QuadAAFlags aaFlags = (aa == GrAA::kYes) ? SkCanvas::kAll_QuadAAFlags
                                                        : SkCanvas::kNone_QuadAAFlags;
-    this->drawImageQuad(image, src, &dst, /* dstClip= */ nullptr, aaFlags,
-                        /* preViewMatrix= */ nullptr, sampling, paint, constraint);
+    skgpu::TiledTextureUtils::DrawImageQuad(nullptr,
+                                            image,
+                                            src ? *src
+                                                : SkRect::MakeIWH(image->width(), image->height()),
+                                            dst,
+                                            /* dstClip= */ nullptr,
+                                            aaFlags,
+                                            /* preViewMatrix= */ nullptr,
+                                            sampling,
+                                            paint,
+                                            constraint);
+//    this->drawImageQuad(image, src, &dst, /* dstClip= */ nullptr, aaFlags,
+//                        /* preViewMatrix= */ nullptr, sampling, paint, constraint);
 }
 
 void Device::drawViewLattice(GrSurfaceProxyView view,
