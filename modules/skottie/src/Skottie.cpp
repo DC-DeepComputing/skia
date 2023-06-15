@@ -94,6 +94,7 @@ public:
     }
 
 private:
+    friend class skottie::internal::AnimationBuilder;
     void onSync() override {
         this->node()->setOpacity(fOpacity * 0.01f);
     }
@@ -114,7 +115,7 @@ sk_sp<sksg::RenderNode> AnimationBuilder::attachOpacity(const skjson::ObjectValu
     if (adapter->isStatic()) {
         adapter->seek(0);
     }
-    const auto dispatched = this->dispatchOpacityProperty(adapter->node(), jobject["o"]);
+    auto dispatched = this->dispatchOpacityProperty(adapter->node(), jobject["o"], adapter);
     if (adapter->isStatic()) {
         if (!dispatched && adapter->node()->getOpacity() >= 1) {
             // No obeservable effects - we can discard.
@@ -217,13 +218,15 @@ bool AnimationBuilder::dispatchColorProperty(const sk_sp<sksg::Color>& c,
                                              const skjson::ObjectValue* jcolor) const {
     bool dispatched = false;
 
+    if (jcolor) {
+        if (const skjson::StringValue* slotID = (*jcolor)["sid"]) {
+            fSlotManager->trackColorValue(SkString(slotID->begin()), &(c->fColor), c);
+            dispatched = true;
+        }
+    }
+
     if (fPropertyObserver) {
         const char * node_name = fPropertyObserverContext;
-        if (jcolor) {
-            if (const skjson::StringValue* slotID = (*jcolor)["sid"]) {
-                node_name = slotID->begin();
-            }
-        }
         fPropertyObserver->onColorProperty(node_name,
             [&]() {
                 dispatched = true;
@@ -235,17 +238,20 @@ bool AnimationBuilder::dispatchColorProperty(const sk_sp<sksg::Color>& c,
 }
 
 bool AnimationBuilder::dispatchOpacityProperty(const sk_sp<sksg::OpacityEffect>& o,
-                                               const skjson::ObjectValue* jopacity) const {
+                                               const skjson::ObjectValue* jopacity,
+                                               const sk_sp<OpacityAdapter> adapter) const {
     bool dispatched = false;
 
-    if (fPropertyObserver) {
-        const char * node_name = fPropertyObserverContext;
-        if (jopacity) {
-            if (const skjson::StringValue* slotID = (*jopacity)["sid"]) {
-                node_name = slotID->begin();
-            }
+    if (jopacity) {
+        if (const skjson::StringValue* slotID = (*jopacity)["sid"]) {
+            fSlotManager->trackScalarValue(SkString(slotID->begin()), &(adapter->fOpacity),
+                                            adapter);
+            dispatched = true;
         }
-        fPropertyObserver->onOpacityProperty(node_name,
+    }
+
+    if (fPropertyObserver) {
+        fPropertyObserver->onOpacityProperty(fPropertyObserverContext,
             [&]() {
                 dispatched = true;
                 return std::make_unique<OpacityPropertyHandle>(o, fRevalidator);
