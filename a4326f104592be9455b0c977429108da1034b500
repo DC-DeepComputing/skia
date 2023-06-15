@@ -16,6 +16,23 @@
       "message": "Looks like this does it, PTAL.",
       "revId": "a4326f104592be9455b0c977429108da1034b500",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e08c755_e5e35f26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-15T17:13:27Z",
+      "side": 1,
+      "message": "Thank you for putting this together! I think this will make progress a lot easier to measure.",
+      "revId": "a4326f104592be9455b0c977429108da1034b500",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
