@@ -20,8 +20,9 @@ void DrawImageRect(SkCanvas* canvas,
         return;
     }
 
-    if (canvas->recordingContext() || canvas->recorder()) {
+    if (canvas->recorder()) {
         // TODO: branch off into Ganesh and Graphite specific tiling
+        return
     }
 
     canvas->drawImageRect(image, src, dst, sampling, paint, constraint);
