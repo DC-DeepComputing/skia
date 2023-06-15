@@ -94,13 +94,26 @@ double SkQuads::Discriminant(const double a, const double b, const double c) {
 }
 
 SkQuads::RootResult SkQuads::Roots(double A, double B, double C) {
-    SkASSERT(A != 0);
-
     const double discriminant = Discriminant(A, B, C);
 
-    if (discriminant == 0) {
-        const double root = B / A;
+    if (A == 0) {
+        double root;
+        if (B == 0) {
+            if (C == 0) {
+                root = std::numeric_limits<double>::infinity();
+            } else {
+                root = std::numeric_limits<double>::quiet_NaN();
+            }
+        } else {
+            // Solve -2*B*x + C == 0; x = c/(2*b).
+            root = C / (2 * B);
+        }
         return {discriminant, root, root};
+    }
+
+    SkASSERT(A != 0);
+    if (discriminant == 0) {
+        return {discriminant, B / A, B / A};
     }
 
     if (discriminant > 0) {
