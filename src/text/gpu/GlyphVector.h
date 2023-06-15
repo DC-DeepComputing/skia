@@ -17,6 +17,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <iterator>
 #include <optional>
 #include <tuple>
 
@@ -57,6 +58,7 @@ public:
                             SubRunAllocator* alloc);
 
     SkSpan<const Glyph*> glyphs() const;
+    SkSpan<Glyph*> glyphsMutable() const;
 
     static std::optional<GlyphVector> MakeFromBuffer(SkReadBuffer& buffer,
                                                      const SkStrikeClient* strikeClient,
@@ -77,17 +79,16 @@ public:
             GrMeshDrawTarget*);
 #endif
 
-#if defined(SK_GRAPHITE)
-    std::tuple<bool, int> regenerateAtlas(
-            int begin, int end,
-            skgpu::MaskFormat maskFormat,
-            int srcPadding,
-            skgpu::graphite::Recorder*);
-#endif
-
     static size_t GlyphVectorSize(size_t count) {
         return sizeof(Variant) * count;
     }
+
+    size_t size() const { return std::size(fGlyphs); }
+
+    uint64_t atlasGeneration() const { return fAtlasGeneration; }
+    void setAtlasGeneration(uint64_t newGen) { fAtlasGeneration = newGen; }
+    sk_sp<TextStrike> textStrike() const { return fTextStrike; }
+    skgpu::BulkUsePlotUpdater& bulkUseUpdater() { return fBulkUseUpdater; }
 
 private:
     friend class GlyphVectorTestingPeer;

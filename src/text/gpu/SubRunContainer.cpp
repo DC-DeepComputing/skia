@@ -99,22 +99,6 @@ using namespace skglyph;
 //   In order to transform Slugs, you need to set the fSupportBilerpFromGlyphAtlas on
 //   GrContextOptions.
 
-namespace sktext::gpu {
-// -- SubRunType -----------------------------------------------------------------------------------
-enum SubRun::SubRunType : int {
-    kBad = 0,  // Make this 0 to line up with errors from readInt.
-    kDirectMask,
-#if !defined(SK_DISABLE_SDF_TEXT)
-    kSDFT,
-#endif
-    kTransformMask,
-    kPath,
-    kDrawable,
-    kSubRunTypeCount,
-};
-
-}  // namespace sktext::gpu
-
 using MaskFormat = skgpu::MaskFormat;
 
 using namespace sktext;
@@ -420,7 +404,7 @@ public:
                                       const SkStrikeClient* client);
 
 protected:
-    SubRunType subRunType() const override { return kPath; }
+    SubRunType subRunType() const override { return SubRunType::kPath; }
     void doFlatten(SkWriteBuffer& buffer) const override;
 
 private:
@@ -624,7 +608,7 @@ public:
     const AtlasSubRun* testingOnly_atlasSubRun() const override;
 
 protected:
-    SubRunType subRunType() const override { return kDrawable; }
+    SubRunType subRunType() const override { return SubRunType::kDrawable; }
     void doFlatten(SkWriteBuffer& buffer) const override;
 
 private:
@@ -859,11 +843,6 @@ public:
 #endif  // defined(SK_GANESH)
 
 #if defined(SK_GRAPHITE)
-    std::tuple<bool, int>
-    regenerateAtlas(int begin, int end, Recorder* target) const override {
-        return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 0, target);
-    }
-
     std::tuple<gr::Rect, Transform> boundsAndDeviceMatrix(
             const Transform& localToDevice, SkPoint drawOrigin) const override {
         return fVertexFiller.boundsAndDeviceMatrix(localToDevice, drawOrigin);
@@ -892,12 +871,14 @@ public:
         return reuse;
     }
 
+    GlyphVector& glyphs() const override { return fGlyphs; }
+
     const AtlasSubRun* testingOnly_atlasSubRun() const override {
         return this;
     }
 
 protected:
-    SubRunType subRunType() const override { return kDirectMask; }
+    SubRunType subRunType() const override { return SubRunType::kDirectMask; }
 
     void doFlatten(SkWriteBuffer& buffer) const override {
         fVertexFiller.flatten(buffer);
@@ -1057,11 +1038,6 @@ public:
 #endif  // defined(SK_GANESH)
 
 #if defined(SK_GRAPHITE)
-
-    std::tuple<bool, int> regenerateAtlas(int begin, int end, Recorder* recorder) const override {
-        return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, recorder);
-    }
-
     std::tuple<gr::Rect, Transform> boundsAndDeviceMatrix(const Transform& localToDevice,
                                                           SkPoint drawOrigin) const override {
         return fVertexFiller.boundsAndDeviceMatrix(localToDevice, drawOrigin);
@@ -1086,8 +1062,10 @@ public:
 
 #endif  // SK_GRAPHITE
 
+    GlyphVector& glyphs() const override { return fGlyphs; }
+
 protected:
-    SubRunType subRunType() const override { return kTransformMask; }
+    SubRunType subRunType() const override { return SubRunType::kTransformMask; }
 
     void doFlatten(SkWriteBuffer& buffer) const override {
         fVertexFiller.flatten(buffer);
@@ -1194,6 +1172,9 @@ public:
         SDFTMatrixRange matrixRange = SDFTMatrixRange::MakeFromBuffer(buffer);
         auto vertexFiller = VertexFiller::MakeFromBuffer(buffer, alloc);
         if (!buffer.validate(vertexFiller.has_value())) { return nullptr; }
+        if (!buffer.validate(vertexFiller.value().grMaskType() == MaskFormat::kA8)) {
+            return nullptr;
+        }
         auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
         if (!buffer.validate(glyphVector.has_value())) { return nullptr; }
         if (!buffer.validate(SkCount(glyphVector->glyphs()) == vertexFiller->count())) {
@@ -1221,7 +1202,10 @@ public:
     }
 
     int glyphCount() const override { return fVertexFiller.count(); }
-    MaskFormat maskFormat() const override { return fVertexFiller.grMaskType(); }
+    MaskFormat maskFormat() const override {
+        SkASSERT(fVertexFiller.grMaskType() == MaskFormat::kA8);
+        return MaskFormat::kA8;
+    }
 
     void draw(SkCanvas*,
               SkPoint drawOrigin,
@@ -1305,12 +1289,6 @@ public:
 #endif  // defined(SK_GANESH)
 
 #if defined(SK_GRAPHITE)
-
-    std::tuple<bool, int> regenerateAtlas(int begin, int end, Recorder *recorder) const override {
-        return fGlyphs.regenerateAtlas(
-                begin, end, MaskFormat::kA8, SK_DistanceFieldInset, recorder);
-    }
-
     std::tuple<gr::Rect, Transform> boundsAndDeviceMatrix(const Transform& localToDevice,
                                                           SkPoint drawOrigin) const override {
         return fVertexFiller.boundsAndDeviceMatrix(localToDevice, drawOrigin);
@@ -1333,8 +1311,10 @@ public:
 
 #endif  // SK_GRAPHITE
 
+    GlyphVector& glyphs() const override { return fGlyphs; }
+
 protected:
-    SubRunType subRunType() const override { return kSDFT; }
+    SubRunType subRunType() const override { return SubRunType::kSDFT; }
     void doFlatten(SkWriteBuffer& buffer) const override {
         buffer.writeInt(fUseLCDText);
         buffer.writeInt(fAntiAliased);
@@ -1516,8 +1496,8 @@ prepare_for_SDFT_drawing(StrikeForGPU* strike,
         }
 
         const SkPackedGlyphID packedID{glyphID};
-        switch (const SkGlyphDigest digest = strike->digestFor(kSDFT, packedID);
-                digest.actionFor(kSDFT)) {
+        switch (const SkGlyphDigest digest = strike->digestFor(skglyph::kSDFT, packedID);
+                digest.actionFor(skglyph::kSDFT)) {
             case GlyphAction::kAccept: {
                 SkPoint mappedPos = creationMatrix.mapPoint(pos);
                 const SkGlyphRect glyphBounds =
@@ -1571,8 +1551,8 @@ prepare_for_direct_mask_drawing(StrikeForGPU* strike,
 
         const SkPoint mappedPos = positionMatrixWithRounding.mapPoint(pos);
         const SkPackedGlyphID packedID{glyphID, mappedPos, mask};
-        switch (const SkGlyphDigest digest = strike->digestFor(kDirectMask, packedID);
-                digest.actionFor(kDirectMask)) {
+        switch (const SkGlyphDigest digest = strike->digestFor(skglyph::kDirectMask, packedID);
+                digest.actionFor(skglyph::kDirectMask)) {
             case GlyphAction::kAccept: {
                 const SkPoint roundedPos{SkScalarFloorToScalar(mappedPos.x()),
                                          SkScalarFloorToScalar(mappedPos.y())};
@@ -1649,7 +1629,8 @@ prepare_for_path_drawing(StrikeForGPU* strike,
             continue;
         }
 
-        switch (strike->digestFor(kPath, SkPackedGlyphID{glyphID}).actionFor(kPath)) {
+        switch (strike->digestFor(skglyph::kPath, SkPackedGlyphID{glyphID})
+                       .actionFor(skglyph::kPath)) {
             case GlyphAction::kAccept:
                 acceptedBuffer[acceptedSize++] = std::make_tuple(glyphID, pos);
                 break;
@@ -1676,7 +1657,8 @@ std::tuple<SkZip<const SkGlyphID, const SkPoint>, SkZip<SkGlyphID, SkPoint>>
             continue;
         }
 
-        switch (strike->digestFor(kDrawable, SkPackedGlyphID{glyphID}).actionFor(kDrawable)) {
+        switch (strike->digestFor(skglyph::kDrawable, SkPackedGlyphID{glyphID})
+                       .actionFor(skglyph::kDrawable)) {
             case GlyphAction::kAccept:
                 acceptedBuffer[acceptedSize++] = std::make_tuple(glyphID, pos);
                 break;
