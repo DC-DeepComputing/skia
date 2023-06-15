@@ -111,13 +111,16 @@ static SkMaskGamma* gMaskGamma = nullptr;
 static SkScalar gContrast = SK_ScalarMin;
 static SkScalar gPaintGamma = SK_ScalarMin;
 static SkScalar gDeviceGamma = SK_ScalarMin;
+static bool gUseExperimentalContrast = false;
 
 /**
  * The caller must hold the mask_gamma_cache_mutex() and continue to hold it until
  * the returned SkMaskGamma pointer is refed or forgotten.
  */
-static const SkMaskGamma& cached_mask_gamma(SkScalar contrast, SkScalar paintGamma,
-                                            SkScalar deviceGamma) {
+static const SkMaskGamma& cached_mask_gamma(SkScalar contrast,
+                                            SkScalar paintGamma,
+                                            SkScalar deviceGamma,
+                                            bool experimentalContrast) {
     mask_gamma_cache_mutex().assertHeld();
     if (0 == contrast && SK_Scalar1 == paintGamma && SK_Scalar1 == deviceGamma) {
         if (nullptr == gLinearMaskGamma) {
@@ -125,12 +128,14 @@ static const SkMaskGamma& cached_mask_gamma(SkScalar contrast, SkScalar paintGam
         }
         return *gLinearMaskGamma;
     }
-    if (gContrast != contrast || gPaintGamma != paintGamma || gDeviceGamma != deviceGamma) {
+    if (gContrast != contrast || gPaintGamma != paintGamma || gDeviceGamma != deviceGamma ||
+        gUseExperimentalContrast != experimentalContrast) {
         SkSafeUnref(gMaskGamma);
         gMaskGamma = new SkMaskGamma(contrast, paintGamma, deviceGamma);
         gContrast = contrast;
         gPaintGamma = paintGamma;
         gDeviceGamma = deviceGamma;
+        gUseExperimentalContrast = experimentalContrast;
     }
     return *gMaskGamma;
 }
@@ -143,18 +148,22 @@ SkMaskGamma::PreBlend SkScalerContext::GetMaskPreBlend(const SkScalerContextRec&
 
     const SkMaskGamma& maskGamma = cached_mask_gamma(rec.getContrast(),
                                                      rec.getPaintGamma(),
-                                                     rec.getDeviceGamma());
+                                                     rec.getDeviceGamma(),
+                                                     rec.getUseExperimentalContrast());
 
     // TODO: remove CanonicalColor when we to fix up Chrome layout tests.
     return maskGamma.preBlend(rec.getLuminanceColor());
 }
 
-size_t SkScalerContext::GetGammaLUTSize(SkScalar contrast, SkScalar paintGamma,
-                                        SkScalar deviceGamma, int* width, int* height) {
+size_t SkScalerContext::GetGammaLUTSize(SkScalar contrast,
+                                        SkScalar paintGamma,
+                                        SkScalar deviceGamma,
+                                        bool experimentalContrast,
+                                        int* width,
+                                        int* height) {
     SkAutoMutexExclusive ama(mask_gamma_cache_mutex());
-    const SkMaskGamma& maskGamma = cached_mask_gamma(contrast,
-                                                     paintGamma,
-                                                     deviceGamma);
+    const SkMaskGamma& maskGamma =
+            cached_mask_gamma(contrast, paintGamma, deviceGamma, experimentalContrast);
 
     maskGamma.getGammaTableDimensions(width, height);
     size_t size = (*width)*(*height)*sizeof(uint8_t);
@@ -162,12 +171,14 @@ size_t SkScalerContext::GetGammaLUTSize(SkScalar contrast, SkScalar paintGamma,
     return size;
 }
 
-bool SkScalerContext::GetGammaLUTData(SkScalar contrast, SkScalar paintGamma, SkScalar deviceGamma,
+bool SkScalerContext::GetGammaLUTData(SkScalar contrast,
+                                      SkScalar paintGamma,
+                                      SkScalar deviceGamma,
+                                      bool experimentalContrast,
                                       uint8_t* data) {
     SkAutoMutexExclusive ama(mask_gamma_cache_mutex());
-    const SkMaskGamma& maskGamma = cached_mask_gamma(contrast,
-                                                     paintGamma,
-                                                     deviceGamma);
+    const SkMaskGamma& maskGamma =
+            cached_mask_gamma(contrast, paintGamma, deviceGamma, experimentalContrast);
     const uint8_t* gammaTables = maskGamma.getGammaTables();
     if (!gammaTables) {
         return false;
@@ -1136,6 +1147,11 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
         flags |= SkScalerContext::kNeedsForegroundColor_Flag;
         rec->fForegroundColor = paint.getColor();
     }
+#if defined(SK_ENABLE_EXPERIMENTAL_CONTRAST)
+    if (surfaceProps.flags() & SkSurfaceProps::kUseExperimentalContrast_Flag) {
+        flags |= SkScalerContext::kUseExperimentalContrast;
+    }
+#endif
     rec->fFlags = SkToU16(flags);
 
     // these modify fFlags, so do them after assigning fFlags
@@ -1146,18 +1162,9 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
     // The math in SkMaskGamma can handle them being different,
     // but it requires superluminous masks when
     // Ex : deviceGamma(x) < paintGamma(x) and x is sufficiently large.
-    rec->setDeviceGamma(SK_GAMMA_EXPONENT);
-    rec->setPaintGamma(SK_GAMMA_EXPONENT);
-
-#ifdef SK_GAMMA_CONTRAST
-    rec->setContrast(SK_GAMMA_CONTRAST);
-#else
-    // A value of 0.5 for SK_GAMMA_CONTRAST appears to be a good compromise.
-    // With lower values small text appears washed out (though correctly so).
-    // With higher values lcd fringing is worse and the smoothing effect of
-    // partial coverage is diminished.
-    rec->setContrast(0.5f);
-#endif
+    rec->setDeviceGamma(surfaceProps.textGamma());
+    rec->setPaintGamma(surfaceProps.textGamma());
+    rec->setContrast(surfaceProps.textContrast());
 
     if (!SkToBool(scalerContextFlags & SkScalerContextFlags::kFakeGamma)) {
         rec->ignoreGamma();

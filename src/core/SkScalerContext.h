@@ -83,11 +83,26 @@ public:
         fPaintGamma = SkScalarFloorToInt(pg * (1 << 6));
     }
 
+    // The contrast range is [0.0, 1.0] normally, but [0.0, 4.0] with the experimental formula.
+    // However, we're currently supporting both new & old formulas via a flag so that Chromium
+    // can do experimental testing.  In order to maintain numeric stability, we don't want to
+    // alter the underlying storage of the contrast value at this time, so we multiply or
+    // divide by 4.0 if the experimental contrast is being used.
     SkScalar getContrast() const {
         sk_ignore_unused_variable(fReservedAlign);
+#if defined(SK_ENABLE_EXPERIMENTAL_CONTRAST)
+        if (getUseExperimentalContrast()) {
+            return SkIntToScalar(fContrast) / ((1 << 8) - 1) * SkIntToScalar(4);
+        }
+#endif
         return SkIntToScalar(fContrast) / ((1 << 8) - 1);
     }
     void setContrast(SkScalar c) {
+#if defined(SK_ENABLE_EXPERIMENTAL_CONTRAST)
+        if (getUseExperimentalContrast()) {
+            c /= SkIntToScalar(4);
+        }
+#endif
         SkASSERT(0 <= c && c <= SK_Scalar1);
         fContrast = SkScalarRoundToInt(c * ((1 << 8) - 1));
     }
@@ -193,6 +208,8 @@ public:
     inline SkFontHinting getHinting() const;
     inline void setHinting(SkFontHinting);
 
+    inline bool getUseExperimentalContrast() const;
+
     SkMask::Format getFormat() const {
         return fMaskFormat;
     }
@@ -234,31 +251,34 @@ typedef SkTMaskGamma<3, 3, 3> SkMaskGamma;
 class SkScalerContext {
 public:
     enum Flags {
-        kFrameAndFill_Flag        = 0x0001,
-        kUnused                   = 0x0002,
-        kEmbeddedBitmapText_Flag  = 0x0004,
-        kEmbolden_Flag            = 0x0008,
+        kFrameAndFill_Flag = 0x0001,
+        kUnused = 0x0002,
+        kEmbeddedBitmapText_Flag = 0x0004,
+        kEmbolden_Flag = 0x0008,
         kSubpixelPositioning_Flag = 0x0010,
-        kForceAutohinting_Flag    = 0x0020,  // Use auto instead of bytcode hinting if hinting.
+        kForceAutohinting_Flag = 0x0020,  // Use auto instead of bytcode hinting if hinting.
 
         // together, these two flags resulting in a two bit value which matches
         // up with the SkPaint::Hinting enum.
-        kHinting_Shift            = 7, // to shift into the other flags above
-        kHintingBit1_Flag         = 0x0080,
-        kHintingBit2_Flag         = 0x0100,
+        kHinting_Shift = 7,  // to shift into the other flags above
+        kHintingBit1_Flag = 0x0080,
+        kHintingBit2_Flag = 0x0100,
 
         // Pixel geometry information.
         // only meaningful if fMaskFormat is kLCD16
-        kLCD_Vertical_Flag        = 0x0200,    // else Horizontal
-        kLCD_BGROrder_Flag        = 0x0400,    // else RGB order
+        kLCD_Vertical_Flag = 0x0200,  // else Horizontal
+        kLCD_BGROrder_Flag = 0x0400,  // else RGB order
 
         // Generate A8 from LCD source (for GDI and CoreGraphics).
         // only meaningful if fMaskFormat is kA8
-        kGenA8FromLCD_Flag        = 0x0800, // could be 0x200 (bit meaning dependent on fMaskFormat)
-        kLinearMetrics_Flag       = 0x1000,
-        kBaselineSnap_Flag        = 0x2000,
+        kGenA8FromLCD_Flag = 0x0800,  // could be 0x200 (bit meaning dependent on fMaskFormat)
+        kLinearMetrics_Flag = 0x1000,
+        kBaselineSnap_Flag = 0x2000,
 
         kNeedsForegroundColor_Flag = 0x4000,
+
+        // Use the new experimental text-contrast formula
+        kUseExperimentalContrast = 0x8000,
     };
 
     // computed values
@@ -294,16 +314,23 @@ public:
 
     /** Return the size in bytes of the associated gamma lookup table
      */
-    static size_t GetGammaLUTSize(SkScalar contrast, SkScalar paintGamma, SkScalar deviceGamma,
-                                  int* width, int* height);
+    static size_t GetGammaLUTSize(SkScalar contrast,
+                                  SkScalar paintGamma,
+                                  SkScalar deviceGamma,
+                                  bool experimentalContrast,
+                                  int* width,
+                                  int* height);
 
     /** Get the associated gamma lookup table. The 'data' pointer must point to pre-allocated
      *  memory, with size in bytes greater than or equal to the return value of getGammaLUTSize().
      *
      *  If the lookup table hasn't been initialized (e.g., it's linear), this will return false.
      */
-    static bool   GetGammaLUTData(SkScalar contrast, SkScalar paintGamma, SkScalar deviceGamma,
-                                  uint8_t* data);
+    static bool GetGammaLUTData(SkScalar contrast,
+                                SkScalar paintGamma,
+                                SkScalar deviceGamma,
+                                bool experimentalContrast,
+                                uint8_t* data);
 
     static void MakeRecAndEffects(const SkFont& font, const SkPaint& paint,
                                   const SkSurfaceProps& surfaceProps,
@@ -458,5 +485,8 @@ void SkScalerContextRec::setHinting(SkFontHinting hinting) {
                         (static_cast<unsigned>(hinting) << SkScalerContext::kHinting_Shift);
 }
 
+bool SkScalerContextRec::getUseExperimentalContrast() const {
+    return !!(fFlags & SkScalerContext::kUseExperimentalContrast);
+}
 
 #endif
