@@ -952,6 +952,15 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
 
+    // Calculate the clipped bounds of the draw and determine the clip elements that affect the
+    // draw without updating the clip stack.
+    auto clipState = fClip.visitClipStackForDraw(localToDevice, geometry, style);
+    const Clip& clip = clipState.clip();
+    if (clip.isClippedOut()) {
+        // Clipped out, so don't record anything.
+        return;
+    }
+
     // Figure out what dst color requirements we have, if any.
     DstReadRequirement dstReadReq = DstReadRequirement::kNone;
     const SkBlenderBase* blender = as_BB(paint.getBlender());
@@ -968,13 +977,10 @@ void Device::drawGeometry(const Transform& localToDevice,
         this->flushPendingWorkToRecorder();
     }
 
+    // Update the clip stack
     DrawOrder order(fCurrentDepth.next());
-    auto [clip, clipOrder] = fClip.applyClipToDraw(
-            fColorDepthBoundsManager.get(), localToDevice, geometry, style, order.depth());
-    if (clip.drawBounds().isEmptyNegativeOrNaN()) {
-        // Clipped out, so don't record anything
-        return;
-    }
+    CompressedPaintersOrder clipOrder =
+            fClip.updateClipStateForDraw(clipState, fColorDepthBoundsManager.get(), order.depth());
 
 #if defined(SK_DEBUG)
     // Renderers and their component RenderSteps have flexibility in defining their
