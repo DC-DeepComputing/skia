@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5422fb61_345b29cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-15T18:04:13Z",
+      "side": 1,
+      "message": "All looks good except for the binding index, see comment.",
+      "revId": "d481bdf518159ee9ac62ab47fd474bbf03d25701",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1404cb2a_b293387c",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-15T18:04:13Z",
+      "side": 1,
+      "message": "When you run this against the validator I suspect you\u0027ll see that it fails, because the descriptor doesn\u0027t match the binding in the shader. For example, a draw could use the intisingsic(sic) buffer and the renderstep buffer, which means that you\u0027d need binding indices 0 and 2. My suggestion is that the binding index be included in the DescTypeAndCount struct and this would use that.",
+      "range": {
+        "startLine": 77,
+        "startChar": 12,
+        "endLine": 77,
+        "endChar": 37
+      },
+      "revId": "d481bdf518159ee9ac62ab47fd474bbf03d25701",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
