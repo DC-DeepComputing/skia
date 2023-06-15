@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2648f116_00c0b848",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-15T14:00:37Z",
+      "side": 1,
+      "message": "This finally fixes the linked chromium bug (as well as the gradients_color_space_many_stops GM that demonstrated the issue).",
+      "revId": "4219856c6845b274fcce76c3a6d3a2a4a6e62c48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
