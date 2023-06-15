@@ -21,9 +21,6 @@ class VulkanSharedContext;
 
 class VulkanResourceProvider final : public ResourceProvider {
 public:
-    static VkDescriptorSetLayout DescTypeAndCountToVkDescSetLayout(const VulkanSharedContext* ctxt,
-                                                                   SkSpan<DescTypeAndCount>);
-
     VulkanResourceProvider(SharedContext* sharedContext, SingleOwner*, uint32_t recorderID);
     ~VulkanResourceProvider() override;
 
