@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cddfd61_82a79da2",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1433,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-15T19:55:28Z",
+      "side": 1,
+      "message": "Change atlasDelegate here and all other places to be consistent.",
+      "range": {
+        "startLine": 1433,
+        "startChar": 9,
+        "endLine": 1433,
+        "endChar": 22
+      },
+      "revId": "969725c3931c206d985913bd272e2a0634864ba8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19ebbdad_2499cfbc",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-15T19:55:28Z",
+      "side": 1,
+      "message": "This is not closed over anything. Can you remove \u0026 to indicate it\u0027s a pure function.",
+      "range": {
+        "startLine": 822,
+        "startChar": 12,
+        "endLine": 822,
+        "endChar": 13
+      },
+      "revId": "969725c3931c206d985913bd272e2a0634864ba8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
