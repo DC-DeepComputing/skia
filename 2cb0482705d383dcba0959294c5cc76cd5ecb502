@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8503bfae_303bfb81",
+        "filename": "src/effects/imagefilters/SkMorphologyImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-15T16:25:13Z",
+      "side": 1,
+      "message": "It\u0027s just 0 and is handled elsewhere",
+      "parentUuid": "725d29d5_cea64657",
+      "range": {
+        "startLine": 899,
+        "startChar": 21,
+        "endLine": 899,
+        "endChar": 37
+      },
+      "revId": "2cb0482705d383dcba0959294c5cc76cd5ecb502",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fe6f12f_2773a7d1",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-15T15:09:22Z",
       "side": 1,
       "message": "I think you could use a macro and stringize it to do this automatically.\n\n```\n#define MAX_LINEAR_RADIUS 14\n\n\"const int kMaxLinearRadius \u003d \" #MAX_LINEAR_RADIUS \";\"\n```",
+      "range": {
+        "startLine": 906,
+        "startChar": 50,
+        "endLine": 906,
+        "endChar": 84
+      },
+      "revId": "2cb0482705d383dcba0959294c5cc76cd5ecb502",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa084d49_0533167e",
+        "filename": "src/effects/imagefilters/SkMorphologyImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 906,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-15T16:25:13Z",
+      "side": 1,
+      "message": "The stringifier `#` only works for macro parameters, not free macros :/\n\nI played around with using `SkStringPrintf` and a `%d` but that hurt readability IMO. Given how closely together these two locations are, I think I prefer this and being able to keep the sksl as a `const char*`",
+      "parentUuid": "6fe6f12f_2773a7d1",
       "range": {
         "startLine": 906,
         "startChar": 50,
