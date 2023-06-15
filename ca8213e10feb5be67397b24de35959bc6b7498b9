@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40014e03_8676aa31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-15T16:08:02Z",
+      "side": 1,
+      "message": "Can you pull out a separate CL that just adds either skglyp::\u003ctype\u003e or SubRunConatiner::\u003ctype\u003e. \n\nI don\u0027t think you need to expose the subrun type to the entire world, I think is should stay in the .cpp. Just add a virtual to AtlasSubRun to expose the padding.",
+      "revId": "ca8213e10feb5be67397b24de35959bc6b7498b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
