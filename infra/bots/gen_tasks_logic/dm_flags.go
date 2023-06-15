@@ -352,6 +352,35 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "gm", ALL, "async_rescale_and_read_dog_down")
 					skip(ALL, "gm", ALL, "async_rescale_and_read_rose")
 				}
+		        }
+			if b.extraConfig("Vulkan") {
+				configs = []string{"grvk"}
+                                // Allocation errors
+                                skip(ALL, "gm", ALL, "scaled_tilemodes")
+                                skip(ALL, "gm", ALL, "scaled_tilemodes_npot")
+				// Readback failure
+                                skip(ALL, "gm", ALL, "destcolor")
+                                skip(ALL, "gm", ALL, "xfermodes3")
+                                skip(ALL, "gm", ALL, "xfermodes2_gray")
+                                skip(ALL, "gm", ALL, "xfermodes2")
+                                skip(ALL, "gm", ALL, "xfermodes")
+                                skip(ALL, "gm", ALL, "windowrectangles")
+                                skip(ALL, "gm", ALL, "verylarge_picture_image")
+                                skip(ALL, "gm", ALL, "verylargebitmap")
+                                skip(ALL, "gm", ALL, "unpremul")
+                                skip(ALL, "gm", ALL, "tileimagefilter")
+                                skip(ALL, "gm", ALL, "clipped_thinrect")
+                                skip(ALL, "gm", ALL, "textblobrandomfont")
+                                skip(ALL, "gm", ALL, "textblobgeometrychange")
+                                skip(ALL, "gm", ALL, "textblobblockreordering")
+                                skip(ALL, "gm", ALL, "surface_underdraw")
+                                skip(ALL, "gm", ALL, "copy_on_write_savelayer")
+                                skip(ALL, "gm", ALL, "simple_snap_image2")
+                                skip(ALL, "gm", ALL, "simple_snap_image")
+                                skip(ALL, "gm", ALL, "copy_on_write_retain2")
+                                skip(ALL, "gm", ALL, "copy_on_write_retain")
+                                skip(ALL, "gm", ALL, "surfacenew")
+                                skip(ALL, "gm", ALL, "bug339297_as_clip")
 			}
 		}
 
