@@ -78,6 +78,10 @@ public:
         return fTargetType.slotCount();
     }
 
+    const Type& slotType(size_t n) const override {
+        return fTargetType.slotType(n);
+    }
+
     SpvDim_ dimensions() const override {
         return fTargetType.dimensions();
     }
@@ -183,6 +187,11 @@ public:
         return fCount * fComponentType.slotCount();
     }
 
+    const Type& slotType(size_t n) const override {
+        SkASSERT(fCount == kUnsizedArray || n < this->slotCount());
+        return fComponentType.slotType(n % fComponentType.slotCount());
+    }
+
 private:
     using INHERITED = Type;
 
@@ -203,6 +212,11 @@ public:
 
     SkSpan<const Type* const> coercibleTypes() const override {
         return SkSpan(fCoercibleTypes, fNumTypes);
+    }
+
+    const Type& slotType(size_t) const override {
+        SkDEBUGFAIL("introspection not supported on a generic type");
+        return *this;
     }
 
 private:
@@ -265,6 +279,11 @@ public:
         return 1;
     }
 
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n == 0);
+        return fScalarType;
+    }
+
 private:
     using INHERITED = Type;
 
@@ -314,6 +333,11 @@ public:
 
     size_t slotCount() const override {
         return 1;
+    }
+
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n == 0);
+        return *this;
     }
 
     using int_limits = std::numeric_limits<int32_t>;
@@ -371,6 +395,11 @@ public:
 
     bool isAllowedInES2() const override { return false; }
 
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n == 0);
+        return *this;
+    }
+
 private:
     using INHERITED = Type;
 };
@@ -417,6 +446,11 @@ public:
         return fColumns * fRows;
     }
 
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n < this->slotCount());
+        return fComponentType;
+    }
+
 private:
     using INHERITED = Type;
 
@@ -456,6 +490,11 @@ public:
 
     TextureAccess textureAccess() const override {
         return fTextureAccess;
+    }
+
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n == 0);
+        return *this;
     }
 
 private:
@@ -500,6 +539,11 @@ public:
         return fTextureType.textureAccess();
     }
 
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n == 0);
+        return *this;
+    }
+
 private:
     using INHERITED = Type;
 
@@ -539,6 +583,19 @@ public:
             slots += field.fType->slotCount();
         }
         return slots;
+    }
+
+    const Type& slotType(size_t n) const override {
+        for (const Field& field : fFields) {
+            size_t fieldSlots = field.fType->slotCount();
+            if (n < fieldSlots) {
+                return field.fType->slotType(n);
+            } else {
+                n -= fieldSlots;
+            }
+        }
+        SkDEBUGFAIL("slot index out of range");
+        return *this;
     }
 
 private:
@@ -586,6 +643,11 @@ public:
 
     size_t slotCount() const override {
         return fColumns;
+    }
+
+    const Type& slotType(size_t n) const override {
+        SkASSERT(n < SkToSizeT(fColumns));
+        return fComponentType;
     }
 
 private:
