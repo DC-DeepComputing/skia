@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "725d29d5_cea64657",
+        "filename": "src/effects/imagefilters/SkMorphologyImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-15T15:09:22Z",
+      "side": 1,
+      "message": "Is there a minimum?",
+      "range": {
+        "startLine": 899,
+        "startChar": 21,
+        "endLine": 899,
+        "endChar": 37
+      },
+      "revId": "2cb0482705d383dcba0959294c5cc76cd5ecb502",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fe6f12f_2773a7d1",
+        "filename": "src/effects/imagefilters/SkMorphologyImageFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 906,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-15T15:09:22Z",
+      "side": 1,
+      "message": "I think you could use a macro and stringize it to do this automatically.\n\n```\n#define MAX_LINEAR_RADIUS 14\n\n\"const int kMaxLinearRadius \u003d \" #MAX_LINEAR_RADIUS \";\"\n```",
+      "range": {
+        "startLine": 906,
+        "startChar": 50,
+        "endLine": 906,
+        "endChar": 84
+      },
+      "revId": "2cb0482705d383dcba0959294c5cc76cd5ecb502",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
