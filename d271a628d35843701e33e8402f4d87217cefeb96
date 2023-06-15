@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c89019bb_55cefe32",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-15T20:50:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6face325_2d4714a3",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 41
+      },
+      "revId": "d271a628d35843701e33e8402f4d87217cefeb96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af91a18f_5d95372a",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4be645e0_3e4758b8",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-15T20:50:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af91a18f_5d95372a",
+      "range": {
+        "startLine": 91,
+        "startChar": 26,
+        "endLine": 91,
+        "endChar": 41
+      },
+      "revId": "d271a628d35843701e33e8402f4d87217cefeb96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f92f7e03_487f042d",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-06-15T20:07:16Z",
       "side": 1,
       "message": "I can\u0027t remember is this the dst padding or the src. It should be labeled as such.",
+      "range": {
+        "startLine": 96,
+        "startChar": 16,
+        "endLine": 96,
+        "endChar": 28
+      },
+      "revId": "d271a628d35843701e33e8402f4d87217cefeb96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a674615d_5e6cda69",
+        "filename": "src/text/gpu/SubRunContainer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-15T20:50:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f92f7e03_487f042d",
       "range": {
         "startLine": 96,
         "startChar": 16,
