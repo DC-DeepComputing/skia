@@ -428,8 +428,8 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 break;
             }
             case DrawPassCommands::Type::kBindUniformBuffer: {
-                auto bub = static_cast<DrawPassCommands::BindUniformBuffer*>(cmdPtr);
-                this->recordBufferBindingInfo(bub->fInfo, bub->fSlot);
+                // auto bub = static_cast<DrawPassCommands::BindUniformBuffer*>(cmdPtr);
+                // this->recordBufferBindingInfo(bub->fInfo, bub->fSlot);
                 break;
             }
             case DrawPassCommands::Type::kBindDrawBuffers: {
@@ -439,8 +439,8 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 break;
             }
             case DrawPassCommands::Type::kBindTexturesAndSamplers: {
-                auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
-                this->recordTextureAndSamplerDescSet(*drawPass, *bts);
+                // auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
+                // this->recordTextureAndSamplerDescSet(*drawPass, *bts);
                 break;
             }
             case DrawPassCommands::Type::kSetScissor: {
@@ -753,12 +753,12 @@ void VulkanCommandBuffer::draw(PrimitiveType,
     SkASSERT(fActiveRenderPass);
     this->syncDescriptorSets();
     // TODO: set primitive type via dynamic state if available
-    VULKAN_CALL(fSharedContext->interface(),
-                CmdDraw(fPrimaryCommandBuffer,
-                        vertexCount,
-                        /*instanceCount=*/0,
-                        baseVertex,
-                        /*firstInstance=*/0));
+    // VULKAN_CALL(fSharedContext->interface(),
+    //             CmdDraw(fPrimaryCommandBuffer,
+    //                     vertexCount,
+    //                     /*instanceCount=*/0,
+    //                     baseVertex,
+    //                     /*firstInstance=*/0));
 }
 
 void VulkanCommandBuffer::drawIndexed(PrimitiveType,
@@ -768,13 +768,13 @@ void VulkanCommandBuffer::drawIndexed(PrimitiveType,
     SkASSERT(fActiveRenderPass);
     this->syncDescriptorSets();
     // TODO: set primitive type via dynamic state if available
-    VULKAN_CALL(fSharedContext->interface(),
-                CmdDrawIndexed(fPrimaryCommandBuffer,
-                               indexCount,
-                               /*instanceCount=*/0,
-                               baseIndex,
-                               baseVertex,
-                               /*firstInstance=*/0));
+    // VULKAN_CALL(fSharedContext->interface(),
+    //             CmdDrawIndexed(fPrimaryCommandBuffer,
+    //                            indexCount,
+    //                            /*instanceCount=*/0,
+    //                            baseIndex,
+    //                            baseVertex,
+    //                            /*firstInstance=*/0));
 }
 
 void VulkanCommandBuffer::drawInstanced(PrimitiveType,
@@ -785,12 +785,12 @@ void VulkanCommandBuffer::drawInstanced(PrimitiveType,
     SkASSERT(fActiveRenderPass);
     this->syncDescriptorSets();
     // TODO: set primitive type via dynamic state if available
-    VULKAN_CALL(fSharedContext->interface(),
-                CmdDraw(fPrimaryCommandBuffer,
-                        vertexCount,
-                        instanceCount,
-                        baseVertex,
-                        baseInstance));
+    // VULKAN_CALL(fSharedContext->interface(),
+    //             CmdDraw(fPrimaryCommandBuffer,
+    //                     vertexCount,
+    //                     instanceCount,
+    //                     baseVertex,
+    //                     baseInstance));
 }
 
 void VulkanCommandBuffer::drawIndexedInstanced(PrimitiveType,
@@ -802,13 +802,13 @@ void VulkanCommandBuffer::drawIndexedInstanced(PrimitiveType,
     SkASSERT(fActiveRenderPass);
     this->syncDescriptorSets();
     // TODO: set primitive type via dynamic state if available
-    VULKAN_CALL(fSharedContext->interface(),
-                CmdDrawIndexed(fPrimaryCommandBuffer,
-                               indexCount,
-                               instanceCount,
-                               baseIndex,
-                               baseVertex,
-                               baseInstance));
+    // VULKAN_CALL(fSharedContext->interface(),
+    //             CmdDrawIndexed(fPrimaryCommandBuffer,
+    //                            indexCount,
+    //                            instanceCount,
+    //                            baseIndex,
+    //                            baseVertex,
+    //                            baseInstance));
 }
 
 void VulkanCommandBuffer::drawIndirect(PrimitiveType) {
@@ -817,12 +817,12 @@ void VulkanCommandBuffer::drawIndirect(PrimitiveType) {
     // TODO: set primitive type via dynamic state if available
     // Currently we can only support doing one indirect draw operation at a time,
     // so stride is irrelevant.
-    VULKAN_CALL(fSharedContext->interface(),
-                CmdDrawIndirect(fPrimaryCommandBuffer,
-                                fBoundIndirectBuffer,
-                                fBoundIndirectBufferOffset,
-                                /*drawCount=*/1,
-                                /*stride=*/0));
+    // VULKAN_CALL(fSharedContext->interface(),
+    //             CmdDrawIndirect(fPrimaryCommandBuffer,
+    //                             fBoundIndirectBuffer,
+    //                             fBoundIndirectBufferOffset,
+    //                             /*drawCount=*/1,
+    //                             /*stride=*/0));
 }
 
 void VulkanCommandBuffer::drawIndexedIndirect(PrimitiveType) {
@@ -831,12 +831,12 @@ void VulkanCommandBuffer::drawIndexedIndirect(PrimitiveType) {
     // TODO: set primitive type via dynamic state if available
     // Currently we can only support doing one indirect draw operation at a time,
     // so stride is irrelevant.
-    VULKAN_CALL(fSharedContext->interface(),
-                CmdDrawIndexedIndirect(fPrimaryCommandBuffer,
-                                       fBoundIndirectBuffer,
-                                       fBoundIndirectBufferOffset,
-                                       /*drawCount=*/1,
-                                       /*stride=*/0));
+    // VULKAN_CALL(fSharedContext->interface(),
+    //             CmdDrawIndexedIndirect(fPrimaryCommandBuffer,
+    //                                    fBoundIndirectBuffer,
+    //                                    fBoundIndirectBufferOffset,
+    //                                    /*drawCount=*/1,
+    //                                    /*stride=*/0));
 }
 
 bool VulkanCommandBuffer::onAddComputePass(const DispatchGroupList&) { return false; }
