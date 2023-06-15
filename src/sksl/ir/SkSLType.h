@@ -425,6 +425,14 @@ public:
         return 0;
     }
 
+    /**
+     * Returns the type of the value in the nth slot. For scalar, vector and matrix types, should
+     * always match `componentType()`.
+     */
+    virtual const Type& slotType(size_t) const {
+        return *this;
+    }
+
     virtual SkSpan<const Field> fields() const {
         SK_ABORT("Internal error: not a struct");
     }
