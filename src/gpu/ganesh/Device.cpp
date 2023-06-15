@@ -952,11 +952,17 @@ void Device::drawImageRect(const SkImage* image,
     GrAA aa = fSurfaceDrawContext->chooseAA(paint);
     SkCanvas::QuadAAFlags aaFlags = (aa == GrAA::kYes) ? SkCanvas::kAll_QuadAAFlags
                                                        : SkCanvas::kNone_QuadAAFlags;
-    this->drawImageQuad(image,
-                        src ? *src
-                            : SkRect::MakeIWH(image->width(), image->height()),
-                        dst, /* dstClip= */ nullptr, aaFlags,
-                        /* preViewMatrix= */ nullptr, sampling, paint, constraint);
+    DrawImageQuad(this,
+                  image,
+                  src ? *src
+                      : SkRect::MakeIWH(image->width(), image->height()),
+                  dst,
+                  /* dstClip= */ nullptr,
+                  aaFlags,
+                  /* preViewMatrix= */ nullptr,
+                  sampling,
+                  paint,
+                  constraint);
 }
 
 void Device::drawViewLattice(GrSurfaceProxyView view,
