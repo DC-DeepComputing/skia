@@ -17,6 +17,8 @@
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 
+#include <string>
+
 namespace skgpu::graphite::ContextFactory {
 
 std::unique_ptr<Context> MakeVulkan(const VulkanBackendContext& backendContext,
@@ -66,6 +68,65 @@ VkShaderModule createVulkanShaderModule(const VulkanSharedContext* context,
         return VK_NULL_HANDLE;
     }
     return shaderModule;
+}
+
+VkDescriptorSetLayout DescTypeAndCountToVkDescSetLayout(
+        const VulkanSharedContext* ctxt, const SkSpan<DescTypeAndCount>& requestedDescriptors) {
+    VkDescriptorSetLayout layout;
+    skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
+
+    for (size_t i = 0; i < requestedDescriptors.size(); i++) {
+        if (requestedDescriptors[i].count != 0) {
+            VkDescriptorSetLayoutBinding& layoutBinding = bindingLayouts.push_back();
+            memset(&layoutBinding, 0, sizeof(VkDescriptorSetLayoutBinding));
+            layoutBinding.binding = 0;
+            layoutBinding.descriptorType = DsTypeEnumToVkDs(requestedDescriptors[i].type);
+            layoutBinding.descriptorCount = requestedDescriptors[i].count;
+            // TODO: Obtain layout binding stage flags from visibility (vertex or shader)
+            layoutBinding.stageFlags = 0;
+            // TODO: Optionally set immutableSamplers here.
+            layoutBinding.pImmutableSamplers = nullptr;
+        }
+    }
+
+    VkDescriptorSetLayoutCreateInfo layoutCreateInfo;
+    memset(&layoutCreateInfo, 0, sizeof(VkDescriptorSetLayoutCreateInfo));
+    layoutCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+    layoutCreateInfo.pNext = nullptr;
+    layoutCreateInfo.flags = 0;
+    layoutCreateInfo.bindingCount = bindingLayouts.size();
+    layoutCreateInfo.pBindings = &bindingLayouts.front();
+
+    VkResult result;
+    VULKAN_CALL_RESULT(ctxt->interface(),
+                       result,
+                       CreateDescriptorSetLayout(ctxt->device(),
+                                                 &layoutCreateInfo,
+                                                 nullptr,
+                                                 &layout));
+    if (result != VK_SUCCESS) {
+        SkDebugf("Failed to create VkDescriptorSetLayout\n");
+        layout = VK_NULL_HANDLE;
+    }
+    return layout;
+}
+
+VkDescriptorType DsTypeEnumToVkDs(DescriptorType type) {
+    switch (type) {
+        case DescriptorType::kUniformBuffer:
+            return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        case DescriptorType::kTextureSampler:
+            return VK_DESCRIPTOR_TYPE_SAMPLER;
+        case DescriptorType::kTexture:
+            return VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+        case DescriptorType::kCombinedTextureSampler:
+            return VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+        case DescriptorType::kStorageBuffer:
+            return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+        case DescriptorType::kInputAttachment:
+            return VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT;
+    }
+    SkUNREACHABLE;
 }
 
 } // namespace skgpu::graphite

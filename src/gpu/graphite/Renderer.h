@@ -116,6 +116,8 @@ public:
     bool emitsCoverage()       const { return fFlags & Flags::kEmitsCoverage;       }
     bool emitsPrimitiveColor() const { return fFlags & Flags::kEmitsPrimitiveColor; }
 
+    // uint32_t numTextures() const { return }
+
     PrimitiveType primitiveType()  const { return fPrimitiveType;  }
     size_t        vertexStride()   const { return fVertexStride;   }
     size_t        instanceStride() const { return fInstanceStride; }
