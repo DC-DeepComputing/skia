@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6face325_2d4714a3",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-15T20:07:16Z",
+      "side": 1,
+      "message": "Let\u0027s not use overloading to distinguish these to functions. Call this regenerateAtlasForGanesh. Only things that are unified should have the same name.",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 41
+      },
+      "revId": "d271a628d35843701e33e8402f4d87217cefeb96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af91a18f_5d95372a",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-15T20:07:16Z",
+      "side": 1,
+      "message": "This should be called regenerateAtlasForGraphite.",
+      "range": {
+        "startLine": 91,
+        "startChar": 26,
+        "endLine": 91,
+        "endChar": 41
+      },
+      "revId": "d271a628d35843701e33e8402f4d87217cefeb96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f92f7e03_487f042d",
+        "filename": "src/text/gpu/SubRunContainer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-15T20:07:16Z",
+      "side": 1,
+      "message": "I can\u0027t remember is this the dst padding or the src. It should be labeled as such.",
+      "range": {
+        "startLine": 96,
+        "startChar": 16,
+        "endLine": 96,
+        "endChar": 28
+      },
+      "revId": "d271a628d35843701e33e8402f4d87217cefeb96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
