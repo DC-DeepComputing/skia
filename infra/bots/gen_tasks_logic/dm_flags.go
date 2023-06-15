@@ -352,6 +352,14 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "gm", ALL, "async_rescale_and_read_dog_down")
 					skip(ALL, "gm", ALL, "async_rescale_and_read_rose")
 				}
+		        }
+			if b.extraConfig("Vulkan") {
+				configs = []string{"grvk"}
+                                // Validation errors
+				skip(ALL, "gm", ALL, "xfermodes3")
+                                // Allocation errors
+                                skip(ALL, "gm", ALL, "scaled_tilemodes")
+                                skip(ALL, "gm", ALL, "scaled_tilemodes_npot")
 			}
 		}
 
