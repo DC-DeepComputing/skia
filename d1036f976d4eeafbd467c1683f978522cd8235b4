@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00ed740c_4cd0d4f6",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-15T10:14:25Z",
+      "side": 1,
+      "message": "Renamed.",
+      "parentUuid": "82541df8_f4ec17b5",
+      "range": {
+        "startLine": 232,
+        "startChar": 3,
+        "endLine": 232,
+        "endChar": 16
+      },
+      "revId": "d1036f976d4eeafbd467c1683f978522cd8235b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef46b573_53f6ca0d",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-06-14T18:42:07Z",
       "side": 1,
       "message": "If we derive `Default` on `BridgeNormalizedCoords`, we can wrap this into one call to with_font:\n```rust\nlet bridge_normalized_coords \u003d font_ref\n    .with_font(|f| {\n        Some(BridgeNormalizedCoords {\n            normalized_coords: f.axes().location(variation_tuples.clone()),\n            filtered_user_coords: f.axes().filter(variation_tuples).collect(),\n        })\n    })\n    .unwrap_or_default();\nBox::new(bridge_normalized_coords)\n```",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 6
+      },
+      "revId": "d1036f976d4eeafbd467c1683f978522cd8235b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fa39ad1_65f50bab",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-15T10:14:25Z",
+      "side": 1,
+      "message": "Incorporated that suggestion.",
+      "parentUuid": "ef46b573_53f6ca0d",
       "range": {
         "startLine": 279,
         "startChar": 0,
