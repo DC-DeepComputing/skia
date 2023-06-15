@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ff28f09_69552db6",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-15T19:25:14Z",
+      "side": 1,
+      "message": "`std::move(_node);`",
+      "range": {
+        "startLine": 79,
+        "startChar": 19,
+        "endLine": 79,
+        "endChar": 24
+      },
+      "revId": "cc93a105d0e29df815b84541c3e6f91572851019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "953e940d_6135066b",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-15T19:25:14Z",
+      "side": 1,
+      "message": "`std::move(_adapter)`",
+      "range": {
+        "startLine": 80,
+        "startChar": 22,
+        "endLine": 80,
+        "endChar": 30
+      },
+      "revId": "cc93a105d0e29df815b84541c3e6f91572851019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40b55a04_7a29424a",
+        "filename": "modules/sksg/include/SkSGOpacityEffect.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-15T19:25:14Z",
+      "side": 1,
+      "message": "not needed anymore?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "cc93a105d0e29df815b84541c3e6f91572851019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
