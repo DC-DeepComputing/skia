@@ -34,50 +34,6 @@
 
 namespace skgpu::graphite {
 
-VkDescriptorSetLayout VulkanResourceProvider::DescTypeAndCountToVkDescSetLayout(
-        const VulkanSharedContext* ctxt,
-        SkSpan<DescTypeAndCount> requestedDescriptors) {
-
-    VkDescriptorSetLayout layout;
-    skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
-
-    for (size_t i = 0, j = 0; i < requestedDescriptors.size(); i++) {
-        if (requestedDescriptors[i].count != 0) {
-            VkDescriptorSetLayoutBinding* layoutBinding = &bindingLayouts.at(j++);
-            memset(layoutBinding, 0, sizeof(VkDescriptorSetLayoutBinding));
-            layoutBinding->binding = 0;
-            layoutBinding->descriptorType =
-                    VulkanDescriptorSet::DsTypeEnumToVkDs(requestedDescriptors[i].type);
-            layoutBinding->descriptorCount = requestedDescriptors[i].count;
-            // TODO: Obtain layout binding stage flags from visibility (vertex or shader)
-            layoutBinding->stageFlags = 0;
-            // TODO: Optionally set immutableSamplers here.
-            layoutBinding->pImmutableSamplers = nullptr;
-        }
-    }
-
-    VkDescriptorSetLayoutCreateInfo layoutCreateInfo;
-    memset(&layoutCreateInfo, 0, sizeof(VkDescriptorSetLayoutCreateInfo));
-    layoutCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    layoutCreateInfo.pNext = nullptr;
-    layoutCreateInfo.flags = 0;
-    layoutCreateInfo.bindingCount = bindingLayouts.size();
-    layoutCreateInfo.pBindings = &bindingLayouts.front();
-
-    VkResult result;
-    VULKAN_CALL_RESULT(ctxt->interface(),
-                       result,
-                       CreateDescriptorSetLayout(ctxt->device(),
-                                                 &layoutCreateInfo,
-                                                 nullptr,
-                                                 &layout));
-    if (result != VK_SUCCESS) {
-        SkDebugf("Failed to create VkDescriptorSetLayout\n");
-        layout = VK_NULL_HANDLE;
-    }
-    return layout;
-}
-
 VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                SingleOwner* singleOwner,
                                                uint32_t recorderID)
@@ -174,7 +130,8 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
                                         step->depthStencilSettings(),
                                         step->primitiveType(),
                                         fsSkSLInfo.fNumTexturesAndSamplers,
-                                        fsSkSLInfo.fBlendInfo);
+                                        fsSkSLInfo.fBlendInfo,
+                                        !step->uniforms().empty());
 }
 
 sk_sp<ComputePipeline> VulkanResourceProvider::createComputePipeline(const ComputePipelineDesc&) {
@@ -239,9 +196,8 @@ VulkanDescriptorSet* VulkanResourceProvider::findOrCreateDescriptorSet(
     // If we did not find an existing avilable desc set, allocate sets with the appropriate layout
     // and add them to the cache.
     auto pool = VulkanDescriptorPool::Make(this->vulkanSharedContext(), requestedDescriptors);
-    VkDescriptorSetLayout layout = DescTypeAndCountToVkDescSetLayout(
-            this->vulkanSharedContext(),
-            requestedDescriptors);
+    VkDescriptorSetLayout layout =
+            DescTypeAndCountToVkDescSetLayout(this->vulkanSharedContext(), requestedDescriptors);
 
     // Store the key of the first descriptor set so it can be easily accessed later.
     GraphiteResourceKey firstSetKey;
