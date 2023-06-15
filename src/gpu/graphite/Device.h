@@ -21,11 +21,6 @@
 
 class SkStrokeRec;
 
-namespace sktext::gpu {
-class AtlasSubRun;
-enum class Budgeted : bool;
-}  // namespace sktext::gpu
-
 namespace skgpu::graphite {
 
 class BoundsManager;
@@ -264,7 +259,6 @@ private:
     bool fDrawsOverlap;
 
     friend class ClipStack; // for recordDraw
-    friend class sktext::gpu::AtlasSubRun; // for drawAtlasSubRun
 };
 
 SK_MAKE_BITMASK_OPS(Device::DrawFlags)
