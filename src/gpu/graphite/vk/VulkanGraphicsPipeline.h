@@ -60,12 +60,14 @@ public:
 private:
     VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                            VkPipelineLayout,
+                           VkPipeline,
                            bool hasFragment,
                            bool hasStepUniforms);
 
     void freeGpuData() override;
 
-    VkPipelineLayout  fPipelineLayout;
+    VkPipelineLayout fPipelineLayout = VK_NULL_HANDLE;
+    VkPipeline fPipeline = VK_NULL_HANDLE;
     bool fHasFragment = false;
     bool fHasStepUniforms = false;
 };
