@@ -52,6 +52,48 @@ public:
                                 SkCanvas::SrcRectConstraint constraint,
                                 SkSamplingOptions sampling,
                                 SkTileMode tileMode);
+
+    static void DrawTiledBitmap_Graphite(SkCanvas*,
+                                         const SkBitmap&,
+                                         int tileSize,
+                                         const SkMatrix& srcToDst,
+                                         const SkRect& srcRect,
+                                         const SkIRect& clippedSrcIRect,
+                                         const SkPaint* paint,
+                                         SkCanvas::QuadAAFlags origAAFlags,
+//                                         const SkMatrix& localToDevice,
+                                         SkCanvas::SrcRectConstraint constraint,
+                                         SkSamplingOptions sampling);
+//                                         SkTileMode tileMode);
+
+    enum class ImageDrawMode {
+        // Src and dst have been restricted to the image content. May need to clamp, no need to
+        // decal.
+        kOptimized,
+        // Src and dst are their original sizes, requires use of a decal instead of plain clamping.
+        // This is used when a dst clip is provided and extends outside of the optimized dst rect.
+        kDecal,
+        // Src or dst are empty, or do not intersect the image content so don't draw anything.
+        kSkip
+    };
+
+    static ImageDrawMode OptimizeSampleArea(const SkISize& imageSize,
+                                            const SkRect& origSrcRect,
+                                            const SkRect& origDstRect,
+                                            const SkPoint dstClip[4],
+                                            SkRect* outSrcRect,
+                                            SkRect* outDstRect,
+                                            SkMatrix* outSrcToDst);
+
+    static bool CanDisableMipmap(const SkMatrix& viewM, const SkMatrix& localM);
+
+    static void Draw(SkCanvas*,
+                     const SkImage*,
+                     const SkRect& src,
+                     const SkRect& dst,
+                     const SkSamplingOptions&,
+                     const SkPaint*,
+                     SkCanvas::SrcRectConstraint);
 };
 
 } // namespace skgpu
