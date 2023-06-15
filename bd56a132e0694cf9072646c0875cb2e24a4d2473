@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "857ddff7_31460212",
+        "filename": "tools/viewer/MeshSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-15T14:47:57Z",
+      "side": 1,
+      "message": "Just curious (because this came up on skia-discuss recently): If you instead set the paint color to white, can you use `SkBlendMode::kModulate` here, and have it work in both cases? (I think we ignore the blend mode if the vertex colors are missing, and if they\u0027re present, we won\u0027t have a shader, so the white color will get multiplied in, and not change anything)?",
+      "revId": "bd56a132e0694cf9072646c0875cb2e24a4d2473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
