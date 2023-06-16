@@ -117,6 +117,30 @@
       },
       "revId": "e640601c0645e82e8ffb672df798404366da6644",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f33c460_2eb8e977",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-16T23:27:31Z",
+      "side": 1,
+      "message": "Following our offline conversation, I\u0027m now wondering if `Geometry::bounds()` should actually be the same as `Shape::bounds()` for an atlas shape (as it was earlier in this CL). An `AtlasShape` is always derived from a `Shape` after all and it makes sense to carry forward its local bounds as they should match what the client provided. OTOH `maskBounds()` is the device-space bounds of the shape restricted to the scissor rect.\n\nIs `Geometry::bounds()` used by code in a particular way that this needs to be compatible with? `AtlasShapeRenderStep` doesn\u0027t do anything with it since it just relies on `maskBounds()` and `atlasBounds()` (and it now computes `stepLocalCoords` by applying the inverse of the `localToDevice` transform to it).",
+      "parentUuid": "2eb1e753_6e83fce8",
+      "range": {
+        "startLine": 157,
+        "startChar": 55,
+        "endLine": 157,
+        "endChar": 61
+      },
+      "revId": "e640601c0645e82e8ffb672df798404366da6644",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
