@@ -16,6 +16,24 @@
       "message": "Do you know why this might be timing out? And could you add this to the other Metal window contexts?",
       "revId": "1cd4d6b49bcf15cfd412233317a68626c7dc636e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06fa4537_8a1f31c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-16T22:31:55Z",
+      "side": 1,
+      "message": "\u003e Do you know why this might be timing out?\n\nI\u0027ve been triggering this occasionally when the runtime of the compute shaders cause the command buffer to not finish at pace with vsync (this can happen if atlas draws require too many flushes due to large paths for instance). `nextDrawable` returns nil in this case.\n\nAn alternative is to set `allowsNextDrawableTimeout \u003d NO` when initializing the layer (https://developer.apple.com/documentation/quartzcore/cametallayer/2887086-allowsnextdrawabletimeout?language\u003dobjc) which makes `nextDrawable` block until the request is satisfied. Though I kind of prefer logging a message when we had to drop a frame in this case.\n\n\u003e And could you add this to the other Metal window contexts?\n\nWill do!",
+      "parentUuid": "94c1e4cc_34a9ffb7",
+      "revId": "1cd4d6b49bcf15cfd412233317a68626c7dc636e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
