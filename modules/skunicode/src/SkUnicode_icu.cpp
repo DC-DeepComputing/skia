@@ -307,11 +307,6 @@ class SkUnicode_icu : public SkUnicode {
     }
 
     bool isEmoji(SkUnichar unichar) override {
-        auto r1 = sk_u_hasBinaryProperty(unichar, UCHAR_EMOJI);
-        auto r2 = sk_u_hasBinaryProperty(unichar, UCHAR_EMOJI_COMPONENT);
-        auto r3 = sk_u_hasBinaryProperty(unichar, UCHAR_EMOJI_MODIFIER);
-        auto r4 = sk_u_hasBinaryProperty(unichar, UCHAR_EMOJI_MODIFIER_BASE);
-
         return sk_u_hasBinaryProperty(unichar, UCHAR_EMOJI) ||
                sk_u_hasBinaryProperty(unichar, UCHAR_EMOJI_COMPONENT);
     }
@@ -427,6 +422,9 @@ public:
                 }
                 if (this->isControl(unichar)) {
                     results->at(i) |= SkUnicode::kControl;
+                }
+                if (this->isIdeographic(unichar)) {
+                    results->at(i) |= SkUnicode::kIdeographic;
                 }
             }
         }
