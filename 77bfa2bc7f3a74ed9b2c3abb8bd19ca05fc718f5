@@ -16,6 +16,24 @@
       "message": "Do not include SkTypes here. Include the appropriate things from base (e.g. include/private/base/SkAPI.h)",
       "revId": "77bfa2bc7f3a74ed9b2c3abb8bd19ca05fc718f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4789e4ea_59efce51",
+        "filename": "include/private/base/SkPoint_impl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-16T20:15:32Z",
+      "side": 1,
+      "message": "Oops, good catch. I had noticed that in the previous CL, then forgot to check for it in this one.",
+      "parentUuid": "7f3c4bd6_1e0dfa2a",
+      "revId": "77bfa2bc7f3a74ed9b2c3abb8bd19ca05fc718f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
