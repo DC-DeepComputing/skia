@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69fd0b8d_5719aea4",
+        "filename": "modules/skottie/src/layers/FootageLayer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-16T18:05:36Z",
+      "side": 1,
+      "message": "Do we want to bin this behavior as we move Slots away from the ResourceProvider backed implementation?",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 116,
+        "endChar": 46
+      },
+      "revId": "ce7b000e0ba32de6f8296d3b01c35317aa6cc199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
