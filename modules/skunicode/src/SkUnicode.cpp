@@ -5,10 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "modules/skunicode/include/SkUnicode.h"
 #include "include/private/SkBitmaskEnum.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTemplates.h"
-#include "modules/skunicode/include/SkUnicode.h"
+#include <algorithm>
+#include <array>
+#include <utility>
 
 using namespace skia_private;
 
