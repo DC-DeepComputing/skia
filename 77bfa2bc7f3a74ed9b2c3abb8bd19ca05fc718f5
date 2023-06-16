@@ -34,6 +34,24 @@
       "parentUuid": "7f3c4bd6_1e0dfa2a",
       "revId": "77bfa2bc7f3a74ed9b2c3abb8bd19ca05fc718f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e6884f1_6d75de29",
+        "filename": "include/private/base/SkPoint_impl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-16T20:19:13Z",
+      "side": 1,
+      "message": "It\u0027s interesting that my command line IWYU didn\u0027t not tickle this problem.\nDone.",
+      "parentUuid": "7f3c4bd6_1e0dfa2a",
+      "revId": "77bfa2bc7f3a74ed9b2c3abb8bd19ca05fc718f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
