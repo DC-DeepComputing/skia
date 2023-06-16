@@ -33,6 +33,24 @@
       "message": "These don\u0027t have a pin, so we will end up sending infinity to the shader. That\u0027s never caused us any trouble, as far as I can tell.",
       "revId": "44c07eb71d25d9a0385b0defa3a7ea575418accc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e717481e_9c5515a8",
+        "filename": "src/gpu/ganesh/ops/GrOvalOpFactory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2016,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-16T20:50:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a0092d33_89a70664",
+      "revId": "44c07eb71d25d9a0385b0defa3a7ea575418accc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
