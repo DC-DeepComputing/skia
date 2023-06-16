@@ -27,14 +27,11 @@ class VulkanSharedContext;
 class VulkanDescriptorSet : public Resource {
 public:
     static sk_sp<VulkanDescriptorSet> Make(const VulkanSharedContext*,
-                                           sk_sp<VulkanDescriptorPool>,
-                                           const VkDescriptorSetLayout*);
+                                           sk_sp<VulkanDescriptorPool>);
 
     static VkDescriptorType DsTypeEnumToVkDs(DescriptorType type);
 
     VulkanDescriptorSet(const VulkanSharedContext*, VkDescriptorSet, sk_sp<VulkanDescriptorPool>);
-
-    VkDescriptorSetLayout layout() const { return fDescLayout; }
 
     const VkDescriptorSet* descriptorSet() { return &fDescSet; }
 
@@ -46,7 +43,6 @@ private:
     // is 0, that means all the descriptor sets that came from that pool are no longer needed, so
     // the pool can safely be destroyed.
     sk_sp<VulkanDescriptorPool> fPool;
-    VkDescriptorSetLayout       fDescLayout;
 };
 } // namespace skgpu::graphite
 

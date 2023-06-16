@@ -80,6 +80,7 @@ Context::~Context() {
         recorder->priv().setContext(nullptr);
     }
 #endif
+    fQueueManager->checkForFinishedWork(SyncToCpu::kYes);
 }
 
 bool Context::finishInitialization() {

@@ -13,17 +13,16 @@
 namespace skgpu::graphite {
 
 sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* ctxt,
-                                                     sk_sp<VulkanDescriptorPool> pool,
-                                                     const VkDescriptorSetLayout* layout) {
+                                                     sk_sp<VulkanDescriptorPool> pool) {
+    SkASSERT(pool && pool->descLayout() != VK_NULL_HANDLE);
     VkDescriptorSet descSet;
-
     VkDescriptorSetAllocateInfo dsAllocateInfo;
     memset(&dsAllocateInfo, 0, sizeof(VkDescriptorSetAllocateInfo));
     dsAllocateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     dsAllocateInfo.pNext = nullptr;
-    dsAllocateInfo.descriptorPool = *(pool->descPool());
-    dsAllocateInfo.descriptorSetCount = VulkanDescriptorPool::kMaxNumSets;
-    dsAllocateInfo.pSetLayouts = layout;
+    dsAllocateInfo.descriptorPool = pool->descPool();
+    dsAllocateInfo.descriptorSetCount = 1;
+    dsAllocateInfo.pSetLayouts = &pool->descLayout();
 
     VkResult result;
     VULKAN_CALL_RESULT(ctxt->interface(),
@@ -59,13 +58,11 @@ VulkanDescriptorSet::VulkanDescriptorSet(const VulkanSharedContext* ctxt,
                                          VkDescriptorSet set,
                                          sk_sp<VulkanDescriptorPool> pool)
         : Resource(ctxt, Ownership::kOwned, skgpu::Budgeted::kNo, /*gpuMemorySize=*/0)
-        , fDescSet (set)
-        , fPool (pool) {
-    fPool->ref();
+        , fDescSet(set)
+        , fPool(pool) {
 }
 
 void VulkanDescriptorSet::freeGpuData() {
-    fPool->unref();
 }
 
 } // namespace skgpu::graphite
