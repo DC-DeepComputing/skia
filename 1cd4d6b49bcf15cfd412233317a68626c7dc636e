@@ -34,6 +34,24 @@
       "parentUuid": "94c1e4cc_34a9ffb7",
       "revId": "1cd4d6b49bcf15cfd412233317a68626c7dc636e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff27eb4d_97a1b00c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-16T22:47:30Z",
+      "side": 1,
+      "message": "\u003e \u003e Do you know why this might be timing out?\n\u003e \n\u003e I\u0027ve been triggering this occasionally when the runtime of the compute shaders cause the command buffer to not finish at pace with vsync (this can happen if atlas draws require too many flushes due to large paths for instance). `nextDrawable` returns nil in this case.\n\u003e \n\u003e An alternative is to set `allowsNextDrawableTimeout \u003d NO` when initializing the layer (https://developer.apple.com/documentation/quartzcore/cametallayer/2887086-allowsnextdrawabletimeout?language\u003dobjc) which makes `nextDrawable` block until the request is satisfied. Though I kind of prefer logging a message when we had to drop a frame in this case.\n\u003e \n\u003e \u003e And could you add this to the other Metal window contexts?\n\u003e \n\u003e Will do!\n\nDone. I don\u0027t know yet if the Dawn/Metal backends are subject to the same problem. They work differently since Dawn internally manages a swapchain. We\u0027ll see if it reproduces on Dawn once we have compute enabled on that backend.",
+      "parentUuid": "06fa4537_8a1f31c8",
+      "revId": "1cd4d6b49bcf15cfd412233317a68626c7dc636e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
