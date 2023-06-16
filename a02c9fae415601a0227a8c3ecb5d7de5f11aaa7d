@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf5b37f0_851cd751",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-06-16T13:34:09Z",
+      "side": 1,
+      "message": "PTAL, same thing on the Skia side.",
+      "revId": "a02c9fae415601a0227a8c3ecb5d7de5f11aaa7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
