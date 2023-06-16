@@ -163,6 +163,11 @@ bool CommandBuffer::copyTextureToTexture(sk_sp<Texture> src,
                                          SkIPoint dstPoint) {
     SkASSERT(src);
     SkASSERT(dst);
+    if (src->textureInfo().isProtected() == Protected::kYes &&
+        dst->textureInfo().isProtected() != Protected::kYes) {
+        SkDebugf("Can't copy from protected memory to non-protected");
+        return false;
+    }
 
     if (!this->onCopyTextureToTexture(src.get(), srcRect, dst.get(), dstPoint)) {
         return false;
