@@ -52,6 +52,24 @@
       "parentUuid": "7f3c4bd6_1e0dfa2a",
       "revId": "77bfa2bc7f3a74ed9b2c3abb8bd19ca05fc718f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b66601c8_ba722f06",
+        "filename": "include/private/base/SkPoint_impl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-16T20:25:33Z",
+      "side": 1,
+      "message": "The command you run doesn\u0027t use a build which uses the base modules.\n\n```\nbazelisk build //src:base --config\u003denforce_iwyu --config\u003dfor_linux_x64_with_rbe --jobs\u003d100 --remote_download_minimal\n```\ndoes",
+      "parentUuid": "8e6884f1_6d75de29",
+      "revId": "77bfa2bc7f3a74ed9b2c3abb8bd19ca05fc718f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
