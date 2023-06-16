@@ -128,6 +128,30 @@
       },
       "revId": "87406f2abf8c26178e1254b7a05346195dc15c6c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a72dac30_635307c9",
+        "filename": "src/core/SkGeometry.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-16T18:09:11Z",
+      "side": 1,
+      "message": "Given that we\u0027ve already got code in `base/SkBezierCurves` that would benefit, it seems worthwhile. It\u0027s not really on the same level as the rest of base, but SkPoint is fairly trivial, so having it there seems better than forcing other code layout (or having poorly-typed functions, as is the case with the existing SkBezierCurves stuff).",
+      "parentUuid": "c8636120_672bcbef",
+      "range": {
+        "startLine": 550,
+        "startChar": 6,
+        "endLine": 550,
+        "endChar": 18
+      },
+      "revId": "87406f2abf8c26178e1254b7a05346195dc15c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
