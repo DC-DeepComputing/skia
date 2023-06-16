@@ -93,6 +93,30 @@
       },
       "revId": "e640601c0645e82e8ffb672df798404366da6644",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eb1e753_6e83fce8",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-16T19:10:39Z",
+      "side": 1,
+      "message": "Actually, `bounds()` are supposed to be in device space correct? `maskBounds()` has been transformed by `localToDevice` and clipped by the scissor so using this for `Geometry::bounds()` would be incorrect if that\u0027s the case.\n\nYou mentioned in your comment in https://skia-review.googlesource.com/c/skia/+/706896 that the `stepLocalCoords` are currently incorrect. For an atlas shape, should the local coords incorporate the scale/rotate/skew that are currently included in the mask bounds? Should it take into account the clip as well? Or should `stepLocalCoords` be the untransformed, unclipped, unexpanded (due to stroke style) bounds of the original shape?",
+      "parentUuid": "4ecbf301_e6fbce2f",
+      "range": {
+        "startLine": 157,
+        "startChar": 55,
+        "endLine": 157,
+        "endChar": 61
+      },
+      "revId": "e640601c0645e82e8ffb672df798404366da6644",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
