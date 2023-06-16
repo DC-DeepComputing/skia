@@ -359,6 +359,11 @@ bool VarDeclaration::ErrorCheckAndCoerce(const Context& context,
                                    "initializers are not permitted on interface block fields");
             return false;
         }
+        if (context.fConfig->strictES2Mode() && var.type().isOrContainsArray()) {
+            context.fErrors->error(value->fPosition, "initializers are not permitted on arrays "
+                                                     "(or structs containing arrays)");
+            return false;
+        }
         value = var.type().coerceExpression(std::move(value), context);
         if (!value) {
             return false;
