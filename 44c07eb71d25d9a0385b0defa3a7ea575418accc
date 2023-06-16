@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d63ee8ff_e3070990",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-16T20:44:23Z",
+      "side": 1,
+      "message": "This CL stops squelching divide-by-zero errors (from sanitizers) in places that call SkScalarInvert. The only instances that popped up while testing locally were in GrOvalOpFactory, and I think both spots are safe. Those are now directly using ieee_divide, to maintain the suppression. All other call-sites are now potentially going to produce errors (eg, via fuzzing). I\u0027m signing up to investigate and fix any that arise.",
+      "revId": "44c07eb71d25d9a0385b0defa3a7ea575418accc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0092d33_89a70664",
+        "filename": "src/gpu/ganesh/ops/GrOvalOpFactory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2016,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-16T20:44:23Z",
+      "side": 1,
+      "message": "These don\u0027t have a pin, so we will end up sending infinity to the shader. That\u0027s never caused us any trouble, as far as I can tell.",
+      "revId": "44c07eb71d25d9a0385b0defa3a7ea575418accc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
