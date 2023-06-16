@@ -33,6 +33,24 @@
       "message": "Not ready yet. I will ping when I\u0027m done.",
       "revId": "c181fe3f20c16146f1eef1efeba8a4bf993fdd45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dad376c4_0b1bf086",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-16T15:36:16Z",
+      "side": 1,
+      "message": "This is now ready for review.",
+      "parentUuid": "358a26ce_9ab8a2e3",
+      "revId": "c181fe3f20c16146f1eef1efeba8a4bf993fdd45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
