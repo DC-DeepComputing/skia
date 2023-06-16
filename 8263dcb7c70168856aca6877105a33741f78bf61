@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "830dd5bf_6f765cd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-16T18:42:57Z",
+      "side": 1,
+      "message": "I incorporated two additional changes into this CL:\n    1. The compute dispatch is now restricted to the occupied bounds of the atlas.\n    2. Each mask is now clipped by the atlas bounds. These bounds will correspond to the conservative bounds of the clip stack.",
+      "revId": "8263dcb7c70168856aca6877105a33741f78bf61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
