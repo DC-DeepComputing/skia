@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "311d8ce6_0d5e4d35",
+        "filename": "src/gpu/ganesh/SurfaceContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 10037
+      },
+      "writtenOn": "2023-06-16T19:47:11Z",
+      "side": 1,
+      "message": "Maybe constexpr int kSampleCnt \u003d 1;\n\nlike:\n\nhttps://source.chromium.org/chromium/chromium/src/+/refs/heads/main:third_party/skia/src/gpu/ganesh/GrThreadSafeCache.cpp;l\u003d333;drc\u003df80633b34538615fcb73515ad8c4bc56a748abfe;bpv\u003d1;bpt\u003d1",
+      "revId": "bc59b5f325f9362181b7cb95873d3ea31a3bca3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
