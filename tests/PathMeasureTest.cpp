@@ -211,6 +211,10 @@ DEF_TEST(PathMeasure, reporter) {
     test_small_segment();
     test_small_segment2();
     test_small_segment3();
+
+    // SkPathMeasure isn't copyable, but it should be move-able
+    SkPathMeasure meas2(std::move(meas));
+    meas = std::move(meas2);
 }
 
 DEF_TEST(PathMeasureConic, reporter) {
