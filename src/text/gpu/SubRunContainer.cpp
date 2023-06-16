@@ -78,13 +78,6 @@ class GrRecordingContext;
 using AtlasTextOp = skgpu::ganesh::AtlasTextOp;
 #endif  // defined(SK_GANESH)
 
-#if defined(SK_GRAPHITE)
-#include "src/gpu/graphite/Device.h"
-#include "src/gpu/graphite/DrawWriter.h"
-#include "src/gpu/graphite/Renderer.h"
-#include "src/gpu/graphite/RendererProvider.h"
-#endif
-
 using namespace skia_private;
 using namespace skglyph;
 
@@ -119,20 +112,6 @@ using MaskFormat = skgpu::MaskFormat;
 
 using namespace sktext;
 using namespace sktext::gpu;
-
-#if defined(SK_GRAPHITE)
-namespace gr = skgpu::graphite;
-
-using BindBufferInfo = gr::BindBufferInfo;
-using BufferType = gr::BufferType;
-using Device = gr::Device;
-using DrawWriter = gr::DrawWriter;
-using Recorder = gr::Recorder;
-using Renderer = gr::Renderer;
-using RendererProvider = gr::RendererProvider;
-using TextureProxy = gr::TextureProxy;
-using Transform = gr::Transform;
-#endif
 
 namespace {
 #if defined(SK_GANESH)
@@ -871,13 +850,9 @@ public:
 
     const VertexFiller* vertexFiller() const override { return &fVertexFiller; }
 
-#if defined(SK_GRAPHITE)
-
-    const Renderer* renderer(const RendererProvider* renderers) const override {
-        return renderers->bitmapText();
+    const void* renderer(const Renderers* r) const override {
+        return r->bitmapText();
     }
-
-#endif  // defined(SK_GRAPHITE)
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
         auto [reuse, _] = fVertexFiller.deviceRectAndCheckTransform(positionMatrix);
@@ -1061,13 +1036,10 @@ public:
 
     const VertexFiller* vertexFiller() const override { return &fVertexFiller; }
 
-#if defined(SK_GRAPHITE)
-
-    const Renderer* renderer(const RendererProvider* renderers) const override {
-        return renderers->bitmapText();
+    const void* renderer(const Renderers* r) const override {
+        return r->bitmapText();
     }
 
-#endif  // SK_GRAPHITE
 
 protected:
     SubRunType subRunType() const override { return SubRunType::kTransformMask; }
@@ -1302,13 +1274,9 @@ public:
 
     const VertexFiller* vertexFiller() const override { return &fVertexFiller; }
 
-#if defined(SK_GRAPHITE)
-
-    const Renderer* renderer(const RendererProvider* renderers) const override {
-        return renderers->sdfText(fUseLCDText);
+    const void* renderer(const Renderers* r) const override {
+        return r->sdfText(fUseLCDText);
     }
-
-#endif  // SK_GRAPHITE
 
 protected:
     SubRunType subRunType() const override { return SubRunType::kSDFT; }
