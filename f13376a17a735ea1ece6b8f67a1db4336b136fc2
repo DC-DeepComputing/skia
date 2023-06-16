@@ -16,6 +16,24 @@
       "message": "Out of line, because of pimpl.",
       "revId": "f13376a17a735ea1ece6b8f67a1db4336b136fc2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c033a27_b3605e09",
+        "filename": "src/core/SkContourMeasure.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-16T15:04:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "716525ab_a14e5375",
+      "revId": "f13376a17a735ea1ece6b8f67a1db4336b136fc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
