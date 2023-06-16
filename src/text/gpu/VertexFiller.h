@@ -30,7 +30,11 @@ class SkWriteBuffer;
 namespace skgpu {
 enum class MaskFormat : int;
 
-namespace graphite { class DrawWriter; }
+namespace graphite {
+class DrawWriter;
+class Rect;
+class Transform;
+}
 }
 
 namespace sktext::gpu {
@@ -95,10 +99,8 @@ public:
                           SkSpan<const Glyph*> glyphs,
                           SkScalar depth) const;
 
-#if defined(SK_GRAPHITE)
     std::tuple<skgpu::graphite::Rect, skgpu::graphite::Transform> boundsAndDeviceMatrix(
             const skgpu::graphite::Transform& localToDevice, SkPoint drawOrigin) const;
-#endif  // defined(SK_GRAPHITE)
 
     // Return true if the positionMatrix represents an integer translation. Return the device
     // bounding box of all the glyphs. If the bounding box is empty, then something went singular
