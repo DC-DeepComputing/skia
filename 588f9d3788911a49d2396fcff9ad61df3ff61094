@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "588f9d3788911a49d2396fcff9ad61df3ff61094",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ad67204_e3bc27dc",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-16T14:10:38Z",
+      "side": 1,
+      "message": "Once the compilation error here is fixed w/ castings, this change LGTM.\n\n```../../../../../../skia/src/gpu/graphite/vk/VulkanCommandBuffer.cpp:778:10: error: non-constant-expression cannot be narrowed from type \u0027unsigned int\u0027 to \u0027int32_t\u0027 (aka \u0027int\u0027) in initializer list [-Wc++11-narrowing]\n        {left, top},\n         ^~~~\n../../../../../../skia/src/gpu/graphite/vk/VulkanCommandBuffer.cpp:778:10: note: insert an explicit cast to silence this issue\n        {left, top},\n         ^~~~\n         static_cast\u003cint32_t\u003e( )\n../../../../../../skia/src/gpu/graphite/vk/VulkanCommandBuffer.cpp:778:16: error: non-constant-expression cannot be narrowed from type \u0027unsigned int\u0027 to \u0027int32_t\u0027 (aka \u0027int\u0027) in initializer list [-Wc++11-narrowing]\n        {left, top},\n               ^~~\n../../../../../../skia/src/gpu/graphite/vk/VulkanCommandBuffer.cpp:778:16: note: insert an explicit cast to silence this issue\n        {left, top},\n               ^~~\n               static_cast\u003cint32_t\u003e( )```",
+      "range": {
+        "startLine": 777,
+        "startChar": 0,
+        "endLine": 780,
+        "endChar": 6
+      },
+      "revId": "588f9d3788911a49d2396fcff9ad61df3ff61094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
