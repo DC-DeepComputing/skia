@@ -48,6 +48,10 @@ class TextAdapter;
 class TransformAdapter2D;
 class TransformAdapter3D;
 
+namespace {
+class OpacityAdapter;
+}
+
 using AnimatorScope = std::vector<sk_sp<Animator>>;
 
 class SceneGraphRevalidator final : public SkNVRefCnt<SceneGraphRevalidator> {
@@ -184,7 +188,8 @@ public:
     bool dispatchColorProperty(const sk_sp<sksg::Color>&,
                                const skjson::ObjectValue* jcolor = nullptr) const;
     bool dispatchOpacityProperty(const sk_sp<sksg::OpacityEffect>&,
-                                 const skjson::ObjectValue* jopacity) const;
+                                 const skjson::ObjectValue* jopacity,
+                                 const sk_sp<OpacityAdapter>) const;
     bool dispatchTextProperty(const sk_sp<TextAdapter>&,
                               const skjson::ObjectValue* jtext) const;
     bool dispatchTransformProperty(const sk_sp<TransformAdapter2D>&) const;
