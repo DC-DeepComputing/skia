@@ -17,8 +17,12 @@
 #include "src/core/SkDevice.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkSamplingPriv.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/image/SkImage_Base.h"
 
 #if GR_TEST_UTILS
+extern int gOverrideMaxTextureSize;
 std::atomic<int>  gNumTilesDrawn{0};
 #endif
 
@@ -170,18 +174,18 @@ bool TiledTextureUtils::ShouldTileImage(SkIRect conservativeClipBounds,
     return usedTileBytes * 2 < bmpSize;
 }
 
-void TiledTextureUtils::DrawTiledBitmap(SkBaseDevice* device,
-                                        const SkBitmap& bitmap,
-                                        int tileSize,
-                                        const SkMatrix& srcToDst,
-                                        const SkRect& srcRect,
-                                        const SkIRect& clippedSrcIRect,
-                                        const SkPaint& paint,
-                                        SkCanvas::QuadAAFlags origAAFlags,
-                                        const SkMatrix& localToDevice,
-                                        SkCanvas::SrcRectConstraint constraint,
-                                        SkSamplingOptions sampling,
-                                        SkTileMode tileMode) {
+void TiledTextureUtils::DrawTiledBitmap_Ganesh(SkBaseDevice* device,
+                                               const SkBitmap& bitmap,
+                                               int tileSize,
+                                               const SkMatrix& srcToDst,
+                                               const SkRect& srcRect,
+                                               const SkIRect& clippedSrcIRect,
+                                               const SkPaint& paint,
+                                               SkCanvas::QuadAAFlags origAAFlags,
+                                               const SkMatrix& localToDevice,
+                                               SkCanvas::SrcRectConstraint constraint,
+                                               SkSamplingOptions sampling,
+                                               SkTileMode tileMode) {
     if (sampling.isAniso()) {
         sampling = SkSamplingPriv::AnisoFallback(/* imageIsMipped= */ false);
     }

@@ -40,19 +40,6 @@ public:
                                 int* tileSize,
                                 SkIRect* clippedSubset);
 
-    static void DrawTiledBitmap(SkBaseDevice*,
-                                const SkBitmap&,
-                                int tileSize,
-                                const SkMatrix& srcToDst,
-                                const SkRect& srcRect,
-                                const SkIRect& clippedSrcIRect,
-                                const SkPaint& paint,
-                                SkCanvas::QuadAAFlags origAAFlags,
-                                const SkMatrix& localToDevice,
-                                SkCanvas::SrcRectConstraint constraint,
-                                SkSamplingOptions sampling,
-                                SkTileMode tileMode);
-
     enum class ImageDrawMode {
         // Src and dst have been restricted to the image content. May need to clamp, no need to
         // decal.
@@ -73,6 +60,38 @@ public:
                                             SkMatrix* outSrcToDst);
 
     static bool CanDisableMipmap(const SkMatrix& viewM, const SkMatrix& localM);
+
+    static void DrawTiledBitmap_Ganesh(SkBaseDevice*,
+                                       const SkBitmap&,
+                                       int tileSize,
+                                       const SkMatrix& srcToDst,
+                                       const SkRect& srcRect,
+                                       const SkIRect& clippedSrcIRect,
+                                       const SkPaint& paint,
+                                       SkCanvas::QuadAAFlags origAAFlags,
+                                       const SkMatrix& localToDevice,
+                                       SkCanvas::SrcRectConstraint constraint,
+                                       SkSamplingOptions sampling,
+                                       SkTileMode tileMode);
+
+    static void DrawTiledBitmap_Graphite(SkCanvas*,
+                                         const SkBitmap&,
+                                         int tileSize,
+                                         const SkMatrix& srcToDst,
+                                         const SkRect& srcRect,
+                                         const SkIRect& clippedSrcIRect,
+                                         const SkPaint*,
+                                         SkCanvas::QuadAAFlags origAAFlags,
+                                         SkCanvas::SrcRectConstraint,
+                                         SkSamplingOptions);
+
+    static void DrawImageRect_Graphite(SkCanvas*,
+                                       const SkImage*,
+                                       const SkRect& src,
+                                       const SkRect& dst,
+                                       const SkSamplingOptions&,
+                                       const SkPaint*,
+                                       SkCanvas::SrcRectConstraint);
 };
 
 } // namespace skgpu
