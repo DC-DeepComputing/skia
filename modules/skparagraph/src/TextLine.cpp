@@ -445,22 +445,51 @@ void TextLine::paintDecorations(ParagraphPainter* painter, SkScalar x, SkScalar 
 }
 
 void TextLine::justify(SkScalar maxWidth) {
-    // Count words and the extra spaces to spread across the line
-    // TODO: do it at the line breaking?..
+    struct Break {
+        const Cluster* fCluster;
+        bool fBreakBefore;
+    };
     size_t whitespacePatches = 0;
     SkScalar textLen = 0;
-    bool whitespacePatch = false;
-    this->iterateThroughClustersInGlyphsOrder(false, false,
-        [&whitespacePatches, &textLen, &whitespacePatch](const Cluster* cluster, bool ghost) {
-            if (cluster->isWhitespaceBreak()) {
-                if (!whitespacePatch) {
-                    whitespacePatch = true;
-                    ++whitespacePatches;
+    SkScalar whitespaceLen = 0;
+    std::vector<Break> breaks;
+    // Walk through all the clusters in line in visual order and
+    // collect information about whitespace breaks
+    this->iterateThroughClustersInGlyphsOrder(false, true,
+        [&](const Cluster* cluster, bool ghost) {
+
+            if (ghost) {
+                // Deal with the ghost spaces
+                auto ghostShift = maxWidth - this->fAdvance.fX;
+                if (cluster->run().leftToRight()) {
+                    this->shiftCluster(cluster, ghostShift, ghostShift);
                 }
+                this->fWidthWithSpaces += ghostShift;
+                return true;
+            }
+            if (!breaks.empty() && breaks.back().fCluster->isIdeographic()) {
+                // Whatever is the current cluster we have to add a break before
+                breaks.emplace_back(Break{cluster, true});
+                whitespacePatches += 1;
+            } else if (!breaks.empty() && breaks.back().fCluster->isWhitespaceBreak()) {
+                // Whatever is the current cluster we already have a break in place,
+                // no need for another one
+                breaks.emplace_back(Break{cluster, false});
+            } else if (cluster->isWhitespaceBreak()) {
+                // This is the first whitespace so it adds a break
+                breaks.emplace_back(Break{cluster, true});
+                whitespacePatches += 1;
+            } else if (cluster->isIdeographic()) {
+                // We add a break for CJK cluster
+                breaks.emplace_back(Break{cluster, true});
+                whitespacePatches += 1;
             } else {
-                whitespacePatch = false;
+                breaks.emplace_back(Break{cluster, false});
             }
             textLen += cluster->width();
+            if (cluster->isWhitespaceBreak()) {
+                whitespaceLen += cluster->width();
+            }
             return true;
         });
 
@@ -468,40 +497,29 @@ void TextLine::justify(SkScalar maxWidth) {
         return;
     }
 
-    SkScalar step = (maxWidth - textLen) / whitespacePatches;
+    // We take in account all whitespaces length, too
+    SkScalar step = (maxWidth - textLen + whitespaceLen) / whitespacePatches;
     SkScalar shift = 0;
 
-    // Deal with the ghost spaces
-    auto ghostShift = maxWidth - this->fAdvance.fX;
-    // Spread the extra whitespaces
-    whitespacePatch = false;
-    this->iterateThroughClustersInGlyphsOrder(false, true, [&](const Cluster* cluster, bool ghost) {
-
-        if (ghost) {
-            if (cluster->run().leftToRight()) {
-                this->shiftCluster(cluster, ghostShift, ghostShift);
-            }
-            return true;
-        }
+    for (auto& spaces : breaks) {
 
         auto prevShift = shift;
-        if (cluster->isWhitespaceBreak()) {
-            if (!whitespacePatch) {
+        if (spaces.fBreakBefore) {
+            if (spaces.fCluster->isWhitespaceBreak()) {
+                shift += step - spaces.fCluster->width();
+            } else {
                 shift += step;
-                whitespacePatch = true;
-                --whitespacePatches;
             }
-        } else {
-            whitespacePatch = false;
+            --whitespacePatches;
+        } else if (spaces.fCluster->isWhitespaceBreak()) {
+            // All the following spaces shift to nothing
+            shift -= spaces.fCluster->width();
         }
-        shiftCluster(cluster, shift, prevShift);
-        return true;
-    });
-
+        this->shiftCluster(spaces.fCluster, shift, prevShift);
+    }
     SkAssertResult(nearlyEqual(shift, maxWidth - textLen));
     SkASSERT(whitespacePatches == 0);
 
-    this->fWidthWithSpaces += ghostShift;
     this->fAdvance.fX = maxWidth;
 }
 
