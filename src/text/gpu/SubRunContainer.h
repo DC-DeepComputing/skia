@@ -50,19 +50,6 @@ class SurfaceDrawContext;
 }
 #endif
 
-#if defined(SK_GRAPHITE)
-#include "src/gpu/graphite/geom/Rect.h"
-#include "src/gpu/graphite/geom/SubRunData.h"
-#include "src/gpu/graphite/geom/Transform_graphite.h"
-
-namespace skgpu::graphite {
-class DrawWriter;
-class Recorder;
-class Renderer;
-class RendererProvider;
-}
-#endif
-
 namespace sktext::gpu {
 class GlyphVector;
 class Glyph;
@@ -74,6 +61,13 @@ using RegenerateAtlasDelegate = std::function<std::tuple<bool, int>(GlyphVector*
                                                                     int end,
                                                                     skgpu::MaskFormat,
                                                                     int padding)>;
+
+class Renderers {
+public:
+    virtual const void* bitmapText() const = 0;
+    virtual const void* sdfText(bool useLCDText) const = 0;
+    virtual ~Renderers() {}
+};
 
 // -- AtlasSubRun --------------------------------------------------------------------------------
 // AtlasSubRun is the API that AtlasTextOp uses to generate vertex data for drawing.
@@ -123,12 +117,7 @@ public:
 
     virtual const VertexFiller* vertexFiller() const = 0;
 
-#if defined(SK_GRAPHITE)
-
-    virtual const skgpu::graphite::Renderer* renderer(
-            const skgpu::graphite::RendererProvider*) const = 0;
-
-#endif
+    virtual const void* renderer(const Renderers*) const = 0;
 
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;
 };
