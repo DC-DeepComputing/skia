@@ -428,6 +428,9 @@ public:
                 if (this->isControl(unichar)) {
                     results->at(i) |= SkUnicode::kControl;
                 }
+                if (this->isIdeographic(unichar)) {
+                    results->at(i) |= SkUnicode::kIdeographic;
+                }
             }
         }
 
