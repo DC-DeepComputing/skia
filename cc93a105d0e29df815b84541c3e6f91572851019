@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d936bed_f2fea40d",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-16T14:45:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ff28f09_69552db6",
+      "range": {
+        "startLine": 79,
+        "startChar": 19,
+        "endLine": 79,
+        "endChar": 24
+      },
+      "revId": "cc93a105d0e29df815b84541c3e6f91572851019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "953e940d_6135066b",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60dad673_38d828de",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-16T14:45:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "953e940d_6135066b",
+      "range": {
+        "startLine": 80,
+        "startChar": 22,
+        "endLine": 80,
+        "endChar": 30
+      },
+      "revId": "cc93a105d0e29df815b84541c3e6f91572851019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40b55a04_7a29424a",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-06-15T19:25:14Z",
       "side": 1,
       "message": "not needed anymore?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "cc93a105d0e29df815b84541c3e6f91572851019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adb7f5f0_8fb2287d",
+        "filename": "modules/sksg/include/SkSGOpacityEffect.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-16T14:45:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40b55a04_7a29424a",
       "range": {
         "startLine": 12,
         "startChar": 0,
