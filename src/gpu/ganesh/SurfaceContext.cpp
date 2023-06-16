@@ -584,6 +584,10 @@ void SurfaceContext::asyncRescaleAndReadPixels(GrDirectContext* dContext,
         colorTypeOfFinalContext = dstCT;
         backendFormatOfFinalContext =
                 this->caps()->getDefaultBackendFormat(dstCT, GrRenderable::kYes);
+        if (!backendFormatOfFinalContext.isValid()) {
+            std::tie(colorTypeOfFinalContext, backendFormatOfFinalContext) =
+                    this->caps()->getFallbackColorTypeAndFormat(colorTypeOfFinalContext, 1);
+        }
     }
     auto readInfo = this->caps()->supportedReadPixelsColorType(colorTypeOfFinalContext,
                                                                backendFormatOfFinalContext,
