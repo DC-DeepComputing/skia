@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "750acad6_72d0983b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-16T22:35:34Z",
+      "side": 1,
+      "message": "This demonstrates the issue around the incorrect local coordinates that you identified. The AtlasShapeRenderStep CL in the stack should now do this correctly and these GMs should look right with that.",
+      "revId": "8a6f5d11a18c81cf53bb1074f983480f9f5fbb73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
