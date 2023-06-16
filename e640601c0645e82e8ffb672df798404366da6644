@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d1bcbba_0d49819b",
+        "filename": "src/gpu/graphite/geom/AtlasShape.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-16T18:43:13Z",
+      "side": 1,
+      "message": "Nope. This was here because I thought this was necessary for `Geometry::bounds()` to be correct but I removed it following your clarification.",
+      "parentUuid": "38f63561_0121e1e2",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 50
+      },
+      "revId": "e640601c0645e82e8ffb672df798404366da6644",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e30629e8_61f6489e",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-07T13:19:42Z",
       "side": 1,
       "message": "I think this should return `maskBounds()`, or `bounds()` should be updated to actually return the masked bounds.  The bounds returned by `Geometry::bounds` are meant to be relative to the transform that\u0027s applied in order to draw it. For regular shapes, that\u0027s the full local-to-device matrix, but for special geometries that\u0027s not necessarily the case. \n\nFor instance, sub runs have a decomposed transform and are sometimes already transformed into device space. In that case, the recorded draws use just a translation matrix and the subrun\u0027s bounds are effectively projected to device space (sans the translation).\n\nThis is pretty similar to how AtlasShapes are drawn, where their \"shape\" is actually the non-zero (or non-one for inverse-fills) portion of the coverage mask.",
+      "range": {
+        "startLine": 157,
+        "startChar": 55,
+        "endLine": 157,
+        "endChar": 61
+      },
+      "revId": "e640601c0645e82e8ffb672df798404366da6644",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ecbf301_e6fbce2f",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-16T18:43:13Z",
+      "side": 1,
+      "message": "Done. I initially assumed `bounds()` had to return the shape in its local coordinates but your explanation makes a lot of sense. I made this here return `maskBounds()` which makes it a bit more clear that `Geometry::bounds()` can have a different meaning for different kinds of geometry.",
+      "parentUuid": "e30629e8_61f6489e",
       "range": {
         "startLine": 157,
         "startChar": 55,
