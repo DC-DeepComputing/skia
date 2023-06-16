@@ -16,6 +16,24 @@
       "message": "It might be worth adding a second sentence: \"SkScalar was a typedef for float, so this has no practical impact on code that uses Skia.\"",
       "revId": "8a927fe900859cf2b1f11516d56d8f38f99681ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b65bd14_b978bb2a",
+        "filename": "relnotes/skpoint_float.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-16T19:33:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67721c0c_e1b0f250",
+      "revId": "8a927fe900859cf2b1f11516d56d8f38f99681ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
