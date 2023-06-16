@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67721c0c_e1b0f250",
+        "filename": "relnotes/skpoint_float.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-16T19:24:34Z",
+      "side": 1,
+      "message": "It might be worth adding a second sentence: \"SkScalar was a typedef for float, so this has no practical impact on code that uses Skia.\"",
+      "revId": "8a927fe900859cf2b1f11516d56d8f38f99681ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
