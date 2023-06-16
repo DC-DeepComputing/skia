@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e87e38c_e00dbbdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-16T15:52:15Z",
+      "side": 1,
+      "message": "Overall I think this is a good simplification, and avoids the complexities that James had run into for dst readback. I really want to avoid memory allocation overhead on a per-draw basis, so I think the API needs to be tweaked a bit to let us use an STArray for the common cases of a very small clip stack.",
+      "revId": "0a1fe680a1faa0eda382f26802c36ee8d3917d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73efcbe7_44eff7b8",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1210,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-16T15:52:15Z",
+      "side": 1,
+      "message": "This causes a heap allocation, but in practice most clip stacks will only be a few elements that influence a given shape. It would be nice to use STArray with an N of 2-4-ish to keep the common clip stack\u0027s affecting elements in the stack of `Device::drawGeometry`.\n\nThat would require moving the `elements` to an out parameter. STArray subclasses TArray I believe, so this could still take the param as `TArray*`. I think that would also mean ClipStateForDraw would go away and this function would just return a Clip, and updateClipStateForDraw() would take a Clip and a span.",
+      "range": {
+        "startLine": 1210,
+        "startChar": 0,
+        "endLine": 1210,
+        "endChar": 43
+      },
+      "revId": "0a1fe680a1faa0eda382f26802c36ee8d3917d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fada8e64_64b8ca4c",
+        "filename": "src/gpu/graphite/ClipStack_graphite.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-16T15:52:15Z",
+      "side": 1,
+      "message": "I don\u0027t think we need this anymore if we have RawElement publicly extend element now.",
+      "range": {
+        "startLine": 175,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 94
+      },
+      "revId": "0a1fe680a1faa0eda382f26802c36ee8d3917d31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
