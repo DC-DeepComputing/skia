@@ -176,7 +176,6 @@ bool SkUnicode::isHardBreak(SkUnichar utf8) {
 }
 
 bool SkUnicode::isEmoji(SkUnichar unichar) {
-    SkDEBUGFAIL("Not implemented");
     return false;
 }
 
