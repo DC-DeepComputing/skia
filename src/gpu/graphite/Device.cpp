@@ -1131,7 +1131,7 @@ const Renderer* Device::chooseRenderer(const Transform& localToDevice,
 
     if (geometry.isSubRun()) {
         SkASSERT(!requireMSAA);
-        return geometry.subRunData().subRun()->renderer(renderers);
+        return static_cast<const Renderer*>(geometry.subRunData().subRun()->renderer(renderers));
     } else if (geometry.isVertices()) {
         SkVerticesPriv info(geometry.vertices()->priv());
         return renderers->vertices(info.mode(), info.hasColors(), info.hasTexCoords());
