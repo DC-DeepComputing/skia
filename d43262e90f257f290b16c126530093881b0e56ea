@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44fb4f54_22290803",
+        "filename": "include/core/SkPathMeasure.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-16T14:49:46Z",
+      "side": 0,
+      "message": "This is implicitly deleted, because `SkContourMeasureIter` is just a `unique_ptr`.",
+      "revId": "d43262e90f257f290b16c126530093881b0e56ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
