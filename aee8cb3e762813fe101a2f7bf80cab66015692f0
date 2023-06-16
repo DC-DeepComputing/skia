@@ -22,6 +22,30 @@
       },
       "revId": "aee8cb3e762813fe101a2f7bf80cab66015692f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "035f5469_ab39eabd",
+        "filename": "src/gpu/graphite/render/AtlasShapeRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-16T22:37:13Z",
+      "side": 1,
+      "message": "Done. I\u0027ll upload a fix for BitmapTextRenderStep in a follow-up.",
+      "parentUuid": "320599ac_6d82064d",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 65
+      },
+      "revId": "aee8cb3e762813fe101a2f7bf80cab66015692f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
