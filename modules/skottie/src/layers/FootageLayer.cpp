@@ -115,8 +115,8 @@ AnimationBuilder::loadFootageAsset(const skjson::ObjectValue& defaultJImage) con
     // will extend the base ResourceProvider and provide a new loadImageAsset call that passes all
     // four arguments (path, name, id, slotID)
     auto asset = fResourceProvider->loadImageAsset(path->begin(),
-                                               name->begin(),
-                                               slotID
+                                                   name->begin(),
+                                                   slotID
                                                    ? slotID->begin()
                                                    : id->begin());
     if (!asset) {
@@ -125,6 +125,9 @@ AnimationBuilder::loadFootageAsset(const skjson::ObjectValue& defaultJImage) con
         return nullptr;
     }
 
+    if (slotID) {
+        asset = fSlotManager->trackImageValue(SkString(slotID->begin()), asset);
+    }
     const auto size = SkISize::Make(ParseDefault<int>((*jimage)["w"], 0),
                                     ParseDefault<int>((*jimage)["h"], 0));
     return fImageAssetCache.set(res_id, { std::move(asset), size });
