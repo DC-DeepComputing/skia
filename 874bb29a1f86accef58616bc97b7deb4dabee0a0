@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2917a2ae_c61908e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-16T17:35:39Z",
+      "side": 1,
+      "message": "I was getting a second copy of this file locally when I built, because the original was checked in with a lower-case `i`.",
+      "revId": "874bb29a1f86accef58616bc97b7deb4dabee0a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
