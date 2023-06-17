@@ -1,0 +1,21 @@
+uniform half4 colorGreen, colorRed;
+uniform float testArray[5];
+
+float sumArray(float a[5]) {
+    float sum = 0;
+    for (int i = 0; i < 5; ++i) {
+        sum += a[i];
+    }
+    return sum;
+}
+
+float sumArrayMutating(float a[5]) {
+    for (int i = 1; i < 5; ++i) {
+        a[0] += a[i];
+    }
+    return a[0];
+}
+
+half4 main(float2 coords) {
+    return sumArray(testArray) == sumArrayMutating(testArray) ? colorGreen : colorRed;
+}
