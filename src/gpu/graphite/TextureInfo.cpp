@@ -61,18 +61,26 @@ bool TextureInfo::operator==(const TextureInfo& that) const {
         return false;
     }
 
+    if (!isSpecCompatible(that)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool TextureInfo::isSpecCompatible(const TextureInfo& that) const {
     switch (fBackend) {
 #ifdef SK_DAWN
         case BackendApi::kDawn:
-            return fDawnSpec == that.fDawnSpec;
+            return fDawnSpec.isCompatible(that.fDawnSpec);
 #endif
 #ifdef SK_METAL
         case BackendApi::kMetal:
-            return fMtlSpec == that.fMtlSpec;
+            return fMtlSpec.isCompatible(that.fMtlSpec);
 #endif
 #ifdef SK_VULKAN
         case BackendApi::kVulkan:
-            return fVkSpec == that.fVkSpec;
+            return fVkSpec.isCompatible(that.fVkSpec);
 #endif
         default:
             return false;
