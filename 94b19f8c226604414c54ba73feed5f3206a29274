@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9de07701_b06904a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-20T17:49:24Z",
+      "side": 1,
+      "message": "While looking into issues around whether blink actually provided this information when printing this change turns out to be quite helpful.",
+      "revId": "94b19f8c226604414c54ba73feed5f3206a29274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
