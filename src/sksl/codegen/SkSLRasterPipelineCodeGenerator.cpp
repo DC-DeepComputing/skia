@@ -14,6 +14,7 @@
 #include "include/private/SkSLDefines.h"
 #include "include/private/base/SkTArray.h"
 #include "src/base/SkStringView.h"
+#include "src/base/SkUtils.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
@@ -67,6 +68,7 @@
 #include "src/sksl/transform/SkSLTransform.h"
 
 #include <algorithm>
+#include <climits>
 #include <cstddef>
 #include <cstdint>
 #include <float.h>
@@ -314,6 +316,18 @@ public:
                                                                const Expression& ifFalse);
     [[nodiscard]] bool pushVariableReference(const VariableReference& v);
 
+    /** Support methods for immutable data, which trade more slots for smaller code size. */
+    struct ImmutableValue {
+        Type::NumberKind fKind;
+        int32_t fBits;
+    };
+
+    [[nodiscard]] bool pushImmutableData(const Expression& e);
+    [[nodiscard]] bool pushPreexistingImmutableData(const TArray<ImmutableValue>& immutableValues);
+    [[nodiscard]] bool getImmutableValueForExpression(const Expression& expr,
+                                                      TArray<ImmutableValue>* immutableValues);
+    void storeImmutableValueToSlots(const TArray<ImmutableValue>& immutableValues, SlotRange slots);
+
     /** Pops an expression from the value stack and copies it into slots. */
     void popToSlotRange(SlotRange r) {
         fBuilder.pop_slots(r);
@@ -455,6 +469,8 @@ private:
     TArray<int> fRecycledStacks;
 
     THashMap<const FunctionDefinition*, Analysis::ReturnComplexity> fReturnComplexityMap;
+
+    THashMap<int32_t, THashSet<Slot>> fImmutableSlotMap;
 
     // `fInsideCompoundStatement` will be nonzero if we are currently writing statements inside of a
     // compound-statement Block. (Conceptually those statements should all count as one.)
@@ -1990,56 +2006,14 @@ bool Generator::writeImmutableVarDeclaration(const VarDeclaration& d) {
         return false;
     }
 
-    SlotRange varSlots = this->getVariableSlots(*d.var());
-    size_t numSlots = varSlots.count;
-
-    STArray<16, Type::NumberKind> kinds;
-    kinds.reserve_exact(numSlots);
-
-    STArray<16, double> values;
-    values.reserve_exact(numSlots);
-
-    for (size_t index = 0; index < numSlots; ++index) {
-        // Determine the number-kind of the slot; bail if it's non-numeric.
-        Type::NumberKind kind = initialValue->type().slotType(index).numberKind();
-        switch (kind) {
-            case Type::NumberKind::kFloat:
-            case Type::NumberKind::kSigned:
-            case Type::NumberKind::kUnsigned:
-            case Type::NumberKind::kBoolean:
-                kinds.push_back(kind);
-                break;
-            default:
-                return false;
-        }
-
-        // Determine the constant-value of the slot.
-        std::optional<double> v = initialValue->getConstantValue(index);
-        if (!v.has_value()) {
-            return false;
-        }
-        values.push_back(*v);
+    STArray<16, ImmutableValue> immutableValues;
+    if (!this->getImmutableValueForExpression(*initialValue, &immutableValues)) {
+        return false;
     }
 
     // Write out the constant value back to slots immutably. (This generates no runtime code.)
-    for (int index = 0; index < varSlots.count; ++index) {
-        switch (kinds[index]) {
-            case Type::NumberKind::kFloat:
-                fBuilder.store_immutable_value_f(varSlots.index + index, values[index]);
-                break;
-            case Type::NumberKind::kSigned:
-                fBuilder.store_immutable_value_i(varSlots.index + index, values[index]);
-                break;
-            case Type::NumberKind::kUnsigned:
-                fBuilder.store_immutable_value_u(varSlots.index + index, values[index]);
-                break;
-            case Type::NumberKind::kBoolean:
-                fBuilder.store_immutable_value_u(varSlots.index + index, values[index] ? ~0 : 0);
-                break;
-            default:
-                SkUNREACHABLE;
-        }
-    }
+    SlotRange varSlots = this->getVariableSlots(*d.var());
+    this->storeImmutableValueToSlots(immutableValues, varSlots);
 
     // In a debugging session, we still expect debug traces for this variable declaration to appear.
     if (this->shouldWriteTraceOps()) {
@@ -2539,7 +2513,124 @@ bool Generator::pushBinaryExpression(const Expression& left, Operator op, const 
                   : true;
 }
 
+bool Generator::getImmutableValueForExpression(const Expression& expr,
+                                               TArray<ImmutableValue>* immutableValues) {
+    if (!expr.supportsConstantValues()) {
+        return false;
+    }
+    size_t numSlots = expr.type().slotCount();
+    immutableValues->reserve_exact(numSlots);
+    for (size_t index = 0; index < numSlots; ++index) {
+        // Determine the constant-value of the slot; bail if it isn't constant.
+        std::optional<double> v = expr.getConstantValue(index);
+        if (!v.has_value()) {
+            return false;
+        }
+        // Determine the number-kind of the slot, and convert the value to its bit-representation.
+        Type::NumberKind kind = expr.type().slotType(index).numberKind();
+        double value = *v;
+        int32_t bits;
+        switch (kind) {
+            case Type::NumberKind::kFloat:
+                bits = sk_bit_cast<int32_t>((float)value);
+                break;
+            case Type::NumberKind::kSigned:
+                bits = (int32_t)value;
+                break;
+            case Type::NumberKind::kUnsigned:
+                bits = sk_bit_cast<int32_t>((uint32_t)value);
+                break;
+            case Type::NumberKind::kBoolean:
+                bits = value ? ~0 : 0;
+                break;
+            default:
+                return false;
+        }
+        immutableValues->push_back({kind, bits});
+    }
+    return true;
+}
+
+void Generator::storeImmutableValueToSlots(const TArray<ImmutableValue>& immutableValues,
+                                           SlotRange slots) {
+    for (int index = 0; index < slots.count; ++index) {
+        // Store the immutable value in its slot.
+        const Slot slot = slots.index++;
+        const int bits = immutableValues[index].fBits;
+        fBuilder.store_immutable_value_i(slot, bits);
+
+        // Keep track of every stored immutable value for potential later reuse.
+        fImmutableSlotMap[bits].add(slot);
+    }
+}
+
+bool Generator::pushPreexistingImmutableData(const TArray<ImmutableValue>& immutableValues) {
+    STArray<16, const THashSet<Slot>*> slotArray;
+    slotArray.reserve_exact(immutableValues.size());
+
+    // Find all the slots associated with each immutable-value bit representation.
+    // If a given bit-pattern doesn't exist anywhere in our program yet, we can stop searching.
+    for (const ImmutableValue& immutableValue : immutableValues) {
+        const THashSet<Slot>* slotsForValue = fImmutableSlotMap.find(immutableValue.fBits);
+        if (!slotsForValue) {
+            return false;
+        }
+        slotArray.push_back(slotsForValue);
+    }
+
+    // Look for the group with the fewest number of entries, since that can be searched in the
+    // least amount of effort.
+    int leastSlotIndex = 0, leastSlotCount = INT_MAX;
+    for (int index = 0; index < slotArray.size(); ++index) {
+        int currentCount = slotArray[index]->count();
+        if (currentCount < leastSlotCount) {
+            leastSlotIndex = index;
+            leastSlotCount = currentCount;
+        }
+    }
+
+    // See if we can reconstitute the value that we want with any of the data we've already got.
+    for (int slot : *slotArray[leastSlotIndex]) {
+        int firstSlot = slot - leastSlotIndex;
+        bool found = true;
+        for (int index = 0; index < slotArray.size(); ++index) {
+            if (!slotArray[index]->contains(firstSlot + index)) {
+                found = false;
+                break;
+            }
+        }
+        if (found) {
+            // We've found an exact match for the input value; push its range onto the stack.
+            fBuilder.push_slots({firstSlot, slotArray.size()});
+            return true;
+        }
+    }
+
+    // We didn't find any reusable slot ranges.
+    return false;
+}
+
+bool Generator::pushImmutableData(const Expression& e) {
+    STArray<16, ImmutableValue> immutableValues;
+    if (!this->getImmutableValueForExpression(e, &immutableValues)) {
+        return false;
+    }
+    if (this->pushPreexistingImmutableData(immutableValues)) {
+        return true;
+    }
+    SlotRange range = fProgramSlots.createSlots(e.description(),
+                                                e.type(),
+                                                e.fPosition,
+                                                /*isFunctionReturnValue=*/false);
+    this->storeImmutableValueToSlots(immutableValues, range);
+    fBuilder.push_slots(range);
+    return true;
+}
+
 bool Generator::pushConstructorCompound(const AnyConstructor& c) {
+    if (c.type().slotCount() > 1 && this->pushImmutableData(c)) {
+        return true;
+    }
     for (const std::unique_ptr<Expression> &arg : c.argumentSpan()) {
         if (!this->pushExpression(*arg)) {
             return unsupported();
