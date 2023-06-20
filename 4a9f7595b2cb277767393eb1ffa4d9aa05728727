@@ -34,6 +34,24 @@
       "parentUuid": "ecd572d8_c342f0e1",
       "revId": "4a9f7595b2cb277767393eb1ffa4d9aa05728727",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e8bb33c_f78db106",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-20T18:59:19Z",
+      "side": 1,
+      "message": "Done in cl 714064 and rebased.",
+      "parentUuid": "a714326a_779092ab",
+      "revId": "4a9f7595b2cb277767393eb1ffa4d9aa05728727",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
