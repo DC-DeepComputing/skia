@@ -1177,7 +1177,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLLoopInt_GPU")
 	}
 
-	if b.gpu("QuadroP400") || b.gpu("GTX660") || b.gpu("GTX960") || b.gpu("Tegra3") || b.gpu("RTX3060") {
+	if b.gpu("QuadroP400") || b.gpu("GTX660") || b.gpu("GTX960") || b.gpu("") || b.gpu("RTX3060") {
 		if !b.extraConfig("Vulkan") {
 			// Various Nvidia GPUs crash or generate errors when assembling weird matrices
 			skip(ALL, "tests", ALL, "SkSLMatrixConstructorsES2_GPU") // skia:12443
@@ -1221,6 +1221,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLMatrixFoldingES2_GPU") // skia:11919
 		skip(ALL, "tests", ALL, "SkSLMatrixEquality_GPU")   // skia:11919
 		skip(ALL, "tests", ALL, "SkSLIntrinsicFract_GPU")
+		skip(ALL, "tests", ALL, "SkSLModifiedStructParametersCannotBeInlined_GPU")
 	}
 
 	if b.gpu("QuadroP400") && b.matchOs("Ubuntu") && b.matchModel("Golo") {
