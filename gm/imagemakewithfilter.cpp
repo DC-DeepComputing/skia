@@ -351,6 +351,7 @@ private:
             // Clip before the saveLayer with the filter
             canvas->clipRect(SkRect::Make(clip));
 
+
             // Put the image filter on the layer
             SkPaint paint;
             paint.setImageFilter(filter);
