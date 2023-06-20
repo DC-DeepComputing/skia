@@ -45,7 +45,7 @@ private:
     }
     SkISize onISize() override { return SkISize::Make(fStarSize * 2, fStarSize * 2); }
 
-    void modifyGrContextOptions(GrContextOptions* ctxOptions) override {
+    void modifyGrContextOptions(GrContextOptions* ctxOptions) const override {
         ctxOptions->fAllowPathMaskCaching = true;
     }
 

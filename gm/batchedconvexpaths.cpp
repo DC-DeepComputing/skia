@@ -19,7 +19,7 @@ private:
     SkString onShortName() override { return SkString("batchedconvexpaths"); }
     SkISize onISize() override { return SkISize::Make(512, 512); }
 
-    void modifyGrContextOptions(GrContextOptions* ctxOptions) override {
+    void modifyGrContextOptions(GrContextOptions* ctxOptions) const override {
         // Ensure our paths don't go through the atlas path renderer.
         ctxOptions->fGpuPathRenderers &= ~GpuPathRenderers::kAtlas;
     }

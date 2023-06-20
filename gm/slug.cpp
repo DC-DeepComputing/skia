@@ -33,7 +33,7 @@ public:
     SlugGM(const char* txt) : fText(txt) {}
 
 protected:
-    void modifyGrContextOptions(GrContextOptions* ctxOptions) override {
+    void modifyGrContextOptions(GrContextOptions* ctxOptions) const override {
         ctxOptions->fSupportBilerpFromGlyphAtlas = true;
     }
 

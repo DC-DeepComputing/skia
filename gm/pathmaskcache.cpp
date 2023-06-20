@@ -110,7 +110,7 @@ protected:
         }
     }
 
-    void modifyGrContextOptions(GrContextOptions* options) override {
+    void modifyGrContextOptions(GrContextOptions* options) const override {
         options->fGpuPathRenderers = GpuPathRenderers::kNone;
         options->fAllowPathMaskCaching = true;
     }

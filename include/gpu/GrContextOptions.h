@@ -22,6 +22,8 @@ class SkExecutor;
 
 #if defined(SK_GANESH)
 struct SK_API GrContextOptions {
+    GrContextOptions() {}
+
     enum class Enable {
         /** Forces an option to be disabled. */
         kNo,
@@ -72,8 +74,6 @@ struct SK_API GrContextOptions {
     };
 
     using ShaderErrorHandler = skgpu::ShaderErrorHandler;
-
-    GrContextOptions() {}
 
     // Suppress prints for the GrContext.
     bool fSuppressPrints = false;

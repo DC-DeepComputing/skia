@@ -51,7 +51,7 @@ static sk_sp<SkTextBlob> make_blob(const SkString& text, const SkFont& font) {
 
 class FontRegenGM : public skiagm::GM {
 
-    void modifyGrContextOptions(GrContextOptions* options) override {
+    void modifyGrContextOptions(GrContextOptions* options) const override {
         options->fGlyphCacheTextureMaximumBytes = 0;
         options->fAllowMultipleGlyphCacheTextures = GrContextOptions::Enable::kNo;
     }

@@ -42,7 +42,7 @@ public:
         this->setBGColor(SK_ColorLTGRAY);
     }
 
-    void modifyGrContextOptions(GrContextOptions* options) override {
+    void modifyGrContextOptions(GrContextOptions* options) const override {
         options->fGlyphCacheTextureMaximumBytes = 0;
         options->fAllowMultipleGlyphCacheTextures = fAllowMultipleTextures;
     }
