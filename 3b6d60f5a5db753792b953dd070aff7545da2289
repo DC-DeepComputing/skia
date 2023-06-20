@@ -16,6 +16,144 @@
       "message": "Please take a look.",
       "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43bf7a77_a015d044",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T14:21:01Z",
+      "side": 1,
+      "message": "This term is redundant with the superset check.",
+      "range": {
+        "startLine": 32,
+        "startChar": 16,
+        "endLine": 32,
+        "endChar": 41
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7474f5c_2c2c40d6",
+        "filename": "include/private/gpu/graphite/MtlGraphiteTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T14:21:01Z",
+      "side": 1,
+      "message": "nit: same",
+      "range": {
+        "startLine": 72,
+        "startChar": 16,
+        "endLine": 72,
+        "endChar": 41
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "356ed794_3f175651",
+        "filename": "include/private/gpu/graphite/VulkanGraphiteTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T14:21:01Z",
+      "side": 1,
+      "message": "nit: same",
+      "range": {
+        "startLine": 48,
+        "startChar": 16,
+        "endLine": 48,
+        "endChar": 60
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "810fd1fc_25be50e7",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T14:21:01Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to call specCompatible as part of the \u003d\u003d operator, because that will start allowing texture specs that are supersets to be incorrectly considered equal.",
+      "range": {
+        "startLine": 64,
+        "startChar": 9,
+        "endLine": 64,
+        "endChar": 25
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a8d268c_e6f4886f",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T14:21:01Z",
+      "side": 1,
+      "message": "Do we need to have `isSpecCompatible` be distinct from a more all-inclusive `TextureInfo::isCompatible` method? For instance, I\u0027m wondering if we should be taking mipmapping and protected status into account for compatibility. The main thing is we want to allow supersets of usages to fulfill a promise\u0027d texture info, right?",
+      "range": {
+        "startLine": 71,
+        "startChar": 18,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99fa91ad_4d667d22",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T14:21:01Z",
+      "side": 1,
+      "message": "We should probably check `that.fBackend \u003d\u003d fBackend` too.",
+      "range": {
+        "startLine": 71,
+        "startChar": 18,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
