@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c4ef152_54e8cadb",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-20T13:12:06Z",
+      "side": 1,
+      "message": "I\u0027m confused. Why does the code need to remove all type information. This should never happen. The code doesn\u0027t show how these pointers are used, so I can\u0027t really understand what is going on. Returning a void* should only happen in a memory allocator.\n\nCan you explain why this needs to be void*?",
+      "range": {
+        "startLine": 52,
+        "startChar": 10,
+        "endLine": 52,
+        "endChar": 16
+      },
+      "revId": "7ee2c1f92508a3e721fdf55e701c0b2f198e52e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
