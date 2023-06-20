@@ -16,6 +16,40 @@
       "message": "Some SkParagraph API extension for Flutter...",
       "revId": "de8a478bb720afeb4d541dfe77245833a58c811c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60d874da_c3f87bfe",
+        "filename": "modules/skparagraph/include/Paragraph.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-20T18:52:11Z",
+      "side": 1,
+      "message": "This would at least need to also return what was left out because it didn\u0027t have a path.",
+      "revId": "de8a478bb720afeb4d541dfe77245833a58c811c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1119f04c_cb746333",
+        "filename": "modules/skparagraph/include/Paragraph.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-20T18:52:11Z",
+      "side": 1,
+      "message": "Knowing if a unicode code point has the \"emoji\" bit is really only interesting for shaping (it might be used when determining font fallback boundaries or other segmentation, though one needs to be very careful about that not to break up zwj graphemes). However, it has nothing to do with the glyph representation like having a path, bitmap, drawable, full length feature film, set of raised dots, a 3d rendering, or whatever.\n\nIn other words \"emoji\" code points and \"has colorful representation\" are completely orthogonal and should not be linked like this.",
+      "revId": "de8a478bb720afeb4d541dfe77245833a58c811c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
