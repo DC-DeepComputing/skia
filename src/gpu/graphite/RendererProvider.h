@@ -11,6 +11,7 @@
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkVertices.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/text/gpu/SubRunContainer.h"
 
 #ifdef SK_ENABLE_VELLO_SHADERS
 #include "src/gpu/graphite/compute/VelloRenderer.h"
@@ -31,7 +32,7 @@ class StaticBufferManager;
  * Because Renderers are immutable and the defined Renderers are created at context initialization,
  * RendererProvider is trivially thread-safe.
  */
-class RendererProvider {
+class RendererProvider : public sktext::gpu::Renderers {
 public:
     // TODO: Add configuration options to disable "optimization" renderers in favor of the more
     // general case, or renderers that won't be used by the application. When that's added, these
@@ -48,8 +49,8 @@ public:
     const Renderer* tessellatedStrokes() const { return &fTessellatedStrokes; }
 
     // Atlas'ed text rendering
-    const Renderer* bitmapText() const { return &fBitmapText; }
-    const Renderer* sdfText(bool useLCDText) const { return &fSDFText[useLCDText]; }
+    const Renderer* bitmapText() const override { return &fBitmapText; }
+    const Renderer* sdfText(bool useLCDText) const override { return &fSDFText[useLCDText]; }
 
     // Mesh rendering
     const Renderer* vertices(SkVertices::VertexMode mode, bool hasColors, bool hasTexCoords) const {
