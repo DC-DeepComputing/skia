@@ -93,7 +93,7 @@ public:
     virtual bool isRenderable(const TextureInfo&) const = 0;
     virtual bool isStorage(const TextureInfo&) const = 0;
 
-    int maxTextureSize() const { return fMaxTextureSize; }
+    int maxTextureSize() const { return fMaxTextureSize1; }
 
     virtual void buildKeyForTexture(SkISize dimensions,
                                     const TextureInfo&,
@@ -245,7 +245,7 @@ protected:
         skgpu::Swizzle fWriteSwizzle;
     };
 
-    int fMaxTextureSize = 0;
+    int fMaxTextureSize1 = 0;
     size_t fRequiredUniformBufferAlignment = 0;
     size_t fRequiredStorageBufferAlignment = 0;
     size_t fRequiredTransferBufferAlignment = 0;

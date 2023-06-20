@@ -31,6 +31,8 @@
 #include "src/core/SkBlurMask.h"
 #include "tools/ToolUtils.h"
 
+#include "include/gpu/graphite/ContextOptions.h"
+
 /** Creates an image with two one-pixel wide borders around a checkerboard. The checkerboard is 2x2
     checks where each check has as many pixels as is necessary to fill the interior. It returns
     the image and a src rect that bounds the checkerboard portion. */
@@ -309,6 +311,10 @@ protected:
     }
 
     void modifyGrContextOptions(GrContextOptions* options) override {
+        options->fMaxTextureSizeOverride = kMaxTextureSize;
+    }
+
+    void modifyGraphiteContextOptions(skgpu::graphite::ContextOptions* options) const override {
         options->fMaxTextureSizeOverride = kMaxTextureSize;
     }
 

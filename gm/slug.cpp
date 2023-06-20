@@ -25,6 +25,8 @@
 #include "include/private/chromium/Slug.h"
 #include "tools/ToolUtils.h"
 
+#include "include/gpu/graphite/ContextOptions.h"
+
 #if defined(SK_GANESH)
 #include "include/gpu/GrContextOptions.h"
 
@@ -35,6 +37,10 @@ public:
 protected:
     void modifyGrContextOptions(GrContextOptions* ctxOptions) override {
         ctxOptions->fSupportBilerpFromGlyphAtlas = true;
+    }
+
+    void modifyGraphiteContextOptions(skgpu::graphite::ContextOptions* options) const override {
+        options->fSupportBilerpFromGlyphAtlas = true;
     }
 
     void onOnceBeforeDraw() override {

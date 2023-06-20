@@ -36,6 +36,8 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tools/ToolUtils.h"
 
+#include "include/gpu/graphite/ContextOptions.h"
+
 using namespace skia_private;
 using MaskFormat = skgpu::MaskFormat;
 
@@ -54,6 +56,11 @@ class FontRegenGM : public skiagm::GM {
     void modifyGrContextOptions(GrContextOptions* options) override {
         options->fGlyphCacheTextureMaximumBytes = 0;
         options->fAllowMultipleGlyphCacheTextures = GrContextOptions::Enable::kNo;
+    }
+
+    void modifyGraphiteContextOptions(skgpu::graphite::ContextOptions* options) const override {
+        options->fGlyphCacheTextureMaximumBytes = 0;
+        options->fAllowMultipleGlyphCacheTextures = skgpu::graphite::ContextOptions::Enable::kNo;
     }
 
     SkString onShortName() override { return SkString("fontregen"); }

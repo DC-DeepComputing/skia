@@ -224,9 +224,9 @@ void MtlCaps::initGPUFamily(id<MTLDevice> device) {
 
 void MtlCaps::initCaps(const id<MTLDevice> device) {
     if (this->isMac() || fFamilyGroup >= 3) {
-        fMaxTextureSize = 16384;
+        fMaxTextureSize1 = 16384;
     } else {
-        fMaxTextureSize = 8192;
+        fMaxTextureSize1 = 8192;
     }
 
     // We use constant address space for our uniform buffers which has various alignment
