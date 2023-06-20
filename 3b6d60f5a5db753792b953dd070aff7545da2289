@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17550328_2d304aa6",
+        "filename": "include/private/gpu/graphite/DawnTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T17:20:13Z",
+      "side": 1,
+      "message": "Oops, removed.",
+      "parentUuid": "43bf7a77_a015d044",
+      "range": {
+        "startLine": 32,
+        "startChar": 16,
+        "endLine": 32,
+        "endChar": 41
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7474f5c_2c2c40d6",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "991f48b1_10ac4170",
+        "filename": "include/private/gpu/graphite/MtlGraphiteTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T17:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7474f5c_2c2c40d6",
+      "range": {
+        "startLine": 72,
+        "startChar": 16,
+        "endLine": 72,
+        "endChar": 41
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "356ed794_3f175651",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-06-20T14:21:01Z",
       "side": 1,
       "message": "nit: same",
+      "range": {
+        "startLine": 48,
+        "startChar": 16,
+        "endLine": 48,
+        "endChar": 60
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "815c25d4_ca575f0b",
+        "filename": "include/private/gpu/graphite/VulkanGraphiteTypesPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T17:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "356ed794_3f175651",
       "range": {
         "startLine": 48,
         "startChar": 16,
@@ -158,6 +230,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bb37392_75eb0b56",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T17:20:13Z",
+      "side": 1,
+      "message": "Thanks, updated TextureProxy to call isCompatible with similar equality checks before checking for spec compatibility.",
+      "parentUuid": "751de585_b1f62881",
+      "range": {
+        "startLine": 64,
+        "startChar": 9,
+        "endLine": 64,
+        "endChar": 25
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a8d268c_e6f4886f",
@@ -218,6 +314,54 @@
       "side": 1,
       "message": "Yeah, I guess this should also be called `isCompatible` to keep consistent. I haven\u0027t looked into mipmapping and protected status yet but yeah needed to allow supersets of usages to fulfill a promise\u0027d texture info.",
       "parentUuid": "5a8d268c_e6f4886f",
+      "range": {
+        "startLine": 71,
+        "startChar": 18,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e075469_3282af46",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T17:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69a609c8_43baa063",
+      "range": {
+        "startLine": 71,
+        "startChar": 18,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70e73c91_835357a6",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T17:20:13Z",
+      "side": 1,
+      "message": "Updated isCompatible to have this check as well.",
+      "parentUuid": "99fa91ad_4d667d22",
       "range": {
         "startLine": 71,
         "startChar": 18,
