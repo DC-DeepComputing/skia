@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7cbc384_983680d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-20T12:13:53Z",
+      "side": 1,
+      "message": "The new test is failing on Tegra3 devices:\n\nFailures:\n\t../../../../../../skia/tests/SkSLTest.cpp:270\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\n000000FF 000000FF\n000000FF 000000FF [SkSLModifiedStructParametersCannotBeInlined_GPU, OpenGLES]\n\t../../../../../../skia/tests/SkSLTest.cpp:270\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\n000000FF 000000FF\n000000FF 000000FF [SkSLModifiedStructParametersCannotBeInlined_GPU, OpenGLES]\n\t../../../../../../skia/tests/SkSLTest.cpp:270\tExpected (Unoptimized): solid green. Actual:\nRRGGBBAA RRGGBBAA\n000000FF 000000FF\n000000FF 000000FF [SkSLModifiedStructParametersCannotBeInlined_GPU, OpenGLES]\n\t../../../../../../skia/tests/SkSLTest.cpp:270\tExpected (Unoptimized): solid green. Actual:\nRRGGBBAA RRGGBBAA\n000000FF 000000FF\n000000FF 000000FF [SkSLModifiedStructParametersCannotBeInlined_GPU, OpenGLES]\n2 failures\n2 failures",
+      "revId": "9c2148cd1c82d267c8d22af013843a9dec4f33bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
