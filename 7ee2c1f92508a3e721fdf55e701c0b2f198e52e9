@@ -46,6 +46,30 @@
       },
       "revId": "7ee2c1f92508a3e721fdf55e701c0b2f198e52e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc865f34_6f695cd2",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-20T15:21:19Z",
+      "side": 1,
+      "message": "I agree with Herb, this should remain Renderer*. An alternative might be to have a static method in Graphite that takes a SubRun and infers the Renderer from the SubRunType, but I\u0027m not sure if we want to expose that outside of SubRun.",
+      "parentUuid": "0772f2f8_2b989474",
+      "range": {
+        "startLine": 52,
+        "startChar": 10,
+        "endLine": 52,
+        "endChar": 16
+      },
+      "revId": "7ee2c1f92508a3e721fdf55e701c0b2f198e52e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
