@@ -1,3 +1,6 @@
+[immutable slots]
+S(0).i = 0
+
 store_src_rg                   coords = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
 copy_uniform                   $4 = colorGreen(1)
@@ -11,7 +14,7 @@ jump                           jump +7 (label 1 at #17)
 label                          label 0
 copy_constant                  ₁ = 0x0000007B (1.723597e-43)
 copy_constant                  f = 0x4048F5C3 (3.14)
-copy_constant                  .i = 0
+copy_slot_unmasked             .i = S(0).i
 copy_4_uniforms                $0..3 = colorRed
 label                          label 0x00000003
 label                          label 0x00000001
