@@ -22,9 +22,10 @@ namespace {
 
 class SkCropImageFilter final : public SkImageFilter_Base {
 public:
-    SkCropImageFilter(const SkRect& cropRect, sk_sp<SkImageFilter> input)
+    SkCropImageFilter(const SkRect& cropRect, SkTileMode tileMode, sk_sp<SkImageFilter> input)
             : SkImageFilter_Base(&input, 1, /*cropRect=*/nullptr)
-            , fCropRect(cropRect) {
+            , fCropRect(cropRect)
+            , fTileMode(tileMode) {
         SkASSERT(cropRect.isFinite());
         SkASSERT(cropRect.isSorted());
     }
@@ -37,6 +38,8 @@ protected:
 private:
     friend void ::SkRegisterCropImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkCropImageFilter)
+
+    bool onAffectsTransparentBlack() const { return fTileMode != SkTileMode::kDecal; }
 
     skif::FilterResult onFilterImage(const skif::Context& context) const override;
 
@@ -58,6 +61,7 @@ private:
     skif::LayerSpace<SkIRect> cropRect(const skif::Mapping& mapping,
                                        const skif::LayerSpace<SkIRect>& outputBounds) const {
         auto crop = mapping.paramToLayer(fCropRect).roundOut();
+        // FIXME does this always apply when the tilemode is not decal?
         if (!crop.intersect(outputBounds)) {
             return skif::LayerSpace<SkIRect>::Empty();
         } else {
@@ -66,15 +70,18 @@ private:
     }
 
     skif::ParameterSpace<SkRect> fCropRect;
+    SkTileMode fTileMode;
 };
 
 } // end namespace
 
-sk_sp<SkImageFilter> SkMakeCropImageFilter(const SkRect& rect, sk_sp<SkImageFilter> input) {
+sk_sp<SkImageFilter> SkMakeCropImageFilter(const SkRect& rect,
+                                           SkTileMode tileMode,
+                                           sk_sp<SkImageFilter> input) {
     if (!rect.isFinite()) {
         return nullptr;
     }
-    return sk_sp<SkImageFilter>(new SkCropImageFilter(rect, std::move(input)));
+    return sk_sp<SkImageFilter>(new SkCropImageFilter(rect, tileMode, std::move(input)));
 }
 
 void SkRegisterCropImageFilterFlattenable() {
@@ -87,12 +94,19 @@ sk_sp<SkFlattenable> SkCropImageFilter::CreateProc(SkReadBuffer& buffer) {
     if (!buffer.isValid() || !buffer.validate(SkIsValidRect(cropRect))) {
         return nullptr;
     }
-    return SkMakeCropImageFilter(cropRect, common.getInput(0));
+
+    SkTileMode tileMode = SkTileMode::kDecal;
+    if (!buffer.isVersionLT(SkPicturePriv::kCropImageFilterSupportsTiling)) {
+        tileMode = buffer.readEnum(SkTileMode::kLast);
+    }
+
+    return SkMakeCropImageFilter(cropRect, tileMode, common.getInput(0));
 }
 
 void SkCropImageFilter::flatten(SkWriteBuffer& buffer) const {
     this->SkImageFilter_Base::flatten(buffer);
     buffer.writeRect(SkRect(fCropRect));
+    buffer.write((int32_t) fTileMode);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +120,7 @@ skif::FilterResult SkCropImageFilter::onFilterImage(const skif::Context& context
     // While the child filter may have exactly matched the requested 'cropBounds', it's not
     // necessarily the case, so applyCrop() ensures this is true while avoiding rendering a new
     // when possible.
-    return childOutput.applyCrop(context, cropBounds);
+    return childOutput.applyCrop(context, fTileMode, cropBounds);
 }
 
 // TODO(michaelludwig) - onGetInputLayerBounds() and onGetOutputLayerBounds() are tightly coupled
