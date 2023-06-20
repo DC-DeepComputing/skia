@@ -312,6 +312,10 @@ protected:
         options->fMaxTextureSizeOverride = kMaxTextureSize;
     }
 
+//    void modifyGraphiteContextOptions(skgpu::graphiteContextOptions* options) override {
+//        options->fMaxTextureSizeOverride = kMaxTextureSize;
+//    }
+
 private:
     inline static constexpr int kBlockSize = 70;
     inline static constexpr int kBlockSpacing = 12;

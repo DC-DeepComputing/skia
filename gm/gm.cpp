@@ -168,6 +168,7 @@ bool GM::animate(double nanos) { return this->onAnimate(nanos); }
 
 bool GM::runAsBench() const { return false; }
 void GM::modifyGrContextOptions(GrContextOptions* options) {}
+void GM::modifyGraphiteContextOptions(skgpu::graphite::ContextOptions*) {}
 
 std::unique_ptr<verifiers::VerifierList> GM::getVerifiers() const {
     // No verifiers by default.
