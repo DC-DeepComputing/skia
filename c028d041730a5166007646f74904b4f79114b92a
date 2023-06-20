@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07d2dca6_43801997",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-20T20:13:23Z",
+      "side": 1,
+      "message": "Why move any of this into the base SkUnicode (which should be more or less just an interface). It should be up to the impl to have something like this or not. If there are more impls that want this then they should share it, but it shouldn\u0027t go here.",
+      "revId": "c028d041730a5166007646f74904b4f79114b92a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
