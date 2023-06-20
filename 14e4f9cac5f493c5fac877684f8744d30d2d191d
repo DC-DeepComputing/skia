@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9abd5e6_a44bb2ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-20T15:12:06Z",
+      "side": 1,
+      "message": "LGTM depending on how the discussion on the fillInstanceData CL works out.",
+      "revId": "14e4f9cac5f493c5fac877684f8744d30d2d191d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
