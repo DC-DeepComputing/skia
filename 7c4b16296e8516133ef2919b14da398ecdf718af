@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62975a76_a96a8011",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:57:29Z",
+      "side": 1,
+      "message": "Looking at the gold diffs, CPU diffs are expected because of improved sampling logic and running through the SkSL version of the functions (it more closely matches the prior GPU output).\n\nThe `imagefiltersscaled` GM has changes on the non-identity scales because the old code was not transforming the surface scale parameter used to convert alpha into depth values, even though it *was* transforming the Z values of the lights. The new code is more consistent across zoom levels.\n\nThe `imagemakewithfilter` GM now finally has the lighting filter match between the `makeWithFilter` and the `ref` cases. Previously, the `makeWithFilter` cases did not expand out. The old implementation reported that it affected transparent black, but it\u0027s actual implementation was to only light the pixels that were produced by the child filter. With the hybrid clamp/decal logic in the new implementation, its layer behavior is not well behaved regardless of bounds hint or being filtered directly with makeWithFilter.\n\nThe `imagefiltersclipped` GM had to be updated to crop the output of the lighting filter to keep the results consistent with what had been generated before. The input filter to the lighting filter was just a 64x64 checkerboard image, and due to the onFilterImage issue noted above, that was also the output. Correctly affecting transparent black and flooding out to the actual clipRect() that the GM was using caused the different cells to overlap. And we\u0027d see an unexpected black boundary at the edge of the checkerboard image.  This is because the lighting filter only uses the alpha channel and the checkerboard was opaque, so flooding out to the clip highlights a Z change from 1 to 0 at the image boundary. Other than that, the normals always point straight out of the screen. Additionally, the specific lighting filters have the lights in the center, so these bevel edges at the image bounds have normals that all point away from the center, which is correct, but will evaluate to black when lighting them.\n\nThe decal/bevel boundary is not objectionable with more realistic lighting values or images that have interesting alpha content because you have a more gradual and natural transition from a bumpy surface to a smooth exterior region. It is also more attractive than clamping the alpha values across the exterior region, which creates streaks in the normal map that leads to un-intuitive behavior. Now the clamping is only done when the input content exactly matched the desired output content (vs. having the 1px buffer); this way the common SVG case uses clamped normals.",
+      "revId": "7c4b16296e8516133ef2919b14da398ecdf718af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
