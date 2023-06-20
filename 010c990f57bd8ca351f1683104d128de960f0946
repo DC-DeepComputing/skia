@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3aa4bc66_f5b13720",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-20T21:03:51Z",
+      "side": 1,
+      "message": "I did not predict that the -Oz build would actually get smaller, but here we are.",
+      "revId": "010c990f57bd8ca351f1683104d128de960f0946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
