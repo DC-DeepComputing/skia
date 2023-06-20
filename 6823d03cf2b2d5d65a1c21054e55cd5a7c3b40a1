@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe0b6be0_4e399cc3",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1323,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-20T14:28:46Z",
+      "side": 0,
+      "message": "I\u0027m not sure why it\u0027s necessary to remove this. If DrawWriter is forward declared then I believe this could be moved out of the SK_GRAPHITE block. It just seems odd to have to dig into the subrun for members which are then passed to a call in another member of subrun.",
+      "range": {
+        "startLine": 1323,
+        "startChar": 9,
+        "endLine": 1323,
+        "endChar": 25
+      },
+      "revId": "6823d03cf2b2d5d65a1c21054e55cd5a7c3b40a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
