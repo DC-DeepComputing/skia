@@ -16,6 +16,23 @@
       "message": "This structure is really unfortunate, as it invalidates the fuzzer corpus. Not sure how to weigh that against the annoyance of assertions in debug, though?",
       "revId": "b30aaa93591c3728b83304f27ae8603d9883c22a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0750ac9d_4cb174a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T15:32:39Z",
+      "side": 1,
+      "message": "Thanks Brian!",
+      "revId": "b30aaa93591c3728b83304f27ae8603d9883c22a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
