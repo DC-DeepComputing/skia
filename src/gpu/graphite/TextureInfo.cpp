@@ -44,9 +44,6 @@ TextureInfo& TextureInfo::operator=(const TextureInfo& that) {
 }
 
 bool TextureInfo::operator==(const TextureInfo& that) const {
-    if (!this->isValid() && !that.isValid()) {
-        return true;
-    }
     if (!this->isValid() || !that.isValid()) {
         return false;
     }
@@ -73,6 +70,42 @@ bool TextureInfo::operator==(const TextureInfo& that) const {
 #ifdef SK_VULKAN
         case BackendApi::kVulkan:
             return fVkSpec == that.fVkSpec;
+#endif
+        default:
+            return false;
+    }
+}
+
+bool TextureInfo::isCompatible(const TextureInfo& that) const {
+    if (!this->isValid() && !that.isValid()) {
+        return true;
+    }
+    if (!this->isValid() || !that.isValid()) {
+        return false;
+    }
+
+    if (fSampleCount != that.fSampleCount ||
+        fMipmapped != that.fMipmapped ||
+        fProtected != that.fProtected) {
+        return false;
+    }
+
+    if (fBackend != that.fBackend) {
+        return false;
+    }
+
+    switch (fBackend) {
+#ifdef SK_DAWN
+        case BackendApi::kDawn:
+            return fDawnSpec.isCompatible(that.fDawnSpec);
+#endif
+#ifdef SK_METAL
+        case BackendApi::kMetal:
+            return fMtlSpec.isCompatible(that.fMtlSpec);
+#endif
+#ifdef SK_VULKAN
+        case BackendApi::kVulkan:
+            return fVkSpec.isCompatible(that.fVkSpec);
 #endif
         default:
             return false;
