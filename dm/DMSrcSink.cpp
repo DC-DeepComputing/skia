@@ -157,6 +157,13 @@ void GMSrc::modifyGrContextOptions(GrContextOptions* options) const {
     gm->modifyGrContextOptions(options);
 }
 
+#if defined(SK_GRAPHITE)
+void GMSrc::modifyGraphiteContextOptions(skgpu::graphite::ContextOptions* options) const {
+    std::unique_ptr<skiagm::GM> gm(fFactory());
+    gm->modifyGraphiteContextOptions(options);
+}
+#endif
+
 std::unique_ptr<skiagm::verifiers::VerifierList> GMSrc::getVerifiers() const {
     std::unique_ptr<skiagm::GM> gm(fFactory());
     return gm->getVerifiers();
@@ -2112,9 +2119,13 @@ Result GraphiteSink::draw(const Src& src,
                           SkBitmap* dst,
                           SkWStream* dstStream,
                           SkString* log) const {
+    skgpu::graphite::ContextOptions options;
+
+    src.modifyGraphiteContextOptions(&options);
+
     SkImageInfo ii = SkImageInfo::Make(src.size(), this->colorInfo());
 
-    skiatest::graphite::ContextFactory factory;
+    skiatest::graphite::ContextFactory factory(options);
     auto [_, context] = factory.getContextInfo(fContextType);
     if (!context) {
         return Result::Fatal("Could not create a context.");
