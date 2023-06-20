@@ -22,6 +22,30 @@
       },
       "revId": "6823d03cf2b2d5d65a1c21054e55cd5a7c3b40a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e99ee5b_065047c5",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1323,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-20T15:19:44Z",
+      "side": 0,
+      "message": "It causes a linking error because VertexFiller::fillInstanceData(DrawWriter* ...) is only implemented in graphite code. Thus, I exposed the necessary member accessors so that fillInstanceData is only called from Graphite code (BitmapTextRenderStep.cpp and SDFTextRenderStep.cpp)\n\n```\nUndefined symbols for architecture arm64:\n  \"sktext::gpu::VertexFiller::fillInstanceData(skgpu::graphite::DrawWriter*, int, int, unsigned short, int, SkSpan\u003csktext::gpu::Glyph const*\u003e, float) const\", referenced from:\n      (anonymous namespace)::DirectMaskSubRun::fillInstanceData(skgpu::graphite::DrawWriter*, int, int, int, float) const in libskia.a(gpu_shared.SubRunContainer.o)\n      (anonymous namespace)::SDFTSubRun::fillInstanceData(skgpu::graphite::DrawWriter*, int, int, int, float) const in libskia.a(gpu_shared.SubRunContainer.o)\n      (anonymous namespace)::TransformedMaskSubRun::fillInstanceData(skgpu::graphite::DrawWriter*, int, int, int, float) const in libskia.a(gpu_shared.SubRunContainer.o)\n```\n\nThe linker is not smart enough to know that AtlasSubRun::fillInstanceData is only called from Graphite code and not to worry that it is missing for Ganesh.",
+      "parentUuid": "fe0b6be0_4e399cc3",
+      "range": {
+        "startLine": 1323,
+        "startChar": 9,
+        "endLine": 1323,
+        "endChar": 25
+      },
+      "revId": "6823d03cf2b2d5d65a1c21054e55cd5a7c3b40a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6617004a_1d2dc226",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1230,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-20T15:19:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "579b8e28_860d9e9d",
+      "range": {
+        "startLine": 1230,
+        "startChar": 59,
+        "endLine": 1230,
+        "endChar": 60
+      },
+      "revId": "f649ab92fd8e107d59f3b825b48f4692defaf9ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58cbac6e_8900fb6d",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-20T14:28:46Z",
       "side": 1,
       "message": "FYI, there will be a Ganesh-only version of this as well, and correspondingly a Graphite-only version of fillVertices. So we\u0027ll need a GaneshVertexFiller.cpp at some point.",
+      "range": {
+        "startLine": 91,
+        "startChar": 9,
+        "endLine": 91,
+        "endChar": 25
+      },
+      "revId": "f649ab92fd8e107d59f3b825b48f4692defaf9ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e5974ba_078f3942",
+        "filename": "src/text/gpu/VertexFiller.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-20T15:19:44Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "58cbac6e_8900fb6d",
       "range": {
         "startLine": 91,
         "startChar": 9,
