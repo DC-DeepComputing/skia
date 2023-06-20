@@ -152,6 +152,30 @@
       },
       "revId": "87406f2abf8c26178e1254b7a05346195dc15c6c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47e25c40_f0b509e4",
+        "filename": "src/core/SkGeometry.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-20T14:43:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a72dac30_635307c9",
+      "range": {
+        "startLine": 550,
+        "startChar": 6,
+        "endLine": 550,
+        "endChar": 18
+      },
+      "revId": "87406f2abf8c26178e1254b7a05346195dc15c6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
