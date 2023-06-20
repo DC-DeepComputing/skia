@@ -33,6 +33,24 @@
       "message": "I think this is okay. In SurfaceContext::rescale() we use the fallback colortype and format when setting up the temporary SurfaceFillContext so they should end up being the same types.",
       "revId": "9dd2d9309118e92aa812cb950f5d63a4cf216a67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52de0e3b_f46bf6b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-20T16:34:23Z",
+      "side": 1,
+      "message": "And we should do a color conversion from tempFC to the dest colorType in asyncReadPixels, if necessary.",
+      "parentUuid": "f2e83cb8_339257ce",
+      "revId": "9dd2d9309118e92aa812cb950f5d63a4cf216a67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
