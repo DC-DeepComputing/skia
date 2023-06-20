@@ -112,6 +112,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5eea76c2_f6ac444d",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T15:18:11Z",
+      "side": 1,
+      "message": "Yeah, that makes sense. I could update the TextureProxy callsite to call isCompatible on TextureInfo instead of the \u003d\u003d operator in SkAssert, would that be better?",
+      "parentUuid": "810fd1fc_25be50e7",
+      "range": {
+        "startLine": 64,
+        "startChar": 9,
+        "endLine": 64,
+        "endChar": 25
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a8d268c_e6f4886f",
         "filename": "src/gpu/graphite/TextureInfo.cpp",
         "patchSetId": 2
@@ -146,6 +170,30 @@
       "writtenOn": "2023-06-20T14:21:01Z",
       "side": 1,
       "message": "We should probably check `that.fBackend \u003d\u003d fBackend` too.",
+      "range": {
+        "startLine": 71,
+        "startChar": 18,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "3b6d60f5a5db753792b953dd070aff7545da2289",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69a609c8_43baa063",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T15:18:11Z",
+      "side": 1,
+      "message": "Yeah, I guess this should also be called `isCompatible` to keep consistent. I haven\u0027t looked into mipmapping and protected status yet but yeah needed to allow supersets of usages to fulfill a promise\u0027d texture info.",
+      "parentUuid": "5a8d268c_e6f4886f",
       "range": {
         "startLine": 71,
         "startChar": 18,
