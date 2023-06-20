@@ -16,6 +16,23 @@
       "message": "Please take a look.",
       "revId": "2621445d4bcd417df71526d60e014866c86044f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7be8bade_a45f1165",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6240
+      },
+      "writtenOn": "2023-06-20T14:57:44Z",
+      "side": 1,
+      "message": "Looks like someone beat me to it: https://skia-review.googlesource.com/c/skia/+/713236\n\nSorry for the noise.",
+      "revId": "2621445d4bcd417df71526d60e014866c86044f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
