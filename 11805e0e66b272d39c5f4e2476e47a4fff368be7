@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc510248_7caace09",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T17:42:06Z",
+      "side": 1,
+      "message": "Yeah, I was wondering if we still wanted these checks on isValid() too but decided to keep it as didn\u0027t know the implications. Removed the first if check, thanks.",
+      "parentUuid": "58968bd2_94504f9e",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 5
+      },
+      "revId": "11805e0e66b272d39c5f4e2476e47a4fff368be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a0b73ea_4fa6c5a5",
@@ -71,6 +95,30 @@
       "writtenOn": "2023-06-20T17:31:25Z",
       "side": 1,
       "message": "nit: replace with \" incompatible with \"",
+      "range": {
+        "startLine": 183,
+        "startChar": 32,
+        "endLine": 183,
+        "endChar": 34
+      },
+      "revId": "11805e0e66b272d39c5f4e2476e47a4fff368be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cd81437_3a2eea7e",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T17:42:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a0b73ea_4fa6c5a5",
       "range": {
         "startLine": 183,
         "startChar": 32,
