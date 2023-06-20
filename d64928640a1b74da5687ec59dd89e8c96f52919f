@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "effd1b3b_bda7b2e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-20T20:36:01Z",
+      "side": 1,
+      "message": "I saw that the first point was landed in `main` with I694cd3ebb0a7e08da975838bfc4f403e65d14816.\n\nWhat about the other changes? Are they needed in `main`? Did they land separately in `main`? Note that we don\u0027t automatically merge anything from `android/u-release` to `main`.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 21
+      },
+      "revId": "d64928640a1b74da5687ec59dd89e8c96f52919f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
