@@ -94,6 +94,30 @@
       },
       "revId": "6823d03cf2b2d5d65a1c21054e55cd5a7c3b40a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5519c096_d228408d",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1323,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-20T16:49:37Z",
+      "side": 0,
+      "message": "Oh yeah -- I had considered that possibility as well. There\u0027s some other refactoring involved but I think that could work.",
+      "parentUuid": "08ea302d_eafa36a6",
+      "range": {
+        "startLine": 1323,
+        "startChar": 9,
+        "endLine": 1323,
+        "endChar": 25
+      },
+      "revId": "6823d03cf2b2d5d65a1c21054e55cd5a7c3b40a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
