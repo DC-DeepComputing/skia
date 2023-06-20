@@ -63,11 +63,11 @@ public:
     }
 
     // Returns r.width()/2 but divides first to avoid width() overflowing.
-    static float HalfWidth(const SkRect& r) {
+    static constexpr float HalfWidth(const SkRect& r) {
         return sk_float_midpoint(-r.fLeft, r.fRight);
     }
     // Returns r.height()/2 but divides first to avoid height() overflowing.
-    static float HalfHeight(const SkRect& r) {
+    static constexpr float HalfHeight(const SkRect& r) {
         return sk_float_midpoint(-r.fTop, r.fBottom);
     }
 

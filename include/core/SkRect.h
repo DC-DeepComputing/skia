@@ -786,7 +786,7 @@ struct SK_API SkRect {
 
         @return  midpoint on x-axis
     */
-    float centerX() const {
+    constexpr float centerX() const {
         return sk_float_midpoint(fLeft, fRight);
     }
 
@@ -795,14 +795,14 @@ struct SK_API SkRect {
 
         @return  midpoint on y-axis
     */
-    float centerY() const {
+    constexpr float centerY() const {
         return sk_float_midpoint(fTop, fBottom);
     }
 
     /** Returns the point this->centerX(), this->centerY().
         @return  rectangle center
      */
-    SkPoint center() const { return {this->centerX(), this->centerY()}; }
+    constexpr SkPoint center() const { return {this->centerX(), this->centerY()}; }
 
     /** Returns true if all members in a: fLeft, fTop, fRight, and fBottom; are
         equal to the corresponding members in b.
