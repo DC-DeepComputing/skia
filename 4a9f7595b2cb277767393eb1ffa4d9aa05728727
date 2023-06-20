@@ -16,6 +16,24 @@
       "message": "This might need an explicit cast back to float (for MSVC?) (to avoid warnings about implicit narrowing).",
       "revId": "4a9f7595b2cb277767393eb1ffa4d9aa05728727",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a714326a_779092ab",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-20T18:43:52Z",
+      "side": 1,
+      "message": "Actually. this code is missing an inline. I have a CL just for midpoint incoming with a couple of tests.",
+      "parentUuid": "ecd572d8_c342f0e1",
+      "revId": "4a9f7595b2cb277767393eb1ffa4d9aa05728727",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
