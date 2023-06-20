@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aac568e_5d55d836",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-20T21:32:41Z",
+      "side": 1,
+      "message": "Adding SK_API to the definition might work too, but I think this is cleaner.",
+      "revId": "b8e2e03aca936a7b4d744b1c2d9d62ea4731600f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9da350c_fcc1b17d",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-20T21:32:41Z",
+      "side": 1,
+      "message": "Nice catch -- I assume this is not being used/tested?",
+      "range": {
+        "startLine": 469,
+        "startChar": 10,
+        "endLine": 469,
+        "endChar": 25
+      },
+      "revId": "b8e2e03aca936a7b4d744b1c2d9d62ea4731600f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
