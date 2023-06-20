@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae93411e_6498eabd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T13:55:22Z",
+      "side": 1,
+      "message": "I\u0027m looping in Jim and Rob to weigh on this as well. From a mile high POV, I\u0027m not opposed to something like this, but I think it can actually lead to subtle issues down the line with how the asyncRescale API is currently written.\n\nThe async callback does not take the final SkImageInfo, color format, etc. as parameters since it is written currently to allow the caller to assume that on success means the color format of the data matches what was passed to the function. If we apply this fallback, we need to ensure that this is correctly propagated to the callers so that the wrong format isn\u0027t carried forward.\n\nThis also doesn\u0027t seem to be problematic to me, but will require adjustments to the public API (AsyncReadResult in particular I believe).",
+      "revId": "9dd2d9309118e92aa812cb950f5d63a4cf216a67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
