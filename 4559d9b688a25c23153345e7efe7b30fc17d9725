@@ -39,6 +39,30 @@
       },
       "revId": "4559d9b688a25c23153345e7efe7b30fc17d9725",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82023578_3a76e4db",
+        "filename": "src/base/SkFloatingPoint.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-20T19:26:38Z",
+      "side": 1,
+      "message": "Looking at the compiler explorer link the Brian passed around, the inlined code would be 26 bytes at every call site. That seems a little too large to inline.",
+      "parentUuid": "3db81252_d7942033",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 66
+      },
+      "revId": "4559d9b688a25c23153345e7efe7b30fc17d9725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
