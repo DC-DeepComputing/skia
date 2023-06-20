@@ -71,6 +71,8 @@ struct SK_API ContextOptions {
      * Private options that are only meant for testing within Skia's tools.
      */
 
+    int  fMaxTextureSizeOverride = SK_MaxS32;
+
     /**
      * Maximum width and height of internal texture atlases.
      */

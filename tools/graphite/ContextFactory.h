@@ -13,6 +13,8 @@
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "tools/graphite/GraphiteTestContext.h"
 
+#include "include/gpu/graphite/ContextOptions.h"
+
 // TODO: This is only included to get access to GrContextFactory::ContextType. We should instead
 // move all of tools/gpu/ into tools/gpu/ganesh and tools/graphite into tools/gpu/graphite. Then in
 // tools gpu we can have files for shared things between ganesh and graphite like ContextType.
@@ -51,17 +53,19 @@ public:
         std::unique_ptr<skgpu::graphite::Context> fContext;
     };
 
+    explicit ContextFactory(const skgpu::graphite::ContextOptions&);
     ContextFactory() = default;
     ContextFactory(const ContextFactory&) = delete;
     ContextFactory& operator=(const ContextFactory&) = delete;
 
-    ~ContextFactory() = default;
+    ~ContextFactory();
 
     std::tuple<GraphiteTestContext*, skgpu::graphite::Context*> getContextInfo(
             GrContextFactory::ContextType);
 
 private:
     std::vector<ContextInfo> fContexts;
+    const skgpu::graphite::ContextOptions fOptions;
 };
 
 } // namespace skiatest::graphite

@@ -25,6 +25,10 @@ struct GrContextOptions;
 
 namespace skiagm { namespace verifiers { class VerifierList; } }
 
+namespace skgpu::graphite {
+struct ContextOptions;
+}
+
 #define DEF_GM(CODE)                                         \
     static skiagm::GMRegistry SK_MACRO_APPEND_COUNTER(REG_)( \
             []() { return std::unique_ptr<skiagm::GM>([]() { CODE; }()); });
@@ -161,7 +165,8 @@ namespace skiagm {
         bool getControls(SkMetaData* controls) { return this->onGetControls(controls); }
         void setControls(const SkMetaData& controls) { this->onSetControls(controls); }
 
-        virtual void modifyGrContextOptions(GrContextOptions*);
+        virtual void modifyGrContextOptions(GrContextOptions*) {}
+        virtual void modifyGraphiteContextOptions(skgpu::graphite::ContextOptions*) const {}
 
         virtual std::unique_ptr<verifiers::VerifierList> getVerifiers() const;
 
