@@ -46,6 +46,30 @@
       },
       "revId": "6823d03cf2b2d5d65a1c21054e55cd5a7c3b40a1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73fbbbb3_990a0c99",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1323,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-20T15:26:10Z",
+      "side": 0,
+      "message": "Ok. Seems awkward but I\u0027m fine with it if Herb is. There\u0027s a lot of redirection in this text code either way.",
+      "parentUuid": "2e99ee5b_065047c5",
+      "range": {
+        "startLine": 1323,
+        "startChar": 9,
+        "endLine": 1323,
+        "endChar": 25
+      },
+      "revId": "6823d03cf2b2d5d65a1c21054e55cd5a7c3b40a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
