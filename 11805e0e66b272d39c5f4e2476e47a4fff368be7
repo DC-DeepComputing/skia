@@ -16,6 +16,69 @@
       "message": "Addressed feedback, PTAL. Thanks!",
       "revId": "11805e0e66b272d39c5f4e2476e47a4fff368be7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1cea630_acd413d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T17:31:25Z",
+      "side": 1,
+      "message": "Thanks! Just some small comments left.",
+      "revId": "11805e0e66b272d39c5f4e2476e47a4fff368be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58968bd2_94504f9e",
+        "filename": "src/gpu/graphite/TextureInfo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T17:31:25Z",
+      "side": 1,
+      "message": "I would be okay having invalid texture infos be incompatible with everything, at least until we have a use case that requires us to make it supported. Then we can remove that first `if` and just return false if either this or that is not valid.",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 88,
+        "endChar": 5
+      },
+      "revId": "11805e0e66b272d39c5f4e2476e47a4fff368be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a0b73ea_4fa6c5a5",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T17:31:25Z",
+      "side": 1,
+      "message": "nit: replace with \" incompatible with \"",
+      "range": {
+        "startLine": 183,
+        "startChar": 32,
+        "endLine": 183,
+        "endChar": 34
+      },
+      "revId": "11805e0e66b272d39c5f4e2476e47a4fff368be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
