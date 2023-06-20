@@ -1,0 +1,343 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e39628a_746a439a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "There was so much unnecessary code in the old implementation that this is pretty much a complete rewrite and Gerrit\u0027s diff is not super helpful. Where possible, I\u0027ve added comments the new code with codesearch links pointing back to the relevant old implementation.\n\nI have to re-run the numbers, but with the simplification of the edge boundary model, the performance discrepancy from the switch to RP is less drastic than it had been when branching and handling all 9 conditions.",
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b0afca6_4bbe7c90",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "This Map logic had been inlined in various places in the old code, for each of the light `transform` functions, e.g. https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d1044\n\nNotably, the old implementation did not also transform the surfaceScale that applied to the alpha map so you\u0027d get weird effects when zooming in or out where the lights would get farther from the surface and the surface effectively gets flatter.",
+      "range": {
+        "startLine": 62,
+        "startChar": 30,
+        "endLine": 62,
+        "endChar": 33
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23e445d0_a842f083",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "Instead of having a class hierarchy for CPU lights and a parallel hierarchy for GPU lights, this just tracks the type and union of properties that are used.",
+      "range": {
+        "startLine": 81,
+        "startChar": 15,
+        "endLine": 81,
+        "endChar": 19
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f66206e_20bb71af",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "The old code for spotlights (https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d1024) had a lot of extra state that was unnecessary.\n\nFirst, it remembered the location and the target, and the normalized direction. In the new shader, we just calculate the direction at construction time and normalize when we upload the layer-space direction to the uniforms. The math works out the same.\n\nIt also had parameters for the inner cutoff and the width of fuzziness for the spotlight. These were all driven by constants and didn\u0027t need to be variables, so they have been moved directly into the shader.",
+      "range": {
+        "startLine": 96,
+        "startChar": 39,
+        "endLine": 96,
+        "endChar": 51
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e7d2fa3_0ff32a7a",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "Instead of having two subclasses of image filter for diffuse vs. specular, `Material` just tracks which one it is and stores both k and shininess (unused by the shader if it\u0027s diffuse).",
+      "range": {
+        "startLine": 139,
+        "startChar": 15,
+        "endLine": 139,
+        "endChar": 19
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69c0b767_18595f5e",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "As noted earlier, this used to not be adjusted. The impact is not noticeable unless playing around in viewer. This is the reason for the differences in the `imagefiltersscaled` GM (for the GPU cases; the CPU cases also include the whole switch to sksl).",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 47
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56cee665_3a6b9374",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "See https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d1845 and https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d1545 although it\u0027s restructured a bit to use dot products and only bothers with the interior kernel.",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 55
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3c2b3fb_7d3ac95e",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "See https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d1858",
+      "range": {
+        "startLine": 227,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 70
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50e2821a_a46dc13f",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "In combination with the CPU-side logic to choose the edgeBounds (either requiredInput, in which case this is a no-op, or the desired output edge, in which case the coords that have +/-1 added to them are clamped), this handles the new boundary condition behavior that sort of matches the SVG spec and handles the decal/affects-transparent-black behavior that works better with Skia\u0027s layering model.",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 81
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eb7f56b_a4a10431",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "See https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d1882\n\nAlso, this is the primary source of reduced performance in the CPU implementation now. Previously, the normal calculation would shift the sampled matrix around and read only the new values required: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d91.  If needed, and once the normal map is extracted into a cacheable stage, we could revisit such a CPU implementation outside of SkSL if we need to recover that performance.",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 246,
+        "endChar": 60
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87ecca2c_2f2daa3e",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "See https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d2113 and https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d2140",
+      "range": {
+        "startLine": 292,
+        "startChar": 0,
+        "endLine": 292,
+        "endChar": 71
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12b054f0_671a93ca",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "See https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d2170",
+      "range": {
+        "startLine": 296,
+        "startChar": 14,
+        "endLine": 296,
+        "endChar": 29
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8ac5710_828d815a",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d1929",
+      "range": {
+        "startLine": 320,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 43
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a44340c_cf22a2c4",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "See https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d2036",
+      "range": {
+        "startLine": 324,
+        "startChar": 0,
+        "endLine": 328,
+        "endChar": 75
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e3bf41a_333ca780",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T19:48:46Z",
+      "side": 1,
+      "message": "This was the best strategy I could come up with after our offline discussion about clamping and the requirements of the SVG spec vs. what makes sense for saveLayer.",
+      "range": {
+        "startLine": 614,
+        "startChar": 0,
+        "endLine": 628,
+        "endChar": 54
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
