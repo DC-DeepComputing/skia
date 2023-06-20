@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/base/SkFloatingPoint.h"
 #include "src/utils/SkDashPathPriv.h"
 
 #include "include/core/SkPaint.h"
@@ -252,7 +253,10 @@ public:
         }
 
         fPathLength = pathLength;
-        fTangent.scale(SkScalarInvert(pathLength));
+        fTangent.scale(sk_ieee_float_divide(1.0f, pathLength));
+        if (!SkScalarsAreFinite(fTangent.fX, fTangent.fY)) {
+            return false;
+        }
         SkPointPriv::RotateCCW(fTangent, &fNormal);
         fNormal.scale(SkScalarHalf(rec->getWidth()));
 
