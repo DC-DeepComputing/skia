@@ -63,6 +63,30 @@
       },
       "revId": "4559d9b688a25c23153345e7efe7b30fc17d9725",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e630486d_a202cadb",
+        "filename": "src/base/SkFloatingPoint.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-20T20:27:15Z",
+      "side": 1,
+      "message": "Putting the code in the header doesn\u0027t mean it _will_ inline, it just gives the compiler the option. I think it\u0027s worth at least trying it in a followup CL and see what the code size change looks like in practice.",
+      "parentUuid": "82023578_3a76e4db",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 66
+      },
+      "revId": "4559d9b688a25c23153345e7efe7b30fc17d9725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
