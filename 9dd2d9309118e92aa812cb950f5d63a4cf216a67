@@ -51,6 +51,24 @@
       "parentUuid": "f2e83cb8_339257ce",
       "revId": "9dd2d9309118e92aa812cb950f5d63a4cf216a67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8ba38d3_2db6d8ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T16:36:14Z",
+      "side": 1,
+      "message": "Ok, I\u0027d misunderstood the data flow. The color conversion from tempFC to dst color type will hide any fallback that is done in the GPU path, the callback will always be seeing what was requested. I agree that this should be fine then.",
+      "parentUuid": "52de0e3b_f46bf6b4",
+      "revId": "9dd2d9309118e92aa812cb950f5d63a4cf216a67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
