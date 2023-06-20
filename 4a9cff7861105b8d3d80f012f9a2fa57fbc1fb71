@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d68ab2b_fe303be8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-20T15:31:21Z",
+      "side": 1,
+      "message": "This topped the list of pointless SkScalar-isms.",
+      "revId": "4a9cff7861105b8d3d80f012f9a2fa57fbc1fb71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
