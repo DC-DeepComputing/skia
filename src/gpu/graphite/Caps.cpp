@@ -34,6 +34,7 @@ void Caps::finishInitialization(const ContextOptions& options) {
     }
 
 #if GRAPHITE_TEST_UTILS
+    fMaxTextureSize = 1000;
     fMaxTextureAtlasSize = options.fMaxTextureAtlasSize;
 #endif
     fGlyphCacheTextureMaximumBytes = options.fGlyphCacheTextureMaximumBytes;
