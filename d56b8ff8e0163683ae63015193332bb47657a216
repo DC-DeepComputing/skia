@@ -22,6 +22,30 @@
       },
       "revId": "d56b8ff8e0163683ae63015193332bb47657a216",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "663b783c_ad892cb7",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-20T17:26:41Z",
+      "side": 1,
+      "message": "N/A - that version of the code is gone now. It had been done when you mentioned this, the weights had been applied directly to the kernel constants. But I hadn\u0027t wanted to delete the parameter and modify call sites until I\u0027d proven out its correctness, the FIXME was just for me to work through before sending this out.",
+      "parentUuid": "ac889f49_6e7d0f10",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 71
+      },
+      "revId": "d56b8ff8e0163683ae63015193332bb47657a216",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
