@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e62e2d2_2118efc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-06-20T18:24:51Z",
+      "side": 1,
+      "message": "Some SkParagraph API extension for Flutter...",
+      "revId": "de8a478bb720afeb4d541dfe77245833a58c811c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
