@@ -16,6 +16,23 @@
       "message": "Thanks for reviewing! Adding brianosman@ for include/gpu/ owner approval, PTAL.",
       "revId": "83b9f5e0c5837f84d052a6053e33df3383074c55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "454b28e2_472f4f04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2023-06-20T19:18:26Z",
+      "side": 1,
+      "message": "Thanks for reviews!",
+      "revId": "83b9f5e0c5837f84d052a6053e33df3383074c55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
