@@ -170,18 +170,18 @@ bool TiledTextureUtils::ShouldTileImage(SkIRect conservativeClipBounds,
     return usedTileBytes * 2 < bmpSize;
 }
 
-void TiledTextureUtils::DrawTiledBitmap(SkBaseDevice* device,
-                                        const SkBitmap& bitmap,
-                                        int tileSize,
-                                        const SkMatrix& srcToDst,
-                                        const SkRect& srcRect,
-                                        const SkIRect& clippedSrcIRect,
-                                        const SkPaint& paint,
-                                        SkCanvas::QuadAAFlags origAAFlags,
-                                        const SkMatrix& localToDevice,
-                                        SkCanvas::SrcRectConstraint constraint,
-                                        SkSamplingOptions sampling,
-                                        SkTileMode tileMode) {
+void TiledTextureUtils::DrawTiledBitmap_Ganesh(SkBaseDevice* device,
+                                               const SkBitmap& bitmap,
+                                               int tileSize,
+                                               const SkMatrix& srcToDst,
+                                               const SkRect& srcRect,
+                                               const SkIRect& clippedSrcIRect,
+                                               const SkPaint& paint,
+                                               SkCanvas::QuadAAFlags origAAFlags,
+                                               const SkMatrix& localToDevice,
+                                               SkCanvas::SrcRectConstraint constraint,
+                                               SkSamplingOptions sampling,
+                                               SkTileMode tileMode) {
     if (sampling.isAniso()) {
         sampling = SkSamplingPriv::AnisoFallback(/* imageIsMipped= */ false);
     }
