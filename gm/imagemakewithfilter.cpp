@@ -351,13 +351,14 @@ private:
             // Clip before the saveLayer with the filter
             canvas->clipRect(SkRect::Make(clip));
 
+            SkRect r = SkRect::Make(subset);
+
             // Put the image filter on the layer
             SkPaint paint;
             paint.setImageFilter(filter);
-            canvas->saveLayer(nullptr, &paint);
+            canvas->saveLayer(&r, &paint);
 
             // Draw the original subset of the image
-            SkRect r = SkRect::Make(subset);
             canvas->drawImageRect(mainImage, r, r, SkSamplingOptions(),
                                   nullptr, SkCanvas::kStrict_SrcRectConstraint);
 
