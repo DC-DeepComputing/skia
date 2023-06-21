@@ -25,7 +25,7 @@
 
 namespace skgpu::graphite {
 
-GraphiteResourceKey build_desc_set_key(const SkSpan<DescTypeAndCount>& requestedDescriptors,
+GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDescriptors,
                                        const uint32_t uniqueId) {
     // TODO(nicolettep): Optimize key structure. It is horrendously inefficient but functional.
     // Fow now, have each descriptor type and quantity take up an entire uint32_t, with an
@@ -54,9 +54,9 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescTypeAndCount>& requested
     return key;
 }
 
-VkDescriptorSetLayout VulkanResourceProvider::DescTypeAndCountToVkDescSetLayout(
+VkDescriptorSetLayout VulkanResourceProvider::DescriptorDataToVkDescSetLayout(
         const VulkanSharedContext* ctxt,
-        SkSpan<DescTypeAndCount> requestedDescriptors) {
+        SkSpan<DescriptorData> requestedDescriptors) {
 
     VkDescriptorSetLayout layout;
     skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
@@ -152,7 +152,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(SkISize dimensions
 }
 
 VulkanDescriptorSet* VulkanResourceProvider::findOrCreateDescriptorSet(
-        SkSpan<DescTypeAndCount> requestedDescriptors) {
+        SkSpan<DescriptorData> requestedDescriptors) {
     // Search for available descriptor sets by assembling a key based upon the set's structure with
     // a unique set ID (which ranges from 0 to kMaxNumSets - 1). Start the search at 0 and continue
     // until an available set is found.
@@ -171,7 +171,7 @@ VulkanDescriptorSet* VulkanResourceProvider::findOrCreateDescriptorSet(
     // and add them to the cache.
     auto pool = VulkanDescriptorPool::Make(this->vulkanSharedContext(), requestedDescriptors);
     SkASSERT(pool);
-    VkDescriptorSetLayout layout = DescTypeAndCountToVkDescSetLayout(
+    VkDescriptorSetLayout layout = DescriptorDataToVkDescSetLayout(
             this->vulkanSharedContext(),
             requestedDescriptors);
 
