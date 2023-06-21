@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04f46cbb_fcd9112b",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1251,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-21T14:52:48Z",
+      "side": 1,
+      "message": "A fairly easy way to do this in debug builds is to add a `ClipStack* owner` field to `RawElement` that\u0027s wrapped in `SkDEBUGCODE` and then assert it\u0027s equal. Another way would be to iterate over the elements in the clip stack and search for `e`. But I think that can come later.",
+      "range": {
+        "startLine": 1250,
+        "startChar": 8,
+        "endLine": 1251,
+        "endChar": 73
+      },
+      "revId": "71b0e44208e4a5ecacfd19dbe3c685f87e4d7fa0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
