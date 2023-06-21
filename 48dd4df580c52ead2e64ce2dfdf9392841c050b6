@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "607ea9f9_786cb63a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-21T18:10:22Z",
+      "side": 1,
+      "message": "Slicing apart https://skia-review.googlesource.com/c/skia/+/639576 (which no longer merges cleanly, at all).",
+      "revId": "48dd4df580c52ead2e64ce2dfdf9392841c050b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
