@@ -39,6 +39,30 @@
       },
       "revId": "d481bdf518159ee9ac62ab47fd474bbf03d25701",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c64fd06_febf799d",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-21T21:11:08Z",
+      "side": 1,
+      "message": "Yes, that makes total sense. Implemented this change in https://skia-review.googlesource.com/c/skia/+/714897/4. Much of this code isn\u0027t getting used right now w/ the new define guards, but we should see all of this play together nicely once all combined. \n\nOn my personal omnibus branch, I have various changes and fixes so I\u0027m trying to sprinkle all of those where it makes sense.",
+      "parentUuid": "1404cb2a_b293387c",
+      "range": {
+        "startLine": 77,
+        "startChar": 12,
+        "endLine": 77,
+        "endChar": 37
+      },
+      "revId": "d481bdf518159ee9ac62ab47fd474bbf03d25701",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
