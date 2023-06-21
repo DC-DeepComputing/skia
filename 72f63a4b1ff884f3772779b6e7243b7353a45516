@@ -22,6 +22,30 @@
       },
       "revId": "72f63a4b1ff884f3772779b6e7243b7353a45516",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a53cbf78_6883ffb4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-21T19:47:15Z",
+      "side": 1,
+      "message": "I have banished the pointer.",
+      "parentUuid": "b02ddb85_4c4532da",
+      "range": {
+        "startLine": 882,
+        "startChar": 51,
+        "endLine": 882,
+        "endChar": 64
+      },
+      "revId": "72f63a4b1ff884f3772779b6e7243b7353a45516",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
