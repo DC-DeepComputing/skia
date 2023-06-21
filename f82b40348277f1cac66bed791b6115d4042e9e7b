@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d21f350b_1272878e",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-21T17:10:50Z",
+      "side": 1,
+      "message": "Should we technically allow +-1 for degenerate lights?",
+      "revId": "f82b40348277f1cac66bed791b6115d4042e9e7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "221bafd3_d5b5fab3",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-21T17:10:50Z",
+      "side": 1,
+      "message": "😕",
+      "revId": "f82b40348277f1cac66bed791b6115d4042e9e7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
