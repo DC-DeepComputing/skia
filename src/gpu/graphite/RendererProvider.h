@@ -11,6 +11,7 @@
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkVertices.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/text/gpu/SubRunContainer.h"
 
 #ifdef SK_ENABLE_VELLO_SHADERS
 #include "src/gpu/graphite/compute/VelloRenderer.h"
