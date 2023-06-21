@@ -78,6 +78,7 @@ def compile_fn(api, checkout_root, out_dir):
 
   clang_linux      = str(api.vars.workdir.join('clang_linux'))
   win_toolchain    = str(api.vars.workdir.join('win_toolchain'))
+  dwritecore_sdk   = str(api.vars.workdir.join('dwritecore'))
 
   cc, cxx, ccache = None, None, None
   extra_cflags = []
@@ -304,6 +305,9 @@ def compile_fn(api, checkout_root, out_dir):
 
   if 'AVIF' in extra_tokens:
     args['skia_use_libavif'] = 'true'
+
+  if 'DWriteCore' in extra_tokens:
+    args['skia_dwritecore_sdk'] = dwritecore_sdk
 
   for (k,v) in {
     'cc':  cc,

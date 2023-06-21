@@ -523,6 +523,10 @@ optional("fontmgr_win") {
     "src/ports/SkTypeface_win_dw.cpp",
     "src/ports/SkTypeface_win_dw.h",
   ]
+  if (skia_dwritecore_sdk != "") {
+    defines = [ "DWRITE_CORE" ]
+    include_dirs = [ "${skia_dwritecore_sdk}/include" ]
+  }
 }
 optional("fontmgr_win_factory") {
   enabled = skia_enable_fontmgr_win
