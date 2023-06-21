@@ -358,12 +358,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			if b.extraConfig("Vulkan") {
 				configs = []string{"grvk"}
                                 // Image size failures
-                                skip(ALL, "gm", ALL, "hugebitmapshader")
-                                skip(ALL, "gm", ALL, "path_huge_aa")
                                 skip(ALL, "gm", ALL, "path_huge_aa_manual")
-                                skip(ALL, "gm", ALL, "verylargebitmap")
                                 skip(ALL, "gm", ALL, "verylargebitmap_manual")
-                                skip(ALL, "gm", ALL, "verylarge_picture_image")
                                 skip(ALL, "gm", ALL, "verylarge_picture_image_manual")
                                 // Async read failure
                                 skip(ALL, "gm", ALL, "async_rescale_and_read_dog_down")
