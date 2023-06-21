@@ -131,6 +131,24 @@
       "message": "Got to here",
       "revId": "7c4b16296e8516133ef2919b14da398ecdf718af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bc6abd7_668127db",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-21T17:23:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4f62a7b1_cecc535b",
+      "revId": "7c4b16296e8516133ef2919b14da398ecdf718af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
