@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "017e5344_d44bec44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-21T18:49:28Z",
+      "side": 1,
+      "message": "Clean, rebased version of the remainder of https://skia-review.googlesource.com/c/skia/+/639576",
+      "revId": "300d97d4cd1fd3b667e2bdea0467a38d0953d174",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
