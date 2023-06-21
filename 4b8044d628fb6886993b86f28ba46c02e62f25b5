@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01811953_5658e861",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-21T15:53:03Z",
+      "side": 1,
+      "message": "Looks like these three aren\u0027t needed?",
+      "revId": "4b8044d628fb6886993b86f28ba46c02e62f25b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7e77617_bf879c19",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-21T15:53:03Z",
+      "side": 1,
+      "message": "Not used? (Causing G3 failures.)",
+      "revId": "4b8044d628fb6886993b86f28ba46c02e62f25b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
