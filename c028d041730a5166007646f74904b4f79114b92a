@@ -16,6 +16,24 @@
       "message": "Why move any of this into the base SkUnicode (which should be more or less just an interface). It should be up to the impl to have something like this or not. If there are more impls that want this then they should share it, but it shouldn\u0027t go here.",
       "revId": "c028d041730a5166007646f74904b4f79114b92a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8075877a_95a54bd1",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-06-21T13:26:38Z",
+      "side": 1,
+      "message": "I override it for ICU; for all the other implementations (libgrapheme, client ICU and ICU4X) currently it\u0027s hardcoded with this code. I am planning to get rid of it but for now it works.",
+      "parentUuid": "07d2dca6_43801997",
+      "revId": "c028d041730a5166007646f74904b4f79114b92a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
