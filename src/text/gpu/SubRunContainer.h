@@ -38,6 +38,7 @@ class StrikeForGPUCacheInterface;
 
 namespace skgpu {
 enum class MaskFormat : int;
+namespace graphite { class Renderer; }
 }
 
 #if defined(SK_GANESH)
@@ -47,19 +48,6 @@ enum class MaskFormat : int;
 class GrClip;
 namespace skgpu::ganesh {
 class SurfaceDrawContext;
-}
-#endif
-
-#if defined(SK_GRAPHITE)
-#include "src/gpu/graphite/geom/Rect.h"
-#include "src/gpu/graphite/geom/SubRunData.h"
-#include "src/gpu/graphite/geom/Transform_graphite.h"
-
-namespace skgpu::graphite {
-class DrawWriter;
-class Recorder;
-class Renderer;
-class RendererProvider;
 }
 #endif
 
@@ -74,6 +62,11 @@ using RegenerateAtlasDelegate = std::function<std::tuple<bool, int>(GlyphVector*
                                                                     int end,
                                                                     skgpu::MaskFormat,
                                                                     int padding)>;
+
+struct RendererData {
+    bool isSDF = false;
+    bool isLCD = false;
+};
 
 // -- AtlasSubRun --------------------------------------------------------------------------------
 // AtlasSubRun is the API that AtlasTextOp uses to generate vertex data for drawing.
@@ -123,20 +116,14 @@ public:
 
     virtual const VertexFiller& vertexFiller() const = 0;
 
-#if defined(SK_GRAPHITE)
-
-    virtual const skgpu::graphite::Renderer* renderer(
-            const skgpu::graphite::RendererProvider*) const = 0;
-
-#endif
-
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;
 };
 
 using AtlasDrawDelegate = std::function<void(const sktext::gpu::AtlasSubRun* subRun,
                                              SkPoint drawOrigin,
                                              const SkPaint& paint,
-                                             sk_sp<SkRefCnt> subRunStorage)>;
+                                             sk_sp<SkRefCnt> subRunStorage,
+                                             sktext::gpu::RendererData)>;
 
 // -- SubRun -------------------------------------------------------------------------------------
 // SubRun defines the most basic functionality of a SubRun; the ability to draw, and the
