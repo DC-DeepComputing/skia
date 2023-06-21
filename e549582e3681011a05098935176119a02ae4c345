@@ -33,6 +33,24 @@
       "message": "Technically safe (I think?), but I\u0027d mark this as `inline` as well, given that it now lives in a header.",
       "revId": "e549582e3681011a05098935176119a02ae4c345",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7054514_0f760522",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-21T13:45:54Z",
+      "side": 1,
+      "message": "The `inline` is implied, but I\u0027m not opposed to it either way: https://screenshot.googleplex.com/5aJqozGkxfXkAw8\n\nI am pretty sure the `static` also isn\u0027t doing anything.",
+      "parentUuid": "b2631796_ac45aa84",
+      "revId": "e549582e3681011a05098935176119a02ae4c345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
