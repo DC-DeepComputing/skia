@@ -87,6 +87,24 @@
       "parentUuid": "8a2a38cd_93d12403",
       "revId": "e549582e3681011a05098935176119a02ae4c345",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7e12a69_1b8ccf9a",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-21T13:58:43Z",
+      "side": 1,
+      "message": "And above it in the file are sk_float_degrees_to_radians and sk_float_radians_to_degrees that are both marked just constexpr.",
+      "parentUuid": "8a2a38cd_93d12403",
+      "revId": "e549582e3681011a05098935176119a02ae4c345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
