@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0de1ede_4b126665",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-21T17:25:39Z",
+      "side": 1,
+      "message": "PTAL at the use of a struct to choose.\n\nNote that Ganesh ignores this struct because it makes the decision of how to render something elsewhere.",
+      "revId": "dd90d428fc8dc801f1d052ea08e7217173e927d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
