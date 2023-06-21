@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d495f4ef_68c34b2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-21T16:06:39Z",
+      "side": 1,
+      "message": "Hmmm... SkTestCanvas is a bit too generic here, should be SkTestSlugCanvas or something like that to make it obvious this needs to be done. On the other hand, don\u0027t need to do that right now.",
+      "revId": "4f0a94016ecc0cda7002636e23a311a6fef90c97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
