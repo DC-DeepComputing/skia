@@ -16,6 +16,29 @@
       "message": "This is a re-creation of https://skia-review.googlesource.com/c/skia/+/639643. (There were enough bad merge conflicts that it was easier to start over).",
       "revId": "2ca57540dea1da1e67468a885ec6ed30ad5461e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36f448a6_e971e48a",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-21T20:32:07Z",
+      "side": 1,
+      "message": "Is this still needed?",
+      "range": {
+        "startLine": 24,
+        "startChar": 9,
+        "endLine": 24,
+        "endChar": 29
+      },
+      "revId": "2ca57540dea1da1e67468a885ec6ed30ad5461e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
