@@ -74,6 +74,30 @@
       },
       "revId": "19b2e7f46502eb197432fa45d714cb564e2a63ea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b29f135_0bff1617",
+        "filename": "src/gpu/graphite/render/SDFTextRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-21T21:40:50Z",
+      "side": 1,
+      "message": "Good point, the z coordinate is always set to 0. I removed the perspective division here and replaced it with a TODO comment referencing b/246963258 for now, until we decide on how atlas renderers should interact with perspective.",
+      "parentUuid": "1c8827ba_79aa98db",
+      "range": {
+        "startLine": 72,
+        "startChar": 9,
+        "endLine": 72,
+        "endChar": 59
+      },
+      "revId": "19b2e7f46502eb197432fa45d714cb564e2a63ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
