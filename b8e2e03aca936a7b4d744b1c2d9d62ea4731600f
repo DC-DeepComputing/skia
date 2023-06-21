@@ -39,6 +39,30 @@
       },
       "revId": "b8e2e03aca936a7b4d744b1c2d9d62ea4731600f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ccae676_865281ea",
+        "filename": "src/codec/SkJpegxlCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-21T12:03:09Z",
+      "side": 1,
+      "message": "Yes, it wasn\u0027t registered by default at least and few clients have started registering things explicitly.",
+      "parentUuid": "c9da350c_fcc1b17d",
+      "range": {
+        "startLine": 469,
+        "startChar": 10,
+        "endLine": 469,
+        "endChar": 25
+      },
+      "revId": "b8e2e03aca936a7b4d744b1c2d9d62ea4731600f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
