@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0798b730_67b5a80b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-21T20:10:23Z",
+      "side": 1,
+      "message": "This looks fine to me. Because of the way the instance data is set up in a halfway transformed state I don\u0027t think we can get back to the original local coords without either using a matrix uniform (like here), or additional instance data, which we don\u0027t want to do.",
+      "revId": "19b2e7f46502eb197432fa45d714cb564e2a63ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1ffe8a5_988fd1b0",
