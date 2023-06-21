@@ -51,6 +51,24 @@
       "parentUuid": "b2631796_ac45aa84",
       "revId": "e549582e3681011a05098935176119a02ae4c345",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a2a38cd_93d12403",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-21T13:49:39Z",
+      "side": 1,
+      "message": "Aha, makes sense. The `static` is actually critically important - it ensures we don\u0027t violate ODR if the header is included by non-default _opts code. eg:\n\nhttps://bugs.chromium.org/p/chromium/issues/detail?id\u003d666707\nhttps://gist.github.com/nico/93df46db7f5e1d0bd941d63663db95b1",
+      "parentUuid": "c7054514_0f760522",
+      "revId": "e549582e3681011a05098935176119a02ae4c345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
