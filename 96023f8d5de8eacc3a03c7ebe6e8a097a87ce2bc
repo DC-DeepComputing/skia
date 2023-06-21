@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2d81bf7_6551d98b",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-21T16:50:09Z",
+      "side": 1,
+      "message": "Removed the indent whitespace. This is what I get for editing within gerrit instead of VS Code where it cleans that stuff up automagically. Still kept a new line to match below and group things cleanly.",
+      "parentUuid": "3052fce5_01168ee1",
+      "range": {
+        "startLine": 480,
+        "startChar": 0,
+        "endLine": 480,
+        "endChar": 8
+      },
+      "revId": "96023f8d5de8eacc3a03c7ebe6e8a097a87ce2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f29e035_8b6f5a42",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11c582aa_7814a8fb",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-21T16:50:09Z",
+      "side": 1,
+      "message": "Done - good catch.",
+      "parentUuid": "9f29e035_8b6f5a42",
+      "range": {
+        "startLine": 511,
+        "startChar": 15,
+        "endLine": 511,
+        "endChar": 22
+      },
+      "revId": "96023f8d5de8eacc3a03c7ebe6e8a097a87ce2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33be8c65_b697d043",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-06-21T15:39:42Z",
       "side": 1,
       "message": "Just a note: this isn\u0027t quite true. We can clean them up after the pipeline object is created.",
+      "range": {
+        "startLine": 552,
+        "startChar": 7,
+        "endLine": 552,
+        "endChar": 63
+      },
+      "revId": "96023f8d5de8eacc3a03c7ebe6e8a097a87ce2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dbcf760_afe858be",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-21T16:50:09Z",
+      "side": 1,
+      "message": "Done - updated comment",
+      "parentUuid": "33be8c65_b697d043",
       "range": {
         "startLine": 552,
         "startChar": 7,
