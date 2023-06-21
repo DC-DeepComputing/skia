@@ -16,6 +16,75 @@
       "message": "A quick update \u0026 shuffle of the SkSL logic into the graphics pipeline class as discussed. I know this is a lower priority, but it was quick to knock out while waiting for other stuff to compile. :^)",
       "revId": "96023f8d5de8eacc3a03c7ebe6e8a097a87ce2bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3052fce5_01168ee1",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-21T15:39:42Z",
+      "side": 1,
+      "message": "Nit: remove whitespace",
+      "range": {
+        "startLine": 480,
+        "startChar": 0,
+        "endLine": 480,
+        "endChar": 8
+      },
+      "revId": "96023f8d5de8eacc3a03c7ebe6e8a097a87ce2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f29e035_8b6f5a42",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-21T15:39:42Z",
+      "side": 1,
+      "message": "Something that got missed before: we need to clean up the shader modules here to prevent a leak.",
+      "range": {
+        "startLine": 511,
+        "startChar": 15,
+        "endLine": 511,
+        "endChar": 22
+      },
+      "revId": "96023f8d5de8eacc3a03c7ebe6e8a097a87ce2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33be8c65_b697d043",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-21T15:39:42Z",
+      "side": 1,
+      "message": "Just a note: this isn\u0027t quite true. We can clean them up after the pipeline object is created.",
+      "range": {
+        "startLine": 552,
+        "startChar": 7,
+        "endLine": 552,
+        "endChar": 63
+      },
+      "revId": "96023f8d5de8eacc3a03c7ebe6e8a097a87ce2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
