@@ -202,7 +202,8 @@ private:
                       const SkStrokeRec&,
                       SkEnumBitMask<DrawFlags> = DrawFlags::kNone,
                       sk_sp<SkBlender> primitiveBlender = nullptr,
-                      bool skipColorXform = false);
+                      bool skipColorXform = false,
+                      sktext::gpu::RendererData* = nullptr);
 
     // Like drawGeometry() but is Shape-only, depth-only, fill-only, and lets the ClipStack define
     // the transform, clip, and DrawOrder (although Device still tracks stencil buffer usage).
@@ -213,7 +214,8 @@ private:
     void drawAtlasSubRun(const sktext::gpu::AtlasSubRun*,
                          SkPoint drawOrigin,
                          const SkPaint& paint,
-                         sk_sp<SkRefCnt> subRunStorage);
+                         sk_sp<SkRefCnt> subRunStorage,
+                         sktext::gpu::RendererData);
 
     sk_sp<sktext::gpu::Slug> convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,
                                                        const SkPaint& initialPaint,
@@ -233,7 +235,8 @@ private:
     const Renderer* chooseRenderer(const Transform& localToDevice,
                                    const Geometry&,
                                    const SkStrokeRec&,
-                                   bool requireMSAA) const;
+                                   bool requireMSAA,
+                                   sktext::gpu::RendererData* = nullptr) const;
 
     bool needsFlushBeforeDraw(int numNewDraws, DstReadRequirement) const;
 

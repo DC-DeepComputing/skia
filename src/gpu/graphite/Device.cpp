@@ -824,8 +824,9 @@ sktext::gpu::AtlasDrawDelegate Device::atlasDelegate() {
     return [&](const sktext::gpu::AtlasSubRun* subRun,
                SkPoint drawOrigin,
                const SkPaint& paint,
-               sk_sp<SkRefCnt> subRunStorage) {
-        this->drawAtlasSubRun(subRun, drawOrigin, paint, subRunStorage);
+               sk_sp<SkRefCnt> subRunStorage,
+               sktext::gpu::RendererData rendererData) {
+        this->drawAtlasSubRun(subRun, drawOrigin, paint, subRunStorage, rendererData);
     };
 }
 
@@ -844,7 +845,8 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
 void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
                              SkPoint drawOrigin,
                              const SkPaint& paint,
-                             sk_sp<SkRefCnt> subRunStorage) {
+                             sk_sp<SkRefCnt> subRunStorage,
+                             sktext::gpu::RendererData rendererData) {
     const int subRunEnd = subRun->glyphCount();
     auto regenerateDelegate = [&](sktext::gpu::GlyphVector* glyphs,
                                   int begin,
@@ -879,7 +881,10 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
                                                    fRecorder)),
                                subRunPaint,
                                DefaultFillStyle(),
-                               DrawFlags::kIgnorePathEffect | DrawFlags::kIgnoreMaskFilter);
+                               DrawFlags::kIgnorePathEffect | DrawFlags::kIgnoreMaskFilter,
+                               /* primitiveBlender = */nullptr,
+                               /* skipColorXform = */false,
+                               &rendererData);
         }
         subRunCursor += glyphsRegenerated;
 
@@ -900,7 +905,8 @@ void Device::drawGeometry(const Transform& localToDevice,
                           const SkStrokeRec& style,
                           SkEnumBitMask<DrawFlags> flags,
                           sk_sp<SkBlender> primitiveBlender,
-                          bool skipColorXform) {
+                          bool skipColorXform,
+                          sktext::gpu::RendererData* rendererData) {
     if (!localToDevice.valid()) {
         // If the transform is not invertible or not finite then drawing isn't well defined.
         SKGPU_LOG_W("Skipping draw with non-invertible/non-finite transform.");
@@ -969,7 +975,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     SkASSERT(!SkToBool(paint.getMaskFilter()) || (flags & DrawFlags::kIgnoreMaskFilter));
 
     const Renderer* renderer =
-            this->chooseRenderer(localToDevice, geometry, style, /*requireMSAA=*/false);
+            this->chooseRenderer(localToDevice, geometry, style, /*requireMSAA=*/false, rendererData);
     if (!renderer) {
         SKGPU_LOG_W("Skipping draw with no supported renderer.");
         return;
@@ -1125,13 +1131,19 @@ void Device::drawClipShape(const Transform& localToDevice,
 const Renderer* Device::chooseRenderer(const Transform& localToDevice,
                                        const Geometry& geometry,
                                        const SkStrokeRec& style,
-                                       bool requireMSAA) const {
+                                       bool requireMSAA,
+                                       sktext::gpu::RendererData* rendererData) const {
     const RendererProvider* renderers = fRecorder->priv().rendererProvider();
+    SkASSERT(renderers);
     SkStrokeRec::Style type = style.getStyle();
 
     if (geometry.isSubRun()) {
+        SkASSERT(rendererData);
         SkASSERT(!requireMSAA);
-        return geometry.subRunData().subRun()->renderer(renderers);
+        if (!rendererData->isSDF) {
+            return renderers->bitmapText();
+        }
+        return renderers->sdfText(rendererData->isLCD);
     } else if (geometry.isVertices()) {
         SkVerticesPriv info(geometry.vertices()->priv());
         return renderers->vertices(info.mode(), info.hasColors(), info.hasTexCoords());
