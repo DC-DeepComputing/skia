@@ -34,8 +34,9 @@ BitmapTextRenderStep::BitmapTextRenderStep()
         : RenderStep("BitmapTextRenderStep",
                      "",
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
-                     /*uniforms=*/{{"deviceMatrix", SkSLType::kFloat4x4},
-                                   {"atlasSizeInv", SkSLType::kFloat2}},
+                     /*uniforms=*/{{"subRunDeviceMatrix", SkSLType::kFloat4x4},
+                                   {"deviceToLocal"     , SkSLType::kFloat4x4},
+                                   {"atlasSizeInv"      , SkSLType::kFloat2}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGEqualPass,
                      /*vertexAttrs=*/ {},
@@ -59,8 +60,15 @@ std::string BitmapTextRenderStep::vertexSkSL() const {
         "float2 baseCoords = float2(float(sk_VertexID >> 1), float(sk_VertexID & 1));"
         "baseCoords.xy *= float2(size);"
 
-        "stepLocalCoords = strikeToSourceScale*baseCoords + float2(xyPos);"
-        "float4 position = deviceMatrix*float4(stepLocalCoords, 0, 1);"
+        // Sub runs have a decomposed transform and are sometimes already transformed into device
+        // space, in which `subRunCoords` represents the bounds projected to device space without
+        // the local-to-device translation and `subRunDeviceMatrix` contains the translation.
+        "float2 subRunCoords = strikeToSourceScale * baseCoords + float2(xyPos);"
+        "float4 position = subRunDeviceMatrix * float4(subRunCoords, 0, 1);"
+
+        // Calculate the local coords used for shading.
+        "float4 localCoords = deviceToLocal * position;"
+        "stepLocalCoords = localCoords.xy / localCoords.w;"
 
         "float2 unormTexCoords = baseCoords + float2(uvPos);"
         "textureCoords = unormTexCoords * atlasSizeInv;"
@@ -130,7 +138,8 @@ void BitmapTextRenderStep::writeUniformsAndTextures(const DrawParams& params,
     SkASSERT(proxies && numProxies > 0);
 
     // write uniforms
-    gatherer->write(params.transform());
+    gatherer->write(params.transform());  // subRunDeviceMatrix
+    gatherer->write(subRunData.deviceToLocal());
     SkV2 atlasDimensionsInverse = {1.f/proxies[0]->dimensions().width(),
                                    1.f/proxies[0]->dimensions().height()};
     gatherer->write(atlasDimensionsInverse);
