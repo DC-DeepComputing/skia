@@ -39,6 +39,30 @@
       },
       "revId": "2ca57540dea1da1e67468a885ec6ed30ad5461e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc97974d_2de64ae0",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-21T20:35:54Z",
+      "side": 1,
+      "message": "Yes, that header also defines SkTCopyOnFirstWrite, which is used (with T \u003d SkMatrix) in some of the replacement code.",
+      "parentUuid": "36f448a6_e971e48a",
+      "range": {
+        "startLine": 24,
+        "startChar": 9,
+        "endLine": 24,
+        "endChar": 29
+      },
+      "revId": "2ca57540dea1da1e67468a885ec6ed30ad5461e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
