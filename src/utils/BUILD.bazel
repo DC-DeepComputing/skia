@@ -54,14 +54,22 @@ CORE_FILES = [
     "SkShadowTessellator.cpp",
     "SkShadowTessellator.h",
     "SkShadowUtils.cpp",
-    "SkTestCanvas.h",
-    "SkTestCanvas.cpp",
     "SkTextUtils.cpp",
 ]
 
 split_srcs_and_hdrs(
     name = "core",
     files = CORE_FILES,
+)
+
+GPU_ONLY_FILES = [
+    "SkTestCanvas.h",
+    "SkTestCanvas.cpp",
+]
+
+split_srcs_and_hdrs(
+    name = "gpu",
+    files = GPU_ONLY_FILES,
 )
 
 skia_filegroup(
@@ -122,6 +130,7 @@ skia_filegroup(
     srcs = [
         ":core_skslc_srcs",
         ":core_srcs",
+        ":gpu_srcs",
     ] + select({
         "//src/sksl:needs_sksl": [":sksl_srcs"],
         "//conditions:default": [],
@@ -138,6 +147,7 @@ skia_filegroup(
         ":chromium_hdrs",
         ":core_hdrs",
         ":core_skslc_hdrs",
+        ":gpu_hdrs",
     ] + select({
         "//src/sksl:needs_sksl": [":sksl_hdrs"],
         "//conditions:default": [],

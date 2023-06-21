@@ -1937,6 +1937,7 @@ if (skia_enable_tools) {
                                          # GrContextFactory workaround.
       "tools/gpu/mock/MockTestContext.cpp",
     ]
+    sources += skia_utils_gpu
 
     libs = []
     frameworks = []
