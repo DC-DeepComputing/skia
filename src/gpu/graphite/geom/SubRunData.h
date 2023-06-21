@@ -10,7 +10,10 @@
 
 #include "src/gpu/graphite/geom/Rect.h"
 
-namespace sktext::gpu { class AtlasSubRun; }
+namespace sktext::gpu {
+class AtlasSubRun;
+struct RendererData;
+}
 
 namespace skgpu::graphite {
 
@@ -30,13 +33,15 @@ public:
                Rect deviceBounds,
                int startGlyphIndex,
                int glyphCount,
-               Recorder* recorder)
+               Recorder* recorder,
+               sktext::gpu::RendererData* rendererData)
         : fSubRun(subRun)
         , fSupportDataKeepAlive(std::move(supportDataKeepAlive))
         , fBounds(deviceBounds)
         , fStartGlyphIndex(startGlyphIndex)
         , fGlyphCount(glyphCount)
-        , fRecorder(recorder) {}
+        , fRecorder(recorder)
+        , fRendererData(rendererData) {}
 
     ~SubRunData() = default;
 
@@ -53,6 +58,7 @@ public:
     int startGlyphIndex() const { return fStartGlyphIndex; }
     int glyphCount() const { return fGlyphCount; }
     Recorder* recorder() const { return fRecorder; }
+    sktext::gpu::RendererData* rendererData() const { return fRendererData; }
 
 private:
     const sktext::gpu::AtlasSubRun* fSubRun;
@@ -63,6 +69,7 @@ private:
     int fStartGlyphIndex;
     int fGlyphCount;
     Recorder* fRecorder; // this SubRun can only be associated with this Recorder's atlas
+    sktext::gpu::RendererData* fRendererData;
 };
 
 } // namespace skgpu::graphite
