@@ -34,6 +34,24 @@
       "parentUuid": "07d2dca6_43801997",
       "revId": "c028d041730a5166007646f74904b4f79114b92a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db3ef1e4_b1c78861",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-21T13:47:07Z",
+      "side": 1,
+      "message": "Just because you override it in the ICU subclass doesn\u0027t make all that code go away if the user only builds in the ICU subclass. If you need to share this then make a `SkUnicodeHardCodedCharProperties` which inherits from `SkUnicode` and put all this there, then have whichever subclasses that need to inherit from that. Putting a bunch of implementation on `SkUnicode` is a bad idea since the entire point of `SkUnicode` is to be an interface.",
+      "parentUuid": "8075877a_95a54bd1",
+      "revId": "c028d041730a5166007646f74904b4f79114b92a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
