@@ -438,12 +438,7 @@ SkColor4f sk_color_from(DWRITE_COLOR_F const& color) {
 }
 DWRITE_COLOR_F dw_color_from(SkColor4f const& color) {
     // DWRITE_COLOR_F and SkColor4f are laid out the same and this should be a no-op.
-    return DWRITE_COLOR_F{ color.fR, color.fG, color.fB, color.fA };
-}
-
-SkPoint sk_point_from(D2D_POINT_2F const& point) {
-    // D2D_POINT_2F and SkPoint are both y-down and laid out the same and this should be a no-op.
-    return SkPoint{ point.x, point.y };
+    return DWRITE_COLOR_F{ {color.fR}, {color.fG}, {color.fB}, {color.fA} };
 }
 
 SkRect sk_rect_from(D2D_RECT_F const& rect) {
