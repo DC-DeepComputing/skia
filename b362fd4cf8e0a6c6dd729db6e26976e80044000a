@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "170b65fc_93c4c58e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-21T18:26:38Z",
+      "side": 1,
+      "message": "I think we should add RendererData to `SubRunData` instead of adding a parameter to `drawGeometry`, but otherwise I like how this plumbs the data through and decouples the renderer selection from sktext.",
+      "range": {
+        "startLine": 876,
+        "startChar": 40,
+        "endLine": 876,
+        "endChar": 50
+      },
+      "revId": "b362fd4cf8e0a6c6dd729db6e26976e80044000a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
