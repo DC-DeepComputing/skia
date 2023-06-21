@@ -33,6 +33,24 @@
       "message": "LGTM with glee!",
       "revId": "e325c63eef4b6d2c1ce6907ce5627953d1f2514a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91c903cc_2a6e7cc3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-21T20:06:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42a3570e_4a0b1ed4",
+      "revId": "e325c63eef4b6d2c1ce6907ce5627953d1f2514a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
