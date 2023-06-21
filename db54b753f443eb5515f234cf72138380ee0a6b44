@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3885f1fc_e96bffca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-21T14:49:51Z",
+      "side": 1,
+      "message": "Adding Michael.",
+      "revId": "db54b753f443eb5515f234cf72138380ee0a6b44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8de2b8e_8dc4d743",
+        "filename": "src/gpu/graphite/RendererProvider.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-21T14:49:51Z",
+      "side": 1,
+      "message": "I don\u0027t think this should be dependent on sktext. Maybe put it in skgpu?",
+      "range": {
+        "startLine": 35,
+        "startChar": 32,
+        "endLine": 35,
+        "endChar": 55
+      },
+      "revId": "db54b753f443eb5515f234cf72138380ee0a6b44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
