@@ -572,28 +572,39 @@ void VulkanCommandBuffer::syncDescriptorSets() {
 
 void VulkanCommandBuffer::bindUniformBuffers() {
     fBindUniformBuffers = false;
+    static const DescriptorData intrinsicUniformDescriptor  =
+            {DescriptorType::kUniformBuffer,
+             /*count=*/1,
+             VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex};
+    static const DescriptorData renderStepUniformDescriptor =
+            {DescriptorType::kUniformBuffer,
+             /*count=*/1,
+             VulkanGraphicsPipeline::kRenderStepUniformBufferIndex};
+    static const DescriptorData paintUniformDescriptor      =
+            {DescriptorType::kUniformBuffer,
+             /*count=*/1,
+             VulkanGraphicsPipeline::kPaintUniformBufferIndex};
+
     // We always bind at least one uniform buffer descriptor for intrinsic uniforms, but can bind
     // up to three (one for render step uniforms, one for paint uniforms).
-    int numBuffers = 1;
-    static const DescTypeAndCount uniformDescriptor {DescriptorType::kUniformBuffer, 1};
     fUniformBuffersToBind[0] = fIntrinsicUniformBufferInfo;
+    STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> descriptors;
+    descriptors.push_back(intrinsicUniformDescriptor);
     if (fActiveGraphicsPipeline->hasStepUniforms() &&
-            fUniformBuffersToBind[VulkanGraphicsPipeline::kRenderStepUniformBufferIndex]) {
-        ++numBuffers;
+            fUniformBuffersToBind[VulkanGraphicsPipeline::kRenderStepUniformBufferIndex].fBuffer) {
+        descriptors.push_back(renderStepUniformDescriptor);
     }
     if (fActiveGraphicsPipeline->hasFragment() &&
-            fUniformBuffersToBind[VulkanGraphicsPipeline::kPaintUniformBufferIndex]) {
-        ++numBuffers;
+            fUniformBuffersToBind[VulkanGraphicsPipeline::kPaintUniformBufferIndex].fBuffer) {
+        descriptors.push_back(paintUniformDescriptor);
     }
-    TArray<DescTypeAndCount> descriptors(numBuffers);
-    descriptors.push_back_n(numBuffers, uniformDescriptor);
     VulkanDescriptorSet* set = fResourceProvider->findOrCreateDescriptorSet(
-            SkSpan<DescTypeAndCount>{&descriptors.front(), numBuffers});
+            SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
 
     if (!set) {
         SKGPU_LOG_E("Unable to find or create descriptor set");
     } else {
-        TArray<VkWriteDescriptorSet> writeDescriptorSets(numBuffers);
+        TArray<VkWriteDescriptorSet> writeDescriptorSets(descriptors.size());
         for (uint32_t i = 0; i < fUniformBuffersToBind.size(); i++) {
             if (fUniformBuffersToBind[i].fBuffer) {
                 VkDescriptorBufferInfo bufferInfo;
@@ -621,7 +632,7 @@ void VulkanCommandBuffer::bindUniformBuffers() {
 
         VULKAN_CALL(fSharedContext->interface(),
                     UpdateDescriptorSets(fSharedContext->device(),
-                                         numBuffers,
+                                         writeDescriptorSets.size(),
                                          &writeDescriptorSets[0],
                                          /*descriptorCopyCount=*/0,
                                          /*pDescriptorCopies=*/nullptr));
@@ -717,11 +728,12 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         return;
     }
     // Query resource provider to obtain a descriptor set for the texture/samplers
-    TArray<DescTypeAndCount> descriptors(command.fNumTexSamplers);
-    static const DescTypeAndCount textureSamplerDesc {DescriptorType::kCombinedTextureSampler, 1};
-    descriptors.push_back_n(command.fNumTexSamplers, textureSamplerDesc);
+    TArray<DescriptorData> descriptors(command.fNumTexSamplers);
+    for (int i = 0; i < command.fNumTexSamplers; i++) {
+        descriptors.push_back({DescriptorType::kCombinedTextureSampler, 1, i});
+    }
     VulkanDescriptorSet* set = fResourceProvider->findOrCreateDescriptorSet(
-            SkSpan<DescTypeAndCount>{&descriptors.front(), descriptors.size()});
+            SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
 
     if (!set) {
         SKGPU_LOG_E("Unable to find or create descriptor set");
