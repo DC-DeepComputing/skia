@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5dcdabb_0500b074",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17734
+      },
+      "writtenOn": "2023-06-21T17:42:04Z",
+      "side": 1,
+      "message": "Unfortunately using environment variable doesn\u0027t work on mobile devices. The default of the additional flag will be flipped to false when migration is finished. And after a few months if everything is working fine the flag will be removed.",
+      "revId": "438341c9cb519c43f6f74233306e12e415486cc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
