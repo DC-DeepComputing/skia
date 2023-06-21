@@ -39,6 +39,29 @@
       },
       "revId": "db54b753f443eb5515f234cf72138380ee0a6b44",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc5f3c85_1aa5e41b",
+        "filename": "src/text/gpu/SubRunContainer.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-21T14:57:06Z",
+      "side": 1,
+      "message": "Can we just have this be a struct that has 3 pointers to `const skgpu::graphite::Renderer*`? Having virtual functions seems heavy handed for something that isn\u0027t meant to change after the RendererProvider is setup.\n\nThe graphite RendererProvider can just fill out a `sktext::gpu::Renderers` struct and pass that it.",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 2
+      },
+      "revId": "db54b753f443eb5515f234cf72138380ee0a6b44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
