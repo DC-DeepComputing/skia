@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08022790_fa059bcb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-21T20:19:47Z",
+      "side": 1,
+      "message": "This is a re-creation of https://skia-review.googlesource.com/c/skia/+/639643. (There were enough bad merge conflicts that it was easier to start over).",
+      "revId": "2ca57540dea1da1e67468a885ec6ed30ad5461e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
