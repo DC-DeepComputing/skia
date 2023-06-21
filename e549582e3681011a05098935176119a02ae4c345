@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63368999_b69c70a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-21T12:58:49Z",
+      "side": 1,
+      "message": "The last midpoint CL can\u0027t be used because of a merge conflict with the SkRect CL.\nJust do the inline.",
+      "revId": "e549582e3681011a05098935176119a02ae4c345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
