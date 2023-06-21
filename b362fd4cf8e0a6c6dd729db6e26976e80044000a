@@ -22,6 +22,30 @@
       },
       "revId": "b362fd4cf8e0a6c6dd729db6e26976e80044000a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "598b9fdf_8d59addd",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-21T19:06:32Z",
+      "side": 1,
+      "message": "Jim said he\u0027d handle this in a follow-up.",
+      "parentUuid": "170b65fc_93c4c58e",
+      "range": {
+        "startLine": 876,
+        "startChar": 40,
+        "endLine": 876,
+        "endChar": 50
+      },
+      "revId": "b362fd4cf8e0a6c6dd729db6e26976e80044000a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
