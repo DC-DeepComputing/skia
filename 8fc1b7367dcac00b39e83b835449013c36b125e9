@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b40c8b_7ca25862",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2565,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-21T17:02:11Z",
+      "side": 1,
+      "message": "Do clients override these in their SkCanvas-derived types? If not (and I wouldn\u0027t think so), then we probably don\u0027t need to stage this part of the change, right?",
+      "revId": "8fc1b7367dcac00b39e83b835449013c36b125e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "868b74c5_09c28a59",
+        "filename": "tests/CanvasTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-21T17:02:11Z",
+      "side": 1,
+      "message": "I think this flush (and possibly this whole test step, given the comment\u0027s justification) can be removed. We only use these tests for bitmap and PDF canvases, where flush does nothing, and there is no \"deferred\" canvas outside of GPU. I don\u0027t even know what that comment is talking about: \"... flush on a deferred canvas will reset the recording session.\" ???",
+      "range": {
+        "startLine": 400,
+        "startChar": 0,
+        "endLine": 402,
+        "endChar": 9
+      },
+      "revId": "8fc1b7367dcac00b39e83b835449013c36b125e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9d7b7ef_6c12e7b4",
+        "filename": "tests/PictureTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-21T17:02:11Z",
+      "side": 1,
+      "message": "Similarly, I\u0027d suggest just deleting this entire test. Recording clears and draws are thoroughly tested elsewhere, this was explicitly trying to test that we recorded the flushes (which were impossible to observe in any way, hence this CL).",
+      "range": {
+        "startLine": 758,
+        "startChar": 0,
+        "endLine": 776,
+        "endChar": 1
+      },
+      "revId": "8fc1b7367dcac00b39e83b835449013c36b125e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
