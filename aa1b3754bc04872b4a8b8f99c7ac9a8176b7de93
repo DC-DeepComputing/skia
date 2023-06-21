@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27bf8b07_5ec4f088",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-21T20:22:32Z",
+      "side": 1,
+      "message": "Update comment.",
+      "range": {
+        "startLine": 737,
+        "startChar": 7,
+        "endLine": 737,
+        "endChar": 97
+      },
+      "revId": "aa1b3754bc04872b4a8b8f99c7ac9a8176b7de93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
