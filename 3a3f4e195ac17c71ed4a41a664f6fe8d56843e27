@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9ea9284_35bb30e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-21T15:30:50Z",
+      "side": 1,
+      "message": "This looks to be [breaking the Android roll](https://android-build.corp.google.com/artifact/pending/P58728996/aosp_cheetah-userdebug/latest/view/logs%2Ferror.log?ref\u003djumpToFull).",
+      "revId": "3a3f4e195ac17c71ed4a41a664f6fe8d56843e27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
