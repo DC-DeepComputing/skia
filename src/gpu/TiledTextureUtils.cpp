@@ -208,7 +208,6 @@ bool TiledTextureUtils::CanDisableMipmap(const SkMatrix& viewM, const SkMatrix& 
     return matrix.getMinScale() >= SK_ScalarRoot2Over2;
 }
 
-
 // This method outsets 'iRect' by 'outset' all around and then clamps its extents to
 // 'clamp'. 'offset' is adjusted to remain positioned over the top-left corner
 // of 'iRect' for all possible outsets/clamps.

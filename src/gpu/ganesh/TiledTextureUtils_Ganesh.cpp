@@ -109,7 +109,7 @@ void TiledTextureUtils::DrawTiledBitmap_Ganesh(SkBaseDevice* device,
                     aaFlags |= SkCanvas::kTop_QuadAAFlag;
                 }
                 if (tileR.fBottom >= srcRect.fBottom &&
-                    (origAAFlags & SkCanvas::kBottom_QuadAAFlag)) {
+                        (origAAFlags & SkCanvas::kBottom_QuadAAFlag)) {
                     aaFlags |= SkCanvas::kBottom_QuadAAFlag;
                 }
 
@@ -136,6 +136,5 @@ void TiledTextureUtils::DrawTiledBitmap_Ganesh(SkBaseDevice* device,
         }
     }
 }
-
 
 } // namespace skgpu
