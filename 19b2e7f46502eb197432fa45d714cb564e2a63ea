@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1ffe8a5_988fd1b0",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 864,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-21T18:24:05Z",
+      "side": 1,
+      "message": "In my first attempt at fixing this, I initially tried setting the local coordinates based on `SubRunData::bounds()` which are equal to the `bounds` computed here. This led to incorrect rendering of a gradient shader when applied to a multi-character string as the gradient coordinates would shrink to just the glyph bounds rather than applying to the entire text (GM_textblobshader is a good example of this. GM_shadertext3 also demonstrates this if you changed the rendered string from a `B` to a something longer).\n\nI think this is because these `bounds` here are the bounds of the AtlasSubRun but _not_ of the SubRunData and they are not useful to the RenderStep without the offset and width of the cursor position relative to the bounds in local coordinates. I could be missing something but this call to `boundsAndDeviceMatrix` could be made only once outside the loop as it doesn\u0027t seem to return different values for different cursor positions.\n\nI decided to pass along the inverse of the local-to-device matrix to transform the coordinates rather than reworking AtlasSubRun to return bounds that take the offset into account. Let me know if you\u0027d prefer that I explore a solution that uses the correct `bounds` rather than the inverse matrix.",
+      "revId": "19b2e7f46502eb197432fa45d714cb564e2a63ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
