@@ -63,6 +63,30 @@
       },
       "revId": "12d22d2cab2d5704712e172212f5563b37798949",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b90b63f_954cb8e0",
+        "filename": "src/gpu/graphite/geom/AtlasShape.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-22T20:49:47Z",
+      "side": 1,
+      "message": "Alternately, AtlasShape could just store the atlasBounds (which amounts to storing the atlas origin and size), and maskBounds() could just be read from the `Clip` since that has the `transformedShapeBounds` field now, which is equivalent.",
+      "parentUuid": "ef8e84c5_01a6a651",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 58
+      },
+      "revId": "12d22d2cab2d5704712e172212f5563b37798949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
