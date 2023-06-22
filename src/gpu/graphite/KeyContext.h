@@ -32,19 +32,22 @@ public:
                ShaderCodeDictionary* dict,
                RuntimeEffectDictionary* rtEffectDict,
                const SkColorInfo& dstColorInfo,
-               sk_sp<TextureProxy> dstTexture)
+               sk_sp<TextureProxy> dstTexture,
+               SkIPoint dstOffset)
             : fDictionary(dict)
             , fRTEffectDict(rtEffectDict)
             , fDstColorInfo(dstColorInfo)
             , fCaps(caps)
-            , fDstTexture(std::move(dstTexture)) {}
+            , fDstTexture(std::move(dstTexture))
+            , fDstOffset(dstOffset) {}
 
     // Constructor for the ExtractPaintData code path (i.e., with a Recorder)
     KeyContext(Recorder*,
                const SkM44& local2Dev,
                const SkColorInfo&,
                const SkColor4f& paintColor,
-               sk_sp<TextureProxy> dstTexture);
+               sk_sp<TextureProxy> dstTexture,
+               SkIPoint dstOffset);
 
     KeyContext(const KeyContext&);
 
@@ -61,6 +64,7 @@ public:
     const SkColorInfo& dstColorInfo() const { return fDstColorInfo; }
 
     sk_sp<TextureProxy> dstTexture() const { return fDstTexture; }
+    SkIPoint dstOffset() const { return fDstOffset; }
 
     const SkPMColor4f& paintColor() const { return fPaintColor; }
 
@@ -76,6 +80,7 @@ protected:
 private:
     const Caps* fCaps = nullptr;
     sk_sp<TextureProxy> fDstTexture;
+    SkIPoint fDstOffset;
 };
 
 class KeyContextWithLocalMatrix : public KeyContext {
