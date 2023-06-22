@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2cfc868_5c895cbf",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-22T15:41:47Z",
+      "side": 1,
+      "message": "Yes, this class should own it, so it makes sense to store the sk_sp within this class and simply initialize a BindBufferInfo struct when needed. Done",
+      "parentUuid": "f5887d1b_eaeb4c35",
+      "range": {
+        "startLine": 93,
+        "startChar": 35,
+        "endLine": 93,
+        "endChar": 44
+      },
+      "revId": "178189f25a42bf68c4c787594c679104e598a446",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99e5b078_6f2525c5",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-22T15:07:08Z",
       "side": 1,
       "message": "VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex",
+      "range": {
+        "startLine": 579,
+        "startChar": 26,
+        "endLine": 579,
+        "endChar": 27
+      },
+      "revId": "178189f25a42bf68c4c787594c679104e598a446",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1bc23c4_eb58bd07",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-22T15:41:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99e5b078_6f2525c5",
       "range": {
         "startLine": 579,
         "startChar": 26,
