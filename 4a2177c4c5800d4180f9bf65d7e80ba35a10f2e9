@@ -22,6 +22,30 @@
       },
       "revId": "4a2177c4c5800d4180f9bf65d7e80ba35a10f2e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cd4ffb5_4c34e37e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-22T20:52:08Z",
+      "side": 1,
+      "message": "Yes, I agree. We should get together at some point to align on what parameters \u0026 limitations we are willing to enforce on desc. sets in order to keep the key manageable (such as limits on max number of descriptors or of each descriptor type within a set, limits on the number of bindings within a set, etc; some of which have already been defined but might need to be revisited and tweaked).",
+      "parentUuid": "b5dd37f2_b585b97e",
+      "range": {
+        "startLine": 28,
+        "startChar": 20,
+        "endLine": 28,
+        "endChar": 38
+      },
+      "revId": "4a2177c4c5800d4180f9bf65d7e80ba35a10f2e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
