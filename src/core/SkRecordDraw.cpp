@@ -5,14 +5,40 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkBBHFactory.h"
-#include "include/core/SkImage.h"
-#include "include/private/base/SkTDArray.h"
-#include "src/core/SkCanvasPriv.h"
-#include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkRecordDraw.h"
+
+#include "include/core/SkBBHFactory.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkBlender.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkMesh.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkRRect.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkRegion.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkShader.h"
+#include "include/core/SkString.h"
+#include "include/core/SkTextBlob.h"
+#include "include/core/SkVertices.h"
+#include "include/private/base/SkAssert.h"
+#include "include/private/base/SkPoint_impl.h"
+#include "include/private/base/SkTDArray.h"
+#include "include/private/base/SkTemplates.h"
+#include "include/private/chromium/Slug.h"
+#include "src/core/SkCanvasPriv.h"
+#include "src/core/SkDrawShadowInfo.h"
+#include "src/core/SkImageFilter_Base.h"
+#include "src/core/SkRecord.h"
+#include "src/core/SkRecords.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
 #include "src/utils/SkPatchUtils.h"
+
+#include <algorithm>
+#include <optional>
+#include <vector>
 
 void SkRecordDraw(const SkRecord& record,
                   SkCanvas* canvas,
