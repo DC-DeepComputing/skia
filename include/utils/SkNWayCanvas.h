@@ -120,6 +120,9 @@ protected:
                           SkBlendMode) override;
     void onDrawEdgeAAImageSet2(const ImageSetEntry[], int count, const SkPoint[], const SkMatrix[],
                                const SkSamplingOptions&,const SkPaint*, SrcRectConstraint) override;
+
+    void onFlush() override;
+
     class Iter;
 
 private:
