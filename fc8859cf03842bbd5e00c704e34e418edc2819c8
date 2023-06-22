@@ -16,6 +16,23 @@
       "message": "Hi Michael, PTAL. Thanks",
       "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7e59b3d_e22c1350",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T14:20:42Z",
+      "side": 1,
+      "message": "I think this works from a texture POV, but `kRGB_888x` as an SkColorType is also describing the channel order of the data whenever it\u0027s on the CPU. Unless the GPU driver is performing a swizzle from BGR to RGB on any readback, we might lose the BGR channel ordering when describing the data solely on SkColorType.\n\nCan Dawn read back BGRA to RGBA to avoid this? Otherwise we might need to add a kBGR_888x color type (analogous to how we have both RGBA and BGRA SkColorTypes already).",
+      "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
