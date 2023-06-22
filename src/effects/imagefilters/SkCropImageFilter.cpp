@@ -13,6 +13,7 @@
 #include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkRectPriv.h"
 #include "src/core/SkValidationUtils.h"
 #include "src/core/SkWriteBuffer.h"
 
@@ -22,9 +23,10 @@ namespace {
 
 class SkCropImageFilter final : public SkImageFilter_Base {
 public:
-    SkCropImageFilter(const SkRect& cropRect, sk_sp<SkImageFilter> input)
+    SkCropImageFilter(const SkRect& cropRect, SkTileMode tileMode, sk_sp<SkImageFilter> input)
             : SkImageFilter_Base(&input, 1, /*cropRect=*/nullptr)
-            , fCropRect(cropRect) {
+            , fCropRect(cropRect)
+            , fTileMode(tileMode) {
         SkASSERT(cropRect.isFinite());
         SkASSERT(cropRect.isSorted());
     }
@@ -37,6 +39,8 @@ protected:
 private:
     friend void ::SkRegisterCropImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkCropImageFilter)
+
+    bool onAffectsTransparentBlack() const { return fTileMode != SkTileMode::kDecal; }
 
     skif::FilterResult onFilterImage(const skif::Context& context) const override;
 
@@ -52,29 +56,28 @@ private:
     // The crop rect is specified in floating point to allow cropping to partial local pixels,
     // that could become whole pixels in the layer-space image if the canvas is scaled.
     // For now it's always rounded to integer pixels as if it were non-AA.
-    //
-    // The returned rect is intersected with 'outputBounds', which is either the desired or
-    // actual bounds of the child filter.
-    skif::LayerSpace<SkIRect> cropRect(const skif::Mapping& mapping,
-                                       const skif::LayerSpace<SkIRect>& outputBounds) const {
-        auto crop = mapping.paramToLayer(fCropRect).roundOut();
-        if (!crop.intersect(outputBounds)) {
-            return skif::LayerSpace<SkIRect>::Empty();
-        } else {
-            return crop;
-        }
+    skif::LayerSpace<SkIRect> cropRect(const skif::Mapping& mapping) const {
+        return mapping.paramToLayer(fCropRect).roundOut();
     }
 
+    // Calculates the required input to fill the crop rect, given the desired output that it will
+    // be tiled across.
+    skif::LayerSpace<SkIRect> requiredInput(const skif::Mapping& mapping,
+                                            const skif::LayerSpace<SkIRect>& outputBounds) const;
+
     skif::ParameterSpace<SkRect> fCropRect;
+    SkTileMode fTileMode;
 };
 
 } // end namespace
 
-sk_sp<SkImageFilter> SkMakeCropImageFilter(const SkRect& rect, sk_sp<SkImageFilter> input) {
+sk_sp<SkImageFilter> SkMakeCropImageFilter(const SkRect& rect,
+                                           SkTileMode tileMode,
+                                           sk_sp<SkImageFilter> input) {
     if (!rect.isFinite()) {
         return nullptr;
     }
-    return sk_sp<SkImageFilter>(new SkCropImageFilter(rect, std::move(input)));
+    return sk_sp<SkImageFilter>(new SkCropImageFilter(rect, tileMode, std::move(input)));
 }
 
 void SkRegisterCropImageFilterFlattenable() {
@@ -87,26 +90,55 @@ sk_sp<SkFlattenable> SkCropImageFilter::CreateProc(SkReadBuffer& buffer) {
     if (!buffer.isValid() || !buffer.validate(SkIsValidRect(cropRect))) {
         return nullptr;
     }
-    return SkMakeCropImageFilter(cropRect, common.getInput(0));
+
+    SkTileMode tileMode = SkTileMode::kDecal;
+    if (!buffer.isVersionLT(SkPicturePriv::kCropImageFilterSupportsTiling)) {
+        tileMode = buffer.read32LE(SkTileMode::kLastTileMode);
+    }
+
+    return SkMakeCropImageFilter(cropRect, tileMode, common.getInput(0));
 }
 
 void SkCropImageFilter::flatten(SkWriteBuffer& buffer) const {
     this->SkImageFilter_Base::flatten(buffer);
     buffer.writeRect(SkRect(fCropRect));
+    buffer.writeInt(static_cast<int32_t>(fTileMode));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-skif::FilterResult SkCropImageFilter::onFilterImage(const skif::Context& context) const {
-    skif::LayerSpace<SkIRect> cropBounds =
-            this->cropRect(context.mapping(), context.desiredOutput());
-    skif::FilterResult childOutput =
-            this->getChildOutput(0, context.withNewDesiredOutput(cropBounds));
+skif::LayerSpace<SkIRect> SkCropImageFilter::requiredInput(
+        const skif::Mapping& mapping,
+        const skif::LayerSpace<SkIRect>& outputBounds) const {
+    skif::LayerSpace<SkIRect> crop = this->cropRect(mapping);
+    if (fTileMode == SkTileMode::kRepeat || fTileMode == SkTileMode::kMirror) {
+        // FIXME periodic boundary conditions to see what part of cropRect covers outputBounds
+        return crop;
+    } else {
+        // Both clamp and decal won't show content inside cropRect that's beyond 'outputBounds'
+        if (!crop.intersect(outputBounds)) {
+            if (fTileMode == SkTileMode::kClamp) {
+                // Except for clamping when there's no intersection; in that case the closest
+                // row/column/corner covers the entire output bounds.
+                // FIXME (leaving crop alone is valid but uses more pixels)
+            } else {
+                crop = skif::LayerSpace<SkIRect>::Empty();
+            }
+        }
 
-    // While the child filter may have exactly matched the requested 'cropBounds', it's not
-    // necessarily the case, so applyCrop() ensures this is true while avoiding rendering a new
-    // when possible.
-    return childOutput.applyCrop(context, cropBounds);
+        return crop;
+    }
+}
+
+skif::FilterResult SkCropImageFilter::onFilterImage(const skif::Context& context) const {
+    skif::LayerSpace<SkIRect> cropInput = this->requiredInput(context.mapping(),
+                                                              context.desiredOutput());
+    skif::FilterResult childOutput =
+            this->getChildOutput(0, context.withNewDesiredOutput(cropInput));
+
+    // The 'cropInput' is the optimal input to satisfy the original crop rect, but we have to pass
+    // that and the tile mode to applyCrop() in order for FilterResult to track the effective image.
+    return childOutput.applyCrop(context, this->cropRect(context.mapping()), fTileMode);
 }
 
 // TODO(michaelludwig) - onGetInputLayerBounds() and onGetOutputLayerBounds() are tightly coupled
@@ -122,7 +154,7 @@ skif::LayerSpace<SkIRect> SkCropImageFilter::onGetInputLayerBounds(
     // Assuming unbounded desired output, this filter only needs to process an image that's at most
     // sized to our crop rect, but we can restrict the crop rect to just what's requested since
     // anything in the crop but outside 'desiredOutput' won't be visible.
-    skif::LayerSpace<SkIRect> requiredInput = this->cropRect(mapping, desiredOutput);
+    skif::LayerSpace<SkIRect> requiredInput = this->requiredInput(mapping, desiredOutput);
 
     // Our required input is the desired output for our child image filter.
     return this->getChildInputLayerBounds(0, mapping, requiredInput, contentBounds);
@@ -131,12 +163,24 @@ skif::LayerSpace<SkIRect> SkCropImageFilter::onGetInputLayerBounds(
 skif::LayerSpace<SkIRect> SkCropImageFilter::onGetOutputLayerBounds(
         const skif::Mapping& mapping,
         const skif::LayerSpace<SkIRect>& contentBounds) const {
-    // Assuming unbounded child content, our output is a decal-tiled image sized to our crop rect.
+    // Assuming unbounded child content, our output is an image tiled around the crop rect.
     // But the child output image is drawn into our output surface with its own decal tiling, which
     // may allow the output dimensions to be reduced.
     skif::LayerSpace<SkIRect> childOutput =
             this->getChildOutputLayerBounds(0, mapping, contentBounds);
-    return this->cropRect(mapping, childOutput);
+
+    skif::LayerSpace<SkIRect> crop = this->cropRect(mapping);
+    if (!crop.intersect(childOutput)) {
+        return skif::LayerSpace<SkIRect>::Empty();
+    } else {
+        // The crop rect contains non-transparent content from the child filter; if not a decal
+        // tile mode, the actual visual output is unbounded (even if the underlying data is cropped)
+        if (fTileMode == SkTileMode::kDecal) {
+            return crop;
+        } else {
+            return skif::LayerSpace<SkIRect>(SkRectPriv::MakeILarge());
+        }
+    }
 }
 
 SkRect SkCropImageFilter::computeFastBounds(const SkRect& bounds) const {
@@ -152,12 +196,15 @@ SkRect SkCropImageFilter::computeFastBounds(const SkRect& bounds) const {
     // rect filter and the new APIs.
     if (this->getInput(0) && !this->getInput(0)->canComputeFastBounds()) {
         // The input bounds to the crop are effectively infinite so the output fills the crop rect.
-        return SkRect(fCropRect);
+        // And if it's non-decal, the crop rect is then tiled infinitely.
+        return fTileMode == SkTileMode::kDecal ? SkRect(fCropRect) : SkRectPriv::MakeLargeS32();
     }
 
     SkRect inputBounds = this->getInput(0) ? this->getInput(0)->computeFastBounds(bounds) : bounds;
     if (!inputBounds.intersect(SkRect(fCropRect))) {
+        // Regardless of tile mode, the content within the crop rect is fully transparent, so
+        // any tiling will maintain that transparency.
         return SkRect::MakeEmpty();
     }
-    return inputBounds;
+    return fTileMode == SkTileMode::kDecal ? inputBounds : SkRectPriv::MakeLargeS32();
 }
