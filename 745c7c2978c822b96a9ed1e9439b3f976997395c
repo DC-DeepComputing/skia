@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a6df618_8c69e2e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-22T17:24:41Z",
+      "side": 1,
+      "message": "Might move these to a different bot configuration eventually but they at least work on this one.",
+      "revId": "745c7c2978c822b96a9ed1e9439b3f976997395c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
