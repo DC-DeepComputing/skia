@@ -18,6 +18,7 @@ namespace skgpu::graphite {
 
 class VulkanResourceProvider;
 class VulkanSharedContext;
+class Buffer;
 
 class VulkanCommandBuffer final : public CommandBuffer {
 public:
@@ -179,7 +180,7 @@ private:
     bool fBindUniformBuffers = false;
     bool fBindTextureSamplers = false;
 
-    BindBufferInfo fIntrinsicUniformBufferInfo;
+    sk_sp<Buffer> fIntrinsicUniformBuffer;
     std::array<BindBufferInfo, VulkanGraphicsPipeline::kNumUniformBuffers> fUniformBuffersToBind
             = {{{nullptr, 0}}};
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
