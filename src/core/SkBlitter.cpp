@@ -756,7 +756,8 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
     if (paint->getShader()) {
         shaderContext = as_SB(paint->getShader())
                                 ->makeContext({paint->getAlpha(),
-                                               SkShaders::MatrixRec(ctm),
+                                               ctm,
+                                               nullptr,
                                                device.colorType(),
                                                device.colorSpace(),
                                                props},

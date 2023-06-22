@@ -79,7 +79,7 @@ SkShaderBase::Context* SkBitmapProcLegacyShader::MakeContext(
 {
     SkMatrix totalInverse;
     // Do this first, so we know the matrix can be inverted.
-    if (!rec.fMatrixRec.totalInverse(&totalInverse)) {
+    if (!shader.computeTotalInverse(*rec.fMatrix, rec.fLocalMatrix, &totalInverse)) {
         return nullptr;
     }
 

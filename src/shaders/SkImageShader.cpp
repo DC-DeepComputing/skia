@@ -300,7 +300,8 @@ SkShaderBase::Context* SkImageShader::onMakeContext(const ContextRec& rec,
     }
 
     SkMatrix inv;
-    if (!rec.fMatrixRec.totalInverse(&inv) || !legacy_shader_can_handle(inv)) {
+    if (!this->computeTotalInverse(*rec.fMatrix, rec.fLocalMatrix, &inv) ||
+        !legacy_shader_can_handle(inv)) {
         return nullptr;
     }
 
