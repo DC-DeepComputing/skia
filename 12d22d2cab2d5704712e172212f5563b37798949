@@ -16,6 +16,29 @@
       "message": "gentle ping",
       "revId": "12d22d2cab2d5704712e172212f5563b37798949",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65f4df58_e19a935c",
+        "filename": "src/gpu/graphite/geom/AtlasShape.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T14:32:11Z",
+      "side": 1,
+      "message": "This seems redundant with `atlasBounds`, since we can apply inversion in the AtlasShapeRenderStep. The required allocation in the atlas will be the same for both regular and inverse fills/strokes.\n\nThe shape shouldn\u0027t be responsible for remembering the transformation of the atlas bounds into device space. That\u0027s already part of the Clip and DrawParams data.",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 58
+      },
+      "revId": "12d22d2cab2d5704712e172212f5563b37798949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
