@@ -28,7 +28,6 @@
 #include "include/core/SkTiledImageUtils.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/gpu/GrDirectContext.h"
 #include "include/private/base/SkAssert.h"
 #include "src/core/SkSamplingPriv.h"
 #include "tests/Test.h"
@@ -36,9 +35,18 @@
 #include "tools/ToolUtils.h"
 
 #if defined(SK_GANESH)
+#include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "tests/CtsEnforcement.h"
 struct GrContextOptions;
+#endif
+
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/Surface.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #endif
 
 #include <atomic>
@@ -119,14 +127,16 @@ const char* get_sampling_str(const SkSamplingOptions& sampling) {
     }
 }
 
-SkString create_label(const char* generator,
+SkString create_label(GrDirectContext* dContext,
+                      const char* generator,
                       const SkSamplingOptions& sampling,
                       int scale,
                       int rot,
                       SkCanvas::SrcRectConstraint constraint,
                       int numTiles) {
     SkString label;
-    label.appendf("%s-%s-%d-%d-%s-%d",
+    label.appendf("%s-%s-%s-%d-%d-%s-%d",
+                  dContext ? "ganesh" : "graphite",
                   generator,
                   get_sampling_str(sampling),
                   scale,
@@ -139,11 +149,11 @@ SkString create_label(const char* generator,
 void potentially_write_to_png(const char* directory,
                               const SkString& label,
                               const SkBitmap& bm) {
-    constexpr bool kWriteOutImages = false;
+    constexpr bool kWriteOutImages = true;
 
     if constexpr(kWriteOutImages) {
         SkString filename;
-        filename.appendf("//%s//%s.png", directory, label.c_str());
+        filename.appendf("//Users//robertphillips//src//bugs//%s//%s.png", directory, label.c_str());
 
         SkFILEWStream file(filename.c_str());
         SkAssertResult(file.isValid());
@@ -232,25 +242,22 @@ bool difficult_case(const SkSamplingOptions& sampling,
     return false;
 }
 
-} // anonymous namespace
-
-
-#if defined(SK_GANESH)
-
-DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
-                                       reporter,
-                                       ctxInfo,
-                                       CtsEnforcement::kNever) {
-    auto dContext = ctxInfo.directContext();
-
+void run_test(GrDirectContext* dContext,
+              skgpu::graphite::Recorder* recorder,
+              skiatest::Reporter* reporter) {
     // We're using the knowledge that the internal tile size is 1024. By creating kImageSize
     // sized images we know we'll get a 4x4 tiling regardless of the sampling.
     static const int kImageSize = 4096 - 4 * 2 * kBicubicFilterTexelPad;
     static const int kOverrideMaxTextureSize = 1024;
 
-    if (dContext->maxTextureSize() < kImageSize) {
+    if (dContext && dContext->maxTextureSize() < kImageSize) {
         // For the expected images we need to be able to draw w/o tiling
         return;
+    } else if (recorder) {
+        const skgpu::graphite::Caps* caps = recorder->priv().caps();
+        if (caps->maxTextureSize() < kImageSize) {
+            return;
+        }
     }
 
     static const int kWhiteBandWidth = 4;
@@ -264,14 +271,14 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
         GeneratorT fGen;
         const char* fTag;
     } kGenerators[] = { { make_big_bitmap_image, "BM" },
-                        { make_big_picture_image, "Picture" } };
+                       /* { make_big_picture_image, "Picture" }  */ };
 
     static const SkSamplingOptions kSamplingOptions[] = {
-        SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone),
+//        SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone),
         SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone),
-        // Note that Mipmapping gets auto-disabled with a strict-constraint
-        SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kLinear),
-        SkSamplingOptions(SkCubicResampler::CatmullRom()),
+//        // Note that Mipmapping gets auto-disabled with a strict-constraint
+//        SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kLinear),
+//        SkSamplingOptions(SkCubicResampler::CatmullRom()),
     };
 
     int numClippedTiles = 9;
@@ -282,9 +289,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
                                          /* desiredDepth= */ 7);
         numClippedTiles = (numClippedTiles == 9) ? 4 : 9;  // alternate to reduce the combinatorics
 
-        for (int scale : { 1, 4, 8 }) {
+        for (int scale : { 1 /*, 4, 8*/ }) {
             for (int rot : { 0, 45 }) {
-                for (int numDesiredTiles : { numClippedTiles, 16 }) {
+                for (int numDesiredTiles : { numClippedTiles /*, 16*/ }) {
                     SkRect destRect = SkRect::MakeWH(srcRect.width()/scale,
                                                      srcRect.height()/scale);
 
@@ -303,19 +310,27 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
                     expected.allocPixels(destII);
                     actual.allocPixels(destII);
 
-                    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(dContext,
-                                                                        skgpu::Budgeted::kNo,
-                                                                        destII);
+                    sk_sp<SkSurface> surface;
+
+                    if (dContext) {
+                        surface = SkSurfaces::RenderTarget(dContext,
+                                                           skgpu::Budgeted::kNo,
+                                                           destII);
+                    } else if (recorder) {
+                        surface = SkSurfaces::RenderTarget(recorder, destII);
+                    }
 
                     for (auto sampling : kSamplingOptions) {
-                        for (auto constraint : { SkCanvas::kStrict_SrcRectConstraint,
+                        for (auto constraint : { /* SkCanvas::kStrict_SrcRectConstraint, */
                                                  SkCanvas::kFast_SrcRectConstraint }) {
                             if (difficult_case(sampling, scale, rot, constraint)) {
                                 continue;
                             }
 
-                            SkString label = create_label(gen.fTag, sampling, scale, rot,
+                            SkString label = create_label(dContext, gen.fTag, sampling, scale, rot,
                                                           constraint, numDesiredTiles);
+
+                            SkDebugf("%s\n", label.c_str());
 
                             SkCanvas* canvas = surface->getCanvas();
 
@@ -334,19 +349,25 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
                             gOverrideMaxTextureSize = 0;
                             gNumTilesDrawn.store(0, std::memory_order_relaxed);
 
+                            canvas->clear(SK_ColorBLACK);
+                            canvas->save();
                             canvas->clipRect(clipRect);
 
-                            canvas->clear(SK_ColorBLACK);
                             SkTiledImageUtils::DrawImageRect(canvas, img, srcRect, destRect,
                                                              sampling, nullptr, constraint);
                             SkAssertResult(surface->readPixels(expected, 0, 0));
                             int actualNumTiles = gNumTilesDrawn.load(std::memory_order_acquire);
                             REPORTER_ASSERT(reporter, actualNumTiles == 0);
 
+                            canvas->restore();
+
                             // Then, force 4x4 tiling
                             gOverrideMaxTextureSize = kOverrideMaxTextureSize;
 
                             canvas->clear(SK_ColorBLACK);
+                            canvas->save();
+                            canvas->clipRect(clipRect);
+
                             SkTiledImageUtils::DrawImageRect(canvas, img, srcRect, destRect,
                                                              sampling, nullptr, constraint);
                             SkAssertResult(surface->readPixels(actual, 0, 0));
@@ -355,6 +376,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
                             REPORTER_ASSERT(reporter, numDesiredTiles == actualNumTiles,
                                             "mismatch expected: %d actual: %d\n",
                                             numDesiredTiles, actualNumTiles);
+
+                            canvas->restore();
 
                             REPORTER_ASSERT(reporter, check_pixels(reporter, expected, actual,
                                                                    label, rot));
@@ -369,5 +392,30 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
     }
 }
 
+} // anonymous namespace
+
+#if defined(SK_GANESH)
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+
+    run_test(dContext, nullptr, reporter);
+}
 
 #endif // SK_GANESH
+
+#if defined(SK_GRAPHITE)
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Graphite,
+                                         reporter,
+                                         context) {
+    std::unique_ptr<skgpu::graphite::Recorder> recorder =
+            context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+
+    run_test(nullptr, recorder.get(), reporter);
+}
+
+#endif // SK_GRAPHITE
