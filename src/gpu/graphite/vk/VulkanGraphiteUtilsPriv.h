@@ -8,9 +8,13 @@
 #ifndef skgpu_graphite_VulkanGraphiteUtilsPriv_DEFINED
 #define skgpu_graphite_VulkanGraphiteUtilsPriv_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/DescriptorTypes.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/vk/VulkanInterface.h"
+
+#include <string>
 
 // Helper macros to call functions on the VulkanInterface
 #define VULKAN_CALL(IFACE, X) (IFACE)->fFunctions.f##X
@@ -41,6 +45,11 @@ class VulkanSharedContext;
 VkShaderModule createVulkanShaderModule(const VulkanSharedContext*,
                                         const std::string& spirv,
                                         VkShaderStageFlagBits);
+
+VkDescriptorType DsTypeEnumToVkDs(DescriptorType);
+void DescTypeAndCountToVkDescSetLayout(const VulkanSharedContext*,
+                                       VkDescriptorSetLayout* layout,
+                                       const SkSpan<DescTypeAndCount>&);
 
 } // namespace skgpu::graphite
 
