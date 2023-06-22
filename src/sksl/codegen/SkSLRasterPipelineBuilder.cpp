@@ -716,10 +716,11 @@ void Builder::simplifyPopSlotsUnmasked(SlotRange* dst) {
     }
 
     Instruction& lastInstruction = fInstructions.back();
+    BuilderOp lastOp = lastInstruction.fOp;
 
     // If the last instruction is pushing a constant, we can simplify it by copying the constant
     // directly into the destination slot.
-    if (lastInstruction.fOp == BuilderOp::push_constant) {
+    if (lastOp == BuilderOp::push_constant) {
         // Get the last slot.
         int32_t value = lastInstruction.fImmB;
         lastInstruction.fImmA--;
@@ -741,7 +742,7 @@ void Builder::simplifyPopSlotsUnmasked(SlotRange* dst) {
 
     // If the last instruction is pushing a uniform, we can simplify it by copying the uniform
     // directly into the destination slot.
-    if (lastInstruction.fOp == BuilderOp::push_uniform) {
+    if (lastOp == BuilderOp::push_uniform) {
         // Get the last slot.
         Slot sourceSlot = lastInstruction.fSlotA + lastInstruction.fImmA - 1;
         lastInstruction.fImmA--;
@@ -762,8 +763,7 @@ void Builder::simplifyPopSlotsUnmasked(SlotRange* dst) {
     }
 
     // If the last instruction is pushing a slot or immutable, we can just copy that slot.
-    if (lastInstruction.fOp == BuilderOp::push_slots ||
-        lastInstruction.fOp == BuilderOp::push_immutable) {
+    if (lastOp == BuilderOp::push_slots || lastOp == BuilderOp::push_immutable) {
         // Get the last slot.
         Slot sourceSlot = lastInstruction.fSlotA + lastInstruction.fImmA - 1;
         lastInstruction.fImmA--;
@@ -779,14 +779,15 @@ void Builder::simplifyPopSlotsUnmasked(SlotRange* dst) {
         this->simplifyPopSlotsUnmasked(dst);
 
         // Copy the slot directly.
-        if (lastInstruction.fOp == BuilderOp::push_slots) {
+        if (lastOp == BuilderOp::push_slots) {
             if (destinationSlot != sourceSlot) {
                 this->copy_slots_unmasked({destinationSlot, 1}, {sourceSlot, 1});
+            } else {
+                // Copying from a value-slot into the same value-slot is a no-op.
             }
         } else {
             // Copy from immutable data directly to the destination slot.
-            // TODO: when immutables have dedicated storage, this copy will need to reflect that.
-            this->copy_slots_unmasked({destinationSlot, 1}, {sourceSlot, 1});
+            this->copy_immutable_unmasked({destinationSlot, 1}, {sourceSlot, 1});
         }
         return;
     }
@@ -894,13 +895,13 @@ void Builder::copy_constant(Slot slot, int constantValue) {
     fInstructions.push_back({BuilderOp::copy_constant, {slot}, 1, constantValue});
 }
 
-void Builder::copy_slots_unmasked(SlotRange dst, SlotRange src) {
+void Builder::copy_slots_or_immutable_unmasked(SlotRange dst, SlotRange src, BuilderOp op) {
     // If the last instruction copied adjacent slots, just extend it.
     if (!fInstructions.empty()) {
         Instruction& lastInstr = fInstructions.back();
 
-        // If the last op is copy-slots-unmasked...
-        if (lastInstr.fOp == BuilderOp::copy_slot_unmasked &&
+        // If the last op is a match...
+        if (lastInstr.fOp == op &&
             // and this op's destination is immediately after the last copy-slots-op's destination
             lastInstr.fSlotA + lastInstr.fImmA == dst.index &&
             // and this op's source is immediately after the last copy-slots-op's source
@@ -915,7 +916,7 @@ void Builder::copy_slots_unmasked(SlotRange dst, SlotRange src) {
     }
 
     SkASSERT(dst.count == src.count);
-    fInstructions.push_back({BuilderOp::copy_slot_unmasked, {dst.index, src.index}, dst.count});
+    fInstructions.push_back({op, {dst.index, src.index}, dst.count});
 }
 
 void Builder::copy_uniform_to_slots_unmasked(SlotRange dst, SlotRange src) {
@@ -1388,6 +1389,16 @@ void Program::appendCopySlotsUnmasked(TArray<Stage>* pipeline,
                      dst,  src, numSlots);
 }
 
+void Program::appendCopyImmutableUnmasked(TArray<Stage>* pipeline,
+                                          SkArenaAlloc* alloc,
+                                          SkRPOffset dst,
+                                          SkRPOffset src,
+                                          int numSlots) const {
+    this->appendCopy(pipeline, alloc,
+                     ProgramOp::copy_immutable_unmasked,
+                     dst,  src, numSlots);
+}
+
 void Program::appendCopySlotsMasked(TArray<Stage>* pipeline,
                                     SkArenaAlloc* alloc,
                                     SkRPOffset dst,
@@ -1856,6 +1867,14 @@ void Program::makeStages(TArray<Stage>* pipeline,
                                               inst.fImmA);
                 break;
 
+            case BuilderOp::copy_immutable_unmasked:
+                this->appendCopyImmutableUnmasked(pipeline,
+                                                  alloc,
+                                                  OffsetFromBase(SlotA()),
+                                                  OffsetFromBase(SlotB()),
+                                                  inst.fImmA);
+                break;
+
             case BuilderOp::refract_4_floats: {
                 float* dst = tempStackPtr - (9 * N);
                 pipeline->push_back({ProgramOp::refract_4_floats, dst});
@@ -1945,13 +1964,20 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 pipeline->push_back({ProgramOp::load_dst, src});
                 break;
             }
-            case BuilderOp::push_slots:
-            case BuilderOp::push_immutable: {
+            case BuilderOp::push_slots: {
                 float* dst = tempStackPtr;
                 this->appendCopySlotsUnmasked(pipeline, alloc,
                                               OffsetFromBase(dst),
                                               OffsetFromBase(SlotA()),
                                               inst.fImmA);
+                break;
+            }
+            case BuilderOp::push_immutable: {
+                float* dst = tempStackPtr;
+                this->appendCopyImmutableUnmasked(pipeline, alloc,
+                                                  OffsetFromBase(dst),
+                                                  OffsetFromBase(SlotA()),
+                                                  inst.fImmA);
                 break;
             }
             case BuilderOp::copy_stack_to_slots_indirect:
@@ -2895,21 +2921,25 @@ void Program::Dumper::dump(SkWStream* out) {
 
             case POp::copy_slot_masked:
             case POp::copy_slot_unmasked:
+            case POp::copy_immutable_unmasked:
                 std::tie(opArg1, opArg2) = this->binaryOpCtx(stage.ctx, 1);
                 break;
 
             case POp::copy_2_slots_masked:
             case POp::copy_2_slots_unmasked:
+            case POp::copy_2_immutables_unmasked:
                 std::tie(opArg1, opArg2) = this->binaryOpCtx(stage.ctx, 2);
                 break;
 
             case POp::copy_3_slots_masked:
             case POp::copy_3_slots_unmasked:
+            case POp::copy_3_immutables_unmasked:
                 std::tie(opArg1, opArg2) = this->binaryOpCtx(stage.ctx, 3);
                 break;
 
             case POp::copy_4_slots_masked:
             case POp::copy_4_slots_unmasked:
+            case POp::copy_4_immutables_unmasked:
                 std::tie(opArg1, opArg2) = this->binaryOpCtx(stage.ctx, 4);
                 break;
 
@@ -3277,6 +3307,8 @@ void Program::Dumper::dump(SkWStream* out) {
             case POp::copy_3_uniforms:             case POp::copy_4_uniforms:
             case POp::copy_slot_unmasked:          case POp::copy_2_slots_unmasked:
             case POp::copy_3_slots_unmasked:       case POp::copy_4_slots_unmasked:
+            case POp::copy_immutable_unmasked:     case POp::copy_2_immutables_unmasked:
+            case POp::copy_3_immutables_unmasked:  case POp::copy_4_immutables_unmasked:
             case POp::copy_constant:               case POp::splat_2_constants:
             case POp::splat_3_constants:           case POp::splat_4_constants:
             case POp::swizzle_1:                   case POp::swizzle_2:
