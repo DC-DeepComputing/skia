@@ -141,6 +141,30 @@
       },
       "revId": "e640601c0645e82e8ffb672df798404366da6644",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4e4d3cf_635e36df",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T14:46:05Z",
+      "side": 1,
+      "message": "The only requirement of `Geometry::bounds()` is that it\u0027s the bounds *before* any transformation is applied. This is relied on in the ClipStack implementation for determining the final device space bounds.\n\nAtlasShape is a little bit unique because it\u0027s only ever created after the ClipStack processed the original Shape. The AtlasShape should then be drawn with the identity transform, which would normally be what was stored in DrawParams. But it looks like AtlasShapeRenderStep assumes this identity function and then repurposes the DrawParams\u0027 storage to use the original local-to-device matrix to reconstruct the local coords.\n\nI\u0027d like to find a way to better merge the straightforward coordinate flow of plain shapes with the two similar, but different atlas shapes (text atlases happens before clipping I believe). For now, since AtlasShape only comes after clipping, I think we are okay to move forward with this and just be aware of the inconsistency.",
+      "parentUuid": "3f33c460_2eb8e977",
+      "range": {
+        "startLine": 157,
+        "startChar": 55,
+        "endLine": 157,
+        "endChar": 61
+      },
+      "revId": "e640601c0645e82e8ffb672df798404366da6644",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

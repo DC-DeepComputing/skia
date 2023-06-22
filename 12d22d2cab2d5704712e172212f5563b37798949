@@ -39,6 +39,30 @@
       },
       "revId": "12d22d2cab2d5704712e172212f5563b37798949",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef8e84c5_01a6a651",
+        "filename": "src/gpu/graphite/geom/AtlasShape.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T14:46:05Z",
+      "side": 1,
+      "message": "After reading the AtlasRenderStep CL, wdyt encoding the AtlasShape as a device origin, atlas origin, and size? Then you can reconstruct the bounding boxes for either use case and clearly see how they are coupled together.",
+      "parentUuid": "65f4df58_e19a935c",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 58
+      },
+      "revId": "12d22d2cab2d5704712e172212f5563b37798949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
