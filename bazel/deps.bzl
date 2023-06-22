@@ -163,13 +163,13 @@ def git_repos_from_deps(ws = "@"):
 
     git_repository(
         name = "spirv_headers",
-        commit = "10db9d4e194246a020a4148e220837ac7c68cfd9",
+        commit = "3469b164e25cee24435029a569933cb42578db5d",
         remote = "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers.git",
     )
 
     git_repository(
         name = "spirv_tools",
-        commit = "54691dcd737c7b01e524bedcd5e9eb844f1f2d59",
+        commit = "a68ef7b2c520bada945b5017bb098c7403762448",
         remote = "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools.git",
     )
 
