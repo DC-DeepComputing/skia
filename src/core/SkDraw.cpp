@@ -27,6 +27,7 @@
 #include "src/core/SkDraw.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkImagePriv.h"
+#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkMatrixUtils.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRectPriv.h"
@@ -249,8 +250,9 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
         return;
     }
 
+    SkMatrix ctm = fMatrixProvider->localToDevice();
     PtProcRec rec;
-    if (!device && rec.init(mode, paint, fCTM, fRC)) {
+    if (!device && rec.init(mode, paint, &ctm, fRC)) {
         SkAutoBlitterChoose blitter(*this, nullptr, paint);
 
         SkPoint             devPts[MAX_DEV_PTS];
@@ -264,7 +266,7 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
             if (n > MAX_DEV_PTS) {
                 n = MAX_DEV_PTS;
             }
-            fCTM->mapPoints(devPts, pts, n);
+            ctm.mapPoints(devPts, pts, n);
             if (!SkScalarsAreFinite(&devPts[0].fX, n * 2)) {
                 return;
             }
@@ -316,7 +318,8 @@ void SkDraw::drawBitmap(const SkBitmap& bitmap, const SkMatrix& prematrix,
         paint.writable()->setStyle(SkPaint::kFill_Style);
     }
 
-    SkMatrix matrix = *fCTM * prematrix;
+    SkPreConcatMatrixProvider matrixProvider(*fMatrixProvider, prematrix);
+    SkMatrix matrix = matrixProvider.localToDevice();
 
     if (clipped_out(matrix, *fRC, bitmap.width(), bitmap.height())) {
         return;
@@ -351,7 +354,7 @@ void SkDraw::drawBitmap(const SkBitmap& bitmap, const SkMatrix& prematrix,
     // now make a temp draw on the stack, and use it
     //
     SkDraw draw(*this);
-    draw.fCTM = &matrix;
+    draw.fMatrixProvider = &matrixProvider;
 
     // For a long time, the CPU backend treated A8 bitmaps as coverage, rather than alpha. This was
     // inconsistent with the GPU backend (skbug.com/9692). When this was fixed, it altered behavior
@@ -407,8 +410,8 @@ void SkDraw::drawSprite(const SkBitmap& bitmap, int x, int y, const SkPaint& ori
         }
     }
 
-    SkMatrix matrix;
-    SkRect   r;
+    SkMatrix        matrix;
+    SkRect          r;
 
     // get a scalar version of our rect
     r.set(bounds);
@@ -417,7 +420,8 @@ void SkDraw::drawSprite(const SkBitmap& bitmap, int x, int y, const SkPaint& ori
     matrix.setTranslate(r.fLeft, r.fTop);
     SkPaint paintWithShader = make_paint_with_image(paint, bitmap, SkSamplingOptions(), &matrix);
     SkDraw draw(*this);
-    draw.fCTM = &SkMatrix::I();
+    SkMatrixProvider matrixProvider(SkMatrix::I());
+    draw.fMatrixProvider = &matrixProvider;
     // call ourself with a rect
     draw.drawRect(r, paintWithShader);
 }
@@ -432,7 +436,8 @@ void SkDraw::drawDevMask(const SkMask& srcM, const SkPaint& paint) const {
 
     SkMask dstM;
     if (paint.getMaskFilter() &&
-        as_MFB(paint.getMaskFilter())->filterMask(&dstM, srcM, *fCTM, nullptr)) {
+        as_MFB(paint.getMaskFilter())
+                ->filterMask(&dstM, srcM, fMatrixProvider->localToDevice(), nullptr)) {
         mask = &dstM;
     }
     SkAutoMaskFreeImage ami(dstM.fImage);
@@ -462,10 +467,11 @@ void SkDraw::drawBitmapAsMask(const SkBitmap& bitmap, const SkSamplingOptions& s
         return;
     }
 
-    if (SkTreatAsSprite(*fCTM, bitmap.dimensions(), sampling, paint.isAntiAlias()))
+    SkMatrix ctm = fMatrixProvider->localToDevice();
+    if (SkTreatAsSprite(ctm, bitmap.dimensions(), sampling, paint.isAntiAlias()))
     {
-        int ix = SkScalarRoundToInt(fCTM->getTranslateX());
-        int iy = SkScalarRoundToInt(fCTM->getTranslateY());
+        int ix = SkScalarRoundToInt(ctm.getTranslateX());
+        int iy = SkScalarRoundToInt(ctm.getTranslateY());
 
         SkPixmap pmap;
         if (!bitmap.peekPixels(&pmap)) {
@@ -484,7 +490,7 @@ void SkDraw::drawBitmapAsMask(const SkBitmap& bitmap, const SkSamplingOptions& s
         SkMask  mask;
 
         r.setIWH(bitmap.width(), bitmap.height());
-        fCTM->mapRect(&r);
+        ctm.mapRect(&r);
         r.round(&mask.fBounds);
 
         // set the mask's bounds to the transformed bitmap-bounds,
@@ -522,7 +528,7 @@ void SkDraw::drawBitmapAsMask(const SkBitmap& bitmap, const SkSamplingOptions& s
             // need the unclipped top/left for the translate
             c.translate(-SkIntToScalar(mask.fBounds.fLeft),
                         -SkIntToScalar(mask.fBounds.fTop));
-            c.concat(*fCTM);
+            c.concat(ctm);
 
             // We can't call drawBitmap, or we'll infinitely recurse. Instead
             // we manually build a shader and draw that into our new mask

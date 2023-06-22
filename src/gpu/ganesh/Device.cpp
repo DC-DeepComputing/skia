@@ -512,7 +512,7 @@ void Device::drawPoints(SkCanvas::PointMode mode,
         SkDrawBase draw;
         // don't need to set fBlitterChoose, as it should never get used
         draw.fDst = SkPixmap(SkImageInfo::MakeUnknown(this->width(), this->height()), nullptr, 0);
-        draw.fCTM = &this->localToDevice();
+        draw.fMatrixProvider = this;
         draw.fRC = &rc;
         draw.drawDevicePoints(mode, count, pts, paint, this);
         return;

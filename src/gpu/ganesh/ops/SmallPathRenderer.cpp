@@ -416,7 +416,8 @@ private:
             SkRasterClip rasterClip;
             rasterClip.setRect(devPathBounds);
             draw.fRC = &rasterClip;
-            draw.fCTM = &drawMatrix;
+            SkMatrixProvider matrixProvider(drawMatrix);
+            draw.fMatrixProvider = &matrixProvider;
             draw.fDst = dst;
 
             draw.drawPathCoverage(path, paint);
@@ -493,9 +494,10 @@ private:
 
         SkRasterClip rasterClip;
         rasterClip.setRect(devPathBounds);
-        drawMatrix.postTranslate(translateX, translateY);
         draw.fRC = &rasterClip;
-        draw.fCTM = &drawMatrix;
+        drawMatrix.postTranslate(translateX, translateY);
+        SkMatrixProvider matrixProvider(drawMatrix);
+        draw.fMatrixProvider = &matrixProvider;
         draw.fDst = dst;
 
         draw.drawPathCoverage(path, paint);

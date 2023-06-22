@@ -33,6 +33,7 @@
 #include "src/codec/SkSampler.h"
 #include "src/codec/SkScalingCodec.h"
 #include "src/core/SkDraw.h"
+#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkStreamPriv.h"
 
@@ -706,7 +707,8 @@ SkCodec::Result SkWuffsCodec::onIncrementalDecodeTwoPass() {
         draw.fDst.reset(dstInfo(), fIncrDecDst, fIncrDecRowBytes);
         SkMatrix matrix = SkMatrix::RectToRect(SkRect::Make(this->dimensions()),
                                                SkRect::Make(this->dstInfo().dimensions()));
-        draw.fCTM = &matrix;
+        SkMatrixProvider matrixProvider(matrix);
+        draw.fMatrixProvider = &matrixProvider;
         SkRasterClip rc(SkIRect::MakeSize(this->dstInfo().dimensions()));
         draw.fRC = &rc;
 

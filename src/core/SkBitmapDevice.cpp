@@ -34,6 +34,7 @@
 #include "src/core/SkImageFilterCache.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkMatrixPriv.h"
+#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/image/SkImage_Base.h"
@@ -71,10 +72,10 @@ class SkDrawTiler {
     // Used for tiling and non-tiling
     SkDraw          fDraw;
 
-    // fTileMatrix... are only used if fNeedTiling
-    SkTLazy<SkMatrix> fTileMatrix;
-    SkRasterClip      fTileRC;
-    SkIPoint          fOrigin;
+    // fCurr... are only used if fNeedTiling
+    SkTLazy<SkPostTranslateMatrixProvider> fTileMatrixProvider;
+    SkRasterClip                           fTileRC;
+    SkIPoint                               fOrigin;
 
     bool            fDone, fNeedsTiling;
 
@@ -123,14 +124,14 @@ public:
         }
 
         if (fNeedsTiling) {
-            // fDraw.fDst and fCTM are reset each time in setupTileDraw()
+            // fDraw.fDst and fMatrixProvider are reset each time in setupTileDraw()
             fDraw.fRC = &fTileRC;
             // we'll step/increase it before using it
             fOrigin.set(fSrcBounds.fLeft - kMaxDim, fSrcBounds.fTop);
         } else {
             // don't reference fSrcBounds, as it may not have been set
             fDraw.fDst = fRootPixmap;
-            fDraw.fCTM = &dev->localToDevice();
+            fDraw.fMatrixProvider = dev;
             fDraw.fRC = &dev->fRCStack.rc();
             fOrigin.set(0, 0);
         }
@@ -182,11 +183,12 @@ private:
         SkASSERT_RELEASE(success);
         // now don't use bounds, since fDst has the clipped dimensions.
 
-        fTileMatrix.init(fDevice->localToDevice());
-        fTileMatrix->postTranslate(-fOrigin.x(), -fOrigin.y());
-        fDraw.fCTM = fTileMatrix.get();
+        fDraw.fMatrixProvider = fTileMatrixProvider.init(fDevice->asMatrixProvider(),
+                                                         SkIntToScalar(-fOrigin.x()),
+                                                         SkIntToScalar(-fOrigin.y()));
         fDevice->fRCStack.rc().translate(-fOrigin.x(), -fOrigin.y(), &fTileRC);
-        fTileRC.op(SkIRect::MakeSize(fDraw.fDst.dimensions()), SkClipOp::kIntersect);
+        fTileRC.op(SkIRect::MakeWH(fDraw.fDst.width(), fDraw.fDst.height()),
+                   SkClipOp::kIntersect);
     }
 };
 
@@ -209,7 +211,7 @@ public:
             // NoDrawDevice uses us (why?) so we have to catch this case w/ no pixels
             fDst.reset(dev->imageInfo(), nullptr, 0);
         }
-        fCTM = &dev->localToDevice();
+        fMatrixProvider = dev;
         fRC = &dev->fRCStack.rc();
     }
 };
@@ -593,10 +595,11 @@ void SkBitmapDevice::drawSpecial(SkSpecialImage* src,
     SkBitmap resultBM;
     if (src->getROPixels(&resultBM)) {
         SkDraw draw;
+        SkMatrixProvider matrixProvider(localToDevice);
         if (!this->accessPixels(&draw.fDst)) {
           return; // no pixels to draw to so skip it
         }
-        draw.fCTM = &localToDevice;
+        draw.fMatrixProvider = &matrixProvider;
         draw.fRC = &fRCStack.rc();
         draw.drawBitmap(resultBM, SkMatrix::I(), nullptr, sampling, paint);
     }
