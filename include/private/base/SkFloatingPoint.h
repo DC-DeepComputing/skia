@@ -77,7 +77,7 @@ constexpr float sk_float_radians_to_degrees(float radians) {
 #endif
 
 static inline bool sk_float_isfinite(float x) {
-    return SkFloatBits_IsFinite(SkFloat2Bits(x));
+    return std::isfinite(x);
 }
 
 static inline bool sk_floats_are_finite(float a, float b) {
