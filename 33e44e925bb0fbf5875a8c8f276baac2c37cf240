@@ -52,6 +52,24 @@
       "parentUuid": "a889b124_ddf3123e",
       "revId": "33e44e925bb0fbf5875a8c8f276baac2c37cf240",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0b7de65_b84dbaa1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-22T21:01:29Z",
+      "side": 1,
+      "message": "Actually - our theory about isfinite might be part of the issue, but I don\u0027t think it\u0027s the whole story. I just went back and looked at the traces that regressed when we first changed SkPoint to float, and they haven\u0027t fully recovered:\n\nhttps://perf.skia.org/e/?begin\u003d1686581025\u0026end\u003d1687467227\u0026keys\u003dX0ba83ea56118c77c69e1205ae566a7ca\u0026requestType\u003d0\u0026selected\u003dcommit%3D66949%26name%3D%252Carch%253Dx86_64%252Cbench_type%253Dplayback%252Cclip%253D0_0_1000_1000%252Ccompiler%253DClang%252Cconfig%253Dvk%252Ccpu_or_gpu%253DGPU%252Ccpu_or_gpu_value%253DGTX660%252Cextra_config%253DVulkan%252Cmodel%253DShuttleA%252Cname%253Ddesk_micrographygirlsvg.skp%252Cos%253DWin10%252Cscale%253D1%252Csource_type%253Dskp%252Csub_result%253Dmin_ms%252Ctest%253Ddesk_micrographygirlsvg.skp_1_1000_1000%252C\u0026xbaroffset\u003d66949\n\n... although, that CL didn\u0027t actually involve any calls to isfinite, right? Just isnan?",
+      "parentUuid": "25360ba0_adc53051",
+      "revId": "33e44e925bb0fbf5875a8c8f276baac2c37cf240",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
