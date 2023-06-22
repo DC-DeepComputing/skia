@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5887d1b_eaeb4c35",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-22T15:07:08Z",
+      "side": 1,
+      "message": "Who owns this buffer? The ResourceProvider could delete it at any time. Maybe just store the sk_sp\u003cBuffer\u003e in the class (like fIntrinsicConstantBuffer in DawnCommandBuffer) and create the BindBufferInfo if you need to.",
+      "range": {
+        "startLine": 93,
+        "startChar": 35,
+        "endLine": 93,
+        "endChar": 44
+      },
+      "revId": "178189f25a42bf68c4c787594c679104e598a446",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99e5b078_6f2525c5",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-22T15:07:08Z",
+      "side": 1,
+      "message": "VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex",
+      "range": {
+        "startLine": 579,
+        "startChar": 26,
+        "endLine": 579,
+        "endChar": 27
+      },
+      "revId": "178189f25a42bf68c4c787594c679104e598a446",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
