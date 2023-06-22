@@ -10,19 +10,22 @@
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/core/SkSamplingOptions.h"
-#include "include/core/SkShader.h"
-#include "include/core/SkTileMode.h"
+#include "include/core/SkShader.h" // IWYU pragma: keep
 #include "include/core/SkTypes.h"
+
+#include <atomic>
+#include <cstddef>
+#include <cstdint>
 
 class SkCanvas;
 class SkData;
-struct SkDeserialProcs;
-class SkImage;
 class SkMatrix;
-struct SkSerialProcs;
 class SkStream;
 class SkWStream;
+enum class SkFilterMode;
+enum class SkTileMode;
+struct SkDeserialProcs;
+struct SkSerialProcs;
 
 /** \class SkPicture
     SkPicture records drawing commands made to SkCanvas. The command stream may be
