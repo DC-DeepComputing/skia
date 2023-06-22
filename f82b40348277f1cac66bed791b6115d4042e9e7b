@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46478ea5_19fd5475",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-22T15:29:03Z",
+      "side": 1,
+      "message": "D\u0027oh, right. I flipped the test around in my head.",
+      "parentUuid": "6373513c_ee064df4",
+      "revId": "f82b40348277f1cac66bed791b6115d4042e9e7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "770c3ae6_242d5fd7",
