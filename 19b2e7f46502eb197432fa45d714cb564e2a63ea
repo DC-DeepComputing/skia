@@ -98,6 +98,30 @@
       },
       "revId": "19b2e7f46502eb197432fa45d714cb564e2a63ea",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5aab9fd7_d402d9d7",
+        "filename": "src/gpu/graphite/render/SDFTextRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-22T13:55:32Z",
+      "side": 1,
+      "message": "FYI, the SDF text renderer uses perspective.",
+      "parentUuid": "2b29f135_0bff1617",
+      "range": {
+        "startLine": 72,
+        "startChar": 9,
+        "endLine": 72,
+        "endChar": 59
+      },
+      "revId": "19b2e7f46502eb197432fa45d714cb564e2a63ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
