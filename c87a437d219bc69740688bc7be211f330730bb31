@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a27d944_6f730f21",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5b0afca6_4bbe7c90",
+      "range": {
+        "startLine": 62,
+        "startChar": 30,
+        "endLine": 62,
+        "endChar": 33
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23e445d0_a842f083",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-06-20T19:48:46Z",
       "side": 1,
       "message": "Instead of having a class hierarchy for CPU lights and a parallel hierarchy for GPU lights, this just tracks the type and union of properties that are used.",
+      "range": {
+        "startLine": 81,
+        "startChar": 15,
+        "endLine": 81,
+        "endChar": 19
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9de6a262_3da1c9ef",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "23e445d0_a842f083",
       "range": {
         "startLine": 81,
         "startChar": 15,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a247bc8_5a6ee7bb",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2f66206e_20bb71af",
+      "range": {
+        "startLine": 96,
+        "startChar": 39,
+        "endLine": 96,
+        "endChar": 51
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e7d2fa3_0ff32a7a",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-06-20T19:48:46Z",
       "side": 1,
       "message": "Instead of having two subclasses of image filter for diffuse vs. specular, `Material` just tracks which one it is and stores both k and shininess (unused by the shader if it\u0027s diffuse).",
+      "range": {
+        "startLine": 139,
+        "startChar": 15,
+        "endLine": 139,
+        "endChar": 19
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b569cda2_ace018a0",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0e7d2fa3_0ff32a7a",
       "range": {
         "startLine": 139,
         "startChar": 15,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33d0107e_f1366f2a",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "69c0b767_18595f5e",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 150,
+        "endChar": 47
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56cee665_3a6b9374",
@@ -146,6 +266,30 @@
       "writtenOn": "2023-06-20T19:48:46Z",
       "side": 1,
       "message": "See https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d1845 and https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d1545 although it\u0027s restructured a bit to use dot products and only bothers with the interior kernel.",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 55
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce605fed_659271b2",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "56cee665_3a6b9374",
       "range": {
         "startLine": 222,
         "startChar": 0,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e041b403_7922d123",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a3c2b3fb_7d3ac95e",
+      "range": {
+        "startLine": 227,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 70
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50e2821a_a46dc13f",
@@ -192,6 +360,30 @@
       "writtenOn": "2023-06-20T19:48:46Z",
       "side": 1,
       "message": "In combination with the CPU-side logic to choose the edgeBounds (either requiredInput, in which case this is a no-op, or the desired output edge, in which case the coords that have +/-1 added to them are clamped), this handles the new boundary condition behavior that sort of matches the SVG spec and handles the decal/affects-transparent-black behavior that works better with Skia\u0027s layering model.",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 81
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33572c0d_1e1a90e4",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "50e2821a_a46dc13f",
       "range": {
         "startLine": 231,
         "startChar": 0,
@@ -225,6 +417,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "290ea516_19c9a514",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9eb7f56b_a4a10431",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 246,
+        "endChar": 60
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "87ecca2c_2f2daa3e",
@@ -238,6 +454,30 @@
       "writtenOn": "2023-06-20T19:48:46Z",
       "side": 1,
       "message": "See https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d2113 and https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d2140",
+      "range": {
+        "startLine": 292,
+        "startChar": 0,
+        "endLine": 292,
+        "endChar": 71
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeddeb18_711de4fb",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "87ecca2c_2f2daa3e",
       "range": {
         "startLine": 292,
         "startChar": 0,
@@ -271,6 +511,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76dca20d_47caf32a",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "12b054f0_671a93ca",
+      "range": {
+        "startLine": 296,
+        "startChar": 14,
+        "endLine": 296,
+        "endChar": 29
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8ac5710_828d815a",
@@ -284,6 +548,30 @@
       "writtenOn": "2023-06-20T19:48:46Z",
       "side": 1,
       "message": "https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/effects/imagefilters/SkLightingImageFilter.cpp;drc\u003df24283f9968056c3b8e0a28bd91e615f25a15c8c;l\u003d1929",
+      "range": {
+        "startLine": 320,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 43
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14790381_28428724",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a8ac5710_828d815a",
       "range": {
         "startLine": 320,
         "startChar": 0,
@@ -317,6 +605,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "292f84a1_8ae461d8",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4a44340c_cf22a2c4",
+      "range": {
+        "startLine": 324,
+        "startChar": 0,
+        "endLine": 328,
+        "endChar": 75
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e3bf41a_333ca780",
@@ -330,6 +642,30 @@
       "writtenOn": "2023-06-20T19:48:46Z",
       "side": 1,
       "message": "This was the best strategy I could come up with after our offline discussion about clamping and the requirements of the SVG spec vs. what makes sense for saveLayer.",
+      "range": {
+        "startLine": 614,
+        "startChar": 0,
+        "endLine": 628,
+        "endChar": 54
+      },
+      "revId": "c87a437d219bc69740688bc7be211f330730bb31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71184ecc_2c0b3fb2",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9e3bf41a_333ca780",
       "range": {
         "startLine": 614,
         "startChar": 0,

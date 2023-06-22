@@ -116,6 +116,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c9d868f_33aadcce",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-22T01:48:20Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s a little heavy handed in order to get the coordinate-space types setup for a novel thing, but I didn\u0027t want to have a `LayerSpace\u003cfloat\u003e`, I needed `ZValue` to be a definite separate type.",
+      "parentUuid": "ea2f6f71_f4c791e7",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 2
+      },
+      "revId": "7c4b16296e8516133ef2919b14da398ecdf718af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f62a7b1_cecc535b",
