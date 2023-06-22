@@ -13,6 +13,7 @@
 #include "include/core/SkPath.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkDraw.h"
+#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 
 class DrawPathBench : public Benchmark {
@@ -21,10 +22,12 @@ class DrawPathBench : public Benchmark {
     SkPath      fPath;
     SkRasterClip fRC;
     SkAutoPixmapStorage fPixmap;
+    SkMatrixProvider fIdentityMatrixProvider;
     SkDraw      fDraw;
     bool        fDrawCoverage;
 public:
-    DrawPathBench(bool drawCoverage) : fDrawCoverage(drawCoverage) {
+    DrawPathBench(bool drawCoverage)
+            : fIdentityMatrixProvider(SkMatrix::I()), fDrawCoverage(drawCoverage) {
         fPaint.setAntiAlias(true);
         fName.printf("draw_coverage_%s", drawCoverage ? "true" : "false");
 
@@ -41,9 +44,9 @@ public:
 
         fRC.setRect(fPath.getBounds().round());
 
-        fDraw.fDst = fPixmap;
-        fDraw.fCTM = &SkMatrix::I();
-        fDraw.fRC = &fRC;
+        fDraw.fDst            = fPixmap;
+        fDraw.fMatrixProvider = &fIdentityMatrixProvider;
+        fDraw.fRC             = &fRC;
     }
 
 protected:

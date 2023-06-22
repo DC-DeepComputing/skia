@@ -27,6 +27,7 @@ class SkBlitter;
 class SkGlyph;
 class SkMaskFilter;
 class SkMatrix;
+class SkMatrixProvider;
 class SkPath;
 class SkRRect;
 class SkRasterClip;
@@ -151,7 +152,7 @@ private:
 public:
     SkPixmap                fDst;
     BlitterChooser*         fBlitterChooser{nullptr};  // required
-    const SkMatrix*         fCTM{nullptr};             // required
+    const SkMatrixProvider* fMatrixProvider{nullptr};  // required
     const SkRasterClip*     fRC{nullptr};              // required
     const SkSurfaceProps*   fProps{nullptr};           // optional
 

@@ -27,6 +27,7 @@
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkEffectPriv.h"
+#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
@@ -87,8 +88,9 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
     p.setShader(nullptr);
     p.setMaskFilter(nullptr);
 
+    const SkMatrix& ctm = fMatrixProvider->localToDevice();
     // The RSXForms can't contain perspective - only the CTM can.
-    const bool perspective = fCTM->hasPerspective();
+    const bool perspective = ctm.hasPerspective();
 
     auto transformShader = alloc.make<SkTransformShader>(*as_SB(atlasShader), perspective);
 
@@ -139,7 +141,7 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
         SkMatrix mx;
         mx.setRSXform(xform[i]);
         mx.preTranslate(-textures[i].fLeft, -textures[i].fTop);
-        mx.postConcat(*fCTM);
+        mx.postConcat(ctm);
         if (transformShader->update(mx)) {
             fill_rect(mx, *fRC, textures[i], blitter, &scratchPath);
         }

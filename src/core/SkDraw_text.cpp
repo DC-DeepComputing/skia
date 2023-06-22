@@ -20,6 +20,7 @@
 #include "src/core/SkGlyph.h"
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkMask.h"
+#include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkSurfacePriv.h"
 
@@ -53,7 +54,7 @@ void SkDraw::paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& 
     // The size used for a typical blitter.
     SkSTArenaAlloc<3308> alloc;
     SkBlitter* blitter = SkBlitter::Choose(fDst,
-                                           *fCTM,
+                                           fMatrixProvider->localToDevice(),
                                            paint,
                                            &alloc,
                                            false,
@@ -132,7 +133,8 @@ void SkDraw::drawGlyphRunList(SkCanvas* canvas,
         return;
     }
 
-    glyphPainter->drawForBitmapDevice(canvas, this, glyphRunList, paint, *fCTM);
+    glyphPainter->drawForBitmapDevice(canvas, this, glyphRunList, paint,
+                                      fMatrixProvider->localToDevice());
 }
 
 #if defined _WIN32
