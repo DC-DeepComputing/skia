@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5dd37f2_b585b97e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-22T14:51:19Z",
+      "side": 1,
+      "message": "This will probably work for most cases but I suspect adding the binding index might mean you have to change the key, as it\u0027s possible to have DescriptorData objects with the same types and counts but different bindings. Something to consider when you revise the key setup.",
+      "range": {
+        "startLine": 28,
+        "startChar": 20,
+        "endLine": 28,
+        "endChar": 38
+      },
+      "revId": "4a2177c4c5800d4180f9bf65d7e80ba35a10f2e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
