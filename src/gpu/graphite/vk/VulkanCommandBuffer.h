@@ -178,7 +178,10 @@ private:
     // Track whether certain descriptor sets need to be bound
     bool fBindUniformBuffers = false;
     bool fBindTextureSamplers = false;
-    skia_private::TArray<BindBufferInfo> fUniformBuffersToBind;
+
+    BindBufferInfo fIntrinsicUniformBufferInfo;
+    std::array<BindBufferInfo, VulkanGraphicsPipeline::kNumUniformBuffers> fUniformBuffersToBind
+            = {{{nullptr, 0}}};
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
 
     VkBuffer fBoundInputBuffers[VulkanGraphicsPipeline::kNumInputBuffers];
