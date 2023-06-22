@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b8d8e3f_e4d04bce",
+        "filename": "gm/runtimeshader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-22T13:48:24Z",
+      "side": 1,
+      "message": "Follow-up: This comment was true of SkVM, but I don\u0027t think it\u0027s still the case with SkRP. We might be able to enable this, now that we have more consistent semantics?",
+      "range": {
+        "startLine": 1103,
+        "startChar": 0,
+        "endLine": 1105,
+        "endChar": 58
+      },
+      "revId": "23207a6d0421b528dbab1981ee7390267b2509b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
