@@ -1203,12 +1203,13 @@ void Builder::matrix_multiply(int leftColumns, int leftRows, int rightColumns, i
 
 std::unique_ptr<Program> Builder::finish(int numValueSlots,
                                          int numUniformSlots,
+                                         int numImmutableSlots,
                                          DebugTracePriv* debugTrace) {
     // Verify that calls to enableExecutionMaskWrites and disableExecutionMaskWrites are balanced.
     SkASSERT(fExecutionMaskWritesEnabled == 0);
 
     return std::make_unique<Program>(std::move(fInstructions), numValueSlots, numUniformSlots,
-                                     fNumLabels, debugTrace);
+                                     numImmutableSlots, fNumLabels, debugTrace);
 }
 
 void Program::optimize() {
@@ -1337,11 +1338,13 @@ Program::StackDepths Program::tempStackMaxDepths() const {
 Program::Program(TArray<Instruction> instrs,
                  int numValueSlots,
                  int numUniformSlots,
+                 int numImmutableSlots,
                  int numLabels,
                  DebugTracePriv* debugTrace)
         : fInstructions(std::move(instrs))
         , fNumValueSlots(numValueSlots)
         , fNumUniformSlots(numUniformSlots)
+        , fNumImmutableSlots(numImmutableSlots)
         , fNumLabels(numLabels)
         , fDebugTrace(debugTrace) {
     this->optimize();
@@ -1536,17 +1539,18 @@ static void* context_bit_pun(intptr_t val) {
 }
 
 Program::SlotData Program::allocateSlotData(SkArenaAlloc* alloc) const {
-    // Allocate a contiguous slab of slot data for values and stack entries.
+    // Allocate a contiguous slab of slot data for immutables, values, and stack entries.
     const int N = SkOpts::raster_pipeline_highp_stride;
     const int vectorWidth = N * sizeof(float);
-    const int allocSize = vectorWidth * (fNumValueSlots + fNumTempStackSlots);
+    const int allocSize = vectorWidth * (fNumValueSlots + fNumTempStackSlots + fNumImmutableSlots);
     float* slotPtr = static_cast<float*>(alloc->makeBytesAlignedTo(allocSize, vectorWidth));
     sk_bzero(slotPtr, allocSize);
 
     // Store the temp stack immediately after the values.
     SlotData s;
-    s.values = SkSpan{slotPtr,        N * fNumValueSlots};
-    s.stack  = SkSpan{s.values.end(), N * fNumTempStackSlots};
+    s.values    = SkSpan{slotPtr,        N * fNumValueSlots};
+    s.stack     = SkSpan{s.values.end(), N * fNumTempStackSlots};
+    s.immutable = SkSpan{s.stack.end(),  N * fNumImmutableSlots};
     return s;
 }
 
@@ -1712,9 +1716,11 @@ void Program::makeStages(TArray<Stage>* pipeline,
     // Write each BuilderOp to the pipeline array.
     pipeline->reserve_exact(pipeline->size() + fInstructions.size());
     for (const Instruction& inst : fInstructions) {
-        auto SlotA    = [&]() { return &slots.values[N * inst.fSlotA]; };
-        auto SlotB    = [&]() { return &slots.values[N * inst.fSlotB]; };
-        auto UniformA = [&]() { return &uniforms[inst.fSlotA]; };
+        auto ImmutableA = [&]() { return &slots.immutable[N * inst.fSlotA]; };
+        auto ImmutableB = [&]() { return &slots.immutable[N * inst.fSlotB]; };
+        auto SlotA      = [&]() { return &slots.values[N * inst.fSlotA]; };
+        auto SlotB      = [&]() { return &slots.values[N * inst.fSlotB]; };
+        auto UniformA   = [&]() { return &uniforms[inst.fSlotA]; };
         auto AllocTraceContext = [&](auto* ctx) {
             // We pass `ctx` solely for its type; the value is unused.
             using ContextType = typename std::remove_reference<decltype(*ctx)>::type;
@@ -1776,7 +1782,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 break;
 
             case BuilderOp::store_immutable_value: {
-                float* dst = SlotA();
+                float* dst = ImmutableA();
                 for (int index = 0; index < N; ++index) {
                     dst[index] = sk_bit_cast<float>(inst.fImmA);
                 }
@@ -1876,7 +1882,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 this->appendCopyImmutableUnmasked(pipeline,
                                                   alloc,
                                                   OffsetFromBase(SlotA()),
-                                                  OffsetFromBase(SlotB()),
+                                                  OffsetFromBase(ImmutableB()),
                                                   inst.fImmA);
                 break;
 
@@ -1981,7 +1987,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
                 float* dst = tempStackPtr;
                 this->appendCopyImmutableUnmasked(pipeline, alloc,
                                                   OffsetFromBase(dst),
-                                                  OffsetFromBase(SlotA()),
+                                                  OffsetFromBase(ImmutableA()),
                                                   inst.fImmA);
                 break;
             }
@@ -2005,8 +2011,7 @@ void Program::makeStages(TArray<Stage>* pipeline,
                     ctx->dst = tempStackPtr;
                 } else if (inst.fOp == BuilderOp::push_immutable_indirect) {
                     op = ProgramOp::copy_from_indirect_immutable_unmasked;
-                    // TODO(skia:14396): immutables should be stored in a separate slot range
-                    ctx->src = SlotA();
+                    ctx->src = ImmutableA();
                     ctx->dst = tempStackPtr;
                 } else if (inst.fOp == BuilderOp::push_uniform_indirect) {
                     op = ProgramOp::copy_from_indirect_uniform_unmasked;
@@ -2724,7 +2729,8 @@ void Program::Dumper::dump(SkWStream* out) {
     for (const Instruction& inst : fProgram.fInstructions) {
         if (inst.fOp == BuilderOp::store_immutable_value) {
             out->writeText(header);
-            out->writeText(this->slotName({inst.fSlotA, 1}).c_str());
+            out->writeText("i");
+            out->writeText(std::to_string(inst.fSlotA).c_str());
             out->writeText(" = ");
             out->writeText(this->imm(sk_bit_cast<float>(inst.fImmA)).c_str());
             out->writeText("\n");
