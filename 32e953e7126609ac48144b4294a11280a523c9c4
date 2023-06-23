@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bece8860_1f809dca",
+        "filename": "src/effects/colorfilters/SkRuntimeColorFilter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-23T19:42:14Z",
+      "side": 1,
+      "message": "FYI: If you happen to build without `SK_ENABLE_SKSL_IN_RASTER_PIPELINE` now, this triggers an error (because `getFilterColorProgram` is gone)",
+      "revId": "32e953e7126609ac48144b4294a11280a523c9c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
