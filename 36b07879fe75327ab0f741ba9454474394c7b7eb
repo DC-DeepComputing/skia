@@ -22,6 +22,30 @@
       },
       "revId": "36b07879fe75327ab0f741ba9454474394c7b7eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "445d647b_5ac3d6ad",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 3620,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-23T19:35:09Z",
+      "side": 1,
+      "message": "I did look at the code both ways (in ARM at least). `NumSlots` is always ≤ 4 so we always stay in registers regardless. Doing all the loads first generates several fewer instructions. ARM has this weird but powerful \"store two registers\" opcode which Clang can\u0027t use if we interleave the loads and stores. And as you say, the aliasing danger is real here; the RP builder won\u0027t ever do it, of course, but based on this code in isolation, the compiler can\u0027t know that :) \n\nIn `shuffle_fn` I manage to get 16 values into registers without spilling (I checked both platforms here), but I think that\u0027s pushing up to the limit: https://osscs.corp.google.com/skia/skia/+/main:src/opts/SkRasterPipeline_opts.h;l\u003d3632;drc\u003db06e934cb6374a2a741a5b5c727c2abfad719665",
+      "parentUuid": "966c1060_8890b2f9",
+      "range": {
+        "startLine": 3610,
+        "startChar": 0,
+        "endLine": 3620,
+        "endChar": 5
+      },
+      "revId": "36b07879fe75327ab0f741ba9454474394c7b7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
