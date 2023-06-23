@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "966c1060_8890b2f9",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 3620,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-23T19:24:49Z",
+      "side": 1,
+      "message": "Curious why you did the two stage load here? With the compiler not realizing things can\u0027t alias, it may actually force stack traffic (vs. just having the second loop do `dst[index] \u003d src[index]`).",
+      "range": {
+        "startLine": 3610,
+        "startChar": 0,
+        "endLine": 3620,
+        "endChar": 5
+      },
+      "revId": "36b07879fe75327ab0f741ba9454474394c7b7eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
