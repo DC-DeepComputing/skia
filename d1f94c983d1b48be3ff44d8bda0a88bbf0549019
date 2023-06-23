@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3def6a1_d9309016",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-23T17:11:47Z",
+      "side": 1,
+      "message": "Worked out how the transfer part of this will work, PTAL.",
+      "revId": "d1f94c983d1b48be3ff44d8bda0a88bbf0549019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
