@@ -22,6 +22,30 @@
       },
       "revId": "d3e961ed0ccb9533b818e33f52bab61b7ef4f56c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33c0b0d6_15ae8a66",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2516,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-23T19:26:49Z",
+      "side": 1,
+      "message": "Excellent catch! I was baffled because the output looked correct. But upon closer inspection:\nhttps://osscs.corp.google.com/skia/skia/+/main:tools/skslc/Main.cpp;l\u003d45;drc\u003dfa5e80dd327f505552a27d27e409b140a617bacc",
+      "parentUuid": "9d29f939_f6b996c3",
+      "range": {
+        "startLine": 2516,
+        "startChar": 39,
+        "endLine": 2516,
+        "endChar": 44
+      },
+      "revId": "d3e961ed0ccb9533b818e33f52bab61b7ef4f56c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
