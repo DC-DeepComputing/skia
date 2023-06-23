@@ -57,18 +57,20 @@ public:
         return fPipelineLayout;
     }
 
-    // TODO: Implement. For now, simply return whatever bool value enables us to run more dm tests.
-    bool hasStepUniforms() const { return false; }
-    bool hasFragment() const { return true; }
+    bool hasFragment() const { return fHasFragment; }
+    bool hasStepUniforms() const { return fHasStepUniforms; }
 
 private:
-    VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext
-                           /* TODO: fill out argument list */)
-        : GraphicsPipeline(sharedContext) { }
+    VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
+                           VkPipelineLayout,
+                           bool hasFragment,
+                           bool hasStepUniforms);
 
     void freeGpuData() override;
 
     VkPipelineLayout  fPipelineLayout = VK_NULL_HANDLE;
+    bool fHasFragment = false;
+    bool fHasStepUniforms = false;
 };
 
 } // namespace skgpu::graphite
