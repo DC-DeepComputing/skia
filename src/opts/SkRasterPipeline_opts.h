@@ -3603,6 +3603,21 @@ STAGE_TAIL(copy_4_slots_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_slots_unmasked_fn<4>(packed, base);
 }
 
+STAGE_TAIL(copy_immutable_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+    // TODO(skia:14396): immutable values should be stored as scalars, not SIMD multi-lane vectors.
+    // At present, these stages are cloned from `copy_slots` above.
+    copy_n_slots_unmasked_fn<1>(packed, base);
+}
+STAGE_TAIL(copy_2_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+    copy_n_slots_unmasked_fn<2>(packed, base);
+}
+STAGE_TAIL(copy_3_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+    copy_n_slots_unmasked_fn<3>(packed, base);
+}
+STAGE_TAIL(copy_4_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
+    copy_n_slots_unmasked_fn<4>(packed, base);
+}
+
 template <int NumSlots>
 SI void copy_n_slots_masked_fn(SkRasterPipeline_BinaryOpCtx* packed, std::byte* base, I32 mask) {
     auto ctx = SkRPCtxUtils::Unpack(packed);
@@ -3731,8 +3746,8 @@ STAGE_TAIL(copy_from_indirect_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
 
 STAGE_TAIL(copy_from_indirect_immutable_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
     // TODO(skia:14396): immutable values should be stored as scalars, not SIMD multi-lane vectors.
-    // At present, this stage is cloned from `copy_from_indirect_unmasked` above. Once we switch to
-    // scalars, the code should look more like `copy_from_indirect_uniform_unmasked` below.
+    // At present, this stage is cloned from `copy_from_indirect_unmasked` above. The scalar version
+    // is expected to look more like `copy_from_indirect_uniform_unmasked` below.
 
     // Clamp the indirect offsets to stay within the limit.
     U32 offsets = *(U32*)ctx->indirectOffset;
