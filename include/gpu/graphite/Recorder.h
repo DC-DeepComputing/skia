@@ -53,9 +53,9 @@ class TextureInfo;
 class UniformDataBlock;
 class UploadBufferManager;
 
-template<typename T> class PipelineDataCache;
-using UniformDataCache = PipelineDataCache<UniformDataBlock>;
-using TextureDataCache = PipelineDataCache<TextureDataBlock>;
+template <typename T, int N> class PipelineDataCache;
+using UniformDataCache = PipelineDataCache<UniformDataBlock, 128>;
+using TextureDataCache = PipelineDataCache<TextureDataBlock, INT_MAX>;
 
 struct SK_API RecorderOptions final {
     RecorderOptions();
