@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43eda5e6_73bef712",
+        "filename": "modules/skottie/src/layers/FootageLayer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-23T14:50:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8317cbf2_10dc7fd2",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 116,
+        "endChar": 46
+      },
+      "revId": "ce7b000e0ba32de6f8296d3b01c35317aa6cc199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc1ba367_e018da8a",
@@ -61,6 +85,30 @@
       "writtenOn": "2023-06-23T01:03:50Z",
       "side": 1,
       "message": "nit: std::move(asset)",
+      "range": {
+        "startLine": 129,
+        "startChar": 73,
+        "endLine": 129,
+        "endChar": 78
+      },
+      "revId": "ce7b000e0ba32de6f8296d3b01c35317aa6cc199",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f37aea4_50451aca",
+        "filename": "modules/skottie/src/layers/FootageLayer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-23T14:50:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc1ba367_e018da8a",
       "range": {
         "startLine": 129,
         "startChar": 73,
