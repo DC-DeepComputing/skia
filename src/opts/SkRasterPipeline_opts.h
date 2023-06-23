@@ -3729,6 +3729,33 @@ STAGE_TAIL(copy_from_indirect_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
     } while (dst != end);
 }
 
+STAGE_TAIL(copy_from_indirect_immutable_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
+    // TODO(skia:14396): immutable values should be stored as scalars, not SIMD multi-lane vectors.
+    // At present, this stage is cloned from `copy_from_indirect_unmasked` above. Once we switch to
+    // scalars, the code should look more like `copy_from_indirect_uniform_unmasked` below.
+
+    // Clamp the indirect offsets to stay within the limit.
+    U32 offsets = *(U32*)ctx->indirectOffset;
+    offsets = min(offsets, ctx->indirectLimit);
+
+    // Scale up the offsets to account for the N lanes per value.
+    offsets *= N;
+
+    // Adjust the offsets forward so that they fetch from the correct lane.
+    static constexpr uint32_t iota[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    offsets += sk_unaligned_load<I32>(iota);
+
+    // Use gather to perform indirect lookups; write the results into `dst`.
+    const float* src = ctx->src;
+    F*           dst = (F*)ctx->dst;
+    F*           end = dst + ctx->slots;
+    do {
+        *dst = gather(src, offsets);
+        dst += 1;
+        src += N;
+    } while (dst != end);
+}
+
 STAGE_TAIL(copy_from_indirect_uniform_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
     // Clamp the indirect offsets to stay within the limit.
     U32 offsets = *(U32*)ctx->indirectOffset;
