@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2be34fab_b9697b7c",
+        "filename": "src/gpu/ganesh/GrGpuResource.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-23T20:41:24Z",
+      "side": 1,
+      "message": "Won\u0027t this make a copy? Can we avoid that, perhaps by making this be a const reference?\n\nActually, better yet, this is only called by subclasses, which always pass the result of a call to `getLabel()`. Can `dumpMemoryStatisticsPriv` just call that method itself?",
+      "range": {
+        "startLine": 263,
+        "startChar": 65,
+        "endLine": 263,
+        "endChar": 82
+      },
+      "revId": "ea32ccc1d5b3e06289f0742c948872ffb0e571cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
