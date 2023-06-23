@@ -84,8 +84,7 @@ bool SkPictureImageGenerator::onGetPixels(const SkImageInfo& info, void* pixels,
     if (!canvas) {
         return false;
     }
-    canvas->clear(0);
+    canvas->clear(SkColors::kTransparent);
     canvas->drawPicture(fPicture, &fMatrix, fPaint.getMaybeNull());
     return true;
 }
-
