@@ -93,17 +93,10 @@ skia_cc_deps(
         "//:__pkg__",  # Needed in G3
         "//src:__pkg__",
     ],
-    deps = selects.with_or({
-        ("@platforms//cpu:x86_64", "@platforms//cpu:x86_32"): [
-            ":avx",
-            ":hsw",
-            ":skx",
-            ":ssse3",
-        ],
-        # We have no architecture specific optimizations for ARM64 right now
-        "@platforms//cpu:arm64": [],
-        # None of these opts work on WASM, so do not even bother compiling them.
-        "//bazel/common_config_settings:cpu_wasm": [],
-        "//conditions:default": [],
-    }),
+    deps = [
+        ":avx",
+        ":hsw",
+        ":skx",
+        ":ssse3",
+    ],
 )

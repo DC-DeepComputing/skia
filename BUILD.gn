@@ -145,35 +145,18 @@ skia_library_configs = [
 
 # Use for CPU-specific Skia code that needs particular compiler flags.
 template("opts") {
-  if (invoker.enabled) {
-    skia_source_set(target_name) {
-      visibility = [ ":*" ]
-      check_includes = false
-      configs = skia_library_configs
-      forward_variables_from(invoker, "*")
-      if (defined(invoker.configs)) {
-        configs += invoker.configs
-      }
-    }
-  } else {
-    # If not enabled, a phony empty target that swallows all otherwise unused variables.
-    skia_source_set(target_name) {
-      visibility = [ ":*" ]
-      check_includes = false
-      forward_variables_from(invoker,
-                             "*",
-                             [
-                               "sources",
-                               "cflags",
-                             ])
+  skia_source_set(target_name) {
+    visibility = [ ":*" ]
+    check_includes = false
+    configs = skia_library_configs
+    forward_variables_from(invoker, "*")
+    if (defined(invoker.configs)) {
+      configs += invoker.configs
     }
   }
 }
 
-is_x86 = current_cpu == "x64" || current_cpu == "x86"
-
 opts("ssse3") {
-  enabled = is_x86
   sources = skia_opts.ssse3_sources
   if (!is_clang && is_win) {
     defines = [ "SK_CPU_SSE_LEVEL=SK_CPU_SSE_LEVEL_SSSE3" ]
@@ -183,7 +166,6 @@ opts("ssse3") {
 }
 
 opts("avx") {
-  enabled = is_x86
   sources = skia_opts.avx_sources
   if (is_win) {
     cflags = [ "/arch:AVX" ]
@@ -193,7 +175,6 @@ opts("avx") {
 }
 
 opts("hsw") {
-  enabled = is_x86
   sources = skia_opts.hsw_sources
   if (is_win) {
     cflags = [ "/arch:AVX2" ]
@@ -203,7 +184,6 @@ opts("hsw") {
 }
 
 opts("skx") {
-  enabled = is_x86
   sources = skia_opts.skx_sources
   if (is_win) {
     cflags = [ "/arch:AVX512" ]

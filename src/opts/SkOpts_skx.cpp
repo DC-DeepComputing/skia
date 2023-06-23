@@ -7,7 +7,7 @@
 
 #include "src/core/SkOpts.h"
 
-#if !defined(SK_ENABLE_OPTIMIZE_SIZE)
+#if defined(SK_CPU_X86) && !defined(SK_ENABLE_OPTIMIZE_SIZE)
 
 #define SK_OPTS_NS skx
 
@@ -17,4 +17,4 @@ namespace SkOpts {
     }
 }  // namespace SkOpts
 
-#endif // SK_ENABLE_OPTIMIZE_SIZE
+#endif // SK_CPU_X86 && !SK_ENABLE_OPTIMIZE_SIZE
