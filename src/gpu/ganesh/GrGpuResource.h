@@ -260,7 +260,7 @@ protected:
      * to customize various inputs.
      */
     void dumpMemoryStatisticsPriv(SkTraceMemoryDump* traceMemoryDump, const SkString& resourceName,
-                                  const char* type, size_t size) const;
+                                  const char* type, size_t size, std::string label) const;
 
 
 private:

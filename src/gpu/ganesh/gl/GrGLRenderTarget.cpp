@@ -359,7 +359,8 @@ void GrGLRenderTarget::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) 
         SkString resourceName = this->getResourceName();
         resourceName.append("/renderbuffer");
 
-        this->dumpMemoryStatisticsPriv(traceMemoryDump, resourceName, "RenderTarget", size);
+        this->dumpMemoryStatisticsPriv(traceMemoryDump, resourceName, "RenderTarget", size,
+                                       this->getLabel());
 
         SkString renderbuffer_id;
         renderbuffer_id.appendU32(fMSColorRenderbufferID);

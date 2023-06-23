@@ -52,7 +52,7 @@ void GrGLTextureRenderTarget::dumpMemoryStatistics(
     SkString resourceName = this->getResourceName();
     resourceName.append("/texture_renderbuffer");
     this->dumpMemoryStatisticsPriv(traceMemoryDump, resourceName, "RenderTarget",
-                                   this->gpuMemorySize());
+                                   this->gpuMemorySize(), this->getLabel());
 #endif
 }
 

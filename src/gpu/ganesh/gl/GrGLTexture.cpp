@@ -202,7 +202,8 @@ void GrGLTexture::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const
     // As we are only dumping our texture memory (not any additional memory tracked by classes
     // which may inherit from us), specifically call GrGLTexture::gpuMemorySize to avoid
     // hitting an override.
-    this->dumpMemoryStatisticsPriv(traceMemoryDump, resourceName, "Texture", size);
+    this->dumpMemoryStatisticsPriv(traceMemoryDump, resourceName, "Texture", size,
+                                   this->getLabel());
 
     SkString texture_id;
     texture_id.appendU32(this->textureID());
