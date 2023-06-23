@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7318c35_496d2ac5",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-23T19:04:45Z",
+      "side": 1,
+      "message": "nit: This comment should be moved to `push_slots`, and if we want to leave one here, it should say `... from values or immutables ...`, right?",
+      "revId": "1e0dc1cfdd9c1b00263186e159b046e9ed9a3e49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

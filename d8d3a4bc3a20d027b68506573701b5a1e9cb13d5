@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbb26eef_08be19c8",
+        "filename": "tests/sksl/folding/MatrixNoOpFolding.skrp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-23T19:04:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6f71097e_e519c7d6",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 0
+      },
+      "revId": "d8d3a4bc3a20d027b68506573701b5a1e9cb13d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbdfbb47_d9f953e4",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-22T13:42:05Z",
       "side": 1,
       "message": "`mp` is in immutable storage but `hp` is not, so these copies now use different ops and can no longer be fused.",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 0
+      },
+      "revId": "d8d3a4bc3a20d027b68506573701b5a1e9cb13d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e00a84c_27767280",
+        "filename": "tests/sksl/runtime/PrecisionQualifiers.skrp",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-23T19:04:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "dbdfbb47_d9f953e4",
       "range": {
         "startLine": 128,
         "startChar": 0,
