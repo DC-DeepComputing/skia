@@ -3603,19 +3603,34 @@ STAGE_TAIL(copy_4_slots_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
     copy_n_slots_unmasked_fn<4>(packed, base);
 }
 
+template <int NumSlots>
+SI void copy_n_immutable_unmasked_fn(SkRasterPipeline_BinaryOpCtx* packed, std::byte* base) {
+    auto ctx = SkRPCtxUtils::Unpack(packed);
+
+    // Load the scalar values.
+    float* src = (float*)(base + ctx.src);
+    float values[NumSlots];
+    for (int index = 0; index < NumSlots; ++index) {
+        values[index] = src[index];
+    }
+    // Broadcast the scalars into the destination.
+    F* dst = (F*)(base + ctx.dst);
+    for (int index = 0; index < NumSlots; ++index) {
+        dst[index] = values[index];
+    }
+}
+
 STAGE_TAIL(copy_immutable_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
-    // TODO(skia:14396): immutable values should be stored as scalars, not SIMD multi-lane vectors.
-    // At present, these stages are cloned from `copy_slots` above.
-    copy_n_slots_unmasked_fn<1>(packed, base);
+    copy_n_immutable_unmasked_fn<1>(packed, base);
 }
 STAGE_TAIL(copy_2_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
-    copy_n_slots_unmasked_fn<2>(packed, base);
+    copy_n_immutable_unmasked_fn<2>(packed, base);
 }
 STAGE_TAIL(copy_3_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
-    copy_n_slots_unmasked_fn<3>(packed, base);
+    copy_n_immutable_unmasked_fn<3>(packed, base);
 }
 STAGE_TAIL(copy_4_immutables_unmasked, SkRasterPipeline_BinaryOpCtx* packed) {
-    copy_n_slots_unmasked_fn<4>(packed, base);
+    copy_n_immutable_unmasked_fn<4>(packed, base);
 }
 
 template <int NumSlots>
@@ -3722,33 +3737,6 @@ STAGE_TAIL(swizzle_copy_4_slots_masked, SkRasterPipeline_SwizzleCopyCtx* ctx) {
 }
 
 STAGE_TAIL(copy_from_indirect_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
-    // Clamp the indirect offsets to stay within the limit.
-    U32 offsets = *(U32*)ctx->indirectOffset;
-    offsets = min(offsets, ctx->indirectLimit);
-
-    // Scale up the offsets to account for the N lanes per value.
-    offsets *= N;
-
-    // Adjust the offsets forward so that they fetch from the correct lane.
-    static constexpr uint32_t iota[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-    offsets += sk_unaligned_load<I32>(iota);
-
-    // Use gather to perform indirect lookups; write the results into `dst`.
-    const float* src = ctx->src;
-    F*           dst = (F*)ctx->dst;
-    F*           end = dst + ctx->slots;
-    do {
-        *dst = gather(src, offsets);
-        dst += 1;
-        src += N;
-    } while (dst != end);
-}
-
-STAGE_TAIL(copy_from_indirect_immutable_unmasked, SkRasterPipeline_CopyIndirectCtx* ctx) {
-    // TODO(skia:14396): immutable values should be stored as scalars, not SIMD multi-lane vectors.
-    // At present, this stage is cloned from `copy_from_indirect_unmasked` above. The scalar version
-    // is expected to look more like `copy_from_indirect_uniform_unmasked` below.
-
     // Clamp the indirect offsets to stay within the limit.
     U32 offsets = *(U32*)ctx->indirectOffset;
     offsets = min(offsets, ctx->indirectLimit);
