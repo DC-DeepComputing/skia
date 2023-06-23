@@ -1127,6 +1127,8 @@ public:
         return !bounds->isEmpty();
     }
 
+    SkIRect foo() const;
+
     /** Fills clip with color color.
         mode determines how ARGB is combined with destination.
 

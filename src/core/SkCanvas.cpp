@@ -1599,6 +1599,15 @@ SkRect SkCanvas::computeDeviceClipBounds(bool outsetForAA) const {
     }
 }
 
+SkIRect SkCanvas::foo() const {
+    const SkBaseDevice* dev = this->topDevice();
+    if (dev->onGetClipType() == SkBaseDevice::ClipType::kEmpty) {
+        return SkIRect::MakeEmpty();
+    } else {
+        return dev->devClipBounds();
+    }
+}
+
 ///////////////////////////////////////////////////////////////////////
 
 SkMatrix SkCanvas::getTotalMatrix() const {
