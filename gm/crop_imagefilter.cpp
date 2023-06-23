@@ -373,6 +373,8 @@ private:
 };
 
 DEF_GM( return new CropImageFilterGM(SkTileMode::kDecal); )
-// TODO(michaelludwig) - will add GM defs for other output tile modes once supported
+DEF_GM( return new CropImageFilterGM(SkTileMode::kClamp); )
+DEF_GM( return new CropImageFilterGM(SkTileMode::kRepeat); )
+DEF_GM( return new CropImageFilterGM(SkTileMode::kMirror); )
 
 }  // namespace skiagm
