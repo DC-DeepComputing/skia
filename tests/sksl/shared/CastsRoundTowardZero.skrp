@@ -1,9 +1,9 @@
 [immutable slots]
-ok = 0xFFFFFFFF
+i0 = 0xFFFFFFFF
 
 store_src_rg                   coords = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_immutable_unmasked        $0 = ok
+copy_immutable_unmasked        $0 = i0 [0xFFFFFFFF]
 swizzle_4                      $0..3 = ($0..3).xxxx
 copy_4_uniforms                $4..7 = colorRed
 copy_4_uniforms                $8..11 = colorGreen
