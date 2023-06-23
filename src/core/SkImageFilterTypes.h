@@ -14,6 +14,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkEnumBitMask.h"
@@ -659,6 +660,7 @@ public:
     FilterResult(sk_sp<SkSpecialImage> image, const LayerSpace<SkIPoint>& origin)
             : fImage(std::move(image))
             , fSamplingOptions(kDefaultSampling)
+            , fTileMode(SkTileMode::kDecal)
             , fTransform(SkMatrix::Translate(origin.x(), origin.y()))
             , fColorFilter(nullptr)
             , fLayerBounds(
@@ -713,12 +715,9 @@ public:
     // desired output. When possible, the returned FilterResult will reuse the underlying image and
     // adjust its metadata. This will depend on the current transform and tile mode as well as how
     // the crop rect intersects this result's layer bounds.
-    // TODO (michaelludwig): All FilterResults are decal mode and there are no current usages that
-    // require force-padding a decal FilterResult so these arguments aren't implemented yet.
     FilterResult applyCrop(const Context& ctx,
-                           const LayerSpace<SkIRect>& crop) const;
-                           //  SkTileMode newTileMode=SkTileMode::kDecal,
-                           //  bool forcePad=false) const;
+                           const LayerSpace<SkIRect>& crop,
+                           SkTileMode tileMode=SkTileMode::kDecal) const;
 
     // Produce a new FilterResult that is the transformation of this FilterResult. When this
     // result's sampling and transform are compatible with the new transformation, the returned
@@ -767,6 +766,10 @@ private:
     std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>>
     resolve(const Context& ctx, LayerSpace<SkIRect> dstBounds) const;
 
+    // Returns true if tiling and color filtering affect pixels outside of the image's bounds that
+    // are within the layer bounds (limited to 'dstBounds').
+    bool modifiesPixelsBeyondImage(const LayerSpace<SkIRect>& dstBounds) const;
+
     // Returns true if the effects of the fLayerBounds crop are visible when this image is drawn
     // with 'xtraTransform' restricted to 'dstBounds'.
     bool isCropped(const LayerSpace<SkMatrix>& xtraTransform,
@@ -789,7 +792,8 @@ private:
     // filtered by 'fColorFilter', and then clipped to 'fLayerBounds'.
     sk_sp<SkSpecialImage> fImage;
     SkSamplingOptions     fSamplingOptions;
-    // SkTileMode         fTileMode = SkTileMode::kDecal;
+    SkTileMode            fTileMode;
+
     // Typically this will be an integer translation that encodes the origin of the top left corner,
     // but can become more complex when combined with applyTransform().
     LayerSpace<SkMatrix>  fTransform;
