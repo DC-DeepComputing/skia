@@ -3610,11 +3610,13 @@ SI void copy_n_immutable_unmasked_fn(SkRasterPipeline_BinaryOpCtx* packed, std::
     // Load the scalar values.
     float* src = (float*)(base + ctx.src);
     float values[NumSlots];
+    #pragma unroll
     for (int index = 0; index < NumSlots; ++index) {
         values[index] = src[index];
     }
     // Broadcast the scalars into the destination.
     F* dst = (F*)(base + ctx.dst);
+    #pragma unroll
     for (int index = 0; index < NumSlots; ++index) {
         dst[index] = values[index];
     }
@@ -3638,6 +3640,7 @@ SI void copy_n_slots_masked_fn(SkRasterPipeline_BinaryOpCtx* packed, std::byte* 
     auto ctx = SkRPCtxUtils::Unpack(packed);
     F* dst = (F*)(base + ctx.dst);
     F* src = (F*)(base + ctx.src);
+    #pragma unroll
     for (int count = 0; count < NumSlots; ++count) {
         *dst = if_then_else(mask, *src, *dst);
         dst += 1;
@@ -3661,6 +3664,7 @@ STAGE_TAIL(copy_4_slots_masked, SkRasterPipeline_BinaryOpCtx* packed) {
 template <int LoopCount, typename OffsetType>
 SI void shuffle_fn(std::byte* ptr, OffsetType* offsets, int numSlots) {
     F scratch[16];
+    #pragma unroll
     for (int count = 0; count < LoopCount; ++count) {
         scratch[count] = *(F*)(ptr + offsets[count]);
     }
@@ -3715,6 +3719,7 @@ STAGE_TAIL(shuffle, SkRasterPipeline_ShuffleCtx* ctx) {
 template <int NumSlots>
 SI void swizzle_copy_masked_fn(F* dst, const F* src, uint16_t* offsets, I32 mask) {
     std::byte* dstB = (std::byte*)dst;
+    #pragma unroll
     for (int count = 0; count < NumSlots; ++count) {
         F* dstS = (F*)(dstB + *offsets);
         *dstS = if_then_else(mask, *src, *dstS);
@@ -4024,6 +4029,7 @@ SI void apply_binary_immediate(SkRasterPipeline_ConstantCtx* packed, std::byte* 
     V* dst = (V*)(base + ctx.dst);         // get a pointer to the destination
     S scalar = sk_bit_cast<S>(ctx.value);  // bit-pun the constant value as desired
     V src = scalar;                        // broadcast the constant value into a vector
+    #pragma unroll
     for (int index = 0; index < N; ++index) {
         ApplyFn(dst, &src);                // perform the operation
         dst += 1;
@@ -4336,6 +4342,7 @@ SI void apply_adjacent_ternary(T* dst, T* src0, T* src1) {
     __builtin_assume(count >= 1);
 #endif
 
+    #pragma unroll
     for (int index = 0; index < count; ++index) {
         ApplyFn(dst, src0, src1);
         dst += 1;
