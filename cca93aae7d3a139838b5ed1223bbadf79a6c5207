@@ -33,6 +33,24 @@
       "message": "I initially had this call `changeZoomLevel` which also works but I like the zoom to be centered at the mouse cursor position. Let me know if this should achieved without (somewhat abusing) the gesture handler, perhaps with a dedicated transform.\n\nOn Mac, NSEvent has a `momentumPhase` property (https://developer.apple.com/documentation/appkit/nsevent/1525439-momentumphase?language\u003dobjc) with clear `NSEventPhaseBegan`/`NSEventPhaseEnded` values that mark the begin/end of a trackpad gesture (which can map to startZoom/endZoom) but I don\u0027t know if those get reported with a mouse wheel and I don\u0027t think they have equivalents on Windows/Unix.",
       "revId": "cca93aae7d3a139838b5ed1223bbadf79a6c5207",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f0e731e_bf75b1ad",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1874,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-23T19:28:12Z",
+      "side": 1,
+      "message": "A centered zoom sounds useful and the gesture handler seems like the right place to do this.",
+      "parentUuid": "5f3ca942_e0f633d8",
+      "revId": "cca93aae7d3a139838b5ed1223bbadf79a6c5207",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
