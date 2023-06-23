@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d29f939_f6b996c3",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2516,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-23T19:13:50Z",
+      "side": 1,
+      "message": "Does this need to be `index / N` at this point in the CL chain?",
+      "range": {
+        "startLine": 2516,
+        "startChar": 39,
+        "endLine": 2516,
+        "endChar": 44
+      },
+      "revId": "d3e961ed0ccb9533b818e33f52bab61b7ef4f56c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
