@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1b3e155_02d03bab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-23T16:02:02Z",
+      "side": 1,
+      "message": "Reverted as part of [the revert of the original CL](https://skia-review.googlesource.com/c/skia/+/715349/2).",
+      "revId": "5265b5ee1afc64094250ee8d017df93b3d7b1407",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
