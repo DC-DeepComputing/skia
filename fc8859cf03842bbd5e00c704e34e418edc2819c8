@@ -85,6 +85,24 @@
       "parentUuid": "c24d2b83_eebf1571",
       "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1be09055_fdf2e110",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-06-23T23:50:23Z",
+      "side": 1,
+      "message": "What blocks render support for BGRX and RGBX? It it becasue skia may write dst alpha channel?",
+      "parentUuid": "9bdd6bf1_fe7c5590",
+      "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
