@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c433521_9746c324",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-23T19:17:00Z",
+      "side": 1,
+      "message": "I have only tested this on Mac. On Unix the cursor position is currently set to (0, 0) for a scroll event as I haven\u0027t explored making things work there.",
+      "revId": "cca93aae7d3a139838b5ed1223bbadf79a6c5207",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f3ca942_e0f633d8",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1874,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-23T19:17:00Z",
+      "side": 1,
+      "message": "I initially had this call `changeZoomLevel` which also works but I like the zoom to be centered at the mouse cursor position. Let me know if this should achieved without (somewhat abusing) the gesture handler, perhaps with a dedicated transform.\n\nOn Mac, NSEvent has a `momentumPhase` property (https://developer.apple.com/documentation/appkit/nsevent/1525439-momentumphase?language\u003dobjc) with clear `NSEventPhaseBegan`/`NSEventPhaseEnded` values that mark the begin/end of a trackpad gesture (which can map to startZoom/endZoom) but I don\u0027t know if those get reported with a mouse wheel and I don\u0027t think they have equivalents on Windows/Unix.",
+      "revId": "cca93aae7d3a139838b5ed1223bbadf79a6c5207",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
