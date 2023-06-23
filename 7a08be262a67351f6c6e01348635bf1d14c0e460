@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f48f57d6_27ce2d74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2023-06-23T12:29:12Z",
+      "side": 1,
+      "message": "This pull request exposes the FontMgr.matchFamilyStyle() method as a public API. The primary goal is to enable drawText() to utilize the same font manager as the paragraph API.\n\nIn our current CanvasKit application (Remotion), fonts are loaded for both the FontMgr object and our own font manager. This redundancy is necessary so we can use the loaded fonts with simple text APIs like drawText().\n\nHowever, this setup also necessitates that we parse font metadata ourselves (using opentype for example) or establish a separate font indexing system. Alternatively, we can require users to provide font metadata manually.\n\nBy exposing FontMgr.matchFamilyStyle() as a public API, we centralize font management for simple APIs such as drawText() and the paragraph API.\nThis is how we are currently documenting the FontMgr in React Native Skia: https://github.com/Shopify/react-native-skia/pull/1662/files#diff-503393f0b014c6de0ed14359053a8d8b3702d15f0b4975ed94e544feb1c822d4",
+      "revId": "7a08be262a67351f6c6e01348635bf1d14c0e460",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
