@@ -67,6 +67,24 @@
       "message": "So, I think this CL can be rebased and changed to use `kBGR_888x_SkColorType`. However: do we actually want this to be kRenderable? I noticed that earlier, we have RGBA8Unorm associated with both kRGBA_8888 and kRGB_888x, but the second one isn\u0027t marked renderable. Seems like we should follow the same pattern here?",
       "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bdd6bf1_fe7c5590",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-23T19:24:07Z",
+      "side": 1,
+      "message": "I believe that\u0027s correct. From this discussion (https://mail.google.com/chat/u/0/#chat/space/AAAAGFlf6VQ) we would probably have to do more than just set the Renderable flag to fully enable this behavior.",
+      "parentUuid": "c24d2b83_eebf1571",
+      "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
