@@ -30,8 +30,6 @@ public:
                                            sk_sp<VulkanDescriptorPool>,
                                            const VkDescriptorSetLayout);
 
-    static VkDescriptorType DsTypeEnumToVkDs(DescriptorType type);
-
     VulkanDescriptorSet(const VulkanSharedContext*,
                         VkDescriptorSetLayout,
                         VkDescriptorSet,
@@ -44,12 +42,12 @@ public:
 private:
     void freeGpuData() override;
 
+    VkDescriptorSetLayout       fDescSetLayout;
     VkDescriptorSet             fDescSet;
     // Have this class hold on to a reference of the descriptor pool. When a pool's reference count
     // is 0, that means all the descriptor sets that came from that pool are no longer needed, so
     // the pool can safely be destroyed.
     sk_sp<VulkanDescriptorPool> fPool;
-    VkDescriptorSetLayout       fDescSetLayout;
 };
 } // namespace skgpu::graphite
 
