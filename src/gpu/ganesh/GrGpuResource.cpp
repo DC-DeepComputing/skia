@@ -73,12 +73,14 @@ void GrGpuResource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) con
     }
 
     this->dumpMemoryStatisticsPriv(traceMemoryDump, this->getResourceName(),
-                                   this->getResourceType(), this->gpuMemorySize());
+                                   this->getResourceType(), this->gpuMemorySize(),
+                                   this->getLabel());
 }
 
 void GrGpuResource::dumpMemoryStatisticsPriv(SkTraceMemoryDump* traceMemoryDump,
                                              const SkString& resourceName,
-                                             const char* type, size_t size) const {
+                                             const char* type, size_t size,
+                                             std::string label) const {
     const char* tag = "Scratch";
     if (fUniqueKey.isValid()) {
         tag = (fUniqueKey.tag() != nullptr) ? fUniqueKey.tag() : "Other";
@@ -86,6 +88,7 @@ void GrGpuResource::dumpMemoryStatisticsPriv(SkTraceMemoryDump* traceMemoryDump,
 
     traceMemoryDump->dumpNumericValue(resourceName.c_str(), "size", "bytes", size);
     traceMemoryDump->dumpStringValue(resourceName.c_str(), "type", type);
+    traceMemoryDump->dumpStringValue(resourceName.c_str(), "label", label.c_str());
     traceMemoryDump->dumpStringValue(resourceName.c_str(), "category", tag);
     if (this->isPurgeable()) {
         traceMemoryDump->dumpNumericValue(resourceName.c_str(), "purgeable_size", "bytes", size);
