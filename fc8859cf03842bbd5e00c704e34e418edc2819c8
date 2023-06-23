@@ -33,6 +33,40 @@
       "message": "I think this works from a texture POV, but `kRGB_888x` as an SkColorType is also describing the channel order of the data whenever it\u0027s on the CPU. Unless the GPU driver is performing a swizzle from BGR to RGB on any readback, we might lose the BGR channel ordering when describing the data solely on SkColorType.\n\nCan Dawn read back BGRA to RGBA to avoid this? Otherwise we might need to add a kBGR_888x color type (analogous to how we have both RGBA and BGRA SkColorTypes already).",
       "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05e4c3f8_f4db31dd",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-23T18:22:31Z",
+      "side": 1,
+      "message": "^",
+      "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c24d2b83_eebf1571",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-23T18:22:31Z",
+      "side": 1,
+      "message": "So, I think this CL can be rebased and changed to use `kBGR_888x_SkColorType`. However: do we actually want this to be kRenderable? I noticed that earlier, we have RGBA8Unorm associated with both kRGBA_8888 and kRGB_888x, but the second one isn\u0027t marked renderable. Seems like we should follow the same pattern here?",
+      "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
