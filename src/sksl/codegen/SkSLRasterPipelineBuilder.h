@@ -206,6 +206,11 @@ private:
                     SkRPOffset dst,
                     SkRPOffset src,
                     int numSlots) const;
+    void appendCopyImmutableUnmasked(skia_private::TArray<Stage>* pipeline,
+                                     SkArenaAlloc* alloc,
+                                     SkRPOffset dst,
+                                     SkRPOffset src,
+                                     int numSlots) const;
     void appendCopySlotsUnmasked(skia_private::TArray<Stage>* pipeline,
                                  SkArenaAlloc* alloc,
                                  SkRPOffset dst,
@@ -423,10 +428,16 @@ public:
         this->push_slots_or_immutable(src, BuilderOp::push_slots);
     }
 
-    // Translates into copy_slots_unmasked (from immutables into temp stack) in Raster Pipeline.
+    // Translates into copy_immutable_unmasked (from immutables into temp stack) in Raster Pipeline.
     void push_immutable(SlotRange src) {
         this->push_slots_or_immutable(src, BuilderOp::push_immutable);
     }
+
+    // Copies from value slots into other value slots.
+    void copy_slots_unmasked(SlotRange dst, SlotRange src);
+
+    // Copies from immutable-value storage into value slots.
+    void copy_immutable_unmasked(SlotRange dst, SlotRange src);
 
     // Translates into copy_from_indirect_unmasked (from values into temp stack) in Raster Pipeline.
     // `fixedRange` denotes a fixed set of slots; this range is pushed forward by the value at the
@@ -564,8 +575,6 @@ public:
         SkASSERT(dst.count == src.count);
         fInstructions.push_back({BuilderOp::copy_slot_masked, {dst.index, src.index}, dst.count});
     }
-
-    void copy_slots_unmasked(SlotRange dst, SlotRange src);
 
     // Directly writes a constant value into a slot.
     void copy_constant(Slot slot, int constantValue);
