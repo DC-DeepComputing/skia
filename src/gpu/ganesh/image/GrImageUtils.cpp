@@ -249,6 +249,15 @@ static GrSurfaceProxyView generate_picture_texture(GrRecordingContext* ctx,
         return {};
     }
 
+//    SkPaint updatedPaint;
+//    if (img->paint()) {
+//        updatedPaint = *img->paint();
+//    }
+//    updatedPaint.setAntiAlias(true);
+
+    SkDebugf("Ganesh::generate_picture_texture %d %d\n",
+             img->imageInfo().width(),
+             img->imageInfo().height());
     surface->getCanvas()->clear(SkColors::kTransparent);
     surface->getCanvas()->drawPicture(img->picture(), img->matrix(), img->paint());
     sk_sp<SkImage> image(surface->makeImageSnapshot());

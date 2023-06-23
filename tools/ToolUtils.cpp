@@ -696,6 +696,8 @@ public:
     sk_sp<SkImage> findOrCreate(skgpu::graphite::Recorder* recorder,
                                 const SkImage* image,
                                 SkImage::RequiredProperties requiredProps) override {
+//        SkDebugf("image %d\n", image->uniqueID());
+
         if (!requiredProps.fMipmapped) {
             // If no mipmaps are required, check to see if we have a mipmapped version anyway -
             // since it can be used in that case.
@@ -707,6 +709,13 @@ public:
                 return result->second;
             }
         }
+
+#if 0
+        SkBitmap bm;
+        if (image->asLegacyBitmap(&bm)){
+
+        }
+#endif
 
         uint64_t key = ((uint64_t)image->uniqueID() << 32) | (requiredProps.fMipmapped ? 0x1 : 0x0);
 
@@ -837,6 +846,7 @@ void HilbertGenerator::line(SkCanvas* canvas) {
     SkPaint paint;
     paint.setShader(SkGradientShader::MakeLinear(pts, colors, /* colorSpace= */ nullptr,
                                                  /* pos= */ nullptr, 2, SkTileMode::kClamp));
+//    paint.setAntiAlias(true);
     canvas->drawRect(r, paint);
 }
 

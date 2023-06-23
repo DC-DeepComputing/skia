@@ -40,6 +40,12 @@ int gOverrideMaxTextureSize = 0;
 
 using namespace skia_private;
 
+#if 0
+static void print_rect2(const char* label, SkIRect r) {
+    SkDebugf("%s: %d %d %d %d\n", label, r.fLeft, r.fTop, r.fRight, r.fBottom);
+}
+#endif
+
 namespace {
 
 inline bool use_shader(bool textureIsAlphaOnly, const SkPaint& paint) {
@@ -471,6 +477,9 @@ void Device::drawImageQuad(const SkImage* image,
             // test during recording here.
             cacheSize = dContext->getResourceCacheLimit();
         }
+
+//        print_rect2("Ganesh", clip->getConservativeBounds());
+
         int tileSize;
         SkIRect clippedSubset;
         if (skgpu::TiledTextureUtils::ShouldTileImage(

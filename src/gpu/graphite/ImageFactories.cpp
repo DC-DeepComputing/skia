@@ -226,6 +226,8 @@ static sk_sp<SkImage> generate_picture_texture(skgpu::graphite::Recorder* record
         return nullptr;
     }
 
+    SkDebugf("generate_picture_texture %d %d:\n", info.width(), info.height());
+
     surface->getCanvas()->clear(SkColors::kTransparent);
     surface->getCanvas()->drawPicture(img->picture(), img->matrix(), img->paint());
     return SkSurfaces::AsImage(surface);
