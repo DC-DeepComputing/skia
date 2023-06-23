@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9b76a5f_cdba82d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-23T13:22:12Z",
+      "side": 1,
+      "message": "Thanks for the extra comments and cleanup. Just some minor documentation nits but lgtm.",
+      "revId": "00e43de3776a82ab257a62c5ca812fdf5e45d992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9217ff8_2f73216a",
+        "filename": "src/gpu/graphite/geom/AtlasShape.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-23T13:22:12Z",
+      "side": 1,
+      "message": "nit: missing \"and\"?",
+      "range": {
+        "startLine": 26,
+        "startChar": 24,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "00e43de3776a82ab257a62c5ca812fdf5e45d992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb6f657a_1d16429b",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-23T13:22:12Z",
+      "side": 1,
+      "message": "nit: decomposition",
+      "range": {
+        "startLine": 27,
+        "startChar": 80,
+        "endLine": 27,
+        "endChar": 97
+      },
+      "revId": "00e43de3776a82ab257a62c5ca812fdf5e45d992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b7b2a00_c0491deb",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-23T13:22:12Z",
+      "side": 1,
+      "message": "the rest of the decomposed transform",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 18
+      },
+      "revId": "00e43de3776a82ab257a62c5ca812fdf5e45d992",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
