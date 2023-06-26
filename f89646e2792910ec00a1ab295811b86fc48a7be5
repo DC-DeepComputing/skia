@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d118817_33ebd32f",
+        "filename": "src/gpu/TiledTextureUtils.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T16:58:00Z",
+      "side": 1,
+      "message": "Does this need to be a public function?",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 40
+      },
+      "revId": "f89646e2792910ec00a1ab295811b86fc48a7be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1212eefa_714b9f80",
+        "filename": "src/gpu/graphite/TiledTextureUtils_Graphite.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T16:58:00Z",
+      "side": 1,
+      "message": "This is the only graphite specific code in this file. I know the plan was to not bother lifting tiling out of the existing impl in Ganesh, but maybe TiledTextureUtils stays in `skgpu` and accepts a `maxTextureSize` parameter? Then the `SkTiledImageUtils` file that checks for the canvas recorder can query the caps there?",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 54
+      },
+      "revId": "f89646e2792910ec00a1ab295811b86fc48a7be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f3c78a9_b1e73d52",
+        "filename": "src/gpu/graphite/TiledTextureUtils_Graphite.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T16:58:00Z",
+      "side": 1,
+      "message": "`GRAPHITE_TEST_UTILS`?",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 17
+      },
+      "revId": "f89646e2792910ec00a1ab295811b86fc48a7be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
