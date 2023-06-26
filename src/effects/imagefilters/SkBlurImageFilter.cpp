@@ -23,6 +23,7 @@
 #include "include/private/base/SkMalloc.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkVx.h"
+#include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkSpecialImage.h"
@@ -65,7 +66,7 @@ public:
 
 protected:
     void flatten(SkWriteBuffer&) const override;
-    sk_sp<SkSpecialImage> onFilterImage(const Context&, SkIPoint* offset) const override;
+    sk_sp<SkSpecialImage> onFilterImage(const skif::Context&, SkIPoint* offset) const override;
     SkIRect onFilterNodeBounds(const SkIRect& src, const SkMatrix& ctm,
                                MapDirection, const SkIRect* inputRect) const override;
 
@@ -75,7 +76,7 @@ private:
 
 #if defined(SK_GANESH)
     sk_sp<SkSpecialImage> gpuFilter(
-            const Context& ctx, SkVector sigma,
+            const skif::Context& ctx, SkVector sigma,
             const sk_sp<SkSpecialImage> &input,
             SkIRect inputBounds, SkIRect dstBounds, SkIPoint inputOffset, SkIPoint* offset) const;
 #endif
@@ -731,7 +732,7 @@ private:
 };
 
 sk_sp<SkSpecialImage> copy_image_with_bounds(
-        const SkImageFilter_Base::Context& ctx, const sk_sp<SkSpecialImage> &input,
+        const skif::Context& ctx, const sk_sp<SkSpecialImage> &input,
         SkIRect srcBounds, SkIRect dstBounds) {
     SkBitmap inputBM;
     if (!input->getROPixels(&inputBM)) {
@@ -797,7 +798,7 @@ sk_sp<SkSpecialImage> copy_image_with_bounds(
 
 // TODO: Implement CPU backend for different fTileMode.
 sk_sp<SkSpecialImage> cpu_blur(
-        const SkImageFilter_Base::Context& ctx,
+        const skif::Context& ctx,
         SkVector sigma, const sk_sp<SkSpecialImage> &input,
         SkIRect srcBounds, SkIRect dstBounds) {
     // map_sigma limits sigma to 532 to match 1000px box filter limit of WebKit and Firefox.
@@ -926,7 +927,7 @@ sk_sp<SkSpecialImage> cpu_blur(
 }
 }  // namespace
 
-sk_sp<SkSpecialImage> SkBlurImageFilter::onFilterImage(const Context& ctx,
+sk_sp<SkSpecialImage> SkBlurImageFilter::onFilterImage(const skif::Context& ctx,
                                                        SkIPoint* offset) const {
     SkIPoint inputOffset = SkIPoint::Make(0, 0);
 
@@ -981,7 +982,7 @@ sk_sp<SkSpecialImage> SkBlurImageFilter::onFilterImage(const Context& ctx,
 
 #if defined(SK_GANESH)
 sk_sp<SkSpecialImage> SkBlurImageFilter::gpuFilter(
-        const Context& ctx, SkVector sigma, const sk_sp<SkSpecialImage> &input, SkIRect inputBounds,
+        const skif::Context& ctx, SkVector sigma, const sk_sp<SkSpecialImage> &input, SkIRect inputBounds,
         SkIRect dstBounds, SkIPoint inputOffset, SkIPoint* offset) const {
     if (SkGpuBlurUtils::IsEffectivelyZeroSigma(sigma.x()) &&
         SkGpuBlurUtils::IsEffectivelyZeroSigma(sigma.y())) {
