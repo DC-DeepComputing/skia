@@ -14,7 +14,8 @@ namespace skgpu::graphite {
 
 sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* ctxt,
                                                      sk_sp<VulkanDescriptorPool> pool,
-                                                     const VkDescriptorSetLayout layout) {
+                                                     const VkDescriptorSetLayout layout,
+                                                     bool ownsLayout) {
     SkASSERT(layout != VK_NULL_HANDLE && pool);
     VkDescriptorSet descSet;
     VkDescriptorSetAllocateInfo dsAllocateInfo;
@@ -34,23 +35,26 @@ sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* 
     if (result != VK_SUCCESS) {
         return nullptr;
     }
-    return sk_sp<VulkanDescriptorSet>(new VulkanDescriptorSet(ctxt, layout, descSet, pool));
+    return sk_sp<VulkanDescriptorSet>(
+            new VulkanDescriptorSet(ctxt, layout, descSet, pool, ownsLayout));
 }
 
 VulkanDescriptorSet::VulkanDescriptorSet(const VulkanSharedContext* ctxt,
                                          VkDescriptorSetLayout layout,
                                          VkDescriptorSet set,
-                                         sk_sp<VulkanDescriptorPool> pool)
+                                         sk_sp<VulkanDescriptorPool> pool,
+                                         bool ownsLayout)
         : Resource(ctxt, Ownership::kOwned, skgpu::Budgeted::kNo, /*gpuMemorySize=*/0)
         , fDescSetLayout (layout)
         , fDescSet (set)
-        , fPool (pool) {
+        , fPool (pool)
+        , fOwnsLayout (ownsLayout) {
     fPool->ref();
 }
 
 void VulkanDescriptorSet::freeGpuData() {
     fPool->unref();
-    if (fDescSetLayout != VK_NULL_HANDLE) {
+    if (fOwnsLayout && fDescSetLayout != VK_NULL_HANDLE) {
         auto ctxt = static_cast<const VulkanSharedContext*>(this->sharedContext());
         VULKAN_CALL(ctxt->interface(),
                     DestroyDescriptorSetLayout(ctxt->device(), fDescSetLayout, nullptr));

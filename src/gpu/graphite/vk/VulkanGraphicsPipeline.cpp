@@ -589,8 +589,16 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     // Even in cases where we may not have render step or paint uniforms, always create a set which
     // could accommodate having all three sets of uniforms to reduce the number of graphics
     // pipelines we need to create.
-    DescriptorData uniformDescriptors[VulkanGraphicsPipeline::kNumUniformBuffers] =
-            {kIntrinsicUniformDescriptor, kRenderStepUniformDescriptor, kPaintUniformDescriptor};
+    skia_private::TArray<DescriptorData> uniformDescriptors (3);
+    // DescriptorData uniformDescriptors[VulkanGraphicsPipeline::kNumUniformBuffers] =
+    //         {kIntrinsicUniformDescriptor, kRenderStepUniformDescriptor, kPaintUniformDescriptor};
+    uniformDescriptors.push_back(kIntrinsicUniformDescriptor);
+    if (!step->uniforms().empty()) {
+        uniformDescriptors.push_back(kRenderStepUniformDescriptor);
+    }
+    if (hasFragment) {
+        uniformDescriptors.push_back(kPaintUniformDescriptor);
+    }
 
     VkDescriptorSetLayout uniformSetLayout;
     DescriptorDataToVkDescSetLayout(sharedContext, &uniformSetLayout, uniformDescriptors);

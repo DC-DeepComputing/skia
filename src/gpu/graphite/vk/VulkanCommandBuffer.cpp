@@ -447,10 +447,8 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 break;
             }
             case DrawPassCommands::Type::kBindUniformBuffer: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto bub = static_cast<DrawPassCommands::BindUniformBuffer*>(cmdPtr);
                 this->recordBufferBindingInfo(bub->fInfo, bub->fSlot);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kBindDrawBuffers: {
@@ -473,33 +471,26 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 break;
             }
             case DrawPassCommands::Type::kDraw: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::Draw*>(cmdPtr);
                 this->draw(draw->fType, draw->fBaseVertex, draw->fVertexCount);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kDrawIndexed: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::DrawIndexed*>(cmdPtr);
                 this->drawIndexed(
                         draw->fType, draw->fBaseIndex, draw->fIndexCount, draw->fBaseVertex);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kDrawInstanced: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::DrawInstanced*>(cmdPtr);
                 this->drawInstanced(draw->fType,
                                     draw->fBaseVertex,
                                     draw->fVertexCount,
                                     draw->fBaseInstance,
                                     draw->fInstanceCount);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kDrawIndexedInstanced: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::DrawIndexedInstanced*>(cmdPtr);
                 this->drawIndexedInstanced(draw->fType,
                                            draw->fBaseIndex,
@@ -507,21 +498,16 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                                            draw->fBaseVertex,
                                            draw->fBaseInstance,
                                            draw->fInstanceCount);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kDrawIndirect: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::DrawIndirect*>(cmdPtr);
                 this->drawIndirect(draw->fType);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kDrawIndexedIndirect: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::DrawIndexedIndirect*>(cmdPtr);
                 this->drawIndexedIndirect(draw->fType);
-#endif
                 break;
             }
         }
@@ -533,6 +519,10 @@ void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsP
     // So long as 2 pipelines have the same pipeline layout, descriptor sets do not need to be
     // re-bound. If the layouts differ, we should set fBindUniformBuffers to true.
     fActiveGraphicsPipeline = static_cast<const VulkanGraphicsPipeline*>(graphicsPipeline);
+    SkASSERT(fActiveRenderPass);
+    VULKAN_CALL(fSharedContext->interface(), CmdBindPipeline(fPrimaryCommandBuffer,
+                                                             VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                                             fActiveGraphicsPipeline->pipeline()));
 }
 
 void VulkanCommandBuffer::setBlendConstants(float* blendConstants) {
@@ -604,7 +594,8 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     if (!set) {
         SKGPU_LOG_E("Unable to find or create descriptor set");
     } else {
-        TArray<VkWriteDescriptorSet> writeDescriptorSets(descriptors.size());
+        //TArray<VkWriteDescriptorSet> writeDescriptorSets(descriptors.size());
+        TArray<VkWriteDescriptorSet> writeDescriptorSets(VulkanGraphicsPipeline::kNumUniformBuffers);
         for (uint32_t i = 0; i < fUniformBuffersToBind.size(); i++) {
             if (fUniformBuffersToBind[i].fBuffer) {
                 VkDescriptorBufferInfo bufferInfo;
@@ -613,20 +604,44 @@ void VulkanCommandBuffer::bindUniformBuffers() {
                         static_cast<const VulkanBuffer*>(fUniformBuffersToBind[i].fBuffer);
                 bufferInfo.buffer = vulkanBuffer->vkBuffer();
                 bufferInfo.offset = fUniformBuffersToBind[i].fOffset;
-                bufferInfo.range = vulkanBuffer->size();
+                bufferInfo.range =
+                // Must clamp this in a better spot.
+                    (vulkanBuffer->size() > 2048 - fUniformBuffersToBind[i].fOffset) ? VK_WHOLE_SIZE
+                                                                                     : vulkanBuffer->size();
 
                 VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
                 memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
                 writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
                 writeInfo.pNext = nullptr;
                 writeInfo.dstSet = *set->descriptorSet();
-                writeInfo.dstBinding = i;
+                //writeInfo.dstBinding = i; // Possible issue here; need to reference binding from above?
+                writeInfo.dstBinding = i;//descriptors.at(i).bindingIndex;
                 writeInfo.dstArrayElement = 0;
                 writeInfo.descriptorCount = 1;
                 writeInfo.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
                 writeInfo.pImageInfo = nullptr;
                 writeInfo.pBufferInfo = &bufferInfo;
                 writeInfo.pTexelBufferView = nullptr;
+            } else {
+                // Need to enable the nullDescriptor feature in order to bind a null descriptor.
+                // VkDescriptorBufferInfo bufferInfo;
+                // memset(&bufferInfo, 0, sizeof(VkDescriptorBufferInfo));
+                // bufferInfo.buffer = VK_NULL_HANDLE;
+                // bufferInfo.offset = 0;
+                // bufferInfo.range = VK_WHOLE_SIZE;
+
+                // VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
+                // memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
+                // writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                // writeInfo.pNext = nullptr;
+                // writeInfo.dstSet = *set->descriptorSet();
+                // writeInfo.dstBinding = i; // Possible issue here; need to reference binding from above?
+                // writeInfo.dstArrayElement = 0;
+                // writeInfo.descriptorCount = 1;
+                // writeInfo.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                // writeInfo.pImageInfo = nullptr;
+                // writeInfo.pBufferInfo = &bufferInfo;
+                // writeInfo.pTexelBufferView = nullptr;
             }
         }
 

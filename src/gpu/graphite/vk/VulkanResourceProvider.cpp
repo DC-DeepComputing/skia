@@ -131,14 +131,17 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     SkASSERT(pool);
     VkDescriptorSetLayout layout;
     DescriptorDataToVkDescSetLayout(this->vulkanSharedContext(), &layout, requestedDescriptors);
-    // TODO: Free this layout if desc. set creation was unsuccessful in all cases/first case.
     if (!layout) {
         return nullptr;
     }
+    //sk_sp<VkDescriptorSetLayout> layoutRef = {layout};
 
     // Allocate the maximum number of sets so they can be easily accessed as needed from the cache.
     for (int i = 0; i < VulkanDescriptorPool::kMaxNumSets ; i++) {
-        auto descSet = VulkanDescriptorSet::Make(this->vulkanSharedContext(), pool, layout);
+        auto descSet = VulkanDescriptorSet::Make(this->vulkanSharedContext(),
+                                                 pool,
+                                                 layout,
+                                                 i == (VulkanDescriptorPool::kMaxNumSets - 1));
         SkASSERT(descSet);
         descSet->setKey(descSetKeys[i]);
         fResourceCache->insertResource(descSet.get());
