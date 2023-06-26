@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b796c284_85833dfb",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-26T18:40:44Z",
+      "side": 1,
+      "message": "Remove this also, since it\u0027s not used",
+      "range": {
+        "startLine": 710,
+        "startChar": 35,
+        "endLine": 710,
+        "endChar": 41
+      },
+      "revId": "820b7f48a2fcf2db5e5b9e5b622257aa4e63b2c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
