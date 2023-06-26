@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9a624f1_d73f6fe2",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-26T21:16:11Z",
+      "side": 1,
+      "message": "What about putting everything inside an anonymous namespace? E.g.:\n\n```\nnamespace {\n\nstd::unique_ptr\u003cSkCanvas\u003e make_canvas(SkBitmap \u0026bitmap, SkISize size) { ... }\n\n...\n\n}\n```\n\nExample: https://skia.googlesource.com/skia/+/4a8198df9c6b0529be35c7070151efd5968bb9b6/src/core/SkTextBlob.cpp#33\n\nI got this idea from https://stackoverflow.com/a/8406986.",
+      "parentUuid": "33e02f41_c86ee415",
+      "range": {
+        "startLine": 50,
+        "startChar": 26,
+        "endLine": 50,
+        "endChar": 36
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec3f4914_db2fe651",
         "filename": "gm/BazelGMRunner.cpp",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-26T19:01:41Z",
       "side": 1,
       "message": "I would leave this as the empty set. Save metadata for JSON only, *not* changing the hash of the image.",
+      "range": {
+        "startLine": 77,
+        "startChar": 84,
+        "endLine": 77,
+        "endChar": 88
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb544537_008c614a",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-26T21:16:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec3f4914_db2fe651",
       "range": {
         "startLine": 77,
         "startChar": 84,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae5b8acd_e231883c",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-26T21:16:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "827309ae_39fde5ae",
+      "range": {
+        "startLine": 84,
+        "startChar": 11,
+        "endLine": 84,
+        "endChar": 14
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf5bdd74_24bd3455",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-06-26T19:01:41Z",
       "side": 1,
       "message": "Can this always be on?",
+      "range": {
+        "startLine": 105,
+        "startChar": 7,
+        "endLine": 105,
+        "endChar": 27
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "319b48c0_1614e295",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-26T21:16:11Z",
+      "side": 1,
+      "message": "We can\u0027t delete this `#ifdef` because `gSkDebugToStdOut` is only defined in `//src/ports/SkDebug_android.cpp`.\n\nhttps://skia.googlesource.com/skia/+/4a8198df9c6b0529be35c7070151efd5968bb9b6/src/ports/SkDebug_android.cpp#21",
+      "parentUuid": "bf5bdd74_24bd3455",
       "range": {
         "startLine": 105,
         "startChar": 7,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afc344d5_dedcddf9",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-26T21:16:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "844ca469_67a93048",
+      "range": {
+        "startLine": 149,
+        "startChar": 14,
+        "endLine": 149,
+        "endChar": 20
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c72c42c_db6e23dc",
@@ -129,6 +249,30 @@
       "writtenOn": "2023-06-26T19:01:41Z",
       "side": 1,
       "message": "nit: I typically prefer printf or SkDebugf over cout as it is more similar to other programming languages, so there is less mental effort needed to swap between them.\n\nShouldn\u0027t there also be a newline at the end?",
+      "range": {
+        "startLine": 170,
+        "startChar": 6,
+        "endLine": 170,
+        "endChar": 15
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fdecf7b_14c27737",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-26T21:16:11Z",
+      "side": 1,
+      "message": "Oops, leftovers from an earlier iteration.",
+      "parentUuid": "2c72c42c_db6e23dc",
       "range": {
         "startLine": 170,
         "startChar": 6,
