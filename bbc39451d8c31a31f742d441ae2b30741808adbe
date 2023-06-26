@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9f1391e_57a3851a",
+        "filename": "src/gpu/graphite/TiledTextureUtils_Graphite.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T21:00:49Z",
+      "side": 1,
+      "message": "This clipRect is in the coordinate space of the canvas\u0027s top device, which has an extra matrix `fDeviceToGlobal` between it and the canvas\u0027s coordinate space.\n\nPassing `ctm \u003d canvas-\u003egetTotalMatrix()` into `ShouldTileImage` will give potentially wrong answers when inside a saveLayer, particularly one that has an image filter with a more complex device-to-global matrix.\n\nCan we just use `SkCanvas::getDeviceClipBounds`? that applies the device\u0027s matrix for us.",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 66
+      },
+      "revId": "bbc39451d8c31a31f742d441ae2b30741808adbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

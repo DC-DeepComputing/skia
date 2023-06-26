@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef09a68f_b5187fa0",
+        "filename": "src/gpu/graphite/TiledTextureUtils_Graphite.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T21:00:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e4f456f2_3355e6a6",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 54
+      },
+      "revId": "f89646e2792910ec00a1ab295811b86fc48a7be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f3c78a9_b1e73d52",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "afaict, right now, we have GR_TEST_UTILS that is defined for all dev builds and GRAPHITE_TEST_UTILS that is only defined for Graphite dev builds. The \u0027gOverrideMaxTexture\u0027 is used by both Ganesh and Graphite so I put it in the GR_TEST_UTILS pile.\n\nWe should probably have GPU_TEST_UTILS, GANESH_TEST_UTILS and GRAPHITE_TEST_UTILS but that would be a separate CL.",
       "parentUuid": "2f3c78a9_b1e73d52",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 17
+      },
+      "revId": "f89646e2792910ec00a1ab295811b86fc48a7be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87ca314b_8e58212a",
+        "filename": "src/gpu/graphite/TiledTextureUtils_Graphite.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T21:00:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f5bc3baf_eae9e821",
       "range": {
         "startLine": 197,
         "startChar": 4,
