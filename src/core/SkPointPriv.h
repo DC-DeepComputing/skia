@@ -10,6 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
+#include "include/private/base/SkFloatingPoint.h"
 
 class SkPointPriv {
 public:
@@ -20,34 +21,34 @@ public:
     };
 
     static bool AreFinite(const SkPoint array[], int count) {
-        return SkScalarsAreFinite(&array[0].fX, count << 1);
+        return sk_floats_are_finite(&array[0].fX, count << 1);
     }
 
-    static const SkScalar* AsScalars(const SkPoint& pt) { return &pt.fX; }
+    static const float* AsScalars(const SkPoint& pt) { return &pt.fX; }
 
-    static bool CanNormalize(SkScalar dx, SkScalar dy) {
-        return SkScalarsAreFinite(dx, dy) && (dx || dy);
+    static bool CanNormalize(float dx, float dy) {
+        return sk_floats_are_finite(dx, dy) && (dx || dy);
     }
 
-    static SkScalar DistanceToLineBetweenSqd(const SkPoint& pt, const SkPoint& a,
+    static float DistanceToLineBetweenSqd(const SkPoint& pt, const SkPoint& a,
                                              const SkPoint& b, Side* side = nullptr);
 
-    static SkScalar DistanceToLineBetween(const SkPoint& pt, const SkPoint& a,
+    static float DistanceToLineBetween(const SkPoint& pt, const SkPoint& a,
                                           const SkPoint& b, Side* side = nullptr) {
-        return SkScalarSqrt(DistanceToLineBetweenSqd(pt, a, b, side));
+        return sk_float_sqrt(DistanceToLineBetweenSqd(pt, a, b, side));
     }
 
-    static SkScalar DistanceToLineSegmentBetweenSqd(const SkPoint& pt, const SkPoint& a,
+    static float DistanceToLineSegmentBetweenSqd(const SkPoint& pt, const SkPoint& a,
                                                    const SkPoint& b);
 
-    static SkScalar DistanceToLineSegmentBetween(const SkPoint& pt, const SkPoint& a,
+    static float DistanceToLineSegmentBetween(const SkPoint& pt, const SkPoint& a,
                                                  const SkPoint& b) {
-        return SkScalarSqrt(DistanceToLineSegmentBetweenSqd(pt, a, b));
+        return sk_float_sqrt(DistanceToLineSegmentBetweenSqd(pt, a, b));
     }
 
-    static SkScalar DistanceToSqd(const SkPoint& pt, const SkPoint& a) {
-        SkScalar dx = pt.fX - a.fX;
-        SkScalar dy = pt.fY - a.fY;
+    static float DistanceToSqd(const SkPoint& pt, const SkPoint& a) {
+        float dx = pt.fX - a.fX;
+        float dy = pt.fY - a.fY;
         return dx * dx + dy * dy;
     }
 
@@ -55,12 +56,12 @@ public:
         return !CanNormalize(p1.fX - p2.fX, p1.fY - p2.fY);
     }
 
-    static bool EqualsWithinTolerance(const SkPoint& pt, const SkPoint& p, SkScalar tol) {
-        return SkScalarNearlyZero(pt.fX - p.fX, tol)
-               && SkScalarNearlyZero(pt.fY - p.fY, tol);
+    static bool EqualsWithinTolerance(const SkPoint& pt, const SkPoint& p, float tol) {
+        return sk_float_nearly_zero(pt.fX - p.fX, tol)
+               && sk_float_nearly_zero(pt.fY - p.fY, tol);
     }
 
-    static SkScalar LengthSqd(const SkPoint& pt) {
+    static float LengthSqd(const SkPoint& pt) {
         return SkPoint::DotProduct(pt, pt);
     }
 
@@ -71,7 +72,7 @@ public:
 
     static void RotateCCW(const SkPoint& src, SkPoint* dst) {
         // use a tmp in case src == dst
-        SkScalar tmp = src.fX;
+        float tmp = src.fX;
         dst->fX = src.fY;
         dst->fY = -tmp;
     }
@@ -82,7 +83,7 @@ public:
 
     static void RotateCW(const SkPoint& src, SkPoint* dst) {
         // use a tmp in case src == dst
-        SkScalar tmp = src.fX;
+        float tmp = src.fX;
         dst->fX = -src.fY;
         dst->fY = tmp;
     }
@@ -99,7 +100,7 @@ public:
     }
 
     // counter-clockwise fan
-    static void SetRectFan(SkPoint v[], SkScalar l, SkScalar t, SkScalar r, SkScalar b,
+    static void SetRectFan(SkPoint v[], float l, float t, float r, float b,
             size_t stride) {
         SkASSERT(stride >= sizeof(SkPoint));
 
@@ -110,7 +111,7 @@ public:
     }
 
     // tri strip with two counter-clockwise triangles
-    static void SetRectTriStrip(SkPoint v[], SkScalar l, SkScalar t, SkScalar r, SkScalar b,
+    static void SetRectTriStrip(SkPoint v[], float l, float t, float r, float b,
             size_t stride) {
         SkASSERT(stride >= sizeof(SkPoint));
 

@@ -21,6 +21,9 @@ constexpr float SK_FloatSqrt2 = 1.41421356f;
 constexpr float SK_FloatPI    = 3.14159265f;
 constexpr double SK_DoublePI  = 3.14159265358979323846264338327950288;
 
+// This is an arbitrary cutoff copied from SkScalar.
+constexpr float SK_FloatNearlyZeroToleranceDefault = 1.0f / (1 << 12);
+
 // C++98 cmath std::pow seems to be the earliest portable way to get float pow.
 // However, on Linux including cmath undefines isfinite.
 // http://gcc.gnu.org/bugzilla/show_bug.cgi?id=14608
@@ -99,6 +102,11 @@ static inline bool sk_float_isinf(float x) {
 
 static inline bool sk_float_isnan(float x) {
     return !(x == x);
+}
+
+static constexpr bool sk_float_nearly_zero(
+        float a, float tolerance = SK_FloatNearlyZeroToleranceDefault) {
+    return a == 0 || std::abs(a) < tolerance;
 }
 
 #define sk_double_isnan(a)          sk_float_isnan(a)
