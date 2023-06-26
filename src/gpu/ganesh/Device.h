@@ -315,14 +315,6 @@ private:
                              const SkPaint&,
                              SkCanvas::SrcRectConstraint);
 
-    void drawImageQuadPossiblyTiled(const SkImage*,
-                                    const SkRect& src,
-                                    const SkRect& dst,
-                                    SkCanvas::QuadAAFlags,
-                                    const SkSamplingOptions&,
-                                    const SkPaint&,
-                                    SkCanvas::SrcRectConstraint);
-
     void drawEdgeAAImage(const SkImage*,
                          const SkRect& src,
                          const SkRect& dst,
@@ -345,6 +337,7 @@ private:
                          const SkPaint&);
 
     friend class ::SkSurface_Ganesh;  // for access to surfaceProps
+    friend class skgpu::TiledTextureUtils;   // for clip() and drawEdgeAAImage
 };
 
 GR_MAKE_BITFIELD_CLASS_OPS(Device::DeviceFlags)
