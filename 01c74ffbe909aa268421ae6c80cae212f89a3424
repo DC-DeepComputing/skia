@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6ff2e0d_1c531cf5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17734
+      },
+      "writtenOn": "2023-06-26T18:23:48Z",
+      "side": 1,
+      "message": "This is basically the same as https://skia-review.googlesource.com/c/skia/+/714308, with `s[...] ?? true` replaced with `Boolean(s[...])`, PTAL.",
+      "revId": "01c74ffbe909aa268421ae6c80cae212f89a3424",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
