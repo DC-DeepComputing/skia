@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33e02f41_c86ee415",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-26T19:01:41Z",
+      "side": 1,
+      "message": "Skia\u0027s C++ style is to name these functions using snake_case and mark them static (since they are not used outside of this file)",
+      "range": {
+        "startLine": 50,
+        "startChar": 26,
+        "endLine": 50,
+        "endChar": 36
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec3f4914_db2fe651",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-26T19:01:41Z",
+      "side": 1,
+      "message": "I would leave this as the empty set. Save metadata for JSON only, *not* changing the hash of the image.",
+      "range": {
+        "startLine": 77,
+        "startChar": 84,
+        "endLine": 77,
+        "endChar": 88
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "827309ae_39fde5ae",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-26T19:01:41Z",
+      "side": 1,
+      "message": "Rather than this being a text file with just the hash, let\u0027s use JSON (currently with just one key/value pair, but possibly with a more complex structure in the future to describe the gms that were run, status, and the hash.",
+      "range": {
+        "startLine": 84,
+        "startChar": 11,
+        "endLine": 84,
+        "endChar": 14
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf5bdd74_24bd3455",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-26T19:01:41Z",
+      "side": 1,
+      "message": "Can this always be on?",
+      "range": {
+        "startLine": 105,
+        "startChar": 7,
+        "endLine": 105,
+        "endChar": 27
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "844ca469_67a93048",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-26T19:01:41Z",
+      "side": 1,
+      "message": "We will want to make a SkSurface and then use getCanvas() to have the thing to draw on. This way, we will eventually be able to make GPU-backed surfaces more easily based on CLI flags.\n\nFor now, something like \n```\nSkSurfaces::Raster(SkImageInfo::MakeN32(gm-\u003egetISize(), \n                                        kRGBA_8888_SkColorType, \n                                        kPremul_SkAlphaType)) \n```\nshould be a reasonable CPU-backed surface.",
+      "range": {
+        "startLine": 149,
+        "startChar": 14,
+        "endLine": 149,
+        "endChar": 20
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c72c42c_db6e23dc",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-26T19:01:41Z",
+      "side": 1,
+      "message": "nit: I typically prefer printf or SkDebugf over cout as it is more similar to other programming languages, so there is less mental effort needed to swap between them.\n\nShouldn\u0027t there also be a newline at the end?",
+      "range": {
+        "startLine": 170,
+        "startChar": 6,
+        "endLine": 170,
+        "endChar": 15
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
