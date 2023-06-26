@@ -39,6 +39,30 @@
       },
       "revId": "7c8e21968032eac9558a2063f3a9c3c6e7ab8e1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fa56762_0c90583b",
+        "filename": "modules/canvaskit/paragraph.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-26T12:00:27Z",
+      "side": 1,
+      "message": "But it is still odd that only one of CanvasKit jobs is experiencing this issue.",
+      "parentUuid": "fa8b17d1_8a426ad8",
+      "range": {
+        "startLine": 77,
+        "startChar": 54,
+        "endLine": 77,
+        "endChar": 56
+      },
+      "revId": "7c8e21968032eac9558a2063f3a9c3c6e7ab8e1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
