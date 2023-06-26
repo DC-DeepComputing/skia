@@ -101,6 +101,14 @@ static inline bool sk_float_isnan(float x) {
     return !(x == x);
 }
 
+// This is an arbitrary cutoff copied from SkScalar.
+static constexpr float sk_float_near_zero_tolerance_default = 1.0f / (1 << 12);
+
+static constexpr bool sk_float_nearly_zero(
+        float a, float tolerance = sk_float_near_zero_tolerance_default) {
+    return a == 0 || std::abs(a) < tolerance;
+}
+
 #define sk_double_isnan(a)          sk_float_isnan(a)
 
 #define SK_MaxS32FitsInFloat    2147483520
