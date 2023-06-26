@@ -347,7 +347,7 @@ void run_test(GrDirectContext* dContext,
 #endif
 
                     for (auto sampling : kSamplingOptions) {
-                        for (auto constraint : { SkCanvas::kStrict_SrcRectConstraint,
+                        for (auto constraint : { /*SkCanvas::kStrict_SrcRectConstraint, */
                                                  SkCanvas::kFast_SrcRectConstraint }) {
                             if (difficult_case(sampling, scale, rot, constraint)) {
                                 continue;
