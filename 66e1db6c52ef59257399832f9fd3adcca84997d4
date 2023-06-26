@@ -16,6 +16,121 @@
       "message": "gentle ping",
       "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62eb613a_540f7dcf",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1026,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T20:51:42Z",
+      "side": 1,
+      "message": "maybe: \"for the transformed shape bounds to be fully clipped out while the draw still produces coverage due to an inverse fill. In this case, don\u0027t render any mask; AtlasShapeRenderer will automatically handle the simple fill.\"",
+      "range": {
+        "startLine": 1024,
+        "startChar": 7,
+        "endLine": 1026,
+        "endChar": 66
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84482ebd_7ae6bac5",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1038,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T20:51:42Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 1034,
+        "startChar": 0,
+        "endLine": 1038,
+        "endChar": 46
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc22fdd5_384295b4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T20:51:42Z",
+      "side": 1,
+      "message": "Maybe a little hacky, but it does what we probably want it to do, if we re-call `chooseRenderer` with useMSAA to true, it will skip the atlas, we reset `renderer` and `pathAtlas` and then keep going.",
+      "range": {
+        "startLine": 1052,
+        "startChar": 12,
+        "endLine": 1053,
+        "endChar": 56
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2b622d5_78a9cc14",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1192,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T20:51:42Z",
+      "side": 1,
+      "message": "I think we should just assert that `pathAtlas` is null. This function is really intended for drawing the clip directly to the screen. However we handle clipping integrated into the atlas, I don\u0027t think it would go through this draw function (either being an iteration over the returned elements within `drawGeometry` to record modifications to the atlas entry, or preparing a secondary clip atlas mask that is sampled). A clip atlas mask would be unlikely to hit this code path because we would need atlas entries corresponding to the unique stack configurations that draws reference, while this function requires the depth buffer to apply the independent clip shapes appropriately.",
+      "range": {
+        "startLine": 1192,
+        "startChar": 0,
+        "endLine": 1192,
+        "endChar": 71
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f7f674b_534e5f70",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1331,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-26T20:51:42Z",
+      "side": 1,
+      "message": "Should this just be part of the logic in `snapRenderPassTask` or `snapDrawPass`?",
+      "range": {
+        "startLine": 1331,
+        "startChar": 9,
+        "endLine": 1331,
+        "endChar": 34
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
