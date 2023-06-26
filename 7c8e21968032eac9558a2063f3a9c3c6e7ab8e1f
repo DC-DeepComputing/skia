@@ -16,6 +16,29 @@
       "message": "Perf-Ubuntu18-EMCC-Golo-GPU-QuadroP400-wasm-Release-All-SkottieWASM started timing out consistently after this CL: https://chromium-swarm.appspot.com/tasklist?f\u003dsk_name%3APerf-Ubuntu18-EMCC-Golo-GPU-QuadroP400-wasm-Release-All-SkottieWASM\n\nIt\u0027s not clear why, I would have guessed that particular bot only runs Skottie-related WASM tests.\n\n+Kevin",
       "revId": "7c8e21968032eac9558a2063f3a9c3c6e7ab8e1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa8b17d1_8a426ad8",
+        "filename": "modules/canvaskit/paragraph.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-26T11:59:53Z",
+      "side": 1,
+      "message": "My guess is that this syntax is not treated well by the emscripten transpiler.",
+      "range": {
+        "startLine": 77,
+        "startChar": 54,
+        "endLine": 77,
+        "endChar": 56
+      },
+      "revId": "7c8e21968032eac9558a2063f3a9c3c6e7ab8e1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
