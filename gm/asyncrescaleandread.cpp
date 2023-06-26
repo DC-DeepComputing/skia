@@ -17,8 +17,10 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
+#include "include/gpu/graphite/Context.h"
 #include "src/base/SkScopeExit.h"
 #include "src/core/SkAutoPixmapStorage.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 #include "tools/gpu/YUVUtils.h"
@@ -89,6 +91,7 @@ static sk_sp<SkImage> do_read_and_scale_yuv(Src* src,
     SkImageInfo uvII = SkImageInfo::Make(uvSize, kGray_8_SkColorType, kPremul_SkAlphaType);
 
     AsyncContext asyncContext;
+    asyncContext.fCalled = false;
     if (recorder) {
 #if defined(SK_GRAPHITE)
         skgpu::graphite::Context* graphiteContext = recorder->priv().context();
@@ -107,16 +110,15 @@ static sk_sp<SkImage> do_read_and_scale_yuv(Src* src,
         }
 
         graphiteContext->asyncRescaleAndReadPixelsYUV420(src, yuvCS, /*dstColorSpace=*/nullptr,
-                                                      srcRect, size, rescaleGamma, rescaleMode,
-                                                      async_callback, &asyncContext);
+                                                         srcRect, size, rescaleGamma, rescaleMode,
+                                                         async_callback, &asyncContext);
         graphiteContext->submit();
         while (!asyncContext.fCalled) {
             graphiteContext->checkAsyncWorkCompletion();
         }
-#endif
     } else {
-        src->asyncRescaleAndReadPixelsYUV420(yuvCS, /*dstColorSpace=*/nullptr,
-                                             srcRect, size, rescaleGamma, rescaleMode,
+        src->asyncRescaleAndReadPixelsYUV420(yuvCS, /*dstColorSpace=*/nullptr, srcRect, size,
+                                             rescaleGamma, rescaleMode,
                                              async_callback, &asyncContext);
         if (direct) {
             direct->submit();
