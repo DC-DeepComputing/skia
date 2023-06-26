@@ -17,8 +17,10 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
+#include "include/gpu/graphite/Context.h"
 #include "src/base/SkScopeExit.h"
 #include "src/core/SkAutoPixmapStorage.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 #include "tools/gpu/YUVUtils.h"
@@ -143,8 +145,8 @@ static sk_sp<SkImage> do_read_and_scale_yuv(Src* src,
     SkASSERT(pixmaps.isValid());
     auto lazyYUVImage = sk_gpu_test::LazyYUVImage::Make(pixmaps);
     SkASSERT(lazyYUVImage);
-    if (recorder) {
 #if defined(SK_GRAPHITE)
+    if (recorder) {
         return lazyYUVImage->refImage(recorder, sk_gpu_test::LazyYUVImage::Type::kFromTextures);
     } else
 #endif
