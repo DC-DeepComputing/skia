@@ -365,6 +365,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				configs = []string{"grvk"}
                                 // Couldn't readback
                                 skip(ALL, "gm", ALL, "aaxfermodes")
+                                // Could not instantiate texture proxy for UploadTask!
+                                skip(ALL, "test", ALL, "BigImageTest_Graphite")
                                 // Test failures
                                 skip(ALL, "test", ALL, "DeviceTestVertexTransparency")
                                 skip(ALL, "test", ALL, "GraphitePromiseImageMultipleImgUses")
