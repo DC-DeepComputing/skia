@@ -462,7 +462,7 @@ protected:
     SkScalar surfaceScale() const { return fSurfaceScale; }
 
 #if defined(SK_GANESH)
-    sk_sp<SkSpecialImage> filterImageGPU(const Context& ctx,
+    sk_sp<SkSpecialImage> filterImageGPU(const skif::Context& ctx,
                                          SkSpecialImage* input,
                                          const SkIRect& bounds,
                                          const SkMatrix& matrix) const;
@@ -509,7 +509,7 @@ void SkLightingImageFilterInternal::drawRect(skgpu::ganesh::SurfaceFillContext* 
 }
 
 sk_sp<SkSpecialImage> SkLightingImageFilterInternal::filterImageGPU(
-                                                   const Context& ctx,
+                                                   const skif::Context& ctx,
                                                    SkSpecialImage* input,
                                                    const SkIRect& offsetBounds,
                                                    const SkMatrix& matrix) const {
@@ -597,7 +597,7 @@ protected:
                                  sk_sp<SkImageFilter> input, const SkRect* cropRect);
     void flatten(SkWriteBuffer& buffer) const override;
 
-    sk_sp<SkSpecialImage> onFilterImage(const Context&, SkIPoint* offset) const override;
+    sk_sp<SkSpecialImage> onFilterImage(const skif::Context&, SkIPoint* offset) const override;
 
 #if defined(SK_GANESH)
     std::unique_ptr<GrFragmentProcessor> makeFragmentProcessor(GrSurfaceProxyView,
@@ -633,7 +633,7 @@ protected:
                                   sk_sp<SkImageFilter> input, const SkRect*);
     void flatten(SkWriteBuffer& buffer) const override;
 
-    sk_sp<SkSpecialImage> onFilterImage(const Context&, SkIPoint* offset) const override;
+    sk_sp<SkSpecialImage> onFilterImage(const skif::Context&, SkIPoint* offset) const override;
 
 #if defined(SK_GANESH)
     std::unique_ptr<GrFragmentProcessor> makeFragmentProcessor(GrSurfaceProxyView,
@@ -1305,7 +1305,7 @@ void SkDiffuseLightingImageFilter::flatten(SkWriteBuffer& buffer) const {
     buffer.writeScalar(fKD);
 }
 
-sk_sp<SkSpecialImage> SkDiffuseLightingImageFilter::onFilterImage(const Context& ctx,
+sk_sp<SkSpecialImage> SkDiffuseLightingImageFilter::onFilterImage(const skif::Context& ctx,
                                                                   SkIPoint* offset) const {
     SkIPoint inputOffset = SkIPoint::Make(0, 0);
     sk_sp<SkSpecialImage> input(this->filterInput(0, ctx, &inputOffset));
@@ -1448,7 +1448,7 @@ void SkSpecularLightingImageFilter::flatten(SkWriteBuffer& buffer) const {
     buffer.writeScalar(fShininess);
 }
 
-sk_sp<SkSpecialImage> SkSpecularLightingImageFilter::onFilterImage(const Context& ctx,
+sk_sp<SkSpecialImage> SkSpecularLightingImageFilter::onFilterImage(const skif::Context& ctx,
                                                                    SkIPoint* offset) const {
     SkIPoint inputOffset = SkIPoint::Make(0, 0);
     sk_sp<SkSpecialImage> input(this->filterInput(0, ctx, &inputOffset));
