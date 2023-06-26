@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4024aa8_a7154264",
+        "filename": "gm/asyncrescaleandread.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-26T19:03:44Z",
+      "side": 1,
+      "message": "This seems like it won\u0027t compile w/o Graphite",
+      "range": {
+        "startLine": 146,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 1
+      },
+      "revId": "91d2537b684a9c1c72588aa03fc34bccd679de00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
