@@ -74,6 +74,25 @@ public:
                                        const SkMatrix& localToDevice,
                                        SkCanvas::SrcRectConstraint constraint,
                                        SkSamplingOptions sampling);
+
+    static void DrawTiledBitmap_Graphite(SkCanvas*,
+                                         const SkBitmap&,
+                                         int tileSize,
+                                         const SkMatrix& srcToDst,
+                                         const SkRect& srcRect,
+                                         const SkIRect& clippedSrcIRect,
+                                         const SkPaint*,
+                                         SkCanvas::QuadAAFlags origAAFlags,
+                                         SkCanvas::SrcRectConstraint,
+                                         SkSamplingOptions);
+
+    static void DrawImageRect_Graphite(SkCanvas*,
+                                       const SkImage*,
+                                       const SkRect& src,
+                                       const SkRect& dst,
+                                       const SkSamplingOptions&,
+                                       const SkPaint*,
+                                       SkCanvas::SrcRectConstraint);
 };
 
 } // namespace skgpu
