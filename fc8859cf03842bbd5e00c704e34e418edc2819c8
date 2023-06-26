@@ -103,6 +103,24 @@
       "parentUuid": "9bdd6bf1_fe7c5590",
       "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a662957_b06dbce1",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-26T12:54:44Z",
+      "side": 1,
+      "message": "Yes. We thought about a couple different solutions, but guaranteeing that the dst alpha remains 1 (and having blend modes still work correctly) would require some careful design.",
+      "parentUuid": "1be09055_fdf2e110",
+      "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
