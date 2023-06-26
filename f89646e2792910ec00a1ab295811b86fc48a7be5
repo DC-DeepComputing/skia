@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e89cbef3_6d7b1f11",
+        "filename": "src/gpu/TiledTextureUtils.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-26T17:59:54Z",
+      "side": 1,
+      "message": "Done - moved to an anonymous namespace",
+      "parentUuid": "5d118817_33ebd32f",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 40
+      },
+      "revId": "f89646e2792910ec00a1ab295811b86fc48a7be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1212eefa_714b9f80",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4f456f2_3355e6a6",
+        "filename": "src/gpu/graphite/TiledTextureUtils_Graphite.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-26T17:59:54Z",
+      "side": 1,
+      "message": "Yeah - I haven\u0027t quite given up on having a shared impl. I was going to wait until this CL and the Ganesh refactoring (https://skia-review.googlesource.com/c/skia/+/716542) land and then take another quick whack at making the Ganesh impl be based on experimental_DrawEdgeAAImageSet.\n\nThe Ganesh code path has shed a couple of its more intricate invocations so I\u0027m holding out hope.",
+      "parentUuid": "1212eefa_714b9f80",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 195,
+        "endChar": 54
+      },
+      "revId": "f89646e2792910ec00a1ab295811b86fc48a7be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2f3c78a9_b1e73d52",
         "filename": "src/gpu/graphite/TiledTextureUtils_Graphite.cpp",
         "patchSetId": 28
@@ -60,6 +108,30 @@
       "writtenOn": "2023-06-26T16:58:00Z",
       "side": 1,
       "message": "`GRAPHITE_TEST_UTILS`?",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 17
+      },
+      "revId": "f89646e2792910ec00a1ab295811b86fc48a7be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5bc3baf_eae9e821",
+        "filename": "src/gpu/graphite/TiledTextureUtils_Graphite.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-26T17:59:54Z",
+      "side": 1,
+      "message": "afaict, right now, we have GR_TEST_UTILS that is defined for all dev builds and GRAPHITE_TEST_UTILS that is only defined for Graphite dev builds. The \u0027gOverrideMaxTexture\u0027 is used by both Ganesh and Graphite so I put it in the GR_TEST_UTILS pile.\n\nWe should probably have GPU_TEST_UTILS, GANESH_TEST_UTILS and GRAPHITE_TEST_UTILS but that would be a separate CL.",
+      "parentUuid": "2f3c78a9_b1e73d52",
       "range": {
         "startLine": 197,
         "startChar": 4,
