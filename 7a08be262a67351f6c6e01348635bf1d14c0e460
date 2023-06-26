@@ -33,6 +33,24 @@
       "message": "Ben, what do you think about exposing this API?",
       "revId": "7a08be262a67351f6c6e01348635bf1d14c0e460",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29524aa8_9356aa45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-26T18:50:06Z",
+      "side": 1,
+      "message": "It\u0027s probably fine to expose this. It isn\u0027t the best API, but if we ever want to change it a new API will need to be exposed.",
+      "parentUuid": "feb23c8d_8b10308c",
+      "revId": "7a08be262a67351f6c6e01348635bf1d14c0e460",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
