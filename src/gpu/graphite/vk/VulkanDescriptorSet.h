@@ -28,12 +28,14 @@ class VulkanDescriptorSet : public Resource {
 public:
     static sk_sp<VulkanDescriptorSet> Make(const VulkanSharedContext*,
                                            sk_sp<VulkanDescriptorPool>,
-                                           const VkDescriptorSetLayout);
+                                           const VkDescriptorSetLayout,
+                                           bool ownsLayout);
 
     VulkanDescriptorSet(const VulkanSharedContext*,
                         VkDescriptorSetLayout,
                         VkDescriptorSet,
-                        sk_sp<VulkanDescriptorPool>);
+                        sk_sp<VulkanDescriptorPool>,
+                        bool ownsLayout);
 
     // VkDescriptorSetLayout layout() const { return fDescLayout; }
 
@@ -48,6 +50,7 @@ private:
     // is 0, that means all the descriptor sets that came from that pool are no longer needed, so
     // the pool can safely be destroyed.
     sk_sp<VulkanDescriptorPool> fPool;
+    bool fOwnsLayout;
 };
 } // namespace skgpu::graphite
 

@@ -57,6 +57,11 @@ public:
         return fPipelineLayout;
     }
 
+    VkPipeline pipeline() const {
+        SkASSERT(fPipeline != VK_NULL_HANDLE);
+        return fPipeline;
+    }
+
     bool hasFragment() const { return fHasFragment; }
     bool hasStepUniforms() const { return fHasStepUniforms; }
 
