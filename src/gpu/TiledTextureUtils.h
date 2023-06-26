@@ -74,6 +74,14 @@ public:
                                        const SkMatrix& localToDevice,
                                        SkCanvas::SrcRectConstraint constraint,
                                        SkSamplingOptions sampling);
+
+    static void DrawImageRect_Graphite(SkCanvas*,
+                                       const SkImage*,
+                                       const SkRect& src,
+                                       const SkRect& dst,
+                                       const SkSamplingOptions&,
+                                       const SkPaint*,
+                                       SkCanvas::SrcRectConstraint);
 };
 
 } // namespace skgpu
