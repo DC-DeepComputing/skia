@@ -121,6 +121,24 @@
       "parentUuid": "1be09055_fdf2e110",
       "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "874095f9_4bf613e4",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-06-26T13:12:42Z",
+      "side": 1,
+      "message": "I though 888x means API users don\u0027t care what is in the alpha channel.. What is the use case the users want to keep the alpha channel 1 or unchanged?\n\nRemove it for now.",
+      "parentUuid": "9a662957_b06dbce1",
+      "revId": "fc8859cf03842bbd5e00c704e34e418edc2819c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
