@@ -74,6 +74,16 @@ public:
                                        const SkMatrix& localToDevice,
                                        SkCanvas::SrcRectConstraint constraint,
                                        SkSamplingOptions sampling);
+
+    static void DrawImageRect_Ganesh(SkBaseDevice*,
+                                     const SkImage*,
+                                     const SkRect& srcRect,
+                                     const SkRect& dstRect,
+                                     SkCanvas::QuadAAFlags,
+                                     const SkSamplingOptions&,
+                                     const SkPaint&,
+                                     SkCanvas::SrcRectConstraint);
+
 };
 
 } // namespace skgpu
