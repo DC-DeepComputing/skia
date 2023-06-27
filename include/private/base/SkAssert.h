@@ -76,6 +76,17 @@
     #define SkAssertResult(cond)         if (cond) {} do {} while(false)
 #endif
 
+// Check that an invariant is true, and if false report the error
+#if defined(__clang__)
+
+#define SkCheckf(cond, fmt, ...) \
+    (__builtin_expect(static_cast<bool>(cond), 1) \
+        ? (void)0 \
+        : [&]{ SkDebugf(fmt"\n", ##__VA_ARGS__); SK_ABORT("assert(%s)", #cond); return (void)0;}())
+#else
+#define SkCheckf(cond, fmt, ...) (void)0
+#endif
+
 #if !defined(SkUNREACHABLE)
 #  if defined(_MSC_VER) && !defined(__clang__)
 #    include <intrin.h>
