@@ -5,6 +5,13 @@
 * found in the LICENSE file.
 */
 
+#include "modules/skunicode/src/SkUnicode_icu.h"
+#include <unicode/umachine.h>
+#include <cstddef>
+#include <functional>
+#include <string>
+#include <utility>
+#include <vector>
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
@@ -15,17 +22,10 @@
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
-#include "modules/skunicode/src/SkUnicode_icu.h"
 #include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 #include "src/base/SkBitmaskEnum.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkTHash.h"
-#include <unicode/umachine.h>
-#include <cstddef>
-#include <functional>
-#include <string>
-#include <utility>
-#include <vector>
 
 #if defined(SK_USING_THIRD_PARTY_ICU)
 #include "SkLoadICU.h"
@@ -77,7 +77,8 @@ static UBreakIteratorType convertType(SkUnicode::BreakType type) {
         case SkUnicode::BreakType::kLines: return UBRK_LINE;
         case SkUnicode::BreakType::kGraphemes: return UBRK_CHARACTER;
         case SkUnicode::BreakType::kWords: return UBRK_WORD;
-        case SkUnicode::BreakType::kSentences: return UBRK_SENTENCE;
+        case SkUnicode::BreakType::kSentences:
+            return UBRK_SENTENCE;
         default:
             return UBRK_CHARACTER;
     }
@@ -354,22 +355,22 @@ public:
         return SkUnicode_icu::extractWords((uint16_t*)utf16.c_str(), utf16.size(), locale, results);
     }
 
-
-    bool getUtf8Words(const char utf8[], int utf8Units, const char* locale, std::vector<Position>* results) override {
-
+    bool getUtf8Words(const char utf8[],
+                      int utf8Units,
+                      const char* locale,
+                      std::vector<Position>* results) override {
         // Convert to UTF16 since we want the results in utf16
         auto utf16 = convertUtf8ToUtf16(utf8, utf8Units);
         std::vector<Position> utf16Results;
-        if (!SkUnicode_icu::extractWords((uint16_t*)utf16.c_str(), utf16.size(), locale, &utf16Results)) {
+        if (!SkUnicode_icu::extractWords(
+                    (uint16_t*)utf16.c_str(), utf16.size(), locale, &utf16Results)) {
             return false;
         }
 
         std::vector<Position> mapping;
         SkSpan<const char> text(utf8, utf8Units);
         SkUnicode::extractUtfConversionMapping(
-                text,
-                [&](size_t index) { mapping.emplace_back(index); },
-                [&](size_t index) { });
+                text, [&](size_t index) { mapping.emplace_back(index); }, [&](size_t index) {});
 
         for (auto i16 : utf16Results) {
             results->emplace_back(mapping[i16]);
@@ -377,11 +378,15 @@ public:
         return true;
     }
 
-    bool getSentences(const char utf8[], int utf8Units, std::vector<SkUnicode::Position>* results) override {
-        SkUnicode_icu::extractPositions(utf8, utf8Units, BreakType::kSentences,
-                                        [&](int pos, int status) {
-                                            results->emplace_back(pos);
-                                        });
+    bool getSentences(const char utf8[],
+                      int utf8Units,
+                      std::vector<SkUnicode::Position>* results) override {
+        SkUnicode_icu::extractPositions(
+                utf8, utf8Units, BreakType::kSentences, [&](int pos, int status) {
+                    if (status == UBRK_SENTENCE_TERM) {
+                        results->emplace_back(pos);
+                    }
+                });
         return true;
     }
 

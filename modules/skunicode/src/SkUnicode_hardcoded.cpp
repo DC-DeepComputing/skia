@@ -1,16 +1,16 @@
 /*
-* Copyright 2023 Google Inc.
-*
-* Use of this source code is governed by a BSD-style license that can be
-* found in the LICENSE file.
-*/
+ * Copyright 2023 Google Inc.
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
 
-#include "include/private/base/SkDebug.h"
-#include "include/private/base/SkTArray.h"
 #include "modules/skunicode/src/SkUnicode_hardcoded.h"
 #include <algorithm>
 #include <array>
 #include <utility>
+#include "include/private/base/SkDebug.h"
+#include "include/private/base/SkTArray.h"
 
 bool SkUnicodeHardCodedCharProperties::isControl(SkUnichar utf8) {
     return (utf8 < ' ') || (utf8 >= 0x7f && utf8 <= 0x9f) ||

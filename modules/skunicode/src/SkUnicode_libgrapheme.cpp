@@ -49,7 +49,9 @@ public:
         return SkUnicode_IcuBidi::ExtractBidi(utf8, utf8Units, dir, results);
     }
 
-    bool getSentences(const char utf8[], int utf8Units, std::vector<SkUnicode::Position>* results) override {
+    bool getSentences(const char utf8[],
+                      int utf8Units,
+                      std::vector<SkUnicode::Position>* results) override {
         SkDEBUGF("Method 'getSentences' is not implented\n");
         return false;
     }
@@ -153,7 +155,10 @@ public:
         return true;
     }
 
-    bool getUtf8Words(const char utf8[], int utf8Units, const char* locale, std::vector<Position>* results) override {
+    bool getUtf8Words(const char utf8[],
+                      int utf8Units,
+                      const char* locale,
+                      std::vector<Position>* results) override {
         // Let's consider sort line breaks, whitespaces and CJK codepoints instead
         std::vector<CodeUnitFlags> breaks(utf8Units + 1, CodeUnitFlags::kNoCodeUnitFlag);
 
@@ -186,7 +191,7 @@ public:
             } else if (b == CodeUnitFlags::kIdeographic) {
                 results->emplace_back(i);
                 whitespaces = false;
-            } else if  (b == CodeUnitFlags::kPartOfWhiteSpaceBreak) {
+            } else if (b == CodeUnitFlags::kPartOfWhiteSpaceBreak) {
                 if (!whitespaces) {
                     results->emplace_back(i);
                 }
@@ -267,7 +272,9 @@ public:
     }
 };
 
-bool SkUnicode::getSentences(const char utf8[], int utf8Units, std::vector<SkUnicode::Position>* results) {
+bool SkUnicode::getSentences(const char utf8[],
+                             int utf8Units,
+                             std::vector<SkUnicode::Position>* results) {
     SkDebugf("hardcoded\n");
     return false;
 }
