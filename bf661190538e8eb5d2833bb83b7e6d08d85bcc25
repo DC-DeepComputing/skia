@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0d3bcc3_91073d5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T14:01:06Z",
+      "side": 1,
+      "message": "I\u0027d like to start with just this, resetting on Recording snap, vs. resetting for every DrawPass.",
+      "revId": "bf661190538e8eb5d2833bb83b7e6d08d85bcc25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
