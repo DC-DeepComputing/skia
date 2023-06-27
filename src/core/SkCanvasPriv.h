@@ -98,8 +98,6 @@ public:
     // Returns true if the paint has been modified.
     // Requires the paint to have an image filter and the copy-on-write be initialized.
     static bool ImageToColorFilter(SkPaint*);
-
-    static SkIRect DeviceClipBounds(SkCanvas* canvas);
 };
 
 /**

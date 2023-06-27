@@ -138,16 +138,6 @@ bool SkCanvasPriv::ImageToColorFilter(SkPaint* paint) {
     return true;
 }
 
-
-SkIRect SkCanvasPriv::DeviceClipBounds(SkCanvas* canvas) {
-    const SkBaseDevice* dev = canvas->topDevice();
-    if (dev->onGetClipType() == SkBaseDevice::ClipType::kEmpty) {
-        return SkIRect::MakeEmpty();
-    } else {
-        return dev->devClipBounds();
-    }
-}
-
 #if GRAPHITE_TEST_UTILS
 #include "src/gpu/graphite/Device.h"
 
