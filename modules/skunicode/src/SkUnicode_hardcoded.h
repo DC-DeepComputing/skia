@@ -12,8 +12,6 @@
 #include "modules/skunicode/include/SkUnicode.h"
 #include "src/base/SkUTF.h"
 
-using namespace skia_private;
-
 class SkUnicodeHardCodedCharProperties : public SkUnicode {
 public:
     ~SkUnicodeHardCodedCharProperties() override;
