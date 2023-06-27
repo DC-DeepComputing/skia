@@ -88,6 +88,24 @@
       "parentUuid": "a0b7de65_b84dbaa1",
       "revId": "33e44e925bb0fbf5875a8c8f276baac2c37cf240",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1283f26_e27fab43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-27T12:04:27Z",
+      "side": 1,
+      "message": "Yup. And I see that you already checked the code-gen of std::isnan. Hmm.",
+      "parentUuid": "6638373b_aea9c291",
+      "revId": "33e44e925bb0fbf5875a8c8f276baac2c37cf240",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
