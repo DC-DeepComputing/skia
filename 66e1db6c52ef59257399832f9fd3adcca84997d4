@@ -183,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27bc92ed_16b2b83b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-27T21:38:02Z",
+      "side": 1,
+      "message": "Sounds good. I updated the comment here with the new plan and linked to b/285195175.",
+      "parentUuid": "7089e6ba_4790e620",
+      "range": {
+        "startLine": 1052,
+        "startChar": 12,
+        "endLine": 1053,
+        "endChar": 56
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2b622d5_78a9cc14",
