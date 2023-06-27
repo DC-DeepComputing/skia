@@ -16,6 +16,75 @@
       "message": "Works pretty well this way. Added Brian for API review.",
       "revId": "53417a1c779a96e4c7c5405e40d8c35171383341",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f40179_a29e0ded",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T00:52:28Z",
+      "side": 1,
+      "message": "Down the line, should this take an SkImage to be consistent with asyncReadPixelsYUV420?",
+      "range": {
+        "startLine": 141,
+        "startChar": 25,
+        "endLine": 141,
+        "endChar": 58
+      },
+      "revId": "53417a1c779a96e4c7c5405e40d8c35171383341",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5e7e8d5_14cb30d1",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T00:52:28Z",
+      "side": 1,
+      "message": "Is there not an `as_IB()` macro?",
+      "range": {
+        "startLine": 268,
+        "startChar": 19,
+        "endLine": 268,
+        "endChar": 51
+      },
+      "revId": "53417a1c779a96e4c7c5405e40d8c35171383341",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1a34c9e_8e89112f",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T00:52:28Z",
+      "side": 1,
+      "message": "I\u0027m assuming we can\u0027t create the copy tasks and the Recording at the same time, and then only add them if all of them were created successfully?\n\nIs that just an API limitation of Context::transferPixels that it immediately works on the queue, or something more fundamental?",
+      "range": {
+        "startLine": 411,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 43
+      },
+      "revId": "53417a1c779a96e4c7c5405e40d8c35171383341",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
