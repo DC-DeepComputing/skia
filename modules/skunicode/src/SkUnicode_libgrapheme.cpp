@@ -148,6 +148,15 @@ public:
         return true;
     }
 
+    bool getUtf8Words(const char utf8[], int utf8Units, const char* locale, std::vector<Position>* results) override {
+        size_t wordBreak = 0;
+        while (wordBreak < utf8Units) {
+            wordBreak += grapheme_next_word_break_utf8(utf8 + wordBreak, utf8Units - wordBreak);
+            results->emplace_back(wordBreak);
+        }
+        return true;
+    }
+
     SkString toUpper(const SkString& str) override {
 
         SkString res(" ", str.size());

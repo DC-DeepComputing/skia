@@ -1,0 +1,43 @@
+{{ define "scripts" }}
+
+currentId = '';
+currentType = '';
+
+function recurse(id) {
+  var children = document.getElementsByClassName(id);
+  for (let i = 0; i < children.length; i++) {
+    children[i].classList.toggle("open");
+    if (children[i].hasAttribute('href')) {
+      recursive(children[i].getAttribute('href').substring(1));
+    }
+  }
+}
+document.getElementById("comparison").addEventListener("click", function (e) {
+  if (!e) return;
+  if (e.target.tagName !== "A") return;
+  e.preventDefault();
+  recurse(e.target.getAttribute('href').substring(1));
+});
+
+function hideDiff() {
+  if (currentId == '') {
+    return;
+  }
+  $('#id' + currentId + ' > td > div > span.'+currentType).removeClass('span_' + currentType);
+  $('#' + currentType + currentId).addClass('inactive');
+  $('#id' + currentId + ' > td > div.'+currentType).addClass('invisible');
+  currentId = '';
+  currentType = '';
+}
+
+function showDiff(id, type) {
+  hideDiff();
+  $('#' + type + id).removeClass('inactive');
+  $('#id' + id + ' > td > div.'+type).removeClass('invisible');
+  $('#id' + id + ' > td > div > span.'+type).addClass('span_' + type);
+
+  currentId = id;
+  currentType = type;
+}
+
+{{ end }}
