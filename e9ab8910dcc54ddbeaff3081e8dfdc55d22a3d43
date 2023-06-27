@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78a046b9_8f51b82a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T14:35:25Z",
+      "side": 1,
+      "message": "This doesn\u0027t do much at the moment other than change the error message on some of the GMs, but it sets me up for testing rescale.",
+      "revId": "e9ab8910dcc54ddbeaff3081e8dfdc55d22a3d43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
