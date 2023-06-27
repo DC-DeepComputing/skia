@@ -1,0 +1,107 @@
+{{ define "formattedText" }}
+    {{ range $text := . }}
+<span class="{{ .Classes }}">{{ .Text }}</span>
+    {{ end }}
+{{ end }}
+{{ define "rows" }}
+    {{ range $child := . }}
+        {{ if $child.IsImplementation }}
+            <tr class="{{ .Level }}" id="{{ .Id }}">
+                <td><a href="#{{ .Id }}">+</a>{{ .Name }}</td>
+                {{/*
+                <td>{{ printf "%.6f" .Delta.Memory }}</td>
+                <td>{{ printf "%.6f" .Delta.Disk }}</td>
+                */}}
+                <td></td>
+                <td></td>
+                <td>{{ .Delta.Performance.Percents }}</td>
+                <td>{{ .Delta.Graphemes.Divide }}</td>
+                <td>{{ .Delta.SoftBreaks.Divide }}</td>
+                <td>{{ .Delta.HardBreaks.Divide }}</td>
+                <td>{{ .Delta.Whitespaces.Divide }}</td>
+                <td>{{ .Delta.Words.Divide }}</td>
+                <td>{{ .Delta.Controls.Divide }}</td>
+            </tr>
+        {{ else if $child.IsFile }}
+            <tr class="{{ .Level }} {{ .ParentId }}">
+                <td> {{ .Name }} </td>
+                <td colspan="3"></td>
+                {{ if .HasGraphemes }}
+                <td><input type="button" style="width: 100%; height: 100%;" id='grapheme{{ .Num }}' onClick="showDiff('{{ .Num }}', 'grapheme')" value="Graphemes"/></td>
+                {{ else }}
+                <td><input type="button" style="width: 100%; height: 100%;" class="disabled_button" value="Graphemes"/></td>
+                {{ end }}
+                {{ if .HasSoftBreaks }}
+                <td><input type="button" style="width: 100%; height: 100%;" id='softBreak{{ .Num }}' onClick="showDiff('{{ .Num }}', 'softBreak')" value="Soft Breaks"/></td>
+                {{ else }}
+                <td><input type="button" style="width: 100%; height: 100%;" class="disabled_button" value="Soft Breaks"/></td>
+                {{ end}}
+                {{ if .HasHardBreaks }}
+                <td><input type="button" style="width: 100%; height: 100%;" id='hardBreak{{ .Num }}' onClick="showDiff('{{ .Num }}', 'hardBreak')" value="Hard Breaks"/></td>
+                {{ else }}
+                <td><input type="button" style="width: 100%; height: 100%;" class="disabled_button" value="Hard Breaks"/></td>
+                {{ end }}
+                {{ if .HasWhitespaces }}
+                <td><input type="button" style="width: 100%; height: 100%;" id='whitespace{{ .Num }}' onClick="showDiff('{{ .Num }}', 'whitespace')" value="Whitespaces"/></td>
+                {{ else }}
+                <td><input type="button" style="width: 100%; height: 100%;" class="disabled_button" value="Whitespaces"/></td>
+                {{ end }}
+                {{ if .HasWords }}
+                <td><input type="button" style="width: 100%; height: 100%;" id='word{{ .Num }}' onClick="showDiff('{{ .Num }}', 'word')" value="Words"/></td>
+                {{ else }}
+                <td><input type="button" style="width: 100%; height: 100%;" class="disabled_button" value="Words"/></td>
+                {{ end }}
+                {{ if .HasControls }}
+                <td><input type="button" style="width: 100%; height: 100%;" id='control{{ .Num }}' onClick="showDiff('{{ .Num }}', 'control')" value="Controls"/></td>
+                {{ else }}
+                <td><input type="button" style="width: 100%; height: 100%;" class="disabled_button" value="Controls"/></td>
+                {{ end }}
+            </tr>
+            <tr class="{{ .Level }} {{ .ParentId }}" id="{{ .Id }}">
+                <td class="results">{{ .Implementation }} results</td>
+                <td colspan="9">
+                    <div>
+                        {{ template "formattedText" .FormattedText }}<br/>
+
+                    </div>
+                </td>
+            </tr>
+            <tr class="{{ .Level }} {{ .ParentId }}" id="{{ .Id }}a">
+                <td class="results">Chrome results</td>
+                <td colspan="9">
+                    <div>
+                        <span>{{ .Text }}</span>
+                    </div>
+                </td>
+            </tr>
+        {{ else }}
+            <tr class="{{ .Level }} {{ .ParentId }}" id="{{ .Id }}">
+                {{ if $child.IsFile }}
+                <td> {{ .Name }} </td>
+                <td colspan="9">
+                    <div>
+                    {{ template "formattedText" .FormattedText }}<br/>
+                    <span>{{ .Text }}</span>
+                    </div>
+                </td>
+                {{ else }}
+                <td><a href="#{{ .Id }}">+</a> {{ .Name }} </td>
+                {{/*
+                <td>{{ printf "%.6f" .Delta.Memory }}</td>
+                <td>{{ printf "%.6f" .Delta.Disk }}</td>
+                */}}
+                <td></td>
+                <td></td>
+                <td>{{ .Delta.Performance.Percents }}</td>
+                <td>{{ .Delta.Graphemes.Divide }}</td>
+                <td>{{ .Delta.SoftBreaks.Divide }}</td>
+                <td>{{ .Delta.HardBreaks.Divide }}</td>
+                <td>{{ .Delta.Whitespaces.Divide }}</td>
+                <td>{{ .Delta.Words.Divide }}</td>
+                <td>{{ .Delta.Controls.Divide }}</td>
+                {{ end }}
+            </tr>
+        {{ end}}
+        {{ template "rows" $child.Children }}
+    {{ end }}
+{{ end }}
