@@ -5,7 +5,17 @@
 * found in the LICENSE file.
 */
 
+<<<<<<< PATCH SET (206e4c Set of utilities for Unicode comparison)
+#include "modules/skunicode/src/SkUnicode_icu.h"
+#include <unicode/umachine.h>
+#include <cstddef>
+#include <functional>
+#include <string>
+#include <utility>
+#include <vector>
+=======
 #include "include/core/SkRefCnt.h"
+>>>>>>> BASE      (c26710 Set of utilities for Unicode comparison: Skia changes)
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
@@ -15,12 +25,13 @@
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skunicode/include/SkUnicode.h"
-#include "modules/skunicode/src/SkUnicode_icu.h"
 #include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 #include "src/base/SkBitmaskEnum.h"
 #include "src/base/SkUTF.h"
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
+<<<<<<< PATCH SET (206e4c Set of utilities for Unicode comparison)
+=======
 
 #include <unicode/uloc.h>
 #include <unicode/umachine.h>
@@ -31,6 +42,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+>>>>>>> BASE      (c26710 Set of utilities for Unicode comparison: Skia changes)
 
 #if defined(SK_USING_THIRD_PARTY_ICU)
 #include "SkLoadICU.h"
@@ -536,11 +548,17 @@ public:
 
     bool getSentences(const char utf8[],
                       int utf8Units,
+<<<<<<< PATCH SET (206e4c Set of utilities for Unicode comparison)
+                      std::vector<SkUnicode::Position>* results) override {
+        SkUnicode_icu::extractPositions(
+                utf8, utf8Units, BreakType::kSentences, [&](int pos, int status) {
+=======
                       const char* locale,
                       std::vector<SkUnicode::Position>* results) override {
         SkUnicode_icu::extractPositions(
                 utf8, utf8Units, BreakType::kSentences, nullptr,
                 [&](int pos, int status) {
+>>>>>>> BASE      (c26710 Set of utilities for Unicode comparison: Skia changes)
                     if (status == UBRK_SENTENCE_TERM) {
                         results->emplace_back(pos);
                     }

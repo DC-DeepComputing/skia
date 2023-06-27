@@ -51,7 +51,10 @@ public:
 
     bool getSentences(const char utf8[],
                       int utf8Units,
+<<<<<<< PATCH SET (206e4c Set of utilities for Unicode comparison)
+=======
                       const char* locale,
+>>>>>>> BASE      (c26710 Set of utilities for Unicode comparison: Skia changes)
                       std::vector<SkUnicode::Position>* results) override {
         SkDEBUGF("Method 'getSentences' is not implented\n");
         return false;
@@ -273,6 +276,16 @@ public:
     }
 };
 
+<<<<<<< PATCH SET (206e4c Set of utilities for Unicode comparison)
+bool SkUnicode::getSentences(const char utf8[],
+                             int utf8Units,
+                             std::vector<SkUnicode::Position>* results) {
+    SkDebugf("hardcoded\n");
+    return false;
+}
+
+=======
+>>>>>>> BASE      (c26710 Set of utilities for Unicode comparison: Skia changes)
 std::unique_ptr<SkBidiIterator> SkUnicode_libgrapheme::makeBidiIterator(const uint16_t text[], int count,
                                                  SkBidiIterator::Direction dir) {
     return SkUnicode_IcuBidi::MakeIterator(text, count, dir);

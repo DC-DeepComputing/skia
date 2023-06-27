@@ -164,10 +164,14 @@ class SKUNICODE_API SkUnicode {
                                   int utf8Units,
                                   const char* locale,
                                   std::vector<Position>* results) = 0;
+<<<<<<< PATCH SET (206e4c Set of utilities for Unicode comparison)
+        virtual bool getSentences(const char utf8[], int utf8Units, std::vector<Position>* results);
+=======
         virtual bool getSentences(const char utf8[],
                                   int utf8Units,
                                   const char* locale,
                                   std::vector<Position>* results) = 0;
+>>>>>>> BASE      (c26710 Set of utilities for Unicode comparison: Skia changes)
         virtual bool computeCodeUnitFlags(
                 char utf8[], int utf8Units, bool replaceTabs,
                 skia_private::TArray<SkUnicode::CodeUnitFlags, true>* results) = 0;
