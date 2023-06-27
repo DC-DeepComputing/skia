@@ -241,9 +241,7 @@ public:
         if (auto* t = std::get_if<TransformParams>(&fAction)) {
             return in.applyTransform(ctx, t->fMatrix, t->fSampling);
         } else if (auto* c = std::get_if<CropParams>(&fAction)) {
-            // TODO: Pass fTileMode into applyCrop()
-            SkASSERT(c->fTileMode == SkTileMode::kDecal);
-            return in.applyCrop(ctx, c->fRect);
+            return in.applyCrop(ctx, c->fRect, c->fTileMode);
         } else if (auto* cf = std::get_if<sk_sp<SkColorFilter>>(&fAction)) {
             return in.applyColorFilter(ctx, *cf);
         }
@@ -874,8 +872,7 @@ public:
                 REPORTER_ASSERT(fRunner, !expectedBounds.isEmpty());
                 REPORTER_ASSERT(fRunner, SkIRect(output.layerBounds()) == SkIRect(expectedBounds));
                 REPORTER_ASSERT(fRunner, output.sampling() == fActions[i].expectedSampling());
-                // TODO: Check against output.tileMode() once FilterResult exposes it
-                REPORTER_ASSERT(fRunner, SkTileMode::kDecal == fActions[i].expectedTileMode());
+                REPORTER_ASSERT(fRunner, output.tileMode() == fActions[i].expectedTileMode());
                 REPORTER_ASSERT(fRunner, colorfilter_equals(output.colorFilter(),
                                                             fActions[i].expectedColorFilter()));
             }
