@@ -12,20 +12,20 @@
 #include "include/private/base/SkFloatBits.h"
 #include "include/private/base/SkMath.h"
 
-#include <cfloat>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <limits>
 
-constexpr float SK_FloatSqrt2 = 1.41421356f;
-constexpr float SK_FloatPI    = 3.14159265f;
-constexpr double SK_DoublePI  = 3.14159265358979323846264338327950288;
+inline constexpr float SK_FloatSqrt2 = 1.41421356f;
+inline constexpr float SK_FloatPI    = 3.14159265f;
+inline constexpr double SK_DoublePI  = 3.14159265358979323846264338327950288;
 
 // C++98 cmath std::pow seems to be the earliest portable way to get float pow.
 // However, on Linux including cmath undefines isfinite.
 // http://gcc.gnu.org/bugzilla/show_bug.cgi?id=14608
 static inline float sk_float_pow(float base, float exp) {
-    return powf(base, exp);
+    return std::pow(base, exp);
 }
 
 #define sk_float_sqrt(x)        sqrtf(x)
@@ -49,15 +49,15 @@ static inline float sk_float_pow(float base, float exp) {
 #define sk_float_exp(x)         expf(x)
 #define sk_float_log(x)         logf(x)
 
-constexpr int sk_float_sgn(float x) {
+static constexpr int sk_float_sgn(float x) {
     return (0.0f < x) - (x < 0.0f);
 }
 
-constexpr float sk_float_degrees_to_radians(float degrees) {
+static constexpr float sk_float_degrees_to_radians(float degrees) {
     return degrees * (SK_FloatPI / 180);
 }
 
-constexpr float sk_float_radians_to_degrees(float radians) {
+static constexpr float sk_float_radians_to_degrees(float radians) {
     return radians * (180 / SK_FloatPI);
 }
 
@@ -69,7 +69,7 @@ constexpr float sk_float_radians_to_degrees(float radians) {
 // can't find log2f on android, but maybe that just a tool bug?
 #ifdef SK_BUILD_FOR_ANDROID
     static inline float sk_float_log2(float x) {
-        const double inv_ln_2 = 1.44269504088896;
+        static constexpr double inv_ln_2 = 1.44269504088896;
         return (float)(log(x) * inv_ln_2);
     }
 #else
@@ -97,22 +97,23 @@ static inline bool sk_float_isinf(float x) {
     return SkFloatBits_IsInf(SkFloat2Bits(x));
 }
 
-static inline bool sk_float_isnan(float x) {
-    return !(x == x);
+constexpr bool sk_float_isnan(float x) {
+    return x != x;
 }
 
 #define sk_double_isnan(a)          sk_float_isnan(a)
 
-#define SK_MaxS32FitsInFloat    2147483520
-#define SK_MinS32FitsInFloat    -SK_MaxS32FitsInFloat
+inline constexpr int SK_MaxS32FitsInFloat = 2147483520;
+inline constexpr int SK_MinS32FitsInFloat = -SK_MaxS32FitsInFloat;
 
-#define SK_MaxS64FitsInFloat    (SK_MaxS64 >> (63-24) << (63-24))   // 0x7fffff8000000000
-#define SK_MinS64FitsInFloat    -SK_MaxS64FitsInFloat
+// 0x7fffff8000000000
+inline constexpr int64_t SK_MaxS64FitsInFloat = SK_MaxS64 >> (63-24) << (63-24);
+inline constexpr int64_t SK_MinS64FitsInFloat = -SK_MaxS64FitsInFloat;
 
 /**
  *  Return the closest int for the given float. Returns SK_MaxS32FitsInFloat for NaN.
  */
-static inline int sk_float_saturate2int(float x) {
+constexpr int sk_float_saturate2int(float x) {
     x = x < SK_MaxS32FitsInFloat ? x : SK_MaxS32FitsInFloat;
     x = x > SK_MinS32FitsInFloat ? x : SK_MinS32FitsInFloat;
     return (int)x;
@@ -121,7 +122,7 @@ static inline int sk_float_saturate2int(float x) {
 /**
  *  Return the closest int for the given double. Returns SK_MaxS32 for NaN.
  */
-static inline int sk_double_saturate2int(double x) {
+constexpr int sk_double_saturate2int(double x) {
     x = x < SK_MaxS32 ? x : SK_MaxS32;
     x = x > SK_MinS32 ? x : SK_MinS32;
     return (int)x;
@@ -130,7 +131,7 @@ static inline int sk_double_saturate2int(double x) {
 /**
  *  Return the closest int64_t for the given float. Returns SK_MaxS64FitsInFloat for NaN.
  */
-static inline int64_t sk_float_saturate2int64(float x) {
+constexpr int64_t sk_float_saturate2int64(float x) {
     x = x < SK_MaxS64FitsInFloat ? x : SK_MaxS64FitsInFloat;
     x = x > SK_MinS64FitsInFloat ? x : SK_MinS64FitsInFloat;
     return (int64_t)x;
@@ -155,24 +156,24 @@ static inline int64_t sk_float_saturate2int64(float x) {
 // Clang thinks this is undefined, but it's actually implementation defined to return either
 // the largest float or infinity (one of the two bracketing representable floats).  Good enough!
 SK_NO_SANITIZE("float-cast-overflow")
-static inline float sk_double_to_float(double x) {
+constexpr float sk_double_to_float(double x) {
     return static_cast<float>(x);
 }
 
-#define SK_FloatNaN                 std::numeric_limits<float>::quiet_NaN()
-#define SK_FloatInfinity            (+std::numeric_limits<float>::infinity())
-#define SK_FloatNegativeInfinity    (-std::numeric_limits<float>::infinity())
+inline constexpr float SK_FloatNaN = std::numeric_limits<float>::quiet_NaN();
+inline constexpr float SK_FloatInfinity = std::numeric_limits<float>::infinity();
+inline constexpr float SK_FloatNegativeInfinity = -SK_FloatInfinity;
 
-#define SK_DoubleNaN                std::numeric_limits<double>::quiet_NaN()
+inline constexpr double SK_DoubleNaN = std::numeric_limits<double>::quiet_NaN();
 
 // Calculate the midpoint between a and b. Similar to std::midpoint in c++20.
-static constexpr float sk_float_midpoint(float a, float b) {
+constexpr float sk_float_midpoint(float a, float b) {
     // Use double math to avoid underflow and overflow.
     return static_cast<float>(0.5 * (static_cast<double>(a) + b));
 }
 
-// Returns false if any of the floats are outside of [0...1]
-// Returns true if count is 0
+// Returns false if any of the floats are outside the range [0...1].
+// Returns true if count is 0.
 bool sk_floats_are_unit(const float array[], size_t count);
 
 static inline float sk_float_rsqrt_portable(float x) { return 1.0f / sk_float_sqrt(x); }
@@ -189,44 +190,37 @@ static inline float sk_float_rsqrt         (float x) { return 1.0f / sk_float_sq
 //     ...
 static inline int sk_float_nextlog2(float x) {
     uint32_t bits = (uint32_t)SkFloat2Bits(x);
+    // The constant is a significand of all 1s -- 0b0'00000000'111'1111111111'111111111. So, if
+    // the significand of x is all 0s and therefore a power of two, this will not increment the
+    // exponent, but if it is just one ULP above two the carry will ripple into the exponent
+    // incrementing it.
     bits += (1u << 23) - 1u;  // Increment the exponent for non-powers-of-2.
     int exp = ((int32_t)bits >> 23) - 127;
     return exp & ~(exp >> 31);  // Return 0 for negative or denormalized floats, and exponents < 0.
 }
 
-// This is the number of significant digits we can print in a string such that when we read that
-// string back we get the floating point number we expect.  The minimum value C requires is 6, but
-// most compilers support 9
-#ifdef FLT_DECIMAL_DIG
-#define SK_FLT_DECIMAL_DIG FLT_DECIMAL_DIG
-#else
-#define SK_FLT_DECIMAL_DIG 9
-#endif
+// The number of significant digits to print.
+inline constexpr int SK_FLT_DECIMAL_DIG = std::numeric_limits<float>::max_digits10;
 
-// IEEE defines how float divide behaves for non-finite values and zero-denoms, but C does not
+// IEEE defines how float divide behaves for non-finite values and zero-denoms, but C does not,
 // so we have a helper that suppresses the possible undefined-behavior warnings.
-
 SK_NO_SANITIZE("float-divide-by-zero")
-static inline float sk_ieee_float_divide(float numer, float denom) {
+constexpr float sk_ieee_float_divide(float numer, float denom) {
     return numer / denom;
 }
 
 SK_NO_SANITIZE("float-divide-by-zero")
-static inline double sk_ieee_double_divide(double numer, double denom) {
+constexpr double sk_ieee_double_divide(double numer, double denom) {
     return numer / denom;
 }
 
 // While we clean up divide by zero, we'll replace places that do divide by zero with this TODO.
-static inline float sk_ieee_float_divide_TODO_IS_DIVIDE_BY_ZERO_SAFE_HERE(float n, float d) {
+constexpr float sk_ieee_float_divide_TODO_IS_DIVIDE_BY_ZERO_SAFE_HERE(float n, float d) {
     return sk_ieee_float_divide(n,d);
 }
 
 static inline float sk_fmaf(float f, float m, float a) {
-#if defined(FP_FAST_FMA)
-    return std::fmaf(f,m,a);
-#else
-    return f*m+a;
-#endif
+    return std::fma(f,m,a);
 }
 
 // Returns true iff the provided number is within a small epsilon of 0.
