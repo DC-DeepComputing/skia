@@ -44,18 +44,22 @@ UNIX_ONLY_TEST(SkUnicode_Native, reporter) {
     }
 }
 #endif
-UNIX_ONLY_TEST(SkUnicode_GetWords, reporter) {
+
+#ifdef SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION
+UNIX_ONLY_TEST(SkUnicode_GetUtf8Words, reporter) {
     SkString text("1 22 333 4444 55555 666666 7777777");
+    //std::vector<SkUnicode::Position> expected = { 0, 1, 2, 4, 5, 8, 9, 13, 14, 19, 20, 26, 27, 34 };
     std::vector<SkUnicode::Position> expected = { 0, 1, 2, 4, 5, 8, 9, 13, 14, 19, 20, 26, 27, 34 };
-    auto icu = SkUnicode::Make();
+    auto icu = SkUnicode::MakeLibgraphemeBasedUnicode();
     std::vector<SkUnicode::Position> results;
-    auto result = icu->getWords(text.data(), text.size(), "en", &results);
+    auto result = icu->getUtf8Words(text.data(), text.size(), "en", &results);
     REPORTER_ASSERT(reporter, result);
     REPORTER_ASSERT(reporter, results.size() == expected.size());
     for (auto i = 0ul; i < results.size(); ++i) {
         REPORTER_ASSERT(reporter, results[i] == expected[i]);
     }
 }
+#endif
 
 UNIX_ONLY_TEST(SkUnicode_GetBidiRegionsLTR, reporter) {
     SkString text("1 22 333 4444 55555 666666 7777777");
