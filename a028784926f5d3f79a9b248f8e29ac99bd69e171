@@ -22,6 +22,30 @@
       },
       "revId": "a028784926f5d3f79a9b248f8e29ac99bd69e171",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "899a71ae_7ace2457",
+        "filename": "src/gpu/graphite/render/AtlasShapeRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-27T21:39:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32ce6154_c1a1d112",
+      "range": {
+        "startLine": 84,
+        "startChar": 35,
+        "endLine": 84,
+        "endChar": 40
+      },
+      "revId": "a028784926f5d3f79a9b248f8e29ac99bd69e171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
