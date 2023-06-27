@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b10b6af_f35e7bf9",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T14:01:56Z",
+      "side": 1,
+      "message": "Discussed offline. This is private so they don\u0027t need to be consistent, and using TextureProxy makes more sense in this case.",
+      "parentUuid": "16f40179_a29e0ded",
+      "range": {
+        "startLine": 141,
+        "startChar": 25,
+        "endLine": 141,
+        "endChar": 58
+      },
+      "revId": "53417a1c779a96e4c7c5405e40d8c35171383341",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5e7e8d5_14cb30d1",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f609aef0_0c772b45",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T14:01:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5e7e8d5_14cb30d1",
+      "range": {
+        "startLine": 268,
+        "startChar": 19,
+        "endLine": 268,
+        "endChar": 51
+      },
+      "revId": "53417a1c779a96e4c7c5405e40d8c35171383341",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1a34c9e_8e89112f",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-06-27T00:52:28Z",
       "side": 1,
       "message": "I\u0027m assuming we can\u0027t create the copy tasks and the Recording at the same time, and then only add them if all of them were created successfully?\n\nIs that just an API limitation of Context::transferPixels that it immediately works on the queue, or something more fundamental?",
+      "range": {
+        "startLine": 411,
+        "startChar": 0,
+        "endLine": 411,
+        "endChar": 43
+      },
+      "revId": "53417a1c779a96e4c7c5405e40d8c35171383341",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e74a8309_3071ebf8",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T14:01:56Z",
+      "side": 1,
+      "message": "Yeah, transferPixels inserts a CopyTextureToBufferTask and a SyncToCpuTask directly, so we have to add the RenderPassTasks first. If the transfer tasks fail then the worst that will happen is that we\u0027ll render to the offscreen surfaces, which is inefficient but shouldn\u0027t affect any other rendering.",
+      "parentUuid": "a1a34c9e_8e89112f",
       "range": {
         "startLine": 411,
         "startChar": 0,
