@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32ce6154_c1a1d112",
+        "filename": "src/gpu/graphite/render/AtlasShapeRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T00:41:46Z",
+      "side": 1,
+      "message": "There\u0027s no need to clamp if you\u0027re going to have the explicit `if` to set it to 0. Assuming we have a 1-2px buffer between atlas entries, we could clamp and rely on reading that 0 value. Since it\u0027s NN on a pixel-aligned rect draw, it should be pretty safe.",
+      "range": {
+        "startLine": 84,
+        "startChar": 35,
+        "endLine": 84,
+        "endChar": 40
+      },
+      "revId": "a028784926f5d3f79a9b248f8e29ac99bd69e171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
