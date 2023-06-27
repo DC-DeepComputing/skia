@@ -302,6 +302,12 @@ func (b *taskBuilder) usesGSUtil() {
 	b.addToPATH("gsutil/gsutil")
 }
 
+func (b *taskBuilder) needsFontsForParagraphTests() {
+	pkg := b.MustGetCipdPackageFromAsset("skparagraph")
+	pkg.Path = "skia/resources/fonts"
+	b.cipd(pkg)
+}
+
 // recipeProp adds the given recipe property key/value pair. Panics if
 // getRecipeProps() was already called.
 func (b *taskBuilder) recipeProp(key, value string) {
