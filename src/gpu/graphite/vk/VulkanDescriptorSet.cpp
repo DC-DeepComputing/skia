@@ -34,7 +34,7 @@ sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* 
     if (result != VK_SUCCESS) {
         return nullptr;
     }
-    return sk_sp<VulkanDescriptorSet>(new VulkanDescriptorSet(ctxt, descSet, pool));
+    return sk_sp<VulkanDescriptorSet>(new VulkanDescriptorSet(ctxt, layout, descSet, pool));
 }
 
 VkDescriptorType VulkanDescriptorSet::DsTypeEnumToVkDs(DescriptorType type) {
@@ -56,9 +56,11 @@ VkDescriptorType VulkanDescriptorSet::DsTypeEnumToVkDs(DescriptorType type) {
 }
 
 VulkanDescriptorSet::VulkanDescriptorSet(const VulkanSharedContext* ctxt,
+                                         VkDescriptorSetLayout layout,
                                          VkDescriptorSet set,
                                          sk_sp<VulkanDescriptorPool> pool)
         : Resource(ctxt, Ownership::kOwned, skgpu::Budgeted::kNo, /*gpuMemorySize=*/0)
+        , fDescSetLayout (layout)
         , fDescSet (set)
         , fPool (pool) {
     fPool->ref();
