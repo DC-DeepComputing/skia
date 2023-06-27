@@ -46,6 +46,30 @@
       },
       "revId": "bbc39451d8c31a31f742d441ae2b30741808adbe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "149ffe27_b6c5ccea",
+        "filename": "src/gpu/graphite/TiledTextureUtils_Graphite.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T15:18:31Z",
+      "side": 1,
+      "message": "That works, but then we can probably just call `device-\u003edevClipBounds()` here and remove the `SkCanvasPriv::DeviceClipBounds()` function.",
+      "parentUuid": "6b609e76_84b9e6cb",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 66
+      },
+      "revId": "bbc39451d8c31a31f742d441ae2b30741808adbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
