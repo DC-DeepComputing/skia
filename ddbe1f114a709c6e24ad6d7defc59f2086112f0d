@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3b84458_87295765",
+        "filename": "modules/skunicode/src/SkUnicode_hardcoded.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-27T16:06:11Z",
+      "side": 1,
+      "message": "```\n./modules/skunicode/src/SkUnicode_hardcoded.h:15:17: error: using namespace directive in global context in header [-Werror,-Wheader-hygiene]\nusing namespace skia_private;\n```",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 15
+      },
+      "revId": "ddbe1f114a709c6e24ad6d7defc59f2086112f0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
