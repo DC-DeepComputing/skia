@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70d9c354_1f88fccd",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-27T16:03:30Z",
+      "side": 1,
+      "message": "nit: run `git clang-format origin/main` to format things appropriately.\n\n(clang-format should be installed by downloading https://github.com/llvm/llvm-project/blob/main/clang/tools/clang-format/git-clang-format and making it executable on your PATH)",
+      "range": {
+        "startLine": 62,
+        "startChar": 101,
+        "endLine": 62,
+        "endChar": 106
+      },
+      "revId": "e24b359ea94728a8743e5d274b8f9353941e6535",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
