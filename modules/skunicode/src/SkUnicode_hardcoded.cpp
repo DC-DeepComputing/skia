@@ -4,7 +4,10 @@
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
 */
+                                           
 #include "modules/skunicode/src/SkUnicode_hardcoded.h"
+#include "include/private/base/SkDebug.h"
+#include "include/private/base/SkTArray.h"
 #include <algorithm>
 #include <array>
 #include <utility>
@@ -104,6 +107,11 @@ bool SkUnicodeHardCodedCharProperties::isIdeographic(SkUnichar unichar) {
             return true;
         }
     }
+    return false;
+}
+
+bool SkUnicode::getSentences(const char utf8[], int utf8Units, skia_private::TArray<SkUnicode::Position>* results) {
+    SkDebugf("hardcoded\n");
     return false;
 }
 
