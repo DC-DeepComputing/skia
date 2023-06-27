@@ -106,6 +106,24 @@
       "parentUuid": "6638373b_aea9c291",
       "revId": "33e44e925bb0fbf5875a8c8f276baac2c37cf240",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a46bef4c_55ab3084",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-27T12:10:36Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m really baffled that any of the changes could be large enough to be so detectable on perf. Technically the sign (as int) code is different (and generates slightly different code on godbolt, O3), but the two abs patterns look identical, as do the isnan ones.",
+      "parentUuid": "a1283f26_e27fab43",
+      "revId": "33e44e925bb0fbf5875a8c8f276baac2c37cf240",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
