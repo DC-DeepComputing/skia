@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a304790_585898e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-06-27T01:14:54Z",
+      "side": 1,
+      "message": "FYI: Peng, I think this will enable creating BGRx textures in Ganesh, uploading data, etc.",
+      "revId": "1c9eb1bb4a872af4fd55cd86291b9eb14795e23b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
