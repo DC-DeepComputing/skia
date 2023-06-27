@@ -28,25 +28,33 @@ class VulkanDescriptorSet : public Resource {
 public:
     static sk_sp<VulkanDescriptorSet> Make(const VulkanSharedContext*,
                                            sk_sp<VulkanDescriptorPool>,
-                                           const VkDescriptorSetLayout);
+                                           const VkDescriptorSetLayout,
+                                           bool responsibleForFreeingLayout);
 
     static VkDescriptorType DsTypeEnumToVkDs(DescriptorType type);
 
-    VulkanDescriptorSet(const VulkanSharedContext*, VkDescriptorSet, sk_sp<VulkanDescriptorPool>);
-
-    VkDescriptorSetLayout layout() const { return fDescLayout; }
+    VulkanDescriptorSet(const VulkanSharedContext*,
+                        VkDescriptorSetLayout,
+                        VkDescriptorSet,
+                        sk_sp<VulkanDescriptorPool>,
+                        bool responsibleForFreeingLayout);
 
     const VkDescriptorSet* descriptorSet() { return &fDescSet; }
 
 private:
     void freeGpuData() override;
 
+    VkDescriptorSetLayout       fDescSetLayout;
     VkDescriptorSet             fDescSet;
     // Have this class hold on to a reference of the descriptor pool. When a pool's reference count
     // is 0, that means all the descriptor sets that came from that pool are no longer needed, so
     // the pool can safely be destroyed.
     sk_sp<VulkanDescriptorPool> fPool;
-    VkDescriptorSetLayout       fDescLayout;
+    // Indicates whether this descriptor set object is responsible for cleaning up the
+    // VkDescriptorSetLayout to create this set. Of the sets generated from each layout, only one
+    // VulkanDescriptorSet should be responsible for this to avoid multiple attempted destructions
+    // of the same layout.
+    bool                        fResponsibleForFreeingLayout;
 };
 } // namespace skgpu::graphite
 

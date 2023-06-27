@@ -14,7 +14,8 @@ namespace skgpu::graphite {
 
 sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* ctxt,
                                                      sk_sp<VulkanDescriptorPool> pool,
-                                                     const VkDescriptorSetLayout layout) {
+                                                     const VkDescriptorSetLayout layout,
+                                                     bool responsibleForFreeingLayout) {
     SkASSERT(layout != VK_NULL_HANDLE && pool);
     VkDescriptorSet descSet;
     VkDescriptorSetAllocateInfo dsAllocateInfo;
@@ -34,7 +35,8 @@ sk_sp<VulkanDescriptorSet> VulkanDescriptorSet::Make(const VulkanSharedContext* 
     if (result != VK_SUCCESS) {
         return nullptr;
     }
-    return sk_sp<VulkanDescriptorSet>(new VulkanDescriptorSet(ctxt, descSet, pool));
+    return sk_sp<VulkanDescriptorSet>(
+            new VulkanDescriptorSet(ctxt, layout, descSet, pool, responsibleForFreeingLayout));
 }
 
 VkDescriptorType VulkanDescriptorSet::DsTypeEnumToVkDs(DescriptorType type) {
@@ -56,16 +58,26 @@ VkDescriptorType VulkanDescriptorSet::DsTypeEnumToVkDs(DescriptorType type) {
 }
 
 VulkanDescriptorSet::VulkanDescriptorSet(const VulkanSharedContext* ctxt,
+                                         VkDescriptorSetLayout layout,
                                          VkDescriptorSet set,
-                                         sk_sp<VulkanDescriptorPool> pool)
+                                         sk_sp<VulkanDescriptorPool> pool,
+                                         bool responsibleForFreeingLayout)
         : Resource(ctxt, Ownership::kOwned, skgpu::Budgeted::kNo, /*gpuMemorySize=*/0)
+        , fDescSetLayout (layout)
         , fDescSet (set)
-        , fPool (pool) {
+        , fPool (pool)
+        , fResponsibleForFreeingLayout (responsibleForFreeingLayout) {
     fPool->ref();
 }
 
 void VulkanDescriptorSet::freeGpuData() {
     fPool->unref();
+    if (fResponsibleForFreeingLayout && fDescSetLayout != VK_NULL_HANDLE) {
+        auto ctxt = static_cast<const VulkanSharedContext*>(this->sharedContext());
+        VULKAN_CALL(ctxt->interface(),
+                    DestroyDescriptorSetLayout(ctxt->device(), fDescSetLayout, nullptr));
+        fDescSetLayout = VK_NULL_HANDLE;
+    }
 }
 
 } // namespace skgpu::graphite
