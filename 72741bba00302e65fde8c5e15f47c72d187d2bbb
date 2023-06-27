@@ -73,6 +73,30 @@
       },
       "revId": "72741bba00302e65fde8c5e15f47c72d187d2bbb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30f6df10_97879640",
+        "filename": "src/gpu/graphite/AtlasProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-27T04:01:02Z",
+      "side": 1,
+      "message": "Done, PTAL: https://skia-review.googlesource.com/c/skia/+/716815",
+      "parentUuid": "c7222559_a50e1421",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 16
+      },
+      "revId": "72741bba00302e65fde8c5e15f47c72d187d2bbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
