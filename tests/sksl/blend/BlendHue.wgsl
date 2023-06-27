@@ -53,12 +53,12 @@ fn blend_hslc_h4h2h4h4(_skParam0: vec2<f32>, _skParam1: vec4<f32>, _skParam2: ve
     let _skTemp13 = max(_5_result.x, _5_result.y);
     let _skTemp14 = max(_skTemp13, _5_result.z);
     var _7_maxComp: f32 = _skTemp14;
-    if (_6_minComp < 0.0 && _4_lum != _6_minComp) {
+    if ((_6_minComp < 0.0) && (_4_lum != _6_minComp)) {
       {
         _5_result = _4_lum + (_5_result - _4_lum) * (_4_lum / ((_4_lum - _6_minComp) + sk_PrivkGuardedDivideEpsilon));
       }
     }
-    if (_7_maxComp > alpha && _7_maxComp != _4_lum) {
+    if ((_7_maxComp > alpha) && (_7_maxComp != _4_lum)) {
       {
         _5_result = _4_lum + ((_5_result - _4_lum) * (alpha - _4_lum)) / ((_7_maxComp - _4_lum) + sk_PrivkGuardedDivideEpsilon);
       }

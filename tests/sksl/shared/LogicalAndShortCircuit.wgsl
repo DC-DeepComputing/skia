@@ -33,7 +33,7 @@ fn TrueFalse_b() -> bool {
     var _skTemp0: bool;
     if x == 1 {
       y = y + 1;
-      _skTemp0 = y == 3;
+      _skTemp0 = (y == 3);
     } else {
       _skTemp0 = false;
     }
@@ -43,7 +43,7 @@ fn TrueFalse_b() -> bool {
       }
     } else {
       {
-        return x == 1 && y == 2;
+        return (x == 1) && (y == 2);
       }
     }
   }
@@ -56,7 +56,7 @@ fn FalseTrue_b() -> bool {
     var _skTemp1: bool;
     if x == 2 {
       y = y + 1;
-      _skTemp1 = y == 2;
+      _skTemp1 = (y == 2);
     } else {
       _skTemp1 = false;
     }
@@ -66,7 +66,7 @@ fn FalseTrue_b() -> bool {
       }
     } else {
       {
-        return x == 1 && y == 1;
+        return (x == 1) && (y == 1);
       }
     }
   }
@@ -79,7 +79,7 @@ fn FalseFalse_b() -> bool {
     var _skTemp2: bool;
     if x == 2 {
       y = y + 1;
-      _skTemp2 = y == 3;
+      _skTemp2 = (y == 3);
     } else {
       _skTemp2 = false;
     }
@@ -89,7 +89,7 @@ fn FalseFalse_b() -> bool {
       }
     } else {
       {
-        return x == 1 && y == 1;
+        return (x == 1) && (y == 1);
       }
     }
   }
@@ -102,7 +102,7 @@ fn main(_skParam0: vec2<f32>) -> vec4<f32> {
     _2_y = _2_y + 1;
     if (_2_y == 2) {
       {
-        _0_TrueTrue = _2_y == 2;
+        _0_TrueTrue = (_2_y == 2);
       }
     } else {
       {

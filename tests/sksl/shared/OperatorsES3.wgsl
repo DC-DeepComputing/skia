@@ -1,12 +1,8 @@
 ### Compilation failed:
 
-error: :22:19 error: mixing '%' and '<<' requires parenthesis
-    z = (((z / 2) % 3 << 4) >> 2) << 1;
-                  ^^^^^^
-
-:23:21 error: mixing '>' and '==' requires parenthesis
-    var b: bool = x > 4.0 == x < 2.0 || 2.0 >= _globalUniforms.unknownInput && y <= x;
-                    ^^^^^^^^
+error: :23:22 error: mixing '>' and '==' requires parenthesis
+    var b: bool = (x > 4.0 == x < 2.0) || ((2.0 >= _globalUniforms.unknownInput) && (y <= x));
+                     ^^^^^^^^
 
 
 struct FSIn {
@@ -30,8 +26,8 @@ fn main(_skParam0: vec2<f32>) -> vec4<f32> {
     var z: i32 = 3;
     x = (x - x) + ((y * x) * x) * (y - x);
     y = (x / y) / x;
-    z = (((z / 2) % 3 << 4) >> 2) << 1;
-    var b: bool = x > 4.0 == x < 2.0 || 2.0 >= _globalUniforms.unknownInput && y <= x;
+    z = ((((z / 2) % 3) << 4) >> 2) << 1;
+    var b: bool = (x > 4.0 == x < 2.0) || ((2.0 >= _globalUniforms.unknownInput) && (y <= x));
     var c: bool = _globalUniforms.unknownInput > 2.0;
     var d: bool = b != c;
     var e: bool = b && c;
@@ -51,7 +47,7 @@ fn main(_skParam0: vec2<f32>) -> vec4<f32> {
     z = i32(6);
     var w: vec2<i32> = vec2<i32>(~5);
     w = ~w;
-    return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>((((w.x == 5 && w.y == 5) && x == 6.0) && y == 6.0) && z == 6));
+    return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(((((w.x == 5) && (w.y == 5)) && (x == 6.0)) && (y == 6.0)) && (z == 6)));
   }
 }
 @fragment fn fragmentMain(_stageIn: FSIn) -> FSOut {
