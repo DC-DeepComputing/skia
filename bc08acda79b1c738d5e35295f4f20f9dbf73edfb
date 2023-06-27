@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fc8565d_349592fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T00:45:48Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "bc08acda79b1c738d5e35295f4f20f9dbf73edfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25b8ee20_dd1e7440",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T00:45:48Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 985,
+        "endChar": 100
+      },
+      "revId": "bc08acda79b1c738d5e35295f4f20f9dbf73edfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4121cfe2_7bb424b6",
+        "filename": "src/effects/imagefilters/SkComposeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T00:45:48Z",
+      "side": 1,
+      "message": "nit line length",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 100
+      },
+      "revId": "bc08acda79b1c738d5e35295f4f20f9dbf73edfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
