@@ -475,6 +475,5 @@ void SkRegisterPictureImageFilterFlattenable();
 void SkRegisterRuntimeImageFilterFlattenable();
 #endif
 void SkRegisterShaderImageFilterFlattenable();
-void SkRegisterTileImageFilterFlattenable();
 
 #endif // SkImageFilter_Base_DEFINED
