@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "246a09f5_d30d1ee5",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-27T18:53:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9fe2842_e1e0d125",
+      "range": {
+        "startLine": 51,
+        "startChar": 29,
+        "endLine": 51,
+        "endChar": 46
+      },
+      "revId": "9e696173ffec049b1b41b402d213d61a79b53de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbdb27f2_0ba64bc7",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-27T17:27:53Z",
       "side": 1,
       "message": "`std:move(adapter)`\n\n(also above, in trackScalarValue)",
+      "range": {
+        "startLine": 138,
+        "startChar": 31,
+        "endLine": 138,
+        "endChar": 38
+      },
+      "revId": "9e696173ffec049b1b41b402d213d61a79b53de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b0c0e8d_072fbad4",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-27T18:53:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbdb27f2_0ba64bc7",
       "range": {
         "startLine": 138,
         "startChar": 31,
