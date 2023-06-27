@@ -386,14 +386,14 @@ public:
      * Get the i^th element.
      */
     T& operator[] (int i) {
-        SkASSERT(i < this->size());
-        SkASSERT(i >= 0);
+        SkCheckf(0 <= i && i < this->size(),
+                 "i: %d is out of bounds of size %d\n", i, this->size());
         return fData[i];
     }
 
     const T& operator[] (int i) const {
-        SkASSERT(i < this->size());
-        SkASSERT(i >= 0);
+        SkCheckf(0 <= i && i < this->size(),
+                 "i: %d is out of bounds of size %d\n", i, this->size());
         return fData[i];
     }
 
