@@ -22,6 +22,8 @@
 #include <string>
 #include <vector>
 
+#if defined(SK_XML)
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // XMP parsing helper functions
 
@@ -660,3 +662,15 @@ std::unique_ptr<SkXmp> SkXmp::Make(sk_sp<SkData> xmpStandard, sk_sp<SkData> xmpE
     (void)xmp->parseDom(xmpExtended, /*extended=*/true);
     return xmp;
 }
+
+#else  // !defined(SK_XML)
+
+std::unique_ptr<SkXmp> SkXmp::Make(sk_sp<SkData> xmpData) {
+    return nullptr;
+}
+
+std::unique_ptr<SkXmp> SkXmp::Make(sk_sp<SkData> xmpStandard, sk_sp<SkData> xmpExtended) {
+    return nullptr;
+}
+
+#endif
