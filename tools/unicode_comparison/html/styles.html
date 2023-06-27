@@ -1,0 +1,39 @@
+{{ define "styles" }}
+html { overflow-y: scroll; }
+
+table { width: 100%; }
+
+tbody tr { display: none; }
+
+td { vertical-align: top; }
+
+span.missing { background-color: red; }
+span.extra { background-color: yellow; }
+span.underlined { text-decoration: underline; }
+span.regular { foreground-color: gray; }
+
+tr.l1, tr.open { display: table-row; }
+
+tr.l1 { background: #bbb; }
+tr.l2 { background: #ccc; }
+tr.l3 { background: #ddd; }
+tr.l4 { background: #eee; }
+tr.l5 { background: #fff; }
+
+tr td { padding: 0.2em 0.4em; }
+
+tr td:first-of-type {
+  position: relative;
+  padding: 0.2em 1em;
+}
+
+tr td a {
+  color: inherit;
+  text-decoration: inherit;
+  position: absolute;
+  left: 0.25em;
+}
+
+tr td:first-of-type { padding-left: 1em; }
+
+{{ end }}
