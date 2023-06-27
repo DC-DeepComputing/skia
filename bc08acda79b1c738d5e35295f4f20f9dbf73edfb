@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a900e12_84d6a93c",
+        "filename": "src/effects/imagefilters/SkBlurImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-27T12:06:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25b8ee20_dd1e7440",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 985,
+        "endChar": 100
+      },
+      "revId": "bc08acda79b1c738d5e35295f4f20f9dbf73edfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4121cfe2_7bb424b6",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-06-27T00:45:48Z",
       "side": 1,
       "message": "nit line length",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 100
+      },
+      "revId": "bc08acda79b1c738d5e35295f4f20f9dbf73edfb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9de17bb_0ab2c13a",
+        "filename": "src/effects/imagefilters/SkComposeImageFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-27T12:06:41Z",
+      "side": 1,
+      "message": "I ran `git clang-format origin/main` to cover these and other places.",
+      "parentUuid": "4121cfe2_7bb424b6",
       "range": {
         "startLine": 98,
         "startChar": 0,
