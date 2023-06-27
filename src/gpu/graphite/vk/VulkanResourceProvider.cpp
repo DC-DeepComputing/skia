@@ -54,50 +54,6 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     return key;
 }
 
-// This function populates a VkDescriptorSetLayout, but does not own the layout itself. The caller
-// is responsible for lifetime management of the layout.
-void VulkanResourceProvider::DescriptorDataToVkDescSetLayout(
-        const VulkanSharedContext* ctxt,
-        VkDescriptorSetLayout* layout,
-        SkSpan<DescriptorData> requestedDescriptors) {
-    skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
-    for (size_t i = 0; i < requestedDescriptors.size(); i++) {
-        if (requestedDescriptors[i].count != 0) {
-            VkDescriptorSetLayoutBinding layoutBinding;
-            memset(&layoutBinding, 0, sizeof(VkDescriptorSetLayoutBinding));
-            layoutBinding.binding = requestedDescriptors[i].bindingIndex;
-            layoutBinding.descriptorType =
-                    VulkanDescriptorSet::DsTypeEnumToVkDs(requestedDescriptors[i].type);
-            layoutBinding.descriptorCount = requestedDescriptors[i].count;
-            // TODO: Obtain layout binding stage flags from visibility (vertex or shader)
-            layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
-            // TODO: Optionally set immutableSamplers here.
-            layoutBinding.pImmutableSamplers = nullptr;
-            bindingLayouts.push_back(layoutBinding);
-        }
-    }
-
-    VkDescriptorSetLayoutCreateInfo layoutCreateInfo;
-    memset(&layoutCreateInfo, 0, sizeof(VkDescriptorSetLayoutCreateInfo));
-    layoutCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    layoutCreateInfo.pNext = nullptr;
-    layoutCreateInfo.flags = 0;
-    layoutCreateInfo.bindingCount = bindingLayouts.size();
-    layoutCreateInfo.pBindings = &bindingLayouts.front();
-
-    VkResult result;
-    VULKAN_CALL_RESULT(ctxt->interface(),
-                       result,
-                       CreateDescriptorSetLayout(ctxt->device(),
-                                                 &layoutCreateInfo,
-                                                 nullptr,
-                                                 layout));
-    if (result != VK_SUCCESS) {
-        SkDebugf("Failed to create VkDescriptorSetLayout\n");
-        layout = VK_NULL_HANDLE;
-    }
-}
-
 VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                SingleOwner* singleOwner,
                                                uint32_t recorderID)
@@ -175,6 +131,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
     SkASSERT(pool);
     VkDescriptorSetLayout layout;
     DescriptorDataToVkDescSetLayout(this->vulkanSharedContext(), &layout, requestedDescriptors);
+    // TODO: Free this layout if desc. set creation was unsuccessful in all cases/first case.
     if (!layout) {
         return nullptr;
     }
