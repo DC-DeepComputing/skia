@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95ed8b08_d401219e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1026,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-27T20:21:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62eb613a_540f7dcf",
+      "range": {
+        "startLine": 1024,
+        "startChar": 7,
+        "endLine": 1026,
+        "endChar": 66
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84482ebd_7ae6bac5",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-06-26T20:51:42Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 1034,
+        "startChar": 0,
+        "endLine": 1038,
+        "endChar": 46
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24764929_065b7733",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1038,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-27T20:21:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84482ebd_7ae6bac5",
       "range": {
         "startLine": 1034,
         "startChar": 0,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b881b5b0_ba600e8b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-27T20:21:23Z",
+      "side": 1,
+      "message": "`renderer-\u003eemitsCoverage()` factors into the dst read requirement, so we would want to evaluate the dst read requirements and any resulting flush with the fallback renderer after checking the atlas. The only issue with moving that logic after the atlas handling code is that if an atlas entry was successful and `dstReadReqs` subsequently causes a flush, then the atlas entry for the current draw will flush (and later atlas draws are allowed to overwrite that entry in PathAtlas\u0027s Rectanizer tracking). The current order of these checks avoids this problem.\n\nAlternately, `chooseRenderer` could determine whether the shape is too large to fit in an empty atlas and not return the AtlasPathRenderer in that case. That check should be straightforward (based on the clipped bounds of the mask and the atlas dimensions) and doesn\u0027t require changing the current code structure (there would be only one call to `chooseRenderer`).\n\n`chooseRenderer` will have to apply some size based heuristics when choosing the atlas path renderer anyhow, so I can incorporate the \"too large\" case while working on that in a follow up.",
+      "parentUuid": "bc22fdd5_384295b4",
+      "range": {
+        "startLine": 1052,
+        "startChar": 12,
+        "endLine": 1053,
+        "endChar": 56
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f2b622d5_78a9cc14",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 7
@@ -100,6 +172,30 @@
       "writtenOn": "2023-06-26T20:51:42Z",
       "side": 1,
       "message": "I think we should just assert that `pathAtlas` is null. This function is really intended for drawing the clip directly to the screen. However we handle clipping integrated into the atlas, I don\u0027t think it would go through this draw function (either being an iteration over the returned elements within `drawGeometry` to record modifications to the atlas entry, or preparing a secondary clip atlas mask that is sampled). A clip atlas mask would be unlikely to hit this code path because we would need atlas entries corresponding to the unique stack configurations that draws reference, while this function requires the depth buffer to apply the independent clip shapes appropriately.",
+      "range": {
+        "startLine": 1192,
+        "startChar": 0,
+        "endLine": 1192,
+        "endChar": 71
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2a7b65b_3aca9497",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1192,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-27T20:21:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2b622d5_78a9cc14",
       "range": {
         "startLine": 1192,
         "startChar": 0,
@@ -123,6 +219,30 @@
       "writtenOn": "2023-06-26T20:51:42Z",
       "side": 1,
       "message": "Should this just be part of the logic in `snapRenderPassTask` or `snapDrawPass`?",
+      "range": {
+        "startLine": 1331,
+        "startChar": 9,
+        "endLine": 1331,
+        "endChar": 34
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25ef128b_8db04bf0",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1331,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-27T20:21:23Z",
+      "side": 1,
+      "message": "That makes sense. My only objection would be that this would be inconsistent with atlas uploads, which are recorded explicitly and outside of `snapUploadTask` above. At least the current structure keeps all of the task creation actions in one place.",
+      "parentUuid": "5f7f674b_534e5f70",
       "range": {
         "startLine": 1331,
         "startChar": 9,
