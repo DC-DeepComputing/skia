@@ -107,4 +107,9 @@ bool SkUnicodeHardCodedCharProperties::isIdeographic(SkUnichar unichar) {
     return false;
 }
 
+bool SkUnicode::getSentences(const char utf8[], int utf8Units, skia_private::TArray<SkUnicode::Position>* results) {
+    SkDebugf("hardcoded\n");
+    return false;
+}
+
 

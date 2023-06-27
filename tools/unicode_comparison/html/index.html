@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Comparison Table (accuracy, performance and disk memory)</title>
+      <style>
+           tbody tr {
+             display: none;
+           }
+
+
+          /* Simplified */
+
+          tr.level0,
+          tr.open {
+            display: table-row;
+          }
+
+
+          /* Added colors for better visibility */
+
+          tr.level0 {
+            background: #ccc;
+          }
+
+          tr.level1 {
+            background: #ddd;
+          }
+
+          tr.level2 {
+            background: #eee;
+          }
+
+           tr.level3 {
+             background: #eee;
+           }
+
+           tr.level4 {
+             background: #eee;
+           }
+
+          /* Added some more styling after comment */
+
+          tr td {
+            padding: 0.2em 0.4em;
+          }
+
+          tr td:first-of-type {
+            position: relative;
+            padding: 0.2em 1em;
+          }
+
+          tr td a {
+            color: inherit;
+            /* No special color */
+            text-decoration: inherit;
+            /* No underline */
+            position: absolute;
+            left: 0.25em;
+          }
+
+          tr.level1 td:first-of-type {
+            padding-left: 1.5em;
+          }
+
+          tr.level2 td:first-of-type {
+            padding-left: 2em;
+          }
+      </style>
+  </head>
+  <body>
+    <table id="products">
+        <thead>
+            <tr><th>Language</th><th>Memory</th><th>Disk</th><th>Performance (ms)</th><th colspan="6">Accuracy</th></tr>
+            <tr><th/><th/><th/><th/><th>Graphemes</th><th>SoftBreaks</th><th>HardBreaks</th><th>Whitespaces</th><th>Words</th><th>Controls</th></tr>
+        </thead>
+        <tbody>
+        {{ template "rows" .Rows }}
+        </tbody>
+    </table>
+    <script type="text/javascript">{{ template "scripts" }}</script>
+  </body>
+</html>

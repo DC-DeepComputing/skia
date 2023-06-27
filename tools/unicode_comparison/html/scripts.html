@@ -1,0 +1,37 @@
+{{ define "scripts" }}
+  document.getElementById("products").addEventListener("click", function(e) {
+      // I think using the not equal is nicer here, just my opinion… Less indenting.
+      if (!e) return;                       // Exit if null
+      if (e.target.tagName !== "A") return; // Exit if not A element
+
+      e.preventDefault();
+      var row = e.target.closest("tr"); // Better than parent parent!
+      var cls = row.classList[0];       // Get the first class name (the only one in our html)
+      var lvl = +(cls.slice(-1)) + 1;   // Unary operator +1 on the last character
+      cls = cls.slice(0, -1) + lvl;     // Replace the last char with lvl to get the class to be toggled
+
+      // Check if the row is of the class to be displayed OR if the row is already opened
+      // (so that clicking close on parent also closes sub-childs)
+      while ((row = nextTr(row)) && (row.className.includes(cls) || row.className.includes("open")))
+      row.classList.toggle("open"); // Better than the function you created, it already exists!
+    });
+
+    function nextTr(row) {
+      while ((row = row.nextSibling) && row.nodeType != 1);
+      return row;
+    }
+
+    // Select all the tr childs elements (all levels except 0
+    var allChilds = document.querySelectorAll("tr[class^=level]:not(.level0)");
+    // Added the below for buttons after comments
+    document.getElementById("openAll").addEventListener("click", function() {
+      allChilds.forEach(function(elm){
+        elm.classList.add("open");
+      });
+    });
+    document.getElementById("closeAll").addEventListener("click", function() {
+      allChilds.forEach(function(elm){
+      elm.classList.remove("open");
+    });
+  });
+{{ end }}
