@@ -1,0 +1,83 @@
+{{ define "styles" }}
+
+html { overflow-y: scroll; }
+
+table { width: 100%; border-collapse:collapse; }
+
+tr, th {
+border: 2px solid white; background-color: gray; font-size: 18px;
+}
+
+tr, td {
+border: 2px solid white; font-size: 16px;
+}
+
+tbody tr {
+display: none;
+margin:0;
+padding:0;
+}
+
+td { padding: 0px; }
+td div { font-size: 0px; }
+div span { font-size: 16px; }
+span.span_whitespace { background-color: lightBlue; opacity: 0.5; }
+span.span_grapheme { background-color: yellow; opacity: 0.5; }
+span.span_softBreak {border-left: 2px solid rgba(255, 0, 0, 0.5); }
+span.span_control { border-left: 2px solid rgba(127, 126, 0, 0.5); }
+span.span_hardBreak { border-right: 1px solid rgba(0, 255, 0, 0.5); }
+span.span_word { border-right: 1px solid rgba(0, 0, 255, 0.5); }
+
+input[type='button'] {
+border: 0;
+background-color: lightsteelblue;
+cursor: pointer;
+width: 100%;
+height: 100%;
+display: block;
+box-shadow: none;
+margin:0;
+padding:0;
+font-size: 16px;
+}
+
+input[type='button'].active_button {
+color: white;
+background-color: steelblue;
+}
+
+input[type='button'].disabled_button {
+color: gray;
+background-color: lightgray;
+}
+
+selected { background-color: yellow; }
+
+td.results { font-style: italic; color: gray; text-align: right; }
+
+span.underlined { text-decoration: underline; }
+span.regular { foreground-color: gray; }
+
+tr.l1, tr.open { display: table-row; }
+
+tr.l1 { background: #bbb; }
+tr.l2 { background: #ccc; }
+tr.l3 { background: #ddd; }
+tr.l4 { background: #eee; }
+tr.l5 { background: #fff; }
+
+tr td:first-of-type {
+position: relative;
+padding-left: 0.2em;
+}
+
+tr td a {
+color: inherit;
+text-decoration: inherit;
+position: absolute;
+left: 0.25em;
+}
+
+tr td:first-of-type { padding-left: 1em; }
+
+{{ end }}
