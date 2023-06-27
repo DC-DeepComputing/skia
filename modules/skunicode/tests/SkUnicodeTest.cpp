@@ -62,7 +62,7 @@ UNIX_ONLY_TEST(SkUnicode_GetUtf8Words, reporter) {
 
 UNIX_ONLY_TEST(SkUnicode_GetSentences, reporter) {
     SkString text("Hello world! Hello world? Hello world... Not a sentence end: 3.1415926");
-    std::vector<SkUnicode::Position> expected = { 0, 13, 26, 41, 70 };
+    std::vector<SkUnicode::Position> expected = {0, 13, 26, 41, 70};
     auto icu = SkUnicode::Make();
     std::vector<SkUnicode::Position> results;
     auto result = icu->getSentences(text.data(), text.size(), &results);

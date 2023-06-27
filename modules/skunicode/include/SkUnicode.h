@@ -112,12 +112,7 @@ class SKUNICODE_API SkUnicode {
             kHardLineBreak = 100,
         };
 
-        enum class BreakType {
-            kWords,
-            kGraphemes,
-            kLines,
-            kSentences
-        };
+        enum class BreakType { kWords, kGraphemes, kLines, kSentences };
         struct LineBreakBefore {
             LineBreakBefore(Position pos, LineBreakType breakType)
               : pos(pos), breakType(breakType) { }
@@ -165,8 +160,10 @@ class SKUNICODE_API SkUnicode {
         // Returns results in utf16
         virtual bool getWords(const char utf8[], int utf8Units, const char* locale,
                               std::vector<Position>* results) = 0;
-        virtual bool getUtf8Words(const char utf8[], int utf8Units, const char* locale,
-                              std::vector<Position>* results) = 0;
+        virtual bool getUtf8Words(const char utf8[],
+                                  int utf8Units,
+                                  const char* locale,
+                                  std::vector<Position>* results) = 0;
         virtual bool getSentences(const char utf8[], int utf8Units, std::vector<Position>* results);
         virtual bool computeCodeUnitFlags(
                 char utf8[], int utf8Units, bool replaceTabs,
