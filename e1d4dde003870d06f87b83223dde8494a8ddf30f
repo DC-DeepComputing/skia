@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29580259_3eabed6d",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-27T14:49:58Z",
+      "side": 1,
+      "message": "LMK what you think of this being relocated here. I also toyed around w/ the idea of creating a `VulkanDescriptorSetUtilities` file, so I\u0027m weighing the pros/cons of bloating the number of files we have versus having these utilities here within `VulkanGraphiteUtilsPriv` when not all files that include the latter need to use these functions.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 68
+      },
+      "revId": "e1d4dde003870d06f87b83223dde8494a8ddf30f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
