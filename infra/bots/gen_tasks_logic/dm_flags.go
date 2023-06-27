@@ -345,6 +345,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 			if b.extraConfig("Metal") {
 				configs = []string{"grmtl"}
+				if b.gpu("IntelIrisPlus") {
+					// We get some 27/255 RGB diffs on the 45 degree rotation case on this device (skbug.com/14408)
+					skip(ALL, "test", ALL, "BigImageTest_Graphite")
+				}
 			}
 			if b.extraConfig("Dawn") {
 				configs = []string{"grdawn"}
@@ -365,6 +369,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				configs = []string{"grvk"}
                                 // Couldn't readback
                                 skip(ALL, "gm", ALL, "aaxfermodes")
+                                // Could not instantiate texture proxy for UploadTask!
+                                skip(ALL, "test", ALL, "BigImageTest_Graphite")
                                 // Test failures
                                 skip(ALL, "test", ALL, "DeviceTestVertexTransparency")
                                 skip(ALL, "test", ALL, "GraphitePromiseImageMultipleImgUses")
