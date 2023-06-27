@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aad59097_693fc6a0",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-06-27T14:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1b5bbc6_bd3074fc",
+      "range": {
+        "startLine": 83,
+        "startChar": 46,
+        "endLine": 83,
+        "endChar": 50
+      },
+      "revId": "4766aa6dd1009ca679ac7082959668463a9e965c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50f92be8_c8bec3fa",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-06-27T00:59:58Z",
       "side": 1,
       "message": "Can we add a comment like `// Location of \u0027dstTexture\u0027s top-left corner, relative to the render target`?",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 53
+      },
+      "revId": "4766aa6dd1009ca679ac7082959668463a9e965c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3d6a6c6_b95660c4",
+        "filename": "src/gpu/graphite/KeyContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-06-27T14:41:51Z",
+      "side": 1,
+      "message": "Added a comment for both dstTexture and dstOffset.",
+      "parentUuid": "50f92be8_c8bec3fa",
       "range": {
         "startLine": 67,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c910e57_6189bfe0",
+        "filename": "src/gpu/graphite/Precompile.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-06-27T14:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5547fda_7728d56e",
+      "range": {
+        "startLine": 148,
+        "startChar": 56,
+        "endLine": 148,
+        "endChar": 58
+      },
+      "revId": "4766aa6dd1009ca679ac7082959668463a9e965c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "774af6fb_2eec337c",
@@ -100,6 +172,30 @@
       "writtenOn": "2023-06-27T00:59:58Z",
       "side": 1,
       "message": "`{0,0}`",
+      "range": {
+        "startLine": 89,
+        "startChar": 92,
+        "endLine": 89,
+        "endChar": 94
+      },
+      "revId": "4766aa6dd1009ca679ac7082959668463a9e965c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64989206_c8f3db2e",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-06-27T14:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "774af6fb_2eec337c",
       "range": {
         "startLine": 89,
         "startChar": 92,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c847372a_f95751b8",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-06-27T14:41:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e94aeb3_7dc9b6ef",
+      "range": {
+        "startLine": 298,
+        "startChar": 43,
+        "endLine": 298,
+        "endChar": 45
+      },
+      "revId": "4766aa6dd1009ca679ac7082959668463a9e965c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bb80b3a_5937c337",
@@ -146,6 +266,30 @@
       "writtenOn": "2023-06-27T00:59:58Z",
       "side": 1,
       "message": "This should be `fakeDstOffset` too? Maybe rename to `kFakeDstOffset` and make `static constexpr`?",
+      "range": {
+        "startLine": 650,
+        "startChar": 53,
+        "endLine": 650,
+        "endChar": 55
+      },
+      "revId": "4766aa6dd1009ca679ac7082959668463a9e965c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0526c12d_da474feb",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-06-27T14:41:51Z",
+      "side": 1,
+      "message": "This is even more of a nit from me, but I feel this is semantically slightly different than fakeDstOffset, since it\u0027s a default value given since we don\u0027t have a dstTexture (whereas fakeDstOffset is a hypothetical offset into fakeDstTexture). I set it to `{0, 0}` here as with the precompile code.",
+      "parentUuid": "9bb80b3a_5937c337",
       "range": {
         "startLine": 650,
         "startChar": 53,
