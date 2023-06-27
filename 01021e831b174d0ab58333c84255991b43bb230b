@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7362c9fe_e994a99e",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1841,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-27T02:20:43Z",
+      "side": 1,
+      "message": "I think you can express this as a component-wise vector multiplication of each column pair, e.g. `mat2x2\u003cf32\u003e(arg0[0] * arg1[0], arg0[1] * arg[2])`.\n\n(See \"Multiplication\" under https://www.w3.org/TR/WGSL/#arithmetic-expr. FWIW tint translates this WGSL snippet to `OpFMul` invocations over each column in SPIR-V, so the semantics should be right).",
+      "range": {
+        "startLine": 1838,
+        "startChar": 17,
+        "endLine": 1841,
+        "endChar": 17
+      },
+      "revId": "01021e831b174d0ab58333c84255991b43bb230b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
