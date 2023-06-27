@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37ece308_a84cc1ee",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T20:39:41Z",
+      "side": 1,
+      "message": "These two passes are the blit pass from the resolve texture to the load texture, and then the regular render pass that includes a draw from the load texture into the msaa texture, correct?\n\nIf I didn\u0027t recall that incorrectly, it might be good to describe the two passes more explicitly.",
+      "range": {
+        "startLine": 175,
+        "startChar": 79,
+        "endLine": 176,
+        "endChar": 15
+      },
+      "revId": "56e3b26fcfcd7fb4f8ceb8e939dbbb40e02e7030",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
