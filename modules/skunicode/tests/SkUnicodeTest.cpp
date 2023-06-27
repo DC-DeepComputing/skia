@@ -44,18 +44,59 @@ UNIX_ONLY_TEST(SkUnicode_Native, reporter) {
     }
 }
 #endif
-UNIX_ONLY_TEST(SkUnicode_GetWords, reporter) {
+
+#ifdef SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION
+UNIX_ONLY_TEST(SkUnicode_GetUtf8Words, reporter) {
     SkString text("1 22 333 4444 55555 666666 7777777");
+    //std::vector<SkUnicode::Position> expected = { 0, 1, 2, 4, 5, 8, 9, 13, 14, 19, 20, 26, 27, 34 };
     std::vector<SkUnicode::Position> expected = { 0, 1, 2, 4, 5, 8, 9, 13, 14, 19, 20, 26, 27, 34 };
-    auto icu = SkUnicode::Make();
+    auto icu = SkUnicode::MakeLibgraphemeBasedUnicode();
     std::vector<SkUnicode::Position> results;
-    auto result = icu->getWords(text.data(), text.size(), "en", &results);
+    auto result = icu->getUtf8Words(text.data(), text.size(), "en", &results);
     REPORTER_ASSERT(reporter, result);
     REPORTER_ASSERT(reporter, results.size() == expected.size());
     for (auto i = 0ul; i < results.size(); ++i) {
         REPORTER_ASSERT(reporter, results[i] == expected[i]);
     }
 }
+#endif
+
+bool hasWordFlag(SkUnicode::CodeUnitFlags flags) {
+    return (flags & SkUnicode::kWordBreak) == SkUnicode::kWordBreak;
+}
+
+#ifdef SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION
+UNIX_ONLY_TEST(SkUnicode_Words, reporter) {
+    SkString text("鈴木汽車歷年發表過的概念車計有下列：");
+    auto libgrapheme = SkUnicode::MakeLibgraphemeBasedUnicode();
+    auto icu = SkUnicode::MakeIcuBasedUnicode();
+
+    std::vector<SkUnicode::Position> results1;
+    std::vector<SkUnicode::Position> results2;
+    auto result1 = icu->getUtf8Words(text.data(), text.size(), "en", &results1);
+    auto result2 = libgrapheme->getUtf8Words(text.data(), text.size(), "en", &results2);
+    REPORTER_ASSERT(reporter, result1 && result2);
+    REPORTER_ASSERT(reporter, results1.size() == results2.size());
+    int r1 = 0;
+    int r2 = 0;
+    for (auto i = 0; i < text.size(); ++i) {
+        SkDebugf("[%d]: ", i);
+        if (i == results1[r1]) {
+            SkDebugf("icu ");
+            ++r1;
+        } else {
+            SkDebugf("    ");
+        }
+        if (i == results2[r2]) {
+            SkDebugf("libgrapheme ");
+            ++r2;
+        } else {
+            SkDebugf("            ");
+        }
+        SkDebugf("\n");
+    }
+}
+#endif
 
 UNIX_ONLY_TEST(SkUnicode_GetBidiRegionsLTR, reporter) {
     SkString text("1 22 333 4444 55555 666666 7777777");
