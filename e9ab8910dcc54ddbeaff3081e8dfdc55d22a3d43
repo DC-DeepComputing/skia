@@ -33,6 +33,24 @@
       "message": "If Graphite isn\u0027t being compiled in do we need a:\n\n#else\nnamespace skgpu::graphite {\nclass Recorder;\n}\n#endif\n\n?",
       "revId": "e9ab8910dcc54ddbeaff3081e8dfdc55d22a3d43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7ea3140_285eac64",
+        "filename": "gm/asyncrescaleandread.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T17:48:33Z",
+      "side": 1,
+      "message": "No, it comes in via SkCanvas.",
+      "parentUuid": "021b190e_e5ec1be5",
+      "revId": "e9ab8910dcc54ddbeaff3081e8dfdc55d22a3d43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
