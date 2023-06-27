@@ -1609,26 +1609,23 @@ SkM44 SkCanvas::getLocalToDevice() const {
     return fMCRec->fMatrix;
 }
 
-GrRecordingContext* SkCanvas::recordingContext() {
-#if defined(SK_GANESH)
-    if (auto gpuDevice = this->topDevice()->asGaneshDevice()) {
-        return gpuDevice->recordingContext();
-    }
-#endif
+GrRecordingContext* SkCanvas::recordingContext() const {
+    return this->topDevice()->recordingContext();
+}
 
-    return nullptr;
+skgpu::graphite::Recorder* SkCanvas::recorder() const {
+    return this->topDevice()->recorder();
+}
+
+#if !defined(SK_LEGACY_GPU_GETTERS_CONST)
+GrRecordingContext* SkCanvas::recordingContext() {
+    return this->topDevice()->recordingContext();
 }
 
 skgpu::graphite::Recorder* SkCanvas::recorder() {
-#if defined(SK_GRAPHITE)
-    if (auto graphiteDevice = this->topDevice()->asGraphiteDevice()) {
-        return graphiteDevice->recorder();
-    }
-#endif
-
-    return nullptr;
+    return this->topDevice()->recorder();
 }
-
+#endif
 
 void SkCanvas::drawDRRect(const SkRRect& outer, const SkRRect& inner,
                           const SkPaint& paint) {
