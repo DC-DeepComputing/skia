@@ -1,0 +1,15 @@
+Unicode comparison utilities
+============================
+
+This directory contains the following-
+
+cpp/*
+-----
+This folder contains the bridge code between SkUnicode and golang
+
+go/*
+----
+This folder contains the set on golang utilities that allow to download, preprocess data and then generate the comparison table itself
+
+download_wiki.go
+-------------------
