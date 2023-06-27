@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9fe2842_e1e0d125",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-27T17:27:53Z",
+      "side": 1,
+      "message": "`const TextPropertyValue\u0026`, to avoid forcing an unneeded copy at call sites.",
+      "range": {
+        "startLine": 51,
+        "startChar": 29,
+        "endLine": 51,
+        "endChar": 46
+      },
+      "revId": "9e696173ffec049b1b41b402d213d61a79b53de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbdb27f2_0ba64bc7",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-27T17:27:53Z",
+      "side": 1,
+      "message": "`std:move(adapter)`\n\n(also above, in trackScalarValue)",
+      "range": {
+        "startLine": 138,
+        "startChar": 31,
+        "endLine": 138,
+        "endChar": 38
+      },
+      "revId": "9e696173ffec049b1b41b402d213d61a79b53de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
