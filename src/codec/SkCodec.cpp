@@ -125,6 +125,15 @@ void Register(Decoder d) {
     decoders->push_back(d);
 }
 
+bool HasDecoder(std::string_view id) {
+    for (const SkCodecs::Decoder& decoder : get_decoders()) {
+        if (decoder.id == id) {
+            return true;
+        }
+    }
+    return false;
+}
+
 }  // namespace SkCodecs
 
 std::unique_ptr<SkCodec> SkCodec::MakeFromStream(

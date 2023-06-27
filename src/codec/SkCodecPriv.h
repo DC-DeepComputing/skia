@@ -253,4 +253,8 @@ static inline PackColorProc choose_pack_color_proc(bool isPremul, SkColorType co
     }
 }
 
+namespace SkCodecs {
+bool HasDecoder(std::string_view id);
+}
+
 #endif // SkCodecPriv_DEFINED
