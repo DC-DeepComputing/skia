@@ -140,6 +140,30 @@
       },
       "revId": "2e52a5ffa55e747b5e15485510f4ab69e6690725",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27b7609b_8d933754",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T17:35:42Z",
+      "side": 1,
+      "message": "LG",
+      "parentUuid": "05289749_15bd5559",
+      "range": {
+        "startLine": 32,
+        "startChar": 43,
+        "endLine": 32,
+        "endChar": 75
+      },
+      "revId": "2e52a5ffa55e747b5e15485510f4ab69e6690725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

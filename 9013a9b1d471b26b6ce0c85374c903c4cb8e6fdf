@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "359d7cbe_c658ceee",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T17:35:42Z",
+      "side": 1,
+      "message": "Is this still needed?",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 1
+      },
+      "revId": "9013a9b1d471b26b6ce0c85374c903c4cb8e6fdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b353829_f33f2ac8",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T17:35:42Z",
+      "side": 1,
+      "message": "I suggest setting this first or last in the parameter list to indicate more clearly that it\u0027s the output.",
+      "range": {
+        "startLine": 61,
+        "startChar": 8,
+        "endLine": 61,
+        "endChar": 38
+      },
+      "revId": "9013a9b1d471b26b6ce0c85374c903c4cb8e6fdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
