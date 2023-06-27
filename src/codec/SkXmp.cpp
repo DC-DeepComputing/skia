@@ -7,6 +7,8 @@
 
 #include "include/private/SkXmp.h"
 
+#if defined(SK_XML)
+
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
 #include "include/core/SkScalar.h"
@@ -660,3 +662,15 @@ std::unique_ptr<SkXmp> SkXmp::Make(sk_sp<SkData> xmpStandard, sk_sp<SkData> xmpE
     (void)xmp->parseDom(xmpExtended, /*extended=*/true);
     return xmp;
 }
+
+#else  // !defined(SK_XML)
+
+std::unique_ptr<SkXmp> SkXmp::Make(sk_sp<SkData> xmpData) {
+    return nullptr;
+}
+
+std::unique_ptr<SkXmp> SkXmp::Make(sk_sp<SkData> xmpStandard, sk_sp<SkData> xmpExtended) {
+    return nullptr;
+}
+
+#endif
