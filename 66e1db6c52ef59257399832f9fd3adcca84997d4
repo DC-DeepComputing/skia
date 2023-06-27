@@ -161,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7089e6ba_4790e620",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T20:24:28Z",
+      "side": 1,
+      "message": "That seems reasonable to apply the logic in `chooseRenderer`. It already has a size heuristic for wedge vs. curve tessellation. It used to be based on the clipped draw bounds, and then was switched to just transform the shape bounds in order to avoid the ordering issues of dst readback flushing. Now that the clip stack is collected first, we should be able to go back to just using the clip draw bounds for both this new heuristic and the tessellation path renderer heuristic.",
+      "parentUuid": "b881b5b0_ba600e8b",
+      "range": {
+        "startLine": 1052,
+        "startChar": 12,
+        "endLine": 1053,
+        "endChar": 56
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f2b622d5_78a9cc14",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 7
@@ -243,6 +267,30 @@
       "side": 1,
       "message": "That makes sense. My only objection would be that this would be inconsistent with atlas uploads, which are recorded explicitly and outside of `snapUploadTask` above. At least the current structure keeps all of the task creation actions in one place.",
       "parentUuid": "5f7f674b_534e5f70",
+      "range": {
+        "startLine": 1331,
+        "startChar": 9,
+        "endLine": 1331,
+        "endChar": 34
+      },
+      "revId": "66e1db6c52ef59257399832f9fd3adcca84997d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47fc28a2_9d0b335f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1331,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-27T20:24:28Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "25ef128b_8db04bf0",
       "range": {
         "startLine": 1331,
         "startChar": 9,
