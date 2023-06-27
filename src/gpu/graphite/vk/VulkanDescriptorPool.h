@@ -27,7 +27,9 @@ public:
      * enough of the descriptor types and quantities requested to allocate the maximum number of
      * sets possible (kMaxNumSets). Counts must be > 0.
     */
-    static sk_sp<VulkanDescriptorPool> Make(const VulkanSharedContext*, SkSpan<DescriptorData>);
+    static sk_sp<VulkanDescriptorPool> Make(const VulkanSharedContext*,
+                                            SkSpan<DescriptorData>,
+                                            VkDescriptorSetLayout);
 
     VkDescriptorPool descPool() { return fDescPool; }
 
@@ -37,11 +39,13 @@ private:
     static constexpr int kMaxNumDescriptors = 1024;
 
     VulkanDescriptorPool(const VulkanSharedContext*,
-                         VkDescriptorPool);
+                         VkDescriptorPool,
+                         VkDescriptorSetLayout);
     ~VulkanDescriptorPool() override;
 
     const VulkanSharedContext*       fSharedContext;
     VkDescriptorPool                 fDescPool;
+    VkDescriptorSetLayout            fDescSetLayout;
 };
 } // namespace skgpu::graphite
 
