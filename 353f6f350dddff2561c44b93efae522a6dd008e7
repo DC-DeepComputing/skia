@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18232d54_a9f0b703",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-27T17:21:38Z",
+      "side": 1,
+      "message": "Maybe add that this is a follow-up to https://skia-review.googlesource.com/c/skia/+/712438",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 22
+      },
+      "revId": "353f6f350dddff2561c44b93efae522a6dd008e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

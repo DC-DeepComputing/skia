@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "034e0ae3_fbad38c9",
+        "filename": "modules/skunicode/src/SkUnicode_hardcoded.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-27T17:21:38Z",
+      "side": 0,
+      "message": "I suppose we weren\u0027t actually using this namespace anywhere within this header or an associated class if there are no further edits that appends this namespace now that this `using` has been removed? Just confirming.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "7ff6cf6acbb7bf7ebf8fa9f3bd190009ac2b849f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
