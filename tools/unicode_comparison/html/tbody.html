@@ -1,0 +1,46 @@
+{{ define "tbody" }}
+    {{ range $impl := . }}
+        <tr style="font-weight:bold">
+            <td>{{ .Name }}</td>
+            <td>{{ printf "%.6f" .Delta.Memory }}</td>
+            <td>{{ printf "%.6f" .Delta.Disk }}</td>
+            <td>{{ printf "%.6f" .Delta.Performance }}</td>
+            <td>{{ .Delta.Graphemes.Divide }}</td>
+            <td>{{ .Delta.SoftBreaks.Divide }}</td>
+            <td>{{ .Delta.HardBreaks.Divide }}</td>
+            <td>{{ .Delta.Whitespaces.Divide }}</td>
+            <td>{{ .Delta.Words.Divide }}</td>
+            <td>{{ .Delta.Controls.Divide }}</td>
+        </tr>
+        {{ range $locale := $impl.Locales }}
+            <tr class="parent" id="{{ .Name }}" title="Click to expand/collapse" style="cursor: pointer;">
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ .Name }}</td>
+                <td>{{ printf "%.6f" .Delta.Memory }}</td>
+                <td></td>
+                <td>{{ printf "%.6f" .Delta.Performance }}</td>
+                <td>{{ .Delta.Graphemes.Divide }}</td>
+                <td>{{ .Delta.SoftBreaks.Divide }}</td>
+                <td>{{ .Delta.HardBreaks.Divide }}</td>
+                <td>{{ .Delta.Whitespaces.Divide }}</td>
+                <td>{{ .Delta.Words.Divide }}</td>
+                <td>{{ .Delta.Controls.Divide }}</td>
+            </tr>
+            {{ range $file := $locale.Files }}
+                <tr class="child-{{ $locale.Name }}" style="display: none;" tabindex="1">
+                    <td colspan="4"> {{ .Locale }}/{{ .Name }} </td>
+                    <td>{{ .Delta.Graphemes.Divide }}</td>
+                    <td class="collapse" tabindex="1">
+                        <a>{{ .Delta.SoftBreaks.Divide }}</a>
+                        <div>{{ .FormattedText }}</div>
+                    <td>
+                    <td>{{ .Delta.HardBreaks.Divide }}</td>
+                    <td>{{ .Delta.Whitespaces.Divide }}</td>
+                    <td>
+                        <a>{{ .Delta.Words.Divide }}</a>
+                    </td>
+                    <td>{{ .Delta.Controls.Divide }}</td>
+                </tr>
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end }}
