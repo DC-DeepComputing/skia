@@ -87,6 +87,8 @@ class SKUNICODE_API SkUnicode {
             kTabulation = 0x40,
             kGlyphClusterStart = 0x80,
             kIdeographic = 0x100,
+            kWordBreak = 0x200,
+            kSentenceBreak = 0x400,
         };
         enum class TextDirection {
             kLTR,
@@ -109,7 +111,8 @@ class SKUNICODE_API SkUnicode {
         enum class BreakType {
             kWords,
             kGraphemes,
-            kLines
+            kLines,
+            kSentences
         };
         struct LineBreakBefore {
             LineBreakBefore(Position pos, LineBreakType breakType)
@@ -157,6 +160,7 @@ class SKUNICODE_API SkUnicode {
                                     std::vector<BidiRegion>* results) = 0;
         virtual bool getWords(const char utf8[], int utf8Units, const char* locale,
                               std::vector<Position>* results) = 0;
+        virtual bool getSentences(const char utf8[], int utf8Units, skia_private::TArray<Position>* results);
         virtual bool computeCodeUnitFlags(
                 char utf8[], int utf8Units, bool replaceTabs,
                 skia_private::TArray<SkUnicode::CodeUnitFlags, true>* results) = 0;

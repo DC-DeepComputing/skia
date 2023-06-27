@@ -108,6 +108,7 @@ static UBreakIteratorType convertType(SkUnicode::BreakType type) {
         case SkUnicode::BreakType::kLines: return UBRK_LINE;
         case SkUnicode::BreakType::kGraphemes: return UBRK_CHARACTER;
         case SkUnicode::BreakType::kWords: return UBRK_WORD;
+        case SkUnicode::BreakType::kSentences: return UBRK_SENTENCE;
         default:
             return UBRK_CHARACTER;
     }
@@ -384,6 +385,13 @@ public:
         // Convert to UTF16 since we want the results in utf16
         auto utf16 = convertUtf8ToUtf16(utf8, utf8Units);
         return SkUnicode_icu::extractWords((uint16_t*)utf16.c_str(), utf16.size(), locale, results);
+    }
+
+  bool getSentences(const char utf8[], int utf8Units, skia_private::TArray<SkUnicode::Position>* results) override {
+        SkUnicode_icu::extractPositions(utf8, utf8Units, BreakType::kSentences, [&](int pos,
+                                                                       int status) {
+            (*results)[pos] |= CodeUnitFlags::kSentenceBreak;
+        });
     }
 
     bool computeCodeUnitFlags(char utf8[], int utf8Units, bool replaceTabs,

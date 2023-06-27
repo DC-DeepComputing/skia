@@ -97,3 +97,7 @@ bool SkUnicode::hasControlFlag(SkUnicode::CodeUnitFlags flags) {
 bool SkUnicode::hasPartOfWhiteSpaceBreakFlag(SkUnicode::CodeUnitFlags flags) {
     return (flags & SkUnicode::kPartOfWhiteSpaceBreak) == SkUnicode::kPartOfWhiteSpaceBreak;
 }
+
+bool SkUnicode::getSentences(const char utf8[], int utf8Units, skia_private::TArray<SkUnicode::Position>* results) {
+    return false;
+}
