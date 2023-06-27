@@ -1,0 +1,51 @@
+{{ define "styles" }}
+html { overflow-y: scroll; }
+
+table { width: 100%; }
+
+tbody tr { display: none; }
+
+td { vertical-align: top; }
+td div { font-size: 0px; }
+div span { font-size: 16px; }
+span.grapheme { background-color: yellow; opacity: 0.5; }
+span.whitespace { background-color: lightBlue; opacity: 0.5; }
+
+span.control { border-left: 2px solid rgba(127, 126, 0, 0.5); }
+span.softBreak { border-left: 2px solid rgba(255, 0, 0, 0.5); }
+span.hardBreak { border-right: 1px solid rgba(0, 255, 0, 0.5); }
+span.word { border-right: 1px solid rgba(0, 0, 255, 0.5); }
+
+span.missing { border-left: 1px solid; }
+span.missing:before { content: '-'; }
+span.extra { border-left: 1px solid; }
+span.extra:before { content: '+'; }
+
+span.underlined { text-decoration: underline; }
+span.regular { foreground-color: gray; }
+
+tr.l1, tr.open { display: table-row; }
+
+tr.l1 { background: #bbb; }
+tr.l2 { background: #ccc; }
+tr.l3 { background: #ddd; }
+tr.l4 { background: #eee; }
+tr.l5 { background: #fff; }
+
+tr td { padding: 0.2em 0.4em; }
+
+tr td:first-of-type {
+  position: relative;
+  padding: 0.2em 1em;
+}
+
+tr td a {
+  color: inherit;
+  text-decoration: inherit;
+  position: absolute;
+  left: 0.25em;
+}
+
+tr td:first-of-type { padding-left: 1em; }
+
+{{ end }}

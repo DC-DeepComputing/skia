@@ -1,0 +1,47 @@
+{{ define "formattedText" }}
+    {{ range $text := . }}
+<span class="{{ .Classes }}">{{ .Text }}</span>
+    {{ end }}
+{{ end }}
+{{ define "rows" }}
+    {{ range $child := . }}
+        {{ if $child.IsImplementation }}
+            <tr class="{{ .Level }}" id="{{ .Id }}">
+                <td><a href="#{{ .Id }}">+</a>{{ .Name }}</td>
+                <td>{{ printf "%.6f" .Delta.Memory }}</td>
+                <td>{{ printf "%.6f" .Delta.Disk }}</td>
+                <td>{{ printf "%.6f" .Delta.Performance }}</td>
+                <td>{{ .Delta.Graphemes.Divide }}</td>
+                <td>{{ .Delta.SoftBreaks.Divide }}</td>
+                <td>{{ .Delta.HardBreaks.Divide }}</td>
+                <td>{{ .Delta.Whitespaces.Divide }}</td>
+                <td>{{ .Delta.Words.Divide }}</td>
+                <td>{{ .Delta.Controls.Divide }}</td>
+            </tr>
+        {{ else }}
+            <tr class="{{ .Level }} {{ .ParentId }}" id="{{ .Id }}">
+                {{ if $child.IsFile }}
+                <td> {{ .Name }} </td>
+                <td colspan="9">
+                    <div>
+                    {{ template "formattedText" .FormattedText }}<br/>
+                    <span>{{ .Text }}</span>
+                    </div>
+                </td>
+                {{ else }}
+                <td><a href="#{{ .Id }}">+</a> {{ .Name }} </td>
+                <td>{{ printf "%.6f" .Delta.Memory }}</td>
+                <td>{{ printf "%.6f" .Delta.Disk }}</td>
+                <td>{{ printf "%.6f" .Delta.Performance }}</td>
+                <td>{{ .Delta.Graphemes.Divide }}</td>
+                <td>{{ .Delta.SoftBreaks.Divide }}</td>
+                <td>{{ .Delta.HardBreaks.Divide }}</td>
+                <td>{{ .Delta.Whitespaces.Divide }}</td>
+                <td>{{ .Delta.Words.Divide }}</td>
+                <td>{{ .Delta.Controls.Divide }}</td>
+                {{ end }}
+            </tr>
+        {{ end}}
+        {{ template "rows" $child.Children }}
+    {{ end }}
+{{ end }}
