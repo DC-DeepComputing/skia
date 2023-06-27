@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b996a4b_3303c244",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-27T17:22:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94f0c558_3a6a99dc",
+      "range": {
+        "startLine": 649,
+        "startChar": 4,
+        "endLine": 649,
+        "endChar": 5
+      },
+      "revId": "2e52a5ffa55e747b5e15485510f4ab69e6690725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ad52103_e1b3ce4e",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ac0b329_6d9148a1",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-27T17:22:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ad52103_e1b3ce4e",
+      "range": {
+        "startLine": 782,
+        "startChar": 4,
+        "endLine": 782,
+        "endChar": 5
+      },
+      "revId": "2e52a5ffa55e747b5e15485510f4ab69e6690725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ec460e0_81968d48",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-06-27T15:13:28Z",
       "side": 1,
       "message": "This feels a little clunky -- if there\u0027s a command buffer in flight but the last descriptor isn\u0027t being used in it, you might delete the layout before the command buffer is done with it. What about creating an SkRefCnt-derived wrapper class? Then each DescriptorSet would have a ref to that layout, and last one using it deletes it. Alternatively you could associate the layout with the Pool.",
+      "range": {
+        "startLine": 32,
+        "startChar": 43,
+        "endLine": 32,
+        "endChar": 75
+      },
+      "revId": "2e52a5ffa55e747b5e15485510f4ab69e6690725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05289749_15bd5559",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-27T17:22:29Z",
+      "side": 1,
+      "message": "I had considered using a SkRefCnt-derived wrapper class, so the fact that you suggested it is encouraging. It is quick and easy to have the pool be in charge of removing it since the pool is only cleaned up once every desc. set is no longer needed - I don\u0027t know why I didn\u0027t think of that. \n\nI threw the latter change together. Although this route is more dependent on the current architecture, I don\u0027t foresee the strategy of having the pools being cleaned up once their ref count is 0 changing. However, please do let me know if you have a preference for the RefCnt route for this reason (or others!).",
+      "parentUuid": "5ec460e0_81968d48",
       "range": {
         "startLine": 32,
         "startChar": 43,
