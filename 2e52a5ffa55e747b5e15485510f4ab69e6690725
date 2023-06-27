@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94f0c558_3a6a99dc",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T15:13:28Z",
+      "side": 1,
+      "message": "You need to track the descriptor set in the command buffer via: this-\u003etrackResource(std::move(set));",
+      "range": {
+        "startLine": 649,
+        "startChar": 4,
+        "endLine": 649,
+        "endChar": 5
+      },
+      "revId": "2e52a5ffa55e747b5e15485510f4ab69e6690725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ad52103_e1b3ce4e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T15:13:28Z",
+      "side": 1,
+      "message": "At the end here: this-\u003etrackResource(std::move(set));",
+      "range": {
+        "startLine": 782,
+        "startChar": 4,
+        "endLine": 782,
+        "endChar": 5
+      },
+      "revId": "2e52a5ffa55e747b5e15485510f4ab69e6690725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ec460e0_81968d48",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorSet.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T15:13:28Z",
+      "side": 1,
+      "message": "This feels a little clunky -- if there\u0027s a command buffer in flight but the last descriptor isn\u0027t being used in it, you might delete the layout before the command buffer is done with it. What about creating an SkRefCnt-derived wrapper class? Then each DescriptorSet would have a ref to that layout, and last one using it deletes it. Alternatively you could associate the layout with the Pool.",
+      "range": {
+        "startLine": 32,
+        "startChar": 43,
+        "endLine": 32,
+        "endChar": 75
+      },
+      "revId": "2e52a5ffa55e747b5e15485510f4ab69e6690725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
