@@ -44,18 +44,40 @@ UNIX_ONLY_TEST(SkUnicode_Native, reporter) {
     }
 }
 #endif
-UNIX_ONLY_TEST(SkUnicode_GetWords, reporter) {
+
+#ifdef SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION
+UNIX_ONLY_TEST(SkUnicode_GetUtf8Words, reporter) {
     SkString text("1 22 333 4444 55555 666666 7777777");
+    //std::vector<SkUnicode::Position> expected = { 0, 1, 2, 4, 5, 8, 9, 13, 14, 19, 20, 26, 27, 34 };
     std::vector<SkUnicode::Position> expected = { 0, 1, 2, 4, 5, 8, 9, 13, 14, 19, 20, 26, 27, 34 };
-    auto icu = SkUnicode::Make();
+    auto icu = SkUnicode::MakeLibgraphemeBasedUnicode();
     std::vector<SkUnicode::Position> results;
-    auto result = icu->getWords(text.data(), text.size(), "en", &results);
+    auto result = icu->getUtf8Words(text.data(), text.size(), "en", &results);
     REPORTER_ASSERT(reporter, result);
     REPORTER_ASSERT(reporter, results.size() == expected.size());
     for (auto i = 0ul; i < results.size(); ++i) {
         REPORTER_ASSERT(reporter, results[i] == expected[i]);
     }
 }
+#endif
+
+#ifdef SK_UNICODE_LIBGRAPHEME_IMPLEMENTATION
+UNIX_ONLY_TEST(SkUnicode_GetIdeographicWords, reporter) {
+    SkString text("1961年迄今：鈴木Carry");
+    // 4 5 6 7 8 9 10 11 12 16 17 18 19 20 21
+    auto libgrapheme = SkUnicode::MakeLibgraphemeBasedUnicode();
+    auto icu = SkUnicode::MakeIcuBasedUnicode();
+    std::vector<SkUnicode::Position> results1;
+    std::vector<SkUnicode::Position> results2;
+    auto result1 = icu->getUtf8Words(text.data(), text.size(), "en", &results1);
+    auto result2 = libgrapheme->getUtf8Words(text.data(), text.size(), "en", &results2);
+    REPORTER_ASSERT(reporter, result1 && result2);
+    REPORTER_ASSERT(reporter, results1.size() == results2.size());
+    for (auto i = 0ul; i < results1.size(); ++i) {
+        REPORTER_ASSERT(reporter, results1[i] == results2[i]);
+    }
+}
+#endif
 
 UNIX_ONLY_TEST(SkUnicode_GetBidiRegionsLTR, reporter) {
     SkString text("1 22 333 4444 55555 666666 7777777");
