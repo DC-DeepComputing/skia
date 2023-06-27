@@ -1,0 +1,61 @@
+{{ define "scripts" }}
+
+currentId = '';
+currentType = '';
+currentChunk = '';
+
+function switchSign(element) {
+  if (!element) return false;
+  if (element.tagName !== "A") return false;
+  if (!element.hasAttribute('href')) return false;
+  if (element.innerHTML[0] == '+') {
+      element.innerHTML = '-' + element.innerHTML.substring(1);
+      return true;
+  } else {
+      element.innerHTML = '+' + element.innerHTML.substring(1);
+      return true;
+  }
+}
+
+function recurse(id) {
+  var children = document.getElementsByClassName(id);
+  for (let i = 0; i < children.length; i++) {
+    children[i].classList.toggle("open");
+    if (switchSign(children[i])) {
+      recursive(children[i].getAttribute('href').substring(1));
+    }
+  }
+}
+
+document.getElementById("comparison").addEventListener("click", function (e) {
+  if (!e) return;
+  e.preventDefault();
+  if (switchSign(e.target)) {
+      recurse(e.target.getAttribute('href').substring(1));
+  }
+});
+
+function hideDiff() {
+  if (currentId == '') {
+    return;
+  }
+  $('#id_' + currentId + ' > td > div > span.'+currentType).removeClass('span_' + currentType);
+  $('#' + currentType + '_' + currentChunk + currentId).addClass('inactive');
+  $('#id_' + currentId + ' > td > div.'+currentType).addClass('invisible');
+  currentId = '';
+  currentType = '';
+  currentChunk = '';
+}
+
+function showDiff(id, type, chunkType) {
+  hideDiff();
+  $('#' + type + '_' + chunkType + id).removeClass('inactive');
+  $('#id_' + id + ' > td > div.' + type).removeClass('invisible');
+  $('#id_' + id + ' > td > div > span.'+type).addClass('span_' + type);
+
+  currentId = id;
+  currentType = type;
+  currentChunk = chunkType;
+}
+
+{{ end }}
