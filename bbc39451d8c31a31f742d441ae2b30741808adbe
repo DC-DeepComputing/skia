@@ -22,6 +22,30 @@
       },
       "revId": "bbc39451d8c31a31f742d441ae2b30741808adbe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b609e76_84b9e6cb",
+        "filename": "src/gpu/graphite/TiledTextureUtils_Graphite.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-27T15:04:56Z",
+      "side": 1,
+      "message": "I\u0027m still trying to keep the Ganesh and Graphite implementations in parallel. I\u0027ve updated the Graphite to match the Ganesh code (i.e., just getting the localToDevice matrix from the top device.",
+      "parentUuid": "b9f1391e_57a3851a",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 66
+      },
+      "revId": "bbc39451d8c31a31f742d441ae2b30741808adbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
