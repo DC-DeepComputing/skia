@@ -16,6 +16,121 @@
       "message": "PTAL round 2 🤓",
       "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8925938c_4e401aa2",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T16:33:32Z",
+      "side": 1,
+      "message": "It looks all the code from here down is to create the PipelineLayout -- it might be cleaner to put it all in a static helper function like the other ones.",
+      "range": {
+        "startLine": 557,
+        "startChar": 4,
+        "endLine": 557,
+        "endChar": 100
+      },
+      "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ccbfe87_b13c08ff",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T16:33:32Z",
+      "side": 1,
+      "message": "Delete shader modules first?",
+      "range": {
+        "startLine": 575,
+        "startChar": 8,
+        "endLine": 575,
+        "endChar": 22
+      },
+      "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8f7456c_face0540",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T16:33:32Z",
+      "side": 1,
+      "message": "Delete shader modules and descriptor set layouts first?",
+      "range": {
+        "startLine": 617,
+        "startChar": 8,
+        "endLine": 617,
+        "endChar": 22
+      },
+      "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c62b68b6_9e922871",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T16:33:32Z",
+      "side": 1,
+      "message": "Any reason you can\u0027t add this in this CL? It looks like you have everything set up.",
+      "range": {
+        "startLine": 646,
+        "startChar": 4,
+        "endLine": 646,
+        "endChar": 29
+      },
+      "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bf053a4_2d805aa3",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-27T16:33:32Z",
+      "side": 1,
+      "message": "I believe these can be deleted once the PipelineLayout is created.",
+      "range": {
+        "startLine": 656,
+        "startChar": 4,
+        "endLine": 663,
+        "endChar": 5
+      },
+      "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
