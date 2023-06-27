@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1255ab53_5cd50086",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-27T11:59:33Z",
+      "side": 1,
+      "message": "I dislike the anonymous namespace approach (as do a few other Skia devs).\n\nIMO, it obscures what you are trying to do and due to the convention of not indenting code inside a namespace, it can be more difficult to determine if a function is or is not used elsewhere (I have to scroll up hunting for the namespace token).\n\nAlso clang might not be able to tell you if a function is no longer used if it is in an anonymous namespace [citation needed] (but maybe that\u0027s fixed in newer versions or I am misremembering).",
+      "parentUuid": "e9a624f1_d73f6fe2",
+      "range": {
+        "startLine": 50,
+        "startChar": 26,
+        "endLine": 50,
+        "endChar": 36
+      },
+      "revId": "ae8544428bdfce6281fc2504cdd64fef6d2795fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec3f4914_db2fe651",
         "filename": "gm/BazelGMRunner.cpp",
         "patchSetId": 6
