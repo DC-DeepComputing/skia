@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44c9bd47_f1a74cb2",
+        "filename": "gm/crop_imagefilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-27T17:19:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4e669146_15458fff",
+      "range": {
+        "startLine": 234,
+        "startChar": 86,
+        "endLine": 234,
+        "endChar": 87
+      },
+      "revId": "ed075e400037dd326e15edb3622723404da11c4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6000908_e6ddfc8d",
@@ -60,6 +84,30 @@
       "writtenOn": "2023-06-27T17:13:32Z",
       "side": 1,
       "message": "\u003d ?",
+      "range": {
+        "startLine": 237,
+        "startChar": 61,
+        "endLine": 237,
+        "endChar": 62
+      },
+      "revId": "ed075e400037dd326e15edb3622723404da11c4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "905f5564_8ef5fff6",
+        "filename": "gm/crop_imagefilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-27T17:19:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e6000908_e6ddfc8d",
       "range": {
         "startLine": 237,
         "startChar": 61,
