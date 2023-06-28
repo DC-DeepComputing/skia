@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96465f6d_12a1fc6b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-28T18:07:00Z",
+      "side": 1,
+      "message": "nit: Probably worth *also* referencing b/283195708, i.e.\n\n```\nBug: b/283195708\n```",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 3
+      },
+      "revId": "75a94d0f9fbdccacd9b74403f38c2fb717f55704",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbaecdcd_83783b5d",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-28T18:07:00Z",
+      "side": 1,
+      "message": "This is probably correct, although this will lead to a (better?) crash in HWUI and RenderEngine. Is the idea that the callers will then update their own code to handle this case?",
+      "revId": "75a94d0f9fbdccacd9b74403f38c2fb717f55704",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
