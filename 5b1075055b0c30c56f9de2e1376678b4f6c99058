@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8a5c438_1dcdba6c",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T14:20:44Z",
+      "side": 1,
+      "message": "We don\u0027t want it to look like `SkCHECKF` to match our other debug macros and `CHECK()` elsewhere?",
+      "range": {
+        "startLine": 81,
+        "startChar": 8,
+        "endLine": 81,
+        "endChar": 16
+      },
+      "revId": "5b1075055b0c30c56f9de2e1376678b4f6c99058",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

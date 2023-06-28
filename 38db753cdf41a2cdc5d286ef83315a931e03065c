@@ -52,6 +52,24 @@
       "parentUuid": "d494e27d_b2a1efbc",
       "revId": "38db753cdf41a2cdc5d286ef83315a931e03065c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c70a78e_3593a073",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T14:20:44Z",
+      "side": 1,
+      "message": "Also, it would be interesting to see the code size delta if we got rid of the printf part and just used `SkASSERT_Release`. It could be that the majority of the 30K is spent dealing with format strings.",
+      "parentUuid": "d494e27d_b2a1efbc",
+      "revId": "38db753cdf41a2cdc5d286ef83315a931e03065c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
