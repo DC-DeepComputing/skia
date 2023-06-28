@@ -198,6 +198,8 @@ public:
         return fSlotsRoot;
     }
 
+    sk_sp<SlotManager> getSlotManager() const { return fSlotManager; }
+
 private:
     friend class CompositionBuilder;
     friend class CustomFont;

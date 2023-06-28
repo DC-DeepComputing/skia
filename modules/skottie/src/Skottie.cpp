@@ -424,6 +424,8 @@ sk_sp<Animation> Animation::Builder::make(const char* data, size_t data_len) {
                                        &fStats, size, duration, fps, fFlags);
     auto ainfo = builder.parse(json);
 
+    fSlotManager = builder.getSlotManager();
+
     const auto t2 = std::chrono::steady_clock::now();
     fStats.fSceneParseTimeMS = std::chrono::duration<float, std::milli>{t2-t1}.count();
     fStats.fTotalLoadTimeMS  = std::chrono::duration<float, std::milli>{t2-t0}.count();
@@ -453,6 +455,10 @@ sk_sp<Animation> Animation::Builder::makeFromFile(const char path[]) {
 
     return data ? this->make(static_cast<const char*>(data->data()), data->size())
                 : nullptr;
+}
+
+SlotManager* Animation::Builder::getSlotManager() {
+    return fSlotManager.release();
 }
 
 Animation::Animation(sk_sp<sksg::RenderNode> scene_root,

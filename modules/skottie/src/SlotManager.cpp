@@ -111,9 +111,17 @@ skottie::TextPropertyValue skottie::SlotManager::getTextSlot(SlotID slotID) cons
            TextPropertyValue();
 }
 
+void skottie::SlotManager::addSlotInfo(SlotInfo info) {
+    for (const auto& i : fSlotInfos) {
+        if (i == info) { return; }
+    }
+    fSlotInfos.push_back(info);
+}
+
 void skottie::SlotManager::trackColorValue(SlotID slotID, SkColor* colorValue,
                                            sk_sp<sksg::Node> node) {
     fColorMap[slotID].push_back({colorValue, std::move(node), nullptr});
+    addSlotInfo({slotID, SlotType::kColor});
 }
 
 sk_sp<skresources::ImageAsset> skottie::SlotManager::trackImageValue(SlotID slotID,
@@ -121,19 +129,23 @@ sk_sp<skresources::ImageAsset> skottie::SlotManager::trackImageValue(SlotID slot
                                                                         imageAsset) {
     auto proxy = sk_make_sp<ImageAssetProxy>(std::move(imageAsset));
     fImageMap[slotID].push_back(proxy);
+    addSlotInfo({slotID, SlotType::kImage});
     return std::move(proxy);
 }
 
 void skottie::SlotManager::trackScalarValue(SlotID slotID, SkScalar* scalarValue,
                                             sk_sp<sksg::Node> node) {
     fScalarMap[slotID].push_back({scalarValue, std::move(node), nullptr});
+    addSlotInfo({slotID, SlotType::kScalar});
 }
 
 void skottie::SlotManager::trackScalarValue(SlotID slotID, SkScalar* scalarValue,
                                             sk_sp<internal::AnimatablePropertyContainer> adapter) {
     fScalarMap[slotID].push_back({scalarValue, nullptr, adapter});
+    addSlotInfo({slotID, SlotType::kScalar});
 }
 
 void skottie::SlotManager::trackTextValue(SlotID slotID, sk_sp<internal::TextAdapter> adapter) {
     fTextMap[slotID].push_back(std::move(adapter));
+    addSlotInfo({slotID, SlotType::kText});
 }
