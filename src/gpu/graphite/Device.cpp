@@ -449,6 +449,202 @@ bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
     return false;
 }
 
+sk_sp<SkImage> Device::rescale(SkIRect srcRect,
+                               const SkImageInfo& dstInfo,
+                               SkImage::RescaleGamma rescaleGamma,
+                               SkImage::RescaleMode rescaleMode) {
+    //*** use Recorder in this
+    //*** use TextureProxyView to make Image
+
+    // make a Surface matching dstInfo to rescale into
+    // TODO: use fallback colortype if necessary
+    sk_sp<SkSurface> surf = this->makeSurface(dstInfo, SkSurfaceProps{});
+    SkIRect dstRect = SkIRect::MakeSize(dstInfo.dimensions());
+
+    // get backing texture information for current Device
+    // if backing texture isn't texturable, create a TextureProxyView and copy into it
+#if 0
+    GrSurfaceProxyView texView = this->readSurfaceView();
+    // If we perform scaling as draws, texView must be texturable; if it's not already, we have to
+    // make a copy. However, if the scaling can use copyScaled(), we can avoid this copy.
+    auto ensureTexturable = [this](GrSurfaceProxyView texView, SkIRect srcRect) {
+        if (!texView.asTextureProxy()) {
+            // TODO: If copying supported specifying a renderable copy then we could return the copy
+            // when there are no other conversions.
+            texView = GrSurfaceProxyView::Copy(fContext,
+                                               std::move(texView),
+                                               GrMipmapped::kNo,
+                                               srcRect,
+                                               SkBackingFit::kApprox,
+                                               skgpu::Budgeted::kNo,
+                                               "SurfaceContext_RescaleInto");
+            if (texView) {
+                SkASSERT(texView.asTextureProxy());
+                srcRect = SkIRect::MakeSize(srcRect.size());
+            }
+        }
+        return std::make_pair(std::move(texView), srcRect);
+    };
+#endif
+
+    SkISize finalSize = dstRect.size();
+    if (finalSize == srcRect.size()) {
+        rescaleGamma = RescaleGamma::kSrc;
+        rescaleMode = RescaleMode::kNearest;
+    }
+
+    // Within a rescaling pass inputImage is read from (if not null) and outputSurface is
+    // written to. At the end of the pass outputSurface is used to create the new inputSurface.
+    // If 'this' is the input on the first pass then inputImage is null.
+    sk_sp<SkImage> inputImage;
+    sk_sp<SkSurface> outputSurface;
+
+    // TODO: implement linear gamma
+#if 0
+    // Assume we should ignore the rescale linear request if the surface has no color space since
+    // it's unclear how we'd linearize from an unknown color space.
+    if (rescaleGamma == RescaleGamma::kLinear && this->colorInfo().colorSpace() &&
+        !this->colorInfo().colorSpace()->gammaIsLinear()) {
+        // Colorspace transformations are always handled by drawing so we need to be texturable
+        std::tie(texView, srcRect) = ensureTexturable(texView, srcRect);
+        if (!texView) {
+            return false;
+        }
+        auto cs = this->colorInfo().colorSpace()->makeLinearGamma();
+        // We'll fall back to kRGBA_8888 if half float not supported.
+        GrImageInfo ii(GrColorType::kRGBA_F16,
+                       dst->colorInfo().alphaType(),
+                       std::move(cs),
+                       srcRect.size());
+        auto linearRTC = fContext->priv().makeSFCWithFallback(std::move(ii),
+                                                              SkBackingFit::kApprox,
+                                                              1,
+                                                              GrMipmapped::kNo,
+                                                              GrProtected::kNo,
+                                                              dst->origin());
+        if (!linearRTC) {
+            return false;
+        }
+        auto fp = GrTextureEffect::Make(std::move(texView),
+                                        this->colorInfo().alphaType(),
+                                        SkMatrix::Translate(srcRect.topLeft()),
+                                        GrSamplerState::Filter::kNearest,
+                                        GrSamplerState::MipmapMode::kNone);
+        fp = GrColorSpaceXformEffect::Make(std::move(fp),
+                                           this->colorInfo(),
+                                           linearRTC->colorInfo());
+        linearRTC->fillWithFP(std::move(fp));
+        texView = linearRTC->readSurfaceView();
+        SkASSERT(texView.asTextureProxy());
+        tempA = std::move(linearRTC);
+        srcRect = SkIRect::MakeSize(srcRect.size());
+    } else
+#endif
+    {
+        inputImage.reset(new Image(kNeedNewImageUniqueID,
+                                   this->textureProxyView(),
+                                   this->colorInfo()));
+    }
+
+    //*** To start, implement just this. Don't worry about texturable or fallback.
+    //*** Figure out size to render to, do a drawRect or drawPaint with an optional colorspace
+    //*** filter.
+    //*** Basically this just ping-pongs between two textures, reading from A, drawing to B
+    do {
+        SkISize nextDims = finalSize;
+        if (rescaleMode != RescaleMode::kNearest && rescaleMode != RescaleMode::kLinear) {
+            if (srcRect.width() > finalSize.width()) {
+                nextDims.fWidth = std::max((srcRect.width() + 1)/2, finalSize.width());
+            } else if (srcRect.width() < finalSize.width()) {
+                nextDims.fWidth = std::min(srcRect.width()*2, finalSize.width());
+            }
+            if (srcRect.height() > finalSize.height()) {
+                nextDims.fHeight = std::max((srcRect.height() + 1)/2, finalSize.height());
+            } else if (srcRect.height() < finalSize.height()) {
+                nextDims.fHeight = std::min(srcRect.height()*2, finalSize.height());
+            }
+        }
+        auto input = tempA ? tempA.get() : this;
+        sk_sp<GrColorSpaceXform> xform;
+        SurfaceFillContext* stepDst;
+        SkIRect stepDstRect;
+        if (nextDims == finalSize) {
+            stepDst = dst;
+            stepDstRect = dstRect;
+            xform = GrColorSpaceXform::Make(input->colorInfo(), dst->colorInfo());
+        } else {
+            GrImageInfo nextInfo(input->colorInfo(), nextDims);
+            tempB = fContext->priv().makeSFCWithFallback(nextInfo, SkBackingFit::kApprox);
+            if (!tempB) {
+                return false;
+            }
+            stepDst = tempB.get();
+            stepDstRect = SkIRect::MakeSize(tempB->dimensions());
+        }
+        std::unique_ptr<GrFragmentProcessor> fp;
+        if (rescaleMode == RescaleMode::kRepeatedCubic) {
+            // Cubic sampling is always handled by drawing with a shader, so we must be texturable
+            std::tie(texView, srcRect) = ensureTexturable(texView, srcRect);
+            if (!texView) {
+                return false;
+            }
+            auto dir = GrBicubicEffect::Direction::kXY;
+            if (nextDims.width() == srcRect.width()) {
+                dir = GrBicubicEffect::Direction::kY;
+            } else if (nextDims.height() == srcRect.height()) {
+                dir = GrBicubicEffect::Direction::kX;
+            }
+            static constexpr auto kWM     = GrSamplerState::WrapMode::kClamp;
+            static constexpr auto kKernel = GrBicubicEffect::gCatmullRom;
+            fp = GrBicubicEffect::MakeSubset(std::move(texView),
+                                             input->colorInfo().alphaType(),
+                                             SkMatrix::I(),
+                                             kWM,
+                                             kWM,
+                                             SkRect::Make(srcRect),
+                                             kKernel,
+                                             dir,
+                                             *this->caps());
+        } else {
+            auto filter = rescaleMode == RescaleMode::kNearest ? GrSamplerState::Filter::kNearest
+                                                               : GrSamplerState::Filter::kLinear;
+            if (xform ||
+                texView.origin() != stepDst->origin() ||
+                !stepDst->copyScaled(texView.refProxy(), srcRect, stepDstRect, filter)) {
+                // We could not or were unable to successful perform a scaling blit (which can be
+                // much faster if texView isn't already texturable). Scale by drawing instead.
+                std::tie(texView, srcRect) = ensureTexturable(texView, srcRect);
+                if (!texView) {
+                    return false;
+                }
+                auto srcRectF = SkRect::Make(srcRect);
+                fp = GrTextureEffect::MakeSubset(std::move(texView),
+                                                 this->colorInfo().alphaType(),
+                                                 SkMatrix::I(),
+                                                 {filter, GrSamplerState::MipmapMode::kNone},
+                                                 srcRectF,
+                                                 srcRectF,
+                                                 *this->caps());
+            }
+        }
+        if (xform) {
+            SkASSERT(SkToBool(fp)); // shouldn't have done a copy if there was a color xform
+            fp = GrColorSpaceXformEffect::Make(std::move(fp), std::move(xform));
+        }
+        if (fp) {
+            // When fp is not null, we scale by drawing; if it is null, presumably the src has
+            // already been copied into stepDst.
+            stepDst->fillRectToRectWithFP(srcRect, stepDstRect, std::move(fp));
+        }
+        texView = stepDst->readSurfaceView();
+        tempA = std::move(tempB);
+        srcRect = SkIRect::MakeSize(nextDims);
+    } while (srcRect.size() != finalSize);
+#endif
+
+    return nullptr;
+}
+
 bool Device::onWritePixels(const SkPixmap& src, int x, int y) {
     // TODO: we may need to share this in a more central place to handle uploads
     // to backend textures
