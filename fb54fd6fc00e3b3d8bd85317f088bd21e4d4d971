@@ -22,6 +22,30 @@
       },
       "revId": "fb54fd6fc00e3b3d8bd85317f088bd21e4d4d971",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9c64d7d_24f2dad1",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T16:06:31Z",
+      "side": 1,
+      "message": "You can\u0027t actually `emplace_back` into a POD struct--you need a user-defined constructor. That being said, you can do `push_back({op, immA, ...})` which I think is in the spirit of the suggestion, so I\u0027ve made that change.",
+      "parentUuid": "a154f4ec_af7cda40",
+      "range": {
+        "startLine": 187,
+        "startChar": 4,
+        "endLine": 192,
+        "endChar": 22
+      },
+      "revId": "fb54fd6fc00e3b3d8bd85317f088bd21e4d4d971",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
