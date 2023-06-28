@@ -14,6 +14,8 @@ build --remote_upload_local_results=false
 # improves both the remote cache hit rate and the correctness and repeatability of the build.
 build --incompatible_strict_action_env=true
 
+build --workspace_status_command=bazel/get_workspace_status.sh
+
 # This tells Bazel that the host platform can use the hermetic toolchain. This is a small lie until
 # Windows support is added.
 build --host_platform=//bazel/platform:host_with_hermetic_toolchain
