@@ -54,6 +54,14 @@ void sk_abort_no_print() {
 #endif
 }
 
+int sk_check_index_bounds(int i, int size) {
+    if (0 <= i && i < size) SK_LIKELY {
+        return i;
+    } else SK_UNLIKELY {
+        SK_ABORT("Index (%d) out of bounds for size %d.\n", i, size);
+    }
+}
+
 void sk_out_of_memory(void) {
     SkDEBUGFAIL("sk_out_of_memory");
 #if defined(SK_BUILD_FOR_AFL_FUZZ)

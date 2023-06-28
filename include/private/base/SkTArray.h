@@ -386,15 +386,11 @@ public:
      * Get the i^th element.
      */
     T& operator[] (int i) {
-        SkASSERT(i < this->size());
-        SkASSERT(i >= 0);
-        return fData[i];
+        return fData[sk_check_index_bounds(i, this->size())];
     }
 
     const T& operator[] (int i) const {
-        SkASSERT(i < this->size());
-        SkASSERT(i >= 0);
-        return fData[i];
+        return fData[sk_check_index_bounds(i, this->size())];
     }
 
     T& at(int i) { return (*this)[i]; }

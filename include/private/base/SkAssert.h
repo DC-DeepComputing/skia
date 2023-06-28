@@ -11,11 +11,23 @@
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkDebug.h" // IWYU pragma: keep
 
+#include <cstddef>
+
+#if defined(__clang__)
+#define SK_LIKELY [[likely]]
+#define SK_UNLIKELY [[unlikely]]
+#else
+#define SK_LIKELY
+#define SK_UNLIKELY
+#endif
+
 /** Called internally if we hit an unrecoverable error.
     The platform implementation must not return, but should either throw
     an exception or otherwise exit.
 */
 [[noreturn]] SK_API extern void sk_abort_no_print(void);
+
+SK_API extern int sk_check_index_bounds(int i, int size);
 
 #if defined(SK_BUILD_FOR_GOOGLE3)
     void SkDebugfForDumpStackTrace(const char* data, void* unused);
