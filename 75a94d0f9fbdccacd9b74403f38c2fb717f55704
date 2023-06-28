@@ -63,6 +63,24 @@
       "message": "This is probably correct, although this will lead to a (better?) crash in HWUI and RenderEngine. Is the idea that the callers will then update their own code to handle this case?",
       "revId": "75a94d0f9fbdccacd9b74403f38c2fb717f55704",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27fa2771_9827ce39",
+        "filename": "src/gpu/ganesh/GrAHardwareBufferUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-28T20:10:56Z",
+      "side": 1,
+      "message": "As discussed offline, the callers would need to update their own code.\n\nI\u0027ve also tested this on a Pixel device and it didn\u0027t cause any crashes.",
+      "parentUuid": "dbaecdcd_83783b5d",
+      "revId": "75a94d0f9fbdccacd9b74403f38c2fb717f55704",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
