@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e829ff3d_2753534b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-28T00:56:13Z",
+      "side": 1,
+      "message": "So +30K just for operator[] on TArray. We have to do TDArray and SkSpan.",
+      "revId": "38db753cdf41a2cdc5d286ef83315a931e03065c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
