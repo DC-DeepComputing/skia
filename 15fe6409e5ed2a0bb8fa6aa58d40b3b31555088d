@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a874777_add3542b",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T15:29:15Z",
+      "side": 1,
+      "message": "nit: nothing captured, `[]` like before seems more correct",
+      "range": {
+        "startLine": 60,
+        "startChar": 11,
+        "endLine": 60,
+        "endChar": 12
+      },
+      "revId": "15fe6409e5ed2a0bb8fa6aa58d40b3b31555088d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
