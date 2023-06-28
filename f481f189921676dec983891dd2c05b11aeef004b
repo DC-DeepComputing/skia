@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30519621_626ccf00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2023-06-28T00:05:41Z",
+      "side": 1,
+      "message": "This is needed to unblock the WASM build when rolling Skia into Flutter.",
+      "revId": "f481f189921676dec983891dd2c05b11aeef004b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
