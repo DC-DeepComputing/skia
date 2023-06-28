@@ -517,3 +517,11 @@ load(
     "@io_bazel_rules_docker//container:container.bzl",
     "container_pull",
 )
+
+# Pulls the gcr.io/skia-public/debugger-app-base container.
+container_pull(
+    name = "debugger-app-base",
+    digest = "sha256:6820bee4d8f062bfac1a370fa66ea83e8ad67443f603f843c62367ab486b1506",
+    registry = "gcr.io",
+    repository = "skia-public/debugger-app-base",
+)

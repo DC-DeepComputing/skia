@@ -281,6 +281,7 @@ wasm_cc_binary(
     # Whatever is before the dot will be the name of the output js and wasm, aka "the stem".
     # https://github.com/emscripten-core/emsdk/blob/82ad00499a42abde16b363239d2bc83bf5d863ab/bazel/emscripten_toolchain/wasm_cc_binary.bzl#L91
     cc_target = ":canvaskit.build",
+    visibility = ["//infra:__subpackages__"],
 )
 
 bool_flag(
@@ -346,4 +347,24 @@ karma_test(
         ":canvaskit/canvaskit.wasm",
         "//modules/canvaskit/tests/assets:test_assets",
     ],
+)
+
+filegroup(
+    name = "canvaskit.js",
+    srcs = ["local_build/canvaskit.js"],
+    visibility = ["//infra:__subpackages__"],
+)
+
+filegroup(
+    name = "canvaskit.wasm",
+    srcs = ["local_build/canvaskit.wasm"],
+    visibility = ["//infra:__subpackages__"],
+)
+
+genrule(
+    name = "make version file",
+    srcs = ["make_version.sh"],
+    outs = ["version.js"],
+    cmd = "$< $@",
+    visibility = ["//infra:__subpackages__"],
 )
