@@ -326,12 +326,12 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 			// Graphite doesn't do auto-image-tiling so these GMs should
 			// remain disabled
-			skip(ALL, "gm", ALL, "verylarge_picture_image")
-			skip(ALL, "gm", ALL, "verylargebitmap")
-			skip(ALL, "gm", ALL, "path_huge_aa")
-			skip(ALL, "gm", ALL, "fast_constraint_red_is_allowed")
-			skip(ALL, "gm", ALL, "strict_constraint_batch_no_red_allowed")
-			skip(ALL, "gm", ALL, "strict_constraint_no_red_allowed")
+			skip(ALL, "gm", ALL, "^verylarge_picture_image$")
+			skip(ALL, "gm", ALL, "^verylargebitmap$")
+			skip(ALL, "gm", ALL, "^path_huge_aa$")
+			skip(ALL, "gm", ALL, "^fast_constraint_red_is_allowed$")
+			skip(ALL, "gm", ALL, "^strict_constraint_batch_no_red_allowed$")
+			skip(ALL, "gm", ALL, "^strict_constraint_no_red_allowed$")
 
 			// Could not readback from surface.
 			skip(ALL, "gm", ALL, "hugebitmapshader")
