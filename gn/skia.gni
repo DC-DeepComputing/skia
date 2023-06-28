@@ -84,7 +84,7 @@ declare_args() {
 
   # Use the safe mode for libcxx
   # See: https://libcxx.llvm.org/UsingLibcxx.html#enabling-the-safe-libc-mode
-  skia_use_safe_libcxx = false
+  skia_use_safe_libcxx = true
 
   # deprecated, we will eventually use just skia_enable_ganesh
   skia_enable_gpu = true
