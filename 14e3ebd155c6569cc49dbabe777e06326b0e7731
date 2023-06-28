@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37acd821_d8afcb58",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T16:43:42Z",
+      "side": 1,
+      "message": "This is a good idea, but it would be nice to include some comments here about the motivation for making the change.",
+      "revId": "14e3ebd155c6569cc49dbabe777e06326b0e7731",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e45728c6_77201d64",
+        "filename": "relnotes/runtimeeffect_const.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T16:43:42Z",
+      "side": 1,
+      "message": "Is that true? I guess it\u0027s technically possible someone was relying on mutating the return value of `uniforms()`, right?",
+      "range": {
+        "startLine": 3,
+        "startChar": 64,
+        "endLine": 4,
+        "endChar": 32
+      },
+      "revId": "14e3ebd155c6569cc49dbabe777e06326b0e7731",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5280d949_de42bcca",
+        "filename": "src/core/SkRuntimeBlender.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T16:43:42Z",
+      "side": 1,
+      "message": "You don\u0027t want `const` on a vector\u0027s inner type.\n(here and L55)",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 21
+      },
+      "revId": "14e3ebd155c6569cc49dbabe777e06326b0e7731",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd8ac9d7_5fc2926c",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T16:43:42Z",
+      "side": 1,
+      "message": "no `const` here",
+      "range": {
+        "startLine": 432,
+        "startChar": 49,
+        "endLine": 432,
+        "endChar": 54
+      },
+      "revId": "14e3ebd155c6569cc49dbabe777e06326b0e7731",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b0efcd5_6126d56c",
+        "filename": "src/core/SkRuntimeEffectPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T16:43:42Z",
+      "side": 1,
+      "message": "no `const` here",
+      "range": {
+        "startLine": 133,
+        "startChar": 52,
+        "endLine": 133,
+        "endChar": 57
+      },
+      "revId": "14e3ebd155c6569cc49dbabe777e06326b0e7731",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "611a8221_2b962f99",
+        "filename": "src/effects/colorfilters/SkRuntimeColorFilter.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T16:43:42Z",
+      "side": 1,
+      "message": "no `const` on vector inner type, here and L56",
+      "range": {
+        "startLine": 51,
+        "startChar": 16,
+        "endLine": 51,
+        "endChar": 21
+      },
+      "revId": "14e3ebd155c6569cc49dbabe777e06326b0e7731",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c8063a1_8e56b3c4",
+        "filename": "src/shaders/SkRuntimeShader.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T16:43:42Z",
+      "side": 1,
+      "message": "This is returning a copy of the vector, which was already safe (the caller could mutate it, but it was a copy so it didn\u0027t matter either way) but not very efficient.\n\nWe might have done better to return a `const std::vector\u003cSkRuntimeEffect::ChildPtr\u003e\u0026` instead. That\u0027d avoid a copy and give the caller an immutable reference to the vector. (`operator[]` on a const vector returns a const reference.)",
+      "range": {
+        "startLine": 67,
+        "startChar": 16,
+        "endLine": 67,
+        "endChar": 21
+      },
+      "revId": "14e3ebd155c6569cc49dbabe777e06326b0e7731",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbae0ace_4fef6162",
+        "filename": "src/shaders/SkRuntimeShader.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T16:43:42Z",
+      "side": 1,
+      "message": "no `const` here",
+      "range": {
+        "startLine": 82,
+        "startChar": 16,
+        "endLine": 82,
+        "endChar": 21
+      },
+      "revId": "14e3ebd155c6569cc49dbabe777e06326b0e7731",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
