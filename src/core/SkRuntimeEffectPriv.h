@@ -130,7 +130,7 @@ public:
                                  const SkRuntimeEffect* effect,
                                  skia_private::TArray<SkRuntimeEffect::ChildPtr>* children);
     static void WriteChildEffects(SkWriteBuffer &buffer,
-                                  const std::vector<SkRuntimeEffect::ChildPtr> &children);
+                                  const std::vector<const SkRuntimeEffect::ChildPtr> &children);
 
 #if defined(SK_GRAPHITE)
 static void AddChildrenToKey(SkSpan<const SkRuntimeEffect::ChildPtr> children,
