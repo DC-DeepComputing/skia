@@ -78,9 +78,8 @@ SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
     SkString noiseCode;
 
     noiseCode.append(
-            "half4 floorVal;"
-            "floorVal.xy = floor(noiseVec);"
-            "floorVal.zw = floorVal.xy + half2(1);"
+            "half4 floorVal = floor(noiseVec).xyxy;"
+            "floorVal.zw += half2(1);"
             "half2 fractVal = fract(noiseVec);"
 
             // smooth curve : t^2*(3 - 2*t)
@@ -89,7 +88,8 @@ SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
 
     // Adjust frequencies if we're stitching tiles
     if (pne.stitchTiles()) {
-        noiseCode.append("floorVal -= step(stitchData.xyxy, floorVal) * stitchData.xyxy;");
+        noiseCode.append("half4 stitch = stitchData.xyxy;"
+                         "floorVal -= step(stitch, floorVal) * stitch;");
     }
 
     // NOTE: We need to explicitly pass half4(1) as input color here, because the helper function
