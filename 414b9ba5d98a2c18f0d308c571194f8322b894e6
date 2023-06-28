@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7e0a920_1a0c46c0",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-28T17:11:58Z",
+      "side": 1,
+      "message": "Moved this check up here to potentially catch this failure mode *before* bothering w/ the Vulkan structs.",
+      "range": {
+        "startLine": 544,
+        "startChar": 0,
+        "endLine": 548,
+        "endChar": 5
+      },
+      "revId": "414b9ba5d98a2c18f0d308c571194f8322b894e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

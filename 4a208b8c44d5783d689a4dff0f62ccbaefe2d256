@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea6d90a0_46535b86",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-28T17:11:58Z",
+      "side": 1,
+      "message": "Done! Good idea.",
+      "parentUuid": "8925938c_4e401aa2",
+      "range": {
+        "startLine": 557,
+        "startChar": 4,
+        "endLine": 557,
+        "endChar": 100
+      },
+      "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ccbfe87_b13c08ff",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b9cec37_489ad1fc",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-28T17:11:58Z",
+      "side": 1,
+      "message": "Now, if creation of the uniform desc set layout fails, the pipeline layout populated by the new helper will be set to nullptr. When a nullcheck is performed on the pipeline layout, any shader module deletion is handled there. 👍",
+      "parentUuid": "1ccbfe87_b13c08ff",
+      "range": {
+        "startLine": 575,
+        "startChar": 8,
+        "endLine": 575,
+        "endChar": 22
+      },
+      "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8f7456c_face0540",
@@ -77,6 +125,30 @@
       "writtenOn": "2023-06-27T16:33:32Z",
       "side": 1,
       "message": "Delete shader modules and descriptor set layouts first?",
+      "range": {
+        "startLine": 617,
+        "startChar": 8,
+        "endLine": 617,
+        "endChar": 22
+      },
+      "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a82cfbc_2b53a5a8",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-28T17:11:58Z",
+      "side": 1,
+      "message": "OK, I created a helper for destroying the shader modules to clean up the Make call slightly - LMKWYT. I believe I\u0027ve caught every instance where I was returning without properly destroying the modules or the set layouts.",
+      "parentUuid": "b8f7456c_face0540",
       "range": {
         "startLine": 617,
         "startChar": 8,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41878ddf_5d9f5baa",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-28T17:11:58Z",
+      "side": 1,
+      "message": "I have it in an immediate follow-up along with changes to pipeline and render pass desc. key generation, but I could combine that change into this one if you\u0027d prefer.",
+      "parentUuid": "c62b68b6_9e922871",
+      "range": {
+        "startLine": 646,
+        "startChar": 4,
+        "endLine": 646,
+        "endChar": 29
+      },
+      "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2bf053a4_2d805aa3",
         "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
         "patchSetId": 19
@@ -123,6 +219,30 @@
       "writtenOn": "2023-06-27T16:33:32Z",
       "side": 1,
       "message": "I believe these can be deleted once the PipelineLayout is created.",
+      "range": {
+        "startLine": 656,
+        "startChar": 4,
+        "endLine": 663,
+        "endChar": 5
+      },
+      "revId": "4a208b8c44d5783d689a4dff0f62ccbaefe2d256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c631b660_fa5f4fd6",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-28T17:11:58Z",
+      "side": 1,
+      "message": "Nice, now their creation / destruction can be encapsulated within the helper. :^) I love it when things work out.",
+      "parentUuid": "2bf053a4_2d805aa3",
       "range": {
         "startLine": 656,
         "startChar": 4,
