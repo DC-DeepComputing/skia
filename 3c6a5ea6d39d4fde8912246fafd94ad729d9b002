@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f489ac7_a2f383ba",
+        "filename": "infra/debugger-app/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-06-28T20:02:46Z",
+      "side": 1,
+      "message": "The current debugger-app files are:\n\n```\n# ls -l /usr/local/share/debugger-app\ntotal 7732\n-rw-r--r-- 1 root root     533 Jan  1  1970 both.png\n-rw-r--r-- 1 root root     520 Jan  1  1970 bottom.png\n-rw-r--r-- 1 root root  130616 Jan  1  1970 canvaskit.js\n-rw-r--r-- 1 root root 7593700 Jan  1  1970 canvaskit.wasm\n-rw-r--r-- 1 root root     432 Jan  1  1970 favicon.png\n-rw-r--r-- 1 root root     503 Jan  1  1970 image.png\n-rw-r--r-- 1 root root   33938 Jan  1  1970 main.css\n-rw-r--r-- 1 root root     447 Jan  1  1970 main.html\n-rw-r--r-- 1 root root   76904 Jan  1  1970 main.js\n-rw-r--r-- 1 root root     512 Jan  1  1970 right.png\n-rw-r--r-- 1 root root      65 Jan  1  1970 version.js\n-rw-r--r-- 1 root root   23509 Jan  1  1970 versions.css\n-rw-r--r-- 1 root root     365 Jan  1  1970 versions.html\n-rw-r--r-- 1 root root   18376 Jan  1  1970 versions.js\n```\n\nThis dependency does bring in more build artifacts:\n\n```\n$ ls -l /usr/local/share/debugger-app\ntotal 7304\n-rw-r--r-- 1 root root     533 Jan  1  1970 both.png\n-rw-r--r-- 1 root root     520 Jan  1  1970 bottom.png\n-rw-r--r-- 1 root root       0 Jan  1  1970 canvaskit.data\n-rw-r--r-- 1 root root       0 Jan  1  1970 canvaskit.fetch.js\n-rw-r--r-- 1 root root       0 Jan  1  1970 canvaskit.html\n-rw-r--r-- 1 root root  130537 Jan  1  1970 canvaskit.js\n-rw-r--r-- 1 root root       0 Jan  1  1970 canvaskit.js.mem\n-rw-r--r-- 1 root root       0 Jan  1  1970 canvaskit.js.symbols\n-rw-r--r-- 1 root root 7154923 Jan  1  1970 canvaskit.wasm\n-rw-r--r-- 1 root root       0 Jan  1  1970 canvaskit.wasm.debug.wasm\n-rw-r--r-- 1 root root       0 Jan  1  1970 canvaskit.wasm.map\n-rw-r--r-- 1 root root       0 Jan  1  1970 canvaskit.worker.js\n-rw-r--r-- 1 root root     432 Jan  1  1970 favicon.png\n-rw-r--r-- 1 root root     503 Jan  1  1970 image.png\n-rw-r--r-- 1 root root   33940 Jan  1  1970 main.css\n-rw-r--r-- 1 root root     445 Jan  1  1970 main.html\n-rw-r--r-- 1 root root   76904 Jan  1  1970 main.js\n-rw-r--r-- 1 root root     512 Jan  1  1970 right.png\n-rw-r--r-- 1 root root      65 Jan  1  1970 version.js\n-rw-r--r-- 1 root root   23511 Jan  1  1970 versions.css\n-rw-r--r-- 1 root root     364 Jan  1  1970 versions.html\n-rw-r--r-- 1 root root   18376 Jan  1  1970 versions.js\n```\n\nUsing `//modules/canvaskit:canvaskit` simplifies this build rule but brings in these new (empty) files. WDYT?",
+      "range": {
+        "startLine": 11,
+        "startChar": 33,
+        "endLine": 11,
+        "endChar": 46
+      },
+      "revId": "3c6a5ea6d39d4fde8912246fafd94ad729d9b002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
