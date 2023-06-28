@@ -89,7 +89,8 @@ SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
 
     // Adjust frequencies if we're stitching tiles
     if (pne.stitchTiles()) {
-        noiseCode.append("floorVal -= step(stitchData.xyxy, floorVal) * stitchData.xyxy;");
+        noiseCode.append("floorVal -= half4(lessThanEqual(stitchData.xyxy, floorVal)) *"
+                                     "stitchData.xyxy;");
     }
 
     // NOTE: We need to explicitly pass half4(1) as input color here, because the helper function
