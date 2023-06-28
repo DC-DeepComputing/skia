@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b45e22aa_3ed143e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-28T15:19:49Z",
+      "side": 1,
+      "message": "The static uses of `SkTypeface::Register` in `TestSVGTypeface.cpp` and `TestTypeface.cpp` can happen because they\u0027re part of the dm/viewer/etc applications, not part of Skia-the-library. Those apps don\u0027t have the static initializer bans that Chromium and Skia-the-library have so they get away with it. Even those should probably have the app register them, but the apps using them already have enormous static initializers (the registries of tests, gms, and samples).",
+      "revId": "3e1944d82626e9593c3c76384ee7b22029feb1eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
