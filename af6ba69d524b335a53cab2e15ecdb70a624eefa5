@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "331e41b3_3dba9a99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-28T12:07:27Z",
+      "side": 1,
+      "message": "SK_XML is not set in the Bazel build, so previously it was always compiling/linking in the real implementation. With the (now reverted) change, it was getting the no-op impl.\n\nA better approach would be to have a SkXmp_none.cpp and not rely on an ifdef, but we can reland the ifdef to help stage such a change if necessary",
+      "revId": "af6ba69d524b335a53cab2e15ecdb70a624eefa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
