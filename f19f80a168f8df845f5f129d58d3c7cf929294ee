@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55e2d13b_447a7005",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-28T19:37:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cc4dda6_2bb4a862",
+      "range": {
+        "startLine": 836,
+        "startChar": 96,
+        "endLine": 836,
+        "endChar": 104
+      },
+      "revId": "f19f80a168f8df845f5f129d58d3c7cf929294ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "024dce29_fb38b93f",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-28T19:10:31Z",
       "side": 1,
       "message": "We don\u0027t want to use `const\u0026` here. You should pass spans by value (but the interior object being spanned-over can be const as desired).\nThis tip is about `absl::Span` but all the lessons apply equally to `SkSpan`:\nhttp://go/totw/93#as-function-parameters",
+      "range": {
+        "startLine": 132,
+        "startChar": 34,
+        "endLine": 132,
+        "endChar": 39
+      },
+      "revId": "f19f80a168f8df845f5f129d58d3c7cf929294ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b2bf477_76f39db4",
+        "filename": "src/core/SkRuntimeEffectPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-28T19:37:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "024dce29_fb38b93f",
       "range": {
         "startLine": 132,
         "startChar": 34,
