@@ -55,15 +55,29 @@ public:
     SkScalar getScalarSlot(SlotID) const;
     TextPropertyValue getTextSlot(SlotID) const;
 
+    enum SlotType {
+    // properties
+    kColor   = 1,
+    kScalar = 4,
+    // assets
+    kImage   = 50,
+    // text
+    kText    = 99,
+};
     struct SlotInfo {
         SlotID slotID;
-        int type;
+        SlotType type;
+
+        bool operator==(const SlotInfo& other) const {
+            return slotID == other.slotID && type == other.type;
+        }
     };
 
     // Helper function to get all slot IDs and their value types
     const TArray<SlotInfo>& getSlotInfo() const { return fSlotInfos; }
 
 private:
+    void addSlotInfo(SlotInfo);
 
     // pass value to the SlotManager for manipulation and node for invalidation
     void trackColorValue(SlotID, SkColor*, sk_sp<sksg::Node>);
