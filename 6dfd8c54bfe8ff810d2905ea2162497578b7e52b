@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84a29792_c561a817",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-28T16:05:19Z",
+      "side": 1,
+      "message": "Looks like these three are no longer needed.",
+      "revId": "6dfd8c54bfe8ff810d2905ea2162497578b7e52b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
