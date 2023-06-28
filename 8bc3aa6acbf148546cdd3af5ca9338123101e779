@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d37a075_ff0d2cea",
+        "filename": "tests/sksl/shared/OperatorsES2.wgsl",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T18:08:20Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "0b633df2_62d808c7",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 5
+      },
+      "revId": "8bc3aa6acbf148546cdd3af5ca9338123101e779",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c1096c1_e132d2c9",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-27T20:23:11Z",
       "side": 0,
       "message": "^",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 5
+      },
+      "revId": "8bc3aa6acbf148546cdd3af5ca9338123101e779",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07ad023d_00d9c464",
+        "filename": "tests/sksl/shared/OperatorsES3.wgsl",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T18:08:20Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "3c1096c1_e132d2c9",
       "range": {
         "startLine": 3,
         "startChar": 0,
