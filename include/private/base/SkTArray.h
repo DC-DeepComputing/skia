@@ -386,15 +386,19 @@ public:
      * Get the i^th element.
      */
     T& operator[] (int i) {
-        SkASSERT(i < this->size());
-        SkASSERT(i >= 0);
-        return fData[i];
+        if (0 <= i && i < this->size()) SK_LIKELY {
+            return fData[i];
+        } else SK_UNLIKELY {
+            this->reportOutOfBounds(i);
+        }
     }
 
     const T& operator[] (int i) const {
-        SkASSERT(i < this->size());
-        SkASSERT(i >= 0);
-        return fData[i];
+        if (0 <= i && i < this->size()) SK_LIKELY {
+            return fData[i];
+        } else SK_UNLIKELY {
+            this->reportOutOfBounds(i);
+        }
     }
 
     T& at(int i) { return (*this)[i]; }
@@ -620,6 +624,10 @@ private:
         this->setDataFromBytes(allocation);
         SkASSERT(this->capacity() >= newCount);
         SkASSERT(fData != nullptr);
+    }
+
+    [[noreturn]] void reportOutOfBounds(int i) const {
+        sk_print_index_out_of_bounds(static_cast<size_t>(i), static_cast<size_t>(this->size()));
     }
 
     T* fData{nullptr};
