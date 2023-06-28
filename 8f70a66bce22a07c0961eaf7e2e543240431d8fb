@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a31de9d8_28cd10eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-06-28T06:07:12Z",
+      "side": 1,
+      "message": "In the latest patch set I fixed a bug that appeared after changing the mask bounds check in the fragment coverage SkSL from an explicit if statement to a clamp call. The vertex shader now explicitly handles the case when the mask shape is fully clipped out for an inverse fill.\n\nI also fixed the atlas shape\u0027s clip bounds to exclude the top and left edges of the outer border (which is now 2px wide). This ensures that clamping always produces a black pixel and it is OK to send the UVs to (0, 0) while special-casing the clipped out mask case.",
+      "revId": "8f70a66bce22a07c0961eaf7e2e543240431d8fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
