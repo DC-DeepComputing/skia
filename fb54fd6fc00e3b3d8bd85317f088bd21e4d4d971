@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a154f4ec_af7cda40",
+        "filename": "src/sksl/codegen/SkSLRasterPipelineBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-28T15:54:38Z",
+      "side": 1,
+      "message": "why not `emplace_back(op, immA, ...)`?",
+      "range": {
+        "startLine": 187,
+        "startChar": 4,
+        "endLine": 192,
+        "endChar": 22
+      },
+      "revId": "fb54fd6fc00e3b3d8bd85317f088bd21e4d4d971",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
