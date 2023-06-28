@@ -29,6 +29,10 @@ describe('Core canvas behavior', () => {
         const font = new CanvasKit.Font(null, 20);
         rcanvas.drawText('this picture has a round rect', 5, 100, paint, font);
         const pic = spr.finishRecordingAsPicture();
+        const cullRect = pic.cullRect();
+        const approxBytesUsed = pic.approximateBytesUsed();
+        expect(approxBytesUsed).toBeGreaterThan(0);
+        expect(cullRect[2]).toBeGreaterThan(0);
         spr.delete();
         paint.delete();
 

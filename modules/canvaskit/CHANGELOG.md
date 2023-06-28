@@ -6,12 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `Picture.cullRect` which gives approximate bounds of the draw commands in the
+  picture.
+- `Picture.approximateBytesUsed` which returns an approximation of the bytes
+  used to store this picture. This size does not include large objects like
+  images.
+
 ### Fixed
  - `EmbindObject` has been updated to allow TypeScript to differentiate between opaque
    types such as Shader, ColorFilter, et cetera.
 
 ### Changed
 - `MakeSWCanvasSurface` now allows passing an `OffscreenCanvas` element.
+- `Picture`s made with `PictureRecorder` now have their bounds computed for
+  a more accurate `cullRect`.
 
 ## [0.38.2] - 2023-06-09
 

@@ -2687,6 +2687,18 @@ export interface SkPicture extends EmbindObject<"SkPicture"> {
                localMatrix?: InputMatrix, tileRect?: InputRect): Shader;
 
     /**
+     * Return the bounding area for the Picture.
+     * @param outputArray - if provided, the bounding box will be copied into this array instead of
+     *                      allocating a new one.
+     */
+    cullRect(outputArray?: Rect): Rect;
+
+    /**
+     * Returns the approximate byte size. Does not include large objects.
+     */
+    approximateBytesUsed() : number;
+
+    /**
      * Returns the serialized format of this SkPicture. The format may change at anytime and
      * no promises are made for backwards or forward compatibility.
      */

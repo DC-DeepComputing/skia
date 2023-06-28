@@ -961,6 +961,19 @@ CanvasKit.onRuntimeInitialized = function() {
     return this._makeShader(tmx, tmy, mode, mPtr, rPtr);
   };
 
+  // Clients can pass in a Float32Array with length 4 to this and the results
+  // will be copied into that array. Otherwise, a new TypedArray will be allocated
+  // and returned.
+  CanvasKit.Picture.prototype.cullRect = function (optionalOutputArray) {
+    this._cullRect(_scratchFourFloatsAPtr);
+    var ta = _scratchFourFloatsA['toTypedArray']();
+    if (optionalOutputArray) {
+      optionalOutputArray.set(ta);
+      return optionalOutputArray;
+    }
+    return ta.slice();
+  };
+
   CanvasKit.PictureRecorder.prototype.beginRecording = function(bounds) {
     var bPtr = copyRectToWasm(bounds);
     return this._beginRecording(bPtr);
