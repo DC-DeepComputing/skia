@@ -88,6 +88,24 @@
       "parentUuid": "5c70a78e_3593a073",
       "revId": "38db753cdf41a2cdc5d286ef83315a931e03065c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcbda3cc_168000c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-06-28T14:36:45Z",
+      "side": 1,
+      "message": "It would be interesting if we could inline constexpr the string some how. Coming up with a technology where all the strings are shared would be pretty great.",
+      "parentUuid": "1b0a80de_8d7cbd90",
+      "revId": "38db753cdf41a2cdc5d286ef83315a931e03065c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
