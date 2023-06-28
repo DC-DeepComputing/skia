@@ -106,6 +106,24 @@
       "parentUuid": "1b0a80de_8d7cbd90",
       "revId": "38db753cdf41a2cdc5d286ef83315a931e03065c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af2e47a3_549b341b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T14:37:33Z",
+      "side": 1,
+      "message": "I would expect that the string isn\u0027t duplicated in the final binary, the linker can fix this.",
+      "parentUuid": "bcbda3cc_168000c0",
+      "revId": "38db753cdf41a2cdc5d286ef83315a931e03065c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
