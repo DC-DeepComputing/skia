@@ -21,6 +21,8 @@ class GrTexture;
 
 class GrSurface : public GrGpuResource {
 public:
+    const GrSurface* asSurface() const override { return this; }
+
     /**
      * Retrieves the dimensions of the surface.
      */

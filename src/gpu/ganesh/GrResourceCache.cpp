@@ -730,6 +730,27 @@ void GrResourceCache::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) c
     }
 }
 
+void GrResourceCache::foo() const {
+    SkDebugf("non-purgeable\n");
+    for (int i = 0; i < fNonpurgeableResources.size(); ++i) {
+        if (const GrSurface* surf = fNonpurgeableResources[i]->asSurface()) {
+            const GrTexture* tex = surf->asTexture();
+            if (tex) {
+                SkDebugf("%d %d %s\n", tex->width(), tex->height(), tex->getLabel().c_str());
+            }
+        }
+    }
+    SkDebugf("purgeable\n");
+    for (int i = 0; i < fPurgeableQueue.count(); ++i) {
+        if (const GrSurface* surf = fPurgeableQueue.at(i)->asSurface()) {
+            const GrTexture* tex = surf->asTexture();
+            if (tex) {
+                SkDebugf("%d %d %s\n", tex->width(), tex->height(), tex->getLabel().c_str());
+            }
+        }
+    }
+}
+
 #if GR_CACHE_STATS
 void GrResourceCache::getStats(Stats* stats) const {
     stats->reset();

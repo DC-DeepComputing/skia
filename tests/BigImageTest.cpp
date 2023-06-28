@@ -26,6 +26,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTiledImageUtils.h"
+#include "include/core/SkTraceMemoryDump.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/private/base/SkAssert.h"
@@ -37,6 +38,8 @@
 #if defined(SK_GANESH)
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrResourceCache.h"
 #include "tests/CtsEnforcement.h"
 struct GrContextOptions;
 #endif
@@ -245,9 +248,11 @@ bool difficult_case(const SkSamplingOptions& sampling,
     return false;
 }
 
-void run_test(GrDirectContext* dContext,
-              skgpu::graphite::Recorder* recorder,
-              skiatest::Reporter* reporter) {
+// compare tiled and untiled draws varying the parameters (e.g., sampling, rotation, fast vs.
+// strict, etc).
+void tiling_comparison_test(GrDirectContext* dContext,
+                            skgpu::graphite::Recorder* recorder,
+                            skiatest::Reporter* reporter) {
     // We're using the knowledge that the internal tile size is 1024. By creating kImageSize
     // sized images we know we'll get a 4x4 tiling regardless of the sampling.
     static const int kImageSize = 4096 - 4 * 2 * kBicubicFilterTexelPad;
@@ -378,7 +383,8 @@ void run_test(GrDirectContext* dContext,
                             canvas->clipRect(clipRect);
 
                             SkTiledImageUtils::DrawImageRect(canvas, img, srcRect, destRect,
-                                                             sampling, nullptr, constraint);
+                                                             sampling, /* paint= */ nullptr,
+                                                             constraint);
                             SkAssertResult(surface->readPixels(expected, 0, 0));
                             int actualNumTiles = gNumTilesDrawn.load(std::memory_order_acquire);
                             REPORTER_ASSERT(reporter, actualNumTiles == 0);
@@ -393,7 +399,8 @@ void run_test(GrDirectContext* dContext,
                             canvas->clipRect(clipRect);
 
                             SkTiledImageUtils::DrawImageRect(canvas, img, srcRect, destRect,
-                                                             sampling, nullptr, constraint);
+                                                             sampling, /* paint= */ nullptr,
+                                                             constraint);
                             SkAssertResult(surface->readPixels(actual, 0, 0));
 
                             actualNumTiles = gNumTilesDrawn.load(std::memory_order_acquire);
@@ -416,6 +423,78 @@ void run_test(GrDirectContext* dContext,
     }
 }
 
+// In this test we draw the same bitmap-backed image twice and check that we only upload it once.
+void tiled_image_caching_test(GrDirectContext* dContext,
+                              skgpu::graphite::Recorder* recorder,
+                              skiatest::Reporter* reporter) {
+    static const int kImageSize = 4096;
+    static const int kOverrideMaxTextureSize = 1024;
+    static const int kWhiteBandWidth = 0;
+
+    sk_sp<SkImage> img = make_big_bitmap_image(kImageSize,
+                                               kWhiteBandWidth,
+                                               /* desiredLineWidth= */ 16,
+                                               /* desiredDepth= */ 7);
+
+    SkRect destRect = SkRect::MakeWH(kImageSize, kImageSize);
+
+    auto destII = SkImageInfo::Make(kImageSize,
+                                    kImageSize,
+                                    kRGBA_8888_SkColorType,
+                                    kPremul_SkAlphaType);
+
+    SkBitmap readback;
+    readback.allocPixels(destII);
+
+    sk_sp<SkSurface> surface;
+
+#if defined(SK_GANESH)
+    if (dContext) {
+        surface = SkSurfaces::RenderTarget(dContext,
+                                           skgpu::Budgeted::kNo,
+                                           destII);
+    }
+#endif
+
+#if defined(SK_GRAPHITE)
+    if (recorder) {
+        surface = SkSurfaces::RenderTarget(recorder, destII);
+    }
+#endif
+
+    SkCanvas* canvas = surface->getCanvas();
+
+    gOverrideMaxTextureSize = kOverrideMaxTextureSize;
+
+    for (int i = 0; i < 2; ++i) {
+        canvas->clear(SK_ColorBLACK);
+
+        SkTiledImageUtils::DrawImageRect(canvas, img,
+                                         destRect, destRect,
+                                         SkSamplingOptions(SkFilterMode::kNearest,
+                                                           SkMipmapMode::kNone),
+                                         /* paint= */ nullptr,
+                                         SkCanvas::kFast_SrcRectConstraint);
+        SkAssertResult(surface->readPixels(readback, 0, 0));
+    }
+
+#if defined(SK_GANESH)
+    if (dContext) {
+        GrResourceCache* cache = dContext->priv().getResourceCache();
+
+        cache->foo();
+    }
+#endif
+
+#if defined(SK_GRAPHITE)
+    if (recorder) {
+
+    }
+#endif
+
+    gOverrideMaxTextureSize = 0;
+}
+
 } // anonymous namespace
 
 #if defined(SK_GANESH)
@@ -426,7 +505,16 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Ganesh,
                                        CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
 
-    run_test(dContext, nullptr, reporter);
+    tiling_comparison_test(dContext, /* recorder= */ nullptr, reporter);
+}
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TiledDrawCacheTest_Ganesh,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNever) {
+    auto dContext = ctxInfo.directContext();
+
+    tiled_image_caching_test(dContext, /* recorder= */ nullptr, reporter);
 }
 
 #endif // SK_GANESH
@@ -439,7 +527,16 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BigImageTest_Graphite,
     std::unique_ptr<skgpu::graphite::Recorder> recorder =
             context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
 
-    run_test(nullptr, recorder.get(), reporter);
+    tiling_comparison_test(/* dContext= */ nullptr, recorder.get(), reporter);
+}
+
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(TiledDrawCacheTest_Graphite,
+                                         reporter,
+                                         context) {
+    std::unique_ptr<skgpu::graphite::Recorder> recorder =
+            context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
+
+    tiled_image_caching_test(/* dContext= */ nullptr, recorder.get(), reporter);
 }
 
 #endif // SK_GRAPHITE
