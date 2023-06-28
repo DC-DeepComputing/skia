@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e594db26_d23e4c86",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-28T17:17:27Z",
+      "side": 1,
+      "message": "So this doesn\u0027t quite work because `Simplify` has a bug. `Simplify` has an early inexpensive check to see if the path is convex. If it is then there isn\u0027t any need to simplify and the path can just be returned as-is. However, `SkPath::computeConvexity` has a special case and extra code to ensure that a path with no area made up of verbs that return to the starting point the way it came is considered \"convex\". This means that `Simplify` does not simplify these zero area paths to nothing as expected. What `Simplify` wants is a \"strictly convex\" check where when the `cross \u003d\u003d 0` and `dot \u003c 0` (going directly backwards) doesn\u0027t count as convex.",
+      "revId": "47253cda733a6d93efb166855c72e76f8f4a9b1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
