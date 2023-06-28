@@ -16,6 +16,24 @@
       "message": "So +30K just for operator[] on TArray. We have to do TDArray and SkSpan.",
       "revId": "38db753cdf41a2cdc5d286ef83315a931e03065c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d494e27d_b2a1efbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-28T14:17:35Z",
+      "side": 1,
+      "message": "I think this feature could be disabled in Optimize-for-Size. Chrome wants hardening, and doesn\u0027t care about size. Wasm wants small code, and hardening is mostly meaningless; a memory stomp issue in Wasm doesn\u0027t allow arbitrary code execution on the local machine.",
+      "parentUuid": "e829ff3d_2753534b",
+      "revId": "38db753cdf41a2cdc5d286ef83315a931e03065c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
