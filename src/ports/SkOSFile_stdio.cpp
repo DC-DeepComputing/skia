@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <filesystem>
 
 #ifdef _WIN32
 #include <direct.h>
@@ -67,6 +68,10 @@ FILE* sk_fopen(const char path[], SkFILE_Flags flags) {
 
     if (flags & kRead_SkFILE_Flag) {
         *p++ = 'r';
+        if (std::filesystem::exists(path) && std::filesystem::is_symlink(path)) {
+            std::filesystem::path symPath = std::filesystem::read_symlink(path);
+            path = symPath.c_str();
+        }
     }
     if (flags & kWrite_SkFILE_Flag) {
         *p++ = 'w';

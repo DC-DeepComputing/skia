@@ -91,11 +91,13 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
 
     std::vector<sk_sp<SkTypeface>> typefaces;
     for (const SkString& familyName : familyNames) {
+        SkDebugf("looking for %s\n", familyName.c_str());
         sk_sp<SkTypeface> match = matchTypeface(familyName, fontStyle);
         if (match && fontArgs) {
             match = fontArgs->CloneTypeface(match);
         }
         if (match) {
+            SkDebugf("Found one via matchTypeface\n");
             typefaces.emplace_back(std::move(match));
         }
     }
@@ -105,6 +107,7 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
         for (const SkString& familyName : fDefaultFamilyNames) {
             match = matchTypeface(familyName, fontStyle);
             if (match) {
+                SkDebugf("Found %s in default list\n", familyName.c_str());
                 break;
             }
         }
@@ -112,6 +115,7 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
             for (const auto& manager : this->getFontManagerOrder()) {
                 match = manager->legacyMakeTypeface(nullptr, fontStyle);
                 if (match) {
+                    SkDebugf("Found a font style in legacy make typeface\n");
                     break;
                 }
             }
