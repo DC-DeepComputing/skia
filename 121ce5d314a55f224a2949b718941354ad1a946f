@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d14f91e_fda5b335",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1033,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-28T20:01:34Z",
+      "side": 1,
+      "message": "I think we can drop this field. We can\u0027t get rid of fGaneshContext yet because of the legacy filters calling getContext() and gpuBacked(), but other than makeSurface() that now uses the surface delegate, there shouldn\u0027t be any graphite-specific image filtering code out there.",
+      "range": {
+        "startLine": 1033,
+        "startChar": 0,
+        "endLine": 1033,
+        "endChar": 49
+      },
+      "revId": "121ce5d314a55f224a2949b718941354ad1a946f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83bb576b_e322d8a3",
+        "filename": "src/gpu/ganesh/image/GrImageUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-28T20:01:34Z",
+      "side": 1,
+      "message": "If `context` is null, can we just return Context::MakeRaster() so this check doesn\u0027t have to live in the functor?\n\nAlternatively, callers should only be calling MakeGaneshContext when they have a valid context, so we can just assert context is not null.",
+      "range": {
+        "startLine": 736,
+        "startChar": 0,
+        "endLine": 736,
+        "endChar": 22
+      },
+      "revId": "121ce5d314a55f224a2949b718941354ad1a946f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a05ee7e_f2004dbc",
+        "filename": "src/gpu/ganesh/image/GrImageUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-28T20:01:34Z",
+      "side": 1,
+      "message": "I forgot to delete this comment; it\u0027s stale.",
+      "range": {
+        "startLine": 737,
+        "startChar": 0,
+        "endLine": 738,
+        "endChar": 49
+      },
+      "revId": "121ce5d314a55f224a2949b718941354ad1a946f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e14d467b_1ce4ee2e",
+        "filename": "src/gpu/graphite/ImageUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-28T20:01:34Z",
+      "side": 1,
+      "message": "Same logic as in ganesh, ideally, either return Context::MakeRaster or assert recorder is not null.",
+      "range": {
+        "startLine": 126,
+        "startChar": 12,
+        "endLine": 126,
+        "endChar": 20
+      },
+      "revId": "121ce5d314a55f224a2949b718941354ad1a946f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
