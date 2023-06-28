@@ -3125,18 +3125,19 @@ bool Generator::pushIntrinsic(IntrinsicKind intrinsic, const Expression& arg0) {
             }
             int slotCount = arg0.type().slotCount();
             if (slotCount > 1) {
-                // Instead of `x / sqrt(dot(x, x))`, we can get roughly the same result in less time
-                // by computing `x * invsqrt(dot(x, x))`.
+                // TODO: Instead of `x / sqrt(dot(x, x))`, we could get roughly the same result in
+                // less time by computing `x * invsqrt(dot(x, x))`, if we are willing to tolerate
+                // a very slight increase in error.
                 fBuilder.push_clone(slotCount);
                 fBuilder.push_clone(slotCount);
                 fBuilder.dot_floats(slotCount);
 
-                // Compute `vec(inversesqrt(dot(x, x)))`.
-                fBuilder.unary_op(BuilderOp::invsqrt_float, 1);
+                // Compute `vec(sqrt(dot(x, x)))`.
+                fBuilder.unary_op(BuilderOp::sqrt_float, 1);
                 fBuilder.push_duplicates(slotCount - 1);
 
-                // Return `x * vec(inversesqrt(dot(x, x)))`.
-                return this->binaryOp(arg0.type(), kMultiplyOps);
+                // Return `x / vec(sqrt(dot(x, x)))`.
+                return this->binaryOp(arg0.type(), kDivideOps);
             } else {
                 // For single-slot normalization, we can simplify `sqrt(x * x)` into `abs(x)`.
                 fBuilder.push_clone(slotCount);
