@@ -23,6 +23,8 @@ namespace skgpu::graphite {
 
 class Texture : public Resource {
 public:
+    const Texture* asTexture() const override { return this; }
+
     ~Texture() override;
 
     int numSamples() const { return fInfo.numSamples(); }

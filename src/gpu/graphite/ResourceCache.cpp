@@ -13,6 +13,7 @@
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/Resource.h"
+#include "src/gpu/graphite/Texture.h"
 
 namespace skgpu::graphite {
 
@@ -66,6 +67,20 @@ void ResourceCache::shutdown() {
         SkASSERT(!top->wasDestroyed());
         this->removeFromPurgeableQueue(top);
         top->unrefCache();
+    }
+}
+
+void ResourceCache::visitTextures(
+        const std::function<void(const Texture*, bool purgeable)>& func) const {
+    for (int i = 0; i < fNonpurgeableResources.size(); ++i) {
+        if (const Texture* tex = fNonpurgeableResources[i]->asTexture()) {
+            func(tex, /* purgeable= */ false);
+        }
+    }
+    for (int i = 0; i < fPurgeableQueue.count(); ++i) {
+        if (const Texture* tex = fPurgeableQueue.at(i)->asTexture()) {
+            func(tex, /* purgeable= */ true);
+        }
     }
 }
 

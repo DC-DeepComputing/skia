@@ -22,12 +22,15 @@ namespace skgpu::graphite {
 
 class ResourceCache;
 class SharedContext;
+class Texture;
 
 /**
  * Base class for objects that can be kept in the ResourceCache.
  */
 class Resource {
 public:
+    virtual const Texture* asTexture() const { return nullptr; }
+
     Resource(const Resource&) = delete;
     Resource(Resource&&) = delete;
     Resource& operator=(const Resource&) = delete;

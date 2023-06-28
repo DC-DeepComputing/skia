@@ -28,9 +28,12 @@ namespace skgpu::graphite {
 class GraphiteResourceKey;
 class ProxyCache;
 class Resource;
+class Texture;
 
 class ResourceCache : public SkRefCnt {
 public:
+    void visitTextures(const std::function<void(const Texture*, bool purgeable)>&) const;
+
     static sk_sp<ResourceCache> Make(SingleOwner*, uint32_t recorderID);
     ~ResourceCache() override;
 
