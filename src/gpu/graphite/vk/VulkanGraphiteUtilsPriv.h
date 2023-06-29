@@ -49,7 +49,7 @@ VkShaderModule createVulkanShaderModule(const VulkanSharedContext*,
 VkDescriptorType DsTypeEnumToVkDs(DescriptorType);
 void DescriptorDataToVkDescSetLayout(const VulkanSharedContext*,
                                      const SkSpan<DescriptorData>&,
-                                     VkDescriptorSetLayout*);
+                                     VkDescriptorSetLayout);
 
 } // namespace skgpu::graphite
 

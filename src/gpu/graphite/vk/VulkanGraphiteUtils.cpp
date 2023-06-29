@@ -69,7 +69,7 @@ VkShaderModule createVulkanShaderModule(const VulkanSharedContext* context,
 
 void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
                                      const SkSpan<DescriptorData>& requestedDescriptors,
-                                     VkDescriptorSetLayout* outLayout) {
+                                     VkDescriptorSetLayout outLayout) {
     skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
     for (size_t i = 0; i < requestedDescriptors.size(); i++) {
         if (requestedDescriptors[i].count != 0) {
@@ -99,7 +99,7 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
                        CreateDescriptorSetLayout(ctxt->device(),
                                                  &layoutCreateInfo,
                                                  nullptr,
-                                                 outLayout));
+                                                 &outLayout));
     if (result != VK_SUCCESS) {
         SkDebugf("Failed to create VkDescriptorSetLayout\n");
         outLayout = VK_NULL_HANDLE;
