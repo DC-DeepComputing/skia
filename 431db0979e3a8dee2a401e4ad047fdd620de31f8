@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed29b000_74c274a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-29T13:34:38Z",
+      "side": 1,
+      "message": "`DWRITE_COLOR_F` is `D3DCOLORVALUE`: https://learn.microsoft.com/en-us/windows/win32/directwrite/dwrite-color-f\n\n`D3DCOLORVALUE` is a POD struct of floats: https://learn.microsoft.com/en-us/windows/win32/direct3d9/d3dcolorvalue\n\nWhy do we need braces around each element? What was the warning?",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
