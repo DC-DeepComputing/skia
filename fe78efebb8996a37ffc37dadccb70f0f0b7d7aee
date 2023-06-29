@@ -329,6 +329,30 @@
       },
       "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e61475ea_66b4cd4d",
+        "filename": "gm/animated_gif.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-29T18:35:05Z",
+      "side": 1,
+      "message": "I\u0027m not quite sure what you mean. As far as I know this is the first time we\u0027ve attempted to compile this GM with Bazel. As for the Android GN build, I suspect it uses a slightly different set of compiler flags that don\u0027t treat this syntax as an error.\n\nHere is the compiler error I get if I replace `;)` with `);`:\n\n```\n$ bazel build //gm:cpu_android_test --config\u003dlinux_rbe --config\u003dpixel_5\n...\nCompiling gm/animated_gif.cpp failed: (Exit 1): clang.sh failed: error executing command toolchain/android_trampolines/clang.sh -gcc-toolchain external/ndk_linux_amd64/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 -target aarch64-none-linux-android -fpic -isystem ... (remaining 166 arguments skipped)\ngm/animated_gif.cpp:177:33: error: extra \u0027;\u0027 outside of a function is incompatible with C++98 [-Werror,-Wc++98-compat-extra-semi]\nDEF_GM(return new AnimatedGifGM);\n                                ^\n1 error generated.\nTarget //gm:cpu_android_test failed to build\n```\n\nIt seems like `-Wc++98-compat-extra-semi` is the culprit. If I comment out that flag in `//include/config/copts.bzl` the error becomes a warning and the target builds successfully.\n\nThe way I interpret the warning, I *think* the `DEF_GM(return new AnimatedGifGM);` macro is getting expanded to something like:\n\n```\nskiagm::GM* someFunc() {\n   ...\n   return new AnimatedGifGM;\n};\n```\n\nAnd the warning is caused by the semicolon at the end of the function declaration. A simpler example that yields the same error: `void f() {};`. The error goes away if I remove the semicolon: `void f() {}`.\n\nI\u0027m not sure if my explanation is correct (see https://skia.googlesource.com/skia/+/a4d0373cd41496f0412d02e414608325e068b473/gm/gm.h#34), but given that we use the `;)` variation elsewhere in the codebase without issues, I say let\u0027s use it here as well to get rid of the compiler error.\n\nWDYT?",
+      "parentUuid": "12d31854_f76a7042",
+      "range": {
+        "startLine": 177,
+        "startChar": 30,
+        "endLine": 177,
+        "endChar": 33
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
