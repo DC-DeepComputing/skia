@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a1cd6e6_62d0fdd6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T13:42:15Z",
+      "side": 1,
+      "message": "nit: adb_test_runner.go uses adb_pull to copy the contents...",
+      "range": {
+        "startLine": 27,
+        "startChar": 66,
+        "endLine": 27,
+        "endChar": 79
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a98a6a3d_a1b91116",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T13:42:15Z",
+      "side": 1,
+      "message": "Let\u0027s use `goldctl`, which will require some modifications to that binary.",
+      "range": {
+        "startLine": 37,
+        "startChar": 529,
+        "endLine": 37,
+        "endChar": 536
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85515f68_f64a8fd6",
+        "filename": "bazel/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T13:42:15Z",
+      "side": 1,
+      "message": "This is not how to use this constant. 0600 is more correct (we don\u0027t need the test file to be executable nor visible to anyone but us).\n\nI\u0027m pretty sure this constant is intended to be used for bitmasking purposes only.",
+      "range": {
+        "startLine": 83,
+        "startChar": 48,
+        "endLine": 83,
+        "endChar": 56
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "387810cb_8e14c3e6",
+        "filename": "bazel/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T13:42:15Z",
+      "side": 1,
+      "message": "new is a golang keyword, let\u0027s not use it as a variable name.",
+      "range": {
+        "startLine": 182,
+        "startChar": 3,
+        "endLine": 182,
+        "endChar": 6
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74cfbbee_281520fa",
+        "filename": "bazel/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T13:42:15Z",
+      "side": 1,
+      "message": "If we are changing where tests write their output, we can/should pick a less silly folder path.",
+      "range": {
+        "startLine": 224,
+        "startChar": 17,
+        "endLine": 224,
+        "endChar": 39
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a711bd7a_948686f4",
+        "filename": "gm/animated_gif.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T13:42:15Z",
+      "side": 1,
+      "message": "This seems wrong - what changed?",
+      "range": {
+        "startLine": 177,
+        "startChar": 30,
+        "endLine": 177,
+        "endChar": 33
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

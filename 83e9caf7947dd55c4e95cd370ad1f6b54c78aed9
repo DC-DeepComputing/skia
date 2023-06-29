@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cc9f2d7_3d0ac985",
+        "filename": "bazel/android_test.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T13:42:15Z",
+      "side": 0,
+      "message": "Of note: this logic to have a no-op runner was kind of a hack because I didn\u0027t know how to not build something of a certain configuration at the time. Is this possible to do with a `something something ... compatible_with ... something` Bazel attribute instead?\n\nDoesn\u0027t have to be done in this CL, but might be worth the effort to do it \"properly\".",
+      "range": {
+        "startLine": 81,
+        "startChar": 12,
+        "endLine": 81,
+        "endChar": 30
+      },
+      "revId": "83e9caf7947dd55c4e95cd370ad1f6b54c78aed9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
