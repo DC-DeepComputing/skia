@@ -22,6 +22,30 @@
       },
       "revId": "7f632a88e96344e1db5d970aad5316d5263c0003",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39041275_6367aeef",
+        "filename": "include/utils/SkPaintFilterCanvas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T14:16:33Z",
+      "side": 1,
+      "message": "I don\u0027t think so. Many useful methods on a GrRecordingContext mutate it and so by returning a const pointer to it, I think that would not be what most users want.\n\nThis change made the getter const since it is not directly changing anything in the canvas itself.",
+      "parentUuid": "c86e6a1f_9969aa9f",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 22
+      },
+      "revId": "7f632a88e96344e1db5d970aad5316d5263c0003",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
