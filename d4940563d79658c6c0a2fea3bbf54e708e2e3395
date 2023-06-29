@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45e07484_f1a7dfc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-29T14:57:02Z",
+      "side": 1,
+      "message": "This will need staging it turns out, but it seems there\u0027s no need to wait for all filters to be done. My guess is the brittle filters were lighting, magnifier, and maybe displacement/morphology. If blur/convolution do have issues in scenarios that aren\u0027t being covered between our tests and chrome tests, we can add them or will be fixing blur/convolution soon enough anyways.",
+      "revId": "d4940563d79658c6c0a2fea3bbf54e708e2e3395",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
