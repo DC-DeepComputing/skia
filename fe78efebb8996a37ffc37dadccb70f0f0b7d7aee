@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ce8ad0e_c28c52f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-29T17:42:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a1cd6e6_62d0fdd6",
+      "range": {
+        "startLine": 27,
+        "startChar": 66,
+        "endLine": 27,
+        "endChar": 79
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a98a6a3d_a1b91116",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-29T13:42:15Z",
       "side": 1,
       "message": "Let\u0027s use `goldctl`, which will require some modifications to that binary.",
+      "range": {
+        "startLine": 37,
+        "startChar": 529,
+        "endLine": 37,
+        "endChar": 536
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "140e54e4_177fb87b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-29T17:42:19Z",
+      "side": 1,
+      "message": "Done. I mentioned the required modifications to `goldctl`. Please take a look.",
+      "parentUuid": "a98a6a3d_a1b91116",
       "range": {
         "startLine": 37,
         "startChar": 529,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c4225d2_2c5f28cb",
+        "filename": "bazel/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-29T17:42:19Z",
+      "side": 1,
+      "message": "You\u0027re right. I used 0644 instead to give read rights to the group and others, which might not be strictly necessary but I suspect might prevent permission errors in the future.",
+      "parentUuid": "85515f68_f64a8fd6",
+      "range": {
+        "startLine": 83,
+        "startChar": 48,
+        "endLine": 83,
+        "endChar": 56
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "387810cb_8e14c3e6",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-06-29T13:42:15Z",
       "side": 1,
       "message": "new is a golang keyword, let\u0027s not use it as a variable name.",
+      "range": {
+        "startLine": 182,
+        "startChar": 3,
+        "endLine": 182,
+        "endChar": 6
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4dd6e14_459959c9",
+        "filename": "bazel/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-29T17:42:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "387810cb_8e14c3e6",
       "range": {
         "startLine": 182,
         "startChar": 3,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2377d08_48b9eb84",
+        "filename": "bazel/adb_test_runner/adb_test_runner.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-29T17:42:19Z",
+      "side": 1,
+      "message": "Done, I simply dropped the `revenge_of_the_skiabot` part everywhere in this file.",
+      "parentUuid": "74cfbbee_281520fa",
+      "range": {
+        "startLine": 224,
+        "startChar": 17,
+        "endLine": 224,
+        "endChar": 39
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a711bd7a_948686f4",
@@ -129,6 +249,30 @@
       "writtenOn": "2023-06-29T13:42:15Z",
       "side": 1,
       "message": "This seems wrong - what changed?",
+      "range": {
+        "startLine": 177,
+        "startChar": 30,
+        "endLine": 177,
+        "endChar": 33
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2a3090a_dc5d306c",
+        "filename": "gm/animated_gif.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-29T17:42:19Z",
+      "side": 1,
+      "message": "I don\u0027t know but there are several instances across the codebase. Try `git grep \";)\"`. Some examples:\n\nhttps://skia.googlesource.com/skia/+/34f5d27c11fe493f917794df9df671d3c704eb84/bench/AAClipBench.cpp#245\n\nhttps://skia.googlesource.com/skia/+/34f5d27c11fe493f917794df9df671d3c704eb84/experimental/sktext/slides/Text.cpp#187\n\nhttps://skia.googlesource.com/skia/+/34f5d27c11fe493f917794df9df671d3c704eb84/gm/aaclip.cpp#227\n\nhttps://skia.googlesource.com/skia/+/34f5d27c11fe493f917794df9df671d3c704eb84/gm/complexclip.cpp#202\n\nhttps://skia.googlesource.com/skia/+/34f5d27c11fe493f917794df9df671d3c704eb84/gm/gradients_no_texture.cpp#295\n\nhttps://skia.googlesource.com/skia/+/34f5d27c11fe493f917794df9df671d3c704eb84/gm/texelsubset.cpp#234",
+      "parentUuid": "a711bd7a_948686f4",
       "range": {
         "startLine": 177,
         "startChar": 30,

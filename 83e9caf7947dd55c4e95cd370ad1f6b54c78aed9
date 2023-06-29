@@ -22,6 +22,30 @@
       },
       "revId": "83e9caf7947dd55c4e95cd370ad1f6b54c78aed9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "334acb88_1ac06cff",
+        "filename": "bazel/android_test.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-29T17:42:19Z",
+      "side": 0,
+      "message": "Ack. It seems like the `target_compatible_with` attribute is what we need. In fact we already use it in this very file (see the `adb_test` instance below). I\u0027ll address this in a separate CL.\n\nRelevant docs: https://bazel.build/extending/platforms#skipping-incompatible-targets.",
+      "parentUuid": "7cc9f2d7_3d0ac985",
+      "range": {
+        "startLine": 81,
+        "startChar": 12,
+        "endLine": 81,
+        "endChar": 30
+      },
+      "revId": "83e9caf7947dd55c4e95cd370ad1f6b54c78aed9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
