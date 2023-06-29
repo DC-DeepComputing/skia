@@ -16,6 +16,46 @@
       "message": "PTAL.",
       "revId": "cc5b16dc6a56452793d41379727c2fc93ac9eacc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33fac115_e06387d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-29T18:29:44Z",
+      "side": 1,
+      "message": "Overall looks good; I like how cleanly the logic from SurfaceContext mapped to the higher Sk types.",
+      "revId": "cc5b16dc6a56452793d41379727c2fc93ac9eacc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a60a0c9a_6f396a02",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-29T18:29:44Z",
+      "side": 1,
+      "message": "Do we need this? I thought `drawImageRect` was supposed to incorporate color space transforms from the image to the dst color space already.",
+      "range": {
+        "startLine": 518,
+        "startChar": 0,
+        "endLine": 520,
+        "endChar": 88
+      },
+      "revId": "cc5b16dc6a56452793d41379727c2fc93ac9eacc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
