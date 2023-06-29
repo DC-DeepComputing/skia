@@ -70,6 +70,24 @@
       "parentUuid": "1e61bedb_a7afb66a",
       "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da2de733_a7f4ba1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-29T13:55:16Z",
+      "side": 1,
+      "message": "If `dxgitype.h` _had_ been included, would the extra bracing cause a compile error?",
+      "parentUuid": "1e61bedb_a7afb66a",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
