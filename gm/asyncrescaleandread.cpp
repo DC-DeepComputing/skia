@@ -106,7 +106,7 @@ static sk_sp<SkImage> do_read_and_scale_yuv(Src* src,
             return nullptr;
         }
 
-        graphiteContext->asyncRescaleAndReadPixelsYUV420(src, yuvCS, /*dstColorSpace=*/nullptr,
+        graphiteContext->asyncRescaleAndReadPixelsYUV420(src, yuvCS, SkColorSpace::MakeSRGB(),
                                                          srcRect, size, rescaleGamma, rescaleMode,
                                                          async_callback, &asyncContext);
         graphiteContext->submit();
@@ -140,7 +140,9 @@ static sk_sp<SkImage> do_read_and_scale_yuv(Src* src,
             {uvII, asyncContext.fResult->data(2), asyncContext.fResult->rowBytes(2)}
     };
     auto pixmaps = SkYUVAPixmaps::FromExternalPixmaps(yuvaInfo, yuvPMs);
-    SkASSERT(pixmaps.isValid());
+    if (!pixmaps.isValid()) {
+        return nullptr;
+    }
     auto lazyYUVImage = sk_gpu_test::LazyYUVImage::Make(pixmaps);
     SkASSERT(lazyYUVImage);
 #if defined(SK_GRAPHITE)
