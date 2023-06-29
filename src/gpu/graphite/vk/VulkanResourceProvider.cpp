@@ -136,7 +136,6 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateDescriptorSet(
                                            requestedDescriptors,
                                            layout);
     SkASSERT(pool);
-
     // Allocate the maximum number of sets so they can be easily accessed as needed from the cache.
     for (int i = 0; i < VulkanDescriptorPool::kMaxNumSets ; i++) {
         auto descSet = VulkanDescriptorSet::Make(this->vulkanSharedContext(), pool, layout);

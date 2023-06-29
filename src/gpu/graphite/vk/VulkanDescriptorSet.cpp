@@ -48,6 +48,12 @@ VulkanDescriptorSet::VulkanDescriptorSet(const VulkanSharedContext* ctxt,
 
 void VulkanDescriptorSet::freeGpuData() {
     fPool->unref();
+    if (fDescSetLayout != VK_NULL_HANDLE) {
+        auto ctxt = static_cast<const VulkanSharedContext*>(this->sharedContext());
+        VULKAN_CALL(ctxt->interface(),
+                    DestroyDescriptorSetLayout(ctxt->device(), fDescSetLayout, nullptr));
+        fDescSetLayout = VK_NULL_HANDLE;
+    }
 }
 
 } // namespace skgpu::graphite
