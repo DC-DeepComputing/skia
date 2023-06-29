@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9810966b_3e7de92e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2023-06-29T15:38:14Z",
+      "side": 1,
+      "message": "I noticed one nit here, otherwise this looks great!",
+      "revId": "042406a888b54e9452686813d2df64967f069376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4351464_2ece7f11",
+        "filename": "infra/bots/assets/dwritecore/create.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 20059
+      },
+      "writtenOn": "2023-06-29T15:38:14Z",
+      "side": 1,
+      "message": "2023",
+      "range": {
+        "startLine": 3,
+        "startChar": 16,
+        "endLine": 3,
+        "endChar": 17
+      },
+      "revId": "042406a888b54e9452686813d2df64967f069376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
