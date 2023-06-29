@@ -88,6 +88,24 @@
       "parentUuid": "1e61bedb_a7afb66a",
       "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af53ee22_e85ca517",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-29T14:00:26Z",
+      "side": 1,
+      "message": "Weirdly I see a lot of support for the actual DirectX API defining this the same was DirectWrite does? I am so confused.\n\nYes, if `dxgitype.h` is included first then clang will warn the other way like `warning: braces around initializer [-wbraces-scalar-init]`.",
+      "parentUuid": "fdc72598_ce2c9c3f",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
