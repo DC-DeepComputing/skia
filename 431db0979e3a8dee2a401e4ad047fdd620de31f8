@@ -124,6 +124,24 @@
       "parentUuid": "af53ee22_e85ca517",
       "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d06a489b_4686bb47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-29T14:29:31Z",
+      "side": 1,
+      "message": "So maybe the documentation and `dxgitype.h` are just out of date? My current copy of `d3dtypes.h` from Windows Kit 22621 does define `D3DCOLORVALUE` with the unions.\n\nThis is a mess, so I\u0027m just going to switch syntax and avoid brace initialization and just do it manually (and add a comment as to why).",
+      "parentUuid": "af53ee22_e85ca517",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
