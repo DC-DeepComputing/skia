@@ -10,7 +10,6 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkShader.h"
-#include "include/core/SkTileMode.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkRectPriv.h"
@@ -59,14 +58,23 @@ bool is_nearly_integer_translation(const LayerSpace<SkMatrix>& m,
 
 // Assumes 'image' is decal-tiled, so everything outside the image bounds but inside dstBounds is
 // transparent black, in which case the returned special image may be smaller than dstBounds.
+//
+// If 'clampSrcIfDisjtoin' is true and the image bounds do not overlap with dstBounds, the closest
+// edge/corner pixels of the image will be extracted, assuming it will be tiled with kClamp.
 std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> extract_subset(
         const SkSpecialImage* image,
         LayerSpace<SkIPoint> origin,
-        const LayerSpace<SkIRect>& dstBounds) {
+        const LayerSpace<SkIRect>& dstBounds,
+        bool clampSrcIfDisjoint=false) {
     LayerSpace<SkIRect> imageBounds(SkIRect::MakeXYWH(origin.x(), origin.y(),
                                                       image->width(), image->height()));
     if (!imageBounds.intersect(dstBounds)) {
-        return {nullptr, {}};
+        if (clampSrcIfDisjoint) {
+            auto edge = SkRectPriv::ClosestDisjointEdge(SkIRect(imageBounds), SkIRect(dstBounds));
+            imageBounds = LayerSpace<SkIRect>(edge);
+        } else {
+            return {nullptr, {}};
+        }
     }
 
     // Offset the image subset directly to avoid issues negating (origin). With the prior
@@ -281,7 +289,6 @@ sk_sp<SkSpecialSurface> Context::makeSurface(const SkISize& size,
 
 #if defined(SK_GANESH)
     if (fGaneshContext) {
-        // FIXME: Context should also store a surface origin that matches the source origin
         return SkSpecialSurface::MakeRenderTarget(fGaneshContext,
                                                   imageInfo,
                                                   *props,
@@ -545,8 +552,8 @@ sk_sp<SkSpecialImage> FilterResult::imageAndOffset(const Context& ctx, SkIPoint*
 bool FilterResult::modifiesPixelsBeyondImage(const LayerSpace<SkIRect>& dstBounds) const {
     // If there is no transparency-affecting color filter and it's just decal tiling, it doesn't
     // matter how the image geometry overlaps with the dst bounds.
-    if (!(fColorFilter && as_CFB(fColorFilter)->affectsTransparentBlack())) {
-        // TODO: add "&& fTileMode == SkTileMode::kDecal) {""
+    if (!(fColorFilter && as_CFB(fColorFilter)->affectsTransparentBlack()) &&
+        fTileMode == SkTileMode::kDecal) {
         return false;
     }
 
@@ -593,38 +600,117 @@ bool FilterResult::isCropped(const LayerSpace<SkMatrix>& xtraTransform,
 }
 
 FilterResult FilterResult::applyCrop(const Context& ctx,
-                                     const LayerSpace<SkIRect>& crop) const {
-    LayerSpace<SkIRect> tightBounds = crop;
-    // TODO(michaelludwig): Intersecting to the target output is only valid when the crop has
-    // decal tiling (the only current option).
-    if (!fImage ||
-        !tightBounds.intersect(ctx.desiredOutput()) ||
-        !tightBounds.intersect(fLayerBounds)) {
-        // The desired output would be filled with transparent black. There should never be a
-        // color filter acting on an empty image that could change that assumption.
-        SkASSERT(fImage || !fColorFilter);
+                                     const LayerSpace<SkIRect>& crop,
+                                     SkTileMode tileMode) const {
+    static const LayerSpace<SkMatrix> kIdentity{SkMatrix::I()};
+
+    if (crop.isEmpty() || ctx.desiredOutput().isEmpty()) {
+        // An empty crop cannot be anything other than fully transparent
         return {};
     }
 
+    // First, determine how this image's layer bounds interact with the crop rect, which determines
+    // the portion of 'crop' that could have non-transparent content.
+    LayerSpace<SkIRect> cropContent = crop;
+    if (!fImage ||
+        !cropContent.intersect(fLayerBounds)) {
+        // The pixels within 'crop' would be fully transparent, and tiling won't change that.
+        return {};
+    }
+
+    // Second, determine the subset of 'crop' that is relevant to ctx.desiredOutput().
+    LayerSpace<SkIRect> fittedCrop = crop;
+    if (tileMode == SkTileMode::kRepeat || tileMode == SkTileMode::kMirror) {
+        // SkRect tileCoords = normalized_crop_coords(crop, ctx.desiredOutput());
+
+        // auto [l, r] = tile_src_range(tileMode, tileCoords.left(), tileCoords.right());
+        // auto [t, b] = tile_src_range(tileMode, tileCoords.top(), tileCoords.bottom());
+
+        // if (l > 0.f && r < 1.f && t > 0.f && b < 1.f) {
+            // Tiling will not be necessary, reconstruct required crop subset and transform.
+
+        // } // else tiling is needed on at least one axis, so just keep 'crop' unmodified
+    } else {
+        // For both decal/clamp, we only care about the pixels within crop that are in the desired
+        // output, unless we are clamping and have to preserve edge pixels when there's no overlap.
+        if (!fittedCrop.intersect(ctx.desiredOutput())) {
+            if (tileMode == SkTileMode::kDecal) {
+                // The desired output would be filled with transparent black.
+                fittedCrop = LayerSpace<SkIRect>::Empty();
+            } else {
+                // We just need the closest row/column/corner of 'crop' to the desired output.
+                auto edge = SkRectPriv::ClosestDisjointEdge(SkIRect(crop),
+                                                            SkIRect(ctx.desiredOutput()));
+                fittedCrop = LayerSpace<SkIRect>(edge);
+
+            }
+        }
+    }
+
+    // SkDebugf("fittedCrop: %d %d %d %d\n", fittedCrop.left(), fittedCrop.top(), fittedCrop.right(), fittedCrop.bottom());
+    // SkDebugf("content: %d %d %d %d\n", cropContent.left(), cropContent.top(), cropContent.right(), cropContent.bottom());
+
+    // Third, check if there's overlap with the known non-transparent cropped content and what's
+    // used to tile the desired output. If not, the image is known to be empty. This modifies
+    // 'cropContent' and not 'fittedCrop' so that any transparent padding remains if we have to
+    // apply repeat/mirror tiling to the original geometry.
+    if (!cropContent.intersect(fittedCrop)) {
+        return {};
+    }
+
+    bool preserveTransparencyInCrop = false;
+    if (tileMode == SkTileMode::kDecal) {
+        // We can reduce the crop dimensions to what's non-transparent
+        fittedCrop = cropContent;
+    } else if (!cropContent.contains(fittedCrop)) {
+        // There is transparency in fittedCrop that must be resolved in order to maintain the new
+        // tiling geometry.
+        preserveTransparencyInCrop = true;
+    } // Otherwise cropContent == fittedCrop
+
+    // Fourth, when the transform is an integer translation, any prior tiling and the new tiling
+    // can sometimes be addressed analytically without producing a new image. Moving the crop into
+    // the image dimensions allows future operations like applying a transform or color filter to
+    // be composed without rendering a new image since there will not be an intervening crop.
+    const bool doubleClamp = fTileMode == SkTileMode::kClamp && tileMode == SkTileMode::kClamp;
     LayerSpace<SkIPoint> origin;
-    if (!this->modifiesPixelsBeyondImage(tightBounds) &&
-         is_nearly_integer_translation(fTransform, &origin)) {
-        // We can lift the crop to earlier in the order of operations and apply it to the image
-        // subset directly. This does not rely on resolve() to call extract_subset() because it
-        // will still render a new image if there's a color filter. As such, we have to preserve
-        // the current color filter on the new FilterResult.
-        // NOTE: Even though applying a crop never renders a new image, moving the crop into the
-        // image dimensions allows future operations like applying a transform or color filter to
-        // be composed without rendering a new image since there is no longer an intervening crop.
-        FilterResult restrictedOutput = extract_subset(fImage.get(), origin, tightBounds);
+    if (!preserveTransparencyInCrop &&
+        is_nearly_integer_translation(fTransform, &origin) &&
+        (doubleClamp || !this->modifiesPixelsBeyondImage(fittedCrop))) {
+        // Since the transform is axis-aligned, the tile mode can be applied to the original
+        // image pre-transformation and still be consistent with the 'crop' geometry. When the
+        // original tile mode is decal, extract_subset is always valid. When the original mode is
+        // mirror/repeat, !modifiesPixelsBeyondImage() ensures that 'fittedCrop' is contained within
+        // the base image bounds, so extract_subset is valid. When the original mode is clamp
+        // and the new mode is not clamp, that is also the case. When both modes are clamp, we have
+        // to consider how 'fittedCrop' intersects (or doesn't) with the base image bounds.
+        FilterResult restrictedOutput =
+                extract_subset(fImage.get(), origin, fittedCrop, doubleClamp);
+        // This does not rely on resolve() to call extract_subset() because it  will still render a
+        // new image if there's a color filter. As such, we have to preserve the current color
+        // filter on the new FilterResult.
         restrictedOutput.fColorFilter = fColorFilter;
+        restrictedOutput.fTileMode = tileMode;
+        if (tileMode != SkTileMode::kDecal) {
+            restrictedOutput.fLayerBounds = ctx.desiredOutput();
+        }
+        return restrictedOutput;
+    } else if (tileMode == SkTileMode::kDecal) {
+        // A decal crop can always be applied as the final operation by adjusting layer bounds, and
+        // does not modify any prior tile mode.
+        SkASSERT(!preserveTransparencyInCrop);
+        FilterResult restrictedOutput = *this;
+        restrictedOutput.fLayerBounds = fittedCrop;
         return restrictedOutput;
     } else {
-        // Otherwise cropping is the final operation to the FilterResult's image and can always be
-        // applied by adjusting the layer bounds.
-        FilterResult restrictedOutput = *this;
-        restrictedOutput.fLayerBounds = tightBounds;
-        return restrictedOutput;
+        // There is a non-trivial transform to the image data that must be applied before the
+        // non-decal tilemode is meant to be applied to the axis-aligned 'crop'.
+        // FIXME if we have a mix of (crop,decal) or (decal,crop), we can outset the crop bounds
+        // by 1 and then intersect with the decal bounds to get an image smaller than fittedCrop.
+        FilterResult tiled = this->resolve(ctx, fittedCrop, true);
+        tiled.fLayerBounds = ctx.desiredOutput();
+        tiled.fTileMode = tileMode;
+        return tiled;
     }
 }
 
@@ -803,17 +889,19 @@ FilterResult FilterResult::applyTransform(const Context& ctx,
 
 std::pair<sk_sp<SkSpecialImage>, LayerSpace<SkIPoint>> FilterResult::resolve(
         const Context& ctx,
-        LayerSpace<SkIRect> dstBounds) const {
+        LayerSpace<SkIRect> dstBounds,
+        bool preserveTransparency) const {
     // The layer bounds is the final clip, so it can always be used to restrict 'dstBounds'. Even
     // if there's a non-decal tile mode or transparent-black affecting color filter, those floods
     // are restricted to fLayerBounds.
-    if (!fImage || !dstBounds.intersect(fLayerBounds)) {
+    if (!fImage || (!preserveTransparency && !dstBounds.intersect(fLayerBounds))) {
         return {nullptr, {}};
     }
 
     // If we have any extra effect to apply, there's no point in trying to extract a subset.
-    // TODO: Also factor in a non-decal tile mode
-    const bool subsetCompatible = !fColorFilter;
+    const bool subsetCompatible = !fColorFilter &&
+                                  fTileMode == SkTileMode::kDecal &&
+                                  !preserveTransparency;
 
     // TODO(michaelludwig): If we get to the point where all filter results track bounds in
     // floating point, then we can extend this case to any S+T transform.
@@ -858,14 +946,19 @@ void FilterResult::draw(SkCanvas* canvas, const LayerSpace<SkIRect>& dstBounds) 
 
     if (this->modifiesPixelsBeyondImage(dstBounds)) {
 #ifdef SK_ENABLE_SKSL
-        // apply_decal consumes the transform, so we don't modify the canvas
-        paint.setShader(apply_decal(fTransform, fImage, fLayerBounds, sampling));
-#else
-        // Decal tiling might be distorted if transform has a high scale factor, but this is a rare
-        // scenario that requires rendering an intermediate image to fix without SkSL, so accept the
-        // potential distortion.
-        paint.setShader(fImage->asShader(SkTileMode::kDecal, sampling, SkMatrix(fTransform)));
+        if (fTileMode == SkTileMode::kDecal) {
+            // apply_decal consumes the transform, so we don't modify the canvas
+            paint.setShader(apply_decal(fTransform, fImage, fLayerBounds, sampling));
+        } else
 #endif
+        {
+            // For clamp/repeat/mirror, tiling at the layer resolution vs. resolving the image to
+            // the layer resolution and then tiling produces much more compatible results than
+            // decal would, so just always use a simple shader. If we don't have SkSL to let us use
+            // apply_decal, this might introduce some distortion if there was a deferred transform
+            // with a high scale factor, but this is a rare scenario.
+            paint.setShader(fImage->asShader(fTileMode, sampling, SkMatrix(fTransform)));
+        }
         // Fill the canvas with the shader, relying on it to do the transform
         canvas->drawPaint(paint);
     } else {
@@ -908,7 +1001,8 @@ sk_sp<SkShader> FilterResult::asShader(const Context& ctx,
 
     sk_sp<SkShader> shader;
     if (needsResolve) {
-        // The resolve takes care of fTransform (sans origin), fColorFilter, and fLayerBounds
+        // The resolve takes care of fTransform (sans origin), fTileMode, fColorFilter, and
+        // fLayerBounds
         auto [pixels, origin] = this->resolve(ctx, fLayerBounds);
         if (pixels) {
             shader = pixels->asShader(SkTileMode::kDecal, sampling,
@@ -918,10 +1012,14 @@ sk_sp<SkShader> FilterResult::asShader(const Context& ctx,
         // Since we didn't need to resolve, we know the content being sampled isn't cropped by
         // fLayerBounds. fTransform and fColorFilter are handled in the shader directly.
 #ifdef SK_ENABLE_SKSL
-        shader = apply_decal(fTransform, fImage, sampleBounds, sampling);
-#else
-        shader = fImage->asShader(SkTileMode::kDecal, sampling, SkMatrix(fTransform));
+        if (fTileMode == SkTileMode::kDecal) {
+            shader = apply_decal(fTransform, fImage, sampleBounds, sampling);
+        } else
 #endif
+        {
+            shader = fImage->asShader(fTileMode, sampling, SkMatrix(fTransform));
+        }
+
         if (shader && fColorFilter) {
             shader = shader->makeWithColorFilter(fColorFilter);
         }
