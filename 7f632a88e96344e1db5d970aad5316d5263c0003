@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c86e6a1f_9969aa9f",
+        "filename": "include/utils/SkPaintFilterCanvas.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-29T13:37:24Z",
+      "side": 1,
+      "message": "Should this be `const GrRecordingContext*`?",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 22
+      },
+      "revId": "7f632a88e96344e1db5d970aad5316d5263c0003",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
