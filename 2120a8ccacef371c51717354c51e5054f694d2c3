@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ef65791_7b0c46d4",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-29T13:20:48Z",
+      "side": 1,
+      "message": "If someone registered `SkHeifCodec` under `avif`, then we\u0027d do the wrong thing, right? They\u0027d get the adapter, and it wouldn\u0027t allow sampling? Maybe put this in the comments for `SkHeifCodec`?",
+      "revId": "2120a8ccacef371c51717354c51e5054f694d2c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

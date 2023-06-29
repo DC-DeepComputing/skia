@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9718c6cc_37d3c77f",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-29T13:20:48Z",
+      "side": 1,
+      "message": "nit: `const`",
+      "range": {
+        "startLine": 220,
+        "startChar": 25,
+        "endLine": 220,
+        "endChar": 31
+      },
+      "revId": "f71f45ffd590ebe4897b35748eaca259561024f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
