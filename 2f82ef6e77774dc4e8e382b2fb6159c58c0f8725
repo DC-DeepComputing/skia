@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8afbf03a_73c16f43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2023-06-29T22:09:26Z",
+      "side": 1,
+      "message": "FWIW this seems to be preventing Skia roll into Chromium: https://chromium-review.googlesource.com/c/chromium/src/+/4657153?tab\u003dchecks",
+      "revId": "2f82ef6e77774dc4e8e382b2fb6159c58c0f8725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
