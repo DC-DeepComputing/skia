@@ -29,6 +29,11 @@ class GraphiteResourceKey;
 class ProxyCache;
 class Resource;
 
+#if GRAPHITE_TEST_UTILS
+#include <functional>
+class Texture;
+#endif
+
 class ResourceCache : public SkRefCnt {
 public:
     static sk_sp<ResourceCache> Make(SingleOwner*, uint32_t recorderID);
@@ -83,6 +88,8 @@ public:
     Resource* topOfPurgeableQueue();
 
     bool testingInPurgeableQueue(Resource* resource) { return this->inPurgeableQueue(resource); }
+
+    void visitTextures(const std::function<void(const Texture*, bool purgeable)>&) const;
 #endif
 
     ProxyCache* proxyCache() { return fProxyCache.get(); }
