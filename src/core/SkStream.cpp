@@ -926,14 +926,17 @@ static sk_sp<SkData> mmap_filename(const char path[]) {
 std::unique_ptr<SkStreamAsset> SkStream::MakeFromFile(const char path[]) {
     auto data(mmap_filename(path));
     if (data) {
+        SkDebugf("Made MemoryStream from %s; %d bytes long\n", path, (int)data->size());
         return std::make_unique<SkMemoryStream>(std::move(data));
     }
 
     // If we get here, then our attempt at using mmap failed, so try normal file access.
     auto stream = std::make_unique<SkFILEStream>(path);
     if (!stream->isValid()) {
+        SkDebugf("Could not make SkFILEStream from %s\n", path);
         return nullptr;
     }
+    SkDebugf("Made SkFILEStream from %s\n", path);
     return std::move(stream);
 }
 

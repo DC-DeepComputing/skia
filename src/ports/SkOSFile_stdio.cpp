@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 #ifdef _WIN32
 #include <direct.h>
@@ -67,6 +68,17 @@ FILE* sk_fopen(const char path[], SkFILE_Flags flags) {
 
     if (flags & kRead_SkFILE_Flag) {
         *p++ = 'r';
+        // Maybe this is a symlink?
+        // https://man7.org/linux/man-pages/man2/readlink.2.html
+        constexpr int kMaxPathLength = 500; // arbitrary
+        std::string result(kMaxPathLength, '\0');
+        ssize_t len = readlink(path, result.data(), kMaxPathLength - 1);
+        // positive means success. If it fails, we'll just try the file path as is
+        // because it might have just not been a symlink.
+        if (len > 0) {
+            SkDebugf("Identified symlink %s -> %s\n", path, result.c_str());
+            path = result.c_str();
+        }
     }
     if (flags & kWrite_SkFILE_Flag) {
         *p++ = 'w';
