@@ -686,6 +686,15 @@ SkSpan<const SkFontArguments::VariationPosition::Coordinate> VariationSliders::g
 
 #if defined(SK_GRAPHITE)
 
+namespace {
+
+uint64_t create_key(SkImage* image, bool mipmapped) {
+//    if (SkBitmap bm; as_IB(image)->getROPixels(nullptr, &bm)) {
+    return ((uint64_t)image->uniqueID() << 32) | (mipmapped ? 0x1 : 0x0);
+}
+
+} // anonymous namespace
+
 // Currently, we give each new Recorder its own ImageProvider. This means we don't have to deal
 // w/ any threading issues.
 // TODO: We should probably have this class generate and report some cache stats
@@ -703,14 +712,14 @@ public:
             // since it can be used in that case.
             // TODO: we could get fancy and, if ever a mipmapped key eclipsed a non-mipmapped
             // key, we could remove the hidden non-mipmapped key/image from the cache.
-            uint64_t mipMappedKey = ((uint64_t)image->uniqueID() << 32) | 0x1;
+            uint64_t mipMappedKey = create_key(image, /* mipmapped= */ true);
             auto result = fCache.find(mipMappedKey);
             if (result != fCache.end()) {
                 return result->second;
             }
         }
 
-        uint64_t key = ((uint64_t)image->uniqueID() << 32) | (requiredProps.fMipmapped ? 0x1 : 0x0);
+        uint64_t key = create_key(image, requiredProps.fMipmapped);
 
         auto result = fCache.find(key);
         if (result != fCache.end()) {

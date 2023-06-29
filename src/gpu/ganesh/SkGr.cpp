@@ -67,6 +67,13 @@ void GrMakeKeyFromImageID(skgpu::UniqueKey* key, uint32_t imageID, const SkIRect
     builder[2] = imageBounds.fTop;
     builder[3] = imageBounds.fRight;
     builder[4] = imageBounds.fBottom;
+
+    SkDebugf("%d: %d %d %d %d\n",
+             imageID,
+             imageBounds.fLeft,
+             imageBounds.fTop,
+             imageBounds.fRight,
+             imageBounds.fBottom);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
