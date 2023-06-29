@@ -34,6 +34,24 @@
       "parentUuid": "ed29b000_74c274a5",
       "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e61bedb_a7afb66a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-29T13:52:03Z",
+      "side": 1,
+      "message": "Whoops, missed the bit where the line `}` should be `} D3DCOLORVALUE;`.",
+      "parentUuid": "2437100f_a107a3ed",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
