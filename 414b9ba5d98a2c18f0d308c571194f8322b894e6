@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9456729a_e07f27b6",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-29T13:59:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c8eddc7_ff207d23",
+      "range": {
+        "startLine": 439,
+        "startChar": 12,
+        "endLine": 439,
+        "endChar": 33
+      },
+      "revId": "414b9ba5d98a2c18f0d308c571194f8322b894e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73b28593_0f3e7036",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-06-28T18:23:19Z",
       "side": 1,
       "message": "Indent",
+      "range": {
+        "startLine": 520,
+        "startChar": 12,
+        "endLine": 520,
+        "endChar": 31
+      },
+      "revId": "414b9ba5d98a2c18f0d308c571194f8322b894e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b99ffc8_52b24186",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-29T13:59:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73b28593_0f3e7036",
       "range": {
         "startLine": 520,
         "startChar": 12,
@@ -100,6 +148,30 @@
       "writtenOn": "2023-06-28T18:23:19Z",
       "side": 1,
       "message": "Just noticed this. We should probably use \"if (xxx \u003d\u003d VK_NULL_HANDLE)\" in these cases. I don\u0027t see anything in the spec that says that VK_NULL_HANDLE has to be 0.",
+      "range": {
+        "startLine": 648,
+        "startChar": 9,
+        "endLine": 648,
+        "endChar": 23
+      },
+      "revId": "414b9ba5d98a2c18f0d308c571194f8322b894e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f40d750_9c7f128b",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-29T13:59:54Z",
+      "side": 1,
+      "message": "Yes, now that we return the VkPipelineLayout directly (instead of a ptr which gets manually assigned to nullptr in the case of failure), that is the better approach. Done",
+      "parentUuid": "6775e499_0ff170de",
       "range": {
         "startLine": 648,
         "startChar": 9,
