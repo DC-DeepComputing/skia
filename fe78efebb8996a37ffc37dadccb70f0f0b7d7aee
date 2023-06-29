@@ -353,6 +353,30 @@
       },
       "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1731f75b_fb4647f7",
+        "filename": "gm/animated_gif.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T18:49:48Z",
+      "side": 1,
+      "message": "Works for me.",
+      "parentUuid": "e61475ea_66b4cd4d",
+      "range": {
+        "startLine": 177,
+        "startChar": 30,
+        "endLine": 177,
+        "endChar": 33
+      },
+      "revId": "fe78efebb8996a37ffc37dadccb70f0f0b7d7aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
