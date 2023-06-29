@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aae1ff74_9f112655",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1899,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T19:23:50Z",
+      "side": 1,
+      "message": "I think we had decided that this should be configurable via a boolean passed in, right?",
+      "range": {
+        "startLine": 1899,
+        "startChar": 49,
+        "endLine": 1899,
+        "endChar": 59
+      },
+      "revId": "57fca9d736f6d12e70cf3328a77cf25166a909fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01bce1c3_b2d80d89",
+        "filename": "modules/canvaskit/tests/core_test.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T19:23:50Z",
+      "side": 1,
+      "message": "I would like more precises assertions for this cull rect. What values should the 4 corners be?",
+      "range": {
+        "startLine": 35,
+        "startChar": 28,
+        "endLine": 35,
+        "endChar": 43
+      },
+      "revId": "57fca9d736f6d12e70cf3328a77cf25166a909fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
