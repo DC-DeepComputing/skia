@@ -160,6 +160,24 @@
       "parentUuid": "d06a489b_4686bb47",
       "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbd30b99_ece71450",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-29T15:21:34Z",
+      "side": 1,
+      "message": "Direct3D 10 and later reference documentation only documents \"new\" things and not the entire interface. Since `D3DCOLORVALUE` isn\u0027t new (just changed from d3d9 and earlier) it isn\u0027t documented in the Direct3D 10 and later documentation. However, it is different and the difference should have been documented. So I can say for certain that the documentation linked at the start of this thread (about direct3d9) is out of date (unless you\u0027re using d3d9). `D3DCOLORVALUE` is now (since d3d10) four unions, it just isn\u0027t documented anywhere except in the headers themselves.\n\nThat being said, while `dxgitype.h` should probably be fixed I don\u0027t think we need to worry about it accidentally being included here. This is part of dxgi which is kind of the user mode part of the direct3d graphics driver. Nothing in these files should ever be pulling in that header.",
+      "parentUuid": "83b28dbc_90ea58fa",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
