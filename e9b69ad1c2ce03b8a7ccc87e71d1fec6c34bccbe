@@ -39,6 +39,30 @@
       },
       "revId": "e9b69ad1c2ce03b8a7ccc87e71d1fec6c34bccbe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4726bbcd_0057fd9e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-29T19:26:30Z",
+      "side": 1,
+      "message": "I expect it\u0027d be the same but I think this is fine for now.",
+      "parentUuid": "217cf117_36c37350",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 9
+      },
+      "revId": "e9b69ad1c2ce03b8a7ccc87e71d1fec6c34bccbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

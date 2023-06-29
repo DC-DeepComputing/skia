@@ -22,6 +22,30 @@
       },
       "revId": "643d8a2fb08989f570e81fd7117e2066c383d1a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b4f1dce_2c2abeda",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-06-29T19:26:30Z",
+      "side": 1,
+      "message": "Sent you a link, but this is null when using dynamic rendering, and we need to add a new VkPipelineRenderingCreateInfoKHR struct to the creation chain.",
+      "parentUuid": "94bd645b_997ed121",
+      "range": {
+        "startLine": 684,
+        "startChar": 0,
+        "endLine": 685,
+        "endChar": 51
+      },
+      "revId": "643d8a2fb08989f570e81fd7117e2066c383d1a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
