@@ -16,6 +16,29 @@
       "message": "PTAL 😊",
       "revId": "e9b69ad1c2ce03b8a7ccc87e71d1fec6c34bccbe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "217cf117_36c37350",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-29T16:45:03Z",
+      "side": 1,
+      "message": "In Ganesh, we had some logic for tapping into a persistent pipeline cache. Are we expecting to do the same for Graphite, or just have pipeline caches be on a per-Resource Provider(shared context) level?",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 9
+      },
+      "revId": "e9b69ad1c2ce03b8a7ccc87e71d1fec6c34bccbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
