@@ -52,6 +52,24 @@
       "parentUuid": "2437100f_a107a3ed",
       "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdc72598_ce2c9c3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-29T13:54:53Z",
+      "side": 1,
+      "message": "Anyhow, they even documented this at https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/win32/dwrite_2/ns-dwrite_2-d3dcolorvalue .",
+      "parentUuid": "1e61bedb_a7afb66a",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
