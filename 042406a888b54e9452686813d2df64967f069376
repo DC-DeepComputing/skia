@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99d70110_87bd0d2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10873
+      },
+      "writtenOn": "2023-06-29T18:55:46Z",
+      "side": 1,
+      "message": "I\u0027m not sure why that would be the case - I\u0027d expect the font collection to be returned the same as for dwrite. What\u0027s the HRESULT coming back from GetSystemFontCollection()?",
+      "parentUuid": "33ca7923_35ca7657",
+      "revId": "042406a888b54e9452686813d2df64967f069376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4351464_2ece7f11",
