@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38095f89_3eb45442",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-29T20:58:46Z",
+      "side": 1,
+      "message": "After some poking, it looks like this may have been an issue with 1.3? I\u0027ve upped to 1.4-preview and it appears to work now.",
+      "parentUuid": "99d70110_87bd0d2b",
+      "revId": "042406a888b54e9452686813d2df64967f069376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4351464_2ece7f11",
@@ -67,6 +85,30 @@
       "writtenOn": "2023-06-29T15:38:14Z",
       "side": 1,
       "message": "2023",
+      "range": {
+        "startLine": 3,
+        "startChar": 16,
+        "endLine": 3,
+        "endChar": 17
+      },
+      "revId": "042406a888b54e9452686813d2df64967f069376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "445c3336_daa472a2",
+        "filename": "infra/bots/assets/dwritecore/create.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-29T20:58:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4351464_2ece7f11",
       "range": {
         "startLine": 3,
         "startChar": 16,
