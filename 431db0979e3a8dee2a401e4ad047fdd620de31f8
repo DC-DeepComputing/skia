@@ -106,6 +106,24 @@
       "parentUuid": "fdc72598_ce2c9c3f",
       "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52d407d2_868abab3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-29T14:07:49Z",
+      "side": 1,
+      "message": "Can we just include `dxgitype.h` instead? It seems like a more durable fix.",
+      "parentUuid": "af53ee22_e85ca517",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
