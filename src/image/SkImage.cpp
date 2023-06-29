@@ -255,6 +255,19 @@ sk_sp<SkImage> SkImage::makeRasterImage(GrDirectContext* dContext, CachingHint c
     return SkImages::RasterFromData(fInfo, std::move(data), rowBytes);
 }
 
+#if 0
+std::tuple<bool, SkIRect> SkImage::isSubset() const {
+    SkIRect subset = this->bounds();
+
+    if (const SkBitmap* bm = as_IB(this)->onPeekBitmap()) {
+        subset.offset(bm->pixelRefOrigin());
+        return { subset == this->bounds(), subset };
+    }
+
+    return { false, subset };
+}
+#endif
+
 bool SkImage::hasMipmaps() const { return as_IB(this)->onHasMipmaps(); }
 
 sk_sp<SkImage> SkImage::withMipmaps(sk_sp<SkMipmap> mips) const {

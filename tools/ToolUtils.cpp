@@ -34,6 +34,7 @@
 #include <cstring>
 
 #if defined(SK_GRAPHITE)
+#include "include/core/SkTiledImageUtils.h"
 #include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/ImageProvider.h"
 
@@ -686,6 +687,49 @@ SkSpan<const SkFontArguments::VariationPosition::Coordinate> VariationSliders::g
 
 #if defined(SK_GRAPHITE)
 
+namespace {
+
+struct ImageKey {
+    static const int kNumValues = SkTiledImageUtils::kFoo + 1;
+
+    uint32_t fValues[kNumValues];
+
+    bool operator==(const ImageKey& other) const {
+        for (int i = 0; i < kNumValues; ++i) {
+            if (fValues[i] != other.fValues[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    bool operator!=(const ImageKey& other) const { return !(*this == other); }
+};
+
+struct ImageHash {
+    size_t operator()(const ImageKey& key) const {
+        return SkChecksum::Hash32(key.fValues, sizeof(key.fValues));
+    }
+};
+
+ImageKey create_key(const SkImage* image, bool mipmapped) {
+    ImageKey key;
+
+    SkTiledImageUtils::foo(image, key.fValues);
+    key.fValues[SkTiledImageUtils::kFoo] = mipmapped ? 0x1 : 0x0;
+
+    SkDebugf("graphite %d: %d %d %d %d\n",
+             key.fValues[0],
+             key.fValues[1],
+             key.fValues[2],
+             key.fValues[3],
+             key.fValues[4]);
+
+    return key;
+}
+
+} // anonymous namespace
+
 // Currently, we give each new Recorder its own ImageProvider. This means we don't have to deal
 // w/ any threading issues.
 // TODO: We should probably have this class generate and report some cache stats
@@ -703,14 +747,14 @@ public:
             // since it can be used in that case.
             // TODO: we could get fancy and, if ever a mipmapped key eclipsed a non-mipmapped
             // key, we could remove the hidden non-mipmapped key/image from the cache.
-            uint64_t mipMappedKey = ((uint64_t)image->uniqueID() << 32) | 0x1;
+            ImageKey mipMappedKey = create_key(image, /* mipmapped= */ true);
             auto result = fCache.find(mipMappedKey);
             if (result != fCache.end()) {
                 return result->second;
             }
         }
 
-        uint64_t key = ((uint64_t)image->uniqueID() << 32) | (requiredProps.fMipmapped ? 0x1 : 0x0);
+        ImageKey key = create_key(image, requiredProps.fMipmapped);
 
         auto result = fCache.find(key);
         if (result != fCache.end()) {
@@ -729,7 +773,7 @@ public:
     }
 
 private:
-    std::unordered_map<uint64_t, sk_sp<SkImage>> fCache;
+    std::unordered_map<ImageKey, sk_sp<SkImage>, ImageHash> fCache;
 };
 
 skgpu::graphite::RecorderOptions CreateTestingRecorderOptions() {

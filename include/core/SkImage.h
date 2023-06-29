@@ -728,6 +728,8 @@ public:
                                       const SkIRect& subset,
                                       RequiredProperties) const = 0;
 
+//    std::tuple<bool, SkIRect> isSubset() const;
+
     /**
      *  Returns true if the image has mipmap levels.
      */

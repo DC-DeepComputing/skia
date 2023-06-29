@@ -92,6 +92,10 @@ inline void DrawImage(SkCanvas* canvas,
     DrawImage(canvas, image.get(), x, y, sampling, paint, constraint);
 }
 
+static const int kFoo = 5;
+
+SK_API void foo(const SkImage* image, uint32_t bar[kFoo]);
+
 }  // namespace SkTiledImageUtils
 
 #endif // SkTiledImageUtils_DEFINED
