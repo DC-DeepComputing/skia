@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "214b363d_866adff7",
+        "filename": ".bazelrc",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T13:19:36Z",
+      "side": 1,
+      "message": "We do not want this by default. It adds overhead that nearly all commands to not need.",
+      "range": {
+        "startLine": 17,
+        "startChar": 8,
+        "endLine": 17,
+        "endChar": 32
+      },
+      "revId": "737e20efb26f6af8afdaf26052565e1649dd5ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "764a2a52_37a87ca2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T13:19:36Z",
+      "side": 1,
+      "message": "Why does all of this need to be duplicated in the Skia repository?\n\nIf we just need to create a Docker container, can we use simpler tools e.g. an ordinary Dockerfile?\n\nI think the code that is used to create and deploy the final image should stay in the Skia Infra repository, unless there is a very good reason to move it into the Skia repository. If such a reason exists, it should be clearly explained in the commit message.",
+      "revId": "737e20efb26f6af8afdaf26052565e1649dd5ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdbbac14_c7cdd435",
+        "filename": "bazel/skia_app_container.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-29T13:19:36Z",
+      "side": 1,
+      "message": "I am sceptical that we want to use pushk from the Skia repo. In any case, this will not work because //kube",
+      "range": {
+        "startLine": 245,
+        "startChar": 16,
+        "endLine": 245,
+        "endChar": 26
+      },
+      "revId": "737e20efb26f6af8afdaf26052565e1649dd5ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
