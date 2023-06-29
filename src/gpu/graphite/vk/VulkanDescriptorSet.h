@@ -30,8 +30,6 @@ public:
                                            sk_sp<VulkanDescriptorPool>,
                                            const VkDescriptorSetLayout);
 
-    static VkDescriptorType DsTypeEnumToVkDs(DescriptorType type);
-
     VulkanDescriptorSet(const VulkanSharedContext*,
                         VkDescriptorSet,
                         sk_sp<VulkanDescriptorPool>);
