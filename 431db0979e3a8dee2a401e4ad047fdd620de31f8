@@ -16,6 +16,24 @@
       "message": "`DWRITE_COLOR_F` is `D3DCOLORVALUE`: https://learn.microsoft.com/en-us/windows/win32/directwrite/dwrite-color-f\n\n`D3DCOLORVALUE` is a POD struct of floats: https://learn.microsoft.com/en-us/windows/win32/direct3d9/d3dcolorvalue\n\nWhy do we need braces around each element? What was the warning?",
       "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2437100f_a107a3ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-29T13:50:39Z",
+      "side": 1,
+      "message": "Yeah, this is silly. `dwrite_2.h` has the bit\n\n    #ifndef D3DCOLORVALUE_DEFINED\n    typedef struct _D3DCOLORVALUE {\n      union { FLOAT r; FLOAT dvR; };\n      union { FLOAT g; FLOAT dvG; };\n      union { FLOAT b; FLOAT dvB; };\n      union { FLOAT a; FLOAT dvA; };\n    }\n    #define D3DCOLORVALUE_DEFINED\n    #endif\n\nWhich is not what `dxgitype.h` would have defined. I don\u0027t know why they did this. (Whoever manages the dwrite headers really doesn\u0027t understand how Windows public headers work, this isn\u0027t the only crazy thing they\u0027ve done.)\n\nOne way to \"work around\" this would be to ensure that `dxgitype.h` is included everywhere before any dwrite headers, but that would be difficult and also make it look like we\u0027re trying to use dx in here. Or just manually do what `dwrite_2.h` is doing but correctly? Would still need to do that before any dwrite headers are included, which is painful.",
+      "parentUuid": "ed29b000_74c274a5",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
