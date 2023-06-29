@@ -142,6 +142,24 @@
       "parentUuid": "af53ee22_e85ca517",
       "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83b28dbc_90ea58fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-29T14:32:01Z",
+      "side": 1,
+      "message": "Hmmm... yes, `d3d9types.h` declares `D3DCOLORVALUE` without the unions.",
+      "parentUuid": "d06a489b_4686bb47",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
