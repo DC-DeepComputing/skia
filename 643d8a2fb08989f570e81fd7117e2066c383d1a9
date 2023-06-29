@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94bd645b_997ed121",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-06-29T17:19:25Z",
+      "side": 1,
+      "message": "Do you know how this integrates with the dynamic render pass system we\u0027re using? Do I pass `VK_NULL_HANDLE` in for `pipelineCreateInfo.renderPass` and it just kind of figures it out? Or do I need to dive deeper into figuring out how to obtain a VkRenderPass handle from the ongoing dynamic pass?",
+      "range": {
+        "startLine": 684,
+        "startChar": 0,
+        "endLine": 685,
+        "endChar": 51
+      },
+      "revId": "643d8a2fb08989f570e81fd7117e2066c383d1a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
