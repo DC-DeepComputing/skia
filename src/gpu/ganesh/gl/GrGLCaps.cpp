@@ -3795,13 +3795,12 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         ctxInfo.angleBackend() == GrGLANGLEBackend::kD3D11) {
         // As GL_EXT_multisampled_render_to_texture supporting issue,
         // fall back to default dmsaa path
-        if ((ctxInfo.vendor()  == GrGLVendor::kIntel ||
+        if ((ctxInfo.vendor() == GrGLVendor::kIntel ||
              ctxInfo.angleVendor() == GrGLVendor::kIntel) &&
-             ctxInfo.renderer() >= GrGLRenderer::kIntelIceLake) {
+            ctxInfo.renderer() >= GrGLRenderer::kIntelIceLake) {
             fMSFBOType = kStandard_MSFBOType;
             fMSAAResolvesAutomatically = false;
-        }
-        else {
+        } else {
             fDisallowDynamicMSAA = true;
         }
     }
@@ -4141,6 +4140,14 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     //    Tegra3, PowerVRGE8320 (Wembley), MaliG76, and Adreno308
     // Given the range of vendors we're just blanket enabling it on Android for OpenGL.
     fShaderCaps->fPerlinNoiseRoundingFix = true;
+#endif
+
+#if defined(SK_BUILD_FOR_WIN)
+    // On Windows with Intel 11th and 12th generation GPUs, the Perlin noise shader struggles with
+    // the vector tile-stitching logic in GLSL. (skbug.com/14411)
+    fShaderCaps->fPerlinNoiseScalarTileStitching =
+            ctxInfo.vendor() == GrGLVendor::kIntel &&
+            ctxInfo.renderer() >= GrGLRenderer::kIntelIceLake;
 #endif
 
     // On Mali 400 there is a bug using dFd* in the x direction. So we avoid using it when possible.

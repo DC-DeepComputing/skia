@@ -89,7 +89,15 @@ SkString GrPerlinNoise2Effect::Impl::emitHelper(EmitArgs& args) {
 
     // Adjust frequencies if we're stitching tiles
     if (pne.stitchTiles()) {
-        noiseCode.append("floorVal -= step(stitchData.xyxy, floorVal) * stitchData.xyxy;");
+        if (args.fShaderCaps->fPerlinNoiseScalarTileStitching) {
+            noiseCode.append("if (floorVal.x >= stitchData.x) { floorVal.x -= stitchData.x; }"
+                             "if (floorVal.y >= stitchData.y) { floorVal.y -= stitchData.y; }"
+                             "if (floorVal.z >= stitchData.x) { floorVal.z -= stitchData.x; }"
+                             "if (floorVal.w >= stitchData.y) { floorVal.w -= stitchData.y; }");
+
+        } else {
+            noiseCode.append("floorVal -= step(stitchData.xyxy, floorVal) * stitchData.xyxy;");
+        }
     }
 
     // NOTE: We need to explicitly pass half4(1) as input color here, because the helper function

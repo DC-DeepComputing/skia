@@ -147,6 +147,9 @@ struct ShaderCaps {
     // On some Android devices colors aren't accurate enough for the double lookup in the
     // Perlin noise shader. This workaround aggressively snaps colors to multiples of 1/255.
     bool fPerlinNoiseRoundingFix = false;
+    // On Windows, some Intel GPUs generate garbage if we use vectorized logic to do tile-stitching.
+    // (skbug.com/14411)
+    bool fPerlinNoiseScalarTileStitching = false;
 
     const char* fVersionDeclString = "";
 
