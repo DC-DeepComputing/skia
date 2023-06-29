@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4694f1c_b963bdb1",
+        "filename": ".bazelrc",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-06-29T13:38:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "214b363d_866adff7",
+      "range": {
+        "startLine": 17,
+        "startChar": 8,
+        "endLine": 17,
+        "endChar": 32
+      },
+      "revId": "737e20efb26f6af8afdaf26052565e1649dd5ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "764a2a52_37a87ca2",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-06-29T13:19:36Z",
       "side": 1,
       "message": "I am sceptical that we want to use pushk from the Skia repo. In any case, this will not work because //kube",
+      "range": {
+        "startLine": 245,
+        "startChar": 16,
+        "endLine": 245,
+        "endChar": 26
+      },
+      "revId": "737e20efb26f6af8afdaf26052565e1649dd5ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89b0d1d3_e731e20c",
+        "filename": "bazel/skia_app_container.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-06-29T13:38:21Z",
+      "side": 1,
+      "message": "Thanks for catching that - fixed.",
+      "parentUuid": "cdbbac14_c7cdd435",
       "range": {
         "startLine": 245,
         "startChar": 16,
