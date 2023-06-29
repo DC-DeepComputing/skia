@@ -16,6 +16,24 @@
       "message": "It looks like this is blocking the g3 roll as glaze appears to think something is out of sync with the build rules in relation to go somehow.",
       "revId": "a4d0373cd41496f0412d02e414608325e068b473",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "060f70d8_b42f3536",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-06-29T21:49:51Z",
+      "side": 1,
+      "message": "Ack. Posted a potential solution in the Skia chat.",
+      "parentUuid": "4b8dcb9a_456e127a",
+      "revId": "a4d0373cd41496f0412d02e414608325e068b473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
