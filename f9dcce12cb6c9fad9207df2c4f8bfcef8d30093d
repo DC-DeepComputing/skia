@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8072b29_9d47fc40",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-06-29T13:40:41Z",
+      "side": 1,
+      "message": "nit: I think traditionally we included this first, though perhaps that has changed?",
+      "revId": "f9dcce12cb6c9fad9207df2c4f8bfcef8d30093d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
