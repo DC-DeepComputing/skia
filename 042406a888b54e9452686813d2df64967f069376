@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33ca7923_35ca7657",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-29T17:44:08Z",
+      "side": 1,
+      "message": "The issue with this setup is that the system font collection is empty. Is that expected? Is there some minimal setup we could do to make it not empty by default? (Short of installing all of WindowsAppSDK.)",
+      "parentUuid": "9810966b_3e7de92e",
+      "revId": "042406a888b54e9452686813d2df64967f069376",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4351464_2ece7f11",
