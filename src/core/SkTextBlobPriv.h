@@ -182,7 +182,7 @@ private:
  *         .....
  *    }
  */
-class SkTextBlobRunIterator {
+class SK_API SkTextBlobRunIterator {
 public:
     SkTextBlobRunIterator(const SkTextBlob* blob);
 
