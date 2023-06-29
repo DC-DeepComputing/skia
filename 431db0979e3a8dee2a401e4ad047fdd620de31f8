@@ -178,6 +178,24 @@
       "parentUuid": "83b28dbc_90ea58fa",
       "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e309617_2564ed53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-29T15:22:40Z",
+      "side": 1,
+      "message": "I think your idea to just initialize the fields one-by-one is probably the best bet here.",
+      "parentUuid": "dbd30b99_ece71450",
+      "revId": "431db0979e3a8dee2a401e4ad047fdd620de31f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
