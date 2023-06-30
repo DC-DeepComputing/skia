@@ -39,6 +39,30 @@
       },
       "revId": "5c569e382e8ed42f9c3795ac34bb3559d1e347a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52b0fd33_b1d46d8e",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-30T13:25:48Z",
+      "side": 1,
+      "message": "Done. Though in theory it\u0027s still a bit of a no-op in the sense that the SkColor should be converted directly into the DWRITE_COLOR_F with the SkColor4f intermediate compiled out. Anyhow, this line doesn\u0027t add much here, so removing.",
+      "parentUuid": "d256b77d_2f7d7768",
+      "range": {
+        "startLine": 81,
+        "startChar": 66,
+        "endLine": 81,
+        "endChar": 92
+      },
+      "revId": "5c569e382e8ed42f9c3795ac34bb3559d1e347a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
