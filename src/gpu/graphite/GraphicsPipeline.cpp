@@ -9,8 +9,14 @@
 
 namespace skgpu::graphite {
 
-GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext)
-        : Resource(sharedContext, Ownership::kOwned, skgpu::Budgeted::kYes, /*gpuMemorySize=*/0) {}
+GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext, Shaders* pipelineShaders)
+        : Resource(sharedContext, Ownership::kOwned, skgpu::Budgeted::kYes, /*gpuMemorySize=*/0) {
+#if GRAPHITE_TEST_UTILS
+    if (pipelineShaders) {
+        fPipelineShaders = std::move(*pipelineShaders);
+    }
+#endif
+}
 
 GraphicsPipeline::~GraphicsPipeline() {
 }
