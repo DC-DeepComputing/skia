@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e04c835_c8dac655",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-06-30T15:00:27Z",
+      "side": 1,
+      "message": "I\u0027ve added an SkRecorderPriv::getResourceCacheLimit() call since, I figure, we\u0027ll expose it on Recorder at some point (to match GrDirectContext\u0027s getResourceCacheLimit call).",
+      "revId": "57901fdd1da332fd6815c39276c06061ce61bf83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
