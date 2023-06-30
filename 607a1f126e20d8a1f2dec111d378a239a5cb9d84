@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "614ecbe6_13ca9964",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-30T17:51:14Z",
+      "side": 1,
+      "message": "Clients would need to be updated anyway, whether to handle new enum values or look at new fields.  Up to you, but yeah, let\u0027s generate on the fly in either case.",
+      "parentUuid": "6a8aed85_7ce056e1",
+      "revId": "607a1f126e20d8a1f2dec111d378a239a5cb9d84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5266b39d_1da4a9d0",
         "filename": "modules/skottie/src/Skottie.cpp",
         "patchSetId": 2
