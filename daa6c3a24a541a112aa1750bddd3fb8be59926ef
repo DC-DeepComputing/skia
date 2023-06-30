@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa71cac_278b7ffd",
+        "filename": "infra/bots/assets/dwritecore/create.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-30T12:32:22Z",
+      "side": 1,
+      "message": "This comment and line 22 are vague enough to be not useful. Either make less vague or delete.",
+      "range": {
+        "startLine": 9,
+        "startChar": 3,
+        "endLine": 9,
+        "endChar": 9
+      },
+      "revId": "daa6c3a24a541a112aa1750bddd3fb8be59926ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6a43aef_b6086b16",
+        "filename": "infra/bots/assets/dwritecore/create.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-30T12:32:22Z",
+      "side": 1,
+      "message": "Can we add a sha256 sum check of this zip to this creation script? I\u0027ve been doing this for newer assets to help verify what was used to make our CIPD assets:\nhttps://github.com/google/skia/blob/main/infra/bots/assets/bazelisk_mac_arm64/create.py#L18",
+      "range": {
+        "startLine": 24,
+        "startChar": 68,
+        "endLine": 24,
+        "endChar": 81
+      },
+      "revId": "daa6c3a24a541a112aa1750bddd3fb8be59926ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
