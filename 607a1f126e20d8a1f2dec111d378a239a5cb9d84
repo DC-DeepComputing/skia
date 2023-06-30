@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f1cfc5a_6198b3b8",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-30T14:13:47Z",
+      "side": 1,
+      "message": "Unless it gets in the way of converting to ints, `enum class` is preferred these days.",
+      "revId": "607a1f126e20d8a1f2dec111d378a239a5cb9d84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "399eb69d_bcc62ef1",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-30T14:13:47Z",
+      "side": 1,
+      "message": "Instead of storing in fSlotInfos, would it make sense to generate on the fly?  The information is already present in SlotMaps.\n\nI\u0027m assuming this is called rarely (once?), so performance is not an issue.\n\nAlso, currently we\u0027re flattening all types into a single array, but then the client needs to separate again based on the type tag.  It seems it would be less friction to return separate arrays for different types (then I think we don\u0027t need the enum at all).\n\nI\u0027m thinking something along the lines of\n\n    struct SlotInfo {\n        std::vector\u003cSlotID\u003e fScalarSlots;\n        std::vector\u003cSlotID\u003e fColorSlots;\n        ...\n    };\n    \n    SlotInfo getSlotInfo() const {\n        SlotInfo sinfo;\n    \n        sinfo.fScalarSlots.reserve(fScalarMap.count());\n        for (const auto\u0026 scalar : fScalarMap) {\n            sinfo.fScalarSlots.push_back(scalar.first);\n        }\n        \n        ...\n        \n        return sinfo;\n    }\n    \nWDYT?",
+      "revId": "607a1f126e20d8a1f2dec111d378a239a5cb9d84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5266b39d_1da4a9d0",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-06-30T14:13:47Z",
+      "side": 1,
+      "message": "AnimationBuilder::parse() returns a struct, let\u0027s extend that to also store a slotmgr -- that way you don\u0027t need to add a getter.",
+      "revId": "607a1f126e20d8a1f2dec111d378a239a5cb9d84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
