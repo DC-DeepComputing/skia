@@ -137,3 +137,20 @@ void skottie::SlotManager::trackScalarValue(SlotID slotID, SkScalar* scalarValue
 void skottie::SlotManager::trackTextValue(SlotID slotID, sk_sp<internal::TextAdapter> adapter) {
     fTextMap[slotID].push_back(std::move(adapter));
 }
+
+const skia_private::TArray<skottie::SlotManager::SlotInfo> skottie::SlotManager::getSlotInfo() const {
+    TArray<SlotInfo> sInfo;
+    for (const auto& c : fColorMap) {
+        sInfo.push_back({c.first, SlotType::kColor});
+    }
+    for (const auto& s : fScalarMap) {
+        sInfo.push_back({s.first, SlotType::kScalar});
+    }
+    for (const auto& i : fImageMap) {
+        sInfo.push_back({i.first, SlotType::kImage});
+    }
+    for (const auto& t : fTextMap) {
+        sInfo.push_back({t.first, SlotType::kText});
+    }
+    return sInfo;
+}
