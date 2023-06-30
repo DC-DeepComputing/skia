@@ -51,4 +51,6 @@ void SetAnalyticAA();
  */
 void SetDefaultFontMgr();
 
+bool IsCIJob
+
 }  // namespace CommonFlags
