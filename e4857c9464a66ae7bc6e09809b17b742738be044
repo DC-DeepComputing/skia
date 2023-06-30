@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc9e7b89_0cc2e0ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-06-30T19:11:09Z",
+      "side": 1,
+      "message": "nice! next step combine ganesh/graphite code paths?",
+      "revId": "e4857c9464a66ae7bc6e09809b17b742738be044",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
