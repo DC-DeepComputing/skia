@@ -41596,6 +41596,11 @@
           "name": "skia/bots/gsutil",
           "path": "gsutil",
           "version": "version:0"
+        },
+        {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
         }
       ],
       "command": [
@@ -48649,6 +48654,11 @@
           "version": "version:433"
         },
         {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
+        },
+        {
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
@@ -54450,6 +54460,11 @@
           "version": "version:433"
         },
         {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
+        },
+        {
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
@@ -54552,6 +54567,11 @@
           "name": "skia/bots/skp",
           "path": "skp",
           "version": "version:433"
+        },
+        {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
         },
         {
           "name": "skia/bots/svg",
@@ -55164,6 +55184,11 @@
           "version": "version:433"
         },
         {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
+        },
+        {
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
@@ -55478,6 +55503,11 @@
           "version": "version:433"
         },
         {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
+        },
+        {
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
@@ -55582,6 +55612,11 @@
           "version": "version:433"
         },
         {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
+        },
+        {
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
@@ -55684,6 +55719,11 @@
           "name": "skia/bots/skp",
           "path": "skp",
           "version": "version:433"
+        },
+        {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
         },
         {
           "name": "skia/bots/svg",
@@ -56301,6 +56341,11 @@
           "name": "skia/bots/skp",
           "path": "skp",
           "version": "version:433"
+        },
+        {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
         },
         {
           "name": "skia/bots/svg",
@@ -57440,6 +57485,11 @@
           "version": "version:433"
         },
         {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
+        },
+        {
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
@@ -57542,6 +57592,11 @@
           "name": "skia/bots/skp",
           "path": "skp",
           "version": "version:433"
+        },
+        {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
         },
         {
           "name": "skia/bots/svg",
@@ -57647,6 +57702,11 @@
           "name": "skia/bots/skp",
           "path": "skp",
           "version": "version:433"
+        },
+        {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
         },
         {
           "name": "skia/bots/svg",
@@ -57855,6 +57915,11 @@
           "name": "skia/bots/skp",
           "path": "skp",
           "version": "version:433"
+        },
+        {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
         },
         {
           "name": "skia/bots/svg",
@@ -59502,6 +59567,11 @@
           "version": "version:433"
         },
         {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
+        },
+        {
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
@@ -59810,6 +59880,11 @@
           "name": "skia/bots/skp",
           "path": "skp",
           "version": "version:433"
+        },
+        {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
         },
         {
           "name": "skia/bots/svg",
@@ -60228,6 +60303,11 @@
           "version": "version:433"
         },
         {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
+        },
+        {
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
@@ -60434,6 +60514,11 @@
           "name": "skia/bots/skp",
           "path": "skp",
           "version": "version:433"
+        },
+        {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
         },
         {
           "name": "skia/bots/svg",
@@ -64329,6 +64414,11 @@
           "version": "version:433"
         },
         {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
+        },
+        {
           "name": "skia/bots/svg",
           "path": "svg",
           "version": "version:14"
@@ -65297,6 +65387,11 @@
           "name": "skia/bots/skp",
           "path": "skp",
           "version": "version:433"
+        },
+        {
+          "name": "skia/bots/skparagraph",
+          "path": "skia/resources/extra_fonts",
+          "version": "version:3"
         },
         {
           "name": "skia/bots/svg",
