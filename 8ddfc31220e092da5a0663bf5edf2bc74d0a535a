@@ -16,6 +16,24 @@
       "message": "@sallyqi@google.com it looks like this revert causes `android.graphics.cts.GainmapTest#testCompressA8ByBitmapRegionDecoder` to fail (http://ag/23862536), is there an associated test change we should topic-coordinate?",
       "revId": "8ddfc31220e092da5a0663bf5edf2bc74d0a535a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12aa4e86_d4f02512",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18039
+      },
+      "writtenOn": "2023-06-30T16:02:38Z",
+      "side": 1,
+      "message": "We do have the test change (ag/23859287) while we are waiting for drno in udc-dev. after approval, this change will automatically fall into android main branch and make this presubmit pass.",
+      "parentUuid": "4bd615b9_297641fc",
+      "revId": "8ddfc31220e092da5a0663bf5edf2bc74d0a535a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
