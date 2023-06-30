@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5fd3d53_638d6d92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-06-30T12:30:05Z",
+      "side": 1,
+      "message": "Discovered while creating test jobs at https://skia-review.googlesource.com/c/skia/+/714502 .",
+      "revId": "5c569e382e8ed42f9c3795ac34bb3559d1e347a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
