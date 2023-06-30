@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bd615b9_297641fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-06-30T15:57:38Z",
+      "side": 1,
+      "message": "@sallyqi@google.com it looks like this revert causes `android.graphics.cts.GainmapTest#testCompressA8ByBitmapRegionDecoder` to fail (http://ag/23862536), is there an associated test change we should topic-coordinate?",
+      "revId": "8ddfc31220e092da5a0663bf5edf2bc74d0a535a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
