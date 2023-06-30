@@ -16,6 +16,29 @@
       "message": "Discovered while creating test jobs at https://skia-review.googlesource.com/c/skia/+/714502 .",
       "revId": "5c569e382e8ed42f9c3795ac34bb3559d1e347a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d256b77d_2f7d7768",
+        "filename": "src/ports/SkTypeface_win_dw.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-06-30T12:58:11Z",
+      "side": 1,
+      "message": "This isn\u0027t a no-op (it\u0027s not a conversion, it\u0027s a copy).",
+      "range": {
+        "startLine": 81,
+        "startChar": 66,
+        "endLine": 81,
+        "endChar": 92
+      },
+      "revId": "5c569e382e8ed42f9c3795ac34bb3559d1e347a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
