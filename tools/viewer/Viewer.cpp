@@ -47,8 +47,6 @@
 #include "src/core/SkStringUtils.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/core/SkTextBlobPriv.h"
-#include "src/gpu/graphite/ContextPriv.h"
-#include "src/gpu/graphite/GlobalCache.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLString.h"
 #include "src/text/GlyphRun.h"
@@ -100,6 +98,12 @@
 #include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/gpu/ganesh/ops/AtlasPathRenderer.h"
 #include "src/gpu/ganesh/ops/TessellationPathRenderer.h"
+#endif
+
+#if defined(SK_GRAPHITE)
+#include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/GlobalCache.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
 #endif
 
 #include "imgui.h"
@@ -2608,9 +2612,35 @@ void Viewer::drawImGui() {
                         });
                     }
 #if defined(SK_GRAPHITE)
+#if GRAPHITE_TEST_UTILS
                     if (skgpu::graphite::Context* gctx = fWindow->graphiteContext()) {
                         // TODO(skia:14418): populate fCachedShaders with recently-used shaders
+                        auto callback = [&](const skgpu::UniqueKey& key,
+                                            const skgpu::graphite::GraphicsPipeline* pipeline) {
+                            // Retrieve the shaders from the pipeline.
+                            const skgpu::graphite::GraphicsPipeline::Shaders& shaders =
+                                    pipeline->getPipelineShaders();
+
+                            CachedShader& entry(fCachedShaders.push_back());
+                            entry.fKey = nullptr;
+                            entry.fKeyString.printf("Pipeline 0x%08X", key.hash());
+
+                            if (sksl) {
+                                entry.fShader[kVertex_GrShaderType] = shaders.fSkSLVertexShader;
+                                entry.fShader[kFragment_GrShaderType] = shaders.fSkSLFragmentShader;
+                                entry.fShaderType = SkSetFourByteTag('S', 'K', 'S', 'L');
+                            } else {
+                                entry.fShader[kVertex_GrShaderType] = shaders.fNativeVertexShader;
+                                entry.fShader[kFragment_GrShaderType] =
+                                        shaders.fNativeFragmentShader;
+                                // We could derive the shader type from the GraphicsPipeline's type
+                                // if there is ever a need to.
+                                entry.fShaderType = SkSetFourByteTag('?', '?', '?', '?');
+                            }
+                        };
+                        gctx->priv().globalCache()->forEachGraphicsPipeline(callback);
                     }
+#endif
 #endif
 
                     gLoadPending = false;
@@ -2740,7 +2770,7 @@ void Viewer::drawImGui() {
                 if (isVulkan && !sksl) {
                     doApply = false;
                 }
-                if (doApply) {
+                if (ctx && doApply) {
                     fPersistentCache.reset();
                     ctx->priv().getGpu()->resetShaderCacheForTesting();
                     for (auto& entry : fCachedShaders) {
