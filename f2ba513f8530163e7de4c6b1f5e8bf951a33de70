@@ -16,6 +16,24 @@
       "message": "It looks like `Housekeeper-PerCommit-InfraTests_Linux` is complaining that `infra/bots/recipes.py test train` is failing to cover this line. I was wondering why `NativeFonts` doesn\u0027t appear to run afoul of this, but that is only handled in go code.\n\nIf I add `Test-Win10-Clang-NUC5i7RYH-CPU-AVX2-x86_64-Debug-All-NativeFonts_DWriteCore` to the list in `infra/bots/recipes/test.py` I do get a `test.expected/Test-Win10-Clang-NUC5i7RYH-CPU-AVX2-x86_64-Debug-All-NativeFonts_DWriteCore.json` which has this `path` in it, so this was obviously run, but it still complains about lack of coverage.",
       "revId": "f2ba513f8530163e7de4c6b1f5e8bf951a33de70",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af9acade_d8c31064",
+        "filename": "infra/bots/recipe_modules/flavor/default.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-06-30T15:30:24Z",
+      "side": 1,
+      "message": "It needs to go in infra/bots/recipe_modules/flavor/examples/full.py instead. I\u0027m not quite sure why.",
+      "parentUuid": "32d04a83_aa77443c",
+      "revId": "f2ba513f8530163e7de4c6b1f5e8bf951a33de70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
