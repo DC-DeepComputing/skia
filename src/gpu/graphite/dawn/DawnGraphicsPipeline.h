@@ -64,19 +64,20 @@ public:
     bool hasFragment() const { return fHasFragment; }
     const wgpu::RenderPipeline& dawnRenderPipeline() const;
 
+#if GRAPHITE_TEST_UTILS
+    const Shaders* getPipelineShaders() const override {
+        return &fPipelineShaders;
+    }
+#endif
+
 private:
     DawnGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                          wgpu::RenderPipeline renderPipeline,
                          PrimitiveType primitiveType,
                          uint32_t refValue,
                          bool hasStepUniforms,
-                         bool hasFragment)
-        : GraphicsPipeline(sharedContext)
-        , fRenderPipeline(std::move(renderPipeline))
-        , fPrimitiveType(primitiveType)
-        , fStencilReferenceValue(refValue)
-        , fHasStepUniforms(hasStepUniforms)
-        , fHasFragment(hasFragment) {}
+                         bool hasFragment,
+                         Shaders* pipelineShaders);
 
     void freeGpuData() override;
 
@@ -85,6 +86,10 @@ private:
     const uint32_t fStencilReferenceValue;
     const bool fHasStepUniforms;
     const bool fHasFragment;
+
+#if GRAPHITE_TEST_UTILS
+    Shaders fPipelineShaders;
+#endif
 };
 
 } // namespace skgpu::graphite

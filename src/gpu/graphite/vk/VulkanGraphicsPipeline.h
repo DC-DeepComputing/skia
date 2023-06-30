@@ -74,17 +74,28 @@ public:
     bool hasFragment() const { return fHasFragment; }
     bool hasStepUniforms() const { return fHasStepUniforms; }
 
+#if GRAPHITE_TEST_UTILS
+    const Shaders* getPipelineShaders() const override {
+        return &fPipelineShaders;
+    }
+#endif
+
 private:
     VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                            VkPipelineLayout,
                            bool hasFragment,
-                           bool hasStepUniforms);
+                           bool hasStepUniforms,
+                           Shaders* shaders);
 
     void freeGpuData() override;
 
     VkPipelineLayout  fPipelineLayout = VK_NULL_HANDLE;
     bool fHasFragment = false;
     bool fHasStepUniforms = false;
+
+#if GRAPHITE_TEST_UTILS
+    Shaders fPipelineShaders;
+#endif
 };
 
 } // namespace skgpu::graphite

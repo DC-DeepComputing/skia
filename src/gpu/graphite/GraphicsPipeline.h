@@ -26,12 +26,23 @@ class GraphicsPipeline : public Resource {
 public:
     ~GraphicsPipeline() override;
 
+#if GRAPHITE_TEST_UTILS
+    struct Shaders {
+        std::string fSkSLVertexShader;
+        std::string fSkSLFragmentShader;
+        std::string fNativeVertexShader;
+        std::string fNativeFragmentShader;
+    };
+
+    virtual const Shaders* getPipelineShaders() const = 0;
+#endif
+
 protected:
     GraphicsPipeline(const SharedContext*);
 
 private:
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
 #endif // skgpu_graphite_GraphicsPipeline_DEFINED

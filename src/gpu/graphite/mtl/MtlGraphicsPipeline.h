@@ -47,7 +47,8 @@ public:
                                            sk_cfp<id<MTLDepthStencilState>>,
                                            uint32_t stencilRefValue,
                                            const BlendInfo& blendInfo,
-                                           const RenderPassDesc&);
+                                           const RenderPassDesc&,
+                                           Shaders* pipelineShaders);
 
     ~MtlGraphicsPipeline() override {}
 
@@ -55,21 +56,28 @@ public:
     id<MTLDepthStencilState> mtlDepthStencilState() const { return fDepthStencilState.get(); }
     uint32_t stencilReferenceValue() const { return fStencilReferenceValue; }
 
+#if GRAPHITE_TEST_UTILS
+    const Shaders* getPipelineShaders() const override {
+        return &fPipelineShaders;
+    }
+#endif
+
 private:
     MtlGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                         sk_cfp<id<MTLRenderPipelineState>> pso,
                         sk_cfp<id<MTLDepthStencilState>> dss,
-                        uint32_t refValue)
-        : GraphicsPipeline(sharedContext)
-        , fPipelineState(std::move(pso))
-        , fDepthStencilState(dss)
-        , fStencilReferenceValue(refValue) {}
+                        uint32_t refValue,
+                        Shaders* pipelineShaders);
 
     void freeGpuData() override;
 
     sk_cfp<id<MTLRenderPipelineState>> fPipelineState;
     sk_cfp<id<MTLDepthStencilState>> fDepthStencilState;
     uint32_t fStencilReferenceValue;
+
+#if GRAPHITE_TEST_UTILS
+    Shaders fPipelineShaders;
+#endif
 };
 
 } // namespace skgpu::graphite
