@@ -49,6 +49,8 @@ void draw_tiled_bitmap_ganesh(skgpu::ganesh::Device* device,
     gNumTilesDrawn.store(0, std::memory_order_relaxed);
 #endif
 
+    skia_private::TArray<SkCanvas::ImageSetEntry> imgSet(nx * ny);
+
     for (int x = 0; x <= nx; x++) {
         for (int y = 0; y <= ny; y++) {
             SkRect tileR;
@@ -118,19 +120,14 @@ void draw_tiled_bitmap_ganesh(skgpu::ganesh::Device* device,
 
                 // Offset the source rect to make it "local" to our tmp bitmap
                 tileR.offset(-offset.fX, -offset.fY);
-                SkMatrix offsetSrcToDst = srcToDst;
-                offsetSrcToDst.preTranslate(offset.fX, offset.fY);
-                device->drawEdgeAAImage(image.get(),
-                                        tileR,
-                                        rectToDraw,
-                                        /* dstClip= */ nullptr,
-                                        static_cast<SkCanvas::QuadAAFlags>(aaFlags),
-                                        localToDevice,
-                                        sampling,
-                                        paint,
-                                        constraint,
-                                        offsetSrcToDst,
-                                        SkTileMode::kClamp);
+
+                imgSet.push_back(SkCanvas::ImageSetEntry(std::move(image),
+                                                         tileR,
+                                                         rectToDraw,
+                                                         /* matrixIndex= */ -1,
+                                                         /* alpha= */ 1.0f,
+                                                         aaFlags,
+                                                         /* hasClip= */ false));
 
 #if GR_TEST_UTILS
                 (void)gNumTilesDrawn.fetch_add(+1, std::memory_order_relaxed);
@@ -138,6 +135,14 @@ void draw_tiled_bitmap_ganesh(skgpu::ganesh::Device* device,
             }
         }
     }
+
+    device->drawEdgeAAImageSet(imgSet.data(),
+                               imgSet.size(),
+                               /* dstClips= */ nullptr,
+                               /* preViewMatrices= */ nullptr,
+                               sampling,
+                               paint,
+                               constraint);
 }
 
 } // anonymous namespace
