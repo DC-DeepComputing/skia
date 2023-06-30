@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1390f584_c4a79fd1",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-30T17:30:40Z",
+      "side": 1,
+      "message": "`enum class` doesn\u0027t have implicit conversion to ints, so we don\u0027t want it strongly typed. Maybe this is another reason to unflatten the slot infos?",
+      "parentUuid": "2f1cfc5a_6198b3b8",
+      "revId": "607a1f126e20d8a1f2dec111d378a239a5cb9d84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "399eb69d_bcc62ef1",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a8aed85_7ce056e1",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-30T17:30:40Z",
+      "side": 1,
+      "message": "It makes sense, I\u0027m on the fence. Getting rid of the enum is nice and runtime is definitely negligible. I\u0027m worried about if we add more slot types in the future we have to account for clients having to update their code. Thinking about canvas kit, if the SlotInfo struct changes, we have to update CK\u0027s `ManagedAnimation`. It\u0027s easier for other clients to update their code as well.\n\nEither way, we could generate it on the fly.",
+      "parentUuid": "399eb69d_bcc62ef1",
+      "revId": "607a1f126e20d8a1f2dec111d378a239a5cb9d84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5266b39d_1da4a9d0",
         "filename": "modules/skottie/src/Skottie.cpp",
         "patchSetId": 2
@@ -48,6 +84,24 @@
       "writtenOn": "2023-06-30T14:13:47Z",
       "side": 1,
       "message": "AnimationBuilder::parse() returns a struct, let\u0027s extend that to also store a slotmgr -- that way you don\u0027t need to add a getter.",
+      "revId": "607a1f126e20d8a1f2dec111d378a239a5cb9d84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb261deb_36b1fd65",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-06-30T17:30:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5266b39d_1da4a9d0",
       "revId": "607a1f126e20d8a1f2dec111d378a239a5cb9d84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
