@@ -15,12 +15,15 @@
 namespace skgpu::graphite {
 
 AtlasProvider::AtlasProvider(Recorder* recorder)
-        : fTextAtlasManager(std::make_unique<TextAtlasManager>(recorder)) {
+        : fTextAtlasManager(std::make_unique<TextAtlasManager>(recorder)) {}
+
+std::unique_ptr<ComputePathAtlas> AtlasProvider::createComputePathAtlas(Recorder* recorder) const {
 #ifdef SK_ENABLE_VELLO_SHADERS
     if (recorder->priv().caps()->computeSupport()) {
-        fComputePathAtlas = std::make_unique<ComputePathAtlas>();
+        return std::make_unique<VelloComputePathAtlas>();
     }
 #endif  // SK_ENABLE_VELLO_SHADERS
+    return nullptr;
 }
 
 }  // namespace skgpu::graphite
