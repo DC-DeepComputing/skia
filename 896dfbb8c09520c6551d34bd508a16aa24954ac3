@@ -16,6 +16,46 @@
       "message": "Reassigning since Arman is OOO next week",
       "revId": "896dfbb8c09520c6551d34bd508a16aa24954ac3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13934fa1_ff9c84bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-01T02:29:25Z",
+      "side": 1,
+      "message": "This looks like handy metadata to have for debugging. It would be great to set this up for ComputePipelines too in a follow up. I imagine it would work very similarly to this CL.",
+      "revId": "896dfbb8c09520c6551d34bd508a16aa24954ac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91079b82_21f3c101",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-01T02:29:25Z",
+      "side": 1,
+      "message": "Is this type defined if `GRAPHITE_TEST_UTILS` is false?",
+      "range": {
+        "startLine": 543,
+        "startChar": 4,
+        "endLine": 543,
+        "endChar": 30
+      },
+      "revId": "896dfbb8c09520c6551d34bd508a16aa24954ac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
