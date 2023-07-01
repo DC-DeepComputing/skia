@@ -22,6 +22,13 @@
 #endif
 
 namespace skgpu::graphite {
+namespace {
+
+// TODO: select atlas size dynamically? Take ContextOptions::fMaxTextureAtlasSize into account?
+// TODO: This is the maximum target dimension that vello can handle today
+constexpr uint32_t kComputeAtlasDim = 4096;
+
+}  // namespace
 
 PathAtlas::PathAtlas(uint32_t width, uint32_t height) : fRectanizer(width, height) {}
 
@@ -72,18 +79,11 @@ void PathAtlas::reset() {
     this->onReset();
 }
 
-#ifdef SK_ENABLE_VELLO_SHADERS
-namespace {
-
-// TODO: select atlas size dynamically? Take ContextOptions::fMaxTextureAtlasSize into account?
-// TODO: This is the maximum target dimension that vello can handle today
-constexpr uint32_t kComputeAtlasDim = 4096;
-
-}  // namespace
-
 ComputePathAtlas::ComputePathAtlas() : PathAtlas(kComputeAtlasDim, kComputeAtlasDim) {}
 
-std::unique_ptr<DispatchGroup> ComputePathAtlas::recordDispatches(Recorder* recorder) const {
+#ifdef SK_ENABLE_VELLO_SHADERS
+
+std::unique_ptr<DispatchGroup> VelloComputePathAtlas::recordDispatches(Recorder* recorder) const {
     if (!this->texture()) {
         return nullptr;
     }
@@ -96,12 +96,12 @@ std::unique_ptr<DispatchGroup> ComputePathAtlas::recordDispatches(Recorder* reco
             recorder);
 }
 
-void ComputePathAtlas::onAddShape(const Shape& shape,
-                                  const Transform& localToDevice,
-                                  const Rect& atlasBounds,
-                                  float deviceOffsetX,
-                                  float deviceOffsetY,
-                                  const SkStrokeRec& style) {
+void VelloComputePathAtlas::onAddShape(const Shape& shape,
+                                       const Transform& localToDevice,
+                                       const Rect& atlasBounds,
+                                       float deviceOffsetX,
+                                       float deviceOffsetY,
+                                       const SkStrokeRec& style) {
     // TODO: The compute renderer doesn't support perspective yet. We assume that the path has been
     // appropriately transformed in that case.
     SkASSERT(localToDevice.type() != Transform::Type::kProjection);

@@ -28,22 +28,13 @@ public:
     // rendering. This TextAtlasManager is always available.
     TextAtlasManager* textAtlasManager() const { return fTextAtlasManager.get(); }
 
-    // Returns the transient atlas handler that uses compute shaders to rasterize coverage masks for
-    // path rendering. This method returns nullptr if compute shaders are not supported by the
+    // Creates a new transient atlas handler that uses compute shaders to rasterize coverage masks
+    // for path rendering. This method returns nullptr if compute shaders are not supported by the
     // owning Recorder's context.
-    ComputePathAtlas* computePathAtlas() const {
-#ifdef SK_ENABLE_VELLO_SHADERS
-        return fComputePathAtlas.get();
-#else
-        return nullptr;
-#endif
-    }
+    std::unique_ptr<ComputePathAtlas> createComputePathAtlas(Recorder*) const;
 
 private:
     std::unique_ptr<TextAtlasManager> fTextAtlasManager;
-#ifdef SK_ENABLE_VELLO_SHADERS
-    std::unique_ptr<ComputePathAtlas> fComputePathAtlas;
-#endif
 };
 
 }  // namespace skgpu::graphite

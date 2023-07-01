@@ -104,28 +104,34 @@ private:
     sk_sp<TextureProxy> fTexture;
 };
 
-// NOTE: currently the coverage mask atlas that uses GPU compute uses Vello shaders, so its
-// availability is conditioned on SK_ENABLE_VELLO_SHADERS:
-#ifdef SK_ENABLE_VELLO_SHADERS
-
 class DispatchGroup;
 
 /**
- * PathAtlas implementation that rasterizes the coverage masks on the GPU using compute shaders.
+ * Base class for PathAtlas implementations that rasterize coverage masks on the GPU using compute
+ * shaders.
  *
- * When a new shape gets added, it gets encoded into data streams that will later serve as an input
- * to a series of GPU compute passes. This data is recorded into a DispatchGroup which can be added
- * to a ComputeTask in `recordDispatches()`.
+ * When a new shape gets added, it gets tracked as input to a series of GPU compute passes. This
+ * data is recorded by `recordDispatches()` into a DispatchGroup which can be added to a
+ * ComputeTask.
  *
  * After a successful call to `recordDispatches()`, the client is free to call `reset()` and start
  * adding new shapes for a future atlas render.
  */
-class ComputePathAtlas final : public PathAtlas {
+class ComputePathAtlas : public PathAtlas {
 public:
     ComputePathAtlas();
+    virtual std::unique_ptr<DispatchGroup> recordDispatches(Recorder*) const = 0;
+};
 
+#ifdef SK_ENABLE_VELLO_SHADERS
+
+/**
+ * ComputePathAtlas that uses a VelloRenderer.
+ */
+class VelloComputePathAtlas final : public ComputePathAtlas {
+public:
     // Record the compute dispatches that will draw the atlas contents.
-    std::unique_ptr<DispatchGroup> recordDispatches(Recorder*) const;
+    std::unique_ptr<DispatchGroup> recordDispatches(Recorder*) const override;
 
 private:
     void onAddShape(const Shape&, const Transform&, const Rect&,
