@@ -16,6 +16,69 @@
       "message": "Dana, PTAL if you\u0027re around. It seems most of my typical Skia reviewers are out this week. Thanks in advance.",
       "revId": "ba199ed7648ea1256fbdc941f12330c3ed5fa43e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4c66f4a_c1d11e3e",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-07-04T14:37:49Z",
+      "side": 1,
+      "message": "not needed- see below",
+      "range": {
+        "startLine": 237,
+        "startChar": 38,
+        "endLine": 237,
+        "endChar": 49
+      },
+      "revId": "ba199ed7648ea1256fbdc941f12330c3ed5fa43e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0f6d41f_15452cb5",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-07-04T14:37:49Z",
+      "side": 1,
+      "message": "not needed- this happens implicitly. if anything an implicit_cast to document, static_cast is a dangerous thing.",
+      "range": {
+        "startLine": 332,
+        "startChar": 41,
+        "endLine": 332,
+        "endChar": 83
+      },
+      "revId": "ba199ed7648ea1256fbdc941f12330c3ed5fa43e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "333354e4_71cdd11e",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-07-04T14:37:49Z",
+      "side": 1,
+      "message": "80 cols, git cl format?",
+      "revId": "ba199ed7648ea1256fbdc941f12330c3ed5fa43e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
