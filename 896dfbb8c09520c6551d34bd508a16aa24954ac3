@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cd7ad874_92fa6162",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-05T17:30:54Z",
+      "side": 1,
+      "message": "#else\n   struct Shaders;\n   \n?",
+      "range": {
+        "startLine": 40,
+        "startChar": 1,
+        "endLine": 40,
+        "endChar": 6
+      },
+      "revId": "896dfbb8c09520c6551d34bd508a16aa24954ac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91079b82_21f3c101",
         "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
         "patchSetId": 3
@@ -48,6 +71,30 @@
       "writtenOn": "2023-07-01T02:29:25Z",
       "side": 1,
       "message": "Is this type defined if `GRAPHITE_TEST_UTILS` is false?",
+      "range": {
+        "startLine": 543,
+        "startChar": 4,
+        "endLine": 543,
+        "endChar": 30
+      },
+      "revId": "896dfbb8c09520c6551d34bd508a16aa24954ac3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3554cc1d_eaf52c7c",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-05T17:30:54Z",
+      "side": 1,
+      "message": "It doesn\u0027t appear to be.",
+      "parentUuid": "91079b82_21f3c101",
       "range": {
         "startLine": 543,
         "startChar": 4,
