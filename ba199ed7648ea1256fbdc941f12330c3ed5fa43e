@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cba7c5b5_0d1409a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-07-05T08:05:02Z",
+      "side": 1,
+      "message": "Thanks for the review, Dana.",
+      "revId": "ba199ed7648ea1256fbdc941f12330c3ed5fa43e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4c66f4a_c1d11e3e",
@@ -31,6 +48,30 @@
       "writtenOn": "2023-07-04T14:37:49Z",
       "side": 1,
       "message": "not needed- see below",
+      "range": {
+        "startLine": 237,
+        "startChar": 38,
+        "endLine": 237,
+        "endChar": 49
+      },
+      "revId": "ba199ed7648ea1256fbdc941f12330c3ed5fa43e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1060988_99d07d28",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-07-05T08:05:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4c66f4a_c1d11e3e",
       "range": {
         "startLine": 237,
         "startChar": 38,
@@ -64,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "172cf90c_5053fde5",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-07-05T08:05:02Z",
+      "side": 1,
+      "message": "Cast removed. For some reason I had a compile failure in an earlier stage during development and got the impression, this did it (maybe when I forgot to mark the inheritance as `public` after the colon in the class definition?), but yeah, it\u0027s wrong and I should have removed it, thanks for catching that.",
+      "parentUuid": "a0f6d41f_15452cb5",
+      "range": {
+        "startLine": 332,
+        "startChar": 41,
+        "endLine": 332,
+        "endChar": 83
+      },
+      "revId": "ba199ed7648ea1256fbdc941f12330c3ed5fa43e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "333354e4_71cdd11e",
@@ -77,6 +142,24 @@
       "writtenOn": "2023-07-04T14:37:49Z",
       "side": 1,
       "message": "80 cols, git cl format?",
+      "revId": "ba199ed7648ea1256fbdc941f12330c3ed5fa43e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3437df13_0dfb6504",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-07-05T08:05:02Z",
+      "side": 1,
+      "message": "To my knowledge, Skia is okay with a 100 column limit, compare: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/.clang-format;l\u003d154?\n\nReformatted to fit into that.",
+      "parentUuid": "333354e4_71cdd11e",
       "revId": "ba199ed7648ea1256fbdc941f12330c3ed5fa43e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
