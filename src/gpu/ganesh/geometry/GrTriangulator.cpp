@@ -293,10 +293,14 @@ void GrTriangulator::EdgeList::insert(Edge* edge, Edge* prev, Edge* next) {
     list_insert<Edge, &Edge::fLeft, &Edge::fRight>(edge, prev, next, &fHead, &fTail);
 }
 
-void GrTriangulator::EdgeList::remove(Edge* edge) {
+bool GrTriangulator::EdgeList::remove(Edge* edge) {
     TESS_LOG("removing edge %g -> %g\n", edge->fTop->fID, edge->fBottom->fID);
-    SkASSERT(this->contains(edge));
+    // SkASSERT(this->contains(edge));  // Leave this here for future debugging.
+    if (!this->contains(edge)) {
+        return false;
+    }
     list_remove<Edge, &Edge::fLeft, &Edge::fRight>(edge, &fHead, &fTail);
+    return true;
 }
 
 void GrTriangulator::MonotonePoly::addEdge(Edge* edge) {
@@ -723,16 +727,18 @@ void GrTriangulator::Edge::disconnect() {
     remove_edge_below(this);
 }
 
-static void rewind(EdgeList* activeEdges, Vertex** current, Vertex* dst, const Comparator& c) {
+static bool rewind(EdgeList* activeEdges, Vertex** current, Vertex* dst, const Comparator& c) {
     if (!current || *current == dst || c.sweep_lt((*current)->fPoint, dst->fPoint)) {
-        return;
+        return true;
     }
     Vertex* v = *current;
     TESS_LOG("rewinding active edges from vertex %g to vertex %g\n", v->fID, dst->fID);
     while (v != dst) {
         v = v->fPrev;
         for (Edge* e = v->fFirstEdgeBelow; e; e = e->fNextEdgeBelow) {
-            activeEdges->remove(e);
+            if (!activeEdges->remove(e)) {
+                return false;
+            }
         }
         Edge* leftEdge = v->fLeftEnclosingEdge;
         for (Edge* e = v->fFirstEdgeAbove; e; e = e->fNextEdgeAbove) {
@@ -747,6 +753,7 @@ static void rewind(EdgeList* activeEdges, Vertex** current, Vertex* dst, const C
         }
     }
     *current = v;
+    return true;
 }
 
 static void rewind_if_necessary(Edge* edge, EdgeList* activeEdges, Vertex** current,
@@ -816,46 +823,60 @@ void GrTriangulator::setBottom(Edge* edge, Vertex* v, EdgeList* activeEdges, Ver
     this->mergeCollinearEdges(edge, activeEdges, current, c);
 }
 
-void GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEdges,
+bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEdges,
                                      Vertex** current, const Comparator& c) const {
     if (coincident(edge->fTop->fPoint, other->fTop->fPoint)) {
         TESS_LOG("merging coincident above edges (%g, %g) -> (%g, %g)\n",
                  edge->fTop->fPoint.fX, edge->fTop->fPoint.fY,
                  edge->fBottom->fPoint.fX, edge->fBottom->fPoint.fY);
-        rewind(activeEdges, current, edge->fTop, c);
+        if (!rewind(activeEdges, current, edge->fTop, c)) {
+            return false;
+        }
         other->fWinding += edge->fWinding;
         edge->disconnect();
         edge->fTop = edge->fBottom = nullptr;
     } else if (c.sweep_lt(edge->fTop->fPoint, other->fTop->fPoint)) {
-        rewind(activeEdges, current, edge->fTop, c);
+        if (!rewind(activeEdges, current, edge->fTop, c)) {
+            return false;
+        }
         other->fWinding += edge->fWinding;
         this->setBottom(edge, other->fTop, activeEdges, current, c);
     } else {
-        rewind(activeEdges, current, other->fTop, c);
+        if (!rewind(activeEdges, current, other->fTop, c)) {
+            return false;
+        }
         edge->fWinding += other->fWinding;
         this->setBottom(other, edge->fTop, activeEdges, current, c);
     }
+    return true;
 }
 
-void GrTriangulator::mergeEdgesBelow(Edge* edge, Edge* other, EdgeList* activeEdges,
+bool GrTriangulator::mergeEdgesBelow(Edge* edge, Edge* other, EdgeList* activeEdges,
                                      Vertex** current, const Comparator& c) const {
     if (coincident(edge->fBottom->fPoint, other->fBottom->fPoint)) {
         TESS_LOG("merging coincident below edges (%g, %g) -> (%g, %g)\n",
                  edge->fTop->fPoint.fX, edge->fTop->fPoint.fY,
                  edge->fBottom->fPoint.fX, edge->fBottom->fPoint.fY);
-        rewind(activeEdges, current, edge->fTop, c);
+        if (!rewind(activeEdges, current, edge->fTop, c)) {
+            return false;
+        }
         other->fWinding += edge->fWinding;
         edge->disconnect();
         edge->fTop = edge->fBottom = nullptr;
     } else if (c.sweep_lt(edge->fBottom->fPoint, other->fBottom->fPoint)) {
-        rewind(activeEdges, current, other->fTop, c);
+        if (!rewind(activeEdges, current, other->fTop, c)) {
+            return false;
+        }
         edge->fWinding += other->fWinding;
         this->setTop(other, edge->fBottom, activeEdges, current, c);
     } else {
-        rewind(activeEdges, current, edge->fTop, c);
+        if (!rewind(activeEdges, current, edge->fTop, c)) {
+            return false;
+        }
         other->fWinding += edge->fWinding;
         this->setTop(edge, other->fBottom, activeEdges, current, c);
     }
+    return true;
 }
 
 static bool top_collinear(Edge* left, Edge* right) {
@@ -874,17 +895,25 @@ static bool bottom_collinear(Edge* left, Edge* right) {
            !left->isLeftOf(*right->fBottom) || !right->isRightOf(*left->fBottom);
 }
 
-void GrTriangulator::mergeCollinearEdges(Edge* edge, EdgeList* activeEdges, Vertex** current,
+bool GrTriangulator::mergeCollinearEdges(Edge* edge, EdgeList* activeEdges, Vertex** current,
                                          const Comparator& c) const {
     for (;;) {
         if (top_collinear(edge->fPrevEdgeAbove, edge)) {
-            this->mergeEdgesAbove(edge->fPrevEdgeAbove, edge, activeEdges, current, c);
+            if (!this->mergeEdgesAbove(edge->fPrevEdgeAbove, edge, activeEdges, current, c)) {
+                return false;
+            }
         } else if (top_collinear(edge, edge->fNextEdgeAbove)) {
-            this->mergeEdgesAbove(edge->fNextEdgeAbove, edge, activeEdges, current, c);
+            if (!this->mergeEdgesAbove(edge->fNextEdgeAbove, edge, activeEdges, current, c)) {
+                return false;
+            }
         } else if (bottom_collinear(edge->fPrevEdgeBelow, edge)) {
-            this->mergeEdgesBelow(edge->fPrevEdgeBelow, edge, activeEdges, current, c);
+            if (!this->mergeEdgesBelow(edge->fPrevEdgeBelow, edge, activeEdges, current, c)) {
+                return false;
+            }
         } else if (bottom_collinear(edge, edge->fNextEdgeBelow)) {
-            this->mergeEdgesBelow(edge->fNextEdgeBelow, edge, activeEdges, current, c);
+            if (!this->mergeEdgesBelow(edge->fNextEdgeBelow, edge, activeEdges, current, c)) {
+                return false;
+            }
         } else {
             break;
         }
@@ -893,12 +922,13 @@ void GrTriangulator::mergeCollinearEdges(Edge* edge, EdgeList* activeEdges, Vert
     SkASSERT(!top_collinear(edge, edge->fNextEdgeAbove));
     SkASSERT(!bottom_collinear(edge->fPrevEdgeBelow, edge));
     SkASSERT(!bottom_collinear(edge, edge->fNextEdgeBelow));
+    return true;
 }
 
-bool GrTriangulator::splitEdge(Edge* edge, Vertex* v, EdgeList* activeEdges, Vertex** current,
-                               const Comparator& c) {
+GrTriangulator::BoolFail GrTriangulator::splitEdge(
+        Edge* edge, Vertex* v, EdgeList* activeEdges, Vertex** current, const Comparator& c) {
     if (!edge->fTop || !edge->fBottom || v == edge->fTop || v == edge->fBottom) {
-        return false;
+        return BoolFail::kFalse;
     }
     TESS_LOG("splitting edge (%g -> %g) at vertex %g (%g, %g)\n",
              edge->fTop->fID, edge->fBottom->fID, v->fID, v->fPoint.fX, v->fPoint.fY);
@@ -932,17 +962,19 @@ bool GrTriangulator::splitEdge(Edge* edge, Vertex* v, EdgeList* activeEdges, Ver
     Edge* newEdge = this->allocateEdge(top, bottom, winding, edge->fType);
     newEdge->insertBelow(top, c);
     newEdge->insertAbove(bottom, c);
-    this->mergeCollinearEdges(newEdge, activeEdges, current, c);
-    return true;
+    if (!this->mergeCollinearEdges(newEdge, activeEdges, current, c)) {
+        return BoolFail::kFail;
+    }
+    return BoolFail::kTrue;
 }
 
-bool GrTriangulator::intersectEdgePair(Edge* left, Edge* right, EdgeList* activeEdges,
-                                       Vertex** current, const Comparator& c) {
+GrTriangulator::BoolFail GrTriangulator::intersectEdgePair(
+        Edge* left, Edge* right, EdgeList* activeEdges, Vertex** current, const Comparator& c) {
     if (!left->fTop || !left->fBottom || !right->fTop || !right->fBottom) {
-        return false;
+        return BoolFail::kFalse;
     }
     if (left->fTop == right->fTop || left->fBottom == right->fBottom) {
-        return false;
+        return BoolFail::kFalse;
     }
 
     // Check if the lines intersect as determined by isLeftOf and isRightOf, since that is the
@@ -975,12 +1007,14 @@ bool GrTriangulator::intersectEdgePair(Edge* left, Edge* right, EdgeList* active
     }
 
     if (!split) {
-        return false;
+        return BoolFail::kFalse;
     }
 
     // Rewind to the top of the edge that is "moving" since this topology correction can change the
     // geometry of the split edge.
-    rewind(activeEdges, current, split->fTop, c);
+    if (!rewind(activeEdges, current, split->fTop, c)) {
+        return BoolFail::kFail;
+    }
     return this->splitEdge(split, splitAt, activeEdges, current, c);
 }
 
@@ -1085,11 +1119,12 @@ void GrTriangulator::computeBisector(Edge* edge1, Edge* edge2, Vertex* v) const 
     }
 }
 
-bool GrTriangulator::checkForIntersection(Edge* left, Edge* right, EdgeList* activeEdges,
-                                          Vertex** current, VertexList* mesh,
-                                          const Comparator& c) {
+GrTriangulator::BoolFail GrTriangulator::checkForIntersection(
+        Edge* left, Edge* right, EdgeList* activeEdges,
+        Vertex** current, VertexList* mesh,
+        const Comparator& c) {
     if (!left || !right) {
-        return false;
+        return BoolFail::kFalse;
     }
     SkPoint p;
     uint8_t alpha;
@@ -1125,11 +1160,17 @@ bool GrTriangulator::checkForIntersection(Edge* left, Edge* right, EdgeList* act
                 this->computeBisector(left, right, v);
             }
         }
-        rewind(activeEdges, current, top ? top : v, c);
-        this->splitEdge(left, v, activeEdges, current, c);
-        this->splitEdge(right, v, activeEdges, current, c);
+        if (!rewind(activeEdges, current, top ? top : v, c)) {
+            return BoolFail::kFail;
+        }
+        if (this->splitEdge(left, v, activeEdges, current, c) == BoolFail::kFail) {
+            return BoolFail::kFail;
+        }
+        if (this->splitEdge(right, v, activeEdges, current, c) == BoolFail::kFail) {
+            return BoolFail::kFail;
+        }
         v->fAlpha = std::max(v->fAlpha, alpha);
-        return true;
+        return BoolFail::kTrue;
     }
     return this->intersectEdgePair(left, right, activeEdges, current, c);
 }
@@ -1357,18 +1398,29 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
             v->fRightEnclosingEdge = rightEnclosingEdge;
             if (v->fFirstEdgeBelow) {
                 for (Edge* edge = v->fFirstEdgeBelow; edge; edge = edge->fNextEdgeBelow) {
-                    if (this->checkForIntersection(
-                            leftEnclosingEdge, edge, &activeEdges, &v, mesh, c) ||
-                        this->checkForIntersection(
-                            edge, rightEnclosingEdge, &activeEdges, &v, mesh, c)) {
+                    BoolFail l = this->checkForIntersection(
+                            leftEnclosingEdge, edge, &activeEdges, &v, mesh, c);
+                    if (l == BoolFail::kFail) {
+                        return SimplifyResult::kFailed;
+                    }
+                    BoolFail r = this->checkForIntersection(
+                            edge, rightEnclosingEdge, &activeEdges, &v, mesh, c);
+                    if (r == BoolFail::kFail) {
+                        return SimplifyResult::kFailed;
+                    }
+                    if (l == BoolFail::kTrue || r == BoolFail::kTrue) {
                         result = SimplifyResult::kFoundSelfIntersection;
                         restartChecks = true;
                         break;
                     }
                 }
             } else {
-                if (this->checkForIntersection(leftEnclosingEdge, rightEnclosingEdge, &activeEdges,
-                                               &v, mesh, c)) {
+                BoolFail bf = this->checkForIntersection(
+                        leftEnclosingEdge, rightEnclosingEdge, &activeEdges, &v, mesh, c);
+                if (bf == BoolFail::kFail) {
+                    return SimplifyResult::kFailed;
+                }
+                if (bf == BoolFail::kTrue) {
                     result = SimplifyResult::kFoundSelfIntersection;
                     restartChecks = true;
                 }
