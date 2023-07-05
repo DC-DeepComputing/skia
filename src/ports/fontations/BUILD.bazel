@@ -15,7 +15,7 @@ exports_files_legacy()
 rust_cxx_bridge(
     name = "fontations_ffi",
     src = "src/ffi.rs",
-    deps = [":path_bridge_include"],
+    deps = [":path_bridge"],
 )
 
 rust_static_library(
@@ -30,18 +30,10 @@ rust_static_library(
 )
 
 skia_cc_library(
-    name = "path_bridge_include",
+    name = "path_bridge",
     hdrs = [
         "src/skpath_bridge.h",
     ],
-)
-
-skia_filegroup(
-    name = "srcs",
-    srcs = [
-        ":fontations_ffi/filegroup",
-    ],
-    visibility = ["//src/ports:__pkg__"],
 )
 
 skia_cc_deps(
@@ -49,7 +41,7 @@ skia_cc_deps(
     visibility = ["//src/ports:__pkg__"],
     deps = [
         ":bridge_rust_side",
-        ":fontations_ffi/include",
-        ":path_bridge_include",
+        ":fontations_ffi",
+        ":path_bridge",
     ],
 )
