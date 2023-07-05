@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ebdbc7a_bed66332",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-07-05T14:29:04Z",
+      "side": 1,
+      "message": "If I\u0027m reading swarming correctly it looks like all RTX3060 drivers were updated.",
+      "revId": "b045863ad2e8144962b35f0ef75a03516390b174",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
