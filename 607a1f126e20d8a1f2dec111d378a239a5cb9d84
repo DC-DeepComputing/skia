@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7157ece2_8806f5c4",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-05T14:22:06Z",
+      "side": 1,
+      "message": "Decided to unflatten the slot infos. Done.",
+      "parentUuid": "614ecbe6_13ca9964",
+      "revId": "607a1f126e20d8a1f2dec111d378a239a5cb9d84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5266b39d_1da4a9d0",
