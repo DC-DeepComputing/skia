@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "839a725d_8bfb63c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-07-05T09:57:23Z",
+      "side": 1,
+      "message": "Arman, what do you think about this? I was looking closer at porting the vello rules for using them as GN recipes for fontations, and I was wondering why the extra target is defined. I found this works, at least locally, too. Would you agree that\u0027s sufficient?",
+      "revId": "a6ed6764a224f124efaf4f2a5985f6364d5c20b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
