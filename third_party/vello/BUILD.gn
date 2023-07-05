@@ -38,10 +38,10 @@ if (skia_enable_vello_shaders) {
       "BUILD.bazel",
       "src/lib.rs",
     ]
-    outputs = [ "$root_out_dir/libvello_ffi.a" ]
+    outputs = [ "$root_out_dir/libffi_gen.a" ]
     args = [
-             "//third_party/vello:vello_ffi",
-             rebase_path("//bazel-bin/third_party/vello/libvello_ffi.a",
+             "//third_party/vello:ffi_gen",
+             rebase_path("//bazel-bin/third_party/vello/libffi_gen.a",
                          root_build_dir),
            ] + bazel_args
   }
@@ -66,7 +66,7 @@ if (skia_enable_vello_shaders) {
 third_party("vello") {
   public_include_dirs = [ "../../bazel-bin/" ]
   libs = [
-    "$root_out_dir/libvello_ffi.a",
+    "$root_out_dir/libffi_gen.a",
     "$root_out_dir/libvello_rust.a",
   ]
   deps = [
