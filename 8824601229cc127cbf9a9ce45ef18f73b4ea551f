@@ -16,6 +16,23 @@
       "message": "Ready for review!",
       "revId": "8824601229cc127cbf9a9ce45ef18f73b4ea551f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38803c24_4cf40b14",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-05T19:37:48Z",
+      "side": 1,
+      "message": "How about adding `SK_WARN_UNUSED_RESULT` to these, too?",
+      "revId": "8824601229cc127cbf9a9ce45ef18f73b4ea551f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
