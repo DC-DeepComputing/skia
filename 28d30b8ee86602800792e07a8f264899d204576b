@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bc0f16d_de4ddcd9",
+        "filename": "src/image/SkTiledImageUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-05T13:43:32Z",
+      "side": 1,
+      "message": "How about we just make this a static function in ToolUtils.cpp, so there\u0027s no exposure at all?",
+      "revId": "28d30b8ee86602800792e07a8f264899d204576b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
