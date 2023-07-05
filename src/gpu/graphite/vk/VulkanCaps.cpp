@@ -49,7 +49,7 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     // give the minimum max size across all configs. So for simplicity we will use that for now.
     fMaxTextureSize = std::min(physDevProperties.limits.maxImageDimension2D, (uint32_t)INT_MAX);
 
-    fRequiredUniformBufferAlignment = 256;
+    fRequiredUniformBufferAlignment = physDevProperties.limits.minUniformBufferOffsetAlignment; //16;//256;
     fRequiredStorageBufferAlignment = 1;
     fRequiredTransferBufferAlignment = 4;
 
