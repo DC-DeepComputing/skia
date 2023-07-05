@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1215fd42_2a9b0d09",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1389,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-05T14:37:57Z",
+      "side": 1,
+      "message": "Don\u0027t need this line anymore?",
+      "range": {
+        "startLine": 1389,
+        "startChar": 0,
+        "endLine": 1389,
+        "endChar": 34
+      },
+      "revId": "695a50f27d70812bf14f7bf293499f495d6c19a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
