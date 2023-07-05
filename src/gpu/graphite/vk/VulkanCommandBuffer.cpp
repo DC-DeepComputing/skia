@@ -18,6 +18,8 @@
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
 
+#include "src/gpu/graphite/TextureProxy.h"
+
 #define SK_DISABLE_VULKAN_RENDERING
 
 using namespace skia_private;
@@ -277,6 +279,26 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                           const Texture* depthStencilTexture,
                                           SkRect viewport,
                                           const DrawPassList& drawPasses) {
+    for (const auto& drawPass : drawPasses) {
+        // Our current implementation of setting texture image layouts does not allow layout changes
+        // once we have already begun a render pass, so prior to any other commands, set the layout
+        // of all sampled textures from the drawpass so they can be sampled from the shader.
+        const skia_private::TArray<sk_sp<TextureProxy>>& sampledTextureProxies = drawPass->sampledTextures();
+        for (sk_sp<TextureProxy> textureProxy : sampledTextureProxies) {
+            VulkanTexture* vulkanTexture = const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(textureProxy->texture()));
+            // if (vulkanTexture->currentLayout() == VK_IMAGE_LAYOUT_UNDEFINED) {
+            // if ()
+            SkDebugf("Changing layout from %d", vulkanTexture->currentLayout());
+                vulkanTexture->setImageLayout(this,
+                                              VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+                                              VK_ACCESS_SHADER_READ_BIT,
+                                              VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+                                              false);
+                this->submitPipelineBarriers();
+            // }
+        }
+    }
+
     if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
         return false;
     }
@@ -458,10 +480,8 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 break;
             }
             case DrawPassCommands::Type::kBindTexturesAndSamplers: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
                 this->recordTextureAndSamplerDescSet(*drawPass, *bts);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kSetScissor: {
@@ -725,8 +745,8 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         // Populate the descriptor set with texture/sampler descriptors
         TArray<VkWriteDescriptorSet> writeDescriptorSets(command.fNumTexSamplers);
         for (int i = 0; i < command.fNumTexSamplers; ++i) {
-            auto texture = static_cast<const VulkanTexture*>(
-                    drawPass.getTexture(command.fTextureIndices[i]));
+            auto texture =  const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(
+                    drawPass.getTexture(command.fTextureIndices[i])));
             auto sampler = static_cast<const VulkanSampler*>(
                     drawPass.getSampler(command.fSamplerIndices[i]));
             SkASSERT(texture && sampler);
@@ -734,8 +754,15 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             VkDescriptorImageInfo textureInfo;
             memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
             textureInfo.sampler = sampler->vkSampler();
-            textureInfo.imageView = VK_NULL_HANDLE; // TODO: Obtain texture view from VulkanImage.
-            textureInfo.imageLayout = texture->currentLayout();
+
+            // texture->setImageLayout(this,
+            //                         VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+            //                         VK_ACCESS_SHADER_READ_BIT,
+            //                         VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+            //                         false);
+            textureInfo.imageView =
+                    texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
+            textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;//texture->currentLayout();
 
             VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
             memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
