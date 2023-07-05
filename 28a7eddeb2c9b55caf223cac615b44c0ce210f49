@@ -33,6 +33,42 @@
       "message": "It looks like the bazel build builds the `bridge_rust_side` and cxx code against its own clang provided `libstdc++`.  \n\nThe last command that bazel generates to build the libbridge_rust_side is:\n\n```\nbazel-out/k8-opt-exec-D7A71F67/bin/external/rules_rust/util/process_wrapper/process_wrapper --subst \u0027pwd\u003d${pwd}\u0027 -- bazel-out/k8-dbg/bin/external/rust_linux_x86_64__x86_64-unknown-linux-gnu__stable_tools/rust_toolchain/bin/rustc src/ports/fontations/src/ffi.rs \u0027--crate-name\u003dbridge_rust_side\u0027 \u0027--crate-type\u003dstaticlib\u0027 \u0027--error-format\u003dhuman\u0027 \u0027--out-dir\u003dbazel-out/k8-dbg/bin/src/ports/fontations\u0027 \u0027--codegen\u003dopt-level\u003d0\u0027 \u0027--codegen\u003ddebuginfo\u003d2\u0027 \u0027--remap-path-prefix\u003d${pwd}\u003d\u0027 \u0027--emit\u003ddep-info,link\u0027 \u0027--color\u003dalways\u0027 \u0027--target\u003dx86_64-unknown-linux-gnu\u0027 -L bazel-out/k8-dbg/bin/external/rust_linux_x86_64__x86_64-unknown-linux-gnu__stable_tools/rust_toolchain/lib/rustlib/x86_64-unknown-linux-gnu/lib \u0027--edition\u003d2021\u0027 \u0027--codegen\u003dlinker\u003dtoolchain/linux_trampolines/clang_trampoline_linux.sh\u0027 --codegen \u0027link-args\u003d-ldl -lpthread -ldl -lpthread -ldl -lpthread -ldl -lpthread -fuse-ld\u003dlld --rtlib\u003dcompiler-rt -std\u003dc++17 -stdlib\u003dlibc++ external/clang_linux_amd64/lib/x86_64-unknown-linux-gnu/libc++.a external/clang_linux_amd64/lib/x86_64-unknown-linux-gnu/libc++abi.a external/clang_linux_amd64/lib/x86_64-unknown-linux-gnu/libunwind.a -lpthread -lm -ldl --sysroot\u003dexternal/clang_linux_amd64\u0027 \u0027-Lnative\u003dbazel-out/k8-dbg/bin/external/cxx\u0027 \u0027-lstatic\u003dcore-lib\u0027 \u0027-Clink-arg\u003d-lcore-lib\u0027 \u0027--extern\u003dcxx\u003dbazel-out/k8-dbg/bin/external/cxx/libcxx-743792582.rlib\u0027 \u0027--extern\u003dfont_types\u003dbazel-out/k8-dbg/bin/external/fontations__font-types-0.3.0/libfont_types-1240665324.rlib\u0027 \u0027--extern\u003dread_fonts\u003dbazel-out/k8-dbg/bin/external/fontations__read-fonts-0.5.0/libread_fonts-1659777534.rlib\u0027 \u0027--extern\u003dskrifa\u003dbazel-out/k8-dbg/bin/external/fontations__skrifa-0.4.0/libskrifa-1030452149.rlib\u0027 \u0027-Ldependency\u003dbazel-out/k8-opt-exec-D7A71F67/bin/external/cxx_deps__cxxbridge-macro-1.0.94\u0027 \u0027-Ldependency\u003dbazel-out/k8-dbg/bin/external/cxx\u0027 \u0027-Ldependency\u003dbazel-out/k8-dbg/bin/external/fontations__font-types-0.3.0\u0027 \u0027-Ldependency\u003dbazel-out/k8-dbg/bin/external/fontations__read-fonts-0.5.0\u0027 \u0027-Ldependency\u003dbazel-out/k8-dbg/bin/external/fontations__skrifa-0.4.0\u0027)\n```\n\nWhen I cd to my `out/gnrust_rel/` build directory and run the following, which links against the clang provided libstdc++, the build succeeds.\n\n```\n$ c++ -rdynamic -Wl,-rpath,\\$ORIGIN -Wl,--start-group @./viewer.rsp   -Wl,--end-group  -lpthread -lfontconfig -ldl -lGL libfontations_ffi.a libbridge_rust_side.a /usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/execroot/skia/external/clang_linux_amd64/lib/x86_64-unknown-linux-gnu/libc++.a /usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/execroot/skia/external/clang_linux_amd64/lib/x86_64-unknown-linux-gnu/libc++abi.a /usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/execroot/skia/external/clang_linux_amd64/lib/x86_64-unknown-linux-gnu/libunwind.a -lGLU -lX11 -o ./viewer\n``",
       "revId": "28a7eddeb2c9b55caf223cac615b44c0ce210f49",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea33b538_38ddad51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-07-05T14:13:32Z",
+      "side": 1,
+      "message": "\u003e (as Skia\u0027s GN has no means of building Rust on its own, and this seems to be the accepted process)\n\nYou could use GN properly, skia uses chrome\u0027s //build, which of course can do this.",
+      "parentUuid": "135aa377_be8537a8",
+      "revId": "28a7eddeb2c9b55caf223cac615b44c0ce210f49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12558c39_cfec6176",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7060
+      },
+      "writtenOn": "2023-07-05T14:13:32Z",
+      "side": 1,
+      "message": "The chromium libc++ puts the stdlib into a different inner namespace, maybe that\u0027s why. Or yeah upstream libstd vs libc++ probably do this differently.\n\n\u003e clang provided libstdc++\n\nI think you mean libc++? libstdc++ is what ships with gcc/gnu and comes with your linux distro.\n\nYou will want to point it to the same lib that any c++ linked code uses. Generally you do that by using the ldflags and cflags that are set up for c++ code already in the build system. Our GN tools consume the same flags and pass them through rustc for the linker.",
+      "parentUuid": "866740a7_408043f6",
+      "revId": "28a7eddeb2c9b55caf223cac615b44c0ce210f49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
