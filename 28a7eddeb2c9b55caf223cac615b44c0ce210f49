@@ -69,6 +69,24 @@
       "parentUuid": "866740a7_408043f6",
       "revId": "28a7eddeb2c9b55caf223cac615b44c0ce210f49",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d4f54e9_2e752a0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-07-05T14:21:02Z",
+      "side": 1,
+      "message": "Yes, thanks, I think the second part is helpful. I will have to try and teach `cc_library` and `rust_static_library` bazel rules to accept flags that make it use the same standard library that the rest of the C++ code uses.",
+      "parentUuid": "12558c39_cfec6176",
+      "revId": "28a7eddeb2c9b55caf223cac615b44c0ce210f49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
