@@ -16,6 +16,23 @@
       "message": "LGTM",
       "revId": "4649c08958f0b58ae12dbdbdc6d5a8b6bbde92ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47b3b610_5a0b9043",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-07-05T14:19:10Z",
+      "side": 1,
+      "message": "Florin, could you rubberstamp this change? Dana was so kind as to reviewing it already.",
+      "revId": "4649c08958f0b58ae12dbdbdc6d5a8b6bbde92ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
