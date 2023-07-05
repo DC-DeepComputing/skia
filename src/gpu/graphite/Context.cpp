@@ -141,24 +141,14 @@ void Context::asyncReadPixels(const SkImage* image,
                               const SkIRect& srcRect,
                               SkImage::ReadPixelsCallback callback,
                               SkImage::ReadPixelsContext callbackContext) {
-    if (!as_IB(image)->isGraphiteBacked()) {
-        callback(callbackContext, nullptr);
-        return;
-    }
-    // TODO(b/238756380): YUVA read not supported right now
-    if (as_IB(image)->isYUVA()) {
-        callback(callbackContext, nullptr);
-        return;
-    }
-    auto graphiteImage = reinterpret_cast<const skgpu::graphite::Image*>(image);
-    TextureProxyView proxyView = graphiteImage->textureProxyView();
-
-    this->asyncReadPixels(proxyView.proxy(),
-                          image->imageInfo(),
-                          dstColorInfo,
-                          srcRect,
-                          callback,
-                          callbackContext);
+    SkImageInfo dstImageInfo = SkImageInfo::Make(srcRect.size(), dstColorInfo);
+    this->asyncRescaleAndReadPixels(image,
+                                    dstImageInfo,
+                                    srcRect,
+                                    SkImage::RescaleGamma::kSrc,
+                                    SkImage::RescaleMode::kNearest,
+                                    callback,
+                                    callbackContext);
 }
 
 void Context::asyncReadPixels(const SkSurface* surface,
@@ -166,19 +156,14 @@ void Context::asyncReadPixels(const SkSurface* surface,
                               const SkIRect& srcRect,
                               SkImage::ReadPixelsCallback callback,
                               SkImage::ReadPixelsContext callbackContext) {
-    if (!static_cast<const SkSurface_Base*>(surface)->isGraphiteBacked()) {
-        callback(callbackContext, nullptr);
-        return;
-    }
-    auto graphiteSurface = reinterpret_cast<const skgpu::graphite::Surface*>(surface);
-    TextureProxyView proxyView = graphiteSurface->readSurfaceView();
-
-    this->asyncReadPixels(proxyView.proxy(),
-                          surface->imageInfo(),
-                          dstColorInfo,
-                          srcRect,
-                          callback,
-                          callbackContext);
+    SkImageInfo dstImageInfo = SkImageInfo::Make(srcRect.size(), dstColorInfo);
+    this->asyncRescaleAndReadPixels(surface,
+                                    dstImageInfo,
+                                    srcRect,
+                                    SkImage::RescaleGamma::kSrc,
+                                    SkImage::RescaleMode::kNearest,
+                                    callback,
+                                    callbackContext);
 }
 
 void Context::asyncRescaleAndReadPixels(const SkImage* image,
@@ -189,6 +174,11 @@ void Context::asyncRescaleAndReadPixels(const SkImage* image,
                                         SkImage::ReadPixelsCallback callback,
                                         SkImage::ReadPixelsContext callbackContext) {
     if (!image || !as_IB(image)->isGraphiteBacked()) {
+        callback(callbackContext, nullptr);
+        return;
+    }
+    // TODO(b/238756380): YUVA read not supported right now
+    if (as_IB(image)->isYUVA()) {
         callback(callbackContext, nullptr);
         return;
     }
