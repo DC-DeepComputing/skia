@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "135aa377_be8537a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-07-05T13:42:52Z",
+      "side": 1,
+      "message": "@danakj, could you perhaps help here?\n\nI am trying to build the Fontations parts with bazel in Skia(as Skia\u0027s GN has no means of building Rust on its own, and this seems to be the accepted process). The goal is to be able to run the Skia GM that produces Fontations pixel output on the Skia bots so we can regression test Fontations in Skia Gold. (The bots do not support building the gm executable through Bazel at the moment).\n\nBut then when I am trying to link the components produced by Fontations, which is the Rust library itself, and cxx bindings code, then I get linkage errors due to what seems to be missing c++ standard library symbols. The following symbols are missing, see below. \n\nIs there something I can do to resolve that with GN? What do I need to tell the linker to resolve this? (I believe Skia seems to be using ld)? And how could I fix my GN targets?\n\nDid you encounter similar issues in Chromium Rust linkage?\n\nThe same problem does not appear to happen for linking Vello, as Vello\u0027s cxx bindings do not make use of the cxx adapter code for slices and Rust\u0027s Box type etc, and thus do not seem to have C++ standard library dependencies. \n\n\n```\n`std::__1::__shared_weak_count::__release_weak()\u0027\n`std::__1::__shared_weak_count::lock()\u0027\n`std::__1::__shared_weak_count::~__shared_weak_count()\u0027\n`std::__1::basic_ostream\u003cchar, std::__1::char_traits\u003cchar\u003e \u003e::write(char const*, long)\u0027\n`std::__1::basic_string\u003cchar, std::__1::char_traits\u003cchar\u003e, std::__1::allocator\u003cchar\u003e \u003e::__init(char const*, unsigned long)\u0027\n`std::__1::basic_string\u003cchar, std::__1::char_traits\u003cchar\u003e, std::__1::allocator\u003cchar\u003e \u003e::append(char const*, unsigned long)\u0027\n`std::__1::basic_string\u003cchar, std::__1::char_traits\u003cchar\u003e, std::__1::allocator\u003cchar\u003e \u003e::reserve(unsigned long)\u0027\n`std::__1::basic_string\u003cchar, std::__1::char_traits\u003cchar\u003e, std::__1::allocator\u003cchar\u003e \u003e::~basic_string()\u0027\n`std::bad_array_new_length::bad_array_new_length()\u0027\n`typeinfo for std::__1::__shared_weak_count\u0027\n`vtable for std::__1::__shared_count\u0027\n`vtable for std::__1::__shared_weak_count\u0027\n```\n\nBeginning of error message looks like this:\n\n```\nautoninja -C out/gnrust_rel/ viewer\nninja: Entering directory `out/gnrust_rel/\u0027\n[0/1] Regenerating ninja files\n[7/7] link viewer\nFAILED: viewer \nc++ -rdynamic -Wl,-rpath,\\$ORIGIN -Wl,--start-group @./viewer.rsp   -Wl,--end-group -lpthread -lfontconfig -ldl -lGL libfontations_ffi.a libbridge_rust_side.a -lGLU -lX11 -o ./viewer\n/usr/bin/ld: libbridge_rust_side.a(cxx.o): in function `cxxbridge1$cxx_string$destroy\u0027:\ncxx.cc:(.text+0x51): undefined reference to `std::__1::basic_string\u003cchar, std::__1::char_traits\u003cchar\u003e, std::__1::allocator\u003cchar\u003e \u003e::~basic_string()\u0027\n/usr/bin/ld: libbridge_rust_side.a(cxx.o): in function `cxxbridge1$cxx_string$reserve_total\u0027:\ncxx.cc:(.text+0xd9): undefined reference to `std::__1::basic_string\u003cchar, std::__1::char_traits\u003cchar\u003e, std::__1::allocator\u003cchar\u003e \u003e::reserve(unsigned long)\u0027\n/usr/bin/ld: libbridge_rust_side.a(cxx.o): in function `cxxbridge1$cxx_string$push\u0027:\n```",
+      "revId": "28a7eddeb2c9b55caf223cac615b44c0ce210f49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
