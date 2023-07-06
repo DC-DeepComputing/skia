@@ -16,6 +16,24 @@
       "message": "Should I attempt to figure out a test case?",
       "revId": "e9d6268317ce97b7787304686162325604c4949f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7963a8bc_17894f7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-06T15:10:57Z",
+      "side": 1,
+      "message": "Might be tricky to do (a quick read doesn\u0027t suggest an obvious way to get it to fail this late in the process). If you have a way to do it, though - yes!",
+      "parentUuid": "59f916d5_9a419d00",
+      "revId": "e9d6268317ce97b7787304686162325604c4949f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
