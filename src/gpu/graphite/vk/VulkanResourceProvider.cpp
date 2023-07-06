@@ -47,7 +47,7 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     // descriptor types with count values of 0, but check just in case.
     for (auto desc : requestedDescriptors) {
         if (desc.count > 0) {
-            builder[static_cast<uint32_t>(desc.type) + 1] = desc.count;
+            builder[static_cast<uint32_t>(desc.type) + 1] += desc.count;
         }
     }
     builder[kNum32DataCnt - 1] = uniqueId;
