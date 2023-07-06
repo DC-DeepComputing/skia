@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bc86d2e_17f94be1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-06T17:07:24Z",
+      "side": 1,
+      "message": "James, are you okay reviewing this? The prior version had the same changes in SkXmp.cpp, but then failed on Bazel-Test bots. That\u0027s because those bots don\u0027t set the SK_XML define. There is probably a better build organization of this (as discussed in the prior revert), but there are already several other tests that depend on XML code, and are ifdef\u0027d out using SK_XML. This just extends that previous fix in the same way.",
+      "revId": "9607100d016ccff7a88418cc6b122bf23c11290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
