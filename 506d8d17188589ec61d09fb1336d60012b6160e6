@@ -16,6 +16,24 @@
       "message": "Is this necessary here now that we\u0027re doing a snap in asyncRescaleAndReadPixels?",
       "revId": "506d8d17188589ec61d09fb1336d60012b6160e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78d31979_96cc3f7b",
+        "filename": "gm/asyncrescaleandread.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-06T16:54:31Z",
+      "side": 1,
+      "message": "Ah, I see, that\u0027s a separate recorder used for readback.",
+      "parentUuid": "fbafd8f3_935aa2ca",
+      "revId": "506d8d17188589ec61d09fb1336d60012b6160e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
