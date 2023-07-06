@@ -30,7 +30,6 @@ CORE_FILES = [
     "SkSampler.h",
     "SkSwizzler.cpp",
     "SkSwizzler.h",
-    "SkXmp.cpp",
 ]
 
 split_srcs_and_hdrs(
@@ -106,6 +105,7 @@ filegroup(
     srcs = [
         "SkJpegXmp.cpp",
         "SkJpegXmp.h",
+        "SkXmp.cpp",
     ],
 )
 
