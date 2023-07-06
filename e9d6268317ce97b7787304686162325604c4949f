@@ -34,6 +34,24 @@
       "parentUuid": "59f916d5_9a419d00",
       "revId": "e9d6268317ce97b7787304686162325604c4949f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e78e2d5b_3a3884d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2023-07-06T20:55:39Z",
+      "side": 1,
+      "message": "+1, sorry I\u0027m also not quite sure how to trigger this scenario -- a repro case was not available.",
+      "parentUuid": "7963a8bc_17894f7c",
+      "revId": "e9d6268317ce97b7787304686162325604c4949f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
