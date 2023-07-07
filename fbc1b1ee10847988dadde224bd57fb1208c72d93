@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeb76733_7701f89f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2023-07-07T13:12:20Z",
+      "side": 1,
+      "message": "While the viewer Bazel build is not tested on bots, it\u0027s useful and required for the Fontations font backend debugging. This change breaks that build.\n\n$ bazel build -c dbg --sandbox_base\u003d/dev/shm //tools/viewer \n\nfails with:\n```\ntools/viewer/Viewer.cpp:32:10: fatal error: \u0027include/gpu/graphite/Context.h\u0027 file not found\n#include \"include/gpu/graphite/Context.h\"\n         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n```\n\nas graphite headers in include/core/gpu/graphite are not visible. I started adding a BUILD.bazel there, similar to the gpu/ganesh directory and add the public_hdrs definition to include/gpu/BUILD.bazel, but that was not sufficient, as eventually, an include to Context_priv.h was required, too. \n\nCould you try to fix that build, John? Thanks in advance.",
+      "revId": "fbc1b1ee10847988dadde224bd57fb1208c72d93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
