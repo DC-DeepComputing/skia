@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bb07938_15e306ae",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-07T16:23:54Z",
+      "side": 1,
+      "message": "Good catch, I think in an older implementation we couldn\u0027t let SlotManager out live the builder, hence the raw ptr. But it looks like they can live independently. Done.",
+      "parentUuid": "2de27193_d115600b",
+      "range": {
+        "startLine": 461,
+        "startChar": 24,
+        "endLine": 461,
+        "endChar": 31
+      },
+      "revId": "5ec8a94dad3a842255d360e9d3ca2400e9b157eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5313a14_85ad82c4",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-07-05T17:17:29Z",
       "side": 1,
       "message": "`sk_sp\u003cSlotManager\u003e`?",
+      "revId": "5ec8a94dad3a842255d360e9d3ca2400e9b157eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa6dd3e6_ee8a1ca3",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-07T16:23:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5313a14_85ad82c4",
       "revId": "5ec8a94dad3a842255d360e9d3ca2400e9b157eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
