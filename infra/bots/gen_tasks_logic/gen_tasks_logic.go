@@ -966,7 +966,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 					"RadeonR9M470X": "1002:6646-26.20.13031.18002",
 					"QuadroP400":    "10de:1cb3-30.0.15.1179",
 					"RadeonVega6":   "1002:1636-31.0.14057.5006",
-					"RTX3060":       "10de:2489-31.0.15.1694",
+					"RTX3060":       "10de:2489-31.0.15.3179",
 				}[b.parts["cpu_or_gpu_value"]]
 				if !ok {
 					log.Fatalf("Entry %q not found in Win GPU mapping.", b.parts["cpu_or_gpu_value"])
@@ -1321,6 +1321,9 @@ func (b *jobBuilder) compile() string {
 				if b.compiler("Clang") {
 					b.asset("clang_win")
 				}
+				if b.extraConfig("DWriteCore") {
+					b.asset("dwritecore")
+				}
 			} else if b.matchOs("Mac") {
 				b.cipd(CIPD_PKGS_XCODE...)
 				b.Spec.Caches = append(b.Spec.Caches, &specs.Cache{
@@ -1637,6 +1640,10 @@ func (b *taskBuilder) commonTestPerfAssets() {
 				b.asset("mesa_intel_driver_linux")
 			}
 		}
+	}
+
+	if b.matchOs("Win") && b.extraConfig("DWriteCore") {
+		b.asset("dwritecore")
 	}
 }
 
