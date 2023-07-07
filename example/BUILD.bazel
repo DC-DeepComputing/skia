@@ -31,7 +31,7 @@ cc_binary_with_flags(
         "//:skia_public",
     ] + select({
         "@platforms//os:macos": ["//tools/sk_app:sk_app_objc"],
-        "@platforms//os:linux": ["//tools/sk_app:sk_app"],
+        "@platforms//os:linux": ["//tools/sk_app"],
         "//conditions:default": [],
     }),
 )
@@ -128,5 +128,22 @@ cc_binary_with_flags(
         # This DEPS is for the utility in the demo for creating a vulkan context.
         # Outside clients would not need it.
         "//tools/gpu/vk:testutils",
+    ],
+)
+
+cc_binary_with_flags(
+    name = "subpixel_aa_surface",
+    testonly = True,
+    srcs = [
+        "SubPixelAA.cpp",
+    ],
+    set_flags = {
+        "include_encoder": [
+            "png_encode_codec",
+        ],
+    },
+    deps = [
+        "//:skia_public",
+        "//tools:tool_utils",
     ],
 )
