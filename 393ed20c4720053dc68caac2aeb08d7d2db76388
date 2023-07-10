@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "293f3c4a_32aacf46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-10T18:27:56Z",
+      "side": 1,
+      "message": "Apparently, the Tegra3\u0027s max texture size is less than 4096.",
+      "revId": "393ed20c4720053dc68caac2aeb08d7d2db76388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
