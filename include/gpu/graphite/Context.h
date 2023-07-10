@@ -54,6 +54,20 @@ public:
     bool insertRecording(const InsertRecordingInfo&);
     bool submit(SyncToCpu = SyncToCpu::kNo);
 
+    /**
+     * Inserts a list of GPU semaphores that the current GPU-backed API must wait on before
+     * executing any more commands on the GPU. If this call returns false, then the GPU back-end
+     * will not wait on any passed in semaphores, and the client will still own the semaphores,
+     * regardless of the value of deleteSemaphoresAfterWait.
+     *
+     * If deleteSemaphoresAfterWait is false then Skia will not delete the semaphores. In this case
+     * it is the client's responsibility to not destroy or attempt to reuse the semaphores until it
+     * knows that Skia has finished waiting on them. This can be done by using finishedProcs on
+     * insertRecording calls.
+     */
+    bool wait(int numSemaphores, const BackendSemaphore* waitSemaphores,
+              bool deleteSemaphoresAfterWait = true);
+
     void asyncRescaleAndReadPixels(const SkImage* image,
                                    const SkImageInfo& dstImageInfo,
                                    const SkIRect& srcRect,
