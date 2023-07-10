@@ -16,6 +16,24 @@
       "message": "nit: we can constify this, so that clients only make a ref copy when needed\n\n`const sk_sp\u003cSlotManager\u003e\u0026 getSlotManager() const { return fSlotManager; }`",
       "revId": "cffa964290dd71b402d2a6052fa2fe8eca72ae2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dc8f785_12195e66",
+        "filename": "modules/skottie/include/Skottie.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-10T23:55:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abfbe0a5_49c66473",
+      "revId": "cffa964290dd71b402d2a6052fa2fe8eca72ae2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
