@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5bab322_7ada0cc3",
+        "filename": "tests/sksl/shared/VertexIDInFunction.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-10T17:20:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "58f67161_6021b0b0",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 11,
+        "endChar": 23
+      },
+      "revId": "6f7bdf2119d4679c3e0e815f6c034280ce669081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6ac8463_e5d11157",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-10T16:55:01Z",
       "side": 1,
       "message": "not passed",
+      "range": {
+        "startLine": 12,
+        "startChar": 11,
+        "endLine": 12,
+        "endChar": 22
+      },
+      "revId": "6f7bdf2119d4679c3e0e815f6c034280ce669081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "693748e6_55d398c7",
+        "filename": "tests/sksl/shared/VertexIDInFunction.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-10T17:20:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e6ac8463_e5d11157",
       "range": {
         "startLine": 12,
         "startChar": 11,
