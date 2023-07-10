@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20b321c5_09b436c3",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-10T17:48:32Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 72,
+        "startChar": 7,
+        "endLine": 72,
+        "endChar": 25
+      },
+      "revId": "5b46e70e318981824e5a5e54b6c3f0cd27aee979",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "783e4eb9_d06a4ebf",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-10T17:48:32Z",
+      "side": 1,
+      "message": "Might as well nudge this guy to the right one",
+      "range": {
+        "startLine": 140,
+        "startChar": 82,
+        "endLine": 140,
+        "endChar": 88
+      },
+      "revId": "5b46e70e318981824e5a5e54b6c3f0cd27aee979",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1180c399_73b52bb5",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-10T17:48:32Z",
+      "side": 1,
+      "message": "duplicate",
+      "range": {
+        "startLine": 145,
+        "startChar": 11,
+        "endLine": 145,
+        "endChar": 13
+      },
+      "revId": "5b46e70e318981824e5a5e54b6c3f0cd27aee979",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1ed53eb_c2289dab",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-10T17:48:32Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "5b46e70e318981824e5a5e54b6c3f0cd27aee979",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
