@@ -52,6 +52,23 @@
       "parentUuid": "535204ee_235c8b62",
       "revId": "3cc21290050e707c75a767ac279b918c96bb7b99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24ab0f66_59596e11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-10T14:30:52Z",
+      "side": 1,
+      "message": "LGTM if you want to also land these changes",
+      "revId": "3cc21290050e707c75a767ac279b918c96bb7b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
