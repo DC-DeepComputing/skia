@@ -21,33 +21,23 @@ constexpr float SK_FloatSqrt2 = 1.41421356f;
 constexpr float SK_FloatPI    = 3.14159265f;
 constexpr double SK_DoublePI  = 3.14159265358979323846264338327950288;
 
-// C++98 cmath std::pow seems to be the earliest portable way to get float pow.
-// However, on Linux including cmath undefines isfinite.
-// http://gcc.gnu.org/bugzilla/show_bug.cgi?id=14608
-static inline float sk_float_pow(float base, float exp) {
-    return powf(base, exp);
-}
-
-#define sk_float_sqrt(x)        sqrtf(x)
-#define sk_float_sin(x)         sinf(x)
-#define sk_float_cos(x)         cosf(x)
-#define sk_float_tan(x)         tanf(x)
-#define sk_float_floor(x)       floorf(x)
-#define sk_float_ceil(x)        ceilf(x)
-#define sk_float_trunc(x)       truncf(x)
-#ifdef SK_BUILD_FOR_MAC
-#    define sk_float_acos(x)    static_cast<float>(acos(x))
-#    define sk_float_asin(x)    static_cast<float>(asin(x))
-#else
-#    define sk_float_acos(x)    acosf(x)
-#    define sk_float_asin(x)    asinf(x)
-#endif
-#define sk_float_atan2(y,x)     atan2f(y,x)
-#define sk_float_abs(x)         fabsf(x)
-#define sk_float_copysign(x, y) copysignf(x, y)
-#define sk_float_mod(x,y)       fmodf(x,y)
-#define sk_float_exp(x)         expf(x)
-#define sk_float_log(x)         logf(x)
+#define sk_float_sqrt(x)        std::sqrt(x)
+#define sk_float_sin(x)         std::sin(x)
+#define sk_float_cos(x)         std::cos(x)
+#define sk_float_tan(x)         std::tan(x)
+#define sk_float_floor(x)       std::floor(x)
+#define sk_float_ceil(x)        std::ceil(x)
+#define sk_float_trunc(x)       std::trunc(x)
+#define sk_float_acos(x)        std::acos(x)
+#define sk_float_asin(x)        std::asin(x)
+#define sk_float_atan2(y,x)     std::atan2(y,x)
+#define sk_float_abs(x)         std::fabs(x)
+#define sk_float_copysign(x, y) std::copysign(x, y)
+#define sk_float_mod(x,y)       std::fmod(x,y)
+#define sk_float_pow(x, y)      std::pow(x, y)
+#define sk_float_exp(x)         std::exp(x)
+#define sk_float_log(x)         std::log(x)
+#define sk_float_log2(x)        std::log2(x)
 
 constexpr int sk_float_sgn(float x) {
     return (0.0f < x) - (x < 0.0f);
@@ -65,16 +55,6 @@ constexpr float sk_float_radians_to_degrees(float radians) {
 // means tricky values like 0.49999997 and 2^24 get rounded correctly. If these were rounded
 // as floatf(x + .5f), they would be 1 higher than expected.
 #define sk_float_round(x) (float)sk_double_round((double)(x))
-
-// can't find log2f on android, but maybe that just a tool bug?
-#ifdef SK_BUILD_FOR_ANDROID
-    static inline float sk_float_log2(float x) {
-        const double inv_ln_2 = 1.44269504088896;
-        return (float)(log(x) * inv_ln_2);
-    }
-#else
-    #define sk_float_log2(x)        log2f(x)
-#endif
 
 static inline bool sk_float_isfinite(float x) {
     return SkFloatBits_IsFinite(SkFloat2Bits(x));
