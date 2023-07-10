@@ -34,6 +34,24 @@
       "parentUuid": "3bc0f16d_de4ddcd9",
       "revId": "28d30b8ee86602800792e07a8f264899d204576b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c0466b9_430d9c80",
+        "filename": "src/image/SkTiledImageUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-10T15:57:45Z",
+      "side": 1,
+      "message": "Ah, if clients are going to be calling this, then yeah - this seems fine.",
+      "parentUuid": "5dda3022_d9ece920",
+      "revId": "28d30b8ee86602800792e07a8f264899d204576b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
