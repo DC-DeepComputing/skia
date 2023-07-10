@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8ced927_5fe3fe3b",
+        "filename": "modules/skparagraph/include/Paragraph.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-10T15:40:21Z",
+      "side": 1,
+      "message": "Skia uses capital letters for static methods (`GetPath`)",
+      "range": {
+        "startLine": 128,
+        "startChar": 18,
+        "endLine": 128,
+        "endChar": 25
+      },
+      "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "156f7e64_4b645e96",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1284,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-10T15:40:21Z",
+      "side": 1,
+      "message": "nit: These lines are past 100 columns.",
+      "range": {
+        "startLine": 1280,
+        "startChar": 0,
+        "endLine": 1284,
+        "endChar": 122
+      },
+      "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60db7305_e489f170",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-10T15:40:21Z",
+      "side": 1,
+      "message": "nit: More long coumns",
+      "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5946bf6_323f7fd2",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1417,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-10T15:40:21Z",
+      "side": 1,
+      "message": "If we\u0027re just returning directly from here, I don\u0027t think we need `result` at all? These lines can just `return true;`, and line 1421 can be `return false;`",
+      "range": {
+        "startLine": 1412,
+        "startChar": 0,
+        "endLine": 1417,
+        "endChar": 13
+      },
+      "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c9c895d_26bdbaf3",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-10T15:40:21Z",
+      "side": 1,
+      "message": "This seems incomplete?",
+      "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
