@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0462a612_1db4c9f2",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-10T15:59:35Z",
+      "side": 1,
+      "message": "`SK_WARN_UNUSED_RESULT` again?",
+      "revId": "08a0eee8ecd25f042320a08bf0987c1a30d4cf35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
