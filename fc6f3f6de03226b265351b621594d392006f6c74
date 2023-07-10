@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d81b6eb2_6c4183da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-10T15:36:12Z",
+      "side": 1,
+      "message": "PTAL. This is mostly a copy and paste from the Ganesh code but changing some types.",
+      "revId": "fc6f3f6de03226b265351b621594d392006f6c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
