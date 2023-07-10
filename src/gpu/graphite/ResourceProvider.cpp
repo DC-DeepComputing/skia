@@ -42,7 +42,9 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
     auto globalCache = fSharedContext->globalCache();
-    UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
+    UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(fSharedContext,
+                                                                            runtimeDict,
+                                                                            pipelineDesc,
                                                                             renderPassDesc);
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey);
     if (!pipeline) {
