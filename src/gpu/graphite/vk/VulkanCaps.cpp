@@ -1028,6 +1028,18 @@ bool VulkanCaps::onIsTexturable(const TextureInfo& texInfo) const {
     return info.isTexturable(vkInfo.fImageTiling);
 }
 
+bool VulkanCaps::isRenderable(const TextureInfo& texInfo) const {
+    VulkanTextureInfo vkInfo;
+    texInfo.getVulkanTextureInfo(&vkInfo);
+
+    // TODO:
+    // Once we support external formats with associated YCbCr conversion info, check for that
+    // and return true here because we can always texture from an external format.
+
+    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
+    return info.isRenderable(vkInfo.fImageTiling, texInfo.numSamples());
+}
+
 bool VulkanCaps::supportsWritePixels(const TextureInfo& texInfo) const {
     VulkanTextureInfo vkInfo;
     texInfo.getVulkanTextureInfo(&vkInfo);

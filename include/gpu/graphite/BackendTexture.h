@@ -109,10 +109,9 @@ public:
     VkImageLayout getVkImageLayout() const;
     uint32_t getVkQueueFamilyIndex() const;
 #endif
+    sk_sp<MutableTextureStateRef> getMutableState() const;
 
 private:
-    sk_sp<MutableTextureStateRef> mutableState() const;
-
     SkISize fDimensions;
     TextureInfo fInfo;
 

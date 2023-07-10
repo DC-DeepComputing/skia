@@ -136,6 +136,12 @@ bool Context::submit(SyncToCpu syncToCpu) {
     return success;
 }
 
+bool Context::wait(int numSemaphores, const BackendSemaphore* waitSemaphores,
+                   bool deleteSemaphoresAfterWait) {
+    // TODO
+    return false;
+}
+
 void Context::asyncRescaleAndReadPixels(const SkImage* image,
                                         const SkImageInfo& dstImageInfo,
                                         const SkIRect& srcRect,

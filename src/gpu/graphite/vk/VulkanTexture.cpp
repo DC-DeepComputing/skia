@@ -156,11 +156,11 @@ sk_sp<Texture> VulkanTexture::Make(const VulkanSharedContext* sharedContext,
 }
 
 sk_sp<Texture> VulkanTexture::MakeWrapped(const VulkanSharedContext* sharedContext,
-                                   SkISize dimensions,
-                                   const TextureInfo& info,
-                                   sk_sp<MutableTextureStateRef> mutableState,
-                                   VkImage image,
-                                   const VulkanAlloc& alloc) {
+                                          SkISize dimensions,
+                                          const TextureInfo& info,
+                                          sk_sp<MutableTextureStateRef> mutableState,
+                                          VkImage image,
+                                          const VulkanAlloc& alloc) {
     return sk_sp<Texture>(new VulkanTexture(sharedContext,
                                             dimensions,
                                             info,
