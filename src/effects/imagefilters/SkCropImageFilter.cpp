@@ -40,6 +40,7 @@ protected:
 private:
     friend void ::SkRegisterCropImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkCropImageFilter)
+    static sk_sp<SkFlattenable> LegacyTileCreateProc(SkReadBuffer&);
 
     bool onAffectsTransparentBlack() const override { return fTileMode != SkTileMode::kDecal; }
 
@@ -92,8 +93,29 @@ sk_sp<SkImageFilter> SkMakeCropImageFilter(const SkRect& rect,
     return sk_sp<SkImageFilter>(new SkCropImageFilter(rect, tileMode, std::move(input)));
 }
 
+sk_sp<SkImageFilter> SkImageFilters::Tile(const SkRect& src,
+                                          const SkRect& dst,
+                                          sk_sp<SkImageFilter> input) {
+    // The Tile filter is simply a crop to 'src' with a kRepeat tile mode wrapped in a crop to 'dst'
+    // with a kDecal tile mode.
+    sk_sp<SkImageFilter> filter = SkMakeCropImageFilter(src, SkTileMode::kRepeat, std::move(input));
+    filter = SkMakeCropImageFilter(dst, SkTileMode::kDecal, std::move(filter));
+    return filter;
+}
+
 void SkRegisterCropImageFilterFlattenable() {
     SK_REGISTER_FLATTENABLE(SkCropImageFilter);
+    // TODO (michaelludwig) - Remove after grace period for SKPs to stop using old name
+    SkFlattenable::Register("SkTileImageFilter", SkCropImageFilter::LegacyTileCreateProc);
+    SkFlattenable::Register("SkTileImageFilterImpl", SkCropImageFilter::LegacyTileCreateProc);
+}
+
+sk_sp<SkFlattenable> SkCropImageFilter::LegacyTileCreateProc(SkReadBuffer& buffer) {
+    SK_IMAGEFILTER_UNFLATTEN_COMMON(common, 1);
+    SkRect src, dst;
+    buffer.readRect(&src);
+    buffer.readRect(&dst);
+    return SkImageFilters::Tile(src, dst, common.getInput(0));
 }
 
 sk_sp<SkFlattenable> SkCropImageFilter::CreateProc(SkReadBuffer& buffer) {
