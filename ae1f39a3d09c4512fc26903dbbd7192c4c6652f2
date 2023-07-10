@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7f37493_b8a72b60",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-10T22:42:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "289b47a0_d7cfda21",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 21
+      },
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d40865d_01757203",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-07-10T19:17:41Z",
       "side": 1,
       "message": "nit: Add bug number or detail (even just TODO: Implement)",
+      "range": {
+        "startLine": 416,
+        "startChar": 12,
+        "endLine": 416,
+        "endChar": 19
+      },
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7a6c3ff_3d081d45",
+        "filename": "tools/sk_app/unix/Window_unix.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-10T22:42:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d40865d_01757203",
       "range": {
         "startLine": 416,
         "startChar": 12,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b1fd034_1e4dab41",
+        "filename": "tools/window/GraphiteVulkanWindowContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-10T22:42:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9bfa84a_cc5e2ad0",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 3
+      },
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32619fcd_85f06b6c",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc9d2d73_366428d5",
+        "filename": "tools/window/GraphiteVulkanWindowContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-10T22:42:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32619fcd_85f06b6c",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 2
+      },
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecb09137_f7a0a105",
@@ -123,6 +219,30 @@
       "writtenOn": "2023-07-10T19:17:41Z",
       "side": 1,
       "message": "// GraphiteVulkanWindowContext_DEFINED",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 6
+      },
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "939792c9_4cfe2992",
+        "filename": "tools/window/GraphiteVulkanWindowContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-10T22:42:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecb09137_f7a0a105",
       "range": {
         "startLine": 117,
         "startChar": 0,
