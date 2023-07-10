@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "291159bd_a0c52437",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-10T14:21:00Z",
+      "side": 1,
+      "message": "Kevin, it looks like we are explicitly enabling this warning? Seems like a mistake:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:include/config/copts.bzl;l\u003d153;drc\u003d658b1d3667588b05ca5404ffd32821697009a73c",
+      "revId": "3cc21290050e707c75a767ac279b918c96bb7b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
