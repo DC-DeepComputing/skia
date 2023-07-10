@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11aba8c6_1cfacfa0",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-10T22:53:37Z",
+      "side": 1,
+      "message": "Should we do this for the Graphite-Vello configurations too?",
+      "range": {
+        "startLine": 217,
+        "startChar": 43,
+        "endLine": 217,
+        "endChar": 63
+      },
+      "revId": "32a59fd5917a4d6712e990ec57e771b3f89966bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
