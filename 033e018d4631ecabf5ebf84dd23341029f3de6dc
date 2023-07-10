@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e6fbe2a_4ef5f89c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-10T14:39:56Z",
+      "side": 1,
+      "message": "I\u0027ve confirmed that this builds with Bazel in Linux. Mac Bazel builds of Viewer aren\u0027t working yet; I\u0027ve filed a bug for this as well.",
+      "revId": "033e018d4631ecabf5ebf84dd23341029f3de6dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
