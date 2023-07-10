@@ -936,13 +936,13 @@ static bool gather_srcs() {
         push_src("gm", "", new GMSrc(f));
     }
 
-    gather_file_srcs<SKPSrc>(FLAGS_skps, "skp");
-    gather_file_srcs<MSKPSrc>(FLAGS_mskps, "mskp");
+//    gather_file_srcs<SKPSrc>(FLAGS_skps, "skp");
+//    gather_file_srcs<MSKPSrc>(FLAGS_mskps, "mskp");
 #if defined(SK_ENABLE_SKOTTIE)
-    gather_file_srcs<SkottieSrc>(FLAGS_lotties, "json", "lottie");
+//    gather_file_srcs<SkottieSrc>(FLAGS_lotties, "json", "lottie");
 #endif
 #if defined(SK_ENABLE_SVG)
-    gather_file_srcs<SVGSrc>(FLAGS_svgs, "svg");
+//    gather_file_srcs<SVGSrc>(FLAGS_svgs, "svg");
 #endif
     if (!FLAGS_bisect.isEmpty()) {
         // An empty l/r trail string will draw all the paths.

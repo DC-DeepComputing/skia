@@ -36,6 +36,8 @@ void draw_tiled_bitmap_ganesh(skgpu::ganesh::Device* device,
                               SkCanvas::QuadAAFlags origAAFlags,
                               SkCanvas::SrcRectConstraint constraint,
                               SkSamplingOptions sampling) {
+    SkDebugf("---- a\n");
+
     if (sampling.isAniso()) {
         sampling = SkSamplingPriv::AnisoFallback(/* imageIsMipped= */ false);
     }
@@ -52,6 +54,8 @@ void draw_tiled_bitmap_ganesh(skgpu::ganesh::Device* device,
 
     for (int x = 0; x <= nx; x++) {
         for (int y = 0; y <= ny; y++) {
+            SkDebugf("---- b %d %d\n", x, y);
+
             SkRect tileR;
             tileR.setLTRB(SkIntToScalar(x * tileSize),       SkIntToScalar(y * tileSize),
                           SkIntToScalar((x + 1) * tileSize), SkIntToScalar((y + 1) * tileSize));
@@ -120,6 +124,8 @@ void draw_tiled_bitmap_ganesh(skgpu::ganesh::Device* device,
                 // Offset the source rect to make it "local" to our tmp bitmap
                 tileR.offset(-offset.fX, -offset.fY);
 
+                SkDebugf("---- c\n");
+
                 imgSet.push_back(SkCanvas::ImageSetEntry(std::move(image),
                                                          tileR,
                                                          rectToDraw,
@@ -135,6 +141,7 @@ void draw_tiled_bitmap_ganesh(skgpu::ganesh::Device* device,
         }
     }
 
+    SkDebugf("---- d\n");
     device->drawEdgeAAImageSet(imgSet.data(),
                                imgSet.size(),
                                /* dstClips= */ nullptr,
@@ -142,6 +149,7 @@ void draw_tiled_bitmap_ganesh(skgpu::ganesh::Device* device,
                                sampling,
                                paint,
                                constraint);
+    SkDebugf("---- e\n");
 }
 
 } // anonymous namespace
