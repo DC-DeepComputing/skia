@@ -69,6 +69,24 @@
       "message": "LGTM if you want to also land these changes",
       "revId": "3cc21290050e707c75a767ac279b918c96bb7b99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1bd5488_284f7d81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-10T14:34:41Z",
+      "side": 1,
+      "message": "Sure, it\u0027s still an improvement",
+      "parentUuid": "24ab0f66_59596e11",
+      "revId": "3cc21290050e707c75a767ac279b918c96bb7b99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
