@@ -18,6 +18,7 @@ class SkSurface;
 
 namespace skgpu::graphite {
 
+class BackendSemaphore;
 class Recording;
 class Task;
 
@@ -38,12 +39,23 @@ using GpuFinishedProc = void (*)(GpuFinishedContext finishedContext, CallbackRes
  * TextureInfo must match the info provided to the Recorder when making the deferred canvas.
  *
  * fTargetTranslation is an additional translation applied to draws targeting fTargetSurface.
+ *
+ * After issuing all commands, fNumSemaphore semaphores will be signaled by the gpu. The client
+ * passes in an array of fNumSemaphores BackendSemaphores. These BackendSemaphores should be
+ * initialized. The semaphores are not sent to the GPU until the next Context::submit call is made.
+ *
+ * The client will own and be responsible for deleting the underlying semaphores that are stored
+ * and returned in initialized BackendSemaphore objects. The BackendSemaphore objects themselves
+ * can be deleted as soon as this function returns.
  */
 struct InsertRecordingInfo {
     Recording* fRecording = nullptr;
 
     SkSurface* fTargetSurface = nullptr;
     SkIVector fTargetTranslation = {0, 0};
+
+    size_t fNumSemaphores = 0;
+    BackendSemaphore* fSignalSemaphores = nullptr;
 
     GpuFinishedContext fFinishedContext = nullptr;
     GpuFinishedProc fFinishedProc = nullptr;

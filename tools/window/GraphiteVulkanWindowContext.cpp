@@ -8,6 +8,8 @@
 #include "tools/window/GraphiteVulkanWindowContext.h"
 
 #include "include/core/SkSurface.h"
+#include "include/gpu/MutableTextureState.h"
+#include "include/gpu/graphite/BackendSemaphore.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/ContextOptions.h"
@@ -388,7 +390,6 @@ bool GraphiteVulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFla
         VULKAN_CALL_RESULT(fInterface, result,
                            CreateSemaphore(fDevice, &semaphoreInfo, nullptr,
                                            &fBackbuffers[i].fRenderSemaphore));
-        SkASSERT(result == VK_SUCCESS);
     }
     fCurrentBackbufferIndex = fImageCount;
 
@@ -478,13 +479,90 @@ GraphiteVulkanWindowContext::BackbufferInfo* GraphiteVulkanWindowContext::getAva
 }
 
 sk_sp<SkSurface> GraphiteVulkanWindowContext::getBackbufferSurface() {
-    // TODO: Acquire next swapchain surface, waiting on previous frame's semaphore
-    return nullptr;
+    BackbufferInfo* backbuffer = this->getAvailableBackbuffer();
+    SkASSERT(backbuffer);
 
+    // semaphores should be in unsignaled state
+    VkSemaphoreCreateInfo semaphoreInfo;
+    memset(&semaphoreInfo, 0, sizeof(VkSemaphoreCreateInfo));
+    semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    semaphoreInfo.pNext = nullptr;
+    semaphoreInfo.flags = 0;
+    VkSemaphore semaphore;
+    VkResult result;
+    VULKAN_CALL_RESULT(fInterface, result,
+                       CreateSemaphore(fDevice, &semaphoreInfo, nullptr, &semaphore));
+
+    // acquire the image
+    VkResult res = fAcquireNextImageKHR(fDevice, fSwapchain, UINT64_MAX,
+                                        semaphore, VK_NULL_HANDLE,
+                                        &backbuffer->fImageIndex);
+    if (VK_ERROR_SURFACE_LOST_KHR == res) {
+        // need to figure out how to create a new vkSurface without the platformData*
+        // maybe use attach somehow? but need a Window
+        VULKAN_CALL(fInterface, DestroySemaphore(fDevice, semaphore, nullptr));
+        return nullptr;
+    }
+    if (VK_ERROR_OUT_OF_DATE_KHR == res) {
+        // tear swapchain down and try again
+        if (!this->createSwapchain(-1, -1, fDisplayParams)) {
+            VULKAN_CALL(fInterface, DestroySemaphore(fDevice, semaphore, nullptr));
+            return nullptr;
+        }
+        backbuffer = this->getAvailableBackbuffer();
+
+        // acquire the image
+        res = fAcquireNextImageKHR(fDevice, fSwapchain, UINT64_MAX,
+                                   semaphore, VK_NULL_HANDLE,
+                                   &backbuffer->fImageIndex);
+
+        if (VK_SUCCESS != res) {
+            VULKAN_CALL(fInterface, DestroySemaphore(fDevice, semaphore, nullptr));
+            return nullptr;
+        }
+    }
+
+    SkSurface* surface = fSurfaces[backbuffer->fImageIndex].get();
+
+    skgpu::graphite::BackendSemaphore beSemaphore(semaphore);
+
+    // TODO: Not sure if this is what I want. Ganesh inserts a WaitRenderTask via the
+    // SurfaceDrawContext. Inject via the Recorder or via the Context as here?
+    fGraphiteContext->wait(1, &beSemaphore);
+
+    return sk_ref_sp(surface);
 }
 
 void GraphiteVulkanWindowContext::onSwapBuffers() {
-    // TODO: Change renderTarget layout to VK_IMAGE_LAYOUT_PRESENT_SRC_KHR and present
+    BackbufferInfo* backbuffer = fBackbuffers + fCurrentBackbufferIndex;
+    SkSurface* surface = fSurfaces[backbuffer->fImageIndex].get();
+
+    skgpu::graphite::BackendSemaphore beSemaphore(backbuffer->fRenderSemaphore);
+
+    skgpu::graphite::InsertRecordingInfo info;
+    info.fNumSemaphores = 1;
+    info.fSignalSemaphores = &beSemaphore;
+    skgpu::MutableTextureState presentState(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, fPresentQueueIndex);
+    // TODO: how we do we do this layout transition?
+    // Build a Recorder? Do it directly through the Context?
+    //auto dContext = surface->recordingContext()->asDirectContext();
+    //dContext->flush(surface, info, &presentState);
+    fGraphiteContext->submit();
+
+    // Submit present operation to present queue
+    const VkPresentInfoKHR presentInfo =
+    {
+        VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, // sType
+        nullptr, // pNext
+        1, // waitSemaphoreCount
+        &backbuffer->fRenderSemaphore, // pWaitSemaphores
+        1, // swapchainCount
+        &fSwapchain, // pSwapchains
+        &backbuffer->fImageIndex, // pImageIndices
+        nullptr // pResults
+    };
+
+    fQueuePresentKHR(fPresentQueue, &presentInfo);
 }
 
 }   //namespace skwindow::internal
