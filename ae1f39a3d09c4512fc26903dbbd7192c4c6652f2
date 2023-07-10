@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3304f8d_1d766468",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-10T19:17:41Z",
+      "side": 1,
+      "message": "Launches for me fine on Windows; commented some nits but otherwise LGTM",
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "289b47a0_d7cfda21",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-10T19:17:41Z",
+      "side": 1,
+      "message": "nit: Indent",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 21
+      },
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d40865d_01757203",
+        "filename": "tools/sk_app/unix/Window_unix.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-10T19:17:41Z",
+      "side": 1,
+      "message": "nit: Add bug number or detail (even just TODO: Implement)",
+      "range": {
+        "startLine": 416,
+        "startChar": 12,
+        "endLine": 416,
+        "endChar": 19
+      },
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9bfa84a_cc5e2ad0",
+        "filename": "tools/window/GraphiteVulkanWindowContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-10T19:17:41Z",
+      "side": 1,
+      "message": "nit: Rm empty line on line 1",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 3
+      },
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32619fcd_85f06b6c",
+        "filename": "tools/window/GraphiteVulkanWindowContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-10T19:17:41Z",
+      "side": 1,
+      "message": "nit: Delete empty line on line 1",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 2
+      },
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecb09137_f7a0a105",
+        "filename": "tools/window/GraphiteVulkanWindowContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-10T19:17:41Z",
+      "side": 1,
+      "message": "// GraphiteVulkanWindowContext_DEFINED",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 6
+      },
+      "revId": "ae1f39a3d09c4512fc26903dbbd7192c4c6652f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
