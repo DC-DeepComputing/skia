@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba770c10_147c302d",
+        "filename": "modules/skparagraph/include/Paragraph.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-10T18:06:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8ced927_5fe3fe3b",
+      "range": {
+        "startLine": 128,
+        "startChar": 18,
+        "endLine": 128,
+        "endChar": 25
+      },
+      "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "156f7e64_4b645e96",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-10T15:40:21Z",
       "side": 1,
       "message": "nit: These lines are past 100 columns.",
+      "range": {
+        "startLine": 1280,
+        "startChar": 0,
+        "endLine": 1284,
+        "endChar": 122
+      },
+      "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b05e0c8f_cfe750ca",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1284,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-10T18:06:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "156f7e64_4b645e96",
       "range": {
         "startLine": 1280,
         "startChar": 0,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b59b310e_7e1094dc",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-10T18:06:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60db7305_e489f170",
+      "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5946bf6_323f7fd2",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a3e63e_dbd956f7",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1417,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-10T18:06:49Z",
+      "side": 1,
+      "message": "There were two different checks at first. I simplified but not enough.",
+      "parentUuid": "f5946bf6_323f7fd2",
+      "range": {
+        "startLine": 1412,
+        "startChar": 0,
+        "endLine": 1417,
+        "endChar": 13
+      },
+      "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c9c895d_26bdbaf3",
@@ -100,6 +190,24 @@
       "writtenOn": "2023-07-10T15:40:21Z",
       "side": 1,
       "message": "This seems incomplete?",
+      "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b86455c_819b17fc",
+        "filename": "modules/skunicode/src/SkUnicode.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-10T18:06:49Z",
+      "side": 1,
+      "message": "This is a default method for all the other non-icu implementations so we can compile.",
+      "parentUuid": "2c9c895d_26bdbaf3",
       "revId": "18840a8b1b4246302aaefb1c57e60b3b62af241e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
