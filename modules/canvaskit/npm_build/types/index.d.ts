@@ -2016,7 +2016,18 @@ export interface Image extends EmbindObject<"Image"> {
 /**
  * See ImageFilter.h for more on this class. The objects are opaque.
  */
-export type ImageFilter = EmbindObject<"ImageFilter">;
+export interface ImageFilter extends EmbindObject<"ImageFilter"> {
+    /**
+     * Returns an IRect that is the updated bounds of inputRect after this
+     * filter has been applied.
+     *
+     * @param inputRect - The Rect this filter will be applied to.
+     * @param outputRect - If provided, the result will be output to this array
+     *        rather than allocating a new one.
+     * @returns an IRect describing the updated bounds.
+     */
+    filterBounds(inputRect: IRect, outputRect?: IRect): IRect;
+}
 
 export interface ImageInfo {
     alphaType: AlphaType;

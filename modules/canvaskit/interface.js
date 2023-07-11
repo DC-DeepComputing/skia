@@ -38,6 +38,9 @@ CanvasKit.onRuntimeInitialized = function() {
   _scratchIRect = CanvasKit.Malloc(Int32Array, 4);
   _scratchIRectPtr = _scratchIRect['byteOffset'];
 
+  _scratchIRect2 = CanvasKit.Malloc(Int32Array, 4);
+  _scratchIRect2Ptr = _scratchIRect2['byteOffset'];
+
   // Create single copies of all three supported color spaces
   // These are sk_sp<ColorSpace>
   CanvasKit.ColorSpace.SRGB = CanvasKit.ColorSpace._MakeSRGB();
@@ -869,6 +872,17 @@ CanvasKit.onRuntimeInitialized = function() {
     if (optionalOutput) {
       optionalOutput.set(ta);
       return optionalOutput;
+    }
+    return ta.slice();
+  };
+
+  CanvasKit.ImageFilter.prototype.filterBounds = function(boundsRect, optionalOutputArray) {
+    var bPtr = copyIRectToWasm(boundsRect, _scratchIRectPtr);
+    this._filterBounds(bPtr, _scratchIRect2Ptr);
+    var ta = _scratchIRect2['toTypedArray']();
+    if (optionalOutputArray) {
+      optionalOutputArray.set(ta);
+      return optionalOutputArray;
     }
     return ta.slice();
   };
