@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4685e420_e14bfe7c",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-11T20:16:44Z",
+      "side": 1,
+      "message": "I wonder if this is even necessary? I suspect it was just included so that we wouldn\u0027t violate the \"ifdef before including something\" rule.",
+      "revId": "2737ec7a3c49cd37eca898ba9e5221d9f2c5c09a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "529577e1_fb161a10",
+        "filename": "src/sksl/SkBitmapDevice_mesh.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-11T20:16:44Z",
+      "side": 1,
+      "message": "Putting these two files in src/sksl is fairly odd (that folder is entirely the sksl compiler today). Is it okay if we leave these in src/core (while still making them a separate set of sources)? That\u0027s how SkRuntimeEffect.cpp works, and it has the same basic restrictions, right?",
+      "revId": "2737ec7a3c49cd37eca898ba9e5221d9f2c5c09a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
