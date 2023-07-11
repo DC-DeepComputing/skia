@@ -2104,8 +2104,8 @@ void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
                             const SkSamplingOptions& sampling, const SkPaint* paint) {
     SkPaint realPaint = clean_paint_for_drawImage(paint);
 
-    SkRect bounds = SkRect::MakeXYWH(x, y, image->width(), image->height());
-    if (this->internalQuickReject(bounds, realPaint)) {
+    SkRect dst = SkRect::MakeXYWH(x, y, image->width(), image->height());
+    if (this->internalQuickReject(dst, realPaint)) {
         return;
     }
 
@@ -2147,9 +2147,14 @@ void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
         } // else fall through to regular drawing path
     }
 
-    auto layer = this->aboutToDraw(this, realPaint, &bounds);
+    if (this->topDevice()->drawTiledImageRect(this, image, nullptr, dst, sampling, realPaint,
+                                              kFast_SrcRectConstraint)) {
+        return;
+    }
+
+    auto layer = this->aboutToDraw(this, realPaint, &dst);
     if (layer) {
-        this->topDevice()->drawImageRect(image, nullptr, bounds, sampling,
+        this->topDevice()->drawImageRect(image, nullptr, dst, sampling,
                                          layer->paint(), kFast_SrcRectConstraint);
     }
 }
@@ -2175,6 +2180,11 @@ void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const S
     SkSamplingOptions realSampling = clean_sampling_for_constraint(sampling, constraint);
 
     if (this->internalQuickReject(dst, realPaint)) {
+        return;
+    }
+
+    if (this->topDevice()->drawTiledImageRect(this, image, &src, dst, realSampling, realPaint,
+                                              constraint)) {
         return;
     }
 
