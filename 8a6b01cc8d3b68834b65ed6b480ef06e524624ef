@@ -22,6 +22,30 @@
       },
       "revId": "8a6b01cc8d3b68834b65ed6b480ef06e524624ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb77d42a_14468252",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-11T20:24:17Z",
+      "side": 1,
+      "message": "Correct. I change things so that PathAtlases now all obtain the texture from the AtlasProvider which is currently expected to always return the same texture.\n\nWe may want to change this scheme in the future but this solves the problem for now. PTAL.",
+      "parentUuid": "f524e0fc_caf31453",
+      "range": {
+        "startLine": 95,
+        "startChar": 22,
+        "endLine": 95,
+        "endChar": 37
+      },
+      "revId": "8a6b01cc8d3b68834b65ed6b480ef06e524624ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
