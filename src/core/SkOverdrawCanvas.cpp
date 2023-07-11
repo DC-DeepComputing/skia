@@ -63,8 +63,10 @@ public:
         }
     }
 
-    void    drawBitmap(const SkBitmap&, const SkMatrix&, const SkRect* dstOrNull,
-                       const SkSamplingOptions&, const SkPaint&) const override {}
+    void drawBitmap(const SkBitmap&, const SkMatrix&, const SkRect* dstOrNull,
+                    const SkSamplingOptions&, const SkPaint&) const override {}
+
+    void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override {}
 
     void onDrawGlyphRunList(SkCanvas* canvas,
                             const sktext::GlyphRunList& glyphRunList,

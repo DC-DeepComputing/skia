@@ -8,14 +8,12 @@
 #ifndef SkMesh_DEFINED
 #define SkMesh_DEFINED
 
-#include "include/core/SkTypes.h"
-
-#ifdef SK_ENABLE_SKSL
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
+#include "include/core/SkTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
 
 #include <memory>
@@ -417,7 +415,5 @@ private:
 };
 
 struct SkMesh::Result { SkMesh mesh; SkString error; };
-
-#endif  // SK_ENABLE_SKSL
 
 #endif

@@ -1465,6 +1465,8 @@ BASE_SRCS_ALL = [
     "src/shaders/gradients/SkSweepGradient.cpp",
     "src/shaders/gradients/SkSweepGradient.h",
     "src/sksl/GLSL.std.450.h",
+    "src/sksl/SkBitmapDevice_mesh.cpp",
+    "src/sksl/SkCanvas_mesh.cpp",
     "src/sksl/SkSLAnalysis.cpp",
     "src/sksl/SkSLAnalysis.h",
     "src/sksl/SkSLBuiltinTypes.cpp",
