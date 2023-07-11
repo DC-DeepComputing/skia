@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e641167_755281a5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2023-07-11T15:01:03Z",
+      "side": 1,
+      "message": "IIRC there\u0027s now a fairly simple switch to unpack CIPD packages using copies instead of symlinks, as opposed to needing to specify the unpacking method at package creation time.  Sounds like that\u0027s not necessary here but it\u0027d be something to look into if this caused problems in a context where we actually wanted the asset loaded on the device.\n\nAlternatively, there may be a flag to follow symlinks when copying to the device.",
+      "range": {
+        "startLine": 9,
+        "startChar": 34,
+        "endLine": 9,
+        "endChar": 61
+      },
+      "revId": "8addc85b47324360637b894d0c205f5ccc366ed9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
