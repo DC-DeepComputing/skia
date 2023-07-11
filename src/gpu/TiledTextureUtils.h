@@ -64,7 +64,6 @@ public:
                                         const SkIRect& clamp);
 
     static bool DrawImageRect_Ganesh(SkCanvas*,
-                                     skgpu::ganesh::Device*,
                                      const SkImage*,
                                      const SkRect& srcRect,
                                      const SkRect& dstRect,

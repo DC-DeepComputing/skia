@@ -13,6 +13,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/GrDirectContext.h"
+#include "src/core/SkCanvasPriv.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkSamplingPriv.h"
@@ -26,7 +27,7 @@ extern std::atomic<int>  gNumTilesDrawn;
 
 namespace {
 
-void draw_tiled_bitmap_ganesh(skgpu::ganesh::Device* device,
+void draw_tiled_bitmap_ganesh(SkCanvas* canvas,
                               const SkBitmap& bitmap,
                               int tileSize,
                               const SkMatrix& srcToDst,
@@ -135,13 +136,13 @@ void draw_tiled_bitmap_ganesh(skgpu::ganesh::Device* device,
         }
     }
 
-    device->drawEdgeAAImageSet(imgSet.data(),
-                               imgSet.size(),
-                               /* dstClips= */ nullptr,
-                               /* preViewMatrices= */ nullptr,
-                               sampling,
-                               paint,
-                               constraint);
+    canvas->experimental_DrawEdgeAAImageSet(imgSet.data(),
+                                            imgSet.size(),
+                                            /* dstClips= */ nullptr,
+                                            /* preViewMatrices= */ nullptr,
+                                            sampling,
+                                            &paint,
+                                            constraint);
 }
 
 size_t get_cache_size(SkBaseDevice* device) {
@@ -160,8 +161,7 @@ size_t get_cache_size(SkBaseDevice* device) {
 
 namespace skgpu {
 
-bool TiledTextureUtils::DrawImageRect_Ganesh(SkCanvas*,
-                                             skgpu::ganesh::Device* device,
+bool TiledTextureUtils::DrawImageRect_Ganesh(SkCanvas* canvas,
                                              const SkImage* image,
                                              const SkRect& srcRect,
                                              const SkRect& dstRect,
@@ -169,6 +169,10 @@ bool TiledTextureUtils::DrawImageRect_Ganesh(SkCanvas*,
                                              const SkSamplingOptions& origSampling,
                                              const SkPaint& paint,
                                              SkCanvas::SrcRectConstraint constraint) {
+    if (canvas->isClipEmpty()) {
+        return true;
+    }
+
     if (!image->isTextureBacked()) {
         SkRect src;
         SkRect dst;
@@ -186,14 +190,15 @@ bool TiledTextureUtils::DrawImageRect_Ganesh(SkCanvas*,
             constraint = SkCanvas::kFast_SrcRectConstraint;
         }
 
-        const SkMatrix& localToDevice = device->localToDevice();
+        SkBaseDevice* device2 = SkCanvasPriv::TopDevice(canvas);
+        const SkMatrix& localToDevice = device2->localToDevice();
 
         SkSamplingOptions sampling = origSampling;
         if (sampling.mipmap != SkMipmapMode::kNone && CanDisableMipmap(localToDevice, srcToDst)) {
             sampling = SkSamplingOptions(sampling.filter);
         }
-        const GrClip* clip = device->clip();
-        SkIRect clipRect = clip ? clip->getConservativeBounds() : device->bounds();
+
+        SkIRect clipRect = device2->devClipBounds();
 
         int tileFilterPad;
         if (sampling.useCubic) {
@@ -205,14 +210,14 @@ bool TiledTextureUtils::DrawImageRect_Ganesh(SkCanvas*,
             tileFilterPad = 0;
         }
 
-        GrRecordingContext* rContext = device->recordingContext();
+        GrRecordingContext* rContext = canvas->recordingContext();
         int maxTileSize = rContext->maxTextureSize() - 2*tileFilterPad;
 #if GR_TEST_UTILS
         if (gOverrideMaxTextureSize) {
             maxTileSize = gOverrideMaxTextureSize - 2 * tileFilterPad;
         }
 #endif
-        size_t cacheSize = get_cache_size(device);
+        size_t cacheSize = get_cache_size(device2);
 
         int tileSize;
         SkIRect clippedSubset;
@@ -228,7 +233,7 @@ bool TiledTextureUtils::DrawImageRect_Ganesh(SkCanvas*,
             // Extract pixels on the CPU, since we have to split into separate textures before
             // sending to the GPU if tiling.
             if (SkBitmap bm; as_IB(image)->getROPixels(nullptr, &bm)) {
-                draw_tiled_bitmap_ganesh(device,
+                draw_tiled_bitmap_ganesh(canvas,
                                          bm,
                                          tileSize,
                                          srcToDst,

@@ -982,7 +982,7 @@ bool Device::drawAsTiledImageRect(SkCanvas* canvas,
     SkCanvas::QuadAAFlags aaFlags = (aa == GrAA::kYes) ? SkCanvas::kAll_QuadAAFlags
                                                        : SkCanvas::kNone_QuadAAFlags;
 
-    return TiledTextureUtils::DrawImageRect_Ganesh(canvas, this,
+    return TiledTextureUtils::DrawImageRect_Ganesh(canvas,
                                                    image,
                                                    src ? *src
                                                        : SkRect::MakeIWH(image->width(),
