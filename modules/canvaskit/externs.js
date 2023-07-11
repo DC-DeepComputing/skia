@@ -476,7 +476,12 @@ var CanvasKit = {
     MakeMatrixTransform: function() {},
     MakeOffset: function() {},
 
+    prototype: {
+      filterBounds: function() {},
+    },
+
     // private API
+    _filterBounds: function() {},
     _MakeDropShadow: function() {},
     _MakeDropShadowOnly: function() {},
     _MakeImageCubic: function() {},

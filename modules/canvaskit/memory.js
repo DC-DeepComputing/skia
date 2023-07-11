@@ -105,6 +105,9 @@ var _scratchThreeFloatsBPtr = nullptr;
 var _scratchIRect;
 var _scratchIRectPtr = nullptr;
 
+var _scratchIRect2;
+var _scratchIRect2Ptr = nullptr;
+
 var _scratchRRect;
 var _scratchRRectPtr = nullptr;
 
