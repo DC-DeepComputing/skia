@@ -22,6 +22,30 @@
       },
       "revId": "32a59fd5917a4d6712e990ec57e771b3f89966bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bcef413_bea0c804",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-11T13:23:55Z",
+      "side": 1,
+      "message": "That seems like a separate change--those builds currently don\u0027t trigger any tests at all. I\u0027m only changing builds which already target `\"(tests|src/gpu)/graphite/.*\"` to also target a second place; I\u0027m not changing anything else.\n\nI\u0027m not sure that these builds are ready for the CQ--can the Dawn and Vello builds run all tests without crashing? I didn\u0027t think they could.",
+      "parentUuid": "11aba8c6_1cfacfa0",
+      "range": {
+        "startLine": 217,
+        "startChar": 43,
+        "endLine": 217,
+        "endChar": 63
+      },
+      "revId": "32a59fd5917a4d6712e990ec57e771b3f89966bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
