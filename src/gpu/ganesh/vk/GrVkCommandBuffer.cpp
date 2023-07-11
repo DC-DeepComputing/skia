@@ -546,6 +546,22 @@ static bool submit_to_queue(GrVkGpu* gpu,
         protectedSubmitInfo.protectedSubmit = VK_TRUE;
     }
 
+    VkTimelineSemaphoreSubmitInfoKHR timelineSubmitInfo;
+    std::vector<uint64_t> waitValues, signalValues;
+    if (gpu->vkCaps().supportsTimelineSemaphore()) {
+        // Allow fence-like semaphores (i.e. timeline semaphores where the only values are 0 and 1)
+        // to be waited on or signalled.
+        waitValues.resize(static_cast<size_t>(waitCount), 1);
+        signalValues.resize(static_cast<size_t>(signalCount), 1);
+
+        timelineSubmitInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO_KHR;
+        timelineSubmitInfo.pNext = nullptr;
+        timelineSubmitInfo.waitSemaphoreValueCount = waitCount;
+        timelineSubmitInfo.pWaitSemaphoreValues = waitValues.data();
+        timelineSubmitInfo.signalSemaphoreValueCount = signalCount;
+        timelineSubmitInfo.pSignalSemaphoreValues = signalValues.data();
+    }
+
     VkSubmitInfo submitInfo;
     memset(&submitInfo, 0, sizeof(VkSubmitInfo));
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -557,6 +573,10 @@ static bool submit_to_queue(GrVkGpu* gpu,
     submitInfo.pCommandBuffers = commandBuffers;
     submitInfo.signalSemaphoreCount = signalCount;
     submitInfo.pSignalSemaphores = signalSemaphores;
+    if (gpu->vkCaps().supportsTimelineSemaphore()) {
+        timelineSubmitInfo.pNext = submitInfo.pNext;
+        submitInfo.pNext = &timelineSubmitInfo;
+    }
     VkResult result;
     GR_VK_CALL_RESULT(gpu, result, QueueSubmit(queue, 1, &submitInfo, fence));
     return result == VK_SUCCESS;

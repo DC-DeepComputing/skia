@@ -170,6 +170,9 @@ public:
     // Returns true if the VK_EXT_image_drm_format_modifier is enabled.
     bool supportsDRMFormatModifiers() const { return fSupportsDRMFormatModifiers; }
 
+    // Returns true if the device supports timeline semaphores.
+    bool supportsTimelineSemaphore() const { return fSupportsTimelineSemaphore; }
+
     // Returns whether we prefer to record draws directly into a primary command buffer.
     bool preferPrimaryOverSecondaryCommandBuffers() const {
         return fPreferPrimaryOverSecondaryCommandBuffers;
@@ -453,6 +456,8 @@ private:
     bool fSupportsProtectedMemory = false;
 
     bool fSupportsDRMFormatModifiers = false;
+
+    bool fSupportsTimelineSemaphore = true;
 
     bool fPreferPrimaryOverSecondaryCommandBuffers = true;
     bool fMustInvalidatePrimaryCmdBufferStateAfterClearAttachments = false;

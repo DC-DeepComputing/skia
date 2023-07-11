@@ -407,6 +407,15 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
         fSupportsDRMFormatModifiers = true;
     }
 
+    auto timelineSemaphoreFeatures =
+            get_extension_feature_struct<VkPhysicalDeviceTimelineSemaphoreFeaturesKHR>(
+                    features, VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TIMELINE_SEMAPHORE_FEATURES_KHR);
+    if (timelineSemaphoreFeatures && timelineSemaphoreFeatures->timelineSemaphore &&
+        (physicalDeviceVersion >= VK_MAKE_VERSION(1, 2, 0) ||
+         extensions.hasExtension(VK_KHR_TIMELINE_SEMAPHORE_EXTENSION_NAME, 1))) {
+        fSupportsTimelineSemaphore = true;
+    }
+
     fMaxInputAttachmentDescriptors = properties.limits.maxDescriptorSetInputAttachments;
 
     fMaxSamplerAnisotropy = properties.limits.maxSamplerAnisotropy;
