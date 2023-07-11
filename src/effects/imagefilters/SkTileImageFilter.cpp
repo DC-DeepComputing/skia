@@ -69,14 +69,6 @@ sk_sp<SkImageFilter> SkImageFilters::Tile(const SkRect& src,
     if (!SkIsValidRect(src) || !SkIsValidRect(dst)) {
         return nullptr;
     }
-    if (src.width() == dst.width() && src.height() == dst.height()) {
-        SkRect ir = dst;
-        if (!ir.intersect(src)) {
-            return input;
-        }
-        return SkImageFilters::Offset(dst.x() - src.x(),  dst.y() - src.y(),
-                                      std::move(input), &ir);
-    }
     return sk_sp<SkImageFilter>(new SkTileImageFilter(src, dst, std::move(input)));
 }
 
