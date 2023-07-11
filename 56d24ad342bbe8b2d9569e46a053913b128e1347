@@ -34,6 +34,24 @@
       "parentUuid": "9b1a9b95_060c60b9",
       "revId": "56d24ad342bbe8b2d9569e46a053913b128e1347",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "842b24ee_0a4839de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-11T14:08:49Z",
+      "side": 1,
+      "message": "Thanks, that helps me sleep a little better. 😜",
+      "parentUuid": "564d4266_4d4928f0",
+      "revId": "56d24ad342bbe8b2d9569e46a053913b128e1347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
