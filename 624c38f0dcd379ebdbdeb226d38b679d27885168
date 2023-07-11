@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7972e1fe_157804dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-11T14:03:33Z",
+      "side": 1,
+      "message": "PTAL. I skipped 2 more tests on non-unix platforms",
+      "revId": "624c38f0dcd379ebdbdeb226d38b679d27885168",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
