@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e431c3e_da90fff3",
+        "filename": "modules/skottie/src/Transform.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-11T18:24:12Z",
+      "side": 1,
+      "message": "Would it make more sense to add the tracking to the bind call? I was brainstorming if we want to track slots in effects, this might be a good entry point to update all their behavior.",
+      "revId": "84f49a89ac31b089181e948046a1e437e941a572",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
