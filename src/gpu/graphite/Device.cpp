@@ -899,7 +899,7 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
     }
 }
 
-void Device::drawImageRect(const SkImage* image, const SkRect* src, const SkRect& dst,
+void Device::drawImageRect1(const SkImage* image, const SkRect* src, const SkRect& dst,
                            const SkSamplingOptions& sampling, const SkPaint& paint,
                            SkCanvas::SrcRectConstraint constraint) {
     SkCanvas::ImageSetEntry single{sk_ref_sp(image),

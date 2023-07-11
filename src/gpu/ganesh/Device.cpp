@@ -945,7 +945,7 @@ void Device::drawDevice(SkBaseDevice* device,
     this->SkBaseDevice::drawDevice(device, sampling, paint);
 }
 
-void Device::drawImageRect(const SkImage* image,
+void Device::drawImageRect1(const SkImage* image,
                            const SkRect* src,
                            const SkRect& dst,
                            const SkSamplingOptions& sampling,

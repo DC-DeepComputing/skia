@@ -1007,7 +1007,7 @@ void SkSVGDevice::drawBitmapCommon(const MxCp& mc, const SkBitmap& bm, const SkP
     }
 }
 
-void SkSVGDevice::drawImageRect(const SkImage* image, const SkRect* src, const SkRect& dst,
+void SkSVGDevice::drawImageRect1(const SkImage* image, const SkRect* src, const SkRect& dst,
                                 const SkSamplingOptions& sampling, const SkPaint& paint,
                                 SkCanvas::SrcRectConstraint constraint) {
     SkBitmap bm;

@@ -2149,7 +2149,7 @@ void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
 
     auto layer = this->aboutToDraw(this, realPaint, &bounds);
     if (layer) {
-        this->topDevice()->drawImageRect(image, nullptr, bounds, sampling,
+        this->topDevice()->drawImageRect1(image, nullptr, bounds, sampling,
                                          layer->paint(), kFast_SrcRectConstraint);
     }
 }
@@ -2182,7 +2182,7 @@ void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const S
                                    image->isOpaque() ? kOpaque_ShaderOverrideOpacity
                                                      : kNotOpaque_ShaderOverrideOpacity);
     if (layer) {
-        this->topDevice()->drawImageRect(image, &src, dst, realSampling, layer->paint(), constraint);
+        this->topDevice()->drawImageRect1(image, &src, dst, realSampling, layer->paint(), constraint);
     }
 }
 

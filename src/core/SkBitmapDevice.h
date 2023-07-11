@@ -94,7 +94,7 @@ protected:
      */
     void drawPath(const SkPath&, const SkPaint&, bool pathIsMutable) override;
 
-    void drawImageRect(const SkImage*, const SkRect* src, const SkRect& dst,
+    void drawImageRect1(const SkImage*, const SkRect* src, const SkRect& dst,
                        const SkSamplingOptions&, const SkPaint&,
                        SkCanvas::SrcRectConstraint) override;
 

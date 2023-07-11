@@ -636,7 +636,7 @@ void SkPDFDevice::internalDrawPath(const SkClipStack& clipStack,
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void SkPDFDevice::drawImageRect(const SkImage* image,
+void SkPDFDevice::drawImageRect1(const SkImage* image,
                                 const SkRect* src,
                                 const SkRect& dst,
                                 const SkSamplingOptions& sampling,
