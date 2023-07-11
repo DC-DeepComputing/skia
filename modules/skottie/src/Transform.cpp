@@ -133,21 +133,6 @@ sk_sp<sksg::Transform> AnimationBuilder::attachMatrix2D(const skjson::ObjectValu
 
     auto dispatched = this->dispatchTransformProperty(adapter);
 
-    if (auto sid = getSlotID(jrotation)) {
-        fSlotManager->trackScalarValue(SkString(sid->begin()), &(adapter->fRotation), adapter);
-        dispatched = true;
-    }
-
-    if (auto sid = getSlotID(jtransform["sk"])) {
-        fSlotManager->trackScalarValue(SkString(sid->begin()), &(adapter->fSkew), adapter);
-        dispatched = true;
-    }
-
-    if (auto sid = getSlotID(jtransform["sa"])) {
-        fSlotManager->trackScalarValue(SkString(sid->begin()), &(adapter->fSkewAxis), adapter);
-        dispatched = true;
-    }
-
     if (adapter->isStatic()) {
         if (!dispatched && adapter->totalMatrix().isIdentity()) {
             // The transform has no observable effects - we can discard.

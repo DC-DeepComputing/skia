@@ -114,7 +114,7 @@ sk_sp<sksg::RenderNode> AnimationBuilder::attachOpacity(const skjson::ObjectValu
     }
     auto dispatched = this->dispatchOpacityProperty(adapter->node(), jobject["o"], adapter);
     if (adapter->isStatic()) {
-        if (!dispatched && adapter->node()->getOpacity() >= 1) {
+        if (!dispatched && adapter->node()->getOpacity() >= 1 && adapter->isStatic()) {
             // No obeservable effects - we can discard.
             return child_node;
         }
@@ -238,14 +238,6 @@ bool AnimationBuilder::dispatchOpacityProperty(const sk_sp<sksg::OpacityEffect>&
                                                const skjson::ObjectValue* jopacity,
                                                const sk_sp<OpacityAdapter> adapter) const {
     bool dispatched = false;
-
-    if (jopacity) {
-        if (const skjson::StringValue* slotID = (*jopacity)["sid"]) {
-            fSlotManager->trackScalarValue(SkString(slotID->begin()), &(adapter->fOpacity),
-                                            adapter);
-            dispatched = true;
-        }
-    }
 
     if (fPropertyObserver) {
         fPropertyObserver->onOpacityProperty(fPropertyObserverContext,

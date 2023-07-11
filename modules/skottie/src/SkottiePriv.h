@@ -203,6 +203,7 @@ private:
     friend class CompositionBuilder;
     friend class CustomFont;
     friend class LayerBuilder;
+    friend class AnimatablePropertyContainer;
 
     struct AttachLayerContext;
     struct AttachShapeContext;

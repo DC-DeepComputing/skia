@@ -47,6 +47,16 @@ void AnimatablePropertyContainer::shrink_to_fit() {
     fAnimators.shrink_to_fit();
 }
 
+const skjson::StringValue* AnimatablePropertyContainer::getSlotID(const skjson::ObjectValue* jobj) {
+    if (jobj) {
+        if (const skjson::StringValue* sid = (*jobj)["sid"]) {
+            fHasSlotID = true;
+            return sid;
+        }
+    }
+    return skjson::NullValue();
+}
+
 bool AnimatablePropertyContainer::bindImpl(const AnimationBuilder& abuilder,
                                            const skjson::ObjectValue* jprop,
                                            AnimatorBuilder& builder) {
