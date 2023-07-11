@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/effects/SkImageFilters.h"
 #include "src/effects/imagefilters/SkCropImageFilter.h"
 
 #include "include/core/SkFlattenable.h"
@@ -41,8 +42,13 @@ protected:
 private:
     friend void ::SkRegisterCropImageFilterFlattenable();
     SK_FLATTENABLE_HOOKS(SkCropImageFilter)
+    static sk_sp<SkFlattenable> LegacyTileCreateProc(SkReadBuffer&);
 
     bool onAffectsTransparentBlack() const override { return fTileMode != SkTileMode::kDecal; }
+
+    // Disable recursing in affectsTransparentBlack() if we hit a Crop.
+    // TODO(skbug.com/14611): Automatically infer this from the output bounds being finite.
+    bool ignoreInputsAffectsTransparentBlack() const override { return true; }
 
     skif::FilterResult onFilterImage(const skif::Context& context) const override;
 
@@ -93,8 +99,29 @@ sk_sp<SkImageFilter> SkMakeCropImageFilter(const SkRect& rect,
     return sk_sp<SkImageFilter>(new SkCropImageFilter(rect, tileMode, std::move(input)));
 }
 
+sk_sp<SkImageFilter> SkImageFilters::Tile(const SkRect& src,
+                                          const SkRect& dst,
+                                          sk_sp<SkImageFilter> input) {
+    // The Tile filter is simply a crop to 'src' with a kRepeat tile mode wrapped in a crop to 'dst'
+    // with a kDecal tile mode.
+    sk_sp<SkImageFilter> filter = SkMakeCropImageFilter(src, SkTileMode::kRepeat, std::move(input));
+    filter = SkMakeCropImageFilter(dst, SkTileMode::kDecal, std::move(filter));
+    return filter;
+}
+
 void SkRegisterCropImageFilterFlattenable() {
     SK_REGISTER_FLATTENABLE(SkCropImageFilter);
+    // TODO (michaelludwig) - Remove after grace period for SKPs to stop using old name
+    SkFlattenable::Register("SkTileImageFilter", SkCropImageFilter::LegacyTileCreateProc);
+    SkFlattenable::Register("SkTileImageFilterImpl", SkCropImageFilter::LegacyTileCreateProc);
+}
+
+sk_sp<SkFlattenable> SkCropImageFilter::LegacyTileCreateProc(SkReadBuffer& buffer) {
+    SK_IMAGEFILTER_UNFLATTEN_COMMON(common, 1);
+    SkRect src, dst;
+    buffer.readRect(&src);
+    buffer.readRect(&dst);
+    return SkImageFilters::Tile(src, dst, common.getInput(0));
 }
 
 sk_sp<SkFlattenable> SkCropImageFilter::CreateProc(SkReadBuffer& buffer) {
