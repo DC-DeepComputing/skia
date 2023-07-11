@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba429f2a_30242453",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-11T14:40:13Z",
+      "side": 1,
+      "message": "Now that it\u0027s in a different file, maybe `AnalyticRRectRenderStep::kCornerVertexCount`?",
+      "range": {
+        "startLine": 558,
+        "startChar": 59,
+        "endLine": 558,
+        "endChar": 83
+      },
+      "revId": "b817178dd7e988b33fe204ea1e9fa1fddae298a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
