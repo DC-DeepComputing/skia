@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5f6d0880_fb64e343",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-11T12:46:54Z",
+      "side": 1,
+      "message": "Please also add docs to the index.d.ts file",
+      "revId": "fd684c55b2ece2a97cad5dc6948e761d239da7fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b21b0845_3fc873b5",
         "filename": "modules/canvaskit/externs.js",
         "patchSetId": 1
