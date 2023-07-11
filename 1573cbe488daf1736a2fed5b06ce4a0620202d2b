@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "365caf82_7ea2caa2",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 5428,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-11T15:16:39Z",
+      "side": 1,
+      "message": "nit: ERRORF(reporter, \"abc/abc.ttf not found\")\n\nand similar below (rather than having a false assertion)",
+      "range": {
+        "startLine": 5428,
+        "startChar": 8,
+        "endLine": 5428,
+        "endChar": 23
+      },
+      "revId": "1573cbe488daf1736a2fed5b06ce4a0620202d2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
