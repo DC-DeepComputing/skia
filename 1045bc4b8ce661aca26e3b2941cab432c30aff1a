@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4004c7a_58b7183b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-07-11T18:10:16Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "1045bc4b8ce661aca26e3b2941cab432c30aff1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36aa76b2_55cff957",
@@ -14,6 +31,24 @@
       "writtenOn": "2023-07-11T18:00:34Z",
       "side": 1,
       "message": "I assume clang accepts these, even though they\u0027re not available until c++20? We don\u0027t need to use the `[[clang::likely]]` syntax?",
+      "revId": "1045bc4b8ce661aca26e3b2941cab432c30aff1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "143f4618_ca6ac5ca",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-07-11T18:10:16Z",
+      "side": 1,
+      "message": "Actually, [[likely]] is the clang specific one *until* c++20 when it becomes [[clang::likely]] and the c++20 [[likely]] comes into force.\n\nFor more of an explanation see:\nhttps://clang.llvm.org/docs/AttributeReference.html#likely-and-unlikely",
+      "parentUuid": "36aa76b2_55cff957",
       "revId": "1045bc4b8ce661aca26e3b2941cab432c30aff1a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
