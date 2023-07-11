@@ -9,10 +9,12 @@
 #define SkImage_DEFINED
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkYUVAInfo.h"
 #include "include/private/base/SkAPI.h"
 
 #include <cstddef>
@@ -605,34 +607,51 @@ public:
                                    ReadPixelsContext context) const;
 
     /**
-        Similar to asyncRescaleAndReadPixels but performs an additional conversion to YUV. The
-        RGB->YUV conversion is controlled by 'yuvColorSpace'. The YUV data is returned as three
-        planes ordered y, u, v. The u and v planes are half the width and height of the resized
-        rectangle. The y, u, and v values are single bytes. Currently this fails if 'dstSize'
-        width and height are not even. A 'srcRect' that is not contained by the bounds of the
-        image causes failure.
+        Similar to asyncRescaleAndReadPixels but performs an additional conversion to YUV[A]. The
+        RGB[A]->YUV[A] conversion is controlled by 'yuvaInfo'. The YUV[A] data is will be available
+        in an AysncReadbackResult as indicated by 'yuvaInfo.planeConfig()', both in terms of
+        number and order of planes. Each YUV[A] value will be one byte.
+
+        Restrictions on 'yuvaInfo':
+            1. yuvaInfo.planeConfig() must be SkYUVAInfo::PlaneConfig::kY_U_V or
+               SkYUVAInfo::::kY_U_V_A.
+            2. yuvaInfo.subsampling() must be SkYUVAInfo::Subsampling::k420.
+            3. yuvaInfo.origin() must be kTopLeft_SkEncodedOrigin.
+            4. yuvaInfo.width() and yuvaInfo.height() must be even.
+
+        A 'srcRect' that is not contained by the bounds of the image causes failure. A 'yuvaInfo'
+        with an odd width or height causes failure.
 
         When the pixel data is ready the caller's ReadPixelsCallback is called with a
-        AsyncReadResult containing the planar data. The AsyncReadResult will have count() == 3.
-        Upon failure the callback is called with nullptr for AsyncReadResult. For a GPU image this
-        flushes work but a submit must occur to guarantee a finite time before the callback is
-        called.
+        AsyncReadResult containing the planar data. The AsyncReadResult will have count() ==
+        yuvaInfo.numPlanes(). Upon failure the callback is called with nullptr for AsyncReadResult.
+        For a GPU image this flushes work but a submit must occur to guarantee a finite time before
+        the callback is called.
 
         The data is valid for the lifetime of AsyncReadResult with the exception that if the SkImage
         is GPU-backed the data is immediately invalidated if the context is abandoned or
         destroyed.
 
-        @param yuvColorSpace  The transformation from RGB to YUV. Applied to the resized image
-                              after it is converted to dstColorSpace.
-        @param dstColorSpace  The color space to convert the resized image to, after rescaling.
+        The order of transformations is rescale, convert to destination color space, convert to
+        YUV[A] planes.
+
+        @param yuvaInfo       The planar configuration of the result.
+        @param dstColorSpace  The color space to convert the resized image to.
         @param srcRect        The portion of the image to rescale and convert to YUV planes.
-        @param dstSize        The size to rescale srcRect to
         @param rescaleGamma   controls whether rescaling is done in the image's gamma or whether
                               the source data is transformed to a linear gamma before rescaling.
         @param rescaleMode    controls the technique (and cost) of the rescaling
-        @param callback       function to call with the planar read result
+        @param callback       function to call with the planar read result (or nullptr on failure)
         @param context        passed to callback
      */
+    void asyncRescaleAndReadPixelsYUVA(const SkYUVAInfo& yuvaInfo,
+                                       sk_sp<SkColorSpace> dstColorSpace,
+                                       const SkIRect& srcRect,
+                                       RescaleGamma rescaleGamma,
+                                       RescaleMode rescaleMode,
+                                       ReadPixelsCallback callback,
+                                       ReadPixelsContext context) const;
+
     void asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                          sk_sp<SkColorSpace> dstColorSpace,
                                          const SkIRect& srcRect,
@@ -640,7 +659,19 @@ public:
                                          RescaleGamma rescaleGamma,
                                          RescaleMode rescaleMode,
                                          ReadPixelsCallback callback,
-                                         ReadPixelsContext context) const;
+                                         ReadPixelsContext context) const {
+        SkYUVAInfo yuvaInfo(dstSize,
+                            SkYUVAInfo::PlaneConfig::kY_U_V,
+                            SkYUVAInfo::Subsampling::k420,
+                            yuvColorSpace);
+        return this->asyncRescaleAndReadPixelsYUVA(yuvaInfo,
+                                                   std::move(dstColorSpace),
+                                                   srcRect,
+                                                   rescaleGamma,
+                                                   rescaleMode,
+                                                   callback,
+                                                   context);
+    }
 
     /** Copies SkImage to dst, scaling pixels to fit dst.width() and dst.height(), and
         converting pixels to match dst.colorType() and dst.alphaType(). Returns true if
