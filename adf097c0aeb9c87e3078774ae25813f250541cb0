@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dca0385_ad3ccc93",
+        "filename": "gm/crop_imagefilter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-11T14:59:41Z",
+      "side": 1,
+      "message": "This was needed to make the `serialize-8888` config happy on the non-decal GMs being added. I believe it\u0027s because of the raster restriction to N32 for image filtering, and somehow we get a mismatch on replay and use a different blitter, creating imperceptible diffs.",
+      "range": {
+        "startLine": 128,
+        "startChar": 41,
+        "endLine": 128,
+        "endChar": 57
+      },
+      "revId": "adf097c0aeb9c87e3078774ae25813f250541cb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
