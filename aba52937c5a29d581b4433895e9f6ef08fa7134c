@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d3d3d6e_3724f57a",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2023-07-11T13:20:29Z",
+      "side": 1,
+      "message": "isn\u0027t this default behavior/no-op?",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 54
+      },
+      "revId": "aba52937c5a29d581b4433895e9f6ef08fa7134c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
