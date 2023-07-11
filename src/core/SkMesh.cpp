@@ -652,52 +652,6 @@ SkMesh::SkMesh(SkMesh&&)      = default;
 SkMesh& SkMesh::operator=(const SkMesh&) = default;
 SkMesh& SkMesh::operator=(SkMesh&&)      = default;
 
-sk_sp<IndexBuffer> SkMesh::MakeIndexBuffer(GrDirectContext* dc, const void* data, size_t size) {
-    if (!dc) {
-        return SkMeshPriv::CpuIndexBuffer::Make(data, size);
-    }
-#if defined(SK_GANESH)
-    return SkMeshPriv::GpuIndexBuffer::Make(dc, data, size);
-#else
-    return nullptr;
-#endif
-}
-
-sk_sp<IndexBuffer> SkMesh::CopyIndexBuffer(GrDirectContext* dc, sk_sp<IndexBuffer> src) {
-    if (!src) {
-        return nullptr;
-    }
-    auto* ib = static_cast<SkMeshPriv::IB*>(src.get());
-    const void* data = ib->peek();
-    if (!data) {
-        return nullptr;
-    }
-    return MakeIndexBuffer(dc, data, ib->size());
-}
-
-sk_sp<VertexBuffer> SkMesh::MakeVertexBuffer(GrDirectContext* dc, const void* data, size_t size) {
-    if (!dc) {
-        return SkMeshPriv::CpuVertexBuffer::Make(data, size);
-    }
-#if defined(SK_GANESH)
-    return SkMeshPriv::GpuVertexBuffer::Make(dc, data, size);
-#else
-    return nullptr;
-#endif
-}
-
-sk_sp<VertexBuffer> SkMesh::CopyVertexBuffer(GrDirectContext* dc, sk_sp<VertexBuffer> src) {
-    if (!src) {
-        return nullptr;
-    }
-    auto* vb = static_cast<SkMeshPriv::VB*>(src.get());
-    const void* data = vb->peek();
-    if (!data) {
-        return nullptr;
-    }
-    return MakeVertexBuffer(dc, data, vb->size());
-}
-
 SkMesh::Result SkMesh::Make(sk_sp<SkMeshSpecification> spec,
                             Mode mode,
                             sk_sp<VertexBuffer> vb,
@@ -922,3 +876,37 @@ bool SkMeshPriv::UpdateGpuBuffer(GrDirectContext* dc,
     return true;
 }
 #endif  // defined(SK_GANESH)
+
+namespace SkMeshes {
+sk_sp<IndexBuffer> MakeIndexBuffer(const void* data, size_t size) {
+    return SkMeshPriv::CpuIndexBuffer::Make(data, size);
+}
+
+sk_sp<IndexBuffer> CopyIndexBuffer(sk_sp<IndexBuffer> src) {
+    if (!src) {
+        return nullptr;
+    }
+    auto* ib = static_cast<SkMeshPriv::IB*>(src.get());
+    const void* data = ib->peek();
+    if (!data) {
+        return nullptr;
+    }
+    return MakeIndexBuffer(data, ib->size());
+}
+
+sk_sp<VertexBuffer> MakeVertexBuffer(const void* data, size_t size) {
+    return SkMeshPriv::CpuVertexBuffer::Make(data, size);
+}
+
+sk_sp<VertexBuffer> CopyVertexBuffer(sk_sp<VertexBuffer> src) {
+    if (!src) {
+        return nullptr;
+    }
+    auto* vb = static_cast<SkMeshPriv::VB*>(src.get());
+    const void* data = vb->peek();
+    if (!data) {
+        return nullptr;
+    }
+    return MakeVertexBuffer(data, vb->size());
+}
+}
