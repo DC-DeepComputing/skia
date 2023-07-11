@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da919dbd_105cbb5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-11T12:46:38Z",
+      "side": 1,
+      "message": "Michael, is this something we are ok with exposing on the public API?",
+      "revId": "fd684c55b2ece2a97cad5dc6948e761d239da7fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b21b0845_3fc873b5",
+        "filename": "modules/canvaskit/externs.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-11T12:46:38Z",
+      "side": 1,
+      "message": "not needed (and invalid syntax)",
+      "range": {
+        "startLine": 466,
+        "startChar": 9,
+        "endLine": 466,
+        "endChar": 10
+      },
+      "revId": "fd684c55b2ece2a97cad5dc6948e761d239da7fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0726b967_13763ad6",
+        "filename": "modules/canvaskit/tests/core_test.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-11T12:46:38Z",
+      "side": 1,
+      "message": "done is not needed, as there are no callbacks or other async here.",
+      "range": {
+        "startLine": 738,
+        "startChar": 48,
+        "endLine": 738,
+        "endChar": 52
+      },
+      "revId": "fd684c55b2ece2a97cad5dc6948e761d239da7fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3d735d2_1813ce18",
+        "filename": "modules/canvaskit/tests/core_test.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-11T12:46:38Z",
+      "side": 1,
+      "message": "nit: const",
+      "range": {
+        "startLine": 740,
+        "startChar": 6,
+        "endLine": 740,
+        "endChar": 9
+      },
+      "revId": "fd684c55b2ece2a97cad5dc6948e761d239da7fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
