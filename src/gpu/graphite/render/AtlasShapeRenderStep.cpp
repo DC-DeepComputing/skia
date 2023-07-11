@@ -20,7 +20,7 @@ AtlasShapeRenderStep::AtlasShapeRenderStep()
                      "",
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
                      /*uniforms=*/{{"atlasSizeInv", SkSLType::kFloat2},
-                                   {"isInverted", SkSLType::kInt}},
+                                   {"isInverted", SkSLType::kFloat}},  // -1 if inverted, 1 if plain
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGEqualPass,
                      /*vertexAttrs=*/{},
@@ -61,7 +61,7 @@ std::string AtlasShapeRenderStep::texturesAndSamplersSkSL(
 const char* AtlasShapeRenderStep::fragmentCoverageSkSL() const {
     return R"(
         half c = sample(pathAtlas, clamp(textureCoords, maskBounds.LT, maskBounds.RB)).r;
-        outputCoverage = half4(isInverted == 1 ? (1 - c) : c);
+        outputCoverage = half4(c * isInverted + min(0, isInverted));
     )";
 }
 
@@ -111,7 +111,11 @@ void AtlasShapeRenderStep::writeUniformsAndTextures(const DrawParams& params,
     // write uniforms
     SkV2 atlasSizeInv = {1.f / proxy->dimensions().width(), 1.f / proxy->dimensions().height()};
     gatherer->write(atlasSizeInv);
-    gatherer->write(int(atlasShape.inverted()));
+    gatherer->write(atlasShape.inverted() ? -1.f : 1.f);
+
+    if (atlasShape.inverted()) {
+        SkASSERT(proxy);
+    }
 
     // write textures and samplers
     const SkSamplingOptions kSamplingOptions(SkFilterMode::kNearest);
