@@ -22,6 +22,30 @@
       },
       "revId": "2e9a91448ac7b3e0bd0250318ebeaf03f9b24bb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88225bff_75f285b3",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 1145,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-11T14:44:13Z",
+      "side": 1,
+      "message": "Right, it\u0027s not a pure function because it modifies `dist`. If we mark it `$pure` then SkSL may decide to eliminate its call sites because the return value isn\u0027t used (it\u0027s void).\n\nI should make SkSL report an error if a `$pure` function has out params.",
+      "parentUuid": "8b637f9c_dbf62e02",
+      "range": {
+        "startLine": 1145,
+        "startChar": 22,
+        "endLine": 1145,
+        "endChar": 27
+      },
+      "revId": "2e9a91448ac7b3e0bd0250318ebeaf03f9b24bb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
