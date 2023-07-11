@@ -16,6 +16,24 @@
       "message": "I think this is good, but it could actually trigger a behavior change, because the old versions were using the `f` suffixed functions (eg, implicitly cast double-to-float ... stupid macros). Now we might end up calling the double or int version of some of these? Two ideas:\n\n1) Can we just remove these entirely (eg, replace them at the call-site with the std:: calls). That\u0027s probably time-consuming, though, and then we have to be sure at each call-site that we\u0027re really passing a float.\n2) Change these to be inline wrapper functions, so we at least get the argument coercion to float.",
       "revId": "56d24ad342bbe8b2d9569e46a053913b128e1347",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "564d4266_4d4928f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-07-11T13:00:29Z",
+      "side": 1,
+      "message": "Completed option 2.",
+      "parentUuid": "9b1a9b95_060c60b9",
+      "revId": "56d24ad342bbe8b2d9569e46a053913b128e1347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
