@@ -38,12 +38,26 @@ using GpuFinishedProc = void (*)(GpuFinishedContext finishedContext, CallbackRes
  * TextureInfo must match the info provided to the Recorder when making the deferred canvas.
  *
  * fTargetTranslation is an additional translation applied to draws targeting fTargetSurface.
+ *
+ * Before issuing all commands, fNumWaitSemaphore semaphores will be waited on by the gpu.
+ * Similarly, after issuing all commands, fNumSignalSemaphore semaphores will be signaled by the
+ * gpu. For both the client passes in an array of initialized BackendSemaphores. The semaphores
+ * are not sent to the GPU until the next Context::submit call is made.
+ *
+ * The client will own and be responsible for deleting the underlying semaphores after the
+ * submission completes, however the BackendSemaphore objects themselves can be deleted as soon
+ * as this function returns.
  */
 struct InsertRecordingInfo {
     Recording* fRecording = nullptr;
 
     SkSurface* fTargetSurface = nullptr;
     SkIVector fTargetTranslation = {0, 0};
+
+    size_t fNumWaitSemaphores = 0;
+    BackendSemaphore* fWaitSemaphores = nullptr;
+    size_t fNumSignalSemaphores = 0;
+    BackendSemaphore* fSignalSemaphores = nullptr;
 
     GpuFinishedContext fFinishedContext = nullptr;
     GpuFinishedProc fFinishedProc = nullptr;
