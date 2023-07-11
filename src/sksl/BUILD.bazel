@@ -46,6 +46,8 @@ skia_filegroup(
 )
 
 CORE_SRCS = [
+    "SkBitmapDevice_mesh.cpp",
+    "SkCanvas_mesh.cpp",
     "SkSLAnalysis.cpp",
     "SkSLAnalysis.h",
     "SkSLBuiltinTypes.cpp",

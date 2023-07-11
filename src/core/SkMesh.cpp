@@ -7,7 +7,6 @@
 
 #include "include/core/SkMesh.h"
 
-#ifdef SK_ENABLE_SKSL
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/private/base/SkMath.h"
@@ -923,5 +922,3 @@ bool SkMeshPriv::UpdateGpuBuffer(GrDirectContext* dc,
     return true;
 }
 #endif  // defined(SK_GANESH)
-
-#endif  // SK_ENABLE_SKSL
