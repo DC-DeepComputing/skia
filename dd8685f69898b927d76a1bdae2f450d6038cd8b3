@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a46c6e36_64a41560",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 1172,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-11T17:24:16Z",
+      "side": 1,
+      "message": "Minor related cleanup to use a source-list variable we\u0027re already defining, rather than directly naming the source file.",
+      "revId": "dd8685f69898b927d76a1bdae2f450d6038cd8b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
