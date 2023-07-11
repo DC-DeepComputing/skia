@@ -46,6 +46,30 @@
       },
       "revId": "aba52937c5a29d581b4433895e9f6ef08fa7134c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "678fd0ea_a81e05bc",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-07-11T14:12:17Z",
+      "side": 1,
+      "message": "SkSurface::getCanvas() -\u003e\n      SkSurface_Base::getCachedCanvas() -\u003e\n        if (nullptr \u003d\u003d fCachedCanvas) {\n        ...\n        \nIf the surface is null, we segfault while reading 0x0 + offsetof(fCachedCanvas):\n`Exception infoSIGSEGV /SEGV_MAPERR @0x00000020`",
+      "parentUuid": "1d895848_7b45ebfd",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 178,
+        "endChar": 54
+      },
+      "revId": "aba52937c5a29d581b4433895e9f6ef08fa7134c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
