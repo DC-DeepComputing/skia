@@ -945,21 +945,47 @@ void Device::drawDevice(SkBaseDevice* device,
     this->SkBaseDevice::drawDevice(device, sampling, paint);
 }
 
-void Device::drawImageRect(const SkImage* image,
+void Device::drawImageRect1(const SkImage* image,
                            const SkRect* src,
                            const SkRect& dst,
                            const SkSamplingOptions& sampling,
                            const SkPaint& paint,
                            SkCanvas::SrcRectConstraint constraint) {
     ASSERT_SINGLE_OWNER
+
     GrAA aa = fSurfaceDrawContext->chooseAA(paint);
     SkCanvas::QuadAAFlags aaFlags = (aa == GrAA::kYes) ? SkCanvas::kAll_QuadAAFlags
                                                        : SkCanvas::kNone_QuadAAFlags;
-    TiledTextureUtils::DrawImageRect_Ganesh(this,
-                                            image,
-                                            src ? *src
-                                                : SkRect::MakeIWH(image->width(), image->height()),
-                                            dst, aaFlags, sampling, paint, constraint);
+
+    this->drawImageQuadDirect(image,
+                              src ? *src
+                                  : SkRect::MakeIWH(image->width(), image->height()),
+                              dst,
+                              /* dstClip= */ nullptr,
+                              aaFlags,
+                              /* preViewMatrix= */ nullptr,
+                              sampling,
+                              paint,
+                              constraint);
+}
+
+bool Device::drawTiledImageRect(SkCanvas* canvas,
+                                const SkImage* image,
+                                const SkRect* src,
+                                const SkRect& dst,
+                                const SkSamplingOptions& sampling,
+                                const SkPaint& paint,
+                                SkCanvas::SrcRectConstraint constraint) {
+    ASSERT_SINGLE_OWNER
+    GrAA aa = fSurfaceDrawContext->chooseAA(paint);
+    SkCanvas::QuadAAFlags aaFlags = (aa == GrAA::kYes) ? SkCanvas::kAll_QuadAAFlags
+                                                       : SkCanvas::kNone_QuadAAFlags;
+
+    return TiledTextureUtils::DrawImageRect_Ganesh(this,
+                                                   image,
+                                                   src ? *src
+                                                       : SkRect::MakeIWH(image->width(), image->height()),
+                                                   dst, aaFlags, sampling, paint, constraint);
 }
 
 void Device::drawViewLattice(GrSurfaceProxyView view,

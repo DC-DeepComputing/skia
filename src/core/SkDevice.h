@@ -313,9 +313,17 @@ protected:
                           const SkPaint& paint,
                           bool pathIsMutable = false) = 0;
 
-    virtual void drawImageRect(const SkImage*, const SkRect* src, const SkRect& dst,
+    virtual void drawImageRect1(const SkImage*, const SkRect* src, const SkRect& dst,
                                const SkSamplingOptions&, const SkPaint&,
                                SkCanvas::SrcRectConstraint) = 0;
+    virtual bool drawTiledImageRect(SkCanvas*,
+                                    const SkImage*,
+                                    const SkRect* src,
+                                    const SkRect& dst,
+                                    const SkSamplingOptions&,
+                                    const SkPaint&,
+                                    SkCanvas::SrcRectConstraint) { return false; }
+
     virtual void drawImageLattice(const SkImage*, const SkCanvas::Lattice&,
                                   const SkRect& dst, SkFilterMode, const SkPaint&);
 
@@ -483,7 +491,6 @@ private:
     friend class SkDrawBase;
     friend class SkSurface_Raster;
     friend class DeviceTestingAccess;
-    friend class skgpu::TiledTextureUtils; // for drawEdgeAAImage
 
     void simplifyGlyphRunRSXFormAndRedraw(SkCanvas*,
                                           const sktext::GlyphRunList&,
@@ -585,7 +592,7 @@ protected:
 
     void drawPaint(const SkPaint& paint) override {}
     void drawPoints(SkCanvas::PointMode, size_t, const SkPoint[], const SkPaint&) override {}
-    void drawImageRect(const SkImage*, const SkRect*, const SkRect&,
+    void drawImageRect1(const SkImage*, const SkRect*, const SkRect&,
                        const SkSamplingOptions&, const SkPaint&,
                        SkCanvas::SrcRectConstraint) override {}
     void drawRect(const SkRect&, const SkPaint&) override {}

@@ -193,9 +193,16 @@ public:
     void drawAtlas(const SkRSXform[], const SkRect[], const SkColor[], int count, sk_sp<SkBlender>,
                    const SkPaint&) override;
 
-    void drawImageRect(const SkImage*, const SkRect* src, const SkRect& dst,
+    void drawImageRect1(const SkImage*, const SkRect* src, const SkRect& dst,
                        const SkSamplingOptions&, const SkPaint&,
                        SkCanvas::SrcRectConstraint) override;
+    bool drawTiledImageRect(SkCanvas*,
+                            const SkImage*,
+                            const SkRect* src,
+                            const SkRect& dst,
+                            const SkSamplingOptions&,
+                            const SkPaint&,
+                            SkCanvas::SrcRectConstraint) override;
     void drawImageLattice(const SkImage*, const SkCanvas::Lattice&,
                           const SkRect& dst, SkFilterMode, const SkPaint&) override;
 
@@ -347,7 +354,7 @@ private:
                          const SkPaint&);
 
     friend class ::SkSurface_Ganesh;  // for access to surfaceProps
-    friend class skgpu::TiledTextureUtils;   // for clip() and drawEdgeAAImage
+    friend class skgpu::TiledTextureUtils;   // for access to clip()
 };
 
 GR_MAKE_BITFIELD_CLASS_OPS(Device::DeviceFlags)

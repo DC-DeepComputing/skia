@@ -2100,12 +2100,13 @@ static SkPaint clean_paint_for_drawVertices(SkPaint paint) {
     return paint;
 }
 
+//$$
 void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
                             const SkSamplingOptions& sampling, const SkPaint* paint) {
     SkPaint realPaint = clean_paint_for_drawImage(paint);
 
-    SkRect bounds = SkRect::MakeXYWH(x, y, image->width(), image->height());
-    if (this->internalQuickReject(bounds, realPaint)) {
+    SkRect dst = SkRect::MakeXYWH(x, y, image->width(), image->height());
+    if (this->internalQuickReject(dst, realPaint)) {
         return;
     }
 
@@ -2147,9 +2148,14 @@ void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
         } // else fall through to regular drawing path
     }
 
-    auto layer = this->aboutToDraw(this, realPaint, &bounds);
+    if (this->topDevice()->drawTiledImageRect(this, image, nullptr, dst, sampling, realPaint,
+                                              kFast_SrcRectConstraint)) {
+        return;
+    }
+
+    auto layer = this->aboutToDraw(this, realPaint, &dst);
     if (layer) {
-        this->topDevice()->drawImageRect(image, nullptr, bounds, sampling,
+        this->topDevice()->drawImageRect1(image, nullptr, dst, sampling,
                                          layer->paint(), kFast_SrcRectConstraint);
     }
 }
@@ -2168,6 +2174,7 @@ static SkSamplingOptions clean_sampling_for_constraint(
     return sampling;
 }
 
+//$$
 void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
                                 const SkSamplingOptions& sampling, const SkPaint* paint,
                                 SrcRectConstraint constraint) {
@@ -2178,11 +2185,16 @@ void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const S
         return;
     }
 
+    if (this->topDevice()->drawTiledImageRect(this, image, &src, dst, realSampling, realPaint,
+                                              constraint)) {
+        return;
+    }
+
     auto layer = this->aboutToDraw(this, realPaint, &dst, CheckForOverwrite::kYes,
                                    image->isOpaque() ? kOpaque_ShaderOverrideOpacity
                                                      : kNotOpaque_ShaderOverrideOpacity);
     if (layer) {
-        this->topDevice()->drawImageRect(image, &src, dst, realSampling, layer->paint(), constraint);
+        this->topDevice()->drawImageRect1(image, &src, dst, realSampling, layer->paint(), constraint);
     }
 }
 

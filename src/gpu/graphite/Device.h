@@ -140,7 +140,7 @@ private:
                             const SkSamplingOptions&, const SkPaint&,
                             SkCanvas::SrcRectConstraint) override;
 
-    void drawImageRect(const SkImage*, const SkRect* src, const SkRect& dst,
+    void drawImageRect1(const SkImage*, const SkRect* src, const SkRect& dst,
                        const SkSamplingOptions&, const SkPaint&,
                        SkCanvas::SrcRectConstraint) override;
 
