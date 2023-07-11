@@ -142,12 +142,7 @@ public:
     bool hasWork() const { return fHasWork; }
 
 protected:
-    GrVkCommandBuffer(VkCommandBuffer cmdBuffer, bool isWrapped = false)
-            : fIsActive(isWrapped) // All wrapped command buffers start as active
-            , fCmdBuffer(cmdBuffer)
-            , fIsWrapped(isWrapped) {
-        this->invalidateState();
-    }
+    GrVkCommandBuffer(VkCommandBuffer cmdBuffer, bool isWrapped = false);
 
     bool isWrapped() const { return fIsWrapped; }
 

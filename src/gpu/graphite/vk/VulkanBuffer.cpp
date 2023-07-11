@@ -15,6 +15,7 @@
 namespace skgpu::graphite {
 
 sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
+                                 const VulkanResourceProvider* resourceProvider,
                                  size_t size,
                                  BufferType type,
                                  AccessPattern accessPattern) {
@@ -144,6 +145,26 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
     //         return nullptr;
     //     }
     // }
+    /**
+     *
+    kVertex,
+    kIndex,
+    kXferCpuToGpu,
+    kXferGpuToCpu,
+    kUniform,
+    kStorage,
+
+    // GPU-only buffer types
+    kIndirect,
+    kVertexStorage,
+    kIndexStorage,
+    */
+    // if (type == BufferType::kUniform) {
+    //     resourceProvider->findOrCreateDescriptorSet();
+    // TODO: Do we still need to create a uniform desc. set within this class, or does a desc set
+    // get created and bound by the command buffer?
+    // }
+
 
     return sk_sp<Buffer>(new VulkanBuffer(
             sharedContext, size, type, accessPattern, std::move(buffer), alloc, bufInfo.usage));

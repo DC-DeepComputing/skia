@@ -48,6 +48,7 @@ private:
     VkPipelineCache pipelineCache();
 
     friend class VulkanCommandBuffer;
+    friend class VulkanBuffer;
     VkPipelineCache fPipelineCache = VK_NULL_HANDLE;
 };
 
