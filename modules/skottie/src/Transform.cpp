@@ -105,13 +105,20 @@ void TransformAdapter2D::setSkewAxis(float sa) {
     this->onSync();
 }
 
+const skjson::StringValue* getSlotID(const skjson::ObjectValue* json) {
+    if (json) {
+        return (*json)["sid"];
+    }
+    return skjson::NullValue();
+}
+
 sk_sp<sksg::Transform> AnimationBuilder::attachMatrix2D(const skjson::ObjectValue& jtransform,
                                                         sk_sp<sksg::Transform> parent,
                                                         bool auto_orient) const {
-    const auto* jrotation = &jtransform["r"];
+    const skjson::ObjectValue* jrotation = jtransform["r"];
     if (jrotation->is<skjson::NullValue>()) {
         // Some 2D rotations are disguised as 3D...
-        jrotation = &jtransform["rz"];
+        jrotation = jtransform["rz"];
     }
 
     auto adapter = TransformAdapter2D::Make(*this,
@@ -124,7 +131,22 @@ sk_sp<sksg::Transform> AnimationBuilder::attachMatrix2D(const skjson::ObjectValu
                                             auto_orient);
     SkASSERT(adapter);
 
-    const auto dispatched = this->dispatchTransformProperty(adapter);
+    auto dispatched = this->dispatchTransformProperty(adapter);
+
+    if (auto sid = getSlotID(jrotation)) {
+        fSlotManager->trackScalarValue(SkString(sid->begin()), &(adapter->fRotation), adapter);
+        dispatched = true;
+    }
+
+    if (auto sid = getSlotID(jtransform["sk"])) {
+        fSlotManager->trackScalarValue(SkString(sid->begin()), &(adapter->fSkew), adapter);
+        dispatched = true;
+    }
+
+    if (auto sid = getSlotID(jtransform["sa"])) {
+        fSlotManager->trackScalarValue(SkString(sid->begin()), &(adapter->fSkewAxis), adapter);
+        dispatched = true;
+    }
 
     if (adapter->isStatic()) {
         if (!dispatched && adapter->totalMatrix().isIdentity()) {

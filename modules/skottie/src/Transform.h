@@ -71,6 +71,8 @@ private:
                 fOrientation = 0; // additional rotation component controlled by auto-orient
 
     using INHERITED = DiscardableAdapterBase<TransformAdapter2D, sksg::Matrix<SkMatrix>>;
+
+    friend class AnimationBuilder;
 };
 
 class TransformAdapter3D : public DiscardableAdapterBase<TransformAdapter3D, sksg::Matrix<SkM44>> {
