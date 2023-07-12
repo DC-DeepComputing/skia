@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c018e6e4_10f3912a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T02:00:13Z",
+      "side": 1,
+      "message": "This will have to be staged into chrome. The only significant gold change is fixed in https://skia-review.googlesource.com/c/skia/+/721961, since it was actually a bug in the old tile image filter.\n\nThe layout test changes are somewhat noticeable, and the reason for this is switching from rounding out (and introducing transparency) to rounding in. In the presence of a non-integer scale factor (the linux bots use either 1.25 or 1.5 I believe), both of these are inaccurate for a periodic tiling. Rounding in is slightly better when combined with other image filters that might magnify the effects of inadvertent transparency.\n\nEventually skbug.com/11249 will let the tile image filter preserve the floating point periodic bounds and this should be fully fixed. At the moment, we\u0027re just changing how we are wrong.",
+      "revId": "d54f2697cd7d5bc927fff7b579055a1957c027ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
