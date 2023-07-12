@@ -322,8 +322,8 @@ static void test_nextlog2(skiatest::Reporter* r) {
     REPORTER_ASSERT(r, sk_float_nextlog2(9.0f) == 4);
     REPORTER_ASSERT(r, sk_float_nextlog2(9.1f) == 4);
     REPORTER_ASSERT(r, sk_float_nextlog2(std::numeric_limits<float>::max()) == 128);
-    REPORTER_ASSERT(r, sk_float_nextlog2(std::numeric_limits<float>::infinity()) > 0);
-    REPORTER_ASSERT(r, sk_float_nextlog2(std::numeric_limits<float>::quiet_NaN()) >= 0);
+    REPORTER_ASSERT(r, sk_float_nextlog2(std::numeric_limits<float>::infinity()) == 128);
+    REPORTER_ASSERT(r, sk_float_nextlog2(std::numeric_limits<float>::quiet_NaN()) == 0);
 
     for (int i = 0; i < 100; ++i) {
         float pow2 = std::ldexp(1, i);

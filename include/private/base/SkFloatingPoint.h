@@ -158,9 +158,10 @@ bool sk_floats_are_unit(const float array[], size_t count);
 static inline float sk_float_rsqrt_portable(float x) { return 1.0f / sk_float_sqrt(x); }
 static inline float sk_float_rsqrt         (float x) { return 1.0f / sk_float_sqrt(x); }
 
-// Returns the log2 of the provided value, were that value to be rounded up to the next power of 2.
-// Returns 0 if value <= 0:
-// Never returns a negative number, even if value is NaN.
+// For finite positive x > 1, return ceil(log2(x)) otherwise, return 0.
+// For +/- NaN return 0.
+// For +infinity return 128.
+// For -infinity return 0.
 //
 //     sk_float_nextlog2((-inf..1]) -> 0
 //     sk_float_nextlog2((1..2]) -> 1
@@ -168,10 +169,28 @@ static inline float sk_float_rsqrt         (float x) { return 1.0f / sk_float_sq
 //     sk_float_nextlog2((4..8]) -> 3
 //     ...
 static inline int sk_float_nextlog2(float x) {
+    if (x < 0) {
+        return 0;
+    }
+
     uint32_t bits = (uint32_t)SkFloat2Bits(x);
-    bits += (1u << 23) - 1u;  // Increment the exponent for non-powers-of-2.
-    int exp = ((int32_t)bits >> 23) - 127;
-    return exp & ~(exp >> 31);  // Return 0 for negative or denormalized floats, and exponents < 0.
+    static constexpr uint32_t kDigitsAfterBinaryPoint = std::numeric_limits<float>::digits - 1;
+
+    // The constant is a significand of all 1s -- 0b0'00000000'111'1111111111'111111111. So, if
+    // the significand of x is all 0s (and therefore an integer power of two) this will not
+    // increment the exponent, but if it is just one ULP above the power of two the carry will
+    // ripple into the exponent incrementing the exponent by 1.
+    bits += (1u << kDigitsAfterBinaryPoint) - 1u;
+
+    // Shift the exponent down, and adjust it by the exponent offset so that 2^0 is really 0 instead
+    // of 127. Remember that 1 was added to the exponent, if x is NaN, then the exponent will
+    // carry a 1 into the sign bit during the addition to bits. Be sure to strip off the sign bit.
+    // In addition, infinity is an exponent of all 1's, and a significand of all 0, so
+    // the exponent is not affected during the addition to bits, and the exponent remains all 1's.
+    int exp = ((bits >> kDigitsAfterBinaryPoint) & 0b1111'1111) - 127;
+
+    // Return 0 for x <= 1.
+    return exp > 0 ? exp : 0;
 }
 
 // This is the number of significant digits we can print in a string such that when we read that
