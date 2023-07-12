@@ -16,6 +16,23 @@
       "message": "Kevin PTAL!",
       "revId": "d2630917dc0ca89bdb5d668fe2559999798c824a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "369e9588_cc67a913",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-12T13:24:06Z",
+      "side": 1,
+      "message": "I think this was superceded by https://skia-review.googlesource.com/c/skia/+/721905",
+      "revId": "d2630917dc0ca89bdb5d668fe2559999798c824a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
