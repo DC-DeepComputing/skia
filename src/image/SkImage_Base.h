@@ -100,19 +100,21 @@ public:
                                              SkIRect srcRect,
                                              RescaleGamma,
                                              RescaleMode,
-                                             ReadPixelsCallback,
+                                             RGBAReadPixelsCallback,
                                              ReadPixelsContext) const;
+
     /**
      * Default implementation does a rescale/read/yuv conversion and then calls the callback.
      */
-    virtual void onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
-                                                   sk_sp<SkColorSpace> dstColorSpace,
-                                                   SkIRect srcRect,
-                                                   SkISize dstSize,
-                                                   RescaleGamma,
-                                                   RescaleMode,
-                                                   ReadPixelsCallback,
-                                                   ReadPixelsContext) const;
+    virtual void onAsyncRescaleAndReadPixelsYUVA(const SkYUVAInfo&,
+                                                 SkYUVAPixmapInfo::DataType,
+                                                 sk_sp<SkColorSpace> dstColorSpace,
+                                                 SkIRect srcRect,
+                                                 RescaleGamma,
+                                                 RescaleMode,
+                                                 YUVAReadPixelsCallback,
+                                                 ReadPixelsContext) const;
+
 
     virtual GrImageContext* context() const { return nullptr; }
 

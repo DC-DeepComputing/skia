@@ -25,13 +25,15 @@
 #include <memory>
 #include <utility>
 
-void SkRescaleAndReadPixels(SkBitmap bmp,
-                            const SkImageInfo& resultInfo,
-                            const SkIRect& srcRect,
-                            SkImage::RescaleGamma rescaleGamma,
-                            SkImage::RescaleMode rescaleMode,
-                            SkImage::ReadPixelsCallback callback,
-                            SkImage::ReadPixelsContext context) {
+namespace SkRescaleAndReadPixelsUtils {
+
+void SynchronousRescaleAndReadPixels(SkBitmap bmp,
+                                     const SkImageInfo& resultInfo,
+                                     const SkIRect& srcRect,
+                                     SkImage::RescaleGamma rescaleGamma,
+                                     SkImage::RescaleMode rescaleMode,
+                                     SkImage::RGBAReadPixelsCallback callback,
+                                     SkImage::ReadPixelsContext context) {
     int srcW = srcRect.width();
     int srcH = srcRect.height();
 
@@ -143,24 +145,111 @@ void SkRescaleAndReadPixels(SkBitmap bmp,
         constraint = SkCanvas::kFast_SrcRectConstraint;
     }
 
-    size_t rowBytes = resultInfo.minRowBytes();
-    std::unique_ptr<char[]> data(new char[resultInfo.height() * rowBytes]);
-    SkPixmap pm(resultInfo, data.get(), rowBytes);
-    if (srcImage->readPixels(nullptr, pm, srcX, srcY)) {
-        class Result : public SkImage::AsyncReadResult {
+    SkBitmap readBmp;
+    readBmp.allocPixels(resultInfo);
+    if (srcImage->readPixels(nullptr, bmp.pixmap(), srcX, srcY)) {
+        class Result : public SkImage::RGBAAsyncReadPixelsResult {
         public:
-            Result(std::unique_ptr<const char[]> data, size_t rowBytes)
-                    : fData(std::move(data)), fRowBytes(rowBytes) {}
-            int count() const override { return 1; }
-            const void* data(int i) const override { return fData.get(); }
-            size_t rowBytes(int i) const override { return fRowBytes; }
+            Result(SkBitmap bmp) : fBmp(bmp) {}
+
+            const SkPixmap& pixmap() const override { return fBmp.pixmap(); }
 
         private:
-            std::unique_ptr<const char[]> fData;
-            size_t fRowBytes;
+            SkBitmap fBmp;
         };
-        callback(context, std::make_unique<Result>(std::move(data), rowBytes));
+        callback(context, std::make_unique<Result>(std::move(readBmp)));
     } else {
         callback(context, nullptr);
     }
+}
+
+bool IsYUVAInfoValid(const SkYUVAInfo& info, const SkYUVAPixmapInfo::DataType dataType) {
+    if (info.planeConfig() != SkYUVAInfo::PlaneConfig::kY_U_V) {
+        return false;
+    }
+
+    if (info.subsampling() != SkYUVAInfo::Subsampling::k420) {
+        return false;
+    }
+
+    if (info.origin() != kTopLeft_SkEncodedOrigin) {
+        return false;
+    }
+
+    if (info.width() & 0b1 || info.height() & 0b1) {
+        return false;
+    }
+
+    if (dataType != SkYUVAPixmapInfo::DataType::kUnorm8) {
+        return false;
+    }
+
+    return true;
+}
+
+void LegacyRGBACallbackWrapper(SkImage::ReadPixelsContext rgbaContext,
+                               std::unique_ptr<const SkImage::RGBAAsyncReadPixelsResult> rgbaResult) {
+    class LegacyResultWrapper : public SkImage::AsyncReadResult {
+    public:
+        LegacyResultWrapper(std::unique_ptr<const SkImage::RGBAAsyncReadPixelsResult> wrappedResult) : fWrappedResult(std::move(wrappedResult)) {}
+
+        int count() const override { return 1; }
+
+        const void* data(int i) const override {
+            return (i == 0) ? fWrappedResult->pixmap().addr() : nullptr;
+        }
+
+        size_t rowBytes(int i) const override {
+            return (i == 0) ? fWrappedResult->pixmap().rowBytes() : 0;
+        }
+
+    private:
+        std::unique_ptr<const SkImage::RGBAAsyncReadPixelsResult> fWrappedResult;
+    };
+
+    std::unique_ptr<LegacyWrapperContext> wrapperContext(static_cast<LegacyWrapperContext*>(rgbaContext));
+
+    std::unique_ptr<const SkImage::AsyncReadResult> clientResult;
+    if (rgbaResult) {
+        clientResult = std::make_unique<LegacyResultWrapper>(std::move(rgbaResult));
+    }
+
+    wrapperContext->fClientCallback(wrapperContext->fClientContext, std::move(clientResult));
+}
+
+void LegacyYUVACallbackWrapper(SkImage::ReadPixelsContext yuvaContext, std::unique_ptr<const SkImage::YUVAAsyncReadPixelsResult> yuvaResult) {
+    class LegacyResultWrapper : public SkImage::AsyncReadResult {
+    public:
+        LegacyResultWrapper(std::unique_ptr<const SkImage::YUVAAsyncReadPixelsResult> wrappedResult) : fWrappedResult(std::move(wrappedResult)) {}
+
+        int count() const override { return fWrappedResult->pixmaps().numPlanes(); }
+
+        const void* data(int i) const override {
+            if (i < 0 || i >= fWrappedResult->pixmaps().numPlanes()) {
+                return nullptr;
+            }
+            return fWrappedResult->pixmaps().plane(i).addr();
+        }
+
+        size_t rowBytes(int i) const override {
+            if (i < 0 || i >= fWrappedResult->pixmaps().numPlanes()) {
+                return 0;
+            }
+            return fWrappedResult->pixmaps().plane(i).rowBytes();
+        }
+
+    private:
+        std::unique_ptr<const SkImage::YUVAAsyncReadPixelsResult> fWrappedResult;
+    };
+
+    std::unique_ptr<LegacyWrapperContext> wrapperContext(static_cast<LegacyWrapperContext*>(yuvaContext));
+
+    std::unique_ptr<const SkImage::AsyncReadResult> clientResult;
+    if (yuvaResult) {
+        clientResult = std::make_unique<LegacyResultWrapper>(std::move(yuvaResult));
+    }
+
+    wrapperContext->fClientCallback(wrapperContext->fClientContext, std::move(clientResult));
+}
+
 }

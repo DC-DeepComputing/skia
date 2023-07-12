@@ -18,6 +18,7 @@
 #include "src/core/SkMipmap.h"
 #include "src/core/SkNextID.h"
 #include "src/image/SkImage_Base.h"
+#include "src/image/SkRescaleAndReadPixels.h"
 #include "src/shaders/SkImageShader.h"
 
 #include <utility>
@@ -56,7 +57,7 @@ void SkImage::asyncRescaleAndReadPixels(const SkImageInfo& info,
                                         const SkIRect& srcRect,
                                         RescaleGamma rescaleGamma,
                                         RescaleMode rescaleMode,
-                                        ReadPixelsCallback callback,
+                                        RGBAReadPixelsCallback callback,
                                         ReadPixelsContext context) const {
     if (!SkIRect::MakeWH(this->width(), this->height()).contains(srcRect) ||
         !SkImageInfoIsValid(info)) {
@@ -67,6 +68,48 @@ void SkImage::asyncRescaleAndReadPixels(const SkImageInfo& info,
             info, srcRect, rescaleGamma, rescaleMode, callback, context);
 }
 
+
+void SkImage::asyncRescaleAndReadPixels(const SkImageInfo& info,
+                                        const SkIRect& srcRect,
+                                        RescaleGamma rescaleGamma,
+                                        RescaleMode rescaleMode,
+                                        ReadPixelsCallback callback,
+                                        ReadPixelsContext context) const {
+    auto wrapperContext = std::make_unique<SkRescaleAndReadPixelsUtils::LegacyWrapperContext>();
+    wrapperContext->fClientCallback = callback;
+    wrapperContext->fClientContext  = context;
+
+    this->asyncRescaleAndReadPixels(info,
+                                    srcRect,
+                                    rescaleGamma,
+                                    rescaleMode,
+                                    SkRescaleAndReadPixelsUtils::LegacyRGBACallbackWrapper,
+                                    wrapperContext.release());
+}
+
+void SkImage::asyncRescaleAndReadPixelsYUVA(const SkYUVAInfo& yuvaInfo,
+                                            SkYUVAPixmapInfo::DataType dataType,
+                                            sk_sp<SkColorSpace> dstColorSpace,
+                                            const SkIRect& srcRect,
+                                            RescaleGamma rescaleGamma,
+                                            RescaleMode rescaleMode,
+                                            YUVAReadPixelsCallback callback,
+                                            ReadPixelsContext context) const {
+    if (!SkRescaleAndReadPixelsUtils::IsYUVAInfoValid(yuvaInfo, dataType) ||
+        !SkIRect::MakeWH(this->width(), this->height()).contains(srcRect)) {
+        callback(context, nullptr);
+        return;
+    }
+    as_IB(this)->onAsyncRescaleAndReadPixelsYUVA(yuvaInfo,
+                                                 dataType,
+                                                 std::move(dstColorSpace),
+                                                 srcRect,
+                                                 rescaleGamma,
+                                                 rescaleMode,
+                                                 callback,
+                                                 context);
+}
+
 void SkImage::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                               sk_sp<SkColorSpace> dstColorSpace,
                                               const SkIRect& srcRect,
@@ -75,19 +118,23 @@ void SkImage::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                               RescaleMode rescaleMode,
                                               ReadPixelsCallback callback,
                                               ReadPixelsContext context) const {
-    if (!SkIRect::MakeWH(this->width(), this->height()).contains(srcRect) || dstSize.isZero() ||
-        (dstSize.width() & 0b1) || (dstSize.height() & 0b1)) {
-        callback(context, nullptr);
-        return;
-    }
-    as_IB(this)->onAsyncRescaleAndReadPixelsYUV420(yuvColorSpace,
-                                                   std::move(dstColorSpace),
-                                                   srcRect,
-                                                   dstSize,
-                                                   rescaleGamma,
-                                                   rescaleMode,
-                                                   callback,
-                                                   context);
+    auto wrapperContext = std::make_unique<SkRescaleAndReadPixelsUtils::LegacyWrapperContext>();
+    wrapperContext->fClientCallback = callback;
+    wrapperContext->fClientContext  = context;
+
+    SkYUVAInfo yuvaInfo(dstSize,
+                        SkYUVAInfo::PlaneConfig::kY_U_V,
+                        SkYUVAInfo::Subsampling::k420,
+                        yuvColorSpace);
+
+    this->asyncRescaleAndReadPixelsYUVA(yuvaInfo,
+                                        SkYUVAPixmaps::DataType::kUnorm8,
+                                        std::move(dstColorSpace),
+                                        srcRect,
+                                        rescaleGamma,
+                                        rescaleMode,
+                                        SkRescaleAndReadPixelsUtils::LegacyYUVACallbackWrapper,
+                                        wrapperContext.release());
 }
 
 bool SkImage::scalePixels(const SkPixmap& dst, const SkSamplingOptions& sampling,

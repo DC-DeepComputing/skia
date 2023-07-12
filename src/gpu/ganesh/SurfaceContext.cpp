@@ -554,7 +554,7 @@ void SurfaceContext::asyncRescaleAndReadPixels(GrDirectContext* dContext,
                                                const SkIRect& srcRect,
                                                RescaleGamma rescaleGamma,
                                                RescaleMode rescaleMode,
-                                               ReadPixelsCallback callback,
+                                               RGBAReadPixelsCallback callback,
                                                ReadPixelsContext callbackContext) {
     if (!dContext) {
         callback(callbackContext, nullptr);
@@ -632,10 +632,9 @@ void SurfaceContext::asyncRescaleAndReadPixels(GrDirectContext* dContext,
 void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
                                      const SkIRect& rect,
                                      SkColorType colorType,
-                                     ReadPixelsCallback callback,
+                                     RGBAReadPixelsCallback callback,
                                      ReadPixelsContext callbackContext) {
-    using AsyncReadResult = skgpu::TAsyncReadResult<GrGpuBuffer, GrDirectContext::DirectContextID,
-                                                    PixelTransferResult>;
+    using AsyncReadResult = skgpu::RGBAAsyncReadResult<GrGpuBuffer, GrDirectContext::DirectContextID>;
 
     SkASSERT(rect.fLeft >= 0 && rect.fRight <= this->width());
     SkASSERT(rect.fTop >= 0 && rect.fBottom <= this->height());
@@ -649,28 +648,30 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
 
     auto transferResult = this->transferPixels(SkColorTypeToGrColorType(colorType), rect);
 
+    auto resultImageInfo = SkImageInfo::Make(rect.size(),
+                                             colorType,
+                                             this->colorInfo().alphaType(),
+                                             this->colorInfo().refColorSpace());
+
     if (!transferResult.fTransferBuffer) {
-        auto ii = SkImageInfo::Make(rect.size(), colorType, this->colorInfo().alphaType(),
-                                    this->colorInfo().refColorSpace());
         static const GrDirectContext::DirectContextID kInvalid;
-        auto result = std::make_unique<AsyncReadResult>(kInvalid);
-        GrPixmap pm = GrPixmap::Allocate(ii);
-        result->addCpuPlane(pm.pixelStorage(), pm.rowBytes());
+
+        GrPixmap pm = GrPixmap::Allocate(resultImageInfo);
+        AsyncReadResult::Plane plane(resultImageInfo, pm.pixelStorage(), pm.rowBytes());
 
         SkIPoint pt{rect.fLeft, rect.fTop};
         if (!this->readPixels(dContext, pm, pt)) {
             callback(callbackContext, nullptr);
             return;
         }
-        callback(callbackContext, std::move(result));
+        callback(callbackContext, AsyncReadResult::Make(std::move(plane)));
         return;
     }
 
     struct FinishContext {
-        ReadPixelsCallback* fClientCallback;
+        RGBAReadPixelsCallback* fClientCallback;
         ReadPixelsContext fClientContext;
-        SkISize fSize;
-        SkColorType fColorType;
+        SkImageInfo fResultImageInfo;
         size_t fBufferAlignment;
         GrClientMappedBufferManager* fMappedBufferManager;
         PixelTransferResult fTransferResult;
@@ -680,23 +681,20 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
     // callback to GrGpu until after the next flush that flushes our op list, though.
     auto* finishContext = new FinishContext{callback,
                                             callbackContext,
-                                            rect.size(),
-                                            colorType,
+                                            resultImageInfo,
                                             this->caps()->transferBufferRowBytesAlignment(),
                                             mappedBufferManager,
                                             std::move(transferResult)};
     auto finishCallback = [](GrGpuFinishedContext c) {
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         auto manager = context->fMappedBufferManager;
-        auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-        size_t rowBytes =
-                SkAlignTo(context->fSize.width() * SkColorTypeBytesPerPixel(context->fColorType),
-                          context->fBufferAlignment);
-        if (!result->addTransferResult(context->fTransferResult, context->fSize, rowBytes,
-                                       manager)) {
-            result.reset();
-        }
-        (*context->fClientCallback)(context->fClientContext, std::move(result));
+        size_t rowBytes = SkAlignTo(context->fResultImageInfo.minRowBytes(), context->fBufferAlignment);
+
+        auto plane = AsyncReadResult::Plane::MakeFromBuffer(context->fTransferResult,
+                                                            context->fResultImageInfo,
+                                                            rowBytes,
+                                                            manager);
+        (*context->fClientCallback)(context->fClientContext, AsyncReadResult::Make(std::move(plane)));
         delete context;
     };
     GrFlushInfo flushInfo;
@@ -707,22 +705,21 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
             this->asSurfaceProxy(), SkSurfaces::BackendSurfaceAccess::kNoAccess, flushInfo);
 }
 
-void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
-                                                     SkYUVColorSpace yuvColorSpace,
-                                                     sk_sp<SkColorSpace> dstColorSpace,
-                                                     const SkIRect& srcRect,
-                                                     SkISize dstSize,
-                                                     RescaleGamma rescaleGamma,
-                                                     RescaleMode rescaleMode,
-                                                     ReadPixelsCallback callback,
-                                                     ReadPixelsContext callbackContext) {
-    using AsyncReadResult = skgpu::TAsyncReadResult<GrGpuBuffer, GrDirectContext::DirectContextID,
-                                                    PixelTransferResult>;
+void SurfaceContext::asyncRescaleAndReadPixelsYUVA(GrDirectContext* dContext,
+                                                   const SkYUVAInfo& yuvaInfo,
+                                                   SkYUVAPixmaps::DataType dataType,
+                                                   sk_sp<SkColorSpace> dstColorSpace,
+                                                   const SkIRect& srcRect,
+                                                   RescaleGamma rescaleGamma,
+                                                   RescaleMode rescaleMode,
+                                                   YUVAReadPixelsCallback callback,
+                                                   ReadPixelsContext callbackContext) {
+    using AsyncReadResult = skgpu::YUVAAsyncReadResult<GrGpuBuffer, GrDirectContext::DirectContextID>;
 
     SkASSERT(srcRect.fLeft >= 0 && srcRect.fRight <= this->width());
     SkASSERT(srcRect.fTop >= 0 && srcRect.fBottom <= this->height());
-    SkASSERT(!dstSize.isZero());
-    SkASSERT((dstSize.width() % 2 == 0) && (dstSize.height() % 2 == 0));
+    SkASSERT(yuvaInfo.isValid());
+    SkASSERT((yuvaInfo.width() % 2 == 0) && (yuvaInfo.height() % 2 == 0));
 
     if (!dContext) {
         callback(callbackContext, nullptr);
@@ -743,11 +740,11 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     }
     int x = srcRect.fLeft;
     int y = srcRect.fTop;
-    bool needsRescale = srcRect.size() != dstSize ||
+    bool needsRescale = srcRect.size() != yuvaInfo.dimensions() ||
                         !SkColorSpace::Equals(this->colorInfo().colorSpace(), dstColorSpace.get());
     GrSurfaceProxyView srcView = this->readSurfaceView();
     if (needsRescale) {
-        auto info = SkImageInfo::Make(dstSize,
+        auto info = SkImageInfo::Make(yuvaInfo.dimensions(),
                                       kRGBA_8888_SkColorType,
                                       this->colorInfo().alphaType(),
                                       dstColorSpace);
@@ -783,7 +780,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
         x = y = 0;
     }
 
-    auto yInfo = SkImageInfo::MakeA8(dstSize);
+    auto yInfo = SkImageInfo::MakeA8(yuvaInfo.dimensions());
     auto yFC = dContext->priv().makeSFCWithFallback(yInfo, SkBackingFit::kApprox);
 
     auto uvInfo = yInfo.makeWH(yInfo.width()/2, yInfo.height()/2);
@@ -796,7 +793,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     }
 
     float baseM[20];
-    SkColorMatrix_RGB2YUV(yuvColorSpace, baseM);
+    SkColorMatrix_RGB2YUV(yuvaInfo.yuvColorSpace(), baseM);
 
     // TODO: Use one transfer buffer for all three planes to reduce map/unmap cost?
 
@@ -894,61 +891,50 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
             callback(callbackContext, nullptr);
             return;
         }
-        auto result = std::make_unique<AsyncReadResult>(dContext->directContextID());
-        result->addCpuPlane(yPmp.pixelStorage(), yPmp.rowBytes());
-        result->addCpuPlane(uPmp.pixelStorage(), uPmp.rowBytes());
-        result->addCpuPlane(vPmp.pixelStorage(), vPmp.rowBytes());
-        callback(callbackContext, std::move(result));
+        AsyncReadResult::Plane planes[3] {
+            {yInfo , yPmp.pixelStorage(), yPmp.rowBytes()},
+            {uvInfo, uPmp.pixelStorage(), uPmp.rowBytes()},
+            {uvInfo, vPmp.pixelStorage(), vPmp.rowBytes()}
+        };
+        callback(callbackContext, AsyncReadResult::Make(yuvaInfo, planes));
         return;
     }
 
+    SkYUVAPixmapInfo yuvaPixmapInfo(yuvaInfo, dataType, /*rowBytes=*/nullptr);
+
     struct FinishContext {
-        ReadPixelsCallback* fClientCallback;
+        YUVAReadPixelsCallback* fClientCallback;
         ReadPixelsContext fClientContext;
         GrClientMappedBufferManager* fMappedBufferManager;
-        SkISize fSize;
+        SkYUVAPixmapInfo fYUVAPixmapInfo;
         size_t fBufferAlignment;
-        PixelTransferResult fYTransfer;
-        PixelTransferResult fUTransfer;
-        PixelTransferResult fVTransfer;
+        PixelTransferResult fTransfers[3];
     };
     // Assumption is that the caller would like to flush. We could take a parameter or require an
     // explicit flush from the caller. We'd have to have a way to defer attaching the finish
     // callback to GrGpu until after the next flush that flushes our op list, though.
-    auto* finishContext = new FinishContext{callback,
-                                            callbackContext,
-                                            dContext->priv().clientMappedBufferManager(),
-                                            dstSize,
-                                            this->caps()->transferBufferRowBytesAlignment(),
-                                            std::move(yTransfer),
-                                            std::move(uTransfer),
-                                            std::move(vTransfer)};
+    auto* finishContext = new FinishContext{
+            callback,
+            callbackContext,
+            dContext->priv().clientMappedBufferManager(),
+            yuvaPixmapInfo,
+            this->caps()->transferBufferRowBytesAlignment(),
+            {std::move(yTransfer), std::move(uTransfer), std::move(vTransfer)}
+    };
+
     auto finishCallback = [](GrGpuFinishedContext c) {
-        const auto* context = reinterpret_cast<const FinishContext*>(c);
+        std::unique_ptr<const FinishContext> context(static_cast<const FinishContext*>(c));
         auto manager = context->fMappedBufferManager;
-        auto result = std::make_unique<AsyncReadResult>(manager->ownerID());
-        size_t rowBytes = SkToSizeT(context->fSize.width());
-        rowBytes = SkAlignTo(rowBytes, context->fBufferAlignment);
-        if (!result->addTransferResult(context->fYTransfer, context->fSize, rowBytes, manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
+
+        AsyncReadResult::Plane planes[SkYUVAPixmapInfo::kMaxPlanes];
+        for (int numPlanes = context->fYUVAPixmapInfo.numPlanes(), i = 0; i < numPlanes; ++i) {
+            size_t rowBytes = SkAlignTo(context->fYUVAPixmapInfo.rowBytes(i), context->fBufferAlignment);
+            planes[i] = AsyncReadResult::Plane::MakeFromBuffer(context->fTransfers[i],
+                                                               context->fYUVAPixmapInfo.planeInfo(i),
+                                                               rowBytes,
+                                                               manager);
         }
-        rowBytes = SkToSizeT(context->fSize.width()) / 2;
-        rowBytes = SkAlignTo(rowBytes, context->fBufferAlignment);
-        SkISize uvSize = {context->fSize.width() / 2, context->fSize.height() / 2};
-        if (!result->addTransferResult(context->fUTransfer, uvSize, rowBytes, manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
-        }
-        if (!result->addTransferResult(context->fVTransfer, uvSize, rowBytes, manager)) {
-            (*context->fClientCallback)(context->fClientContext, nullptr);
-            delete context;
-            return;
-        }
-        (*context->fClientCallback)(context->fClientContext, std::move(result));
-        delete context;
+        (*context->fClientCallback)(context->fClientContext, AsyncReadResult::Make(context->fYUVAPixmapInfo.yuvaInfo(), planes));
     };
     GrFlushInfo flushInfo;
     flushInfo.fFinishedContext = finishContext;
