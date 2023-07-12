@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff9061a5_ba7cd5f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T01:54:03Z",
+      "side": 1,
+      "message": "This fixes an optimization that was causing `GM_tileimagefilter` to draw incorrectly. This was noticed first in the gold diffs of https://skia-review.googlesource.com/c/skia/+/721198, which completely replaces the SkTileImageFilter implementation.\n\nThis keeps the simple pass-through case (src contains dst so it\u0027s just a crop) to avoid triggering layout test rebaselines for this change, but allows the linked CL to have cleaner image diffs.\n\nA simple thought experiment can show that the optimization was incorrect. If the src and dst had the same dimensions but src intersected half of dst, we should see two halves of src tiled across dst. The optimization could at most show one half of it.\n\nReviewing the diffs, you can see that the new placement of the \"e\" aligns itself with the clipped top curve of the \"e\" in the 3rd column. I also hacked the GM to draw the un-filtered source image and it aligns with the placement of the tiled \"e\" after this change.",
+      "revId": "79690b477edd948fe9828b4195c166c021bb98ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
