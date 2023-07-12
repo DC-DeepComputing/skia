@@ -13,20 +13,34 @@
 
 #include <string>
 
-// Returns a raster SkSurface for the given config.
-sk_sp<SkSurface> make_surface(std::string config, int width, int height) {
+class RasterSurfaceManager : public SurfaceManager {
+public:
+    RasterSurfaceManager(sk_sp<SkSurface> surface) : fSurface(surface) {}
+
+    sk_sp<SkSurface> getSurface() override { return fSurface; }
+
+    void flush() override {}  // Nothing to do.
+
+private:
+    sk_sp<SkSurface> fSurface;
+};
+
+std::unique_ptr<SurfaceManager> SurfaceManager::FromConfig(std::string config,
+                                                           int width,
+                                                           int height) {
     // These configs are based on the RasterSink configs here:
     // https://skia.googlesource.com/skia/+/faaa8393a68b518ec1f204a60c7c3393e1da2fa2/dm/DM.cpp#1046.
     if (config == "8888") {
-        return SkSurfaces::Raster(SkImageInfo::Make(
-                width, height, kN32_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB()));
+        return std::make_unique<RasterSurfaceManager>(SkSurfaces::Raster(SkImageInfo::Make(
+                width, height, kN32_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB())));
     }
     if (config == "565") {
-        return SkSurfaces::Raster(SkImageInfo::Make(width,
-                                                    height,
-                                                    kRGB_565_SkColorType,
-                                                    kPremul_SkAlphaType,
-                                                    SkColorSpace::MakeSRGB()));
+        return std::make_unique<RasterSurfaceManager>(
+                SkSurfaces::Raster(SkImageInfo::Make(width,
+                                                     height,
+                                                     kRGB_565_SkColorType,
+                                                     kPremul_SkAlphaType,
+                                                     SkColorSpace::MakeSRGB())));
     }
     return nullptr;
 }

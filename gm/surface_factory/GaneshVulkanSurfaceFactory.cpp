@@ -6,11 +6,11 @@
  */
 
 #include "gm/surface_factory/SurfaceFactory.h"
-#include "include/core/SkSurface.h"
 
 #include <string>
 
-// Returns a Ganesh Vulkan SkSurface for the given config.
-sk_sp<SkSurface> make_surface(std::string config, int width, int height) {
+std::unique_ptr<SurfaceManager> SurfaceManager::FromConfig(std::string config,
+                                                           int width,
+                                                           int height) {
     return nullptr;  // TODO(lovisolo): Implement.
 }
