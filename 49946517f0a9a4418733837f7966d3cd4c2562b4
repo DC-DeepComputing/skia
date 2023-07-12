@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98662a9a_463b3763",
+        "filename": "gm/surface_factory/RasterSurfaceFactory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-12T21:34:09Z",
+      "side": 1,
+      "message": "I also updated the follow-up CL (https://skia-review.googlesource.com/c/skia/+/721915) to use `SkASSERT_RELEASE` in the factories if the surface/context couldn\u0027t be created for reasons other than an unknown config.\n\nI think this is a good balance: we fail early if something goes wrong during surface creation time, and we print a meaningful error message if the config passed to BazelGMRunner.cpp via the `--config` flag is unknown (not to be confused with Bazel\u0027s own `--config` flag).",
+      "parentUuid": "bc01fe8a_5e2a876d",
+      "range": {
+        "startLine": 31,
+        "startChar": 11,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "49946517f0a9a4418733837f7966d3cd4c2562b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "86b48d6c_fd5b523d",
         "filename": "gm/surface_factory/SurfaceFactory.h",
         "patchSetId": 2
