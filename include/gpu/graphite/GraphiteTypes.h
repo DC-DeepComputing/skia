@@ -9,6 +9,7 @@
 #define skgpu_graphite_GraphiteTypes_DEFINED
 
 #include "include/core/SkPoint.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
 
@@ -18,6 +19,7 @@ class SkSurface;
 
 namespace skgpu::graphite {
 
+class BackendSemaphore;
 class Recording;
 class Task;
 
@@ -38,12 +40,27 @@ using GpuFinishedProc = void (*)(GpuFinishedContext finishedContext, CallbackRes
  * TextureInfo must match the info provided to the Recorder when making the deferred canvas.
  *
  * fTargetTranslation is an additional translation applied to draws targeting fTargetSurface.
+ *
+ * The client may pass in two arrays of initialized BackendSemaphores to be included in the
+ * command stream. At some time before issuing commands in the Recording, the fWaitSemaphores will
+ * be waited on by the gpu. Similarly, at some time after issuing the Recording's commands, the
+ * fSignalSemaphores will be signaled by the gpu. Depending on the platform, the timing of the wait
+ * and signal operations will either be immediately before or after the given Recording's command
+ * stream, respectively, or before and after the entire CommandBuffer's command stream. The
+ * semaphores are not sent to the GPU until the next Context::submit call is made.
+ *
+ * The client will own and be responsible for deleting the underlying semaphore objects after the
+ * submission completes, however the BackendSemaphore objects themselves can be deleted as soon
+ * as this function returns.
  */
 struct InsertRecordingInfo {
     Recording* fRecording = nullptr;
 
     SkSurface* fTargetSurface = nullptr;
     SkIVector fTargetTranslation = {0, 0};
+
+    SkSpan<BackendSemaphore> fWaitSemaphores = {};
+    SkSpan<BackendSemaphore> fSignalSemaphores = {};
 
     GpuFinishedContext fFinishedContext = nullptr;
     GpuFinishedProc fFinishedProc = nullptr;

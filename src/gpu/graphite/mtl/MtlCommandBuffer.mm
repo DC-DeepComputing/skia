@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/mtl/MtlCommandBuffer.h"
 
+#include "include/gpu/graphite/BackendSemaphore.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/compute/DispatchGroup.h"
@@ -101,6 +102,38 @@ void MtlCommandBuffer::onResetCommandBuffer() {
     fActiveBlitCommandEncoder.reset();
     fCurrentIndexBuffer = nil;
     fCurrentIndexBufferOffset = 0;
+}
+
+void MtlCommandBuffer::addWaitSemaphores(const SkSpan<BackendSemaphore>& waitSemaphores) {
+    // Can only insert events with no active encoder
+    SkASSERT(!fActiveRenderCommandEncoder);
+    SkASSERT(!fActiveComputeCommandEncoder);
+    this->endBlitCommandEncoder();
+    if (@available(macOS 10.14, iOS 12.0, *)) {
+        for (auto semaphore : waitSemaphores) {
+            if (semaphore.isValid() && semaphore.backend() == BackendApi::kMetal) {
+                id<MTLEvent> mtlEvent = (__bridge id<MTLEvent>)semaphore.getMtlEvent();
+                [(*fCommandBuffer) encodeWaitForEvent: mtlEvent
+                                                value: semaphore.getMtlValue()];
+            }
+        }
+    }
+}
+
+void MtlCommandBuffer::addSignalSemaphores(const SkSpan<BackendSemaphore>& signalSemaphores) {
+    // Can only insert events with no active encoder
+    SkASSERT(!fActiveRenderCommandEncoder);
+    SkASSERT(!fActiveComputeCommandEncoder);
+    this->endBlitCommandEncoder();
+    if (@available(macOS 10.14, iOS 12.0, *)) {
+        for (auto semaphore : signalSemaphores) {
+            if (semaphore.isValid() && semaphore.backend() == BackendApi::kMetal) {
+                id<MTLEvent> mtlEvent = (__bridge id<MTLEvent>)semaphore.getMtlEvent();
+                [(*fCommandBuffer) encodeSignalEvent: mtlEvent
+                                               value: semaphore.getMtlValue()];
+            }
+        }
+    }
 }
 
 bool MtlCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
