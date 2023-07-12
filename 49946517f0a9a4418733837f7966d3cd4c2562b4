@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2919f6c_c5568b8d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-12T20:53:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09fdfa3b_debc52bb",
+      "range": {
+        "startLine": 11,
+        "startChar": 257,
+        "endLine": 11,
+        "endChar": 260
+      },
+      "revId": "49946517f0a9a4418733837f7966d3cd4c2562b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d141f96_ed1d50d0",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3abc3b8_2d791709",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-12T20:53:43Z",
+      "side": 1,
+      "message": "Each target uses one single config, so in order to support multiple configs we need multiple targets with different names. This specific target uses the `8888` config, but a different target might use e.g. `gles`, as is the case in the follow-up CL.\n\nAs an example, see the list comprehension between lines 512 and 538, which generates targets `cpu_8888_android_test` and `cpu_565_android_test`.",
+      "parentUuid": "6d141f96_ed1d50d0",
+      "range": {
+        "startLine": 543,
+        "startChar": 12,
+        "endLine": 543,
+        "endChar": 33
+      },
+      "revId": "49946517f0a9a4418733837f7966d3cd4c2562b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a73ce44_dfdb1323",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-07-12T19:37:40Z",
       "side": 1,
       "message": "before this, let\u0027s add a SkDEBUGFAILF(\"Unsupported config %s\", config) to make tests fail in debug mode. If you think we should always fail, you can make use of SkASSERT_RELEASE (see SkAssert.h)",
+      "range": {
+        "startLine": 31,
+        "startChar": 11,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "49946517f0a9a4418733837f7966d3cd4c2562b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc01fe8a_5e2a876d",
+        "filename": "gm/surface_factory/RasterSurfaceFactory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-12T20:53:43Z",
+      "side": 1,
+      "message": "The current behavior in BazelGMRunner.cpp is to print a warning and skip the GM if the surface couldn\u0027t be created. I changed that logic to make the entire Bazel test fail instead of just skipping the GM. WDYT?",
+      "parentUuid": "2a73ce44_dfdb1323",
       "range": {
         "startLine": 31,
         "startChar": 11,
