@@ -177,10 +177,6 @@ protected:
 
     void writeMinAbsHack(Expression& absExpr, Expression& otherExpr);
 
-    std::string getOutParamHelper(const FunctionCall& c,
-                                  const ExpressionArray& arguments,
-                                  const skia_private::TArray<VariableReference*>& outVars);
-
     std::string getInversePolyfill(const ExpressionArray& arguments);
 
     std::string getBitcastIntrinsic(const Type& outType);
@@ -317,7 +313,6 @@ protected:
     std::string fRTFlipName;
     const FunctionDeclaration* fCurrentFunction = nullptr;
     int fSwizzleHelperCount = 0;
-    bool fIgnoreVariableReferenceModifiers = false;
     static constexpr char kTextureSuffix[] = "_Tex";
     static constexpr char kSamplerSuffix[] = "_Smplr";
 
