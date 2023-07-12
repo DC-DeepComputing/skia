@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e20c5a3f_223c1290",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-12T20:46:44Z",
+      "side": 1,
+      "message": "Pass spans by value; it usually generates smaller/better code.\n\nhttp://go/totw/93#as-function-parameters",
+      "range": {
+        "startLine": 57,
+        "startChar": 35,
+        "endLine": 57,
+        "endChar": 81
+      },
+      "revId": "062139ec0248cdfa79da9f5cad695396c5483d13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
