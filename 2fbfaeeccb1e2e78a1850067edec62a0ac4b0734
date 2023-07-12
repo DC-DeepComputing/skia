@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fb79029_efa9495c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-12T21:27:06Z",
+      "side": 1,
+      "message": "Glad you think so! 😊",
+      "parentUuid": "a7e29880_6444797d",
+      "revId": "2fbfaeeccb1e2e78a1850067edec62a0ac4b0734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44d12197_f7c7462a",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-07-12T19:50:03Z",
       "side": 1,
       "message": "If we can\u0027t make a surface, we should fail loudly not just skip to the next GM.",
+      "range": {
+        "startLine": 180,
+        "startChar": 30,
+        "endLine": 180,
+        "endChar": 38
+      },
+      "revId": "2fbfaeeccb1e2e78a1850067edec62a0ac4b0734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b209241b_5110372d",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-12T21:27:06Z",
+      "side": 1,
+      "message": "Addressed in the parent CL (https://skia-review.googlesource.com/c/skia/+/721914).",
+      "parentUuid": "44d12197_f7c7462a",
       "range": {
         "startLine": 180,
         "startChar": 30,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c8927a0_9949884f",
+        "filename": "gm/surface_factory/GaneshGLSurfaceFactory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-12T21:27:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "581601fd_c967f172",
+      "range": {
+        "startLine": 47,
+        "startChar": 25,
+        "endLine": 47,
+        "endChar": 32
+      },
+      "revId": "2fbfaeeccb1e2e78a1850067edec62a0ac4b0734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9277a549_ee10b39b",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dac0a41e_03f96ff7",
+        "filename": "gm/surface_factory/GaneshGLSurfaceFactory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-12T21:27:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9277a549_ee10b39b",
+      "range": {
+        "startLine": 53,
+        "startChar": 25,
+        "endLine": 53,
+        "endChar": 32
+      },
+      "revId": "2fbfaeeccb1e2e78a1850067edec62a0ac4b0734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecd12682_c7c502f7",
@@ -100,6 +190,30 @@
       "writtenOn": "2023-07-12T19:50:03Z",
       "side": 1,
       "message": "Alternate names to consider: SurfaceManager or SurfaceTracker\n\nIt\u0027s not really a factory since it makes only one surface",
+      "range": {
+        "startLine": 16,
+        "startChar": 6,
+        "endLine": 16,
+        "endChar": 20
+      },
+      "revId": "2fbfaeeccb1e2e78a1850067edec62a0ac4b0734",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddb744b7_7de3e896",
+        "filename": "gm/surface_factory/SurfaceFactory.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-12T21:27:06Z",
+      "side": 1,
+      "message": "Fair point. Done.",
+      "parentUuid": "ecd12682_c7c502f7",
       "range": {
         "startLine": 16,
         "startChar": 6,
