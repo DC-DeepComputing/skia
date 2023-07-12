@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4393fdf6_0ac02129",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T18:54:33Z",
+      "side": 1,
+      "message": "lgtm!",
+      "revId": "cd6a3d431557c1459465113c49083d5ba0c0ea49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "635f81ea_015c6c7b",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T18:54:33Z",
+      "side": 1,
+      "message": "nit: empty line.",
+      "revId": "cd6a3d431557c1459465113c49083d5ba0c0ea49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
