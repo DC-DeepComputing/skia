@@ -166,6 +166,7 @@ bool TiledTextureUtils::DrawImageRect_Graphite(SkCanvas* canvas,
                                                const SkImage* image,
                                                const SkRect& srcRect,
                                                const SkRect& dstRect,
+                                               SkCanvas::QuadAAFlags aaFlags,
                                                const SkSamplingOptions& origSampling,
                                                const SkPaint* paint,
                                                SkCanvas::SrcRectConstraint constraint) {
@@ -241,7 +242,7 @@ bool TiledTextureUtils::DrawImageRect_Graphite(SkCanvas* canvas,
                                            src,
                                            clippedSubset,
                                            paint,
-                                           SkCanvas::kAll_QuadAAFlags,
+                                           aaFlags,
                                            constraint,
                                            sampling);
                 return true;
