@@ -33,6 +33,24 @@
       "message": "nit: empty line.",
       "revId": "cd6a3d431557c1459465113c49083d5ba0c0ea49",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce4efbc6_7cdcf3de",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-12T18:57:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "635f81ea_015c6c7b",
+      "revId": "cd6a3d431557c1459465113c49083d5ba0c0ea49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
