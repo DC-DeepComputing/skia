@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "795b798e_7d14d8e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-12T14:43:13Z",
+      "side": 1,
+      "message": "This only applies an outset for AnalyticRRectRenderStep, so it doesn\u0027t include migrating out local_aa_radius functionality to be shared by other Renderers that need an outset. I had a couple of questions and wanted to make sure the approach so far made sense.",
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f999b547_a7ce20fa",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-12T14:43:13Z",
+      "side": 1,
+      "message": "I wasn\u0027t able to see any difference in any GM between including this line or not. But I\u0027m guessing there are some complex clipping situations where this would make a difference. Something that complicates this is that Graphite always seems to apply AA to clip shapes, which causes a GM like clipdrawdraw is drawing incorrectly both before and after these changes. Is that something we\u0027re planning to address soon?",
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73b2c624_f2d86cb9",
+        "filename": "src/gpu/graphite/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-12T14:43:13Z",
+      "side": 1,
+      "message": "I had a couple concerns about adding this new field.\n1) Are Shapes used in performance-sensitive code where this might be a performance concern? I considered applying the outset to the shape geometry directly, but that seems a bit complicated for lines (and possibly too complicated for paths, though we might not care about those here).\n2) It feels a little weird to add this field just for clipping. But, otherwise it gets hairy passing down an outset value through various functions in ClipStack (e.g. intersects/contains) and knowing where to apply it. So I didn\u0027t have any better ideas.",
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
