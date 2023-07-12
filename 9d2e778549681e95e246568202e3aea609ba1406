@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c560b49_5f8c687d",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-12T18:35:05Z",
+      "side": 1,
+      "message": "Whoops, done.",
+      "parentUuid": "4c87d206_4ed6b170",
+      "range": {
+        "startLine": 116,
+        "startChar": 65,
+        "endLine": 116,
+        "endChar": 84
+      },
+      "revId": "9d2e778549681e95e246568202e3aea609ba1406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "496f54d3_727af1b4",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93b52046_782a77e2",
+        "filename": "modules/skottie/src/animator/Animator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-12T18:35:05Z",
+      "side": 1,
+      "message": "Lol, I was just thinking the same thing. Done.",
+      "parentUuid": "496f54d3_727af1b4",
+      "range": {
+        "startLine": 53,
+        "startChar": 11,
+        "endLine": 53,
+        "endChar": 30
+      },
+      "revId": "9d2e778549681e95e246568202e3aea609ba1406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63080939_31461f1f",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-07-12T18:11:10Z",
       "side": 1,
       "message": "This does convert to a nullptr StringValue*, but let\u0027s just return that explicitly:\n\n`return nullptr;`",
+      "range": {
+        "startLine": 57,
+        "startChar": 11,
+        "endLine": 57,
+        "endChar": 30
+      },
+      "revId": "9d2e778549681e95e246568202e3aea609ba1406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "739e9de7_ad6663b8",
+        "filename": "modules/skottie/src/animator/Animator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-12T18:35:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63080939_31461f1f",
       "range": {
         "startLine": 57,
         "startChar": 11,

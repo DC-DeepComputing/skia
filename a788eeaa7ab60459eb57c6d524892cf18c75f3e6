@@ -16,6 +16,24 @@
       "message": "We touched a lot of classes with `friend` on our first pass of value tracking. I think this is the only one, but a second look at this would be appreciated.",
       "revId": "a788eeaa7ab60459eb57c6d524892cf18c75f3e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10d89b2c_0e0cd7c0",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-12T18:35:05Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "424d346c_8a2a60e2",
+      "revId": "a788eeaa7ab60459eb57c6d524892cf18c75f3e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
