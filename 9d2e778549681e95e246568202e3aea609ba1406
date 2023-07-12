@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c87d206_4ed6b170",
+        "filename": "modules/skottie/src/Skottie.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-07-12T18:11:10Z",
+      "side": 1,
+      "message": "Already checked above.",
+      "range": {
+        "startLine": 116,
+        "startChar": 65,
+        "endLine": 116,
+        "endChar": 84
+      },
+      "revId": "9d2e778549681e95e246568202e3aea609ba1406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "496f54d3_727af1b4",
+        "filename": "modules/skottie/src/animator/Animator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-07-12T18:11:10Z",
+      "side": 1,
+      "message": "This reads odd in a method named \"get\"...  can we move the flag update to bind\u003c\u003e instead?  That prolly means making the field protected.\n\nThen we can make this helper a free-standing function (ParseSlotID()?) and stick it some place where it make sense, maybe SkottieJson.",
+      "range": {
+        "startLine": 53,
+        "startChar": 11,
+        "endLine": 53,
+        "endChar": 30
+      },
+      "revId": "9d2e778549681e95e246568202e3aea609ba1406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63080939_31461f1f",
+        "filename": "modules/skottie/src/animator/Animator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-07-12T18:11:10Z",
+      "side": 1,
+      "message": "This does convert to a nullptr StringValue*, but let\u0027s just return that explicitly:\n\n`return nullptr;`",
+      "range": {
+        "startLine": 57,
+        "startChar": 11,
+        "endLine": 57,
+        "endChar": 30
+      },
+      "revId": "9d2e778549681e95e246568202e3aea609ba1406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
