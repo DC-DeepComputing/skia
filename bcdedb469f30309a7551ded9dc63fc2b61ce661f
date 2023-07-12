@@ -22,6 +22,30 @@
       },
       "revId": "bcdedb469f30309a7551ded9dc63fc2b61ce661f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c4d2259_3baf90d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-12T15:26:44Z",
+      "side": 1,
+      "message": "To a large degree we\u0027re making Ganesh match Graphite\u0027s behavior in this change. At a lower level, we\u0027re, somewhat secretly, redefining drawEdgeAAImageSet to never tile. This is somewhat plausible since Chrome only uses this in compositing - where everything should already be in VRAM. For drawImageLattice, the tiled image drawing path is only used as a fallback when the lattice is invalid so changing its behavior is probably going to be okay.",
+      "parentUuid": "78e7def7_e415e90a",
+      "range": {
+        "startLine": 11,
+        "startChar": 50,
+        "endLine": 11,
+        "endChar": 129
+      },
+      "revId": "bcdedb469f30309a7551ded9dc63fc2b61ce661f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
