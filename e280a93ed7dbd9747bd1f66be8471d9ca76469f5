@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecc47d2d_bf1791b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-12T17:43:36Z",
+      "side": 1,
+      "message": "Including Brian for API review.\n\nThis is slightly different from what we discussed in the meeting yesterday. While\nideally we\u0027d put all the wait commands for all the Recordings at the start of the \ncommand buffer to match Vulkan behavior, that isn\u0027t possible because we\u0027re always\npumping commands in via addCommands(). So the best we can say is that we will wait\nat some time before the Recording\u0027s commands, and signal sometime after.",
+      "revId": "e280a93ed7dbd9747bd1f66be8471d9ca76469f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
