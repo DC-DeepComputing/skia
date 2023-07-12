@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "527f3625_6f5ce23b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T01:48:00Z",
+      "side": 1,
+      "message": "I am not opposed to exposing bounds functionality in CK. However, the `filterBounds` API is likely going to change (in particular the `MapDirection` parameter and overloaded parameter meanings is problematic). I don\u0027t want to add a new API to CK that just matches an API that will be updated in the next few months.\n\nAnother thing to consider is that with this implementation in CK, `filterBounds()` is only calculating the forward bounds and always with an identity matrix. This is, integer vs. float aside, equivalent to `computeFastBounds()`. I don\u0027t know if CK exposes that on mask filters or SkPaint as an existing precedent to follow?",
+      "parentUuid": "da919dbd_105cbb5e",
+      "revId": "fd684c55b2ece2a97cad5dc6948e761d239da7fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b21b0845_3fc873b5",
         "filename": "modules/canvaskit/externs.js",
         "patchSetId": 1
