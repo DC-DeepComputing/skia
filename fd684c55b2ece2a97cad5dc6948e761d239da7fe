@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48c34f5d_25022357",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2023-07-12T22:31:50Z",
+      "side": 1,
+      "message": "For context, Flutter already depends on `SkImageFilter.filterBounds`: https://github.com/flutter/engine/blob/cf2fa190fdc8eee4d8feaa82e21e6e7eb77254b4/lib/web_ui/skwasm/filters.cpp#L58\n\nI\u0027m happy to change this PR to use `SkPaint.computeFastBounds()` if it is equivalent. Basically our only use case for this is to adjust the computed bounds of a picture with the ImageFilter adjustment",
+      "parentUuid": "527f3625_6f5ce23b",
+      "revId": "fd684c55b2ece2a97cad5dc6948e761d239da7fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b21b0845_3fc873b5",
         "filename": "modules/canvaskit/externs.js",
         "patchSetId": 1
