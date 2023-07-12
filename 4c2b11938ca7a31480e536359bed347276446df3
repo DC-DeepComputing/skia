@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f4b2a59_193fa590",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T20:37:05Z",
+      "side": 1,
+      "message": "nit: assuming everything works without kMaxSize, this assert isn\u0027t adding anything that the above call to SkToSizeT isn\u0027t already asserting.",
+      "range": {
+        "startLine": 71,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 61
+      },
+      "revId": "4c2b11938ca7a31480e536359bed347276446df3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
