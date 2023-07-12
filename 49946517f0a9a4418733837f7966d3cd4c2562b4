@@ -91,6 +91,30 @@
       },
       "revId": "49946517f0a9a4418733837f7966d3cd4c2562b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a997f87_2083cc3b",
+        "filename": "gm/surface_factory/SurfaceFactory.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-12T19:43:35Z",
+      "side": 1,
+      "message": "Disregard. The classes you introduce in the follow-up are sufficient",
+      "parentUuid": "86b48d6c_fd5b523d",
+      "range": {
+        "startLine": 16,
+        "startChar": 17,
+        "endLine": 16,
+        "endChar": 29
+      },
+      "revId": "49946517f0a9a4418733837f7966d3cd4c2562b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
