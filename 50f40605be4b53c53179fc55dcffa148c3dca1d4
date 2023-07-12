@@ -20,6 +20,121 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4cdeac76_61ad8d7d",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T15:33:30Z",
+      "side": 1,
+      "message": "Let\u0027s update this comment to be \"Will be in device space once style/AA outsets are applied\"",
+      "range": {
+        "startLine": 1136,
+        "startChar": 61,
+        "endLine": 1136,
+        "endChar": 84
+      },
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eea0a7b2_346d77ec",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T15:33:30Z",
+      "side": 1,
+      "message": "`rendererOutset` can be infinite in AnalyticRRectRenderStep when the localToDevice matrix is really degenerate or if the bounding box would have points clipped behind the w\u003d0 plane.\n\nWe should check for that before applying the outset to `transformedShapeBounds`. I think what makes sense when an infinite outset is returned, is to skip over lines 1141 to 1179 and set `transformedShapeBounds` and `drawBounds` to `deviceBounds`, as well as setting `styledShape` and `shapeInDeviceSpace` like we do in the if true condition at line 1170.",
+      "range": {
+        "startLine": 1140,
+        "startChar": 10,
+        "endLine": 1140,
+        "endChar": 24
+      },
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ffcdd3e_aea98b9f",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T15:33:30Z",
+      "side": 1,
+      "message": "We should take this branch if `rendererOutset` is not 0, and then add `rendererOutset` to `localStyleOutset` instead of calling `transformedShapeBounds` above. \n\nIf we update following condition at line 1148 (!isFillStyle) to be true when `rendererOutset` is not 0, then we can get rid of the Shape::setOutset entirely and not have to modify `styledShape` down below. I think that\u0027s my preferred solution since it keeps Shape just a geometry holder.\n\nAnother way of applying these outsets, instead of adding the rendererOutset to the localStyleOutset and changing `transformedShapeBounds`, would be to set `styledShape` to `transformedShapeBounds.makeOutset(rendererOutset)`. Then after we\u0027ve transformed `transformedShapeBounds` to device space (line 1155) we add a constant outset of 1px. This provides slightly tighter device-space bounds than what we\u0027d get by mapping the local rendererOutset by the local-to-device transform (since AnalyticRRectRenderStep calculates a conservative radius that ensures the final device-space radius is at least 1px, that it uses when moving vertices into the shape, but uses a separate approach that ensures outset vertices are exactly 1px out). This might couple the ClipStack to the details of AnalyticRRectRenderStep too much, though, while just relying on the local rendererOutset returned by the Renderer\u0027s virtual function avoids that issue.",
+      "range": {
+        "startLine": 1144,
+        "startChar": 8,
+        "endLine": 1144,
+        "endChar": 32
+      },
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baf38679_5edbe0c8",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1158,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T15:33:30Z",
+      "side": 1,
+      "message": "We should only need to take this branch now if `rendererOutset` is 0. The local AA outset covers the hairline case (technically it\u0027s a 0-width shape with AA outsets).",
+      "range": {
+        "startLine": 1158,
+        "startChar": 8,
+        "endLine": 1158,
+        "endChar": 31
+      },
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abe738e2_e03e5e4c",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T15:33:30Z",
+      "side": 1,
+      "message": "nit: this comment can be deleted.",
+      "range": {
+        "startLine": 1176,
+        "startChar": 0,
+        "endLine": 1176,
+        "endChar": 82
+      },
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f999b547_a7ce20fa",
         "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
         "patchSetId": 1
@@ -37,6 +152,64 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "76b66a0a_ade021e2",
+        "filename": "src/gpu/graphite/ClipStack_graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T15:33:30Z",
+      "side": 1,
+      "message": "Yes, Graphite treats all draws and clips as AA so the specific issue being tested in `clipdrawdraw` doesn\u0027t really apply regardless of how we handle analytic vs. sampled AA in the clip stack.\n\nThis CL should hopefully address the issues in the `save_behind` GM that you\u0027ve been seeing, though.",
+      "parentUuid": "f999b547_a7ce20fa",
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3346eff_49ce9579",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T15:33:30Z",
+      "side": 1,
+      "message": "Can we add a comment like: \n\n    // Return the effective local-space outset the RenderStep applies to geometry transformed by `localToDevice` contained in the `local` bounds.",
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45d05e52_3ca16cb9",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T15:33:30Z",
+      "side": 1,
+      "message": "nit: \"How much this Renderer will additionally outset the local draw bounds, which have already accounted for geometry and style.\"?",
+      "range": {
+        "startLine": 238,
+        "startChar": 7,
+        "endLine": 239,
+        "endChar": 31
+      },
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "73b2c624_f2d86cb9",
         "filename": "src/gpu/graphite/geom/Shape.h",
         "patchSetId": 1
@@ -48,6 +221,24 @@
       "writtenOn": "2023-07-12T14:43:13Z",
       "side": 1,
       "message": "I had a couple concerns about adding this new field.\n1) Are Shapes used in performance-sensitive code where this might be a performance concern? I considered applying the outset to the shape geometry directly, but that seems a bit complicated for lines (and possibly too complicated for paths, though we might not care about those here).\n2) It feels a little weird to add this field just for clipping. But, otherwise it gets hairy passing down an outset value through various functions in ClipStack (e.g. intersects/contains) and knowing where to apply it. So I didn\u0027t have any better ideas.",
+      "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93957b8f_294f7b21",
+        "filename": "src/gpu/graphite/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T15:33:30Z",
+      "side": 1,
+      "message": "See my note on just replacing `styledShape`\u0027s value with an outset rect, instead of carrying the outset within the Shape. I think this can go away and Shape won\u0027t have to change at all.",
+      "parentUuid": "73b2c624_f2d86cb9",
       "revId": "50f40605be4b53c53179fc55dcffa148c3dca1d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
