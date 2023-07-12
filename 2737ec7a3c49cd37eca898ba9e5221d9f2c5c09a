@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1faad938_5aa274af",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-12T14:30:18Z",
+      "side": 1,
+      "message": "Done. I addeded SkMesh to the IWYU list.",
+      "parentUuid": "4685e420_e14bfe7c",
+      "revId": "2737ec7a3c49cd37eca898ba9e5221d9f2c5c09a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "529577e1_fb161a10",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-07-11T20:16:44Z",
       "side": 1,
       "message": "Putting these two files in src/sksl is fairly odd (that folder is entirely the sksl compiler today). Is it okay if we leave these in src/core (while still making them a separate set of sources)? That\u0027s how SkRuntimeEffect.cpp works, and it has the same basic restrictions, right?",
+      "revId": "2737ec7a3c49cd37eca898ba9e5221d9f2c5c09a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9382a080_d17ee4db",
+        "filename": "src/sksl/SkBitmapDevice_mesh.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-12T14:30:18Z",
+      "side": 1,
+      "message": "I ended up deleting these extra files entirely due to the problems they were causing with subclasses of SkCanvas.\n\nIf we want an SkBitmapDevice that can talk SkSL, that probably makes more sense as a subclass of SkBitmapDevice than a file that is chosen at compile time, but we can decide a solution in the future when there is bandwidth/desire to implement such support.",
+      "parentUuid": "529577e1_fb161a10",
       "revId": "2737ec7a3c49cd37eca898ba9e5221d9f2c5c09a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
