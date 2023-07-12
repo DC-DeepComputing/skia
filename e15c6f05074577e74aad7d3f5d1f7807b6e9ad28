@@ -70,6 +70,30 @@
       },
       "revId": "e15c6f05074577e74aad7d3f5d1f7807b6e9ad28",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "765c1d54_e247d4ff",
+        "filename": "modules/skottie/src/animator/ScalarKeyframeAnimator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-12T18:38:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d51fa85e_6e9bf336",
+      "range": {
+        "startLine": 112,
+        "startChar": 4,
+        "endLine": 113,
+        "endChar": 15
+      },
+      "revId": "e15c6f05074577e74aad7d3f5d1f7807b6e9ad28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
