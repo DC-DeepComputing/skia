@@ -37,6 +37,9 @@ public:
 
     bool setNewCommandBufferResources() override;
 
+    void addWaitSemaphores(const SkSpan<BackendSemaphore>& waitSemaphores) override;
+    void addSignalSemaphores(const SkSpan<BackendSemaphore>& signalSemaphores) override;
+
     bool isFinished() {
         return (*fCommandBuffer).status == MTLCommandBufferStatusCompleted ||
                (*fCommandBuffer).status == MTLCommandBufferStatusError;
