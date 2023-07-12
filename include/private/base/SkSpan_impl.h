@@ -82,11 +82,10 @@ public:
     constexpr SkSpan& operator=(const SkSpan& that) = default;
 
     constexpr T& operator [] (size_t i) const {
-        SkASSERT(i < this->size());
-        return fPtr[i];
+        return fPtr[this->checkIndex(i)];
     }
-    constexpr T& front() const { return fPtr[0]; }
-    constexpr T& back()  const { return fPtr[fSize - 1]; }
+    constexpr T& front() const { this->checkNotEmpty(); return fPtr[0]; }
+    constexpr T& back()  const { this->checkNotEmpty(); return fPtr[fSize - 1]; }
     constexpr T* begin() const { return fPtr; }
     constexpr T* end() const { return fPtr + fSize; }
     constexpr auto rbegin() const { return std::make_reverse_iterator(this->end()); }
@@ -96,23 +95,56 @@ public:
     constexpr bool empty() const { return fSize == 0; }
     constexpr size_t size_bytes() const { return fSize * sizeof(T); }
     constexpr SkSpan<T> first(size_t prefixLen) const {
-        SkASSERT(prefixLen <= this->size());
-        return SkSpan{fPtr, prefixLen};
+        return SkSpan{fPtr, this->checkLen(prefixLen)};
     }
     constexpr SkSpan<T> last(size_t postfixLen) const {
-        SkASSERT(postfixLen <= this->size());
-        return SkSpan{fPtr + (this->size() - postfixLen), postfixLen};
+        return SkSpan{fPtr + (this->size() - postfixLen), this->checkLen(postfixLen)};
     }
     constexpr SkSpan<T> subspan(size_t offset) const {
         return this->subspan(offset, this->size() - offset);
     }
     constexpr SkSpan<T> subspan(size_t offset, size_t count) const {
-        SkASSERT(offset <= this->size());
-        SkASSERT(count <= this->size() - offset);
-        return SkSpan{fPtr + offset, count};
+        const size_t safeOffset = this->checkLen(offset);
+        if (count > this->size() - safeOffset) SK_UNLIKELY {
+            // The count is too large.
+            SkUNREACHABLE;
+        }
+        return SkSpan{fPtr + safeOffset, count};
     }
 
 private:
+    void checkNotEmpty() const {
+        if (this->empty()) SK_UNLIKELY {
+            SkUNREACHABLE;
+        }
+    }
+
+    int checkIndex(size_t i) const {
+        if (i < fSize) SK_LIKELY {
+            return i;
+        } else SK_UNLIKELY {
+
+#if defined(SK_DEBUG)
+            sk_print_index_out_of_bounds(i, fSize);
+#else
+            SkUNREACHABLE;
+#endif
+        }
+    }
+
+    int checkLen(size_t len) const {
+        if (len <= fSize) SK_LIKELY {
+            return len;
+        } else SK_UNLIKELY {
+
+#if defined(SK_DEBUG)
+            sk_print_length_too_big(len, fSize);
+#else
+            SkUNREACHABLE;
+#endif
+        }
+    }
+
     static const constexpr size_t kMaxSize = std::numeric_limits<size_t>::max() / sizeof(T);
     T* fPtr;
     size_t fSize;
