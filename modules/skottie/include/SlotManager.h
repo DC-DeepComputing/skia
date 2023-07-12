@@ -107,6 +107,7 @@ private:
     const sk_sp<skottie::internal::SceneGraphRevalidator> fRevalidator;
 
     friend class skottie::internal::AnimationBuilder;
+    friend class skottie::internal::AnimatablePropertyContainer;
 };
 
 } // namespace skottie
