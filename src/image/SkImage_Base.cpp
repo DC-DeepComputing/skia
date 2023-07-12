@@ -46,7 +46,7 @@ void SkImage_Base::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
                                                SkIRect origSrcRect,
                                                RescaleGamma rescaleGamma,
                                                RescaleMode rescaleMode,
-                                               ReadPixelsCallback callback,
+                                               RGBAReadPixelsCallback callback,
                                                ReadPixelsContext context) const {
     SkBitmap src;
     SkPixmap peek;
@@ -65,7 +65,13 @@ void SkImage_Base::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
         }
         srcRect = SkIRect::MakeSize(src.dimensions());
     }
-    return SkRescaleAndReadPixels(src, info, srcRect, rescaleGamma, rescaleMode, callback, context);
+    SkRescaleAndReadPixelsUtils::SynchronousRescaleAndReadPixels(src,
+                                                                 info,
+                                                                 srcRect,
+                                                                 rescaleGamma,
+                                                                 rescaleMode,
+                                                                 callback,
+                                                                 context);
 }
 
 bool SkImage_Base::onAsLegacyBitmap(GrDirectContext* dContext, SkBitmap* bitmap) const {
@@ -192,14 +198,14 @@ sk_sp<SkImage> SkImage_Base::filterSpecialImage(skif::Context context,
     return result->asImage();
 }
 
-void SkImage_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
-                                                     sk_sp<SkColorSpace> dstColorSpace,
-                                                     SkIRect srcRect,
-                                                     SkISize dstSize,
-                                                     RescaleGamma,
-                                                     RescaleMode,
-                                                     ReadPixelsCallback callback,
-                                                     ReadPixelsContext context) const {
+void SkImage_Base::onAsyncRescaleAndReadPixelsYUVA(const SkYUVAInfo&,
+                                                   SkYUVAPixmapInfo::DataType,
+                                                   sk_sp<SkColorSpace>,
+                                                   SkIRect,
+                                                   RescaleGamma,
+                                                   RescaleMode,
+                                                   YUVAReadPixelsCallback callback,
+                                                   ReadPixelsContext context) const {
     // TODO: Call non-YUV asyncRescaleAndReadPixels and then make our callback convert to YUV and
     // call client's callback.
     callback(context, nullptr);

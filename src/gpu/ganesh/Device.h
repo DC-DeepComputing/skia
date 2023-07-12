@@ -112,26 +112,27 @@ public:
                              const SkSurfaceProps&);
     bool replaceBackingProxy(SkSurface::ContentChangeMode);
 
-    using RescaleGamma       = SkImage::RescaleGamma;
-    using RescaleMode        = SkImage::RescaleMode;
-    using ReadPixelsCallback = SkImage::ReadPixelsCallback;
-    using ReadPixelsContext  = SkImage::ReadPixelsContext;
+    using RescaleGamma           = SkImage::RescaleGamma;
+    using RescaleMode            = SkImage::RescaleMode;
+    using RGBAReadPixelsCallback = SkImage::RGBAReadPixelsCallback;
+    using YUVAReadPixelsCallback = SkImage::YUVAReadPixelsCallback;
+    using ReadPixelsContext      = SkImage::ReadPixelsContext;
 
     void asyncRescaleAndReadPixels(const SkImageInfo& info,
                                    const SkIRect& srcRect,
                                    RescaleGamma rescaleGamma,
                                    RescaleMode rescaleMode,
-                                   ReadPixelsCallback callback,
+                                   RGBAReadPixelsCallback callback,
                                    ReadPixelsContext context);
 
-    void asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
-                                         sk_sp<SkColorSpace> dstColorSpace,
-                                         const SkIRect& srcRect,
-                                         SkISize dstSize,
-                                         RescaleGamma rescaleGamma,
-                                         RescaleMode,
-                                         ReadPixelsCallback callback,
-                                         ReadPixelsContext context);
+    void asyncRescaleAndReadPixelsYUVA(const SkYUVAInfo& yuvaInfo,
+                                       const SkYUVAPixmaps::DataType dataType,
+                                       sk_sp<SkColorSpace> dstColorSpace,
+                                       const SkIRect& srcRect,
+                                       RescaleGamma rescaleGamma,
+                                       RescaleMode,
+                                       YUVAReadPixelsCallback callback,
+                                       ReadPixelsContext context);
 
     /**
      * This factory uses the color space, origin, surface properties, and initialization

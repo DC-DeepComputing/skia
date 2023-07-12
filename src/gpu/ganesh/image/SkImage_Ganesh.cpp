@@ -335,7 +335,7 @@ void SkImage_Ganesh::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
                                                  SkIRect srcRect,
                                                  RescaleGamma rescaleGamma,
                                                  RescaleMode rescaleMode,
-                                                 ReadPixelsCallback callback,
+                                                 RGBAReadPixelsCallback callback,
                                                  ReadPixelsContext context) const {
     auto dContext = fContext->asDirectContext();
     if (!dContext) {
@@ -352,14 +352,14 @@ void SkImage_Ganesh::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
             dContext, info, srcRect, rescaleGamma, rescaleMode, callback, context);
 }
 
-void SkImage_Ganesh::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
-                                                       sk_sp<SkColorSpace> dstColorSpace,
-                                                       SkIRect srcRect,
-                                                       SkISize dstSize,
-                                                       RescaleGamma rescaleGamma,
-                                                       RescaleMode rescaleMode,
-                                                       ReadPixelsCallback callback,
-                                                       ReadPixelsContext context) const {
+void SkImage_Ganesh::onAsyncRescaleAndReadPixelsYUVA(const SkYUVAInfo& yuvaInfo,
+                                                     SkYUVAPixmapInfo::DataType dataType,
+                                                     sk_sp<SkColorSpace> dstColorSpace,
+                                                     SkIRect srcRect,
+                                                     RescaleGamma rescaleGamma,
+                                                     RescaleMode rescaleMode,
+                                                     YUVAReadPixelsCallback callback,
+                                                     ReadPixelsContext context) const {
     auto dContext = fContext->asDirectContext();
     if (!dContext) {
         // DDL TODO: buffer up the readback so it occurs when the DDL is drawn?
@@ -371,15 +371,15 @@ void SkImage_Ganesh::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorS
         callback(context, nullptr);
         return;
     }
-    ctx->asyncRescaleAndReadPixelsYUV420(dContext,
-                                         yuvColorSpace,
-                                         std::move(dstColorSpace),
-                                         srcRect,
-                                         dstSize,
-                                         rescaleGamma,
-                                         rescaleMode,
-                                         callback,
-                                         context);
+    ctx->asyncRescaleAndReadPixelsYUVA(dContext,
+                                       yuvaInfo,
+                                       dataType,
+                                       std::move(dstColorSpace),
+                                       srcRect,
+                                       rescaleGamma,
+                                       rescaleMode,
+                                       callback,
+                                       context);
 }
 
 void SkImage_Ganesh::generatingSurfaceIsDeleted() { fChooser.makeVolatileProxyStable(); }

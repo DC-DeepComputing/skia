@@ -29,20 +29,20 @@ void Image_Base::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
                                              SkIRect srcRect,
                                              RescaleGamma rescaleGamma,
                                              RescaleMode rescaleMode,
-                                             ReadPixelsCallback callback,
+                                             RGBAReadPixelsCallback callback,
                                              ReadPixelsContext context) const {
     // TODO
     callback(context, nullptr);
 }
 
-void Image_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
-                                                   sk_sp<SkColorSpace> dstColorSpace,
-                                                   const SkIRect srcRect,
-                                                   const SkISize dstSize,
-                                                   RescaleGamma rescaleGamma,
-                                                   RescaleMode rescaleMode,
-                                                   ReadPixelsCallback callback,
-                                                   ReadPixelsContext context) const {
+void Image_Base::onAsyncRescaleAndReadPixelsYUVA(const SkYUVAInfo& yuvaInfo,
+                                                 SkYUVAPixmapInfo::DataType dataType,
+                                                 sk_sp<SkColorSpace> dstColorSpace,
+                                                 const SkIRect srcRect,
+                                                 RescaleGamma rescaleGamma,
+                                                 RescaleMode rescaleMode,
+                                                 YUVAReadPixelsCallback callback,
+                                                 ReadPixelsContext context) const {
     // TODO
     callback(context, nullptr);
 }

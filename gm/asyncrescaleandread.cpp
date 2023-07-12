@@ -30,17 +30,18 @@
 #endif
 
 namespace {
-struct AsyncContext {
+template<typename ResultType> struct AsyncContext {
     bool fCalled = false;
-    std::unique_ptr<const SkImage::AsyncReadResult> fResult;
+    std::unique_ptr<const ResultType> fResult;
 };
 }  // anonymous namespace
 
 // Making this a lambda in the test functions caused:
 //   "error: cannot compile this forwarded non-trivially copyable parameter yet"
 // on x86/Win/Clang bot, referring to 'result'.
-static void async_callback(void* c, std::unique_ptr<const SkImage::AsyncReadResult> result) {
-    auto context = static_cast<AsyncContext*>(c);
+template<typename ResultType>
+static void async_callback(void* c, std::unique_ptr<const ResultType> result) {
+    auto context = static_cast<AsyncContext<ResultType>*>(c);
     context->fResult = std::move(result);
     context->fCalled = true;
 }
@@ -55,6 +56,7 @@ static sk_sp<SkImage> do_read_and_scale(Src* src,
                                         const SkImageInfo& ii,
                                         SkImage::RescaleGamma rescaleGamma,
                                         SkImage::RescaleMode rescaleMode) {
+    using AsyncContext = AsyncContext<SkImage::RGBAAsyncReadPixelsResult>;
     auto* asyncContext = new AsyncContext();
     if (recorder) {
 #if defined(SK_GRAPHITE)
@@ -81,7 +83,11 @@ static sk_sp<SkImage> do_read_and_scale(Src* src,
         }
 #endif
     } else {
-        src->asyncRescaleAndReadPixels(ii, srcRect, rescaleGamma, rescaleMode, async_callback,
+        src->asyncRescaleAndReadPixels(ii,
+                                       srcRect,
+                                       rescaleGamma,
+                                       rescaleMode,
+                                       async_callback<SkImage::RGBAAsyncReadPixelsResult>,
                                        asyncContext);
         if (direct) {
             direct->submit();
@@ -95,9 +101,8 @@ static sk_sp<SkImage> do_read_and_scale(Src* src,
     if (!asyncContext->fResult) {
         return nullptr;
     }
-    SkPixmap pixmap(ii, asyncContext->fResult->data(0), asyncContext->fResult->rowBytes(0));
     auto releasePixels = [](const void*, void* c) { delete static_cast<AsyncContext*>(c); };
-    return SkImages::RasterFromPixmap(pixmap, releasePixels, asyncContext);
+    return SkImages::RasterFromPixmap(asyncContext->fResult->pixmap(), releasePixels, asyncContext);
 }
 
 template <typename Src>
@@ -116,7 +121,9 @@ static sk_sp<SkImage> do_read_and_scale_yuv(Src* src,
     SkImageInfo yII  = SkImageInfo::Make(size,   kGray_8_SkColorType, kPremul_SkAlphaType);
     SkImageInfo uvII = SkImageInfo::Make(uvSize, kGray_8_SkColorType, kPremul_SkAlphaType);
 
+    using AsyncContext = AsyncContext<SkImage::YUVAAsyncReadPixelsResult>;
     AsyncContext asyncContext;
+    SkYUVAInfo yuvaInfo(size, SkYUVAInfo::PlaneConfig::kY_U_V, SkYUVAInfo::Subsampling::k420, yuvCS);
     if (recorder) {
 #if defined(SK_GRAPHITE)
         skgpu::graphite::Context* graphiteContext = recorder->priv().context();
@@ -134,18 +141,29 @@ static sk_sp<SkImage> do_read_and_scale_yuv(Src* src,
             return nullptr;
         }
 
-        graphiteContext->asyncRescaleAndReadPixelsYUV420(src, yuvCS, SkColorSpace::MakeSRGB(),
-                                                         srcRect, size, rescaleGamma, rescaleMode,
-                                                         async_callback, &asyncContext);
+        graphiteContext->asyncRescaleAndReadPixelsYUVA(src,
+                                                       yuvaInfo,
+                                                       SkYUVAPixmapInfo::DataType::kUnorm8,
+                                                       SkColorSpace::MakeSRGB(),
+                                                       srcRect,
+                                                       rescaleGamma,
+                                                       rescaleMode,
+                                                       async_callback<SkImage::YUVAAsyncReadPixelsResult>,
+                                                       &asyncContext);
         graphiteContext->submit();
         while (!asyncContext.fCalled) {
             graphiteContext->checkAsyncWorkCompletion();
         }
 #endif
     } else {
-        src->asyncRescaleAndReadPixelsYUV420(yuvCS, SkColorSpace::MakeSRGB(),
-                                             srcRect, size, rescaleGamma, rescaleMode,
-                                             async_callback, &asyncContext);
+        src->asyncRescaleAndReadPixelsYUVA(yuvaInfo,
+                                           SkYUVAPixmapInfo::DataType::kUnorm8,
+                                           SkColorSpace::MakeSRGB(),
+                                           srcRect,
+                                           rescaleGamma,
+                                           rescaleMode,
+                                           async_callback<SkImage::YUVAAsyncReadPixelsResult>,
+                                           &asyncContext);
         if (direct) {
             direct->submit();
         }
@@ -158,18 +176,8 @@ static sk_sp<SkImage> do_read_and_scale_yuv(Src* src,
     if (!asyncContext.fResult) {
         return nullptr;
     }
-    SkYUVAInfo yuvaInfo(size,
-                        SkYUVAInfo::PlaneConfig::kY_U_V,
-                        SkYUVAInfo::Subsampling::k420,
-                        yuvCS);
-    SkPixmap yuvPMs[] = {
-            {yII,  asyncContext.fResult->data(0), asyncContext.fResult->rowBytes(0)},
-            {uvII, asyncContext.fResult->data(1), asyncContext.fResult->rowBytes(1)},
-            {uvII, asyncContext.fResult->data(2), asyncContext.fResult->rowBytes(2)}
-    };
-    auto pixmaps = SkYUVAPixmaps::FromExternalPixmaps(yuvaInfo, yuvPMs);
-    SkASSERT(pixmaps.isValid());
-    auto lazyYUVImage = sk_gpu_test::LazyYUVImage::Make(pixmaps);
+    SkASSERT(asyncContext.fResult->pixmaps().isValid());
+    auto lazyYUVImage = sk_gpu_test::LazyYUVImage::Make(asyncContext.fResult->pixmaps());
     SkASSERT(lazyYUVImage);
 #if defined(SK_GRAPHITE)
     if (recorder) {
@@ -495,12 +503,14 @@ DEF_SIMPLE_GM_CAN_FAIL(async_rescale_and_read_alpha_type, canvas, errorMsg, 512,
         for (auto readAT : {kPremul_SkAlphaType, kUnpremul_SkAlphaType}) {
             auto readInfo = img->imageInfo().makeAlphaType(readAT).makeWH(size, size);
 
+            // Test the legacy result type here.
+            using AsyncContext = AsyncContext<SkImage::AsyncReadResult>;
             auto* asyncContext = new AsyncContext();
             img->asyncRescaleAndReadPixels(readInfo,
                                            SkIRect::MakeSize(img->dimensions()),
                                            SkImage::RescaleGamma::kSrc,
                                            SkImage::RescaleMode::kRepeatedCubic,
-                                           async_callback,
+                                           async_callback<SkImage::AsyncReadResult>,
                                            asyncContext);
             if (dContext) {
                 dContext->submit();
