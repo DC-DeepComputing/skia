@@ -106,6 +106,9 @@ public:
     const SkRRect& rrect() const { SkASSERT(this->isRRect()); return fRRect;           }
     const SkPath&  path()  const { SkASSERT(this->isPath());  return fPath;            }
 
+    // Set an outset applied to the shape's bounds.
+    void setOutset(float outset) { fOutset = outset; }
+
     // Update the geometry stored in the Shape and update its associated type to match. This
     // performs no simplification, so calling setRRect() with a round rect that has isRect() return
     // true will still be considered an rrect by Shape.
@@ -164,6 +167,7 @@ private:
         SkPath  fPath;
     };
 
+    float   fOutset   = 0.0f;
     Type    fType     = Type::kEmpty;
     bool    fInverted = false;
 };

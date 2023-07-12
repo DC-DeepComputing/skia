@@ -61,10 +61,15 @@ bool Shape::convex(bool simpleFill) const {
 Rect Shape::bounds() const {
     switch (fType) {
         case Type::kEmpty: return Rect(0, 0, 0, 0);
-        case Type::kLine:  return fRect.makeSorted(); // sorting corners computes bbox of segment
-        case Type::kRect:  return fRect; // assuming it's sorted
-        case Type::kRRect: return fRRect.getBounds();
-        case Type::kPath:  return fPath.getBounds();
+        case Type::kLine:
+            // sorting corners computes bbox of segment
+            return fRect.makeSorted().makeOutset(fOutset);
+        case Type::kRect:
+            return fRect.makeOutset(fOutset);  // assuming it's sorted
+        case Type::kRRect:
+            return fRRect.getBounds().makeOutset(fOutset, fOutset);
+        case Type::kPath:
+            return fPath.getBounds().makeOutset(fOutset, fOutset);
     }
     SkUNREACHABLE;
 }
