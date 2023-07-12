@@ -44,6 +44,7 @@ skia_cc_library(
     ],
     deps = [
         ":gm",
+        "//gm/surface_factory",
         "//tools:hash_and_encode",
         "//tools/timer",  # Required by animatedimageblurs.cpp.
     ] + select({
@@ -508,32 +509,40 @@ cc_test_with_flags(
     deps = [":tests_base"],
 )
 
-# Sample invocation (assuming there's a Pixel 5 or similar device available via adb):
-#
-#     $ bazel test --config=linux_rbe //gm:cpu_android_test --config=pixel_5
-#
-# Then inspect the PNG and JSON files produced by the GMs:
-#
-#     $ unzip -l bazel-testlogs/gm/cpu_android_test/test.outputs/outputs.zip
-android_gm_test(
-    name = "cpu_android_test",
-    srcs = CPU_GMS,
-    flags = {
-        "enable_sksl": ["True"],
-        "include_decoder": [
-            "gif_decode_codec",
-            "webp_decode_codec",
-        ],
-    },
-    requires_resources_dir = True,
-    deps = [":tests_base"],
-)
+[
+    # Sample invocation (assuming there's a Pixel 5 or similar device available via adb):
+    #
+    #     $ bazel test --config=linux_rbe //gm:cpu_8888_android_test --config=pixel_5
+    #
+    # Then inspect the PNG and JSON files produced by the GMs:
+    #
+    #     $ unzip -l bazel-testlogs/gm/cpu_8888_android_test/test.outputs/outputs.zip
+    android_gm_test(
+        name = "cpu_%s_android_test" % config,
+        srcs = CPU_GMS,
+        config = config,
+        flags = {
+            "enable_sksl": ["True"],
+            "include_decoder": [
+                "gif_decode_codec",
+                "webp_decode_codec",
+            ],
+        },
+        requires_resources_dir = True,
+        deps = [":tests_base"],
+    )
+    for config in [
+        "8888",
+        "565",
+    ]
+]
 
 # Does not work because BazelGMRunner.cpp can only create CPU-backed SkCanvases at this time
 # (the test passes but the GMs will be skipped).
 android_gm_test(
-    name = "gpu_android_test",
+    name = "gpu_8888_android_test",
     srcs = GPU_GMS,
+    config = "8888",
     flags = {
         "include_decoder": [
             "png_decode_codec",
