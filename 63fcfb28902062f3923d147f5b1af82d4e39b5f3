@@ -16,6 +16,24 @@
       "message": "The mesh_picture GM is failing on this assert. I take it when deserializing from pictures, there is a mechanism to upload the mesh later and I should remove this assert?",
       "revId": "63fcfb28902062f3923d147f5b1af82d4e39b5f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbecf598_2f81afa8",
+        "filename": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-12T20:07:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d11cbc2e_54ef4989",
+      "revId": "63fcfb28902062f3923d147f5b1af82d4e39b5f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
