@@ -69,6 +69,24 @@
       "parentUuid": "05c4c11d_2edb5465",
       "revId": "e280a93ed7dbd9747bd1f66be8471d9ca76469f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18670c8b_b2fc2ea2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T20:13:47Z",
+      "side": 1,
+      "message": "Oops, I missed the use of `sizeof(T)` in the `size_bytes()` function, so just removing kMaxSize probably isn\u0027t sufficient.\n\nMaybe we have the InsertRecordingInfo take a Span\u003cBackendSemaphore*\u003e? That\u0027s a little clunky. \n\nOtherwise maybe we should post to the C++ chat and see if any expert has a better idea of how to get around this for spans?",
+      "parentUuid": "61085a3a_bdc02036",
+      "revId": "e280a93ed7dbd9747bd1f66be8471d9ca76469f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
