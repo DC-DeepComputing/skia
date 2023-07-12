@@ -51,6 +51,24 @@
       "parentUuid": "a0f618f5_a09dfebd",
       "revId": "e280a93ed7dbd9747bd1f66be8471d9ca76469f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61085a3a_bdc02036",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-12T18:43:47Z",
+      "side": 1,
+      "message": "It seems like SkSpan should be able to work with a forward declaration. It\u0027s the kMaxSize constexpr value that needs `sizeof(BackendSemaphore)` that\u0027s causing the problem. It looks like kMaxSize is only used in asserts, so I wonder if we can change that up?",
+      "parentUuid": "05c4c11d_2edb5465",
+      "revId": "e280a93ed7dbd9747bd1f66be8471d9ca76469f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
