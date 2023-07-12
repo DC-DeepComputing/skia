@@ -22,6 +22,30 @@
       },
       "revId": "062139ec0248cdfa79da9f5cad695396c5483d13",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4e80f72_d35e47b8",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-12T21:23:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e20c5a3f_223c1290",
+      "range": {
+        "startLine": 57,
+        "startChar": 35,
+        "endLine": 57,
+        "endChar": 81
+      },
+      "revId": "062139ec0248cdfa79da9f5cad695396c5483d13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
