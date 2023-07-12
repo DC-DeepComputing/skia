@@ -12,7 +12,17 @@
 
 #include <string>
 
-// Returns a surface according to the given config name (e.g. "8888", "565", etc.).
-sk_sp<SkSurface> make_surface(std::string config, int width, int height);
+// Abstract class to create and manage surfaces.
+class SurfaceFactory {
+public:
+    // Constructs a SurfaceFactory for the given config name (e.g. "8888", "565", "gles").
+    static std::unique_ptr<SurfaceFactory> FromConfig(std::string config, int width, int height);
+
+    // Returns a surface created from the given config
+    virtual sk_sp<SkSurface> getSurface() = 0;
+    virtual void flush() = 0;
+
+    virtual ~SurfaceFactory() = default;
+};
 
 #endif  // SurfaceFactory_DEFINED
