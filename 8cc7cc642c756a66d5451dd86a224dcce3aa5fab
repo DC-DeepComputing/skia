@@ -16,6 +16,23 @@
       "message": "Quick fix for a crash.",
       "revId": "8cc7cc642c756a66d5451dd86a224dcce3aa5fab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "845c6fe2_756538a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-07-12T13:29:14Z",
+      "side": 1,
+      "message": "Thanks for the fix!",
+      "revId": "8cc7cc642c756a66d5451dd86a224dcce3aa5fab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
