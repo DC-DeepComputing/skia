@@ -552,11 +552,9 @@ void SkBitmapDevice::drawVertices(const SkVertices* vertices,
     BDDraw(this).drawVertices(vertices, std::move(blender), paint, skipColorXform);
 }
 
-#ifdef SK_ENABLE_SKSL
 void SkBitmapDevice::drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) {
-    // TODO: Implement
+    // TODO(brianosman): Implement, maybe with a subclass of BitmapDevice that has SkSL support.
 }
-#endif
 
 void SkBitmapDevice::drawAtlas(const SkRSXform xform[],
                                const SkRect tex[],
@@ -606,7 +604,7 @@ sk_sp<SkSpecialImage> SkBitmapDevice::makeSpecial(const SkBitmap& bitmap) {
 }
 
 sk_sp<SkSpecialImage> SkBitmapDevice::makeSpecial(const SkImage* image) {
-    return SkSpecialImage::MakeFromImage(nullptr, SkIRect::MakeWH(image->width(), image->height()),
+    return SkSpecialImage::MakeFromImage(SkIRect::MakeWH(image->width(), image->height()),
                                          image->makeNonTextureImage(), this->surfaceProps());
 }
 

@@ -740,7 +740,13 @@ Context MakeGaneshContext(GrRecordingContext* context,
                                                   origin);
     };
 
-    return Context(info, context, makeSurfaceFunctor);
+    auto makeImageFunctor = [context](const SkIRect& subset,
+                                      sk_sp<SkImage> image,
+                                      const SkSurfaceProps& props) {
+        return SkSpecialImages::MakeFromTextureImage(context, subset, image, props);
+    };
+
+    return Context(info, context, makeSurfaceFunctor, makeImageFunctor);
 }
 
 }  // namespace skgpu::ganesh
