@@ -46,6 +46,30 @@
       },
       "revId": "bcdedb469f30309a7551ded9dc63fc2b61ce661f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5964d057_04e44b4e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-12T15:30:37Z",
+      "side": 1,
+      "message": "Note that, if the lattice is valid, the lattice drawing code does not do any tiling. So, to some degree, we\u0027re making the drawImageLattice call more consistent.",
+      "parentUuid": "4c4d2259_3baf90d0",
+      "range": {
+        "startLine": 11,
+        "startChar": 50,
+        "endLine": 11,
+        "endChar": 129
+      },
+      "revId": "bcdedb469f30309a7551ded9dc63fc2b61ce661f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
