@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85507312_15fdc025",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-12T19:26:02Z",
+      "side": 1,
+      "message": "\u003c\u003d 1 instead?",
+      "revId": "187d0080dcd032ce3f13bc8ebd2bbdb6e1395c9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
