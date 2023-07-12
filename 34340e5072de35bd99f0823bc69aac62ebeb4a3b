@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2561f57f_c88f5f85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-12T22:06:45Z",
+      "side": 1,
+      "message": "This feels like a situation that would be naturally resolved by SSA-style codegen (i.e. our current WGSL codegen approach). Something worth considering down the line for the Metal backend.",
+      "revId": "34340e5072de35bd99f0823bc69aac62ebeb4a3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
