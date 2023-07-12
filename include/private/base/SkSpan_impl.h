@@ -113,7 +113,9 @@ public:
     }
 
 private:
+#ifdef SK_DEBUG
     static const constexpr size_t kMaxSize = std::numeric_limits<size_t>::max() / sizeof(T);
+#endif
     T* fPtr;
     size_t fSize;
 };
