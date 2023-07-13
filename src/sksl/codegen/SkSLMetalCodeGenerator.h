@@ -295,6 +295,8 @@ protected:
 
     int getUniformSet(const Modifiers& m);
 
+    void writeWithIndexSubstitution(const std::function<void()>& fn);
+
     skia_private::THashSet<std::string_view> fReservedWords;
     skia_private::THashMap<const Field*, const InterfaceBlock*> fInterfaceBlockMap;
     skia_private::THashMap<const InterfaceBlock*, std::string_view> fInterfaceBlockNameMap;
@@ -324,8 +326,14 @@ protected:
     // The map holds <index-expression, temp-variable name>.
     using IndexSubstitutionMap = skia_private::THashMap<const Expression*, std::string>;
 
-    // When this is null (usually), index-substitution does not need to be performed.
-    std::unique_ptr<IndexSubstitutionMap> fIndexSubstitutionMap;
+    // When fIndexSubstitution is null (usually), index-substitution does not need to be performed.
+    struct IndexSubstitutionData {
+        IndexSubstitutionMap fMap;
+        StringStream fMainStream;
+        StringStream fPrefixStream;
+        bool fCreateSubstitutes = true;
+    };
+    std::unique_ptr<IndexSubstitutionData> fIndexSubstitutionData;
 
     // Workaround/polyfill flags
     bool fWrittenInverse2 = false, fWrittenInverse3 = false, fWrittenInverse4 = false;
