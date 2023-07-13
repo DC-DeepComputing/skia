@@ -16,6 +16,29 @@
       "message": "Arman, what do you think about this? I was looking closer at porting the vello rules for using them as GN recipes for fontations, and I was wondering why the extra target is defined. I found this works, at least locally, too. Would you agree that\u0027s sufficient?",
       "revId": "a6ed6764a224f124efaf4f2a5985f6364d5c20b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b54c096_23ae4e37",
+        "filename": "third_party/vello/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-13T23:07:11Z",
+      "side": 1,
+      "message": "Is there some guarantee that this will be the only static library called `libffi_gen.a` under `$root_out_dir`? The explicit target name was intentional so that this library would be named `out/Foo/libvello_ffi.a` as `libffi_gen` sounds too generic.",
+      "range": {
+        "startLine": 41,
+        "startChar": 31,
+        "endLine": 41,
+        "endChar": 41
+      },
+      "revId": "a6ed6764a224f124efaf4f2a5985f6364d5c20b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
