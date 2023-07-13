@@ -88,34 +88,6 @@ public:
         this->draw(canvas, x, y, SkSamplingOptions(), nullptr);
     }
 
-    static sk_sp<SkSpecialImage> MakeFromImage(GrRecordingContext*,
-                                               const SkIRect& subset,
-                                               sk_sp<SkImage>,
-                                               const SkSurfaceProps&);
-    static sk_sp<SkSpecialImage> MakeFromRaster(const SkIRect& subset,
-                                                const SkBitmap&,
-                                                const SkSurfaceProps&);
-    static sk_sp<SkSpecialImage> CopyFromRaster(const SkIRect& subset,
-                                                const SkBitmap&,
-                                                const SkSurfaceProps&);
-#if defined(SK_GANESH)
-    static sk_sp<SkSpecialImage> MakeDeferredFromGpu(GrRecordingContext*,
-                                                     const SkIRect& subset,
-                                                     uint32_t uniqueID,
-                                                     GrSurfaceProxyView,
-                                                     const GrColorInfo&,
-                                                     const SkSurfaceProps&);
-#endif
-
-#if defined(SK_GRAPHITE)
-    static sk_sp<SkSpecialImage> MakeGraphite(skgpu::graphite::Recorder*,
-                                              const SkIRect& subset,
-                                              uint32_t uniqueID,
-                                              skgpu::graphite::TextureProxyView,
-                                              const SkColorInfo&,
-                                              const SkSurfaceProps&);
-#endif
-
     /**
      * Extract a subset of this special image and return it as a special image.
      * It may or may not point to the same backing memory. The input 'subset' is relative to the
@@ -218,15 +190,22 @@ protected:
                                        const SkSamplingOptions&,
                                        const SkMatrix&) const = 0;
 
-#ifdef SK_DEBUG
-    static bool RectFits(const SkIRect& rect, int width, int height);
-#endif
-
 private:
     const SkIRect        fSubset;
     const uint32_t       fUniqueID;
     const SkColorInfo    fColorInfo;
     const SkSurfaceProps fProps;
 };
+
+namespace SkSpecialImages {
+sk_sp<SkSpecialImage> MakeFromImage(const SkIRect& subset, sk_sp<SkImage>, const SkSurfaceProps&);
+sk_sp<SkSpecialImage> MakeFromRaster(const SkIRect& subset, const SkBitmap&, const SkSurfaceProps&);
+sk_sp<SkSpecialImage> CopyFromRaster(const SkIRect& subset, const SkBitmap&, const SkSurfaceProps&);
+
+#ifdef SK_DEBUG
+bool RectFits(const SkIRect& rect, int width, int height);
+#endif
+
+}  // namespace SkSpecialImages
 
 #endif // SkSpecialImage_DEFINED
