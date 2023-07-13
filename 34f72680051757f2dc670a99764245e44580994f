@@ -16,6 +16,23 @@
       "message": "Just to finish this series of CLs to reach closure for the week.",
       "revId": "34f72680051757f2dc670a99764245e44580994f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "380add0d_e5a3c687",
+        "filename": "include/private/base/SkFloatingPoint.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-13T15:18:21Z",
+      "side": 1,
+      "message": "This one can actually be removed - I got rid of the last reference recently.",
+      "revId": "34f72680051757f2dc670a99764245e44580994f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
