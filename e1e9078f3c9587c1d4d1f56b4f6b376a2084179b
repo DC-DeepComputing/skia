@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8284a5c1_14ee3b2f",
+        "filename": "resources/sksl/shared/SwizzleAsLValue.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-13T17:02:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8c239331_4da337f6",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 59
+      },
+      "revId": "e1e9078f3c9587c1d4d1f56b4f6b376a2084179b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "720d38a3_9e34eaf8",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-13T15:53:24Z",
       "side": 1,
       "message": "^ not legal Metal",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 46
+      },
+      "revId": "e1e9078f3c9587c1d4d1f56b4f6b376a2084179b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bddf9ab0_15b07452",
+        "filename": "tests/sksl/shared/SwizzleAsLValueES3.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-13T17:02:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "720d38a3_9e34eaf8",
       "range": {
         "startLine": 29,
         "startChar": 3,
@@ -84,6 +132,30 @@
       "side": 1,
       "message": "http://go/crb/skia/14619",
       "parentUuid": "a3362be8_476cff18",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 0
+      },
+      "revId": "e1e9078f3c9587c1d4d1f56b4f6b376a2084179b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "980369c3_9cc7206f",
+        "filename": "tests/sksl/shared/SwizzleAsLValueES3.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-13T17:02:43Z",
+      "side": 1,
+      "message": "Good find!",
+      "parentUuid": "b2d45d87_763a3841",
       "range": {
         "startLine": 39,
         "startChar": 0,
