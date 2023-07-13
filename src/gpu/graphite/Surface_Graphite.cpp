@@ -96,20 +96,19 @@ void Surface::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
                                           SkIRect srcRect,
                                           RescaleGamma rescaleGamma,
                                           RescaleMode rescaleMode,
-                                          ReadPixelsCallback callback,
+                                          RGBAReadPixelsCallback callback,
                                           ReadPixelsContext context) {
     // Not supported for Graphite. Use Context::asyncRescaleAndReadPixels instead.
     callback(context, nullptr);
 }
 
-void Surface::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
-                                                sk_sp<SkColorSpace> dstColorSpace,
-                                                SkIRect srcRect,
-                                                SkISize dstSize,
-                                                RescaleGamma rescaleGamma,
-                                                RescaleMode rescaleMode,
-                                                ReadPixelsCallback callback,
-                                                ReadPixelsContext context) {
+void Surface::onAsyncRescaleAndReadPixelsYUVA(const SkYUVAInfo& yuvaInfo,
+                                              sk_sp<SkColorSpace> dstColorSpace,
+                                              SkIRect srcRect,
+                                              RescaleGamma rescaleGamma,
+                                              RescaleMode rescaleMode,
+                                              YUVAReadPixelsCallback callback,
+                                              ReadPixelsContext context) {
     // Not supported for Graphite. Use Context::asyncRescaleAndReadPixelsYUV420 instead.
     callback(context, nullptr);
 }

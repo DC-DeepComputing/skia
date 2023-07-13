@@ -49,17 +49,16 @@ public:
                                      SkIRect srcRect,
                                      RescaleGamma,
                                      RescaleMode,
-                                     ReadPixelsCallback,
+                                     RGBAReadPixelsCallback,
                                      ReadPixelsContext) const override;
 
-    void onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
-                                           sk_sp<SkColorSpace>,
-                                           SkIRect srcRect,
-                                           SkISize dstSize,
-                                           RescaleGamma,
-                                           RescaleMode,
-                                           ReadPixelsCallback,
-                                           ReadPixelsContext) const override;
+    void onAsyncRescaleAndReadPixelsYUVA(const SkYUVAInfo&,
+                                         sk_sp<SkColorSpace>,
+                                         SkIRect srcRect,
+                                         RescaleGamma,
+                                         RescaleMode,
+                                         YUVAReadPixelsCallback,
+                                         ReadPixelsContext) const override;
 
     virtual sk_sp<SkImage> makeTextureImage(Recorder*, RequiredProperties) const = 0;
 
