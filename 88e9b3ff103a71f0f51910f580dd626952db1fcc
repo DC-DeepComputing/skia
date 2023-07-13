@@ -16,6 +16,47 @@
       "message": "PTAL. There is an assumption here that the client will keep these VkSemaphores alive until the command buffer finishes, which I think we agreed to.",
       "revId": "88e9b3ff103a71f0f51910f580dd626952db1fcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e280a386_3a2983a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-13T18:40:51Z",
+      "side": 1,
+      "message": "That is consistent with my memory. We have that policy documented in InsertRecordingInfo, right?",
+      "parentUuid": "e067bc64_70ff17d6",
+      "revId": "88e9b3ff103a71f0f51910f580dd626952db1fcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "836ddc7e_ae703ce6",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-13T18:40:51Z",
+      "side": 1,
+      "message": "I think using `auto` will just become `BackendSemaphore` so we copy it into a local variable. `const auto\u0026` or `auto\u0026\u0026` should make sure it\u0027s a reference to `waitSemaphores[i]`. \n\nIf BackendSemaphore is small, it probably doesn\u0027t matter though.",
+      "range": {
+        "startLine": 163,
+        "startChar": 8,
+        "endLine": 163,
+        "endChar": 12
+      },
+      "revId": "88e9b3ff103a71f0f51910f580dd626952db1fcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
