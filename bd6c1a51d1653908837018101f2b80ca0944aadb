@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e851c36_3bf9d47c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2023-07-13T14:15:07Z",
+      "side": 1,
+      "message": "I noticed that matchFamilyStyle, countFamilies, getFamilyName are already available via TypefaceProvider because it extends FontMgr. This PR aims to reflects this change into CanvasKit.",
+      "revId": "bd6c1a51d1653908837018101f2b80ca0944aadb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
