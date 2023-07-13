@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32ed37d6_90a7c2e6",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-13T19:57:19Z",
+      "side": 1,
+      "message": "Fair enough!",
+      "parentUuid": "68b34b5a_9b581f88",
+      "range": {
+        "startLine": 543,
+        "startChar": 12,
+        "endLine": 543,
+        "endChar": 33
+      },
+      "revId": "49946517f0a9a4418733837f7966d3cd4c2562b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a73ce44_dfdb1323",
@@ -204,6 +228,30 @@
       "side": 1,
       "message": "I think we should always assert/abort (the equivalent of panic) if we cannot set up a surface. Using failures should be reserved for \"we had problems while drawing\" not \"we had problems before drawing\".\n\nYou got me thinking, \"config\" is a bit overloaded. As long as we are re-creating things, can we call it --surface_config to differentiate it from the bazel flag and give it slightly more meaning?",
       "parentUuid": "98662a9a_463b3763",
+      "range": {
+        "startLine": 31,
+        "startChar": 11,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "49946517f0a9a4418733837f7966d3cd4c2562b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1afe4de_37397d08",
+        "filename": "gm/surface_factory/RasterSurfaceFactory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-13T19:57:19Z",
+      "side": 1,
+      "message": "Ok, aborting if we had problems before drawing makes sense to me.\n\nIn order to avoid repeating the same `SK_ABORT` message on all factories, I placed the `SK_ABORT` in BazelGMRunner.cpp when the returned surface is nil, and I updated the comment in SurfaceFactory.h to explicitly state the contract that `make_surface` must only return null if the config is unknown, and abort execution on all other errors.",
+      "parentUuid": "787e37a1_ff04e659",
       "range": {
         "startLine": 31,
         "startChar": 11,
