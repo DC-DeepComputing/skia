@@ -46,6 +46,30 @@
       },
       "revId": "3621c713b860207c6cbf83ffb147b4ac4dadd2dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d19e30dd_407a34bb",
+        "filename": "tests/sksl/shared/SwizzleAsLValueES3.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-13T17:06:42Z",
+      "side": 1,
+      "message": "Crud. It looks like it\u0027s well defined in C++17 (but backwards from this implementation). Metal is C++14 based, so there\u0027s no rules.\n\nhttps://screenshot.googleplex.com/9L2dUWkjMrtxFV9",
+      "parentUuid": "271b7033_0c9427a0",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 64
+      },
+      "revId": "3621c713b860207c6cbf83ffb147b4ac4dadd2dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
