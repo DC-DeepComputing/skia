@@ -34,6 +34,24 @@
       "parentUuid": "e952e591_cc243760",
       "revId": "e6edb8012a25e4943235755fe66fd1acea3e2505",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05dba431_6bd0a2f9",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 17944
+      },
+      "writtenOn": "2023-07-13T16:47:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "60b03154_a7172f80",
+      "revId": "e6edb8012a25e4943235755fe66fd1acea3e2505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
