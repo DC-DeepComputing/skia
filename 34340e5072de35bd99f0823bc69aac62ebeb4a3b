@@ -16,6 +16,24 @@
       "message": "This feels like a situation that would be naturally resolved by SSA-style codegen (i.e. our current WGSL codegen approach). Something worth considering down the line for the Metal backend.",
       "revId": "34340e5072de35bd99f0823bc69aac62ebeb4a3b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f7e90d1_215015d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-13T00:38:59Z",
+      "side": 1,
+      "message": "You\u0027re right, but it\u0027s hard to imagine a rewrite happening any time soon. Also, without a real `let` instruction, you have to make lots of variable copies and trust the compiler to optimize them away. `let` kind of builds in the idea of \"this is a freebie\".",
+      "parentUuid": "2561f57f_c88f5f85",
+      "revId": "34340e5072de35bd99f0823bc69aac62ebeb4a3b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
