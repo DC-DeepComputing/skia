@@ -26,6 +26,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7df7f867_47cb4b7d",
+        "filename": "DEPS",
+        "patchSetId": 28
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-13T16:46:02Z",
+      "side": 1,
+      "message": "It\u0027s a temporary solution. I thought it\u0027s allowed? In line #40 there is another github references.",
+      "parentUuid": "d9bd001c_bdaff2c4",
+      "range": {
+        "startLine": 40,
+        "startChar": 60,
+        "endLine": 40,
+        "endChar": 70
+      },
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e79424c7_5ed748cc",
+        "filename": "DEPS",
+        "patchSetId": 28
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-13T16:46:02Z",
+      "side": 1,
+      "message": "That is not mine. What do we do with that?",
+      "parentUuid": "d9bd001c_bdaff2c4",
+      "range": {
+        "startLine": 40,
+        "startChar": 60,
+        "endLine": 40,
+        "endChar": 70
+      },
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa15ba93_16f2b4bf",
         "filename": "DEPS",
         "patchSetId": 28
@@ -37,6 +85,30 @@
       "writtenOn": "2023-07-13T14:53:47Z",
       "side": 1,
       "message": "This should really be a mirror.",
+      "range": {
+        "startLine": 42,
+        "startChar": 60,
+        "endLine": 42,
+        "endChar": 71
+      },
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3997389e_05b709b1",
+        "filename": "DEPS",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-13T16:46:02Z",
+      "side": 1,
+      "message": "It will be, just not the first version. I promise.",
+      "parentUuid": "aa15ba93_16f2b4bf",
       "range": {
         "startLine": 42,
         "startChar": 60,
@@ -64,6 +136,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49526c3e_e6e89516",
+        "filename": "modules/skparagraph/src/Run.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-13T16:46:02Z",
+      "side": 1,
+      "message": "I used it for testing but then I switched to ICU/bidi in this version so it\u0027s not needed anymore.",
+      "parentUuid": "6bdfe996_6756c36a",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18cbf4d0_315c4b44",
@@ -77,6 +167,24 @@
       "writtenOn": "2023-07-13T14:53:47Z",
       "side": 1,
       "message": "Skia\u0027s build should not be using `configure` or require autotools. This will not work in the bazel build. Need to create a full gn build for this (and possibly a bazel build as well).",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1c7d7cf_cc543403",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-13T16:46:02Z",
+      "side": 1,
+      "message": "It\u0027s for the very first version only. I will create gn build (and probably later bazel build, too).",
+      "parentUuid": "18cbf4d0_315c4b44",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

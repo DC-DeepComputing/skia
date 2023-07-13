@@ -16,6 +16,24 @@
       "message": "`external_dir \u003d \"../externals/libgrapheme\"`",
       "revId": "e6edb8012a25e4943235755fe66fd1acea3e2505",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60b03154_a7172f80",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-13T16:46:02Z",
+      "side": 1,
+      "message": "In our build we operate from output folder (for instance, /usr/local/google/home/jlavrova/Sources/skia/out/Debug). To get to libgrapheme I need ../../third_party/externals/libgrapheme",
+      "parentUuid": "e952e591_cc243760",
+      "revId": "e6edb8012a25e4943235755fe66fd1acea3e2505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
