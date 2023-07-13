@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "dee18d86_75464b0a",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-13T20:38:22Z",
+      "side": 1,
+      "message": "As discussed, I renamed MakeFromImage -\u003e MakeFromRaster to emphasize that it will only work with raster images.",
+      "parentUuid": "a836c13a_750ae1ca",
+      "range": {
+        "startLine": 217,
+        "startChar": 22,
+        "endLine": 217,
+        "endChar": 35
+      },
+      "revId": "6bcb7edca73c6056b061774c0813fbf026485e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "35d99cbc_204d320a",
         "filename": "src/gpu/graphite/ImageUtils.cpp",
         "patchSetId": 6
