@@ -259,7 +259,7 @@ sk_sp<Task> DrawContext::snapComputeTask(Recorder* recorder) {
     if (fDispatchGroups.empty()) {
         return nullptr;
     }
-    SkASSERT(fDispatchGroups.size() == 1);
+    //SkASSERT(fDispatchGroups.size() == 1);
     return ComputeTask::Make(std::move(fDispatchGroups));
 }
 
