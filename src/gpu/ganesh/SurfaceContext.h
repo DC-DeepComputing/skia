@@ -75,10 +75,11 @@ public:
      */
     bool readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoint srcPt);
 
-    using ReadPixelsCallback = SkImage::ReadPixelsCallback;
-    using ReadPixelsContext  = SkImage::ReadPixelsContext;
-    using RescaleGamma       = SkImage::RescaleGamma;
-    using RescaleMode        = SkImage::RescaleMode;
+    using RGBAReadPixelsCallback = SkImage::RGBAReadPixelsCallback;
+    using YUVAReadPixelsCallback = SkImage::YUVAReadPixelsCallback;
+    using ReadPixelsContext      = SkImage::ReadPixelsContext;
+    using RescaleGamma           = SkImage::RescaleGamma;
+    using RescaleMode            = SkImage::RescaleMode;
 
     // GPU implementation for SkImage:: and SkSurface::asyncRescaleAndReadPixels.
     void asyncRescaleAndReadPixels(GrDirectContext*,
@@ -86,19 +87,18 @@ public:
                                    const SkIRect& srcRect,
                                    RescaleGamma rescaleGamma,
                                    RescaleMode,
-                                   ReadPixelsCallback callback,
+                                   RGBAReadPixelsCallback callback,
                                    ReadPixelsContext callbackContext);
 
     // GPU implementation for SkImage:: and SkSurface::asyncRescaleAndReadPixelsYUV420.
-    void asyncRescaleAndReadPixelsYUV420(GrDirectContext*,
-                                         SkYUVColorSpace yuvColorSpace,
-                                         sk_sp<SkColorSpace> dstColorSpace,
-                                         const SkIRect& srcRect,
-                                         SkISize dstSize,
-                                         RescaleGamma rescaleGamma,
-                                         RescaleMode,
-                                         ReadPixelsCallback callback,
-                                         ReadPixelsContext context);
+    void asyncRescaleAndReadPixelsYUVA(GrDirectContext*,
+                                       const SkYUVAInfo& yuvaInfo,
+                                       sk_sp<SkColorSpace> dstColorSpace,
+                                       const SkIRect& srcRect,
+                                       RescaleGamma rescaleGamma,
+                                       RescaleMode,
+                                       YUVAReadPixelsCallback callback,
+                                       ReadPixelsContext context);
 
     /**
      * Writes a rectangle of pixels from src into the surfaceDrawContext at the specified position.
@@ -203,7 +203,7 @@ protected:
     void asyncReadPixels(GrDirectContext*,
                          const SkIRect& srcRect,
                          SkColorType,
-                         ReadPixelsCallback,
+                         RGBAReadPixelsCallback,
                          ReadPixelsContext);
 
 private:

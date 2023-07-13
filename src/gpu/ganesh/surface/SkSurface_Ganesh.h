@@ -63,16 +63,16 @@ public:
                                      SkIRect srcRect,
                                      RescaleGamma rescaleGamma,
                                      RescaleMode,
-                                     ReadPixelsCallback callback,
+                                     RGBAReadPixelsCallback callback,
                                      ReadPixelsContext context) override;
-    void onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
-                                           sk_sp<SkColorSpace> dstColorSpace,
-                                           SkIRect srcRect,
-                                           SkISize dstSize,
-                                           RescaleGamma rescaleGamma,
-                                           RescaleMode,
-                                           ReadPixelsCallback callback,
-                                           ReadPixelsContext context) override;
+
+    void onAsyncRescaleAndReadPixelsYUVA(const SkYUVAInfo& yuvaInfo,
+                                         sk_sp<SkColorSpace> dstColorSpace,
+                                         SkIRect srcRect,
+                                         RescaleGamma rescaleGamma,
+                                         RescaleMode,
+                                         YUVAReadPixelsCallback callback,
+                                         ReadPixelsContext context) override;
     bool onCopyOnWrite(ContentChangeMode) override;
     void onDiscard() override;
     bool onWait(int numSemaphores,

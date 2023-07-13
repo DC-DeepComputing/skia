@@ -9,10 +9,13 @@
 #define SkImage_DEFINED
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkYUVAInfo.h"
+#include "include/core/SkYUVAPixmaps.h"
 #include "include/private/base/SkAPI.h"
 
 #include <cstddef>
@@ -533,7 +536,21 @@ public:
                     CachingHint cachingHint = kAllow_CachingHint) const;
 #endif
 
-    /** The result from asyncRescaleAndReadPixels() or asyncRescaleAndReadPixelsYUV420(). */
+    class RGBAAsyncReadPixelsResult {
+    public:
+        virtual ~RGBAAsyncReadPixelsResult() = default;
+
+        virtual const SkPixmap& pixmap() const = 0;
+    };
+
+    class YUVAAsyncReadPixelsResult {
+    public:
+        virtual ~YUVAAsyncReadPixelsResult() = default;
+
+        virtual const SkYUVAPixmaps& pixmaps() const = 0;
+    };
+
+    /** Legecy result from asyncRescaleAndReadPixels() or asyncRescaleAndReadPixelsYUV420(). */
     class AsyncReadResult {
     public:
         AsyncReadResult(const AsyncReadResult&) = delete;
@@ -550,11 +567,20 @@ public:
         AsyncReadResult() = default;
     };
 
-    /** Client-provided context that is passed to client-provided ReadPixelsContext. */
+    /** Client-provided context that is passed to client-provided read pixel callbacks. */
     using ReadPixelsContext = void*;
 
-    /**  Client-provided callback to asyncRescaleAndReadPixels() or
-         asyncRescaleAndReadPixelsYUV420() that is called when read result is ready or on failure.
+    /** Client-provided callback to asyncRescaleAndReadPixels(). */
+    using RGBAReadPixelsCallback = void(ReadPixelsContext,
+                                        std::unique_ptr<const RGBAAsyncReadPixelsResult>);
+
+    /** Client-provided callback to asyncRescaleAndReadPixelsYUVA(). */
+    using YUVAReadPixelsCallback = void(ReadPixelsContext,
+                                        std::unique_ptr<const YUVAAsyncReadPixelsResult>);
+
+    /**
+        Legacy client-provided callback to asyncRescaleAndReadPixels() or
+        asyncRescaleAndReadPixelsYUV420() that is called when read result is ready or on failure.
      */
     using ReadPixelsCallback = void(ReadPixelsContext, std::unique_ptr<const AsyncReadResult>);
 
@@ -601,37 +627,81 @@ public:
                                    const SkIRect& srcRect,
                                    RescaleGamma rescaleGamma,
                                    RescaleMode rescaleMode,
+                                   RGBAReadPixelsCallback callback,
+                                   ReadPixelsContext context) const;
+
+    /**
+        Legacy version that takes the legacy callback type. This functions identically to the
+        version above except the type passed to the client callback with the pixels is different.
+
+        When the pixel data is ready the caller's ReadPixelsCallback is called with a
+        AsyncReadResult containing pixel data in the requested color type, alpha type, and color
+        space. The AsyncReadResult will have count() == 1. Upon failure the callback is called with
+        nullptr for AsyncReadResult.
+     */
+    void asyncRescaleAndReadPixels(const SkImageInfo& info,
+                                   const SkIRect& srcRect,
+                                   RescaleGamma rescaleGamma,
+                                   RescaleMode rescaleMode,
                                    ReadPixelsCallback callback,
                                    ReadPixelsContext context) const;
 
     /**
-        Similar to asyncRescaleAndReadPixels but performs an additional conversion to YUV. The
-        RGB->YUV conversion is controlled by 'yuvColorSpace'. The YUV data is returned as three
-        planes ordered y, u, v. The u and v planes are half the width and height of the resized
-        rectangle. The y, u, and v values are single bytes. Currently this fails if 'dstSize'
-        width and height are not even. A 'srcRect' that is not contained by the bounds of the
-        image causes failure.
+        Similar to asyncRescaleAndReadPixels but performs an additional conversion to YUV[A].
+        The data type of the planes is determined by 'dataType'. The RGB[A]->YUV[A] conversion is
+        controlled by 'yuvaInfo'. The YUV[A] data is will be available as SkYUVAPixmaps in a
+        YUVAAysncReadbackResult
+
+        Restrictions on 'yuvaInfo':
+            1. yuvaInfo.planeConfig() must be SkYUVAInfo::PlaneConfig::kY_U_V.
+            2. yuvaInfo.subsampling() must be SkYUVAInfo::Subsampling::k420.
+            3. yuvaInfo.origin() must be kTopLeft_SkEncodedOrigin.
+            4. yuvaInfo.width() and yuvaInfo.height() must be even.
+            5. yuvaInfo.sitingX() and yuvaInfo.sitingY() must both be SkYUVAInfo::Siting::kCentered.
+
+        'dataType' must be SkYUVAPixmapInfo::DataType::kUnorm8.
+
+        A 'srcRect' that is not contained by the bounds of the image causes failure. A 'yuvaInfo'
+        with an odd width or height causes failure.
 
         When the pixel data is ready the caller's ReadPixelsCallback is called with a
-        AsyncReadResult containing the planar data. The AsyncReadResult will have count() == 3.
-        Upon failure the callback is called with nullptr for AsyncReadResult. For a GPU image this
-        flushes work but a submit must occur to guarantee a finite time before the callback is
-        called.
+        AsyncReadResult containing the planar data. The AsyncReadResult will have count() ==
+        yuvaInfo.numPlanes(). Upon failure the callback is called with nullptr for AsyncReadResult.
+        For a GPU image this flushes work but a submit must occur to guarantee a finite time before
+        the callback is called.
 
         The data is valid for the lifetime of AsyncReadResult with the exception that if the SkImage
         is GPU-backed the data is immediately invalidated if the context is abandoned or
         destroyed.
 
-        @param yuvColorSpace  The transformation from RGB to YUV. Applied to the resized image
-                              after it is converted to dstColorSpace.
-        @param dstColorSpace  The color space to convert the resized image to, after rescaling.
+        The order of transformations is rescale, convert to destination color space, convert to
+        YUV[A] planes.
+
+        @param yuvaInfo       The planar configuration of the result.
+        @param dstColorSpace  The color space to convert the resized image to.
         @param srcRect        The portion of the image to rescale and convert to YUV planes.
-        @param dstSize        The size to rescale srcRect to
         @param rescaleGamma   controls whether rescaling is done in the image's gamma or whether
                               the source data is transformed to a linear gamma before rescaling.
         @param rescaleMode    controls the technique (and cost) of the rescaling
-        @param callback       function to call with the planar read result
+        @param callback       function to call with the planar read result (or nullptr on failure)
         @param context        passed to callback
+     */
+    void asyncRescaleAndReadPixelsYUVA(const SkYUVAInfo& yuvaInfo,
+                                       const SkYUVAPixmapInfo::DataType dataType,
+                                       sk_sp<SkColorSpace> dstColorSpace,
+                                       const SkIRect& srcRect,
+                                       RescaleGamma rescaleGamma,
+                                       RescaleMode rescaleMode,
+                                       YUVAReadPixelsCallback callback,
+                                       ReadPixelsContext context) const;
+
+    /**
+        Legacy version that takes the legacy callback type. This functions identically to the
+        version above except the type passed to the client callback with the pixels is different.
+
+        When the pixel data is ready the caller's ReadPixelsCallback is called with a
+        AsyncReadResult containing the planar data. The AsyncReadResult will have count() == 3.
+        Upon failure the callback is called with nullptr for AsyncReadResult.
      */
     void asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                          sk_sp<SkColorSpace> dstColorSpace,
