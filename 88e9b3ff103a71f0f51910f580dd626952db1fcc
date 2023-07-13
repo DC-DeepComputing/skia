@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e067bc64_70ff17d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-13T17:39:30Z",
+      "side": 1,
+      "message": "PTAL. There is an assumption here that the client will keep these VkSemaphores alive until the command buffer finishes, which I think we agreed to.",
+      "revId": "88e9b3ff103a71f0f51910f580dd626952db1fcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
