@@ -12,13 +12,20 @@
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
+// TODO: Remove if not needed
+#include "src/gpu/graphite/vk/VulkanResourceProvider.h"
+
 namespace skgpu::graphite {
 
 class VulkanCommandBuffer;
 
 class VulkanBuffer final : public Buffer {
 public:
-    static sk_sp<Buffer> Make(const VulkanSharedContext*, size_t, BufferType, AccessPattern);
+    static sk_sp<Buffer> Make(const VulkanSharedContext*,
+                              const VulkanResourceProvider*,
+                              size_t,
+                              BufferType,
+                              AccessPattern);
     void freeGpuData() override;
     VkBuffer vkBuffer() const { return fBuffer; }
     VkBufferUsageFlags bufferUsageFlags() const { return fBufferUsageFlags; }

@@ -32,24 +32,31 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
     // Fow now, have each descriptor type and quantity take up an entire uint32_t, with an
     // additional uint32_t added to include a unique identifier for different descriptor sets that
     // have the same set layout.
-    static const int kNum32DataCnt = (kDescriptorTypeCount * 2) + 1;
+    static const int kNum32DataCnt = 10;//(kDescriptorTypeCount * 2) + 1;
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
     GraphiteResourceKey key;
     GraphiteResourceKey::Builder builder(&key, kType, kNum32DataCnt, Shareable::kNo);
 
-    // Fill out the key with each descriptor type. Initialize each count to 0.
-    for (uint8_t j = 0; j < kDescriptorTypeCount; j = j + 2) {
-        builder[j] = static_cast<uint32_t>(static_cast<DescriptorType>(j));
-        builder[j+1] = 0;
-    }
-    // Go through and update the counts for requested descriptor types. The span should not contain
-    // descriptor types with count values of 0, but check just in case.
-    for (auto desc : requestedDescriptors) {
-        if (desc.count > 0) {
-            builder[static_cast<uint32_t>(desc.type) + 1] = desc.count;
+    // desc type = uint8_t
+    // count     = uint32_t
+    // binding   = int
+
+    // for (int i = 0; i < requestedDescriptors.size(); i++) {
+    //     builder[0] = requestedDescriptors.at(i)
+    // }
+    SkASSERT(requestedDescriptors.size() <= 9);
+    for (size_t i = 0; i < kNum32DataCnt; i++) {
+        if (i < requestedDescriptors.size()) {
+            uint16_t smallerCount = static_cast<uint16_t>(requestedDescriptors[i].count);
+            builder[i] =  static_cast<uint8_t>(requestedDescriptors[i].type) << 24
+                          | requestedDescriptors[i].bindingIndex << 16
+                          | smallerCount;
+        } else {
+            builder[i] = 0;
         }
     }
+
     builder[kNum32DataCnt - 1] = uniqueId;
     builder.finish();
     return key;
@@ -102,7 +109,7 @@ sk_sp<Texture> VulkanResourceProvider::createTexture(SkISize size, const Texture
 sk_sp<Buffer> VulkanResourceProvider::createBuffer(size_t size,
                                                    BufferType type,
                                                    AccessPattern accessPattern) {
-    return VulkanBuffer::Make(this->vulkanSharedContext(), size, type, accessPattern);
+    return VulkanBuffer::Make(this->vulkanSharedContext(), this, size, type, accessPattern);
 }
 
 sk_sp<Sampler> VulkanResourceProvider::createSampler(const SkSamplingOptions& samplingOptions,

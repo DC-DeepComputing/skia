@@ -21,6 +21,17 @@
 #include "src/gpu/ganesh/vk/GrVkRenderTarget.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
 
+#if defined(SK_BUILD_FOR_WIN)
+ #include "C:\Program Files\RenderDoc\renderdoc_app.h"
+ #include <windows.h>
+#elif defined(SK_BUILD_FOR_UNIX)
+ #include <dlfcn.h>
+ #include "/usr/local/google/home/nicolettep/Downloads/renderdoc_1.27/include/renderdoc_app.h"
+#endif
+
+#include <cassert>
+// RENDERDOC_API_1_1_2 *rdoc_api = nullptr;
+
 using namespace skia_private;
 
 void GrVkCommandBuffer::invalidateState() {
@@ -392,12 +403,39 @@ void GrVkCommandBuffer::addingWork(const GrVkGpu* gpu) {
     fHasWork = true;
 }
 
+GrVkCommandBuffer::GrVkCommandBuffer(VkCommandBuffer cmdBuffer, bool isWrapped)
+    : fIsActive(isWrapped) // All wrapped command buffers start as active
+    , fCmdBuffer(cmdBuffer)
+    , fIsWrapped(isWrapped) {
+// #if defined(SK_BUILD_FOR_WIN)
+//     if(HMODULE mod = GetModuleHandleA("renderdoc.dll")) {
+//         pRENDERDOC_GetAPI RENDERDOC_GetAPI =
+//             (pRENDERDOC_GetAPI)GetProcAddress(mod, "RENDERDOC_GetAPI");
+//         int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_1_2, (void **)&rdoc_api);
+//         assert(ret == 1);
+//     }
+// #elif defined(SK_BUILD_FOR_UNIX)
+//     if (rdoc_api == nullptr) {
+//         if(void *mod = dlopen("librenderdoc.so", RTLD_NOW | RTLD_NOLOAD)) {
+//             pRENDERDOC_GetAPI RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)dlsym(mod, "RENDERDOC_GetAPI");
+//             int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_1_2, (void **)&rdoc_api);
+//             assert(ret == 1);
+//         }
+//     }
+// #endif
+//     if(rdoc_api) {
+//         rdoc_api->StartFrameCapture(NULL, NULL);
+//     }
+    this->invalidateState();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // PrimaryCommandBuffer
 ////////////////////////////////////////////////////////////////////////////////
 GrVkPrimaryCommandBuffer::~GrVkPrimaryCommandBuffer() {
     // Should have ended any render pass we're in the middle of
     SkASSERT(!fActiveRenderPass);
+    // if(rdoc_api) rdoc_api->EndFrameCapture(NULL, NULL);
 }
 
 GrVkPrimaryCommandBuffer* GrVkPrimaryCommandBuffer::Create(GrVkGpu* gpu,
