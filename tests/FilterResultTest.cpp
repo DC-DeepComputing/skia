@@ -633,7 +633,7 @@ private:
 #if defined(SK_GANESH)
         if (fDirectContext) {
             // Ganesh backed, just use the SkImage::readPixels API
-            SkASSERT(specialImage->isTextureBacked());
+            SkASSERT(specialImage->isGaneshBacked());
             sk_sp<SkImage> image = specialImage->asImage();
             SkAssertResult(image->readPixels(fDirectContext, bm.pixmap(), srcX, srcY));
         } else
