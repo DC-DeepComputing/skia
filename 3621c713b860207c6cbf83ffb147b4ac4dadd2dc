@@ -70,6 +70,30 @@
       },
       "revId": "3621c713b860207c6cbf83ffb147b4ac4dadd2dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7333e235_874066fa",
+        "filename": "tests/sksl/shared/SwizzleAsLValueES3.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-13T19:38:32Z",
+      "side": 1,
+      "message": "Done at parent CL http://review.skia.org/723337",
+      "parentUuid": "d19e30dd_407a34bb",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 64
+      },
+      "revId": "3621c713b860207c6cbf83ffb147b4ac4dadd2dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
