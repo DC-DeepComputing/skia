@@ -22,6 +22,30 @@
       },
       "revId": "3621c713b860207c6cbf83ffb147b4ac4dadd2dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "271b7033_0c9427a0",
+        "filename": "tests/sksl/shared/SwizzleAsLValueES3.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-13T17:01:33Z",
+      "side": 1,
+      "message": "That is a great question. In practice it passes, but I don\u0027t know if that\u0027s just by luck. I will try to figure it out.",
+      "parentUuid": "dc50f1ba_3b36be75",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 64
+      },
+      "revId": "3621c713b860207c6cbf83ffb147b4ac4dadd2dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
