@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1e46552_16091384",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-13T18:36:06Z",
+      "side": 1,
+      "message": "I\u0027m not sure how much benefit we get from keeping this in favor of updating the call sites to just call MakeFromRaster. That makes it clearer that it\u0027s only a CPU special image out and CPU SkImage in.",
+      "range": {
+        "startLine": 217,
+        "startChar": 22,
+        "endLine": 217,
+        "endChar": 35
+      },
+      "revId": "6bcb7edca73c6056b061774c0813fbf026485e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35d99cbc_204d320a",
+        "filename": "src/gpu/graphite/ImageUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-13T18:36:06Z",
+      "side": 1,
+      "message": "Thanks for pointing this hole out. That might explain some of the remaining diffs in graphite\u0027s image filter stack. I agree it\u0027s best to preserve the existing behavior and I can fix it in a dedicated CL.",
+      "range": {
+        "startLine": 132,
+        "startChar": 8,
+        "endLine": 133,
+        "endChar": 68
+      },
+      "revId": "6bcb7edca73c6056b061774c0813fbf026485e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e8ee531_36bc0bb3",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-13T18:36:06Z",
+      "side": 1,
+      "message": "This can be null when the test wants to use a raster backed image filter.",
+      "range": {
+        "startLine": 592,
+        "startChar": 12,
+        "endLine": 592,
+        "endChar": 20
+      },
+      "revId": "6bcb7edca73c6056b061774c0813fbf026485e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
