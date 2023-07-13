@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f13a7e9_1c1adf52",
+        "filename": "gm/surface_manager/GaneshGLSurfaceManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-13T15:11:15Z",
+      "side": 1,
+      "message": "nit: .get() not needed here. The boolean operator on sk_sp\u003c\u003e does this already: https://github.com/google/skia/blob/084daab746ebca2b0d125ec7739f296cb3744ed3/include/core/SkRefCnt.h#L301",
+      "range": {
+        "startLine": 57,
+        "startChar": 33,
+        "endLine": 57,
+        "endChar": 36
+      },
+      "revId": "86b13e715d65e9b54198e0708870eaa154dc07f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
