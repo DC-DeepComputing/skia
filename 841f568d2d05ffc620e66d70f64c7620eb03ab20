@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9bd001c_bdaff2c4",
+        "filename": "DEPS",
+        "patchSetId": 28
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-13T14:53:47Z",
+      "side": 1,
+      "message": "I notice this one is already depending directly on github.",
+      "range": {
+        "startLine": 40,
+        "startChar": 60,
+        "endLine": 40,
+        "endChar": 70
+      },
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa15ba93_16f2b4bf",
+        "filename": "DEPS",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-13T14:53:47Z",
+      "side": 1,
+      "message": "This should really be a mirror.",
+      "range": {
+        "startLine": 42,
+        "startChar": 60,
+        "endLine": 42,
+        "endChar": 71
+      },
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18cbf4d0_315c4b44",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-13T14:53:47Z",
+      "side": 1,
+      "message": "Skia\u0027s build should not be using `configure` or require autotools. This will not work in the bazel build. Need to create a full gn build for this (and possibly a bazel build as well).",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
