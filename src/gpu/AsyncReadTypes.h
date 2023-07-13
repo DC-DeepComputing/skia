@@ -24,7 +24,7 @@ namespace skgpu {
  * Buffers are first registered using insert() before being passed the client. process() should be
  * called periodically on the owner's thread to poll for messages and process them.
  */
-template <typename T, typename IDType>
+template <typename BufferType, typename RecipientIDType>
 class TClientMappedBufferManager {
 public:
     /**
@@ -32,23 +32,19 @@ public:
      * Set fInboxID to inboxID(). fBuffer must have been previously passed to insert().
      */
     struct BufferFinishedMessage {
-        BufferFinishedMessage(sk_sp<T> buffer,
-                              IDType intendedRecipient)
+        BufferFinishedMessage(sk_sp<BufferType> buffer, RecipientIDType intendedRecipient)
                 : fBuffer(std::move(buffer)), fIntendedRecipient(intendedRecipient) {}
         BufferFinishedMessage(BufferFinishedMessage&& other) {
             fBuffer = std::move(other.fBuffer);
             fIntendedRecipient = other.fIntendedRecipient;
             other.fIntendedRecipient.makeInvalid();
         }
-        sk_sp<T> fBuffer;
-        IDType   fIntendedRecipient;
+        sk_sp<BufferType> fBuffer;
+        RecipientIDType fIntendedRecipient;
     };
-    using BufferFinishedMessageBus = SkMessageBus<BufferFinishedMessage,
-                                                  IDType,
-                                                  false>;
+    using BufferFinishedMessageBus = SkMessageBus<BufferFinishedMessage, RecipientIDType, false>;
 
-    TClientMappedBufferManager(IDType ownerID)
-            : fFinishedBufferInbox(ownerID) {}
+    TClientMappedBufferManager(RecipientIDType ownerID) : fFinishedBufferInbox(ownerID) {}
     TClientMappedBufferManager(const TClientMappedBufferManager&) = delete;
     TClientMappedBufferManager(TClientMappedBufferManager&&) = delete;
 
@@ -70,15 +66,13 @@ public:
     /** Initialize BufferFinishedMessage::fIntendedRecipient to this value. It is the
      *  unique ID of the object that owns this buffer manager.
      */
-    IDType ownerID() const {
-        return fFinishedBufferInbox.uniqueID();
-    }
+    RecipientIDType ownerID() const { return fFinishedBufferInbox.uniqueID(); }
 
     /**
      * Let the manager know to expect a message with buffer 'b'. It's illegal for a buffer to be
      * inserted again before it is unmapped by process().
      */
-    void insert(sk_sp<T> b) {
+    void insert(sk_sp<BufferType> b) {
         SkDEBUGCODE(auto end = fClientHeldBuffers.end());
         SkASSERT(std::find(fClientHeldBuffers.begin(), end, b) == end);
         fClientHeldBuffers.emplace_front(std::move(b));
@@ -104,10 +98,10 @@ public:
 
 private:
     typename BufferFinishedMessageBus::Inbox fFinishedBufferInbox;
-    std::forward_list<sk_sp<T>> fClientHeldBuffers;
+    std::forward_list<sk_sp<BufferType>> fClientHeldBuffers;
     bool fAbandoned = false;
 
-    void remove(const sk_sp<T>& b) {
+    void remove(const sk_sp<BufferType>& b) {
         // There is no convenient remove only the first element that equals a value functionality in
         // std::forward_list.
         auto prev = fClientHeldBuffers.before_begin();
@@ -125,99 +119,140 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename T, typename IDType, typename TransferResultType>
-class TAsyncReadResult : public SkImage::AsyncReadResult {
+
+template <typename BufferType, typename RecipientIDType>
+class AsyncReadPlane {
 public:
-    TAsyncReadResult(IDType intendedRecipient)
-        : fIntendedRecipient(intendedRecipient) {
-    }
+    using MappedBufferManager = TClientMappedBufferManager<BufferType, RecipientIDType>;
 
-    ~TAsyncReadResult() override {
-        for (int i = 0; i < fPlanes.size(); ++i) {
-            fPlanes[i].releaseMappedBuffer(fIntendedRecipient);
-        }
-    }
+    AsyncReadPlane() = default;
 
-    int count() const override { return fPlanes.size(); }
-    const void* data(int i) const override { return fPlanes[i].data(); }
-    size_t rowBytes(int i) const override { return fPlanes[i].rowBytes(); }
+    AsyncReadPlane(const SkImageInfo& info, sk_sp<SkData> data, size_t rowBytes)
+            : fData(std::move(data)), fPixmap(info, fData->data(), rowBytes) {}
 
-    bool addTransferResult(const TransferResultType& result,
-                           SkISize dimensions,
-                           size_t rowBytes,
-                           TClientMappedBufferManager<T, IDType>* manager) {
-        SkASSERT(!result.fTransferBuffer->isMapped());
-        const void* mappedData = result.fTransferBuffer->map();
+    template <typename TransferResultType>
+    static AsyncReadPlane MakeFromBuffer(const TransferResultType& transferResult,
+                                         const SkImageInfo&        imageInfo,
+                                         size_t                    rowBytes,
+                                         MappedBufferManager*      manager) {
+        SkASSERT(!transferResult.fTransferBuffer->isMapped());
+        const void* mappedData = transferResult.fTransferBuffer->map();
         if (!mappedData) {
-            return false;
+            return AsyncReadPlane();
         }
-        if (result.fPixelConverter) {
-            size_t size = rowBytes*dimensions.height();
+
+        if (transferResult.fPixelConverter) {
+            size_t size = rowBytes*imageInfo.height();
             sk_sp<SkData> data = SkData::MakeUninitialized(size);
-            result.fPixelConverter(data->writable_data(), mappedData);
-            this->addCpuPlane(std::move(data), rowBytes);
-            result.fTransferBuffer->unmap();
-        } else {
-            manager->insert(result.fTransferBuffer);
-            this->addMappedPlane(mappedData, rowBytes, std::move(result.fTransferBuffer));
+            transferResult.fPixelConverter(data->writable_data(), mappedData);
+            auto plane = AsyncReadPlane(imageInfo, std::move(data), rowBytes);
+            transferResult.fTransferBuffer->unmap();
+            return plane;
         }
-        return true;
+
+        manager->insert(transferResult.fTransferBuffer);
+        return AsyncReadPlane(imageInfo,
+                              std::move(transferResult.fTransferBuffer),
+                              rowBytes,
+                              manager->ownerID());
     }
 
-    void addCpuPlane(sk_sp<SkData> data, size_t rowBytes) {
-        SkASSERT(data);
-        SkASSERT(rowBytes > 0);
-        fPlanes.emplace_back(std::move(data), rowBytes);
+    AsyncReadPlane(AsyncReadPlane&&) = default;
+
+    ~AsyncReadPlane() {
+        if (fMappedBuffer) {
+            MessageBus::Post({std::move(fMappedBuffer), fRecipient});
+        }
     }
+
+    AsyncReadPlane& operator=(const AsyncReadPlane&) = delete;
+    AsyncReadPlane& operator=(AsyncReadPlane&&) = default;
+
+    const SkPixmap& pixmap() const { return fPixmap; }
+
+    bool isValid() { return pixmap().addr(); }
 
 private:
-    void addMappedPlane(const void* data, size_t rowBytes, sk_sp<T> mappedBuffer) {
-        SkASSERT(data);
-        SkASSERT(rowBytes > 0);
-        SkASSERT(mappedBuffer);
-        SkASSERT(mappedBuffer->isMapped());
-        fPlanes.emplace_back(std::move(mappedBuffer), rowBytes);
+    using MessageBus = typename MappedBufferManager::BufferFinishedMessageBus;
+
+    AsyncReadPlane(const SkImageInfo& info,
+                   sk_sp<BufferType>  buffer,
+                   size_t             rowBytes,
+                   RecipientIDType    recipient)
+            : fMappedBuffer(CheckMapped(std::move(buffer)))
+            , fPixmap(info, fMappedBuffer->map(), rowBytes)
+            , fRecipient(recipient) {}
+
+    static sk_sp<BufferType> CheckMapped(sk_sp<BufferType> buffer) {
+        SkASSERT(buffer->isMapped());
+        return buffer;
     }
 
-    class Plane {
-    public:
-        Plane(sk_sp<T> buffer, size_t rowBytes)
-                : fMappedBuffer(std::move(buffer)), fRowBytes(rowBytes) {}
-        Plane(sk_sp<SkData> data, size_t rowBytes) : fData(std::move(data)), fRowBytes(rowBytes) {}
+    sk_sp<SkData> fData;
+    sk_sp<BufferType> fMappedBuffer;
+    SkPixmap fPixmap;
+    RecipientIDType fRecipient;
+};
 
-        Plane(Plane&&) = default;
+/////////////////////////////////////////////////////////////////////////////
 
-        ~Plane() { SkASSERT(!fMappedBuffer); }
+template <typename BufferType, typename RecipientIDType>
+class RGBAAsyncReadResult : public SkImage::RGBAAsyncReadPixelsResult {
+public:
+    using Plane = AsyncReadPlane<BufferType, RecipientIDType>;
 
-        Plane& operator=(const Plane&) = delete;
-        Plane& operator=(Plane&&) = default;
+    static std::unique_ptr<SkImage::RGBAAsyncReadPixelsResult> Make(Plane plane) {
+        if (!plane.isValid()) {
+            return nullptr;
+        }
+        return std::unique_ptr<SkImage::RGBAAsyncReadPixelsResult>(
+                new RGBAAsyncReadResult(std::move(plane)));
+    }
 
-        void releaseMappedBuffer(IDType intendedRecipient) {
-            if (fMappedBuffer) {
-                TClientMappedBufferManager<T, IDType>::BufferFinishedMessageBus::Post(
-                        {std::move(fMappedBuffer), intendedRecipient});
-            }
+    const SkPixmap& pixmap() const override { return fPlane.pixmap(); }
+
+private:
+    RGBAAsyncReadResult(Plane plane) : fPlane(std::move(plane)) {}
+    Plane fPlane;
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+template <typename BufferType, typename RecipientIDType>
+class YUVAAsyncReadResult : public SkImage::YUVAAsyncReadPixelsResult {
+public:
+    using Plane = AsyncReadPlane<BufferType, RecipientIDType>;
+
+    static std::unique_ptr<SkImage::YUVAAsyncReadPixelsResult> Make(const SkYUVAInfo& yuvaInfo,
+                                                                    Plane             planes[]) {
+        SkPixmap pixmaps[SkYUVAPixmaps::kMaxPlanes];
+        for (int i = 0; i < yuvaInfo.numPlanes(); ++i) {
+            pixmaps[i] = planes[i].pixmap();
         }
 
-        const void* data() const {
-            if (fMappedBuffer) {
-                SkASSERT(!fData);
-                SkASSERT(fMappedBuffer->isMapped());
-                return fMappedBuffer->map();
-            }
-            SkASSERT(fData);
-            return fData->data();
+        auto yuvaPixmaps = SkYUVAPixmaps::FromExternalPixmaps(yuvaInfo, pixmaps);
+        if (!yuvaPixmaps.isValid()) {
+            return nullptr;
         }
 
-        size_t rowBytes() const { return fRowBytes; }
+        std::unique_ptr<YUVAAsyncReadResult> result(new YUVAAsyncReadResult);
 
-    private:
-        sk_sp<SkData> fData;
-        sk_sp<T> fMappedBuffer;
-        size_t fRowBytes;
-    };
-    skia_private::STArray<3, Plane> fPlanes;
-    IDType fIntendedRecipient;
+        result->fYUVAPixmaps = std::move(yuvaPixmaps);
+        for (int i = 0; i < yuvaInfo.numPlanes(); ++i) {
+            result->fPlanes[i] = std::move(planes[i]);
+        }
+
+        return result;
+    }
+
+public:
+    YUVAAsyncReadResult() = default;
+
+    const SkYUVAPixmaps& pixmaps() const override { return fYUVAPixmaps; }
+
+private:
+    Plane fPlanes[SkYUVAPixmaps::kMaxPlanes];
+    SkYUVAPixmaps fYUVAPixmaps;
 };
 
 }  // namespace skgpu
