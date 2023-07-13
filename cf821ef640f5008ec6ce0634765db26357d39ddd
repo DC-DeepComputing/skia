@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "106cc3f6_1df24ea1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-07-13T18:12:57Z",
+      "side": 1,
+      "message": "I expanded the scope a little bit on this after my earlier email.\n\n1) I added a DataType parameter for YUV. It must be unorm8 now. I figured this was the only other possible input that would be needed for future YUV formats so might as well add it now while I\u0027m at it. I didn\u0027t thread it any deeper than the public APIs\n\n2) I thought it would be much more convenient to users to get a SkYUVAPixmaps result, especially if the variety of formats expands again in the future. That meant making different result types for YUVA and RGBA so I also made RGBA get a single SkPixmap.",
+      "revId": "cf821ef640f5008ec6ce0634765db26357d39ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05d206cc_19b8cede",
+        "filename": "src/gpu/AsyncReadTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-07-13T18:12:57Z",
+      "side": 1,
+      "message": "It seemed a little simpler to pull this out and take the expense of storing an extra recipient ID per plane.",
+      "revId": "cf821ef640f5008ec6ce0634765db26357d39ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd422a2e_36b1ef6d",
+        "filename": "src/image/SkRescaleAndReadPixelsUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-07-13T18:12:57Z",
+      "side": 1,
+      "message": "This non highlighted part of this function, other than the name and putting it in a namespace, is identical. The tool didn\u0027t recognize the file rename. The highlighted part here was redone to account for the new result type.\n\nEverything below this function is new.",
+      "range": {
+        "startLine": 149,
+        "startChar": 0,
+        "endLine": 166,
+        "endChar": 1
+      },
+      "revId": "cf821ef640f5008ec6ce0634765db26357d39ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
