@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "589517d5_ef3d27be",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1609,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-13T20:44:37Z",
+      "side": 1,
+      "message": "I checked that none of the operators which support compound-assignment need special handling in WGSL. (That is, we need special handling for logical-and/or and equality ops, but these don\u0027t have compound-assignment operators: `a \u0026\u0026\u003d b;` and `a !\u003d\u003d b;` don\u0027t exist, thankfully.)",
+      "range": {
+        "startLine": 1609,
+        "startChar": 22,
+        "endLine": 1609,
+        "endChar": 40
+      },
+      "revId": "f48e19c5d4e2313c67eb5134f10e3ae2d4961a7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

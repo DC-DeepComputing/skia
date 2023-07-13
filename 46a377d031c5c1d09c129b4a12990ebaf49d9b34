@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "500f1027_86b2321d",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-13T20:44:37Z",
+      "side": 0,
+      "message": "`getPointer()` became unused at some point; I noticed and removed them while I was here.",
+      "range": {
+        "startLine": 448,
+        "startChar": 24,
+        "endLine": 448,
+        "endChar": 34
+      },
+      "revId": "46a377d031c5c1d09c129b4a12990ebaf49d9b34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
