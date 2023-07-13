@@ -1844,21 +1844,28 @@ void MetalCodeGenerator::writeBinaryExpression(const BinaryExpression& b,
         this->write("(");
     }
 
-    this->writeBinaryExpressionElement(left, op, right, precedence);
-
-    if (op.kind() != Operator::Kind::EQ && op.isAssignment() &&
-        left.kind() == Expression::Kind::kSwizzle && !Analysis::HasSideEffects(left)) {
+    if (op.isCompoundAssignment() && left.kind() == Expression::Kind::kSwizzle) {
         // This doesn't compile in Metal:
-        // float4 x = float4(1);
-        // x.xy *= float2x2(...);
+        //     float4 x = float4(1);
+        //     x.xy *= float2x2(...);
         // with the error message "non-const reference cannot bind to vector element",
-        // but switching it to x.xy = x.xy * float2x2(...) fixes it. We perform this tranformation
-        // as long as the LHS has no side effects, and hope for the best otherwise.
+        // but switching it to x.xy = x.xy * float2x2(...) fixes it.
+
+        // Temporarily enable index-expression substitution; if the LHS has index-expressions with
+        // side effects, we don't want to evaluate them twice.
+        auto oldIndexSubstitutionMap = std::make_unique<IndexSubstitutionMap>();
+        fIndexSubstitutionMap.swap(oldIndexSubstitutionMap);
+
+        this->writeExpression(left, precedence);
         this->write(" = ");
         this->writeExpression(left, Precedence::kAssignment);
         this->write(operator_name(op.removeAssignment()));
         precedence = op.removeAssignment().getBinaryPrecedence();
+
+        // We're written out the LHS; we no longer need to use index substitution.
+        fIndexSubstitutionMap.swap(oldIndexSubstitutionMap);
     } else {
+        this->writeBinaryExpressionElement(left, op, right, precedence);
         this->write(operator_name(op));
     }
 
