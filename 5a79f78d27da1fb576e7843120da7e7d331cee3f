@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63a3847b_01066d54",
+        "filename": "gn/core.gni",
+        "patchSetId": 12
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-13T14:35:17Z",
+      "side": 1,
+      "message": "I put these here and not in sksl.gni to not break `skslc` and because these are not really part of the SkSL compiler",
+      "range": {
+        "startLine": 637,
+        "startChar": 0,
+        "endLine": 637,
+        "endChar": 23
+      },
+      "revId": "5a79f78d27da1fb576e7843120da7e7d331cee3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
