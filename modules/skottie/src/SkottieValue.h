@@ -22,7 +22,7 @@ namespace skottie {
 using ScalarValue = SkScalar;
 using   Vec2Value = SkV2;
 
-class VectorValue final : public std::vector<float> {
+class VectorValue : public std::vector<float> {
 public:
     VectorValue() = default;
 
@@ -34,6 +34,16 @@ public:
 
 private:
     using INHERITED = std::vector<float>;
+};
+
+class ColorValue final : public VectorValue {
+public:
+    ColorValue() = default;
+
+    ColorValue(std::initializer_list<float> l) : INHERITED(l) {}
+
+private:
+    using INHERITED = VectorValue;
 };
 
 class ShapeValue final : public std::vector<float> {
