@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "061be8b6_9592f19f",
+        "filename": "DEPS",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-13T17:25:29Z",
+      "side": 1,
+      "message": "No, should be done now.",
+      "parentUuid": "3997389e_05b709b1",
+      "range": {
+        "startLine": 42,
+        "startChar": 60,
+        "endLine": 42,
+        "endChar": 71
+      },
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6bdfe996_6756c36a",
         "filename": "modules/skparagraph/src/Run.h",
         "patchSetId": 28
@@ -185,6 +209,24 @@
       "side": 1,
       "message": "It\u0027s for the very first version only. I will create gn build (and probably later bazel build, too).",
       "parentUuid": "18cbf4d0_315c4b44",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2afb7ad_0f129f5e",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-13T17:25:29Z",
+      "side": 1,
+      "message": "No, it\u0027s fine for testing locally I suppose, but don\u0027t check this in. This needs a gn or bazel build (preferably both).",
+      "parentUuid": "b1c7d7cf_cc543403",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
