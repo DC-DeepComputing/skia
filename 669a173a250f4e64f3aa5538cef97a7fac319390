@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b6140b8_24f1166f",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-13T19:40:37Z",
+      "side": 1,
+      "message": "This code is not entirely different; Gerrit just struggles with indentation changes.",
+      "range": {
+        "startLine": 354,
+        "startChar": 12,
+        "endLine": 354,
+        "endChar": 30
+      },
+      "revId": "669a173a250f4e64f3aa5538cef97a7fac319390",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
