@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91fcbb15_6a28ad3f",
+        "filename": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-13T13:58:02Z",
+      "side": 1,
+      "message": "This does happen with SkPictures, but the onPrepareDraw part uploads the data if this returns nullptr.\n\nhttps://github.com/google/skia/blob/56b68ce6196c395f24f4ac17ccd18ee03111cbf8/src/gpu/ganesh/ops/DrawMeshOp.cpp#L904-L922",
+      "range": {
+        "startLine": 552,
+        "startChar": 16,
+        "endLine": 552,
+        "endChar": 22
+      },
+      "revId": "b57f9390458a0f9effed1cc001605233abda0839",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
