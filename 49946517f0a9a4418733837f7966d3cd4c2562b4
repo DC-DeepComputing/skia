@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68b34b5a_9b581f88",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-13T15:08:55Z",
+      "side": 1,
+      "message": "What I mean is that a GPU + 8888 config does not make sense. 8888 (AFAIK) is only a CPU config.\n\nYou can just delete this target since it is properly created in a follow-up CL",
+      "parentUuid": "f3abc3b8_2d791709",
+      "range": {
+        "startLine": 543,
+        "startChar": 12,
+        "endLine": 543,
+        "endChar": 33
+      },
+      "revId": "49946517f0a9a4418733837f7966d3cd4c2562b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2a73ce44_dfdb1323",
         "filename": "gm/surface_factory/RasterSurfaceFactory.cpp",
         "patchSetId": 2
@@ -156,6 +180,30 @@
       "side": 1,
       "message": "I also updated the follow-up CL (https://skia-review.googlesource.com/c/skia/+/721915) to use `SkASSERT_RELEASE` in the factories if the surface/context couldn\u0027t be created for reasons other than an unknown config.\n\nI think this is a good balance: we fail early if something goes wrong during surface creation time, and we print a meaningful error message if the config passed to BazelGMRunner.cpp via the `--config` flag is unknown (not to be confused with Bazel\u0027s own `--config` flag).",
       "parentUuid": "bc01fe8a_5e2a876d",
+      "range": {
+        "startLine": 31,
+        "startChar": 11,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "49946517f0a9a4418733837f7966d3cd4c2562b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "787e37a1_ff04e659",
+        "filename": "gm/surface_factory/RasterSurfaceFactory.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-13T15:08:55Z",
+      "side": 1,
+      "message": "I think we should always assert/abort (the equivalent of panic) if we cannot set up a surface. Using failures should be reserved for \"we had problems while drawing\" not \"we had problems before drawing\".\n\nYou got me thinking, \"config\" is a bit overloaded. As long as we are re-creating things, can we call it --surface_config to differentiate it from the bazel flag and give it slightly more meaning?",
+      "parentUuid": "98662a9a_463b3763",
       "range": {
         "startLine": 31,
         "startChar": 11,
