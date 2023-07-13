@@ -1305,7 +1305,7 @@ void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
                                        const SkIRect& srcRect,
                                        RescaleGamma rescaleGamma,
                                        RescaleMode rescaleMode,
-                                       ReadPixelsCallback callback,
+                                       RGBAReadPixelsCallback callback,
                                        ReadPixelsContext context) {
     auto* sdc = fSurfaceDrawContext.get();
     // Context TODO: Elevate direct context requirement to public API.
@@ -1317,29 +1317,27 @@ void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
                                    context);
 }
 
-void Device::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
-                                             sk_sp<SkColorSpace> dstColorSpace,
-                                             const SkIRect& srcRect,
-                                             SkISize dstSize,
-                                             RescaleGamma rescaleGamma,
-                                             RescaleMode rescaleMode,
-                                             ReadPixelsCallback callback,
-                                             ReadPixelsContext context) {
+void Device::asyncRescaleAndReadPixelsYUVA(const SkYUVAInfo& yuvaInfo,
+                                           sk_sp<SkColorSpace> dstColorSpace,
+                                           const SkIRect& srcRect,
+                                           RescaleGamma rescaleGamma,
+                                           RescaleMode rescaleMode,
+                                           YUVAReadPixelsCallback callback,
+                                           ReadPixelsContext context) {
     auto* sdc = fSurfaceDrawContext.get();
     // Context TODO: Elevate direct context requirement to public API.
     auto dContext = sdc->recordingContext()->asDirectContext();
     if (!dContext) {
         return;
     }
-    sdc->asyncRescaleAndReadPixelsYUV420(dContext,
-                                         yuvColorSpace,
-                                         std::move(dstColorSpace),
-                                         srcRect,
-                                         dstSize,
-                                         rescaleGamma,
-                                         rescaleMode,
-                                         callback,
-                                         context);
+    sdc->asyncRescaleAndReadPixelsYUVA(dContext,
+                                       yuvaInfo,
+                                       std::move(dstColorSpace),
+                                       srcRect,
+                                       rescaleGamma,
+                                       rescaleMode,
+                                       callback,
+                                       context);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
