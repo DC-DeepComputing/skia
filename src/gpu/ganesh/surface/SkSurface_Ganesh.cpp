@@ -12,7 +12,6 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkRect.h"
-#include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/gpu/GpuTypes.h"
@@ -188,27 +187,25 @@ void SkSurface_Ganesh::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
                                                    SkIRect srcRect,
                                                    RescaleGamma rescaleGamma,
                                                    RescaleMode rescaleMode,
-                                                   ReadPixelsCallback callback,
+                                                   RGBAReadPixelsCallback callback,
                                                    ReadPixelsContext context) {
     fDevice->asyncRescaleAndReadPixels(info, srcRect, rescaleGamma, rescaleMode, callback, context);
 }
 
-void SkSurface_Ganesh::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
-                                                         sk_sp<SkColorSpace> dstColorSpace,
-                                                         SkIRect srcRect,
-                                                         SkISize dstSize,
-                                                         RescaleGamma rescaleGamma,
-                                                         RescaleMode rescaleMode,
-                                                         ReadPixelsCallback callback,
-                                                         ReadPixelsContext context) {
-    fDevice->asyncRescaleAndReadPixelsYUV420(yuvColorSpace,
-                                             std::move(dstColorSpace),
-                                             srcRect,
-                                             dstSize,
-                                             rescaleGamma,
-                                             rescaleMode,
-                                             callback,
-                                             context);
+void SkSurface_Ganesh::onAsyncRescaleAndReadPixelsYUVA(const SkYUVAInfo& yuvaInfo,
+                                                       sk_sp<SkColorSpace> dstColorSpace,
+                                                       SkIRect srcRect,
+                                                       RescaleGamma rescaleGamma,
+                                                       RescaleMode rescaleMode,
+                                                       YUVAReadPixelsCallback callback,
+                                                       ReadPixelsContext context) {
+    fDevice->asyncRescaleAndReadPixelsYUVA(yuvaInfo,
+                                           std::move(dstColorSpace),
+                                           srcRect,
+                                           rescaleGamma,
+                                           rescaleMode,
+                                           callback,
+                                           context);
 }
 
 // Create a new render target and, if necessary, copy the contents of the old

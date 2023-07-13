@@ -17,8 +17,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
-#include "include/core/SkSize.h"
-#include "src/image/SkRescaleAndReadPixels.h"
+#include "src/image/SkRescaleAndReadPixelsUtils.h"
 
 #include <atomic>
 #include <cstdint>
@@ -58,8 +57,8 @@ void SkSurface_Base::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
                                                  SkIRect origSrcRect,
                                                  SkSurface::RescaleGamma rescaleGamma,
                                                  RescaleMode rescaleMode,
-                                                 SkSurface::ReadPixelsCallback callback,
-                                                 SkSurface::ReadPixelsContext context) {
+                                                 RGBAReadPixelsCallback callback,
+                                                 ReadPixelsContext context) {
     SkBitmap src;
     SkPixmap peek;
     SkIRect srcRect;
@@ -75,14 +74,22 @@ void SkSurface_Base::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
         }
         srcRect = SkIRect::MakeSize(src.dimensions());
     }
-    return SkRescaleAndReadPixels(src, info, srcRect, rescaleGamma, rescaleMode, callback,
-                                  context);
+    SkRescaleAndReadPixelsUtils::SynchronousRescaleAndReadPixels(src,
+                                                                 info,
+                                                                 srcRect,
+                                                                 rescaleGamma,
+                                                                 rescaleMode,
+                                                                 callback,
+                                                                 context);
 }
 
-void SkSurface_Base::onAsyncRescaleAndReadPixelsYUV420(
-        SkYUVColorSpace yuvColorSpace, sk_sp<SkColorSpace> dstColorSpace, SkIRect srcRect,
-        SkISize dstSize, RescaleGamma rescaleGamma, RescaleMode,
-        ReadPixelsCallback callback, ReadPixelsContext context) {
+void SkSurface_Base::onAsyncRescaleAndReadPixelsYUVA(const SkYUVAInfo&,
+                                                     sk_sp<SkColorSpace>,
+                                                     SkIRect,
+                                                     RescaleGamma,
+                                                     RescaleMode,
+                                                     YUVAReadPixelsCallback callback,
+                                                     ReadPixelsContext context) {
     // TODO: Call non-YUV asyncRescaleAndReadPixels and then make our callback convert to YUV and
     // call client's callback.
     callback(context, nullptr);
