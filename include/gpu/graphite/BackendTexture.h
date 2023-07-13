@@ -96,6 +96,8 @@ public:
     // Vulkan: VkImageLayout and QueueFamilyIndex
     void setMutableState(const skgpu::MutableTextureState&);
 
+    sk_sp<MutableTextureStateRef> getMutableState() const;
+
 #ifdef SK_DAWN
     WGPUTexture getDawnTexturePtr() const;
     WGPUTextureView getDawnTextureViewPtr() const;
@@ -111,8 +113,6 @@ public:
 #endif
 
 private:
-    sk_sp<MutableTextureStateRef> mutableState() const;
-
     SkISize fDimensions;
     TextureInfo fInfo;
 
