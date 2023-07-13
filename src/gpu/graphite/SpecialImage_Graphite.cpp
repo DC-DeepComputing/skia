@@ -35,6 +35,8 @@ public:
         return 0;
     }
 
+    bool isGraphiteBacked() const override { return true; }
+
     void onDraw(SkCanvas* canvas,
                 SkScalar x, SkScalar y,
                 const SkSamplingOptions& sampling,
@@ -49,15 +51,6 @@ public:
         canvas->drawImageRect(img, SkRect::Make(this->subset()), dst,
                               sampling, paint, SkCanvas::kStrict_SrcRectConstraint);
     }
-
-#if defined(SK_GANESH)
-    GrSurfaceProxyView onView(GrRecordingContext*) const override {
-        // To get here we would have to be requesting a Ganesh resource from a Graphite-backed
-        // special image. That should never happen.
-        SkASSERT(false);
-        return {};
-    }
-#endif
 
     TextureProxyView onTextureProxyView() const override { return fTextureProxyView; }
 
