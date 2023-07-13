@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c239331_4da337f6",
+        "filename": "resources/sksl/shared/SwizzleAsLValue.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-13T15:53:24Z",
+      "side": 1,
+      "message": "This works fine because `array[0]` has no side-effects and so the Metal backend allows it to be cloned.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 59
+      },
+      "revId": "e1e9078f3c9587c1d4d1f56b4f6b376a2084179b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "720d38a3_9e34eaf8",
+        "filename": "tests/sksl/shared/SwizzleAsLValueES3.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-13T15:53:24Z",
+      "side": 1,
+      "message": "^ not legal Metal",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 46
+      },
+      "revId": "e1e9078f3c9587c1d4d1f56b4f6b376a2084179b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3362be8_476cff18",
+        "filename": "tests/sksl/shared/SwizzleAsLValueES3.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-13T15:53:24Z",
+      "side": 1,
+      "message": "!!\nWGSL gets this wrong, and evaluates Z() twice. Oops.",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 0
+      },
+      "revId": "e1e9078f3c9587c1d4d1f56b4f6b376a2084179b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
