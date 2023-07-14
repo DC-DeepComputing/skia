@@ -51,6 +51,24 @@
       "parentUuid": "a9c32f5e_d265d7f8",
       "revId": "5e6cced37305755d393f96765b9c241b8381c42f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eda21431_7d3e42d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-14T19:27:40Z",
+      "side": 1,
+      "message": "I didn\u0027t write the shader, it doesn\u0027t need a deep review :)",
+      "parentUuid": "d680ba57_3ca06565",
+      "revId": "5e6cced37305755d393f96765b9c241b8381c42f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
