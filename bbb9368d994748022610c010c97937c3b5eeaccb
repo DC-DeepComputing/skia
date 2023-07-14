@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b4aad02_94ee2232",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-14T13:33:42Z",
+      "side": 1,
+      "message": "FYI about the less strong version of this assert until Graphite is updated.",
+      "revId": "bbb9368d994748022610c010c97937c3b5eeaccb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
