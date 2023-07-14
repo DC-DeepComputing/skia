@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "549d967a_0588efdd",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-14T23:02:45Z",
+      "side": 1,
+      "message": "I believe so but I haven\u0027t tested cross-compiling while targeting x64. I just confirmed that without this, the correct rust toolchain doesn\u0027t get resolved so I suspect more triples may be necessary.\n\nIn local rust development I\u0027ve had to add this triple to my Rust toolchain installation (via `rustup`) but never for x86. Nevertheless, this is something we can confirm empirically.",
+      "parentUuid": "9044588a_5e6f005d",
+      "range": {
+        "startLine": 258,
+        "startChar": 29,
+        "endLine": 258,
+        "endChar": 36
+      },
+      "revId": "b6062de38d432ccbbaadaaa0500f7400c9ad23a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9502bec9_3377a928",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-14T12:39:46Z",
       "side": 1,
       "message": "Could this be re-structured to be\n```\nif (host_cpu \u003d\u003d \"arm64\") {\n  # set host_platform to arm64_hermetic\n} else {\n  # set host_platform to x64_hermetic\n}\nif (target_cpu \u003d\u003d \"arm64\") {\n  # set platforms and cc_output_directory_tag to mac_arm64_hermetic\n} else {\n  # set platforms and cc_output_directory_tag to mac_x64_hermetic\n}\n```\n\nAs is, the control flow is a bit tough for me to parse.\n\nThe --extra_toolchains should probably go in the .bazelrc file so they are always available (unless this BUILD.gn is not seeing the .bazelrc file, which I would expect to cause other issues).",
+      "range": {
+        "startLine": 21,
+        "startChar": 8,
+        "endLine": 21,
+        "endChar": 16
+      },
+      "revId": "b6062de38d432ccbbaadaaa0500f7400c9ad23a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1a54ecd_0a6f611e",
+        "filename": "third_party/vello/BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-14T23:02:45Z",
+      "side": 1,
+      "message": "\u003e Could this be re-structured to be\n\u003e ```\n\u003e if (host_cpu \u003d\u003d \"arm64\") {\n\u003e   # set host_platform to arm64_hermetic\n\u003e } else {\n\u003e   # set host_platform to x64_hermetic\n\u003e }\n\u003e if (target_cpu \u003d\u003d \"arm64\") {\n\u003e   # set platforms and cc_output_directory_tag to mac_arm64_hermetic\n\u003e } else {\n\u003e   # set platforms and cc_output_directory_tag to mac_x64_hermetic\n\u003e }\n\u003e ```\n\u003e \n\u003e As is, the control flow is a bit tough for me to parse.\n\u003e \n\nDone. I didn\u0027t put in any `else` blocks, instead letting the build figure out what to do with the defaults in the \"not arm64\" case. I think this reads better now that the `cc_output_directory_tag` arguments have been removed.\n\n\u003e The --extra_toolchains should probably go in the .bazelrc file so they are always available (unless this BUILD.gn is not seeing the .bazelrc file, which I would expect to cause other issues).\n\nDone. It looks like moving this to .bazelrc was sufficient, so I removed these lines from here.",
+      "parentUuid": "9502bec9_3377a928",
       "range": {
         "startLine": 21,
         "startChar": 8,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32c6c5eb_0033bd9c",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-14T23:02:45Z",
+      "side": 1,
+      "message": "I think this is probably worth doing as the permutations increase, I imagine we may want to generate the toolchain config declarations from a macro in that case too.\n\nI prefer to hold off on it and perhaps make that change in a follow up CL. IWBN to set up at least another (non-vello) Bazel build job that cross compiles to an arm64 target on mac so we have some CI in place before making further changes.",
+      "parentUuid": "fbcf177e_3e91eee0",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 9
+      },
+      "revId": "b6062de38d432ccbbaadaaa0500f7400c9ad23a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20554397_979464de",
         "filename": "toolchain/mac_toolchain_config.bzl",
         "patchSetId": 8
@@ -83,6 +155,30 @@
       "writtenOn": "2023-07-14T12:39:46Z",
       "side": 1,
       "message": "move this up with a comment along the lines of \"If blank, this will target the host cpu. If specified, this allows use for cross-compilation\"",
+      "range": {
+        "startLine": 65,
+        "startChar": 21,
+        "endLine": 65,
+        "endChar": 24
+      },
+      "revId": "b6062de38d432ccbbaadaaa0500f7400c9ad23a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76fad450_ac397add",
+        "filename": "toolchain/mac_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-14T23:02:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20554397_979464de",
       "range": {
         "startLine": 65,
         "startChar": 21,
