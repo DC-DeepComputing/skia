@@ -70,6 +70,29 @@
       },
       "revId": "91cf741cde99c800ba0514eee38cfb1f41db93eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd77e80d_d57fe625",
+        "filename": "tools/window/GraphiteVulkanWindowContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-14T19:15:29Z",
+      "side": 0,
+      "message": "Why was this assert removed? Does it somehow depend upon the impl. of `GraphiteVulkanWindowContext::getBackbufferSurface()` in a way I\u0027m missing?",
+      "range": {
+        "startLine": 391,
+        "startChar": 0,
+        "endLine": 391,
+        "endChar": 39
+      },
+      "revId": "91cf741cde99c800ba0514eee38cfb1f41db93eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
