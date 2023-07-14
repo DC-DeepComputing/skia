@@ -1256,6 +1256,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLSwizzleIndexStore_GPU") // skia:14177
 	}
 
+	if b.matchOs("Win") && (b.matchGpu("Intel") || b.extraConfig("ANGLE")) {
+		skip(ALL, "tests", ALL, "SkSLSwizzleAsLValueES3_GPU") // https://anglebug.com/8260
+    }
+
 	if b.gpu("RTX3060") && b.extraConfig("Vulkan") && b.matchOs("Win") {
 		skip(ALL, "gm", ALL, "blurcircles2") // skia:13342
 		skip(ALL, "tests", ALL, "SkSLIntrinsicMixFloatES3_GPU")
