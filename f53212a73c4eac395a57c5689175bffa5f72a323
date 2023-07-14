@@ -33,6 +33,24 @@
       "message": "Would it make sense to add a rotated version of GM_strokerects as a regression test?",
       "revId": "f53212a73c4eac395a57c5689175bffa5f72a323",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6658d8f_866e686d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-14T17:00:49Z",
+      "side": 1,
+      "message": "I added a `strokerects_rotated` variant. I confirmed it failed like before on graphite, and that this CL fixes it. I\u0027m not going to stage the CLs to show the fix in gold, but it will be a good test case to ensure new regressions don\u0027t slip through.",
+      "parentUuid": "3089af62_2723ad1b",
+      "revId": "f53212a73c4eac395a57c5689175bffa5f72a323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
