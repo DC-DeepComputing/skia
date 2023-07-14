@@ -30,6 +30,7 @@
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
+#include "src/gpu/ganesh/GrBlurUtils.h"
 #include "src/image/SkImage_Base.h"
 
 using namespace skia_private;
@@ -360,7 +361,7 @@ void Device::drawEdgeAAImage(const SkImage* image,
             shape = GrStyledShape(dst);
         }
 
-        GrBlurUtils::drawShapeWithMaskFilter(
+        GrBlurUtils::DrawShapeWithMaskFilter(
                 rContext, sdc, clip, shape, std::move(grPaint), localToDevice, mf);
     }
 }

@@ -7,21 +7,10 @@
 
 #include "src/core/SkGpuBlurUtils.h"
 
-#include "include/core/SkBitmap.h"
-#include "include/core/SkRect.h"
-#include "src/base/SkMathPriv.h"
 
-#if defined(SK_GANESH)
-#include "include/core/SkColorSpace.h"
-#include "include/gpu/GrRecordingContext.h"
-#include "src/gpu/ganesh/GrCaps.h"
-#include "src/gpu/ganesh/GrRecordingContextPriv.h"
-#include "src/gpu/ganesh/SkGr.h"
-#include "src/gpu/ganesh/effects/GrGaussianConvolutionFragmentProcessor.h"
-#include "src/gpu/ganesh/effects/GrMatrixConvolutionEffect.h"
-#include "src/gpu/ganesh/effects/GrTextureEffect.h"
 
-#include "src/gpu/ganesh/SurfaceDrawContext.h"
+#if defined(SK_GANESH) && defined(FIXME_KJLUBICK)
+
 
 using Direction = GrGaussianConvolutionFragmentProcessor::Direction;
 
@@ -32,8 +21,8 @@ static void fill_in_2D_gaussian_kernel(
 
     // SkGpuBlurUtils::GaussianBlur() should have detected the cases where a 2D blur
     // degenerates to a 1D on X or Y, or to the identity.
-    SkASSERT(!SkGpuBlurUtils::IsEffectivelyZeroSigma(sigmaX) &&
-             !SkGpuBlurUtils::IsEffectivelyZeroSigma(sigmaY));
+    SkASSERT(!GrBlurUtils::IsEffectivelyZeroSigma(sigmaX) &&
+             !GrBlurUtils::IsEffectivelyZeroSigma(sigmaY));
     SkASSERT(!SkScalarNearlyZero(twoSigmaSqrdX) && !SkScalarNearlyZero(twoSigmaSqrdY));
 
     const float sigmaXDenom = 1.0f / twoSigmaSqrdX;
@@ -75,7 +64,7 @@ static void convolve_gaussian_1d(skgpu::ganesh::SurfaceFillContext* sfc,
                                  int radius,
                                  float sigma,
                                  SkTileMode mode) {
-    SkASSERT(radius && !SkGpuBlurUtils::IsEffectivelyZeroSigma(sigma));
+    SkASSERT(radius && !GrBlurUtils::IsEffectivelyZeroSigma(sigma));
     auto wm = SkTileModeToWrapMode(mode);
     auto srcRect = dstRect.makeOffset(dstToSrcOffset);
     // NOTE: This could just be GrMatrixConvolutionEffect with one of the dimensions set to 1
@@ -109,8 +98,8 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian_2d(
         sk_sp<SkColorSpace> finalCS,
         SkBackingFit dstFit) {
     SkASSERT(radiusX && radiusY);
-    SkASSERT(!SkGpuBlurUtils::IsEffectivelyZeroSigma(sigmaX) &&
-             !SkGpuBlurUtils::IsEffectivelyZeroSigma(sigmaY));
+    SkASSERT(!GrBlurUtils::IsEffectivelyZeroSigma(sigmaX) &&
+             !GrBlurUtils::IsEffectivelyZeroSigma(sigmaY));
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // SurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
     auto sdc = skgpu::ganesh::SurfaceDrawContext::Make(
@@ -182,7 +171,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian(
         sk_sp<SkColorSpace> finalCS,
         SkBackingFit fit) {
     using namespace SkGpuBlurUtils;
-    SkASSERT(radius > 0 && !SkGpuBlurUtils::IsEffectivelyZeroSigma(sigma));
+    SkASSERT(radius > 0 && !GrBlurUtils::IsEffectivelyZeroSigma(sigma));
     // Logically we're creating an infinite blur of 'srcBounds' of 'srcView' with 'mode' tiling
     // and then capturing the 'dstBounds' portion in a new RTC where the top left of 'dstBounds' is
     // at {0, 0} in the new RTC.
@@ -899,77 +888,6 @@ bool ComputeBlurredRRectParams(const SkRRect& srcRRect,
 
     rrectToDraw->setRectRadii(newRect, newRadii);
     return true;
-}
-
-// TODO: it seems like there should be some synergy with SkBlurMask::ComputeBlurProfile
-// TODO: maybe cache this on the cpu side?
-int CreateIntegralTable(float sixSigma, SkBitmap* table) {
-    // Check for NaN
-    if (sk_float_isnan(sixSigma)) {
-        return 0;
-    }
-    // Avoid overflow, covers both multiplying by 2 and finding next power of 2:
-    // 2*((2^31-1)/4 + 1) = 2*(2^29-1) + 2 = 2^30 and SkNextPow2(2^30) = 2^30
-    if (sixSigma > SK_MaxS32/4 + 1) {
-        return 0;
-    }
-    // The texture we're producing represents the integral of a normal distribution over a
-    // six-sigma range centered at zero. We want enough resolution so that the linear
-    // interpolation done in texture lookup doesn't introduce noticeable artifacts. We
-    // conservatively choose to have 2 texels for each dst pixel.
-    int minWidth = 2*((int)sk_float_ceil(sixSigma));
-    // Bin by powers of 2 with a minimum so we get good profile reuse.
-    int width = std::max(SkNextPow2(minWidth), 32);
-
-    if (!table) {
-        return width;
-    }
-
-    if (!table->tryAllocPixels(SkImageInfo::MakeA8(width, 1))) {
-        return 0;
-    }
-    *table->getAddr8(0, 0) = 255;
-    const float invWidth = 1.f / width;
-    for (int i = 1; i < width - 1; ++i) {
-        float x = (i + 0.5f) * invWidth;
-        x = (-6 * x + 3) * SK_ScalarRoot2Over2;
-        float integral = 0.5f * (std::erf(x) + 1.f);
-        *table->getAddr8(i, 0) = SkToU8(sk_float_round2int(255.f * integral));
-    }
-
-    *table->getAddr8(width - 1, 0) = 0;
-    table->setImmutable();
-    return table->width();
-}
-
-void Compute1DGaussianKernel(float* kernel, float sigma, int radius) {
-    SkASSERT(radius == SigmaRadius(sigma));
-    if (SkGpuBlurUtils::IsEffectivelyZeroSigma(sigma)) {
-        // Calling SigmaRadius() produces 1, just computing ceil(sigma)*3 produces 3
-        SkASSERT(KernelWidth(radius) == 1);
-        std::fill_n(kernel, 1, 0.f);
-        kernel[0] = 1.f;
-        return;
-    }
-
-    // If this fails, kEffectivelyZeroSigma isn't big enough to prevent precision issues
-    SkASSERT(!SkScalarNearlyZero(2.f * sigma * sigma));
-
-    const float sigmaDenom = 1.0f / (2.f * sigma * sigma);
-    int size = KernelWidth(radius);
-    float sum = 0.0f;
-    for (int i = 0; i < size; ++i) {
-        float term = static_cast<float>(i - radius);
-        // Note that the constant term (1/(sqrt(2*pi*sigma^2)) of the Gaussian
-        // is dropped here, since we renormalize the kernel below.
-        kernel[i] = sk_float_exp(-term * term * sigmaDenom);
-        sum += kernel[i];
-    }
-    // Normalize the kernel
-    float scale = 1.0f / sum;
-    for (int i = 0; i < size; ++i) {
-        kernel[i] *= scale;
-    }
 }
 
 void Compute1DLinearGaussianKernel(float* kernel, float* offset, float sigma, int radius) {

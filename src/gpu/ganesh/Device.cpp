@@ -86,6 +86,7 @@
 #include "src/gpu/ganesh/GrTracing.h"
 #include "src/gpu/ganesh/GrUserStencilSettings.h"
 #include "src/gpu/ganesh/GrXferProcessor.h"
+#include "src/gpu/ganesh/GrBlurUtils.h"
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/SurfaceContext.h"
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
@@ -550,7 +551,7 @@ void Device::drawRect(const SkRect& rect, const SkPaint& paint) {
     if (paint.getMaskFilter() || paint.getPathEffect()) {
         GrStyledShape shape(rect, style);
 
-        GrBlurUtils::drawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(),
+        GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(),
                                              this->clip(), paint, this->localToDevice(), shape);
         return;
     }
@@ -623,7 +624,7 @@ void Device::drawRRect(const SkRRect& rrect, const SkPaint& paint) {
         // A path effect will presumably transform this rrect into something else.
         GrStyledShape shape(rrect, style);
 
-        GrBlurUtils::drawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(),
+        GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(),
                                              this->clip(), paint, this->localToDevice(), shape);
         return;
     }
@@ -692,7 +693,7 @@ void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPain
     // fixed by upgrading GrStyledShape to handle DRRects.
     GrStyledShape shape(path, paint);
 
-    GrBlurUtils::drawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
+    GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
                                          paint, this->localToDevice(), shape);
 }
 
@@ -804,7 +805,7 @@ void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint, bool path
     // TODO: losing possible mutability of 'origSrcPath' here
     GrStyledShape shape(origSrcPath, paint);
 
-    GrBlurUtils::drawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
+    GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
                                          paint, this->localToDevice(), shape);
 }
 

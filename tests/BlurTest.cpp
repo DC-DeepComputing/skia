@@ -29,12 +29,12 @@
 #include "include/effects/SkPerlinNoiseShader.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/GrDirectContext.h"
+#include "src/gpu/ganesh/GrBlurUtils.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/base/SkFloatBits.h"
 #include "include/private/base/SkTPin.h"
 #include "src/base/SkMathPriv.h"
 #include "src/core/SkBlurMask.h"
-#include "src/core/SkGpuBlurUtils.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/effects/SkEmbossMaskFilter.h"
@@ -443,10 +443,10 @@ DEF_TEST(BlurredRRectNinePatchComputation, reporter) {
     bool ninePatchable;
     SkRRect rrectToDraw;
     SkISize size;
-    SkScalar rectXs[SkGpuBlurUtils::kBlurRRectMaxDivisions],
-             rectYs[SkGpuBlurUtils::kBlurRRectMaxDivisions];
-    SkScalar texXs[SkGpuBlurUtils::kBlurRRectMaxDivisions],
-             texYs[SkGpuBlurUtils::kBlurRRectMaxDivisions];
+    SkScalar rectXs[GrBlurUtils::kBlurRRectMaxDivisions],
+             rectYs[GrBlurUtils::kBlurRRectMaxDivisions];
+    SkScalar texXs[GrBlurUtils::kBlurRRectMaxDivisions],
+             texYs[GrBlurUtils::kBlurRRectMaxDivisions];
 
     // not nine-patchable
     {
@@ -455,7 +455,7 @@ DEF_TEST(BlurredRRectNinePatchComputation, reporter) {
         SkRRect rr;
         rr.setRectRadii(r, radii);
 
-        ninePatchable = SkGpuBlurUtils::ComputeBlurredRRectParams(rr, rr, kBlurRad, kBlurRad,
+        ninePatchable = GrBlurUtils::ComputeBlurredRRectParams(rr, rr, kBlurRad, kBlurRad,
                                                                   &rrectToDraw, &size,
                                                                   rectXs, rectYs, texXs, texYs);
         REPORTER_ASSERT(reporter, !ninePatchable);
@@ -467,7 +467,7 @@ DEF_TEST(BlurredRRectNinePatchComputation, reporter) {
         SkRRect rr;
         rr.setRectXY(r, kCornerRad, kCornerRad);
 
-        ninePatchable = SkGpuBlurUtils::ComputeBlurredRRectParams(rr, rr, kBlurRad, kBlurRad,
+        ninePatchable = GrBlurUtils::ComputeBlurredRRectParams(rr, rr, kBlurRad, kBlurRad,
                                                                   &rrectToDraw, &size,
                                                                   rectXs, rectYs, texXs, texYs);
 
@@ -484,7 +484,7 @@ DEF_TEST(BlurredRRectNinePatchComputation, reporter) {
         SkRRect rr;
         rr.setRectXY(r, kXCornerRad, kYCornerRad);
 
-        ninePatchable = SkGpuBlurUtils::ComputeBlurredRRectParams(rr, rr, kBlurRad, kBlurRad,
+        ninePatchable = GrBlurUtils::ComputeBlurredRRectParams(rr, rr, kBlurRad, kBlurRad,
                                                                   &rrectToDraw, &size,
                                                                   rectXs, rectYs, texXs, texYs);
 
