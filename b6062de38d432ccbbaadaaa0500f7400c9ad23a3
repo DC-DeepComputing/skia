@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9044588a_5e6f005d",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-14T12:39:46Z",
+      "side": 1,
+      "message": "In theory, if we needed to cross compile on M1 for x64, we\u0027d add another triple?",
+      "range": {
+        "startLine": 258,
+        "startChar": 29,
+        "endLine": 258,
+        "endChar": 36
+      },
+      "revId": "b6062de38d432ccbbaadaaa0500f7400c9ad23a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9502bec9_3377a928",
+        "filename": "third_party/vello/BUILD.gn",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-14T12:39:46Z",
+      "side": 1,
+      "message": "Could this be re-structured to be\n```\nif (host_cpu \u003d\u003d \"arm64\") {\n  # set host_platform to arm64_hermetic\n} else {\n  # set host_platform to x64_hermetic\n}\nif (target_cpu \u003d\u003d \"arm64\") {\n  # set platforms and cc_output_directory_tag to mac_arm64_hermetic\n} else {\n  # set platforms and cc_output_directory_tag to mac_x64_hermetic\n}\n```\n\nAs is, the control flow is a bit tough for me to parse.\n\nThe --extra_toolchains should probably go in the .bazelrc file so they are always available (unless this BUILD.gn is not seeing the .bazelrc file, which I would expect to cause other issues).",
+      "range": {
+        "startLine": 21,
+        "startChar": 8,
+        "endLine": 21,
+        "endChar": 16
+      },
+      "revId": "b6062de38d432ccbbaadaaa0500f7400c9ad23a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbcf177e_3e91eee0",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-14T12:39:46Z",
+      "side": 1,
+      "message": "Since we are now up to 3 of these, do you think it is worth generating these with a macro, following the example of the rust Bazel rules?",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 9
+      },
+      "revId": "b6062de38d432ccbbaadaaa0500f7400c9ad23a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20554397_979464de",
+        "filename": "toolchain/mac_toolchain_config.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-14T12:39:46Z",
+      "side": 1,
+      "message": "move this up with a comment along the lines of \"If blank, this will target the host cpu. If specified, this allows use for cross-compilation\"",
+      "range": {
+        "startLine": 65,
+        "startChar": 21,
+        "endLine": 65,
+        "endChar": 24
+      },
+      "revId": "b6062de38d432ccbbaadaaa0500f7400c9ad23a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
