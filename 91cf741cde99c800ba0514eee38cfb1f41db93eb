@@ -46,6 +46,30 @@
       },
       "revId": "91cf741cde99c800ba0514eee38cfb1f41db93eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bda78a67_6a9f9515",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-14T15:52:26Z",
+      "side": 0,
+      "message": "This keeps it private and matches what we did in Ganesh. However, I\u0027m still not sure why it\u0027s private.",
+      "parentUuid": "0e5d19c1_b3c1268b",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 55
+      },
+      "revId": "91cf741cde99c800ba0514eee38cfb1f41db93eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
