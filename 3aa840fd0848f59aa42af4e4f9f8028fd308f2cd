@@ -33,6 +33,24 @@
       "message": "This ended up a lot bigger than changing the YUVAInfo input. What\u0027s the rest of the motivation here?",
       "revId": "3aa840fd0848f59aa42af4e4f9f8028fd308f2cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8321c5ee_c7f73026",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-07-14T14:26:10Z",
+      "side": 1,
+      "message": "Mainly getting the API right if I\u0027m going to touch it. The two additional pieces are:\n\n1. Adding the data type parameter for non-byte yuv formats.\n\n2. More structured results, as pixmaps. The reason the original API produced more raw results was the insufficiency of SkColorType at the time for a range of YUV formats. SkColorType has since expanded and SkYUVAPixmaps now exists for exactly this use case: holding a set of pixmaps that make up a YUVA image.",
+      "parentUuid": "f8799c9e_9084b04f",
+      "revId": "3aa840fd0848f59aa42af4e4f9f8028fd308f2cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
