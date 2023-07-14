@@ -533,9 +533,7 @@ SKSL_TEST(CPU | GPU,     kApiLevel_T, MatrixNoOpFolding,               "folding/
 SKSL_TEST(CPU | GPU,     kApiLevel_T, MatrixScalarNoOpFolding,         "folding/MatrixScalarNoOpFolding.rts")
 SKSL_TEST(CPU | GPU,     kApiLevel_T, MatrixVectorNoOpFolding,         "folding/MatrixVectorNoOpFolding.rts")
 SKSL_TEST(CPU | GPU,     kApiLevel_T, Negation,                        "folding/Negation.rts")
-// TODO(skia:13035): This test fails on Nvidia GPUs on OpenGL but passes Vulkan. Re-enable the test
-// on Vulkan when granular GPU backend selection is supported.
-SKSL_TEST(CPU,           kApiLevel_T, PreserveSideEffects,             "folding/PreserveSideEffects.rts")
+SKSL_TEST(CPU | GPU,     kNextRelease,PreserveSideEffects,             "folding/PreserveSideEffects.rts")
 SKSL_TEST(CPU | GPU,     kApiLevel_T, SelfAssignment,                  "folding/SelfAssignment.rts")
 SKSL_TEST(CPU | GPU,     kApiLevel_T, ShortCircuitBoolFolding,         "folding/ShortCircuitBoolFolding.rts")
 SKSL_TEST(CPU | GPU,     kApiLevel_T, StructFieldFolding,              "folding/StructFieldFolding.rts")
