@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b172c4d7_f453ed70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-07-14T19:46:55Z",
+      "side": 1,
+      "message": "Any idea what\u0027s causing the build failures? (Can you see them?) I see a bunch of linking errors like\n\n```\nlld-link: error: undefined symbol: char const *const wuffs_lzw__error__truncated_input\n\u003e\u003e\u003e referenced by C:\\b\\s\\w\\ir\\skia\\src\\codec\\SkWuffsCodec.cpp:456\n\u003e\u003e\u003e               skia.lib(wuffs.SkWuffsCodec.obj):(private: virtual enum SkCodec::Result __thiscall SkWuffsCodec::onStartIncrementalDecode(struct SkImageInfo const \u0026, void *, unsigned int, struct SkCodec::Options const \u0026))\n\u003e\u003e\u003e referenced by C:\\b\\s\\w\\ir\\skia\\src\\codec\\SkWuffsCodec.cpp:606\n\u003e\u003e\u003e               skia.lib(wuffs.SkWuffsCodec.obj):(private: virtual enum SkCodec::Result __thiscall SkWuffsCodec::onIncrementalDecode(int *))\n\u003e\u003e\u003e referenced by C:\\b\\s\\w\\ir\\skia\\src\\codec\\SkWuffsCodec.cpp:620\n\u003e\u003e\u003e               skia.lib(wuffs.SkWuffsCodec.obj):(private: enum SkCodec::Result __thiscall SkWuffsCodec::onIncrementalDecodeOnePass(void))\n\u003e\u003e\u003e referenced 2 more times\n```\n\nbut I haven\u0027t looked through all the failures.",
+      "revId": "00befbb39c4fd0f89f694bf861f4e000291866fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
