@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cacf4632_0c35c5ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-14T01:08:38Z",
+      "side": 1,
+      "message": "I tested this change via the following CL (https://skia-review.googlesource.com/c/skia/+/717842) which adds the Build-Mac-Clang-arm64-Debug-Graphite_Metal_Vello and Test-Mac13-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Graphite_Metal_Vello jobs: https://task-scheduler.skia.org/job/xEKquDmeBd1F73NMmArB",
+      "revId": "140bb0ec0738ecb8e45d618601bd01dac3fad75e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
