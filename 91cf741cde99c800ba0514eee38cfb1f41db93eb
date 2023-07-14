@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d735b4c2_75d74b68",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-14T15:38:35Z",
+      "side": 0,
+      "message": "I\u0027m not sure why this was private -- I don\u0027t think it does any harm to make it public, other than maybe someone can change the state indirectly. However, Ganesh also has it private. I can look into another way to handle this, if need be.",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 55
+      },
+      "revId": "91cf741cde99c800ba0514eee38cfb1f41db93eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
