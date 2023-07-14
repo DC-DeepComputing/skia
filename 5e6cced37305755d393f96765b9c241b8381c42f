@@ -16,6 +16,41 @@
       "message": "I\u0027ll make a test slide as well, but this seemed like a good starting point.",
       "revId": "5e6cced37305755d393f96765b9c241b8381c42f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d680ba57_3ca06565",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-07-14T19:25:50Z",
+      "side": 1,
+      "message": "(Sorry for the delay! I\u0027m still catching up on email from my vacation.)\n\nI can\u0027t provide a meaningful review, but I\u0027m happy to rubber stamp 😊",
+      "revId": "5e6cced37305755d393f96765b9c241b8381c42f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa94be9d_f664d7ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-07-14T19:25:50Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "a9c32f5e_d265d7f8",
+      "revId": "5e6cced37305755d393f96765b9c241b8381c42f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
