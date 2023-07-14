@@ -16,6 +16,23 @@
       "message": "Good catch!",
       "revId": "f53212a73c4eac395a57c5689175bffa5f72a323",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3089af62_2723ad1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-14T15:40:10Z",
+      "side": 1,
+      "message": "Would it make sense to add a rotated version of GM_strokerects as a regression test?",
+      "revId": "f53212a73c4eac395a57c5689175bffa5f72a323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
