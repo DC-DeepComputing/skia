@@ -34,6 +34,24 @@
       "parentUuid": "b172c4d7_f453ed70",
       "revId": "00befbb39c4fd0f89f694bf861f4e000291866fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22b3ffd6_931548c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8223
+      },
+      "writtenOn": "2023-07-16T02:48:31Z",
+      "side": 1,
+      "message": "I added bazel/deps.bzl to this CL, which addressed the Housekeeper-PerCommit-CheckGeneratedFiles failure, but the Windows CQ bots still aren\u0027t happy.\n\nI have a temporary workaround at https://skia-review.googlesource.com/c/skia/+/724256 WDYT?",
+      "parentUuid": "55e8b575_9d0ee45a",
+      "revId": "00befbb39c4fd0f89f694bf861f4e000291866fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
