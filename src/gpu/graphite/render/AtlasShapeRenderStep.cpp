@@ -114,7 +114,7 @@ void AtlasShapeRenderStep::writeUniformsAndTextures(const DrawParams& params,
     gatherer->write(int(atlasShape.inverted()));
 
     // write textures and samplers
-    const SkSamplingOptions kSamplingOptions(SkFilterMode::kNearest);
+    const SkSamplingOptions kSamplingOptions(SkFilterMode::kLinear);
     constexpr SkTileMode kTileModes[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
     gatherer->add(kSamplingOptions, kTileModes, sk_ref_sp(proxy));
 }
