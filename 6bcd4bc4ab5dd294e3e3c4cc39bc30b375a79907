@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd28cefb_b64c3d88",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-17T14:32:08Z",
+      "side": 1,
+      "message": "This confused me for a sec. Consider `/*width\u003d*/` and `/*height\u003d*/` for clarity?\n(Also, for that matter, might be worthwhile to add a height-too-large test)",
+      "range": {
+        "startLine": 180,
+        "startChar": 41,
+        "endLine": 181,
+        "endChar": 43
+      },
+      "revId": "6bcd4bc4ab5dd294e3e3c4cc39bc30b375a79907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

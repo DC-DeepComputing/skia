@@ -16,6 +16,24 @@
       "message": "I added this check here because it seems to me we can get too-large dimensions here via PromiseTextureFrom:\nhttps://crsrc.org/c/third_party/skia/src/gpu/graphite/ImageFactories.cpp;l\u003d97;drc\u003daa0a4a46\nbut if so I\u0027d probably like to add another test for this code path.",
       "revId": "531bf47c9a5d90a41de9cfe81f6e0d413043e383",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c8e06eb_04600517",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-17T14:32:08Z",
+      "side": 1,
+      "message": "Why do we check for dimensions.w/h \u003c 1 on other paths, but not this one?",
+      "parentUuid": "14fb8971_aa0fe1f5",
+      "revId": "531bf47c9a5d90a41de9cfe81f6e0d413043e383",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
