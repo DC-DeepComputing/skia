@@ -83,7 +83,7 @@ public:
     constexpr SkSpan& operator=(const SkSpan& that) = default;
 
     constexpr T& operator [] (size_t i) const {
-        return fPtr[this->checkIndex(i)];
+        return fPtr[sk_check_index_bounds(i, this->size())];
     }
     constexpr T& front() const { this->checkNotEmpty(); return fPtr[0]; }
     constexpr T& back()  const { this->checkNotEmpty(); return fPtr[fSize - 1]; }
@@ -120,19 +120,6 @@ private:
     void checkNotEmpty() const {
         if (this->empty()) SK_UNLIKELY {
             SkUNREACHABLE;
-        }
-    }
-
-    size_t checkIndex(size_t i) const {
-        if (i < fSize) SK_LIKELY {
-            return i;
-        } else SK_UNLIKELY {
-
-#if defined(SK_DEBUG)
-            sk_print_index_out_of_bounds(i, fSize);
-#else
-            SkUNREACHABLE;
-#endif
         }
     }
 

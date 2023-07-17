@@ -153,10 +153,10 @@ public:
     const T* end() const { return this->data() + this->size(); }
 
     T& operator[](int index) {
-        return this->data()[this->checkIndex(index)];
+        return this->data()[sk_check_index_bounds(index, this->size())];
     }
     const T& operator[](int index) const {
-        return this->data()[this->checkIndex(index)];
+        return this->data()[sk_check_index_bounds(index, this->size())];
     }
 
     const T& back() const {
@@ -230,19 +230,6 @@ private:
     void checkNotEmpty() const {
         if (this->empty()) SK_UNLIKELY {
             SkUNREACHABLE;
-        }
-    }
-
-    int checkIndex(int i) const {
-        if (0 <= i && i < this->size()) SK_LIKELY {
-            return i;
-        } else SK_UNLIKELY {
-
-#if defined(SK_DEBUG)
-            sk_print_index_out_of_bounds(SkToSizeT(i), SkToSizeT(this->size()));
-#else
-            SkUNREACHABLE;
-#endif
         }
     }
 

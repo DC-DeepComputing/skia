@@ -387,11 +387,11 @@ public:
      * Get the i^th element.
      */
     T& operator[] (int i) {
-        return fData[this->checkIndex(i)];
+        return fData[sk_check_index_bounds(i, this->size())];
     }
 
     const T& operator[] (int i) const {
-        return fData[this->checkIndex(i)];
+        return fData[sk_check_index_bounds(i, this->size())];
     }
 
     T& at(int i) { return (*this)[i]; }
@@ -515,19 +515,6 @@ private:
     void checkNotEmpty() const {
         if (this->empty()) SK_UNLIKELY {
             SkUNREACHABLE;
-        }
-    }
-
-    int checkIndex(int i) const {
-        if (0 <= i && i < fSize) SK_LIKELY {
-            return i;
-        } else SK_UNLIKELY {
-
-#if defined(SK_DEBUG)
-        sk_print_index_out_of_bounds(SkToSizeT(i), SkToSizeT(fSize));
-#else
-        SkUNREACHABLE;
-#endif
         }
     }
 
