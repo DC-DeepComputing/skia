@@ -291,6 +291,9 @@ static std::map<std::string, std::string> cf_api_map = {
     {"api_path_measure", "PathMeasure"},
     {"api_pathop", "Pathop"},
     {"api_polyutils", "PolyUtils"},
+#if defined(SK_ENABLE_SKOTTIE)
+    {"api_precompile", "Precompile"},
+#endif
     {"api_raster_n32_canvas", "RasterN32Canvas"},
     {"api_skparagraph", "SkParagraph"},
     {"api_svg_canvas", "SVGCanvas"},
@@ -298,7 +301,7 @@ static std::map<std::string, std::string> cf_api_map = {
     {"jpeg_encoder", "JPEGEncoder"},
     {"png_encoder", "PNGEncoder"},
     {"skia_pathop_fuzzer", "LegacyChromiumPathop"},
-    {"webp_encoder", "WEBPEncoder"}
+    {"webp_encoder", "WEBPEncoder"},
 };
 
 // maps clusterfuzz/oss-fuzz -> Skia's name
@@ -839,4 +842,3 @@ static void fuzz_skdescriptor_deserialize(sk_sp<SkData> bytes) {
     FuzzSkDescriptorDeserialize(bytes);
     SkDebugf("[terminated] Did not crash while deserializing an SkDescriptor.\n");
 }
-
