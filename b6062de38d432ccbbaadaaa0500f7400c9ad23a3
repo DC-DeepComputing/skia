@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57d2677d_3740bcf2",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-17T12:11:57Z",
+      "side": 1,
+      "message": "Follow-up CL works for me.",
+      "parentUuid": "32c6c5eb_0033bd9c",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 9
+      },
+      "revId": "b6062de38d432ccbbaadaaa0500f7400c9ad23a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20554397_979464de",
