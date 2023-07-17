@@ -18,6 +18,8 @@ class GrRenderTarget;
 
 namespace skgpu { struct VulkanInterface; }
 
+namespace skgpu::graphite { class BackendSemaphore; }
+
 namespace skwindow::internal {
 
 class GraphiteVulkanWindowContext : public WindowContext {
@@ -107,6 +109,7 @@ private:
     sk_sp<SkSurface>*      fSurfaces;       // surfaces client renders to (may not be based on rts)
     BackbufferInfo*        fBackbuffers;
     uint32_t               fCurrentBackbufferIndex;
+    std::unique_ptr<skgpu::graphite::BackendSemaphore> fWaitSemaphore;
 };
 
 }   // namespace sk_app
