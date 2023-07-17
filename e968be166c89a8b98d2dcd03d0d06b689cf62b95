@@ -16,6 +16,23 @@
       "message": "I think this is the last CL in the bounds check series.",
       "revId": "e968be166c89a8b98d2dcd03d0d06b689cf62b95",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca4e2c68_0427a193",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-07-17T20:57:21Z",
+      "side": 1,
+      "message": "This is ready for review.",
+      "revId": "e968be166c89a8b98d2dcd03d0d06b689cf62b95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
