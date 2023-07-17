@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d572e932_a4c9d255",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-17T14:55:40Z",
+      "side": 1,
+      "message": "Does it complain about unreachability of SkUNREACHABLE if you do it like this?\n\n```\n    SkDEBUGCODE(sk_print_index_out_of_bounds(i, fSize);)\n    SkUNREACHABLE;\n```",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 6
+      },
+      "revId": "7a843ff9e58286575caefafb3f4f6f8a4ba4513a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
