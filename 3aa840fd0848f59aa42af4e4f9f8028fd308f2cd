@@ -105,6 +105,23 @@
       "parentUuid": "652c689a_df94ddc0",
       "revId": "3aa840fd0848f59aa42af4e4f9f8028fd308f2cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b1d0586_3e48dde4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-17T18:05:22Z",
+      "side": 1,
+      "message": "So I was chatting with Brian O about this today and we have some concerns. First, the number of conditions on the YUVAInfo parameters makes us think that maybe this is not the best approach. Despite all the caveats, some client is going to try to use this for other formats and possibly create a maintenance burden that we\u0027re not prepared for right now. Second, this change is a lot more sweeping than either of us were expecting. Brian\u0027s suggestion -- which I agree with -- is that we instead keep asyncRescaleAndReadYUV420 and add a separate YUVA method which doesn\u0027t use YUVAInfo but narrows down to only the parameters needed. That will unblock you, not have to affect Chrome, and then we can discuss how Skia can implement a more generic interface that works for all clients.",
+      "revId": "3aa840fd0848f59aa42af4e4f9f8028fd308f2cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
