@@ -152,20 +152,18 @@ public:
     const T* end() const { return this->data() + this->size(); }
 
     T& operator[](int index) {
-        SkASSERT(index < this->size());
-        return this->data()[index];
+        return this->data()[this->checkIndex(index)];
     }
     const T& operator[](int index) const {
-        SkASSERT(index < this->size());
-        return this->data()[index];
+        return this->data()[this->checkIndex(index)];
     }
 
     const T& back() const {
-        SkASSERT(this->size() > 0);
+        this->checkNotEmpty();
         return this->data()[this->size() - 1];
     }
     T& back() {
-        SkASSERT(this->size() > 0);
+        this->checkNotEmpty();
         return this->data()[this->size() - 1];
     }
 
@@ -228,6 +226,25 @@ public:
     }
 
 private:
+    void checkNotEmpty() const {
+        if (this->empty()) SK_UNLIKELY {
+            SkUNREACHABLE;
+        }
+    }
+
+    int checkIndex(int i) const {
+        if (0 <= i && i < this->size()) SK_LIKELY {
+            return i;
+        } else SK_UNLIKELY {
+
+#if defined(SK_DEBUG)
+            sk_print_index_out_of_bounds(i, this->size());
+#else
+            SkUNREACHABLE;
+#endif
+        }
+    }
+
     SkTDStorage fStorage;
 };
 
