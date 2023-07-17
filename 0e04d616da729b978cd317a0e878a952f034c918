@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6db7c252_a50cebb9",
+        "filename": "src/gpu/graphite/SpecialImage_Graphite.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-17T16:55:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dca33d94_c3da0913",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 76
+      },
+      "revId": "0e04d616da729b978cd317a0e878a952f034c918",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65864af9_41fb51d6",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-17T15:47:10Z",
       "side": 1,
       "message": "This should also include `!srcImg-\u003eisGraphiteBacked()`",
+      "range": {
+        "startLine": 1730,
+        "startChar": 13,
+        "endLine": 1730,
+        "endChar": 38
+      },
+      "revId": "0e04d616da729b978cd317a0e878a952f034c918",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "401e2593_2307f9e7",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1730,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-17T16:55:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65864af9_41fb51d6",
       "range": {
         "startLine": 1730,
         "startChar": 13,
