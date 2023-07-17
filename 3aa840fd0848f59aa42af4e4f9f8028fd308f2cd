@@ -122,6 +122,24 @@
       "message": "So I was chatting with Brian O about this today and we have some concerns. First, the number of conditions on the YUVAInfo parameters makes us think that maybe this is not the best approach. Despite all the caveats, some client is going to try to use this for other formats and possibly create a maintenance burden that we\u0027re not prepared for right now. Second, this change is a lot more sweeping than either of us were expecting. Brian\u0027s suggestion -- which I agree with -- is that we instead keep asyncRescaleAndReadYUV420 and add a separate YUVA method which doesn\u0027t use YUVAInfo but narrows down to only the parameters needed. That will unblock you, not have to affect Chrome, and then we can discuss how Skia can implement a more generic interface that works for all clients.",
       "revId": "3aa840fd0848f59aa42af4e4f9f8028fd308f2cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce4bc107_18192db3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-07-17T19:25:29Z",
+      "side": 1,
+      "message": "Just side notes for posterity:\n\n1) Chrome is using the RGBA async multiple times to readback in NV12 format.\n2) The use of yuvainfo makes the impl (at least in Ganesh, didnt get to graphite) nicely data driven:\nhttps://skia-review.googlesource.com/c/skia/+/724997\nmeaning supporting something like 1) in Skia would mean relaxing the input checks and testing that it works.",
+      "parentUuid": "7e2bb394_cad62360",
+      "revId": "3aa840fd0848f59aa42af4e4f9f8028fd308f2cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
