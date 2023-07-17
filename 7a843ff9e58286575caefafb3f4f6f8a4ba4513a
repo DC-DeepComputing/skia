@@ -94,6 +94,30 @@
       },
       "revId": "7a843ff9e58286575caefafb3f4f6f8a4ba4513a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8a6aa23_0f6c0085",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-17T15:38:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "adb6897a_e068bce8",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 6
+      },
+      "revId": "7a843ff9e58286575caefafb3f4f6f8a4ba4513a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
