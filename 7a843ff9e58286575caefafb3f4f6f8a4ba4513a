@@ -118,6 +118,30 @@
       },
       "revId": "7a843ff9e58286575caefafb3f4f6f8a4ba4513a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57b5778d_e99560a0",
+        "filename": "include/private/base/SkSpan_impl.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-17T15:38:51Z",
+      "side": 1,
+      "message": "Ah, that will be nicer.",
+      "parentUuid": "adb6897a_e068bce8",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 6
+      },
+      "revId": "7a843ff9e58286575caefafb3f4f6f8a4ba4513a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
