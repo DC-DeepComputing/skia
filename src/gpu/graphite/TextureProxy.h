@@ -25,9 +25,6 @@ class Texture;
 
 class TextureProxy : public SkRefCnt {
 public:
-    TextureProxy(SkISize dimensions, const TextureInfo& info, skgpu::Budgeted budgeted);
-    TextureProxy(sk_sp<Texture>);
-
     TextureProxy() = delete;
 
     ~TextureProxy() override;
@@ -71,6 +68,10 @@ public:
                                     Protected,
                                     Renderable,
                                     skgpu::Budgeted);
+    static sk_sp<TextureProxy> Make(const Caps*,
+                                    SkISize dimensions,
+                                    const TextureInfo&,
+                                    skgpu::Budgeted);
 
     using LazyInstantiateCallback = std::function<sk_sp<Texture> (ResourceProvider*)>;
 
@@ -89,12 +90,16 @@ public:
                                            SkColorType,
                                            skgpu::Budgeted);
 
+    static sk_sp<TextureProxy> Wrap(sk_sp<Texture>);
+
 private:
+    TextureProxy(SkISize dimensions, const TextureInfo& info, skgpu::Budgeted budgeted);
     TextureProxy(SkISize dimensions,
                  const TextureInfo&,
                  skgpu::Budgeted,
                  Volatile,
                  LazyInstantiateCallback&&);
+    TextureProxy(sk_sp<Texture>);
 
 #ifdef SK_DEBUG
     void validateTexture(const Texture*);

@@ -87,7 +87,7 @@ sk_sp<SkImage> AdoptTextureFrom(Recorder* recorder,
     }
     texture->setReleaseCallback(std::move(releaseHelper));
 
-    sk_sp<TextureProxy> proxy(new TextureProxy(std::move(texture)));
+    sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
 
     skgpu::Swizzle swizzle = caps->getReadSwizzle(ct, backendTex.info());
     TextureProxyView view(std::move(proxy), swizzle);
@@ -399,7 +399,7 @@ sk_sp<SkImage> TextureFromYUVATextures(Recorder* recorder,
         }
         texture->setReleaseCallback(releaseHelper);
 
-        sk_sp<TextureProxy> proxy(new TextureProxy(std::move(texture)));
+        sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
         textureProxyViews[plane] = TextureProxyView(std::move(proxy));
     }
     YUVATextureProxies yuvaProxies(recorder,

@@ -7,8 +7,11 @@
 
 #include "tests/Test.h"
 
+#include "include/core/SkBitmap.h"
+#include "include/core/SkColorSpace.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
@@ -167,6 +170,26 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context) 
             kValidSize, textureInfo, skgpu::Budgeted::kNo, Volatile::kNo, nullCallback);
     instantiateSuccess = TextureProxy::InstantiateIfNotLazy(resourceProvider, textureProxy.get());
     REPORTER_ASSERT(reporter, instantiateSuccess);
+}
+
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureTooLargeTest, reporter, context) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    const Caps* caps = context->priv().caps();
+
+    // Try to create a texture that is too large for the backend.
+    SkBitmap bitmap;
+    SkISize dimensions = SkISize::Make(caps->maxTextureSize() + 1, 1);
+    bitmap.allocPixels(SkImageInfo::Make(
+            dimensions, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType));
+    sk_sp<SkImage> rasterImage = SkImages::RasterFromBitmap(bitmap);
+    sk_sp<SkImage> graphiteImage =
+            SkImages::TextureFromImage(recorder.get(), rasterImage.get(), /*requiredProps=*/{});
+
+    // Image creation should have failed.
+    REPORTER_ASSERT(reporter, !graphiteImage);
+
+    // Snapping should still succeed, no texture upload should actually be attempted.
+    REPORTER_ASSERT(reporter, recorder->snap());
 }
 
 }  // namespace skgpu::graphite
