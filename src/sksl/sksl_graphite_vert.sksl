@@ -883,7 +883,7 @@ float4 atlas_shape_vertex_fn(float2 quadCoords,
     // will always land on a 0-coverage border pixel.
     if (all(greaterThan(maskDims, float2(0)))) {
         maskBounds    = float4(uvPos, uvPos + maskDims + float2(1)) * atlasSizeInv.xyxy;
-        textureCoords = (uvPos + float2(1) + drawCoords - deviceOrigin) * atlasSizeInv;
+        textureCoords = (uvPos + float2(1) + drawCoords - round(deviceOrigin)) * atlasSizeInv;
     } else {
         // The mask is clipped out so send the texture coordinates to 0. This pixel should
         // always be empty.
