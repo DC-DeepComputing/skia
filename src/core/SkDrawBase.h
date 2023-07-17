@@ -146,7 +146,7 @@ private:
      *  If the matrix cannot be inverted, or the current clip is empty, return
      *  false and ignore bounds parameter.
      */
-    bool SK_WARN_UNUSED_RESULT computeConservativeLocalClipBounds(SkRect* bounds) const;
+    [[nodiscard]] bool computeConservativeLocalClipBounds(SkRect* bounds) const;
 
 public:
     SkPixmap                fDst;
