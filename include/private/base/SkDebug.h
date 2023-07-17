@@ -24,4 +24,9 @@
     #define SkDEBUGF(...)
 #endif
 
+#if defined(SK_DEBUG)
+    inline constexpr bool SkDEBUG = true;
+#else
+    inline constexpr bool SkDEBUG = false;
 #endif
+#endif  // SkDebug_DEFINED
