@@ -31,6 +31,7 @@ std::tuple<int, SkYUVAPixmapInfo::DataType> SkYUVAPixmapInfo::NumChannelsAndData
     // We could allow BGR[A] color types, but then we'd have to decide whether B should be the 0th
     // or 2nd channel. Our docs currently say channel order is always R=0, G=1, B=2[, A=3].
     switch (ct) {
+        case kR8_unorm_SkColorType:
         case kAlpha_8_SkColorType:
         case kGray_8_SkColorType:    return {1, DataType::kUnorm8 };
         case kA16_unorm_SkColorType: return {1, DataType::kUnorm16};
@@ -111,6 +112,18 @@ bool SkYUVAPixmapInfo::operator==(const SkYUVAPixmapInfo& that) const {
                   fPlaneInfos == that.fPlaneInfos &&
                   fRowBytes   == that.fRowBytes;
     SkASSERT(!result || fDataType == that.fDataType);
+    return result;
+}
+
+SkYUVAInfo::YUVALocations SkYUVAPixmapInfo::toYUVALocations() const {
+    uint32_t channelFlags[] = {SkColorTypeChannelFlags(fPlaneInfos[0].colorType()),
+                               SkColorTypeChannelFlags(fPlaneInfos[1].colorType()),
+                               SkColorTypeChannelFlags(fPlaneInfos[2].colorType()),
+                               SkColorTypeChannelFlags(fPlaneInfos[3].colorType())};
+    auto result = fYUVAInfo.toYUVALocations(channelFlags);
+    SkDEBUGCODE(int numPlanes;)
+    SkASSERT(SkYUVAInfo::YUVALocation::AreValidLocations(result, &numPlanes));
+    SkASSERT(numPlanes == this->numPlanes());
     return result;
 }
 

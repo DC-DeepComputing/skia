@@ -12,6 +12,7 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkMipmap.h"
+#include "src/core/SkYUVAInfoLocation.h"
 #include "src/core/SkYUVMath.h"
 #include "src/gpu/ganesh/GrClientMappedBufferManager.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
@@ -783,127 +784,91 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUVA(GrDirectContext* dContext,
         x = y = 0;
     }
 
-    auto yInfo = SkImageInfo::MakeA8(yuvaInfo.dimensions());
-    auto yFC = dContext->priv().makeSFCWithFallback(yInfo, SkBackingFit::kApprox);
+    SkYUVAPixmapInfo yuvaPixmapInfo(yuvaInfo, SkYUVAPixmapInfo::DataType::kUnorm8, /*rowBytes=*/0);
+    const int numPlanes = yuvaPixmapInfo.numPlanes();
 
-    auto uvInfo = yInfo.makeWH(yInfo.width()/2, yInfo.height()/2);
-    auto uFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox);
-    auto vFC = dContext->priv().makeSFCWithFallback(uvInfo, SkBackingFit::kApprox);
+    SkYUVAInfo::YUVALocations yuvaLocations = yuvaPixmapInfo.toYUVALocations();
 
-    if (!yFC || !uFC || !vFC) {
-        callback(callbackContext, nullptr);
-        return;
+    // Start with a full RGBA->YUVA matrix and then copy rows into per-plane matrices.
+    float baseMatrix[20];
+    SkColorMatrix_RGB2YUV(yuvaInfo.yuvColorSpace(), baseMatrix);
+    float planeMatrices[SkYUVAPixmapInfo::kMaxPlanes][20] = {};
+    for (size_t yuvaIndex = 0; yuvaIndex < 4; ++yuvaIndex) {
+        int plane = yuvaLocations[yuvaIndex].fPlane;
+        SkColorChannel rgbaChannel = yuvaLocations[yuvaIndex].fChannel;
+        if (plane < 0) {
+            continue;
+        }
+        size_t srcOffset = yuvaIndex*5;
+        size_t dstOffset = static_cast<size_t>(rgbaChannel)*5;
+        std::copy_n(baseMatrix + srcOffset, 5, planeMatrices[plane] + dstOffset);
     }
 
-    float baseM[20];
-    SkColorMatrix_RGB2YUV(yuvaInfo.yuvColorSpace(), baseM);
+    std::unique_ptr<SurfaceFillContext> sfcs              [SkYUVAPixmapInfo::kMaxPlanes];
+    GrColorType                         readColorTypes    [SkYUVAPixmapInfo::kMaxPlanes];
 
-    // TODO: Use one transfer buffer for all three planes to reduce map/unmap cost?
+    bool doSynchronousRead = !this->caps()->transferFromSurfaceToBufferSupport();
 
-    auto texMatrix = SkMatrix::Translate(x, y);
-
-    auto [readCT, offsetAlignment] =
-            this->caps()->supportedReadPixelsColorType(yFC->colorInfo().colorType(),
-                                                       yFC->asSurfaceProxy()->backendFormat(),
-                                                       GrColorType::kAlpha_8);
-    if (readCT == GrColorType::kUnknown) {
-        callback(callbackContext, nullptr);
-        return;
-    }
-    bool doSynchronousRead = !this->caps()->transferFromSurfaceToBufferSupport() ||
-                             !offsetAlignment;
-    PixelTransferResult yTransfer, uTransfer, vTransfer;
-
-    // This matrix generates (r,g,b,a) = (0, 0, 0, y)
-    float yM[20];
-    std::fill_n(yM, 15, 0.f);
-    std::copy_n(baseM + 0, 5, yM + 15);
-
-    auto yFP = GrTextureEffect::Make(srcView, this->colorInfo().alphaType(), texMatrix);
-    yFP = GrFragmentProcessor::ColorMatrix(std::move(yFP),
-                                           yM,
-                                           /*unpremulInput=*/false,
-                                           /*clampRGBOutput=*/true,
-                                           /*premulOutput=*/false);
-    yFC->fillWithFP(std::move(yFP));
-    if (!doSynchronousRead) {
-        yTransfer = yFC->transferPixels(GrColorType::kAlpha_8,
-                                        SkIRect::MakeSize(yFC->dimensions()));
-        if (!yTransfer.fTransferBuffer) {
+    for (int p = 0; p < numPlanes; ++p) {
+        sfcs[p] = dContext->priv().makeSFCWithFallback(yuvaPixmapInfo.planeInfo(p),
+                                                       SkBackingFit::kApprox);
+        if (!sfcs[p]) {
             callback(callbackContext, nullptr);
             return;
         }
-    }
-
-    texMatrix.preScale(2.f, 2.f);
-    // This matrix generates (r,g,b,a) = (0, 0, 0, u)
-    float uM[20];
-    std::fill_n(uM, 15, 0.f);
-    std::copy_n(baseM + 5, 5, uM + 15);
-
-    auto uFP = GrTextureEffect::Make(srcView,
-                                     this->colorInfo().alphaType(),
-                                     texMatrix,
-                                     GrSamplerState::Filter::kLinear);
-    uFP = GrFragmentProcessor::ColorMatrix(std::move(uFP),
-                                           uM,
-                                           /*unpremulInput=*/false,
-                                           /*clampRGBOutput=*/true,
-                                           /*premulOutput=*/false);
-    uFC->fillWithFP(std::move(uFP));
-    if (!doSynchronousRead) {
-        uTransfer = uFC->transferPixels(GrColorType::kAlpha_8,
-                                        SkIRect::MakeSize(uFC->dimensions()));
-        if (!uTransfer.fTransferBuffer) {
+        auto supportedRead = this->caps()->supportedReadPixelsColorType(
+                sfcs[p]->colorInfo().colorType(),
+                sfcs[p]->asSurfaceProxy()->backendFormat(),
+                SkColorTypeToGrColorType(yuvaPixmapInfo.planeInfo(p).colorType()));
+        readColorTypes[p] = supportedRead.fColorType;
+        if (readColorTypes[p] == GrColorType::kUnknown) {
             callback(callbackContext, nullptr);
             return;
         }
-    }
-
-    // This matrix generates (r,g,b,a) = (0, 0, 0, v)
-    float vM[20];
-    std::fill_n(vM, 15, 0.f);
-    std::copy_n(baseM + 10, 5, vM + 15);
-    auto vFP = GrTextureEffect::Make(std::move(srcView),
-                                     this->colorInfo().alphaType(),
-                                     texMatrix,
-                                     GrSamplerState::Filter::kLinear);
-    vFP = GrFragmentProcessor::ColorMatrix(std::move(vFP),
-                                           vM,
-                                           /*unpremulInput=*/false,
-                                           /*clampRGBOutput=*/true,
-                                           /*premulOutput=*/false);
-    vFC->fillWithFP(std::move(vFP));
-
-    if (!doSynchronousRead) {
-        vTransfer = vFC->transferPixels(GrColorType::kAlpha_8,
-                                         SkIRect::MakeSize(vFC->dimensions()));
-        if (!vTransfer.fTransferBuffer) {
-            callback(callbackContext, nullptr);
-            return;
+        if (!supportedRead.fOffsetAlignmentForTransferBuffer) {
+            doSynchronousRead = true;
         }
     }
 
+    PixelTransferResult asyncResults[SkYUVAPixmapInfo::kMaxPlanes];
+    for (int p = 0; p < numPlanes; ++p) {
+        auto texMatrix = SkMatrix::Translate(x, y);
+        auto [subX, subY] = yuvaInfo.planeSubsamplingFactors(p);
+        texMatrix.preScale(subX, subY);
+        auto fp = GrTextureEffect::Make(srcView, this->colorInfo().alphaType(), texMatrix);
+        fp = GrFragmentProcessor::ColorMatrix(std::move(fp),
+                                              planeMatrices[p],
+                                              /*unpremulInput=*/false,
+                                              /*clampRGBOutput=*/true,
+                                              /*premulOutput=*/false);
+        sfcs[p]->fillWithFP(std::move(fp));
+        if (!doSynchronousRead) {
+            asyncResults[p] = sfcs[p]->transferPixels(readColorTypes[p],
+                                                      SkIRect::MakeSize(sfcs[p]->dimensions()));
+            if (!asyncResults[p].fTransferBuffer) {
+                callback(callbackContext, nullptr);
+                return;
+            }
+        }
+    }
+
+    // If we're synchronous, do all the reads at the end so we don't need to sync GPU/CPU more than
+    // once.
     if (doSynchronousRead) {
-        GrPixmap yPmp = GrPixmap::Allocate(yInfo);
-        GrPixmap uPmp = GrPixmap::Allocate(uvInfo);
-        GrPixmap vPmp = GrPixmap::Allocate(uvInfo);
-        if (!yFC->readPixels(dContext, yPmp, {0, 0}) ||
-            !uFC->readPixels(dContext, uPmp, {0, 0}) ||
-            !vFC->readPixels(dContext, vPmp, {0, 0})) {
-            callback(callbackContext, nullptr);
-            return;
+        AsyncReadResult::Plane planes[SkYUVAPixmapInfo::kMaxPlanes];
+        for (int p = 0; p < numPlanes; ++p) {
+            GrPixmap pm = GrPixmap::Allocate(yuvaPixmapInfo.planeInfo(p));
+            if (!sfcs[p]->readPixels(dContext, pm, {0,0})) {
+                callback(callbackContext, nullptr);
+                return;
+            }
+            planes[p] = AsyncReadResult::Plane(yuvaPixmapInfo.planeInfo(p),
+                                               pm.pixelStorage(),
+                                               pm.rowBytes());
         }
-        AsyncReadResult::Plane planes[3]{{yInfo, yPmp.pixelStorage(), yPmp.rowBytes()},
-                                         {uvInfo, uPmp.pixelStorage(), uPmp.rowBytes()},
-                                         {uvInfo, vPmp.pixelStorage(), vPmp.rowBytes()}};
         callback(callbackContext, AsyncReadResult::Make(yuvaInfo, planes));
         return;
     }
-
-    SkYUVAPixmapInfo yuvaPixmapInfo(yuvaInfo,
-                                    SkYUVAPixmapInfo::DataType::kUnorm8,
-                                    /*rowBytes=*/nullptr);
 
     struct FinishContext {
         YUVAReadPixelsCallback* fClientCallback;
@@ -911,7 +876,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUVA(GrDirectContext* dContext,
         GrClientMappedBufferManager* fMappedBufferManager;
         SkYUVAPixmapInfo fYUVAPixmapInfo;
         size_t fBufferAlignment;
-        PixelTransferResult fTransfers[3];
+        PixelTransferResult fTransfers[SkYUVAPixmaps::kMaxPlanes];
     };
     // Assumption is that the caller would like to flush. We could take a parameter or require an
     // explicit flush from the caller. We'd have to have a way to defer attaching the finish
@@ -922,8 +887,11 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUVA(GrDirectContext* dContext,
             dContext->priv().clientMappedBufferManager(),
             yuvaPixmapInfo,
             this->caps()->transferBufferRowBytesAlignment(),
-            {std::move(yTransfer), std::move(uTransfer), std::move(vTransfer)}
+            /*fTransfers=*/{},
     };
+    for (int p = 0; p < numPlanes; ++p) {
+        finishContext->fTransfers[p] = std::move(asyncResults[p]);
+    }
 
     auto finishCallback = [](GrGpuFinishedContext c) {
         std::unique_ptr<const FinishContext> context(static_cast<const FinishContext*>(c));

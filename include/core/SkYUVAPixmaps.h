@@ -135,6 +135,12 @@ public:
     const SkImageInfo& planeInfo(int i) const { return fPlaneInfos[static_cast<size_t>(i)]; }
 
     /**
+     * Computes a YUVALocations representation of the planar layout. The result is guaranteed to be
+     * valid if this->isValid().
+     */
+    SkYUVAInfo::YUVALocations toYUVALocations() const;
+
+    /**
      * Determine size to allocate for all planes. Optionally retrieves the per-plane sizes in
      * planeSizes if not null. If total size overflows will return SIZE_MAX and set all planeSizes
      * to SIZE_MAX. Returns 0 and fills planesSizes with 0 if this SkYUVAPixmapInfo is not valid.
@@ -295,7 +301,7 @@ constexpr SkColorType SkYUVAPixmapInfo::DefaultColorTypeForDataType(DataType dat
     switch (numChannels) {
         case 1:
             switch (dataType) {
-                case DataType::kUnorm8:         return kGray_8_SkColorType;
+                case DataType::kUnorm8:         return kR8_unorm_SkColorType;
                 case DataType::kUnorm16:        return kA16_unorm_SkColorType;
                 case DataType::kFloat16:        return kA16_float_SkColorType;
                 case DataType::kUnorm10_Unorm2: return kUnknown_SkColorType;

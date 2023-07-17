@@ -166,7 +166,8 @@ void SynchronousRescaleAndReadPixels(SkBitmap bmp,
 }
 
 bool IsYUVAInfoValid(const SkYUVAInfo& info, const SkYUVAPixmapInfo::DataType dataType) {
-    if (info.planeConfig() != SkYUVAInfo::PlaneConfig::kY_U_V) {
+    if (info.planeConfig() != SkYUVAInfo::PlaneConfig::kY_U_V &&
+        info.planeConfig() != SkYUVAInfo::PlaneConfig::kY_U_V_A) {
         return false;
     }
 
