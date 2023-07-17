@@ -52,6 +52,24 @@
       "parentUuid": "14fb8971_aa0fe1f5",
       "revId": "531bf47c9a5d90a41de9cfe81f6e0d413043e383",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2da2d9d_f7ec395f",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-17T15:46:18Z",
+      "side": 1,
+      "message": "Actually, I changed my mind about this again -- interrupting an entire replay is probably worse than dropping specific image draw calls for images that are too big. I don\u0027t think it makes sense to return a TextureProxy that we know can\u0027t be instantiated because the dimensions are too large, so I think this check makes sense here. I added a test trying to create promise images that are too large (exercising this code path) as well as empty (which we already catch).",
+      "parentUuid": "05128352_6d9902bf",
+      "revId": "531bf47c9a5d90a41de9cfe81f6e0d413043e383",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
