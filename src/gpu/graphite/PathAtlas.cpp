@@ -131,8 +131,8 @@ void VelloComputePathAtlas::onAddShape(const Shape& shape,
     // `localToDevice` translated by the top-left offset of `atlasBounds`, accounting for the 2
     // pixel-wide border we added earlier, so that the shape is correctly centered.
     SkM44 atlasMatrix = localToDevice.matrix();
-    atlasMatrix.postTranslate(atlasBounds.x() + 2 - deviceOffsetX,
-                              atlasBounds.y() + 2 - deviceOffsetY);
+    atlasMatrix.postTranslate(atlasBounds.x() + 2 - round(deviceOffsetX),
+                              atlasBounds.y() + 2 - round(deviceOffsetY));
     Transform atlasTransform(atlasMatrix);
     SkPath devicePath = shape.asPath();
 
