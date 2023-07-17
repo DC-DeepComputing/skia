@@ -52,6 +52,24 @@
       "parentUuid": "55e8b575_9d0ee45a",
       "revId": "00befbb39c4fd0f89f694bf861f4e000291866fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e965f45a_b07105c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-07-17T14:24:06Z",
+      "side": 1,
+      "message": "\u003e I\u0027m not sure why Windows makes a difference (do Win-Clang and Debian10-Clang use a different linker, even if they use the same compiler??).\n\nI don\u0027t know about the linkers. Maybe @kjlubick@google.com has thoughts?\n\n\u003e I have a temporary workaround at https://skia-review.googlesource.com/c/skia/+/724256 WDYT?\n\nSounds fine to me.",
+      "parentUuid": "22b3ffd6_931548c2",
+      "revId": "00befbb39c4fd0f89f694bf861f4e000291866fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
