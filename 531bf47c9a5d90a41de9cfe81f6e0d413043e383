@@ -88,6 +88,24 @@
       "parentUuid": "b2da2d9d_f7ec395f",
       "revId": "531bf47c9a5d90a41de9cfe81f6e0d413043e383",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90bc33f9_a3aeea9a",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-17T17:37:54Z",
+      "side": 1,
+      "message": "Checking for empty dimensions here since this is no longer called by MakeFullyLazy.",
+      "parentUuid": "ac235fef_66194406",
+      "revId": "531bf47c9a5d90a41de9cfe81f6e0d413043e383",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
