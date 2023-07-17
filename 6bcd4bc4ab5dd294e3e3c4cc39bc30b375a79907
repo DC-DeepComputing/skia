@@ -22,6 +22,30 @@
       },
       "revId": "6bcd4bc4ab5dd294e3e3c4cc39bc30b375a79907",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90e87348_57cae70e",
+        "filename": "tests/graphite/TextureProxyTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-17T14:47:15Z",
+      "side": 1,
+      "message": "Split the dimensions definition into a separate line. A height-too-large test feels a little redundant to me personally, especially since maxTextureSize() only has one value for both dimensions, but I don\u0027t have a very strong opinion here.",
+      "parentUuid": "bd28cefb_b64c3d88",
+      "range": {
+        "startLine": 180,
+        "startChar": 41,
+        "endLine": 181,
+        "endChar": 43
+      },
+      "revId": "6bcd4bc4ab5dd294e3e3c4cc39bc30b375a79907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

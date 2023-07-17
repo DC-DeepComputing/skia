@@ -34,6 +34,24 @@
       "parentUuid": "14fb8971_aa0fe1f5",
       "revId": "531bf47c9a5d90a41de9cfe81f6e0d413043e383",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05128352_6d9902bf",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-17T14:47:15Z",
+      "side": 1,
+      "message": "Dimensions can be negative here to designate a \"fully-lazy\" proxy, whose dimensions will only be known at instantiation.\n\nWith that in mind, maybe too-large dimensions are ok here since for all lazy proxies the actual texture still needs to be instantiated by the client, and a failure there (during a replay) won\u0027t be as catastrophic as a failure during a snap? And we can\u0027t validate dimensions at this point for fully-lazy proxies anyways.",
+      "parentUuid": "14fb8971_aa0fe1f5",
+      "revId": "531bf47c9a5d90a41de9cfe81f6e0d413043e383",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
