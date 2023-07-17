@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48da82fb_f4e32066",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-17T13:03:21Z",
+      "side": 1,
+      "message": "Might be worth calling out that this does not use a Dockerfile (or similar process) to build CanvasKit, but uses the existing Bazel rules directly.",
+      "revId": "3c6a5ea6d39d4fde8912246fafd94ad729d9b002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "485215b2_ae17d3e8",
         "filename": "WORKSPACE.bazel",
         "patchSetId": 3
@@ -42,6 +59,29 @@
         "startChar": 33,
         "endLine": 11,
         "endChar": 46
+      },
+      "revId": "3c6a5ea6d39d4fde8912246fafd94ad729d9b002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f99a9b70_715017a7",
+        "filename": "infra/debugger-app/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-17T13:03:21Z",
+      "side": 1,
+      "message": "In the original, there was an enable_debugger CLI option set. Does that functionality exist in the current Bazel rules?\n\nhttps://github.com/google/skia/blob/0494868e93a414dc870027253fcfc5281264c5db/docker/skia-wasm-release/Dockerfile#L51C64-L51C64",
+      "range": {
+        "startLine": 6,
+        "startChar": 10,
+        "endLine": 6,
+        "endChar": 32
       },
       "revId": "3c6a5ea6d39d4fde8912246fafd94ad729d9b002",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
