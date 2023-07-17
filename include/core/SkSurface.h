@@ -555,6 +555,19 @@ public:
                                          ReadPixelsCallback callback,
                                          ReadPixelsContext context);
 
+
+    /**
+     * TODO: Description
+     */
+    void asyncRescaleAndReadPixelsYUVA420(SkYUVColorSpace yuvColorSpace,
+                                          sk_sp<SkColorSpace> dstColorSpace,
+                                          const SkIRect& srcRect,
+                                          const SkISize& dstSize,
+                                          RescaleGamma rescaleGamma,
+                                          RescaleMode rescaleMode,
+                                          ReadPixelsCallback callback,
+                                          ReadPixelsContext context);
+
     /** Copies SkRect of pixels from the src SkPixmap to the SkSurface.
 
         Source SkRect corners are (0, 0) and (src.width(), src.height()).
