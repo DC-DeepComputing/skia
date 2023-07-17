@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f9def4f_94d749e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-17T12:54:56Z",
+      "side": 1,
+      "message": "Just an FYI: This revert also restored some performance that was lost when the original CL landed. Not surprising, but if you\u0027re curious to see the magnitude of the effect of the re-ordering: https://perf.skia.org/e/?begin\u003d1689205009\u0026end\u003d1689281595\u0026keys\u003dX8a103983b7ee2ffd7b7144997096a192\u0026selected\u003dcommit%3D67403%26name%3D%252Carch%253Dx86_64%252Cbench_type%253Dplayback%252Cclip%253D0_0_1000_1000%252Ccompiler%253DClang%252Cconfig%253Dangle_d3d11_es3%252Ccpu_or_gpu%253DGPU%252Ccpu_or_gpu_value%253DIntelHD4400%252Cextra_config%253DANGLE%252Cmodel%253DNUCD34010WYKH%252Cname%253Dmobi_youtube.skp%252Cos%253DWin10%252Cscale%253D1%252Csource_type%253Dskp%252Csub_result%253Dmin_ms%252Ctest%253Dmobi_youtube.skp_1_1000_1000%252C\u0026xbaroffset\u003d67403",
+      "revId": "084daab746ebca2b0d125ec7739f296cb3744ed3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
