@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bab9a383_deffcff4",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-17T16:56:49Z",
+      "side": 1,
+      "message": "nit: Assert proxy isn\u0027t null here.",
+      "revId": "3084516b4f51aa08664d9895b3936f2687e458da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6ed0bc6_8c080fe8",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-17T16:56:49Z",
+      "side": 1,
+      "message": "Should this just be calling `MakeLazy` with `{-1, -1}`? If it\u0027s not, then we can switch `MakeLazy` to be strict about not accepting negative dimensions.",
+      "range": {
+        "startLine": 174,
+        "startChar": 11,
+        "endLine": 174,
+        "endChar": 48
+      },
+      "revId": "3084516b4f51aa08664d9895b3936f2687e458da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

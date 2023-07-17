@@ -70,6 +70,24 @@
       "parentUuid": "05128352_6d9902bf",
       "revId": "531bf47c9a5d90a41de9cfe81f6e0d413043e383",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac235fef_66194406",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-17T16:56:49Z",
+      "side": 1,
+      "message": "I agree, but I also think a comment about fully-lazy images using negative dimensions would be valid, since in the future, I could see John\u0027s question coming up again.",
+      "parentUuid": "b2da2d9d_f7ec395f",
+      "revId": "531bf47c9a5d90a41de9cfe81f6e0d413043e383",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
