@@ -22,6 +22,30 @@
       },
       "revId": "89ba92d21de4e498aa4f030ba0b00968d57faee2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c84eb037_65853866",
+        "filename": "bazel/get_workspace_status.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-17T12:59:30Z",
+      "side": 1,
+      "message": "NVM, I see it is used in the follow-on CL.",
+      "parentUuid": "41fc9e9a_d8a0de47",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "89ba92d21de4e498aa4f030ba0b00968d57faee2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
