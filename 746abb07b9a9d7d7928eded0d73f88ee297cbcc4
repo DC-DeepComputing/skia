@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "680bdd05_a590bceb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-17T13:55:06Z",
+      "side": 1,
+      "message": "Canary bots ran fine, red seems to be complaining about a later merge conflict(?)",
+      "revId": "746abb07b9a9d7d7928eded0d73f88ee297cbcc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
