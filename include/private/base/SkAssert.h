@@ -12,6 +12,7 @@
 #include "include/private/base/SkDebug.h" // IWYU pragma: keep
 
 #include <cstddef>
+#include <type_traits>
 
 #if defined(__clang__) && defined(__has_attribute)
     #if __has_attribute(likely)
@@ -119,4 +120,24 @@
     SK_ABORT("Length (%zu) is too big for size %zu.\n", i, size);
 }
 
-#endif
+template <typename T> SK_API inline T sk_check_index_bounds(T i, T size) {
+    if constexpr (std::is_signed_v<T>) {
+        if (0 <= i && i < size) SK_LIKELY{
+            return i;
+        }
+    } else {
+        if (i < size)  SK_LIKELY {
+            return i;
+        }
+    }
+
+    SK_UNLIKELY {
+        if constexpr (SkDEBUG) {
+            SK_ABORT("Index (%zu) out of bounds for size %zu.\n", (size_t)i, (size_t)size);
+        } else {
+            SkUNREACHABLE;
+        }
+    }
+}
+
+#endif  // SkAssert_DEFINED
