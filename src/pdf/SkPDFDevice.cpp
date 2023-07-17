@@ -1727,7 +1727,7 @@ void SkPDFDevice::drawSpecial(SkSpecialImage* srcImg, const SkMatrix& localToDev
     if (this->hasEmptyClip()) {
         return;
     }
-    SkASSERT(!srcImg->isTextureBacked());
+    SkASSERT(!srcImg->isGaneshBacked() && !srcImg->isGraphiteBacked());
     SkASSERT(!paint.getMaskFilter() && !paint.getImageFilter());
 
     SkBitmap resultBM;
