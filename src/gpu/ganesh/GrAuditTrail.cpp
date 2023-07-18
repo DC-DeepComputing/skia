@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/GrAuditTrail.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
+#include "src/utils/SkJSONWriter.h"
 
 using namespace skia_private;
 
@@ -138,7 +139,6 @@ void GrAuditTrail::fullReset() {
 }
 
 #ifdef SK_ENABLE_DUMP_GPU
-#include "src/utils/SkJSONWriter.h"
 
 template <typename T>
 void GrAuditTrail::JsonifyTArray(SkJSONWriter& writer, const char* name, const T& array) {
@@ -205,8 +205,14 @@ void GrAuditTrail::OpNode::toJson(SkJSONWriter& writer) const {
 #else
 template <typename T>
 void GrAuditTrail::JsonifyTArray(SkJSONWriter& writer, const char* name, const T& array) {}
-void GrAuditTrail::toJson(SkJSONWriter& writer) const {}
-void GrAuditTrail::toJson(SkJSONWriter& writer, int clientID) const {}
+void GrAuditTrail::toJson(SkJSONWriter& writer) const {
+    writer.beginObject();
+    writer.endObject();
+}
+void GrAuditTrail::toJson(SkJSONWriter& writer, int clientID) const  {
+    writer.beginObject();
+    writer.endObject();
+}
 void GrAuditTrail::Op::toJson(SkJSONWriter& writer) const {}
 void GrAuditTrail::OpNode::toJson(SkJSONWriter& writer) const {}
 #endif // SK_ENABLE_DUMP_GPU
