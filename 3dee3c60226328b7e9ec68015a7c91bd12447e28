@@ -70,6 +70,30 @@
       },
       "revId": "3dee3c60226328b7e9ec68015a7c91bd12447e28",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdbc6884_ddb45d43",
+        "filename": "fuzz/oss_fuzz/FuzzSkMeshSpecification.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-18T16:54:16Z",
+      "side": 1,
+      "message": "PS in retrospect I wish I hadn\u0027t made this fuzzer try to be smart. It didn\u0027t improve the fuzzer\u0027s ability to find trouble. If you wanted to remove all this logic I wouldn\u0027t complain.",
+      "parentUuid": "b857610b_ec995410",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 0
+      },
+      "revId": "3dee3c60226328b7e9ec68015a7c91bd12447e28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
