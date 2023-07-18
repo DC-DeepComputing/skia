@@ -166,6 +166,30 @@
       },
       "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8403ccd_b15572db",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-18T14:46:42Z",
+      "side": 1,
+      "message": "What? No, that\u0027s not what I am trying to say.\n\nWe don\u0027t turn off any warnings here. Very old or bad compilers might have warned (MSVC, I\u0027m looking at you) but hopefully that isn\u0027t still the case in 2023.\n\nYou don\u0027t need to look at assembly to know the code is safe. \n\nI asked questions about these things because I wanted to understand why you had used `if constexpr (...)` and added two paths here, vs just one check. I was trying to understand why you did it this more-complex way.\n\nAssuming reasonable codegen, and assuming the compiler doesn\u0027t issue a warning, universally checking against `(0 \u003c\u003d i \u0026\u0026 i \u003c\u003d size)` seems like it should be perfectly safe and reader-comprehensible.",
+      "parentUuid": "10b4aa89_3c023eb8",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 40
+      },
+      "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
