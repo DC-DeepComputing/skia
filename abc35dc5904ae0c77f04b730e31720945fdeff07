@@ -39,6 +39,30 @@
       },
       "revId": "abc35dc5904ae0c77f04b730e31720945fdeff07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fac0b152_07ee3ffb",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-18T16:06:01Z",
+      "side": 1,
+      "message": "Done. I cleaned up some of the plumbing so that integer types are used all the way to the instance attributes. I also localized the two border calculations (1-pixel AA border + atlas bounds) to here and included it in the data returned to Device so that it doesn\u0027t have to be repeated by the RenderStep.\n\nPTAL.",
+      "parentUuid": "dd5f71e6_54ac1a9e",
+      "range": {
+        "startLine": 62,
+        "startChar": 18,
+        "endLine": 62,
+        "endChar": 28
+      },
+      "revId": "abc35dc5904ae0c77f04b730e31720945fdeff07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
