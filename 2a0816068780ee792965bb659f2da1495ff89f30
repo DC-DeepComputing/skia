@@ -33,6 +33,24 @@
       "message": "The direction looks good -- I assume the static bools are just there to test things out?",
       "revId": "2a0816068780ee792965bb659f2da1495ff89f30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61ba3d63_d6acc0ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-07-18T18:07:14Z",
+      "side": 1,
+      "message": "Yeah, I was able to get the GM working locally by just always returning 4 planes.",
+      "parentUuid": "e85447d1_88eb46a1",
+      "revId": "2a0816068780ee792965bb659f2da1495ff89f30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
