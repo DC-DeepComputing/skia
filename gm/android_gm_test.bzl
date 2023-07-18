@@ -10,19 +10,27 @@ _KNOWN_CONFIGS = [
     "gles",
 ]
 
-def android_gm_test(config, extra_args = [], **kwargs):
+# This list should be kept in sync with the supported vias in //gm/BazelTestRunner.cpp.
+_KNOWN_VIAS = [
+    "serialization",
+]
+
+def android_gm_test(config, via = "", extra_args = [], **kwargs):
     """Defines an Android GM test.
 
     This macro is just a wrapper around the android_test macro with the necessary defaults for
     Android GM tests. See the android_test macro documentation for details.
 
     Args:
-        config: The config under which the GM should run.
+        config: The config under which the GMs should run.
+        via: The via under which the GMs should run. Optional.
         extra_args: See the android_test macro documentation.
         **kwargs: Any arguments to pass to the underlying android_test macro instance.
     """
     if config not in _KNOWN_CONFIGS:
         fail("Unknown config: " + config)
+    if via != "" and via not in _KNOWN_VIAS:
+        fail("Unknown via: " + via)
 
     android_test(
         test_runner_if_required_condition_is_satisfied = "//gm:BazelGMRunner.cpp",
@@ -33,7 +41,7 @@ def android_gm_test(config, extra_args = [], **kwargs):
             "$ADB_TEST_OUTPUT_DIR",
             "--surfaceConfig",
             config,
-        ],
+        ] + (["--via", via] if via != "" else []),
         save_output_files = True,  # Save any produced PNG and JSON files as undeclared outputs.
         **kwargs
     )
