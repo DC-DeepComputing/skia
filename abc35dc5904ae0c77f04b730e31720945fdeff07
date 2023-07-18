@@ -16,6 +16,29 @@
       "message": "The new GM diffs on gold show that this fixes the bug.",
       "revId": "abc35dc5904ae0c77f04b730e31720945fdeff07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd5f71e6_54ac1a9e",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-18T01:22:21Z",
+      "side": 1,
+      "message": "I think instead of rounding just the top-left corner, and also rounding in sksl, we should call roundOut() on the maskBounds here to to get the pixelized bounds of the mask.\n\nonAddShape() should probably take integers for the device offsets, since applying fractional offsets during the mask generation is going to be desired for SW atlasing too.",
+      "range": {
+        "startLine": 62,
+        "startChar": 18,
+        "endLine": 62,
+        "endChar": 28
+      },
+      "revId": "abc35dc5904ae0c77f04b730e31720945fdeff07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
