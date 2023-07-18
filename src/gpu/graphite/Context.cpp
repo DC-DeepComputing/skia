@@ -421,15 +421,20 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
                                     const SkIRect& srcRect,
                                     SkImage::ReadPixelsCallback callback,
                                     SkImage::ReadPixelsContext callbackContext) {
-    // Make three Surfaces to draw the YUV planes into
-    SkImageInfo yInfo = SkImageInfo::MakeA8(srcRect.size());
-    sk_sp<SkSurface> ySurface = Surface::MakeGraphite(recorder, yInfo, Budgeted::kNo);
+    static bool alpha = true;
+    // Make three or four Surfaces to draw the YUV[A] planes into
+    SkImageInfo yaInfo = SkImageInfo::MakeA8(srcRect.size());
+    sk_sp<SkSurface> ySurface = Surface::MakeGraphite(recorder, yaInfo, Budgeted::kNo);
+    sk_sp<SkSurface> aSurface;
+    if (alpha) {
+        aSurface = Surface::MakeGraphite(recorder, yaInfo, Budgeted::kNo);
+    }
 
-    SkImageInfo uvInfo = yInfo.makeWH(yInfo.width()/2, yInfo.height()/2);
+    SkImageInfo uvInfo = yaInfo.makeWH(yaInfo.width()/2, yaInfo.height()/2);
     sk_sp<SkSurface> uSurface = Surface::MakeGraphite(recorder, uvInfo, Budgeted::kNo);
     sk_sp<SkSurface> vSurface = Surface::MakeGraphite(recorder, uvInfo, Budgeted::kNo);
 
-    if (!ySurface || !uSurface || !vSurface) {
+    if (!ySurface || !uSurface || !vSurface || (alpha && !aSurface)) {
         callback(callbackContext, nullptr);
         return;
     }
@@ -441,27 +446,32 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
                         float rgb2yuv[20],
                         const SkMatrix& texMatrix) {
         // Render the plane defined by rgb2yuv from srcImage into dstSurface
-        SkCanvas* canvas = dstSurface->getCanvas();
+        SkPaint paint;
         const SkSamplingOptions sampling(SkFilterMode::kLinear, SkMipmapMode::kNone);
         sk_sp<SkShader> imgShader = srcImage->makeShader(SkTileMode::kClamp, SkTileMode::kClamp,
                                                          sampling, texMatrix);
-        sk_sp<SkColorFilter> matrixFilter = SkColorFilters::Matrix(rgb2yuv);
-        SkPaint paint;
         paint.setShader(std::move(imgShader));
-        paint.setColorFilter(std::move(matrixFilter));
+
+        if (rgb2yuv) {
+            sk_sp<SkColorFilter> matrixFilter = SkColorFilters::Matrix(rgb2yuv);
+            paint.setColorFilter(std::move(matrixFilter));
+        }
+
+        SkCanvas* canvas = dstSurface->getCanvas();
         canvas->drawPaint(paint);
     };
 
-    auto copyPlane = [this](SkSurface* dstSurface,
-                            const SkImageInfo& surfaceInfo) {
+    auto copyPlane = [this](SkSurface* surface) {
         // Transfer result from dstSurface
-        auto graphiteSurface = reinterpret_cast<const skgpu::graphite::Surface*>(dstSurface);
+        auto graphiteSurface = reinterpret_cast<const skgpu::graphite::Surface*>(surface);
         TextureProxyView proxyView = graphiteSurface->readSurfaceView();
 
+        auto srcImageInfo = surface->imageInfo();
+        auto dstColorInfo = srcImageInfo.colorInfo().makeColorType(kAlpha_8_SkColorType);
         return this->transferPixels(proxyView.proxy(),
-                                    surfaceInfo,
-                                    surfaceInfo.colorInfo().makeColorType(kAlpha_8_SkColorType),
-                                    SkIRect::MakeWH(dstSurface->width(), dstSurface->height()));
+                                    srcImageInfo,
+                                    dstColorInfo,
+                                    SkIRect::MakeWH(surface->width(), surface->height()));
     };
 
     float baseM[20];
@@ -473,6 +483,15 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
     std::fill_n(yM, 15, 0.f);
     std::copy_n(baseM + 0, 5, yM + 15);
     drawPlane(ySurface.get(), srcImage, yM, texMatrix);
+    if (alpha) {
+        // No matrix, straight copy of alpha channel
+        SkASSERT(baseM[15] == 0 &&
+                 baseM[16] == 0 &&
+                 baseM[17] == 0 &&
+                 baseM[18] == 1 &&
+                 baseM[19] == 0);
+        drawPlane(aSurface.get(), srcImage, nullptr, texMatrix);
+    }
 
     texMatrix.preScale(0.5f, 0.5f);
     // This matrix generates (r,g,b,a) = (0, 0, 0, u)
@@ -501,21 +520,28 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
     }
 
     // Now set up transfers
-    PixelTransferResult yTransfer, uTransfer, vTransfer;
-    yTransfer = copyPlane(ySurface.get(), yInfo);
+    PixelTransferResult yTransfer, uTransfer, vTransfer, aTransfer;
+    yTransfer = copyPlane(ySurface.get());
     if (!yTransfer.fTransferBuffer) {
         callback(callbackContext, nullptr);
         return;
     }
-    uTransfer = copyPlane(uSurface.get(), uvInfo);
+    uTransfer = copyPlane(uSurface.get());
     if (!uTransfer.fTransferBuffer) {
         callback(callbackContext, nullptr);
         return;
     }
-    vTransfer = copyPlane(vSurface.get(), uvInfo);
+    vTransfer = copyPlane(vSurface.get());
     if (!vTransfer.fTransferBuffer) {
         callback(callbackContext, nullptr);
         return;
+    }
+    if (alpha) {
+        aTransfer = copyPlane(aSurface.get());
+        if (!aTransfer.fTransferBuffer) {
+            callback(callbackContext, nullptr);
+            return;
+        }
     }
 
     // Set up FinishContext and add transfer commands to queue
@@ -528,6 +554,7 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
         PixelTransferResult fYTransfer;
         PixelTransferResult fUTransfer;
         PixelTransferResult fVTransfer;
+        PixelTransferResult fATransfer;
     };
     auto* finishContext = new FinishContext{callback,
                                             callbackContext,
@@ -535,7 +562,8 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
                                             fMappedBufferManager.get(),
                                             std::move(yTransfer),
                                             std::move(uTransfer),
-                                            std::move(vTransfer)};
+                                            std::move(vTransfer),
+                                            std::move(aTransfer)};
     GpuFinishedProc finishCallback = [](GpuFinishedContext c, CallbackResult status) {
         const auto* context = reinterpret_cast<const FinishContext*>(c);
         if (status == CallbackResult::kSuccess) {
@@ -552,6 +580,11 @@ void Context::asyncReadPixelsYUV420(Recorder* recorder,
             }
             if (result && !result->addTransferResult(context->fVTransfer, uvSize,
                                                      context->fVTransfer.fRowBytes, manager)) {
+                result.reset();
+            }
+            if (result && context->fATransfer.fTransferBuffer &&
+                !result->addTransferResult(context->fATransfer, context->fSize,
+                                           context->fATransfer.fRowBytes, manager)) {
                 result.reset();
             }
             (*context->fClientCallback)(context->fClientContext, std::move(result));
