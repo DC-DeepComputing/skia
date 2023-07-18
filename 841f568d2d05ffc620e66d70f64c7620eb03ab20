@@ -145,6 +145,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ca3ccee8_ec19a591",
+        "filename": "DEPS",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-18T14:35:59Z",
+      "side": 1,
+      "message": "Working on it right now...",
+      "parentUuid": "061be8b6_9592f19f",
+      "range": {
+        "startLine": 42,
+        "startChar": 60,
+        "endLine": 42,
+        "endChar": 71
+      },
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6bdfe996_6756c36a",
         "filename": "modules/skparagraph/src/Run.h",
         "patchSetId": 28
@@ -227,6 +251,24 @@
       "side": 1,
       "message": "No, it\u0027s fine for testing locally I suppose, but don\u0027t check this in. This needs a gn or bazel build (preferably both).",
       "parentUuid": "b1c7d7cf_cc543403",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f3fea4c_6a3e4594",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-18T14:35:59Z",
+      "side": 1,
+      "message": "I did what I could. I am going to talk to Laslo when I switch to the next version of libgrapheme (to make his building procedure more convenient for Skia) and at that time I am going to address the bazel build, too.\nI added Kevin to this code review.",
+      "parentUuid": "a2afb7ad_0f129f5e",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
