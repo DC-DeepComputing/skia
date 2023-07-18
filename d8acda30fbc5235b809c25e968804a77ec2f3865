@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a883e4b_458bcfc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-07-18T17:43:39Z",
+      "side": 1,
+      "message": "LGTM modulo type/naming nits.",
+      "revId": "d8acda30fbc5235b809c25e968804a77ec2f3865",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b53b22ec_9ddc77b1",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-07-18T17:43:39Z",
+      "side": 1,
+      "message": "This is an internal type, let\u0027s use SkVector instead.  (I\u0027m also noticing ScalarValue above, we should also change that to float).\n\nAlso, for naming, let\u0027s replace \u0027Vec2\u0027 with \u0027Vector\u0027 everywhere.",
+      "range": {
+        "startLine": 52,
+        "startChar": 29,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "d8acda30fbc5235b809c25e968804a77ec2f3865",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
