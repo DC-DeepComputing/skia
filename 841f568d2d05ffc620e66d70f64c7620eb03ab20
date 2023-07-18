@@ -193,6 +193,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "62fab8bc_4103350e",
+        "filename": "DEPS",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-18T19:36:29Z",
+      "side": 1,
+      "message": "https://skia.googlesource.com/external/github.com/FRIGN/libgrapheme/ should be ready to use",
+      "parentUuid": "ca3ccee8_ec19a591",
+      "range": {
+        "startLine": 42,
+        "startChar": 60,
+        "endLine": 42,
+        "endChar": 71
+      },
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6bdfe996_6756c36a",
         "filename": "modules/skparagraph/src/Run.h",
         "patchSetId": 28
