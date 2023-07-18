@@ -245,6 +245,10 @@ VulkanInterface::VulkanInterface(VulkanGetProc getProc,
         ACQUIRE_PROC_SUFFIX(CmdEndRendering, KHR, VK_NULL_HANDLE, device);
     }
 
+    // if (extensions->hasExtension(VK_EXT_INLINE_UNIFORM_BLOCK_EXTENSION_NAME)) {
+
+    // }
+
 #ifdef SK_BUILD_FOR_ANDROID
     // Functions for VK_ANDROID_external_memory_android_hardware_buffer
     if (extensions->hasExtension(

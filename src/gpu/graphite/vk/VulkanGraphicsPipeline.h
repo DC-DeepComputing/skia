@@ -36,8 +36,9 @@ public:
     inline static constexpr unsigned int kNumUniformBuffers = 3;
 
     inline static const DescriptorData kIntrinsicUniformDescriptor  =
-            {DescriptorType::kUniformBuffer,
-             /*count=*/1,
+            {DescriptorType::kInlineUniform,
+             /*count=*/sizeof(float) * 4, // For inline uniform descriptors, the descriptor count
+             // is actually the number of bytes to allocate for descriptors of this type.
              VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex};
     inline static const DescriptorData kRenderStepUniformDescriptor =
             {DescriptorType::kUniformBuffer,
@@ -79,13 +80,15 @@ public:
 
     bool hasFragment() const { return fHasFragment; }
     bool hasStepUniforms() const { return fHasStepUniforms; }
+    int numTextureSamplers() const { return fNumTextureSamplers; }
 
 private:
     VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                            VkPipelineLayout,
                            VkPipeline,
                            bool hasFragment,
-                           bool hasStepUniforms);
+                           bool hasStepUniforms,
+                           int numTextureSamplers);
 
     void freeGpuData() override;
 
@@ -93,6 +96,7 @@ private:
     VkPipeline fPipeline = VK_NULL_HANDLE;
     bool fHasFragment = false;
     bool fHasStepUniforms = false;
+    int fNumTextureSamplers = 0;
 };
 
 } // namespace skgpu::graphite

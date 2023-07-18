@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/vk/VulkanDescriptorPool.h"
 
+#include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 
@@ -45,10 +46,16 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext
         poolSize.descriptorCount = requestedDescCounts[i].count * kMaxNumSets;
     }
 
+    VkDescriptorPoolInlineUniformBlockCreateInfoEXT inlineUniformInfo;
+    inlineUniformInfo.sType =
+            VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_INLINE_UNIFORM_BLOCK_CREATE_INFO_EXT;
+    inlineUniformInfo.pNext = nullptr;
+    //inlineUniformInfo.maxInlineUniformBindings = 1; // TODO: Using arbitrary value; remedy.
+
     VkDescriptorPoolCreateInfo createInfo;
     memset(&createInfo, 0, sizeof(VkDescriptorPoolCreateInfo));
     createInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    createInfo.pNext = nullptr;
+    createInfo.pNext = &inlineUniformInfo;
     createInfo.flags = 0;
     createInfo.maxSets = kMaxNumSets;
     createInfo.poolSizeCount = requestedDescCounts.size();

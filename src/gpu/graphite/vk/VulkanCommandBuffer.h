@@ -61,11 +61,11 @@ private:
     void end();
 
     bool onAddRenderPass(const RenderPassDesc&,
-                        const Texture* colorTexture,
-                        const Texture* resolveTexture,
-                        const Texture* depthStencilTexture,
-                        SkRect viewport,
-                        const DrawPassList&) override;
+                         const Texture* colorTexture,
+                         const Texture* resolveTexture,
+                         const Texture* depthStencilTexture,
+                         SkRect viewport,
+                         const DrawPassList&) override;
 
     bool beginRenderPass(const RenderPassDesc&,
                          const Texture* colorTexture,
@@ -84,7 +84,6 @@ private:
     void bindUniformBuffers();
     void syncDescriptorSets();
 
-    // TODO: Populate the following methods to handle the possible commands in a draw pass.
     void bindGraphicsPipeline(const GraphicsPipeline*);
     void setBlendConstants(float* blendConstants);
     void bindDrawBuffers(const BindBufferInfo& vertices,
@@ -111,8 +110,6 @@ private:
     void drawIndirect(PrimitiveType type);
     void drawIndexedIndirect(PrimitiveType type);
 
-    // TODO: The virtuals in this class have not yet been implemented as we still haven't
-    // implemented the objects they use.
     bool onAddComputePass(const DispatchGroupList&) override;
 
     bool onCopyBufferToBuffer(const Buffer* srcBuffer,
@@ -181,6 +178,10 @@ private:
     bool fBindTextureSamplers = false;
 
     sk_sp<Buffer> fIntrinsicUniformBuffer;
+    // Store the current viewport so we can calculate rtAdjust when it is time to populate / bind
+    // the intrinsic uniform buffer.
+    SkRect fCurrentViewport;
+
     std::array<BindBufferInfo, VulkanGraphicsPipeline::kNumUniformBuffers> fUniformBuffersToBind
             = {{{nullptr, 0}}};
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;

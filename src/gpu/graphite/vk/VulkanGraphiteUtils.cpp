@@ -104,12 +104,18 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
         SkDebugf("Failed to create VkDescriptorSetLayout\n");
         outLayout = VK_NULL_HANDLE;
     }
+    // SkDebugf("Created desc sat layout from span of %d descriptors, resulting in %d binding layouts\n",
+    //          requestedDescriptors.size(),
+    //          bindingLayouts.size());
 }
 
 VkDescriptorType DsTypeEnumToVkDs(DescriptorType type) {
     switch (type) {
         case DescriptorType::kUniformBuffer:
             return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        case DescriptorType::kInlineUniform:
+            // TODO: Check for extension
+            return VK_DESCRIPTOR_TYPE_INLINE_UNIFORM_BLOCK_EXT;
         case DescriptorType::kTextureSampler:
             return VK_DESCRIPTOR_TYPE_SAMPLER;
         case DescriptorType::kTexture:

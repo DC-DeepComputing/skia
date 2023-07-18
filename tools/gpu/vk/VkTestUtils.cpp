@@ -77,9 +77,10 @@ const char* kDebugLayerNames[] = {
     // single merged layer
     "VK_LAYER_KHRONOS_validation",
     // not included in standard_validation
-    //"VK_LAYER_LUNARG_api_dump",
-    //"VK_LAYER_LUNARG_vktrace",
-    //"VK_LAYER_LUNARG_screenshot",
+    // "VK_LAYER_LUNARG_api_dump",
+    "VK_LAYER_LUNARG_vktrace",
+    "VK_LAYER_LUNARG_screenshot",
+    "VK_LAYER_LUNARG_standard_validation",
 };
 
 static uint32_t remove_patch_version(uint32_t specVersion) {
@@ -445,6 +446,26 @@ static bool setup_features(skgpu::VulkanGetProc getProc, VkInstance inst, VkPhys
         dynamicRenderingFeature->dynamicRendering = VK_TRUE;
         *tailPNext = dynamicRenderingFeature;
         tailPNext = &dynamicRenderingFeature->pNext;
+    }
+
+    VkPhysicalDeviceInlineUniformBlockFeaturesEXT* inlineUniformFeature = nullptr;
+    if (extensions->hasExtension(VK_EXT_INLINE_UNIFORM_BLOCK_EXTENSION_NAME, 1)) {
+        inlineUniformFeature = (VkPhysicalDeviceInlineUniformBlockFeaturesEXT*)sk_malloc_throw(
+            sizeof(VkPhysicalDeviceInlineUniformBlockFeaturesEXT));
+        inlineUniformFeature->sType =
+                VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_INLINE_UNIFORM_BLOCK_FEATURES_EXT;
+        inlineUniformFeature->pNext = nullptr;
+        inlineUniformFeature->inlineUniformBlock = VK_TRUE;
+        // TODO: Determine real values for the below members. For now, use what we need just for
+        // the rtAdjust intrinsic uniform.
+        // inlineUniformFeature->maxInlineUniformBlockSize = sizeof(float) * 4;
+        // inlineUniformFeature->maxPerStageDescriptorInlineUniformBlocks = 1;
+        // inlineUniformFeature->maxPerStageDescriptorUpdateAfterBindInlineUniformBlocks = 0;
+        // inlineUniformFeature->maxDescriptorSetInlineUniformBlocks = 1;
+        // inlineUniformFeature->maxDescriptorSetUpdateAfterBindInlineUniformBlocks = 0;
+
+        *tailPNext = inlineUniformFeature;
+        tailPNext = &inlineUniformFeature->pNext;
     }
 
     if (physDeviceVersion >= VK_MAKE_VERSION(1, 1, 0)) {

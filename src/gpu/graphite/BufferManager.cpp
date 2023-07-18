@@ -19,6 +19,8 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/SharedContext.h"
 
+#include "src/gpu/graphite/ResourceTypes.h"
+
 namespace skgpu::graphite {
 
 namespace {
@@ -322,8 +324,22 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
     }
 
     info->fOffset = SkAlignTo(info->fOffset, info->fStartAlignment);
-    BindBufferInfo bindInfo{info->fBuffer.get(), info->fOffset};
-    info->fOffset += requiredBytes;
+
+    // Changes here lead to changes in where the data is actually written into the buffer.
+    BindBufferInfo bindInfo{info->fBuffer.get(), info->fOffset}; // This change led
+    static int hitCount {0};
+    if (info->fType == BufferType::kUniform) {
+        bool useLargerOffset = hitCount == 2;
+        // bindInfo.fOffset = 128;
+        bindInfo.fOffset += useLargerOffset ? 256 : 128;
+        // info->fOffset += 128;
+        hitCount++;
+        // info->fOffset += requiredBytes;
+    }
+    // to data being written at 128 bytes in (when making a new buffer each time),
+    // however led to the offset of the uniforms within the buffer being 256.
+    // >:^(
+    info->fOffset += requiredBytes; // THIS seems to be where we get an offset of 128
 
     if (cleared == ClearBuffer::kYes) {
         fClearList.push_back({bindInfo.fBuffer, bindInfo.fOffset, requiredBytes});

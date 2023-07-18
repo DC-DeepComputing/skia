@@ -15,6 +15,7 @@
 namespace skgpu::graphite {
 
 sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
+                                 const VulkanResourceProvider* resourceProvider,
                                  size_t size,
                                  BufferType type,
                                  AccessPattern accessPattern) {
@@ -144,6 +145,26 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
     //         return nullptr;
     //     }
     // }
+    /**
+     *
+    kVertex,
+    kIndex,
+    kXferCpuToGpu,
+    kXferGpuToCpu,
+    kUniform,
+    kStorage,
+
+    // GPU-only buffer types
+    kIndirect,
+    kVertexStorage,
+    kIndexStorage,
+    */
+    // if (type == BufferType::kUniform) {
+    //     resourceProvider->findOrCreateDescriptorSet();
+    // TODO: Do we still need to create a uniform desc. set within this class, or does a desc set
+    // get created and bound by the command buffer?
+    // }
+
 
     return sk_sp<Buffer>(new VulkanBuffer(
             sharedContext, size, type, accessPattern, std::move(buffer), alloc, bufInfo.usage));
@@ -215,7 +236,7 @@ void VulkanBuffer::internalMap(size_t readOffset, size_t readSize) {
                                                        fAlloc,
                                                        readOffset,
                                                        readSize,
-                                                       nullptr);
+                                                       checkResult);
         }
     }
 }
@@ -226,8 +247,13 @@ void VulkanBuffer::internalUnmap(size_t flushOffset, size_t flushSize) {
     SkASSERT(fAlloc.fSize > 0);
     SkASSERT(fAlloc.fSize >= flushOffset + flushSize);
 
-    auto allocator = this->vulkanSharedContext()->memoryAllocator();
-    skgpu::VulkanMemory::FlushMappedAlloc(allocator, fAlloc, flushOffset, flushSize, nullptr);
+    auto sharedCtxt = this->vulkanSharedContext();
+    auto allocator = sharedCtxt->memoryAllocator();
+    auto checkResult = [sharedCtxt](VkResult result) {
+        return sharedCtxt->checkVkResult(result);
+    };
+    // fAlloc.fFlags = VulkanAlloc::Flag::kNoncoherent_Flag;
+    skgpu::VulkanMemory::FlushMappedAlloc(allocator, fAlloc, flushOffset, flushSize, checkResult);
     skgpu::VulkanMemory::UnmapAlloc(allocator, fAlloc);
 }
 

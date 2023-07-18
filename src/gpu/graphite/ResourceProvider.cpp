@@ -42,7 +42,9 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
     auto globalCache = fSharedContext->globalCache();
-    UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
+    UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(fSharedContext,
+                                                                            runtimeDict,
+                                                                            pipelineDesc,
                                                                             renderPassDesc);
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey);
     if (!pipeline) {
@@ -193,62 +195,62 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingO
 sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
                                                    BufferType type,
                                                    AccessPattern accessPattern) {
-    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+//     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
-#ifdef SK_DEBUG
-    // The size should already be aligned.
-    size_t minAlignment = 1;
-    if (type == BufferType::kStorage || type == BufferType::kIndirect ||
-        type == BufferType::kVertexStorage || type == BufferType::kIndexStorage) {
-        minAlignment = std::max(fSharedContext->caps()->requiredStorageBufferAlignment(),
-                                minAlignment);
-    } else if (type == BufferType::kUniform) {
-        minAlignment = std::max(fSharedContext->caps()->requiredUniformBufferAlignment(),
-                                minAlignment);
-    } else if (type == BufferType::kXferCpuToGpu || type == BufferType::kXferGpuToCpu) {
-        minAlignment = std::max(fSharedContext->caps()->requiredTransferBufferAlignment(),
-                                minAlignment);
-    }
-    SkASSERT(size % minAlignment == 0);
-#endif
+// #ifdef SK_DEBUG
+//     // The size should already be aligned.
+//     size_t minAlignment = 1;
+//     if (type == BufferType::kStorage || type == BufferType::kIndirect ||
+//         type == BufferType::kVertexStorage || type == BufferType::kIndexStorage) {
+//         minAlignment = std::max(fSharedContext->caps()->requiredStorageBufferAlignment(),
+//                                 minAlignment);
+//     } else if (type == BufferType::kUniform) {
+//         minAlignment = std::max(fSharedContext->caps()->requiredUniformBufferAlignment(),
+//                                 minAlignment);
+//     } else if (type == BufferType::kXferCpuToGpu || type == BufferType::kXferGpuToCpu) {
+//         minAlignment = std::max(fSharedContext->caps()->requiredTransferBufferAlignment(),
+//                                 minAlignment);
+//     }
+//     SkASSERT(size % minAlignment == 0);
+// #endif
 
-    GraphiteResourceKey key;
-    {
-        // For the key we need ((sizeof(size_t) + (sizeof(uint32_t) - 1)) / (sizeof(uint32_t))
-        // uint32_t's for the size and one uint32_t for the rest.
-        static_assert(sizeof(uint32_t) == 4);
-        static const int kSizeKeyNum32DataCnt = (sizeof(size_t) + 3) / 4;
-        static const int kKeyNum32DataCnt =  kSizeKeyNum32DataCnt + 1;
+//     GraphiteResourceKey key;
+//     {
+//         // For the key we need ((sizeof(size_t) + (sizeof(uint32_t) - 1)) / (sizeof(uint32_t))
+//         // uint32_t's for the size and one uint32_t for the rest.
+//         static_assert(sizeof(uint32_t) == 4);
+//         static const int kSizeKeyNum32DataCnt = (sizeof(size_t) + 3) / 4;
+//         static const int kKeyNum32DataCnt =  kSizeKeyNum32DataCnt + 1;
 
-        SkASSERT(static_cast<uint32_t>(type) < (1u << 4));
-        SkASSERT(static_cast<uint32_t>(accessPattern) < (1u << 1));
+//         SkASSERT(static_cast<uint32_t>(type) < (1u << 4));
+//         SkASSERT(static_cast<uint32_t>(accessPattern) < (1u << 1));
 
-        GraphiteResourceKey::Builder builder(&key, kType, kKeyNum32DataCnt, Shareable::kNo);
-        builder[0] = (static_cast<uint32_t>(type) << 0) |
-                     (static_cast<uint32_t>(accessPattern) << 4);
-        size_t szKey = size;
-        for (int i = 0; i < kSizeKeyNum32DataCnt; ++i) {
-            builder[i + 1] = (uint32_t) szKey;
+//         GraphiteResourceKey::Builder builder(&key, kType, kKeyNum32DataCnt, Shareable::kNo);
+//         builder[0] = (static_cast<uint32_t>(type) << 0) |
+//                      (static_cast<uint32_t>(accessPattern) << 4);
+//         size_t szKey = size;
+//         for (int i = 0; i < kSizeKeyNum32DataCnt; ++i) {
+//             builder[i + 1] = (uint32_t) szKey;
 
-            // If size_t is 4 bytes, we cannot do a shift of 32 or else we get a warning/error that
-            // shift amount is >= width of the type.
-            if constexpr(kSizeKeyNum32DataCnt > 1) {
-                szKey = szKey >> 32;
-            }
-        }
-    }
+//             // If size_t is 4 bytes, we cannot do a shift of 32 or else we get a warning/error that
+//             // shift amount is >= width of the type.
+//             if constexpr(kSizeKeyNum32DataCnt > 1) {
+//                 szKey = szKey >> 32;
+//             }
+//         }
+//     }
 
-    skgpu::Budgeted budgeted = skgpu::Budgeted::kYes;
-    if (Resource* resource = fResourceCache->findAndRefResource(key, budgeted)) {
-        return sk_sp<Buffer>(static_cast<Buffer*>(resource));
-    }
+//     skgpu::Budgeted budgeted = skgpu::Budgeted::kYes;
+    // if (Resource* resource = fResourceCache->findAndRefResource(key, budgeted)) {
+    //     return sk_sp<Buffer>(static_cast<Buffer*>(resource));
+    // }
     auto buffer = this->createBuffer(size, type, accessPattern);
     if (!buffer) {
         return nullptr;
     }
 
-    buffer->setKey(key);
-    fResourceCache->insertResource(buffer.get());
+    // buffer->setKey(key);
+    // fResourceCache->insertResource(buffer.get());
     return buffer;
 }
 

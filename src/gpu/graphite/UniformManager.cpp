@@ -508,7 +508,8 @@ size_t UniformOffsetCalculator::advanceOffset(SkSLType type, unsigned int count)
     uint32_t uniformSize = fWriteUniform(revisedType, CType::kDefault,
                                          /*dest=*/nullptr, count, /*src=*/nullptr);
     fOffset = alignedOffset + uniformSize;
-    return alignedOffset;
+    return alignedOffset; // This is the offset within the uniform data block, which could be
+    // just one chunk of a buffer already offset a certain amount.
 }
 
 UniformDataBlock UniformManager::finishUniformDataBlock() {
