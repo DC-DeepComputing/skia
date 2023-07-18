@@ -51,12 +51,6 @@ public:
                                                std::unique_ptr<Expression> base,
                                                ComponentArray inComponents);
 
-    static std::unique_ptr<Expression> Convert(const Context& context,
-                                               Position pos,
-                                               Position maskPos,
-                                               std::unique_ptr<Expression> base,
-                                               std::string_view maskString);
-
     // Swizzle::Make does not permit ZERO or ONE in the component array, just X/Y/Z/W; errors are
     // reported via ASSERT.
     static std::unique_ptr<Expression> Make(const Context& context,

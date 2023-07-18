@@ -242,43 +242,6 @@ static std::unique_ptr<Expression> optimize_constructor_swizzle(const Context& c
                                      std::move(newArgs));
 }
 
-std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
-                                             Position pos,
-                                             Position maskPos,
-                                             std::unique_ptr<Expression> base,
-                                             std::string_view maskString) {
-    ComponentArray components;
-    for (size_t i = 0; i < maskString.length(); ++i) {
-        char field = maskString[i];
-        switch (field) {
-            case '0': components.push_back(SwizzleComponent::ZERO); break;
-            case '1': components.push_back(SwizzleComponent::ONE);  break;
-            case 'x': components.push_back(SwizzleComponent::X);    break;
-            case 'r': components.push_back(SwizzleComponent::R);    break;
-            case 's': components.push_back(SwizzleComponent::S);    break;
-            case 'L': components.push_back(SwizzleComponent::UL);   break;
-            case 'y': components.push_back(SwizzleComponent::Y);    break;
-            case 'g': components.push_back(SwizzleComponent::G);    break;
-            case 't': components.push_back(SwizzleComponent::T);    break;
-            case 'T': components.push_back(SwizzleComponent::UT);   break;
-            case 'z': components.push_back(SwizzleComponent::Z);    break;
-            case 'b': components.push_back(SwizzleComponent::B);    break;
-            case 'p': components.push_back(SwizzleComponent::P);    break;
-            case 'R': components.push_back(SwizzleComponent::UR);   break;
-            case 'w': components.push_back(SwizzleComponent::W);    break;
-            case 'a': components.push_back(SwizzleComponent::A);    break;
-            case 'q': components.push_back(SwizzleComponent::Q);    break;
-            case 'B': components.push_back(SwizzleComponent::UB);   break;
-            default:
-                context.fErrors->error(Position::Range(maskPos.startOffset() + i,
-                                                       maskPos.startOffset() + i + 1),
-                                       String::printf("invalid swizzle component '%c'", field));
-                return nullptr;
-        }
-    }
-    return Convert(context, pos, maskPos, std::move(base), std::move(components));
-}
-
 // Swizzles are complicated due to constant components. The most difficult case is a mask like
 // '.x1w0'. A naive approach might turn that into 'float4(base.x, 1, base.w, 0)', but that evaluates
 // 'base' twice. We instead group the swizzle mask ('xw') and constants ('1, 0') together and use a
