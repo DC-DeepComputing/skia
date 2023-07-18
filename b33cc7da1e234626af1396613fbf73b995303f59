@@ -118,6 +118,30 @@
       },
       "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e3f60a2_faa157c9",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-18T14:07:29Z",
+      "side": 1,
+      "message": "Totally agree, but\n```\n        if (0 \u003c\u003d i \u0026\u0026 i \u003c\u003d size) SK_LIKELY {\n            return i;\n        }\n```\nis the safest version of this code for all types, right?\nThe unsigned path isn\u0027t safer and it doesn\u0027t look like it should be necessary.",
+      "parentUuid": "c6caba4c_d098c790",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 40
+      },
+      "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
