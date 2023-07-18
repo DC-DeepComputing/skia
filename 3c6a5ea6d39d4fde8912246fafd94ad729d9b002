@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0ccbbac_d8cfeeb6",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-07-18T21:30:05Z",
+      "side": 1,
+      "message": "yes.",
+      "parentUuid": "485215b2_ae17d3e8",
+      "range": {
+        "startLine": 524,
+        "startChar": 21,
+        "endLine": 524,
+        "endChar": 85
+      },
+      "revId": "3c6a5ea6d39d4fde8912246fafd94ad729d9b002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f489ac7_a2f383ba",
@@ -77,6 +101,30 @@
       "writtenOn": "2023-07-17T13:03:21Z",
       "side": 1,
       "message": "In the original, there was an enable_debugger CLI option set. Does that functionality exist in the current Bazel rules?\n\nhttps://github.com/google/skia/blob/0494868e93a414dc870027253fcfc5281264c5db/docker/skia-wasm-release/Dockerfile#L51C64-L51C64",
+      "range": {
+        "startLine": 6,
+        "startChar": 10,
+        "endLine": 6,
+        "endChar": 32
+      },
+      "revId": "3c6a5ea6d39d4fde8912246fafd94ad729d9b002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d51bbb30_43d5fabd",
+        "filename": "infra/debugger-app/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-07-18T21:30:05Z",
+      "side": 1,
+      "message": "It did not, and thank you for pointing this out. I fixed this and ran locally to verify that debugger-app worked.",
+      "parentUuid": "f99a9b70_715017a7",
       "range": {
         "startLine": 6,
         "startChar": 10,
