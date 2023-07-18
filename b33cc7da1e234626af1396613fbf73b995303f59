@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30740d79_7f4937aa",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-18T13:52:47Z",
+      "side": 1,
+      "message": "Do you get different codegen if you just use the signed path always? Feels strange that we would need to hold the compiler\u0027s hand and tell it that unsigned values can\u0027t be negative.",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 40
+      },
+      "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
