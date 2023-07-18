@@ -538,11 +538,11 @@ bool Compiler::toSPIRV(Program& program, OutputStream& out) {
 
 bool Compiler::toSPIRV(Program& program, std::string* out) {
     StringStream buffer;
-    bool result = this->toSPIRV(program, buffer);
-    if (result) {
-        *out = buffer.str();
+    if (!this->toSPIRV(program, buffer)) {
+        return false;
     }
-    return result;
+    *out = buffer.str();
+    return true;
 }
 
 bool Compiler::toGLSL(Program& program, OutputStream& out) {
@@ -556,11 +556,11 @@ bool Compiler::toGLSL(Program& program, OutputStream& out) {
 
 bool Compiler::toGLSL(Program& program, std::string* out) {
     StringStream buffer;
-    bool result = this->toGLSL(program, buffer);
-    if (result) {
-        *out = buffer.str();
+    if (!this->toGLSL(program, buffer)) {
+        return false;
     }
-    return result;
+    *out = buffer.str();
+    return true;
 }
 
 bool Compiler::toHLSL(Program& program, OutputStream& out) {
@@ -598,11 +598,11 @@ bool Compiler::toMetal(Program& program, OutputStream& out) {
 
 bool Compiler::toMetal(Program& program, std::string* out) {
     StringStream buffer;
-    bool result = this->toMetal(program, buffer);
-    if (result) {
-        *out = buffer.str();
+    if (!this->toMetal(program, buffer)) {
+        return false;
     }
-    return result;
+    *out = buffer.str();
+    return true;
 }
 
 #if defined(SK_ENABLE_WGSL_VALIDATION)
@@ -659,6 +659,15 @@ bool Compiler::toWGSL(Program& program, OutputStream& out) {
     bool result = cg.generateCode();
 #endif
     return result;
+}
+
+bool Compiler::toWGSL(Program& program, std::string* out) {
+    StringStream buffer;
+    if (!this->toWGSL(program, buffer)) {
+        return false;
+    }
+    *out = buffer.str();
+    return true;
 }
 
 #endif // defined(SKSL_STANDALONE) || defined(SK_GANESH) || defined(SK_GRAPHITE)
