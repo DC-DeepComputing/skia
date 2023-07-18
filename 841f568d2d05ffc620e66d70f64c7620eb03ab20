@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa26bf90_b8cd7784",
+        "filename": "DEPS",
+        "patchSetId": 28
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-18T14:44:12Z",
+      "side": 1,
+      "message": "For now I sent a reminder to the people who introduced that change.",
+      "parentUuid": "e79424c7_5ed748cc",
+      "range": {
+        "startLine": 40,
+        "startChar": 60,
+        "endLine": 40,
+        "endChar": 70
+      },
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa15ba93_16f2b4bf",
