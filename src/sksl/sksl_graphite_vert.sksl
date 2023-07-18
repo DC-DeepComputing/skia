@@ -869,7 +869,7 @@ float4 atlas_shape_vertex_fn(float2 quadCoords,
     // transform.
 
     // Vertex coordinates.
-    float2 drawCoords = drawBounds.xy + quadCoords * max(drawBounds.zw - drawBounds.xy, maskDims);
+    float2 drawCoords = min(drawBounds.xy, deviceOrigin) + quadCoords * max(drawBounds.zw - drawBounds.xy, maskDims);
 
     // Local coordinates used for shading.
     float3 localCoords = deviceToLocal * drawCoords.xy1;
