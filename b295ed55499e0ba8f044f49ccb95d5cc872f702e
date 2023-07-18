@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fd99375_6f0fde17",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-18T22:41:45Z",
+      "side": 1,
+      "message": "Actually, this is likely incorrect for an inverse fill where we would want the coordinate to be fractional when the draw bounds are larger than the mask bounds.",
+      "range": {
+        "startLine": 872,
+        "startChar": 24,
+        "endLine": 872,
+        "endChar": 44
+      },
+      "revId": "b295ed55499e0ba8f044f49ccb95d5cc872f702e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
