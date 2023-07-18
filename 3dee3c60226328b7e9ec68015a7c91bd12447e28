@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6dcd371_6cbfe147",
+        "filename": "fuzz/oss_fuzz/FuzzSkMeshSpecification.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-18T16:39:42Z",
+      "side": 1,
+      "message": "This will cause the last byte of the input to be ignored, I think.",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 0
+      },
+      "revId": "3dee3c60226328b7e9ec68015a7c91bd12447e28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
