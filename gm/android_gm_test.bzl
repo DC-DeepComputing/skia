@@ -13,6 +13,7 @@ _KNOWN_CONFIGS = [
 # This list should be kept in sync with the supported vias in //gm/BazelTestRunner.cpp.
 _KNOWN_VIAS = [
     "serialization",
+    "picture",
 ]
 
 def android_gm_test(config, via = "", extra_args = [], **kwargs):

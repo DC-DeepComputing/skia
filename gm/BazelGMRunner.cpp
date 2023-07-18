@@ -150,12 +150,16 @@ static GMOutput draw(skiagm::GM* gm, SkSurface* surface) {
 
 // The "serialization" via tests that if we record a GM using an SkPictureRecorder, the bitmap
 // produced by serializing the recorded picture, deserializing it, and drawing it on the surface
-// under test is the same as the bitmap obtained by drawing the GM directly on the surface under
+// under test is the same as the bitmap produced by drawing the GM directly on the surface under
 // test.
+//
+// If the serialize argument is false, it will skip the serialization/deserialization step and
+// draw the recorded picture on the surface under test as-is. This is effectively the same as the
+// "picture" via (see function draw_via_picture below).
 //
 // Based on DM's ViaSerialization class here:
 // https://skia.googlesource.com/skia/+/dcc56df202cca129edda3f6f8bae04ec306b264e/dm/DMSrcSink.cpp#2281.
-static GMOutput draw_via_serialization(skiagm::GM* gm, SkSurface* surface) {
+static GMOutput draw_via_serialization(skiagm::GM* gm, SkSurface* surface, bool serialize = true) {
     // Draw GM on a recording canvas.
     SkPictureRecorder recorder;
     SkCanvas* recordingCanvas =
@@ -164,18 +168,20 @@ static GMOutput draw_via_serialization(skiagm::GM* gm, SkSurface* surface) {
     skiagm::DrawResult result = gm->draw(recordingCanvas, &msg);
     if (result != skiagm::DrawResult::kOk) return {result, msg};
 
-    // Serialize and deserialize the recorded picture.
+    // Finish recording, and optionally serialize and then deserialize the resulting picture.
     sk_sp<SkPicture> pic(recorder.finishRecordingAsPicture());
-    sk_sp<SkPicture> deserializedPic(SkPicture::MakeFromData(pic->serialize().get()));
+    if (serialize) {
+        pic = SkPicture::MakeFromData(pic->serialize().get());
+    }
 
-    // Draw the deserialized picture on the surface under test and extract it as a bitmap.
-    surface->getCanvas()->drawPicture(deserializedPic);
-    SkBitmap deserializedBitmap;
-    deserializedBitmap.allocPixelsFlags(surface->getCanvas()->imageInfo(),
-                                        SkBitmap::kZeroPixels_AllocFlag);
-    if (!surface->readPixels(deserializedBitmap, 0, 0)) {
+    // Draw the recorded picture on the surface under test and extract it as a bitmap.
+    surface->getCanvas()->drawPicture(pic);
+    SkBitmap recordedBitmap;
+    recordedBitmap.allocPixelsFlags(surface->getCanvas()->imageInfo(),
+                                    SkBitmap::kZeroPixels_AllocFlag);
+    if (!surface->readPixels(recordedBitmap, 0, 0)) {
         return {skiagm::DrawResult::kFail,
-                SkString("Could not read deserialized pixels from surface")};
+                SkString("Could not read recorded picture pixels from surface")};
     }
 
     // Draw GM on the surface under test and extract the reference bitmap.
@@ -186,22 +192,32 @@ static GMOutput draw_via_serialization(skiagm::GM* gm, SkSurface* surface) {
                                      SkBitmap::kZeroPixels_AllocFlag);
     if (!surface->readPixels(referenceBitmap, 0, 0)) {
         return {skiagm::DrawResult::kFail,
-                SkString("Could not read reference pixels from surface")};
+                SkString("Could not read reference picture pixels from surface")};
     }
 
-    // The deserialized and reference bitmaps should be identical.
-    if (deserializedBitmap.computeByteSize() != referenceBitmap.computeByteSize()) {
+    // The recorded and reference bitmaps should be identical.
+    if (recordedBitmap.computeByteSize() != referenceBitmap.computeByteSize()) {
         return {skiagm::DrawResult::kFail,
-                SkString("Deserialized and reference bitmap dimensions do not match")};
+                SkString("Recorded and reference bitmap dimensions do not match")};
     }
-    if (0 != memcmp(deserializedBitmap.getPixels(),
+    if (0 != memcmp(recordedBitmap.getPixels(),
                     referenceBitmap.getPixels(),
                     referenceBitmap.computeByteSize())) {
         return {skiagm::DrawResult::kFail,
-                SkString("Deserialized and reference bitmap pixels do not match")};
+                SkString("Recorded and reference bitmap pixels do not match")};
     }
 
     return {result, msg, referenceBitmap};
+}
+
+// The "picture" via tests that if we record a GM using an SkPictureRecorder, the bitmap produced
+// by drawing the recorded picture on the surface under test is the same as the bitmap produced by
+// drawing the GM directly on the surface under test.
+//
+// Based on DM's ViaPicture class here:
+// https://skia.googlesource.com/skia/+/dcc56df202cca129edda3f6f8bae04ec306b264e/dm/DMSrcSink.cpp#2310.
+static GMOutput draw_via_picture(skiagm::GM* gm, SkSurface* surface) {
+    return draw_via_serialization(gm, surface, /* serialize= */ false);
 }
 
 int main(int argc, char** argv) {
@@ -290,6 +306,9 @@ int main(int argc, char** argv) {
             } else if (viaName == "serialization") {
                 SkDebugf("[%s]     Drawing GM via serialization...\n", now().c_str());
                 output = draw_via_serialization(gm.get(), surface_manager->getSurface().get());
+            } else if (viaName == "picture") {
+                SkDebugf("[%s]     Drawing GM via picture...\n", now().c_str());
+                output = draw_via_picture(gm.get(), surface_manager->getSurface().get());
             } else {
                 // We should have caught this earlier during flag validation.
                 SK_ABORT("unknown --via flag value: %s", viaName);
