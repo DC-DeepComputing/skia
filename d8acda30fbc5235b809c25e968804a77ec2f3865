@@ -63,6 +63,30 @@
       },
       "revId": "d8acda30fbc5235b809c25e968804a77ec2f3865",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68cc67a3_396d325d",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-07-18T19:22:44Z",
+      "side": 1,
+      "message": "Oh, SkVector is a two-tuple, just like SkV2.  But good point, if we\u0027re adding VectorValue support then it would be ambiguous, let\u0027s keep the V2 naming and use SkV2 for values instead.",
+      "parentUuid": "27b41f6f_94f93896",
+      "range": {
+        "startLine": 52,
+        "startChar": 29,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "d8acda30fbc5235b809c25e968804a77ec2f3865",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
