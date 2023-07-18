@@ -46,6 +46,30 @@
       },
       "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0459c65b_a56b9f8d",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-18T13:56:28Z",
+      "side": 1,
+      "message": "That would be a bummer... I thought warnings like that would be squelched in templated code.",
+      "parentUuid": "5d17d431_9bc900b9",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 40
+      },
+      "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
