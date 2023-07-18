@@ -1,3 +1,10 @@
+### Compilation failed:
+
+error: :14:6 error: struct member sk_PointSize not found
+    (*_stageOut).sk_PointSize = x;
+     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+
 diagnostic(off, derivative_uniformity);
 struct VSIn {
   @builtin(instance_index) sk_InstanceID: u32,
@@ -11,7 +18,7 @@ fn main(_stageIn: VSIn, _stageOut: ptr<function, VSOut>) {
   {
     var x: f32 = f32(i32(_stageIn.sk_VertexID));
     var y: f32 = f32(i32(_stageIn.sk_InstanceID));
-    sk_PointSize = x;
+    (*_stageOut).sk_PointSize = x;
     (*_stageOut).sk_Position = vec4<f32>(x, y, 1.0, 1.0);
   }
 }
@@ -20,3 +27,5 @@ fn main(_stageIn: VSIn, _stageOut: ptr<function, VSOut>) {
   main(_stageIn, &_stageOut);
   return _stageOut;
 }
+
+1 error
