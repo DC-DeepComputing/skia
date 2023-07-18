@@ -197,13 +197,16 @@ public:
 protected:
     SkImage_Base(const SkImageInfo& info, uint32_t uniqueID);
 
+// private:
+    // virtual skif::Context createContext(const skif::ContextInfo& ctxInfo) const;
+
     sk_sp<SkImage> filterSpecialImage(skif::Context context,
-                                      const SkImageFilter_Base* filter,
-                                      const SkSpecialImage* specialImage,
-                                      const SkIRect& subset,
-                                      const SkIRect& clipBounds,
-                                      SkIRect* outSubset,
-                                      SkIPoint* offset) const;
+                                    const SkImageFilter_Base* filter,
+                                    const SkSpecialImage* specialImage,
+                                    const SkIRect& subset,
+                                    const SkIRect& clipBounds,
+                                    SkIRect* outSubset,
+                                    SkIPoint* offset) const;
 
 private:
     // Set true by caches when they cache content that's derived from the current pixels.
