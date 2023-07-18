@@ -868,8 +868,15 @@ float4 atlas_shape_vertex_fn(float2 quadCoords,
     // coordinates from the bounds by simply applying the inverse of the shape's localToDevice
     // transform.
 
-    // Vertex coordinates.
-    float2 drawCoords = drawBounds.xy + quadCoords * max(drawBounds.zw - drawBounds.xy, maskDims);
+    // Assign the vertex coordinates. When the draw bounds are within the mask bounds (for a regular
+    // fill or a partially clipped inverse fill) we want to make sure that the drawn quad is aligned
+    // to pixel boundaries. We use `deviceOrigin` and `maskDims` for this purpose, however the value
+    // of `deviceOrigin` is not meaningful (i.e. set to 0) for an inverse fill with a clipped out
+    // mask, so conditionalize origin calculation on the mask's visibility (see the instance
+    // attribute initialization logic in AtlasShapeRenderStep::writeVertices).
+    bool maskVisible = all(greaterThan(maskDims, float2(0)));
+    float2 drawOrigin = maskVisible ? min(drawBounds.xy, deviceOrigin) : drawBounds.xy;
+    float2 drawCoords = drawOrigin + quadCoords * max(drawBounds.zw - drawBounds.xy, maskDims);
 
     // Local coordinates used for shading.
     float3 localCoords = deviceToLocal * drawCoords.xy1;
@@ -881,7 +888,7 @@ float4 atlas_shape_vertex_fn(float2 quadCoords,
     //
     // For an inverse fill, `textureCoords` will get clamped to `maskBounds` and the edge pixels
     // will always land on a 0-coverage border pixel.
-    if (all(greaterThan(maskDims, float2(0)))) {
+    if (maskVisible) {
         maskBounds    = float4(uvPos, uvPos + maskDims + float2(1)) * atlasSizeInv.xyxy;
         textureCoords = (uvPos + float2(1) + drawCoords - deviceOrigin) * atlasSizeInv;
     } else {
