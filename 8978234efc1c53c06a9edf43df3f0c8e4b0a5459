@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12e8c632_bc0efb3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-18T20:51:34Z",
+      "side": 1,
+      "message": "The new gold images appear to all be cases where an image source had been turning into a raster SkSpecialImage and then being discarded by the Graphite Device, and now it\u0027s being promoted to a graphite special image by the ImageProvider and image filtering proceeds on the GPU successfully.",
+      "revId": "8978234efc1c53c06a9edf43df3f0c8e4b0a5459",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
