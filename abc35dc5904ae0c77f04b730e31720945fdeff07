@@ -63,6 +63,30 @@
       },
       "revId": "abc35dc5904ae0c77f04b730e31720945fdeff07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa51be2b_6b06087f",
+        "filename": "src/gpu/graphite/PathAtlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-18T16:45:35Z",
+      "side": 1,
+      "message": "LGTM, I like the additional comments and the MaskInfo struct.",
+      "parentUuid": "fac0b152_07ee3ffb",
+      "range": {
+        "startLine": 62,
+        "startChar": 18,
+        "endLine": 62,
+        "endChar": 28
+      },
+      "revId": "abc35dc5904ae0c77f04b730e31720945fdeff07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
