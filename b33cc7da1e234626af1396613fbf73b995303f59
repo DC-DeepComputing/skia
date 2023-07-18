@@ -190,6 +190,30 @@
       },
       "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c5e53d6_9f57fe3a",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-18T15:09:32Z",
+      "side": 1,
+      "message": "I\u0027ll just say that I don\u0027t have a strong opinion about which way this code looks, because I think it\u0027s a slight tradeoff of (different) cognitive load, with no clear winner:\n\n1) As-is, I have to parse the code to figure out that there are two cases, and why. With the LIKELY attributes, the normal C++ control flow is slightly disturbed, making this harder to quickly parse. Still, after a short time, it\u0027s pretty clear.\n\n2) Collapsing to one implementation, things will initially look straightforward (and easier to parse mentally). Then I might wonder about unsigned types, second-guess the choice, then realize the compiler is going to elide the check against zero. In total, probably the same amount of time and cognitive effort to reach the conclusion that all is well.\n\nSo: meh.",
+      "parentUuid": "e8403ccd_b15572db",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 40
+      },
+      "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
