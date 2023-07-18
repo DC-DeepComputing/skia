@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bce6719_4f3f53cc",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-18T19:31:38Z",
+      "side": 1,
+      "message": "Since this is internal I\u0027m assuming we\u0027d want to go back to SkColor as our type here?\n(context: https://skia-review.googlesource.com/c/skia/+/723336/2)",
+      "range": {
+        "startLine": 93,
+        "startChar": 22,
+        "endLine": 93,
+        "endChar": 32
+      },
+      "revId": "fb1fe4276ce0ed42c6e68967e4c077a020b790b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
