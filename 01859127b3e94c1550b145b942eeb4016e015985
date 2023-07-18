@@ -39,6 +39,30 @@
       },
       "revId": "01859127b3e94c1550b145b942eeb4016e015985",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7727517_9c9fba14",
+        "filename": "tools/window/GraphiteVulkanWindowContext.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-18T15:49:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3dc6acd_403ed99b",
+      "range": {
+        "startLine": 505,
+        "startChar": 0,
+        "endLine": 506,
+        "endChar": 54
+      },
+      "revId": "01859127b3e94c1550b145b942eeb4016e015985",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
