@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10587100_7bae8b77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-18T14:37:51Z",
+      "side": 1,
+      "message": "I\u0027m not 100% sure this will work if there\u0027s a readPixels, because that will prematurely snap the Recording. Presumably in that case we\u0027re rendering to an offscreen surface so we don\u0027t need the waitSemaphore yet. But it will at least get us up and running in most cases, and the readPixels case can be addressed later.",
+      "revId": "01859127b3e94c1550b145b942eeb4016e015985",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
