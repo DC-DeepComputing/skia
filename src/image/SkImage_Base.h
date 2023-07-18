@@ -40,6 +40,7 @@ enum {
 
 namespace skif {
 class Context;
+struct ContextInfo;
 }
 
 namespace skgpu { namespace graphite { class Recorder; } }
@@ -64,12 +65,7 @@ public:
     sk_sp<SkImage> makeSubset(skgpu::graphite::Recorder*,
                               const SkIRect&,
                               RequiredProperties) const override;
-    sk_sp<SkImage> makeWithFilter(GrRecordingContext* context,
-                                  const SkImageFilter* filter,
-                                  const SkIRect& subset,
-                                  const SkIRect& clipBounds,
-                                  SkIRect* outSubset,
-                                  SkIPoint* offset) const override;
+
     size_t textureSize() const override { return 0; }
 
     // Methods that we want to use elsewhere in Skia, but not be a part of the public API.
@@ -194,16 +190,12 @@ public:
                                         const SkIRect&,
                                         RequiredProperties) const = 0;
 
+    // Returns a raster-backed image filtering context by default.
+    virtual skif::Context onCreateFilterContext(GrRecordingContext* rContext,
+                                                const skif::ContextInfo& info) const;
+
 protected:
     SkImage_Base(const SkImageInfo& info, uint32_t uniqueID);
-
-    sk_sp<SkImage> filterSpecialImage(skif::Context context,
-                                      const SkImageFilter_Base* filter,
-                                      const SkSpecialImage* specialImage,
-                                      const SkIRect& subset,
-                                      const SkIRect& clipBounds,
-                                      SkIRect* outSubset,
-                                      SkIPoint* offset) const;
 
 private:
     // Set true by caches when they cache content that's derived from the current pixels.

@@ -96,6 +96,9 @@ public:
 
     void generatingSurfaceIsDeleted() override;
 
+    skif::Context onCreateFilterContext(GrRecordingContext* rContext,
+                                        const skif::ContextInfo& ctxInfo) const override;
+
     // From SkImage_GaneshBase.h
     GrSemaphoresSubmitted flush(GrDirectContext*, const GrFlushInfo&) const override;
 

@@ -60,12 +60,6 @@ public:
                                               SkColorType targetColorType,
                                               sk_sp<SkColorSpace> targetCS) const final;
     sk_sp<SkImage> makeSubset(GrDirectContext* direct, const SkIRect& subset) const final;
-    sk_sp<SkImage> makeWithFilter(GrRecordingContext* context,
-                                  const SkImageFilter* filter,
-                                  const SkIRect& subset,
-                                  const SkIRect& clipBounds,
-                                  SkIRect* outSubset,
-                                  SkIPoint* offset) const final;
 
     // From SkImage_Base.h
     GrImageContext* context() const final { return fContext.get(); }
@@ -120,8 +114,6 @@ public:
 protected:
     SkImage_GaneshBase(sk_sp<GrImageContext>, SkImageInfo, uint32_t uniqueID);
 
-    sk_sp<GrImageContext> fContext;
-
     sk_sp<SkImage> onMakeSubset(skgpu::graphite::Recorder*,
                                 const SkIRect& subset,
                                 RequiredProperties) const final;
@@ -130,6 +122,8 @@ protected:
                                               SkColorType,
                                               sk_sp<SkColorSpace>,
                                               RequiredProperties) const final;
+
+    sk_sp<GrImageContext> fContext;
 };
 
 #endif
