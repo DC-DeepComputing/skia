@@ -50,6 +50,11 @@ namespace skgpu {
 enum class Mipmapped : bool;
 }
 
+namespace skif {
+class Context;
+struct ContextInfo;
+}
+
 class SkImage_Ganesh final : public SkImage_GaneshBase {
 public:
     SkImage_Ganesh(sk_sp<GrImageContext> context,
@@ -95,6 +100,9 @@ public:
                                            ReadPixelsContext) const override;
 
     void generatingSurfaceIsDeleted() override;
+
+    skif::Context onCreateFilterContext(GrRecordingContext* rContext,
+                                        const skif::ContextInfo& ctxInfo) const override;
 
     // From SkImage_GaneshBase.h
     GrSemaphoresSubmitted flush(GrDirectContext*, const GrFlushInfo&) const override;
