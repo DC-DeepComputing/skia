@@ -438,9 +438,9 @@ static void setup_shader_stage_info(VkShaderStageFlagBits stage,
 }
 
 static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedContext,
-                                  bool hasStepUniforms,
-                                  bool hasFragment,
-                                  int numTextureSamplers) {
+                                              bool hasStepUniforms,
+                                              bool hasFragment,
+                                              int numTextureSamplers) {
     // Determine descriptor set layouts based upon the number of uniform buffers & texture/samplers.
     skia_private::STArray<2, VkDescriptorSetLayout> setLayouts;
     skia_private::STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData>
@@ -738,7 +738,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                                                     pipelineLayout,
                                                                     vkPipeline,
                                                                     hasFragment,
-                                                                    !step->uniforms().empty()));
+                                                                    !step->uniforms().empty(),
+                                                                    fsSkSLInfo.fNumTexturesAndSamplers));
 }
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
@@ -746,12 +747,14 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(const skgpu::graphite::SharedCont
                                                VkPipelineLayout pipelineLayout,
                                                VkPipeline pipeline,
                                                bool hasFragment,
-                                               bool hasStepUniforms)
-        : GraphicsPipeline(sharedContext, pipelineShaders)
-        , fPipelineLayout(pipelineLayout)
-        , fPipeline(pipeline)
-        , fHasFragment(hasFragment)
-        , fHasStepUniforms(hasStepUniforms) {}
+                                               bool hasStepUniforms,
+                                               int numTextureSamplers)
+    : GraphicsPipeline(sharedContext, pipelineShaders)
+    , fPipelineLayout(pipelineLayout)
+    , fPipeline(pipeline)
+    , fHasFragment(hasFragment)
+    , fHasStepUniforms(hasStepUniforms)
+    , fNumTextureSamplers(numTextureSamplers) {}
 
 void VulkanGraphicsPipeline::freeGpuData() {
     auto sharedCtxt = static_cast<const VulkanSharedContext*>(this->sharedContext());
