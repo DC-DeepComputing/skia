@@ -16,6 +16,23 @@
       "message": "This avoids the failed assertion. Is this approach OK?",
       "revId": "0da7aa4ad9995687829b1511cca112f1c7515380",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1efe183d_cee500fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-18T17:48:26Z",
+      "side": 1,
+      "message": "Works for me",
+      "revId": "0da7aa4ad9995687829b1511cca112f1c7515380",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
