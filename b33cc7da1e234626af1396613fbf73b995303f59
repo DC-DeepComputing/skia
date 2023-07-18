@@ -142,6 +142,30 @@
       },
       "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10b4aa89_3c023eb8",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-07-18T14:31:45Z",
+      "side": 1,
+      "message": "In your argument for your proposed code, you had to invoke looking at the compiler assembly output, and the fact that we turn off warnings to silence the comparison \u003c\u003d for an unsigned number. The reader of the code would have to have that same external knowledge to understand the proposed code\u0027s safety and meaning. The code as written does not appeal to code generation or warnings being turned off in order to understand the meaning of the code, and to see it\u0027s safety. You can read the code as written and understand it directly.\n\nSo, no. I don\u0027t think the code with the unneeded comparison against 0 for unsigned numbers is safer or safest.",
+      "parentUuid": "8e3f60a2_faa157c9",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 40
+      },
+      "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
