@@ -16,6 +16,24 @@
       "message": "I believe gating these on `defined(SK_GANESH)` is causing Android\u0027s libhwui compilation to fail when building for host-mode Linux (which is often not a fun target to build for), since its not in Android\u0027s `external/skia/linux/include/config/SkUserConfig.h`. Failures started in ag/24100039\n\nShould we:\n- Revert this?\n- Fix forward in Skia by loosening the `#if`?\n- Fix forward in Android by topic-synchronizing an update to the new namespace?\n\nFWIW there are also other ongoing failures blocking the roll that don\u0027t relate to us, so this isn\u0027t the only blocker.",
       "revId": "9daea7b8515be4770d510cf987577a7fda289def",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cd25671_ac46c7ad",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-18T11:47:04Z",
+      "side": 1,
+      "message": "I can loosen the #if (I hope)",
+      "parentUuid": "32ff505c_6c9ba276",
+      "revId": "9daea7b8515be4770d510cf987577a7fda289def",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
