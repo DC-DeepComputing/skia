@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de253798_0d62a9b4",
+        "filename": "tools/window/GraphiteVulkanWindowContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-18T15:00:13Z",
+      "side": 1,
+      "message": "```suggestion\n    // TODO: set up layout transition for backbuffer surface\n```",
+      "range": {
+        "startLine": 542,
+        "startChar": 27,
+        "endLine": 542,
+        "endChar": 37
+      },
+      "revId": "77b8c4622a7a6895ed2171ce28c1f34e4975889f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
