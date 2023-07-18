@@ -513,6 +513,32 @@ cc_test_with_flags(
     deps = [":tests_base"],
 )
 
+# Currently fails the "arithmode_blender" GM with "Deserialized and reference bitmap pixels do not
+# match". Other GMs fail as well, and some others pass.
+# TODO(lovisolo): Define flag --skip and skip the "arithmode_blender" GM.
+cc_test_with_flags(
+    name = "cpu_8888_via_serialize_test",
+    srcs = ["BazelGMRunner.cpp"] + CPU_GMS,
+    args = [
+        "--surfaceConfig",
+        "8888",
+        "--via",
+        "serialize",
+    ],
+    data = ["//resources"],
+    set_flags = {
+        "enable_sksl": ["True"],
+        "include_decoder": [
+            "gif_decode_codec",
+            "webp_decode_codec",
+        ],
+        "include_encoder": [
+            "png_encode_codec",  # Required by the "serialize" via.
+        ],
+    },
+    deps = [":tests_base"],
+)
+
 cc_test_with_flags(
     name = "gpu_gles_test",
     srcs = ["BazelGMRunner.cpp"] + GPU_GMS,
@@ -571,5 +597,27 @@ android_gm_test(
     },
     requires_condition = "//src/gpu:gl_backend",
     requires_resources_dir = True,
+    deps = [":tests_base"],
+)
+
+# Currently fails the "anisomips" GM with "Deserialized and reference bitmap pixels do not match".
+# Other GMs do pass.
+# TODO(lovisolo): Define flag --skip and skip the "anisomips" GM.
+android_gm_test(
+    name = "gpu_gles_via_serialize_android_test",
+    srcs = GPU_GMS,
+    config = "gles",
+    flags = {
+        "include_decoder": [
+            "png_decode_codec",
+            "webp_decode_codec",
+        ],
+        "include_encoder": [
+            "png_encode_codec",  # Required by the "serialize" via.
+        ],
+    },
+    requires_condition = "//src/gpu:gl_backend",
+    requires_resources_dir = True,
+    via = "serialize",
     deps = [":tests_base"],
 )
