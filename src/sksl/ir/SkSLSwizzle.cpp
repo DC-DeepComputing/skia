@@ -249,6 +249,12 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
                                              std::string_view maskString) {
     ComponentArray components;
     for (size_t i = 0; i < maskString.length(); ++i) {
+        if (i >= 4) {
+            context.fErrors->error(Position::Range(maskPos.startOffset() + 4,
+                                                   maskPos.endOffset()),
+                                   "too many components in swizzle mask");
+            return nullptr;
+        }
         char field = maskString[i];
         switch (field) {
             case '0': components.push_back(SwizzleComponent::ZERO); break;
