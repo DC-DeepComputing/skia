@@ -730,8 +730,7 @@ Context MakeGaneshContext(GrRecordingContext* context,
                           GrSurfaceOrigin origin,
                           const ContextInfo& info) {
     SkASSERT(context);
-    SkASSERT(!info.fSource.image() ||
-             SkToBool(context) == info.fSource.image()->isGaneshBacked());
+    SkASSERT(!info.fSource.image() || info.fSource.image()->isGaneshBacked());
 
     auto makeSurfaceFunctor = [context, origin](const SkImageInfo& imageInfo,
                                                 const SkSurfaceProps* props) {
@@ -751,5 +750,3 @@ Context MakeGaneshContext(GrRecordingContext* context,
 }
 
 }  // namespace skgpu::ganesh
-
-
