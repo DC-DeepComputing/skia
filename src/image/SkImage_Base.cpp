@@ -193,6 +193,7 @@ sk_sp<SkImage> SkImage_Base::filterSpecialImage(skif::Context context,
 }
 
 void SkImage_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
+                                                     bool readAlpha,
                                                      sk_sp<SkColorSpace> dstColorSpace,
                                                      SkIRect srcRect,
                                                      SkISize dstSize,
