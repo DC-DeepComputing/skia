@@ -16,6 +16,23 @@
       "message": "The Bazel build is failing because `needs_json` doesn\u0027t get set. I\u0027m not sure the right way to get this set for all users of GrAuditTrail without enabling it in too many places.\n\nAnother approach to this fix is to possibly add a `defined(SK_ENABLE_DUMP_GPU)` check in `DebugCanvas::toJSON()`. I dislike this approach as it makes the debugger have a dependency on the internal workings of `GrAuditTrail`. Any suggestions?",
       "revId": "fa7e86e7575b1a8308b326afc826425ef398bf40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abb7651d_f7892129",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-18T14:44:18Z",
+      "side": 1,
+      "message": "I don\u0027t think we want this problem solved this way. The one of the points of SK_ENABLE_DUMP_GPU is to not bring in the JSON writing code unnecessarily.",
+      "revId": "fa7e86e7575b1a8308b326afc826425ef398bf40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
