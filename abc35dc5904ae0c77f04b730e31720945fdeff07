@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21bab539_4a872432",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-18T00:54:13Z",
+      "side": 1,
+      "message": "The new GM diffs on gold show that this fixes the bug.",
+      "revId": "abc35dc5904ae0c77f04b730e31720945fdeff07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
