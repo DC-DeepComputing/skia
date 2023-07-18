@@ -208,6 +208,16 @@ const SkSL::RP::Program* SkRuntimeEffect::getRPProgram(SkSL::DebugTracePriv* deb
     // can avoid the cost of invoking the RP code generator until it's actually needed.
     fCompileRPProgramOnce([&] {
 #ifdef SK_ENABLE_SKSL_IN_RASTER_PIPELINE
+        // We generally do not run the inliner when an SkRuntimeEffect program is initially created,
+        // because the final compile to native shader code will do this. However, in SkRP, there's
+        // no additional compilation occurring, so we need to manually inline here if we want the
+        // performance boost of inlining.
+        if (!(fFlags & kDisableOptimization_Flag)) {
+            SkSL::Compiler compiler(SkSL::ShaderCapsFactory::Standalone());
+            fBaseProgram->fConfig->fSettings.fInlineThreshold = SkSL::kDefaultInlineThreshold;
+            compiler.runInliner(*fBaseProgram);
+        }
+
         SkSL::DebugTracePriv tempDebugTrace;
         if (debugTrace) {
             const_cast<SkRuntimeEffect*>(this)->fRPProgram = MakeRasterPipelineProgram(
@@ -498,6 +508,10 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeInternal(std::unique_ptr<SkSL::Prog
             break;
         default:
             SkUNREACHABLE;
+    }
+
+    if (options.forceUnoptimized) {
+        flags |= kDisableOptimization_Flag;
     }
 
     // Find 'main', then locate the sample coords parameter. (It might not be present.)
