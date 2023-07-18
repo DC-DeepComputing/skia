@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48fbc82d_fe636376",
+        "filename": "fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-18T20:30:14Z",
+      "side": 1,
+      "message": "For now this is sufficient. The next step is, probably, to add different draw types to match DrawTypeFlags (e.g., text and drawVertices). As DrawTypeFlags expands we may have to add additional draws (e.g., concave vs. convex paths, rects and roundrects).",
+      "parentUuid": "799a3305_90e87c4d",
+      "range": {
+        "startLine": 75,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 15
+      },
+      "revId": "4488bff52556ac79d49fed776a800d7c41023be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5aa2e2c6_7db75d7f",
         "filename": "fuzz/FuzzPrecompile.cpp",
         "patchSetId": 8
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-18T19:21:43Z",
       "side": 1,
       "message": "If the fuzzer runs out of bytes, it will just return 0. You might want to add in a check for fuzz-\u003eexhausted() to avoid an infinite loop if all 0s happens to be a no-op color filter.",
+      "range": {
+        "startLine": 182,
+        "startChar": 12,
+        "endLine": 182,
+        "endChar": 14
+      },
+      "revId": "4488bff52556ac79d49fed776a800d7c41023be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03fa2722_5a1b5f4e",
+        "filename": "fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-18T20:30:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5aa2e2c6_7db75d7f",
       "range": {
         "startLine": 182,
         "startChar": 12,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdaa38a2_4ce98642",
+        "filename": "fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-18T20:30:14Z",
+      "side": 1,
+      "message": "Nope - fixed.",
+      "parentUuid": "0353422c_2176b1d3",
+      "range": {
+        "startLine": 356,
+        "startChar": 57,
+        "endLine": 356,
+        "endChar": 63
+      },
+      "revId": "4488bff52556ac79d49fed776a800d7c41023be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebf2413c_8ea3dea1",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-07-18T19:21:43Z",
       "side": 1,
       "message": "Does this fuzzer actually use fonts? if not, let\u0027s drop this.",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 33
+      },
+      "revId": "4488bff52556ac79d49fed776a800d7c41023be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "990e1967_ede12185",
+        "filename": "fuzz/oss_fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-18T20:30:14Z",
+      "side": 1,
+      "message": "The next iteration will when I add a text drawing call so I figured I would just leave it in.",
+      "parentUuid": "ebf2413c_8ea3dea1",
       "range": {
         "startLine": 26,
         "startChar": 8,
