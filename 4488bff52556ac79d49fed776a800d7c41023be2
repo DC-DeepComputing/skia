@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2187a861_8be09934",
+        "filename": "fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-18T21:02:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "48fbc82d_fe636376",
+      "range": {
+        "startLine": 75,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 15
+      },
+      "revId": "4488bff52556ac79d49fed776a800d7c41023be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5aa2e2c6_7db75d7f",
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "The next iteration will when I add a text drawing call so I figured I would just leave it in.",
       "parentUuid": "ebf2413c_8ea3dea1",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 33
+      },
+      "revId": "4488bff52556ac79d49fed776a800d7c41023be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e786c325_e24ea508",
+        "filename": "fuzz/oss_fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-18T21:02:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "990e1967_ede12185",
       "range": {
         "startLine": 26,
         "startChar": 8,
