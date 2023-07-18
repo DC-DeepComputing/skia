@@ -70,6 +70,30 @@
       },
       "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d772e85b_2c6d37b1",
+        "filename": "include/private/base/SkAssert.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-18T13:59:35Z",
+      "side": 1,
+      "message": "Yeah, I think they might be - I just tried to repro on compiler explorer and I couldn\u0027t (and the compiler did appear to elide the zero check in the generated code), so we probably could collapse this down.",
+      "parentUuid": "0459c65b_a56b9f8d",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 40
+      },
+      "revId": "b33cc7da1e234626af1396613fbf73b995303f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
