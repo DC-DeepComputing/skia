@@ -15,6 +15,8 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/private/base/SkAssert.h"
@@ -57,6 +59,8 @@ static DEFINE_string(surfaceConfig,
                      "Name of the Surface configuration to use (e.g. \"8888\"). This determines "
                      "how we construct the SkSurface from which we get the SkCanvas that GMs will "
                      "draw on. See file //gm/surface_manager/SurfaceManager.h for details.");
+
+static DEFINE_string(via, "", "Name of the \"via\" to use (e.g. \"serialization\"). Optional.");
 
 // Takes a SkBitmap and writes the resulting PNG and MD5 hash into the given files. Returns an
 // empty string on success, or an error message in the case of failures.
@@ -117,6 +121,89 @@ static std::string draw_result_to_string(skiagm::DrawResult result) {
     }
 }
 
+// Holds the result of one of the draw* functions below.
+struct GMOutput {
+    skiagm::GM::DrawResult result;
+    SkString msg;
+    SkBitmap bitmap;
+
+    GMOutput(skiagm::GM::DrawResult result = skiagm::DrawResult::kFail,
+             SkString msg = SkString(""),
+             SkBitmap bitmap = SkBitmap())
+            : result(result), msg(msg), bitmap(bitmap) {}
+};
+
+static GMOutput draw(skiagm::GM* gm, SkSurface* surface) {
+    // Run the GM.
+    SkString msg;
+    skiagm::GM::DrawResult result = gm->draw(surface->getCanvas(), &msg);
+    if (result != skiagm::DrawResult::kOk) return {result, msg};
+
+    // Extract a bitmap from the surface.
+    SkBitmap bitmap;
+    bitmap.allocPixelsFlags(surface->getCanvas()->imageInfo(), SkBitmap::kZeroPixels_AllocFlag);
+    if (!surface->readPixels(bitmap, 0, 0)) {
+        return {skiagm::DrawResult::kFail, SkString("Could not read pixels from surface")};
+    }
+    return {result, msg, bitmap};
+}
+
+// The "serialization" via tests that if we record a GM using an SkPictureRecorder, the bitmap
+// produced by serializing the recorded picture, deserializing it, and drawing it on the surface
+// under test is the same as the bitmap obtained by drawing the GM directly on the surface under
+// test.
+//
+// Based on DM's ViaSerialization class here:
+// https://skia.googlesource.com/skia/+/dcc56df202cca129edda3f6f8bae04ec306b264e/dm/DMSrcSink.cpp#2281.
+static GMOutput draw_via_serialization(skiagm::GM* gm, SkSurface* surface) {
+    // Draw GM on a recording canvas.
+    SkPictureRecorder recorder;
+    SkCanvas* recordingCanvas =
+            recorder.beginRecording(gm->getISize().width(), gm->getISize().height());
+    SkString msg;
+    skiagm::DrawResult result = gm->draw(recordingCanvas, &msg);
+    if (result != skiagm::DrawResult::kOk) return {result, msg};
+
+    // Serialize and deserialize the recorded picture.
+    sk_sp<SkPicture> pic(recorder.finishRecordingAsPicture());
+    sk_sp<SkPicture> deserializedPic(SkPicture::MakeFromData(pic->serialize().get()));
+
+    // Draw the deserialized picture on the surface under test and extract it as a bitmap.
+    surface->getCanvas()->drawPicture(deserializedPic);
+    SkBitmap deserializedBitmap;
+    deserializedBitmap.allocPixelsFlags(surface->getCanvas()->imageInfo(),
+                                        SkBitmap::kZeroPixels_AllocFlag);
+    if (!surface->readPixels(deserializedBitmap, 0, 0)) {
+        return {skiagm::DrawResult::kFail,
+                SkString("Could not read deserialized pixels from surface")};
+    }
+
+    // Draw GM on the surface under test and extract the reference bitmap.
+    result = gm->draw(surface->getCanvas(), &msg);
+    if (result != skiagm::DrawResult::kOk) return {result, msg};
+    SkBitmap referenceBitmap;
+    referenceBitmap.allocPixelsFlags(surface->getCanvas()->imageInfo(),
+                                     SkBitmap::kZeroPixels_AllocFlag);
+    if (!surface->readPixels(referenceBitmap, 0, 0)) {
+        return {skiagm::DrawResult::kFail,
+                SkString("Could not read reference pixels from surface")};
+    }
+
+    // The deserialized and reference bitmaps should be identical.
+    if (deserializedBitmap.computeByteSize() != referenceBitmap.computeByteSize()) {
+        return {skiagm::DrawResult::kFail,
+                SkString("Deserialized and reference bitmap dimensions do not match")};
+    }
+    if (0 != memcmp(deserializedBitmap.getPixels(),
+                    referenceBitmap.getPixels(),
+                    referenceBitmap.computeByteSize())) {
+        return {skiagm::DrawResult::kFail,
+                SkString("Deserialized and reference bitmap pixels do not match")};
+    }
+
+    return {result, msg, referenceBitmap};
+}
+
 int main(int argc, char** argv) {
 #ifdef SK_BUILD_FOR_ANDROID
     extern bool gSkDebugToStdOut;  // If true, sends SkDebugf to stdout as well.
@@ -164,6 +251,10 @@ int main(int argc, char** argv) {
                  FLAGS_surfaceConfig.size());
         return 1;
     }
+    if (FLAGS_via.size() > 1) {
+        SkDebugf("Flag --via takes at most one value, got %d.\n", FLAGS_via.size());
+        return 1;
+    }
 
     std::string outputDir =
             FLAGS_outputDir.isEmpty() ? testUndeclaredOutputsDir : FLAGS_outputDir[0];
@@ -182,17 +273,30 @@ int main(int argc, char** argv) {
         if (surface_manager == nullptr) {
             SK_ABORT("unknown --surfaceConfig flag value: %s", config.c_str());
         }
-        SkCanvas* canvas = surface_manager->getSurface()->getCanvas();
 
         // Set up GPU.
         SkDebugf("[%s]     Setting up GPU...\n", now().c_str());
         SkString msg;
-        skiagm::DrawResult result = gm->gpuSetup(canvas, &msg);
+        skiagm::DrawResult result = gm->gpuSetup(surface_manager->getSurface()->getCanvas(), &msg);
 
         // Draw GM into canvas if GPU setup was successful.
+        SkBitmap bitmap;
         if (result == skiagm::DrawResult::kOk) {
-            SkDebugf("[%s]     Drawing GM...\n", now().c_str());
-            result = gm->draw(canvas, &msg);
+            GMOutput output;
+            std::string viaName = FLAGS_via.size() == 0 ? "" : (FLAGS_via[0]);
+            if (viaName == "") {
+                SkDebugf("[%s]     Drawing GM...\n", now().c_str());
+                output = draw(gm.get(), surface_manager->getSurface().get());
+            } else if (viaName == "serialization") {
+                SkDebugf("[%s]     Drawing GM via serialization...\n", now().c_str());
+                output = draw_via_serialization(gm.get(), surface_manager->getSurface().get());
+            } else {
+                // We should have caught this earlier during flag validation.
+                SK_ABORT("unknown --via flag value: %s", viaName);
+            }
+            result = output.result;
+            msg = output.msg;
+            bitmap = output.bitmap;
         }
 
         // Flush surface if the GM was successful.
@@ -217,10 +321,6 @@ int main(int argc, char** argv) {
             std::string name = std::string(gm->getName());
             SkString pngPath = SkOSPath::Join(outputDir.c_str(), (name + ".png").c_str());
             SkString jsonPath = SkOSPath::Join(outputDir.c_str(), (name + ".json").c_str());
-
-            SkBitmap bitmap;
-            bitmap.allocPixelsFlags(canvas->imageInfo(), SkBitmap::kZeroPixels_AllocFlag);
-            surface_manager->getSurface()->readPixels(bitmap, 0, 0);
 
             std::string pngAndJSONResult = write_png_and_json_files(
                     gm->getName(), config, bitmap, pngPath.c_str(), jsonPath.c_str());
