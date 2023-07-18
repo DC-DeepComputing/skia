@@ -22,6 +22,30 @@
       },
       "revId": "b295ed55499e0ba8f044f49ccb95d5cc872f702e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bf5321d_79b1d4ab",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-18T22:55:56Z",
+      "side": 1,
+      "message": "This is now fixed in PS3.",
+      "parentUuid": "7fd99375_6f0fde17",
+      "range": {
+        "startLine": 872,
+        "startChar": 24,
+        "endLine": 872,
+        "endChar": 44
+      },
+      "revId": "b295ed55499e0ba8f044f49ccb95d5cc872f702e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
