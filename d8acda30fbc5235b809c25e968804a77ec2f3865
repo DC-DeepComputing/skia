@@ -39,6 +39,30 @@
       },
       "revId": "d8acda30fbc5235b809c25e968804a77ec2f3865",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27b41f6f_94f93896",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-18T18:46:47Z",
+      "side": 1,
+      "message": "Whoops, I thought the values in SkottieValue were public since they\u0027re in namespace `skottie`. For naming, do we want to differentiate between `Vec2Values` and `VectorValues` (or rather, the public representations of these)? We can use SkV2 for this CL, then SkVector for VectorValues.\nI\u0027m nervous about generalizing vector slots too much, just because we have different keyframe animators for each.",
+      "parentUuid": "b53b22ec_9ddc77b1",
+      "range": {
+        "startLine": 52,
+        "startChar": 29,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "d8acda30fbc5235b809c25e968804a77ec2f3865",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
