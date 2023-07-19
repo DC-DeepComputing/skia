@@ -39,6 +39,29 @@
       },
       "revId": "3434703e32667a80263c316c504a6c706d5b6620",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3334753_790ec154",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-19T03:23:55Z",
+      "side": 1,
+      "message": "LMK if you have any suggestions on limits we can enforce on descriptor sets to make the key more digestible - whether that be short-term improvements or long-term considerations. Happy to talk about this in a meeting or in-person when I\u0027m back in as well. 😊",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 97
+      },
+      "revId": "3434703e32667a80263c316c504a6c706d5b6620",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
