@@ -16,6 +16,24 @@
       "message": "I revised the solution to expand the draw bounds by implementing `RenderStep::boundsOutset` rather than in the vertex shader. This should result in drawBounds and the mask bounds to match in dimension and the drawBounds.TL seems to generally fall on the right pixel without needing to snap it to `deviceBounds`. This also meant that `PathAtlas` no longer adds the AA padding as ClipStack incorporates it into `transformedShapeBounds`.\n\nI\u0027ll wait for the Graphite_Metal_Vello job to finish and see how this impacts the GMs before calling it done but this resolves the pixel snapping and discarded edge bugs that I mentioned in my reply to Brian\u0027s comment and AtlasShapeRenderStep needed to implement this anyway.\n\nPTAL.",
       "revId": "80e17de7c4489184f839a6e75dee84c5df4ef5e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bb325e0_9700b621",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-19T22:09:44Z",
+      "side": 1,
+      "message": "The new GMs look good, the missing top/left edge pixels on several GMs are now present. It looks like this also fixed the bug I was seeing with the thin_aa_dash_lines GM (b/291677393).",
+      "parentUuid": "a71127ef_331fe81f",
+      "revId": "80e17de7c4489184f839a6e75dee84c5df4ef5e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
