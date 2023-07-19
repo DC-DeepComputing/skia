@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6aee774_52611d37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-19T03:20:25Z",
+      "side": 1,
+      "message": "A bite-sized CL to cleanse your palette. :^)",
+      "revId": "7b58cafdcc780e202be12f94a82730b0227b268b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
