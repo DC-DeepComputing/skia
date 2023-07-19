@@ -578,7 +578,12 @@ void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsP
 }
 
 void VulkanCommandBuffer::setBlendConstants(float* blendConstants) {
-    // TODO: Implement
+    SkASSERT(fActive);
+    if (0 != memcmp(blendConstants, fCachedBlendConstant, 4 * sizeof(float))) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetBlendConstants(fPrimaryCmdBuffer, blendConstants));
+        memcpy(fCachedBlendConstant, blendConstants, 4 * sizeof(float));
+    }
 }
 
 void VulkanCommandBuffer::recordBufferBindingInfo(const BindBufferInfo& info, UniformSlot slot) {
