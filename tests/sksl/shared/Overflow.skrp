@@ -1,10 +1,26 @@
-252 instructions
+270 instructions
 
 [immutable slots]
 i0 = 0x00000002 (2.802597e-45)
 i1 = 0x00000002 (2.802597e-45)
 i2 = 0x00000002 (2.802597e-45)
 i3 = 0x00000002 (2.802597e-45)
+i4 = 0x7F800000
+i5 = 0x7F800000
+i6 = 0x7F800000
+i7 = 0x7F800000
+i8 = 0x7F800000
+i9 = 0x7F800000
+i10 = 0x7F800000
+i11 = 0x7F800000
+i12 = 0x7F800000
+i13 = 0x7F800000
+i14 = 0x7F800000
+i15 = 0x7F800000
+i16 = 0x7F800000
+i17 = 0x7F800000
+i18 = 0x7F800000
+i19 = 0x7F800000
 
 store_src_rg                   coords = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
@@ -252,6 +268,24 @@ min_4_floats                   $4..7 = min($4..7, $8..11)
 mul_4_floats                   $0..3 *= $4..7
 copy_4_slots_unmasked          $4..7 = hugeUvec
 cast_to_float_from_4_uints     $4..7 = UintToFloat($4..7)
+splat_4_constants              $8..11 = 0
+max_4_floats                   $4..7 = max($4..7, $8..11)
+splat_4_constants              $8..11 = 0x3F800000 (1.0)
+min_4_floats                   $4..7 = min($4..7, $8..11)
+mul_4_floats                   $0..3 *= $4..7
+copy_4_immutables_unmasked     $4..7 = i4..7 [0x7F800000, 0x7F800000, 0x7F800000, 0x7F800000]
+splat_4_constants              $8..11 = 0
+max_4_floats                   $4..7 = max($4..7, $8..11)
+splat_4_constants              $8..11 = 0x3F800000 (1.0)
+min_4_floats                   $4..7 = min($4..7, $8..11)
+mul_4_floats                   $0..3 *= $4..7
+splat_4_constants              $4..7 = 0x7F800000
+splat_4_constants              $8..11 = 0
+max_4_floats                   $4..7 = max($4..7, $8..11)
+splat_4_constants              $8..11 = 0x3F800000 (1.0)
+min_4_floats                   $4..7 = min($4..7, $8..11)
+mul_4_floats                   $0..3 *= $4..7
+splat_4_constants              $4..7 = 0x7F800000
 splat_4_constants              $8..11 = 0
 max_4_floats                   $4..7 = max($4..7, $8..11)
 splat_4_constants              $8..11 = 0x3F800000 (1.0)
