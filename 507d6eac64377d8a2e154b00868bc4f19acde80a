@@ -16,6 +16,69 @@
       "message": "Kevin:\n\nPretty big changes after your LGTM. I\u0027ll wait till tomorrow to submit to give you time to take a look if you want.",
       "revId": "507d6eac64377d8a2e154b00868bc4f19acde80a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd54eb30_1d948313",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T12:54:48Z",
+      "side": 1,
+      "message": "Overall LGTM. Thanks for getting the bazel rules to work.",
+      "revId": "507d6eac64377d8a2e154b00868bc4f19acde80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6e2f1a4_8a97a2b6",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T12:54:48Z",
+      "side": 1,
+      "message": "It\u0027s not clear to me why we need two build_for_debugger flags. Let\u0027s just keep the one in //modules/canvaskit/BUILD.bazel",
+      "range": {
+        "startLine": 232,
+        "startChar": 12,
+        "endLine": 232,
+        "endChar": 30
+      },
+      "revId": "507d6eac64377d8a2e154b00868bc4f19acde80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "153ad0c8_279167a2",
+        "filename": "modules/canvaskit/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T12:54:48Z",
+      "side": 1,
+      "message": "Can you make this more precise? //infra/debugger-app:__pkg__ ?",
+      "range": {
+        "startLine": 301,
+        "startChar": 27,
+        "endLine": 301,
+        "endChar": 42
+      },
+      "revId": "507d6eac64377d8a2e154b00868bc4f19acde80a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
