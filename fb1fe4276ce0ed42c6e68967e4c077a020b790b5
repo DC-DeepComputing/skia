@@ -22,6 +22,30 @@
       },
       "revId": "fb1fe4276ce0ed42c6e68967e4c077a020b790b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fa6abd3_34f11930",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-07-19T16:56:13Z",
+      "side": 1,
+      "message": "It should be fine to store this way, let\u0027s just keep it out of the public APIs (getColorSlot/setColorSlot).",
+      "parentUuid": "7bce6719_4f3f53cc",
+      "range": {
+        "startLine": 93,
+        "startChar": 22,
+        "endLine": 93,
+        "endChar": 32
+      },
+      "revId": "fb1fe4276ce0ed42c6e68967e4c077a020b790b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
