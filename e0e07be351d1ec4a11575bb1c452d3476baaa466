@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abfeea5f_548fb64e",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1184,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-19T02:28:41Z",
+      "side": 1,
+      "message": "I have not been able to think of a better way for VulkanCaps to determine the # of texture/sampler and uniform descriptors so that those pieces of information can be included within a graphics pipeline key. Suggestions are welcome. This is why I added the SharedContext and RuntimeEffectDictionary args even though no other backends currently need them.",
+      "range": {
+        "startLine": 1167,
+        "startChar": 0,
+        "endLine": 1184,
+        "endChar": 43
+      },
+      "revId": "e0e07be351d1ec4a11575bb1c452d3476baaa466",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

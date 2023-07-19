@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8faee530_89907b8a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-19T02:28:41Z",
+      "side": 1,
+      "message": "Tear it up, Jim 😎",
+      "revId": "3434703e32667a80263c316c504a6c706d5b6620",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "708288e2_b0c3e676",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-19T02:28:41Z",
+      "side": 1,
+      "message": "I am looking into why there are validation errors with indexed instanced draw calls on QuadroP400 GPUs (relating to vertex buffers not being bound), but wanted to get this review out to you so you could start TAL.",
+      "range": {
+        "startLine": 553,
+        "startChar": 0,
+        "endLine": 558,
+        "endChar": 65
+      },
+      "revId": "3434703e32667a80263c316c504a6c706d5b6620",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
