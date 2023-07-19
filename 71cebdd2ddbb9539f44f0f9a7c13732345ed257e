@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33c34152_d6b282ad",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2784,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-19T21:45:52Z",
+      "side": 1,
+      "message": "Is this an SkSL restriction? Technically it\u0027s not invalid WGSL to bind multiple uniform buffers at different binding indices (although afaik Skia doesn\u0027t do that in practice). Maybe add a comment about this assumption?\n\n----\nP.S.: As a follow up we\u0027ll want a storage buffer/block version of this method which I imagine will look very similar. Maybe there can be a method that generally handles one or more interface block declarations that it encounters in both storage and uniform address spaces?",
+      "range": {
+        "startLine": 2779,
+        "startChar": 8,
+        "endLine": 2784,
+        "endChar": 9
+      },
+      "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c176231a_76fdb77f",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2805,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-19T21:45:52Z",
+      "side": 1,
+      "message": "Do we want to validate the offsets/layout of the fields here, using `SkSLMemoryLayout`? That doesn\u0027t have to happen in this CL but maybe add a TODO as a reminder.",
+      "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
