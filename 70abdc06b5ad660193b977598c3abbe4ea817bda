@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "310dac1d_56434e91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-19T15:46:23Z",
+      "side": 1,
+      "message": "Idea makes sense to me, but I want Michael to double-check the math here",
+      "revId": "70abdc06b5ad660193b977598c3abbe4ea817bda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
