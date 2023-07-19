@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc9ccbdd_57caffac",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 7687,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-19T18:25:43Z",
+      "side": 1,
+      "message": "Make it UNIX_ONLY_TEST. We do not test texts/fonts on different platforms - the results is not guaranteed.",
+      "range": {
+        "startLine": 7687,
+        "startChar": 0,
+        "endLine": 7687,
+        "endChar": 8
+      },
+      "revId": "c8e994f79b57c8d1ea8aa744ed8a1b5f4d6a1a6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
