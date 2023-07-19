@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5df561a_f794fc9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "I\u0027m requesting a semi-major change to avoid vias adding unnecessary dependencies to all gms.",
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e16603e0_5cae81c9",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "We should use std::string where possible in new APIs. The Skia team wants to use SkString less and less as we can (exceptions include a \"StringBuilder\" mechanism, as std::string is not great for that).",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 12
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d983c090_8bcd79a6",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "For what it\u0027s worth, only about 15% of GMs override the version that takes in a string:\n```\n~/skia/skia/gm$ git grep onDraw.*SkString.*override | wc -l\n48\n~/skia/skia/gm$ git grep onDraw.*override | wc -l\n358\n```",
+      "range": {
+        "startLine": 139,
+        "startChar": 40,
+        "endLine": 139,
+        "endChar": 44
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d20acb60_6b1b14ad",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "I loathe this style of inlined if statements. Please always use braces and put the body on the next line.\n\nHere, above, and below.",
+      "range": {
+        "startLine": 165,
+        "startChar": 38,
+        "endLine": 165,
+        "endChar": 41
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1f23bbe_b5fd4780",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "Add a note that this uses the default behavior from SkSerialProcs (which is where that dependency on libpng comes from, btw)",
+      "range": {
+        "startLine": 167,
+        "startChar": 46,
+        "endLine": 167,
+        "endChar": 53
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c9778b4_c4cb394a",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "nit: I have a personal preference for the style of\n```\nsk_sp\u003cSkPicture\u003e pic \u003d recorder.finishRecordingAsPicture();\n```\n\nbecause it looks like other programming languages I\u0027m used to and makes switching back and forth easier.",
+      "range": {
+        "startLine": 168,
+        "startChar": 21,
+        "endLine": 168,
+        "endChar": 24
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2988de8_90139bbc",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "Do we need to clear the canvas between draws?",
+      "range": {
+        "startLine": 182,
+        "startChar": 31,
+        "endLine": 182,
+        "endChar": 40
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bfc05e1_791731f8",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "I loathe this style of inlined if statements. Please always use braces and put the body on the next line.",
+      "range": {
+        "startLine": 183,
+        "startChar": 43,
+        "endLine": 183,
+        "endChar": 49
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f770d6dd_3f3a3562",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "The message should include the different dimensions, as well as the computed width and height.",
+      "range": {
+        "startLine": 195,
+        "startChar": 78,
+        "endLine": 195,
+        "endChar": 83
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5949cb26_ca9ba74b",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "If this fails on the CI, how are we going to have any insight as to what went wrong?\n\nThere are some tests which can output base64 encoded PNGs to help spot the differences. Maybe we should do that.",
+      "range": {
+        "startLine": 200,
+        "startChar": 36,
+        "endLine": 200,
+        "endChar": 41
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adb23a44_a77d4101",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:29:02Z",
+      "side": 1,
+      "message": "I originally thought \"Could we make our known vias a class enum and then turn this into a switch statement?\"\n\nHowever, one reason we might *not* want to use an enum and an if statement is because having all the vias in this way couples them together.\n\nAs things are currently written, we *must* have SkPicture support to compile BazelGMRunner.cpp now. If something changes the SkPicture implementation, we would have to re-compile and re-run all tests, not just those which use the serialization via, because the linker cannot throw away the serialization/deserialization code.\n\nI think we might want each via to be defined in its own file and implement the same interface (draw). That way, at build time, we can only bring in what we need.",
+      "range": {
+        "startLine": 290,
+        "startChar": 35,
+        "endLine": 290,
+        "endChar": 48
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
