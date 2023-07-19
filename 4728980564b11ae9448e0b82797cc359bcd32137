@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4dfe6c1_e5e1574a",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3767,
+      "author": {
+        "id": 7712
+      },
+      "writtenOn": "2023-07-19T16:35:43Z",
+      "side": 0,
+      "message": "You likely want to keep the base level set to ensure that you sample from the correct mip.",
+      "range": {
+        "startLine": 3767,
+        "startChar": 8,
+        "endLine": 3767,
+        "endChar": 86
+      },
+      "revId": "4728980564b11ae9448e0b82797cc359bcd32137",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
