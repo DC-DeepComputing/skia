@@ -246,6 +246,53 @@
       },
       "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c12fd5b8_fc22f106",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:41:11Z",
+      "side": 1,
+      "message": "After looking at the follow-on CL, here\u0027s what I think will work cleanly and also reduce unnecessary duplication.\n\nForward declare (or make a header for) the function\n```\nGMOutput draw(skiagm::GM* gm, SkSurface* surface, std::string via)\n```\n(or `draw_with_via(...)`, if you prefer)\n\nAdd a new file DirectVia.cpp which will have the current implementation of draw()\n\nAdd a new file PictureVias.cpp which declares draw() and looks at the via param to decide if it should deserialize the picture and then draw it or just draw the picture directly.\n\nThe build rules will then bundle in the appropriate via .cpp file, effectively making a new binary for a surface+via combination.",
+      "parentUuid": "adb23a44_a77d4101",
+      "range": {
+        "startLine": 290,
+        "startChar": 35,
+        "endLine": 290,
+        "endChar": 48
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "055fad61_a1508780",
+        "filename": "gm/android_gm_test.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-19T13:41:11Z",
+      "side": 1,
+      "message": "I think \"serialized_picture\" or picture_serialization is a better name that will help compare/contrast it with the \"picture\" via you add next.",
+      "range": {
+        "startLine": 15,
+        "startChar": 5,
+        "endLine": 15,
+        "endChar": 18
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
