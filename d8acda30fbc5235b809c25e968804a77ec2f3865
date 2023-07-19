@@ -87,6 +87,30 @@
       },
       "revId": "d8acda30fbc5235b809c25e968804a77ec2f3865",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1b00e5c_4cb7d8ff",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-19T18:22:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68cc67a3_396d325d",
+      "range": {
+        "startLine": 52,
+        "startChar": 29,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "d8acda30fbc5235b809c25e968804a77ec2f3865",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
