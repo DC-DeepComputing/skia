@@ -4,6 +4,54 @@ store_src_rg                   xy = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
 splat_4_constants              color = 0
 splat_4_constants              color = 0x3F800000 (1.0)
+label                          label 0x00000030
+label                          label 0x0000002F
+label                          label 0x0000002E
+label                          label 0x0000002D
+label                          label 0x0000002C
+label                          label 0x0000002B
+label                          label 0x0000002A
+label                          label 0x00000029
+label                          label 0x00000028
+label                          label 0x00000027
+label                          label 0x00000026
+label                          label 0x00000025
+label                          label 0x00000024
+label                          label 0x00000023
+label                          label 0x00000022
+label                          label 0x00000021
+label                          label 0x00000020
+label                          label 0x0000001F
+label                          label 0x0000001E
+label                          label 0x0000001D
+label                          label 0x0000001C
+label                          label 0x0000001B
+label                          label 0x0000001A
+label                          label 0x00000019
+label                          label 0x00000018
+label                          label 0x00000017
+label                          label 0x00000016
+label                          label 0x00000015
+label                          label 0x00000014
+label                          label 0x00000013
+label                          label 0x00000012
+label                          label 0x00000011
+label                          label 0x00000010
+label                          label 0x0000000F
+label                          label 0x0000000E
+label                          label 0x0000000D
+label                          label 0x0000000C
+label                          label 0x0000000B
+label                          label 0x0000000A
+label                          label 0x00000009
+label                          label 0x00000008
+label                          label 0x00000007
+label                          label 0x00000006
+label                          label 0x00000005
+label                          label 0x00000004
+label                          label 0x00000003
+label                          label 0x00000002
+label                          label 0x00000001
 label                          label 0
 copy_4_slots_unmasked          $0..3 = color
 load_src                       src.rgba = $0..3

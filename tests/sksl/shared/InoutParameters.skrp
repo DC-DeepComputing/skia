@@ -1,4 +1,4 @@
-24 instructions
+28 instructions
 
 store_src_rg                   coords = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
@@ -28,5 +28,11 @@ copy_4_slots_unmasked          x₂ = $0..3
 label                          label 0x00000005
 copy_4_slots_unmasked          c = x₂
 label                          label 0x00000004
+copy_4_slots_unmasked          x₃ = c
+copy_4_slots_unmasked          c = x₃
+label                          label 0x00000006
+copy_4_slots_unmasked          x₄ = c
+copy_4_slots_unmasked          c = x₄
+label                          label 0x00000007
 copy_4_slots_unmasked          $0..3 = c
 load_src                       src.rgba = $0..3

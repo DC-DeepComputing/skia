@@ -1,12 +1,30 @@
-9 instructions
+21 instructions
 
 [immutable slots]
 i0 = 0x00000002 (2.802597e-45)
+i1 = 0x00000001 (1.401298e-45)
+i2 = 0x00000003 (4.203895e-45)
 
 store_src_rg                   coords = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_constant                  $0 = 0x00000002 (2.802597e-45)
-cmpeq_imm_int                  $0 = equal($0, 0x00000002)
+splat_4_constants              a[0], b[0], b[1], c[0] = 0
+splat_2_constants              c[1], c[2] = 0
+copy_slot_unmasked             [0] = a[0]
+label                          label 0x00000002
+copy_2_slots_unmasked          [0]₁, [1] = b[0], b[1]
+label                          label 0x00000003
+copy_3_slots_unmasked          [0]₂, [1]₁, [2] = c[0], c[1], c[2]
+label                          label 0x00000004
+copy_constant                  flatten1 = 0x00000002 (2.802597e-45)
+copy_constant                  $0 = 0x00000001 (1.401298e-45)
+cmpeq_imm_int                  $0 = equal($0, 0x00000001)
+copy_slot_unmasked             $1 = flatten1
+cmpeq_imm_int                  $1 = equal($1, 0x00000002)
+bitwise_and_int                $0 &= $1
+copy_constant                  $1 = 0x00000003 (4.203895e-45)
+cmpeq_imm_int                  $1 = equal($1, 0x00000003)
+bitwise_and_int                $0 &= $1
+label                          label 0x00000001
 swizzle_4                      $0..3 = ($0..3).xxxx
 copy_4_uniforms                $4..7 = colorRed
 copy_4_uniforms                $8..11 = colorGreen

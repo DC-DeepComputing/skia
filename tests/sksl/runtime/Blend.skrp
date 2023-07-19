@@ -1,16 +1,20 @@
-14 instructions
+17 instructions
 
 store_src                      src = src.rgba
 store_dst                      dst = dst.rgba
 init_lane_masks                CondMask = LoopMask = RetMask = true
-copy_4_slots_unmasked          $0..3 = src
+copy_4_slots_unmasked          src₁ = src
+splat_4_constants              $0..3 = 0x3F800000 (1.0)
+copy_4_slots_unmasked          $4..7 = dst
+sub_4_floats                   $0..3 -= $4..7
+copy_4_slots_unmasked          dst₁ = $0..3
+copy_4_slots_unmasked          $0..3 = src₁
 copy_constant                  $4 = 0x3F800000 (1.0)
-copy_slot_unmasked             $5 = src(3)
+copy_slot_unmasked             $5 = src₁(3)
 sub_float                      $4 -= $5
 swizzle_4                      $4..7 = ($4..7).xxxx
-splat_4_constants              $8..11 = 0x3F800000 (1.0)
-copy_4_slots_unmasked          $12..15 = dst
-sub_4_floats                   $8..11 -= $12..15
+copy_4_slots_unmasked          $8..11 = dst₁
 mul_4_floats                   $4..7 *= $8..11
 add_4_floats                   $0..3 += $4..7
+label                          label 0
 load_src                       src.rgba = $0..3

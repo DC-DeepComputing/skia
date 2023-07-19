@@ -642,6 +642,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
 #if defined(SK_ENABLE_SKSL_IN_RASTER_PIPELINE)
     } else if (skstd::ends_with(outputPath, ".skrp")) {
         settings.fMaxVersionAllowed = SkSL::Version::k300;
+        settings.fInlineThreshold = 0;
         return compileProgramAsRuntimeShader(
                 [&](SkSL::Compiler& compiler, SkSL::Program& program, SkSL::OutputStream& out) {
                     SkSL::DebugTracePriv skrpDebugTrace;

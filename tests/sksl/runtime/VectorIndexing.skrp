@@ -2,61 +2,64 @@
 
 store_src_rg                   xy = src.rg
 init_lane_masks                CondMask = LoopMask = RetMask = true
-splat_2_constants              _0_sum, _1_i = 0
-label                          label 0x00000001
-copy_slot_unmasked             $0 = _0_sum
-copy_slot_unmasked             $6 = _1_i
-copy_from_indirect_uniform_unm $1 = Indirect(u2(0) + $6)
-add_float                      $0 += $1
-copy_slot_unmasked             _0_sum = $0
-add_imm_int                    _1_i += 0x00000001
-copy_slot_unmasked             $0 = _1_i
-cmplt_imm_int                  $0 = lessThan($0, 0x00000004)
-stack_rewind
-branch_if_no_active_lanes_eq   branch -10 (label 1 at #4) if no lanes of $0 == 0
+copy_uniform                   $0 = u1(0)
 label                          label 0
-copy_constant                  _2_prod = 0x3F800000 (1.0)
-copy_constant                  _3_i = 0
+splat_2_constants              sum, i = 0
 label                          label 0x00000003
-copy_slot_unmasked             $0 = _2_prod
-copy_slot_unmasked             $6 = _3_i
+copy_slot_unmasked             $1 = sum
+copy_slot_unmasked             $6 = i
+copy_from_indirect_uniform_unm $2 = Indirect(u2(0) + $6)
+add_float                      $1 += $2
+copy_slot_unmasked             sum = $1
+add_imm_int                    i += 0x00000001
+copy_slot_unmasked             $1 = i
+cmplt_imm_int                  $1 = lessThan($1, 0x00000004)
+stack_rewind
+branch_if_no_active_lanes_eq   branch -10 (label 3 at #6) if no lanes of $1 == 0
+label                          label 0x00000002
+copy_slot_unmasked             $1 = sum
+label                          label 0x00000001
+copy_constant                  prod = 0x3F800000 (1.0)
+copy_constant                  i₁ = 0
+label                          label 0x00000006
+copy_slot_unmasked             $2 = prod
+copy_slot_unmasked             $6 = i₁
 cmplt_imm_int                  $6 = lessThan($6, 0x00000002)
-copy_slot_unmasked             $7 = _3_i
+copy_slot_unmasked             $7 = i₁
 copy_constant                  $8 = 0
 mix_int                        $6 = mix($7, $8, $6)
-copy_from_indirect_uniform_unm $1 = Indirect(u3(0) + $6)
-mul_float                      $0 *= $1
-copy_slot_unmasked             _2_prod = $0
-add_imm_int                    _3_i += 0x00000001
-copy_slot_unmasked             $0 = _3_i
-cmplt_imm_int                  $0 = lessThan($0, 0x00000004)
+copy_from_indirect_uniform_unm $3 = Indirect(u3(0) + $6)
+mul_float                      $2 *= $3
+copy_slot_unmasked             prod = $2
+add_imm_int                    i₁ += 0x00000001
+copy_slot_unmasked             $2 = i₁
+cmplt_imm_int                  $2 = lessThan($2, 0x00000004)
 stack_rewind
-branch_if_no_active_lanes_eq   branch -14 (label 3 at #18) if no lanes of $0 == 0
-label                          label 0x00000002
-copy_uniform                   $0 = u1(0)
-copy_slot_unmasked             $1 = _0_sum
-copy_slot_unmasked             $2 = _2_prod
+branch_if_no_active_lanes_eq   branch -14 (label 6 at #22) if no lanes of $2 == 0
+label                          label 0x00000005
+copy_slot_unmasked             $2 = prod
+label                          label 0x00000004
 store_return_mask              $3 = RetMask
-copy_constant                  i = 0x00000007 (9.809089e-45)
+copy_constant                  i₂ = 0x00000007 (9.809089e-45)
 store_loop_mask                $4 = LoopMask
-jump                           jump +9 (label 7 at #49)
-label                          label 0x00000008
-copy_slot_unmasked             $6 = i
+jump                           jump +9 (label 10 at #52)
+label                          label 0x0000000B
+copy_slot_unmasked             $6 = i₂
 copy_from_indirect_uniform_unm $5 = Indirect(u4(0) + $6)
 copy_slot_masked               [index_clamped_out_of_bounds].result = Mask($5)
 mask_off_return_mask           RetMask &= ~(CondMask & LoopMask & RetMask)
-copy_slot_unmasked             $5 = i
+copy_slot_unmasked             $5 = i₂
 add_imm_int                    $5 += 0x00000001
-copy_slot_masked               i = Mask($5)
-label                          label 0x00000007
-copy_slot_unmasked             $5 = i
+copy_slot_masked               i₂ = Mask($5)
+label                          label 0x0000000A
+copy_slot_unmasked             $5 = i₂
 cmplt_imm_int                  $5 = lessThan($5, 0x00000008)
 merge_loop_mask                LoopMask &= $5
 stack_rewind
-branch_if_any_lanes_active     branch_if_any_lanes_active -13 (label 8 at #41)
-label                          label 0x00000006
+branch_if_any_lanes_active     branch_if_any_lanes_active -13 (label 11 at #44)
+label                          label 0x00000009
 load_loop_mask                 LoopMask = $4
 load_return_mask               RetMask = $3
 copy_slot_unmasked             $3 = [index_clamped_out_of_bounds].result
-label                          label 0x00000005
+label                          label 0x00000008
 load_src                       src.rgba = $0..3
