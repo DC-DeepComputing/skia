@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a524f24_2534e89f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e5df561a_f794fc9b",
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e16603e0_5cae81c9",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-07-19T13:29:02Z",
       "side": 1,
       "message": "We should use std::string where possible in new APIs. The Skia team wants to use SkString less and less as we can (exceptions include a \"StringBuilder\" mechanism, as std::string is not great for that).",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 12
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed3279a_25a07dc0",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "Just a note. One thing we lose by moving away from `SkString` is the `SkStringPrintf` function. We can replace that with `std::format`[1], but it requires C++20, which AFAIK we don\u0027t currently use in our Bazel build. In the meantime I\u0027m resorting to `std::ostringstream`.\n\n[1] https://en.cppreference.com/w/cpp/utility/format/format",
+      "parentUuid": "e16603e0_5cae81c9",
       "range": {
         "startLine": 127,
         "startChar": 4,
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90e47793_672db869",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "d983c090_8bcd79a6",
+      "range": {
+        "startLine": 139,
+        "startChar": 40,
+        "endLine": 139,
+        "endChar": 44
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d20acb60_6b1b14ad",
@@ -94,6 +160,30 @@
       "writtenOn": "2023-07-19T13:29:02Z",
       "side": 1,
       "message": "I loathe this style of inlined if statements. Please always use braces and put the body on the next line.\n\nHere, above, and below.",
+      "range": {
+        "startLine": 165,
+        "startChar": 38,
+        "endLine": 165,
+        "endChar": 41
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "012de2d0_bf3977dc",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d20acb60_6b1b14ad",
       "range": {
         "startLine": 165,
         "startChar": 38,
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "355798c6_bc2d074d",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1f23bbe_b5fd4780",
+      "range": {
+        "startLine": 167,
+        "startChar": 46,
+        "endLine": 167,
+        "endChar": 53
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c9778b4_c4cb394a",
@@ -140,6 +254,30 @@
       "writtenOn": "2023-07-19T13:29:02Z",
       "side": 1,
       "message": "nit: I have a personal preference for the style of\n```\nsk_sp\u003cSkPicture\u003e pic \u003d recorder.finishRecordingAsPicture();\n```\n\nbecause it looks like other programming languages I\u0027m used to and makes switching back and forth easier.",
+      "range": {
+        "startLine": 168,
+        "startChar": 21,
+        "endLine": 168,
+        "endChar": 24
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3e57c0d_ef939160",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c9778b4_c4cb394a",
       "range": {
         "startLine": 168,
         "startChar": 21,
@@ -173,6 +311,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84c1ddc1_de06d077",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "I understand GMs always do that before drawing their contents:\n\nhttps://skia.googlesource.com/skia/+/650c980daa72d887602e701db8f84072e26d4d48/gm/gm.cpp#114",
+      "parentUuid": "c2988de8_90139bbc",
+      "range": {
+        "startLine": 182,
+        "startChar": 31,
+        "endLine": 182,
+        "endChar": 40
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bfc05e1_791731f8",
@@ -186,6 +348,30 @@
       "writtenOn": "2023-07-19T13:29:02Z",
       "side": 1,
       "message": "I loathe this style of inlined if statements. Please always use braces and put the body on the next line.",
+      "range": {
+        "startLine": 183,
+        "startChar": 43,
+        "endLine": 183,
+        "endChar": 49
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be594c6b_0d0c22c3",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5bfc05e1_791731f8",
       "range": {
         "startLine": 183,
         "startChar": 43,
@@ -219,6 +405,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1230b540_a4cef31d",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f770d6dd_3f3a3562",
+      "range": {
+        "startLine": 195,
+        "startChar": 78,
+        "endLine": 195,
+        "endChar": 83
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5949cb26_ca9ba74b",
@@ -232,6 +442,30 @@
       "writtenOn": "2023-07-19T13:29:02Z",
       "side": 1,
       "message": "If this fails on the CI, how are we going to have any insight as to what went wrong?\n\nThere are some tests which can output base64 encoded PNGs to help spot the differences. Maybe we should do that.",
+      "range": {
+        "startLine": 200,
+        "startChar": 36,
+        "endLine": 200,
+        "endChar": 41
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f171202c_ea56f932",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5949cb26_ca9ba74b",
       "range": {
         "startLine": 200,
         "startChar": 36,
@@ -326,6 +560,30 @@
       "writtenOn": "2023-07-19T13:41:11Z",
       "side": 1,
       "message": "I think \"serialized_picture\" or picture_serialization is a better name that will help compare/contrast it with the \"picture\" via you add next.",
+      "range": {
+        "startLine": 15,
+        "startChar": 5,
+        "endLine": 15,
+        "endChar": 18
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "becc78e3_4fb1bc7c",
+        "filename": "gm/android_gm_test.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-19T18:47:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "055fad61_a1508780",
       "range": {
         "startLine": 15,
         "startChar": 5,
