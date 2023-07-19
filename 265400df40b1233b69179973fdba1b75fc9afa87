@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c604a3a_4d50afaf",
+        "filename": "modules/skottie/src/SkottieValue.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-19T18:07:07Z",
+      "side": 1,
+      "message": "It worked and I caught one. See TextAnimator for how I handled it.",
+      "parentUuid": "407d9ba0_9a4d336e",
+      "revId": "265400df40b1233b69179973fdba1b75fc9afa87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be6dca35_1cf25988",
         "filename": "modules/skottie/src/SlotManager.cpp",
         "patchSetId": 2
@@ -48,6 +66,30 @@
       "writtenOn": "2023-07-19T16:56:13Z",
       "side": 1,
       "message": "SkColor4f is a struct, you an access its members directly:\n\n    auto c4f \u003d SkColor4f::FromColor(c);\n    ColorValue V{c4f.fR, c4f.fG, c4f.B, c4f.fA};",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 51
+      },
+      "revId": "265400df40b1233b69179973fdba1b75fc9afa87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acc02f5e_2bef6c45",
+        "filename": "modules/skottie/src/SlotManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-19T18:07:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be6dca35_1cf25988",
       "range": {
         "startLine": 47,
         "startChar": 0,
@@ -71,6 +113,30 @@
       "writtenOn": "2023-07-19T16:56:13Z",
       "side": 1,
       "message": "nit: `static_cast\u003cVectorValue*\u003e(v)`",
+      "range": {
+        "startLine": 312,
+        "startChar": 39,
+        "endLine": 312,
+        "endChar": 55
+      },
+      "revId": "265400df40b1233b69179973fdba1b75fc9afa87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc8381d4_b0809d92",
+        "filename": "modules/skottie/src/animator/VectorKeyframeAnimator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-07-19T18:07:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36c38319_305d4900",
       "range": {
         "startLine": 312,
         "startChar": 39,
