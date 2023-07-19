@@ -106,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fee6b59_2cf21911",
+        "filename": "bazel/override_container_label.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-07-19T12:38:38Z",
+      "side": 1,
+      "message": "Nope - removed.",
+      "parentUuid": "4023fda7_585c592e",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "737e20efb26f6af8afdaf26052565e1649dd5ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdbbac14_c7cdd435",
