@@ -7,6 +7,18 @@
 
 #include "include/gpu/graphite/TextureInfo.h"
 
+#ifdef SK_DAWN
+#include "src/gpu/dawn/DawnUtilsPriv.h"
+#endif
+
+#ifdef SK_METAL
+#include "src/gpu/mtl/MtlUtilsPriv.h"
+#endif
+
+#ifdef SK_VULKAN
+#include "src/gpu/vk/VulkanUtilsPriv.h"
+#endif
+
 namespace skgpu::graphite {
 
 TextureInfo& TextureInfo::operator=(const TextureInfo& that) {
@@ -154,5 +166,27 @@ SkString TextureInfo::toString() const {
     return ret;
 }
 
-} // namespace skgpu::graphite
+size_t TextureInfo::bytesPerPixel() const {
+    if (!this->isValid()) {
+        return 0;
+    }
 
+    switch (fBackend) {
+#ifdef SK_DAWN
+        case BackendApi::kDawn:
+            return DawnFormatBytesPerBlock(this->dawnTextureSpec().fFormat);
+#endif
+#ifdef SK_METAL
+        case BackendApi::kMetal:
+            return MtlFormatBytesPerBlock((MTLPixelFormat)this->mtlTextureSpec().fFormat);
+#endif
+#ifdef SK_VULKAN
+        case BackendApi::kVulkan:
+            return VkFormatBytesPerBlock(this->vulkanTextureSpec().fFormat);
+#endif
+        default:
+            return 0;
+    }
+}
+
+} // namespace skgpu::graphite
