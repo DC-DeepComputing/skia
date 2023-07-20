@@ -377,15 +377,15 @@ protected:
         SkGlyph* glyph, const SkPath& path, SkMask::Format format,
         bool verticalLCD, bool a8FromLCD, bool hairline);
 
-    /** Generates the contents of glyph.fImage.
-     *  When called, glyph.fImage will be pointing to a pre-allocated,
-     *  uninitialized region of memory of size glyph.imageSize().
+    /** Generates the contents of the glyph's image.
+     *
+     *  imageBuffer is a pre-allocated, uninitialized region of memory of size glyph.imageSize().
      *  This method may not change glyph.fMaskFormat.
      *
      *  Because glyph.imageSize() will determine the size of fImage,
      *  generateMetrics will be called before generateImage.
      */
-    virtual void generateImage(const SkGlyph& glyph) = 0;
+    virtual void generateImage(const SkGlyph& glyph, void* imageBuffer) = 0;
     static void GenerateImageFromPath(
         const SkMask& mask, const SkPath& path, const SkMaskGamma::PreBlend& maskPreBlend,
         bool doBGR, bool verticalLCD, bool a8FromLCD, bool hairline);

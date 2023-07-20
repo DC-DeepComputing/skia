@@ -286,12 +286,12 @@ protected:
         }
     }
 
-    void generateImage(const SkGlyph& glyph) override {
+    void generateImage(const SkGlyph& glyph, void* imageBuffer) override {
         const auto& rec = this->userTF()->fGlyphRecs[glyph.getGlyphID()];
         SkASSERTF(rec.isDrawable(), "Only drawable-backed glyphs should reach generateImage.");
 
         auto canvas = SkCanvas::MakeRasterDirectN32(glyph.fWidth, glyph.fHeight,
-                                                    static_cast<SkPMColor*>(glyph.fImage),
+                                                    static_cast<SkPMColor*>(imageBuffer),
                                                     glyph.rowBytes());
         if constexpr (kSkShowTextBlitCoverage) {
             canvas->clear(0x33FF0000);

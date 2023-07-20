@@ -40,7 +40,7 @@ void SkScalerContextProxy::generateMetrics(SkGlyph* glyph, SkArenaAlloc*) {
             SkStrikeClient::CacheMissType::kGlyphMetrics, fRec.fTextSize);
 }
 
-void SkScalerContextProxy::generateImage(const SkGlyph& glyph) {
+void SkScalerContextProxy::generateImage(const SkGlyph& glyph, void* imageBuffer) {
     TRACE_EVENT1("skia", "generateImage", "rec", TRACE_STR_COPY(this->getRec().dump().c_str()));
     if (this->getProxyTypeface()->isLogging()) {
         SkDebugf("GlyphCacheMiss generateImage: %s\n", this->getRec().dump().c_str());

@@ -28,7 +28,7 @@ public:
 protected:
     bool     generateAdvance(SkGlyph*) override;
     void     generateMetrics(SkGlyph*, SkArenaAlloc*) override;
-    void     generateImage(const SkGlyph&) override;
+    void     generateImage(const SkGlyph&, void* imageBuffer) override;
     bool     generatePath(const SkGlyph&, SkPath*) override;
     sk_sp<SkDrawable> generateDrawable(const SkGlyph&) override;
     void     generateFontMetrics(SkFontMetrics*) override;
@@ -101,9 +101,9 @@ void RandomScalerContext::generateMetrics(SkGlyph* glyph, SkArenaAlloc* alloc) {
     glyph->fHeight = ibounds.height();
 }
 
-void RandomScalerContext::generateImage(const SkGlyph& glyph) {
+void RandomScalerContext::generateImage(const SkGlyph& glyph, void* imageBuffer) {
     if (fFakeIt) {
-        sk_bzero(glyph.fImage, glyph.imageSize());
+        sk_bzero(imageBuffer, glyph.imageSize());
         return;
     }
 
@@ -117,7 +117,7 @@ void RandomScalerContext::generateImage(const SkGlyph& glyph) {
 
     SkBitmap bm;
     bm.installPixels(SkImageInfo::MakeN32Premul(glyph.fWidth, glyph.fHeight),
-                     glyph.fImage,
+                     imageBuffer,
                      glyph.rowBytes());
     bm.eraseColor(0);
 
