@@ -22,6 +22,30 @@
       },
       "revId": "650c980daa72d887602e701db8f84072e26d4d48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "895cccfc_a7c6e56c",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-20T17:53:37Z",
+      "side": 0,
+      "message": "Personally, I think this makes sense and is fine as-is (simply removed)",
+      "parentUuid": "d6130e41_14d1f6ee",
+      "range": {
+        "startLine": 129,
+        "startChar": 4,
+        "endLine": 129,
+        "endChar": 80
+      },
+      "revId": "650c980daa72d887602e701db8f84072e26d4d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
