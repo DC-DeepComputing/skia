@@ -102,6 +102,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ab8c1ad3_91c3f1ae",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-20T12:18:09Z",
+      "side": 1,
+      "message": "That\u0027s a fine use of SkString (since the std library doesn\u0027t have great support for it). I just don\u0027t want to store SkStrings in structs/classes or be on API boundaries if we can help it.",
+      "parentUuid": "2ed3279a_25a07dc0",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 12
+      },
+      "revId": "01d0cc99361bcb0bb6ce877c4f360e5ead1ed051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d983c090_8bcd79a6",
         "filename": "gm/BazelGMRunner.cpp",
         "patchSetId": 8
