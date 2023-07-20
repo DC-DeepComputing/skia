@@ -1659,7 +1659,7 @@ std::string WGSLCodeGenerator::assembleBinaryExpression(const Expression& left,
         // WGSL compile-time check can be dodged by putting one side into a let-variable. This
         // technically gives us an indeterminate result, but the vast majority of backends will just
         // calculate an infinity or nan here, as we would expect. (skia:14385)
-        expr += this->writeScratchLet(this->assembleExpression(left, precedence));
+        expr += this->writeScratchLet(left, precedence);
     } else {
         expr += this->assembleExpression(left, precedence);
     }
@@ -1701,6 +1701,21 @@ std::string WGSLCodeGenerator::assembleFieldAccess(const FieldAccess& f) {
     return expr;
 }
 
+static bool all_arguments_constant(const ExpressionArray& arguments) {
+    // Returns true if all arguments in the ExpressionArray are compile-time constants. If an
+    // we are calling an intrinsic and all of its inputs are constant, but we didn't constant-fold
+    // it, this generally indicates that constant-folding resulted in an infinity or nan. The WGSL
+    // compiler will reject such an expression with a compile-time error. We can dodge the error,
+    // taking on the risk of indeterminate behavior instead, by replacing one of the constant values
+    // with a scratch let-variable. (skia:14385)
+    for (const std::unique_ptr<Expression>& arg : arguments) {
+        if (!ConstantFolder::GetConstantValueOrNull(*arg)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 std::string WGSLCodeGenerator::assembleSimpleIntrinsic(std::string_view intrinsicName,
                                                        const FunctionCall& call) {
     SkASSERT(!call.type().isVoid());
@@ -1710,9 +1725,13 @@ std::string WGSLCodeGenerator::assembleSimpleIntrinsic(std::string_view intrinsi
     expr.push_back('(');
     const ExpressionArray& args = call.arguments();
     auto separator = SkSL::String::Separator();
+    bool allConstant = all_arguments_constant(call.arguments());
     for (int index = 0; index < args.size(); ++index) {
         expr += separator();
-        expr += this->assembleExpression(*args[index], Precedence::kSequence);
+
+        std::string argument = this->assembleExpression(*args[index], Precedence::kSequence);
+        expr += (allConstant && index == 0) ? this->writeScratchLet(argument)
+                                            : argument;
     }
     expr.push_back(')');
 
@@ -1730,6 +1749,7 @@ std::string WGSLCodeGenerator::assembleVectorizedIntrinsic(std::string_view intr
     auto separator = SkSL::String::Separator();
     const ExpressionArray& args = call.arguments();
     bool returnsVector = call.type().isVector();
+    bool allConstant = all_arguments_constant(call.arguments());
     for (int index = 0; index < args.size(); ++index) {
         expr += separator();
 
@@ -1739,8 +1759,9 @@ std::string WGSLCodeGenerator::assembleVectorizedIntrinsic(std::string_view intr
             expr.push_back('(');
         }
 
-        expr += this->assembleExpression(*args[index], Precedence::kSequence);
-
+        std::string argument = this->assembleExpression(*args[index], Precedence::kSequence);
+        expr += (allConstant && index == 0) ? this->writeScratchLet(argument)
+                                            : argument;
         if (vectorize) {
             expr.push_back(')');
         }
@@ -1785,7 +1806,9 @@ std::string WGSLCodeGenerator::assembleBinaryOpIntrinsic(Operator op,
         expr.push_back('(');
     }
 
-    expr += this->assembleExpression(*call.arguments()[0], precedence);
+    std::string argument = this->assembleExpression(*call.arguments()[0], precedence);
+    expr += all_arguments_constant(call.arguments()) ? this->writeScratchLet(argument)
+                                                     : argument;
     expr += operator_name(op);
     expr += this->assembleExpression(*call.arguments()[1], precedence);
 
@@ -1799,13 +1822,18 @@ std::string WGSLCodeGenerator::assembleBinaryOpIntrinsic(Operator op,
 std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
                                                      IntrinsicKind kind,
                                                      Precedence parentPrecedence) {
+    // Be careful: WGSL 1.0 will reject any intrinsic calls which can be constant-evaluated to
+    // infinity or nan with a compile error. If all arguments to an intrinsic are compile-time
+    // constants (`all_arguments_constant`), it is safest to copy one argument into a scratch-let so
+    // that the call will be seen as runtime-evaluated, which defuses the overflow checks.
+    // Don't worry; a competent driver should still optimize it away.
+
     const ExpressionArray& arguments = call.arguments();
     switch (kind) {
         case k_atan_IntrinsicKind: {
             const char* name = (arguments.size() == 1) ? "atan" : "atan2";
             return this->assembleSimpleIntrinsic(name, call);
         }
-
         case k_dot_IntrinsicKind: {
             if (arguments[0]->type().isScalar()) {
                 return this->assembleBinaryOpIntrinsic(OperatorKind::STAR, call, parentPrecedence);
@@ -1819,11 +1847,13 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
             if (arguments[0]->type().isScalar()) {
                 // (select(-1.0, 1.0, (I * Nref) < 0) * N)
                 return this->writeScratchLet(
-                        "(select(-1.0, 1.0, (" +
-                        this->assembleExpression(*arguments[1], Precedence::kMultiplicative) +
-                        " * " +
-                        this->assembleExpression(*arguments[2], Precedence::kMultiplicative) +
-                        ") < 0) * " +
+                        "(select(-1.0, 1.0, " +
+                        this->assembleBinaryExpression(*arguments[1],
+                                                       OperatorKind::STAR,
+                                                       *arguments[2],
+                                                       arguments[1]->type(),
+                                                       Precedence::kRelational) +
+                        " < 0) * " +
                         this->assembleExpression(*arguments[0], Precedence::kMultiplicative) + ")");
             }
             return this->assembleSimpleIntrinsic("faceForward", call);
@@ -1844,7 +1874,9 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
             return this->assembleBinaryOpIntrinsic(OperatorKind::LTEQ, call, parentPrecedence);
 
         case k_matrixCompMult_IntrinsicKind: {
-            std::string arg0 = this->writeNontrivialScratchLet(*arguments[0], Precedence::kPostfix);
+            std::string arg0 = all_arguments_constant(arguments)
+                            ? this->writeScratchLet(*arguments[0], Precedence::kPostfix)
+                            : this->writeNontrivialScratchLet(*arguments[0], Precedence::kPostfix);
             std::string arg1 = this->writeNontrivialScratchLet(*arguments[1], Precedence::kPostfix);
             std::string expr = to_wgsl_type(arguments[0]->type()) + '(';
 
@@ -1863,8 +1895,11 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
         }
         case k_mod_IntrinsicKind: {
             // WGSL has no intrinsic equivalent to `mod`. Synthesize `x - y * floor(x / y)`.
-            std::string arg0 = this->writeNontrivialScratchLet(*arguments[0],
-                                                               Precedence::kAdditive);
+            // We can use a scratch-let on one side to dodge WGSL overflow errors.  In practice, I
+            // can't find any values of x or y which would overflow, but it can't hurt. (skia:14385)
+            std::string arg0 = all_arguments_constant(arguments)
+                            ? this->writeScratchLet(*arguments[0], Precedence::kAdditive)
+                            : this->writeNontrivialScratchLet(*arguments[0], Precedence::kAdditive);
             std::string arg1 = this->writeNontrivialScratchLet(*arguments[1],
                                                                Precedence::kAdditive);
             return this->writeScratchLet(arg0 + " - " + arg1 + " * floor(" +
@@ -1883,10 +1918,12 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
         case k_reflect_IntrinsicKind:
             if (arguments[0]->type().isScalar()) {
                 // I - 2 * N * I * N
+                // We can use a scratch-let for N to dodge WGSL overflow errors. (skia:14385)
                 std::string I = this->writeNontrivialScratchLet(*arguments[0],
                                                                 Precedence::kAdditive);
-                std::string N = this->writeNontrivialScratchLet(*arguments[1],
-                                                                Precedence::kMultiplicative);
+                std::string N = all_arguments_constant(arguments)
+                      ? this->writeScratchLet(*arguments[1], Precedence::kMultiplicative)
+                      : this->writeNontrivialScratchLet(*arguments[1], Precedence::kMultiplicative);
                 return this->writeScratchLet(String::printf("%s - 2 * %s * %s * %s",
                                                             I.c_str(), N.c_str(),
                                                             I.c_str(), N.c_str()));
@@ -1901,8 +1938,8 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
                                                                 Precedence::kSequence);
                 std::string N = this->writeNontrivialScratchLet(*arguments[1],
                                                                 Precedence::kSequence);
-                std::string Eta = this->writeNontrivialScratchLet(*arguments[2],
-                                                                  Precedence::kSequence);
+                // We always use a scratch-let for Eta to dodge WGSL overflow errors. (skia:14385)
+                std::string Eta = this->writeScratchLet(*arguments[2], Precedence::kSequence);
                 return this->writeScratchLet(
                         String::printf("refract(vec2<%s>(%s, 0), vec2<%s>(%s, 0), %s).x",
                                        to_wgsl_type(arguments[0]->type()).c_str(), I.c_str(),
@@ -2187,6 +2224,11 @@ std::string WGSLCodeGenerator::writeScratchLet(const std::string& expr) {
     this->write(expr);
     this->writeLine(";");
     return scratchVarName;
+}
+
+std::string WGSLCodeGenerator::writeScratchLet(const Expression& expr,
+                                               Precedence parentPrecedence) {
+    return this->writeScratchLet(this->assembleExpression(expr, parentPrecedence));
 }
 
 std::string WGSLCodeGenerator::writeNontrivialScratchLet(const Expression& expr,

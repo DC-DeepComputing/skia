@@ -2,8 +2,8 @@ uniform half4 testInputs;
 uniform half4 colorGreen, colorRed, colorWhite;
 
 half4 main(float2 coords) {
-    half4 expectedA = half4(0.75, 0.0, 0.75, 0.25);
-    half4 expectedB = half4(0.25, 0.0, 0.75, 1.0);
+    expectedA = half4(0.75, 0.0, 0.75, 0.25);
+    expectedB = half4(0.25, 0.0, 0.75, 1.0);
     const half4 constVal   = half4(-1.25, 0, 0.75, 2.25);
     const half4 constRamp  = half4(0.5, 0.75, 1, 1.25);
     return (mod(testInputs.x,    1)               == expectedA.x     &&

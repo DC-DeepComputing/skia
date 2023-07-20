@@ -1,45 +1,57 @@
-diagnostic(off, derivative_uniformity);
-struct FSIn {
-  @builtin(front_facing) sk_Clockwise: bool,
-  @builtin(position) sk_FragCoord: vec4<f32>,
-};
-struct FSOut {
-  @location(0) sk_FragColor: vec4<f32>,
-};
-struct _GlobalUniforms {
-  testInputs: vec4<f32>,
-  colorGreen: vec4<f32>,
-  colorRed: vec4<f32>,
-  colorWhite: vec4<f32>,
-};
-@binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
-fn main(_skParam0: vec2<f32>) -> vec4<f32> {
-  let coords = _skParam0;
-  {
-    var expectedA: vec4<f32> = vec4<f32>(0.75, 0.0, 0.75, 0.25);
-    var expectedB: vec4<f32> = vec4<f32>(0.25, 0.0, 0.75, 1.0);
-    let _skTemp0 = _globalUniforms.testInputs.x;
-    let _skTemp1 = _skTemp0 - 1.0 * floor(_skTemp0 / 1.0);
-    let _skTemp2 = _globalUniforms.testInputs.xy;
-    let _skTemp3 = _skTemp2 - 1.0 * floor(_skTemp2 / 1.0);
-    let _skTemp4 = _globalUniforms.testInputs.xyz;
-    let _skTemp5 = _skTemp4 - 1.0 * floor(_skTemp4 / 1.0);
-    let _skTemp6 = _globalUniforms.testInputs - 1.0 * floor(_globalUniforms.testInputs / 1.0);
-    let _skTemp7 = _globalUniforms.testInputs.x;
-    let _skTemp8 = _globalUniforms.colorWhite.x;
-    let _skTemp9 = _skTemp7 - _skTemp8 * floor(_skTemp7 / _skTemp8);
-    let _skTemp10 = _globalUniforms.testInputs.xy;
-    let _skTemp11 = _globalUniforms.colorWhite.xy;
-    let _skTemp12 = _skTemp10 - _skTemp11 * floor(_skTemp10 / _skTemp11);
-    let _skTemp13 = _globalUniforms.testInputs.xyz;
-    let _skTemp14 = _globalUniforms.colorWhite.xyz;
-    let _skTemp15 = _skTemp13 - _skTemp14 * floor(_skTemp13 / _skTemp14);
-    let _skTemp16 = _globalUniforms.testInputs - _globalUniforms.colorWhite * floor(_globalUniforms.testInputs / _globalUniforms.colorWhite);
-    return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>((((((((((((((((_skTemp1 == expectedA.x) && all(_skTemp3 == expectedA.xy)) && all(_skTemp5 == expectedA.xyz)) && all(_skTemp6 == expectedA)) && (0.75 == expectedA.x)) && all(vec2<f32>(0.75, 0.0) == expectedA.xy)) && all(vec3<f32>(0.75, 0.0, 0.75) == expectedA.xyz)) && all(vec4<f32>(0.75, 0.0, 0.75, 0.25) == expectedA)) && (_skTemp9 == expectedA.x)) && all(_skTemp12 == expectedA.xy)) && all(_skTemp15 == expectedA.xyz)) && all(_skTemp16 == expectedA)) && (0.25 == expectedB.x)) && all(vec2<f32>(0.25, 0.0) == expectedB.xy)) && all(vec3<f32>(0.25, 0.0, 0.75) == expectedB.xyz)) && all(vec4<f32>(0.25, 0.0, 0.75, 1.0) == expectedB)));
-  }
-}
-@fragment fn fragmentMain(_stageIn: FSIn) -> FSOut {
-  var _stageOut: FSOut;
-  _stageOut.sk_FragColor = main(_stageIn.sk_FragCoord.xy);
-  return _stageOut;
-}
+### Compilation failed:
+
+error: 5: unknown identifier 'expectedA'
+    expectedA = half4(0.75, 0.0, 0.75, 0.25);
+    ^^^^^^^^^
+error: 6: unknown identifier 'expectedB'
+    expectedB = half4(0.25, 0.0, 0.75, 1.0);
+    ^^^^^^^^^
+error: 9: unknown identifier 'expectedA'
+    return (mod(testInputs.x,    1)               == expectedA.x     &&
+                                                     ^^^^^^^^^
+error: 10: unknown identifier 'expectedA'
+            mod(testInputs.xy,   1)               == expectedA.xy    &&
+                                                     ^^^^^^^^^
+error: 11: unknown identifier 'expectedA'
+            mod(testInputs.xyz,  1)               == expectedA.xyz   &&
+                                                     ^^^^^^^^^
+error: 12: unknown identifier 'expectedA'
+            mod(testInputs.xyzw, 1)               == expectedA.xyzw  &&
+                                                     ^^^^^^^^^
+error: 13: unknown identifier 'expectedA'
+            mod(constVal.x,      1)               == expectedA.x     &&
+                                                     ^^^^^^^^^
+error: 14: unknown identifier 'expectedA'
+            mod(constVal.xy,     1)               == expectedA.xy    &&
+                                                     ^^^^^^^^^
+error: 15: unknown identifier 'expectedA'
+            mod(constVal.xyz,    1)               == expectedA.xyz   &&
+                                                     ^^^^^^^^^
+error: 16: unknown identifier 'expectedA'
+            mod(constVal.xyzw,   1)               == expectedA.xyzw  &&
+                                                     ^^^^^^^^^
+error: 17: unknown identifier 'expectedA'
+            mod(testInputs.x,    colorWhite.x)    == expectedA.x     &&
+                                                     ^^^^^^^^^
+error: 18: unknown identifier 'expectedA'
+            mod(testInputs.xy,   colorWhite.xy)   == expectedA.xy    &&
+                                                     ^^^^^^^^^
+error: 19: unknown identifier 'expectedA'
+            mod(testInputs.xyz,  colorWhite.xyz)  == expectedA.xyz   &&
+                                                     ^^^^^^^^^
+error: 20: unknown identifier 'expectedA'
+            mod(testInputs.xyzw, colorWhite.xyzw) == expectedA.xyzw  &&
+                                                     ^^^^^^^^^
+error: 21: unknown identifier 'expectedB'
+            mod(constVal.x,      constRamp.x)     == expectedB.x     &&
+                                                     ^^^^^^^^^
+error: 22: unknown identifier 'expectedB'
+            mod(constVal.xy,     constRamp.xy)    == expectedB.xy    &&
+                                                     ^^^^^^^^^
+error: 23: unknown identifier 'expectedB'
+            mod(constVal.xyz,    constRamp.xyz)   == expectedB.xyz   &&
+                                                     ^^^^^^^^^
+error: 24: unknown identifier 'expectedB'
+            mod(constVal.xyzw,   constRamp.xyzw)  == expectedB.xyzw) ? colorGreen : colorRed;
+                                                     ^^^^^^^^^
+18 errors
