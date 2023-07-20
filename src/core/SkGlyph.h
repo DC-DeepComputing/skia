@@ -489,6 +489,17 @@ public:
     const SkPath* path() const;
     bool pathIsHairline() const;
 
+    // Should only be called from generateAdvance() or generateMetrics()
+    void setAdvance(float x, float y) {
+        fAdvanceX = x;
+        fAdvanceY = y;
+    }
+
+    // Should only be called from generateMetrics()
+    void setBoundsMaskExtra(const SkIRect&, SkMask::Format, uint16_t extraBits = 0);
+
+    uint16_t extraBits() const { return fScalerContextBits; }
+
     bool setDrawable(SkArenaAlloc* alloc, SkScalerContext* scalerContext);
     bool setDrawable(SkArenaAlloc* alloc, sk_sp<SkDrawable> drawable);
     bool setDrawableHasBeenCalled() const { return fDrawableData != nullptr; }
@@ -559,12 +570,11 @@ private:
     friend class RandomScalerContext;
     friend class SkScalerContext;
     friend class SkScalerContextProxy;
-    friend class SkScalerContext_Empty;
+//    friend class SkScalerContext_Empty;
     friend class SkScalerContext_FreeType;
     friend class SkScalerContext_FreeType_Base;
     friend class SkScalerContext_DW;
     friend class SkScalerContext_GDI;
-    friend class SkScalerContext_Mac;
     friend class SkStrikeClientImpl;
     friend class SkTestScalerContext;
     friend class SkTestSVGScalerContext;

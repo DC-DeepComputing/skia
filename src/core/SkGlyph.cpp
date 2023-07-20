@@ -145,6 +145,23 @@ void SkGlyph::zeroMetrics() {
     fLeft     = 0;
 }
 
+void SkGlyph::setBoundsMaskExtra(const SkIRect& bounds, SkMask::Format format, uint16_t extraBits) {
+    if (!SkTFitsIn<decltype(fWidth )>(bounds.width ()) ||
+        !SkTFitsIn<decltype(fHeight)>(bounds.height()) ||
+        !SkTFitsIn<decltype(fTop   )>(bounds.top   ()) ||
+        !SkTFitsIn<decltype(fLeft  )>(bounds.left  ())  )
+    {
+        fLeft = fTop = fWidth = fHeight = 0;
+    } else {
+        fWidth  = SkToU16(bounds.width ());
+        fHeight = SkToU16(bounds.height());
+        fTop    = SkToS16(bounds.top   ());
+        fLeft   = SkToS16(bounds.left  ());
+    }
+    fMaskFormat = format;
+    fScalerContextBits = extraBits;
+}
+
 static size_t bits_to_bytes(size_t bits) {
     return (bits + 7) >> 3;
 }
