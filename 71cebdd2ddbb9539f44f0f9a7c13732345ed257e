@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8f5b9cda_4e2e5f2f",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2784,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-20T03:11:19Z",
+      "side": 1,
+      "message": "Skia doesn\u0027t make multiple IBs in practice (or use IB arrays for that matter) so I didn\u0027t think it was necessary to support them. We would need to name each uniform struct and then look up the name when emitting variable-reference prefixes. Because I know I only support one, I can simplify things by hard-coding the name prefix as `_uniforms.`. I believe SPIR-V also limits itself to one IB only:\n\n```\n// We can only have one interface block (because we use push_constant and that is limited\n// to one per program)\n```\n\nI\u0027ll need to look at how SSBOs are handled, that might complicate things. I haven\u0027t looked too closely at those yet.",
+      "parentUuid": "33c34152_d6b282ad",
+      "range": {
+        "startLine": 2779,
+        "startChar": 8,
+        "endLine": 2784,
+        "endChar": 9
+      },
+      "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c176231a_76fdb77f",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 3
@@ -37,6 +61,24 @@
       "writtenOn": "2023-07-19T21:45:52Z",
       "side": 1,
       "message": "Do we want to validate the offsets/layout of the fields here, using `SkSLMemoryLayout`? That doesn\u0027t have to happen in this CL but maybe add a TODO as a reminder.",
+      "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f786890c_d340f76c",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2805,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-20T03:11:19Z",
+      "side": 1,
+      "message": "There\u0027s going to be all sorts of work here, because of skia:14370. I\u0027ll add a TODO.",
+      "parentUuid": "c176231a_76fdb77f",
       "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
