@@ -446,7 +446,7 @@ public:
 protected:
     bool generateAdvance(SkGlyph* glyph) override;
     void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) override;
-    void generateImage(const SkGlyph& glyph) override;
+    void generateImage(const SkGlyph& glyph, void* imageBuffer) override;
     bool generatePath(const SkGlyph& glyph, SkPath* path) override;
     sk_sp<SkDrawable> generateDrawable(const SkGlyph&) override;
     void generateFontMetrics(SkFontMetrics*) override;
@@ -1376,11 +1376,11 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph, SkArenaAlloc* all
 #endif
 }
 
-void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
+void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph, void* imageBuffer) {
     SkAutoMutexExclusive  ac(f_t_mutex());
 
     if (this->setupSize()) {
-        sk_bzero(glyph.fImage, glyph.imageSize());
+        sk_bzero(imageBuffer, glyph.imageSize());
         return;
     }
 
@@ -1395,7 +1395,7 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
                                             kN32_SkColorType,
                                             kPremul_SkAlphaType),
                                             glyph.rowBytes());
-        dstBitmap.setPixels(glyph.fImage);
+        dstBitmap.setPixels(imageBuffer);
 
         SkCanvas canvas(dstBitmap);
         if constexpr (kSkShowTextBlitCoverage) {
@@ -1426,7 +1426,7 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
     }
 
     if (FT_Load_Glyph(fFace, glyph.getGlyphID(), fLoadGlyphFlags)) {
-        sk_bzero(glyph.fImage, glyph.imageSize());
+        sk_bzero(imageBuffer, glyph.imageSize());
         return;
     }
     emboldenIfNeeded(fFace, fFace->glyph, glyph.getGlyphID());

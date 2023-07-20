@@ -184,7 +184,7 @@ protected:
         // Always generates from paths, so SkScalerContext::makeGlyph will figure the bounds.
     }
 
-    void generateImage(const SkGlyph&) override { SK_ABORT("Should have generated from path."); }
+    void generateImage(const SkGlyph&, void*) override { SK_ABORT("Should have generated from path."); }
 
     bool generatePath(const SkGlyph& glyph, SkPath* path) override {
         SkVector scale;

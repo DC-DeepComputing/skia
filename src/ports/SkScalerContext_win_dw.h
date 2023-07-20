@@ -34,7 +34,7 @@ public:
 protected:
     bool generateAdvance(SkGlyph* glyph) override;
     void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) override;
-    void generateImage(const SkGlyph& glyph) override;
+    void generateImage(const SkGlyph& glyph, void* imageBuffer) override;
     bool generatePath(const SkGlyph&, SkPath*) override;
     sk_sp<SkDrawable> generateDrawable(const SkGlyph&) override;
     void generateFontMetrics(SkFontMetrics*) override;
@@ -56,16 +56,17 @@ private:
 
     template<bool APPLY_PREBLEND>
     static void GrayscaleToA8(const uint8_t* SK_RESTRICT src,
-                              const SkGlyph& glyph,
+                              const SkGlyph& glyph, void* glyphImageBuffer,
                               const uint8_t* table8);
 
     template<bool APPLY_PREBLEND>
     static void RGBToA8(const uint8_t* SK_RESTRICT src,
-                        const SkGlyph& glyph,
+                        const SkGlyph& glyph, void* glyphImageBuffer,
                         const uint8_t* table8);
 
     template<bool APPLY_PREBLEND, bool RGB>
     static void RGBToLcd16(const uint8_t* SK_RESTRICT src, const SkGlyph& glyph,
+                           void* glyphImageBuffer,
                            const uint8_t* tableR, const uint8_t* tableG, const uint8_t* tableB);
 
     DWriteFontTypeface* getDWriteTypeface() {
@@ -74,26 +75,26 @@ private:
 
     bool generateColorV1PaintBounds(SkMatrix*, SkRect*, IDWritePaintReader&, DWRITE_PAINT_ELEMENT const &);
     bool generateColorV1Metrics(SkGlyph*);
-    bool generateColorV1Image(const SkGlyph&);
+    bool generateColorV1Image(const SkGlyph&, void*);
     bool drawColorV1Paint(SkCanvas&, IDWritePaintReader&, DWRITE_PAINT_ELEMENT const &);
     bool drawColorV1Image(const SkGlyph&, SkCanvas&);
 
     bool getColorGlyphRun(const SkGlyph&, IDWriteColorGlyphRunEnumerator**);
     bool generateColorMetrics(SkGlyph*);
-    bool generateColorImage(const SkGlyph&);
+    bool generateColorImage(const SkGlyph&, void*);
     bool drawColorImage(const SkGlyph&, SkCanvas&);
 
     bool generateSVGMetrics(SkGlyph*);
-    bool generateSVGImage(const SkGlyph&);
+    bool generateSVGImage(const SkGlyph&, void*);
     bool drawSVGImage(const SkGlyph&, SkCanvas&);
 
     bool generatePngMetrics(SkGlyph*);
-    bool generatePngImage(const SkGlyph&);
+    bool generatePngImage(const SkGlyph&, void*);
     bool drawPngImage(const SkGlyph&, SkCanvas&);
 
     bool generateDWMetrics(SkGlyph*, DWRITE_RENDERING_MODE, DWRITE_TEXTURE_TYPE);
     const void* getDWMaskBits(const SkGlyph&, DWRITE_RENDERING_MODE, DWRITE_TEXTURE_TYPE);
-    bool generateDWImage(const SkGlyph&);
+    bool generateDWImage(const SkGlyph&, void*);
 
     static void SetGlyphBounds(SkGlyph* glyph, const SkRect& bounds);
 

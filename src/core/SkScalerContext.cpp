@@ -584,13 +584,13 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
     }
 
     if (!fGenerateImageFromPath) {
-        generateImage(*unfilteredGlyph);
+        generateImage(*unfilteredGlyph, unfilteredGlyph->fImage);
     } else {
         SkASSERT(origGlyph.setPathHasBeenCalled());
         const SkPath* devPath = origGlyph.path();
 
         if (!devPath) {
-            generateImage(*unfilteredGlyph);
+            generateImage(*unfilteredGlyph, unfilteredGlyph->fImage);
         } else {
             SkMask mask = unfilteredGlyph->mask();
             SkASSERT(SkMask::kARGB32_Format != origGlyph.fMaskFormat);
@@ -1262,7 +1262,7 @@ std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
             glyph->fMaskFormat = fRec.fMaskFormat;
             glyph->zeroMetrics();
         }
-        void generateImage(const SkGlyph& glyph) override {}
+        void generateImage(const SkGlyph& glyph, void* imageBuffer) override {}
         bool generatePath(const SkGlyph& glyph, SkPath* path) override {
             path->reset();
             return false;

@@ -476,7 +476,7 @@ static SkPMColor cgpixels_to_pmcolor(CGRGBPixel rgb) {
     return SkPackARGB32(a, r, g, b);
 }
 
-void SkScalerContext_Mac::generateImage(const SkGlyph& glyph) {
+void SkScalerContext_Mac::generateImage(const SkGlyph& glyph, void* imageBuffer) {
     CGGlyph cgGlyph = SkTo<CGGlyph>(glyph.getGlyphID());
 
     // FIXME: lcd smoothed un-hinted rasterization unsupported.
@@ -518,24 +518,24 @@ void SkScalerContext_Mac::generateImage(const SkGlyph& glyph) {
     switch (glyph.fMaskFormat) {
         case SkMask::kLCD16_Format: {
             if (fPreBlend.isApplicable()) {
-                RGBToLcd16<true>(cgPixels, cgRowBytes, glyph, glyph.fImage,
+                RGBToLcd16<true>(cgPixels, cgRowBytes, glyph, imageBuffer,
                                  fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
             } else {
-                RGBToLcd16<false>(cgPixels, cgRowBytes, glyph, glyph.fImage,
+                RGBToLcd16<false>(cgPixels, cgRowBytes, glyph, imageBuffer,
                                   fPreBlend.fR, fPreBlend.fG, fPreBlend.fB);
             }
         } break;
         case SkMask::kA8_Format: {
             if (fPreBlend.isApplicable()) {
-                RGBToA8<true>(cgPixels, cgRowBytes, glyph, glyph.fImage, fPreBlend.fG);
+                RGBToA8<true>(cgPixels, cgRowBytes, glyph, imageBuffer, fPreBlend.fG);
             } else {
-                RGBToA8<false>(cgPixels, cgRowBytes, glyph, glyph.fImage, fPreBlend.fG);
+                RGBToA8<false>(cgPixels, cgRowBytes, glyph, imageBuffer, fPreBlend.fG);
             }
         } break;
         case SkMask::kBW_Format: {
             const int width = glyph.fWidth;
             size_t dstRB = glyph.rowBytes();
-            uint8_t* dst = (uint8_t*)glyph.fImage;
+            uint8_t* dst = (uint8_t*)imageBuffer;
             for (int y = 0; y < glyph.fHeight; y++) {
                 cgpixels_to_bits(dst, cgPixels, width);
                 cgPixels = SkTAddOffset<CGRGBPixel>(cgPixels, cgRowBytes);
@@ -545,7 +545,7 @@ void SkScalerContext_Mac::generateImage(const SkGlyph& glyph) {
         case SkMask::kARGB32_Format: {
             const int width = glyph.fWidth;
             size_t dstRB = glyph.rowBytes();
-            SkPMColor* dst = (SkPMColor*)glyph.fImage;
+            SkPMColor* dst = (SkPMColor*)imageBuffer;
             for (int y = 0; y < glyph.fHeight; y++) {
                 for (int x = 0; x < width; ++x) {
                     dst[x] = cgpixels_to_pmcolor(cgPixels[x]);
