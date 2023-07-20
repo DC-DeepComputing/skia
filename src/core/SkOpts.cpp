@@ -98,6 +98,9 @@ namespace SkOpts {
     void Init_hsw();
     void Init_erms();
 
+    // New style (by functionality, not architecture)
+    void Init_BitmapProcState();
+
     static void init() {
     #if defined(SK_ENABLE_OPTIMIZE_SIZE)
         // All Init_foo functions are omitted when optimizing for size
@@ -112,6 +115,8 @@ namespace SkOpts {
         #endif
 
         if (SkCpu::Supports(SkCpu::ERMS)) { Init_erms(); }
+
+        Init_BitmapProcState();
     #endif
     }
 
