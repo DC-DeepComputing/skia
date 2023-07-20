@@ -193,6 +193,7 @@ private:
     std::array<BindBufferInfo, VulkanGraphicsPipeline::kNumUniformBuffers> fUniformBuffersToBind
             = {{{nullptr, 0}}};
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
+    int fNumTextureSamplers = 0;
 
     VkBuffer fBoundInputBuffers[VulkanGraphicsPipeline::kNumInputBuffers];
     size_t fBoundInputBufferOffsets[VulkanGraphicsPipeline::kNumInputBuffers];
