@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbafb946_a9732002",
+        "filename": "src/text/gpu/SDFMaskFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-20T19:32:29Z",
+      "side": 1,
+      "message": "This includes extending SkFlattenable, so we *must* keep SK_FLATTENABLE_HOOKS and CreateProc around, unless we do something more dramatic with refactoring.\n\nIs how I have it ok?",
+      "range": {
+        "startLine": 24,
+        "startChar": 33,
+        "endLine": 24,
+        "endChar": 49
+      },
+      "revId": "2dd3891a11c29a3f725998cb86875d8f174e2513",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
