@@ -1244,9 +1244,27 @@ bool SkScalerContext::CheckBufferSizeForRec(const SkScalerContextRec& rec,
     return size >= calculate_size_and_flatten(rec, effects, &buf);
 }
 
-std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
-        sk_sp<SkTypeface> typeface, const SkScalerContextEffects& effects,
-        const SkDescriptor* desc) {
+///////////////
+
+// Should only be called from generateMetrics()
+void SkGlyph::setBoundsMaskExtra(const SkIRect& bounds, SkMask::Format format, uint16_t extraBits) {
+    if (!SkTFitsIn<decltype(fWidth )>(bounds.width ()) ||
+        !SkTFitsIn<decltype(fHeight)>(bounds.height()) ||
+        !SkTFitsIn<decltype(fTop   )>(bounds.top   ()) ||
+        !SkTFitsIn<decltype(fLeft  )>(bounds.left  ())  )
+    {
+        fLeft = fTop = fWidth = fHeight = 0;
+    } else {
+        fWidth  = SkToU16(bounds.width ());
+        fHeight = SkToU16(bounds.height());
+        fTop    = SkToS16(bounds.top   ());
+        fLeft   = SkToS16(bounds.left  ());
+    }
+    fMaskFormat = format;
+    fScalerContextBits = extraBits;
+}
+
+namespace {
     class SkScalerContext_Empty : public SkScalerContext {
     public:
         SkScalerContext_Empty(sk_sp<SkTypeface> typeface, const SkScalerContextEffects& effects,
@@ -1258,12 +1276,28 @@ std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
             glyph->zeroMetrics();
             return true;
         }
-        void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) override {
-            glyph->fMaskFormat = fRec.fMaskFormat;
+        void generateMetrics(SkGlyph* glyph, SkArenaAlloc* alloc) override {
+        //    glyph->fMaskFormat = fRec.fMaskFormat;
+            glyph->setPath(alloc, nullptr, false);
+
+            glyph->getGlyphID();
             glyph->zeroMetrics();
+
+            glyph->setAdvance(1, 2);
+
+            glyph->getSubXFixed();
+            glyph->getSubXFixed();
+
+            glyph->setBoundsMaskExtra({1, 2, 3, 4}, fRec.fMaskFormat, 0);
         }
-        void generateImage(const SkGlyph& glyph) override {}
+        void generateImage(const SkGlyph& glyph) override {
+            auto i = glyph.writable_image();
+            auto b = glyph.extraBits();
+            glyph.imageSize();
+            glyph.rowBytes();
+        }
         bool generatePath(const SkGlyph& glyph, SkPath* path) override {
+            glyph.getGlyphID();
             path->reset();
             return false;
         }
@@ -1273,7 +1307,11 @@ std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
             }
         }
     };
+}
 
+std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
+        sk_sp<SkTypeface> typeface, const SkScalerContextEffects& effects,
+        const SkDescriptor* desc) {
     return std::make_unique<SkScalerContext_Empty>(std::move(typeface), effects, desc);
 }
 
