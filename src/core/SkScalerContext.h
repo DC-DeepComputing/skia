@@ -368,11 +368,16 @@ protected:
      */
     virtual bool generateAdvance(SkGlyph* glyph) = 0;
 
-    /** Generates the contents of glyph.fWidth, fHeight, fTop, fLeft,
-     *  as well as fAdvanceX and fAdvanceY if not already set.
-     *  The fMaskFormat will already be set to a requested format but may be changed.
-     */
-    virtual void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) = 0;
+    struct Metrics {
+        SkVector       advance;
+        SkIRect        bounds;
+        SkMask::Format maskFormat;
+        uint16_t       extraBits;
+        bool           neverRequestPath;
+    };
+
+    virtual Metrics generateMetrics(SkGlyphID, SkMask::Format requested) = 0;
+
     static bool GenerateMetricsFromPath(
         SkGlyph* glyph, const SkPath& path, SkMask::Format format,
         bool verticalLCD, bool a8FromLCD, bool hairline);
