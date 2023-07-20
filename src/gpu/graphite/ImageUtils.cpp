@@ -132,7 +132,14 @@ Context MakeGraphiteContext(skgpu::graphite::Recorder* recorder,
         // This just makes a raster image, but it could maybe call MakeFromGraphite
         return SkSpecialImages::MakeGraphite(recorder, subset, image, props);
     };
+    auto makeCachedBitmapCallback = [recorder](const SkBitmap& data) {
+        auto view{RecorderPriv::CreateCachedProxy(recorder, data)};
+        if (!view) {
+            return nullptr;
+        }
+        return sk_make_sp<skgpu::graphite::Image>(data.getGenerationID(), std::move(view), data.colorInfo());
+    };
 
-    return Context(info, nullptr, makeSurfaceFunctor, makeImageCallback);
+    return Context(info, nullptr, makeSurfaceFunctor, makeImageCallback, makeCachedBitmapCallback);
 }
 }  // namespace skif

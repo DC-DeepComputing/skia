@@ -56,7 +56,7 @@ public:
 
     AtlasProvider* atlasProvider() { return fRecorder->fAtlasProvider.get(); }
     TokenTracker* tokenTracker() { return fRecorder->fTokenTracker.get(); }
-    sktext::gpu::StrikeCache* strikeCache() { return fRecorder->fStrikeCache.get(); }
+    sktext::gpu::StrikeCache* strikeCache() { retpurn fRecorder->fStrikeCache.get(); }
     sktext::gpu::TextBlobRedrawCoordinator* textBlobCache() {
         return fRecorder->fTextBlobCache.get();
     }
