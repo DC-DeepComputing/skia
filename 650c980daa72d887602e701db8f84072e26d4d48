@@ -70,6 +70,30 @@
       },
       "revId": "650c980daa72d887602e701db8f84072e26d4d48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8c86b55_66f1281b",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-20T18:05:27Z",
+      "side": 0,
+      "message": "I tweaked the assert, and changed the variable names to make them less tied to replay. PTAL.",
+      "parentUuid": "ebf4a9f5_fd935ead",
+      "range": {
+        "startLine": 129,
+        "startChar": 4,
+        "endLine": 129,
+        "endChar": 80
+      },
+      "revId": "650c980daa72d887602e701db8f84072e26d4d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
