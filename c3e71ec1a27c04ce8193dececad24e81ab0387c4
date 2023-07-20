@@ -39,6 +39,30 @@
       },
       "revId": "c3e71ec1a27c04ce8193dececad24e81ab0387c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebe02ad9_09140ec4",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-07-20T17:03:39Z",
+      "side": 1,
+      "message": "It lets us know some formats are not supported. Maybe it is very useful. Removed it.",
+      "parentUuid": "383e2f0c_963008fd",
+      "range": {
+        "startLine": 117,
+        "startChar": 8,
+        "endLine": 121,
+        "endChar": 9
+      },
+      "revId": "c3e71ec1a27c04ce8193dececad24e81ab0387c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
