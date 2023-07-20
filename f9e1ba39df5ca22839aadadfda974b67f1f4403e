@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "505cd71c_055c1ffa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-20T18:31:52Z",
+      "side": 1,
+      "message": "LGTM modulo one comment below.",
+      "revId": "f9e1ba39df5ca22839aadadfda974b67f1f4403e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd2dc890_70f2d1fa",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-20T18:31:52Z",
+      "side": 1,
+      "message": "Since this is an extension and isn\u0027t part of the core until Vulkan 1.3 we can\u0027t assume it\u0027s supported so we need a Caps check, or at the very least an assert somewhere. I think it\u0027s fine to use this to get up and running but we need to figure out what our base version is. That can wait for Greg.",
+      "range": {
+        "startLine": 663,
+        "startChar": 20,
+        "endLine": 668,
+        "endChar": 57
+      },
+      "revId": "f9e1ba39df5ca22839aadadfda974b67f1f4403e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
