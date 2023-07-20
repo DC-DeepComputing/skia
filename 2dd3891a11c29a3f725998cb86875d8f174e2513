@@ -22,6 +22,30 @@
       },
       "revId": "2dd3891a11c29a3f725998cb86875d8f174e2513",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67f23005_0d6d1b3a",
+        "filename": "src/text/gpu/SDFMaskFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-20T20:24:41Z",
+      "side": 1,
+      "message": "Yeah, I think it\u0027s fine for this to be an unregistered flatenable. Not ideal, but should be fine.",
+      "parentUuid": "cbafb946_a9732002",
+      "range": {
+        "startLine": 24,
+        "startChar": 33,
+        "endLine": 24,
+        "endChar": 49
+      },
+      "revId": "2dd3891a11c29a3f725998cb86875d8f174e2513",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
