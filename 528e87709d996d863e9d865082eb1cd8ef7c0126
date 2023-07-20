@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6145f78e_8981051a",
+        "filename": "gm/vias/SimpleVias.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-20T17:51:29Z",
+      "side": 1,
+      "message": "ubernit: don\u0027t need the else because all if/else ifs end in return.",
+      "range": {
+        "startLine": 160,
+        "startChar": 6,
+        "endLine": 160,
+        "endChar": 12
+      },
+      "revId": "528e87709d996d863e9d865082eb1cd8ef7c0126",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
