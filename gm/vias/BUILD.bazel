@@ -28,6 +28,7 @@ string_flag_with_values(
         # accepted by BazelGMRunner.cpp are the same (except for "no_via"), so they should be kept
         # in sync.
         "no_via",
+        "picture",
         "picture_serialization",
     ],
 )
@@ -35,7 +36,7 @@ string_flag_with_values(
 selects.config_setting_group(
     name = "needs_picture_vias",
     match_any = [
+        ":picture",
         ":picture_serialization",
-        # ":picture",  # TODO(lovisolo): Implement.
     ],
 )
