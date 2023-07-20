@@ -93371,6 +93371,7 @@
         "skia/tests",
         "skia/third_party",
         "skia/tools",
+        "skia/gm",
         "skia/gn",
         "skia/resources",
         "skia/package.json",
