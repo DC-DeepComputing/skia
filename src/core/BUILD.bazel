@@ -320,6 +320,7 @@ CORE_FILES = [
     "SkTypeface_remote.cpp",
     "SkTypeface_remote.h",
     "SkUnPreMultiply.cpp",
+    "SkUtils_opts.cpp",
     "SkValidationUtils.h",
     "SkVertState.cpp",
     "SkVertState.h",
