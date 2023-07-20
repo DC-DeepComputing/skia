@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3ab39af_5a1b9574",
+        "filename": "tools/fonts/RandomScalerContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-20T20:21:30Z",
+      "side": 0,
+      "message": "Really this was just resetting the glyph to what it was before it was assigning what ever the proxy did. If the proxy already set the path then `setPath` would have failed to set the path to nothing.",
+      "revId": "adc9278f47e3e7bed56b911a367b9af861b63d83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

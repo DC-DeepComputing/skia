@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60dd3ba2_dfc27054",
+        "filename": "tools/fonts/RandomScalerContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-20T20:21:30Z",
+      "side": 1,
+      "message": "This is now assigning to a different glyph than the origGlyph so there should be no need to reset anymore (since the origGlyph is no longer being written to).",
+      "revId": "e1d4236e8bcdc19e949de8568a563f46b41d7344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a79ded26_4533ad3d",
+        "filename": "tools/fonts/RandomScalerContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-20T20:21:30Z",
+      "side": 1,
+      "message": "So now this should be safe to remove.",
+      "revId": "e1d4236e8bcdc19e949de8568a563f46b41d7344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
