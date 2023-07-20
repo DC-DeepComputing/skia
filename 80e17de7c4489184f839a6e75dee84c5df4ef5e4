@@ -57,6 +57,30 @@
       },
       "revId": "80e17de7c4489184f839a6e75dee84c5df4ef5e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab49619a_1284f6fd",
+        "filename": "src/gpu/graphite/render/AtlasShapeRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-20T17:00:42Z",
+      "side": 1,
+      "message": "Ack, thanks for pointing that out. I figured this wouldn\u0027t be correct for perspective but that\u0027s something we have to fix in general with this RenderStep. I added a TODO comment.",
+      "parentUuid": "ceebdb0c_349fbe64",
+      "range": {
+        "startLine": 74,
+        "startChar": 11,
+        "endLine": 74,
+        "endChar": 48
+      },
+      "revId": "80e17de7c4489184f839a6e75dee84c5df4ef5e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
