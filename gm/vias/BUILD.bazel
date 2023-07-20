@@ -1,0 +1,41 @@
+load("//bazel:skia_rules.bzl", "exports_files_legacy", "skia_cc_library")
+load("//bazel:flags.bzl", "selects", "string_flag_with_values")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+skia_cc_library(
+    name = "vias",
+    testonly = True,
+    srcs = select({
+        ":no_via": ["NoVia.cpp"],
+        ":needs_picture_vias": ["PictureVias.cpp"],
+    }),
+    hdrs = ["Draw.h"],
+    visibility = ["//gm:__pkg__"],
+    deps = [
+        "//:skia_internal",
+        "//gm",
+    ],
+)
+
+string_flag_with_values(
+    name = "via",
+    default = "no_via",
+    values = [
+        # The android_gm_test macro assumes that the below values and the --via flag values
+        # accepted by BazelGMRunner.cpp are the same (except for "no_via"), so they should be kept
+        # in sync.
+        "no_via",
+        "picture_serialization",
+    ],
+)
+
+selects.config_setting_group(
+    name = "needs_picture_vias",
+    match_any = [
+        ":picture_serialization",
+        # ":picture",  # TODO(lovisolo): Implement.
+    ],
+)
