@@ -76,6 +76,8 @@ public:
     Mipmapped mipmapped() const { return fMipmapped; }
     Protected isProtected() const { return fProtected; }
 
+    size_t bytesPerPixel() const;
+
 #ifdef SK_DAWN
     bool getDawnTextureInfo(DawnTextureInfo* info) const;
 #endif
