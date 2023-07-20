@@ -66,6 +66,11 @@ bool TextureProxy::isVolatile() const {
     return fVolatile == Volatile::kYes;
 }
 
+size_t ComputeSize(SkISize dimensions, const TextureInfo&);
+
+size_t TextureProxy::uninstantiatedGpuMemorySize() const {
+    return ComputeSize(fDimensions, fInfo);
+}
 
 bool TextureProxy::instantiate(ResourceProvider* resourceProvider) {
     SkASSERT(!this->isLazy());
