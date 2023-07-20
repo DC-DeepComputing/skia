@@ -189,23 +189,23 @@ protected:
         return static_cast<TestSVGTypeface*>(this->getTypeface());
     }
 
-    void setAdvance(SkGlyph* glyph) {
+    SkVector computeAdvance(SkGlyph* glyph) {
         this->getTestSVGTypeface()->getAdvance(glyph);
 
         const SkVector advance =
                 fMatrix.mapXY(SkFloatToScalar(glyph->fAdvanceX), SkFloatToScalar(glyph->fAdvanceY));
-        glyph->fAdvanceX = SkScalarToFloat(advance.fX);
-        glyph->fAdvanceY = SkScalarToFloat(advance.fY);
+        return {
+            SkScalarToFloat(advance.fX), SkScalarToFloat(advance.fY)
+        };
     }
 
-    void generateMetrics(SkGlyph* glyph, SkArenaAlloc* alloc) override {
-        SkGlyphID glyphID = glyph->getGlyphID();
+    GlyphMetrics generateMetrics(const SkGlyph& glyph) override {
+        SkGlyphID glyphID = glyph.getGlyphID();
         glyphID           = glyphID < this->getTestSVGTypeface()->fGlyphCount ? glyphID : 0;
 
-        glyph->zeroMetrics();
-        glyph->fMaskFormat = SkMask::kARGB32_Format;
-        glyph->setPath(alloc, nullptr, false);
-        this->setAdvance(glyph);
+        GlyphMetrics mx(SkMask::kARGB32_Format);
+        mx.neverRequestPath = true;
+        mx.advance = this->computeAdvance(glyph);
 
         TestSVGTypeface::Glyph& glyphData = this->getTestSVGTypeface()->fGlyphs[glyphID];
 
@@ -215,16 +215,11 @@ protected:
                                             containerSize.fWidth,
                                             containerSize.fHeight);
         fMatrix.mapRect(&newBounds);
-        SkScalar dx = SkFixedToScalar(glyph->getSubXFixed());
-        SkScalar dy = SkFixedToScalar(glyph->getSubYFixed());
+        SkScalar dx = SkFixedToScalar(glyph.getSubXFixed());
+        SkScalar dy = SkFixedToScalar(glyph.getSubYFixed());
         newBounds.offset(dx, dy);
-
-        SkIRect ibounds;
-        newBounds.roundOut(&ibounds);
-        glyph->fLeft   = ibounds.fLeft;
-        glyph->fTop    = ibounds.fTop;
-        glyph->fWidth  = ibounds.width();
-        glyph->fHeight = ibounds.height();
+        newBounds.roundOut(&mx.bounds);
+        return mx;
     }
 
     void generateImage(const SkGlyph& glyph) override {
