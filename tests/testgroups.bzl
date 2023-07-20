@@ -262,6 +262,7 @@ GANESH_TESTS = [
     "GrThreadSafeCacheTest.cpp",
     "GradientTest.cpp",
     "ImageFilterCacheTest.cpp",
+    "ImageSizeTest.cpp",
     # "ImageFilterTest.cpp",  # TODO(b/277938020): Linux - Fails at a Skia library assertion.
     # "ImageIsOpaqueTest.cpp",  # TODO(b/277938020): Linux - Fails with segmentation fault.
     # "ImageNewShaderTest.cpp",  # TODO(b/277938020): Linux - Fails at a test assertion.
