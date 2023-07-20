@@ -94,6 +94,30 @@
       },
       "revId": "650c980daa72d887602e701db8f84072e26d4d48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6df11816_2916eaed",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-20T18:14:34Z",
+      "side": 0,
+      "message": "LGTM, thanks!",
+      "parentUuid": "d8c86b55_66f1281b",
+      "range": {
+        "startLine": 129,
+        "startChar": 4,
+        "endLine": 129,
+        "endChar": 80
+      },
+      "revId": "650c980daa72d887602e701db8f84072e26d4d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
