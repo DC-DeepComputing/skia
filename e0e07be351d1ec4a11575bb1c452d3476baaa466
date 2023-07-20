@@ -22,6 +22,30 @@
       },
       "revId": "e0e07be351d1ec4a11575bb1c452d3476baaa466",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2e0d5df_e3b18710",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1184,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-20T19:25:36Z",
+      "side": 1,
+      "message": "I\u0027m probably missing something here but do you need this? It feels like it\u0027s encapsulated in the renderStepID, i.e. a given renderStep type + all the other variables will always have the same number of texture/samplers and uniform blocks. And looking at how you generate the values in [5] and [6], it appears that they all come from things that are already stored in the key, with the exception of \"storageBufferPreferred\"",
+      "parentUuid": "abfeea5f_548fb64e",
+      "range": {
+        "startLine": 1167,
+        "startChar": 0,
+        "endLine": 1184,
+        "endChar": 43
+      },
+      "revId": "e0e07be351d1ec4a11575bb1c452d3476baaa466",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

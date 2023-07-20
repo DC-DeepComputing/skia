@@ -16,6 +16,121 @@
       "message": "FYI: Just tacked on the uniform offset fix in here since it\u0027s not many lines of code.",
       "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "692de6bd_d1bca654",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-20T19:25:36Z",
+      "side": 1,
+      "message": "Do you still need these includes?",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 53
+      },
+      "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d771c152_a8d8df30",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-20T19:25:36Z",
+      "side": 1,
+      "message": "Would a span work here?",
+      "range": {
+        "startLine": 97,
+        "startChar": 18,
+        "endLine": 97,
+        "endChar": 24
+      },
+      "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b65464e5_ab610112",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-20T19:25:36Z",
+      "side": 1,
+      "message": "Remove the variable name so it\u0027s clear it\u0027s not used?",
+      "range": {
+        "startLine": 544,
+        "startChar": 75,
+        "endLine": 544,
+        "endChar": 86
+      },
+      "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b1dd6ce_e8474675",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-20T19:25:36Z",
+      "side": 1,
+      "message": "Whoops. It\u0027s a shame they\u0027re both type VkFlags.",
+      "range": {
+        "startLine": 425,
+        "startChar": 38,
+        "endLine": 425,
+        "endChar": 74
+      },
+      "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d3b1b3a_c7f0273f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-20T19:25:36Z",
+      "side": 1,
+      "message": "It\u0027s not clear why this isn\u0027t outside the loop. You\u0027re filling in the array of descriptors to update and then updating them. At each iteration you\u0027re updating the ones you already did plus one more.",
+      "range": {
+        "startLine": 689,
+        "startChar": 24,
+        "endLine": 689,
+        "endChar": 44
+      },
+      "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
