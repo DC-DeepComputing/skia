@@ -34,6 +34,29 @@
       "parentUuid": "a71127ef_331fe81f",
       "revId": "80e17de7c4489184f839a6e75dee84c5df4ef5e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceebdb0c_349fbe64",
+        "filename": "src/gpu/graphite/render/AtlasShapeRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-20T13:21:11Z",
+      "side": 1,
+      "message": "This should be mostly correct, given Transform\u0027s implementation. It\u0027s exact for scale, translate, rotate type matrices but if there is skew or perspective it won\u0027t be right. For perspective it\u0027s because the API doesn\u0027t let you specify where you are in the plane, and that\u0027s something I need to add. For skew it\u0027s because I lazily implemented the scale factors as the lengths of the mapped X and Y axes, which doesn\u0027t exactly match what\u0027s possible to hit with a skew transform. For that it has to be updated to use an SVD. \n\nI don\u0027t think you need to make any changes here, I just wanted to bring it to your attention in case you saw some clipping issues under those sorts of matrices (I know perspective doesn\u0027t matter right now because it\u0027s pre-transformed).",
+      "range": {
+        "startLine": 74,
+        "startChar": 11,
+        "endLine": 74,
+        "endChar": 48
+      },
+      "revId": "80e17de7c4489184f839a6e75dee84c5df4ef5e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
