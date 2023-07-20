@@ -16,6 +16,40 @@
       "message": "ptal",
       "revId": "dae51f0fbc249c1a43399787172bc4c0b4094f07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef657cac_4ef660c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-20T15:29:28Z",
+      "side": 1,
+      "message": "I\u0027ll spend some time tinkering with different ways to do this, but I don\u0027t think we really want just anyone to be able to set things on glyphs just whenever, will need to think a bit about the invariants we need.",
+      "revId": "dae51f0fbc249c1a43399787172bc4c0b4094f07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02bfe39c_d944dd67",
+        "filename": "src/ports/SkScalerContext_mac_ct.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-20T15:29:28Z",
+      "side": 1,
+      "message": "So, thinking about this for a bit and the desired invariants on `SkGlyph`...\n\nI think we want `generateMetrics` to return an \"optional\" struct with the advance, bounds, mask format, and extra bits. Then the caller of `generateMetrics` (currently `SkScalerContext` can set these on the glyph and the strike can be the one friend of `SkGlyph`. An alternative is to have some protected setters on `generateMetrics` (so only subclasses of `SkScalerContext` can call them which then calls the setters on `SkGlyph`. However, I think I like the former rather than the latter.",
+      "revId": "dae51f0fbc249c1a43399787172bc4c0b4094f07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
