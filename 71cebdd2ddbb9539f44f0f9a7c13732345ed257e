@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e01d7b3_0a6ce439",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2784,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-20T20:44:37Z",
+      "side": 1,
+      "message": "I\u0027ll just tweak the comment for now, and will look at storage buffers in a followup. Sounds like I might need to support multiple IBs once buffers come into play.",
+      "parentUuid": "74166e00_dd3c535a",
+      "range": {
+        "startLine": 2779,
+        "startChar": 8,
+        "endLine": 2784,
+        "endChar": 9
+      },
+      "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c176231a_76fdb77f",
@@ -138,6 +162,24 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "f786890c_d340f76c",
+      "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2338c79_821f3e67",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2805,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-20T20:44:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd7071a0_9f1cbb14",
       "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
