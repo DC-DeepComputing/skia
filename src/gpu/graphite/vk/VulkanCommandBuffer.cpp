@@ -7,10 +7,13 @@
 
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
 
+#include "include/gpu/MutableTextureState.h"
 #include "include/gpu/graphite/BackendSemaphore.h"
 #include "include/private/base/SkTArray.h"
 #include "src/gpu/graphite/DescriptorTypes.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/Surface_Graphite.h"
+#include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/vk/VulkanBuffer.h"
 #include "src/gpu/graphite/vk/VulkanDescriptorSet.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
@@ -19,7 +22,16 @@
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/graphite/vk/VulkanTexture.h"
 
-#define SK_DISABLE_VULKAN_RENDERING
+#if defined(SK_BUILD_FOR_WIN)
+ #include "C:\Program Files\RenderDoc\renderdoc_app.h"
+ #include <windows.h>
+#elif defined(SK_BUILD_FOR_UNIX)
+ #include <dlfcn.h>
+ #include "/usr/local/google/home/nicolettep/Downloads/renderdoc_1.27/include/renderdoc_app.h"
+#endif
+
+#include <cassert>
+RENDERDOC_API_1_1_2 *rdoc_api = nullptr;
 
 using namespace skia_private;
 
@@ -27,9 +39,40 @@ namespace skgpu::graphite {
 
 class VulkanDescriptorSet;
 
+namespace { // anonymous namespace
+
+uint64_t clamp_ubo_binding_size(const uint64_t& offset,
+                                const uint64_t& bufferSize,
+                                const uint64_t& maxSize) {
+    SkASSERT(offset <= bufferSize);
+    auto remainSize = bufferSize - offset;
+    return remainSize > maxSize ? maxSize : remainSize;
+}
+
+} // anonymous namespace
+
 std::unique_ptr<VulkanCommandBuffer> VulkanCommandBuffer::Make(
         const VulkanSharedContext* sharedContext,
         VulkanResourceProvider* resourceProvider) {
+
+#if defined(SK_BUILD_FOR_WIN)
+    if(HMODULE mod = GetModuleHandleA("renderdoc.dll")) {
+        pRENDERDOC_GetAPI RENDERDOC_GetAPI =
+            (pRENDERDOC_GetAPI)GetProcAddress(mod, "RENDERDOC_GetAPI");
+        int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_1_2, (void **)&rdoc_api);
+        assert(ret == 1);
+    }
+#elif defined(SK_BUILD_FOR_UNIX)
+    if (rdoc_api == nullptr) {
+        if(void *mod = dlopen("librenderdoc.so", RTLD_NOW | RTLD_NOLOAD)) {
+            pRENDERDOC_GetAPI RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)dlsym(mod, "RENDERDOC_GetAPI");
+            int ret = RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_1_2, (void **)&rdoc_api);
+            assert(ret == 1);
+        }
+    }
+#endif
+    if(rdoc_api) rdoc_api->StartFrameCapture(NULL, NULL);
+
     // Create VkCommandPool
     VkCommandPoolCreateFlags cmdPoolCreateFlags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
     if (sharedContext->isProtected() == Protected::kYes) {
@@ -69,6 +112,8 @@ std::unique_ptr<VulkanCommandBuffer> VulkanCommandBuffer::Make(
         VULKAN_CALL(interface, DestroyCommandPool(sharedContext->device(), pool, nullptr));
         return nullptr;
     }
+
+    if(rdoc_api) rdoc_api->EndFrameCapture(NULL, NULL);
 
     return std::unique_ptr<VulkanCommandBuffer>(new VulkanCommandBuffer(pool,
                                                                         primaryCmdBuffer,
@@ -119,7 +164,11 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     fActiveGraphicsPipeline = nullptr;
     fBindUniformBuffers = true;
     fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
+    fNumTextureSamplers = 0;
     fUniformBuffersToBind.fill({nullptr, 0});
+    for (int i = 0; i < 4; ++i) {
+        fCachedBlendConstant[i] = -1.0;
+    }
 }
 
 bool VulkanCommandBuffer::setNewCommandBufferResources() {
@@ -180,6 +229,41 @@ void VulkanCommandBuffer::addSignalSemaphores(size_t numSignalSemaphores,
             fSignalSemaphores.push_back(semaphore.getVkSemaphore());
         }
     }
+}
+
+void VulkanCommandBuffer::prepareSurfaceForStateUpdate(SkSurface* targetSurface,
+                                                       const MutableTextureState* newState) {
+    TextureProxy* textureProxy = static_cast<Surface*>(targetSurface)->backingTextureProxy();
+    VulkanTexture* texture = static_cast<VulkanTexture*>(textureProxy->texture());
+
+    // Even though internally we use this helper for getting src access flags and stages they
+    // can also be used for general dst flags since we don't know exactly what the client
+    // plans on using the image for.
+    VkImageLayout newLayout = newState->getVkImageLayout();
+    if (newLayout == VK_IMAGE_LAYOUT_UNDEFINED) {
+        newLayout = texture->currentLayout();
+    }
+    VkPipelineStageFlags dstStage = VulkanTexture::LayoutToPipelineSrcStageFlags(newLayout);
+    VkAccessFlags dstAccess = VulkanTexture::LayoutToSrcAccessMask(newLayout);
+
+    uint32_t currentQueueFamilyIndex = texture->currentQueueFamilyIndex();
+    uint32_t newQueueFamilyIndex = newState->getQueueFamilyIndex();
+    auto isSpecialQueue = [](uint32_t queueFamilyIndex) {
+        return queueFamilyIndex == VK_QUEUE_FAMILY_EXTERNAL ||
+               queueFamilyIndex == VK_QUEUE_FAMILY_FOREIGN_EXT;
+    };
+    if (isSpecialQueue(currentQueueFamilyIndex) && isSpecialQueue(newQueueFamilyIndex)) {
+        // It is illegal to have both the new and old queue be special queue families (i.e. external
+        // or foreign).
+        return;
+    }
+
+    texture->setImageLayoutAndQueueIndex(this,
+                                         newLayout,
+                                         dstAccess,
+                                         dstStage,
+                                         false,
+                                         newQueueFamilyIndex);
 }
 
 static bool submit_to_queue(const VulkanInterface* interface,
@@ -315,6 +399,25 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                           const Texture* depthStencilTexture,
                                           SkRect viewport,
                                           const DrawPassList& drawPasses) {
+    for (const auto& drawPass : drawPasses) {
+        // Our current implementation of setting texture image layouts does not allow layout changes
+        // once we have already begun a render pass, so prior to any other commands, set the layout
+        // of all sampled textures from the drawpass so they can be sampled from the shader.
+        const skia_private::TArray<sk_sp<TextureProxy>>& sampledTextureProxies =
+                drawPass->sampledTextures();
+        for (sk_sp<TextureProxy> textureProxy : sampledTextureProxies) {
+            VulkanTexture* vulkanTexture = const_cast<VulkanTexture*>(
+                                           static_cast<const VulkanTexture*>(
+                                           textureProxy->texture()));
+            vulkanTexture->setImageLayout(this,
+                                          VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+                                          VK_ACCESS_SHADER_READ_BIT,
+                                          VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+                                          false);
+            this->submitPipelineBarriers();
+        }
+    }
+
     if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
         return false;
     }
@@ -332,6 +435,7 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                /*firstViewport=*/0,
                                /*viewportCount=*/1,
                                &vkViewport));
+    fCurrentViewport = viewport;
 
     for (const auto& drawPass : drawPasses) {
         this->addDrawPass(drawPass.get());
@@ -371,6 +475,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                 { (unsigned int) colorTexture->dimensions().width(),
                                   (unsigned int) colorTexture->dimensions().height() }};
     renderingInfo.layerCount = 1;
+    renderingInfo.viewMask = 0;
 
     // Set up color attachment
     VkRenderingAttachmentInfoKHR colorAttachment;
@@ -388,9 +493,11 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         memcpy(&colorAttachment.clearValue.color.float32,
                &renderPassDesc.fClearColor,
                4*sizeof(float));
-        vulkanTexture->setImageLayout(this, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+        vulkanTexture->setImageLayout(this,
+                                      VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                                      VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
                                       VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                      VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT, false);
+                                      false);
         // Set up resolve attachment
         if (resolveTexture) {
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
@@ -485,10 +592,8 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 break;
             }
             case DrawPassCommands::Type::kBindUniformBuffer: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto bub = static_cast<DrawPassCommands::BindUniformBuffer*>(cmdPtr);
                 this->recordBufferBindingInfo(bub->fInfo, bub->fSlot);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kBindDrawBuffers: {
@@ -498,10 +603,8 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 break;
             }
             case DrawPassCommands::Type::kBindTexturesAndSamplers: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
                 this->recordTextureAndSamplerDescSet(*drawPass, *bts);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kSetScissor: {
@@ -511,33 +614,26 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 break;
             }
             case DrawPassCommands::Type::kDraw: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::Draw*>(cmdPtr);
                 this->draw(draw->fType, draw->fBaseVertex, draw->fVertexCount);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kDrawIndexed: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::DrawIndexed*>(cmdPtr);
                 this->drawIndexed(
                         draw->fType, draw->fBaseIndex, draw->fIndexCount, draw->fBaseVertex);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kDrawInstanced: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::DrawInstanced*>(cmdPtr);
                 this->drawInstanced(draw->fType,
                                     draw->fBaseVertex,
                                     draw->fVertexCount,
                                     draw->fBaseInstance,
                                     draw->fInstanceCount);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kDrawIndexedInstanced: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::DrawIndexedInstanced*>(cmdPtr);
                 this->drawIndexedInstanced(draw->fType,
                                            draw->fBaseIndex,
@@ -545,21 +641,16 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                                            draw->fBaseVertex,
                                            draw->fBaseInstance,
                                            draw->fInstanceCount);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kDrawIndirect: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::DrawIndirect*>(cmdPtr);
                 this->drawIndirect(draw->fType);
-#endif
                 break;
             }
             case DrawPassCommands::Type::kDrawIndexedIndirect: {
-#ifndef SK_DISABLE_VULKAN_RENDERING
                 auto draw = static_cast<DrawPassCommands::DrawIndexedIndirect*>(cmdPtr);
                 this->drawIndexedIndirect(draw->fType);
-#endif
                 break;
             }
         }
@@ -567,18 +658,23 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
 }
 
 void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
-    // TODO: Implement.
-    // So long as 2 pipelines have the same pipeline layout, descriptor sets do not need to be
-    // re-bound. If the layouts differ, we should set fBindUniformBuffers to true.
     fActiveGraphicsPipeline = static_cast<const VulkanGraphicsPipeline*>(graphicsPipeline);
     SkASSERT(fActiveRenderPass);
     VULKAN_CALL(fSharedContext->interface(), CmdBindPipeline(fPrimaryCommandBuffer,
                                                              VK_PIPELINE_BIND_POINT_GRAPHICS,
                                                              fActiveGraphicsPipeline->pipeline()));
+    // TODO: Compare pipeline layouts. If 2 pipelines have the same pipeline layout, then descriptor
+    // sets do not need to be re-bound. For now, simply force re-binding with any new pipeline.
+    fBindUniformBuffers = true;
 }
 
 void VulkanCommandBuffer::setBlendConstants(float* blendConstants) {
-    // TODO: Implement
+    SkASSERT(fActive);
+    if (0 != memcmp(blendConstants, fCachedBlendConstant, 4 * sizeof(float))) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetBlendConstants(fPrimaryCommandBuffer, blendConstants));
+        memcpy(fCachedBlendConstant, blendConstants, 4 * sizeof(float));
+    }
 }
 
 void VulkanCommandBuffer::recordBufferBindingInfo(const BindBufferInfo& info, UniformSlot slot) {
@@ -634,39 +730,67 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     if (!set) {
         SKGPU_LOG_E("Unable to find or create descriptor set");
     } else {
-        TArray<VkWriteDescriptorSet> writeDescriptorSets(descriptors.size());
-        for (uint32_t i = 0; i < fUniformBuffersToBind.size(); i++) {
-            if (fUniformBuffersToBind[i].fBuffer) {
-                VkDescriptorBufferInfo bufferInfo;
-                memset(&bufferInfo, 0, sizeof(VkDescriptorBufferInfo));
-                auto vulkanBuffer =
-                        static_cast<const VulkanBuffer*>(fUniformBuffersToBind[i].fBuffer);
-                bufferInfo.buffer = vulkanBuffer->vkBuffer();
-                bufferInfo.offset = fUniformBuffersToBind[i].fOffset;
-                bufferInfo.range = vulkanBuffer->size();
+        TArray<VkWriteDescriptorSet> writeDescriptorSets(
+                VulkanGraphicsPipeline::kNumUniformBuffers);
+        static uint64_t maxUniformBufferRange = static_cast<const VulkanSharedContext*>(
+                fSharedContext)->vulkanCaps().maxUniformBufferRange();
+        for (int i = 0; i < descriptors.size(); i++) {
+            // fUniformBuffersToBind is organized by binding indices, so use the descriptor's
+            // binding index to inform which index to examine within fUniformBuffersToBind.
+            int descriptorBindingIndex = descriptors.at(i).bindingIndex;
+            SkASSERT(static_cast<unsigned long>(descriptorBindingIndex)
+                     < fUniformBuffersToBind.size());
 
-                VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
-                memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
-                writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            VkDescriptorBufferInfo bufferInfo;
+            memset(&bufferInfo, 0, sizeof(VkDescriptorBufferInfo));
+            auto vulkanBuffer = static_cast<const VulkanBuffer*>(
+                    fUniformBuffersToBind[descriptorBindingIndex].fBuffer);
+            bufferInfo.buffer = vulkanBuffer->vkBuffer();
+            bufferInfo.offset = fUniformBuffersToBind[descriptorBindingIndex].fOffset;
+            bufferInfo.range = clamp_ubo_binding_size(bufferInfo.offset, vulkanBuffer->size(),
+                                                      maxUniformBufferRange);
+
+            VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
+            memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
+            writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            // Perform special setup for intrinsic uniform when appropriate.
+            if (descriptors.at(i).type == DescriptorType::kInlineUniform) {
+                // Vulkan's framebuffer space has (0, 0) at the top left. This agrees with
+                // Skia's device coords. However, in NDC (-1, -1) is the bottom left. So we flip
+                // the origin here (assuming all surfaces we have are TopLeft origin).
+                const float x = fCurrentViewport.x() - fReplayTranslation.x();
+                const float y = fCurrentViewport.y() - fReplayTranslation.y();
+                float invTwoW = 2.f / fCurrentViewport.width();
+                float invTwoH = 2.f / fCurrentViewport.height();
+                float rtAdjust[4] = {invTwoW, -invTwoH, -1.f - x * invTwoW, 1.f + y * invTwoH};
+
+                VkWriteDescriptorSetInlineUniformBlockEXT writeInlineUniform;
+                writeInlineUniform.sType =
+                        VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET_INLINE_UNIFORM_BLOCK_EXT;
+                writeInlineUniform.pNext = nullptr;
+                writeInlineUniform.dataSize = fIntrinsicUniformBuffer->size();
+                writeInlineUniform.pData = &rtAdjust;
+
+                writeInfo.pNext = &writeInlineUniform;
+            } else {
                 writeInfo.pNext = nullptr;
-                writeInfo.dstSet = *set->descriptorSet();
-                writeInfo.dstBinding = i;
-                writeInfo.dstArrayElement = 0;
-                writeInfo.descriptorCount = 1;
-                writeInfo.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-                writeInfo.pImageInfo = nullptr;
-                writeInfo.pBufferInfo = &bufferInfo;
-                writeInfo.pTexelBufferView = nullptr;
             }
+            writeInfo.dstSet = *set->descriptorSet();
+            writeInfo.dstBinding = descriptorBindingIndex;
+            writeInfo.dstArrayElement = 0;
+            writeInfo.descriptorCount = descriptors.at(i).count;
+            writeInfo.descriptorType = DsTypeEnumToVkDs(descriptors.at(i).type);
+            writeInfo.pImageInfo = nullptr;
+            writeInfo.pBufferInfo = &bufferInfo;
+            writeInfo.pTexelBufferView = nullptr;
+
+            VULKAN_CALL(fSharedContext->interface(),
+                        UpdateDescriptorSets(fSharedContext->device(),
+                                             /*descriptorWriteCount=*/writeDescriptorSets.size(),
+                                             &writeDescriptorSets[0],
+                                             /*descriptorCopyCount=*/0,
+                                             /*pDescriptorCopies=*/nullptr));
         }
-
-        VULKAN_CALL(fSharedContext->interface(),
-                    UpdateDescriptorSets(fSharedContext->device(),
-                                         writeDescriptorSets.size(),
-                                         &writeDescriptorSets[0],
-                                         /*descriptorCopyCount=*/0,
-                                         /*pDescriptorCopies=*/nullptr));
-
         VULKAN_CALL(fSharedContext->interface(),
                     CmdBindDescriptorSets(fPrimaryCommandBuffer,
                                           VK_PIPELINE_BIND_POINT_GRAPHICS,
@@ -756,6 +880,9 @@ void VulkanCommandBuffer::bindIndirectBuffer(const Buffer* indirectBuffer, size_
 void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         const DrawPass& drawPass, const DrawPassCommands::BindTexturesAndSamplers& command) {
     if (command.fNumTexSamplers == 0) {
+        fNumTextureSamplers = 0;
+        fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
+        fBindTextureSamplers = false;
         return;
     }
     // Query resource provider to obtain a descriptor set for the texture/samplers
@@ -768,12 +895,16 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
 
     if (!set) {
         SKGPU_LOG_E("Unable to find or create descriptor set");
+        fNumTextureSamplers = 0;
+        fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
+        fBindTextureSamplers = false;
+        return;
     } else {
         // Populate the descriptor set with texture/sampler descriptors
         TArray<VkWriteDescriptorSet> writeDescriptorSets(command.fNumTexSamplers);
         for (int i = 0; i < command.fNumTexSamplers; ++i) {
-            auto texture = static_cast<const VulkanTexture*>(
-                    drawPass.getTexture(command.fTextureIndices[i]));
+            auto texture = const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(
+                    drawPass.getTexture(command.fTextureIndices[i])));
             auto sampler = static_cast<const VulkanSampler*>(
                     drawPass.getSampler(command.fSamplerIndices[i]));
             SkASSERT(texture && sampler);
@@ -781,8 +912,9 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             VkDescriptorImageInfo textureInfo;
             memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
             textureInfo.sampler = sampler->vkSampler();
-            textureInfo.imageView = VK_NULL_HANDLE; // TODO: Obtain texture view from VulkanImage.
-            textureInfo.imageLayout = texture->currentLayout();
+            textureInfo.imageView =
+                    texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
+            textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
             VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
             memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
@@ -810,13 +942,15 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         // through drawpass commands.
         fTextureSamplerDescSetToBind = *set->descriptorSet();
         fBindTextureSamplers = true;
+        fNumTextureSamplers = command.fNumTexSamplers;
         this->trackResource(std::move(set));
     }
 }
 
 void VulkanCommandBuffer::bindTextureSamplers() {
     fBindTextureSamplers = false;
-    if (fTextureSamplerDescSetToBind != VK_NULL_HANDLE) {
+    if (fTextureSamplerDescSetToBind != VK_NULL_HANDLE
+        && fActiveGraphicsPipeline->numTextureSamplers() == fNumTextureSamplers) {
         VULKAN_CALL(fSharedContext->interface(),
                     CmdBindDescriptorSets(fPrimaryCommandBuffer,
                                           VK_PIPELINE_BIND_POINT_GRAPHICS,
@@ -851,7 +985,7 @@ void VulkanCommandBuffer::draw(PrimitiveType,
     VULKAN_CALL(fSharedContext->interface(),
                 CmdDraw(fPrimaryCommandBuffer,
                         vertexCount,
-                        /*instanceCount=*/0,
+                        /*instanceCount=*/1,
                         baseVertex,
                         /*firstInstance=*/0));
 }
@@ -866,7 +1000,7 @@ void VulkanCommandBuffer::drawIndexed(PrimitiveType,
     VULKAN_CALL(fSharedContext->interface(),
                 CmdDrawIndexed(fPrimaryCommandBuffer,
                                indexCount,
-                               /*instanceCount=*/0,
+                               /*instanceCount=*/1,
                                baseIndex,
                                baseVertex,
                                /*firstInstance=*/0));

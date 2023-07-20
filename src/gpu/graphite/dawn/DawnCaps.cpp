@@ -539,7 +539,9 @@ uint64_t DawnCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) co
     return (((uint64_t) colorAttachmentKey) << 32) | dsAttachmentKey;
 }
 
-UniqueKey DawnCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
+UniqueKey DawnCaps::makeGraphicsPipelineKey(const SharedContext* ctxt,
+                                            const RuntimeEffectDictionary* runtimeDict,
+                                            const GraphicsPipelineDesc& pipelineDesc,
                                             const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {

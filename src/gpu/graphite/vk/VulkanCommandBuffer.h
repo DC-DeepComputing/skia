@@ -64,6 +64,8 @@ private:
                            const BackendSemaphore* waitSemaphores) override;
     void addSignalSemaphores(size_t numWaitSemaphores,
                              const BackendSemaphore* signalSemaphores) override;
+    void prepareSurfaceForStateUpdate(SkSurface* targetSurface,
+                                      const MutableTextureState* newState) override;
 
     bool onAddRenderPass(const RenderPassDesc&,
                         const Texture* colorTexture,
@@ -194,6 +196,11 @@ private:
             = {{{nullptr, 0}}};
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
 
+    int fNumTextureSamplers = 0;
+    // Store the current viewport so we can calculate rtAdjust when it is time to populate / bind
+    // the intrinsic uniform buffer.
+    SkRect fCurrentViewport;
+
     VkBuffer fBoundInputBuffers[VulkanGraphicsPipeline::kNumInputBuffers];
     size_t fBoundInputBufferOffsets[VulkanGraphicsPipeline::kNumInputBuffers];
 
@@ -201,6 +208,8 @@ private:
     VkBuffer fBoundIndirectBuffer = VK_NULL_HANDLE;
     size_t fBoundIndexBufferOffset = 0;
     size_t fBoundIndirectBufferOffset = 0;
+
+    float fCachedBlendConstant[4];
 };
 
 } // namespace skgpu::graphite
