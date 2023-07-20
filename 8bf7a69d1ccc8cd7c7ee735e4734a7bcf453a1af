@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc58abdc_f9777775",
+        "filename": "gm/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-20T17:38:52Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "5d5bbc4d_3cca4235",
+      "range": {
+        "startLine": 621,
+        "startChar": 52,
+        "endLine": 621,
+        "endChar": 73
+      },
+      "revId": "8bf7a69d1ccc8cd7c7ee735e4734a7bcf453a1af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb89eed2_3a22e28c",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-20T12:18:09Z",
       "side": 1,
       "message": "As I said, we should put \"the direct via and the two picture ones\" in the same .cpp file, as that level of separation was not deemed \"worth it\"",
+      "range": {
+        "startLine": 12,
+        "startChar": 10,
+        "endLine": 12,
+        "endChar": 16
+      },
+      "revId": "8bf7a69d1ccc8cd7c7ee735e4734a7bcf453a1af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a407d56b_8502692c",
+        "filename": "gm/vias/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-20T17:38:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb89eed2_3a22e28c",
       "range": {
         "startLine": 12,
         "startChar": 10,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d12fd01d_1edcf7eb",
+        "filename": "gm/vias/Draw.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-20T17:38:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8162a66d_08d16ee7",
+      "range": {
+        "startLine": 34,
+        "startChar": 50,
+        "endLine": 34,
+        "endChar": 70
+      },
+      "revId": "8bf7a69d1ccc8cd7c7ee735e4734a7bcf453a1af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93914570_b0c812c0",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa71e6ce_6a91f8b0",
+        "filename": "gm/vias/PictureVias.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-20T17:38:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93914570_b0c812c0",
+      "range": {
+        "startLine": 47,
+        "startChar": 48,
+        "endLine": 48,
+        "endChar": 92
+      },
+      "revId": "8bf7a69d1ccc8cd7c7ee735e4734a7bcf453a1af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a5d7c04_99a57c52",
@@ -106,6 +202,30 @@
       "writtenOn": "2023-07-20T12:18:09Z",
       "side": 1,
       "message": "This is fine to use SkString for the easier format method. Same below.",
+      "range": {
+        "startLine": 51,
+        "startChar": 21,
+        "endLine": 51,
+        "endChar": 34
+      },
+      "revId": "8bf7a69d1ccc8cd7c7ee735e4734a7bcf453a1af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ac73505_42d29d8b",
+        "filename": "gm/vias/PictureVias.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-20T17:38:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a5d7c04_99a57c52",
       "range": {
         "startLine": 51,
         "startChar": 21,
