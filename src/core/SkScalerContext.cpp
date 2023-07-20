@@ -1244,9 +1244,10 @@ bool SkScalerContext::CheckBufferSizeForRec(const SkScalerContextRec& rec,
     return size >= calculate_size_and_flatten(rec, effects, &buf);
 }
 
-std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
-        sk_sp<SkTypeface> typeface, const SkScalerContextEffects& effects,
-        const SkDescriptor* desc) {
+///////////////
+
+// Should only be called from generateMetrics()
+namespace {
     class SkScalerContext_Empty : public SkScalerContext {
     public:
         SkScalerContext_Empty(sk_sp<SkTypeface> typeface, const SkScalerContextEffects& effects,
@@ -1258,12 +1259,28 @@ std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
             glyph->zeroMetrics();
             return true;
         }
-        void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) override {
-            glyph->fMaskFormat = fRec.fMaskFormat;
+        void generateMetrics(SkGlyph* glyph, SkArenaAlloc* alloc) override {
+        //    glyph->fMaskFormat = fRec.fMaskFormat;
+            glyph->setPath(alloc, nullptr, false);
+
+            glyph->getGlyphID();
             glyph->zeroMetrics();
+
+            glyph->setAdvance(1, 2);
+
+            glyph->getSubXFixed();
+            glyph->getSubXFixed();
+
+            glyph->setBoundsMaskExtra({1, 2, 3, 4}, fRec.fMaskFormat, 0);
         }
-        void generateImage(const SkGlyph& glyph) override {}
+        void generateImage(const SkGlyph& glyph) override {
+            auto i = glyph.writable_image();
+            auto b = glyph.extraBits();
+            glyph.imageSize();
+            glyph.rowBytes();
+        }
         bool generatePath(const SkGlyph& glyph, SkPath* path) override {
+            glyph.getGlyphID();
             path->reset();
             return false;
         }
@@ -1273,7 +1290,11 @@ std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
             }
         }
     };
+}
 
+std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
+        sk_sp<SkTypeface> typeface, const SkScalerContextEffects& effects,
+        const SkDescriptor* desc) {
     return std::make_unique<SkScalerContext_Empty>(std::move(typeface), effects, desc);
 }
 
