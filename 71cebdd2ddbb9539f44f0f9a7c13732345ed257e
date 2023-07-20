@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24b27481_8dffbcac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-20T03:57:39Z",
+      "side": 1,
+      "message": "LGTM wrt the current single UBO block assumption but let\u0027s discuss how this should work for SSBOs.",
+      "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33c34152_d6b282ad",
@@ -50,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74166e00_dd3c535a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2784,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-20T03:57:39Z",
+      "side": 1,
+      "message": "\u003e I\u0027ll need to look at how SSBOs are handled, that might complicate things. I haven\u0027t looked too closely at those yet.\n\nWe allow multiple storage buffer bindings in a program and both Metal and SPIR-V should handle this correctly (see resources/sksl/shared/StorageBuffer.sksl and its codegen outputs). I think that comment might be out of date (or we missed some invariant when adding storage buffer support).",
+      "parentUuid": "8f5b9cda_4e2e5f2f",
+      "range": {
+        "startLine": 2779,
+        "startChar": 8,
+        "endLine": 2784,
+        "endChar": 9
+      },
+      "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c176231a_76fdb77f",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 3
@@ -79,6 +120,24 @@
       "side": 1,
       "message": "There\u0027s going to be all sorts of work here, because of skia:14370. I\u0027ll add a TODO.",
       "parentUuid": "c176231a_76fdb77f",
+      "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd7071a0_9f1cbb14",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2805,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-20T03:57:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f786890c_d340f76c",
       "revId": "71cebdd2ddbb9539f44f0f9a7c13732345ed257e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
