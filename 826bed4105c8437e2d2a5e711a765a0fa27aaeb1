@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f742af2e_d85620ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-07-20T15:20:15Z",
+      "side": 1,
+      "message": "Kevin PTAL. Patchset 1 is the original (reverted) CL for easy reviewing.",
+      "revId": "826bed4105c8437e2d2a5e711a765a0fa27aaeb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
