@@ -46,6 +46,30 @@
       },
       "revId": "650c980daa72d887602e701db8f84072e26d4d48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebf4a9f5_fd935ead",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-20T17:58:08Z",
+      "side": 0,
+      "message": "It does feel a bit like we\u0027re overloading InsertRecordingInfo::fTargetSurface here (using it as a target for deferred canvas draws, and as a surface to update during replay) but I think the most important question is: would you ever want to do both of these actions at once, on different surfaces? I would think not, in which case this is probably fine.",
+      "parentUuid": "d6130e41_14d1f6ee",
+      "range": {
+        "startLine": 129,
+        "startChar": 4,
+        "endLine": 129,
+        "endChar": 80
+      },
+      "revId": "650c980daa72d887602e701db8f84072e26d4d48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
