@@ -126,7 +126,6 @@ bool RecordingPriv::addCommands(Context* context,
             fRecording->fTargetProxyData ? fRecording->fTargetProxyData->lazyProxy() : nullptr);
 
     const Texture* replayTarget = nullptr;
-    SkASSERT(SkToBool(fRecording->fTargetProxyData) == SkToBool(replaySurface));
     ResourceProvider* resourceProvider = context->priv().resourceProvider();
     if (fRecording->fTargetProxyData) {
         if (!replaySurface) {
