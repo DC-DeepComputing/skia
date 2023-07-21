@@ -16,6 +16,74 @@
       "message": "I don\u0027t know which reviewer to choose. Can you help me with which reviewer to choose?",
       "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35e50705_85b5ff60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-21T17:32:04Z",
+      "side": 1,
+      "message": "Thanks for putting this together! Although it mostly looked correct, I\u0027m suggesting that we reduce the changes to just adding MakeForBlender/makeBlender.\n\nI\u0027d like to spend some more time on the other two parts, so we can do them more carefully.",
+      "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c8549c1_205162e4",
+        "filename": "AUTHORS",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-21T17:32:04Z",
+      "side": 1,
+      "message": "The \u0027name\u0027 here needs to be a legal name that matches the one you used when you signed the CLA.",
+      "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd753e57_3e07af7a",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2098,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-21T17:32:04Z",
+      "side": 1,
+      "message": "I know why you did this (and it would be nice to rename this), but that\u0027s going to change the public API for all existing CanvasKit users. For now, let\u0027s leave this as `_Make`, and just use `_MakeForBlender` for the new one.\n\n(If we decide to change this later, we would keep both names for at least one release, so people can update their code).",
+      "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c29f79b_b9e26db0",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2188,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-21T17:32:04Z",
+      "side": 1,
+      "message": "Having a version that takes children is a good idea, but the current types don\u0027t make this very useful. (This isn\u0027t a problem with your code, it\u0027s an issue with how we\u0027ve exposed the child shader/blender/color-filter types to canvas kit.)\n\nSo: I\u0027d suggest just exposing `_makeBlender` for now (I\u0027m guessing that lets you do what you need?). If we leave out `_makeBlenderWithChildren`, then we don\u0027t need the changes to `SkRuntimeEffect.h` and `SkRuntimeEffect.cpp`, either.",
+      "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
