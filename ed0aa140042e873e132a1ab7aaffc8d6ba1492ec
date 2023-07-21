@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a72ab1fd_00f2f326",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1705,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-21T15:08:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ed80004_2063c301",
+      "range": {
+        "startLine": 1705,
+        "startChar": 91,
+        "endLine": 1705,
+        "endChar": 93
+      },
+      "revId": "ed0aa140042e873e132a1ab7aaffc8d6ba1492ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed1e8eaa_445c63f6",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-07-21T03:29:25Z",
       "side": 1,
       "message": "Maybe repeat the comment you added to `assembleIntrinsicCall` here to explain why we\u0027re let-declaring only the first argument.",
+      "range": {
+        "startLine": 1763,
+        "startChar": 31,
+        "endLine": 1763,
+        "endChar": 42
+      },
+      "revId": "ed0aa140042e873e132a1ab7aaffc8d6ba1492ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b9675a_96c208b4",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1763,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-21T15:08:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed1e8eaa_445c63f6",
       "range": {
         "startLine": 1763,
         "startChar": 31,
