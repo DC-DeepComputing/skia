@@ -76,7 +76,7 @@ function init() {
                  mix(pc, pd, w.x), w.y);
   }
   `;
-  const effect = CanvasKit.RuntimeEffect.Make(prog);
+  const effect = CanvasKit.RuntimeEffect.MakeForShader(prog);
 
   const size = 100;
   const shader_paint = new CanvasKit.Paint();

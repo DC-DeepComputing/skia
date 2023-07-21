@@ -24,5 +24,5 @@ function MakeSpiralShaderEffect(CanvasKit) {
         return half4(mix(in_colors0, in_colors1, t));
     }`;
 
-    return CanvasKit.RuntimeEffect.Make(_spiralSkSL);
+    return CanvasKit.RuntimeEffect.MakeForShader(_spiralSkSL);
 }

@@ -221,6 +221,9 @@ public:
                                          SkSpan<const ChildPtr> children) const;
 
     sk_sp<SkBlender> makeBlender(sk_sp<const SkData> uniforms,
+                                 sk_sp<SkBlender> children[],
+                                 size_t childCount) const;
+    sk_sp<SkBlender> makeBlender(sk_sp<const SkData> uniforms,
                                  SkSpan<const ChildPtr> children = {}) const;
 
     /**

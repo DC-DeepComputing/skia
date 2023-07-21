@@ -1956,7 +1956,7 @@ describe('Core canvas behavior', () => {
 
     gm('ImageFilter_MakeShader', (canvas) => {
 
-        const rt = CanvasKit.RuntimeEffect.Make(`
+        const rt = CanvasKit.RuntimeEffect.MakeForShader(`
 uniform float4 color;
 half4 main(vec2 fragcoord) {
     return vec4(color);
