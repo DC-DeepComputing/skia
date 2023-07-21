@@ -46,6 +46,30 @@
       },
       "revId": "358186ffe5ff8e897673a411ccf22bd1bcd6dd34",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4c8859f_7c2bb1f4",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-21T20:02:50Z",
+      "side": 1,
+      "message": "Maybe we keep going with the return-struct idea, and just invent a small input struct. That way we *never* have to expose SkGlyph to the scalercontext...\n\nstruct GlyphInfo {\n    uint16_t glyphID;\n    SkFixed fractX, fractY;\n    SkMask::Format requestedFormat;\n};\n\nGlyphMetrics generateMetrics(const GlyphInfo\u0026, alloc);",
+      "parentUuid": "bac949ef_b95b296e",
+      "range": {
+        "startLine": 382,
+        "startChar": 41,
+        "endLine": 382,
+        "endChar": 55
+      },
+      "revId": "358186ffe5ff8e897673a411ccf22bd1bcd6dd34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
