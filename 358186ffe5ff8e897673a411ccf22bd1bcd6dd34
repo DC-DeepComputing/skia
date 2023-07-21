@@ -22,6 +22,30 @@
       },
       "revId": "358186ffe5ff8e897673a411ccf22bd1bcd6dd34",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bac949ef_b95b296e",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-21T17:44:23Z",
+      "side": 1,
+      "message": "impls want glyph, fractx, fracty, maskformat.\n\nThe first 3 are in the packed dude, right? So we could pass in packed and maskformat (if you want to commit to having subclasses know about packedglphID).\n\nCould also pass those 4 as explicit values:\n\ngenerateMetrics(GlyphID, fracX, fracY, maskFormat, ...)\n\nthoughts?",
+      "parentUuid": "0d433239_b0d67ae7",
+      "range": {
+        "startLine": 382,
+        "startChar": 41,
+        "endLine": 382,
+        "endChar": 55
+      },
+      "revId": "358186ffe5ff8e897673a411ccf22bd1bcd6dd34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
