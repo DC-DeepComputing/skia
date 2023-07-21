@@ -361,6 +361,24 @@
       "parentUuid": "3f3fea4c_6a3e4594",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23cf9381_aedac55b",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-21T17:57:30Z",
+      "side": 1,
+      "message": "We have a skia-cdn GCS bucket that we could copy these into or make them a CIPD asset.",
+      "parentUuid": "083fe8c6_c8d76d37",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
