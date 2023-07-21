@@ -32,7 +32,7 @@ public:
     ~SkScalerContext_DW() override;
 
 protected:
-    void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) override;
+    GlyphMetrics generateMetrics(const SkGlyph&, SkArenaAlloc*) override;
     void generateImage(const SkGlyph& glyph) override;
     bool generatePath(const SkGlyph&, SkPath*) override;
     sk_sp<SkDrawable> generateDrawable(const SkGlyph&) override;
