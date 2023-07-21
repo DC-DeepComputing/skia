@@ -379,6 +379,24 @@
       "parentUuid": "083fe8c6_c8d76d37",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a70e0d03_440e6d23",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-21T18:22:51Z",
+      "side": 1,
+      "message": "The only issue I might have with that is that it is difficult for developers to remember that CIPD assets need to be updated periodically. If I have a repo with a bunch of branches / tags for each version of the Unicode machine readable files then it\u0027s fairly obvious in tooling and such that I don\u0027t have the newest version and things should be updated periodically (the fact that Unicode doesn\u0027t do this and keeps pointing people at downloading from the website is just silly, especially since they need to essentially do it for themselves anyway and then tell people not to use that one). The CIPD assets get their own \"version\" but it is all a bit opaque.\n\nIn other words, if there is some way to make it super obvious that the CIPD asset should get updated when Unicode updates (somehow make the version of Unicode in CIPD visible) then I\u0027m fine with that. As things are it is difficult to really know what is in CIPD and when it should be updated because people aren\u0027t treating CIPD like another third_party thing that should be on a roller (or maybe they are and third_party just gets neglected the same way, but at least I can see in DEPS what\u0027s going on), I was actually just running into this with the DirectWriteCore CIPD asset I just created and it is nice that the version and stuff is in the `create.py` but I\u0027m gonna forget about it because now that is yet another DEPS like thing to look at.\n\nAlso, need to make sure it\u0027s available generally (not just to our build). How public are our CIPD assets? These are going to be needed for a local build as well, not just on the bots. This is also a bit of a problem already for the DWriteCore builds, but in that case the WindowsAppSdk has like an installer and stuff for users. This Unicode thing doesn\u0027t really?",
+      "parentUuid": "23cf9381_aedac55b",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
