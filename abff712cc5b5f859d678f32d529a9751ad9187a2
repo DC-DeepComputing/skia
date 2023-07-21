@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae930000_bf3ff8ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-21T13:49:28Z",
+      "side": 1,
+      "message": "Thanks for consolidating this Kevin. Rob and I are definitely going to be refactoring the blur code in the upcoming weeks, but this cleanup helps. We will also try and make sure the new design works with the goals of the define-less build system.",
+      "revId": "abff712cc5b5f859d678f32d529a9751ad9187a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
