@@ -343,6 +343,24 @@
       "parentUuid": "a2afb7ad_0f129f5e",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "083fe8c6_c8d76d37",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-21T17:20:14Z",
+      "side": 1,
+      "message": "I took a look at the Makefile and it is fairly straight forward and there should be no issue creating a BUILD.gn file which builds this. However... note that this Makefile uses `wget` directly against `www.unicode.org` to get the Unicode data. We really cannot be doing this (and it reflects somewhat poorly on libgrapheme for doing so) as it is not really reproducible. Sure, the Unicode consortium states that it won\u0027t change these files once they are published, but these files can also just go away for various reasons (they have the same problem as us not having a local mirror of libgrapheme, only more so). These inputs would also need to be mirrored / checked in somewhere and the BUILD.gn use that (and not attempt to download files during the build). In a BUILD.bazel build it might be possible to version and cache these as if we were pointing at another repo (including checking hashes of the context), but even then for actual reproducibility reasons (and sanity reasons) to be building with a specific copy of these files.",
+      "parentUuid": "3f3fea4c_6a3e4594",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
