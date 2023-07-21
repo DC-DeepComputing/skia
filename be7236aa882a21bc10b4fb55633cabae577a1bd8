@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d41f095_8259bef4",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-21T19:10:44Z",
+      "side": 1,
+      "message": "I think this is good, the only thing to keep in mind is that some potential driver bugs that folks have mentioned running into in the past with flat interpolation on OpenGL ES, which may need special treatment if/when graphite targets that backend API.\n\nI don\u0027t remember the full details but I wanted to just mention it as a reminder, no action needed otherwise. For Dawn and Vulkan this is the mandated behavior so lgtm.",
+      "revId": "be7236aa882a21bc10b4fb55633cabae577a1bd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9e4094e_a7d53a66",
+        "filename": "tests/sksl/shared/StorageBuffer.hlsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-21T19:10:44Z",
+      "side": 1,
+      "message": "interesting that this got annotated as a texcoord by spirv-cross. Either way the SPIR-V disassembly looks good to me.",
+      "range": {
+        "startLine": 15,
+        "startChar": 38,
+        "endLine": 15,
+        "endChar": 47
+      },
+      "revId": "be7236aa882a21bc10b4fb55633cabae577a1bd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
