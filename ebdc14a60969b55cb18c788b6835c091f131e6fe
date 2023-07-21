@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d27e5e35_e67a61b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-21T17:42:56Z",
+      "side": 1,
+      "message": "I attached the wrong bug. The correct bug is https://skbug.com/14227.",
+      "revId": "ebdc14a60969b55cb18c788b6835c091f131e6fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
