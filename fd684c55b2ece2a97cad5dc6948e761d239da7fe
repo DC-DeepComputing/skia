@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2169f476_213c7e18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-21T13:47:57Z",
+      "side": 1,
+      "message": "The long term API that will be added to SkImageFilter will be\n\n    SkIRect getOutputBounds(const SkMatrix\u0026 ctm, const SkRect\u0026 drawBounds) const;\n    \nand \n   \n    SkIRect getInputBounds(const SkMatrix\u0026 ctm, const SkIRect\u0026 clipBounds, const SkRect\u0026 drawBounds) const;\n    \nThe `ctm` matrix is the full transform of the SkCanvas when the image filter would be used. The `drawBounds` are the local (pre-transformed) bounding box of the geometry being drawn *before* the filter is applied. Both functions return pixel bounding boxes in the canvas device space (post-transformed). For `getInputBounds`, the `clipBounds` is the pixel bounds in device space that can be rendered to.\n\nThe issue for migration is that the old `filterBounds` function expected the input bounding boxes to be in device-space already. For flutter\u0027s use case where they always pass in the identity matrix, it\u0027s a non-issue because mapping from local to device/canvas space is a no-op. In general, it\u0027s probably a good idea to move away from assuming the identity matrix in Flutter\u0027s code simply because it could be misleading about the size of a pixel relative to the local coordinate space.\n\nIn order to future-proof CanvasKit, it would be great if this `filterBounds` function could be updated to match the `getOutputBounds` signature above. Since there is no C++ version of that yet, it can be implemented by calling:\n\n    return filter-\u003efilterBounds(ctm.mapRect(drawBounds).roundOut(), ctm, kForward);\n    \nAnd then Flutter CK would just call that with the identity matrix, just like it does for filterBounds in its skwasm adapter.",
+      "parentUuid": "48c34f5d_25022357",
+      "revId": "fd684c55b2ece2a97cad5dc6948e761d239da7fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b21b0845_3fc873b5",
         "filename": "modules/canvaskit/externs.js",
         "patchSetId": 1
