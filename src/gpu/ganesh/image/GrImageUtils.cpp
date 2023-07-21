@@ -57,6 +57,7 @@
 #include "src/gpu/ganesh/effects/GrBicubicEffect.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 #include "src/gpu/ganesh/effects/GrYUVtoRGBEffect.h"
+#include "src/gpu/ganesh/image/SkImage_Ganesh.h"
 #include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
 #include "src/gpu/ganesh/image/SkImage_RasterPinnable.h"
 #include "src/gpu/ganesh/image/SkSpecialImage_Ganesh.h"
@@ -745,7 +746,18 @@ Context MakeGaneshContext(GrRecordingContext* context,
         return SkSpecialImages::MakeFromTextureImage(context, subset, image, props);
     };
 
-    return Context(info, context, makeSurfaceFunctor, makeImageFunctor);
+    auto makeCachedBitmapFunctor = [context](const SkBitmap& data) -> sk_sp<SkImage> {
+        // FIXME Is this thread safe?
+        auto [view, ct] = GrMakeCachedBitmapProxyView(context, data, "Cached ImageFilter Data");
+        if (!view) {
+            return nullptr;
+        }
+
+        SkColorInfo colorInfo{GrColorTypeToSkColorType(ct), data.alphaType(), data.refColorSpace()};
+        return sk_make_sp<SkImage_Ganesh>(sk_ref_sp(context), data.getGenerationID(), std::move(view), colorInfo);
+    };
+
+    return Context(info, context, makeSurfaceFunctor, makeImageFunctor, makeCachedBitmapFunctor);
 }
 
 }  // namespace skgpu::ganesh
