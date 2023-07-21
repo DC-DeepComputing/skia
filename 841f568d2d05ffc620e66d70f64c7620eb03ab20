@@ -415,6 +415,24 @@
       "parentUuid": "a70e0d03_440e6d23",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38021ac8_78882a01",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-21T18:41:32Z",
+      "side": 1,
+      "message": "Switching libgrapheme from one unicode version to another is a manual process that is hard to miss. If we go with what Kevin suggested (and checking the version) it should be Ok for now?",
+      "parentUuid": "c0c0ae29_bc98b7ef",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
