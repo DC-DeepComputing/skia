@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "0a17544e891f7a3f299be42d0414e1a8c53728f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58782df3_a57fbe73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-07-21T13:09:47Z",
+      "side": 1,
+      "message": "How does this look? I don\u0027t have permission to see the new GM results from the bots but locally they looked good (async_rescale_and_read_yuv420_rose becomes transparent, everything else is the same).",
+      "revId": "0a17544e891f7a3f299be42d0414e1a8c53728f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
