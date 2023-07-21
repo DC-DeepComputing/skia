@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc7da99b_b7c87670",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-21T21:01:07Z",
+      "side": 1,
+      "message": "Thanks for the changes. This looks great! Just one really minor edit that I saw.",
+      "revId": "13d4361c21a4954f0857055d3e1a46077b6b3d68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21716a7b_c55bb1b0",
+        "filename": "modules/canvaskit/tests/rtshader_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-21T21:01:07Z",
+      "side": 1,
+      "message": "Tiny thing: There\u0027s extra whitespace here that can be deleted.",
+      "range": {
+        "startLine": 297,
+        "startChar": 0,
+        "endLine": 297,
+        "endChar": 16
+      },
+      "revId": "13d4361c21a4954f0857055d3e1a46077b6b3d68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
