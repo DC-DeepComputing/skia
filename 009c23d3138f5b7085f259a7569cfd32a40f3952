@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09209c71_93b610ac",
+        "filename": "tests/TextureSizeTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-21T12:59:55Z",
+      "side": 1,
+      "message": "Pre-existing, but why is this testing the same color type twice?",
+      "revId": "009c23d3138f5b7085f259a7569cfd32a40f3952",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
