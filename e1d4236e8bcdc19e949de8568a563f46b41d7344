@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4612e71_8d906df4",
+        "filename": "tools/fonts/RandomScalerContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-21T11:52:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "60dd3ba2_dfc27054",
+      "revId": "e1d4236e8bcdc19e949de8568a563f46b41d7344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a79ded26_4533ad3d",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-07-20T20:21:30Z",
       "side": 1,
       "message": "So now this should be safe to remove.",
+      "revId": "e1d4236e8bcdc19e949de8568a563f46b41d7344",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8778efd3_7d5a9f7a",
+        "filename": "tools/fonts/RandomScalerContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-21T11:52:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a79ded26_4533ad3d",
       "revId": "e1d4236e8bcdc19e949de8568a563f46b41d7344",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
