@@ -598,6 +598,7 @@ SKSL_TEST(GPU_ES3,       kNever,      IntrinsicDeterminant,            "intrinsi
 SKSL_TEST(GPU_ES3,       kNever,      IntrinsicDFdx,                   "intrinsics/DFdx.sksl")
 SKSL_TEST(GPU_ES3,       kNever,      IntrinsicDFdy,                   "intrinsics/DFdy.sksl")
 SKSL_TEST(CPU | GPU,     kNever,      IntrinsicDot,                    "intrinsics/Dot.sksl")
+SKSL_TEST(CPU | GPU,     kNever,      IntrinsicFaceForward,            "intrinsics/FaceForward.sksl")
 SKSL_TEST(CPU | GPU,     kNever,      IntrinsicFract,                  "intrinsics/Fract.sksl")
 SKSL_TEST(ES3 | GPU_ES3, kNever,      IntrinsicFloatBitsToInt,         "intrinsics/FloatBitsToInt.sksl")
 SKSL_TEST(ES3 | GPU_ES3, kNever,      IntrinsicFloatBitsToUint,        "intrinsics/FloatBitsToUint.sksl")

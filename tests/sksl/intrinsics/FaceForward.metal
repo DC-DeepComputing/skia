@@ -2,9 +2,6 @@
 #include <simd/simd.h>
 using namespace metal;
 struct Uniforms {
-    half4 N;
-    half4 I;
-    half4 NRef;
     half4 colorGreen;
     half4 colorRed;
 };
@@ -22,8 +19,13 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     float4 huge4 = faceforward(float4(1.0), float4(1e+30), float4(1e+30));
     half4 expectedPos = half4(float4(huge) + huge2.xxxx);
     half4 expectedNeg = half4(huge3.xxxx + huge4.xxxx);
+    const half4 constN = half4(1.0h, 2.0h, 3.0h, 4.0h);
+    const half4 constI = half4(1.0h, 1.0h, -100.0h, 1.0h);
+    half4 N = _uniforms.colorGreen.yyyy * constN;
+    half4 I = _uniforms.colorGreen.yyyy * constI;
+    half4 NRef = _uniforms.colorGreen.yyyy;
     expectedPos = half4(1.0h, 2.0h, 3.0h, 4.0h);
     expectedNeg = half4(-1.0h, -2.0h, -3.0h, -4.0h);
-    _out.sk_FragColor = ((((((((((_uniforms.NRef.x) * (_uniforms.I.x) < 0) ? 1 : -1) * (_uniforms.N.x)) == expectedNeg.x && all(faceforward(_uniforms.N.xy, _uniforms.I.xy, _uniforms.NRef.xy) == expectedNeg.xy)) && all(faceforward(_uniforms.N.xyz, _uniforms.I.xyz, _uniforms.NRef.xyz) == expectedPos.xyz)) && all(faceforward(_uniforms.N, _uniforms.I, _uniforms.NRef) == expectedPos)) && -1.0h == expectedNeg.x) && all(half2(-1.0h, -2.0h) == expectedNeg.xy)) && all(half3(1.0h, 2.0h, 3.0h) == expectedPos.xyz)) && all(half4(1.0h, 2.0h, 3.0h, 4.0h) == expectedPos) ? _uniforms.colorGreen : _uniforms.colorRed;
+    _out.sk_FragColor = ((((((((((NRef.x) * (I.x) < 0) ? 1 : -1) * (N.x)) == expectedNeg.x && all(faceforward(N.xy, I.xy, NRef.xy) == expectedNeg.xy)) && all(faceforward(N.xyz, I.xyz, NRef.xyz) == expectedPos.xyz)) && all(faceforward(N, I, NRef) == expectedPos)) && -1.0h == expectedNeg.x) && all(half2(-1.0h, -2.0h) == expectedNeg.xy)) && all(half3(1.0h, 2.0h, 3.0h) == expectedPos.xyz)) && all(half4(1.0h, 2.0h, 3.0h, 4.0h) == expectedPos) ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }

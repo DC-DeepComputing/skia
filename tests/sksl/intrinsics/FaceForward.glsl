@@ -1,8 +1,5 @@
 
 out vec4 sk_FragColor;
-uniform vec4 N;
-uniform vec4 I;
-uniform vec4 NRef;
 uniform vec4 colorGreen;
 uniform vec4 colorRed;
 vec4 main() {
@@ -12,6 +9,11 @@ vec4 main() {
     vec4 huge4 = faceforward(vec4(1.0), vec4(1e+30), vec4(1e+30));
     vec4 expectedPos = vec4(huge) + huge2.xxxx;
     vec4 expectedNeg = huge3.xxxx + huge4.xxxx;
+    const vec4 constN = vec4(1.0, 2.0, 3.0, 4.0);
+    const vec4 constI = vec4(1.0, 1.0, -100.0, 1.0);
+    vec4 N = colorGreen.yyyy * constN;
+    vec4 I = colorGreen.yyyy * constI;
+    vec4 NRef = colorGreen.yyyy;
     expectedPos = vec4(1.0, 2.0, 3.0, 4.0);
     expectedNeg = vec4(-1.0, -2.0, -3.0, -4.0);
     return ((((((faceforward(N.x, I.x, NRef.x) == expectedNeg.x && faceforward(N.xy, I.xy, NRef.xy) == expectedNeg.xy) && faceforward(N.xyz, I.xyz, NRef.xyz) == expectedPos.xyz) && faceforward(N, I, NRef) == expectedPos) && -1.0 == expectedNeg.x) && vec2(-1.0, -2.0) == expectedNeg.xy) && vec3(1.0, 2.0, 3.0) == expectedPos.xyz) && vec4(1.0, 2.0, 3.0, 4.0) == expectedPos ? colorGreen : colorRed;

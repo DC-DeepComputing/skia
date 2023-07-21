@@ -7,9 +7,6 @@ struct FSOut {
   @location(0) sk_FragColor: vec4<f32>,
 };
 struct _GlobalUniforms {
-  N: vec4<f32>,
-  I: vec4<f32>,
-  NRef: vec4<f32>,
   colorGreen: vec4<f32>,
   colorRed: vec4<f32>,
 };
@@ -31,12 +28,17 @@ fn main(_skParam0: vec2<f32>) -> vec4<f32> {
     var huge4: vec4<f32> = _skTemp7;
     var expectedPos: vec4<f32> = vec4<f32>(vec4<f32>(huge) + huge2.xxxx);
     var expectedNeg: vec4<f32> = vec4<f32>(huge3.xxxx + huge4.xxxx);
+    const constN: vec4<f32> = vec4<f32>(1.0, 2.0, 3.0, 4.0);
+    const constI: vec4<f32> = vec4<f32>(1.0, 1.0, -100.0, 1.0);
+    var N: vec4<f32> = _globalUniforms.colorGreen.yyyy * constN;
+    var I: vec4<f32> = _globalUniforms.colorGreen.yyyy * constI;
+    var NRef: vec4<f32> = _globalUniforms.colorGreen.yyyy;
     expectedPos = vec4<f32>(1.0, 2.0, 3.0, 4.0);
     expectedNeg = vec4<f32>(-1.0, -2.0, -3.0, -4.0);
-    let _skTemp8 = (select(-1.0, 1.0, _globalUniforms.I.x * _globalUniforms.NRef.x < 0) * _globalUniforms.N.x);
-    let _skTemp9 = faceForward(_globalUniforms.N.xy, _globalUniforms.I.xy, _globalUniforms.NRef.xy);
-    let _skTemp10 = faceForward(_globalUniforms.N.xyz, _globalUniforms.I.xyz, _globalUniforms.NRef.xyz);
-    let _skTemp11 = faceForward(_globalUniforms.N, _globalUniforms.I, _globalUniforms.NRef);
+    let _skTemp8 = (select(-1.0, 1.0, I.x * NRef.x < 0) * N.x);
+    let _skTemp9 = faceForward(N.xy, I.xy, NRef.xy);
+    let _skTemp10 = faceForward(N.xyz, I.xyz, NRef.xyz);
+    let _skTemp11 = faceForward(N, I, NRef);
     return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>((((((((_skTemp8 == expectedNeg.x) && all(_skTemp9 == expectedNeg.xy)) && all(_skTemp10 == expectedPos.xyz)) && all(_skTemp11 == expectedPos)) && (-1.0 == expectedNeg.x)) && all(vec2<f32>(-1.0, -2.0) == expectedNeg.xy)) && all(vec3<f32>(1.0, 2.0, 3.0) == expectedPos.xyz)) && all(vec4<f32>(1.0, 2.0, 3.0, 4.0) == expectedPos)));
   }
 }
