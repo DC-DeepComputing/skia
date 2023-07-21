@@ -50,6 +50,46 @@
       "message": "This lgtm - feels like a good step that we can land, and possibly go further.\n\nJim and I chatted briefly yesterday, about the possibility of switching to YUVAInfo (and actually being able to support more/most of the options). We didn\u0027t have much time to dig into that. We\u0027re also waiting to hear back from chromium folks about their needs around separate rescale and readback - it doesn\u0027t seem like something that comes up for them.",
       "revId": "0a17544e891f7a3f299be42d0414e1a8c53728f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8b4d845_1e31f44c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-21T14:50:40Z",
+      "side": 1,
+      "message": "Chrome is also fine with the Pixmap change so that could be added as a separate CL if you want.\n\nNext week I\u0027m going to look into turning Rescale into a separate utility function, that I think could be used for both Ganesh and Graphite at least internally to start. I know Chrome has some cases where they don\u0027t need the rescale so it\u0027s possible we could convince them to make the split, and hence make that external.",
+      "revId": "0a17544e891f7a3f299be42d0414e1a8c53728f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db44c336_58af3395",
+        "filename": "gm/asyncrescaleandread.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-21T14:50:40Z",
+      "side": 1,
+      "message": "I don\u0027t think you need fallthrough here since there\u0027s no kYUV specific code that then falls through to kYUVA.",
+      "range": {
+        "startLine": 252,
+        "startChar": 33,
+        "endLine": 252,
+        "endChar": 48
+      },
+      "revId": "0a17544e891f7a3f299be42d0414e1a8c53728f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
