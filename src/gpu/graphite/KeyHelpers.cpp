@@ -128,7 +128,12 @@ void add_gradient_preamble(const GradientShaderBlocks::GradientData& gradData,
         int stops = gradData.fNumStops <= 4 ? 4 : 8;
 
         gatherer->writeArray({gradData.fColors, stops});
-        gatherer->writeArray({gradData.fOffsets, stops});
+        // The offsets array is packed into float4s to save space.
+        if (stops > 4) {
+            gatherer->writeArray(SkSLType::kFloat4, &gradData.fOffsets, stops / 4);
+        } else {
+            gatherer->write(SkSLType::kFloat4, &gradData.fOffsets);
+        }
     }
 }
 
