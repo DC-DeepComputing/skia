@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9692e010_2504030f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-21T20:34:54Z",
+      "side": 1,
+      "message": "PTAL. Appears to work, at least with the Metal backend.",
+      "revId": "929099a4f4c3178745a382069cb1c9a5fa46b915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
