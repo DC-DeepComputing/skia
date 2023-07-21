@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c79ea6c_5303b400",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-21T15:31:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "339e147d_b3a3b5a8",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 29
+      },
+      "revId": "a3aca7ae523e9d69d86172e8b7706ff6b4d7a42b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4cb9225f_7955dab1",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bdb0137_91051970",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-21T15:31:16Z",
+      "side": 1,
+      "message": "Yeah, there was never a need for this `!glyph` check, glyph always has to be a valid pointer. The only reason glyph is a `SkGlyph*` and not `SkGlyph\u0026` is that Skia has for a long time eschewed non-const references as parameters. We wouldn\u0027t want to \"fix\" that here either, as what we want to do in a forthcoming CL is have `generateMetrics` just return the data (and not mutate or even know about `SkGlyph` at all.",
+      "parentUuid": "4cb9225f_7955dab1",
+      "revId": "a3aca7ae523e9d69d86172e8b7706ff6b4d7a42b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cba76aeb_217f93ac",
@@ -54,6 +96,24 @@
       "writtenOn": "2023-07-21T13:51:14Z",
       "side": 1,
       "message": "Those two new lines seem like they should be moved to here or later.",
+      "revId": "a3aca7ae523e9d69d86172e8b7706ff6b4d7a42b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b22d1a86_e75ba828",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-21T15:31:16Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cba76aeb_217f93ac",
       "revId": "a3aca7ae523e9d69d86172e8b7706ff6b4d7a42b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
