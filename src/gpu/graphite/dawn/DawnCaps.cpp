@@ -247,9 +247,8 @@ void DawnCaps::initCaps(const wgpu::Device& device) {
     fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = true;
 
-    // TODO: support storage buffer
-    fStorageBufferSupport = false;
-    fStorageBufferPreferred = false;
+    fStorageBufferSupport = true;
+    fStorageBufferPreferred = true;
 
     fDrawBufferCanBeMapped = false;
 

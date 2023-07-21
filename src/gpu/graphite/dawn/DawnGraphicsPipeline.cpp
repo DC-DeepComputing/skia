@@ -395,7 +395,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(const DawnSharedContext* 
             if (hasFragment) {
                 entries[numBuffers].binding = kPaintUniformBufferIndex;
                 entries[numBuffers].visibility = wgpu::ShaderStage::Fragment;
-                entries[numBuffers].buffer.type = wgpu::BufferBindingType::Uniform;
+                entries[numBuffers].buffer.type = wgpu::BufferBindingType::Storage;
                 entries[numBuffers].buffer.hasDynamicOffset = false;
                 entries[numBuffers].buffer.minBindingSize = 0;
                 ++numBuffers;
