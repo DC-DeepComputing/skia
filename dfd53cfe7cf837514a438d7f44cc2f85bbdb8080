@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e446c5a_3c1d2a34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-21T17:55:39Z",
+      "side": 1,
+      "message": "I have no suggestions to make beyond Brian\u0027s.\n\nI appreciate you updating the types/index.d.ts and CHANGELOG.md",
+      "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c8549c1_205162e4",
