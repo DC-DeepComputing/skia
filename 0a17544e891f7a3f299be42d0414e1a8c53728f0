@@ -69,6 +69,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "030f41ca_9713663b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-21T14:54:29Z",
+      "side": 1,
+      "message": "Oh, and gold images on the bots look good.",
+      "revId": "0a17544e891f7a3f299be42d0414e1a8c53728f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db44c336_58af3395",
