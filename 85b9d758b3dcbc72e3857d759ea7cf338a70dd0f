@@ -16,6 +16,24 @@
       "message": "Because we are compiling code in a new directory using Bazel, we need to update the CAS spec (which chooses which code gets copied onto our build machines).\n\nAdd skia/gm to https://github.com/google/skia/blob/a8a3686483127980709012de94392fb1bbd1630a/infra/bots/gen_tasks_logic/gen_tasks_logic.go#L421",
       "revId": "85b9d758b3dcbc72e3857d759ea7cf338a70dd0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d827aaca_f45f027c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-21T17:00:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f797a5a8_717fb14e",
+      "revId": "85b9d758b3dcbc72e3857d759ea7cf338a70dd0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

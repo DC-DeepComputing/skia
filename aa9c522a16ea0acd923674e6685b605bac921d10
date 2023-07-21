@@ -16,6 +16,24 @@
       "message": "Random post-submit drive-by: Did we intend to do something with `out.data()` here?  Or did we intend to set the contents of `out` to something other than `len` `\\0` characters before the next call?\n\nAs is, I don\u0027t believe this line of code does anything.",
       "revId": "aa9c522a16ea0acd923674e6685b605bac921d10",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed3f39df_29272406",
+        "filename": "gm/vias/SimpleVias.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-21T17:00:24Z",
+      "side": 1,
+      "message": "You\u0027re right, it does nothing. I must have added that by accident while experimenting with VSCode\u0027s code completion feature to see which std::string methods would be appropriate here (I ended up using out.data() in the line immediately below).\n\nAddressed here: https://skia-review.googlesource.com/c/skia/+/727042.",
+      "parentUuid": "9935628a_335e8343",
+      "revId": "aa9c522a16ea0acd923674e6685b605bac921d10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
