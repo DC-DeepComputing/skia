@@ -426,7 +426,7 @@
 
     const canvas = surface.getCanvas();
 
-    const effect = CanvasKit.RuntimeEffect.Make(spiralSkSL);
+    const effect = CanvasKit.RuntimeEffect.MakeForShader(spiralSkSL);
     const shader = effect.makeShader([
       0.5,
       150, 150,
@@ -498,8 +498,8 @@
 
     const canvas = surface.getCanvas();
 
-    const thresholdEffect = CanvasKit.RuntimeEffect.Make(prog);
-    const spiralEffect = CanvasKit.RuntimeEffect.Make(spiralSkSL);
+    const thresholdEffect = CanvasKit.RuntimeEffect.MakeForShader(prog);
+    const spiralEffect = CanvasKit.RuntimeEffect.MakeForShader(spiralSkSL);
 
     const draw = (x, y, shader) => {
       const paint = new CanvasKit.Paint();
