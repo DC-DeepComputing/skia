@@ -397,6 +397,24 @@
       "parentUuid": "23cf9381_aedac55b",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0c0ae29_bc98b7ef",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-21T18:31:43Z",
+      "side": 1,
+      "message": "Many of our CIPD assets are publicly downloadable. The default tag (e.g. version:4) can be supplemented with whatever string we want.\n\nThe GCS bucket approach could also be specified as a version, e.g. https://storage.googleapis.com/skia-cdn/unicode/version_ABCD/FOO.txt",
+      "parentUuid": "a70e0d03_440e6d23",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
