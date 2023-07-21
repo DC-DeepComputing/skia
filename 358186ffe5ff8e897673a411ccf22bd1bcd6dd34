@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d433239_b0d67ae7",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-21T16:37:19Z",
+      "side": 1,
+      "message": "It looks like the goal here is to pass in the `.getPackedID()` of this glyph? Is there any more than that needed? Can we just pass a `SkPackedGlyphID` here?",
+      "range": {
+        "startLine": 382,
+        "startChar": 41,
+        "endLine": 382,
+        "endChar": 55
+      },
+      "revId": "358186ffe5ff8e897673a411ccf22bd1bcd6dd34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
