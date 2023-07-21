@@ -451,6 +451,24 @@
       "parentUuid": "38021ac8_78882a01",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99113da3_d7493dc6",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-21T19:38:38Z",
+      "side": 1,
+      "message": "Unicode knows it needs this so has https://github.com/unicode-org/unicodetools/tree/main/unicodetools/data/ucd . But they\u0027re all like \"use the versions on the website\" in the README for some reason. From my perspective it would be nice to just mirror that and DEPS it and use these files that way, because it would make everything really straight forward.",
+      "parentUuid": "0c62ff2c_64cde3bf",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
