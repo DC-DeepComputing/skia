@@ -433,6 +433,24 @@
       "parentUuid": "c0c0ae29_bc98b7ef",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c62ff2c_64cde3bf",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-21T18:59:50Z",
+      "side": 1,
+      "message": "Yeah, I should have noted that CIPD is fine for now, it\u0027s what we have. It would be nicer to organize these text files in a git repository and it is frustrating that hasn\u0027t already been done. Note that HarfBuzz has a bit of its build that `curl`s these `src/update-unicode-tables.make` but note that this was hugely problematic when it was part of the default build, so this part of the build is now only run to update a number of generated files which are checked-in. It would be better for all of these projects to just have a `ucd` git repo to depend on which just had these (versioned) files in it.\n\nIn other words, I\u0027m more frustrated by the general state of the world which should have already provided a sane solution and is instead standing in the way so that we are looking to provide an inferior solution just to make progress.",
+      "parentUuid": "38021ac8_78882a01",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
