@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "339e147d_b3a3b5a8",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2023-07-21T13:51:14Z",
+      "side": 1,
+      "message": "It seems like both these lines should be moved a little later in this function, because they are unconditionally dereferencing `glyph` and...",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 29
+      },
+      "revId": "a3aca7ae523e9d69d86172e8b7706ff6b4d7a42b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cb9225f_7955dab1",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2023-07-21T13:51:14Z",
+      "side": 1,
+      "message": "...here we perform a NULL check on `glyph` and leave the function without crashing if it\u0027s NULL.",
+      "revId": "a3aca7ae523e9d69d86172e8b7706ff6b4d7a42b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cba76aeb_217f93ac",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2023-07-21T13:51:14Z",
+      "side": 1,
+      "message": "Those two new lines seem like they should be moved to here or later.",
+      "revId": "a3aca7ae523e9d69d86172e8b7706ff6b4d7a42b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
