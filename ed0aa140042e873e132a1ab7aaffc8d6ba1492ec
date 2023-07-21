@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba1256b2_8b94492d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-21T15:09:07Z",
+      "side": 1,
+      "message": "Filed tint:1989 as this is a SPIR-V Reader error",
+      "parentUuid": "1f55a825_7ed10e0d",
+      "revId": "ed0aa140042e873e132a1ab7aaffc8d6ba1492ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ed80004_2063c301",
