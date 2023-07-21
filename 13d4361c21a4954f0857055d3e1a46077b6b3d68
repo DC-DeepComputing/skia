@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bad5bc69_e1767a51",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 20514
+      },
+      "writtenOn": "2023-07-21T21:11:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdbc9602_1dcee8e4",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 0
+      },
+      "revId": "13d4361c21a4954f0857055d3e1a46077b6b3d68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "651c2505_a1ba5171",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-21T21:04:25Z",
       "side": 1,
       "message": "Please write this like:\n`Bug: skia:14621`\n\nIt will still get turned into a link, and it will automatically update the bug when the change lands.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 43
+      },
+      "revId": "13d4361c21a4954f0857055d3e1a46077b6b3d68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec8cf02e_e03404fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 20514
+      },
+      "writtenOn": "2023-07-21T21:11:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "651c2505_a1ba5171",
       "range": {
         "startLine": 20,
         "startChar": 0,
@@ -77,6 +125,30 @@
       "writtenOn": "2023-07-21T21:01:07Z",
       "side": 1,
       "message": "Tiny thing: There\u0027s extra whitespace here that can be deleted.",
+      "range": {
+        "startLine": 297,
+        "startChar": 0,
+        "endLine": 297,
+        "endChar": 16
+      },
+      "revId": "13d4361c21a4954f0857055d3e1a46077b6b3d68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dea860b_12c0146e",
+        "filename": "modules/canvaskit/tests/rtshader_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 20514
+      },
+      "writtenOn": "2023-07-21T21:11:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21716a7b_c55bb1b0",
       "range": {
         "startLine": 297,
         "startChar": 0,
