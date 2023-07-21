@@ -16,6 +16,29 @@
       "message": "PTAL. Appears to work, at least with the Metal backend.",
       "revId": "929099a4f4c3178745a382069cb1c9a5fa46b915",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e58d8dbc_d0bef610",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-21T20:35:58Z",
+      "side": 1,
+      "message": "I kept this name to be consistent with Ganesh. Also defaultMSAASamples seems like it might be unclear to an external client.",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 40,
+        "endChar": 33
+      },
+      "revId": "929099a4f4c3178745a382069cb1c9a5fa46b915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
