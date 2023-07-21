@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c154ee15_c6e485e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20514
+      },
+      "writtenOn": "2023-07-21T19:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3b2d7fb_fa18891b",
+      "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c8549c1_205162e4",
@@ -65,6 +83,24 @@
       "writtenOn": "2023-07-21T17:32:04Z",
       "side": 1,
       "message": "The \u0027name\u0027 here needs to be a legal name that matches the one you used when you signed the CLA.",
+      "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2e6d0a8_32974f5e",
+        "filename": "AUTHORS",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 20514
+      },
+      "writtenOn": "2023-07-21T19:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c8549c1_205162e4",
       "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -86,6 +122,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20cfe2ae_767db4a3",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2098,
+      "author": {
+        "id": 20514
+      },
+      "writtenOn": "2023-07-21T19:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd753e57_3e07af7a",
+      "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c29f79b_b9e26db0",
@@ -99,6 +153,24 @@
       "writtenOn": "2023-07-21T17:32:04Z",
       "side": 1,
       "message": "Having a version that takes children is a good idea, but the current types don\u0027t make this very useful. (This isn\u0027t a problem with your code, it\u0027s an issue with how we\u0027ve exposed the child shader/blender/color-filter types to canvas kit.)\n\nSo: I\u0027d suggest just exposing `_makeBlender` for now (I\u0027m guessing that lets you do what you need?). If we leave out `_makeBlenderWithChildren`, then we don\u0027t need the changes to `SkRuntimeEffect.h` and `SkRuntimeEffect.cpp`, either.",
+      "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc49363d_d9383620",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2188,
+      "author": {
+        "id": 20514
+      },
+      "writtenOn": "2023-07-21T19:49:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c29f79b_b9e26db0",
       "revId": "dfd53cfe7cf837514a438d7f44cc2f85bbdb8080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
