@@ -469,7 +469,7 @@ half4 main(float2 p) {
 }
 `;
 
-    const fact = CanvasKit.RuntimeEffect.Make(prog);
+    const fact = CanvasKit.RuntimeEffect.MakeForShader(prog);
     function drawFrame(canvas) {
       canvas.clear(CanvasKit.WHITE);
       const shader = fact.makeShader([
@@ -569,7 +569,7 @@ half4 main(float2 p) {
       }
 `;
 
-    const fact = CanvasKit.RuntimeEffect.Make(prog);
+    const fact = CanvasKit.RuntimeEffect.MakeForShader(prog);
 
     // properties of light
     let lightLocation = [...vSphereCenter];

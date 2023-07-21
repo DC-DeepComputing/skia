@@ -38,7 +38,7 @@ half4 main(float2 p) {
         if (!surface) {
             return;
         }
-        const spiral = CanvasKit.RuntimeEffect.Make(spiralSkSL);
+        const spiral = CanvasKit.RuntimeEffect.MakeForShader(spiralSkSL);
         expect(spiral).toBeTruthy('could not compile program');
 
         expect(spiral.getUniformCount()     ).toEqual(4);
@@ -86,7 +86,7 @@ half4 main(float2 p) {
 
     it('can provide a error handler for compilation errors', () => {
         let error = '';
-        const spiral = CanvasKit.RuntimeEffect.Make(`invalid sksl code, I hope`, (e) => {
+        const spiral = CanvasKit.RuntimeEffect.MakeForShader(`invalid sksl code, I hope`, (e) => {
             error = e;
         });
         expect(spiral).toBeFalsy();
@@ -100,7 +100,7 @@ half4 main(float2 p) {
         if (!surface) {
             return;
         }
-        const spiral = CanvasKit.RuntimeEffect.Make(spiralSkSL);
+        const spiral = CanvasKit.RuntimeEffect.MakeForShader(spiralSkSL);
         expect(spiral).toBeTruthy('could not compile program');
 
         const canvas = surface.getCanvas();
@@ -188,9 +188,9 @@ half4 main(float2 xy) {
                 const mandrillImg = CanvasKit.MakeImageFromEncoded(mandrillData);
                 expect(mandrillImg).toBeTruthy('mandrill image could not be loaded');
 
-                const thresholdEffect = CanvasKit.RuntimeEffect.Make(thresholdSkSL);
+                const thresholdEffect = CanvasKit.RuntimeEffect.MakeForShader(thresholdSkSL);
                 expect(thresholdEffect).toBeTruthy('threshold did not compile');
-                const spiralEffect = CanvasKit.RuntimeEffect.Make(spiralSkSL);
+                const spiralEffect = CanvasKit.RuntimeEffect.MakeForShader(spiralSkSL);
                 expect(spiralEffect).toBeTruthy('spiral did not compile');
 
                 const brickShader = brickImg.makeShaderCubic(
@@ -242,5 +242,75 @@ half4 main(float2 xy) {
 
     it('apply a local matrix to the children-based shader', (done) => {
         testChildrenShader('rtshader_children_rotated', done, CanvasKit.Matrix.rotated(Math.PI/12));
+    });
+
+    it('can generate runtime blender', (done) => {
+        const loadBrick = fetch(
+            '/assets/brickwork-texture.jpg')
+            .then((response) => response.arrayBuffer());
+        const loadMandrill = fetch(
+            '/assets/mandrill_512.png')
+            .then((response) => response.arrayBuffer());
+        Promise.all([loadBrick, loadMandrill]).then((values) => {
+            catchException(done, () => {
+                const screenSkSL = `
+                    vec4 main(vec4 src, vec4 dst) {
+                        return src + dst - src * dst;
+                    }
+                `;
+
+                const [brickData, mandrillData] = values;
+                const brickImg = CanvasKit.MakeImageFromEncoded(brickData);
+                expect(brickImg)
+                    .withContext('brick image could not be loaded')
+                    .toBeTruthy();
+                const mandrillImg = CanvasKit.MakeImageFromEncoded(mandrillData);
+                expect(mandrillImg)
+                    .withContext('mandrill image could not be loaded')
+                    .toBeTruthy();
+
+                const brickShader = brickImg.makeShaderCubic(
+                    CanvasKit.TileMode.Decal, CanvasKit.TileMode.Decal,
+                    1/3 /*B*/, 1/3 /*C*/,
+                    CanvasKit.Matrix.scaled(CANVAS_WIDTH/brickImg.width(),
+                                            CANVAS_HEIGHT/brickImg.height()));
+                const mandrillShader = mandrillImg.makeShaderCubic(
+                    CanvasKit.TileMode.Decal, CanvasKit.TileMode.Decal,
+                    1/3 /*B*/, 1/3 /*C*/,
+                    CanvasKit.Matrix.scaled(CANVAS_WIDTH/mandrillImg.width(),
+                                            CANVAS_HEIGHT/mandrillImg.height()));
+
+                const surface = CanvasKit.MakeCanvasSurface('test');
+                expect(surface)
+                    .withContext('Could not make surface')
+                    .toBeTruthy();
+                const canvas = surface.getCanvas();
+                const paint = new CanvasKit.Paint();
+
+                const screenEffect = CanvasKit.RuntimeEffect.MakeForBlender(screenSkSL);
+                expect(screenEffect)
+                    .withContext('could not compile program')
+                    .toBeTruthy();
+                expect(screenEffect.getUniformCount()     ).toEqual(0);
+                expect(screenEffect.getUniformFloatCount()).toEqual(0);
+                const screenBlender = screenEffect.makeBlender([]);
+                
+                paint.setShader(brickShader);
+                canvas.drawRect(CanvasKit.LTRBRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT), paint);
+                paint.setShader(mandrillShader);
+                paint.setBlender(screenBlender);
+                canvas.drawRect(CanvasKit.LTRBRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT), paint);
+
+                brickImg.delete();
+                mandrillImg.delete();
+                brickShader.delete();
+                mandrillShader.delete();
+                paint.delete();
+                screenBlender.delete();
+                screenEffect.delete();
+
+                reportSurface(surface, 'rtblender', done);
+            })();
+        });
     });
 });

@@ -915,6 +915,16 @@ sk_sp<SkColorFilter> SkRuntimeEffect::makeColorFilter(sk_sp<const SkData> unifor
 }
 
 sk_sp<SkBlender> SkRuntimeEffect::makeBlender(sk_sp<const SkData> uniforms,
+                                              sk_sp<SkBlender> childBlenders[],
+                                              size_t childCount) const {
+    STArray<4, ChildPtr> children(childCount);
+    for (size_t i = 0; i < childCount; ++i) {
+        children.emplace_back(childBlenders[i]);
+    }
+    return this->makeBlender(std::move(uniforms), SkSpan(children));
+}
+
+sk_sp<SkBlender> SkRuntimeEffect::makeBlender(sk_sp<const SkData> uniforms,
                                               SkSpan<const ChildPtr> children) const {
     if (!this->allowBlender()) {
         return nullptr;

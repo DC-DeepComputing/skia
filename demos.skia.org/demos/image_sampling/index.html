@@ -77,7 +77,7 @@
       return mix(mix(pa, pb, w.x), mix(pc, pd, w.x), w.y);
     }
     `;
-    const effect = CanvasKit.RuntimeEffect.Make(prog);
+    const effect = CanvasKit.RuntimeEffect.MakeForShader(prog);
 
     const paint = new CanvasKit.Paint();
     // image is a 4x4 image of 16 random colors. This very small image will be upscaled

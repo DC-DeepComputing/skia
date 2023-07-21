@@ -10,6 +10,7 @@
 #include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkBlender.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -1085,6 +1086,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
             return SkScalarFloorToInt(self.getBounds().width());
         }));
 
+    class_<SkBlender>("Blender")
+        .smart_ptr<sk_sp<SkBlender>>("sk_sp<Blender>")
+        .class_function("Mode", &SkBlender::Mode);
+
     class_<SkCanvas>("Canvas")
         .constructor<>()
         .constructor<SkScalar,SkScalar>()
@@ -1708,6 +1713,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .function("setAntiAlias", &SkPaint::setAntiAlias)
         .function("setAlphaf", &SkPaint::setAlphaf)
         .function("setBlendMode", &SkPaint::setBlendMode)
+        .function("setBlender", &SkPaint::setBlender)
         .function("_setColor", optional_override([](SkPaint& self, WASMPointerF32 cPtr,
                 sk_sp<SkColorSpace> colorSpace) {
             self.setColor(ptrToSkColor4f(cPtr), colorSpace.get());
@@ -2089,11 +2095,22 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
     class_<SkRuntimeEffect>("RuntimeEffect")
         .smart_ptr<sk_sp<SkRuntimeEffect>>("sk_sp<RuntimeEffect>")
-        .class_function("_Make", optional_override([](std::string sksl,
+        .class_function("_MakeForShader", optional_override([](std::string sksl,
                                                      emscripten::val errHandler
                                                     )->sk_sp<SkRuntimeEffect> {
             SkString s(sksl.c_str(), sksl.length());
             auto [effect, errorText] = SkRuntimeEffect::MakeForShader(s);
+            if (!effect) {
+                errHandler.call<void>("onError", val(errorText.c_str()));
+                return nullptr;
+            }
+            return effect;
+        }))
+        .class_function("_MakeForBlender", optional_override([](std::string sksl,
+                                                     emscripten::val errHandler
+                                                    )->sk_sp<SkRuntimeEffect> {
+            SkString s(sksl.c_str(), sksl.length());
+            auto [effect, errorText] = SkRuntimeEffect::MakeForBlender(s);
             if (!effect) {
                 errHandler.call<void>("onError", val(errorText.c_str()));
                 return nullptr;
@@ -2152,6 +2169,47 @@ EMSCRIPTEN_BINDINGS(Skia) {
             auto s = self.makeShader(uniforms, children, cLen, &localMatrix);
             delete[] children;
             return s;
+        }))
+        .function("_makeBlender", optional_override([](SkRuntimeEffect& self,
+                                                       WASMPointerF32 fPtr,
+                                                       size_t fLen,
+                                                       bool shouldOwnUniforms)->sk_sp<SkBlender> {
+            void* uniformData = reinterpret_cast<void*>(fPtr);
+            castUniforms(uniformData, fLen, self);
+            sk_sp<SkData> uniforms;
+            if (shouldOwnUniforms) {
+                uniforms = SkData::MakeFromMalloc(uniformData, fLen);
+            } else {
+                uniforms = SkData::MakeWithoutCopy(uniformData, fLen);
+            }
+
+            return self.makeBlender(uniforms, nullptr, 0);
+        }))
+        .function("_makeBlenderWithChildren", optional_override([](SkRuntimeEffect& self,
+                                                                   WASMPointerF32 fPtr,
+                                                                   size_t fLen,
+                                                                   bool shouldOwnUniforms,
+                                                                   WASMPointerU32 cPtrs,
+                                                                   size_t cLen)->sk_sp<SkBlender> {
+            void* uniformData = reinterpret_cast<void*>(fPtr);
+            castUniforms(uniformData, fLen, self);
+            sk_sp<SkData> uniforms;
+            if (shouldOwnUniforms) {
+                uniforms = SkData::MakeFromMalloc(uniformData, fLen);
+            } else {
+                uniforms = SkData::MakeWithoutCopy(uniformData, fLen);
+            }
+
+            sk_sp<SkBlender>* children = new sk_sp<SkBlender>[cLen];
+            SkBlender** childrenPtrs = reinterpret_cast<SkBlender**>(cPtrs);
+            for (size_t i = 0; i < cLen; i++) {
+                // This bare pointer was already part of an sk_sp (owned outside of here),
+                // so we want to ref the new sk_sp so makeBlender doesn't clean it up.
+                children[i] = sk_ref_sp<SkBlender>(childrenPtrs[i]);
+            }
+            auto blender = self.makeBlender(uniforms, children, cLen);
+            delete[] children;
+            return blender;
         }))
         .function("getUniformCount", optional_override([](SkRuntimeEffect& self)->int {
             return self.uniforms().size();
