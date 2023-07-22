@@ -86,6 +86,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10af1523_685a12f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-07-22T18:26:38Z",
+      "side": 1,
+      "message": "After thinking about this more, the RGBA-\u003eYUVA step could also be externalized to a utility built on top of the Skia API. The Graphite version up to the point where the transfers are done is basically the public API implementation. \n\nPerhaps, if this were all being rethought from a clean slate, the only thing that Graphite/Ganesh should provide is a way to async read multiple images with one callback, as a convenience for YUV[A]. Even that is not really necessary.",
+      "parentUuid": "d8b4d845_1e31f44c",
+      "revId": "0a17544e891f7a3f299be42d0414e1a8c53728f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f874d12a_5fe205ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-07-22T18:26:38Z",
+      "side": 1,
+      "message": "I don\u0027t have any real use case that would benefit particularly from separating them. It just seemed like two different things that got packaged together in one API for a potential optimization that wasn\u0027t implemented and may not actually be faster. Similar, for revisiting YUVAInfo input or YUVAPixmaps output. They seemed like a cleanup opportunity while touching the API but there isn\u0027t a real need on my end.",
+      "parentUuid": "bae877b5_2d897b80",
+      "revId": "0a17544e891f7a3f299be42d0414e1a8c53728f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db44c336_58af3395",
@@ -99,6 +135,30 @@
       "writtenOn": "2023-07-21T14:50:40Z",
       "side": 1,
       "message": "I don\u0027t think you need fallthrough here since there\u0027s no kYUV specific code that then falls through to kYUVA.",
+      "range": {
+        "startLine": 252,
+        "startChar": 33,
+        "endLine": 252,
+        "endChar": 48
+      },
+      "revId": "0a17544e891f7a3f299be42d0414e1a8c53728f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a73788fc_55ed4a66",
+        "filename": "gm/asyncrescaleandread.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2023-07-22T18:26:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db44c336_58af3395",
       "range": {
         "startLine": 252,
         "startChar": 33,
