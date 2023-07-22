@@ -56,7 +56,7 @@ public:
                 const Variable* v = e.as<VariableReference>().variable();
                 if ((v->storage() == Variable::Storage::kGlobal ||
                      v->storage() == Variable::Storage::kLocal) &&
-                    (v->modifiers().fFlags & Modifiers::kConst_Flag)) {
+                     v->modifiers().isConst()) {
                     return false;
                 }
                 return !fLoopIndices || !fLoopIndices->contains(v);
