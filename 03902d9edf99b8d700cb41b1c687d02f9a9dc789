@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dd9f833_1b32f4f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-23T13:25:21Z",
+      "side": 1,
+      "message": "OK, so now I like #1 (what is uploaded) -- the case where DW needs the path is rare, so seems the not-caching part will not be important (and this looks very clean).",
+      "revId": "03902d9edf99b8d700cb41b1c687d02f9a9dc789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
