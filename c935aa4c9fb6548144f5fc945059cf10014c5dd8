@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f64b92d6_fbe67f63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-23T12:45:00Z",
+      "side": 1,
+      "message": "Will need another trybot run...\n\nDW\u0027s generateMetrics wants to call getPath(), which wants to mutate the SkGlyph object. This was allowed before, and with the alternate CL to this one...\n\nhttps://skia-review.googlesource.com/c/skia/+/726936\n\nWe can:\n\n1. modify the DW context to just get the path, but not go through the glyph/context machinery, which would mean we wouldn\u0027t cache the path for them.\n\n2. go with the alt CL (which is much less invasive than this one) and postpone the idea of a large-scale cleanup to another effort.\n\nThoughts?\n\nI vote for #2, as it would allow a minimalist way forward to unfriend classes (the original goal), but not close the door on a more exciting future CL that cleans up this flow, but ready to hear alternatives.",
+      "revId": "c935aa4c9fb6548144f5fc945059cf10014c5dd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
