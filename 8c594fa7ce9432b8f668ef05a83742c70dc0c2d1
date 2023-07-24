@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ba82768_a95e1a6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-24T14:17:50Z",
+      "side": 1,
+      "message": "This is fine I suppose, but the only reason to package up the unicode data files was because the \"official\" ones are on the website ( https://www.unicode.org/Public/UCD/latest/ ). If using the copies from the github repo it seems like it would be better to just make a mirror of that repo and clone that? Why the extra complexity of cloning, packaging, uploading, downloading?",
+      "revId": "8c594fa7ce9432b8f668ef05a83742c70dc0c2d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
