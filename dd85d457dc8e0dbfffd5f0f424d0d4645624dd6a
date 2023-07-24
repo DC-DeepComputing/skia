@@ -16,6 +16,23 @@
       "message": "See https://skia-review.googlesource.com/c/skia/+/728919 for original issue report and reproduction steps.",
       "revId": "dd85d457dc8e0dbfffd5f0f424d0d4645624dd6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db2ec1d3_e56564cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-07-24T22:50:34Z",
+      "side": 1,
+      "message": "Thank you very much! Just tried this on my machine and confirmed the fix works.",
+      "revId": "dd85d457dc8e0dbfffd5f0f424d0d4645624dd6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
