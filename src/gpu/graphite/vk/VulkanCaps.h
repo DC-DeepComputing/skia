@@ -76,6 +76,8 @@ public:
         return fShouldPersistentlyMapCpuToGpuBuffers;
     }
 
+    bool supportsInlineUniformBlocks() const { return fSupportsInlineUniformBlocks; }
+
     uint32_t maxVertexAttributes() const {
         return fMaxVertexAttributes;
     }
@@ -215,6 +217,7 @@ private:
     bool fShouldAlwaysUseDedicatedImageMemory = false;
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
+    bool fSupportsInlineUniformBlocks = false;
 };
 
 } // namespace skgpu::graphite
