@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a9ddadf2_99687fb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T22:15:49Z",
+      "side": 1,
+      "message": "These are very good points. I asked April to find some high resolution images to measure the shaders\u0027 performance. That said I don\u0027t think we need to check these in as we can run these experiments locally (and it\u0027s easy enough to spin up new slides locally with new images thanks to April\u0027s work).\n\nThe main value of actually having them in the tree would be to run perf benchmarks across the GPU fleet, though I don\u0027t think we\u0027ll gain much from it at this stage.",
+      "parentUuid": "6dda3047_05153a4d",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec88c3fa_6dd368e6",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 5
@@ -174,6 +192,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "05af72d5_15781cd1",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T22:15:49Z",
+      "side": 1,
+      "message": "This assertion is incorrect, so it\u0027s OK to delete it.",
+      "parentUuid": "8dbf1e8a_6d43ff40",
+      "range": {
+        "startLine": 262,
+        "startChar": 4,
+        "endLine": 262,
+        "endChar": 6
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "447fefb3_a1a6469e",
         "filename": "src/gpu/graphite/DrawContext.h",
         "patchSetId": 5
@@ -220,6 +262,24 @@
       "side": 1,
       "message": "Where is `SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS` defined?",
       "parentUuid": "5f9c5c6d_3420c3fa",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e21ef93_2d24000a",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T22:15:49Z",
+      "side": 1,
+      "message": "This is currently not defined anywhere and I figured April can initially define it in the root BUILD.gn file on her local tree. Alternately we can wire it up to a new GN argument. Either way, that define can come in this CL or in a follow-up; the important thing is that this code here doesn\u0027t compile by default.",
+      "parentUuid": "d726e064_49c69d88",
       "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -706,6 +766,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "340d3523_49795535",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T22:15:49Z",
+      "side": 1,
+      "message": "Oops, that\u0027s right, so perhaps \"TwoTimes\" or simply a generic name like factor or coeff.",
+      "parentUuid": "9d8cb1bb_2f1f7b4f",
+      "range": {
+        "startLine": 235,
+        "startChar": 22,
+        "endLine": 235,
+        "endChar": 32
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "574c4259_31359195",
         "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
         "patchSetId": 5
@@ -900,6 +984,52 @@
         "startChar": 87,
         "endLine": 488,
         "endChar": 97
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5384fda_76070697",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T22:15:49Z",
+      "side": 1,
+      "message": "nit: `std::move(image)`",
+      "range": {
+        "startLine": 529,
+        "startChar": 15,
+        "endLine": 529,
+        "endChar": 20
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f92538d_3998ff9a",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T22:15:49Z",
+      "side": 1,
+      "message": "nit: `std::move(imageName)`",
+      "range": {
+        "startLine": 530,
+        "startChar": 19,
+        "endLine": 530,
+        "endChar": 28
       },
       "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
