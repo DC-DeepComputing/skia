@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eefa54ab_94b07ce7",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-24T18:52:39Z",
+      "side": 1,
+      "message": "Should use `SkASSERT` or something that goes through `SK_ABORT` since that gets hooked up differently by various users (like Chromium). Also, maybe this belongs as just `SkASSERT(!mx.neverRequestPath)` if attempting to compute from path (line 255 here)?",
+      "range": {
+        "startLine": 245,
+        "startChar": 4,
+        "endLine": 245,
+        "endChar": 10
+      },
+      "revId": "b36d26cd8a97cabb7462eb57ddb5097f9c629353",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
