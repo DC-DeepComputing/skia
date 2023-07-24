@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b87acf3_fecaaf7c",
+        "filename": "tools/fonts/RandomScalerContext.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-24T20:35:36Z",
+      "side": 1,
+      "message": "Not 100% sure yet, but I think this should be\n\n        mx.neverRequestPath \u003d glyph.setPathHasBeenCalled() \u0026\u0026 !glyph.path();\n        mx.computeFromPath \u003d !mx.neverRequestPath;",
+      "range": {
+        "startLine": 76,
+        "startChar": 8,
+        "endLine": 76,
+        "endChar": 34
+      },
+      "revId": "4d1f295275d6f52befffbc6d24a02a0b4e08a978",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
