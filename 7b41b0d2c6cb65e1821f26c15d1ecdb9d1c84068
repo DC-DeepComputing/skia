@@ -884,6 +884,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ddd87afa_c52b4ffc",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:48:05Z",
+      "side": 1,
+      "message": "spelling: `blurRadius`",
+      "range": {
+        "startLine": 488,
+        "startChar": 87,
+        "endLine": 488,
+        "endChar": 97
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8eac5a8c_a3350d4b",
         "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
         "patchSetId": 5
