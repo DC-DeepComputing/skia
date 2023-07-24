@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bbc4d8c_d68ce7d7",
+        "filename": "src/opts/SkOpts_SetTarget.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-24T12:50:52Z",
+      "side": 1,
+      "message": "We\u0027ll want to make sure this this header doesn\u0027t end up being included in a more public header. go/chrome-includes has shown this sort of thing to be \"expensive\" in the past.",
+      "range": {
+        "startLine": 59,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 16
+      },
+      "revId": "32cbb8367d13f23db9e07f63ba5c9c207b7e2bae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
