@@ -224,6 +224,13 @@ bool SkScalerContext::GenerateMetricsFromPath(
     return true;
 }
 
+static bool fits_in_int16(const SkIRect& r) {
+    return SkTFitsIn<int16_t>(r.fLeft)  &&
+           SkTFitsIn<int16_t>(r.fTop)   &&
+           SkTFitsIn<int16_t>(r.fRight) &&
+           SkTFitsIn<int16_t>(r.fBottom);
+}
+
 SkGlyph SkScalerContext::internalMakeGlyph(SkPackedGlyphID packedID, SkMask::Format format, SkArenaAlloc* alloc) {
     auto zeroBounds = [](SkGlyph& glyph) {
         glyph.fLeft     = 0;
@@ -231,10 +238,43 @@ SkGlyph SkScalerContext::internalMakeGlyph(SkPackedGlyphID packedID, SkMask::For
         glyph.fWidth    = 0;
         glyph.fHeight   = 0;
     };
+
     SkGlyph glyph{packedID};
-    glyph.fMaskFormat = format;
-    // Must call to allow the subclass to determine the glyph representation to use.
-    this->generateMetrics(&glyph, alloc);
+    glyph.fMaskFormat = format; // subclass may return a different value
+    const auto mx = this->generateMetrics(glyph, alloc);
+    assert(!mx.neverRequestPath || !mx.computeFromPath);
+
+    glyph.fAdvanceX = mx.advance.fX;
+    glyph.fAdvanceY = mx.advance.fY;
+    glyph.fMaskFormat = mx.maskFormat;
+    glyph.fScalerContextBits = mx.extraBits;
+
+    if (mx.computeFromPath) {
+        this->internalGetPath(glyph, alloc);
+        const SkPath* devPath = glyph.path();
+        if (devPath) {
+            const bool doVert = SkToBool(fRec.fFlags & SkScalerContext::kLCD_Vertical_Flag);
+            const bool a8LCD = SkToBool(fRec.fFlags & SkScalerContext::kGenA8FromLCD_Flag);
+            const bool hairline = glyph.pathIsHairline();
+            if (!GenerateMetricsFromPath(&glyph, *devPath, format, doVert, a8LCD, hairline)) {
+                zeroBounds(glyph);
+            }
+            SkDEBUGCODE(glyph.fAdvancesBoundsFormatAndInitialPathDone = true;)
+        }
+    } else {
+        if (!fits_in_int16(mx.bounds)) {
+            zeroBounds(glyph);
+        } else {
+            glyph.fLeft   = SkTo<int16_t>( mx.bounds.fLeft);
+            glyph.fTop    = SkTo<int16_t>( mx.bounds.fTop);
+            glyph.fWidth  = SkTo<uint16_t>(mx.bounds.width());
+            glyph.fHeight = SkTo<uint16_t>(mx.bounds.height());
+        }
+        if (mx.neverRequestPath) {
+            glyph.setPath(alloc, nullptr, false);
+        }
+    }
+
     SkDEBUGCODE(glyph.fAdvancesBoundsFormatAndInitialPathDone = true;)
     if (fGenerateImageFromPath) {
         this->internalGetPath(glyph, alloc);
@@ -1254,9 +1294,8 @@ std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
                 : SkScalerContext(std::move(typeface), effects, desc) {}
 
     protected:
-        void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) override {
-            glyph->fMaskFormat = fRec.fMaskFormat;
-            glyph->zeroMetrics();
+        GlyphMetrics generateMetrics(const SkGlyph& glyph, SkArenaAlloc*) override {
+            return {glyph.maskFormat()};
         }
         void generateImage(const SkGlyph& glyph) override {}
         bool generatePath(const SkGlyph& glyph, SkPath* path) override {
