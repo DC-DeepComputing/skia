@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d35900c_09a92455",
+        "filename": "modules/skottie/include/SlotManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-07-24T16:51:59Z",
+      "side": 1,
+      "message": "nit: `#include \u003coptional\u003e`",
+      "revId": "85b20997aad066227e577f75a962f850fbd39bee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
