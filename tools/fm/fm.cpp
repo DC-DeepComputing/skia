@@ -446,7 +446,7 @@ int main(int argc, char** argv) {
     }
 
     THashMap<SkString, skiagm::GMFactory> gm_factories;
-    for (skiagm::GMFactory factory : skiagm::GMRegistry::Range()) {
+    for (const skiagm::GMFactory& factory : skiagm::GMRegistry::Range()) {
         std::unique_ptr<skiagm::GM> gm{factory()};
         if (FLAGS_listGMs) {
             fprintf(stdout, "%s\n", gm->getName());
