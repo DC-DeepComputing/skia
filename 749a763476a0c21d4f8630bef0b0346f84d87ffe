@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "60fb9b57_53902766",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-24T15:46:41Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "749a763476a0c21d4f8630bef0b0346f84d87ffe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "848ead2f_6b7b85c7",
         "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
         "patchSetId": 7
@@ -31,6 +48,30 @@
       "writtenOn": "2023-07-24T13:45:19Z",
       "side": 1,
       "message": "Based on John\u0027s recent CLs I need to rework this so we aren\u0027t quadrupling storage space on std140 platforms.",
+      "range": {
+        "startLine": 401,
+        "startChar": 0,
+        "endLine": 401,
+        "endChar": 69
+      },
+      "revId": "749a763476a0c21d4f8630bef0b0346f84d87ffe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "722e8eb0_4d9c30e2",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-24T15:46:41Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "848ead2f_6b7b85c7",
       "range": {
         "startLine": 401,
         "startChar": 0,
