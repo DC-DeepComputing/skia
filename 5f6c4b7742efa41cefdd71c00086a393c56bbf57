@@ -33,6 +33,24 @@
       "message": "`|| fGenerateImageFromPath` and move the assert below up and remove the code this duplicates below?\n\nAlternatively, we could try removing `fGenerateImageFromPath` and let the subclass return that per glyph? Might want to do that later though.",
       "revId": "5f6c4b7742efa41cefdd71c00086a393c56bbf57",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f492ab64_1b7029eb",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-24T18:24:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d439d10d_959bcae0",
+      "revId": "5f6c4b7742efa41cefdd71c00086a393c56bbf57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
