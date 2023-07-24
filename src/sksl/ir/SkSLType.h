@@ -14,7 +14,7 @@
 #include "include/private/base/SkTArray.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLIRNode.h"
-#include "src/sksl/ir/SkSLModifiers.h"
+#include "src/sksl/ir/SkSLLayout.h"
 #include "src/sksl/ir/SkSLSymbol.h"
 #include "src/sksl/spirv.h"
 
@@ -30,6 +30,7 @@ namespace SkSL {
 
 class Context;
 class Expression;
+struct Modifiers;
 class SymbolTable;
 class Type;
 
@@ -70,16 +71,18 @@ struct CoercionCost {
  * Represents a single field in a struct type.
  */
 struct Field {
-    Field(Position pos, Modifiers modifiers, std::string_view name, const Type* type)
+    Field(Position pos, Layout layout, uint32_t flags, std::string_view name, const Type* type)
             : fPosition(pos)
-            , fModifiers(modifiers)
+            , fLayout(layout)
+            , fModifierFlags(flags)
             , fName(name)
             , fType(type) {}
 
     std::string description() const;
 
     Position fPosition;
-    Modifiers fModifiers;
+    Layout fLayout;
+    uint32_t fModifierFlags;
     std::string_view fName;
     const Type* fType;
 };

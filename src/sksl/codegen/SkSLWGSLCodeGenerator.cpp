@@ -670,7 +670,7 @@ void WGSLCodeGenerator::writeVariableDecl(const Type& type,
     this->writeLine(delimiter_to_str(delimiter));
 }
 
-void WGSLCodeGenerator::writePipelineIODeclaration(Modifiers modifiers,
+void WGSLCodeGenerator::writePipelineIODeclaration(const Layout& layout,
                                                    const Type& type,
                                                    std::string_view name,
                                                    Delimiter delimiter) {
@@ -687,11 +687,10 @@ void WGSLCodeGenerator::writePipelineIODeclaration(Modifiers modifiers,
     // https://www.w3.org/TR/WGSL/#input-output-locations
     // https://www.w3.org/TR/WGSL/#attribute-location
     // https://www.w3.org/TR/WGSL/#builtin-inputs-outputs
-    int location = modifiers.fLayout.fLocation;
-    if (location >= 0) {
-        this->writeUserDefinedIODecl(type, name, location, delimiter);
-    } else if (modifiers.fLayout.fBuiltin >= 0) {
-        auto builtin = builtin_from_sksl_name(modifiers.fLayout.fBuiltin);
+    if (layout.fLocation >= 0) {
+        this->writeUserDefinedIODecl(type, name, layout.fLocation, delimiter);
+    } else if (layout.fBuiltin >= 0) {
+        auto builtin = builtin_from_sksl_name(layout.fBuiltin);
         if (builtin.has_value()) {
             this->writeBuiltinIODecl(type, name, *builtin, delimiter);
         }
@@ -1695,7 +1694,7 @@ std::string WGSLCodeGenerator::assembleFieldAccess(const FieldAccess& f) {
 
         case FieldAccess::OwnerKind::kAnonymousInterfaceBlock:
             if (f.base()->is<VariableReference>() &&
-                field->fModifiers.fLayout.fBuiltin != SK_POINTSIZE_BUILTIN) {
+                field->fLayout.fBuiltin != SK_POINTSIZE_BUILTIN) {
                 expr = this->variablePrefix(*f.base()->as<VariableReference>().variable());
             }
             break;
@@ -2724,8 +2723,8 @@ void WGSLCodeGenerator::writeStageInputStruct() {
             const Variable* v = e->as<GlobalVarDeclaration>().declaration()
                                  ->as<VarDeclaration>().var();
             if (v->modifiers().fFlags & Modifiers::kIn_Flag) {
-                this->writePipelineIODeclaration(v->modifiers(), v->type(), v->mangledName(),
-                                                 Delimiter::kComma);
+                this->writePipelineIODeclaration(v->modifiers().fLayout, v->type(),
+                                                 v->mangledName(), Delimiter::kComma);
                 if (v->modifiers().fLayout.fBuiltin == SK_FRAGCOORD_BUILTIN) {
                     declaredFragCoordsBuiltin = true;
                 }
@@ -2739,9 +2738,9 @@ void WGSLCodeGenerator::writeStageInputStruct() {
             // but with members that have individual storage qualifiers?
             if (v->modifiers().fFlags & Modifiers::kIn_Flag) {
                 for (const auto& f : v->type().fields()) {
-                    this->writePipelineIODeclaration(f.fModifiers, *f.fType, f.fName,
+                    this->writePipelineIODeclaration(f.fLayout, *f.fType, f.fName,
                                                      Delimiter::kComma);
-                    if (f.fModifiers.fLayout.fBuiltin == SK_FRAGCOORD_BUILTIN) {
+                    if (f.fLayout.fBuiltin == SK_FRAGCOORD_BUILTIN) {
                         declaredFragCoordsBuiltin = true;
                     }
                 }
@@ -2779,8 +2778,8 @@ void WGSLCodeGenerator::writeStageOutputStruct() {
             const Variable* v = e->as<GlobalVarDeclaration>().declaration()
                                  ->as<VarDeclaration>().var();
             if (v->modifiers().fFlags & Modifiers::kOut_Flag) {
-                this->writePipelineIODeclaration(v->modifiers(), v->type(), v->mangledName(),
-                                                 Delimiter::kComma);
+                this->writePipelineIODeclaration(v->modifiers().fLayout, v->type(),
+                                                 v->mangledName(), Delimiter::kComma);
             }
         } else if (e->is<InterfaceBlock>()) {
             const Variable* v = e->as<InterfaceBlock>().var();
@@ -2791,11 +2790,11 @@ void WGSLCodeGenerator::writeStageOutputStruct() {
             // but with members that have individual storage qualifiers?
             if (v->modifiers().fFlags & Modifiers::kOut_Flag) {
                 for (const auto& f : v->type().fields()) {
-                    this->writePipelineIODeclaration(f.fModifiers, *f.fType, f.fName,
+                    this->writePipelineIODeclaration(f.fLayout, *f.fType, f.fName,
                                                      Delimiter::kComma);
-                    if (f.fModifiers.fLayout.fBuiltin == SK_POSITION_BUILTIN) {
+                    if (f.fLayout.fBuiltin == SK_POSITION_BUILTIN) {
                         declaredPositionBuiltin = true;
-                    } else if (f.fModifiers.fLayout.fBuiltin == SK_POINTSIZE_BUILTIN) {
+                    } else if (f.fLayout.fBuiltin == SK_POINTSIZE_BUILTIN) {
                         // sk_PointSize is explicitly not supported by `builtin_from_sksl_name` so
                         // writePipelineIODeclaration will never write it. We mark it here if the
                         // declaration is needed so we can synthesize it below.
