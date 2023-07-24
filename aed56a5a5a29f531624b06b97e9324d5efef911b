@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "959ebadf_4b0b1418",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-24T13:40:20Z",
+      "side": 1,
+      "message": "It\u0027s pretty trivially true right now, but can we add an assert here that stops % 4 is 0?",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 66
+      },
+      "revId": "aed56a5a5a29f531624b06b97e9324d5efef911b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
