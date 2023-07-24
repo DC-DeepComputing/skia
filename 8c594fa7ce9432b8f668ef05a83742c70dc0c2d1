@@ -34,6 +34,24 @@
       "parentUuid": "5ba82768_a95e1a6a",
       "revId": "8c594fa7ce9432b8f668ef05a83742c70dc0c2d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a08440ab_54e20dc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-24T15:08:37Z",
+      "side": 1,
+      "message": "Yes, we need to write our own BUILD.gn and BUILD.bazel for libgrapheme anyway (we cannot use its Makefile because it is a makefile and because it downloads stuff from the internets) so we can point it at whatever files we want. It\u0027s just a build step that processes these files into data. In theory we could even do that once, I think and check in those or package those up instead.",
+      "parentUuid": "dbe79cbb_5482bba4",
+      "revId": "8c594fa7ce9432b8f668ef05a83742c70dc0c2d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
