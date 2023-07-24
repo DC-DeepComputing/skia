@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6dda3047_05153a4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:17:40Z",
+      "side": 1,
+      "message": "I like the puppy images, but they are pretty large and I don\u0027t know where they came from. These get uploaded to devices on every CQ build, so keeping the sizes small helps tests run fast. And if they are copyrighted or something we can\u0027t include them in our open-source repo.\n\nSo... do we own the image? And should we use JPG instead?",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec88c3fa_6dd368e6",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 5
