@@ -39,6 +39,30 @@
       },
       "revId": "aed56a5a5a29f531624b06b97e9324d5efef911b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79f0501b_d7203711",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T14:24:40Z",
+      "side": 1,
+      "message": "I added the assert but it felt weird asserting immediately below a direct assignment of 4 or 8 that the result was modulo-4. \nWDYT about just structuring it this way instead?\nI can just back this out and put the assert if you don\u0027t prefer it.",
+      "parentUuid": "959ebadf_4b0b1418",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 131,
+        "endChar": 66
+      },
+      "revId": "aed56a5a5a29f531624b06b97e9324d5efef911b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
