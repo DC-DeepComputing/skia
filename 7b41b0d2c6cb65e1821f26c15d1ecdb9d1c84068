@@ -71,6 +71,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ead4b992_c710b302",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "Can we do\n`auto targetImage \u003d sk_make_sp\u003cSkImage\u003e(kNeedNewImageUniqueID, `...\n?",
+      "range": {
+        "startLine": 585,
+        "startChar": 0,
+        "endLine": 585,
+        "endChar": 78
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5b0a840_45adb1d9",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "Can we just pass `SkPaint{}` here instead of making a named one above?",
+      "range": {
+        "startLine": 593,
+        "startChar": 24,
+        "endLine": 593,
+        "endChar": 29
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ff04cab_a3504bad",
         "filename": "src/gpu/graphite/Device.h",
         "patchSetId": 5
@@ -99,6 +145,29 @@
       "writtenOn": "2023-07-24T19:38:39Z",
       "side": 1,
       "message": "ditto: wrap in `#ifdef SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS`",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dbf1e8a_6d43ff40",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "We shouldn\u0027t check in commented-out assertions; either re-enable it or delete it if it is safe/correct to do so.",
+      "range": {
+        "startLine": 262,
+        "startChar": 4,
+        "endLine": 262,
+        "endChar": 6
+      },
       "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -139,6 +208,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d726e064_49c69d88",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "Where is `SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS` defined?",
+      "parentUuid": "5f9c5c6d_3420c3fa",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "745ae05c_0d176cca",
         "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
         "patchSetId": 5
@@ -155,6 +242,53 @@
         "startChar": 0,
         "endLine": 22,
         "endChar": 20
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b08a585_cf08e561",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "+1, Skia style is to explicitly put `std::` where it is used. (Google\u0027s coding guidelines as well, although we don\u0027t adhere to those 100%)",
+      "parentUuid": "745ae05c_0d176cca",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 20
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "827912c4_45d8a684",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "Let\u0027s not abbreviate the names; AFAICS it makes the code clearer to spell out.\n\n```\nusing skgpu::graphite::DrawParams;\nusing skgpu::graphite::ResourceBindingRequirements;\n```",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 56
       },
       "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -224,6 +358,52 @@
         "startChar": 29,
         "endLine": 49,
         "endChar": 30
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b58deef_008c8842",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "nit: please spell out `updateConvolutionMatrix`\n(We try to optimize for the reader who hasn\u0027t seen the code before, where extra characters can add clarity, vs for the writer, where extra typing can be a hassle)",
+      "range": {
+        "startLine": 49,
+        "startChar": 9,
+        "endLine": 49,
+        "endChar": 27
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06898993_107f1888",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "This can just be `-fKernelDim`.",
+      "range": {
+        "startLine": 52,
+        "startChar": 18,
+        "endLine": 52,
+        "endChar": 35
       },
       "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -317,6 +497,99 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "576a84b0_392a9356",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "+1 for `fSigma`, I was confused by `Rou` as well.",
+      "parentUuid": "10d90912_73a552a0",
+      "range": {
+        "startLine": 74,
+        "startChar": 10,
+        "endLine": 74,
+        "endChar": 14
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d315259_2ff20626",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "tiny nit: can be written as `float3(0)`.",
+      "range": {
+        "startLine": 162,
+        "startChar": 34,
+        "endLine": 162,
+        "endChar": 47
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7606f4f_1b59c7fc",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "Could just be `-blurRadius`.",
+      "range": {
+        "startLine": 164,
+        "startChar": 26,
+        "endLine": 164,
+        "endChar": 38
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db3ef1f1_99828613",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "tiny nit: please adhere to our style/spacing rules (automated tools won\u0027t fix these since they are in a string) e.g.\n\n`for (int i \u003d -blurRadius; i \u003c\u003d blurRadius; ++i) {`",
+      "range": {
+        "startLine": 164,
+        "startChar": 16,
+        "endLine": 164,
+        "endChar": 60
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5462740b_63dd0d2f",
         "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
         "patchSetId": 5
@@ -340,6 +613,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e7250f8e_091b51df",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "Should be `rgb`",
+      "range": {
+        "startLine": 168,
+        "startChar": 45,
+        "endLine": 168,
+        "endChar": 48
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56405d70_44c31de6",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "Should be `colorSum.rgb1` (half4 not necessary, rgb out of order)",
+      "range": {
+        "startLine": 176,
+        "startChar": 61,
+        "endLine": 176,
+        "endChar": 81
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3353189f_78d76663",
         "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
         "patchSetId": 5
@@ -351,6 +670,30 @@
       "writtenOn": "2023-07-24T19:38:39Z",
       "side": 1,
       "message": "Maybe rename this to `2RouSquaredInverse` (or `2SigmaSquaredInverse` if we\u0027re matching the standard notation), as `rouInverse` alone could be interpreted as `1 / rou`.",
+      "range": {
+        "startLine": 235,
+        "startChar": 22,
+        "endLine": 235,
+        "endChar": 32
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d8cb1bb_2f1f7b4f",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-24T20:45:39Z",
+      "side": 1,
+      "message": "Can\u0027t start a variable name with 2 though?",
+      "parentUuid": "3353189f_78d76663",
       "range": {
         "startLine": 235,
         "startChar": 22,
