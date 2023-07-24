@@ -16,6 +16,24 @@
       "message": "This is fine I suppose, but the only reason to package up the unicode data files was because the \"official\" ones are on the website ( https://www.unicode.org/Public/UCD/latest/ ). If using the copies from the github repo it seems like it would be better to just make a mirror of that repo and clone that? Why the extra complexity of cloning, packaging, uploading, downloading?",
       "revId": "8c594fa7ce9432b8f668ef05a83742c70dc0c2d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbe79cbb_5482bba4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-24T14:34:02Z",
+      "side": 1,
+      "message": "If libgrapheme can be configured to use a git repo instead of download the files, then I\u0027d prefer we go that route. It doesn\u0027t seem like that\u0027s the case at the moment.\n\nOf note, repackaging the files might be wise anyway due to the large size of the unicodetools git repo. It took a while (~1 minute) to sync even though I only needed comparatively few files.",
+      "parentUuid": "5ba82768_a95e1a6a",
+      "revId": "8c594fa7ce9432b8f668ef05a83742c70dc0c2d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
