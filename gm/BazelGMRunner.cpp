@@ -182,7 +182,7 @@ int main(int argc, char** argv) {
     // Iterate over all registered GMs.
     bool failures = false;
     int numImagesWritten = 0;
-    for (skiagm::GMFactory f : skiagm::GMRegistry::Range()) {
+    for (const skiagm::GMFactory& f : skiagm::GMRegistry::Range()) {
         std::unique_ptr<skiagm::GM> gm(f());
         SkDebugf("[%s] GM: %s\n", now().c_str(), gm->getName());
 
