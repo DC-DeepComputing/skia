@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc04e1d4_d48d82c3",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-24T16:54:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d365f734_60a258b2",
+      "range": {
+        "startLine": 158,
+        "startChar": 11,
+        "endLine": 158,
+        "endChar": 21
+      },
+      "revId": "009c23d3138f5b7085f259a7569cfd32a40f3952",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09209c71_93b610ac",
