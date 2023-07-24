@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d365f734_60a258b2",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-24T15:03:43Z",
+      "side": 1,
+      "message": "The way GrSurface::ComputeSize works is to have an if-block for compressed textures\u0027 size computation and the else does this style computation. There is a todo to add compressed texture support at the top of the method.",
+      "parentUuid": "5fec4709_5c4401c6",
+      "range": {
+        "startLine": 158,
+        "startChar": 11,
+        "endLine": 158,
+        "endChar": 21
+      },
+      "revId": "009c23d3138f5b7085f259a7569cfd32a40f3952",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "09209c71_93b610ac",
         "filename": "tests/TextureSizeTest.cpp",
         "patchSetId": 8
@@ -37,6 +61,24 @@
       "writtenOn": "2023-07-21T12:59:55Z",
       "side": 1,
       "message": "Pre-existing, but why is this testing the same color type twice?",
+      "revId": "009c23d3138f5b7085f259a7569cfd32a40f3952",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0e012a2_eba874dd",
+        "filename": "tests/TextureSizeTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-24T15:03:43Z",
+      "side": 1,
+      "message": "Doh - the second one should\u0027ve been A8.",
+      "parentUuid": "09209c71_93b610ac",
       "revId": "009c23d3138f5b7085f259a7569cfd32a40f3952",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

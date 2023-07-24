@@ -16,6 +16,24 @@
       "message": "I assume the caps version is still used elsewhere? If not, can we remove it? If so, are we getting different answers depending on which route we take? Is that bad?",
       "revId": "303245328527a281a603fa92acceb78d620efdb9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f46ebb0f_f03dd548",
+        "filename": "src/gpu/graphite/Texture.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2023-07-24T15:03:43Z",
+      "side": 0,
+      "message": "Removed. Both paths were ultimately calling the same backend helper functions.",
+      "parentUuid": "507ba74d_41df3f3d",
+      "revId": "303245328527a281a603fa92acceb78d620efdb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
