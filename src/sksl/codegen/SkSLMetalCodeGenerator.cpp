@@ -1584,7 +1584,7 @@ void MetalCodeGenerator::writeFieldAccess(const FieldAccess& f) {
         default:
             if (FieldAccess::OwnerKind::kAnonymousInterfaceBlock == f.ownerKind()) {
                 this->write("_globals.");
-                this->write(fInterfaceBlockNameMap[fInterfaceBlockMap[field]]);
+                this->write(fInterfaceBlockNameMap[&f.base()->type()]);
                 this->write("->");
             }
             this->writeName(field->fName);
@@ -2203,7 +2203,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
                 this->write(is_buffer(intf) ? "device " : "constant ");
                 this->writeType(intf.var()->type());
                 this->write("& " );
-                this->write(fInterfaceBlockNameMap[&intf]);
+                this->write(fInterfaceBlockNameMap[&intf.var()->type()]);
                 this->write(" [[buffer(");
                 this->write(std::to_string(this->getUniformBinding(intf.var()->modifiers())));
                 this->write(")]]");
@@ -2392,10 +2392,11 @@ void MetalCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf) {
             this->write(std::to_string(intf.arraySize()));
             this->write("]");
         }
-        fInterfaceBlockNameMap.set(&intf, intf.instanceName());
+        fInterfaceBlockNameMap.set(&intf.var()->type(), intf.instanceName());
     } else {
-        fInterfaceBlockNameMap.set(&intf, *fProgram.fSymbols->takeOwnershipOfString(
-                "_anonInterface" + std::to_string(fAnonInterfaceCount++)));
+        fInterfaceBlockNameMap.set(&intf.var()->type(),
+                                   *fProgram.fSymbols->takeOwnershipOfString(
+                                       "_anonInterface" + std::to_string(fAnonInterfaceCount++)));
     }
     this->writeLine(";");
 }
@@ -2461,9 +2462,6 @@ void MetalCodeGenerator::writeFields(SkSpan<const Field> fields,
             this->writeName(field.fName);
         }
         this->writeLine(";");
-        if (parentIntf) {
-            fInterfaceBlockMap.set(&field, parentIntf);
-        }
     }
 }
 
@@ -2886,7 +2884,7 @@ void MetalCodeGenerator::visitGlobalStruct(GlobalStructVisitor* visitor) {
         if (element->is<InterfaceBlock>()) {
             const auto* ib = &element->as<InterfaceBlock>();
             if (ib->typeName() != "sk_PerVertex") {
-                visitor->visitInterfaceBlock(*ib, fInterfaceBlockNameMap[ib]);
+                visitor->visitInterfaceBlock(*ib, fInterfaceBlockNameMap[&ib->var()->type()]);
             }
             continue;
         }

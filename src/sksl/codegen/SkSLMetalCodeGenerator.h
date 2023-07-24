@@ -299,8 +299,7 @@ protected:
     void writeWithIndexSubstitution(const std::function<void()>& fn);
 
     skia_private::THashSet<std::string_view> fReservedWords;
-    skia_private::THashMap<const Field*, const InterfaceBlock*> fInterfaceBlockMap;
-    skia_private::THashMap<const InterfaceBlock*, std::string_view> fInterfaceBlockNameMap;
+    skia_private::THashMap<const Type*, std::string_view> fInterfaceBlockNameMap;
     int fAnonInterfaceCount = 0;
     int fPaddingCount = 0;
     const char* fLineEnding;
