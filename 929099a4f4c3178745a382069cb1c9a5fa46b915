@@ -39,6 +39,30 @@
       },
       "revId": "929099a4f4c3178745a382069cb1c9a5fa46b915",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f37cf6c2_583b6f91",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-24T13:37:39Z",
+      "side": 1,
+      "message": "Agreed; defaultMSAASamples could be misinterpreted as what all SkSurfaces would be created with.",
+      "parentUuid": "e58d8dbc_d0bef610",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 40,
+        "endChar": 33
+      },
+      "revId": "929099a4f4c3178745a382069cb1c9a5fa46b915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
