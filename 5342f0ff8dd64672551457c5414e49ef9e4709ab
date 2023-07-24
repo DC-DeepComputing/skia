@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8959187_50922efd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-24T21:55:37Z",
+      "side": 1,
+      "message": "PTAL -- the random scalercontext has failures on a few configs -- haven\u0027t figured those out yet ...",
+      "revId": "5342f0ff8dd64672551457c5414e49ef9e4709ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
