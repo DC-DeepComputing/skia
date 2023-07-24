@@ -65,7 +65,7 @@ public:
 
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const final;
 
-    skif::Context onCreateFilterContext(GrRecordingContext* rContext,
+    skif::Context onCreateFilterContext(const DooDad&,
                                         const skif::ContextInfo& ctxInfo) const override;
 
     // From SkImage_GaneshBase.h

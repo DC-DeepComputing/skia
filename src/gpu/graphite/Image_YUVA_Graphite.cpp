@@ -26,6 +26,9 @@
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/TextureUtils.h"
 
+#include "src/core/SkImageFilterTypes.h"
+#include "src/gpu/graphite/ImageUtils.h"
+
 namespace {
 constexpr auto kAssumedColorType = kRGBA_8888_SkColorType;
 }
@@ -58,6 +61,16 @@ size_t Image_YUVA::textureSize() const {
         }
     }
     return size;
+}
+
+skif::Context Image_YUVA::onCreateFilterContext(const DooDad& dooDad,
+                                                const skif::ContextInfo& ctxInfo) const {
+    Recorder* recorder = nullptr;
+    if (auto tmp = std::get_if<Recorder*>(&dooDad)) {
+        recorder = *tmp;
+    }
+
+    return skif::MakeGraphiteContext(recorder, ctxInfo);
 }
 
 }  // namespace skgpu::graphite

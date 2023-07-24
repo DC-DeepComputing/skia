@@ -410,8 +410,13 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Ganesh::asView(
     return {std::move(view), ct};
 }
 
-skif::Context SkImage_Ganesh::onCreateFilterContext(GrRecordingContext* rContext,
+skif::Context SkImage_Ganesh::onCreateFilterContext(const DooDad& dooDad,
                                                     const skif::ContextInfo& ctxInfo) const {
+    GrRecordingContext* rContext = nullptr;
+    if (auto tmp = std::get_if<GrRecordingContext*>(&dooDad)) {
+        rContext = *tmp;
+    }
+
     return skif::MakeGaneshContext(rContext, fOrigin, ctxInfo);
 }
 

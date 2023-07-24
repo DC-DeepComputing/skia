@@ -412,4 +412,4 @@ sk_sp<SkImage> SubsetTextureFrom(GrDirectContext* context,
     return SkImages::TextureFromImage(context, subsetImg.get());
 }
 
-}
+} // namespace SkImages

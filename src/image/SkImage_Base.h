@@ -17,6 +17,7 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <variant>
 
 class GrDirectContext;
 class GrImageContext;
@@ -187,8 +188,10 @@ public:
                                         const SkIRect&,
                                         RequiredProperties) const = 0;
 
+    using DooDad = std::variant<std::monostate, GrRecordingContext*, skgpu::graphite::Recorder*>;
+
     // Returns a raster-backed image filtering context by default.
-    virtual skif::Context onCreateFilterContext(GrRecordingContext* rContext,
+    virtual skif::Context onCreateFilterContext(const DooDad&,
                                                 const skif::ContextInfo& info) const;
 
 protected:

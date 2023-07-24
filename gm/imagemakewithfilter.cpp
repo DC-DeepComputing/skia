@@ -30,6 +30,8 @@
 
 #include "include/gpu/GrDirectContext.h"
 
+#include "include/gpu/graphite/Image.h"
+
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 
@@ -367,9 +369,13 @@ private:
             SkIRect outSubset;
             SkIPoint offset;
 
-            auto rContext = canvas->recordingContext();
-            result = mainImage->makeWithFilter(rContext, filter.get(), subset, clip,
-                                               &outSubset, &offset);
+            if (auto rContext = canvas->recordingContext()) {
+                result = mainImage->makeWithFilter(rContext, filter.get(), subset, clip,
+                                                   &outSubset, &offset);
+            } else {
+                result = SkImages::MakeWithFilter(canvas->recorder(), mainImage, filter.get(),
+                                                  subset, clip, &outSubset, &offset);
+            }
             if (!result) {
                 return;
             }

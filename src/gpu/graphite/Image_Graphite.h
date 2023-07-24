@@ -49,6 +49,9 @@ public:
             SkImages::GraphitePromiseTextureReleaseProc);
     sk_sp<SkImage> makeTextureImage(Recorder*, RequiredProperties) const override;
 
+    skif::Context onCreateFilterContext(const DooDad&,
+                                        const skif::ContextInfo& ctxInfo) const override;
+
 private:
     sk_sp<SkImage> copyImage(const SkIRect& subset, Recorder*, RequiredProperties) const;
     using Image_Base::onMakeSubset;
