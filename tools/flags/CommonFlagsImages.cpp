@@ -66,14 +66,19 @@ bool CollectImages(CommandLineFlags::StringArray images, TArray<SkString>* outpu
 #endif
     };
 
+    // DO NOT SUBMIT
+    SkDebugf("*** COLLECTING IMAGES... %d IMAGES GIVEN ***\n", images.size());
+
     for (int i = 0; i < images.size(); ++i) {
         const char* flag = images[i];
+        SkDebugf("*** COLLECTING IMAGE: %s ***\n", flag); // DO NOT SUBMIT
         if (!sk_exists(flag)) {
             SkDebugf("%s does not exist!\n", flag);
             return false;
         }
 
         if (sk_isdir(flag)) {
+            SkDebugf("*** IMAGE IS A DIRECTORY: %s ***\n", flag); // DO NOT SUBMIT
             // If the value passed in is a directory, add all the images
             bool foundAnImage = false;
             for (const char* ext : exts) {
@@ -81,6 +86,7 @@ bool CollectImages(CommandLineFlags::StringArray images, TArray<SkString>* outpu
                 SkString file;
                 while (it.next(&file)) {
                     foundAnImage = true;
+                    SkDebugf("*** FOUND IMAGE INSIDE DIRECTORY %s: %s ***\n", flag, file.c_str()); // DO NOT SUBMIT
                     output->push_back() = SkOSPath::Join(flag, file.c_str());
                 }
             }
@@ -89,10 +95,14 @@ bool CollectImages(CommandLineFlags::StringArray images, TArray<SkString>* outpu
                 return false;
             }
         } else {
+            SkDebugf("*** COLLECTED SINGLE IMAGE: %s ***\n", flag); // DO NOT SUBMIT
             // Also add the value if it is a single image
             output->push_back() = flag;
         }
     }
+
+    // DO NOT SUBMIT
+    SkDebugf("*** FINISHED COLLECTING IMAGES ***\n");
     return true;
 }
 

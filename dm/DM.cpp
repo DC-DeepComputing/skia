@@ -950,9 +950,21 @@ static bool gather_srcs() {
                  new BisectSrc(FLAGS_bisect[0], FLAGS_bisect.size() > 1 ? FLAGS_bisect[1] : ""));
     }
 
+    // DO NOT SUBMIT
+    SkDebugf("*** ABOUT TO COLLECT IMAGES. FLAG --images: %d ELEMENTS ***\n", FLAGS_images.size());
+    for (int i = 0; i < FLAGS_images.size(); i++) {
+        SkDebugf("*** FLAG --images ARGUMENT %d: %s ***\n", i, FLAGS_images[i]);
+    }
+
     TArray<SkString> images;
     if (!CommonFlags::CollectImages(FLAGS_images, &images)) {
         return false;
+    }
+
+    // DO NOT SUBMIT
+    SkDebugf("*** COLLECTED %d IMAGES ***\n", images.size());
+    for (int i = 0; i < images.size(); i++) {
+        SkDebugf("*** COLLECTED IMAGE: %s ***\n", images[i].c_str());
     }
 
     for (const SkString& image : images) {
