@@ -1,0 +1,548 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef7dc6e0_832d6c4f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "Let\u0027s make this commit message more descriptive, since this CL includes everything you have implemented so far (including the base the API boilerplate that I had added previously) it makes sense to enumerate all of these features in bullet points here.",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dba5642_6d08eda9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "Great work so far April! Most of my comments are stylistic. The implementation overall looks good to me.\n\nI would like John to take a look as well.",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec88c3fa_6dd368e6",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "Wrap this definition in `#ifdef SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS`",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ff04cab_a3504bad",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "Let\u0027s ifdef this function behind a macro called `SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS`, like so:\n\n    #ifdef SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS\n        void drawComputeFilteredImage(const sk_sp\u003cSkImage\u003e\u0026 image,\n                                      SkScalar left,\n                                      SkScalar top,\n                                      const ComputeStep*);\n    #endif\n \nyou\u0027ll need to do this both here in the header and in Device.cpp where the function gets defined.",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edc3d6c6_b0484bf5",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "ditto: wrap in `#ifdef SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS`",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "447fefb3_a1a6469e",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "wrap this in `#ifdef SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS`. Let\u0027s also replace the comment with:\n\n    // Allows queueing a DispatchGroup explicitly for experimentation",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f9c5c6d_3420c3fa",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "Let\u0027s wrap this entire file in `#ifdef SK_ENABLE_COMPUTE_IMAGE_FILTER_EXPERIMENTS` so that it doesn\u0027t compile by default. I also suggest moving this file to a subdirectory in `experimental/` for example, `experimental/compute_filters/` and have the build files reference that.",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "745ae05c_0d176cca",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "This is not a huge issue but I suggest removing this declaration and referring to types in this namespace explicitly with `std::vector` etc.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 20
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e58469e_e0d22cc2",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "You can remove this since it\u0027s no longer used.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 36
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d364faa_e75e24b8",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "This function is specifically computing a gaussian kernel so I would rename it as such (e.g. `updateGaussianKernel()`). For other kernels (e.g. sobel) you could use a different appropriate name.",
+      "range": {
+        "startLine": 49,
+        "startChar": 10,
+        "endLine": 49,
+        "endChar": 27
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cb9ff01_1ce46f44",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "nit: space.\n\nAlternately just run `git clang-format HEAD~1` after committing your changes to automatically format a single file. I\u0027ll refrain from commenting further on C++ formatting changes, since you can just submit whatever clang-format produces.",
+      "range": {
+        "startLine": 49,
+        "startChar": 29,
+        "endLine": 49,
+        "endChar": 30
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94419306_ba47ad9c",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "This factor doesn\u0027t change across loop iterations, so you can compute it once and reuse it while avoiding a division:\n\n    float 2RouSquaredInv \u003d 0.5f / (fRou * fRou);\n    \nthen reuse it later:\n\n    exp(2RouSquaredInv * (x*x + y*y))\n    \nand because the `1 / (2 * sigma * sigma)` also appears as the factor in the base of the exponent, you can reuse it (also replacing \"rou\" with \"sigma\" as I mention in a later comment below):\n\n    M_1_PI * 2SigmaSquaredInv * exp((x*x + y*y) * -2SigmaSquaredInverse)\n    \nwhich is effectively what you have already written in the slow ALU shader below 😊",
+      "range": {
+        "startLine": 54,
+        "startChar": 84,
+        "endLine": 54,
+        "endChar": 99
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b808f870_a77d1bb3",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "`updateSeparableGaussianKernel()`?",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8038a104_a1e46127",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "I would do the same simplification/caching of the constant factor here as I mentioned above.",
+      "range": {
+        "startLine": 64,
+        "startChar": 30,
+        "endLine": 64,
+        "endChar": 97
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10d90912_73a552a0",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "nit: Standard notation for a gaussian typically uses the letter `sigma` instead of `rou` for the support, so it might make it clearer to change this to `fSigma` or `fStdDev` for \"standard deviation\".",
+      "range": {
+        "startLine": 74,
+        "startChar": 10,
+        "endLine": 74,
+        "endChar": 14
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5462740b_63dd0d2f",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "nit: line break here to fit within 100 columns",
+      "range": {
+        "startLine": 166,
+        "startChar": 86,
+        "endLine": 166,
+        "endChar": 112
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3353189f_78d76663",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "Maybe rename this to `2RouSquaredInverse` (or `2SigmaSquaredInverse` if we\u0027re matching the standard notation), as `rouInverse` alone could be interpreted as `1 / rou`.",
+      "range": {
+        "startLine": 235,
+        "startChar": 22,
+        "endLine": 235,
+        "endChar": 32
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "574c4259_31359195",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "nit: break the line here so that it fits within 100 columns, for example:\n\n    neighbourCoord \u003d clamp(sk_GlobalInvocationID.xy + uint2(i, j),\n                           uint2(0), uint2(srcDim));",
+      "range": {
+        "startLine": 248,
+        "startChar": 85,
+        "endLine": 248,
+        "endChar": 112
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3ab3c0f_b1b1b7cb",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "I would rename this to `kernel_weights` or something more descriptive about what it stores.",
+      "range": {
+        "startLine": 325,
+        "startChar": 22,
+        "endLine": 325,
+        "endChar": 29
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeddec70_0dc0b21f",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "nit: line break",
+      "range": {
+        "startLine": 337,
+        "startChar": 86,
+        "endLine": 337,
+        "endChar": 90
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f753be2_d44fab3e",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "nit: fit within 100 columns. You could perhaps assign the index to a temporary to break the line, like so:\n\n    int idx \u003d (blurRadius - abs(i)) * (blurRadius + 1) +\n              (blurRadius - abs(j));\n    convolutionFactor \u003d in_data[idx];",
+      "range": {
+        "startLine": 340,
+        "startChar": 52,
+        "endLine": 340,
+        "endChar": 128
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "980fdc8d_7d8a8f23",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "Should this be `fConvolutionMatrix.size()`?",
+      "range": {
+        "startLine": 367,
+        "startChar": 31,
+        "endLine": 367,
+        "endChar": 54
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efd0816b_253901b5",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "Maybe assert here that `fConvolutionMatrix.size() \u003d\u003d bufferSize / sizeof(float)` ?",
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c40658c4_6c49821c",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "Rename this to `kernel_weights` or `kernel_coeffs`(for coefficients) or something along those lines.",
+      "range": {
+        "startLine": 438,
+        "startChar": 22,
+        "endLine": 438,
+        "endChar": 29
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c29472a9_3fb299dc",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "Rather than hardcoding `32` let\u0027s redefine this as a constant called `workgroupDim` or `wgDim` and replaces references to it with that.\n\nThis isn\u0027t immediately relevant to you but on other platforms (particularly dawn/WebGPU) the default workgroup size is limited to 256 so a `[32, 32, 1]` dimension won\u0027t work portably if we select the minimum defaults. It will be easier to adapt this in the long run if you reference a constant instead of specifying 32 as a literal insteadl.",
+      "range": {
+        "startLine": 451,
+        "startChar": 62,
+        "endLine": 451,
+        "endChar": 64
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eac5a8c_a3350d4b",
+        "filename": "tools/viewer/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-24T19:38:39Z",
+      "side": 1,
+      "message": "\"Sigma\" or \"Standard. Dev.\"",
+      "range": {
+        "startLine": 632,
+        "startChar": 32,
+        "endLine": 632,
+        "endChar": 35
+      },
+      "revId": "7b41b0d2c6cb65e1821f26c15d1ecdb9d1c84068",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
