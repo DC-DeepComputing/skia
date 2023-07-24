@@ -1574,7 +1574,7 @@ void MetalCodeGenerator::writeFieldAccess(const FieldAccess& f) {
         this->writeExpression(*f.base(), Precedence::kPostfix);
         this->write(".");
     }
-    switch (field->fModifiers.fLayout.fBuiltin) {
+    switch (field->fLayout.fBuiltin) {
         case SK_POSITION_BUILTIN:
             this->write("_out.sk_Position");
             break;
@@ -2247,7 +2247,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
         }
         this->write(separator);
         separator = ", ";
-        this->writeModifiers(param->modifiers());
+        this->writeModifiers(param->modifiers().fFlags);
         this->writeType(param->type());
         if (pass_by_reference(param->type(), param->modifiers())) {
             this->write("&");
@@ -2356,14 +2356,14 @@ void MetalCodeGenerator::writeFunction(const FunctionDefinition& f) {
     this->write(buffer.str());
 }
 
-void MetalCodeGenerator::writeModifiers(const Modifiers& modifiers) {
+void MetalCodeGenerator::writeModifiers(int flags) {
     if (ProgramConfig::IsCompute(fProgram.fConfig->fKind) &&
-            (modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag))) {
+        (flags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag))) {
         this->write("device ");
-    } else if (modifiers.fFlags & Modifiers::kOut_Flag) {
+    } else if (flags & Modifiers::kOut_Flag) {
         this->write("thread ");
     }
-    if (modifiers.isConst()) {
+    if (flags & Modifiers::kConst_Flag) {
         this->write("const ");
     }
 }
@@ -2373,7 +2373,7 @@ void MetalCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf) {
         return;
     }
     const Type* structType = &intf.var()->type().componentType();
-    this->writeModifiers(intf.var()->modifiers());
+    this->writeModifiers(intf.var()->modifiers().fFlags);
     this->write("struct ");
     this->writeType(*structType);
     this->writeLine(" {");
@@ -2406,7 +2406,7 @@ void MetalCodeGenerator::writeFields(SkSpan<const Field> fields,
     MemoryLayout memoryLayout(MemoryLayout::Standard::kMetal);
     int currentOffset = 0;
     for (const Field& field : fields) {
-        int fieldOffset = field.fModifiers.fLayout.fOffset;
+        int fieldOffset = field.fLayout.fOffset;
         const Type* fieldType = field.fType;
         if (!memoryLayout.isSupported(*fieldType)) {
             fContext.fErrors->error(parentPos, "type '" + std::string(fieldType->name()) +
@@ -2443,7 +2443,7 @@ void MetalCodeGenerator::writeFields(SkSpan<const Field> fields,
             // padding past the first element of the array. An alternative approach is to declare
             // the struct without the unsized array member and replace variable references with a
             // buffer offset calculation based on sizeof().
-            this->writeModifiers(field.fModifiers);
+            this->writeModifiers(field.fModifierFlags);
             this->writeType(fieldType->componentType());
             this->write(" ");
             this->writeName(field.fName);
@@ -2455,7 +2455,7 @@ void MetalCodeGenerator::writeFields(SkSpan<const Field> fields,
                 return;
             }
             currentOffset += fieldSize;
-            this->writeModifiers(field.fModifiers);
+            this->writeModifiers(field.fModifierFlags);
             this->writeType(*fieldType);
             this->write(" ");
             this->writeName(field.fName);
@@ -2479,7 +2479,7 @@ void MetalCodeGenerator::writeName(std::string_view name) {
 }
 
 void MetalCodeGenerator::writeVarDeclaration(const VarDeclaration& varDecl) {
-    this->writeModifiers(varDecl.var()->modifiers());
+    this->writeModifiers(varDecl.var()->modifiers().fFlags);
     this->writeType(varDecl.var()->type());
     this->write(" ");
     this->writeName(varDecl.var()->mangledName());
@@ -2955,7 +2955,7 @@ void MetalCodeGenerator::writeGlobalStruct() {
         void visitNonconstantVariable(const Variable& var, const Expression* value) override {
             this->addElement();
             fCodeGen->write("    ");
-            fCodeGen->writeModifiers(var.modifiers());
+            fCodeGen->writeModifiers(var.modifiers().fFlags);
             fCodeGen->writeType(var.type());
             fCodeGen->write(" ");
             fCodeGen->writeName(var.mangledName());
@@ -3062,7 +3062,7 @@ void MetalCodeGenerator::writeThreadgroupStruct() {
         void visitNonconstantVariable(const Variable& var) override {
             this->addElement();
             fCodeGen->write("    ");
-            fCodeGen->writeModifiers(var.modifiers());
+            fCodeGen->writeModifiers(var.modifiers().fFlags);
             fCodeGen->writeType(var.type());
             fCodeGen->write(" ");
             fCodeGen->writeName(var.mangledName());
@@ -3139,7 +3139,7 @@ void MetalCodeGenerator::writeProgramElement(const ProgramElement& e) {
             this->writeFunctionPrototype(e.as<FunctionPrototype>());
             break;
         case ProgramElement::Kind::kModifiers:
-            this->writeModifiers(e.as<ModifiersDeclaration>().modifiers());
+            this->writeModifiers(e.as<ModifiersDeclaration>().modifiers().fFlags);
             this->writeLine(";");
             break;
         default:

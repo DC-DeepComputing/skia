@@ -60,12 +60,12 @@ struct Modifiers {
     };
 
     Modifiers()
-    : fLayout(Layout())
-    , fFlags(0) {}
+            : fLayout(Layout())
+            , fFlags(0) {}
 
     Modifiers(const Layout& layout, int flags)
-    : fLayout(layout)
-    , fFlags(flags) {}
+            : fLayout(layout)
+            , fFlags(flags) {}
 
     std::string description() const {
         return fLayout.description() + DescribeFlags(fFlags) + " ";

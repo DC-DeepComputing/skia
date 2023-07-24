@@ -22,6 +22,7 @@
 #include "src/sksl/ir/SkSLConstructorScalarCast.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLLayout.h"
+#include "src/sksl/ir/SkSLModifiers.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 
 #include <algorithm>
@@ -753,17 +754,16 @@ std::unique_ptr<Type> Type::MakeStructType(const Context& context,
                                                     std::string(structOrIB) + " ('" +
                                                     std::string(name) + "')");
         }
-        if (field.fModifiers.fFlags != Modifiers::kNo_Flag) {
-            std::string desc = field.fModifiers.description();
-            desc.pop_back();  // remove trailing space
+        if (field.fModifierFlags != Modifiers::kNo_Flag) {
+            std::string desc = Modifiers::DescribeFlags(field.fModifierFlags);
             context.fErrors->error(field.fPosition, "modifier '" + desc + "' is not permitted on " +
                                                     std::string(aStructOrIB) + " field");
         }
-        if (field.fModifiers.fLayout.fFlags & Layout::kBinding_Flag) {
+        if (field.fLayout.fFlags & Layout::kBinding_Flag) {
             context.fErrors->error(field.fPosition, "layout qualifier 'binding' is not permitted "
                                                     "on " + std::string(aStructOrIB) + " field");
         }
-        if (field.fModifiers.fLayout.fFlags & Layout::kSet_Flag) {
+        if (field.fLayout.fFlags & Layout::kSet_Flag) {
             context.fErrors->error(field.fPosition, "layout qualifier 'set' is not permitted on " +
                                                     std::string(aStructOrIB) + " field");
         }
@@ -1311,7 +1311,8 @@ SKSL_INT Type::convertArraySize(const Context& context,
 }
 
 std::string Field::description() const {
-    return fModifiers.description() + fType->displayName() + " " + std::string(fName) + ";";
+    return fLayout.description() + Modifiers::DescribeFlags(fModifierFlags) + fType->displayName() +
+           ' ' + std::string(fName) + ';';
 }
 
 }  // namespace SkSL
