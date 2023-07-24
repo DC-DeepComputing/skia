@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08448fd8_ba4b95e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-24T22:46:20Z",
+      "side": 1,
+      "message": "See https://skia-review.googlesource.com/c/skia/+/728919 for original issue report and reproduction steps.",
+      "revId": "dd85d457dc8e0dbfffd5f0f424d0d4645624dd6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
