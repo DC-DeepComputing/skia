@@ -17,6 +17,7 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <variant>
 
 class GrDirectContext;
 class GrImageContext;
@@ -187,9 +188,9 @@ public:
                                         const SkIRect&,
                                         RequiredProperties) const = 0;
 
-    // Returns a raster-backed image filtering context by default.
-    virtual skif::Context onCreateFilterContext(GrRecordingContext* rContext,
-                                                const skif::ContextInfo& info) const;
+    using BackEndContext = std::variant<std::monostate,
+                                        GrRecordingContext*,
+                                        skgpu::graphite::Recorder*>;
 
 protected:
     SkImage_Base(const SkImageInfo& info, uint32_t uniqueID);

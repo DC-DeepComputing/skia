@@ -26,6 +26,9 @@
 #include "src/gpu/graphite/TextureProxyView.h"
 #include "src/gpu/graphite/TextureUtils.h"
 
+#include "src/core/SkImageFilterTypes.h"
+#include "src/gpu/graphite/ImageUtils.h"
+
 namespace {
 constexpr auto kAssumedColorType = kRGBA_8888_SkColorType;
 }
