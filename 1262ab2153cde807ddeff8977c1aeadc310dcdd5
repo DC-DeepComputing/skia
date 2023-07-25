@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "70d8885d_6917d932",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-25T14:22:04Z",
+      "side": 1,
+      "message": "I think maybe what you meant to do here is something like `static SkNoDestructor\u003cSkEmptyFontMgr\u003e singleton;` so that the one in the `.data` section is never destroyed so that the order of destruction doesn\u0027t matter.\n\n(This of course makes no real difference by itself, since the other `sk_sp` already also exists.)",
+      "range": {
+        "startLine": 153,
+        "startChar": 12,
+        "endLine": 153,
+        "endChar": 25
+      },
+      "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "121e32aa_aaac6165",
         "filename": "src/core/SkFontMgr.cpp",
         "patchSetId": 1
