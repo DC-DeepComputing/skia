@@ -3,6 +3,144 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a165f06_dd5c8c25",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-25T15:34:03Z",
+      "side": 1,
+      "message": "Extra copyright notice got pasted in?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 3
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d94fac5_c0927172",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-25T15:34:03Z",
+      "side": 1,
+      "message": "```suggestion\n// convert the input images into the frequency domain. As such, kernels can quickly become too\n```",
+      "range": {
+        "startLine": 636,
+        "startChar": 3,
+        "endLine": 636,
+        "endChar": 13
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da75b738_d6e77de9",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-25T15:34:03Z",
+      "side": 1,
+      "message": "```suggestion\n        // affectsTransparentBlack() is conflated with \"canComputeFastBounds\" and MatrixConvolution\n```",
+      "range": {
+        "startLine": 686,
+        "startChar": 40,
+        "endLine": 686,
+        "endChar": 51
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e81b7a7_edb0271a",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-25T15:34:03Z",
+      "side": 1,
+      "message": "```suggestion\n    // Original kernel data, preserved for serialization even if it was encoded into fKernelBitmap\n```",
+      "range": {
+        "startLine": 719,
+        "startChar": 56,
+        "endLine": 719,
+        "endChar": 79
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "873f86ee_70662bdb",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 894,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-25T15:34:03Z",
+      "side": 1,
+      "message": "```suggestion\n    // cropping/tiling will have been handled by the deserialized input/output Crop image filters.\n```",
+      "range": {
+        "startLine": 894,
+        "startChar": 72,
+        "endLine": 894,
+        "endChar": 80
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1952a2b_dae29ad8",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-25T15:34:03Z",
+      "side": 1,
+      "message": "I\u0027m sure this was pre-existing behavior, but I have to ask: When we are convolving alpha, we operate directly on premul colors? That\u0027s surprising to me.",
+      "range": {
+        "startLine": 959,
+        "startChar": 30,
+        "endLine": 959,
+        "endChar": 74
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a22fddeb_63a8f582",
         "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
         "patchSetId": 10
@@ -14,6 +152,30 @@
       "writtenOn": "2023-07-25T14:49:56Z",
       "side": 1,
       "message": "PTAL at this updated shader, which packs the kernel into vec4s to not waste space when on std140.\n\nOn the raster backend on my workstation, this runs a 3x3 kernel (GM_matrixconvolution) in 10.5ms. If I provided a dedicated 3x3 shader, raster backend runs in 7.9ms. There wasn\u0027t any meaningful timing difference on my high-end GPU, but I\u0027m sure lower-end devices might see an improvement. For now, Rob and I agreed to leave it as 2 possible shaders and we can add the 3x3 option if regressions are reported.",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 1010,
+        "endChar": 99
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ac00f60_8e9a0be9",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-25T15:34:03Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s actually respectable timing - agree that we leave it as-is for now.",
+      "parentUuid": "a22fddeb_63a8f582",
       "range": {
         "startLine": 985,
         "startChar": 0,
