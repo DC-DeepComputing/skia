@@ -41,7 +41,7 @@ def executeWorklist(input, worklist):
     os.remove(worklist.name)
 
 def extensionForSpirvAsm(ext):
-    return ext if (ext == '.frag' or ext == '.vert') else '.frag'
+    return '.comp' if (ext == '.compute') else ext if (ext == '.frag' or ext == '.vert') else '.frag'
 
 if settings != "--settings" and settings != "--nosettings":
     sys.exit("### Expected --settings or --nosettings, got " + settings)
