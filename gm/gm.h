@@ -17,6 +17,7 @@
 #include "tools/Registry.h"
 
 #include <memory>
+#include <vector>
 
 class GrRecordingContext;
 class SkCanvas;
@@ -62,6 +63,7 @@ struct ContextOptions;
     DEF_GM(return new skiagm::SimpleGM(BGCOLOR, NAME_STR, {W,H}, SK_MACRO_CONCAT(NAME,_GM));) \
     skiagm::DrawResult SK_MACRO_CONCAT(NAME,_GM)(SkCanvas* CANVAS, SkString* ERR_MSG)
 
+#define DEF_MULTIPLE_GMS(FN) static skiagm::MultiGMRegistry SK_MACRO_APPEND_COUNTER(REG_)(FN)
 
 #if defined(SK_GANESH)
 // A Simple GpuGM makes direct GPU calls. Its onDraw hook that includes GPU objects as params, and
@@ -195,6 +197,11 @@ namespace skiagm {
         // TODO(lovisolo): Delete once it's no longer needed.
         virtual bool isBazelOnly() const { return false; }
 
+        // Only used by Bazel-only GMs for now. Returns the name of the output directory under
+        // which to save the PNG produced by the GM, e.g. "codec_premul". The empty string means
+        // the PNG will be saved to the default location.
+        virtual SkString getOutputFolder() const { return {}; }
+
     protected:
         // onGpuSetup is called once before any other processing with a direct context.
         virtual DrawResult onGpuSetup(SkCanvas*, SkString*) { return DrawResult::kOk; }
@@ -221,6 +228,14 @@ namespace skiagm {
 
     using GMFactory = std::unique_ptr<skiagm::GM> (*)();
     using GMRegistry = sk_tools::Registry<GMFactory>;
+
+    // Useful for dynamically generated GMs. See //gm/codec.cpp for an example.
+    using MultiGMFactoryResult = struct {
+        std::vector<std::unique_ptr<skiagm::GM>> gms;  // Should be empty in case of errors.
+        std::string errorMsg;                          // Should be set in case of errors.
+    };
+    using MultiGMFactory = std::function<MultiGMFactoryResult()>;
+    using MultiGMRegistry = sk_tools::Registry<MultiGMFactory>;
 
 #if defined(SK_GANESH)
     // A GpuGM replaces the onDraw method with one that also accepts GPU objects alongside the

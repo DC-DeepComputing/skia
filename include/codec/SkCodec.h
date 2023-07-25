@@ -46,6 +46,8 @@ namespace DM {
 class CodecSrc;
 } // namespace DM
 
+class CodecGM;  // Forward declaration to make this GM a friend class of SkCodec.
+
 /**
  *  Abstraction layer directly on top of an image codec.
  */
@@ -1008,6 +1010,7 @@ private:
     virtual SkSampler* getSampler(bool /*createIfNecessary*/) { return nullptr; }
 
     friend class DM::CodecSrc;  // for fillIncompleteImage
+    friend class CodecGM;       // for fillIncompleteImage
     friend class SkSampledCodec;
     friend class SkIcoCodec;
     friend class SkAndroidCodec; // for fEncodedInfo
