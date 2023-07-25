@@ -22,6 +22,9 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
 
+#include "src/core/SkImageFilterTypes.h"
+#include "src/gpu/graphite/ImageUtils.h"
+
 namespace skgpu::graphite {
 
 Image::Image(uint32_t uniqueID,
@@ -108,6 +111,16 @@ sk_sp<SkImage> Image::makeColorTypeAndColorSpace(Recorder* recorder,
 
     s->getCanvas()->drawImage(this, 0, 0);
     return SkSurfaces::AsImage(s);
+}
+
+skif::Context Image::onCreateFilterContext(const BackEndContext& backendContext,
+                                           const skif::ContextInfo& ctxInfo) const {
+    Recorder* recorder = nullptr;
+    if (auto tmp = std::get_if<Recorder*>(&backendContext)) {
+        recorder = *tmp;
+    }
+
+    return skif::MakeGraphiteContext(recorder, ctxInfo);
 }
 
 } // namespace skgpu::graphite

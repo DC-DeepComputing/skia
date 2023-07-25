@@ -215,6 +215,36 @@ sk_sp<SkImage> SubsetTextureFrom(skgpu::graphite::Recorder* recorder,
     return SkImages::TextureFromImage(recorder, subsetImg, props);
 }
 
+    sk_sp<SkImage> MakeWithFilter_Shared(
+            const SkImage_Base::BackEndContext&,
+            sk_sp<SkImage> src,
+            const SkImageFilter* filter,
+            const SkIRect& subset,
+            const SkIRect& clipBounds,
+            SkIRect* outSubset,
+            SkIPoint* offset);
+
+sk_sp<SkImage> MakeWithFilter(skgpu::graphite::Recorder* recorder,
+                              sk_sp<SkImage> src,
+                              const SkImageFilter* filter,
+                              const SkIRect& subset,
+                              const SkIRect& clipBounds,
+                              SkIRect* outSubset,
+                              SkIPoint* offset) {
+    SkImage_Base::BackEndContext backEndContext;
+    if (recorder) {
+        backEndContext = recorder;
+    }
+
+    return MakeWithFilter_Shared(backEndContext,
+                                 std::move(src),
+                                 filter,
+                                 subset,
+                                 clipBounds,
+                                 outSubset,
+                                 offset);
+}
+
 static sk_sp<SkImage> generate_picture_texture(skgpu::graphite::Recorder* recorder,
                                                const SkImage_Picture* img,
                                                const SkImageInfo& info,

@@ -56,6 +56,9 @@ public:
             SkImages::GraphitePromiseTextureContext,
             SkImages::GraphitePromiseTextureReleaseProc);
 
+    skif::Context onCreateFilterContext(const BackEndContext&,
+                                        const skif::ContextInfo&) const override;
+
 private:
     sk_sp<SkImage> makeTextureImage(Recorder*, RequiredProperties) const override {
         return nullptr;
