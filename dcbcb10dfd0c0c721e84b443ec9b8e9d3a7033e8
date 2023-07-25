@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f61169d_e75d6475",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-25T14:27:29Z",
+      "side": 1,
+      "message": "An `SkNoDestructor\u003csk_sp\u003cT\u003e\u003e` is just a raw pointer, so it might as well be one instead of being super confusing. I suppose this is a complicated way of writing \"I know I own a reference but I\u0027m also not going to ever give it up\".\n\nAlso, does this change play well with LSAN? I suppose that static things should be considered roots so at exit these are still reachable, but it would be nice to see if it reports this leak. Then again, if we don\u0027t `new` as I suggested above then there isn\u0027t a leak and so that is ok.",
+      "range": {
+        "startLine": 161,
+        "startChar": 11,
+        "endLine": 161,
+        "endChar": 31
+      },
+      "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
