@@ -22,6 +22,30 @@
       },
       "revId": "d0873bb6633fcae811534795a3dc0fdd62f3316e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fd62908_2a87edbb",
+        "filename": "resources/sksl/wgsl/InterfaceBlockUniforms.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T20:39:50Z",
+      "side": 0,
+      "message": "Although, thinking about it some more... if we send matrices in std140 layout, how are we going to read them in WGSL? WGSL thinks a 2x2 matrix is tightly packed.",
+      "parentUuid": "1e95ce47_360a2f1e",
+      "range": {
+        "startLine": 3,
+        "startChar": 18,
+        "endLine": 3,
+        "endChar": 20
+      },
+      "revId": "d0873bb6633fcae811534795a3dc0fdd62f3316e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
