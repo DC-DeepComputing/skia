@@ -98,9 +98,6 @@ public:
 
     void generatingSurfaceIsDeleted() override;
 
-    skif::Context onCreateFilterContext(GrRecordingContext* rContext,
-                                        const skif::ContextInfo& ctxInfo) const override;
-
     // From SkImage_GaneshBase.h
     GrSemaphoresSubmitted flush(GrDirectContext*, const GrFlushInfo&) const override;
 
@@ -123,6 +120,8 @@ public:
     bool getExistingBackendTexture(GrBackendTexture* outTexture,
                                    bool flushPendingGrContextIO,
                                    GrSurfaceOrigin* origin) const;
+
+    GrSurfaceOrigin origin() const override { return fOrigin; }
 
 private:
     SkImage_Ganesh(sk_sp<GrDirectContext>,

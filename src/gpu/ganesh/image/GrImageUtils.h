@@ -15,6 +15,8 @@
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"  // IWYU pragma: keep
 #include "src/gpu/ganesh/SkGr.h"
 
+#include "src/gpu/ganesh/GrFragmentProcessor.h"
+
 #include <cstdint>
 #include <memory>
 #include <string_view>
