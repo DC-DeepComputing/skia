@@ -22,6 +22,30 @@
       },
       "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8310ba79_9ba30b56",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T14:34:25Z",
+      "side": 1,
+      "message": "Yes, LSAN treats static objects and their contents as always-reachable roots and never as leaks. (Google3 relies on this approach very heavily for singletons, it works well.)\n\nI\u0027m trying to noodle through the idea that `SkNoDestructor\u003csk_sp\u003cT\u003e\u003e` can be swapped out for a raw pointer and I don\u0027t think that\u0027s correct. You\u0027re right that the reference count should never reach zero, making it immortal. But it still needs to interact with APIs that take shared pointers and need to bump references up and down. You can\u0027t just wrap the raw pointer in `sk_sp` and return that, or it will not be immortal (it will get nuked when the first caller is done with it).",
+      "parentUuid": "7f61169d_e75d6475",
+      "range": {
+        "startLine": 161,
+        "startChar": 11,
+        "endLine": 161,
+        "endChar": 31
+      },
+      "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
