@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec86c665_ec2512cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2023-07-25T22:41:20Z",
+      "side": 1,
+      "message": "Thanks! I renamed the API and changed some things around to match `getOutputBounds`. PTAL",
+      "parentUuid": "2169f476_213c7e18",
+      "revId": "fd684c55b2ece2a97cad5dc6948e761d239da7fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b21b0845_3fc873b5",
         "filename": "modules/canvaskit/externs.js",
         "patchSetId": 1
