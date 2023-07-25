@@ -141,6 +141,24 @@
       "parentUuid": "fcef56d1_a3835bcc",
       "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17e2092b_2f43289a",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T14:18:40Z",
+      "side": 1,
+      "message": "OK, if it is just nuking the process instead of doing a tidy shutdown then the justification to fix this would just be smaller codesize and footprint (there is still an atexit list in memory even if we don\u0027t run it).",
+      "parentUuid": "394354f2_608b1513",
+      "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
