@@ -16,6 +16,24 @@
       "message": "nit: //namespace SkSpecialSurfaces",
       "revId": "0dea82b7288ac22980de2658bb47b87223b84af1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38feec85_d5d92f6d",
+        "filename": "src/gpu/ganesh/image/SkSpecialImage_Ganesh.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-25T17:50:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a30e0eab_197d4d17",
+      "revId": "0dea82b7288ac22980de2658bb47b87223b84af1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
