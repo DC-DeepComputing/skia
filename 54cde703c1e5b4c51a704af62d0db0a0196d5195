@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59bfb62a_24fcb317",
+        "filename": "gn/compile_sksl_tests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T16:26:26Z",
+      "side": 1,
+      "message": "tiny nit: line \u003e100 chars",
+      "range": {
+        "startLine": 44,
+        "startChar": 100,
+        "endLine": 44,
+        "endChar": 101
+      },
+      "revId": "54cde703c1e5b4c51a704af62d0db0a0196d5195",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
