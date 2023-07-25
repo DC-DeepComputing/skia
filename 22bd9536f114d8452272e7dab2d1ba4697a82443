@@ -33,6 +33,24 @@
       "message": "It might make sense to explicitly align the struct members with `@align` decorations (similarly to the Metal codegen adds members for padding). Since we\u0027re using std140 layout in both uniform and storage address spaces, there may be situations in which the SSBO alignment doesn\u0027t match std140 but WGSL doesn\u0027t complain because storage address-space alignment isn\u0027t as strict as uniform.\n\nThis particular test case should be OK (I believe `inputData` will be implicitly aligned to 16 bytes, according to the \"Internal Layout of Values\" https://www.w3.org/TR/WGSL/#internal-value-layout) but there might be situations in which that does\u0027t happen.",
       "revId": "22bd9536f114d8452272e7dab2d1ba4697a82443",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82aa889e_428c427a",
+        "filename": "tests/sksl/shared/StorageBuffer.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T16:53:49Z",
+      "side": 1,
+      "message": "OK, I\u0027ve already got a TODO to use MemoryLayout here, so I\u0027ll also add in the @aligns when I do that.\n\nI notice that our MemoryLayout class differentiates between `k140`, `kWGSLUniform` and `kWGSLStorage`. I should be using `k140` exclusively?",
+      "parentUuid": "4f2386d2_0f0a7689",
+      "revId": "22bd9536f114d8452272e7dab2d1ba4697a82443",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
