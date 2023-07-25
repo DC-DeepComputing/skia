@@ -12,7 +12,7 @@ void draw(SkCanvas* canvas) {
     clipBounds.outset(60, 60);
     SkIRect outSubset;
     SkIPoint offset;
-    sk_sp<SkImage> filtered(image->makeWithFilter(canvas->recordingContext(), offsetFilter.get(),
+    sk_sp<SkImage> filtered(image->makeWithFilter1(canvas->recordingContext(), offsetFilter.get(),
                                                   subset, clipBounds, &outSubset, &offset));
     SkPaint paint;
     paint.setAntiAlias(true);

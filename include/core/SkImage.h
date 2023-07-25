@@ -229,6 +229,13 @@ SK_API sk_sp<SkImage> RasterFromData(const SkImageInfo& info,
                                      sk_sp<SkData> pixels,
                                      size_t rowBytes);
 
+sk_sp<SkImage> MakeWithFilter(sk_sp<SkImage> src,
+                              const SkImageFilter* filter,
+                              const SkIRect& subset,
+                              const SkIRect& clipBounds,
+                              SkIRect* outSubset,
+                              SkIPoint* offset);
+
 }  // namespace SkImages
 
 /** \class SkImage
@@ -811,7 +818,7 @@ public:
         @param offset      storage for returned SkImage translation
         @return            filtered SkImage, or nullptr
     */
-    sk_sp<SkImage> makeWithFilter(GrRecordingContext* context,
+    sk_sp<SkImage> makeWithFilter1(GrRecordingContext* context,
                                   const SkImageFilter* filter,
                                   const SkIRect& subset,
                                   const SkIRect& clipBounds,

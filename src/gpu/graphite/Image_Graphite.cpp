@@ -22,6 +22,9 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Texture.h"
 
+#include "src/core/SkImageFilterTypes.h"
+#include "src/gpu/graphite/ImageUtils.h"
+
 namespace skgpu::graphite {
 
 Image::Image(uint32_t uniqueID,
