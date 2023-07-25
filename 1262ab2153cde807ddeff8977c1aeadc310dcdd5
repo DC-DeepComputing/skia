@@ -105,6 +105,24 @@
       "parentUuid": "08671768_5626138e",
       "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fce66e4_3bb7d4e8",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T14:16:35Z",
+      "side": 1,
+      "message": "ClangTidy (not Tiny)",
+      "parentUuid": "fcef56d1_a3835bcc",
+      "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
