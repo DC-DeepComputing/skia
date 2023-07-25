@@ -51,6 +51,24 @@
       "parentUuid": "4f2386d2_0f0a7689",
       "revId": "22bd9536f114d8452272e7dab2d1ba4697a82443",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b8ad9b3_8cf64cab",
+        "filename": "tests/sksl/shared/StorageBuffer.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-25T16:59:45Z",
+      "side": 1,
+      "message": "\u003e OK, I\u0027ve already got a TODO to use MemoryLayout here, so I\u0027ll also add in the @aligns when I do that.\n\u003e \n\nsgtm\n\n\u003e I notice that our MemoryLayout class differentiates between `k140`, `kWGSLUniform` and `kWGSLStorage`. I should be using `k140` exclusively?\n\nFor now I\u0027d say it\u0027s safer to use k140 since that\u0027s what Ganesh and Graphite use. \"WGSL Uniform\" and \"WGSL Storage\" alignments are slightly more relaxed compared to std140/std430 when it comes to matrices, e.g. mat2x2 has the same alignment as \"vec2, vec2\" rather than an array (tint does this conversion to provide a more packed layout), which we may want to consider taking advantage of in the future.",
+      "parentUuid": "82aa889e_428c427a",
+      "revId": "22bd9536f114d8452272e7dab2d1ba4697a82443",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
