@@ -69,6 +69,24 @@
       "parentUuid": "6929a17a_c04b85c9",
       "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd72be0d_aeab3640",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-25T14:15:43Z",
+      "side": 1,
+      "message": "Oh, because Chromium doesn\u0027t care about global destructors, it just ends the process.",
+      "parentUuid": "08671768_5626138e",
+      "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
