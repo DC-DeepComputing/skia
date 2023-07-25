@@ -321,6 +321,15 @@ SK_API sk_sp<SkImage> SubsetTextureFrom(GrDirectContext* context,
                                         const SkImage* img,
                                         const SkIRect& subset);
 
+
+SK_API sk_sp<SkImage> MakeWithFilter(GrRecordingContext* context,
+                                     sk_sp<SkImage> src,
+                                     const SkImageFilter* filter,
+                                     const SkIRect& subset,
+                                     const SkIRect& clipBounds,
+                                     SkIRect* outSubset,
+                                     SkIPoint* offset);
+
 }  // namespace SkImages
 
 #endif

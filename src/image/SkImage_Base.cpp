@@ -166,7 +166,7 @@ sk_sp<SkImage> SkImage_Base::makeColorTypeAndColorSpace(skgpu::graphite::Recorde
     return this->makeColorTypeAndColorSpace(nullptr, ct, std::move(cs));
 }
 
-skif::Context SkImage_Base::onCreateFilterContext(GrRecordingContext*,
+skif::Context SkImage_Base::onCreateFilterContext(const BackEndContext& /* backendContext */,
                                                   const skif::ContextInfo& ctxInfo) const {
     return skif::Context::MakeRaster(ctxInfo);
 }
