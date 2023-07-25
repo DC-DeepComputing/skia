@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53efa40b_7381729f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-25T16:44:18Z",
+      "side": 1,
+      "message": "lgtm % a comment about alignment, which can get resolved in a follow-up.",
+      "revId": "22bd9536f114d8452272e7dab2d1ba4697a82443",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f2386d2_0f0a7689",
+        "filename": "tests/sksl/shared/StorageBuffer.wgsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-07-25T16:44:18Z",
+      "side": 1,
+      "message": "It might make sense to explicitly align the struct members with `@align` decorations (similarly to the Metal codegen adds members for padding). Since we\u0027re using std140 layout in both uniform and storage address spaces, there may be situations in which the SSBO alignment doesn\u0027t match std140 but WGSL doesn\u0027t complain because storage address-space alignment isn\u0027t as strict as uniform.\n\nThis particular test case should be OK (I believe `inputData` will be implicitly aligned to 16 bytes, according to the \"Internal Layout of Values\" https://www.w3.org/TR/WGSL/#internal-value-layout) but there might be situations in which that does\u0027t happen.",
+      "revId": "22bd9536f114d8452272e7dab2d1ba4697a82443",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
