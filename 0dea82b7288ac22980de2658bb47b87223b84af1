@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a30e0eab_197d4d17",
+        "filename": "src/gpu/ganesh/image/SkSpecialImage_Ganesh.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-25T13:30:34Z",
+      "side": 1,
+      "message": "nit: //namespace SkSpecialSurfaces",
+      "revId": "0dea82b7288ac22980de2658bb47b87223b84af1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
