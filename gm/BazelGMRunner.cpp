@@ -27,6 +27,7 @@
 #include "tools/HashAndEncode.h"
 
 #include <ctime>
+#include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -63,6 +64,13 @@ static DEFINE_string(surfaceConfig,
 static DEFINE_string(via,
                      "direct",  // Equivalent to running DM without a via.
                      "Name of the \"via\" to use (e.g. \"picture_serialization\"). Optional.");
+
+// Only used by //gm/codec.cpp.
+DEFINE_string(codecGMImages,
+              "",
+              "Zero or more images or directories where to find images to test with "
+              "CodecGM. Directories are scanned non-recursively for files with known "
+              "image file extensions.");
 
 // Takes a SkBitmap and writes the resulting PNG and MD5 hash into the given files. Returns an
 // empty string on success, or an error message in the case of failures.
@@ -179,12 +187,18 @@ int main(int argc, char** argv) {
             FLAGS_outputDir.isEmpty() ? testUndeclaredOutputsDir : FLAGS_outputDir[0];
     std::string config(FLAGS_surfaceConfig[0]);
 
-    // Iterate over all registered GMs.
     bool failures = false;
     int numImagesWritten = 0;
-    for (skiagm::GMFactory f : skiagm::GMRegistry::Range()) {
-        std::unique_ptr<skiagm::GM> gm(f());
-        SkDebugf("[%s] GM: %s\n", now().c_str(), gm->getName());
+
+    auto runGM = [&](std::unique_ptr<skiagm::GM> gm) {
+        if (!gm->getOutputFolder().isEmpty()) {
+            SkDebugf("[%s] GM: %s (output directory: %s)\n",
+                     now().c_str(),
+                     gm->getName(),
+                     gm->getOutputFolder().c_str());
+        } else {
+            SkDebugf("[%s] GM: %s\n", now().c_str(), gm->getName());
+        }
 
         // Create surface and canvas.
         std::unique_ptr<SurfaceManager> surface_manager =
@@ -230,8 +244,13 @@ int main(int argc, char** argv) {
         // Save PNG and JSON file with MD5 hash to disk if the GM was successful.
         if (result == skiagm::DrawResult::kOk) {
             std::string name = std::string(gm->getName());
-            SkString pngPath = SkOSPath::Join(outputDir.c_str(), (name + ".png").c_str());
-            SkString jsonPath = SkOSPath::Join(outputDir.c_str(), (name + ".json").c_str());
+            SkString gmOutputDir = SkString(outputDir);
+            if (gm->getOutputFolder() != SkString("")) {
+                gmOutputDir = SkOSPath::Join(gmOutputDir.c_str(), gm->getOutputFolder().c_str());
+                std::filesystem::create_directories(gmOutputDir.c_str());
+            }
+            SkString pngPath = SkOSPath::Join(gmOutputDir.c_str(), (name + ".png").c_str());
+            SkString jsonPath = SkOSPath::Join(gmOutputDir.c_str(), (name + ".json").c_str());
 
             std::string pngAndJSONResult = write_png_and_json_files(
                     gm->getName(), config, bitmap, pngPath.c_str(), jsonPath.c_str());
@@ -243,6 +262,20 @@ int main(int argc, char** argv) {
                 SkDebugf("[%s]     PNG file written to: %s\n", now().c_str(), pngPath.c_str());
                 SkDebugf("[%s]     JSON file written to: %s\n", now().c_str(), jsonPath.c_str());
             }
+        }
+    };
+
+    // Iterate over all registered GMs.
+    for (const skiagm::GMFactory& f : skiagm::GMRegistry::Range()) {
+        runGM(f());
+    }
+    for (const skiagm::MultiGMFactory& f : skiagm::MultiGMRegistry::Range()) {
+        skiagm::MultiGMFactoryResult result = f();
+        if (result.errorMsg != "") {
+            SK_ABORT("error while gathering GMs: %s", result.errorMsg.c_str());
+        }
+        for (size_t i = 0; i < result.gms.size(); i++) {
+            runGM(std::move(result.gms[i]));
         }
     }
 
