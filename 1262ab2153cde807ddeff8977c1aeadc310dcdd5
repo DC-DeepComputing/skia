@@ -123,6 +123,24 @@
       "parentUuid": "fcef56d1_a3835bcc",
       "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "394354f2_608b1513",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-25T14:17:18Z",
+      "side": 1,
+      "message": "It only cares about registering the destructors at startup. If there is no code at startup to register the destructor then Chromium doesn\u0027t care.",
+      "parentUuid": "fcef56d1_a3835bcc",
+      "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
