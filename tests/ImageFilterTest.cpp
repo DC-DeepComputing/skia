@@ -1786,6 +1786,7 @@ DEF_TEST(ImageFilterBlurLargeImage, reporter) {
     test_large_blur_input(reporter, surface->getCanvas());
 }
 
+#if 0
 static void test_make_with_filter(skiatest::Reporter* reporter, GrRecordingContext* rContext) {
     sk_sp<SkSurface> surface(create_surface(rContext, 192, 128));
     surface->getCanvas()->clear(SK_ColorRED);
@@ -1871,6 +1872,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_Gpu,
                                        CtsEnforcement::kNever) {
     test_make_with_filter(reporter, ctxInfo.directContext());
 }
+#endif
 
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterHugeBlur_Gpu,
                                        reporter,

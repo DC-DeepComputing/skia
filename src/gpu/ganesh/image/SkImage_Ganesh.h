@@ -98,7 +98,7 @@ public:
 
     void generatingSurfaceIsDeleted() override;
 
-    skif::Context onCreateFilterContext(GrRecordingContext* rContext,
+    skif::Context onCreateFilterContext(const BackEndContext&,
                                         const skif::ContextInfo& ctxInfo) const override;
 
     // From SkImage_GaneshBase.h

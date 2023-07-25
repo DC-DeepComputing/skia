@@ -315,13 +315,20 @@ sk_sp<SkImage> SkImage::makeColorTypeAndColorSpace(SkColorType targetColorType,
 }
 #endif
 
-sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext,
-                                       const SkImageFilter* filter,
-                                       const SkIRect& subset,
-                                       const SkIRect& clipBounds,
-                                       SkIRect* outSubset,
-                                       SkIPoint* offset) const {
-    if (!filter || !outSubset || !offset || !this->bounds().contains(subset)) {
+#include "src/image/SkImage_Base.h"
+
+namespace SkImages {
+
+// TODO: move this to a better location
+sk_sp<SkImage> MakeWithFilter_Shared(
+        const SkImage_Base::BackEndContext& backendContext,
+        sk_sp<SkImage> src,
+        const SkImageFilter* filter,
+        const SkIRect& subset,
+        const SkIRect& clipBounds,
+        SkIRect* outSubset,
+        SkIPoint* offset) {
+    if (!filter || !outSubset || !offset || !src || !src->bounds().contains(subset)) {
         return nullptr;
     }
 
@@ -337,14 +344,14 @@ sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext,
     skif::ContextInfo ctxInfo = {
             skif::Mapping(SkMatrix::Translate(-subset.x(), -subset.y())),
             skif::LayerSpace<SkIRect>(clipBounds.makeOffset(-subset.topLeft())),
-            /*srcImag=*/{}, // Will be filled in with this image after createContext() comes back
-            fInfo.colorType(),
-            fInfo.colorSpace(),
+            /*fSource=*/{}, // Will be filled in with this image after createContext() comes back
+            src->imageInfo().colorType(),
+            src->imageInfo().colorSpace(),
             /*fSurfaceProps=*/{},
             cache.get()};
-    skif::Context context = as_IB(this)->onCreateFilterContext(rContext, ctxInfo);
+    skif::Context context = as_IB(src)->onCreateFilterContext(backendContext, ctxInfo);
 
-    auto srcSpecialImage = context.makeImage(subset, sk_ref_sp(this));
+    auto srcSpecialImage = context.makeImage(subset, src);
     if (!srcSpecialImage) {
         return nullptr;
     }
@@ -377,4 +384,37 @@ sk_sp<SkImage> SkImage::makeWithFilter(GrRecordingContext* rContext,
     offset->fY += (clippedDstRect.y() - dstRect.y());
     *outSubset = clippedDstRect;
     return result->asImage();
+}
+
+sk_sp<SkImage> MakeWithFilter(GrRecordingContext* context,
+                              sk_sp<SkImage> src,
+                              const SkImageFilter* filter,
+                              const SkIRect& subset,
+                              const SkIRect& clipBounds,
+                              SkIRect* outSubset,
+                              SkIPoint* offset) {
+    SkImage_Base::BackEndContext backEndContext;
+    if (context) {
+        backEndContext = context;
+    }
+
+    return MakeWithFilter_Shared(backEndContext,
+                                 std::move(src),
+                                 filter,
+                                 subset,
+                                 clipBounds,
+                                 outSubset,
+                                 offset);
+}
+
+} // namespace SkImages
+
+sk_sp<SkImage> SkImage::makeWithFilter1(GrRecordingContext* rContext,
+                                       const SkImageFilter* filter,
+                                       const SkIRect& subset,
+                                       const SkIRect& clipBounds,
+                                       SkIRect* outSubset,
+                                       SkIPoint* offset) const {
+    return SkImages::MakeWithFilter_Shared(SkImage_Base::BackEndContext(rContext), sk_ref_sp(this),
+                                           filter, subset, clipBounds, outSubset, offset);
 }
