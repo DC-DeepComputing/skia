@@ -9,6 +9,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkOnce.h"
+#include "src/base/SkNoDestructor.h"
 #include "src/core/SkFontDescriptor.h"
 
 class SkFontStyle;
@@ -149,23 +150,20 @@ sk_sp<SkTypeface> SkFontMgr::legacyMakeTypeface(const char familyName[], SkFontS
 }
 
 sk_sp<SkFontMgr> SkFontMgr::RefEmpty() {
-    static sk_sp<SkFontMgr> singleton(new SkEmptyFontMgr);
-    return singleton;
+    static SkNoDestructor<sk_sp<SkFontMgr>> singleton(new SkEmptyFontMgr);
+    return *singleton;
 }
 
 // A global function pointer that's not declared, but can be overriden at startup by test tools.
 sk_sp<SkFontMgr> (*gSkFontMgr_DefaultFactory)() = nullptr;
 
 sk_sp<SkFontMgr> SkFontMgr::RefDefault() {
-    static SkOnce once;
-    static sk_sp<SkFontMgr> singleton;
-
-    once([]{
+    static SkNoDestructor<sk_sp<SkFontMgr>> singleton([]{
         sk_sp<SkFontMgr> fm = gSkFontMgr_DefaultFactory ? gSkFontMgr_DefaultFactory()
                                                         : SkFontMgr::Factory();
-        singleton = fm ? std::move(fm) : RefEmpty();
-    });
-    return singleton;
+        return fm ? std::move(fm) : RefEmpty();
+    }());
+    return *singleton;
 }
 
 /**
