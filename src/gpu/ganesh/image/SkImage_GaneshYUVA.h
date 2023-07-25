@@ -65,8 +65,8 @@ public:
 
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const final;
 
-    skif::Context onCreateFilterContext(GrRecordingContext* rContext,
-                                        const skif::ContextInfo& ctxInfo) const override;
+    skif::Context onCreateFilterContext(const BackEndContext&,
+                                        const skif::ContextInfo&) const override;
 
     // From SkImage_GaneshBase.h
     GrSemaphoresSubmitted flush(GrDirectContext*, const GrFlushInfo&) const override;
@@ -83,6 +83,8 @@ public:
                                                              const SkRect*) const override;
 
     bool setupMipmapsForPlanes(GrRecordingContext*) const;
+
+    GrSurfaceOrigin origin() const override { return fYUVAProxies.textureOrigin(); }
 
 private:
     enum class ColorSpaceMode {

@@ -109,6 +109,8 @@ public:
                                                                      const SkRect*,
                                                                      const SkRect*) const = 0;
 
+    virtual GrSurfaceOrigin origin() const = 0;
+
 protected:
     SkImage_GaneshBase(sk_sp<GrImageContext>, SkImageInfo, uint32_t uniqueID);
 
