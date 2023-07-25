@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb33a6f1_691f3684",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1674,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T16:44:19Z",
+      "side": 1,
+      "message": "tiny nit: prefer `!arguments.empty()`",
+      "range": {
+        "startLine": 1674,
+        "startChar": 13,
+        "endLine": 1674,
+        "endChar": 33
+      },
+      "revId": "d915299c95cf34f2ac25fbe92bd9ef7ee4cfa2a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68b671a3_85cb4a43",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1675,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T16:44:19Z",
+      "side": 1,
+      "message": "This could be moved to L1709 so it\u0027s closer to its usage (or honestly, just removed--it doesn\u0027t really add a lot of value)",
+      "range": {
+        "startLine": 1675,
+        "startChar": 4,
+        "endLine": 1675,
+        "endChar": 36
+      },
+      "revId": "d915299c95cf34f2ac25fbe92bd9ef7ee4cfa2a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf4edcef_db43ff20",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1680,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T16:44:19Z",
+      "side": 1,
+      "message": "Can this happen...? I don\u0027t see a pathway to get a `SwizzleLValue` here given the scalar atomic-uint type. (This is harmless either way, but if we think it\u0027s 100% impossible, we might want to add a `SkDEBUGFAIL` or replace the if-check with an `SkASSERT`... although if we start supporting swizzle-able vector atomics in the future, maybe it could become possible??)",
+      "range": {
+        "startLine": 1680,
+        "startChar": 8,
+        "endLine": 1680,
+        "endChar": 100
+      },
+      "revId": "d915299c95cf34f2ac25fbe92bd9ef7ee4cfa2a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
