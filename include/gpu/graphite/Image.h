@@ -271,6 +271,15 @@ SK_API sk_sp<SkImage> SubsetTextureFrom(skgpu::graphite::Recorder* recorder,
                                         const SkImage* img,
                                         const SkIRect& subset,
                                         SkImage::RequiredProperties props = {});
+
+SK_API sk_sp<SkImage> MakeWithFilter(skgpu::graphite::Recorder* recorder,
+                                     sk_sp<SkImage> src,
+                                     const SkImageFilter* filter,
+                                     const SkIRect& subset,
+                                     const SkIRect& clipBounds,
+                                     SkIRect* outSubset,
+                                     SkIPoint* offset);
+
 } // namespace SkImages
 
 

@@ -91,7 +91,7 @@ protected:
 
         // But measure makeWithFilter() per loop since that's the focus of this benchmark
         for (int j = 0; j < loops; j++) {
-            image = image->makeWithFilter(dContext, mergeFilter.get(), subset, subset,
+            image = image->makeWithFilter1(dContext, mergeFilter.get(), subset, subset,
                                           &discardSubset, &offset);
             SkASSERT(image && image->dimensions() == fImage->dimensions());
         }
