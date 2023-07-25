@@ -70,6 +70,30 @@
       },
       "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eb9aa91_75e8ea7c",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T14:50:13Z",
+      "side": 1,
+      "message": "Don\u0027t worry, Chrome recommends this approach: https://chromium.googlesource.com/chromium/src/+/HEAD/docs/static_initializers.md#Removing-Static-Initializers\n\nAnd Google3 allows it:\nhttp://go/cstyle#common_patterns \"If all else fails, you can create an object dynamically and never delete it by using gtl::NoDestructor.\"\n\nI\u0027d be totally fine with a different version that does this without involving `sk_sp\u003c\u003e` in the static, but I don\u0027t understand how you dodge `~sk_sp` unreffing and deleting the object once the first caller is done with it, so I\u0027d ask you to put that together for me. I\u0027ll +1 it if it works!",
+      "parentUuid": "7ba0daae_d6748f84",
+      "range": {
+        "startLine": 161,
+        "startChar": 11,
+        "endLine": 161,
+        "endChar": 31
+      },
+      "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
