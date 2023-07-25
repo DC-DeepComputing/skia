@@ -20,11 +20,6 @@
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/shaders/SkLocalMatrixShader.h"
 
-#if defined(SK_GRAPHITE)
-#include "src/gpu/graphite/KeyHelpers.h"
-#include "src/gpu/graphite/PaintParamsKey.h"
-#endif
-
 #include <cstring>
 
 class SkWriteBuffer;

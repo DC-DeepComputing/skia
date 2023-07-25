@@ -42,7 +42,24 @@
 #include "src/gpu/graphite/Uniform.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/image/SkImage_Base.h"
+#include "src/shaders/SkBlendShader.h"
+#include "src/shaders/SkColorFilterShader.h"
+#include "src/shaders/SkColorShader.h"
+#include "src/shaders/SkCoordClampShader.h"
+#include "src/shaders/SkEmptyShader.h"
 #include "src/shaders/SkImageShader.h"
+#include "src/shaders/SkLocalMatrixShader.h"
+#include "src/shaders/SkPerlinNoiseShaderImpl.h"
+#include "src/shaders/SkPictureShader.h"
+#include "src/shaders/SkRuntimeShader.h"
+#include "src/shaders/SkShaderBase.h"
+#include "src/shaders/SkTransformShader.h"
+#include "src/shaders/SkTriColorShader.h"
+#include "src/shaders/gradients/SkConicalGradient.h"
+#include "src/shaders/gradients/SkGradientBaseShader.h"
+#include "src/shaders/gradients/SkLinearGradient.h"
+#include "src/shaders/gradients/SkRadialGradient.h"
+#include "src/shaders/gradients/SkSweepGradient.h"
 
 constexpr SkPMColor4f kErrorColor = { 1, 0, 0, 1 };
 
@@ -1194,5 +1211,331 @@ void AddToKey(const KeyContext& keyContext,
     }
     SkUNREACHABLE;
 }
+
+// ==================================================================
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkBlendShader* shader) {
+    SkASSERT(shader);
+
+    BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+    AddToKey(keyContext, builder, gatherer, shader->src().key());
+    AddToKey(keyContext, builder, gatherer, shader->dst().key());
+
+    SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(shader->mode());
+    if (!porterDuffConstants.empty()) {
+        CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, porterDuffConstants);
+        builder->endBlock();
+    } else {
+        BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, shader->mode());
+        builder->endBlock();
+    }
+
+    builder->endBlock();  // BlendShaderBlock
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkCTMShader*) {
+    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+    builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkColorShader* shader) {
+    SkASSERT(shader);
+
+    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
+                                      SkColor4f::FromColor(shader->color()).premul());
+    builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkColor4Shader* shader) {
+    SkASSERT(shader);
+
+    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, shader->color().premul());
+    builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkColorFilterShader* shader) {
+    SkASSERT(shader);
+
+    ColorFilterShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+    AddToKey(keyContext, builder, gatherer, shader->shader());
+    AddToKey(keyContext, builder, gatherer, shader->filter().get());
+
+    builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkCoordClampShader* shader) {
+    SkASSERT(shader);
+
+    CoordClampShaderBlock::CoordClampData data(shader->subset());
+
+    CoordClampShaderBlock::BeginBlock(keyContext, builder, gatherer, &data);
+        AddToKey(keyContext, builder, gatherer, shader->shader().get());
+    builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkEmptyShader*) {
+    SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer, kErrorColor);
+    builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkGradientBaseShader* shader) {
+    SkASSERT(shader);
+
+
+}
+
+static void add_yuv_image_to_key(const KeyContext& keyContext,
+                                 PaintParamsKeyBuilder* builder,
+                                 PipelineDataGatherer* gatherer,
+                                 const SkImageShader* origShader,
+                                 sk_sp<const SkImage> imageToDraw,
+                                 SkSamplingOptions sampling) const {
+    SkASSERT(!imageToDraw->isAlphaOnly());
+
+    const YUVATextureProxies& yuvaProxies =
+            static_cast<Image_YUVA*>(imageToDraw.get())->yuvaProxies();
+    const SkYUVAInfo& yuvaInfo = yuvaProxies.yuvaInfo();
+
+    YUVImageShaderBlock::ImageData imgData(sampling, origShader->tileModeX(),
+                                           origShader->tileModeY(), origShader->subset());
+    imgData.fImgSize = { (float)imageToDraw->width(), (float)imageToDraw->height() };
+    for (int i = 0; i < SkYUVAInfo::kYUVAChannelCount; ++i) {
+        memset(&imgData.fChannelSelect[i], 0, sizeof(SkColor4f));
+    }
+    int textureCount = 0;
+    SkYUVAInfo::YUVALocations yuvaLocations = yuvaProxies.yuvaLocations();
+    for (int locIndex = 0; locIndex < SkYUVAInfo::kYUVAChannelCount; ++locIndex) {
+        auto [yuvPlane, yuvChannel] = yuvaLocations[locIndex];
+        if (yuvPlane >= 0) {
+            SkASSERT(locIndex == textureCount);
+            TextureProxyView view = yuvaProxies.makeView(yuvPlane);
+            imgData.fTextureProxies[locIndex] = view.refProxy();
+            imgData.fChannelSelect[locIndex][static_cast<int>(yuvChannel)] = 1.0f;
+            ++textureCount;
+        }
+    }
+    SkASSERT(textureCount == 3 || textureCount == 4);
+    // If the format has no alpha, we still need to set the proxy to something
+    if (textureCount == 3) {
+        imgData.fTextureProxies[3] = imgData.fTextureProxies[0];
+    }
+    float yuvM[20];
+    SkColorMatrix_YUV2RGB(yuvaInfo.yuvColorSpace(), yuvM);
+    // We drop the fourth column entirely since the transformation
+    // should not depend on alpha. The fifth column is sent as a separate
+    // vector. The fourth row is also dropped entirely because alpha should
+    // never be modified.
+    SkASSERT(yuvM[3] == 0 && yuvM[8] == 0 && yuvM[13] == 0 && yuvM[18] == 1);
+    SkASSERT(yuvM[15] == 0 && yuvM[16] == 0 && yuvM[17] == 0 && yuvM[19] == 0);
+    imgData.fYUVtoRGBMatrix.setAll(
+        yuvM[ 0], yuvM[ 1], yuvM[ 2],
+        yuvM[ 5], yuvM[ 6], yuvM[ 7],
+        yuvM[10], yuvM[11], yuvM[12]
+    );
+    imgData.fYUVtoRGBTranslate = {yuvM[4], yuvM[9], yuvM[14]};
+
+    if (!origShader->isRaw()) {
+        imgData.fSteps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
+                                                imageToDraw->alphaType(),
+                                                keyContext.dstColorInfo().colorSpace(),
+                                                keyContext.dstColorInfo().alphaType());
+    }
+
+    // The YUV formats can encode their own origin including reflection and rotation,
+    // so we need to wrap our block in an additional local matrix transform.
+    SkMatrix originMatrix = yuvaInfo.originMatrix();
+    LocalMatrixShaderBlock::LMShaderData lmShaderData(originMatrix);
+
+    KeyContextWithLocalMatrix newContext(keyContext, originMatrix);
+
+    LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, &lmShaderData);
+
+        YUVImageShaderBlock::BeginBlock(newContext, builder, gatherer, &imgData);
+        builder->endBlock();
+
+    builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkImageShader* shader) {
+    SkASSERT(shader);
+
+    auto [ imageToDraw, newSampling ] = skgpu::graphite::GetGraphiteBacked(keyContext.recorder(),
+                                                                           shader->image().get(),
+                                                                           shader->sampling());
+    if (!imageToDraw) {
+        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
+                                          kErrorColor);
+        builder->endBlock();
+        return;
+    }
+    if (as_IB(imageToDraw)->isYUVA()) {
+        return add_yuv_image_to_key(keyContext,
+                                      builder,
+                                      gatherer,
+                                      shader,
+                                      std::move(imageToDraw),
+                                      newSampling);
+    }
+
+    skgpu::Mipmapped mipmapped = (newSampling.mipmap != SkMipmapMode::kNone)
+                                     ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
+
+    auto [view, _] = skgpu::graphite::AsView(keyContext.recorder(), imageToDraw.get(), mipmapped);
+
+    ImageShaderBlock::ImageData imgData(shader->sampling(), shader->tileModeX(),
+                                        shader->tileModeY(), shader->subset(),
+                                        ReadSwizzle::kRGBA);
+    imgData.fSampling = newSampling;
+    imgData.fTextureProxy = view.refProxy();
+    skgpu::Swizzle readSwizzle = view.swizzle();
+    // If the color type is alpha-only, propagate the alpha value to the other channels.
+    if (imageToDraw->isAlphaOnly()) {
+        readSwizzle = skgpu::Swizzle::Concat(readSwizzle, skgpu::Swizzle("aaaa"));
+    }
+    imgData.fReadSwizzle = swizzle_class_to_read_enum(readSwizzle);
+
+    if (!fRaw) {
+        imgData.fSteps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
+                                                imageToDraw->alphaType(),
+                                                keyContext.dstColorInfo().colorSpace(),
+                                                keyContext.dstColorInfo().alphaType());
+
+        if (imageToDraw->isAlphaOnly()) {
+            SkSpan<const float> constants = skgpu::GetPorterDuffBlendConstants(SkBlendMode::kDstIn);
+            BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
+
+                // src
+                ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
+                builder->endBlock();
+
+                // dst
+                SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
+                                                  keyContext.paintColor());
+                builder->endBlock();
+
+                CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, constants);
+                builder->endBlock();
+
+            builder->endBlock();
+            return;
+        }
+    }
+
+    ImageShaderBlock::BeginBlock(keyContext, builder, gatherer, &imgData);
+    builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkLocalMatrixShader* shader) {
+    SkASSERT(shader);
+
+    LocalMatrixShaderBlock::LMShaderData lmShaderData(shader->localMatrix());
+
+    KeyContextWithLocalMatrix newContext(keyContext, shader->localMatrix());
+
+    LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, &lmShaderData);
+
+    AddToKey(newContext, builder, gatherer, shader->wrappedShader().get());
+
+    builder->endBlock();
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkPerlinNoiseShader* shader) {
+    SkASSERT(shader);
+
+
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkPictureShader* shader) {
+    SkASSERT(shader);
+
+
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkRuntimeShader* shader) {
+    SkASSERT(shader);
+
+
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkTransformShader* shader) {
+    SkASSERT(shader);
+
+
+}
+
+static void add_to_key(const KeyContext& keyContext,
+                       PaintParamsKeyBuilder* builder,
+                       PipelineDataGatherer* gatherer,
+                       const SkTriColorShader* shader) {
+    SkASSERT(shader);
+
+
+}
+
+void AddToKey(const KeyContext& keyContext,
+              PaintParamsKeyBuilder* builder,
+              PipelineDataGatherer* gatherer,
+              const SkShader* shader) {
+    if (!shader) {
+        return;
+    }
+    switch (as_SB(shader)->type()) {
+#define M(type)                                                        \
+    case SkShaderBase::ShaderType::k##type:                             \
+        add_to_key(keyContext,                                         \
+                   builder,                                            \
+                   gatherer,                                           \
+                   static_cast<const Sk##type##Shader*>(shader)); \
+        return;
+        SK_ALL_SHADERS(M)
+#undef M
+    }
+    SkUNREACHABLE;
+}
+
 
 } // namespace skgpu::graphite
