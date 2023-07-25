@@ -487,6 +487,24 @@
       "parentUuid": "99113da3_d7493dc6",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f29040a_a7c9f5bf",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-25T14:30:06Z",
+      "side": 1,
+      "message": "I put in a request to mirror that github repo: https://bugs.chromium.org/p/chromium/issues/detail?id\u003d1467522",
+      "parentUuid": "653f0d5d_5e855942",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
