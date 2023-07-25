@@ -46,6 +46,30 @@
       },
       "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ba0daae_d6748f84",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-25T14:39:56Z",
+      "side": 1,
+      "message": "Sure you can, just ref the object and leak the ref into the pointer. It\u0027s the same thing that\u0027s being done here.\n\nI do hate purposefully introducing a leak (even if it shouldn\u0027t matter here). What this is really pointing out is that Skia is a bad library and has globals and no \"library object\" to hang \"defaults\" off of. Basically \"RefDefault\" is bad and we should feel bad for having it, but no one is willing to do the work to get rid of it.",
+      "parentUuid": "8310ba79_9ba30b56",
+      "range": {
+        "startLine": 161,
+        "startChar": 11,
+        "endLine": 161,
+        "endChar": 31
+      },
+      "revId": "dcbcb10dfd0c0c721e84b443ec9b8e9d3a7033e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
