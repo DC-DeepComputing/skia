@@ -263,15 +263,52 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 		// We want to test both the OpenGL config and the GLES config on Linux Intel:
 		// GL is used by Chrome, GLES is used by ChromeOS.
+		// Also do the Ganesh threading verification test (render with and without
+		// worker threads, using only the SW path renderer, and compare the results).
 		if b.matchGpu("Intel") && b.isLinux() {
-			configs = append(configs, "gles", "glesdft")
+			configs = append(configs, "gles", "glesdft", "gltestthreading")
+			// skbug.com/6333, skbug.com/6419, skbug.com/6702
+			skip("gltestthreading", "gm", ALL, "lcdblendmodes")
+			skip("gltestthreading", "gm", ALL, "lcdoverlap")
+			skip("gltestthreading", "gm", ALL, "textbloblooper")
+			// All of these GMs are flaky, too:
+			skip("gltestthreading", "gm", ALL, "dftext_blob_persp")
+			skip("gltestthreading", "gm", ALL, "dftext")
+			skip("gltestthreading", "gm", ALL, "gpu_blur_utils")
+			skip("gltestthreading", "gm", ALL, "gpu_blur_utils_ref")
+			skip("gltestthreading", "gm", ALL, "gpu_blur_utils_subset_rect")
+			skip("gltestthreading", "gm", ALL, "gpu_blur_utils_subset_rect_ref")
+			// skbug.com/7523 - Flaky on various GPUs
+			skip("gltestthreading", "gm", ALL, "orientation")
+			// These GMs only differ in the low bits
+			skip("gltestthreading", "gm", ALL, "stroketext")
+			skip("gltestthreading", "gm", ALL, "draw_image_set")
+
+			// Fail on Iris Xe (skbug:13921)
+			skip("gltestthreading", "gm", ALL, "circular_arcs_stroke_and_fill_round")
+			skip("gltestthreading", "gm", ALL, "degeneratesegments")
+			skip("gltestthreading", "gm", ALL, "imagemakewithfilter")
+			skip("gltestthreading", "gm", ALL, "imagemakewithfilter_crop_ref")
+			skip("gltestthreading", "gm", ALL, "ovals")
+			skip("gltestthreading", "gm", ALL, "persp_images")
+			skip("gltestthreading", "gm", ALL, "rtif_distort")
+			skip("gltestthreading", "gm", ALL, "teenystrokes")
+			skip("gltestthreading", "gm", ALL, "texel_subset_linear_mipmap_linear_down")
+			skip("gltestthreading", "gm", ALL, "texel_subset_linear_mipmap_nearest_down")
+			skip("gltestthreading", "gm", ALL, "yuv420_odd_dim_repeat")
+
+			skip("gltestthreading", "svg", ALL, "filters-conv-01-f.svg")
+			skip("gltestthreading", "svg", ALL, "filters-displace-01-f.svg")
+			skip("gltestthreading", "svg", ALL, "filters-offset-01-b.svg")
+			skip("gltestthreading", "svg", ALL, "gallardo.svg")
+			skip("gltestthreading", "svg", ALL, "masking-filter-01-f.svg")
+
 		}
 
 		// Dawn bot *only* runs the dawn config
 		if b.extraConfig("Dawn") && !b.extraConfig("Graphite") {
-			// The SPIR-V reader emits bad code for a `matrixCompMult` that overflows. (tint:1989)
-			skip(ALL, "test", ALL, "SkSLIntrinsicMatrixCompMultES2_GPU")
-
+			// tint:1045: Tint doesn't implement MatrixInverse yet.
+			skip(ALL, "gm", ALL, "runtime_intrinsics_matrix")
 			configs = []string{"dawn"}
 		}
 
@@ -985,10 +1022,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "gm", ALL, "perlinnoise_layered") // skia:14411
 	}
 
-	if b.gpu("IntelIrisXe") && b.matchOs("Win") && b.extraConfig("Vulkan") {
-		skip(ALL, "tests", ALL, "VkYCbcrSampler_DrawImageWithYcbcrSampler") // skia:14628
-	}
-
 	// skia:4769
 	skip("pic-8888", "gm", ALL, "drawfilter")
 
@@ -1193,8 +1226,12 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			// Various Nvidia GPUs crash or generate errors when assembling weird matrices
 			skip(ALL, "tests", ALL, "SkSLMatrixConstructorsES2_GPU") // skia:12443
 			skip(ALL, "tests", ALL, "SkSLMatrixConstructorsES3_GPU") // skia:12443
+		}
+	}
 
-			// Nvidia drivers erroneously constant-fold expressions with side-effects in
+	if b.gpu("GTX660") || b.gpu("GTX960") || b.gpu("Tegra3") {
+		if !b.extraConfig("Vulkan") {
+			// Older Nvidia drivers erroneously constant-fold expressions with side-effects in
 			// constructors when compiling GLSL.
 			skip(ALL, "tests", ALL, "SkSLPreserveSideEffects_GPU")  // skia:13035
 			skip(ALL, "tests", ALL, "SkSLStructFieldNoFolding_GPU") // skia:13395
