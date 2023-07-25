@@ -39,6 +39,30 @@
       },
       "revId": "f9e1ba39df5ca22839aadadfda974b67f1f4403e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05189f13_68044cf0",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-25T13:04:21Z",
+      "side": 1,
+      "message": "Added a member variable \u0026 method to Caps, but for now just assert that we support the extension. Added a TODO.",
+      "parentUuid": "bd2dc890_70f2d1fa",
+      "range": {
+        "startLine": 663,
+        "startChar": 20,
+        "endLine": 668,
+        "endChar": 57
+      },
+      "revId": "f9e1ba39df5ca22839aadadfda974b67f1f4403e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
