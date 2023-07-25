@@ -116,6 +116,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57cc2ca2_12770c0e",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 894,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-25T16:40:38Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "873f86ee_70662bdb",
+      "range": {
+        "startLine": 894,
+        "startChar": 72,
+        "endLine": 894,
+        "endChar": 80
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1952a2b_dae29ad8",
@@ -129,6 +153,30 @@
       "writtenOn": "2023-07-25T15:34:03Z",
       "side": 1,
       "message": "I\u0027m sure this was pre-existing behavior, but I have to ask: When we are convolving alpha, we operate directly on premul colors? That\u0027s surprising to me.",
+      "range": {
+        "startLine": 959,
+        "startChar": 30,
+        "endLine": 959,
+        "endChar": 74
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d4d9c1e_fb72140c",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-25T16:40:38Z",
+      "side": 1,
+      "message": "From the SVG spec on feConvolveMatrix\u0027s preserveAlpha property, it says: \"A value of \"true\" indicates that the convolution will only apply to the color channels. In this case, the filter will temporarily unpremultiply the color component values and apply the kernel.\"\n\nNothing explicitly states that it does premul colors when alpha isn\u0027t preserved (corresponding to our `convolveAlpha \u003d true` case), but it would make sense that that is what it\u0027s implying.",
+      "parentUuid": "b1952a2b_dae29ad8",
       "range": {
         "startLine": 959,
         "startChar": 30,
@@ -176,6 +224,30 @@
       "side": 1,
       "message": "Yeah, that\u0027s actually respectable timing - agree that we leave it as-is for now.",
       "parentUuid": "a22fddeb_63a8f582",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 1010,
+        "endChar": 99
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eca9fcb1_ffbfb58c",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-25T16:40:38Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6ac00f60_8e9a0be9",
       "range": {
         "startLine": 985,
         "startChar": 0,
