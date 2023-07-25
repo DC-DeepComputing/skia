@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a22fddeb_63a8f582",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-25T14:49:56Z",
+      "side": 1,
+      "message": "PTAL at this updated shader, which packs the kernel into vec4s to not waste space when on std140.\n\nOn the raster backend on my workstation, this runs a 3x3 kernel (GM_matrixconvolution) in 10.5ms. If I provided a dedicated 3x3 shader, raster backend runs in 7.9ms. There wasn\u0027t any meaningful timing difference on my high-end GPU, but I\u0027m sure lower-end devices might see an improvement. For now, Rob and I agreed to leave it as 2 possible shaders and we can add the 3x3 option if regressions are reported.",
+      "range": {
+        "startLine": 985,
+        "startChar": 0,
+        "endLine": 1010,
+        "endChar": 99
+      },
+      "revId": "051e7cea29dd5947b63c15fdf8209c9172308772",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
