@@ -87,6 +87,24 @@
       "parentUuid": "08671768_5626138e",
       "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcef56d1_a3835bcc",
+        "filename": "src/core/SkFontMgr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-25T14:15:47Z",
+      "side": 1,
+      "message": "Chromium detects/warns for atexits at global scope but I think it misses atexit dtors in functions. I don\u0027t know how their detection works tbh. I fixed a few long-lived ones last year (https://crbug.com/skia/13432). At some point last year I had wired up something which auto-detected them (ClangTiny??) but I don\u0027t remember how I did it now, and I didn\u0027t fix them all.",
+      "parentUuid": "08671768_5626138e",
+      "revId": "1262ab2153cde807ddeff8977c1aeadc310dcdd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
