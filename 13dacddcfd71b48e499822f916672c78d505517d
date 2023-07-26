@@ -22,6 +22,30 @@
       },
       "revId": "13dacddcfd71b48e499822f916672c78d505517d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a309b10_6a5b72c7",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 19829
+      },
+      "writtenOn": "2023-07-26T09:11:03Z",
+      "side": 1,
+      "message": "The problem with doing it this way is that we still need to handle the `this-\u003eparseParenthesized(\"rgba\"...)` that happens before and reusing the code like this might lead us to have a hairy solution to handle the extra \"a\" before the parenthesis.\nI think also compartmentalizing component token into parseColorComponentIntegralToken and parseColorComponentFractionalToken might improve legibility.",
+      "parentUuid": "3e5ed612_1261ad20",
+      "range": {
+        "startLine": 379,
+        "startChar": 0,
+        "endLine": 380,
+        "endChar": 39
+      },
+      "revId": "13dacddcfd71b48e499822f916672c78d505517d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
