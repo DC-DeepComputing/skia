@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98cc33a1_c6c55d62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-26T13:33:53Z",
+      "side": 1,
+      "message": "Other than Kevin\u0027s comment, change lgtm, thanks for adjusting 😊",
+      "revId": "726a18a4b30c128b845a15d1abff63c9a16da788",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdfa2e9c_bb98fcfa",
