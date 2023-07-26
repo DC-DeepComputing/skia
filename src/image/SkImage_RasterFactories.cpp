@@ -15,7 +15,9 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkMath.h"
 #include "src/core/SkCompressedDataUtils.h"
+#include "src/core/SkImageFilterTypes.h"
 #include "src/core/SkImagePriv.h"
+#include "src/image/SkImageFilterUtils.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Raster.h"
 
@@ -90,6 +92,25 @@ sk_sp<SkImage> RasterFromData(const SkImageInfo& info, sk_sp<SkData> data, size_
     }
 
     return sk_make_sp<SkImage_Raster>(info, std::move(data), rowBytes);
+}
+
+sk_sp<SkImage> MakeWithFilter(sk_sp<SkImage> src,
+                              const SkImageFilter* filter,
+                              const SkIRect& subset,
+                              const SkIRect& clipBounds,
+                              SkIRect* outSubset,
+                              SkIPoint* offset) {
+
+    return MakeWithFilter_Shared([](const skif::ContextInfo& ctxInfo) -> skif::Context {
+                                     return skif::Context::MakeRaster(ctxInfo);
+                                 },
+                                 std::move(src),
+                                 filter,
+                                 subset,
+                                 clipBounds,
+                                 outSubset,
+                                 offset);
+
 }
 
 // TODO: this could be improved to decode and make use of the mipmap
