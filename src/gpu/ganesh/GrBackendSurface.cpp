@@ -870,7 +870,7 @@ GrBackendFormat GrBackendTexture::getBackendFormat() const {
     switch (fBackend) {
 #ifdef SK_GL
         case GrBackendApi::kOpenGL:
-            return GrBackendFormat::MakeGL(fGLInfo.info().fFormat, fGLInfo.info().fTarget);
+            SK_ABORT("Not impl");
 #endif
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan: {
@@ -1238,7 +1238,7 @@ GrBackendFormat GrBackendRenderTarget::getBackendFormat() const {
     switch (fBackend) {
 #ifdef SK_GL
         case GrBackendApi::kOpenGL:
-            return GrBackendFormat::MakeGL(fGLInfo.fFormat, GR_GL_TEXTURE_NONE);
+            SK_ABORT("Not impl");
 #endif
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan: {
