@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb334a39_919f5313",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-26T12:55:02Z",
+      "side": 1,
+      "message": "PTAL -- fontations_tests passed locally",
+      "revId": "3ee78b44bc6bdd67854824b97d671cdb69eb075f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
