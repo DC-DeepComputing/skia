@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63e140e4_a5cb2cd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20584
+      },
+      "writtenOn": "2023-07-26T18:18:50Z",
+      "side": 1,
+      "message": "maryla - ptal",
+      "revId": "dad6f1e4c7d29a58c5b3b2967bfb890c69d30602",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
