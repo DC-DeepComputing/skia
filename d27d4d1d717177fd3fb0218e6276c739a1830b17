@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "665ebeb3_82e2d8ef",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1452,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2023-07-26T14:52:40Z",
+      "side": 0,
+      "message": "This is no longer needed, because fLastMoveToIndex is already negative if the last path ended with a close.\n\nIf the new addPath specification is followed, it is actually the opposite case that needs handling: if the last path doesn\u0027t end with a close, then we have started a new path with the current end point as the start point, so we would need a moveTo if we add further segments:\n\n    if (fLastMoveToIndex \u003e\u003d 0 \u0026\u0026 [last verb !\u003d moveTo]) {\n      fLastMoveToIndex \u003d ~(src-\u003ecountPoints() - 1);\n    }\n\nBut this should be addressed in a different issue and CL.",
+      "range": {
+        "startLine": 1452,
+        "startChar": 7,
+        "endLine": 1452,
+        "endChar": 68
+      },
+      "revId": "d27d4d1d717177fd3fb0218e6276c739a1830b17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
