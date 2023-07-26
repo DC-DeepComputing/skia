@@ -60,6 +60,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c5077990_fe03b575",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1383,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2023-07-26T16:58:14Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "32ae93e6_9aa73852",
+      "range": {
+        "startLine": 1378,
+        "startChar": 2,
+        "endLine": 1383,
+        "endChar": 2
+      },
+      "revId": "af8797842910510551140a481dcb805782298972",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a917ef88_1263f578",
         "filename": "src/core/SkPath.cpp",
         "patchSetId": 1

@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "368a02e2_bde41916",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1251,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2023-07-26T16:58:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04fdd2f2_3324ec35",
+      "range": {
+        "startLine": 1251,
+        "startChar": 29,
+        "endLine": 1251,
+        "endChar": 73
+      },
+      "revId": "6cf056ddfcc4ab04914f1cd9645792cbba5af850",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b7faa39_b9b5d0d8",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-07-26T16:28:28Z",
       "side": 1,
       "message": "It wasn\u0027t immediately clear why this holds.  Let\u0027s move it right after `injectMoveToIfNeeded()` to make it more obvious.",
+      "range": {
+        "startLine": 1470,
+        "startChar": 24,
+        "endLine": 1470,
+        "endChar": 55
+      },
+      "revId": "6cf056ddfcc4ab04914f1cd9645792cbba5af850",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b4a95b4_ff4770c3",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1470,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2023-07-26T16:58:14Z",
+      "side": 1,
+      "message": "injectMoveToIfNeeded very clearly sets fLastMoveToIndex to points.count if it is negative, so this assert is quite pointless.  Removing it.",
+      "parentUuid": "1b7faa39_b9b5d0d8",
       "range": {
         "startLine": 1470,
         "startChar": 24,
