@@ -1193,8 +1193,12 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			// Various Nvidia GPUs crash or generate errors when assembling weird matrices
 			skip(ALL, "tests", ALL, "SkSLMatrixConstructorsES2_GPU") // skia:12443
 			skip(ALL, "tests", ALL, "SkSLMatrixConstructorsES3_GPU") // skia:12443
+		}
+	}
 
-			// Nvidia drivers erroneously constant-fold expressions with side-effects in
+	if b.gpu("GTX660") || b.gpu("GTX960") || b.gpu("Tegra3") {
+		if !b.extraConfig("Vulkan") {
+			// Older Nvidia drivers erroneously constant-fold expressions with side-effects in
 			// constructors when compiling GLSL.
 			skip(ALL, "tests", ALL, "SkSLPreserveSideEffects_GPU")  // skia:13035
 			skip(ALL, "tests", ALL, "SkSLStructFieldNoFolding_GPU") // skia:13395
