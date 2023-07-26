@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b210c231_ff1aa749",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2023-07-26T13:38:38Z",
+      "side": 1,
+      "message": "The fundamental issue is still broken, https://g-issues.skia.org/issues/40043389\n\nI added a fidl showing a completely broken calculation of the start position of the last path component when a closed path is added by .addPath(): https://fiddle.skia.org/c/fd053435173ca2f28ef48966175ce36d",
+      "revId": "af8797842910510551140a481dcb805782298972",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32ae93e6_9aa73852",

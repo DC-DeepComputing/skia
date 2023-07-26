@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "749973c6_0f544f74",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1389,
+      "author": {
+        "id": 9349
+      },
+      "writtenOn": "2023-07-26T13:38:38Z",
+      "side": 0,
+      "message": "This is not needed, because fLastMoveToIndex from src is negated if the last verb of src is close, and not otherwise.  It was introduced in https://skia-review.googlesource.com/c/skia/+/342616 but that tackled the symptom of a wrong sign here, not the cause of it.",
+      "range": {
+        "startLine": 1386,
+        "startChar": 5,
+        "endLine": 1389,
+        "endChar": 9
+      },
+      "revId": "d31b15da6e33f25eae6fcd8ce1b440efc27fe61d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
