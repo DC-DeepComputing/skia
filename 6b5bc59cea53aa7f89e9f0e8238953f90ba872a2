@@ -16,6 +16,40 @@
       "message": "PTAL -- all tests passed",
       "revId": "6b5bc59cea53aa7f89e9f0e8238953f90ba872a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46a5ac40_e53a19bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-26T05:37:21Z",
+      "side": 1,
+      "message": "The `generateMetrics` in `src/ports/SkTypeface_fontations.cpp` should be simple to update.\n\nIt looks like `BazelTest-cpu_tests-tests-cpu_only_debug_rbe-linux_x64` is supposed to be running the fontations tests but there is a TODO at the bottom of `tests/BUILD.bazel` with the commented out `#\":fontations_tests\",` stating that RBE doesn\u0027t currently work with Rust. So unfortunately in order to build the needed ffi header files requires a local Bazel build of `:fontations_tests`.",
+      "revId": "6b5bc59cea53aa7f89e9f0e8238953f90ba872a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4b8cc22_c40002a6",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-26T05:37:21Z",
+      "side": 1,
+      "message": "This appears to be another implementation of `SkRectPriv::Is16Bit` which is already used by `SkScalerContext::GenerateMetricsFromPath`?",
+      "revId": "6b5bc59cea53aa7f89e9f0e8238953f90ba872a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
