@@ -44,6 +44,7 @@
 #include "src/gpu/ganesh/SurfaceContext.h"
 #include "src/gpu/ganesh/image/GrImageUtils.h"
 #include "src/gpu/ganesh/image/SkImage_Ganesh.h"
+#include "src/image/SkImageFilterUtils.h"
 #include "src/image/SkImage_Base.h"
 
 #include <functional>
@@ -410,6 +411,34 @@ sk_sp<SkImage> SubsetTextureFrom(GrDirectContext* context,
     }
     auto subsetImg = img->makeSubset(context, subset);
     return SkImages::TextureFromImage(context, subsetImg.get());
+}
+
+sk_sp<SkImage> MakeWithFilter(GrRecordingContext* rContext,
+                              sk_sp<SkImage> src,
+                              const SkImageFilter* filter,
+                              const SkIRect& subset,
+                              const SkIRect& clipBounds,
+                              SkIRect* outSubset,
+                              SkIPoint* offset) {
+    if (!rContext) {
+        return nullptr;
+    }
+
+    GrSurfaceOrigin origin = kTopLeft_GrSurfaceOrigin;
+    if (src && as_IB(src)->isGaneshBacked()) {
+        SkImage_GaneshBase* base = static_cast<SkImage_GaneshBase*>(src.get());
+        origin = base->origin();
+    }
+
+    return MakeWithFilter_Shared([&](const skif::ContextInfo& ctxInfo) -> skif::Context {
+                                     return skif::MakeGaneshContext(rContext, origin, ctxInfo);
+                                 },
+                                 std::move(src),
+                                 filter,
+                                 subset,
+                                 clipBounds,
+                                 outSubset,
+                                 offset);
 }
 
 }
