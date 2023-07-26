@@ -249,23 +249,6 @@ void SkConicalGradient::appendGradientStages(SkArenaAlloc* alloc,
     }
 }
 
-#if defined(SK_GRAPHITE)
-void SkConicalGradient::addToKey(const skgpu::graphite::KeyContext& keyContext,
-                                 skgpu::graphite::PaintParamsKeyBuilder* builder,
-                                 skgpu::graphite::PipelineDataGatherer* gatherer) const {
-    this->addToKeyCommon(keyContext,
-                         builder,
-                         gatherer,
-                         GradientType::kConical,
-                         fCenter1,
-                         fCenter2,
-                         fRadius1,
-                         fRadius2,
-                         0.0f,
-                         0.0f);
-}
-#endif
-
 // assumes colors is SkColor4f* and pos is SkScalar*
 #define EXPAND_1_COLOR(count)            \
     SkColor4f tmp[2];                    \

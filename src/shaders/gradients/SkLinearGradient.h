@@ -23,11 +23,6 @@ public:
     SkLinearGradient(const SkPoint pts[2], const Descriptor&);
 
     GradientType asGradient(GradientInfo* info, SkMatrix* localMatrix) const override;
-#if defined(SK_GRAPHITE)
-    void addToKey(const skgpu::graphite::KeyContext&,
-                  skgpu::graphite::PaintParamsKeyBuilder*,
-                  skgpu::graphite::PipelineDataGatherer*) const override;
-#endif
 
 protected:
     SkLinearGradient(SkReadBuffer& buffer);

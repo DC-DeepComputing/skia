@@ -436,6 +436,20 @@ void AddToKey(const KeyContext& keyContext,
               PipelineDataGatherer* gatherer,
               const SkColorFilter* filter);
 
+/**
+ *  Add implementation details, for the specified backend, of this SkShader to the
+ *  provided key.
+ *
+ *  @param keyContext backend context for key creation
+ *  @param builder    builder for creating the key for this SkShader
+ *  @param gatherer   if non-null, storage for this colorFilter's data
+ *  @param shader     This function is a no-op if shader is null.
+ */
+void AddToKey(const KeyContext& keyContext,
+              PaintParamsKeyBuilder* builder,
+              PipelineDataGatherer* gatherer,
+              const SkShader* shader);
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_KeyHelpers_DEFINED

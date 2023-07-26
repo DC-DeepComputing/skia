@@ -64,11 +64,6 @@ public:
                                   const SkMatrix* localMatrix);
 
     GradientType asGradient(GradientInfo* info, SkMatrix* localMatrix) const override;
-#if defined(SK_GRAPHITE)
-    void addToKey(const skgpu::graphite::KeyContext&,
-                  skgpu::graphite::PaintParamsKeyBuilder*,
-                  skgpu::graphite::PipelineDataGatherer*) const override;
-#endif
     bool isOpaque() const override;
 
     SkScalar getCenterX1() const { return SkPoint::Distance(fCenter1, fCenter2); }

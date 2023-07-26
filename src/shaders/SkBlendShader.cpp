@@ -106,30 +106,6 @@ bool SkBlendShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixR
     return true;
 }
 
-#if defined(SK_GRAPHITE)
-void SkBlendShader::addToKey(const skgpu::graphite::KeyContext& keyContext,
-                             skgpu::graphite::PaintParamsKeyBuilder* builder,
-                             skgpu::graphite::PipelineDataGatherer* gatherer) const {
-    using namespace skgpu::graphite;
-
-    BlendShaderBlock::BeginBlock(keyContext, builder, gatherer);
-
-    as_SB(fSrc)->addToKey(keyContext, builder, gatherer);
-    as_SB(fDst)->addToKey(keyContext, builder, gatherer);
-
-    SkSpan<const float> porterDuffConstants = skgpu::GetPorterDuffBlendConstants(fMode);
-    if (!porterDuffConstants.empty()) {
-        CoeffBlenderBlock::BeginBlock(keyContext, builder, gatherer, porterDuffConstants);
-        builder->endBlock();
-    } else {
-        BlendModeBlenderBlock::BeginBlock(keyContext, builder, gatherer, fMode);
-        builder->endBlock();
-    }
-
-    builder->endBlock();  // BlendShaderBlock
-}
-#endif
-
 sk_sp<SkShader> SkShaders::Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src) {
     if (!src || !dst) {
         return nullptr;
