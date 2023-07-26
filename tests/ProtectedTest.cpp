@@ -25,7 +25,7 @@
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 #endif
 
-namespace {
+//namespace {
 
 bool context_supports_protected(GrDirectContext* dContext) {
     [[maybe_unused]] const GrCaps* caps = dContext->priv().caps();
@@ -122,12 +122,10 @@ void check_image_be_protection(SkImage* image,
 
 sk_sp<SkImage> create_protected_skimage(GrDirectContext* dContext,
                                         skiatest::Reporter* reporter,
+                                        SkISize size,
                                         SkColor4f color,
                                         bool isProtected) {
-    const int kW = 8;
-    const int kH = 8;
-
-    SkImageInfo ii = SkImageInfo::Make(kW, kH, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(size, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
 
     sk_sp<SkImage> image = sk_gpu_test::MakeBackendTextureImage(dContext,
                                                                 ii,
@@ -147,7 +145,7 @@ sk_sp<SkImage> create_protected_skimage(GrDirectContext* dContext,
 }
 
 
-} // anonymous namespace
+//} // anonymous namespace
 
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
@@ -179,7 +177,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
     }
 
     for (bool isProtected : { true, false }) {
-        create_protected_skimage(dContext, reporter, SkColors::kBlue, isProtected);
+        create_protected_skimage(dContext, reporter, {}, SkColors::kBlue, isProtected);
     }
 
     for (bool renderable : { true, false }) {
