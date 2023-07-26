@@ -50,6 +50,24 @@
       "message": "This appears to be another implementation of `SkRectPriv::Is16Bit` which is already used by `SkScalerContext::GenerateMetricsFromPath`?",
       "revId": "6b5bc59cea53aa7f89e9f0e8238953f90ba872a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58f868f7_6dfe0b19",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-26T12:27:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4b8cc22_c40002a6",
+      "revId": "6b5bc59cea53aa7f89e9f0e8238953f90ba872a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
