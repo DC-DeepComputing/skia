@@ -1649,7 +1649,7 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
                 dy = -dy;
             }
 
-            memset(glyph.fImage, 0, glyph.rowBytes() * glyph.fHeight);
+            memset(glyph.fImage, 0, glyph.rowBytes() * glyph.height());
 
             if (SkMask::kLCD16_Format == glyph.fMaskFormat) {
                 const bool doBGR = SkToBool(fRec.fFlags & SkScalerContext::kLCD_BGROrder_Flag);
@@ -1741,8 +1741,8 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
                 FT_Outline_Translate(outline, dx - ((bbox.xMin + dx) & ~63),
                                               dy - ((bbox.yMin + dy) & ~63));
 
-                target.width = glyph.fWidth;
-                target.rows = glyph.fHeight;
+                target.width = glyph.width();
+                target.rows = glyph.height();
                 target.pitch = glyph.rowBytes();
                 target.buffer = reinterpret_cast<uint8_t*>(glyph.fImage);
                 target.pixel_mode = compute_pixel_mode(glyph.fMaskFormat);
@@ -1802,7 +1802,7 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
                                                      kPremul_SkAlphaType));
             if (!unscaledBitmap.tryAllocPixels()) {
                 // TODO: set the fImage to indicate "missing"
-                memset(glyph.fImage, 0, glyph.rowBytes() * glyph.fHeight);
+                memset(glyph.fImage, 0, glyph.rowBytes() * glyph.height());
                 return;
             }
 
@@ -1823,14 +1823,14 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
             }
             SkBitmap dstBitmap;
             // TODO: mark this as sRGB when the blits will be sRGB.
-            dstBitmap.setInfo(SkImageInfo::Make(glyph.fWidth, glyph.fHeight,
+            dstBitmap.setInfo(SkImageInfo::Make(glyph.width(), glyph.height(),
                                                 SkColorType_for_SkMaskFormat(maskFormat),
                                                 kPremul_SkAlphaType),
                               bitmapRowBytes);
             if (SkMask::kBW_Format == maskFormat || SkMask::kLCD16_Format == maskFormat) {
                 if (!dstBitmap.tryAllocPixels()) {
                     // TODO: set the fImage to indicate "missing"
-                    memset(glyph.fImage, 0, glyph.rowBytes() * glyph.fHeight);
+                    memset(glyph.fImage, 0, glyph.rowBytes() * glyph.height());
                     return;
                 }
             } else {
@@ -1844,7 +1844,7 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
             } else {
                 canvas.clear(SK_ColorTRANSPARENT);
             }
-            canvas.translate(-glyph.fLeft, -glyph.fTop);
+            canvas.translate(-glyph.left(), -glyph.top());
             canvas.concat(bitmapTransform);
             canvas.translate(face->glyph->bitmap_left, -face->glyph->bitmap_top);
 
@@ -1872,7 +1872,7 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
 
         default:
             SkDEBUGFAIL("unknown glyph format");
-            memset(glyph.fImage, 0, glyph.rowBytes() * glyph.fHeight);
+            memset(glyph.fImage, 0, glyph.rowBytes() * glyph.height());
             return;
     }
 
@@ -1883,8 +1883,8 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
         uint8_t* SK_RESTRICT dst = (uint8_t*)glyph.fImage;
         unsigned rowBytes = glyph.rowBytes();
 
-        for (int y = glyph.fHeight - 1; y >= 0; --y) {
-            for (int x = glyph.fWidth - 1; x >= 0; --x) {
+        for (int y = glyph.height() - 1; y >= 0; --y) {
+            for (int x = glyph.width() - 1; x >= 0; --x) {
                 dst[x] = fPreBlend.fG[dst[x]];
             }
             dst += rowBytes;
