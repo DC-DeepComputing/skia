@@ -16,6 +16,40 @@
       "message": "PTAL -- fontations_tests passed locally",
       "revId": "3ee78b44bc6bdd67854824b97d671cdb69eb075f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8df52a94_46fe1081",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-26T15:03:18Z",
+      "side": 1,
+      "message": "This looks pretty good. Running the canaries to just make sure, but should be able to land this.",
+      "revId": "3ee78b44bc6bdd67854824b97d671cdb69eb075f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50e2d30c_d05b0632",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-26T15:03:18Z",
+      "side": 1,
+      "message": "So one thing I\u0027m concerned about is that now the `generateMetrics` implementations can now request metrics from path, but there is nothing then ensuring that the image is generated from path the same way. It would be nice if `computeFromPath` also applied to `generateImage`. `fGenerateImageFromPath` works this way in that it applies to both the metrics and the image, but unfortunately globally to all glyphs.\n\nThis is what `extraBits` is generally being used for, and maybe the answer is just that if `generateMetrics` returns `computeFromPath` it can just put some info on `extraBits` so that it knows to then generate the image from the path. This is more or less what is done right now, it\u0027s just that we\u0027ve moved the actual work here so it isn\u0027t as obvious that `computeFromPath` also implies a constraint on `generateImage`.\n\nAnyhow, I\u0027m fine with this for now. This is mostly something to continue to keep in mind while working on https://skia-review.googlesource.com/c/skia/+/727076 and updating `generateImage`.",
+      "revId": "3ee78b44bc6bdd67854824b97d671cdb69eb075f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
