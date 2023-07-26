@@ -14,9 +14,11 @@ then
 fi
 
 SCRIPT_DIR=$(dirname $(realpath $0))
+WORKSPACE_DIR=$(realpath "${SCRIPT_DIR}/../..")
+OUT_DIR="${WORKSPACE_DIR}/bazel-out"
+STABLE_STATUS="${OUT_DIR}/stable-status.txt"
 VERSION_JS_PATH=$1
-GIT_REVISION=$(git -C ${SCRIPT_DIR} rev-parse HEAD)
-OUTPUT_DIR=$(dirname ${VERSION_JS_PATH})
+GIT_REVISION=$(grep STABLE_GIT_REVISION ${STABLE_STATUS} | awk '{print $2}' )
 
 mkdir -p $(dirname ${VERSION_JS_PATH})
 echo "const SKIA_VERSION = '${GIT_REVISION}';" > ${VERSION_JS_PATH}
