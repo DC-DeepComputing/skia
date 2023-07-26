@@ -560,11 +560,13 @@ private:
     friend class SkScalerContext;
     friend class SkScalerContextProxy;
     friend class SkScalerContext_Empty;
+#if 0
     friend class SkScalerContext_FreeType;
     friend class SkScalerContext_FreeType_Base;
     friend class SkScalerContext_DW;
     friend class SkScalerContext_GDI;
     friend class SkScalerContext_Mac;
+#endif
     friend class SkStrikeClientImpl;
     friend class SkTestScalerContext;
     friend class SkTestSVGScalerContext;
