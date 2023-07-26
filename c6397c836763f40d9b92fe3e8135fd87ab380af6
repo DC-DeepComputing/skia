@@ -33,6 +33,24 @@
       "message": "Hmmmm... direct mutable use of `glyph.mask()` here.\n\nLooks like `SkScalerContext_FreeType_Base::generateGlyphImage` also does this in three places. `SkScalerContext` itself does this in several places, but it\u0027s kinda ok for it to do this, I think (when applying filters and generating from path).\n\nMaybe need a way to return a `const SkMask` from the public side of `SkGlyph` and a more private mutable mask from the private side?",
       "revId": "c6397c836763f40d9b92fe3e8135fd87ab380af6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e869689_3ae2ef1d",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2421,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-26T17:31:36Z",
+      "side": 1,
+      "message": "Agreed -- this was just an initial upload.",
+      "parentUuid": "bac349cf_738de9a3",
+      "revId": "c6397c836763f40d9b92fe3e8135fd87ab380af6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
