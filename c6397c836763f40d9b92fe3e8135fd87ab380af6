@@ -51,6 +51,24 @@
       "parentUuid": "bac349cf_738de9a3",
       "revId": "c6397c836763f40d9b92fe3e8135fd87ab380af6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3dff789_b59d9c20",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2421,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-26T17:37:17Z",
+      "side": 1,
+      "message": "So, getting back around to this, the issue is that a `const SkGlyph` still has a `SkMask mask() const` which is lying a little bit. This is a shallow copy of the data in the `SkGlyph` so it is still possible for the user to muck about with the data pointed to by the `SkGlyph::fImage` though the returned `SkMask`. This (also currently) allows `generatePath` and the like to potentially muck about with memory pointed to by the `fImage` of the glyph even though it shouldn\u0027t. I\u0027ll see if there\u0027s anything that can be done about this short term.",
+      "parentUuid": "bac349cf_738de9a3",
+      "revId": "c6397c836763f40d9b92fe3e8135fd87ab380af6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
