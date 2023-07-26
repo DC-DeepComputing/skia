@@ -25,7 +25,7 @@
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 #endif
 
-namespace {
+//namespace {
 
 bool context_supports_protected(GrDirectContext* dContext) {
     [[maybe_unused]] const GrCaps* caps = dContext->priv().caps();
@@ -147,7 +147,7 @@ sk_sp<SkImage> create_protected_skimage(GrDirectContext* dContext,
 }
 
 
-} // anonymous namespace
+//} // anonymous namespace
 
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
