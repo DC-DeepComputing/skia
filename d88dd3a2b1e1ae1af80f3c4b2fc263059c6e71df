@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e5c9df1_5b0001f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2023-07-26T20:31:25Z",
+      "side": 1,
+      "message": "Switching from Git to Grep/Awk is really switching from one hack to another IMHO. debugger-app is the only user of this genrule, so this should be a safe experiment.",
+      "revId": "d88dd3a2b1e1ae1af80f3c4b2fc263059c6e71df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
