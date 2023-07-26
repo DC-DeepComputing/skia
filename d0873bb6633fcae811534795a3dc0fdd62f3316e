@@ -70,6 +70,30 @@
       },
       "revId": "d0873bb6633fcae811534795a3dc0fdd62f3316e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d2e4d32_a9bd97f9",
+        "filename": "resources/sksl/wgsl/InterfaceBlockUniforms.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-26T13:38:07Z",
+      "side": 0,
+      "message": "\"The SPIR-V reader redeclares such matrices as arrays of vectors to get around this.\"  https://chat.google.com/room/AAAAp0qrn9I/ILiHb8Y6iPw\n\nWe already need to do trickery with uniform/storage arrays, so I guess matrices are just one more thing that will need special logic.",
+      "parentUuid": "e0e92f13_79e95bfd",
+      "range": {
+        "startLine": 3,
+        "startChar": 18,
+        "endLine": 3,
+        "endChar": 20
+      },
+      "revId": "d0873bb6633fcae811534795a3dc0fdd62f3316e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
