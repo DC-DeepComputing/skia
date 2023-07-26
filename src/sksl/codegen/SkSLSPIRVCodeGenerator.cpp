@@ -254,6 +254,11 @@ SPIRVCodeGenerator::Intrinsic SPIRVCodeGenerator::getIntrinsic(IntrinsicKind ik)
         case k_sampleLod_IntrinsicKind:   return SPECIAL(TextureLod);
         case k_subpassLoad_IntrinsicKind: return SPECIAL(SubpassLoad);
 
+        case k_textureRead_IntrinsicKind:  return SPECIAL(TextureRead);
+        case k_textureWrite_IntrinsicKind:  return SPECIAL(TextureWrite);
+        case k_textureWidth_IntrinsicKind:  return SPECIAL(TextureWidth);
+        case k_textureHeight_IntrinsicKind:  return SPECIAL(TextureHeight);
+
         case k_floatBitsToInt_IntrinsicKind:  return ALL_SPIRV(Bitcast);
         case k_floatBitsToUint_IntrinsicKind: return ALL_SPIRV(Bitcast);
         case k_intBitsToFloat_IntrinsicKind:  return ALL_SPIRV(Bitcast);
@@ -1132,6 +1137,11 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType, const MemoryLayout& layou
         case Type::TypeKind::kTexture: {
             SpvId floatTypeId = this->getType(*fContext.fTypes.fFloat, layout);
             int sampled = (type->textureAccess() == Type::TextureAccess::kSample) ? 1 : 2;
+
+            // TODO(skia:293670098) SkSL doesn't provide a way to specify a pixel format. Until
+            // then, access an unsampled storage texture as rgba8 and pretend the underlying
+            // resource has a compatible format.
+            SpvImageFormat format = (sampled == 2) ? SpvImageFormatRgba8 : SpvImageFormatUnknown;
             return this->writeInstruction(SpvOpTypeImage,
                                           Words{Word::Result(),
                                                 floatTypeId,
@@ -1140,7 +1150,7 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType, const MemoryLayout& layou
                                                 Word::Number(type->isArrayedTexture()),
                                                 Word::Number(type->isMultisampled()),
                                                 Word::Number(sampled),
-                                                SpvImageFormatUnknown},
+                                                format},
                                           fConstantBuffer);
         }
         case Type::TypeKind::kAtomic: {
@@ -1548,6 +1558,63 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
                                    SpvImageOperandsLodMask,
                                    this->writeExpression(*arguments[2], out),
                                    out);
+            break;
+        }
+        case kTextureRead_SpecialIntrinsic: {
+            SkASSERT(arguments[0]->type().dimensions() == SpvDim2D);
+            SkASSERT(arguments[1]->type().matches(*fContext.fTypes.fUInt2));
+
+            SpvId type = this->getType(callType);
+            SpvId image = this->writeExpression(*arguments[0], out);
+            SpvId coord = this->writeExpression(*arguments[1], out);
+
+            const Type& arg0Type = arguments[0]->type();
+            SkASSERT(arg0Type.typeKind() == Type::TypeKind::kTexture);
+
+            switch (arg0Type.textureAccess()) {
+                case Type::TextureAccess::kSample:
+                    this->writeInstruction(SpvOpImageFetch, type, result, image, coord,
+                                           SpvImageOperandsLodMask,
+                                           this->writeOpConstant(*fContext.fTypes.fInt, 0),
+                                           out);
+                    break;
+                case Type::TextureAccess::kRead:
+                case Type::TextureAccess::kReadWrite:
+                    this->writeInstruction(SpvOpImageRead, type, result, image, coord, out);
+                    break;
+                case Type::TextureAccess::kWrite:
+                default:
+                    SkDEBUGFAIL("'textureRead' called on writeonly texture type");
+                    break;
+            }
+
+            break;
+        }
+        case kTextureWrite_SpecialIntrinsic: {
+            SkASSERT(arguments[0]->type().dimensions() == SpvDim2D);
+            SkASSERT(arguments[1]->type().matches(*fContext.fTypes.fUInt2));
+            SkASSERT(arguments[2]->type().matches(*fContext.fTypes.fHalf4));
+
+            SpvId image = this->writeExpression(*arguments[0], out);
+            SpvId coord = this->writeExpression(*arguments[1], out);
+            SpvId texel = this->writeExpression(*arguments[2], out);
+
+            this->writeInstruction(SpvOpImageWrite, image, coord, texel, out);
+            break;
+        }
+        case kTextureWidth_SpecialIntrinsic:
+        case kTextureHeight_SpecialIntrinsic: {
+            SkASSERT(arguments[0]->type().dimensions() == SpvDim2D);
+            fCapabilities |= 1ULL << SpvCapabilityImageQuery;
+
+            SpvId dimsType = this->getType(*fContext.fTypes.fUInt2);
+            SpvId dims = this->nextId(nullptr);
+            SpvId image = this->writeExpression(*arguments[0], out);
+            this->writeInstruction(SpvOpImageQuerySize, dimsType, dims, image, out);
+
+            SpvId type = this->getType(callType);
+            int32_t index = (kind == kTextureWidth_SpecialIntrinsic) ? 0 : 1;
+            this->writeInstruction(SpvOpCompositeExtract, type, result, dims, index, out);
             break;
         }
         case kMod_SpecialIntrinsic: {
@@ -2320,6 +2387,12 @@ static SpvStorageClass_ get_storage_class_for_global_variable(
         const Variable& var, SpvStorageClass_ fallbackStorageClass) {
     SkASSERT(var.storage() == Variable::Storage::kGlobal);
 
+    if (var.type().typeKind() == Type::TypeKind::kSampler ||
+        var.type().typeKind() == Type::TypeKind::kSeparateSampler ||
+        var.type().typeKind() == Type::TypeKind::kTexture) {
+        return SpvStorageClassUniformConstant;
+    }
+
     const Modifiers& modifiers = var.modifiers();
     if (modifiers.fFlags & ModifierFlag::kIn) {
         SkASSERT(!(modifiers.fLayout.fFlags & LayoutFlag::kPushConstant));
@@ -2332,11 +2405,6 @@ static SpvStorageClass_ get_storage_class_for_global_variable(
     if (modifiers.isUniform()) {
         if (modifiers.fLayout.fFlags & LayoutFlag::kPushConstant) {
             return SpvStorageClassPushConstant;
-        }
-        if (var.type().typeKind() == Type::TypeKind::kSampler ||
-            var.type().typeKind() == Type::TypeKind::kSeparateSampler ||
-            var.type().typeKind() == Type::TypeKind::kTexture) {
-            return SpvStorageClassUniformConstant;
         }
         return SpvStorageClassUniform;
     }
@@ -3874,6 +3942,11 @@ SpvId SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind,
     if (var.modifiers().fFlags & ModifierFlag::kNoPerspective) {
         this->writeInstruction(SpvOpDecorate, id, SpvDecorationNoPerspective,
                                fDecorationBuffer);
+    }
+    if (var.modifiers().isWriteOnly()) {
+        this->writeInstruction(SpvOpDecorate, id, SpvDecorationNonReadable, fDecorationBuffer);
+    } else if (var.modifiers().isReadOnly()) {
+        this->writeInstruction(SpvOpDecorate, id, SpvDecorationNonWritable, fDecorationBuffer);
     }
 
     return id;
