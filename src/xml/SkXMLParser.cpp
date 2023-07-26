@@ -8,6 +8,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/private/base/SkFeatures.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "src/xml/SkXMLParser.h"
@@ -15,6 +16,16 @@
 #include <expat.h>
 
 #include <vector>
+
+#if defined(SK_BUILD_FOR_WIN)
+#include <windows.h>
+
+// Prototype for ProcessPrng.
+// See: https://learn.microsoft.com/en-us/windows/win32/seccng/processprng
+extern "C" {
+BOOL WINAPI ProcessPrng(PBYTE pbData, SIZE_T cbData);
+}
+#endif  // defined(SK_BUILD_FOR_WIN)
 
 static char const* const gErrorStrings[] = {
     "empty or missing file ",
@@ -129,6 +140,25 @@ void XMLCALL entity_decl_handler(void *data,
     XML_StopParser(ctx->fXMLParser, XML_FALSE);
 }
 
+#if defined(SK_BUILD_FOR_WIN)
+decltype(&ProcessPrng) GetProcessPrng() {
+  HMODULE hmod = LoadLibraryW(L"bcryptprimitives.dll");
+  decltype(&ProcessPrng) process_prng_fn =
+      reinterpret_cast<decltype(&ProcessPrng)>(
+          GetProcAddress(hmod, "ProcessPrng"));
+  return process_prng_fn;
+}
+
+unsigned long UnsignedLongNonZero() {
+    static decltype(&ProcessPrng) process_prng_fn = GetProcessPrng();
+    unsigned long ret = 0;
+    while (ret == 0) {
+        process_prng_fn(static_cast<BYTE*>(&ret), sizeof(ret));
+    }
+    return ret;
+}
+#endif   // defined(SK_BUILD_FOR_WIN)
+
 } // anonymous namespace
 
 SkXMLParser::SkXMLParser(SkXMLParserError* parserError) : fParser(nullptr), fError(parserError)
@@ -147,6 +177,11 @@ bool SkXMLParser::parse(SkStream& docStream)
         return false;
     }
 
+#if defined(SK_BUILD_FOR_WIN)
+    // Expat calls rand_s which calls RtlGenRandom which we avoid in Chrome's
+    // renderer process. Other platforms can call rand_s ok.
+    XML_SetHashSalt(ctx.fXMLParser, UnsignedLongNonZero());
+#endif  // defined(SK_BUILD_FOR_WIN)
     XML_SetUserData(ctx.fXMLParser, &ctx);
     XML_SetElementHandler(ctx.fXMLParser, start_element_handler, end_element_handler);
     XML_SetCharacterDataHandler(ctx.fXMLParser, text_handler);
