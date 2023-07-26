@@ -1008,4 +1008,27 @@ static constexpr const char* GrSurfaceOriginToStr(GrSurfaceOrigin origin) {
 }
 #endif
 
+// Clients should not be subclassing or instantiating this.
+class GrBackendFormatData : public SkRefCnt {
+public:
+    virtual SkTextureCompressionType compressionType() const = 0;
+    virtual size_t bytesPerBlock() const = 0;
+    virtual int stencilBits() const = 0;
+    bool equal(const GrBackendFormatData* that) const;
+protected:
+    GrBackendFormatData();
+private:
+    friend class GrBackendFormat;
+    virtual uint32_t channelMask() const = 0;
+    virtual GrColorFormatDesc desc() const = 0;
+    virtual std::string toString() const = 0;
+};
+
+class GrBackendTextureData : public SkRefCnt {
+protected:
+    GrBackendTextureData();
+private:
+    friend class GrBackendTexture;
+};
+
 #endif

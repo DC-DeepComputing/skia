@@ -8,6 +8,7 @@
 #include "tests/Test.h"
 
 #ifdef SK_GL
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -41,6 +42,7 @@
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "tests/CtsEnforcement.h"
 #include "tools/gpu/gl/GLTestContext.h"
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 
 struct GrContextOptions;
 
@@ -150,7 +152,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(TextureBindingsResetTest,
                                                                     GrRenderable::kNo,
                                                                     GrProtected::kNo);
         GrGLTextureInfo info2D;
-        REPORTER_ASSERT(reporter, texture2D.getGLTextureInfo(&info2D));
+        REPORTER_ASSERT(reporter, GrBackendTextures::GetGLTextureInfo(texture2D, &info2D));
         GrEGLImage eglImage = ctxInfo.glContext()->texture2DToEGLImage(info2D.fID);
         REPORTER_ASSERT(reporter, eglImage);
         GrGLTextureInfo infoExternal;
@@ -159,7 +161,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(TextureBindingsResetTest,
         infoExternal.fFormat = info2D.fFormat;
         REPORTER_ASSERT(reporter, infoExternal.fID);
         infoExternal.fProtected = info2D.fProtected;
-        GrBackendTexture backendTexture(10, 10, GrMipmapped::kNo, infoExternal);
+        GrBackendTexture backendTexture = GrBackendTextures::MakeGL(10, 10, GrMipmapped::kNo, infoExternal);
         // Above texture creation will have messed with GL state and bindings.
         resetBindings();
         dContext->resetContext();
@@ -183,7 +185,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(TextureBindingsResetTest,
     }
 
     if (supportRectangle) {
-        format = GrBackendFormat::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_RECTANGLE);
+        format = GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_RECTANGLE);
         GrBackendTexture rectangleTexture = dContext->createBackendTexture(
                 10, 10, format, GrMipmapped::kNo, GrRenderable::kNo);
         if (rectangleTexture.isValid()) {

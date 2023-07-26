@@ -25,6 +25,7 @@
 #include "src/gpu/ganesh/gl/GrGLRenderTarget.h"
 #include "src/gpu/ganesh/gl/GrGLTexture.h"
 #include "src/gpu/ganesh/gl/GrGLVertexArray.h"
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 
 class GrGLBuffer;
 class GrGLOpsRenderPass;
@@ -291,11 +292,11 @@ private:
     int getCompatibleStencilIndex(GrGLFormat format);
 
     GrBackendFormat getPreferredStencilFormat(const GrBackendFormat& format) override {
-        int idx = this->getCompatibleStencilIndex(format.asGLFormat());
+        int idx = this->getCompatibleStencilIndex(GrBackendFormats::AsGLFormat(format));
         if (idx < 0) {
             return {};
         }
-        return GrBackendFormat::MakeGL(GrGLFormatToEnum(this->glCaps().stencilFormats()[idx]),
+        return GrBackendFormats::MakeGL(GrGLFormatToEnum(this->glCaps().stencilFormats()[idx]),
                                        GR_GL_TEXTURE_NONE);
     }
 

@@ -12,6 +12,7 @@
 #include "include/private/base/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/MutableTextureStateRef.h"
+#include "src/gpu/ganesh/GrBackendSurfacePriv.h"
 
 #if defined(SK_GL)
 #include "src/gpu/ganesh/gl/GrGLDefines.h"
@@ -47,20 +48,21 @@
 
 namespace skgpu { class MutableTextureState; }
 
+GrBackendFormat::GrBackendFormat(GrTextureType texture,
+                                 GrBackendApi api,
+                                 sk_sp<const GrBackendFormatData> data)
+        : fBackend(api), fValid(data != nullptr),  fBackendData(data), fTextureType(texture) {}
+
 GrBackendFormat::GrBackendFormat(const GrBackendFormat& that)
         : fBackend(that.fBackend)
         , fValid(that.fValid)
-        , fTextureType(that.fTextureType) {
+        , fTextureType(that.fTextureType)
+        , fBackendData(that.fBackendData) {
     if (!fValid) {
         return;
     }
 
     switch (fBackend) {
-#ifdef SK_GL
-        case GrBackendApi::kOpenGL:
-            fGLFormat = that.fGLFormat;
-            break;
-#endif
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan:
             fVk = that.fVk;
@@ -89,6 +91,9 @@ GrBackendFormat::GrBackendFormat(const GrBackendFormat& that)
     }
 }
 
+// TODO(kjlubick) Do we need to free/deref the backendData or is that done for us?
+GrBackendFormat::~GrBackendFormat() = default;
+
 GrBackendFormat& GrBackendFormat::operator=(const GrBackendFormat& that) {
     if (this != &that) {
         this->~GrBackendFormat();
@@ -96,44 +101,6 @@ GrBackendFormat& GrBackendFormat::operator=(const GrBackendFormat& that) {
     }
     return *this;
 }
-
-#ifdef SK_GL
-
-static GrTextureType gl_target_to_gr_target(GrGLenum target) {
-    switch (target) {
-        case GR_GL_TEXTURE_NONE:
-            return GrTextureType::kNone;
-        case GR_GL_TEXTURE_2D:
-            return  GrTextureType::k2D;
-        case GR_GL_TEXTURE_RECTANGLE:
-            return GrTextureType::kRectangle;
-        case GR_GL_TEXTURE_EXTERNAL:
-            return GrTextureType::kExternal;
-        default:
-            SkUNREACHABLE;
-    }
-}
-
-GrBackendFormat::GrBackendFormat(GrGLenum format, GrGLenum target)
-        : fBackend(GrBackendApi::kOpenGL)
-        , fValid(true)
-        , fGLFormat(format)
-        , fTextureType(gl_target_to_gr_target(target)) {}
-
-GrGLFormat GrBackendFormat::asGLFormat() const {
-    if (this->isValid() && GrBackendApi::kOpenGL == fBackend) {
-        return GrGLFormatFromGLEnum(fGLFormat);
-    }
-    return GrGLFormat::kUnknown;
-}
-
-GrGLenum GrBackendFormat::asGLFormatEnum() const {
-    if (this->isValid() && GrBackendApi::kOpenGL == fBackend) {
-        return fGLFormat;
-    }
-    return 0;
-}
-#endif
 
 #ifdef SK_VULKAN
 GrBackendFormat GrBackendFormat::MakeVk(const GrVkYcbcrConversionInfo& ycbcrInfo,
@@ -240,10 +207,8 @@ uint32_t GrBackendFormat::channelMask() const {
         return 0;
     }
     switch (fBackend) {
-#ifdef SK_GL
         case GrBackendApi::kOpenGL:
-            return GrGLFormatChannels(GrGLFormatFromGLEnum(fGLFormat));
-#endif
+            return fBackendData->channelMask();
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan:
             return skgpu::VkFormatChannels(fVk.fFormat);
@@ -273,10 +238,8 @@ GrColorFormatDesc GrBackendFormat::desc() const {
         return GrColorFormatDesc::MakeInvalid();
     }
     switch (fBackend) {
-#ifdef SK_GL
         case GrBackendApi::kOpenGL:
-            return GrGLFormatDesc(GrGLFormatFromGLEnum(fGLFormat));
-#endif
+            return fBackendData->desc();
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan:
             return GrVkFormatDesc(fVk.fFormat);
@@ -378,10 +341,8 @@ bool GrBackendFormat::operator==(const GrBackendFormat& that) const {
     }
 
     switch (fBackend) {
-#ifdef SK_GL
         case GrBackendApi::kOpenGL:
-            return fGLFormat == that.fGLFormat;
-#endif
+            return fBackendData.equal(that.fBackendData.get());
 #ifdef SK_VULKAN
         case GrBackendApi::kVulkan:
             return fVk.fFormat == that.fVk.fFormat &&
@@ -423,9 +384,7 @@ SkString GrBackendFormat::toStr() const {
 
     switch (fBackend) {
         case GrBackendApi::kOpenGL:
-#ifdef SK_GL
-            str.append(GrGLFormatToStr(fGLFormat));
-#endif
+            str.append(fBackendData->toString());
             break;
         case GrBackendApi::kVulkan:
 #ifdef SK_VULKAN
@@ -460,6 +419,17 @@ SkString GrBackendFormat::toStr() const {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 GrBackendTexture::GrBackendTexture() : fIsValid(false) {}
+
+GrBackendTexture::GrBackendTexture(int width,
+                                   int height,
+                                   std::string_view label,
+                                   skgpu::Mipmapped mipped,
+                                   GrBackendApi backend,
+                                   GrTextureType texture,
+                                   sk_sp<const GrBackendTextureData> data)
+        : fValid(data != nullptr), fWidth(width), fHeight(height), fLabel(label), fMipmapped(mipped),
+          fBackend(api), fTextureType(texture) {}
+
 
 #ifdef SK_DAWN
 GrBackendTexture::GrBackendTexture(int width,
@@ -531,30 +501,6 @@ GrBackendTexture::GrBackendTexture(int width,
         , fMutableState(std::move(mutableState)) {}
 #endif
 
-#ifdef SK_GL
-GrBackendTexture::GrBackendTexture(int width,
-                                   int height,
-                                   GrMipmapped mipmapped,
-                                   const GrGLTextureInfo glInfo,
-                                   sk_sp<GrGLTextureParameters> params,
-                                   std::string_view label)
-        : fIsValid(true)
-        , fWidth(width)
-        , fHeight(height)
-        , fLabel(label)
-        , fMipmapped(mipmapped)
-        , fBackend(GrBackendApi::kOpenGL)
-        , fTextureType(gl_target_to_gr_target(glInfo.fTarget))
-        , fGLInfo(glInfo, params.release()) {}
-
-sk_sp<GrGLTextureParameters> GrBackendTexture::getGLTextureParams() const {
-    if (fBackend != GrBackendApi::kOpenGL) {
-        return nullptr;
-    }
-    return fGLInfo.refParameters();
-}
-#endif
-
 #ifdef SK_METAL
 GrBackendTexture::GrBackendTexture(int width,
                                    int height,
@@ -596,19 +542,6 @@ GrBackendTexture::GrBackendTexture(int width,
         , fBackend(GrBackendApi::kDirect3D)
         , fTextureType(GrTextureType::k2D)
         , fD3DInfo(d3dInfo, state.release()) {}
-#endif
-
-#ifdef SK_GL
-GrBackendTexture::GrBackendTexture(int width,
-                                   int height,
-                                   GrMipmapped mipmapped,
-                                   const GrGLTextureInfo& glInfo,
-                                   std::string_view label)
-        : GrBackendTexture(
-                  width, height, mipmapped, glInfo, sk_make_sp<GrGLTextureParameters>(), label) {
-    // Make no assumptions about client's texture's parameters.
-    this->glTextureParametersModified();
-}
 #endif
 
 GrBackendTexture::GrBackendTexture(int width,

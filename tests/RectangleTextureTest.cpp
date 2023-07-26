@@ -8,6 +8,7 @@
 #include "tests/Test.h"
 
 #ifdef SK_GL
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
@@ -172,7 +173,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(RectangleTexture,
 
     for (auto origin : { kBottomLeft_GrSurfaceOrigin, kTopLeft_GrSurfaceOrigin }) {
 
-        auto format = GrBackendFormat::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_RECTANGLE);
+        auto format = GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_RECTANGLE);
         GrBackendTexture rectangleTex = dContext->createBackendTexture(
                 kWidth, kHeight, format, GrMipmapped::kNo, GrRenderable::kYes);
         if (!rectangleTex.isValid()) {
