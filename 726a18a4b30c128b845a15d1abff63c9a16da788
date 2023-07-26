@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdfa2e9c_bb98fcfa",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1609,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-26T12:32:36Z",
+      "side": 1,
+      "message": "I don\u0027t think this is necessary - I\u0027m pretty sure the OptionalMatrix defaults to the identity",
+      "range": {
+        "startLine": 1607,
+        "startChar": 10,
+        "endLine": 1609,
+        "endChar": 11
+      },
+      "revId": "726a18a4b30c128b845a15d1abff63c9a16da788",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
