@@ -16,6 +16,63 @@
       "message": "ptal",
       "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48651a8a_a23cb06a",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1666,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-27T16:28:14Z",
+      "side": 1,
+      "message": "Since the goal is to eventually make this actually return a const thing, probably shouldn\u0027t use `glyph.mask()` and instead...\n\n    SkMask mask;\n    mask.fImage \u003d imageBuffer;\n    mask.fBounds \u003d glyph.iRect();\n    mask.fRowBytes \u003d glyph.rowBytes();\n    mask.fFormat \u003d glyph.maskFormat();\n\nWhile at the moment this produces exactly the same as `glyph.mask()` it would be nice to do this so that we can clean up and not set the `glyph.fImage` until after the image is created in `imageBuffer` (in which case `glyph.mask().fImage` would be nullptr here).",
+      "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ab19699_019ce6ce",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1668,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-27T16:28:14Z",
+      "side": 1,
+      "message": "I\u0027m still working on making this not a thing, where this should be forced to write into `imageBuffer` instead. At the moment these are both the same pointer, but it would be nice not to get a writable pointer like this off of `const SkGlyph\u0026`.",
+      "range": {
+        "startLine": 1668,
+        "startChar": 27,
+        "endLine": 1668,
+        "endChar": 38
+      },
+      "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bddfedfe_ff4a137a",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2390,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-27T16:28:14Z",
+      "side": 1,
+      "message": "Actually... I think this block can be removed now to remove at least one place where we abuse the mutability of `*glyph.mask().fImage`? (It probably could have been removed in the previous CL.) This case can now be replaced with an assert that we shouldn\u0027t ever get here since `generateMetrics` requested that this be generated from path.\n\nI\u0027m not sure we need to do that right now in this CL, but this should get removed now I think.",
+      "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
