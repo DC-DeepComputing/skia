@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52024908_4e4a51f6",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-27T17:43:13Z",
+      "side": 1,
+      "message": "Sure",
+      "parentUuid": "4a651e3b_4dce90d1",
+      "range": {
+        "startLine": 566,
+        "startChar": 0,
+        "endLine": 571,
+        "endChar": 30
+      },
+      "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48651a8a_a23cb06a",
@@ -136,6 +160,24 @@
       "side": 1,
       "message": "https://skia-review.googlesource.com/c/skia/+/731078",
       "parentUuid": "bddfedfe_ff4a137a",
+      "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7a233a1_c51bb41f",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2390,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-27T17:43:13Z",
+      "side": 1,
+      "message": "Commented there, but this would require `computeFromPath` to be stored somewhere on the `SkGlyph` so that `getImage` would know to create the image from path... much like the subclasses currently use `extraBits` for.\n\nSeeing that, it seems like another place where it is fine to land this change as a first step \"it is possible to write something correctly\" and then clean things up next \"make it at least difficult to write something incorrectly\" after.",
+      "parentUuid": "b93b632e_17a8ade6",
       "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
