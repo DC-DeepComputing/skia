@@ -69,6 +69,23 @@
       "parentUuid": "9cbfb942_cbd04bf1",
       "revId": "acc593705b48310eb2666eed0ffaa17038c9b084",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9ffd1ca_7e8a9ec3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2023-07-27T16:41:04Z",
+      "side": 1,
+      "message": "increasing the revision when it is enforced should be a problem, but I\u0027ll defer to John as to when these tests were added.",
+      "revId": "acc593705b48310eb2666eed0ffaa17038c9b084",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
