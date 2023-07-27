@@ -33,6 +33,24 @@
       "message": "My only thought for a follow-up action is we can probably consolidate TextureUtils and ImageUtils together; the split between them seems somewhat arbitrary right now.",
       "revId": "c94a958abfe990234d94cf2ece304f1bb8c5be5d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6566ae90_5df8eb82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-27T14:21:39Z",
+      "side": 1,
+      "message": "Good idea -- I think ImageUtils is what Kevin separated out, but it makes more sense as a name for all of it.",
+      "parentUuid": "32207a34_ead6f4c0",
+      "revId": "c94a958abfe990234d94cf2ece304f1bb8c5be5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
