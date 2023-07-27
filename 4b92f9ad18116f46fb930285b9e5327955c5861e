@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "547d43f0_a71e4a37",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-27T16:34:31Z",
+      "side": 1,
+      "message": "I suppose I could go look, but is there anything keeping these in this list at the moment other than lots of typing?",
+      "range": {
+        "startLine": 566,
+        "startChar": 0,
+        "endLine": 571,
+        "endChar": 30
+      },
+      "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "48651a8a_a23cb06a",
         "filename": "src/ports/SkFontHost_FreeType_common.cpp",
         "patchSetId": 9
