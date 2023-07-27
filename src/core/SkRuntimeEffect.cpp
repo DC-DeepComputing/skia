@@ -129,7 +129,7 @@ SkRuntimeEffect::Uniform SkRuntimeEffectPriv::VarAsUniform(const SkSL::Variable&
     }
 
     SkAssertResult(init_uniform_type(context, type, &uni));
-    if (var.modifiers().fLayout.fFlags & SkSL::Layout::Flag::kColor_Flag) {
+    if (var.modifiers().fLayout.fFlags & SkSL::LayoutFlag::kColor) {
         uni.flags |= Uniform::kColor_Flag;
     }
 

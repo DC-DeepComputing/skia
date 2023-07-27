@@ -168,7 +168,7 @@ struct Modifiers {
     bool checkPermitted(const Context& context,
                         Position pos,
                         ModifierFlags permittedModifierFlags,
-                        int permittedLayoutFlags) const;
+                        LayoutFlags permittedLayoutFlags) const;
 
     Layout fLayout;
     ModifierFlags fFlags;
