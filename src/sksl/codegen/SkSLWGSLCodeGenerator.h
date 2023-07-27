@@ -10,6 +10,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/private/SkSLDefines.h"
+#include "src/base/SkEnumBitMask.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLOperator.h"
 #include "src/sksl/codegen/SkSLCodeGenerator.h"
@@ -20,10 +21,6 @@
 #include <string>
 #include <string_view>
 #include <utility>
-
-namespace sknonstd {
-template <typename T> struct is_bitmask_enum;
-}  // namespace sknonstd
 
 namespace SkSL {
 
@@ -96,11 +93,13 @@ public:
     // pipeline stage input and output parameters must be passed in as an argument.
     //
     // This is a bitmask enum.
-    enum class FunctionDependencies : uint8_t {
+    enum class FunctionDependency : uint8_t {
         kNone = 0,
-        kPipelineInputs = 1,
-        kPipelineOutputs = 2,
+        kPipelineInputs  = 1 << 0,
+        kPipelineOutputs = 1 << 1,
     };
+    using FunctionDependencies = SkEnumBitMask<FunctionDependency>;
+    SK_DECL_BITMASK_OPS_FRIENDS(FunctionDependency)
 
     // Variable declarations can be terminated by:
     //   - comma (","), e.g. in struct member declarations or function parameters
@@ -335,9 +334,6 @@ private:
 
 }  // namespace SkSL
 
-namespace sknonstd {
-template <>
-struct is_bitmask_enum<SkSL::WGSLCodeGenerator::FunctionDependencies> : std::true_type {};
-}  // namespace sknonstd
+SK_MAKE_BITMASK_OPS(SkSL::WGSLCodeGenerator::FunctionDependency)
 
 #endif  // SKSL_WGSLCODEGENERATOR
