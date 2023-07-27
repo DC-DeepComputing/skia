@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb62328c_abf6311c",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1670,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-27T18:22:46Z",
+      "side": 1,
+      "message": "Apparently need a cast here.",
+      "range": {
+        "startLine": 1670,
+        "startChar": 30,
+        "endLine": 1670,
+        "endChar": 31
+      },
+      "revId": "ee706fa36b2a13d3de1cc36b955e4c1446c32501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
