@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "880f9bf4_3fbd9f9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-27T19:29:53Z",
+      "side": 1,
+      "message": "Something else to look out for here is that this maximum binding size:\nhttps://crsrc.org/c/third_party/skia/src/gpu/graphite/dawn/DawnCommandBuffer.cpp;l\u003d30\nis specific to uniform buffers, for storage buffers we\u0027d want to use a limit of 128MB.",
+      "revId": "75999264aded83a8844658b3398cedd321472845",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
