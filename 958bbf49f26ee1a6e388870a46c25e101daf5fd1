@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4562c108_96d605c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-27T17:39:40Z",
+      "side": 1,
+      "message": "Oh yeah, wait, can\u0027t do this because `computeFromPath` currently only means compute the metrics from the path, not also compute the image from path (like `fGenerateFromPath` implies). Doing this would require setting a bit on `SkGlyph` much like `extraBits` is used but for the base class. (In theory the base class could reserve some of the extraBits for itself, only allowing the subclasses to use a uint8_t worth of bits, which is currently more than enough.)",
+      "revId": "958bbf49f26ee1a6e388870a46c25e101daf5fd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
