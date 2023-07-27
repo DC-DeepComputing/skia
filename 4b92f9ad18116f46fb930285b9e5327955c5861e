@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a651e3b_4dce90d1",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-27T16:58:31Z",
+      "side": 1,
+      "message": "Didn\u0027t try them. Can I do that extra typing in a separate CL?",
+      "parentUuid": "547d43f0_a71e4a37",
+      "range": {
+        "startLine": 566,
+        "startChar": 0,
+        "endLine": 571,
+        "endChar": 30
+      },
+      "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "48651a8a_a23cb06a",
         "filename": "src/ports/SkFontHost_FreeType_common.cpp",
         "patchSetId": 9
