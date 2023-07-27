@@ -424,13 +424,13 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(SkTo<int>(imgData.fTileModes[0]));
     gatherer->write(SkTo<int>(imgData.fTileModes[1]));
     gatherer->write(SkTo<int>(imgData.fSampling.filter));
-    gatherer->write(imgData.fSampling.useCubic);
-    if (imgData.fSampling.useCubic) {
-        const SkCubicResampler& cubic = imgData.fSampling.cubic;
-        gatherer->writeHalf(SkImageShader::CubicResamplerMatrix(cubic.B, cubic.C));
-    } else {
-        gatherer->writeHalf(SkM44());
-    }
+    // gatherer->write(imgData.fSampling.useCubic);
+    // if (imgData.fSampling.useCubic) {
+    //     const SkCubicResampler& cubic = imgData.fSampling.cubic;
+    //     gatherer->writeHalf(SkImageShader::CubicResamplerMatrix(cubic.B, cubic.C));
+    // } else {
+    //     gatherer->writeHalf(SkM44());
+    // }
     gatherer->write(SkTo<int>(imgData.fReadSwizzle));
 
     add_color_space_uniforms(imgData.fSteps, gatherer);
