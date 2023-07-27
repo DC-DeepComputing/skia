@@ -286,6 +286,10 @@ $pure half4 sk_image_shader(float2 coords,
                                     csXformGamutTransform, csXformDstKind, csXformDstCoeffs);
 }
 
+$pure half4 sk_image_shader_simple(float2 coords, float2 imgSize, sampler2D s) {
+    return sample(s, coords / imgSize);
+}
+
 $pure half4 sk_yuv_image_shader(float2 coords,
                                 float2 imgSize,
                                 float4 subset,

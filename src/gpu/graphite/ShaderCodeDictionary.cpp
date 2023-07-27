@@ -785,20 +785,20 @@ static constexpr int kNumXferFnCoeffs = 7;
 
 static constexpr Uniform kImageShaderUniforms[] = {
         { "imgSize",               SkSLType::kFloat2 },
-        { "subset",                SkSLType::kFloat4 },
-        { "tilemodeX",             SkSLType::kInt },
-        { "tilemodeY",             SkSLType::kInt },
-        { "filterMode",            SkSLType::kInt },
-        { "useCubic",              SkSLType::kInt },
-        { "cubicCoeffs",           SkSLType::kHalf4x4 },
-        { "readSwizzle",           SkSLType::kInt },
-        // The next 6 uniforms are for the color space transformation
-        { "csXformFlags",          SkSLType::kInt },
-        { "csXformSrcKind",        SkSLType::kInt },
-        { "csXformSrcCoeffs",      SkSLType::kHalf, kNumXferFnCoeffs },
-        { "csXformGamutTransform", SkSLType::kHalf3x3 },
-        { "csXformDstKind",        SkSLType::kInt },
-        { "csXformDstCoeffs",      SkSLType::kHalf, kNumXferFnCoeffs },
+        // { "subset",                SkSLType::kFloat4 },
+        // { "tilemodeX",             SkSLType::kInt },
+        // { "tilemodeY",             SkSLType::kInt },
+        // { "filterMode",            SkSLType::kInt },
+        // { "useCubic",              SkSLType::kInt },
+        // { "cubicCoeffs",           SkSLType::kHalf4x4 },
+        // { "readSwizzle",           SkSLType::kInt },
+        // // The next 6 uniforms are for the color space transformation
+        // { "csXformFlags",          SkSLType::kInt },
+        // { "csXformSrcKind",        SkSLType::kInt },
+        // { "csXformSrcCoeffs",      SkSLType::kHalf, kNumXferFnCoeffs },
+        // { "csXformGamutTransform", SkSLType::kHalf3x3 },
+        // { "csXformDstKind",        SkSLType::kInt },
+        // { "csXformDstCoeffs",      SkSLType::kHalf, kNumXferFnCoeffs },
 };
 
 static constexpr TextureAndSampler kISTexturesAndSamplers[] = {
@@ -826,7 +826,7 @@ static_assert(3 == static_cast<int>(ReadSwizzle::kRRR1),
 static_assert(4 == static_cast<int>(ReadSwizzle::kBGRA),
               "ImageShader code depends on ReadSwizzle");
 
-static constexpr char kImageShaderName[] = "sk_image_shader";
+static constexpr char kImageShaderName[] = "sk_image_shader_simple";
 
 //--------------------------------------------------------------------------------------------------
 
