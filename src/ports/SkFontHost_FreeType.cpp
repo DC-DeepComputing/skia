@@ -445,7 +445,7 @@ public:
 
 protected:
     GlyphMetrics generateMetrics(const SkGlyph&, SkArenaAlloc*) override;
-    void generateImage(const SkGlyph& glyph) override;
+    void generateImage(const SkGlyph&, void*) override;
     bool generatePath(const SkGlyph& glyph, SkPath* path) override;
     sk_sp<SkDrawable> generateDrawable(const SkGlyph&) override;
     void generateFontMetrics(SkFontMetrics*) override;
@@ -1327,16 +1327,16 @@ SkScalerContext::GlyphMetrics SkScalerContext_FreeType::generateMetrics(const Sk
     }
 
 #ifdef ENABLE_GLYPH_SPEW
-    LOG_INFO("Metrics(glyph:%d flags:0x%x) w:%d\n", glyph->getGlyphID(), fLoadGlyphFlags, glyph->fWidth);
+    LOG_INFO("Metrics(glyph:%d flags:0x%x) w:%d\n", glyph->getGlyphID(), fLoadGlyphFlags, glyph->width());
 #endif
     return mx;
 }
 
-void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
+void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph, void* imageBuffer) {
     SkAutoMutexExclusive  ac(f_t_mutex());
 
     if (this->setupSize()) {
-        sk_bzero(glyph.fImage, glyph.imageSize());
+        sk_bzero(imageBuffer, glyph.imageSize());
         return;
     }
 
@@ -1347,11 +1347,11 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
         SkASSERT(glyph.maskFormat() == SkMask::kARGB32_Format);
         SkBitmap dstBitmap;
         // TODO: mark this as sRGB when the blits will be sRGB.
-        dstBitmap.setInfo(SkImageInfo::Make(glyph.fWidth, glyph.fHeight,
+        dstBitmap.setInfo(SkImageInfo::Make(glyph.width(), glyph.height(),
                                             kN32_SkColorType,
                                             kPremul_SkAlphaType),
                                             glyph.rowBytes());
-        dstBitmap.setPixels(glyph.fImage);
+        dstBitmap.setPixels(imageBuffer);
 
         SkCanvas canvas(dstBitmap);
         if constexpr (kSkShowTextBlitCoverage) {
@@ -1359,7 +1359,7 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
         } else {
             canvas.clear(SK_ColorTRANSPARENT);
         }
-        canvas.translate(-glyph.fLeft, -glyph.fTop);
+        canvas.translate(-glyph.left(), -glyph.top());
 
         SkSpan<SkColor> palette(fFaceRec->fSkPalette.get(), fFaceRec->fFTPaletteEntryCount);
         if (glyph.fScalerContextBits == ScalerContextBits::COLRv0) {
@@ -1382,7 +1382,7 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
     }
 
     if (FT_Load_Glyph(fFace, glyph.getGlyphID(), fLoadGlyphFlags)) {
-        sk_bzero(glyph.fImage, glyph.imageSize());
+        sk_bzero(imageBuffer, glyph.imageSize());
         return;
     }
     emboldenIfNeeded(fFace, fFace->glyph, glyph.getGlyphID());
