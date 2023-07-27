@@ -13,6 +13,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "src/gpu/ganesh/GrRenderTarget.h"
 #include "src/gpu/ganesh/gl/GrGLDefines.h"
+#include "include/gpu/gl/GrGLTypes.h"
 
 class GrGLCaps;
 class GrGLGpu;

@@ -46,6 +46,7 @@
 #include "tests/TestUtils.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/gl/GLTestContext.h"
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 
 #include <cstdint>
 #include <memory>
@@ -134,7 +135,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
     }
 
     GrGLTextureInfo texInfo;
-    if (!mbet->texture().getGLTextureInfo(&texInfo)) {
+    if (!GrBackendTextures::GetGLTextureInfo(mbet->texture(), &texInfo)) {
         ERRORF(reporter, "Failed to get GrGLTextureInfo");
         return;
     }
@@ -189,7 +190,7 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(EGLImageTest,
     }
 
     // Wrap this texture ID in a GrTexture
-    GrBackendTexture backendTex(kSize, kSize, GrMipmapped::kNo, externalTexture);
+    GrBackendTexture backendTex = GrBackendTextures::MakeGL(kSize, kSize, GrMipmapped::kNo, externalTexture);
 
     GrColorInfo colorInfo(GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr);
     // TODO: If I make this TopLeft origin to match resolve_origin calls for kDefault, this test
