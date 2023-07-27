@@ -16,6 +16,41 @@
       "message": "See linked bug for steps taken. Happy to add Derek and/or John as well -- wasn\u0027t sure how wide to send this initially.",
       "revId": "acc593705b48310eb2666eed0ffaa17038c9b084",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3ca6566_5ca7ddcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-07-27T16:37:07Z",
+      "side": 1,
+      "message": "I\u0027m happy to (effectively) rubber stamp - the code looks fine, though I can\u0027t confirm or deny that these tests were actually new in `U`. Checking with @djsollen@google.com or @johnstiles@google.com seems reasonable to me.",
+      "parentUuid": "9cbfb942_cbd04bf1",
+      "revId": "acc593705b48310eb2666eed0ffaa17038c9b084",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93af69f0_9435ac65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2023-07-27T16:37:07Z",
+      "side": 1,
+      "message": "The canary is highlighted red here, but that\u0027s only because we\u0027re still rolling and we ended up with a conflict, likely in a place that\u0027s expected. (i.e. the roll updates `METADATA`, which specifies the Skia version.) But it passed when it was run.",
+      "revId": "acc593705b48310eb2666eed0ffaa17038c9b084",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
