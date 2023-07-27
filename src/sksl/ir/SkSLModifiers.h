@@ -52,7 +52,89 @@ SK_MAKE_BITMASK_OPS(SkSL::ModifierFlag);
 
 namespace SkSL {
 
-using ModifierFlags = SkEnumBitMask<SkSL::ModifierFlag>;
+class ModifierFlags : public SkEnumBitMask<SkSL::ModifierFlag> {
+public:
+    using SkEnumBitMask<SkSL::ModifierFlag>::SkEnumBitMask;
+    ModifierFlags(SkEnumBitMask<SkSL::ModifierFlag> that)
+            : SkEnumBitMask<SkSL::ModifierFlag>(that) {}
+
+    std::string description() const {
+        // SkSL extensions
+        std::string result;
+        if (*this & ModifierFlag::kExport) {
+            result += "$export ";
+        }
+        if (*this & ModifierFlag::kES3) {
+            result += "$es3 ";
+        }
+        if (*this & ModifierFlag::kPure) {
+            result += "$pure ";
+        }
+        if (*this & ModifierFlag::kInline) {
+            result += "inline ";
+        }
+        if (*this & ModifierFlag::kNoInline) {
+            result += "noinline ";
+        }
+
+        // Real GLSL qualifiers (must be specified in order in GLSL 4.1 and below)
+        if (*this & ModifierFlag::kFlat) {
+            result += "flat ";
+        }
+        if (*this & ModifierFlag::kNoPerspective) {
+            result += "noperspective ";
+        }
+        if (*this & ModifierFlag::kConst) {
+            result += "const ";
+        }
+        if (*this & ModifierFlag::kUniform) {
+            result += "uniform ";
+        }
+        if ((*this & ModifierFlag::kIn) && (*this & ModifierFlag::kOut)) {
+            result += "inout ";
+        } else if (*this & ModifierFlag::kIn) {
+            result += "in ";
+        } else if (*this & ModifierFlag::kOut) {
+            result += "out ";
+        }
+        if (*this & ModifierFlag::kHighp) {
+            result += "highp ";
+        }
+        if (*this & ModifierFlag::kMediump) {
+            result += "mediump ";
+        }
+        if (*this & ModifierFlag::kLowp) {
+            result += "lowp ";
+        }
+        if (*this & ModifierFlag::kReadOnly) {
+            result += "readonly ";
+        }
+        if (*this & ModifierFlag::kWriteOnly) {
+            result += "writeonly ";
+        }
+        if (*this & ModifierFlag::kBuffer) {
+            result += "buffer ";
+        }
+
+        // We're using a non-GLSL name for this one; the GLSL equivalent is "shared"
+        if (*this & ModifierFlag::kWorkgroup) {
+            result += "workgroup ";
+        }
+
+        if (!result.empty()) {
+            result.pop_back();
+        }
+        return result;
+    }
+
+    bool isConst() const     { return SkToBool(*this & ModifierFlag::kConst); }
+    bool isUniform() const   { return SkToBool(*this & ModifierFlag::kUniform); }
+    bool isReadOnly() const  { return SkToBool(*this & ModifierFlag::kReadOnly); }
+    bool isWriteOnly() const { return SkToBool(*this & ModifierFlag::kWriteOnly); }
+    bool isBuffer() const    { return SkToBool(*this & ModifierFlag::kBuffer); }
+    bool isWorkgroup() const { return SkToBool(*this & ModifierFlag::kWorkgroup); }
+    bool isPure() const      { return SkToBool(*this & ModifierFlag::kPure); }
+};
 
 /**
  * A set of modifier keywords (in, out, uniform, etc.) appearing before a declaration.
@@ -74,85 +156,17 @@ struct Modifiers {
     Modifiers(const Layout& layout, ModifierFlags flags) : fLayout(layout), fFlags(flags) {}
 
     std::string description() const {
-        return fLayout.description() + DescribeFlags(fFlags) + " ";
+        return fLayout.description() + fFlags.description() + " ";
     }
 
-    bool isConst() const     { return SkToBool(fFlags & ModifierFlag::kConst); }
-    bool isUniform() const   { return SkToBool(fFlags & ModifierFlag::kUniform); }
-    bool isReadOnly() const  { return SkToBool(fFlags & ModifierFlag::kReadOnly); }
-    bool isWriteOnly() const { return SkToBool(fFlags & ModifierFlag::kWriteOnly); }
-    bool isBuffer() const    { return SkToBool(fFlags & ModifierFlag::kBuffer); }
-    bool isWorkgroup() const { return SkToBool(fFlags & ModifierFlag::kWorkgroup); }
-    bool isPure() const      { return SkToBool(fFlags & ModifierFlag::kPure); }
-
-    static std::string DescribeFlags(ModifierFlags flags) {
-        // SkSL extensions
-        std::string result;
-        if (flags & ModifierFlag::kExport) {
-            result += "$export ";
-        }
-        if (flags & ModifierFlag::kES3) {
-            result += "$es3 ";
-        }
-        if (flags & ModifierFlag::kPure) {
-            result += "$pure ";
-        }
-        if (flags & ModifierFlag::kInline) {
-            result += "inline ";
-        }
-        if (flags & ModifierFlag::kNoInline) {
-            result += "noinline ";
-        }
-
-        // Real GLSL qualifiers (must be specified in order in GLSL 4.1 and below)
-        if (flags & ModifierFlag::kFlat) {
-            result += "flat ";
-        }
-        if (flags & ModifierFlag::kNoPerspective) {
-            result += "noperspective ";
-        }
-        if (flags & ModifierFlag::kConst) {
-            result += "const ";
-        }
-        if (flags & ModifierFlag::kUniform) {
-            result += "uniform ";
-        }
-        if ((flags & ModifierFlag::kIn) && (flags & ModifierFlag::kOut)) {
-            result += "inout ";
-        } else if (flags & ModifierFlag::kIn) {
-            result += "in ";
-        } else if (flags & ModifierFlag::kOut) {
-            result += "out ";
-        }
-        if (flags & ModifierFlag::kHighp) {
-            result += "highp ";
-        }
-        if (flags & ModifierFlag::kMediump) {
-            result += "mediump ";
-        }
-        if (flags & ModifierFlag::kLowp) {
-            result += "lowp ";
-        }
-        if (flags & ModifierFlag::kReadOnly) {
-            result += "readonly ";
-        }
-        if (flags & ModifierFlag::kWriteOnly) {
-            result += "writeonly ";
-        }
-        if (flags & ModifierFlag::kBuffer) {
-            result += "buffer ";
-        }
-
-        // We're using a non-GLSL name for this one; the GLSL equivalent is "shared"
-        if (flags & ModifierFlag::kWorkgroup) {
-            result += "workgroup ";
-        }
-
-        if (!result.empty()) {
-            result.pop_back();
-        }
-        return result;
-    }
+    // TODO: these will disappear once Modifiers is fully split in half.
+    bool isConst() const     { return fFlags.isConst(); }
+    bool isUniform() const   { return fFlags.isUniform(); }
+    bool isReadOnly() const  { return fFlags.isReadOnly(); }
+    bool isWriteOnly() const { return fFlags.isWriteOnly(); }
+    bool isBuffer() const    { return fFlags.isBuffer(); }
+    bool isWorkgroup() const { return fFlags.isWorkgroup(); }
+    bool isPure() const      { return fFlags.isPure(); }
 
     bool operator==(const Modifiers& other) const {
         return fLayout == other.fLayout && fFlags == other.fFlags;

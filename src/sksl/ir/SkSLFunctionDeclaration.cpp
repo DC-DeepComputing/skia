@@ -547,7 +547,7 @@ std::string FunctionDeclaration::mangledName() const {
 std::string FunctionDeclaration::description() const {
     ModifierFlags modifierFlags = this->modifiers().fFlags;
     std::string result =
-            (modifierFlags ? Modifiers::DescribeFlags(modifierFlags) + " " : std::string()) +
+            (modifierFlags ? modifierFlags.description() + " " : std::string()) +
             this->returnType().displayName() + " " + std::string(this->name()) + "(";
     auto separator = SkSL::String::Separator();
     for (const Variable* p : this->parameters()) {
@@ -555,7 +555,7 @@ std::string FunctionDeclaration::description() const {
         // We can't just say `p->description()` here, because occasionally might have added layout
         // flags onto parameters (like `layout(builtin=10009)`) and don't want to reproduce that.
         if (p->modifiers().fFlags) {
-            result += Modifiers::DescribeFlags(p->modifiers().fFlags) + " ";
+            result += p->modifiers().fFlags.description() + " ";
         }
         result += p->type().displayName();
         result += " ";
