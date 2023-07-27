@@ -25,6 +25,7 @@
 #include "include/gpu/GrTypes.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "include/private/SkColorData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkAutoPixmapStorage.h"
@@ -64,6 +65,7 @@
 #endif
 
 #if defined(SK_GL)
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "include/gpu/gl/GrGLInterface.h"
 #include "include/gpu/gl/GrGLTypes.h"
 #include "src/gpu/ganesh/gl/GrGLCaps.h"
@@ -182,7 +184,7 @@ static bool isBGRA8(const GrBackendFormat& format) {
     switch (format.backend()) {
         case GrBackendApi::kOpenGL:
 #ifdef SK_GL
-            return format.asGLFormat() == GrGLFormat::kBGRA8;
+            return GrBackendFormats::AsGLFormat(format) == GrGLFormat::kBGRA8;
 #else
             return false;
 #endif
@@ -235,7 +237,7 @@ static bool isRGB(const GrBackendFormat& format) {
     switch (format.backend()) {
         case GrBackendApi::kOpenGL:
 #ifdef SK_GL
-            return format.asGLFormat() == GrGLFormat::kRGB8;
+            return GrBackendFormats::AsGLFormat(format) == GrGLFormat::kRGB8;
 #else
             return false;
 #endif
@@ -853,7 +855,7 @@ DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest,
         for (GrTextureType textureType : {GrTextureType::k2D, GrTextureType::kRectangle}) {
             GrGLenum target = textureType == GrTextureType::k2D ? GR_GL_TEXTURE_2D
                                                                 : GR_GL_TEXTURE_RECTANGLE;
-            GrBackendFormat format = GrBackendFormat::MakeGL(combo.fFormat, target);
+            GrBackendFormat format = GrBackendFormats::MakeGL(combo.fFormat, target);
             if (!glCaps->isFormatTexturable(format, textureType)) {
                 continue;
             }
