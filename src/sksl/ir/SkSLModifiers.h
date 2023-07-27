@@ -51,7 +51,20 @@ SK_MAKE_BITMASK_OPS(SkSL::ModifierFlag);
 
 namespace SkSL {
 
-using ModifierFlags = SkEnumBitMask<SkSL::ModifierFlag>;
+class ModifierFlags : public SkEnumBitMask<SkSL::ModifierFlag> {
+public:
+    using SkEnumBitMask<SkSL::ModifierFlag>::SkEnumBitMask;
+    ModifierFlags(SkEnumBitMask<SkSL::ModifierFlag> that)
+            : SkEnumBitMask<SkSL::ModifierFlag>(that) {}
+
+    bool isConst() const     { return *this & ModifierFlag::kConst; }
+    bool isUniform() const   { return *this & ModifierFlag::kUniform; }
+    bool isReadOnly() const  { return *this & ModifierFlag::kReadOnly; }
+    bool isWriteOnly() const { return *this & ModifierFlag::kWriteOnly; }
+    bool isBuffer() const    { return *this & ModifierFlag::kBuffer; }
+    bool isWorkgroup() const { return *this & ModifierFlag::kWorkgroup; }
+    bool isPure() const      { return *this & ModifierFlag::kPure; }
+};
 
 /**
  * A set of modifier keywords (in, out, uniform, etc.) appearing before a declaration.
@@ -76,6 +89,7 @@ struct Modifiers {
         return fLayout.description() + DescribeFlags(fFlags) + " ";
     }
 
+    // TODO(skia:14635): these will be removed when ModifierFlags and Layout are separated.
     bool isConst() const     { return fFlags & ModifierFlag::kConst; }
     bool isUniform() const   { return fFlags & ModifierFlag::kUniform; }
     bool isReadOnly() const  { return fFlags & ModifierFlag::kReadOnly; }
