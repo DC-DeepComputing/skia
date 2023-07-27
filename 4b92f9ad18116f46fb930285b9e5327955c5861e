@@ -106,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c5bcc47_12e92313",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1666,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-27T18:09:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48651a8a_a23cb06a",
+      "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ab19699_019ce6ce",
@@ -119,6 +137,30 @@
       "writtenOn": "2023-07-27T16:28:14Z",
       "side": 1,
       "message": "I\u0027m still working on making this not a thing, where this should be forced to write into `imageBuffer` instead. At the moment these are both the same pointer, but it would be nice not to get a writable pointer like this off of `const SkGlyph\u0026`.",
+      "range": {
+        "startLine": 1668,
+        "startChar": 27,
+        "endLine": 1668,
+        "endChar": 38
+      },
+      "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90706403_7257ab4c",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1668,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-27T18:09:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5ab19699_019ce6ce",
       "range": {
         "startLine": 1668,
         "startChar": 27,
