@@ -120,6 +120,24 @@
       "message": "Actually... I think this block can be removed now to remove at least one place where we abuse the mutability of `*glyph.mask().fImage`? (It probably could have been removed in the previous CL.) This case can now be replaced with an assert that we shouldn\u0027t ever get here since `generateMetrics` requested that this be generated from path.\n\nI\u0027m not sure we need to do that right now in this CL, but this should get removed now I think.",
       "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b93b632e_17a8ade6",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2390,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2023-07-27T17:15:44Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/731078",
+      "parentUuid": "bddfedfe_ff4a137a",
+      "revId": "4b92f9ad18116f46fb930285b9e5327955c5861e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
