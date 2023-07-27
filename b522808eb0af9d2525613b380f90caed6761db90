@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c913a6f_539411f8",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-27T19:04:48Z",
+      "side": 0,
+      "message": "Switches are a bit cumbersome with SkEnumBitMask for now, so for simple cases, I just rewrote them.",
+      "range": {
+        "startLine": 357,
+        "startChar": 4,
+        "endLine": 357,
+        "endChar": 20
+      },
+      "revId": "b522808eb0af9d2525613b380f90caed6761db90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
