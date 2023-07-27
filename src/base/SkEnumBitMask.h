@@ -37,8 +37,8 @@ public:
 
     SK_ALWAYS_INLINE constexpr operator bool() const { return fValue; }
 
-    SK_ALWAYS_INLINE bool operator==(SkEnumBitMask m) const { return fValue == m.fValue; }
-    SK_ALWAYS_INLINE bool operator!=(SkEnumBitMask m) const { return fValue != m.fValue; }
+    SK_ALWAYS_INLINE constexpr bool operator==(SkEnumBitMask m) const { return fValue == m.fValue; }
+    SK_ALWAYS_INLINE constexpr bool operator!=(SkEnumBitMask m) const { return fValue != m.fValue; }
 
     SK_ALWAYS_INLINE constexpr SkEnumBitMask operator|(SkEnumBitMask m) const {
         return SkEnumBitMask(fValue | m.fValue);
