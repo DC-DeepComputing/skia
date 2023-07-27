@@ -160,7 +160,7 @@ protected:
 
     void writeLayout(const Layout& layout);
 
-    void writeModifiers(const Modifiers& modifiers);
+    void writeModifiers(ModifierFlags flags);
 
     void writeVarInitializer(const Variable& var, const Expression& value);
 

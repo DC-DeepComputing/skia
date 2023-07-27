@@ -52,7 +52,6 @@ class Variable;
 class VariableReference;
 enum class OperatorPrecedence : uint8_t;
 struct Layout;
-struct Modifiers;
 struct Program;
 struct ShaderCaps;
 
@@ -99,7 +98,7 @@ protected:
 
     void writeLayout(const Layout& layout);
 
-    void writeModifiers(const Modifiers& modifiers, bool globalContext);
+    void writeModifiers(const Layout& modifiers, ModifierFlags flags, bool globalContext);
 
     virtual void writeInputVars();
 
