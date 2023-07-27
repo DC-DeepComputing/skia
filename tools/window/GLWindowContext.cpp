@@ -17,6 +17,7 @@
 #include "src/gpu/ganesh/gl/GrGLDefines.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
 #include "src/image/SkImage_Base.h"
+#include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 
 namespace skwindow::internal {
 
@@ -65,11 +66,11 @@ sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
             fbInfo.fFormat = GR_GL_RGBA8;
             fbInfo.fProtected = skgpu::Protected::kNo;
 
-            GrBackendRenderTarget backendRT(fWidth,
-                                            fHeight,
-                                            fSampleCount,
-                                            fStencilBits,
-                                            fbInfo);
+            auto backendRT = GrBackendRenderTargets::MakeGL(fWidth,
+                                                            fHeight,
+                                                            fSampleCount,
+                                                            fStencilBits,
+                                                            fbInfo);
 
             fSurface = SkSurfaces::WrapBackendRenderTarget(fContext.get(),
                                                            backendRT,
