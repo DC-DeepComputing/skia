@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d9f9b20_27b41e74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-28T21:30:48Z",
+      "side": 1,
+      "message": "Use of stuff from DEPS lgtm. Deferring GN review to Ben",
+      "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
