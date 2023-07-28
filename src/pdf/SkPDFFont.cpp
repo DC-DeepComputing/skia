@@ -50,7 +50,7 @@
 #include <memory>
 #include <utility>
 
-void SkPDFFont::GetType1GlyphNames(const SkTypeface& face, SkString* dst) {
+void SkPDFFont::GetType1GlyphNames(const SkTypeface& face, SkSpan<SkString> dst) {
     face.getPostScriptGlyphNames(dst);
 }
 
@@ -166,7 +166,7 @@ const std::vector<SkUnichar>& SkPDFFont::GetUnicodeMap(const SkTypeface* typefac
         return *ptr;
     }
     std::vector<SkUnichar> buffer(typeface->countGlyphs());
-    typeface->getGlyphToUnicodeMap(buffer.data());
+    typeface->getGlyphToUnicodeMap(buffer);
     return *canon->fToUnicodeMap.set(id, std::move(buffer));
 }
 

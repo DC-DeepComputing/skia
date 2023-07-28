@@ -440,16 +440,17 @@ SkFontStyle SkCTFontDescriptorGetSkFontStyle(CTFontDescriptorRef desc, bool from
 // Web fonts added to the CTFont registry do not return their character set.
 // Iterate through the font in this case. The existing caller caches the result,
 // so the performance impact isn't too bad.
-static void populate_glyph_to_unicode_slow(CTFontRef ctFont, CFIndex glyphCount,
-                                           SkUnichar* out) {
-    sk_bzero(out, glyphCount * sizeof(SkUnichar));
+static void populate_glyph_to_unicode_slow(CTFontRef ctFont, SkSpan<SkUnichar> out) {
+    sk_bzero(out.data(), out.size_bytes()); // todo: this is redundant from our caller
+
     UniChar unichar = 0;
-    while (glyphCount > 0) {
+    auto count = out.size();
+    while (count > 0) {
         CGGlyph glyph;
         if (CTFontGetGlyphsForCharacters(ctFont, &unichar, &glyph, 1)) {
             if (out[glyph] == 0) {
                 out[glyph] = unichar;
-                --glyphCount;
+                --count;
             }
         }
         if (++unichar == 0) {
@@ -462,8 +463,7 @@ static constexpr uint16_t kPlaneSize = 1 << 13;
 
 static void get_plane_glyph_map(const uint8_t* bits,
                                 CTFontRef ctFont,
-                                CFIndex glyphCount,
-                                SkUnichar* glyphToUnicode,
+                                SkSpan<SkUnichar> glyphToUnicode,
                                 uint8_t planeIndex) {
     SkUnichar planeOrigin = (SkUnichar)planeIndex << 16; // top half of codepoint.
     for (uint16_t i = 0; i < kPlaneSize; i++) {
@@ -485,7 +485,7 @@ static void get_plane_glyph_map(const uint8_t* bits,
             CGGlyph glyphs[2] = {0, 0};
             if (CTFontGetGlyphsForCharacters(ctFont, utf16, glyphs, count)) {
                 SkASSERT(glyphs[1] == 0);
-                SkASSERT(glyphs[0] < glyphCount);
+                SkASSERT(glyphs[0] < glyphToUnicode.size());
                 // CTFontCopyCharacterSet and CTFontGetGlyphsForCharacters seem to add 'support'
                 // for characters 0x9, 0xA, and 0xD mapping them to the glyph for character 0x20?
                 // Prefer mappings to codepoints at or above 0x20.
@@ -497,12 +497,11 @@ static void get_plane_glyph_map(const uint8_t* bits,
     }
 }
 // Construct Glyph to Unicode table.
-static void populate_glyph_to_unicode(CTFontRef ctFont, CFIndex glyphCount,
-                                      SkUnichar* glyphToUnicode) {
-    sk_bzero(glyphToUnicode, sizeof(SkUnichar) * glyphCount);
+static void populate_glyph_to_unicode(CTFontRef ctFont, SkSpan<SkUnichar> glyphToUnicode) {
+    sk_bzero(glyphToUnicode.data(), glyphToUnicode.size_bytes());
     SkUniqueCFRef<CFCharacterSetRef> charSet(CTFontCopyCharacterSet(ctFont));
     if (!charSet) {
-        populate_glyph_to_unicode_slow(ctFont, glyphCount, glyphToUnicode);
+        populate_glyph_to_unicode_slow(ctFont, glyphToUnicode);
         return;
     }
 
@@ -518,7 +517,7 @@ static void populate_glyph_to_unicode(CTFontRef ctFont, CFIndex glyphCount,
     SkASSERT(dataLength >= kPlaneSize);
     const UInt8* bits = CFDataGetBytePtr(bitmap.get());
 
-    get_plane_glyph_map(bits, ctFont, glyphCount, glyphToUnicode, 0);
+    get_plane_glyph_map(bits, ctFont, glyphToUnicode, 0);
     /*
     A CFData object that specifies the bitmap representation of the Unicode
     character points the for the new character set. The bitmap representation could
@@ -540,16 +539,15 @@ static void populate_glyph_to_unicode(CTFontRef ctFont, CFIndex glyphCount,
         uint8_t planeIndex = *bits++;
         SkASSERT(planeIndex >= 1);
         SkASSERT(planeIndex <= 16);
-        get_plane_glyph_map(bits, ctFont, glyphCount, glyphToUnicode, planeIndex);
+        get_plane_glyph_map(bits, ctFont, glyphToUnicode, planeIndex);
     }
 }
 
-void SkTypeface_Mac::getGlyphToUnicodeMap(SkUnichar* dstArray) const {
+void SkTypeface_Mac::getGlyphToUnicodeMap(SkSpan<SkUnichar> dstArray) const {
     SkUniqueCFRef<CTFontRef> ctFont =
             SkCTFontCreateExactCopy(fFontRef.get(), CTFontGetUnitsPerEm(fFontRef.get()),
                                     fOpszVariation);
-    CFIndex glyphCount = CTFontGetGlyphCount(ctFont.get());
-    populate_glyph_to_unicode(ctFont.get(), glyphCount, dstArray);
+    populate_glyph_to_unicode(ctFont.get(), dstArray);
 }
 
 std::unique_ptr<SkAdvancedTypefaceMetrics> SkTypeface_Mac::onGetAdvancedMetrics() const {
@@ -797,14 +795,14 @@ CFArrayRef SkTypeface_Mac::getVariationAxes() const {
 }
 
 int SkTypeface_Mac::onGetVariationDesignPosition(
-        SkFontArguments::VariationPosition::Coordinate coordinates[], int coordinateCount) const
+        SkSpan<SkFontArguments::VariationPosition::Coordinate> coordinates) const
 {
     CFArrayRef ctAxes = this->getVariationAxes();
     if (!ctAxes) {
         return -1;
     }
     CFIndex axisCount = CFArrayGetCount(ctAxes);
-    if (!coordinates || coordinateCount < axisCount) {
+    if (coordinates.size() < (size_t)axisCount) {
         return axisCount;
     }
 
@@ -1379,8 +1377,8 @@ sk_sp<SkTypeface> SkTypeface_Mac::MakeFromStream(std::unique_ptr<SkStreamAsset> 
     return SkTypeface_Mac::Make(std::move(ctVariant), ctVariation.opsz, std::move(stream));
 }
 
-int SkTypeface_Mac::onGetVariationDesignParameters(SkFontParameters::Variation::Axis parameters[],
-                                                   int parameterCount) const
+int SkTypeface_Mac::onGetVariationDesignParameters(
+                   SkSpan<SkFontParameters::Variation::Axis> parameters) const
 {
     CFArrayRef ctAxes = this->getVariationAxes();
     if (!ctAxes) {
@@ -1388,7 +1386,7 @@ int SkTypeface_Mac::onGetVariationDesignParameters(SkFontParameters::Variation::
     }
     CFIndex axisCount = CFArrayGetCount(ctAxes);
 
-    if (!parameters || parameterCount < axisCount) {
+    if (parameters.size() < (size_t)axisCount) {
         return axisCount;
     }
 

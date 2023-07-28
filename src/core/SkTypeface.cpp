@@ -88,8 +88,8 @@ protected:
         sk_bzero(glyphs, count * sizeof(glyphs[0]));
     }
     int onCountGlyphs() const override { return 0; }
-    void getPostScriptGlyphNames(SkString*) const override {}
-    void getGlyphToUnicodeMap(SkUnichar*) const override {}
+    void getPostScriptGlyphNames(SkSpan<SkString>) const override {}
+    void getGlyphToUnicodeMap(SkSpan<SkUnichar>) const override {}
     int onGetUPEM() const override { return 0; }
     class EmptyLocalizedStrings : public SkTypeface::LocalizedStrings {
     public:
@@ -107,13 +107,11 @@ protected:
     bool onGlyphMaskNeedsCurrentColor() const override {
         return false;
     }
-    int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate coordinates[],
-                                     int coordinateCount) const override
+    int onGetVariationDesignPosition(SkSpan<SkFontArguments::VariationPosition::Coordinate>) const override
     {
         return 0;
     }
-    int onGetVariationDesignParameters(SkFontParameters::Variation::Axis parameters[],
-                                       int parameterCount) const override
+    int onGetVariationDesignParameters(SkSpan<SkFontParameters::Variation::Axis>) const override
     {
         return 0;
     }
@@ -325,13 +323,13 @@ bool SkTypeface::glyphMaskNeedsCurrentColor() const {
 int SkTypeface::getVariationDesignPosition(
         SkFontArguments::VariationPosition::Coordinate coordinates[], int coordinateCount) const
 {
-    return this->onGetVariationDesignPosition(coordinates, coordinateCount);
+    return this->onGetVariationDesignPosition({coordinates, coordinateCount});
 }
 
 int SkTypeface::getVariationDesignParameters(
         SkFontParameters::Variation::Axis parameters[], int parameterCount) const
 {
-    return this->onGetVariationDesignParameters(parameters, parameterCount);
+    return this->onGetVariationDesignParameters({parameters, parameterCount});
 }
 
 int SkTypeface::countTables() const {
@@ -501,8 +499,8 @@ bool SkTypeface::getPostScriptName(SkString* name) const {
     return this->onGetPostScriptName(name);
 }
 
-void SkTypeface::getGlyphToUnicodeMap(SkUnichar* dst) const {
-    sk_bzero(dst, sizeof(SkUnichar) * this->countGlyphs());
+void SkTypeface::getGlyphToUnicodeMap(SkSpan<SkUnichar> dst) const {
+    sk_bzero(dst.data(), dst.size_bytes());
 }
 
 std::unique_ptr<SkAdvancedTypefaceMetrics> SkTypeface::getAdvancedMetrics() const {

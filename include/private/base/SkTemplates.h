@@ -123,6 +123,8 @@ public:
      */
     void reset(int count = 0) { *this = AutoTArray(count); }
 
+    size_t size() const { return (size_t)fCount; }
+
     /** Return the array of T elements. Will be NULL if count == 0
      */
     T* get() const { return fArray.get(); }

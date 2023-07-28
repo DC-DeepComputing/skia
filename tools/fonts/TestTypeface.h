@@ -87,7 +87,7 @@ protected:
     std::unique_ptr<SkScalerContext> onCreateScalerContext(const SkScalerContextEffects&,
                                                            const SkDescriptor* desc) const override;
     void onFilterRec(SkScalerContextRec* rec) const override;
-    void getGlyphToUnicodeMap(SkUnichar* glyphToUnicode) const override;
+    void getGlyphToUnicodeMap(SkSpan<SkUnichar>) const override;
     std::unique_ptr<SkAdvancedTypefaceMetrics> onGetAdvancedMetrics() const override;
 
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override;
@@ -102,7 +102,7 @@ protected:
 
     int onCountGlyphs() const override { return (int)fTestFont->fCharCodesCount; }
 
-    void getPostScriptGlyphNames(SkString*) const override {}
+    void getPostScriptGlyphNames(SkSpan<SkString>) const override {}
 
     int onGetUPEM() const override { return 2048; }
 
@@ -112,13 +112,11 @@ protected:
 
     bool onGlyphMaskNeedsCurrentColor() const override { return false; }
 
-    int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate coordinates[],
-                                     int coordinateCount) const override {
+    int onGetVariationDesignPosition(SkSpan<SkFontArguments::VariationPosition::Coordinate>) const override {
         return 0;
     }
 
-    int onGetVariationDesignParameters(SkFontParameters::Variation::Axis parameters[],
-                                       int parameterCount) const override {
+    int onGetVariationDesignParameters(SkSpan<SkFontParameters::Variation::Axis>) const override {
         return 0;
     }
 
