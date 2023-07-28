@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fda470e_f249411c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-07-28T15:17:08Z",
+      "side": 1,
+      "message": "I think this is close to where I was thinking we\u0027d move this Backend* classes? Then again remembering what my thoughts were from 6+ months ago is not the most reliable thing.\n\nI agree with Brian that the data doesn\u0027t need to be an sk_sp and a u_p is fine.\n\nI haven\u0027t really dug too deep into this CL as still working through a large backlog from being out, but just wanted to at least share high level thoughts.",
+      "revId": "37de5d5326fe7b4e40abd97233fc21fc3b9be8a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "070a0689_414f6b10",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-07-28T15:17:08Z",
+      "side": 1,
+      "message": "should this even be public if we don\u0027t want public users to call it? \u003cinsert Simpson\u0027s \"I\u0027m a sign not a cop\" meme\u003e",
+      "range": {
+        "startLine": 348,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 20
+      },
+      "revId": "37de5d5326fe7b4e40abd97233fc21fc3b9be8a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
