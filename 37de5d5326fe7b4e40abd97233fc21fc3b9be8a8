@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b392441_d7672433",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-28T16:09:20Z",
+      "side": 1,
+      "message": "I\u0027ll try the unique_ptr thing after I wrap up a few other tasks. Good to know that your idea and my idea are not totally misaligned.",
+      "parentUuid": "9fda470e_f249411c",
+      "revId": "37de5d5326fe7b4e40abd97233fc21fc3b9be8a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "070a0689_414f6b10",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-07-28T15:17:08Z",
       "side": 1,
       "message": "should this even be public if we don\u0027t want public users to call it? \u003cinsert Simpson\u0027s \"I\u0027m a sign not a cop\" meme\u003e",
+      "range": {
+        "startLine": 348,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 20
+      },
+      "revId": "37de5d5326fe7b4e40abd97233fc21fc3b9be8a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55958c4b_f6c79d19",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-28T16:09:20Z",
+      "side": 1,
+      "message": "If we make it private, then we would need to friend functions in the SkBackendTextures namespaces, which is really awkward to do.\n\nI guess we could make a GrBackendPriv class that provides \"Skia-public\" access to it though which is hopefully not too awkward.",
+      "parentUuid": "070a0689_414f6b10",
       "range": {
         "startLine": 348,
         "startChar": 4,
