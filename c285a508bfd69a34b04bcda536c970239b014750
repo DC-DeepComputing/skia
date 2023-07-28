@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "023cf5d7_071ad241",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-07-28T19:07:11Z",
+      "side": 1,
+      "message": "Nit: this should be \u0027gatherer\u0027 here and in ImageShaderBlock::BeginBlock",
+      "range": {
+        "startLine": 539,
+        "startChar": 43,
+        "endLine": 539,
+        "endChar": 55
+      },
+      "revId": "c285a508bfd69a34b04bcda536c970239b014750",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
