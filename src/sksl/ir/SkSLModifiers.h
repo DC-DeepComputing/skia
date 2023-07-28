@@ -101,7 +101,15 @@ struct Modifiers {
     Modifiers(const Layout& layout, ModifierFlags flags) : fLayout(layout), fFlags(flags) {}
 
     std::string description() const {
-        return fLayout.description() + fFlags.description() + " ";
+        std::string l = fLayout.description();
+        if (!l.empty()) {
+            l += ' ';
+        }
+        std::string f = fFlags.description();
+        if (!f.empty()) {
+            f += ' ';
+        }
+        return l + f;
     }
 
     // TODO: remove these wrappers
