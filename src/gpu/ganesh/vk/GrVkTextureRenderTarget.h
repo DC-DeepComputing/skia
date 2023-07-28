@@ -68,7 +68,8 @@ private:
                             sk_sp<GrVkImage> colorAttachment,
                             sk_sp<GrVkImage> resolveAttachment,
                             GrMipmapStatus,
-                            std::string_view label);
+                            std::string_view label,
+                            bool foo);
 
     GrVkTextureRenderTarget(GrVkGpu* gpu,
                             SkISize dimensions,
@@ -77,7 +78,8 @@ private:
                             sk_sp<GrVkImage> resolveAttachment,
                             GrMipmapStatus,
                             GrWrapCacheable,
-                            std::string_view label);
+                            std::string_view label,
+                            bool foo);
 
     size_t onGpuMemorySize() const override;
 

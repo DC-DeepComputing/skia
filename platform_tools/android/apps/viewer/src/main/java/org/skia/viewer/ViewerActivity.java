@@ -76,6 +76,7 @@ public class ViewerActivity
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         surfaceView.getHolder().addCallback(this);
         surfaceView.setOnTouchListener(this);
+        surfaceView.setSecure(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         if (mDrawerLayout != null) { // xlarge-land has no drawer layout (drawer is always open)
