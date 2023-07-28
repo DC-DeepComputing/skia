@@ -845,7 +845,9 @@ const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
     return nullptr;
 }
 
-UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
+UniqueKey MtlCaps::makeGraphicsPipelineKey(const SharedContext*,
+                                           const RuntimeEffectDictionary*,
+                                           const GraphicsPipelineDesc& pipelineDesc,
                                            const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {

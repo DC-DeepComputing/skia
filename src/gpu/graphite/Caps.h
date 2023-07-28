@@ -34,6 +34,8 @@ class ComputePipelineDesc;
 class GraphicsPipelineDesc;
 class GraphiteResourceKey;
 struct RenderPassDesc;
+class RuntimeEffectDictionary;
+class SharedContext;
 class TextureInfo;
 class TextureProxy;
 
@@ -82,7 +84,9 @@ public:
 
     virtual TextureInfo getDefaultStorageTextureInfo(SkColorType) const = 0;
 
-    virtual UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
+    virtual UniqueKey makeGraphicsPipelineKey(const SharedContext*,
+                                              const RuntimeEffectDictionary*,
+                                              const GraphicsPipelineDesc&,
                                               const RenderPassDesc&) const = 0;
     virtual UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const = 0;
 

@@ -32,7 +32,9 @@ public:
                                                   uint32_t sampleCount,
                                                   Protected) const override;
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
-    UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
+    UniqueKey makeGraphicsPipelineKey(const SharedContext*,
+                                      const RuntimeEffectDictionary*,
+                                      const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
     uint32_t channelMask(const TextureInfo&) const override;
