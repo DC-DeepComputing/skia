@@ -9,6 +9,7 @@
 #include "tests/Test.h"
 #include "tools/SkMetaData.h"
 
+#include <cstddef>
 #include <cstdint>
 #include <string>
 
@@ -51,7 +52,7 @@ DEF_TEST(MetaData, reporter) {
         { "false",  SkMetaData::kBool_Type,     1 }
     };
 
-    int                 loop = 0;
+    size_t loop = 0;
     int count;
     SkMetaData::Type    t;
     while ((name = iter.next(&t, &count)) != nullptr)
