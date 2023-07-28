@@ -39,6 +39,30 @@
       },
       "revId": "91f2982038bee7db06020c32fd3bb2b04306cef2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79f6fc82_d2240159",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-28T14:39:07Z",
+      "side": 1,
+      "message": "Hmm, that\u0027s an interesting side effect of performing these operations via draws, I\u0027m guessing the surface creation was failing because it couldn\u0027t handle an unpremul output?\n\nI\u0027m going to CC Brian to see if he has any thoughts, but if a solution is non-obvious, I\u0027m fine creating a bug and tagging this update with it so we can proceed with the rest of the refactor.",
+      "parentUuid": "ae74a820_474a8aec",
+      "range": {
+        "startLine": 207,
+        "startChar": 4,
+        "endLine": 207,
+        "endChar": 84
+      },
+      "revId": "91f2982038bee7db06020c32fd3bb2b04306cef2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
