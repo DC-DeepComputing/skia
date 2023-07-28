@@ -16,6 +16,74 @@
       "message": "Use of stuff from DEPS lgtm. Deferring GN review to Ben",
       "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c75fd9af_e2de3163",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 37
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-28T22:01:49Z",
+      "side": 1,
+      "message": "I see a bunch of args declared here... but none of them are used?",
+      "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49589dac_9420c283",
+        "filename": "third_party/libgrapheme/download_license.py",
+        "patchSetId": 37
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-28T22:01:49Z",
+      "side": 1,
+      "message": "We really don\u0027t want to be downloading random stuff during the build. Is the LICENSE file really used by this build?",
+      "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d724867_1b18f534",
+        "filename": "third_party/libgrapheme/generate_headers.py",
+        "patchSetId": 37
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-28T22:01:49Z",
+      "side": 1,
+      "message": "Don\u0027t call some random compiler here. Also, why would the name end in .exe? Also this is building a tool, so should be in the BUILD.gn file. Likely each of these executables will need to be its own target, but it is possible to use `template` to generate the targets.",
+      "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1e8ffb8_c39913ee",
+        "filename": "third_party/libgrapheme/generate_headers.py",
+        "patchSetId": 37
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-28T22:01:49Z",
+      "side": 1,
+      "message": "Now, after building the above from the BUILD.gn, this part may need to remain, but taking just the name of the output (just pass the full path instead of attempting to reconstruct it from base name) and the name of the executable to run (likewise, just pass the full path, and the name won\u0027t generally have .exe at the end).",
+      "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
