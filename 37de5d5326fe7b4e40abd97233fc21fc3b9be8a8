@@ -81,6 +81,30 @@
       },
       "revId": "37de5d5326fe7b4e40abd97233fc21fc3b9be8a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ea894d8_a6b64398",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-07-28T16:13:04Z",
+      "side": 1,
+      "message": "Yeah I much more prefer a cleaner, safer public API at the cost of some awkward complexity on our side.",
+      "parentUuid": "55958c4b_f6c79d19",
+      "range": {
+        "startLine": 348,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 20
+      },
+      "revId": "37de5d5326fe7b4e40abd97233fc21fc3b9be8a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
