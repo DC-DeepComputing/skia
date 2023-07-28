@@ -49,7 +49,7 @@ class ForStatement;
 class FunctionCall;
 class IfStatement;
 class IndexExpression;
-class Layout;
+struct Layout;
 class Literal;
 class Operator;
 class OutputStream;
