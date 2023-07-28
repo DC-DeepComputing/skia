@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ded896cd_e860aeaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-28T16:23:48Z",
+      "side": 1,
+      "message": "The graphite cubic shader split CL: https://skia-review.googlesource.com/c/skia/+/731040 fixes the crashes/hangs in the D3D compiler coming from the new runtime effect shaders that this CL added, so once that lands, this CL can land with its 2 shader variants unmodified from what you reviewed originally.",
+      "revId": "1fe54d2328ce51e2d583d21d9b944cac78280ecf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
