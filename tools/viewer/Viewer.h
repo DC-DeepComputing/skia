@@ -171,7 +171,7 @@ private:
 
     void updateUIState();
 
-    void drawSlide(SkSurface* surface);
+    void drawSlide1(SkSurface* surface);
     void drawImGui();
 
     void changeZoomLevel(float delta);

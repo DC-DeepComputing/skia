@@ -1671,7 +1671,7 @@ class ParagraphSlide24 : public ParagraphSlide_Base {
 public:
     ParagraphSlide24() { fName = "Paragraph24"; }
 
-    void draw(SkCanvas* canvas) override {
+    void draws(SkCanvas* canvas) override {
         canvas->drawColor(SK_ColorWHITE);
 
         ParagraphStyle paragraph_style;

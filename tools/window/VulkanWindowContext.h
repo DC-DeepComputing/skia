@@ -36,7 +36,8 @@ public:
     void setDisplayParams(const DisplayParams& params) override {
         this->destroyContext();
         fDisplayParams = params;
-        this->initializeContext();
+        SkDebugf("erg\n");
+        this->initializeContext1();
     }
 
     /** Platform specific function that creates a VkSurfaceKHR for a window */
@@ -48,7 +49,7 @@ public:
                         PFN_vkGetInstanceProcAddr);
 
 private:
-    void initializeContext();
+    void initializeContext1();
     void destroyContext();
 
     struct BackbufferInfo {
