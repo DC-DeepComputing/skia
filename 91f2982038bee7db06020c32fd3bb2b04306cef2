@@ -63,6 +63,30 @@
       },
       "revId": "91f2982038bee7db06020c32fd3bb2b04306cef2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66b73b98_865c58ec",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-28T14:51:55Z",
+      "side": 1,
+      "message": "I did an update that only sets premul for the output surface imageInfo, PTAL.",
+      "parentUuid": "79f6fc82_d2240159",
+      "range": {
+        "startLine": 207,
+        "startChar": 4,
+        "endLine": 207,
+        "endChar": 84
+      },
+      "revId": "91f2982038bee7db06020c32fd3bb2b04306cef2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
