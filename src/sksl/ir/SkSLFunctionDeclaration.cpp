@@ -16,7 +16,6 @@
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLErrorReporter.h"
-#include "src/sksl/SkSLModifiersPool.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
@@ -98,28 +97,14 @@ static bool check_parameters(const Context& context,
             return false;
         }
 
-        Modifiers m = param->modifiers();
-        bool modifiersChanged = false;
-
         // Pure functions should not change any state, and should be safe to eliminate if their
         // result is not used; this is incompatible with out-parameters, so we forbid it here.
         // (We don't exhaustively guard against pure functions changing global state in other ways,
         // though, since they aren't allowed in user code.)
-        if (modifiers.isPure() && (m.fFlags & ModifierFlag::kOut)) {
+        if (modifiers.isPure() && (param->modifiers().fFlags & ModifierFlag::kOut)) {
             context.fErrors->error(param->modifiersPosition(),
                                    "pure functions cannot have out parameters");
             return false;
-        }
-
-        // The `in` modifier on function parameters is implicit, so we can replace `in float x` with
-        // `float x`. This prevents any ambiguity when matching a function by its param types.
-        if ((m.fFlags & (ModifierFlag::kOut | ModifierFlag::kIn)) == ModifierFlag::kIn) {
-            m.fFlags &= ~(ModifierFlag::kOut | ModifierFlag::kIn);
-            modifiersChanged = true;
-        }
-
-        if (modifiersChanged) {
-            param->setModifiers(context.fModifiersPool->add(m));
         }
     }
     return true;
@@ -541,14 +526,7 @@ std::string FunctionDeclaration::description() const {
     auto separator = SkSL::String::Separator();
     for (const Variable* p : this->parameters()) {
         result += separator();
-        // We can't just say `p->description()` here, because occasionally might have added layout
-        // flags onto parameters (like `layout(builtin=10009)`) and don't want to reproduce that.
-        if (p->modifiers().fFlags) {
-            result += p->modifiers().fFlags.description() + " ";
-        }
-        result += p->type().displayName();
-        result += " ";
-        result += p->name();
+        result += p->description();
     }
     result += ")";
     return result;
