@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81fc6b54_391fc33c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-28T19:24:30Z",
+      "side": 1,
+      "message": "FWIW, when we added lots of these, mtklein had a justification for them other than making old compilers happy. (Basically, remind ourselves that returning covariant u_p doesn\u0027t allow RVO/NRVO): https://skia-review.googlesource.com/c/skia/+/271601",
+      "revId": "b4ac4aa59ba8186c9284a3f82126858d7e33f1d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e71c48e3_eee42b87",
