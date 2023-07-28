@@ -16,6 +16,23 @@
       "message": "ptal",
       "revId": "98b24daffc394a43651814c356c3063db43a047d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8e528ea_f8a487bc",
+        "filename": "src/xml/SkXMLParser.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-28T17:02:17Z",
+      "side": 1,
+      "message": "I\u0027d prefer to just do this unconditionally (remove the `SK_BUILD_FOR_WIN` checks). Sound good?",
+      "revId": "98b24daffc394a43651814c356c3063db43a047d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
