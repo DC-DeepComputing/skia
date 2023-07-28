@@ -8,6 +8,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/private/base/SkFeatures.h"
 #include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "src/xml/SkXMLParser.h"
@@ -58,6 +59,10 @@ void SkXMLParserError::reset() {
 ////////////////
 
 namespace {
+
+#if defined(SK_BUILD_FOR_WIN)
+constexpr const void* kHashSeed = &kHashSeed;
+#endif  // defined(SK_BUILD_FOR_WIN)
 
 const XML_Memory_Handling_Suite sk_XML_alloc = {
     sk_malloc_throw,
@@ -147,6 +152,14 @@ bool SkXMLParser::parse(SkStream& docStream)
         return false;
     }
 
+#if defined(SK_BUILD_FOR_WIN)
+    // Avoid calls to rand_s if this is not set. This seed helps prevent DOS
+    // with a known hash sequence so an address is sufficient. The provided
+    // seed should not be zero as that results in a call to rand_s.
+    unsigned long seed = static_cast<unsigned long>(
+        reinterpret_cast<size_t>(kHashSeed) & 0xFFFFFFFF);
+    XML_SetHashSalt(ctx.fXMLParser, seed ? seed : 1);
+#endif  // defined(SK_BUILD_FOR_WIN)
     XML_SetUserData(ctx.fXMLParser, &ctx);
     XML_SetElementHandler(ctx.fXMLParser, start_element_handler, end_element_handler);
     XML_SetCharacterDataHandler(ctx.fXMLParser, text_handler);
