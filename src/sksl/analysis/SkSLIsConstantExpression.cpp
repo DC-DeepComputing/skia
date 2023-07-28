@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkTypes.h"
+#include "src/base/SkEnumBitMask.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLErrorReporter.h"
@@ -54,8 +55,9 @@ public:
             // ... loop indices as defined in section 4. [constant-index-expression]
             case Expression::Kind::kVariableReference: {
                 const Variable* v = e.as<VariableReference>().variable();
-                if (v->modifiers().isConst() && (v->storage() == Variable::Storage::kGlobal ||
-                                                 v->storage() == Variable::Storage::kLocal)) {
+                if ((v->modifierFlags() & ModifierFlag::kConst) &&
+                    (v->storage() == Variable::Storage::kGlobal ||
+                     v->storage() == Variable::Storage::kLocal)) {
                     return false;
                 }
                 return !fLoopIndices || !fLoopIndices->contains(v);
