@@ -275,6 +275,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> create_mask_GPU(
     // the same. We should offset our filter within the render target and expand the size as needed
     // to guarantee at least 1px of padding on all sides.
     auto approxSize = GrResourceProvider::MakeApprox(maskRect.size());
+    SkDebugf("----- create_mask_GPU!!\n");
     auto sdc = skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(rContext,
                                                                    GrColorType::kAlpha_8,
                                                                    nullptr,
@@ -284,6 +285,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> create_mask_GPU(
                                                                    sampleCnt,
                                                                    GrMipmapped::kNo,
                                                                    GrProtected::kNo,
+                                                                   "create_mask_GPU",
                                                                    kMaskOrigin);
     if (!sdc) {
         return nullptr;
@@ -963,6 +965,7 @@ static bool fillin_view_on_gpu(GrDirectContext* dContext,
     // regardless of the final dst surface.
     SkSurfaceProps defaultSurfaceProps;
 
+    SkDebugf("--------- fillin_view_on_gpu!!\n");
     std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> sdc =
             skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(dContext,
                                                                 GrColorType::kAlpha_8,
@@ -973,6 +976,7 @@ static bool fillin_view_on_gpu(GrDirectContext* dContext,
                                                                 1,
                                                                 GrMipmapped::kNo,
                                                                 GrProtected::kNo,
+                                                                "fillin_view_on_gpu",
                                                                 kBlurredRRectMaskOrigin);
     if (!sdc) {
         return false;
@@ -2793,5 +2797,3 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
 }
 
 }  // namespace GrBlurUtils
-
-

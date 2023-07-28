@@ -78,9 +78,9 @@ public:
                                                     SkISize dimensions,
                                                     const SkSurfaceProps&,
                                                     std::string_view label,
-                                                    int sampleCnt = 1,
-                                                    skgpu::Mipmapped = skgpu::Mipmapped::kNo,
-                                                    skgpu::Protected = skgpu::Protected::kNo,
+                                                    int sampleCnt, // = 1,
+                                                    skgpu::Mipmapped, // = skgpu::Mipmapped::kNo,
+                                                    skgpu::Protected, // = skgpu::Protected::kNo,
                                                     GrSurfaceOrigin = kBottomLeft_GrSurfaceOrigin,
                                                     skgpu::Budgeted = skgpu::Budgeted::kYes);
 
@@ -114,9 +114,10 @@ public:
             SkBackingFit,
             SkISize dimensions,
             const SkSurfaceProps&,
-            int sampleCnt = 1,
-            skgpu::Mipmapped = skgpu::Mipmapped::kNo,
-            skgpu::Protected = skgpu::Protected::kNo,
+            int sampleCnt, // = 1,
+            skgpu::Mipmapped, // = skgpu::Mipmapped::kNo,
+            skgpu::Protected, // = skgpu::Protected::kNo,
+            const char* label,
             GrSurfaceOrigin = kBottomLeft_GrSurfaceOrigin,
             skgpu::Budgeted = skgpu::Budgeted::kYes);
 

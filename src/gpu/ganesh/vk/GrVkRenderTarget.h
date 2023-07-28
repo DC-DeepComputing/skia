@@ -125,7 +125,8 @@ protected:
                      sk_sp<GrVkImage> colorAttachment,
                      sk_sp<GrVkImage> resolveImage,
                      CreateType createType,
-                     std::string_view label);
+                     std::string_view label,
+                     bool foo);
 
     void onAbandon() override;
     void onRelease() override;

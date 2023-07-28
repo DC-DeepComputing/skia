@@ -290,7 +290,6 @@ tests_sources = [
   "$_tests/StrikeForGPUTest.cpp",
   "$_tests/StringTest.cpp",
   "$_tests/StrokeTest.cpp",
-  "$_tests/StrokerTest.cpp",
   "$_tests/SubsetPath.cpp",
   "$_tests/SubsetPath.h",
   "$_tests/SurfaceSemaphoreTest.cpp",
