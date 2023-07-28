@@ -272,6 +272,8 @@ std::unique_ptr<skgpu::ganesh::SurfaceFillContext> GrRecordingContextPriv::makeS
         GrProtected isProtected,
         GrSurfaceOrigin origin,
         skgpu::Budgeted budgeted) {
+    SkDebugf("----------makeSFCWithFallback %d", isProtected == GrProtected::kYes);
+
     if (info.alphaType() == kPremul_SkAlphaType || info.alphaType() == kOpaque_SkAlphaType) {
         return skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(this->context(),
                                                                    info.colorType(),
@@ -282,6 +284,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceFillContext> GrRecordingContextPriv::makeS
                                                                    sampleCount,
                                                                    mipmapped,
                                                                    isProtected,
+                                                                   "makeSFCWithFallback",
                                                                    origin,
                                                                    budgeted);
     }

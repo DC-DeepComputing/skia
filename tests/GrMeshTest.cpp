@@ -164,7 +164,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrMeshTest, reporter, ctxInfo, CtsEnforce
                                                        SkBackingFit::kExact,
                                                        {kImageWidth, kImageHeight},
                                                        SkSurfaceProps(),
-                                                       /*label=*/{});
+                                                       /*label=*/{},
+                                                       1,
+                                                       skgpu::Mipmapped::kNo,
+                                                       skgpu::Protected::kNo);
     if (!sdc) {
         ERRORF(reporter, "could not create render target context.");
         return;

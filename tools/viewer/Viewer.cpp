@@ -186,7 +186,7 @@ static DEFINE_bool(list, false, "List samples?");
 #define BACKENDS_STR BACKENDS_STR_EVALUATOR( \
     "\"sw\"", GL_BACKEND_STR, VK_BACKEND_STR, MTL_BACKEND_STR, D3D_BACKEND_STR, DAWN_BACKEND_STR)
 
-static DEFINE_string2(backend, b, "sw", "Backend to use. Allowed values are " BACKENDS_STR ".");
+static DEFINE_string2(backend, b, "vk", "Backend to use. Allowed values are " BACKENDS_STR ".");
 
 static DEFINE_int(msaa, 1, "Number of subpixel samples. 0 for no HW antialiasing.");
 static DEFINE_bool(dmsaa, false, "Use internal MSAA to render to non-MSAA surfaces?");
@@ -195,7 +195,7 @@ static DEFINE_string(bisect, "", "Path to a .skp or .svg file to bisect.");
 
 static DEFINE_string2(file, f, "", "Open a single file for viewing.");
 
-static DEFINE_string2(match, m, nullptr,
+static DEFINE_string2(match, m, "protected1",
                "[~][^]substring[$] [...] of name to run.\n"
                "Multiple matches may be separated by spaces.\n"
                "~ causes a matching name to always be skipped\n"
@@ -1592,7 +1592,7 @@ public:
     Viewer::SkFontFields* fFontOverrides;
 };
 
-void Viewer::drawSlide(SkSurface* surface) {
+void Viewer::drawSlide1(SkSurface* surface) {
     if (fCurrentSlide < 0) {
         return;
     }
@@ -1660,6 +1660,7 @@ void Viewer::drawSlide(SkSurface* surface) {
         colorSpace != nullptr ||
         FLAGS_offscreen) {
 
+        SkDebugf("----------- offScreen\n");
         offscreenSurface = make_surface(fWindow->width(), fWindow->height());
         slideSurface = offscreenSurface.get();
         slideCanvas = offscreenSurface->getCanvas();
@@ -1762,7 +1763,7 @@ void Viewer::onBackendCreated() {
 }
 
 void Viewer::onPaint(SkSurface* surface) {
-    this->drawSlide(surface);
+    this->drawSlide1(surface);
 
     fCommands.drawHelp(surface->getCanvas());
 

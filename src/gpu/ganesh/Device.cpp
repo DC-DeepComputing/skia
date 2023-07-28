@@ -1361,6 +1361,7 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& cinfo, const SkPaint*) {
 
     SkASSERT(cinfo.fInfo.colorType() != kRGBA_1010102_SkColorType);
 
+    SkDebugf("-------  Device::onCreateDevice %d\n", fSurfaceDrawContext->asSurfaceProxy()->isProtected() == skgpu::Protected::kYes);
     auto sdc = SurfaceDrawContext::MakeWithFallback(
             fContext.get(),
             SkColorTypeToGrColorType(cinfo.fInfo.colorType()),
@@ -1371,6 +1372,7 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& cinfo, const SkPaint*) {
             fSurfaceDrawContext->numSamples(),
             GrMipmapped::kNo,
             fSurfaceDrawContext->asSurfaceProxy()->isProtected(),
+            "Device::onCreateDevice",
             fSurfaceDrawContext->origin(),
             skgpu::Budgeted::kYes);
     if (!sdc) {
