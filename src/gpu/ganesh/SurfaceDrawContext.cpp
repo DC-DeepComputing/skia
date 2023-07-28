@@ -253,6 +253,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback(
         int sampleCnt,
         GrMipmapped mipmapped,
         GrProtected isProtected,
+        const char* label,
         GrSurfaceOrigin origin,
         skgpu::Budgeted budgeted) {
     const GrCaps* caps = rContext->priv().caps();
@@ -260,8 +261,11 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback(
     if (ct == GrColorType::kUnknown) {
         return nullptr;
     }
+
+    SkDebugf("--------- SurfaceDrawContext::MakeWithFallback\n");
     return SurfaceDrawContext::Make(rContext, ct, colorSpace, fit, dimensions, surfaceProps,
-                                    /*label=*/"MakeSurfaceDrawContextWithFallback", sampleCnt,
+                                    ///*label=*/"MakeSurfaceDrawContextWithFallback", sampleCnt,
+                                    label, sampleCnt,
                                     mipmapped, isProtected, origin, budgeted);
 }
 

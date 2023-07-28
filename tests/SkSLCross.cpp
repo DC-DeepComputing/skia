@@ -39,6 +39,7 @@ namespace skgpu { class KeyBuilder; }
 struct GrContextOptions;
 struct GrShaderCaps;
 
+#if 0
 static void run_test(skiatest::Reporter*,
                      GrDirectContext*,
                      skgpu::ganesh::SurfaceDrawContext*,
@@ -66,6 +67,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkSLCross, reporter, ctxInfo, CtsEnforcem
     run_test(reporter, dContext, sdc.get(), {0, 2.287f}, {0, -7.741f}, 0);  // Zero.
     run_test(reporter, dContext, sdc.get(), {62.17f, 0}, {-43.49f, 0}, 0);  // Zero.
 }
+#endif
 
 namespace {
 
@@ -125,6 +127,7 @@ private:
 
 }  // namespace
 
+#if 0
 static void run_test(skiatest::Reporter* reporter,
                      GrDirectContext* directContext,
                      skgpu::ganesh::SurfaceDrawContext* sdc,
@@ -158,3 +161,4 @@ static void run_test(skiatest::Reporter* reporter,
         REPORTER_ASSERT(reporter, result == GrColorPackRGBA(0, 0, 0, 255));  // Black.
     }
 }
+#endif

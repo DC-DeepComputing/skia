@@ -11,6 +11,8 @@
 #include "tools/window/GLWindowContext.h"
 #include "tools/window/android/WindowContextFactory_android.h"
 
+#define EGL_PROTECTED_CONTENT_EXT 0x32C0
+
 namespace {
 class GLWindowContext_android : public skwindow::internal::GLWindowContext {
 public:
@@ -62,6 +64,16 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
     EGLint minorVersion;
     eglInitialize(fDisplay, &majorVersion, &minorVersion);
 
+    const char* extensions = eglQueryString(fDisplay, EGL_EXTENSIONS);
+    SkDebugf("--------- %s\n", extensions);
+
+
+    bool createProtected = true; //$$
+    if (createProtected && !strstr(extensions, "EGL_EXT_protected_content")) {
+        SkDebugf("--------------- Missing EGL_EXT_protected_content support!\n");
+        createProtected = false;
+    }
+
     SkAssertResult(eglBindAPI(EGL_OPENGL_ES_API));
 
     EGLint numConfigs = 0;
@@ -84,12 +96,19 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
     SkAssertResult(eglChooseConfig(fDisplay, configAttribs, &surfaceConfig, 1, &numConfigs));
     SkASSERT(numConfigs > 0);
 
-    static const EGLint kEGLContextAttribsForOpenGLES[] = {
-        EGL_CONTEXT_CLIENT_VERSION, 2,
-        EGL_NONE
+    std::vector<EGLint> kEGLContextAttribsForOpenGLES = {
+            EGL_CONTEXT_CLIENT_VERSION, 2,
     };
+
+    if (createProtected) {
+        kEGLContextAttribsForOpenGLES.push_back(EGL_PROTECTED_CONTENT_EXT);
+        kEGLContextAttribsForOpenGLES.push_back(EGL_TRUE);
+    }
+
+    kEGLContextAttribsForOpenGLES.push_back(EGL_NONE);
+
     fEGLContext = eglCreateContext(
-            fDisplay, surfaceConfig, nullptr, kEGLContextAttribsForOpenGLES);
+            fDisplay, surfaceConfig, nullptr, kEGLContextAttribsForOpenGLES.data());
     SkASSERT(EGL_NO_CONTEXT != fEGLContext);
 
 //    SkDebugf("EGL: %d.%d", majorVersion, minorVersion);
