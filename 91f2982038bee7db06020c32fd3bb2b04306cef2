@@ -87,6 +87,30 @@
       },
       "revId": "91f2982038bee7db06020c32fd3bb2b04306cef2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bd7738c_9433eeeb",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-07-28T14:55:54Z",
+      "side": 1,
+      "message": "That seems better to me. I think the open question is if we should somehow be supporting unpremul inputs -\u003e unpremul outputs where we aren\u0027t averaging adjacent premultiplied colors on the downscale? I feel like the Ganesh SurfaceContext version go away with that because all of the drawing operations were filling so it supported unpremul and could ignore the effects of coverage?",
+      "parentUuid": "66b73b98_865c58ec",
+      "range": {
+        "startLine": 207,
+        "startChar": 4,
+        "endLine": 207,
+        "endChar": 84
+      },
+      "revId": "91f2982038bee7db06020c32fd3bb2b04306cef2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
