@@ -39,8 +39,8 @@ protected:
         sk_bzero(glyphs, count * sizeof(glyphs[0]));
     }
     int onCountGlyphs() const override { return 0; }
-    void getPostScriptGlyphNames(SkString*) const override {}
-    void getGlyphToUnicodeMap(SkUnichar*) const override {}
+    void getPostScriptGlyphNames(SkSpan<SkString>) const override {}
+    void getGlyphToUnicodeMap(SkSpan<SkUnichar>) const override {}
     int onGetUPEM() const override { return 0; }
     class EmptyLocalizedStrings : public SkTypeface::LocalizedStrings {
     public:
@@ -52,12 +52,10 @@ protected:
         return new EmptyLocalizedStrings;
     }
     bool onGlyphMaskNeedsCurrentColor() const override { return false; }
-    int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate coordinates[],
-                                     int coordinateCount) const override {
+    int onGetVariationDesignPosition(SkSpan<SkFontArguments::VariationPosition::Coordinate>) const override {
         return 0;
     }
-    int onGetVariationDesignParameters(SkFontParameters::Variation::Axis parameters[],
-                                       int parameterCount) const override {
+    int onGetVariationDesignParameters(SkSpan<SkFontParameters::Variation::Axis>) const override {
         return 0;
     }
     int    onGetTableTags(SkFontTableTag tags[]) const override { return 0; }

@@ -264,7 +264,7 @@ static const std::vector<SkString>& type_1_glyphnames(SkPDFDocument* canon,
     const std::vector<SkString>* glyphNames = canon->fType1GlyphNames.find(typefaceID);
     if (!glyphNames) {
         std::vector<SkString> names(typeface->countGlyphs());
-        SkPDFFont::GetType1GlyphNames(*typeface, names.data());
+        SkPDFFont::GetType1GlyphNames(*typeface, names);
         glyphNames = canon->fType1GlyphNames.set(typefaceID, std::move(names));
     }
     SkASSERT(glyphNames);

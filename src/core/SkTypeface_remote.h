@@ -104,12 +104,10 @@ protected:
     bool onGlyphMaskNeedsCurrentColor() const override {
         return fGlyphMaskNeedsCurrentColor;
     }
-    int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate coordinates[],
-                                     int coordinateCount) const override {
+    int onGetVariationDesignPosition(SkSpan<SkFontArguments::VariationPosition::Coordinate>) const override {
         SK_ABORT("Should never be called.");
     }
-    int onGetVariationDesignParameters(SkFontParameters::Variation::Axis parameters[],
-                                       int parameterCount) const override {
+    int onGetVariationDesignParameters(SkSpan<SkFontParameters::Variation::Axis>) const override {
         SK_ABORT("Should never be called.");
     }
     void onGetFamilyName(SkString* familyName) const override {
@@ -141,11 +139,11 @@ protected:
     void onGetFontDescriptor(SkFontDescriptor*, bool*) const override {
         SK_ABORT("Should never be called.");
     }
-    void getGlyphToUnicodeMap(SkUnichar*) const override {
+    void getGlyphToUnicodeMap(SkSpan<SkUnichar>) const override {
         SK_ABORT("Should never be called.");
     }
 
-    void getPostScriptGlyphNames(SkString*) const override {
+    void getPostScriptGlyphNames(SkSpan<SkString>) const override {
         SK_ABORT("Should never be called.");
     }
 

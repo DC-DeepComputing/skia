@@ -178,7 +178,7 @@ void SkRandomTypeface::onFilterRec(SkScalerContextRec* rec) const {
     rec->fMaskFormat = SkMask::kARGB32_Format;
 }
 
-void SkRandomTypeface::getGlyphToUnicodeMap(SkUnichar* glyphToUnicode) const {
+void SkRandomTypeface::getGlyphToUnicodeMap(SkSpan<SkUnichar> glyphToUnicode) const {
     fProxy->getGlyphToUnicodeMap(glyphToUnicode);
 }
 
@@ -224,7 +224,7 @@ SkTypeface::LocalizedStrings* SkRandomTypeface::onCreateFamilyNameIterator() con
     return fProxy->createFamilyNameIterator();
 }
 
-void SkRandomTypeface::getPostScriptGlyphNames(SkString* names) const {
+void SkRandomTypeface::getPostScriptGlyphNames(SkSpan<SkString> names) const {
     return fProxy->getPostScriptGlyphNames(names);
 }
 
@@ -233,14 +233,13 @@ bool SkRandomTypeface::onGlyphMaskNeedsCurrentColor() const {
 }
 
 int SkRandomTypeface::onGetVariationDesignPosition(
-        SkFontArguments::VariationPosition::Coordinate coordinates[],
-        int                                            coordinateCount) const {
-    return fProxy->onGetVariationDesignPosition(coordinates, coordinateCount);
+        SkSpan<SkFontArguments::VariationPosition::Coordinate> coordinates) const {
+    return fProxy->onGetVariationDesignPosition(coordinates);
 }
 
-int SkRandomTypeface::onGetVariationDesignParameters(SkFontParameters::Variation::Axis parameters[],
-                                                     int parameterCount) const {
-    return fProxy->onGetVariationDesignParameters(parameters, parameterCount);
+int SkRandomTypeface::onGetVariationDesignParameters(
+        SkSpan<SkFontParameters::Variation::Axis> parameters) const {
+    return fProxy->onGetVariationDesignParameters(parameters);
 }
 
 int SkRandomTypeface::onGetTableTags(SkFontTableTag tags[]) const {

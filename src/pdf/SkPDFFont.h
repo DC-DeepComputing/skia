@@ -45,7 +45,7 @@ public:
 
     static SkAdvancedTypefaceMetrics::FontType FontType(const SkTypeface&,
                                                         const SkAdvancedTypefaceMetrics&);
-    static void GetType1GlyphNames(const SkTypeface&, SkString*);
+    static void GetType1GlyphNames(const SkTypeface&, SkSpan<SkString>);
 
     static bool IsMultiByte(SkAdvancedTypefaceMetrics::FontType type) {
         return type == SkAdvancedTypefaceMetrics::kType1CID_Font ||

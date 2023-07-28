@@ -98,7 +98,7 @@ private:
     std::unique_ptr<SkScalerContext> onCreateScalerContext(const SkScalerContextEffects&,
                                                            const SkDescriptor* desc) const override;
     void onFilterRec(SkScalerContextRec* rec) const override;
-    void getGlyphToUnicodeMap(SkUnichar* glyphToUnicode) const override;
+    void getGlyphToUnicodeMap(SkSpan<SkUnichar>) const override;
     std::unique_ptr<SkAdvancedTypefaceMetrics> onGetAdvancedMetrics() const override;
 
     void onGetFontDescriptor(SkFontDescriptor* desc, bool* isLocal) const override;
@@ -127,12 +127,12 @@ private:
 
     // noops
 
-    void getPostScriptGlyphNames(SkString*) const override {}
+    void getPostScriptGlyphNames(SkSpan<SkString>) const override {}
     bool onGlyphMaskNeedsCurrentColor() const override { return false; }
-    int onGetVariationDesignPosition(SkFontArguments::VariationPosition::Coordinate[],
-                                     int) const override { return 0; }
-    int onGetVariationDesignParameters(SkFontParameters::Variation::Axis[],
-                                       int) const override { return 0; }
+    int onGetVariationDesignPosition(SkSpan<SkFontArguments::VariationPosition::Coordinate>)
+        const override { return 0; }
+    int onGetVariationDesignParameters(SkSpan<SkFontParameters::Variation::Axis>)
+        const override { return 0; }
     int onGetTableTags(SkFontTableTag tags[]) const override { return 0; }
     size_t onGetTableData(SkFontTableTag, size_t, size_t, void*) const override { return 0; }
 
@@ -203,8 +203,8 @@ void SkUserTypeface::onFilterRec(SkScalerContextRec* rec) const {
     rec->setHinting(SkFontHinting::kNone);
 }
 
-void SkUserTypeface::getGlyphToUnicodeMap(SkUnichar* glyphToUnicode) const {
-    for (int gid = 0; gid < this->glyphCount(); ++gid) {
+void SkUserTypeface::getGlyphToUnicodeMap(SkSpan<SkUnichar> glyphToUnicode) const {
+    for (size_t gid = 0; gid < glyphToUnicode.size(); ++gid) {
         glyphToUnicode[gid] = SkTo<SkUnichar>(gid);
     }
 }

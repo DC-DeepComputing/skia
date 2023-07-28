@@ -13,6 +13,7 @@
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/private/SkWeakRefCnt.h"
 #include "include/private/base/SkOnce.h"
@@ -388,12 +389,12 @@ protected:
     // For type1 postscript fonts only, set the glyph names for each glyph.
     // destination array is non-null, and points to an array of size this->countGlyphs().
     // Backends that do not suport type1 fonts should not override.
-    virtual void getPostScriptGlyphNames(SkString*) const = 0;
+    virtual void getPostScriptGlyphNames(SkSpan<SkString>) const = 0;
 
     // The mapping from glyph to Unicode; array indices are glyph ids.
     // For each glyph, give the default Unicode value, if it exists.
     // dstArray is non-null, and points to an array of size this->countGlyphs().
-    virtual void getGlyphToUnicodeMap(SkUnichar* dstArray) const = 0;
+    virtual void getGlyphToUnicodeMap(SkSpan<SkUnichar>) const = 0;
 
     virtual std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const = 0;
 
@@ -402,11 +403,10 @@ protected:
     virtual bool onGlyphMaskNeedsCurrentColor() const = 0;
 
     virtual int onGetVariationDesignPosition(
-        SkFontArguments::VariationPosition::Coordinate coordinates[],
-        int coordinateCount) const = 0;
+                             SkSpan<SkFontArguments::VariationPosition::Coordinate>) const = 0;
 
     virtual int onGetVariationDesignParameters(
-        SkFontParameters::Variation::Axis parameters[], int parameterCount) const = 0;
+                             SkSpan<SkFontParameters::Variation::Axis>) const = 0;
 
     virtual void onGetFontDescriptor(SkFontDescriptor*, bool* isLocal) const = 0;
 
