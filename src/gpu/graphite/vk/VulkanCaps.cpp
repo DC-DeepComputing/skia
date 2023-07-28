@@ -12,9 +12,13 @@
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "src/gpu/graphite/AttachmentTypes.h"
+#include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
+#include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/vk/VulkanSharedContext.h"
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 
 #ifdef SK_BUILD_FOR_ANDROID
@@ -49,9 +53,9 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     // give the minimum max size across all configs. So for simplicity we will use that for now.
     fMaxTextureSize = std::min(physDevProperties.limits.maxImageDimension2D, (uint32_t)INT_MAX);
 
-    fRequiredUniformBufferAlignment = 256;
-    fRequiredStorageBufferAlignment = 1;
-    fRequiredTransferBufferAlignment = 4;
+    fRequiredUniformBufferAlignment = physDevProperties.limits.minUniformBufferOffsetAlignment;
+    fRequiredStorageBufferAlignment =  physDevProperties.limits.minStorageBufferOffsetAlignment;
+    fRequiredTransferBufferAlignment = fRequiredUniformBufferAlignment;
 
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     // TODO(skia:14639): We cannot use std430 layout for SSBOs until SkSL gracefully handles
@@ -100,6 +104,7 @@ void VulkanCaps::init(const skgpu::VulkanInterface* vkInterface,
     } else {
         fMaxVertexAttributes = physDevProperties.limits.maxVertexInputAttributes;
     }
+    fMaxUniformBufferRange = physDevProperties.limits.maxUniformBufferRange;
     // TODO: Add support for using regular uniform buffers or push constants to store intrinsic
     // constant information. For now, require inline uniform support.
     fSupportsInlineUniformBlocks =
@@ -1149,7 +1154,9 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
         static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain =
             UniqueKey::GenerateDomain();
 
-        // 5 uint32_t's (render step id, paint id, uint64 renderpass desc, uint16 write swizzle key)
+        // 6 uint32_t's (render step id, paint id, uint64 renderpass desc,
+        // uint16 write swizzle key, int number of texture/samplers, int num uniform descriptors)
+        // TODO: Combine number texture/samplers, uniform descriptors into one builder uint32_t
         UniqueKey::Builder builder(&pipelineKey, kGraphicsPipelineDomain, 5, "GraphicsPipeline");
         // add graphicspipelinedesc key
         builder[0] = pipelineDesc.renderStepID();
@@ -1160,6 +1167,25 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
         builder[2] = renderPassKey & 0xFFFFFFFF;
         builder[3] = (renderPassKey >> 32) & 0xFFFFFFFF;
         builder[4] = renderPassDesc.fWriteSwizzle.asKey();
+
+        // Determine the number of texture/samplers.
+        // TODO: Spin up a way to centralize this logic so this determination only has to be
+        // performed once for the pipeline key generation and for the actual pipeline creation.
+        // const RenderStep* step = ctxt->rendererProvider()->lookup(pipelineDesc.renderStepID());
+        // bool useShadingSsboIndex = this->storageBufferPreferred() && step->performsShading();
+        // const FragSkSLInfo fsSkSLInfo = GetSkSLFS(this,
+        //                                           ctxt->shaderCodeDictionary(),
+        //                                           runtimeDict,
+        //                                           step,
+        //                                           pipelineDesc.paintParamsID(),
+        //                                           useShadingSsboIndex,
+        //                                           renderPassDesc.fWriteSwizzle);
+        // builder[5] = fsSkSLInfo.fNumTexturesAndSamplers;
+        // int numUniformDescriptors = 1 + !step->uniforms().empty() + !fsSkSLInfo.fSkSL.empty();
+        // // If the permutations of bindings differ (say 2 pipelines have 2 uniform descriptors,
+        // // but one has bindings 0,1 and the other 0,2), then that would warrant creation of a new
+        // // pipeline. TODO: Accomodate for this. Perhaps incorporate existing desc.set keys.
+        // builder[6] = numUniformDescriptors;
 
         builder.finish();
     }

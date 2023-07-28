@@ -15,6 +15,7 @@
 
 namespace skgpu::graphite {
 struct ContextOptions;
+class SharedContext;
 
 class VulkanCaps final : public Caps {
 public:
@@ -79,6 +80,7 @@ public:
     uint32_t maxVertexAttributes() const {
         return fMaxVertexAttributes;
     }
+    uint64_t maxUniformBufferRange() const { return fMaxUniformBufferRange; }
 
     uint64_t getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const;
 
@@ -208,6 +210,7 @@ private:
     const DepthStencilFormatInfo& getDepthStencilFormatInfo(VkFormat) const;
 
     uint32_t fMaxVertexAttributes;
+    uint64_t fMaxUniformBufferRange;
 
     // Various bools to define whether certain Vulkan features are supported.
     bool fSupportsMemorylessAttachments = false;
