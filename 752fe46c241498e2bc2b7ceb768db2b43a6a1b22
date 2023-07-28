@@ -16,6 +16,23 @@
       "message": "What do we think of this approach, especially from a memory management point of view (and also, did I mess anything up with the sk_sp?)",
       "revId": "752fe46c241498e2bc2b7ceb768db2b43a6a1b22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a177dbd7_e85bc3e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-28T13:48:35Z",
+      "side": 1,
+      "message": "I definitely want to get Greg\u0027s opinion on this. If we do go in this direction, I don\u0027t think we need to share the allocations, so we should use unique_ptr, rather than sk_sp. (That also means we don\u0027t need to derive from SkRefCnt, which makes the data objects smaller).",
+      "revId": "752fe46c241498e2bc2b7ceb768db2b43a6a1b22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
