@@ -16,7 +16,7 @@
 #include "src/base/SkEnumBitMask.h"
 #include "src/core/SkTHash.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
-#include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLContext.h"  // IWYU pragma: keep
 #include "src/sksl/SkSLIntrinsicList.h"
 #include "src/sksl/SkSLOperator.h"
 #include "src/sksl/SkSLProgramKind.h"
@@ -38,7 +38,6 @@
 #include "src/sksl/ir/SkSLIRNode.h"
 #include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
-#include "src/sksl/ir/SkSLLayout.h"
 #include "src/sksl/ir/SkSLModifiers.h"
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
