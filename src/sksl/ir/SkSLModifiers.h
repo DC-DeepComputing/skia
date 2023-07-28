@@ -59,6 +59,7 @@ public:
             : SkEnumBitMask<SkSL::ModifierFlag>(that) {}
 
     std::string description() const;
+    std::string paddedDescription() const;
 
     /**
      * Verifies that only permitted modifier flags are included. Reports errors and returns false in
@@ -101,15 +102,7 @@ struct Modifiers {
     Modifiers(const Layout& layout, ModifierFlags flags) : fLayout(layout), fFlags(flags) {}
 
     std::string description() const {
-        std::string l = fLayout.description();
-        if (!l.empty()) {
-            l += ' ';
-        }
-        std::string f = fFlags.description();
-        if (!f.empty()) {
-            f += ' ';
-        }
-        return l + f;
+        return fLayout.paddedDescription() + fFlags.paddedDescription();
     }
 
     // TODO: remove these wrappers
