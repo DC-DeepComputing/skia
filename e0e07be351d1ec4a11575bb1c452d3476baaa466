@@ -46,6 +46,30 @@
       },
       "revId": "e0e07be351d1ec4a11575bb1c452d3476baaa466",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca6c6ffa_1180b94a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1184,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-28T21:09:45Z",
+      "side": 1,
+      "message": "I am on the same page regarding all renderStepID information being encapsulated in the key already. However, I\u0027m less clear on whether \"a given renderStep type + all the other variables will always have the same number of texture/samplers and uniform blocks\". I thought so as well, but it was unclear to me whether the renderStepId housed information on the NUMBER of texture/samplers and uniforms, or simply whether they had them at all (see https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/graphite/ContextUtils.cpp#74 ; https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/graphite/Renderer.h#161). \n\nI did observe that there exists a numUniforms() method within Renderer.h, but I don\u0027t see that being used for the purpose of renderStepID generation. RendererProvider.cpp seems to create the actual RenderStep objects, and I don\u0027t see that information being taken into account there for determining when we need to create a new render step id (which just uses next_id()). But if I\u0027m missing it, please let me know.\n\nThat being said... You may be right, because removing these components of the key seems to retain functionality for a sampling of images I\u0027ve observed (at least along with the other updates I\u0027ve made).",
+      "parentUuid": "c2e0d5df_e3b18710",
+      "range": {
+        "startLine": 1167,
+        "startChar": 0,
+        "endLine": 1184,
+        "endChar": 43
+      },
+      "revId": "e0e07be351d1ec4a11575bb1c452d3476baaa466",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

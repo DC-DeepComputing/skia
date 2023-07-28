@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb709e8f_7e67c6f5",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-28T21:09:45Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "692de6bd_d1bca654",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 53
+      },
+      "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d771c152_a8d8df30",
@@ -87,6 +111,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a055c6a6_4a553bc2",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-28T21:09:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b65464e5_ab610112",
+      "range": {
+        "startLine": 544,
+        "startChar": 75,
+        "endLine": 544,
+        "endChar": 86
+      },
+      "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b1dd6ce_e8474675",
@@ -110,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d631f8bc_1cedf9fb",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-28T21:09:45Z",
+      "side": 1,
+      "message": "Yes, supremely tragic. 😭 Fixed.",
+      "parentUuid": "4b1dd6ce_e8474675",
+      "range": {
+        "startLine": 425,
+        "startChar": 38,
+        "endLine": 425,
+        "endChar": 74
+      },
+      "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d3b1b3a_c7f0273f",
@@ -123,6 +195,30 @@
       "writtenOn": "2023-07-20T19:25:36Z",
       "side": 1,
       "message": "It\u0027s not clear why this isn\u0027t outside the loop. You\u0027re filling in the array of descriptors to update and then updating them. At each iteration you\u0027re updating the ones you already did plus one more.",
+      "range": {
+        "startLine": 689,
+        "startChar": 24,
+        "endLine": 689,
+        "endChar": 44
+      },
+      "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9a33e20_ae127f5b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-28T21:09:45Z",
+      "side": 1,
+      "message": "Great question - so this is the weird fix I mentioned where updating the uniform descriptors one at a time seemed to remedy some draw issues. In short, this works while updating multiple with one update call does not, and it\u0027s not immediately clear to me why that is.\n\nMore details if you\u0027re morbidly curious...\nIn RenderDoc, when updating multiple uniform descriptors at once, uniform descriptors within a set were pointing to the same area of a uniform buffer (ie, had the same offset unexpectedly even though they should point to different areas of the same one buffer). For some unknown reason, this is fixed by updating one at a time, despite having the VkWriteDescriptorSet struct get populated the same way in both cases.\n\nI\u0027ve done some debugging and checked out the API dump and am still unsure exactly why this works but updating multiple uniform descriptors within one update call does not. Notably, updating all the texture/samplers at once seems to work just fine. Maybe you can see what I\u0027m missing here.\n\nHere is an API dump snippet when updating multiple descriptors at once: https://paste.googleplex.com/5114402155003904\n\nHere is an API dump snippet when updating one at a time:\nhttps://paste.googleplex.com/5000621122912256\n\n^ As you can see, the offset and range values differ when updating one at a time (expected), but are the same when updating multiple (unexpected). Again, this is weird because methodology for creating VkWriteDescriptorSet and VkDescriptorBufferInfo is the same in either way; the main difference being that we use one struct reference w/ a descriptorWriteCount of 1 when updating one at a time. This is as opposed to pointing to the beginning of a TArray of VkWriteDescriptorSets w/ descriptorWriteCount of the size of the TArray when updating multiple.\n\nI wonder if the issue lies within having 2 uniform descriptors within a set point to the same one large uniform buffer but rely upon having different offset values / using different suballocations. Maybe there\u0027s some weird \"optimization\" going on where the driver sees we reference the same VkBuffer object for 2 uniform descriptor update calls, and just picks one of their offsets? Seems unlikely though, seeing as both separate usages (multiple updates at once and referencing different parts of the same buffer) should, in theory, be supported. \n\nMy other idea is that using TArray for the VkWriteDescriptorSet does not lead to proper copying of its related VkDescriptorBufferInfo...\n\nFor now, I\u0027ve added a comment. LMKWYT.",
+      "parentUuid": "4d3b1b3a_c7f0273f",
       "range": {
         "startLine": 689,
         "startChar": 24,

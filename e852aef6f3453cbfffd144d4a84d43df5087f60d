@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e822ccb_c66f7709",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-28T21:09:45Z",
+      "side": 1,
+      "message": "Addressed the more substantial pieces of feedback and commented a question for you regarding render step IDs. Still looking into some smaller details, but wanted to get my current thoughts out to you so you could provide feedback. Draws should also be right-side-up now, so that\u0027s pretty neat. :^)",
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
