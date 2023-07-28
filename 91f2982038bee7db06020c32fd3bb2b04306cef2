@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bd05972_c0a588aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-28T12:54:00Z",
+      "side": 1,
+      "message": "Updated with fix",
+      "revId": "91f2982038bee7db06020c32fd3bb2b04306cef2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae74a820_474a8aec",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-28T12:54:00Z",
+      "side": 1,
+      "message": "So this is effectively what we were doing when we wrapped the src image in a Device but I\u0027m not 100% sure if this is the correct approach -- maybe set the alpha for the first (or each) tempOutput to premul and go from there?",
+      "range": {
+        "startLine": 207,
+        "startChar": 4,
+        "endLine": 207,
+        "endChar": 84
+      },
+      "revId": "91f2982038bee7db06020c32fd3bb2b04306cef2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
