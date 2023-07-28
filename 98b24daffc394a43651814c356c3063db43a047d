@@ -33,6 +33,24 @@
       "message": "I\u0027d prefer to just do this unconditionally (remove the `SK_BUILD_FOR_WIN` checks). Sound good?",
       "revId": "98b24daffc394a43651814c356c3063db43a047d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca793788_7398d7f6",
+        "filename": "src/xml/SkXMLParser.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 20584
+      },
+      "writtenOn": "2023-07-28T21:31:50Z",
+      "side": 1,
+      "message": "sure. Done.",
+      "parentUuid": "f8e528ea_f8a487bc",
+      "revId": "98b24daffc394a43651814c356c3063db43a047d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
