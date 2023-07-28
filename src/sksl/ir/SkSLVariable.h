@@ -66,9 +66,9 @@ public:
                                              std::string_view name, Variable::Storage storage);
 
     static std::unique_ptr<Variable> Make(const Context& context, Position pos,
-                                          Position modifiersPos, const Modifiers& modifiers,
-                                          const Type* type, std::string_view name,
-                                          Variable::Storage storage);
+                                          Position modifiersPos, const Layout& layout,
+                                          ModifierFlags flags, const Type* type,
+                                          std::string_view name, Variable::Storage storage);
 
     /**
      * Creates a local scratch variable and the associated VarDeclaration statement.
@@ -87,10 +87,6 @@ public:
                                                std::unique_ptr<Expression> initialValue);
     const Modifiers& modifiers() const {
         return *fModifiers;
-    }
-
-    void setModifiers(const Modifiers* modifiers) {
-        fModifiers = modifiers;
     }
 
     Position modifiersPosition() const {
