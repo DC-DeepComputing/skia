@@ -79,6 +79,7 @@ struct Layout {
         return result;
     }
 
+    std::string paddedDescription() const;
     std::string description() const;
 
     /**
