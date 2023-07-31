@@ -88,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e8f0b1e_d3fc50f1",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-07-31T23:13:59Z",
+      "side": 1,
+      "message": "Not trivially, at least not that I could figure out within a reasonable amount of time. For precedent, I see that we currently return a `SkSpan\u003csk_sp\u003cSkShader\u003e\u003e` created from an `skia_private::STArray\u003c1, sk_sp\u003cSkShader\u003e\u003e` within `SkImageFilterTypes`, but using the same syntax does not seem to agree in the case of `skia_private::TArray\u003csk_sp\u003cTextureProxy\u003e\u003e`. Perhaps it\u0027s due to using a \u0027TArray\u0027 as opposed to an \u0027STArray\u0027, though a comment in SkSpan indicates it should be possible to use w/ any container that supports `size()` and `data()` (which STArray does). Anyways, I don\u0027t want this alone holding up the CL, so I will mark this suggestion as resolved so it can land and we can discuss tomorrow.",
+      "parentUuid": "d771c152_a8d8df30",
+      "range": {
+        "startLine": 97,
+        "startChar": 18,
+        "endLine": 97,
+        "endChar": 24
+      },
+      "revId": "cd0fa3b8007ef33f3ce0bd4f909a7d6c6e52f950",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b65464e5_ab610112",
