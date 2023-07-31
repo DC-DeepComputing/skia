@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c26b18c_25613d85",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 40
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-31T21:09:57Z",
+      "side": 1,
+      "message": "Thank you. I could not event imagine that Microsoft dropped it so much...",
+      "parentUuid": "e26a63ff_0cb2a071",
+      "range": {
+        "startLine": 15,
+        "startChar": 19,
+        "endLine": 15,
+        "endChar": 28
+      },
+      "revId": "f300fab669acb9c231a4df4605cf50adf45d6cc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b455605_532b36f7",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-07-31T20:58:45Z",
       "side": 1,
       "message": "This is documented by the gcc linker to mean \"Remove all symbol table and relocation information from the executable.\" Is there a reason for that? This seems quite linker specific and probably not something that needs to be handled here?\n\nNote that part of the issue is that this isn\u0027t being built by default (`skia_use_libgrapheme \u003d false`) so potential issues aren\u0027t being caught by tryjobs in various configurations. None of the tryjobs run on this CL up to this point have actually built with this. It may be worth uploading one patchset where `skia.gni` does `skia_use_libgrapheme \u003d true` to get bot coverage. We will probably want a number of bots to at least build this configuration in the end, so that\u0027s another way to do things.",
+      "revId": "f300fab669acb9c231a4df4605cf50adf45d6cc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0b03013_9b5b9436",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 40
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-31T21:09:57Z",
+      "side": 1,
+      "message": "The next step after submitting this CL is to get few testable configurations for libgrapheme.\nFor now I am going to ask Mouad to test it.",
+      "parentUuid": "4b455605_532b36f7",
       "revId": "f300fab669acb9c231a4df4605cf50adf45d6cc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
