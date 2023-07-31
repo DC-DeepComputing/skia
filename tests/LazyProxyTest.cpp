@@ -265,7 +265,10 @@ DEF_GANESH_TEST(LazyProxyTest, reporter, /* options */, CtsEnforcement::kApiLeve
                                                            SkBackingFit::kExact,
                                                            {100, 100},
                                                            SkSurfaceProps(),
-                                                           /*label=*/{});
+                                                           /*label=*/{},
+                                                           1,
+                                                           skgpu::Mipmapped::kNo,
+                                                           skgpu::Protected::kNo);
         REPORTER_ASSERT(reporter, sdc);
         auto mockAtlas = skgpu::ganesh::SurfaceDrawContext::Make(ctx.get(),
                                                                  GrColorType::kAlpha_F16,
@@ -273,7 +276,10 @@ DEF_GANESH_TEST(LazyProxyTest, reporter, /* options */, CtsEnforcement::kApiLeve
                                                                  SkBackingFit::kExact,
                                                                  {10, 10},
                                                                  SkSurfaceProps(),
-                                                                 /*label=*/{});
+                                                                 /*label=*/{},
+                                                                 1,
+                                                                 skgpu::Mipmapped::kNo,
+                                                                 skgpu::Protected::kNo);
         REPORTER_ASSERT(reporter, mockAtlas);
         LazyProxyTest::Clip clip(&test, mockAtlas->asTextureProxy());
         sdc->addDrawOp(&clip,
@@ -478,7 +484,10 @@ DEF_GANESH_TEST(LazyProxyFailedInstantiationTest,
                                                            SkBackingFit::kExact,
                                                            {100, 100},
                                                            SkSurfaceProps(),
-                                                           /*label=*/{});
+                                                           /*label=*/{},
+                                                           1,
+                                                           skgpu::Mipmapped::kNo,
+                                                           skgpu::Protected::kNo);
         REPORTER_ASSERT(reporter, sdc);
 
         sdc->clear(SkPMColor4f::FromBytes_RGBA(0xbaaaaaad));

@@ -51,7 +51,7 @@ void SvgSlide::resize(SkScalar w, SkScalar h) {
     }
 }
 
-void SvgSlide::draw(SkCanvas* canvas) {
+void SvgSlide::draw1(SkCanvas* canvas) {
     if (fDom) {
         fDom->render(canvas);
     }

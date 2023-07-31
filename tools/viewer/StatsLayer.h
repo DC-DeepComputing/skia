@@ -27,7 +27,7 @@ public:
     void endTiming(Timer);
 
     void onPrePaint() override;
-    void onPaint(SkSurface*) override;
+    void onPaint1(SkSurface*) override;
 
     void setDisplayScale(float scale) { fDisplayScale = scale; }
 

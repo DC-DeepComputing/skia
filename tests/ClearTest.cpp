@@ -130,7 +130,10 @@ static bool check_ring(GrDirectContext* dContext,
 std::unique_ptr<SurfaceDrawContext> newSDC(GrRecordingContext* rContext, int w, int h) {
     return SurfaceDrawContext::Make(rContext, GrColorType::kRGBA_8888, nullptr,
                                     SkBackingFit::kExact, {w, h}, SkSurfaceProps(),
-                                    /*label=*/{});
+                                    /*label=*/{},
+                                    1,
+                                    skgpu::Mipmapped::kNo,
+                                    skgpu::Protected::kNo);
 }
 
 static void clear_op_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {

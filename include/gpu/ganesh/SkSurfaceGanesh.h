@@ -67,22 +67,25 @@ SK_API sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
                                      int sampleCount,
                                      GrSurfaceOrigin surfaceOrigin,
                                      const SkSurfaceProps* surfaceProps,
-                                     bool shouldCreateWithMips = false);
+                                     bool shouldCreateWithMips,
+                                     bool isProtected);
 inline sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
                                      skgpu::Budgeted budgeted,
                                      const SkImageInfo& imageInfo,
                                      int sampleCount,
-                                     const SkSurfaceProps* surfaceProps) {
+                                     const SkSurfaceProps* surfaceProps,
+                                     bool isProtected) {
     return RenderTarget(
-            context, budgeted, imageInfo, sampleCount, kBottomLeft_GrSurfaceOrigin, surfaceProps);
+            context, budgeted, imageInfo, sampleCount, kBottomLeft_GrSurfaceOrigin, surfaceProps, false, isProtected);
 }
 inline sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
                                      skgpu::Budgeted budgeted,
-                                     const SkImageInfo& imageInfo) {
+                                     const SkImageInfo& imageInfo,
+                                     bool isProtected) {
     if (!imageInfo.width() || !imageInfo.height()) {
         return nullptr;
     }
-    return RenderTarget(context, budgeted, imageInfo, 0, kBottomLeft_GrSurfaceOrigin, nullptr);
+    return RenderTarget(context, budgeted, imageInfo, 0, kBottomLeft_GrSurfaceOrigin, nullptr, false, isProtected);
 }
 
 /** Returns SkSurface on GPU indicated by context that is compatible with the provided

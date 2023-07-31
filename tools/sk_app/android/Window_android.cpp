@@ -77,7 +77,7 @@ void Window_android::onInval() {
 
 void Window_android::paintIfNeeded() {
     if (fWindowContext) { // Check if initDisplay has already been called
-        onPaint();
+        onPaint1();
     } else {
         markInvalProcessed();
     }

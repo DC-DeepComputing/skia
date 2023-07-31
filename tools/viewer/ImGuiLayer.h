@@ -142,7 +142,7 @@ public:
 
     void onAttach(sk_app::Window* window) override;
     void onPrePaint() override;
-    void onPaint(SkSurface*) override;
+    void onPaint1(SkSurface*) override;
     bool onMouse(int x, int y, skui::InputState state, skui::ModifierKey modifiers) override;
     bool onMouseWheel(float delta, int x, int y, skui::ModifierKey modifiers) override;
     bool onKey(skui::Key key, skui::InputState state, skui::ModifierKey modifiers) override;

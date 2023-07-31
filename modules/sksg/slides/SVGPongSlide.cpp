@@ -175,7 +175,7 @@ public:
         }
     }
 
-    void draw(SkCanvas* canvas) override {
+    void draw1(SkCanvas* canvas) override {
         sksg::InvalidationController ic;
         fScene->render(canvas);
 

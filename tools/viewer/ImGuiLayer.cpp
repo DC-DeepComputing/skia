@@ -154,7 +154,7 @@ void ImGuiLayer::onPrePaint() {
     ImGui::NewFrame();
 }
 
-void ImGuiLayer::onPaint(SkSurface* surface) {
+void ImGuiLayer::onPaint1(SkSurface* surface) {
     // This causes ImGui to rebuild vertex/index data based on all immediate-mode commands
     // (widgets, etc...) that have been issued
     ImGui::Render();

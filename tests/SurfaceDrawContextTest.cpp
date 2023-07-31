@@ -36,7 +36,10 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> get_sdc(GrRecordingCon
                                                    SkBackingFit::kExact,
                                                    {kSize, kSize},
                                                    SkSurfaceProps(),
-                                                   /*label=*/{});
+                                                   /*label=*/{},
+                                                   1,
+            skgpu::Mipmapped::kNo,
+            skgpu::Protected::kNo);
 }
 
 static void check_instantiation_status(skiatest::Reporter* reporter,

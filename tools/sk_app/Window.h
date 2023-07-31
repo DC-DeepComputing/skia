@@ -121,7 +121,7 @@ public:
         virtual bool onPinch(skui::InputState state, float scale, float x, float y) { return false; }
         virtual void onUIStateChanged(const SkString& stateName, const SkString& stateValue) {}
         virtual void onPrePaint() {}
-        virtual void onPaint(SkSurface*) {}
+        virtual void onPaint1(SkSurface*) {}
         virtual void onResize(int width, int height) {}
 
     private:
@@ -144,7 +144,7 @@ public:
     bool onFling(skui::InputState state);
     bool onPinch(skui::InputState state, float scale, float x, float y);
     void onUIStateChanged(const SkString& stateName, const SkString& stateValue);
-    void onPaint();
+    void onPaint1();
     void onResize(int width, int height);
     void onActivate(bool isActive);
 
