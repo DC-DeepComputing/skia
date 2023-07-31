@@ -25,6 +25,7 @@ namespace SkSL {
 class Context;
 class ExpressionArray;
 class FunctionDefinition;
+struct Layout;
 class Position;
 class Type;
 class Variable;
@@ -47,7 +48,8 @@ public:
     static FunctionDeclaration* Convert(const Context& context,
                                         Position pos,
                                         Position modifiersPos,
-                                        const Modifiers* modifiers,
+                                        const Layout& layout,
+                                        ModifierFlags modifierFlags,
                                         std::string_view name,
                                         skia_private::TArray<std::unique_ptr<Variable>> parameters,
                                         Position returnTypePos,
