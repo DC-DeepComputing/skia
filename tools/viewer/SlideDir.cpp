@@ -104,7 +104,7 @@ protected:
         canvas->clipRect(SkRect::Make(fSlide->getDimensions()), true);
 
         // TODO: commit the context?
-        fSlide->draw(canvas);
+        fSlide->draw1(canvas);
     }
 
     const RenderNode* onNodeAt(const SkPoint&) const override { return nullptr; }
@@ -369,7 +369,7 @@ SkISize SlideDir::getDimensions() const {
                         fCellSize.height() * (1 + (fSlides.size() - 1) / fColumns)).toCeil();
 }
 
-void SlideDir::draw(SkCanvas* canvas) {
+void SlideDir::draw1(SkCanvas* canvas) {
     fScene->render(canvas);
 }
 

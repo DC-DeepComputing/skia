@@ -132,10 +132,13 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
                                                              sk_sp<GrSurfaceProxy> proxy,
                                                              sk_sp<SkColorSpace> colorSpace,
                                                              GrSurfaceOrigin origin,
-                                                             const SkSurfaceProps& surfaceProps) {
+                                                             const SkSurfaceProps& surfaceProps,
+                                                             bool) {
     if (!rContext || !proxy || colorType == GrColorType::kUnknown) {
         return nullptr;
     }
+
+    SkDebugf("--------- SurfaceDrawContext::Make %d\n", proxy->isProtected() == GrProtected::kYes);
 
     const GrBackendFormat& format = proxy->backendFormat();
     skgpu::Swizzle readSwizzle = rContext->priv().caps()->getReadSwizzle(format, colorType);
@@ -173,6 +176,8 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
     if (rContext->abandoned()) {
         return nullptr;
     }
+
+    SkDebugf("--------- SurfaceDrawContext::Make2 %d\n", isProtected == GrProtected::kYes);
 
     sk_sp<GrTextureProxy> proxy = rContext->priv().proxyProvider()->createProxy(
             format,
@@ -217,6 +222,8 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
         return nullptr;
     }
 
+    SkDebugf("--------- SurfaceDrawContext::Make3 %d\n", isProtected == GrProtected::kYes);
+
     auto format = rContext->priv().caps()->getDefaultBackendFormat(colorType, GrRenderable::kYes);
     if (!format.isValid()) {
         return nullptr;
@@ -240,7 +247,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
                                     std::move(proxy),
                                     std::move(colorSpace),
                                     origin,
-                                    surfaceProps);
+                                    surfaceProps, true);
 }
 
 std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback(
@@ -253,6 +260,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback(
         int sampleCnt,
         GrMipmapped mipmapped,
         GrProtected isProtected,
+        const char* label,
         GrSurfaceOrigin origin,
         skgpu::Budgeted budgeted) {
     const GrCaps* caps = rContext->priv().caps();
@@ -260,8 +268,11 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback(
     if (ct == GrColorType::kUnknown) {
         return nullptr;
     }
+
+    SkDebugf("--------- SurfaceDrawContext::MakeWithFallback %d\n", isProtected == GrProtected::kYes);
     return SurfaceDrawContext::Make(rContext, ct, colorSpace, fit, dimensions, surfaceProps,
-                                    /*label=*/"MakeSurfaceDrawContextWithFallback", sampleCnt,
+                                    ///*label=*/"MakeSurfaceDrawContextWithFallback", sampleCnt,
+                                    label, sampleCnt,
                                     mipmapped, isProtected, origin, budgeted);
 }
 
@@ -282,8 +293,10 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeFromBackendTexture(
         return nullptr;
     }
 
+    SkDebugf("--------- SurfaceDrawContext::MakeFromBackendTexture %d\n", proxy->isProtected() == GrProtected::kYes);
+
     return SurfaceDrawContext::Make(rContext, colorType, std::move(proxy), std::move(colorSpace),
-                                    origin, surfaceProps);
+                                    origin, surfaceProps, true);
 }
 
 // In MDB mode the reffing of the 'getLastOpsTask' call's result allows in-progress
@@ -304,6 +317,7 @@ SurfaceDrawContext::SurfaceDrawContext(GrRecordingContext* rContext,
         , fCanUseDynamicMSAA(
                 (fSurfaceProps.flags() & SkSurfaceProps::kDynamicMSAA_Flag) &&
                 rContext->priv().caps()->supportsDynamicMSAA(this->asRenderTargetProxy())) {
+    SkDebugf("------------ SurfaceDrawContext\n");
     SkDEBUGCODE(this->validate();)
 }
 

@@ -572,7 +572,7 @@ void SkottieSlide::resize(SkScalar w, SkScalar h) {
     fWinSize = { w, h };
 }
 
-void SkottieSlide::draw(SkCanvas* canvas) {
+void SkottieSlide::draw1(SkCanvas* canvas) {
     if (fAnimation) {
         SkAutoCanvasRestore acr(canvas, true);
         const auto dstR = SkRect::MakeSize(fWinSize);

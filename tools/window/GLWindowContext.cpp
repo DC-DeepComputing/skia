@@ -57,13 +57,14 @@ void GLWindowContext::destroyContext() {
 sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
     if (nullptr == fSurface) {
         if (fContext) {
+            SkDebugf("------------------- GLWindowContext::getBackbufferSurface\n");
             GrGLint buffer;
             GR_GL_CALL(fBackendContext.get(), GetIntegerv(GR_GL_FRAMEBUFFER_BINDING, &buffer));
 
             GrGLFramebufferInfo fbInfo;
             fbInfo.fFBOID = buffer;
             fbInfo.fFormat = GR_GL_RGBA8;
-            fbInfo.fProtected = skgpu::Protected::kNo;
+            fbInfo.fProtected = skgpu::Protected::kNo; //$$
 
             GrBackendRenderTarget backendRT(fWidth,
                                             fHeight,

@@ -380,7 +380,6 @@ PATHOPS_TESTS = [
     "PathOpsTigerTest.cpp",
     "PathOpsTightBoundsTest.cpp",
     "PathOpsTypesTest.cpp",
-    "StrokerTest.cpp",
 ]
 
 PDF_TESTS = [

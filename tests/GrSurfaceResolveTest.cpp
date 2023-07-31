@@ -287,7 +287,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(NonmippedDrawBeforeMippedDraw,
                                                                SkBackingFit::kExact,
                                                                {8, 8},
                                                                SkSurfaceProps{},
-                                                               "testDrawDst");
+                                                               "testDrawDst",
+                                                               1,
+                                                               skgpu::Mipmapped::kNo,
+                                                               skgpu::Protected::kNo);
 
         // Do a non-mipmapped draw from the mipmapped texture. This should add a dependency on the
         // copy task recorded above. If the src texture is also multisampled this should record a

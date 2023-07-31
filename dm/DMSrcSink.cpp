@@ -1501,8 +1501,9 @@ sk_sp<SkSurface> GPUSink::createDstSurface(GrDirectContext* context, SkISize siz
 
     switch (fSurfType) {
         case SkCommandLineConfigGpu::SurfType::kDefault:
+            SkDebugf("----------------- GPUSink::createDstSurface\n");
             surface = SkSurfaces::RenderTarget(
-                    context, skgpu::Budgeted::kNo, info, fSampleCount, &props);
+                    context, skgpu::Budgeted::kNo, info, fSampleCount, &props, false); //$$
             break;
         case SkCommandLineConfigGpu::SurfType::kBackendTexture:
             surface = sk_gpu_test::MakeBackendTextureSurface(context,

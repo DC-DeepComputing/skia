@@ -86,7 +86,8 @@ DEF_GANESH_TEST_FOR_ALL_GL_CONTEXTS(GpuDrawPath, reporter, ctxInfo, CtsEnforceme
         for (auto& sampleCount : {1, 4, 16}) {
             SkImageInfo info = SkImageInfo::MakeN32Premul(255, 255);
             auto surface(SkSurfaces::RenderTarget(
-                    ctxInfo.directContext(), skgpu::Budgeted::kNo, info, sampleCount, nullptr));
+                    ctxInfo.directContext(), skgpu::Budgeted::kNo, info, sampleCount, nullptr,
+                    false, /*isProtected=*/false));
             if (!surface) {
                 continue;
             }
