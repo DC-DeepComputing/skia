@@ -52,6 +52,24 @@
       "parentUuid": "5a44c72c_8c30b01f",
       "revId": "056115008d56b8a417ed0f6a51fd4e2e9da97824",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8aed752_b6836c38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-07-31T18:02:11Z",
+      "side": 1,
+      "message": "Basically, AutoTArray is unique_ptr\u003cT[]\u003e with bounds checks in debug.",
+      "parentUuid": "f33dc50b_5dc85600",
+      "revId": "056115008d56b8a417ed0f6a51fd4e2e9da97824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
