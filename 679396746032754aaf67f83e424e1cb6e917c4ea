@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "4120f07a_d6d85879",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-07-31T14:42:48Z",
+      "side": 1,
+      "message": "nit: jobs\n\n(bots can mean many things, let\u0027s be precise about jobs, machines, tasks, or devices)",
+      "range": {
+        "startLine": 7,
+        "startChar": 17,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "679396746032754aaf67f83e424e1cb6e917c4ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3c2e9c48_da7df9cd",
