@@ -16,6 +16,29 @@
       "message": "PS1-\u003ePS4 has the ES2-only changes; looks like I missed one include",
       "revId": "262e97626e0b1abb705aa45bb123556aafe65a3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd17dfe9_652501e6",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1038,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-31T19:36:40Z",
+      "side": 1,
+      "message": "Maybe `static_assert(kMaxKernelDimension \u0026 (kMaxKernelDimension - 1) \u003d\u003d 0)`, given the other constraints here?",
+      "range": {
+        "startLine": 1037,
+        "startChar": 0,
+        "endLine": 1038,
+        "endChar": 74
+      },
+      "revId": "262e97626e0b1abb705aa45bb123556aafe65a3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
