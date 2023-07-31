@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0558f575_25d6225a",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 37
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-31T17:25:16Z",
+      "side": 1,
+      "message": "There are few in use. I removed all the others.",
+      "parentUuid": "c75fd9af_e2de3163",
+      "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49589dac_9420c283",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-07-28T22:01:49Z",
       "side": 1,
       "message": "We really don\u0027t want to be downloading random stuff during the build. Is the LICENSE file really used by this build?",
+      "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f74641c_53ad5102",
+        "filename": "third_party/libgrapheme/download_license.py",
+        "patchSetId": 37
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-31T17:25:16Z",
+      "side": 1,
+      "message": "Not really.",
+      "parentUuid": "49589dac_9420c283",
       "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c240d95_663674eb",
+        "filename": "third_party/libgrapheme/generate_headers.py",
+        "patchSetId": 37
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-31T17:25:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d724867_1b18f534",
+      "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1e8ffb8_c39913ee",
@@ -82,6 +136,24 @@
       "writtenOn": "2023-07-28T22:01:49Z",
       "side": 1,
       "message": "Now, after building the above from the BUILD.gn, this part may need to remain, but taking just the name of the output (just pass the full path instead of attempting to reconstruct it from base name) and the name of the executable to run (likewise, just pass the full path, and the name won\u0027t generally have .exe at the end).",
+      "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1d3e06f_6fced357",
+        "filename": "third_party/libgrapheme/generate_headers.py",
+        "patchSetId": 37
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-31T17:25:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1e8ffb8_c39913ee",
       "revId": "bddb3835860806244afadcaaf9f085a51a392ce8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
