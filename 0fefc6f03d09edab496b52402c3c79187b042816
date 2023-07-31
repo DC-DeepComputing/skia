@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acb3561e_bbac394f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 3716,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-07-31T14:08:55Z",
+      "side": 1,
+      "message": "Don\u0027t worry, this disappears in a followup.",
+      "range": {
+        "startLine": 3716,
+        "startChar": 48,
+        "endLine": 3716,
+        "endChar": 76
+      },
+      "revId": "0fefc6f03d09edab496b52402c3c79187b042816",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
