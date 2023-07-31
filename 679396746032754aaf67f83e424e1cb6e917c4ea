@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c2e9c48_da7df9cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-07-31T14:33:48Z",
+      "side": 1,
+      "message": "The new bots appear to work. After this lands (and things look good on the tree), I\u0027ll switch to running these on the CQ (rather than the Deb10/GCC8.3 ones), then delete the old ones.",
+      "revId": "679396746032754aaf67f83e424e1cb6e917c4ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
