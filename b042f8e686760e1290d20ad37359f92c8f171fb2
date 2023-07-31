@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e2e9729_5670efae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T21:04:02Z",
+      "side": 1,
+      "message": "PTAL. This seems to work generally but not sure if it helps on Intel. We\u0027ll see what the bots say.",
+      "revId": "b042f8e686760e1290d20ad37359f92c8f171fb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
