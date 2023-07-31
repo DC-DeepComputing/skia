@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c7f029f_363a27ab",
+        "filename": "src/image/SkTiledImageUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2023-07-31T15:56:46Z",
+      "side": 1,
+      "message": "Do I need to grab the mutex here based on https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/image/SkImage_Picture.h;l\u003d36-37?q\u003dSkImage_picture.h\u0026ss\u003dchromium ?",
+      "revId": "fc96fab9e2de814039eec8a47e117e13a4ec90f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
