@@ -505,6 +505,24 @@
       "parentUuid": "653f0d5d_5e855942",
       "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f373b3e2_4e6d07c4",
+        "filename": "third_party/libgrapheme/make_libgrapheme.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-31T19:29:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f29040a_a7c9f5bf",
+      "revId": "841f568d2d05ffc620e66d70f64c7620eb03ab20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
