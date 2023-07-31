@@ -259,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dfdadf1_b82f47ea",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 38
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2023-07-31T19:30:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84728d99_30fc50f1",
+      "range": {
+        "startLine": 12,
+        "startChar": 19,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "393990e454b81d6d73f80bc1797fd3dbbbe1f6e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e911ff04_80dfffed",
