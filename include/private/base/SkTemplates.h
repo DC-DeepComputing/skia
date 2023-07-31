@@ -22,7 +22,6 @@
 #include <type_traits>
 #include <utility>
 
-
 /** \file SkTemplates.h
 
     This file contains light-weight template classes for type-safe and exception-safe
@@ -130,8 +129,7 @@ public:
     /** Return the nth element in the array
      */
     T&  operator[](int index) const {
-        SkASSERT((unsigned)index < (unsigned)fCount);
-        return fArray[index];
+        return fArray[sk_collection_check_bounds(index, fCount)];
     }
 
     /** Aliases matching other types, like std::vector. */
@@ -223,8 +221,7 @@ public:
     /** Return the nth element in the array
      */
     T&  operator[](int index) const {
-        SkASSERT(index < fCount);
-        return fArray[index];
+        return fArray[sk_collection_check_bounds(index, fCount)];
     }
 
     /** Aliases matching other types, like std::vector. */
