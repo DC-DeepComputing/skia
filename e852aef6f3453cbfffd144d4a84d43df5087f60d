@@ -16,6 +16,299 @@
       "message": "Addressed the more substantial pieces of feedback and commented a question for you regarding render step IDs. Still looking into some smaller details, but wanted to get my current thoughts out to you so you could provide feedback. Draws should also be right-side-up now, so that\u0027s pretty neat. :^)",
       "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4007c796_a0033ce2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "LGTM, just some minor cleanup suggested.",
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7456db19_e2043069",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "I can\u0027t find it in the spec, but in Ganesh we always align transfer offsets to 4 bytes, so I believe this should just be 4. It\u0027s certainly unrelated to the uniform alignment.",
+      "range": {
+        "startLine": 58,
+        "startChar": 39,
+        "endLine": 58,
+        "endChar": 70
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c609eef1_a141da71",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 1157,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "5? And restore comment in general?",
+      "range": {
+        "startLine": 1157,
+        "startChar": 11,
+        "endLine": 1157,
+        "endChar": 12
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6d0ef18_e4df65c8",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 1171,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "Delete all this?",
+      "range": {
+        "startLine": 1171,
+        "startChar": 8,
+        "endLine": 1171,
+        "endChar": 52
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b86b48_1c28e0a2",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "Not needed?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 20
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f60fd43a_3f3b22d1",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "This should already be 0 because of the memset?",
+      "range": {
+        "startLine": 456,
+        "startChar": 4,
+        "endLine": 456,
+        "endChar": 31
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bd6a82a_8aad2a41",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "Nit: leave a line between this and the comment. The comment is meant to be isolated to indicate it\u0027s a separate step.",
+      "range": {
+        "startLine": 546,
+        "startChar": 4,
+        "endLine": 546,
+        "endChar": 35
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d929a5d4_2c519c9c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "Seems pretty important -- is this noted in a bug or task somewhere?",
+      "range": {
+        "startLine": 646,
+        "startChar": 7,
+        "endLine": 647,
+        "endChar": 94
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "325cd8b2_ef60f90a",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "Return after this, and indent the following code to the left?",
+      "range": {
+        "startLine": 711,
+        "startChar": 8,
+        "endLine": 711,
+        "endChar": 63
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be0ae0b5_09c51321",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "This is local to the if block and in theory will get destroyed when you leave it. Pull it up with the declaration of writeInfo?",
+      "range": {
+        "startLine": 744,
+        "startChar": 20,
+        "endLine": 744,
+        "endChar": 80
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3af83ace_ebd76cbe",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 753,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "I don\u0027t think this is needed -- it should already be 0 from the memset.",
+      "range": {
+        "startLine": 753,
+        "startChar": 20,
+        "endLine": 753,
+        "endChar": 47
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7185b01_f897dc5d",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 764,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "Add a TODO and task for this?",
+      "range": {
+        "startLine": 764,
+        "startChar": 19,
+        "endLine": 764,
+        "endChar": 22
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "827bc4b2_8619c361",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 934,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-07-31T17:47:52Z",
+      "side": 1,
+      "message": "Nit: Place \u0026\u0026 at the end of the previous line.",
+      "range": {
+        "startLine": 934,
+        "startChar": 8,
+        "endLine": 934,
+        "endChar": 10
+      },
+      "revId": "e852aef6f3453cbfffd144d4a84d43df5087f60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
