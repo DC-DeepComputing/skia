@@ -25,11 +25,7 @@
 
 using namespace skia_private;
 
-namespace SkSL {
-
-struct Modifiers;
-
-namespace dsl {
+namespace SkSL::dsl {
 
 static const SkSL::Type* verify_type(const Context& context,
                                      const SkSL::Type* type,
@@ -67,10 +63,10 @@ static const SkSL::Type* find_type(const Context& context, std::string_view name
 static const SkSL::Type* find_type(const Context& context,
                                    std::string_view name,
                                    Position overallPos,
-                                   Modifiers* modifiers,
-                                   Position modifiersPos) {
+                                   Position modifiersPos,
+                                   ModifierFlags* modifierFlags) {
     const Type* type = find_type(context, name, overallPos);
-    return type->applyQualifiers(context, modifiers, modifiersPos);
+    return type->applyQualifiers(context, modifierFlags, modifiersPos);
 }
 
 DSLType::DSLType(std::string_view name, Position pos)
@@ -78,13 +74,13 @@ DSLType::DSLType(std::string_view name, Position pos)
 
 DSLType::DSLType(std::string_view name,
                  Position overallPos,
-                 SkSL::Modifiers* modifiers,
-                 Position modifiersPos)
+                 Position modifiersPos,
+                 ModifierFlags* modifierFlags)
         : fSkSLType(find_type(ThreadContext::Context(),
                               name,
                               overallPos,
-                              modifiers,
-                              modifiersPos)) {}
+                              modifiersPos,
+                              modifierFlags)) {}
 
 DSLType::DSLType(const SkSL::Type* type, Position pos)
         : fSkSLType(verify_type(ThreadContext::Context(), type, /*allowGenericTypes=*/true, pos)) {}
@@ -170,6 +166,4 @@ DSLType UnsizedArray(const DSLType& base, Position pos) {
     return context.fSymbolTable->addArrayDimension(&base.skslType(), SkSL::Type::kUnsizedArray);
 }
 
-} // namespace dsl
-
-} // namespace SkSL
+}  // namespace SkSL::dsl

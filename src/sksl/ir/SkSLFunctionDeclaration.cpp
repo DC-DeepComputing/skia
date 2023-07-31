@@ -34,18 +34,15 @@ using namespace skia_private;
 
 namespace SkSL {
 
-static bool check_modifiers(const Context& context,
-                            Position pos,
-                            const Modifiers& modifiers) {
+static bool check_modifiers(const Context& context, Position pos, ModifierFlags modifierFlags) {
     const ModifierFlags permitted = ModifierFlag::kInline |
                                     ModifierFlag::kNoInline |
                                     (context.fConfig->fIsBuiltinCode ? ModifierFlag::kES3 |
                                                                        ModifierFlag::kPure |
                                                                        ModifierFlag::kExport
                                                                      : ModifierFlag::kNone);
-    modifiers.fFlags.checkPermittedFlags(context, pos, permitted);
-    modifiers.fLayout.checkPermittedLayout(context, pos,/*permittedLayoutFlags=*/LayoutFlag::kNone);
-    if (modifiers.fFlags.isInline() && modifiers.fFlags.isNoInline()) {
+    modifierFlags.checkPermittedFlags(context, pos, permitted);
+    if (modifierFlags.isInline() && modifierFlags.isNoInline()) {
         context.fErrors->error(pos, "functions cannot be both 'inline' and 'noinline'");
         return false;
     }
@@ -72,7 +69,7 @@ static bool check_return_type(const Context& context, Position pos, const Type& 
 
 static bool check_parameters(const Context& context,
                              TArray<std::unique_ptr<Variable>>& parameters,
-                             const Modifiers& modifiers,
+                             ModifierFlags modifierFlags,
                              bool isMain) {
     // Check modifiers on each function parameter.
     for (auto& param : parameters) {
@@ -97,7 +94,7 @@ static bool check_parameters(const Context& context,
             return false;
         }
 
-        if (modifiers.isPure() && (param->modifierFlags() & ModifierFlag::kOut)) {
+        if (modifierFlags.isPure() && (param->modifierFlags() & ModifierFlag::kOut)) {
             context.fErrors->error(param->modifiersPosition(),
                                    "pure functions cannot have out parameters");
             return false;
@@ -445,29 +442,30 @@ FunctionDeclaration::FunctionDeclaration(const Context& context,
 FunctionDeclaration* FunctionDeclaration::Convert(const Context& context,
                                                   Position pos,
                                                   Position modifiersPosition,
-                                                  const Modifiers* modifiers,
+                                                  const Layout& layout,
+                                                  ModifierFlags modifierFlags,
                                                   std::string_view name,
                                                   TArray<std::unique_ptr<Variable>> parameters,
                                                   Position returnTypePos,
                                                   const Type* returnType) {
+    // No layout flag is permissible on a function.
+    layout.checkPermittedLayout(context, pos, /*permittedLayoutFlags=*/LayoutFlag::kNone);
+
     // If requested, apply the `noinline` modifier to every function. This allows us to test Runtime
     // Effects without any inlining, even when the code is later added to a paint.
-    Modifiers updatedModifiers;
     if (context.fConfig->fSettings.fForceNoInline) {
-        updatedModifiers = *modifiers;
-        updatedModifiers.fFlags &= ~ModifierFlag::kInline;
-        updatedModifiers.fFlags |= ModifierFlag::kNoInline;
-        modifiers = &updatedModifiers;
+        modifierFlags &= ~ModifierFlag::kInline;
+        modifierFlags |= ModifierFlag::kNoInline;
     }
 
     bool isMain = (name == "main");
 
     FunctionDeclaration* decl = nullptr;
-    if (!check_modifiers(context, modifiersPosition, *modifiers) ||
+    if (!check_modifiers(context, modifiersPosition, modifierFlags) ||
         !check_return_type(context, returnTypePos, *returnType) ||
-        !check_parameters(context, parameters, *modifiers, isMain) ||
+        !check_parameters(context, parameters, modifierFlags, isMain) ||
         (isMain && !check_main_signature(context, pos, *returnType, parameters)) ||
-        !find_existing_declaration(context, pos, modifiers->fFlags, name, parameters,
+        !find_existing_declaration(context, pos, modifierFlags, name, parameters,
                                    returnTypePos, returnType, &decl)) {
         return nullptr;
     }
@@ -482,7 +480,7 @@ FunctionDeclaration* FunctionDeclaration::Convert(const Context& context,
     return context.fSymbolTable->add(
             std::make_unique<FunctionDeclaration>(context,
                                                   pos,
-                                                  modifiers->fFlags,
+                                                  modifierFlags,
                                                   name,
                                                   std::move(finalParameters),
                                                   returnType,

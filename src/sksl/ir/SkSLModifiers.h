@@ -10,7 +10,6 @@
 
 #include "include/private/base/SkTo.h"
 #include "src/base/SkEnumBitMask.h"
-#include "src/sksl/ir/SkSLLayout.h"
 
 #include <string>
 
@@ -78,50 +77,6 @@ public:
     bool isPure() const      { return SkToBool(*this & ModifierFlag::kPure); }
     bool isInline() const    { return SkToBool(*this & ModifierFlag::kInline); }
     bool isNoInline() const  { return SkToBool(*this & ModifierFlag::kNoInline); }
-};
-
-/**
- * A set of modifier keywords (in, out, uniform, etc.) appearing before a declaration.
- */
-struct Modifiers {
-    /**
-     * OpenGL requires modifiers to be in a strict order:
-     * - invariant-qualifier:     (invariant)
-     * - interpolation-qualifier: flat, noperspective, (smooth)
-     * - storage-qualifier:       const, uniform
-     * - parameter-qualifier:     in, out, inout
-     * - precision-qualifier:     highp, mediump, lowp
-     *
-     * SkSL does not have `invariant` or `smooth`.
-     */
-
-    Modifiers() : fLayout(Layout()), fFlags(ModifierFlag::kNone) {}
-
-    Modifiers(const Layout& layout, ModifierFlags flags) : fLayout(layout), fFlags(flags) {}
-
-    std::string description() const {
-        return fLayout.paddedDescription() + fFlags.paddedDescription();
-    }
-
-    // TODO: remove these wrappers
-    bool isConst() const     { return fFlags.isConst(); }
-    bool isUniform() const   { return fFlags.isUniform(); }
-    bool isReadOnly() const  { return fFlags.isReadOnly(); }
-    bool isWriteOnly() const { return fFlags.isWriteOnly(); }
-    bool isBuffer() const    { return fFlags.isBuffer(); }
-    bool isWorkgroup() const { return fFlags.isWorkgroup(); }
-    bool isPure() const      { return fFlags.isPure(); }
-
-    bool operator==(const Modifiers& other) const {
-        return fLayout == other.fLayout && fFlags == other.fFlags;
-    }
-
-    bool operator!=(const Modifiers& other) const {
-        return !(*this == other);
-    }
-
-    Layout fLayout;
-    ModifierFlags fFlags;
 };
 
 } // namespace SkSL
