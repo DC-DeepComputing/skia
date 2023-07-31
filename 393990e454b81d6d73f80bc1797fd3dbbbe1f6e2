@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c186a1e3_fdedd623",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 38
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-31T18:07:18Z",
+      "side": 1,
+      "message": "Shouldn\u0027t need this since already specifying `-std\u003dc99`.",
+      "range": {
+        "startLine": 10,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 31
+      },
+      "revId": "393990e454b81d6d73f80bc1797fd3dbbbe1f6e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0f779da_a7d2c7e5",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 38
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-31T18:07:18Z",
+      "side": 1,
+      "message": "We don\u0027t really care about these warnings when building Skia. Fine for the developers, but just pain here.",
+      "range": {
+        "startLine": 11,
+        "startChar": 25,
+        "endLine": 11,
+        "endChar": 49
+      },
+      "revId": "393990e454b81d6d73f80bc1797fd3dbbbe1f6e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88ab8cc0_3e94589d",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 38
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-31T18:07:18Z",
+      "side": 1,
+      "message": "We do probably want to make sure things are C99, but make sure we also use the right value for msvc (we may want a config somewhere for C99).",
+      "range": {
+        "startLine": 11,
+        "startChar": 12,
+        "endLine": 11,
+        "endChar": 20
+      },
+      "revId": "393990e454b81d6d73f80bc1797fd3dbbbe1f6e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60916ae9_a32772ea",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 38
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-31T18:07:18Z",
+      "side": 1,
+      "message": "Not sure we need the `-Os`. Skia is already picking optimization levels in general and we should use the defaults from the build.",
+      "range": {
+        "startLine": 11,
+        "startChar": 21,
+        "endLine": 11,
+        "endChar": 24
+      },
+      "revId": "393990e454b81d6d73f80bc1797fd3dbbbe1f6e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a609f110_cec37f63",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 38
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-31T18:07:18Z",
+      "side": 1,
+      "message": "Pretty sure we already put `-fPIC` on the compile like on platforms that need it. Shouldn\u0027t do this here since it isn\u0027t clear which compiler is being used and that work has already been done elsewhere.",
+      "range": {
+        "startLine": 12,
+        "startChar": 13,
+        "endLine": 12,
+        "endChar": 18
+      },
+      "revId": "393990e454b81d6d73f80bc1797fd3dbbbe1f6e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84728d99_30fc50f1",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 38
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-31T18:07:18Z",
+      "side": 1,
+      "message": "I\u0027m guessing that libgrapheme must normally build with `-freestanding` just to ensure that it doesn\u0027t use any on the standard library? That\u0027s fine as far as it goes, but it would get in the way of some things. It\u0027s probably better to build it in Skia without `-freestanding` unless it requires that (it invokes undefined behavior by re-using names that would be defined in the standard library).",
+      "range": {
+        "startLine": 12,
+        "startChar": 19,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "393990e454b81d6d73f80bc1797fd3dbbbe1f6e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e911ff04_80dfffed",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 38
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-31T18:07:18Z",
+      "side": 1,
+      "message": "It\u0027s a good idea for the developers on libgrapheme to use these, but since this isn\u0027t directly our code (code we work on) there isn\u0027t really any benefit to having these warnings in our build. We also don\u0027t `-Werror` for `third_party` in general for similar reasons.",
+      "range": {
+        "startLine": 49,
+        "startChar": 54,
+        "endLine": 49,
+        "endChar": 86
+      },
+      "revId": "393990e454b81d6d73f80bc1797fd3dbbbe1f6e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f288f9dd_0a3e8462",
+        "filename": "third_party/libgrapheme/BUILD.gn",
+        "patchSetId": 38
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-31T18:07:18Z",
+      "side": 1,
+      "message": "This is a define and if set should be set in `defines`. However, this appears to be unneeded as we\u0027re already specifying `-std\u003dc99`. This macro should only need to be set if one want C99 features from headers but specifies an earlier version of the C language.",
+      "range": {
+        "startLine": 49,
+        "startChar": 15,
+        "endLine": 49,
+        "endChar": 34
+      },
+      "revId": "393990e454b81d6d73f80bc1797fd3dbbbe1f6e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c18aa97_bc2e7d20",
+        "filename": "third_party/libgrapheme/download_license.py",
+        "patchSetId": 38
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-07-31T18:07:18Z",
+      "side": 1,
+      "message": "Looks like this file can be removed?",
+      "revId": "393990e454b81d6d73f80bc1797fd3dbbbe1f6e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
