@@ -119,7 +119,7 @@ public:
         fName = "XferDemo";
     }
 
-    void draw(SkCanvas* canvas) override {
+    void draw1(SkCanvas* canvas) override {
         for (int i = 0; i < N_Modes; ++i) {
             fModeButtons[i].draw(canvas);
         }
@@ -220,7 +220,7 @@ public:
         fName = "CubicResampler";
     }
 
-    void draw(SkCanvas* canvas) override {
+    void draw1(SkCanvas* canvas) override {
         for (const auto& rec : fRecs) {
             rec.draw(canvas, fCubic);
         }

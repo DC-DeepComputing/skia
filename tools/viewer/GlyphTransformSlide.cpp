@@ -31,7 +31,7 @@ public:
 
     void resize(SkScalar w, SkScalar h) override { fSize = {w, h}; }
 
-    void draw(SkCanvas* canvas) override {
+    void draw1(SkCanvas* canvas) override {
         SkPaint paint;
 
         SkFont font(fEmojiFont.fTypeface);

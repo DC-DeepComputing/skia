@@ -212,7 +212,10 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(VertexAttributeCount,
                                                        SkBackingFit::kApprox,
                                                        {1, 1},
                                                        SkSurfaceProps(),
-                                                       /*label=*/{});
+                                                       /*label=*/{},
+                                                       1,
+                                                       skgpu::Mipmapped::kNo,
+                                                       skgpu::Protected::kNo);
     if (!sdc) {
         ERRORF(reporter, "Could not create render target context.");
         return;

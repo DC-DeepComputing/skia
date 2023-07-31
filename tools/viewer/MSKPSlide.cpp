@@ -33,7 +33,7 @@ SkISize MSKPSlide::getDimensions() const {
     return fPlayer ? fPlayer->maxDimensions() : SkISize{0, 0};
 }
 
-void MSKPSlide::draw(SkCanvas* canvas) {
+void MSKPSlide::draw1(SkCanvas* canvas) {
     if (!fPlayer) {
         ImGui::Text("Could not read mskp file %s.\n", fName.c_str());
         return;

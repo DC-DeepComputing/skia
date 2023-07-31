@@ -42,7 +42,7 @@ protected:
 
     SkISize getDimensions() const override;
 
-    void draw(SkCanvas*) override;
+    void draw1(SkCanvas*) override;
     bool animate(double) override;
 
     bool onChar(SkUnichar) override;

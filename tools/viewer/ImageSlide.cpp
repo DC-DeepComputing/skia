@@ -27,7 +27,7 @@ SkISize ImageSlide::getDimensions() const {
     return fImage ? fImage->dimensions() : SkISize::Make(0, 0);
 }
 
-void ImageSlide::draw(SkCanvas* canvas) {
+void ImageSlide::draw1(SkCanvas* canvas) {
     SkASSERT(fImage);
     canvas->drawImage(fImage, 0, 0);
 }

@@ -38,7 +38,7 @@ private:
     void update();
 
     void onAttach(sk_app::Window* w) override { fParent = w; }
-    void onPaint(SkSurface* surface) override;
+    void onPaint1(SkSurface* surface) override;
 
     bool onMouse(int x, int y, skui::InputState state, skui::ModifierKey modifiers) override;
     bool onKey(skui::Key, skui::InputState, skui::ModifierKey) override;

@@ -29,7 +29,7 @@ public:
 
     SkISize getDimensions() const override { return fCullRect.size(); }
 
-    void draw(SkCanvas* canvas) override;
+    void draw1(SkCanvas* canvas) override;
     void load(SkScalar winWidth, SkScalar winHeight) override;
     void unload() override;
 

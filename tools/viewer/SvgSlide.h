@@ -25,7 +25,7 @@ public:
     void unload() override;
     void resize(SkScalar, SkScalar) override;
 
-    void draw(SkCanvas*) override;
+    void draw1(SkCanvas*) override;
 private:
     const SkString  fPath;
 

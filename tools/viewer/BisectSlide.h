@@ -40,7 +40,7 @@ public:
     // Slide overrides.
     SkISize getDimensions() const override { return fDrawBounds.size(); }
     bool onChar(SkUnichar c) override;
-    void draw(SkCanvas* canvas) override;
+    void draw1(SkCanvas* canvas) override;
 
 private:
     BisectSlide(const char filepath[]);

@@ -24,7 +24,7 @@ public:
 
     SkISize getDimensions() const override;
 
-    void draw(SkCanvas* canvas) override;
+    void draw1(SkCanvas* canvas) override;
     void load(SkScalar winWidth, SkScalar winHeight) override;
     void unload() override;
 

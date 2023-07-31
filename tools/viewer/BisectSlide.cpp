@@ -100,7 +100,7 @@ bool BisectSlide::onChar(SkUnichar c) {
     return false;
 }
 
-void BisectSlide::draw(SkCanvas* canvas) {
+void BisectSlide::draw1(SkCanvas* canvas) {
     SkAutoCanvasRestore acr(canvas, true);
     canvas->translate(-fDrawBounds.left(), -fDrawBounds.top());
 

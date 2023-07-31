@@ -19,6 +19,18 @@
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
 #include "src/gpu/vk/VulkanInterface.h"
 
+#include "include/gpu/GrTypes.h"
+#include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
+
+#ifdef SK_GL
+#include "src/gpu/ganesh/gl/GrGLCaps.h"
+#endif
+#ifdef SK_VULKAN
+#include "src/gpu/ganesh/vk/GrVkCaps.h"
+#endif
+
+
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 // windows wants to define this as CreateSemaphoreA or CreateSemaphoreW
 #undef CreateSemaphore
@@ -28,6 +40,29 @@
     (PFN_vk ## F) backendContext.fGetProc("vk" #F, fInstance, VK_NULL_HANDLE)
 #define GET_DEV_PROC(F) f ## F = \
     (PFN_vk ## F) backendContext.fGetProc("vk" #F, VK_NULL_HANDLE, fDevice)
+
+bool context_supports_protected(GrDirectContext* dContext) {
+    [[maybe_unused]] const GrCaps* caps = dContext->priv().caps();
+
+#ifdef SK_GL
+    if (dContext->backend() == GrBackendApi::kOpenGL) {
+        const GrGLCaps* glCaps = static_cast<const GrGLCaps*>(caps);
+        return glCaps->supportsProtected();
+    }
+#endif
+#ifdef SK_VULKAN
+    if (dContext->backend() == GrBackendApi::kVulkan) {
+        const GrVkCaps* vkCaps = static_cast<const GrVkCaps*>(caps);
+        return vkCaps->supportsProtectedMemory();
+    }
+#endif
+    if (dContext->backend() == GrBackendApi::kMock) {
+        return true;
+    }
+
+    // Metal, Dawn and D3D don't support protected textures
+    return false;
+}
 
 namespace skwindow::internal {
 
@@ -45,10 +80,12 @@ VulkanWindowContext::VulkanWindowContext(const DisplayParams& params,
     , fSurfaces(nullptr)
     , fBackbuffers(nullptr) {
     fGetInstanceProcAddr = instProc;
-    this->initializeContext();
+    SkDebugf("------------- VulkanWindowContext ctor\n");
+    this->initializeContext1();
 }
 
-void VulkanWindowContext::initializeContext() {
+void VulkanWindowContext::initializeContext1() {
+    SkDebugf("------------- initializeContext1\n");
     SkASSERT(!fContext);
     // any config code here (particularly for msaa)?
 
@@ -58,7 +95,7 @@ void VulkanWindowContext::initializeContext() {
     VkPhysicalDeviceFeatures2 features;
     if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc, &backendContext, &extensions,
                                              &features, &fDebugCallback, &fPresentQueueIndex,
-                                             fCanPresentFn)) {
+                                             fCanPresentFn, false)) { //$$
         sk_gpu_test::FreeVulkanFeaturesStructs(&features);
         return;
     }
@@ -329,7 +366,8 @@ bool VulkanWindowContext::createSwapchain(int width, int height,
     return true;
 }
 
-bool VulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFlags usageFlags,
+bool VulkanWindowContext::createBuffers(VkFormat format,
+                                        VkImageUsageFlags usageFlags,
                                         SkColorType colorType,
                                         VkSharingMode sharingMode) {
     fGetSwapchainImagesKHR(fDevice, fSwapchain, &fImageCount, nullptr);
@@ -352,6 +390,8 @@ bool VulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFlags usage
         info.fImageUsageFlags = usageFlags;
         info.fLevelCount = 1;
         info.fCurrentQueueFamily = fPresentQueueIndex;
+        info.fProtected = context_supports_protected(fContext.get()) ? skgpu::Protected::kYes
+                                                                     : skgpu::Protected::kNo;
         info.fSharingMode = sharingMode;
 
         if (usageFlags & VK_IMAGE_USAGE_SAMPLED_BIT) {
@@ -447,7 +487,7 @@ void VulkanWindowContext::destroyContext() {
         }
     }
 
-    SkASSERT(fContext->unique());
+//    SkASSERT(fContext->unique());
     fContext.reset();
     fInterface.reset();
 

@@ -132,7 +132,7 @@ GrSurfaceProxyView make_src_image(GrRecordingContext* rContext,
                                   SkISize dimensions,
                                   const SkIRect* contentArea = nullptr) {
     auto srcII = SkImageInfo::Make(dimensions, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    auto surf = SkSurfaces::RenderTarget(rContext, skgpu::Budgeted::kYes, srcII);
+    auto surf = SkSurfaces::RenderTarget(rContext, skgpu::Budgeted::kYes, srcII, false);
     if (!surf) {
         return {};
     }

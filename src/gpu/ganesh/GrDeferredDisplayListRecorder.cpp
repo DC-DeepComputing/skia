@@ -156,12 +156,13 @@ bool GrDeferredDisplayListRecorder::init() {
     }
     fTargetProxy->priv().setIsDDLTarget();
 
+    SkDebugf("------------- GrDeferredDisplayListRecorder::init\n");
     auto device = fContext->priv().createDevice(grColorType,
                                                 fTargetProxy,
                                                 fCharacterization.refColorSpace(),
                                                 fCharacterization.origin(),
                                                 fCharacterization.surfaceProps(),
-                                                skgpu::ganesh::Device::InitContents::kUninit);
+                                                skgpu::ganesh::Device::InitContents::kUninit, true);
     if (!device) {
         return false;
     }

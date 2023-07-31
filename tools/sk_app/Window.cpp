@@ -78,7 +78,7 @@ void Window::onUIStateChanged(const SkString& stateName, const SkString& stateVa
     this->visitLayers([=](Layer* layer) { layer->onUIStateChanged(stateName, stateValue); });
 }
 
-void Window::onPaint() {
+void Window::onPaint1() {
     if (!fWindowContext) {
         return;
     }
@@ -92,11 +92,13 @@ void Window::onPaint() {
         return;
     }
 
+    SkDebugf("++++++++++++++++ Window::onPaint1 %p\n", backbuffer->recordingContext());
+
     markInvalProcessed();
 
     // draw into the canvas of this surface
     this->visitLayers([](Layer* layer) { layer->onPrePaint(); });
-    this->visitLayers([=](Layer* layer) { layer->onPaint(backbuffer.get()); });
+    this->visitLayers([=](Layer* layer) { layer->onPaint1(backbuffer.get()); });
 
     if (auto dContext = this->directContext()) {
         dContext->flushAndSubmit(backbuffer);

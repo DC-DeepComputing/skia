@@ -217,7 +217,10 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ProcessorRefTest, reporter, ctxInfo, CtsEnforce
                                                                SkBackingFit::kApprox,
                                                                {1, 1},
                                                                SkSurfaceProps(),
-                                                               /*label=*/{});
+                                                               /*label=*/{},
+                                                               1,
+                                                               skgpu::Mipmapped::kNo,
+                                                               skgpu::Protected::kNo);
             {
                 sk_sp<GrTextureProxy> proxy =
                         proxyProvider->createProxy(format,
@@ -604,7 +607,10 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(ProcessorOptimizationValidationTest,
                                                        SkBackingFit::kExact,
                                                        {kRenderSize, kRenderSize},
                                                        SkSurfaceProps(),
-                                                       /*label=*/{});
+                                                       /*label=*/{},
+                                                       1,
+                                                       skgpu::Mipmapped::kNo,
+                                                       skgpu::Protected::kNo);
 
     // Coverage optimization uses three frames with a linearly transformed input texture.  The first
     // frame has no offset, second frames add .2 and .4, which should then be present as a fixed
@@ -972,7 +978,10 @@ DEF_GANESH_TEST_FOR_GL_RENDERING_CONTEXTS(ProcessorCloneTest,
                                                        SkBackingFit::kExact,
                                                        {kRenderSize, kRenderSize},
                                                        SkSurfaceProps(),
-                                                       /*label=*/{});
+                                                       /*label=*/{},
+                                                       1,
+                                                       skgpu::Mipmapped::kNo,
+                                                       skgpu::Protected::kNo);
 
     std::vector<GrColor> inputPixels = make_input_pixels(kRenderSize, kRenderSize, 0.0f);
     GrSurfaceProxyView inputTexture =

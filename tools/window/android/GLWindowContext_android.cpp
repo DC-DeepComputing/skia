@@ -11,6 +11,8 @@
 #include "tools/window/GLWindowContext.h"
 #include "tools/window/android/WindowContextFactory_android.h"
 
+#define EGL_PROTECTED_CONTENT_EXT 0x32C0
+
 namespace {
 class GLWindowContext_android : public skwindow::internal::GLWindowContext {
 public:
@@ -56,11 +58,20 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
     fWidth = ANativeWindow_getWidth(fNativeWindow);
     fHeight = ANativeWindow_getHeight(fNativeWindow);
 
+    SkDebugf("-----  GLWindowContext_android::onInitializeContext %d %d\n", fWidth, fHeight);
     fDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 
     EGLint majorVersion;
     EGLint minorVersion;
     eglInitialize(fDisplay, &majorVersion, &minorVersion);
+
+    const char* extensions = eglQueryString(fDisplay, EGL_EXTENSIONS);
+
+    bool createProtected = false; //$$
+    if (createProtected && !strstr(extensions, "EGL_EXT_protected_content")) {
+        SkDebugf("--------------- Missing EGL_EXT_protected_content support!\n");
+        createProtected = false;
+    }
 
     SkAssertResult(eglBindAPI(EGL_OPENGL_ES_API));
 
@@ -84,19 +95,38 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
     SkAssertResult(eglChooseConfig(fDisplay, configAttribs, &surfaceConfig, 1, &numConfigs));
     SkASSERT(numConfigs > 0);
 
-    static const EGLint kEGLContextAttribsForOpenGLES[] = {
-        EGL_CONTEXT_CLIENT_VERSION, 2,
-        EGL_NONE
+    std::vector<EGLint> kEGLContextAttribsForOpenGLES = {
+            EGL_CONTEXT_CLIENT_VERSION, 2,
     };
+
+    if (createProtected) {
+        kEGLContextAttribsForOpenGLES.push_back(EGL_PROTECTED_CONTENT_EXT);
+        kEGLContextAttribsForOpenGLES.push_back(EGL_TRUE);
+    }
+
+    kEGLContextAttribsForOpenGLES.push_back(EGL_NONE);
+
     fEGLContext = eglCreateContext(
-            fDisplay, surfaceConfig, nullptr, kEGLContextAttribsForOpenGLES);
+            fDisplay, surfaceConfig, nullptr, kEGLContextAttribsForOpenGLES.data());
     SkASSERT(EGL_NO_CONTEXT != fEGLContext);
 
 //    SkDebugf("EGL: %d.%d", majorVersion, minorVersion);
 //    SkDebugf("Vendor: %s", eglQueryString(fDisplay, EGL_VENDOR));
 //    SkDebugf("Extensions: %s", eglQueryString(fDisplay, EGL_EXTENSIONS));
 
+#if 1
     fSurfaceAndroid = eglCreateWindowSurface(fDisplay, surfaceConfig, fNativeWindow, nullptr);
+#else
+    static const EGLint kSurfaceAttribs[] = {
+            EGL_WIDTH, 1,
+            EGL_HEIGHT, 1,
+            createProtected ? EGL_PROTECTED_CONTENT_EXT : EGL_NONE,
+            createProtected ? EGL_TRUE : EGL_NONE,
+            EGL_NONE
+    };
+
+    fSurfaceAndroid = eglCreatePbufferSurface(fDisplay, surfaceConfig, kSurfaceAttribs);
+#endif
     SkASSERT(EGL_NO_SURFACE != fSurfaceAndroid);
 
     SkAssertResult(eglMakeCurrent(fDisplay, fSurfaceAndroid, fSurfaceAndroid, fEGLContext));

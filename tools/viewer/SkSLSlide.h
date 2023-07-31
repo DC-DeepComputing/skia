@@ -31,7 +31,7 @@ class SkSLSlide : public Slide {
 public:
     SkSLSlide();
 
-    void draw(SkCanvas* canvas) override;
+    void draw1(SkCanvas* canvas) override;
     bool animate(double nanos) override;
 
     void resize(SkScalar winWidth, SkScalar winHeight) override {

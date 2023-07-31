@@ -57,7 +57,7 @@ public:
         ImGui::End();
     }
 
-    void draw(SkCanvas* canvas) override {
+    void draw1(SkCanvas* canvas) override {
         canvas->clear(SK_ColorGRAY);
 
         this->drawUI();

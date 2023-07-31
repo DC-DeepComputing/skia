@@ -35,7 +35,7 @@ public:
     virtual SkISize getDimensions() const { return SkISize::MakeEmpty(); }
 
     virtual void gpuTeardown() { }
-    virtual void draw(SkCanvas* canvas) = 0;
+    virtual void draw1(SkCanvas* canvas) = 0;
     virtual bool animate(double nanos) { return false; }
     virtual void load(SkScalar winWidth, SkScalar winHeight) {}
     virtual void resize(SkScalar winWidth, SkScalar winHeight) {}
