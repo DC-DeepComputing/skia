@@ -54,7 +54,9 @@
 #include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
+#include "src/sksl/ir/SkSLLayout.h"
 #include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLModifiers.h"
 #include "src/sksl/ir/SkSLPoison.h"
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
@@ -995,7 +997,7 @@ SpvId SPIRVCodeGenerator::writeStruct(const Type& type, const MemoryLayout& memo
         }
         size_t size = memoryLayout.size(*field.fType);
         size_t alignment = memoryLayout.alignment(*field.fType);
-        const Layout& fieldLayout = field.fModifiers.fLayout;
+        const Layout& fieldLayout = field.fLayout;
         if (fieldLayout.fOffset >= 0) {
             if (fieldLayout.fOffset < (int) offset) {
                 fContext.fErrors->error(field.fPosition, "offset of field '" +
@@ -1015,7 +1017,7 @@ SpvId SPIRVCodeGenerator::writeStruct(const Type& type, const MemoryLayout& memo
         }
         this->writeInstruction(SpvOpMemberName, resultId, i, field.fName, fNameBuffer);
         this->writeFieldLayout(fieldLayout, resultId, i);
-        if (field.fModifiers.fLayout.fBuiltin < 0) {
+        if (field.fLayout.fBuiltin < 0) {
             this->writeInstruction(SpvOpMemberDecorate, resultId, (SpvId) i, SpvDecorationOffset,
                                    (SpvId) offset, fDecorationBuffer);
         }
@@ -3691,15 +3693,15 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
         SkSpan<const Field> fieldSpan = type.fields();
         TArray<Field> fields(fieldSpan.data(), fieldSpan.size());
         fields.emplace_back(Position(),
-                            Modifiers(Layout(LayoutFlag::kNone,
-                                             /*location=*/-1,
-                                             fProgram.fConfig->fSettings.fRTFlipOffset,
-                                             /*binding=*/-1,
-                                             /*index=*/-1,
-                                             /*set=*/-1,
-                                             /*builtin=*/-1,
-                                             /*inputAttachmentIndex=*/-1),
-                                      ModifierFlag::kNone),
+                            Layout(LayoutFlag::kNone,
+                                   /*location=*/-1,
+                                   fProgram.fConfig->fSettings.fRTFlipOffset,
+                                   /*binding=*/-1,
+                                   /*index=*/-1,
+                                   /*set=*/-1,
+                                   /*builtin=*/-1,
+                                   /*inputAttachmentIndex=*/-1),
+                            ModifierFlag::kNone,
                             SKSL_RTFLIP_NAME,
                             fContext.fTypes.fFloat2.get());
         {
@@ -4226,11 +4228,9 @@ SPIRVCodeGenerator::EntrypointAdapter SPIRVCodeGenerator::writeEntrypointAdapter
                                        Block::Kind::kBracedScope, symbolTable);
     // Declare an entrypoint function.
     EntrypointAdapter adapter;
-    adapter.fLayout = {};
-    adapter.fModifiers = Modifiers{adapter.fLayout, ModifierFlag::kNone};
     adapter.entrypointDecl =
             std::make_unique<FunctionDeclaration>(Position(),
-                                                  &adapter.fModifiers,
+                                                  ModifierFlag::kNone,
                                                   "_entrypoint",
                                                   /*parameters=*/TArray<Variable*>{},
                                                   /*returnType=*/fContext.fTypes.fVoid.get(),
@@ -4259,7 +4259,8 @@ void SPIRVCodeGenerator::writeUniformBuffer(std::shared_ptr<SymbolTable> topLeve
         fTopLevelUniformMap.set(var, (int)fields.size());
         Modifiers modifiers = var->modifiers();
         modifiers.fFlags &= ~ModifierFlag::kUniform;
-        fields.emplace_back(var->fPosition, modifiers, var->name(), &var->type());
+        fields.emplace_back(var->fPosition, modifiers.fLayout, modifiers.fFlags,
+                            var->name(), &var->type());
     }
     fUniformBuffer.fStruct = Type::MakeStructType(fContext,
                                                   Position(),
@@ -4307,15 +4308,15 @@ void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
         fContext.fErrors->error(pos, "RTFlipOffset is negative");
     }
     fields.emplace_back(pos,
-                        Modifiers(Layout(LayoutFlag::kNone,
-                                         /*location=*/-1,
-                                         fProgram.fConfig->fSettings.fRTFlipOffset,
-                                         /*binding=*/-1,
-                                         /*index=*/-1,
-                                         /*set=*/-1,
-                                         /*builtin=*/-1,
-                                         /*inputAttachmentIndex=*/-1),
-                                  ModifierFlag::kNone),
+                        Layout(LayoutFlag::kNone,
+                               /*location=*/-1,
+                               fProgram.fConfig->fSettings.fRTFlipOffset,
+                               /*binding=*/-1,
+                               /*index=*/-1,
+                               /*set=*/-1,
+                               /*builtin=*/-1,
+                               /*inputAttachmentIndex=*/-1),
+                        ModifierFlag::kNone,
                         SKSL_RTFLIP_NAME,
                         fContext.fTypes.fFloat2.get());
     std::string_view name = "sksl_synthetic_uniforms";
