@@ -16,7 +16,7 @@
 namespace SkSL {
 
 class Type;
-struct Modifiers;
+class ModifierFlags;
 
 namespace dsl {
 
@@ -26,8 +26,10 @@ public:
 
     DSLType(std::string_view name, Position pos = {});
 
-    DSLType(std::string_view name, Position overallPos,
-            SkSL::Modifiers* modifiers, Position modifiersPos);
+    DSLType(std::string_view name,
+            Position overallPos,
+            Position modifiersPos,
+            SkSL::ModifierFlags* modifiers);
 
     static DSLType Invalid();
     static DSLType Poison();

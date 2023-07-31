@@ -14,7 +14,8 @@
 namespace SkSL::dsl {
 
 struct DSLModifiers {
-    SkSL::Modifiers fModifiers;
+    SkSL::Layout fLayout;
+    SkSL::ModifierFlags fFlags = ModifierFlag::kNone;
     Position fPosition;
 };
 

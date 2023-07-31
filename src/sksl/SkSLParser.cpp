@@ -530,8 +530,8 @@ bool Parser::modifiersDeclarationEnd(const dsl::DSLModifiers& mods) {
     std::unique_ptr<ModifiersDeclaration> decl =
             ModifiersDeclaration::Convert(fCompiler.context(),
                                           mods.fPosition,
-                                          mods.fModifiers.fLayout,
-                                          mods.fModifiers.fFlags);
+                                          mods.fLayout,
+                                          mods.fFlags);
     if (!decl) {
         return false;
     }
@@ -614,7 +614,8 @@ bool Parser::functionDeclarationEnd(Position start,
         decl = SkSL::FunctionDeclaration::Convert(ThreadContext::Context(),
                                                   this->rangeFrom(start),
                                                   modifiers.fPosition,
-                                                  &modifiers.fModifiers,
+                                                  modifiers.fLayout,
+                                                  modifiers.fFlags,
                                                   this->text(name),
                                                   std::move(parameters),
                                                   start,
@@ -760,7 +761,8 @@ void Parser::globalVarDeclarationEnd(Position pos,
     this->addGlobalVarDeclaration(VarDeclaration::Convert(fCompiler.context(),
                                                           this->rangeFrom(pos),
                                                           mods.fPosition,
-                                                          mods.fModifiers,
+                                                          mods.fLayout,
+                                                          mods.fFlags,
                                                           type.skslType(),
                                                           this->position(name),
                                                           this->text(name),
@@ -783,7 +785,8 @@ void Parser::globalVarDeclarationEnd(Position pos,
                 VarDeclaration::Convert(fCompiler.context(),
                                         this->rangeFrom(identifierName),
                                         mods.fPosition,
-                                        mods.fModifiers,
+                                        mods.fLayout,
+                                        mods.fFlags,
                                         type.skslType(),
                                         this->position(identifierName),
                                         this->text(identifierName),
@@ -810,7 +813,8 @@ DSLStatement Parser::localVarDeclarationEnd(Position pos,
     std::unique_ptr<Statement> result = VarDeclaration::Convert(fCompiler.context(),
                                                                 this->rangeFrom(pos),
                                                                 mods.fPosition,
-                                                                mods.fModifiers,
+                                                                mods.fLayout,
+                                                                mods.fFlags,
                                                                 type.skslType(),
                                                                 this->position(name),
                                                                 this->text(name),
@@ -837,7 +841,8 @@ DSLStatement Parser::localVarDeclarationEnd(Position pos,
                 VarDeclaration::Convert(fCompiler.context(),
                                         this->rangeFrom(identifierName),
                                         mods.fPosition,
-                                        mods.fModifiers,
+                                        mods.fLayout,
+                                        mods.fFlags,
                                         type.skslType(),
                                         this->position(identifierName),
                                         this->text(identifierName),
@@ -948,8 +953,8 @@ DSLType Parser::structDeclaration() {
             }
 
             fields.push_back(SkSL::Field(this->rangeFrom(fieldStart),
-                                         modifiers.fModifiers.fLayout,
-                                         modifiers.fModifiers.fFlags,
+                                         modifiers.fLayout,
+                                         modifiers.fFlags,
                                          this->text(memberName),
                                          &actualType.skslType()));
         } while (this->checkNext(Token::Kind::TK_COMMA));
@@ -1008,7 +1013,8 @@ bool Parser::parameter(std::unique_ptr<SkSL::Variable>* outParam) {
     *outParam = SkSL::Variable::Convert(fCompiler.context(),
                                         this->rangeFrom(pos),
                                         modifiers.fPosition,
-                                        modifiers.fModifiers,
+                                        modifiers.fLayout,
+                                        modifiers.fFlags,
                                         &type.skslType(),
                                         namePos,
                                         nameText,
@@ -1154,7 +1160,7 @@ DSLModifiers Parser::modifiers() {
         flags |= tokenFlag;
         end = this->position(modifier).endOffset();
     }
-    return DSLModifiers{Modifiers(layout, flags), Position::Range(start, end)};
+    return DSLModifiers{layout, flags, Position::Range(start, end)};
 }
 
 /* ifStatement | forStatement | doStatement | whileStatement | block | expression */
@@ -1212,8 +1218,8 @@ DSLType Parser::type(DSLModifiers* modifiers) {
         this->error(type, "no type named '" + std::string(this->text(type)) + "'");
         return DSLType::Invalid();
     }
-    DSLType result(this->text(type), this->position(type),
-                   &modifiers->fModifiers, modifiers->fPosition);
+    DSLType result(this->text(type), this->position(type), modifiers->fPosition,
+                   &modifiers->fFlags);
     if (result.isInterfaceBlock()) {
         // SkSL puts interface blocks into the symbol table, but they aren't general-purpose types;
         // you can't use them to declare a variable type or a function return type.
@@ -1290,8 +1296,8 @@ bool Parser::interfaceBlock(const dsl::DSLModifiers& modifiers) {
             }
 
             fields.push_back(SkSL::Field(this->rangeFrom(fieldPos),
-                                         fieldModifiers.fModifiers.fLayout,
-                                         fieldModifiers.fModifiers.fFlags,
+                                         fieldModifiers.fLayout,
+                                         fieldModifiers.fFlags,
                                          this->text(fieldName),
                                          &actualType.skslType()));
         } while (this->checkNext(Token::Kind::TK_COMMA));
@@ -1310,14 +1316,16 @@ bool Parser::interfaceBlock(const dsl::DSLModifiers& modifiers) {
     }
     this->expect(Token::Kind::TK_SEMICOLON, "';'");
 
-    if (std::unique_ptr<SkSL::InterfaceBlock> ib = InterfaceBlock::Convert(fCompiler.context(),
-                                                                           this->position(typeName),
-                                                                           modifiers.fModifiers,
-                                                                           modifiers.fPosition,
-                                                                           this->text(typeName),
-                                                                           std::move(fields),
-                                                                           instanceName,
-                                                                           size)) {
+    if (std::unique_ptr<SkSL::InterfaceBlock> ib =
+                InterfaceBlock::Convert(fCompiler.context(),
+                                        this->position(typeName),
+                                        modifiers.fPosition,
+                                        modifiers.fLayout,
+                                        modifiers.fFlags,
+                                        this->text(typeName),
+                                        std::move(fields),
+                                        instanceName,
+                                        size)) {
         ThreadContext::ProgramElements().push_back(std::move(ib));
         return true;
     }

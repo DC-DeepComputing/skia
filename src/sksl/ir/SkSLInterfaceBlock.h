@@ -12,6 +12,7 @@
 #include "include/private/base/SkTArray.h"
 #include "src/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLIRNode.h"
+#include "src/sksl/ir/SkSLModifiers.h"
 #include "src/sksl/ir/SkSLProgramElement.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVariable.h"
@@ -25,7 +26,7 @@
 namespace SkSL {
 
 class Context;
-struct Modifiers;
+struct Layout;
 class SymbolTable;
 
 /**
@@ -61,8 +62,9 @@ public:
     // (if it is named) or each of the interface block fields (if it is anonymous).
     static std::unique_ptr<InterfaceBlock> Convert(const Context& context,
                                                    Position pos,
-                                                   const SkSL::Modifiers& modifiers,
                                                    Position modifiersPos,
+                                                   const Layout& layout,
+                                                   ModifierFlags modifierFlags,
                                                    std::string_view typeName,
                                                    skia_private::TArray<Field> fields,
                                                    std::string_view varName,
