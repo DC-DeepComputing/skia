@@ -34,6 +34,24 @@
       "parentUuid": "05cc78d0_c9b248df",
       "revId": "056115008d56b8a417ed0f6a51fd4e2e9da97824",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f33dc50b_5dc85600",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-07-31T18:01:22Z",
+      "side": 1,
+      "message": "I didn\u0027t add the operator[] check because I wanted a clean CL with only the size changes to evaluate. It looks like it is all the code surrounding maintaining size. The non-debug code doesn\u0027t have size at all. Since AutoTArray doesn\u0027t have size, it\u0027s kind of an impoverished collection. I think many of the uses of AutoTArray are in SkTHash which maintains a separate count. Maybe we change should SkTHash to use unique_ptr\u003cT[]\u003e instead of AutoTArray. Currently unique_ptr\u003cT[]\u003e and AutoTArray are very similar.",
+      "parentUuid": "5a44c72c_8c30b01f",
+      "revId": "056115008d56b8a417ed0f6a51fd4e2e9da97824",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
