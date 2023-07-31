@@ -3730,6 +3730,13 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
     width = texture->width();
     height = texture->height();
 
+    // Fixing the LOD to only level-1 is technically unnecessary. However, by making it clear that
+    // a rendering feedback loop is not occurring, we avoid hitting a slow path on some drivers.
+    if (this->glCaps().setLODForRegenerateMipMapLevels()) {
+        GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MIN_LOD, 0));
+        GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MAX_LOD, 0));
+    }
+
     for (GrGLint level = 1; level < levelCount; ++level) {
         // Get and bind the program for this particular downsample (filter shape can vary):
         int progIdx = TextureSizeToMipmapProgramIdx(width, height);
@@ -3753,13 +3760,6 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
         // Set the base level so that we only sample from the previous mip.
         SkASSERT(this->glCaps().mipmapLevelControlSupport());
         GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_BASE_LEVEL, level - 1));
-        // Setting the max level is technically unnecessary and can affect
-        // validation for the framebuffer. However, by making it clear that a
-        // rendering feedback loop is not occurring, we avoid hitting a slow
-        // path on some drivers.
-        if (this->glCaps().setMaxLevelForRegenerateMipMapLevels()) {
-            GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MAX_LEVEL, level - 1));
-        }
 
         GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER, GR_GL_COLOR_ATTACHMENT0, GR_GL_TEXTURE_2D,
                                      glTex->textureID(), level));
@@ -3775,12 +3775,24 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
     GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER, GR_GL_COLOR_ATTACHMENT0,
                                  GR_GL_TEXTURE_2D, 0, 0));
 
-    // We modified the base level and max level params.
+    // We modified the base level params.
     GrGLTextureParameters::NonsamplerState nonsamplerState = glTex->parameters()->nonsamplerState();
     // We drew the 2nd to last level into the last level.
     nonsamplerState.fBaseMipMapLevel = levelCount - 2;
-    nonsamplerState.fMaxMipmapLevel = levelCount - 2;
-    glTex->parameters()->set(nullptr, nonsamplerState, fResetTimestampForTextureParameters);
+    if (this->glCaps().setLODForRegenerateMipMapLevels()) {
+        // We modified lod levels
+        GrGLTextureParameters::SamplerOverriddenState samplerState =
+                glTex->parameters()->samplerOverriddenState();
+        samplerState.fMinLOD = 0;
+        samplerState.fMaxLOD = 0;
+        glTex->parameters()->set(&samplerState,
+                                 nonsamplerState,
+                                 fResetTimestampForTextureParameters);
+    } else {
+        glTex->parameters()->set(nullptr,
+                                 nonsamplerState,
+                                 fResetTimestampForTextureParameters);
+    }
 
     return true;
 }

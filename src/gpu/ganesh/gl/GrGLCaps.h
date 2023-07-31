@@ -486,8 +486,8 @@ public:
 
     bool clientCanDisableMultisample() const { return fClientCanDisableMultisample; }
 
-    bool setMaxLevelForRegenerateMipMapLevels() const {
-        return fSetMaxLevelForRegenerateMipMapLevels;
+    bool setLODForRegenerateMipMapLevels() const {
+        return fSetLODForRegenerateMipMapLevels;
     }
 
     GrBackendFormat getBackendFormatFromCompressionType(SkTextureCompressionType) const override;
@@ -622,7 +622,7 @@ private:
     bool fRebindColorAttachmentAfterCheckFramebufferStatus : 1;
     bool fFlushBeforeWritePixels : 1;
     bool fDisableScalingCopyAsDraws : 1;
-    bool fSetMaxLevelForRegenerateMipMapLevels : 1;
+    bool fSetLODForRegenerateMipMapLevels : 1;
     int fMaxInstancesPerDrawWithoutCrashing = 0;
 
     uint32_t fBlitFramebufferFlags = kNoSupport_BlitFramebufferFlag;
