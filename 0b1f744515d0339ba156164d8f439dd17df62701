@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6541ba5f_1323ce34",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-01T21:13:32Z",
+      "side": 1,
+      "message": "This is just a (long-standing) bug, it\u0027s not an architectural choice. http://b/40045444",
+      "range": {
+        "startLine": 429,
+        "startChar": 37,
+        "endLine": 432,
+        "endChar": 17
+      },
+      "revId": "0b1f744515d0339ba156164d8f439dd17df62701",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7b97663_268e9afe",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-01T21:13:32Z",
+      "side": 1,
+      "message": "tiny nit: two blank lines in a row",
+      "range": {
+        "startLine": 443,
+        "startChar": 0,
+        "endLine": 445,
+        "endChar": 0
+      },
+      "revId": "0b1f744515d0339ba156164d8f439dd17df62701",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c06c5cde_3753eaef",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-01T21:13:32Z",
+      "side": 1,
+      "message": "Delete--I think this is the same as the comment block above. We should not include 15-line comment summaries in the code multiple times. Rely on the bug text to convey detailed information.",
+      "range": {
+        "startLine": 1027,
+        "startChar": 8,
+        "endLine": 1045,
+        "endChar": 51
+      },
+      "revId": "0b1f744515d0339ba156164d8f439dd17df62701",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8b4a0a5_8ef8180a",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1174,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-01T21:13:32Z",
+      "side": 1,
+      "message": "Delete",
+      "range": {
+        "startLine": 1156,
+        "startChar": 0,
+        "endLine": 1174,
+        "endChar": 55
+      },
+      "revId": "0b1f744515d0339ba156164d8f439dd17df62701",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
