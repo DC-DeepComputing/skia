@@ -16,6 +16,23 @@
       "message": "FWIW, there is the accompanying Chromium change https://chromium-review.googlesource.com/c/chromium/src/+/4739911",
       "revId": "ee84ce444092c4a77dcf2f5f5b862c02371a29b3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae3eb519_f3e0d72f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T20:32:45Z",
+      "side": 1,
+      "message": "Despite failing, the canaries look ok (which hopefully means I didn\u0027t mess up the shims). G3 will need a manual roll because of the \"special\" flutter vulkan target.",
+      "revId": "ee84ce444092c4a77dcf2f5f5b862c02371a29b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
