@@ -62,7 +62,10 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> new_SDC(GrRecordingCon
                                                    SkBackingFit::kExact,
                                                    {128, 128},
                                                    SkSurfaceProps(),
-                                                   /*label=*/{});
+                                                   /*label=*/{},
+                                                   1,
+                                                   skgpu::Mipmapped::kNo,
+                                                   skgpu::Protected::kNo);
 }
 
 static sk_sp<GrSurfaceProxy> create_proxy(GrRecordingContext* rContext) {
