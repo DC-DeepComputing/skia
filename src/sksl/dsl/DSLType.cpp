@@ -86,10 +86,6 @@ DSLType DSLType::Poison() {
     return DSLType(ThreadContext::Context().fTypes.fPoison.get(), Position());
 }
 
-DSLType DSLType::Void() {
-    return DSLType(ThreadContext::Context().fTypes.fVoid.get(), Position());
-}
-
 bool DSLType::isBoolean() const {
     return this->skslType().isBoolean();
 }

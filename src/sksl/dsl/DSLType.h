@@ -30,7 +30,6 @@ public:
 
     static DSLType Invalid();
     static DSLType Poison();
-    static DSLType Void();
 
     /**
      * Returns true if the SkSL type is non-null.
