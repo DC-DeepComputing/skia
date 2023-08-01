@@ -39,6 +39,30 @@
       },
       "revId": "262e97626e0b1abb705aa45bb123556aafe65a3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3948688d_8bbfe8ef",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1038,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-01T15:04:39Z",
+      "side": 1,
+      "message": "Done Fun fact, you have to wrap the `kMaxKernelDimension \u0026 (kMax - 1)` in parentheses or `\u003d\u003d` higher precedence than `\u0026` means we compare 0 to 2047, and then and that with 2048 \u003d\u003e 0 and fail the static assert 😄. Luckily the compiler supports a very helpful warning pointing this out, but that makes me think the original precedence orders were a little off.",
+      "parentUuid": "fd17dfe9_652501e6",
+      "range": {
+        "startLine": 1037,
+        "startChar": 0,
+        "endLine": 1038,
+        "endChar": 74
+      },
+      "revId": "262e97626e0b1abb705aa45bb123556aafe65a3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
