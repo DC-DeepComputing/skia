@@ -3775,11 +3775,13 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
     GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER, GR_GL_COLOR_ATTACHMENT0,
                                  GR_GL_TEXTURE_2D, 0, 0));
 
-    // We modified the base level and max level params.
+    // We modified the base level and possibly max level params.
     GrGLTextureParameters::NonsamplerState nonsamplerState = glTex->parameters()->nonsamplerState();
     // We drew the 2nd to last level into the last level.
     nonsamplerState.fBaseMipMapLevel = levelCount - 2;
-    nonsamplerState.fMaxMipmapLevel = levelCount - 2;
+    if (this->glCaps().setMaxLevelForRegenerateMipMapLevels()) {
+        nonsamplerState.fMaxMipmapLevel = levelCount - 2;
+    }
     glTex->parameters()->set(nullptr, nonsamplerState, fResetTimestampForTextureParameters);
 
     return true;
