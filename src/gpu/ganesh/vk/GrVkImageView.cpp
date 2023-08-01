@@ -64,10 +64,17 @@ sk_sp<const GrVkImageView> GrVkImageView::Make(GrVkGpu* gpu,
 }
 
 void GrVkImageView::freeGPUData() const {
+    SkDebugf("+++++++++++++++++++ GrVkImageView::freeGPUData %p %p %p %p %p %d\n",
+             this,
+             this ? this->fGpu : nullptr,
+             fGpu->vkInterface(),
+             fGpu->device(),
+             fImageView,
+             fGpu->disconnected());
+
     GR_VK_CALL(fGpu->vkInterface(), DestroyImageView(fGpu->device(), fImageView, nullptr));
 
     if (fYcbcrConversion) {
         fYcbcrConversion->unref();
     }
 }
-

@@ -53,7 +53,8 @@ GrVkRenderTarget::GrVkRenderTarget(GrVkGpu* gpu,
                                    sk_sp<GrVkImage> colorAttachment,
                                    sk_sp<GrVkImage> resolveAttachment,
                                    CreateType createType,
-                                   std::string_view label)
+                                   std::string_view label,
+                                   bool foo)
         : GrSurface(gpu,
                     dimensions,
                     colorAttachment->isProtected() ? GrProtected::kYes : GrProtected::kNo,
@@ -159,12 +160,15 @@ sk_sp<GrVkRenderTarget> GrVkRenderTarget::MakeWrappedRenderTarget(
         return nullptr;
     }
 
+    SkDebugf("-------- cc\n");
+
     GrVkRenderTarget* vkRT = new GrVkRenderTarget(gpu,
                                                   dimensions,
                                                   std::move(colorAttachment),
                                                   nullptr,
                                                   CreateType::kDirectlyWrapped,
-                                                  /*label=*/"Vk_MakeWrappedRenderTarget");
+                                                  /*label=*/"Vk_MakeWrappedRenderTarget",
+                                                  true);
     return sk_sp<GrVkRenderTarget>(vkRT);
 }
 

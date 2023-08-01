@@ -87,7 +87,6 @@ if (skia_use_icu && skia_enable_sktext && skia_enable_skshaper &&
         "editor/Mouse.cpp",
         "editor/Selection.cpp",
         "editor/Texts.cpp",
-        "slides/Text.cpp",
       ]
       deps = [
         ":sktext",
