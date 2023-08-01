@@ -1,0 +1,140 @@
+               OpCapability Shader
+          %1 = OpExtInstImport "GLSL.std.450"
+               OpMemoryModel Logical GLSL450
+               OpEntryPoint GLCompute %main "main" %sk_GlobalInvocationID
+               OpExecutionMode %main LocalSize 16 16 1
+               OpName %ElementWithArrayMember "ElementWithArrayMember"
+               OpMemberName %ElementWithArrayMember 0 "array"
+               OpName %inputElements "inputElements"
+               OpMemberName %inputElements 0 "wideStrideElementArray"
+               OpName %unsizedArrayAlignmentTest "unsizedArrayAlignmentTest"
+               OpMemberName %unsizedArrayAlignmentTest 0 "foo"
+               OpMemberName %unsizedArrayAlignmentTest 1 "factors"
+               OpName %outputElementsBuffer "outputElementsBuffer"
+               OpMemberName %outputElementsBuffer 0 "outputElements"
+               OpName %ElementWithNoArray "ElementWithNoArray"
+               OpMemberName %ElementWithNoArray 0 "a"
+               OpName %packedElementsBuffer "packedElementsBuffer"
+               OpMemberName %packedElementsBuffer 0 "packedElements"
+               OpName %sk_GlobalInvocationID "sk_GlobalInvocationID"
+               OpName %main "main"
+               OpName %idx "idx"
+               OpName %_0_e "_0_e"
+               OpName %f "f"
+               OpName %_1_arr "_1_arr"
+               OpName %e "e"
+               OpDecorate %_arr_float_int_2 ArrayStride 16
+               OpMemberDecorate %ElementWithArrayMember 0 Offset 0
+               OpDecorate %_runtimearr_ElementWithArrayMember ArrayStride 32
+               OpMemberDecorate %inputElements 0 Offset 0
+               OpMemberDecorate %inputElements 0 RelaxedPrecision
+               OpDecorate %inputElements BufferBlock
+               OpDecorate %3 Binding 0
+               OpDecorate %3 DescriptorSet 0
+               OpDecorate %_runtimearr_float ArrayStride 4
+               OpMemberDecorate %unsizedArrayAlignmentTest 0 Offset 0
+               OpMemberDecorate %unsizedArrayAlignmentTest 1 Offset 4
+               OpDecorate %unsizedArrayAlignmentTest BufferBlock
+               OpDecorate %12 Binding 1
+               OpDecorate %12 DescriptorSet 0
+               OpMemberDecorate %outputElementsBuffer 0 Offset 0
+               OpMemberDecorate %outputElementsBuffer 0 RelaxedPrecision
+               OpDecorate %outputElementsBuffer BufferBlock
+               OpDecorate %17 Binding 2
+               OpDecorate %17 DescriptorSet 0
+               OpMemberDecorate %ElementWithNoArray 0 Offset 0
+               OpDecorate %_runtimearr_ElementWithNoArray ArrayStride 8
+               OpMemberDecorate %packedElementsBuffer 0 Offset 0
+               OpMemberDecorate %packedElementsBuffer 0 RelaxedPrecision
+               OpDecorate %packedElementsBuffer BufferBlock
+               OpDecorate %20 Binding 3
+               OpDecorate %20 DescriptorSet 0
+               OpDecorate %sk_GlobalInvocationID BuiltIn GlobalInvocationId
+               OpDecorate %41 RelaxedPrecision
+               OpDecorate %75 RelaxedPrecision
+      %float = OpTypeFloat 32
+        %int = OpTypeInt 32 1
+      %int_2 = OpConstant %int 2
+%_arr_float_int_2 = OpTypeArray %float %int_2
+%ElementWithArrayMember = OpTypeStruct %_arr_float_int_2
+%_runtimearr_ElementWithArrayMember = OpTypeRuntimeArray %ElementWithArrayMember
+%inputElements = OpTypeStruct %_runtimearr_ElementWithArrayMember
+%_ptr_Uniform_inputElements = OpTypePointer Uniform %inputElements
+          %3 = OpVariable %_ptr_Uniform_inputElements Uniform
+       %uint = OpTypeInt 32 0
+%_runtimearr_float = OpTypeRuntimeArray %float
+%unsizedArrayAlignmentTest = OpTypeStruct %uint %_runtimearr_float
+%_ptr_Uniform_unsizedArrayAlignmentTest = OpTypePointer Uniform %unsizedArrayAlignmentTest
+         %12 = OpVariable %_ptr_Uniform_unsizedArrayAlignmentTest Uniform
+%outputElementsBuffer = OpTypeStruct %_runtimearr_ElementWithArrayMember
+%_ptr_Uniform_outputElementsBuffer = OpTypePointer Uniform %outputElementsBuffer
+         %17 = OpVariable %_ptr_Uniform_outputElementsBuffer Uniform
+    %v2float = OpTypeVector %float 2
+%ElementWithNoArray = OpTypeStruct %v2float
+%_runtimearr_ElementWithNoArray = OpTypeRuntimeArray %ElementWithNoArray
+%packedElementsBuffer = OpTypeStruct %_runtimearr_ElementWithNoArray
+%_ptr_Uniform_packedElementsBuffer = OpTypePointer Uniform %packedElementsBuffer
+         %20 = OpVariable %_ptr_Uniform_packedElementsBuffer Uniform
+     %v3uint = OpTypeVector %uint 3
+%_ptr_Input_v3uint = OpTypePointer Input %v3uint
+%sk_GlobalInvocationID = OpVariable %_ptr_Input_v3uint Input
+       %void = OpTypeVoid
+         %30 = OpTypeFunction %void
+%_ptr_Function_uint = OpTypePointer Function %uint
+%_ptr_Function_ElementWithArrayMember = OpTypePointer Function %ElementWithArrayMember
+      %int_0 = OpConstant %int 0
+%_ptr_Uniform_ElementWithArrayMember = OpTypePointer Uniform %ElementWithArrayMember
+%_ptr_Function_float = OpTypePointer Function %float
+      %int_1 = OpConstant %int 1
+%_ptr_Function__arr_float_int_2 = OpTypePointer Function %_arr_float_int_2
+%_ptr_Uniform__arr_float_int_2 = OpTypePointer Uniform %_arr_float_int_2
+%_ptr_Uniform_float = OpTypePointer Uniform %float
+     %uint_1 = OpConstant %uint 1
+       %main = OpFunction %void None %30
+         %31 = OpLabel
+        %idx = OpVariable %_ptr_Function_uint Function
+       %_0_e = OpVariable %_ptr_Function_ElementWithArrayMember Function
+          %f = OpVariable %_ptr_Function_float Function
+     %_1_arr = OpVariable %_ptr_Function__arr_float_int_2 Function
+          %e = OpVariable %_ptr_Function_ElementWithArrayMember Function
+         %34 = OpLoad %v3uint %sk_GlobalInvocationID
+         %35 = OpCompositeExtract %uint %34 0
+               OpStore %idx %35
+         %39 = OpAccessChain %_ptr_Uniform_ElementWithArrayMember %3 %int_0 %35
+         %41 = OpLoad %ElementWithArrayMember %39
+               OpStore %_0_e %41
+         %44 = OpAccessChain %_ptr_Function_float %_0_e %int_0 %int_0
+         %45 = OpLoad %float %44
+         %47 = OpAccessChain %_ptr_Function_float %_0_e %int_0 %int_1
+         %48 = OpLoad %float %47
+         %49 = OpFMul %float %45 %48
+               OpStore %f %49
+         %52 = OpAccessChain %_ptr_Uniform__arr_float_int_2 %3 %int_0 %35 %int_0
+         %54 = OpLoad %_arr_float_int_2 %52
+               OpStore %_1_arr %54
+         %55 = OpAccessChain %_ptr_Function_float %_1_arr %int_0
+         %56 = OpLoad %float %55
+         %57 = OpAccessChain %_ptr_Function_float %_1_arr %int_1
+         %58 = OpLoad %float %57
+         %59 = OpFMul %float %56 %58
+         %60 = OpFMul %float %49 %59
+               OpStore %f %60
+         %62 = OpAccessChain %_ptr_Uniform_float %12 %int_1 %35
+         %64 = OpLoad %float %62
+         %65 = OpFMul %float %60 %64
+         %66 = OpAccessChain %_ptr_Function_float %e %int_0 %int_0
+               OpStore %66 %65
+         %67 = OpLoad %float %f
+         %68 = OpLoad %uint %idx
+         %70 = OpIAdd %uint %68 %uint_1
+         %71 = OpAccessChain %_ptr_Uniform_float %12 %int_1 %70
+         %72 = OpLoad %float %71
+         %73 = OpFMul %float %67 %72
+         %74 = OpAccessChain %_ptr_Function_float %e %int_0 %int_1
+               OpStore %74 %73
+         %75 = OpLoad %ElementWithArrayMember %e
+         %76 = OpLoad %uint %idx
+         %77 = OpAccessChain %_ptr_Uniform_ElementWithArrayMember %17 %int_0 %76
+               OpStore %77 %75
+               OpReturn
+               OpFunctionEnd

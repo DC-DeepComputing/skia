@@ -1,0 +1,47 @@
+struct ElementWithArrayMember {
+    float array[2];  // expected to obey std140 layout: stride: 16
+};
+
+struct ElementWithNoArray {
+    float2 a;
+};
+
+layout(set=0, binding=0) readonly buffer inputElements
+{
+    ElementWithArrayMember wideStrideElementArray[];  // stride: 32
+};
+
+layout(set=0, binding=1) readonly buffer unsizedArrayAlignmentTest
+{
+    uint foo;
+    float factors[];
+};
+
+layout(set=0, binding=2) buffer outputElementsBuffer
+{
+    ElementWithArrayMember outputElements[];    
+};
+
+layout(set=0, binding=3) buffer packedElementsBuffer
+{
+    ElementWithNoArray packedElements[];    
+};
+
+float processElement(ElementWithArrayMember e) {
+    return e.array[0] * e.array[1];
+}
+
+float processElementArrayMember(float[2] arr) {
+    return arr[0] * arr[1];
+}
+
+void main() {
+    uint idx = sk_GlobalInvocationID.x;
+    float f = processElement(wideStrideElementArray[idx]);
+    f *= processElementArrayMember(wideStrideElementArray[idx].array);
+
+    ElementWithArrayMember e;
+    e.array[0] = f * factors[idx];
+    e.array[1] = f * factors[idx + 1];
+    outputElements[idx] = e;
+}

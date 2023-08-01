@@ -1007,6 +1007,7 @@ skia_filegroup(
         "shared/UniformArray.sksl",
         "shared/UniformBuffers.sksl",
         "shared/UniformMatrixResize.sksl",
+        "shared/UnsizedArray.compute",
         "shared/UnusedVariables.sksl",
         "shared/VectorConstructors.sksl",
         "shared/VectorScalarMath.sksl",
