@@ -16,7 +16,7 @@
 
 static DEFINE_string2(tmpDir, t, nullptr, "Temp directory to use.");
 
-void skiatest::Reporter::bumpTestCount() {}
+//void skiatest::Reporter::bumpTestCount() {}
 
 bool skiatest::Reporter::allowExtendedTest() const { return false; }
 

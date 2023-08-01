@@ -216,7 +216,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrAtlasTextOpPreparation,
                                                        SkBackingFit::kApprox,
                                                        {32, 32},
                                                        SkSurfaceProps(),
-                                                       /*label=*/"AtlasTextOpPreparation");
+                                                       /*label=*/"AtlasTextOpPreparation",
+                                                       1,
+                                                       skgpu::Mipmapped::kNo,
+                                                       skgpu::Protected::kNo);
 
     SkPaint paint;
     paint.setColor(SK_ColorRED);

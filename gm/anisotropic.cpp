@@ -197,7 +197,8 @@ protected:
                                                1,
                                                kTopLeft_GrSurfaceOrigin,
                                                /*surfaceProps=*/nullptr,
-                                               /*shouldCreateWithMips=*/true);
+                                               /*shouldCreateWithMips=*/true,
+                                               /*isProtected=*/false);
             if (!surface) {
                 // We could be in an abandoned context situation.
                 return;
