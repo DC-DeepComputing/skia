@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "636a4733_f495c394",
+        "filename": "src/gpu/ganesh/GrBackendSurface.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-01T15:22:52Z",
+      "side": 1,
+      "message": "So you removed any GL cleanup in this call, but if \"this\" is OpenGL and \"that\" is something else, should we be resetting fTextureData to null? I guess when we have all the backends transferred over to the new system then we can guarantee that fTextureData will be overwritten, but for now it will just hang around with stale data until the object is destroyed.",
+      "range": {
+        "startLine": 593,
+        "startChar": 7,
+        "endLine": 593,
+        "endChar": 24
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8a67bcf_d2d05a1f",
+        "filename": "src/gpu/ganesh/GrBackendSurfacePriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-01T15:22:52Z",
+      "side": 1,
+      "message": "you can remove this SkRefCnt now that you\u0027re using unique_ptr",
+      "range": {
+        "startLine": 27,
+        "startChar": 26,
+        "endLine": 27,
+        "endChar": 42
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "460ccd15_94b50647",
+        "filename": "src/gpu/ganesh/GrBackendSurfacePriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-01T15:22:52Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 44,
+        "startChar": 29,
+        "endLine": 44,
+        "endChar": 44
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8614fa2_f4eade99",
+        "filename": "src/gpu/ganesh/GrBackendSurfacePriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-01T15:22:52Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 57,
+        "startChar": 34,
+        "endLine": 57,
+        "endChar": 49
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "553fbfae_d6277b58",
+        "filename": "src/gpu/ganesh/GrBackendSurfacePriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-01T15:22:52Z",
+      "side": 1,
+      "message": "nit: 100 chars",
+      "range": {
+        "startLine": 107,
+        "startChar": 60,
+        "endLine": 107,
+        "endChar": 109
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a139415_ab70aa48",
+        "filename": "src/gpu/ganesh/gl/GrGLBackendSurface.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-01T15:22:52Z",
+      "side": 1,
+      "message": "should we add an assert that that\u0027s backend is GL?",
+      "range": {
+        "startLine": 68,
+        "startChar": 69,
+        "endLine": 68,
+        "endChar": 73
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
