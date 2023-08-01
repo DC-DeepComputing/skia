@@ -88,7 +88,10 @@ static void run_test(GrDirectContext* dContext, skiatest::Reporter* reporter) {
                                                            SkBackingFit::kApprox,
                                                            {kBigSize / 2 + 1, kBigSize / 2 + 1},
                                                            SkSurfaceProps(),
-                                                           /*label=*/{});
+                                                           /*label=*/{},
+                                                           1,
+                                                           skgpu::Mipmapped::kNo,
+                                                           skgpu::Protected::kNo);
 
         sdc->clear(SK_PMColor4fBLACK);
 
@@ -110,7 +113,10 @@ static void run_test(GrDirectContext* dContext, skiatest::Reporter* reporter) {
                                                            SkBackingFit::kExact,
                                                            {kBigSize, kBigSize},
                                                            SkSurfaceProps(),
-                                                           /*label=*/{});
+                                                           /*label=*/{},
+                                                           1,
+                                                           skgpu::Mipmapped::kNo,
+                                                           skgpu::Protected::kNo);
 
         sdc->clear(SK_PMColor4fBLACK);
 
