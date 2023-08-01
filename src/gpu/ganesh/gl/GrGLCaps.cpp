@@ -4583,8 +4583,9 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // Setting the max level is technically unnecessary and can affect validation for the
     // framebuffer. However, by making it clear that a rendering feedback loop is not occurring,
     // we avoid hitting a slow path on some drivers.
-    if (GR_IS_GR_GL(ctxInfo.standard()) &&
-        (ctxInfo.vendor() == GrGLVendor::kIntel || ctxInfo.angleVendor() == GrGLVendor::kIntel)) {
+    // This fix violates framebuffer validation on ANGLE, so it is disabled for now.
+    if (ctxInfo.vendor() == GrGLVendor::kIntel &&
+        ctxInfo.angleBackend() != GrGLANGLEBackend::kUnknown) {
         fSetMaxLevelForRegenerateMipMapLevels = true;
     }
 }
