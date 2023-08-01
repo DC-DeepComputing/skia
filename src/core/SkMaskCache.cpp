@@ -36,10 +36,8 @@ public:
 
 struct RRectBlurRec : public SkResourceCache::Rec {
     RRectBlurRec(RRectBlurKey key, const SkMask& mask, SkCachedData* data)
-        : fKey(key)
+        : fKey(key), fValue({{nullptr, mask.fBounds, mask.fRowBytes, mask.fFormat}, data})
     {
-        fValue.fMask = mask;
-        fValue.fData = data;
         fValue.fData->attachToCacheAndRef();
     }
     ~RRectBlurRec() override {
@@ -58,7 +56,7 @@ struct RRectBlurRec : public SkResourceCache::Rec {
 
     static bool Visitor(const SkResourceCache::Rec& baseRec, void* contextData) {
         const RRectBlurRec& rec = static_cast<const RRectBlurRec&>(baseRec);
-        MaskValue* result = (MaskValue*)contextData;
+        SkTLazy<MaskValue>* result = (SkTLazy<MaskValue>*)contextData;
 
         SkCachedData* tmpData = rec.fValue.fData;
         tmpData->ref();
@@ -66,23 +64,28 @@ struct RRectBlurRec : public SkResourceCache::Rec {
             tmpData->unref();
             return false;
         }
-        *result = rec.fValue;
+        const SkMask& mask = rec.fValue.fMask;
+        result->init(MaskValue{
+            SkMask(static_cast<const uint8_t*>(tmpData->data()),
+                   mask.fBounds, mask.fRowBytes, mask.fFormat),
+            tmpData
+        });
         return true;
     }
 };
 } // namespace
 
 SkCachedData* SkMaskCache::FindAndRef(SkScalar sigma, SkBlurStyle style,
-                                  const SkRRect& rrect, SkMask* mask, SkResourceCache* localCache) {
-    MaskValue result;
+                                      const SkRRect& rrect, SkTLazy<SkMask>* mask,
+                                      SkResourceCache* localCache) {
+    SkTLazy<MaskValue> result;
     RRectBlurKey key(sigma, rrect, style);
     if (!CHECK_LOCAL(localCache, find, Find, key, RRectBlurRec::Visitor, &result)) {
         return nullptr;
     }
 
-    *mask = result.fMask;
-    mask->fImage = (uint8_t*)(result.fData->data());
-    return result.fData;
+    mask->init(result->fMask);
+    return result->fData;
 }
 
 void SkMaskCache::Add(SkScalar sigma, SkBlurStyle style,
@@ -127,10 +130,8 @@ public:
 
 struct RectsBlurRec : public SkResourceCache::Rec {
     RectsBlurRec(RectsBlurKey key, const SkMask& mask, SkCachedData* data)
-        : fKey(key)
+        : fKey(key), fValue({{nullptr, mask.fBounds, mask.fRowBytes, mask.fFormat}, data})
     {
-        fValue.fMask = mask;
-        fValue.fData = data;
         fValue.fData->attachToCacheAndRef();
     }
     ~RectsBlurRec() override {
@@ -149,7 +150,7 @@ struct RectsBlurRec : public SkResourceCache::Rec {
 
     static bool Visitor(const SkResourceCache::Rec& baseRec, void* contextData) {
         const RectsBlurRec& rec = static_cast<const RectsBlurRec&>(baseRec);
-        MaskValue* result = static_cast<MaskValue*>(contextData);
+        SkTLazy<MaskValue>* result = static_cast<SkTLazy<MaskValue>*>(contextData);
 
         SkCachedData* tmpData = rec.fValue.fData;
         tmpData->ref();
@@ -157,24 +158,28 @@ struct RectsBlurRec : public SkResourceCache::Rec {
             tmpData->unref();
             return false;
         }
-        *result = rec.fValue;
+        const SkMask& mask = rec.fValue.fMask;
+        result->init(MaskValue{
+            SkMask(static_cast<const uint8_t*>(tmpData->data()),
+                   mask.fBounds, mask.fRowBytes, mask.fFormat),
+            tmpData
+        });
         return true;
     }
 };
 } // namespace
 
 SkCachedData* SkMaskCache::FindAndRef(SkScalar sigma, SkBlurStyle style,
-                                      const SkRect rects[], int count, SkMask* mask,
+                                      const SkRect rects[], int count, SkTLazy<SkMask>* mask,
                                       SkResourceCache* localCache) {
-    MaskValue result;
+    SkTLazy<MaskValue> result;
     RectsBlurKey key(sigma, style, rects, count);
     if (!CHECK_LOCAL(localCache, find, Find, key, RectsBlurRec::Visitor, &result)) {
         return nullptr;
     }
 
-    *mask = result.fMask;
-    mask->fImage = (uint8_t*)(result.fData->data());
-    return result.fData;
+    mask->init(result->fMask);
+    return result->fData;
 }
 
 void SkMaskCache::Add(SkScalar sigma, SkBlurStyle style,
