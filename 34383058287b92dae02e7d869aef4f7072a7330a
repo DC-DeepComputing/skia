@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0da65b6_64966971",
+        "filename": "src/gpu/ganesh/GrBackendSurface.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T18:50:03Z",
+      "side": 1,
+      "message": "Overwriting fTextureData with null seems reasonable to me. What else would we do? Fail to do the assignment if the this and that are not of the same backend? Does that happen much in practice or is it just defensive coding?",
+      "parentUuid": "636a4733_f495c394",
+      "range": {
+        "startLine": 593,
+        "startChar": 7,
+        "endLine": 593,
+        "endChar": 24
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e8a67bcf_d2d05a1f",
         "filename": "src/gpu/ganesh/GrBackendSurfacePriv.h",
         "patchSetId": 16
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-01T15:22:52Z",
       "side": 1,
       "message": "you can remove this SkRefCnt now that you\u0027re using unique_ptr",
+      "range": {
+        "startLine": 27,
+        "startChar": 26,
+        "endLine": 27,
+        "endChar": 42
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "580c497b_77e79ca8",
+        "filename": "src/gpu/ganesh/GrBackendSurfacePriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T18:50:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8a67bcf_d2d05a1f",
       "range": {
         "startLine": 27,
         "startChar": 26,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da52c134_a61adaaa",
+        "filename": "src/gpu/ganesh/GrBackendSurfacePriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T18:50:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "460ccd15_94b50647",
+      "range": {
+        "startLine": 44,
+        "startChar": 29,
+        "endLine": 44,
+        "endChar": 44
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8614fa2_f4eade99",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-08-01T15:22:52Z",
       "side": 1,
       "message": "remove",
+      "range": {
+        "startLine": 57,
+        "startChar": 34,
+        "endLine": 57,
+        "endChar": 49
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b037117e_1da71934",
+        "filename": "src/gpu/ganesh/GrBackendSurfacePriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T18:50:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8614fa2_f4eade99",
       "range": {
         "startLine": 57,
         "startChar": 34,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2663725c_2a9223cb",
+        "filename": "src/gpu/ganesh/GrBackendSurfacePriv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T18:50:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "553fbfae_d6277b58",
+      "range": {
+        "startLine": 107,
+        "startChar": 60,
+        "endLine": 107,
+        "endChar": 109
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a139415_ab70aa48",
@@ -129,6 +249,30 @@
       "writtenOn": "2023-08-01T15:22:52Z",
       "side": 1,
       "message": "should we add an assert that that\u0027s backend is GL?",
+      "range": {
+        "startLine": 68,
+        "startChar": 69,
+        "endLine": 68,
+        "endChar": 73
+      },
+      "revId": "34383058287b92dae02e7d869aef4f7072a7330a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bafa8589_f9fac8fb",
+        "filename": "src/gpu/ganesh/gl/GrGLBackendSurface.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T18:50:03Z",
+      "side": 1,
+      "message": "I\u0027m not sure how to do that unless we add a method to the superclass that returns an enum for what type it is. Do you think that\u0027s worth it?",
+      "parentUuid": "3a139415_ab70aa48",
       "range": {
         "startLine": 68,
         "startChar": 69,
