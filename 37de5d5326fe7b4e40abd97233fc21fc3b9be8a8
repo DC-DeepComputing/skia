@@ -105,6 +105,30 @@
       },
       "revId": "37de5d5326fe7b4e40abd97233fc21fc3b9be8a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaa69319_477220e0",
+        "filename": "include/gpu/GrBackendSurface.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T14:57:00Z",
+      "side": 1,
+      "message": "Done. I was able to use a src-private friend class and move the definitions of GrBackendTextureData to src/ as well.",
+      "parentUuid": "0ea894d8_a6b64398",
+      "range": {
+        "startLine": 348,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 20
+      },
+      "revId": "37de5d5326fe7b4e40abd97233fc21fc3b9be8a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

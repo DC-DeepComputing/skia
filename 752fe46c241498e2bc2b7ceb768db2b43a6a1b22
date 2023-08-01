@@ -33,6 +33,42 @@
       "message": "I definitely want to get Greg\u0027s opinion on this. If we do go in this direction, I don\u0027t think we need to share the allocations, so we should use unique_ptr, rather than sk_sp. (That also means we don\u0027t need to derive from SkRefCnt, which makes the data objects smaller).",
       "revId": "752fe46c241498e2bc2b7ceb768db2b43a6a1b22",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9955a7ac_6ba23e35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T14:57:00Z",
+      "side": 1,
+      "message": "I migrated GrGLBackendTextureInfo to have an sk_sp\u003cGrGLTextureParameters\u003e instead of a bare pointer and the cleanup() dance. It was error-prone (I managed to introduce a use-after-free issue and now seems unnecessary due to the lack of the union type.",
+      "parentUuid": "0613c1fe_ccffa170",
+      "revId": "752fe46c241498e2bc2b7ceb768db2b43a6a1b22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8940355d_f42ce856",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T14:57:00Z",
+      "side": 1,
+      "message": "Went with unique_ptr, although still needed to copy the data for the copy constructor and assignment operator. I did try to remove those, but that ended up being infeasible (70+ files with compile errors and several tricky cases like GrYUVABackendTextureInfo holding onto an array of GrBackendFormats.",
+      "parentUuid": "a177dbd7_e85bc3e0",
+      "revId": "752fe46c241498e2bc2b7ceb768db2b43a6a1b22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
