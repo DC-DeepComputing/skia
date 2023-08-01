@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6b6f122b_8ec39057",
+        "filename": "tools/viewer/experimental/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-01T21:08:26Z",
+      "side": 1,
+      "message": "OK, in that case your code is good. Off the top of my head I can\u0027t think of a better name, but maybe a comment would be worthwhile.",
+      "parentUuid": "ac98e747_4d2a0c8b",
+      "range": {
+        "startLine": 165,
+        "startChar": 47,
+        "endLine": 165,
+        "endChar": 60
+      },
+      "revId": "d784037d4f9b6ce087251528047d448052b53209",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a5e770f_8eba9ab6",
         "filename": "tools/viewer/experimental/ComputeImageFiltersSlide.cpp",
         "patchSetId": 7
