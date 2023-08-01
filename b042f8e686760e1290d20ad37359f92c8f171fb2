@@ -16,6 +16,23 @@
       "message": "PTAL. This seems to work generally but not sure if it helps on Intel. We\u0027ll see what the bots say.",
       "revId": "b042f8e686760e1290d20ad37359f92c8f171fb2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca419894_ef94b1b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-01T12:28:38Z",
+      "side": 1,
+      "message": "Looks like it has some issues on IrisXe, but also appears to be no worse than what\u0027s already there.",
+      "revId": "b042f8e686760e1290d20ad37359f92c8f171fb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
