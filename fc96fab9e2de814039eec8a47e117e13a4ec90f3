@@ -16,6 +16,24 @@
       "message": "Do I need to grab the mutex here based on https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/image/SkImage_Picture.h;l\u003d36-37?q\u003dSkImage_picture.h\u0026ss\u003dchromium ?",
       "revId": "fc96fab9e2de814039eec8a47e117e13a4ec90f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2efffe4e_59472ebe",
+        "filename": "src/image/SkTiledImageUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-01T14:47:56Z",
+      "side": 1,
+      "message": "Yes, I think you would need to hold the lock while reading all the lazy picture properties.\n\nThat said, we need to take more than just the picture\u0027s unique ID into account here. The rendered picture will depend on the matrix, paint, surfaceprops and bitdepth properties of the SkImage_Picture object.",
+      "parentUuid": "1c7f029f_363a27ab",
+      "revId": "fc96fab9e2de814039eec8a47e117e13a4ec90f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
