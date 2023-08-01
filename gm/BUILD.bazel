@@ -487,6 +487,7 @@ GPU_GMS = [
     # "attributes.cpp",  # ./include/core/SkRefCnt.h:41: fatal error: "assert(this->getRefCnt() == 1)"
     # "beziereffects.cpp",  # ./include/core/SkRefCnt.h:41: fatal error: "assert(this->getRefCnt() == 1)"
     # "clockwise.cpp",  # ./include/core/SkRefCnt.h:41: fatal error: "assert(this->getRefCnt() == 1)"
+    "protected.cpp",
 ]
 
 # Sample invocation:

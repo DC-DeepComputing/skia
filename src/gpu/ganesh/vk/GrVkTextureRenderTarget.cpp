@@ -28,7 +28,8 @@ GrVkTextureRenderTarget::GrVkTextureRenderTarget(GrVkGpu* gpu,
                                                  sk_sp<GrVkImage> colorAttachment,
                                                  sk_sp<GrVkImage> resolveAttachment,
                                                  GrMipmapStatus mipmapStatus,
-                                                 std::string_view label)
+                                                 std::string_view label,
+                                                 bool foo)
         : GrSurface(gpu,
                     dimensions,
                     texture->isProtected() ? GrProtected::kYes : GrProtected::kNo,
@@ -39,7 +40,7 @@ GrVkTextureRenderTarget::GrVkTextureRenderTarget(GrVkGpu* gpu,
                            std::move(colorAttachment),
                            std::move(resolveAttachment),
                            CreateType::kFromTextureRT,
-                           label) {
+                           label, foo) {
     this->registerWithCache(budgeted);
 }
 
@@ -51,14 +52,15 @@ GrVkTextureRenderTarget::GrVkTextureRenderTarget(
         sk_sp<GrVkImage> resolveAttachment,
         GrMipmapStatus mipmapStatus,
         GrWrapCacheable cacheable,
-        std::string_view label)
+        std::string_view label,
+        bool foo)
         : GrSurface(gpu,
                     dimensions,
                     texture->isProtected() ? GrProtected::kYes : GrProtected::kNo,
                     label)
         , GrVkTexture(gpu, dimensions, std::move(texture), mipmapStatus, label)
         , GrVkRenderTarget(gpu, dimensions, std::move(colorAttachment),
-                           std::move(resolveAttachment), CreateType::kFromTextureRT, label) {
+                           std::move(resolveAttachment), CreateType::kFromTextureRT, label, foo) {
     this->registerWithCacheWrapped(cacheable);
 }
 
@@ -111,6 +113,9 @@ sk_sp<GrVkTextureRenderTarget> GrVkTextureRenderTarget::MakeNewTextureRenderTarg
                                &colorAttachment, &resolveAttachment)) {
         return nullptr;
     }
+
+    SkDebugf("---------aaa %d %s\n", isProtected == GrProtected::kYes, std::string(label).c_str());
+
     SkASSERT(colorAttachment);
     SkASSERT(sampleCnt == 1 || resolveAttachment);
     return sk_sp<GrVkTextureRenderTarget>(new GrVkTextureRenderTarget(gpu,
@@ -120,7 +125,7 @@ sk_sp<GrVkTextureRenderTarget> GrVkTextureRenderTarget::MakeNewTextureRenderTarg
                                                                       std::move(colorAttachment),
                                                                       std::move(resolveAttachment),
                                                                       mipmapStatus,
-                                                                      label));
+                                                                      label, true));
 }
 
 sk_sp<GrVkTextureRenderTarget> GrVkTextureRenderTarget::MakeWrappedTextureRenderTarget(
@@ -164,6 +169,8 @@ sk_sp<GrVkTextureRenderTarget> GrVkTextureRenderTarget::MakeWrappedTextureRender
     GrMipmapStatus mipmapStatus =
             info.fLevelCount > 1 ? GrMipmapStatus::kDirty : GrMipmapStatus::kNotAllocated;
 
+    SkDebugf("----------- bb %d\n", texture->isProtected());
+
     return sk_sp<GrVkTextureRenderTarget>(
             new GrVkTextureRenderTarget(gpu,
                                         dimensions,
@@ -172,7 +179,8 @@ sk_sp<GrVkTextureRenderTarget> GrVkTextureRenderTarget::MakeWrappedTextureRender
                                         std::move(resolveAttachment),
                                         mipmapStatus,
                                         cacheable,
-                                        /*label=*/"Vk_MakeWrappedTextureRenderTarget"));
+                                        /*label=*/"Vk_MakeWrappedTextureRenderTarget",
+                                        true));
 }
 
 size_t GrVkTextureRenderTarget::onGpuMemorySize() const {

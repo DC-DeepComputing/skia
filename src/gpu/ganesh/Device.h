@@ -144,7 +144,8 @@ public:
                               sk_sp<SkColorSpace>,
                               GrSurfaceOrigin,
                               const SkSurfaceProps&,
-                              InitContents);
+                              InitContents,
+                              bool);
 
     /**
      * This factory uses the budgeted, imageInfo, fit, sampleCount, mipmapped, and isProtected
