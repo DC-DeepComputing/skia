@@ -22,6 +22,29 @@
       },
       "revId": "d784037d4f9b6ce087251528047d448052b53209",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a5e770f_8eba9ab6",
+        "filename": "tools/viewer/experimental/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-01T20:49:55Z",
+      "side": 1,
+      "message": "I think this can be pulled out of the loop. \n\n```\n            canvas-\u003edrawImage(fImage, margin + 0 * (dim + margin), margin, SkSamplingOptions(), \u0026paint);\n                        \n            if (fIsDisplaySeparableGaussian) {\n                device-\u003edrawComputeFilteredImage(\n                        fImage, margin + 1 * (dim + margin), margin, \u0026fSeparableGaussian);\n            }\n            if (fIsDisplaySlowBox) {\n                device-\u003edrawComputeFilteredImage(\n                        fImage, margin + 2 * (dim + margin), margin, \u0026fBoxBlur);\n            } \n            if (fIsDisplaySlowALUGaussian) {\n                device-\u003edrawComputeFilteredImage(\n                        fImage, margin + 3 * (dim + margin), margin, \u0026fALUGaussian);\n            } \n            if (fIsDisplaySlowMemGaussian) {\n                device-\u003edrawComputeFilteredImage(\n                        fImage, margin + 4 * (dim + margin), margin, \u0026fMemGaussian);\n            } \n            if (fIsDisplayGrayscale) {\n                device-\u003edrawComputeFilteredImage(\n                        fImage, margin + 5 * (dim + margin), margin, \u0026fGrayscale);\n            }\n```",
+      "range": {
+        "startLine": 592,
+        "startChar": 12,
+        "endLine": 610,
+        "endChar": 13
+      },
+      "revId": "d784037d4f9b6ce087251528047d448052b53209",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
