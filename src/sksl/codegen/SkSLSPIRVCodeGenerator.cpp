@@ -424,6 +424,31 @@ static bool is_globally_reachable_op(SpvOp_ op) {
     }
 }
 
+// TODO(skia:40045541): SkSL currently uses std140 as the layout for uniform buffers as
+// it doesn't have a standard way to define fixed-sized array types with identical type
+// signatures but different strides. For example, a std430 layout SSBO field of type
+// `float[2]` is incompatible with a function parameter of the same type (which currently
+// gets treated as std140) but the compiler will allow passing the former as an argument
+// of the latter.
+//
+// std140 can be too wasteful when used with unsized arrays which usually serve as a
+// view over a large SSBO. Here we make an exception specifically for unsized arrays
+// while keeping the rest of the buffer layout as std140. We assume this is safe because
+//
+//    1. Unsized arrays are only allowed in SSBOs, where std430 is always allowed.
+//    2. Unsized arrays cannot be a function argument, thus clashing with a function
+//       parameter type should never be an issue.
+//    3. They are only allowed as the last field in an SSBO and do not impact the
+//       alignment of the preceding fields in the surrounding block.
+//
+//
+// However, we make an exception if the unsized array's element type contains a fixed
+// sized array and use std140 in that case.
+static bool allows_std430_layout(const Program& program, const Type& type) {
+    return ProgramConfig::IsCompute(program.fConfig->fKind) && type.isUnsizedArray() &&
+           !type.componentType().isOrContainsArray();
+}
+
 void SPIRVCodeGenerator::writeOpCode(SpvOp_ opCode, int length, OutputStream& out) {
     SkASSERT(opCode != SpvOpLoad || &out != &fConstantBuffer);
     SkASSERT(opCode != SpvOpUndef);
@@ -999,8 +1024,34 @@ SpvId SPIRVCodeGenerator::writeStruct(const Type& type, const MemoryLayout& memo
                                                     "' is not permitted here");
             return resultId;
         }
-        size_t size = memoryLayout.size(*field.fType);
-        size_t alignment = memoryLayout.alignment(*field.fType);
+        // TODO(skia:40045541): SkSL currently uses std140 as the layout for uniform buffers as
+        // it doesn't have a standard way to define fixed-sized array types with identical type
+        // signatures but different strides. For example, a std430 layout SSBO field of type
+        // `float[2]` is incompatible with a function parameter of the same type (which currently
+        // gets treated as std140) but the compiler will allow passing the former as an argument
+        // of the latter.
+        //
+        // std140 can be too wasteful when used with unsized arrays which usually serve as a
+        // view over a large SSBO. Here we make an exception specifically for unsized arrays
+        // while keeping the rest of the buffer layout as std140. We assume this is safe because
+        //
+        //    1. Unsized arrays are only allowed in SSBOs, where std430 is always allowed.
+        //    2. Unsized arrays cannot be a function argument, thus clashing with a function
+        //       parameter type should never be an issue.
+        //    3. They are only allowed as the last field in an SSBO and do not impact the
+        //       alignment of the preceding fields in the surrounding block.
+        //
+        // However, we make an exception if the unsized array's element type contains a fixed
+        // sized array and use std140 in that case.
+        size_t size, alignment;
+        if (allows_std430_layout(fProgram, *field.fType)) {
+            MemoryLayout ssboLayout(MemoryLayout::Standard::k430);
+            size = ssboLayout.size(*field.fType);
+            alignment = ssboLayout.alignment(*field.fType);
+        } else {
+            size = memoryLayout.size(*field.fType);
+            alignment = memoryLayout.alignment(*field.fType);
+        }
         const Layout& fieldLayout = field.fLayout;
         if (fieldLayout.fOffset >= 0) {
             if (fieldLayout.fOffset < (int) offset) {
@@ -1102,8 +1153,30 @@ SpvId SPIRVCodeGenerator::getType(const Type& rawType, const MemoryLayout& layou
                                                          "' is not permitted here");
                 return NA;
             }
-            size_t stride = layout.stride(*type);
-            SpvId typeId = this->getType(type->componentType(), layout);
+            // TODO(skia:40045541): SkSL currently uses std140 as the layout for uniform buffers as
+            // it doesn't have a standard way to define fixed-sized array types with identical type
+            // signatures but different strides. For example, a std430 layout SSBO field of type
+            // `float[2]` is incompatible with a function parameter of the same type (which
+            // currently gets treated as std140) but the compiler will allow passing the former as
+            // an argument of the latter.
+            //
+            // std140 can be too wasteful when used with unsized arrays which usually serve as a
+            // view over a large SSBO. Here we make an exception specifically for unsized arrays
+            // while keeping the rest of the buffer layout as std140. We assume this is safe because
+            //
+            //    1. Unsized arrays are only allowed in SSBOs, where std430 is always allowed.
+            //    2. Unsized arrays cannot be a function argument, thus clashing with a function
+            //       parameter type should never be an issue.
+            //    3. They are only allowed as the last field in an SSBO and do not impact the
+            //       alignment of the preceding fields in the surrounding block.
+            //
+            // However, we make an exception if the unsized array's element type contains a fixed
+            // sized array and use std140 in that case.
+            MemoryLayout arrayLayout = allows_std430_layout(fProgram, *type)
+                                               ? MemoryLayout(MemoryLayout::Standard::k430)
+                                               : layout;
+            size_t stride = arrayLayout.stride(*type);
+            SpvId typeId = this->getType(type->componentType(), arrayLayout);
             SpvId result = NA;
             if (type->isUnsizedArray()) {
                 result = this->writeInstruction(SpvOpTypeRuntimeArray,
