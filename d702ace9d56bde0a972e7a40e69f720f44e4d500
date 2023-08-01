@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "234beda9_70c60f2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-01T21:00:18Z",
+      "side": 1,
+      "message": "I thought of this as a compromise in the current situation that forces the use of std140 layout with SSBOs. This allows the existing compute steps (tests and April\u0027s filters) to be written without explicit offsets and padding and keeps the buffer layout quite efficient in the general case (where fixed sized arrays aren\u0027t really involved). The SPIR-V output passes validation and the compute tests pass on the Dawn backend (using WIP code that I haven\u0027t submitted yet).\n\nI\u0027m inclined to only permit this only in compute programs where the SSBOs are often private and not host-visible, and even the host-visible ones get populated using ad-hoc mechanisms that don\u0027t have to use Graphite\u0027s `PipelineDataGatherer` and friends.\n\nI wouldn\u0027t want to expand this to other program kinds since the Graphite-side buffer encoding code isn\u0027t aware of this scheme and its current layout handling won\u0027t be compatible, especially due to layout difference this introduces between RenderStep/Paint uniforms that contain a fixed-sized array and those that do not (unless we discourage their use outright).",
+      "revId": "d702ace9d56bde0a972e7a40e69f720f44e4d500",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
