@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26a3a09c_eac7f31b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-01T19:38:42Z",
+      "side": 1,
+      "message": "SkBlurImageFilter might use this API, or it might always explicitly resolve the images so that it can pass them off to the BlurEngine.\n\nThe serialize-8888 failure is benign but I have to figure out if I can tweak a format or if I just suppress the test.",
+      "revId": "4f3f349051e8f2365056942e5fa91b4a4657dd5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72944653_9aba321e",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-01T19:38:42Z",
+      "side": 1,
+      "message": "Like the original morphology filter, the original lighting just assumed there was nothing mismatched about colorspaces, but the new filter also wasn\u0027t forcing the input image to resolve (which morphology had been doing). Since this does a 3x3 sobel filter, it ought to have the sampled-repeatedly flag if there\u0027s a CS or deferred CF as well.",
+      "range": {
+        "startLine": 653,
+        "startChar": 70,
+        "endLine": 653,
+        "endChar": 88
+      },
+      "revId": "4f3f349051e8f2365056942e5fa91b4a4657dd5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9df72894_9e4e2085",
+        "filename": "src/effects/imagefilters/SkMatrixConvolutionImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-01T19:38:42Z",
+      "side": 1,
+      "message": "In the original filter implementation, there was an explicit call to `ImageToColorSpace` that was lost in the first refactor, in which case we\u0027d re-evaluate CFs or colorspaces. Adding kSampledRepeatedly brings it back to the original behavior on avoiding that logic but allows matrix transforms through w/o a temporary image still.",
+      "range": {
+        "startLine": 1117,
+        "startChar": 29,
+        "endLine": 1117,
+        "endChar": 47
+      },
+      "revId": "4f3f349051e8f2365056942e5fa91b4a4657dd5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3e3d657_8ca439b7",
+        "filename": "src/effects/imagefilters/SkMorphologyImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-01T19:38:42Z",
+      "side": 1,
+      "message": "In the original filter, we didn\u0027t do anything special and just assumed there was a colorspace match (and CFs weren\u0027t a thing). kForceResolveInputs was an aggressive way to do that, kSampledRepeatedly now should allow for transformed-only inputs to avoid an intermediate image.\n\nOn all the multi-passes for really big kernels, the \"input\" is the output of the prior stage and won\u0027t have a CF, or colorspace mismatch so won\u0027t trigger anything extra.",
+      "range": {
+        "startLine": 231,
+        "startChar": 60,
+        "endLine": 231,
+        "endChar": 78
+      },
+      "revId": "4f3f349051e8f2365056942e5fa91b4a4657dd5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
