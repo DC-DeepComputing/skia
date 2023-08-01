@@ -892,7 +892,12 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             auto sampler = static_cast<const VulkanSampler*>(
                     drawPass.getSampler(command.fSamplerIndices[i]));
             if (!texture || !sampler) {
-                SKGPU_LOG_E("Texture and sampler must not be null");
+                if (!texture) {
+                    SKGPU_LOG_W("Texture must not be null");
+                }
+                if (!sampler) {
+                    SKGPU_LOG_W("Sampler must not be null");
+                }
                 fNumTextureSamplers = 0;
                 fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
                 fBindTextureSamplers = false;
