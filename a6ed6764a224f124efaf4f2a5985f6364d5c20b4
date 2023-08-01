@@ -39,6 +39,30 @@
       },
       "revId": "a6ed6764a224f124efaf4f2a5985f6364d5c20b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71c26d11_86c5ccc2",
+        "filename": "third_party/vello/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2023-08-01T15:29:13Z",
+      "side": 1,
+      "message": "I guess Bazel would ensure that there\u0027s no conflicting two libffi_gen.a during the Bazel build process, but the GN action to compile and copy that file over to the root_out_dir probably does not ensure that. But the ffi_gen target in Bazel could be renamed to something more specific, like vello_ffi_gen.",
+      "parentUuid": "5b54c096_23ae4e37",
+      "range": {
+        "startLine": 41,
+        "startChar": 31,
+        "endLine": 41,
+        "endChar": 41
+      },
+      "revId": "a6ed6764a224f124efaf4f2a5985f6364d5c20b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
