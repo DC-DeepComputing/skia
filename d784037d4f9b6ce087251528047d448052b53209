@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85406b32_8e5a225c",
+        "filename": "tools/viewer/experimental/ComputeImageFiltersSlide.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-01T20:45:42Z",
+      "side": 1,
+      "message": "(Here and below)\n\nDoes `srcDim` contain the exact dimensions? We probably want to clamp to `srcDim - 1` on each axis, since if it\u0027s a 128x128 texture, we should only be reading from [0, 127] (the 128th element is off the edge).",
+      "range": {
+        "startLine": 165,
+        "startChar": 47,
+        "endLine": 165,
+        "endChar": 60
+      },
+      "revId": "d784037d4f9b6ce087251528047d448052b53209",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
