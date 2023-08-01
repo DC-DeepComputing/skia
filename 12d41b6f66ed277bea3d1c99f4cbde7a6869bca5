@@ -22,6 +22,30 @@
       },
       "revId": "12d41b6f66ed277bea3d1c99f4cbde7a6869bca5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70936b8b_2d976da1",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1052,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-01T14:59:17Z",
+      "side": 1,
+      "message": "Fix in http://review.skia.org/733301",
+      "parentUuid": "5f3f59ba_7fd42acf",
+      "range": {
+        "startLine": 1052,
+        "startChar": 52,
+        "endLine": 1052,
+        "endChar": 55
+      },
+      "revId": "12d41b6f66ed277bea3d1c99f4cbde7a6869bca5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
