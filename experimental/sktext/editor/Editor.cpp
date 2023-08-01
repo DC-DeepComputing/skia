@@ -106,7 +106,7 @@ bool Editor::moveCursor(skui::Key key) {
     return true;
 }
 
-void Editor::onPaint(SkSurface* surface) {
+void Editor::onPaint1(SkSurface* surface) {
     SkCanvas* canvas = surface->getCanvas();
     SkAutoCanvasRestore acr(canvas, true);
     canvas->clipRect({0, 0, (float)fWidth, (float)fHeight});

@@ -236,7 +236,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrPipelineDynamicStateTest,
                                                        SkBackingFit::kExact,
                                                        {kScreenSize, kScreenSize},
                                                        SkSurfaceProps(),
-                                                       /*label=*/{});
+                                                       /*label=*/{},
+                                                       1,
+                                                       skgpu::Mipmapped::kNo,
+                                                       skgpu::Protected::kNo);
     if (!sdc) {
         ERRORF(reporter, "could not create render target context.");
         return;

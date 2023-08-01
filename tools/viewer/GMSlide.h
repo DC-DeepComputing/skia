@@ -26,7 +26,7 @@ public:
     SkISize getDimensions() const override { return fGM->getISize(); }
 
     void gpuTeardown() override;
-    void draw(SkCanvas* canvas) override;
+    void draw1(SkCanvas* canvas) override;
     bool animate(double nanos) override;
 
     bool onChar(SkUnichar c) override;

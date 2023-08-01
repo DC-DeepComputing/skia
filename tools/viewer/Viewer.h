@@ -49,7 +49,7 @@ public:
     void onIdle() override;
 
     void onBackendCreated() override;
-    void onPaint(SkSurface*) override;
+    void onPaint1(SkSurface*) override;
     void onResize(int width, int height) override;
     bool onTouch(intptr_t owner, skui::InputState state, float x, float y) override;
     bool onMouse(int x, int y, skui::InputState state, skui::ModifierKey modifiers) override;
@@ -171,7 +171,7 @@ private:
 
     void updateUIState();
 
-    void drawSlide(SkSurface* surface);
+    void drawSlide1(SkSurface* surface);
     void drawImGui();
 
     void changeZoomLevel(float delta);

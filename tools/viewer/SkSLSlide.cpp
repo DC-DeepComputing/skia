@@ -140,7 +140,7 @@ bool SkSLSlide::rebuild() {
     return true;
 }
 
-void SkSLSlide::draw(SkCanvas* canvas) {
+void SkSLSlide::draw1(SkCanvas* canvas) {
     canvas->clear(SK_ColorWHITE);
 
     ImGui::Begin("SkSL", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar);

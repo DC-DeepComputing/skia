@@ -186,7 +186,7 @@ static DEFINE_bool(list, false, "List samples?");
 #define BACKENDS_STR BACKENDS_STR_EVALUATOR( \
     "\"sw\"", GL_BACKEND_STR, VK_BACKEND_STR, MTL_BACKEND_STR, D3D_BACKEND_STR, DAWN_BACKEND_STR)
 
-static DEFINE_string2(backend, b, "sw", "Backend to use. Allowed values are " BACKENDS_STR ".");
+static DEFINE_string2(backend, b, "vk", "Backend to use. Allowed values are " BACKENDS_STR ".");
 
 static DEFINE_int(msaa, 1, "Number of subpixel samples. 0 for no HW antialiasing.");
 static DEFINE_bool(dmsaa, false, "Use internal MSAA to render to non-MSAA surfaces?");
@@ -195,7 +195,7 @@ static DEFINE_string(bisect, "", "Path to a .skp or .svg file to bisect.");
 
 static DEFINE_string2(file, f, "", "Open a single file for viewing.");
 
-static DEFINE_string2(match, m, nullptr,
+static DEFINE_string2(match, m, "protected1",
                "[~][^]substring[$] [...] of name to run.\n"
                "Multiple matches may be separated by spaces.\n"
                "~ causes a matching name to always be skipped\n"
@@ -366,7 +366,7 @@ static Window::BackendType backend_type_for_window(Window::BackendType backendTy
 }
 
 class NullSlide : public Slide {
-    void draw(SkCanvas* canvas) override {
+    void draw1(SkCanvas* canvas) override {
         canvas->clear(0xffff11ff);
     }
 };
@@ -1592,10 +1592,12 @@ public:
     Viewer::SkFontFields* fFontOverrides;
 };
 
-void Viewer::drawSlide(SkSurface* surface) {
+void Viewer::drawSlide1(SkSurface* surface) {
     if (fCurrentSlide < 0) {
         return;
     }
+
+    SkDebugf("+++++++++++++++++++  Viewer::drawSlide1 %p\n", surface->recordingContext());
 
     SkAutoCanvasRestore autorestore(surface->getCanvas(), false);
 
@@ -1615,7 +1617,7 @@ void Viewer::drawSlide(SkSurface* surface) {
     if (fSaveToSKP) {
         SkPictureRecorder recorder;
         SkCanvas* recorderCanvas = recorder.beginRecording(SkRect::Make(this->currentSlideSize()));
-        fSlides[fCurrentSlide]->draw(recorderCanvas);
+        fSlides[fCurrentSlide]->draw1(recorderCanvas);
         sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
         SkFILEWStream stream("sample_app.skp");
         picture->serialize(&stream);
@@ -1660,6 +1662,7 @@ void Viewer::drawSlide(SkSurface* surface) {
         colorSpace != nullptr ||
         FLAGS_offscreen) {
 
+        SkDebugf("----------- offScreen\n");
         offscreenSurface = make_surface(fWindow->width(), fWindow->height());
         slideSurface = offscreenSurface.get();
         slideCanvas = offscreenSurface->getCanvas();
@@ -1683,7 +1686,7 @@ void Viewer::drawSlide(SkSurface* surface) {
             for (int x = 0; x < fWindow->width(); x += tileW) {
                 SkAutoCanvasRestore acr(slideCanvas, true);
                 slideCanvas->clipRect(SkRect::MakeXYWH(x, y, tileW, tileH));
-                fSlides[fCurrentSlide]->draw(slideCanvas);
+                fSlides[fCurrentSlide]->draw1(slideCanvas);
             }
         }
 
@@ -1707,9 +1710,9 @@ void Viewer::drawSlide(SkSurface* surface) {
             OveridePaintFilterCanvas filterCanvas(slideCanvas,
                                                   &fPaint, &fPaintOverrides,
                                                   &fFont, &fFontOverrides);
-            fSlides[fCurrentSlide]->draw(&filterCanvas);
+            fSlides[fCurrentSlide]->draw1(&filterCanvas);
         } else {
-            fSlides[fCurrentSlide]->draw(slideCanvas);
+            fSlides[fCurrentSlide]->draw1(slideCanvas);
         }
     }
     fStatsLayer.endTiming(fPaintTimer);
@@ -1761,8 +1764,10 @@ void Viewer::onBackendCreated() {
     fWindow->show();
 }
 
-void Viewer::onPaint(SkSurface* surface) {
-    this->drawSlide(surface);
+void Viewer::onPaint1(SkSurface* surface) {
+
+    SkDebugf("------------ onPaint1\n");
+    this->drawSlide1(surface);
 
     fCommands.drawHelp(surface->getCanvas());
 

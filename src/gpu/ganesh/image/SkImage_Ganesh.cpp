@@ -300,8 +300,12 @@ sk_sp<SkImage> SkImage_Ganesh::onMakeColorTypeAndColorSpace(SkColorType targetCT
         return nullptr;
     }
 
+    SkDebugf("------- SkImage_Ganesh::onMakeColorTypeAndColorSpace\n");
     auto sfc = dContext->priv().makeSFCWithFallback(GrImageInfo(info, this->dimensions()),
-                                                    SkBackingFit::kExact);
+                                                    SkBackingFit::kExact,
+                                                    1,
+                                                    skgpu::Mipmapped::kNo,
+                                                    skgpu::Protected::kNo);
     if (!sfc) {
         return nullptr;
     }
@@ -391,6 +395,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Ganesh::asView(
         GrMipmapped mipmapped,
         GrImageTexGenPolicy policy) const {
     if (!fContext->priv().matches(recordingContext)) {
+        SkDebugf("$$$$$$$$$$$$$$$$$$$$$$$ SkImage_Ganesh::asView mismatch\n");
         return {};
     }
     if (policy != GrImageTexGenPolicy::kDraw) {

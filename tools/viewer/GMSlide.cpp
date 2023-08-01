@@ -31,7 +31,7 @@ void GMSlide::gpuTeardown() {
     fGM->gpuTeardown();
 }
 
-void GMSlide::draw(SkCanvas* canvas) {
+void GMSlide::draw1(SkCanvas* canvas) {
     SkString msg;
 
     auto result = fGM->gpuSetup(canvas, &msg);
@@ -53,4 +53,3 @@ bool GMSlide::onGetControls(SkMetaData* controls) {
 void GMSlide::onSetControls(const SkMetaData& controls) {
     fGM->setControls(controls);
 }
-

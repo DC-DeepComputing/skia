@@ -344,7 +344,10 @@ bool GrDrawingManager::ProgramUnitTest(GrDirectContext* direct, int maxStages, i
                                                        SkBackingFit::kExact,
                                                        {kRenderTargetWidth, kRenderTargetHeight},
                                                        SkSurfaceProps(),
-                                                       /*label=*/{});
+                                                       /*label=*/{},
+                                                       1,
+                                                       skgpu::Mipmapped::kNo,
+                                                       skgpu::Protected::kNo);
     if (!sdc) {
         SkDebugf("Could not allocate a surfaceDrawContext");
         return false;

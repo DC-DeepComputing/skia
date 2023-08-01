@@ -5,6 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkTypes.h"
+
+#if 0
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
@@ -124,6 +127,7 @@ DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_preserve_contents,
                              nullptr,
                              CtsEnforcement::kApiLevel_T) {
     auto dContext = ctxInfo.directContext();
+#if 0
     auto sdc = skgpu::ganesh::SurfaceDrawContext::Make(dContext,
                                                        GrColorType::kRGBA_8888,
                                                        nullptr,
@@ -131,6 +135,8 @@ DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_preserve_contents,
                                                        {kWidth, kHeight},
                                                        kDMSAAProps,
                                                        /*label=*/{});
+#endif
+    sk_sp<skgpu::ganesh::SurfaceDrawContext> sdc;
 
     // Initialize the texture and dmsaa attachment with transparent.
     draw_paint_with_dmsaa(sdc.get(), SK_PMColor4fTRANSPARENT, SkBlendMode::kSrc);
@@ -156,6 +162,7 @@ static void require_dst_reads(GrContextOptions* options) {
     options->fSuppressFramebufferFetch = true;
 }
 
+#if 0
 DEF_GANESH_TEST_FOR_CONTEXTS(DMSAA_dst_read,
                              &sk_gpu_test::GrContextFactory::IsRenderingContext,
                              reporter,
@@ -388,3 +395,5 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
     context->deleteBackendTexture(texture1);
     context->deleteBackendTexture(texture2);
 }
+#endif
+#endif

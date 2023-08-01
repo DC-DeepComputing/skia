@@ -78,7 +78,7 @@ void StatsLayer::onPrePaint() {
     fLastTotalBegin = SkTime::GetMSecs();
 }
 
-void StatsLayer::onPaint(SkSurface* surface) {
+void StatsLayer::onPaint1(SkSurface* surface) {
     int nextMeasurement = (fCurrentMeasurement + 1) & (kMeasurementCount - 1);
     for (int i = 0; i < fTimers.size(); ++i) {
         fTimers[i].fTimes[nextMeasurement] = 0;

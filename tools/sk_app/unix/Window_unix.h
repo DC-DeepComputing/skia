@@ -60,7 +60,7 @@ public:
     void markPendingPaint() { fPendingPaint = true; }
     void finishPaint() {
         if (fPendingPaint) {
-            this->onPaint();
+            this->onPaint1();
             fPendingPaint = false;
         }
     }
