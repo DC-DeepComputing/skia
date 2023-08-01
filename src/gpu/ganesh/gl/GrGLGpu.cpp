@@ -3750,16 +3750,10 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
                           invWidth, (width - 1) * invWidth, invHeight, (height - 1) * invHeight));
         GL_CALL(Uniform1i(fMipmapPrograms[progIdx].fTextureUniform, 0));
 
-        // Set the base level so that we only sample from the previous mip.
+        // Set the LOD so that we only sample from the previous mip.
         SkASSERT(this->glCaps().mipmapLevelControlSupport());
-        GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_BASE_LEVEL, level - 1));
-        // Setting the max level is technically unnecessary and can affect
-        // validation for the framebuffer. However, by making it clear that a
-        // rendering feedback loop is not occurring, we avoid hitting a slow
-        // path on some drivers.
-        if (this->glCaps().setMaxLevelForRegenerateMipMapLevels()) {
-            GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MAX_LEVEL, level - 1));
-        }
+        GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MIN_LOD, level-1));
+        GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MAX_LOD, level-1));
 
         GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER, GR_GL_COLOR_ATTACHMENT0, GR_GL_TEXTURE_2D,
                                      glTex->textureID(), level));
@@ -3775,12 +3769,15 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
     GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER, GR_GL_COLOR_ATTACHMENT0,
                                  GR_GL_TEXTURE_2D, 0, 0));
 
-    // We modified the base level and max level params.
+    // We modified lod levels
     GrGLTextureParameters::NonsamplerState nonsamplerState = glTex->parameters()->nonsamplerState();
-    // We drew the 2nd to last level into the last level.
-    nonsamplerState.fBaseMipMapLevel = levelCount - 2;
-    nonsamplerState.fMaxMipmapLevel = levelCount - 2;
-    glTex->parameters()->set(nullptr, nonsamplerState, fResetTimestampForTextureParameters);
+    GrGLTextureParameters::SamplerOverriddenState samplerState =
+            glTex->parameters()->samplerOverriddenState();
+    samplerState.fMinLOD = levelCount - 2;
+    samplerState.fMaxLOD = levelCount - 2;
+    glTex->parameters()->set(&samplerState,
+                             nonsamplerState,
+                             fResetTimestampForTextureParameters);
 
     return true;
 }
