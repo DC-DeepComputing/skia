@@ -3730,6 +3730,7 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
     width = texture->width();
     height = texture->height();
 
+    std::unique_ptr<GrSemaphore> semaphore;
     for (GrGLint level = 1; level < levelCount; ++level) {
         // Get and bind the program for this particular downsample (filter shape can vary):
         int progIdx = TextureSizeToMipmapProgramIdx(width, height);
@@ -3743,12 +3744,22 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
         }
         this->flushProgram(fMipmapPrograms[progIdx].fProgram);
 
+        if (level > 1) {
+            this->waitSemaphore(semaphore.get());
+            semaphore.reset();
+        }
+
         // Texcoord uniform is expected to contain (1/w, (w-1)/w, 1/h, (h-1)/h)
         const float invWidth = 1.0f / width;
         const float invHeight = 1.0f / height;
         GL_CALL(Uniform4f(fMipmapPrograms[progIdx].fTexCoordXformUniform,
                           invWidth, (width - 1) * invWidth, invHeight, (height - 1) * invHeight));
         GL_CALL(Uniform1i(fMipmapPrograms[progIdx].fTextureUniform, 0));
+
+//        // Set the LOD so that we only sample from the previous mip.
+//        SkASSERT(this->glCaps().mipmapLevelControlSupport());
+//        GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MIN_LOD, level-1));
+//        GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MAX_LOD, level-1));
 
         // Set the base level so that we only sample from the previous mip.
         SkASSERT(this->glCaps().mipmapLevelControlSupport());
@@ -3757,9 +3768,10 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
         // validation for the framebuffer. However, by making it clear that a
         // rendering feedback loop is not occurring, we avoid hitting a slow
         // path on some drivers.
-        if (this->glCaps().setMaxLevelForRegenerateMipMapLevels()) {
-            GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MAX_LEVEL, level - 1));
-        }
+//        if (this->glCaps().setMaxLevelForRegenerateMipMapLevels()) {
+//            GL_CALL(TexParameteri(GR_GL_TEXTURE_2D, GR_GL_TEXTURE_MAX_LEVEL, level - 1));
+//        }
+
 
         GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER, GR_GL_COLOR_ATTACHMENT0, GR_GL_TEXTURE_2D,
                                      glTex->textureID(), level));
@@ -3769,17 +3781,32 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
         this->flushViewport(SkIRect::MakeWH(width, height), height, kTopLeft_GrSurfaceOrigin);
 
         GL_CALL(DrawArrays(GR_GL_TRIANGLE_STRIP, 0, 4));
+
+        if (level < levelCount-1) {
+            semaphore = this->makeSemaphore(true);
+            this->insertSemaphore(semaphore.get());
+        }
     }
 
     // Unbind:
     GL_CALL(FramebufferTexture2D(GR_GL_FRAMEBUFFER, GR_GL_COLOR_ATTACHMENT0,
                                  GR_GL_TEXTURE_2D, 0, 0));
 
+//    // We modified lod levels
+//    GrGLTextureParameters::NonsamplerState nonsamplerState = glTex->parameters()->nonsamplerState();
+//    GrGLTextureParameters::SamplerOverriddenState samplerState =
+//            glTex->parameters()->samplerOverriddenState();
+//    samplerState.fMinLOD = levelCount - 2;
+//    samplerState.fMaxLOD = levelCount - 2;
+//    glTex->parameters()->set(&samplerState,
+//                             nonsamplerState,
+//                             fResetTimestampForTextureParameters);
+
     // We modified the base level and max level params.
     GrGLTextureParameters::NonsamplerState nonsamplerState = glTex->parameters()->nonsamplerState();
     // We drew the 2nd to last level into the last level.
     nonsamplerState.fBaseMipMapLevel = levelCount - 2;
-    nonsamplerState.fMaxMipmapLevel = levelCount - 2;
+//    nonsamplerState.fMaxMipmapLevel = levelCount - 2;
     glTex->parameters()->set(nullptr, nonsamplerState, fResetTimestampForTextureParameters);
 
     return true;
