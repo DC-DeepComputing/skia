@@ -142,6 +142,30 @@
       },
       "revId": "2028536bb8ae838e5c34b29450d7df70249d9606",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "403b2c22_cdb3e0e7",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-02T19:23:04Z",
+      "side": 1,
+      "message": "In Caps::getSDFTControl, to be precise. Not here, obviously.",
+      "parentUuid": "ecb36b1f_d6676b45",
+      "range": {
+        "startLine": 524,
+        "startChar": 4,
+        "endLine": 524,
+        "endChar": 53
+      },
+      "revId": "2028536bb8ae838e5c34b29450d7df70249d9606",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
