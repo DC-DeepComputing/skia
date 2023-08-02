@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9d44cd6_fe4b2f18",
+        "filename": "src/opts/SkUtils_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T13:36:38Z",
+      "side": 0,
+      "message": "Shadows SK_OPTS_NS::N from SkRasterPipeline_opts:\n```\n  // Our fundamental vector depth is our pixel stride.\n  static constexpr size_t N \u003d sizeof(F) / sizeof(float);\n```",
+      "range": {
+        "startLine": 19,
+        "startChar": 29,
+        "endLine": 19,
+        "endChar": 30
+      },
+      "revId": "1c0bba7c105358a52bcd03997fc8a75240ce4702",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
