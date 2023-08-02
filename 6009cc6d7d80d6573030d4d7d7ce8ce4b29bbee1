@@ -16,6 +16,24 @@
       "message": "I think we need to do something about this assert. Ideally I think we would want to assert this on the new TextureInfo created below. However, that will have the same format as the source TextureInfo, which apparently we are designating as untextureable.\n\nCan we confirm that the format used in the problem case is listed here: https://crsrc.org/c/third_party/skia/src/gpu/graphite/dawn/DawnCaps.cpp;l\u003d278 and should it be defined with kTexturable_Flag?",
       "revId": "6009cc6d7d80d6573030d4d7d7ce8ce4b29bbee1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "455e3fe1_582ba755",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2023-08-02T16:55:26Z",
+      "side": 0,
+      "message": "So in the specific bug we\u0027ve been looking at, I don\u0027t think it really is an issue with the format being untextureable. Just the texture was made to non-sampleable. So yeah I think an Assert saying the new info\u0027s format is textureable could be fine here.\n\nNow in general, we will want to be checking things like textureablity higher up. Like once we figure out that we\u0027ll need to do programable blending, we need to decide how we\u0027ll get the dst color in the shader. That decision process is where we should be checking if we\u0027re able to do various approaches (e.g. checking if the format is textureable). One possible way (don\u0027t know if its the best way) to do this, would be to have a call like Caps::getDstReadStrategy(). This can return how a backend wants to do a dstRead, optionally return a new TextureInfo for a copy, etc.",
+      "parentUuid": "bc199b8b_12222a4d",
+      "revId": "6009cc6d7d80d6573030d4d7d7ce8ce4b29bbee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
