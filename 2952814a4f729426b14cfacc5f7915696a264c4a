@@ -259,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d75be9c7_ab106527",
+        "filename": "src/sksl/ir/SkSLModifiersDeclaration.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T18:20:42Z",
+      "side": 1,
+      "message": "LGTM",
+      "parentUuid": "b4265c54_1ac73a99",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 39
+      },
+      "revId": "2952814a4f729426b14cfacc5f7915696a264c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51f891ec_37657b1a",
