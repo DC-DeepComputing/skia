@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24b39681_eb7ead6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2023-08-02T18:02:18Z",
+      "side": 1,
+      "message": "PTAL - this change should fix the assertion crash regarding the size of the VkImageUsageFlags within viewer when toggling through the first couple of slides. Please LMK if you see an issue w/ simply allowing the image flags to take up the remaining space of the uint32 in the texture key.",
+      "revId": "65824755183e76c82023f22219363601a744304f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
