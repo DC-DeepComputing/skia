@@ -402,6 +402,7 @@ static bool setup_features(skgpu::VulkanGetProc getProc, VkInstance inst, VkPhys
     // If |isProtected| is given, attach that first
     VkPhysicalDeviceProtectedMemoryFeatures* protectedMemoryFeatures = nullptr;
     if (isProtected) {
+        SkDebugf("----------- setup_features %d\n", isProtected);
         SkASSERT(physDeviceVersion >= VK_MAKE_VERSION(1, 1, 0));
         protectedMemoryFeatures =
           (VkPhysicalDeviceProtectedMemoryFeatures*)sk_malloc_throw(
@@ -411,6 +412,8 @@ static bool setup_features(skgpu::VulkanGetProc getProc, VkInstance inst, VkPhys
         protectedMemoryFeatures->pNext = nullptr;
         *tailPNext = protectedMemoryFeatures;
         tailPNext = &protectedMemoryFeatures->pNext;
+    } else {
+        SkDebugf("$$$$$$$$$$ setup_features %d\n", isProtected);
     }
 
     VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT* blend = nullptr;
@@ -471,6 +474,7 @@ static bool setup_features(skgpu::VulkanGetProc getProc, VkInstance inst, VkPhys
 
     if (isProtected) {
         if (!protectedMemoryFeatures->protectedMemory) {
+            SkDebugf("------- Oh no!\n");
             return false;
         }
     }
@@ -507,6 +511,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ctx->fDeviceFeatures2 = skgpuCtx.fDeviceFeatures2;
     ctx->fGetProc = skgpuCtx.fGetProc;
     ctx->fOwnsInstanceAndDevice = false;
+    SkDebugf("------------ CreateVkBackendContext %d\n", isProtected);
     ctx->fProtectedContext =
             skgpuCtx.fProtectedContext == skgpu::Protected::kYes ? skgpu::Protected::kYes
                                                                  : skgpu::Protected::kNo;
@@ -536,7 +541,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     }
     SkASSERT(instanceVersion >= VK_MAKE_VERSION(1, 0, 0));
     if (isProtected && instanceVersion < VK_MAKE_VERSION(1, 1, 0)) {
-        SkDebugf("protected requires vk instance version 1.1\n");
+        SkDebugf("----------------- protected requires vk instance version 1.1\n");
         return false;
     }
 
@@ -801,6 +806,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         extensions->hasExtension(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME, 1)) {
         if (!setup_features(getProc, inst, physDev, physDeviceVersion, extensions, features,
                             isProtected)) {
+            SkDebugf("------------- whoops\n");
             destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
             return false;
         }
@@ -893,6 +899,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     ctx->fDeviceFeatures2 = features;
     ctx->fGetProc = getProc;
     ctx->fProtectedContext = isProtected ? skgpu::Protected::kYes : skgpu::Protected::kNo;
+    SkDebugf("----------------- CreateVkBackendContext %d\n", isProtected);
 
     return true;
 }

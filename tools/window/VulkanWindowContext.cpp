@@ -18,6 +18,7 @@
 #include "src/gpu/ganesh/vk/GrVkImage.h"
 #include "src/gpu/ganesh/vk/GrVkUtil.h"
 #include "src/gpu/vk/VulkanInterface.h"
+#include "tools/gpu/ProtectedUtils.h"
 
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 // windows wants to define this as CreateSemaphoreA or CreateSemaphoreW
@@ -45,10 +46,12 @@ VulkanWindowContext::VulkanWindowContext(const DisplayParams& params,
     , fSurfaces(nullptr)
     , fBackbuffers(nullptr) {
     fGetInstanceProcAddr = instProc;
-    this->initializeContext();
+    SkDebugf("------------- VulkanWindowContext ctor\n");
+    this->initializeContext1();
 }
 
-void VulkanWindowContext::initializeContext() {
+void VulkanWindowContext::initializeContext1() {
+    SkDebugf("------------- initializeContext1\n");
     SkASSERT(!fContext);
     // any config code here (particularly for msaa)?
 
@@ -58,7 +61,9 @@ void VulkanWindowContext::initializeContext() {
     VkPhysicalDeviceFeatures2 features;
     if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc, &backendContext, &extensions,
                                              &features, &fDebugCallback, &fPresentQueueIndex,
-                                             fCanPresentFn)) {
+                                             fCanPresentFn,
+                                             fDisplayParams.fCreateProtectedNativeBackend)) {
+//                                             /* isProtected= */ true)) { //$$
         sk_gpu_test::FreeVulkanFeaturesStructs(&features);
         return;
     }
@@ -329,7 +334,8 @@ bool VulkanWindowContext::createSwapchain(int width, int height,
     return true;
 }
 
-bool VulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFlags usageFlags,
+bool VulkanWindowContext::createBuffers(VkFormat format,
+                                        VkImageUsageFlags usageFlags,
                                         SkColorType colorType,
                                         VkSharingMode sharingMode) {
     fGetSwapchainImagesKHR(fDevice, fSwapchain, &fImageCount, nullptr);
@@ -352,6 +358,9 @@ bool VulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFlags usage
         info.fImageUsageFlags = usageFlags;
         info.fLevelCount = 1;
         info.fCurrentQueueFamily = fPresentQueueIndex;
+        info.fProtected = ProtectedUtils::ContextSupportsProtected(fContext.get())
+                                                                     ? skgpu::Protected::kYes
+                                                                     : skgpu::Protected::kNo;
         info.fSharingMode = sharingMode;
 
         if (usageFlags & VK_IMAGE_USAGE_SAMPLED_BIT) {
@@ -447,7 +456,7 @@ void VulkanWindowContext::destroyContext() {
         }
     }
 
-    SkASSERT(fContext->unique());
+//    SkASSERT(fContext->unique());
     fContext.reset();
     fInterface.reset();
 
