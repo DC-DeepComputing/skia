@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7db96c7_34b8243f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2023-08-02T15:40:40Z",
+      "side": 1,
+      "message": "Skipping the serialize-8888 test that is imperceptibly different. Will revisit once raster supports all color types.",
+      "revId": "9324803740c22f273cf3c60886ab25f315f89fb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
