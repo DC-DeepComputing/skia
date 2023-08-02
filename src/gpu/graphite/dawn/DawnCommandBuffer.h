@@ -56,6 +56,7 @@ private:
     bool loadMSAAFromResolveAndBeginRenderPassEncoder(
             const RenderPassDesc& frontendRenderPassDesc,
             const wgpu::RenderPassDescriptor& wgpuRenderPassDesc,
+            const DawnTexture* resolveTexture,
             const DawnTexture* msaaTexture);
     bool doBlitWithDraw(const RenderPassDesc& frontendRenderPassDesc,
                         const wgpu::TextureView& sourceTextureView,
