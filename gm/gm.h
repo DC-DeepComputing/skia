@@ -200,6 +200,19 @@ namespace skiagm {
         // TODO(lovisolo): Delete once it's no longer needed.
         virtual bool isBazelOnly() const { return false; }
 
+        // Only used by Bazel-only GMs for now. Returns the name of the output directory under
+        // which to save the PNG produced by the GM, e.g. "codec_premul". The empty string means
+        // the PNG will be saved to the default location.
+        //
+        // The reason why we rely on multiple output folders, rather than just generating PNGs with
+        // unique names, is because we want to preserve the ability to generate multiple traces for
+        // the same grouping (name/source_type pair) in Gold. Today, the "name" part of the
+        // grouping coincides with the name of the output image minus the ".png" extension.
+        //
+        // As an alternative, we could treat the "name" field in the output JSON as the source of
+        // truth, and give the PNG/JSON files a unique name. TODO(lovisolo): Decide during review.
+        virtual SkString getOutputFolder() const { return {}; }
+
     protected:
         // onGpuSetup is called once before any other processing with a direct context.
         virtual DrawResult onGpuSetup(SkCanvas*, SkString*) { return DrawResult::kOk; }
@@ -228,7 +241,8 @@ namespace skiagm {
     using GMRegistry = sk_tools::Registry<GMFactory>;
 
     // Registry of functions that dynamically register GMs. Useful for GMs that are unknown at
-    // compile time, such as those that are created from images in a directory.
+    // compile time, such as those that are created from images in a directory (see e.g.
+    // //gm/png_codec.cpp).
     //
     // GMRegistererFns should return an empty string on success, or a human-friendly error in the
     // case of errors.
