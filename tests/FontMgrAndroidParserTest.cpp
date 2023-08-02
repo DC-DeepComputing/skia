@@ -40,6 +40,7 @@
 #include <memory>
 #include <string>
 
+//dsfs
 DECLARE_bool(verboseFontMgr)
 
 int CountFallbacks(SkTDArray<FontFamily*> fontFamilies) {
@@ -112,9 +113,9 @@ static void DumpFiles(const FontFamily& fontFamily) {
 }
 
 static void DumpLoadedFonts(SkTDArray<FontFamily*> fontFamilies, const char* label) {
-    if (!FLAGS_verboseFontMgr) {
-        return;
-    }
+//    if (!FLAGS_verboseFontMgr) {
+//        return;
+//    }
 
     SkDebugf("\n--- Dumping %s\n", label);
     for (int i = 0; i < fontFamilies.size(); ++i) {

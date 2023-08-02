@@ -43,6 +43,7 @@ std::unique_ptr<WindowContext> MakeVulkanForAndroid(ANativeWindow* window,
 
     auto canPresent = [](VkInstance, VkPhysicalDevice, uint32_t) { return true; };
 
+    SkDebugf("------------ MakeVulkanForAndroid\n");
     std::unique_ptr<WindowContext> ctx(
             new internal::VulkanWindowContext(params, createVkSurface, canPresent, instProc));
     if (!ctx->isValid()) {
