@@ -129,7 +129,6 @@ private:
     void percolateUpOrDown(int index) {
         SkASSERT(index >= 0);
         if (!percolateUpIfNecessary(index)) {
-            this->validate(index);
             this->percolateDownIfNecessary(index);
         }
     }
@@ -153,7 +152,6 @@ private:
                 this->setIndex(index);
                 return percolated;
             }
-            this->validate(index);
         } while (true);
     }
 
@@ -193,7 +191,6 @@ private:
                 this->setIndex(index);
                 return;
             }
-            this->validate(index);
         } while (true);
     }
 
