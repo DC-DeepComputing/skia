@@ -158,6 +158,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "311b9cc1_8cee3618",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-08-02T18:33:22Z",
+      "side": 1,
+      "message": "I would use `memcpy(fourFloats, \u0026c4f, 4*sizeof(float));`, similar to `ptrToSkColor4f`, just to stay on the safe side of strict aliasing: https://gist.github.com/shafik/848ae25ee209f698763cffee272a58f8#how-do-we-type-pun-correctly\n\n(good luck parsing all the strict aliasing rule language and figuring how/if it applies to this case :P)",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 315,
+        "endChar": 35
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "03b8cd06_265fedde",
         "filename": "modules/canvaskit/skottie_bindings.cpp",
         "patchSetId": 4
@@ -181,6 +204,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "750aa91c_9b47ea72",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-08-02T18:33:22Z",
+      "side": 1,
+      "message": "Similarly, try to use memcpy here too.  Or better, consolidate along the lines of\n\n    SkColor4f c4f;\n    if (auto c \u003d fSlotMgr-\u003egetColorSlot(SkString(slotID))) {\n        c4f \u003d SkColor4f::FromColor(*c);\n    } else {\n        c4f \u003d {-1, -1, -1, -1};\n    }\n    memcpy(reinterpret_cast\u003cvoid*\u003e(outPtr), \u0026c4f, 4*sizeof(float));",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 31
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a94633d5_f73b692d",
         "filename": "modules/canvaskit/skottie_bindings.cpp",
         "patchSetId": 4
@@ -192,6 +238,30 @@
       "writtenOn": "2023-08-02T15:36:53Z",
       "side": 1,
       "message": "There\u0027s a ptrToSkColor4f function defined in canvaskit_bindings.cpp that could be used here.",
+      "range": {
+        "startLine": 436,
+        "startChar": 19,
+        "endLine": 436,
+        "endChar": 29
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89987e79_21c1d058",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2023-08-02T18:33:22Z",
+      "side": 1,
+      "message": "+1.",
+      "parentUuid": "a94633d5_f73b692d",
       "range": {
         "startLine": 436,
         "startChar": 19,
