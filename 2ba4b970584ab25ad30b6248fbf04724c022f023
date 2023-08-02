@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eed620f3_28482486",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-02T21:33:58Z",
+      "side": 1,
+      "message": "This manual approach to creating mipmaps could serve as a fallback when we don\u0027t have any other options. Going forward we could check caps in CopyMipmaps for alternatives like an API command, rescaling copies, or using compute shaders to generate the mipmaps.",
+      "revId": "2ba4b970584ab25ad30b6248fbf04724c022f023",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8fecc07_8700c4c3",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-02T21:33:58Z",
+      "side": 1,
+      "message": "Is the choice of RescaleGamma critical here?",
+      "revId": "2ba4b970584ab25ad30b6248fbf04724c022f023",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
