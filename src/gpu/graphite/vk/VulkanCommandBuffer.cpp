@@ -894,7 +894,12 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             if (!texture || !sampler) {
                 // TODO(b/294198324): Investigate the root cause for null texture or samplers on
                 // Ubuntu QuadP400 GPU
-                SKGPU_LOG_E("Texture and sampler must not be null");
+                if (!texture) {
+                    SKGPU_LOG_W("Texture must not be null");
+                }
+                if (!sampler) {
+                    SKGPU_LOG_W("Sampler must not be null");
+                }
                 fNumTextureSamplers = 0;
                 fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
                 fBindTextureSamplers = false;
