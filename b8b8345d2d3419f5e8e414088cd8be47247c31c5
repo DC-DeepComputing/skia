@@ -39,6 +39,30 @@
       },
       "revId": "b8b8345d2d3419f5e8e414088cd8be47247c31c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9dc7a2a_dc437efa",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-02T16:10:31Z",
+      "side": 1,
+      "message": "Yea, that\u0027s right. Greg had suggested a new method on Caps to set the correct usage flags for dst copy texture. I have a starting point for a CL like that here: http://review.skia.org/734298",
+      "parentUuid": "84527f3e_a1bdb763",
+      "range": {
+        "startLine": 409,
+        "startChar": 29,
+        "endLine": 409,
+        "endChar": 93
+      },
+      "revId": "b8b8345d2d3419f5e8e414088cd8be47247c31c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
