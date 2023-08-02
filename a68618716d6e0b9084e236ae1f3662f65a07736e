@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58089242_a2156ac1",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-02T23:14:40Z",
+      "side": 1,
+      "message": "See my feedback request in `//gm/gm.h`.",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 0
+      },
+      "revId": "a68618716d6e0b9084e236ae1f3662f65a07736e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
