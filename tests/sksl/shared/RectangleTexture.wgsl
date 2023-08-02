@@ -1,8 +1,10 @@
 ### Compilation failed:
 
-error: :8:22 error: unresolved type 'sampler2D'
-var<private> test2D: sampler2D;
-                     ^^^^^^^^^
+error: :8:27 error: entry point 'fragmentMain' references multiple variables that use the same resource binding @group(0), @binding(0)
+@group(0) @binding(0) var test2Dˢ: sampler;
+
+:9:27 note: first resource binding usage declared here
+@group(0) @binding(0) var test2Dᵗ: texture_2d<f32>;
 
 
 diagnostic(off, derivative_uniformity);
@@ -12,16 +14,16 @@ struct FSIn {
 struct FSOut {
   @location(0) sk_FragColor: vec4<f32>,
 };
-var<private> test2D: sampler2D;
-var<private> test2DRect: sampler2D;
+@group(0) @binding(0) var test2Dˢ: sampler;
+@group(0) @binding(0) var test2Dᵗ: texture_2d<f32>;
+@group(0) @binding(0) var test2DRectˢ: sampler;
+@group(0) @binding(0) var test2DRectᵗ: texture_2d<f32>;
 fn main(_stageOut: ptr<function, FSOut>) {
   {
-    let _skTemp0 = sample(test2D, vec2<f32>(0.5));
-    (*_stageOut).sk_FragColor = _skTemp0;
-    let _skTemp1 = sample(test2DRect, vec2<f32>(0.5));
-    (*_stageOut).sk_FragColor = _skTemp1;
-    let _skTemp2 = sample(test2DRect, vec3<f32>(0.5));
-    (*_stageOut).sk_FragColor = _skTemp2;
+    (*_stageOut).sk_FragColor = textureSample(test2Dᵗ, test2Dˢ, vec2<f32>(0.5));
+    (*_stageOut).sk_FragColor = textureSample(test2DRectᵗ, test2DRectˢ, vec2<f32>(0.5));
+    let _skTemp0 = vec3<f32>(0.5);
+    (*_stageOut).sk_FragColor = textureSample(test2DRectᵗ, test2DRectˢ, _skTemp0.xy / _skTemp0.z);
   }
 }
 @fragment fn fragmentMain(_stageIn: FSIn) -> FSOut {
