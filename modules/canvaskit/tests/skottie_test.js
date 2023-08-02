@@ -72,6 +72,14 @@ describe('Skottie behavior', () => {
         const animation = CanvasKit.MakeManagedAnimation(promises[0]);
         expect(animation).toBeTruthy();
         animation.setColor('$Icon Fill', CanvasKit.RED);
+
+        // json is not configured with slots, we should add a seperate gm that tests if
+        // properties are set correctly
+        animation.setColorSlot('FillsGroup', CanvasKit.RED);
+        animation.setScalarSlot('Opacity', 0);
+        expect(animation.getColorSlot('Bad ID')).toBeFalsy();
+        expect(animation.getScalarSlot('Bad ID')).toBeFalsy();
+
         animation.seek(0.5);
         animation.render(canvas, bounds);
         animation.delete();
