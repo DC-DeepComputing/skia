@@ -210,7 +210,8 @@ private:
     sk_sp<SkImage>         fLastImage;
     bool                   fZoomUI;
 
-    sk_app::Window::BackendType fBackendType;
+    sk_app::Window::BackendType fBackendType1;
+    bool                   fProtected;
 
     // Color properties for slide rendering
     ColorMode              fColorMode;
