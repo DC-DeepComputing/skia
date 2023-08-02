@@ -34,6 +34,24 @@
       "parentUuid": "1c7f029f_363a27ab",
       "revId": "fc96fab9e2de814039eec8a47e117e13a4ec90f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb3d319e_af490a08",
+        "filename": "src/image/SkTiledImageUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2023-08-02T07:39:45Z",
+      "side": 1,
+      "message": "I see, thanks! Rob, would you be able to take this CL over to achieve that? How to best incorporate these into the existing generation of GetImageKeyValues() seems not entirely trivial, and I think that you\u0027re better-suited to accomplish that than I am (coupled with me going OOO for 4 weeks after Friday). Thanks!",
+      "parentUuid": "2efffe4e_59472ebe",
+      "revId": "fc96fab9e2de814039eec8a47e117e13a4ec90f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
