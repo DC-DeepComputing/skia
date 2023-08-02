@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc199b8b_12222a4d",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-02T16:15:17Z",
+      "side": 0,
+      "message": "I think we need to do something about this assert. Ideally I think we would want to assert this on the new TextureInfo created below. However, that will have the same format as the source TextureInfo, which apparently we are designating as untextureable.\n\nCan we confirm that the format used in the problem case is listed here: https://crsrc.org/c/third_party/skia/src/gpu/graphite/dawn/DawnCaps.cpp;l\u003d278 and should it be defined with kTexturable_Flag?",
+      "revId": "6009cc6d7d80d6573030d4d7d7ce8ce4b29bbee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
