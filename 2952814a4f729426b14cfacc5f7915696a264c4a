@@ -16,6 +16,121 @@
       "message": "PTAL. Please let me know if you have any suggestions for reducing the code size impact.",
       "revId": "2952814a4f729426b14cfacc5f7915696a264c4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0b14220_2c94bd01",
+        "filename": "resources/sksl/errors/DuplicateWorkgroupSize.compute",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T15:11:16Z",
+      "side": 1,
+      "message": "I\u0027m sure the error checking code will detect it just fine either way, but I was expecting an error-case scenario like this:\n\n```\nlayout(local_size_x \u003d 16, local_size_y \u003d 16, local_size_z \u003d 1) in;\nlayout(local_size_x \u003d 16, local_size_y \u003d 16, local_size_z \u003d 1) in;\n```",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 28
+      },
+      "revId": "2952814a4f729426b14cfacc5f7915696a264c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "582f57a1_09206be3",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T15:11:16Z",
+      "side": 1,
+      "message": "optional, not for this CL: I see you\u0027re following in the footsteps of `GetSkSLFS`/`VS` but I think the `CS` suffix is ambiguous for a reader. Maybe we should spell these out (`FragmentStep`) instead.",
+      "range": {
+        "startLine": 443,
+        "startChar": 12,
+        "endLine": 443,
+        "endChar": 21
+      },
+      "revId": "2952814a4f729426b14cfacc5f7915696a264c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a32fa717_7765b2ba",
+        "filename": "src/sksl/ir/SkSLModifiersDeclaration.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T15:11:16Z",
+      "side": 1,
+      "message": "Move this check below the program-type check. Runtime effects should only get `layout qualifiers are not allowed in this kind of program`. They shouldn\u0027t get specific layout-related errors.",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 24,
+        "endChar": 19
+      },
+      "revId": "2952814a4f729426b14cfacc5f7915696a264c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66adc9ca_7ec1179c",
+        "filename": "src/sksl/ir/SkSLModifiersDeclaration.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T15:11:16Z",
+      "side": 1,
+      "message": "optional: I think this would read better to me with the program-kind check first",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 39
+      },
+      "revId": "2952814a4f729426b14cfacc5f7915696a264c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51f891ec_37657b1a",
+        "filename": "src/sksl/ir/SkSLModifiersDeclaration.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T15:11:16Z",
+      "side": 1,
+      "message": "tiny nit: I don\u0027t think apostrophes should be around `\u0027local size\u0027` since that\u0027s not the actual keyword; usually apostrophes indicate text directly from the program",
+      "range": {
+        "startLine": 29,
+        "startChar": 17,
+        "endLine": 29,
+        "endChar": 29
+      },
+      "revId": "2952814a4f729426b14cfacc5f7915696a264c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
