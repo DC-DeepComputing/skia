@@ -21,8 +21,16 @@ enum class ProgramKind : int8_t;
 std::unique_ptr<ModifiersDeclaration> ModifiersDeclaration::Convert(const Context& context,
                                                                     const Modifiers& modifiers) {
     SkSL::ProgramKind kind = context.fConfig->fKind;
-    if (!ProgramConfig::IsFragment(kind) &&
-        !ProgramConfig::IsVertex(kind)) {
+    if ((modifiers.fLayout.fLocalSizeX >= 0 || modifiers.fLayout.fLocalSizeY >= 0 ||
+         modifiers.fLayout.fLocalSizeY >= 0) &&
+        !ProgramConfig::IsCompute(kind)) {
+        context.fErrors->error(
+                modifiers.fPosition,
+                "'local size' layout qualifiers are only allowed in a compute program");
+        return nullptr;
+    }
+    if (!ProgramConfig::IsFragment(kind) && !ProgramConfig::IsVertex(kind) &&
+        !ProgramConfig::IsCompute(kind)) {
         context.fErrors->error(modifiers.fPosition,
                                "layout qualifiers are not allowed in this kind of program");
         return nullptr;
@@ -34,8 +42,8 @@ std::unique_ptr<ModifiersDeclaration> ModifiersDeclaration::Convert(const Contex
 std::unique_ptr<ModifiersDeclaration> ModifiersDeclaration::Make(const Context& context,
                                                                  const Modifiers& modifiers) {
     [[maybe_unused]] SkSL::ProgramKind kind = context.fConfig->fKind;
-    SkASSERT(ProgramConfig::IsFragment(kind) ||
-             ProgramConfig::IsVertex(kind));
+    SkASSERT(ProgramConfig::IsFragment(kind) || ProgramConfig::IsVertex(kind) ||
+             ProgramConfig::IsCompute(kind));
 
     return std::make_unique<ModifiersDeclaration>(modifiers.fPosition,
                                                   modifiers.fLayout,
