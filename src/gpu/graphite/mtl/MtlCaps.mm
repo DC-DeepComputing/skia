@@ -827,6 +827,15 @@ TextureInfo MtlCaps::getDefaultStorageTextureInfo(SkColorType colorType) const {
     return info;
 }
 
+TextureInfo MtlCaps::getDefaultCopyDstTextureInfo(const TextureInfo& srcInfo) const {
+    MtlTextureInfo info;
+    if (!srcInfo.getMtlTextureInfo(&info)) {
+        return {};
+    }
+    info.fUsage = MTLTextureUsageShaderRead;
+    return info;
+}
+
 const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
         SkColorType ct, const TextureInfo& textureInfo) const {
     MTLPixelFormat mtlFormat = static_cast<MTLPixelFormat>(textureInfo.mtlTextureSpec().fFormat);

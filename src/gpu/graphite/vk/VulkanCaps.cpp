@@ -284,6 +284,15 @@ TextureInfo VulkanCaps::getDefaultStorageTextureInfo(SkColorType colorType) cons
     return info;
 }
 
+TextureInfo VulkanCaps::getDefaultCopyDstTextureInfo(const TextureInfo& srcInfo) const {
+    VulkanTextureInfo info;
+    if (!srcInfo.getVulkanTextureInfo(&info)) {
+        return {};
+    }
+    info.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+    return srcInfo;
+}
+
 uint32_t VulkanCaps::channelMask(const TextureInfo& textureInfo) const {
     return skgpu::VkFormatChannels(textureInfo.vulkanTextureSpec().fFormat);
 }

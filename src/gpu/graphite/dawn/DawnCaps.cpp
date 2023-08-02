@@ -182,6 +182,15 @@ TextureInfo DawnCaps::getDefaultStorageTextureInfo(SkColorType colorType) const 
     return info;
 }
 
+TextureInfo DawnCaps::getDefaultCopyDstTextureInfo(const TextureInfo& srcInfo) const {
+    DawnTextureInfo info;
+    if (!srcInfo.getDawnTextureInfo(&info)) {
+        return {};
+    }
+    info.fUsage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
+    return info;
+}
+
 const Caps::ColorTypeInfo* DawnCaps::getColorTypeInfo(SkColorType colorType,
                                                       const TextureInfo& textureInfo) const {
     auto dawnFormat = textureInfo.dawnTextureSpec().fFormat;
