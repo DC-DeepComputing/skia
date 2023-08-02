@@ -22,6 +22,30 @@
       },
       "revId": "746b503ebc2c84226fe37b703fc5fad7e9cdab21",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be420114_99587137",
+        "filename": "gm/circulararcs.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-02T13:38:06Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6307d1aa_03bb3f07",
+      "range": {
+        "startLine": 328,
+        "startChar": 30,
+        "endLine": 328,
+        "endChar": 34
+      },
+      "revId": "746b503ebc2c84226fe37b703fc5fad7e9cdab21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
