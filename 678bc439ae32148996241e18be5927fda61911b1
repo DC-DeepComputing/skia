@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "711a5ca8_afe927bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "Added some do-nothing calls to the existing setcolor test. After I add all the APIs for the various slot types (vectors, images, and text), we should consider adding a dedicated gm.",
+      "parentUuid": "df35a876_fe13a987",
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb59c9e9_88768214",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-08-02T15:36:53Z",
       "side": 1,
       "message": "Probably worth it to use some more prose to describe what these slots are",
+      "range": {
+        "startLine": 954,
+        "startChar": 7,
+        "endLine": 954,
+        "endChar": 18
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0124acb9_74e0cfc6",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb59c9e9_88768214",
       "range": {
         "startLine": 954,
         "startChar": 7,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cf54ad9_13ceb845",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7dcf7311_2af1eb14",
+      "range": {
+        "startLine": 133,
+        "startChar": 10,
+        "endLine": 133,
+        "endChar": 26
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3afa6d5c_c5e6e4fa",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-08-02T15:36:53Z",
       "side": 1,
       "message": "nit: trailing semicolon",
+      "range": {
+        "startLine": 134,
+        "startChar": 15,
+        "endLine": 134,
+        "endChar": 19
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe3647b2_af1fe060",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3afa6d5c_c5e6e4fa",
       "range": {
         "startLine": 134,
         "startChar": 15,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97ea1f7f_55bc68b0",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "001493be_caa8f8ee",
+      "range": {
+        "startLine": 135,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 12
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ab46275_de8d0cde",
@@ -123,6 +237,30 @@
       "writtenOn": "2023-08-02T15:36:53Z",
       "side": 1,
       "message": "The Color() constructor takes in 4 numbers scaled between 0-255, which I don\u0027t think is the case from the return value.",
+      "range": {
+        "startLine": 136,
+        "startChar": 31,
+        "endLine": 136,
+        "endChar": 47
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dc2ee28_e31c0dbb",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "The floats are scaled 0-255. This is tested in our implementation in SkottieSlide.",
+      "parentUuid": "4ab46275_de8d0cde",
       "range": {
         "startLine": 136,
         "startChar": 31,
@@ -156,6 +294,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a170fed0_1464b0af",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "I\u0027m mirroring the other comments for dividing up the API, like line 192.",
+      "parentUuid": "b5da5643_2710a408",
+      "range": {
+        "startLine": 307,
+        "startChar": 7,
+        "endLine": 307,
+        "endChar": 23
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "311b9cc1_8cee3618",
@@ -169,6 +331,30 @@
       "writtenOn": "2023-08-02T18:33:22Z",
       "side": 1,
       "message": "I would use `memcpy(fourFloats, \u0026c4f, 4*sizeof(float));`, similar to `ptrToSkColor4f`, just to stay on the safe side of strict aliasing: https://gist.github.com/shafik/848ae25ee209f698763cffee272a58f8#how-do-we-type-pun-correctly\n\n(good luck parsing all the strict aliasing rule language and figuring how/if it applies to this case :P)",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 315,
+        "endChar": 35
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1cad9ee_ca7aa45a",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "Ok, parsed and understood. 👍",
+      "parentUuid": "311b9cc1_8cee3618",
       "range": {
         "startLine": 312,
         "startChar": 0,
@@ -202,6 +388,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2617a498_997cf86c",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "Fair point. I\u0027ll leave the others.",
+      "parentUuid": "03b8cd06_265fedde",
+      "range": {
+        "startLine": 318,
+        "startChar": 12,
+        "endLine": 318,
+        "endChar": 22
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "750aa91c_9b47ea72",
@@ -215,6 +425,30 @@
       "writtenOn": "2023-08-02T18:33:22Z",
       "side": 1,
       "message": "Similarly, try to use memcpy here too.  Or better, consolidate along the lines of\n\n    SkColor4f c4f;\n    if (auto c \u003d fSlotMgr-\u003egetColorSlot(SkString(slotID))) {\n        c4f \u003d SkColor4f::FromColor(*c);\n    } else {\n        c4f \u003d {-1, -1, -1, -1};\n    }\n    memcpy(reinterpret_cast\u003cvoid*\u003e(outPtr), \u0026c4f, 4*sizeof(float));",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 31
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c8b01aa_fc1188a1",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "Done. Check my work, I think it should be fine to cast to a float * here.",
+      "parentUuid": "750aa91c_9b47ea72",
       "range": {
         "startLine": 317,
         "startChar": 0,
@@ -261,6 +495,30 @@
       "writtenOn": "2023-08-02T18:33:22Z",
       "side": 1,
       "message": "+1.",
+      "parentUuid": "a94633d5_f73b692d",
+      "range": {
+        "startLine": 436,
+        "startChar": 19,
+        "endLine": 436,
+        "endChar": 29
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71201ddc_63b4c94d",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2023-08-02T20:58:17Z",
+      "side": 1,
+      "message": "IIUC, that\u0027s not available to skottie_bindings.cpp unless we move the function to WasmCommon or some sort of top level util file. If you mean that I can copy the function logic for here, I can change this cast (and others in skottie_bindings), or copy paste the function.",
       "parentUuid": "a94633d5_f73b692d",
       "range": {
         "startLine": 436,
