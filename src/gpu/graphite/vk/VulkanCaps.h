@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_VulkanCaps_DEFINED
 #define skgpu_graphite_VulkanCaps_DEFINED
 
+#include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/vk/VulkanInterface.h"
@@ -38,6 +39,9 @@ public:
                                                   Protected) const override;
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
+
+    // TODO
+    TextureInfo getDefaultCopyDstTextureInfo(const TextureInfo& srcInfo) const override { return srcInfo; }
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;

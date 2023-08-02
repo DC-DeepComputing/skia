@@ -32,6 +32,7 @@ public:
                                                   uint32_t sampleCount,
                                                   Protected) const override;
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
+    TextureInfo getDefaultCopyDstTextureInfo(const TextureInfo& srcInfo) const override;
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;

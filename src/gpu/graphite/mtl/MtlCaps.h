@@ -12,6 +12,7 @@
 
 #import <Metal/Metal.h>
 
+#include "include/gpu/graphite/TextureInfo.h"
 #include "src/gpu/graphite/Caps.h"
 
 namespace skgpu::graphite {
@@ -35,6 +36,9 @@ public:
                                                   Protected) const override;
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
+
+    // TODO
+    TextureInfo getDefaultCopyDstTextureInfo(const TextureInfo& srcInfo) const override { return srcInfo; }
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;

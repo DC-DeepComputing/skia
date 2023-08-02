@@ -402,11 +402,12 @@ sk_sp<TextureProxy> add_copy_target_task(Recorder* recorder,
                                          sk_sp<TextureProxy> target,
                                          const SkImageInfo& targetInfo,
                                          const SkIPoint& targetOffset) {
-    SkASSERT(recorder->priv().caps()->isTexturable(target->textureInfo()));
     SkIRect dstSrcRect = SkIRect::MakePtSize(targetOffset, targetInfo.dimensions());
+    TextureInfo copyInfo = recorder->priv().caps()->getDefaultCopyDstTextureInfo(target->textureInfo());
+    SkASSERT(recorder->priv().caps()->isTexturable(copyInfo));
     sk_sp<TextureProxy> copy = TextureProxy::Make(recorder->priv().caps(),
                                                   targetInfo.dimensions(),
-                                                  target->textureInfo(),
+                                                  copyInfo,
                                                   skgpu::Budgeted::kYes);
     if (!copy) {
         return nullptr;
