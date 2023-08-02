@@ -245,11 +245,6 @@ static sk_sp<SkImage> make_texture_image_from_lazy(skgpu::graphite::Recorder* re
                                                    SkImage::RequiredProperties requiredProps) {
     // 1. Ask the generator to natively create one.
     {
-        // Disable mipmaps here bc Graphite doesn't currently support mipmap regeneration
-        // In this case, we would allocate the mipmaps and fill in the base layer but the mipmap
-        // levels would never be filled out - yielding incorrect draws. Please see: b/238754357.
-        requiredProps.fMipmapped = false;
-
         if (img->type() == SkImage_Base::Type::kLazyPicture) {
             sk_sp<SkImage> newImage =
                     generate_picture_texture(recorder,
