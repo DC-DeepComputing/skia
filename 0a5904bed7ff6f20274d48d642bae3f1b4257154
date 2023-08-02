@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "febbb4f6_1250819d",
+        "filename": "src/sksl/dsl/DSLType.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T18:19:03Z",
+      "side": 1,
+      "message": "No, this was only relevant when users were expected to access DSLType directly and we couldn\u0027t trust the inputs made sense.",
+      "parentUuid": "e5baf25c_58e38d6b",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 28
+      },
+      "revId": "0a5904bed7ff6f20274d48d642bae3f1b4257154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "949b8109_862d645a",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-08-02T18:14:04Z",
       "side": 1,
       "message": "Is Convert only ever called in cases where `!fIsBuiltinCode` is true?",
+      "range": {
+        "startLine": 30,
+        "startChar": 46,
+        "endLine": 30,
+        "endChar": 53
+      },
+      "revId": "0a5904bed7ff6f20274d48d642bae3f1b4257154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c224757_107309d5",
+        "filename": "src/sksl/ir/SkSLTypeReference.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T18:19:03Z",
+      "side": 1,
+      "message": "No, but I don\u0027t think we ever actually want to allow a type-reference to a generic type, even in built-in code. That would be code like `return $genType(123);` which just doesn\u0027t make sense anywhere. I am OK with the subtle behavioral change. It\u0027s very likely code like this would have gotten filtered out at an earlier stage anyway.",
+      "parentUuid": "949b8109_862d645a",
       "range": {
         "startLine": 30,
         "startChar": 46,
