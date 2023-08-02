@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2dc5aaa_59ffad87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T18:50:48Z",
+      "side": 1,
+      "message": "I think we would still allow some nonsensical flags like `layout(local_size_x \u003d 256, push_constant) in;`, but it\u0027s still better than what we typically do; LGTM.",
+      "parentUuid": "c297e463_a77ad2da",
+      "revId": "2952814a4f729426b14cfacc5f7915696a264c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0b14220_2c94bd01",
