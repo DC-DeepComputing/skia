@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87bb40f2_3454ad6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-02T23:08:52Z",
+      "side": 1,
+      "message": "As per our chat, rather than landing a giant CodecGM class that deals with all possible image formats, I\u0027m going to try landing smaller classes that focus on one file format at a time.\n\nAs such, I\u0027m abandoning the CL. Please review https://skia-review.googlesource.com/c/skia/+/734379, where I define a PNGCodecGM class that only focuses on the PNG file format.",
+      "revId": "6c3165060c84b9d6b69a705aa27f9696be0f988c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1f4f229_451b2d39",
@@ -14,6 +31,30 @@
       "writtenOn": "2023-07-25T15:37:34Z",
       "side": 1,
       "message": "... containing over 300 images",
+      "range": {
+        "startLine": 491,
+        "startChar": 25,
+        "endLine": 491,
+        "endChar": 34
+      },
+      "revId": "6c3165060c84b9d6b69a705aa27f9696be0f988c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76248459_39597434",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-02T23:08:52Z",
+      "side": 1,
+      "message": "Done in https://skia-review.googlesource.com/c/skia/+/734379.",
+      "parentUuid": "e1f4f229_451b2d39",
       "range": {
         "startLine": 491,
         "startChar": 25,
@@ -47,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d44fec6_2a99826e",
+        "filename": "gm/BazelGMRunner.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-02T23:08:52Z",
+      "side": 1,
+      "message": "Done in https://skia-review.googlesource.com/c/skia/+/734379.",
+      "parentUuid": "794eb960_94a2a2c6",
+      "range": {
+        "startLine": 193,
+        "startChar": 9,
+        "endLine": 193,
+        "endChar": 14
+      },
+      "revId": "6c3165060c84b9d6b69a705aa27f9696be0f988c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c079cba2_07fdc1dd",
@@ -60,6 +125,30 @@
       "writtenOn": "2023-07-25T15:37:34Z",
       "side": 1,
       "message": "We prefer to use enum classes now-a-days, as they have better scoping of the values:\n```\nenum class Mode {\n  kCodec\n  kCodecZeroInit\n  kScanline\n  ...\n}\n```",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 15
+      },
+      "revId": "6c3165060c84b9d6b69a705aa27f9696be0f988c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96d73b71_f9306c08",
+        "filename": "gm/codec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2023-08-02T23:08:52Z",
+      "side": 1,
+      "message": "Done in https://skia-review.googlesource.com/c/skia/+/734379.",
+      "parentUuid": "c079cba2_07fdc1dd",
       "range": {
         "startLine": 43,
         "startChar": 4,
