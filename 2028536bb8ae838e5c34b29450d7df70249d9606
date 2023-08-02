@@ -22,6 +22,30 @@
       },
       "revId": "2028536bb8ae838e5c34b29450d7df70249d9606",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f530cfda_9b81df3c",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2023-08-02T18:49:45Z",
+      "side": 1,
+      "message": "not src/text/gpu, but part of include that users can get to.",
+      "parentUuid": "678abebf_8aa78bac",
+      "range": {
+        "startLine": 524,
+        "startChar": 4,
+        "endLine": 524,
+        "endChar": 53
+      },
+      "revId": "2028536bb8ae838e5c34b29450d7df70249d9606",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
