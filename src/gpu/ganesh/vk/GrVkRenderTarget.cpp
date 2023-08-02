@@ -159,6 +159,8 @@ sk_sp<GrVkRenderTarget> GrVkRenderTarget::MakeWrappedRenderTarget(
         return nullptr;
     }
 
+    SkDebugf("-------- cc\n");
+
     GrVkRenderTarget* vkRT = new GrVkRenderTarget(gpu,
                                                   dimensions,
                                                   std::move(colorAttachment),
