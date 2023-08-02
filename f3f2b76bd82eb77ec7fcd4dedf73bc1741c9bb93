@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dc6b3ff_42a88f2b",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2023-08-02T17:53:01Z",
+      "side": 1,
+      "message": "Isn\u0027t a copy better in general? IIUC copy commands usually are direct DMA transfers whereas the blit will run on shader units.",
+      "range": {
+        "startLine": 303,
+        "startChar": 8,
+        "endLine": 303,
+        "endChar": 27
+      },
+      "revId": "f3f2b76bd82eb77ec7fcd4dedf73bc1741c9bb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d54b8c4_21ca729b",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2023-08-02T17:53:01Z",
+      "side": 1,
+      "message": "Can we use the superclass copyTextureToTexture method instead which does additional things like tracking resource lifetimes to ensure they\u0027re held on to until the copy executes?",
+      "range": {
+        "startLine": 307,
+        "startChar": 19,
+        "endLine": 307,
+        "endChar": 41
+      },
+      "revId": "f3f2b76bd82eb77ec7fcd4dedf73bc1741c9bb93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
