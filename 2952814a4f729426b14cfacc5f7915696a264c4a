@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7958084b_72a7719e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T15:16:35Z",
+      "side": 1,
+      "message": "If we are error-checking these declarations, should we reject a nonsensical flag like `layout(local_size_x \u003d 256) out;`?",
+      "revId": "2952814a4f729426b14cfacc5f7915696a264c4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e0b14220_2c94bd01",
         "filename": "resources/sksl/errors/DuplicateWorkgroupSize.compute",
         "patchSetId": 3
