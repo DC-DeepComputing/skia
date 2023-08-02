@@ -277,7 +277,8 @@ sk_sp<SkImage> SkImage::makeRasterImage(GrDirectContext* dContext, CachingHint c
         // Try to get the saved context if the client didn't pass it in (but they really should).
         dContext = as_IB(this)->directContext();
     }
-    sk_sp<SkData> data = SkData::MakeUninitialized(size);
+    // Chrome MSAN bots require the data to be initialized.
+    sk_sp<SkData> data = SkData::MakeZeroInitialized(size);
     pm = {fInfo.makeColorSpace(nullptr), data->writable_data(), fInfo.minRowBytes()};
     if (!this->readPixels(dContext, pm, 0, 0, chint)) {
         return nullptr;
