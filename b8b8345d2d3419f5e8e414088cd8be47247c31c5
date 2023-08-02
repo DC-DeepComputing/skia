@@ -16,6 +16,29 @@
       "message": "Hi James, PTAL. Thanks",
       "revId": "b8b8345d2d3419f5e8e414088cd8be47247c31c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84527f3e_a1bdb763",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2023-08-02T16:05:52Z",
+      "side": 1,
+      "message": "I guess we should not use wgpu related code in this file.",
+      "range": {
+        "startLine": 409,
+        "startChar": 29,
+        "endLine": 409,
+        "endChar": 93
+      },
+      "revId": "b8b8345d2d3419f5e8e414088cd8be47247c31c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
