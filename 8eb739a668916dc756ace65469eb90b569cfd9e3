@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4a46a06_cbf15bc0",
+        "filename": "src/core/SkDraw_text.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-02T21:04:25Z",
+      "side": 1,
+      "message": "Gave up.",
+      "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33a0c001_5fd13ae9",
+        "filename": "src/core/SkDraw_text.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-02T21:04:25Z",
+      "side": 1,
+      "message": "Gave up.",
+      "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a359801_65faa069",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-02T21:04:25Z",
+      "side": 1,
+      "message": "Slightly gave up here because this is already too big. This needs to call a function which takes an `SkBitmap`, but there is no such thing as a non-mutating `SkBitmap`. Also, this is a marker in the code that we don\u0027t want the bitmap to mutate, but this practically unenforced. `SkImage`(`SkImage_Raster`), `SkBitmap`, and `SkPixelRef` never actually enforce any sort of immutability and just blindly const cast everywhere. We may want to see about cleaning that up.",
+      "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d9531eb_d19555df",
+        "filename": "src/core/SkMaskCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-02T21:04:25Z",
+      "side": 1,
+      "message": "The caching mechanism here previously relied on creating invalid / empty states on the stack, passing in a pointer, and have the \"returned\" object constructed down in the callee. This change cleans this up by doing that with `SkTLazy` to make it super clear that we\u0027re actually constructing these once (instead of a rather confusing amount of mutation).\n\nThis should probably be done by returning the value, but for the sake of changing as little as possible I\u0027m using `SkTLazy`.\n\nThese changes to use `SkTLazy` appear to be responsible for all of the code size increase in this change. It isn\u0027t clear why that is since everything here is in headers and should just all inline to about the same (or even less) code.",
+      "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e03659a3_699d5b9f",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-02T21:04:25Z",
+      "side": 1,
+      "message": "We were already always making a copy with `kAlways_SkCopyPixelsMode` because this data may be passed off to another thread so that the image encoding can be done in parallel, but also means that the image encoding may not finish before we let go of the lock on the strike with this glyph.",
+      "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c43e3f07_7ae247ef",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1415,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-02T21:04:25Z",
+      "side": 1,
+      "message": "This is another marked \"give up\". SkPixmap will just const cast away the constness of the image internally (in methods marked \"const\"!) but at least this currently documents that we didn\u0027t intend for the image to change.",
+      "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

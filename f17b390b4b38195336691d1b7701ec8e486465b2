@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40289272_9568a953",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2023-08-02T21:04:25Z",
+      "side": 1,
+      "message": "Started working on this because we wanted an actually immutable `SkGlyph`. This gets about half way there (`SkBitmap`, `SkPixmap`, and `SkImage` all need an actually immutable state as well). This was the simplest approach with the least typing that worked, though it is still a bit of a hack. This forced cleaning up a number of places where the non-immutability allowed for some rather unclear code.",
+      "revId": "f17b390b4b38195336691d1b7701ec8e486465b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
