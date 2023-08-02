@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df35a876_fe13a987",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-02T15:36:53Z",
+      "side": 1,
+      "message": "Please add a test for this, even if that means adding a new skottie asset to modules/canvaskit/tests/assets/",
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb59c9e9_88768214",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-02T15:36:53Z",
+      "side": 1,
+      "message": "Probably worth it to use some more prose to describe what these slots are",
+      "range": {
+        "startLine": 954,
+        "startChar": 7,
+        "endLine": 954,
+        "endChar": 18
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dcf7311_2af1eb14",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-02T15:36:53Z",
+      "side": 1,
+      "message": "_scratchColorPtr is a number. Just a plain number. Subscripting it is an error.\n\nYou probably want to use `copyColorFromWasm` or turn the scratchColor object into a typedarray and call slice on it.",
+      "range": {
+        "startLine": 133,
+        "startChar": 10,
+        "endLine": 133,
+        "endChar": 26
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3afa6d5c_c5e6e4fa",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-02T15:36:53Z",
+      "side": 1,
+      "message": "nit: trailing semicolon",
+      "range": {
+        "startLine": 134,
+        "startChar": 15,
+        "endLine": 134,
+        "endChar": 19
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "001493be_caa8f8ee",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-02T15:36:53Z",
+      "side": 1,
+      "message": "nit: since the if statement ends in a return, remove the else and save some indentation.",
+      "range": {
+        "startLine": 135,
+        "startChar": 8,
+        "endLine": 135,
+        "endChar": 12
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ab46275_de8d0cde",
+        "filename": "modules/canvaskit/skottie.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-02T15:36:53Z",
+      "side": 1,
+      "message": "The Color() constructor takes in 4 numbers scaled between 0-255, which I don\u0027t think is the case from the return value.",
+      "range": {
+        "startLine": 136,
+        "startChar": 31,
+        "endLine": 136,
+        "endChar": 47
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5da5643_2710a408",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-02T15:36:53Z",
+      "side": 1,
+      "message": "This comment could be more descriptive or deleted.",
+      "range": {
+        "startLine": 307,
+        "startChar": 7,
+        "endLine": 307,
+        "endChar": 23
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b8cd06_265fedde",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-02T15:36:53Z",
+      "side": 1,
+      "message": "If just the first entry is used as a sentinel value, do you have to write to all 4?",
+      "range": {
+        "startLine": 318,
+        "startChar": 12,
+        "endLine": 318,
+        "endChar": 22
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a94633d5_f73b692d",
+        "filename": "modules/canvaskit/skottie_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2023-08-02T15:36:53Z",
+      "side": 1,
+      "message": "There\u0027s a ptrToSkColor4f function defined in canvaskit_bindings.cpp that could be used here.",
+      "range": {
+        "startLine": 436,
+        "startChar": 19,
+        "endLine": 436,
+        "endChar": 29
+      },
+      "revId": "678bc439ae32148996241e18be5927fda61911b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
