@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7195f338_896b3944",
+        "filename": "infra/bots/recipe_modules/build/util.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-02T16:13:41Z",
+      "side": 0,
+      "message": "This triggered the tiny diff in all the expected recipes. Sorry.",
+      "revId": "aa028fb61cfb5b9dc7ca45c2097f58387e412582",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
