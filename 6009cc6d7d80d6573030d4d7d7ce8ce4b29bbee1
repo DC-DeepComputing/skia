@@ -52,6 +52,24 @@
       "parentUuid": "455e3fe1_582ba755",
       "revId": "6009cc6d7d80d6573030d4d7d7ce8ce4b29bbee1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5474b867_79ef5b4a",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-02T18:55:50Z",
+      "side": 0,
+      "message": "Ok, I had somehow missed that the usage flags are indeed checked in that assert (I was thinking it must had failed on the format, which wasn\u0027t making sense).\n\nFor a decision higher up about format, could we defer that work as part of b/294104587?",
+      "parentUuid": "782a158e_364d07be",
+      "revId": "6009cc6d7d80d6573030d4d7d7ce8ce4b29bbee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

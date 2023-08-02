@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04ac7688_4b7a32fe",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2023-08-02T18:55:50Z",
+      "side": 1,
+      "message": "I implemented this about the same as in Metal and Dawn, but I noticed we don\u0027t check these usage flags in VulkanCaps::onIsTexturable, as we do in Metal and Dawn. Should we?",
+      "revId": "b601cc40ef1ec6ccba40fbc142d14d33d61101c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
