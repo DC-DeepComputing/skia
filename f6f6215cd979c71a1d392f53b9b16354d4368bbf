@@ -16,6 +16,24 @@
       "message": "Is this really an issue with these validate calls and not an issue with the ResourceCache growing way to large in a long-lived process? Do we know what sort of resources are filling up the cache? Like for \"sized\" resources (texutres, budgets) we do have a budget so things shouldn\u0027t get too high in count there. For unsized things (e.g. pipelines) we currently don\u0027t have any limit of them. But I\u0027d be curious which of these resources are being constantly added.",
       "revId": "f6f6215cd979c71a1d392f53b9b16354d4368bbf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3fcf156_df7cb952",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-02T17:46:42Z",
+      "side": 1,
+      "message": "Good question, it\u0027s probably growing way too large. I wouldn\u0027t be surprised at all if it\u0027s making an infinite number of pipelines. I\u0027ll check.",
+      "parentUuid": "3757451b_b53aadac",
+      "revId": "f6f6215cd979c71a1d392f53b9b16354d4368bbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
