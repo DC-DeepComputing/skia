@@ -1,8 +1,10 @@
 ### Compilation failed:
 
-error: :8:17 error: unresolved type 'sampler2D'
-var<private> t: sampler2D;
-                ^^^^^^^^^
+error: :8:27 error: entry point 'fragmentMain' references multiple variables that use the same resource binding @group(0), @binding(0)
+@group(0) @binding(0) var tˢ: sampler;
+
+:9:27 note: first resource binding usage declared here
+@group(0) @binding(0) var tᵗ: texture_2d<f32>;
 
 
 diagnostic(off, derivative_uniformity);
@@ -12,13 +14,13 @@ struct FSIn {
 struct FSOut {
   @location(0) sk_FragColor: vec4<f32>,
 };
-var<private> t: sampler2D;
+@group(0) @binding(0) var tˢ: sampler;
+@group(0) @binding(0) var tᵗ: texture_2d<f32>;
 fn main(_stageOut: ptr<function, FSOut>) {
   {
-    let _skTemp0 = sample(t, vec2<f32>(0.0));
-    var c: vec4<f32> = _skTemp0;
-    let _skTemp1 = sample(t, vec3<f32>(1.0));
-    (*_stageOut).sk_FragColor = c * _skTemp1;
+    var c: vec4<f32> = textureSample(tᵗ, tˢ, vec2<f32>(0.0));
+    let _skTemp0 = vec3<f32>(1.0);
+    (*_stageOut).sk_FragColor = c * textureSample(tᵗ, tˢ, _skTemp0.xy / _skTemp0.z);
   }
 }
 @fragment fn fragmentMain(_stageIn: FSIn) -> FSOut {
