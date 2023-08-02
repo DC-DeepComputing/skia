@@ -16,6 +16,11 @@
 #include "tests/CtsEnforcement.h"
 #include "tools/gpu/ProtectedUtils.h"
 
+//#include "include/gpu/ganesh/SkImageGanesh.h"
+//#include "include/gpu/ganesh/SkSurfaceGanesh.h"
+//#include "tools/gpu/BackendSurfaceFactory.h"
+//#include "tools/gpu/BackendTextureImageFactory.h"
+
 static const int kSize = 8;
 
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnforcement::kNever) {

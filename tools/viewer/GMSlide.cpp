@@ -53,4 +53,3 @@ bool GMSlide::onGetControls(SkMetaData* controls) {
 void GMSlide::onSetControls(const SkMetaData& controls) {
     fGM->setControls(controls);
 }
-
