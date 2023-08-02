@@ -94,6 +94,30 @@
       },
       "revId": "2028536bb8ae838e5c34b29450d7df70249d9606",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c5bc834_78abb8e7",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2023-08-02T19:17:44Z",
+      "side": 1,
+      "message": "GrContextOptions is Ganesh-only. The Graphite equivalent is include/gpu/graphite/ContextOptions.h. They\u0027re fed in via Caps::finalizeInitialization() and stored in the Caps.",
+      "parentUuid": "4cdf006b_6c9f534d",
+      "range": {
+        "startLine": 524,
+        "startChar": 4,
+        "endLine": 524,
+        "endChar": 53
+      },
+      "revId": "2028536bb8ae838e5c34b29450d7df70249d9606",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
