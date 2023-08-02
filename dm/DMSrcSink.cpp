@@ -1501,8 +1501,10 @@ sk_sp<SkSurface> GPUSink::createDstSurface(GrDirectContext* context, SkISize siz
 
     switch (fSurfType) {
         case SkCommandLineConfigGpu::SurfType::kDefault:
-            surface = SkSurfaces::RenderTarget(
-                    context, skgpu::Budgeted::kNo, info, fSampleCount, &props);
+            SkDebugf("----------------- GPUSink::createDstSurface\n");
+            surface = SkSurfaces::RenderTarget1(
+                    context, skgpu::Budgeted::kNo, info, fSampleCount, kBottomLeft_GrSurfaceOrigin,
+                    &props, /* shouldCreateWithMips= */ false, /* isProtected= */ true); //$$
             break;
         case SkCommandLineConfigGpu::SurfType::kBackendTexture:
             surface = sk_gpu_test::MakeBackendTextureSurface(context,

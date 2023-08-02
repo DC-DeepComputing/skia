@@ -307,7 +307,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrGpuBufferTransferTest,
                                                        SkBackingFit::kExact,
                                                        {1, 1},
                                                        SkSurfaceProps{},
-                                                       std::string_view{});
+                                                       std::string_view{},
+                                                       1,
+                                                       skgpu::Mipmapped::kNo,
+                                                       skgpu::Protected::kNo);
     if (!sdc) {
         ERRORF(reporter, "Could not create draw context");
         return;
@@ -386,7 +389,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrGpuBufferUpdateDataTest,
                                                        SkBackingFit::kExact,
                                                        {1, 1},
                                                        SkSurfaceProps{},
-                                                       std::string_view{});
+                                                       std::string_view{},
+                                                       1,
+                                                       skgpu::Mipmapped::kNo,
+                                                       skgpu::Protected::kNo);
     if (!sdc) {
         ERRORF(reporter, "Could not create draw context");
         return;

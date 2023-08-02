@@ -191,13 +191,14 @@ protected:
         // texture.
         sk_sp<SkSurface> surface;
         if (auto rc = canvas->recordingContext()) {
-            surface = SkSurfaces::RenderTarget(rc,
+            surface = SkSurfaces::RenderTarget1(rc,
                                                skgpu::Budgeted::kYes,
                                                ii,
-                                               1,
+                                               /* sampleCount= */ 1,
                                                kTopLeft_GrSurfaceOrigin,
                                                /*surfaceProps=*/nullptr,
-                                               /*shouldCreateWithMips=*/true);
+                                               /*shouldCreateWithMips=*/true,
+                                               /*isProtected=*/false);
             if (!surface) {
                 // We could be in an abandoned context situation.
                 return;

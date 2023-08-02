@@ -244,13 +244,15 @@ static GrSurfaceProxyView generate_picture_texture(GrRecordingContext* ctx,
     skgpu::Budgeted budgeted = texGenPolicy == GrImageTexGenPolicy::kNew_Uncached_Unbudgeted
                                        ? skgpu::Budgeted::kNo
                                        : skgpu::Budgeted::kYes;
-    auto surface = SkSurfaces::RenderTarget(ctx,
+    SkDebugf("$$$$$$$$$$$$$$$$$$ generate_picture_texture\n");
+    auto surface = SkSurfaces::RenderTarget1(ctx,
                                             budgeted,
                                             img->imageInfo(),
                                             0,
                                             kTopLeft_GrSurfaceOrigin,
                                             img->props(),
-                                            mipmapped == GrMipmapped::kYes);
+                                            mipmapped == GrMipmapped::kYes,
+                                            /* isProtected= */ false);
     if (!surface) {
         return {};
     }

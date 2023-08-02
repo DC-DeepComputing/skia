@@ -177,7 +177,8 @@ static sk_sp<SkSurface> make_surface(Fuzz* fuzz, GrDirectContext* dContext, cons
     fuzz->nextEnum(&budgeted, skgpu::Budgeted::kYes);
     SkSurfaceProps surfaceProps = gen_fuzzed_surface_props(fuzz);
     auto surface =
-            SkSurfaces::RenderTarget(dContext, budgeted, ii, kSampleCount, origin, &surfaceProps);
+            SkSurfaces::RenderTarget1(dContext, budgeted, ii, kSampleCount, origin, &surfaceProps,
+                                     /* shouldCreateWithMips= */ false, /* isProtected= */ false);
     return surface;
 }
 

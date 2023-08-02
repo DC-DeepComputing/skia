@@ -61,20 +61,22 @@ using TextureReleaseProc = void (*)(ReleaseContext);
     @param shouldCreateWithMips  hint that SkSurface will host mip map images
     @return                      SkSurface if all parameters are valid; otherwise, nullptr
 */
-SK_API sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
+SK_API sk_sp<SkSurface> RenderTarget1(GrRecordingContext* context,
                                      skgpu::Budgeted budgeted,
                                      const SkImageInfo& imageInfo,
                                      int sampleCount,
                                      GrSurfaceOrigin surfaceOrigin,
                                      const SkSurfaceProps* surfaceProps,
-                                     bool shouldCreateWithMips = false);
+                                     bool shouldCreateWithMips,
+                                     bool isProtected);
 inline sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
                                      skgpu::Budgeted budgeted,
                                      const SkImageInfo& imageInfo,
                                      int sampleCount,
                                      const SkSurfaceProps* surfaceProps) {
-    return RenderTarget(
-            context, budgeted, imageInfo, sampleCount, kBottomLeft_GrSurfaceOrigin, surfaceProps);
+    return RenderTarget1(
+            context, budgeted, imageInfo, sampleCount, kBottomLeft_GrSurfaceOrigin, surfaceProps,
+            /* shouldCreateWithMips= */ false, /* isProtected= */ false);
 }
 inline sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
                                      skgpu::Budgeted budgeted,
@@ -82,7 +84,8 @@ inline sk_sp<SkSurface> RenderTarget(GrRecordingContext* context,
     if (!imageInfo.width() || !imageInfo.height()) {
         return nullptr;
     }
-    return RenderTarget(context, budgeted, imageInfo, 0, kBottomLeft_GrSurfaceOrigin, nullptr);
+    return RenderTarget1(context, budgeted, imageInfo, 0, kBottomLeft_GrSurfaceOrigin, nullptr,
+                        /* shouldCreateWithMips= */ false, /* isProtected= */ false);
 }
 
 /** Returns SkSurface on GPU indicated by context that is compatible with the provided

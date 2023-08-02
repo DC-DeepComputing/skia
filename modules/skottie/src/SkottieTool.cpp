@@ -326,12 +326,14 @@ private:
     {
         fCtx = fFactory.getContextInfo(sk_gpu_test::GrContextFactory::kGL_ContextType)
                            .directContext();
-        fSurface = SkSurfaces::RenderTarget(fCtx,
+        fSurface = SkSurfaces::RenderTarget1(fCtx,
                                             skgpu::Budgeted::kNo,
                                             SkImageInfo::MakeN32Premul(FLAGS_width, FLAGS_height),
                                             0,
                                             GrSurfaceOrigin::kTopLeft_GrSurfaceOrigin,
-                                            nullptr);
+                                            nullptr,
+                                            /* shouldCreateWithMips= */ false,
+                                            /* isProtected= */ false);
         if (fSurface) {
             fSurface->getCanvas()->concat(matrix);
         } else {

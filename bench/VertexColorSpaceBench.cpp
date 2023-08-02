@@ -317,7 +317,10 @@ public:
                                                             SkBackingFit::kApprox,
                                                             {100, 100},
                                                             SkSurfaceProps(),
-                                                            /*label=*/"DrawVertexColorSpaceBench");
+                                                            /*label=*/"DrawVertexColorSpaceBench",
+                                                            1,
+                                                            skgpu::Mipmapped::kYes,
+                                                            skgpu::Protected::kNo);
             SkASSERT(sdc);
 
             for (int j = 0; j < kDrawsPerLoop; ++j) {

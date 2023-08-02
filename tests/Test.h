@@ -46,7 +46,7 @@ struct Failure {
 class Reporter : SkNoncopyable {
 public:
     virtual ~Reporter() {}
-    virtual void bumpTestCount();
+//    virtual void bumpTestCount();
     virtual void reportFailed(const skiatest::Failure&) = 0;
     virtual bool allowExtendedTest() const;
     virtual bool verbose() const;
