@@ -246,6 +246,7 @@ private:
                                           Precedence parentPrecedence);
     std::string assembleVectorizedIntrinsic(std::string_view intrinsicName,
                                             const FunctionCall& call);
+    std::string assembleSampleCoordinates(const Expression& coords);
 
     // Constructor expressions
     std::string assembleAnyConstructor(const AnyConstructor& c, Precedence parentPrecedence);

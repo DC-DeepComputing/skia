@@ -1815,6 +1815,20 @@ std::string WGSLCodeGenerator::assembleBinaryOpIntrinsic(Operator op,
     return expr;
 }
 
+std::string WGSLCodeGenerator::assembleSampleCoordinates(const Expression& coords) {
+    SkASSERT(coords.type().isVector());
+
+    if (coords.type().columns() == 3) {
+        // If coordinates were passed as a vec3, we need to emit `coords.xy / coords.z`.
+        std::string vec3Coords = this->writeScratchLet(coords, Precedence::kMultiplicative);
+        return vec3Coords + ".xy / " + vec3Coords + ".z";
+    }
+
+    // The coordinates should be a plain vec2; return the expression as-is.
+    SkASSERT(coords.type().columns() == 2);
+    return this->assembleExpression(coords, Precedence::kSequence);
+}
+
 std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
                                                      IntrinsicKind kind,
                                                      Precedence parentPrecedence) {
@@ -1967,16 +1981,8 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
             SkASSERT(arguments.size() == 2 || arguments.size() == 3);
             bool callIncludesBias = (arguments.size() == 3);
 
-            // If coordinates were passed as a vec3, we need to emit `coords.xy / coords.z`.
-            SkASSERT(arguments[1]->type().isVector());
-            SkASSERT(arguments[1]->type().columns() == 2 || arguments[1]->type().columns() == 3);
-            std::string coords;
-            if (arguments[1]->type().columns() == 2) {
-                coords = this->assembleExpression(*arguments[1], Precedence::kSequence);
-            } else {
-                coords = this->writeScratchLet(*arguments[1], Precedence::kMultiplicative);
-                coords = coords + ".xy / " + coords + ".z";
-            }
+            // Compute the sample coordinates, dividing out the Z if a vec3 was provided.
+            std::string coords = this->assembleSampleCoordinates(*arguments[1]);
 
             if (fProgram.fConfig->fSettings.fSharpenTextures || callIncludesBias) {
                 std::string expr = "textureSampleBias(" +
@@ -2001,7 +2007,18 @@ std::string WGSLCodeGenerator::assembleIntrinsicCall(const FunctionCall& call,
                    kSamplerSuffix + ", " +
                    coords + ')';
         }
-        case k_sampleLod_IntrinsicKind:
+        case k_sampleLod_IntrinsicKind: {
+            // Compute the sample coordinates, dividing out the Z if a vec3 was provided.
+            std::string coords = this->assembleSampleCoordinates(*arguments[1]);
+
+            return "textureSampleLevel(" +
+                   this->assembleExpression(*arguments[0], Precedence::kSequence) +
+                   kTextureSuffix + ", " +
+                   this->assembleExpression(*arguments[0], Precedence::kSequence) +
+                   kSamplerSuffix + ", " +
+                   coords + ", " +
+                   this->assembleExpression(*arguments[2], Precedence::kSequence) + ')';
+        }
         case k_sampleGrad_IntrinsicKind:
             return "/*" + std::string(call.function().name()) + " unimplemented */vec4<f32>(0)";
 
