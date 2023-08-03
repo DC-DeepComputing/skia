@@ -199,6 +199,30 @@
       },
       "revId": "b6cdd538055df78b695328ec154cdd644c8e7673",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04ae0227_d99d0435",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2718,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-03T21:02:27Z",
+      "side": 1,
+      "message": "I checked in the Tint/WGSL room and they should have caught it if you didn\u0027t bind a 10001. File a bug against Dawn. Also, it\u0027s legal in Tint to assign any positive 32-bit number to a binding, but if Metal has tighter restrictions, Tint would need to fix it up somehow and apparently it is not; that\u0027s likely a second bug.",
+      "parentUuid": "7ffb629e_0be9d4b8",
+      "range": {
+        "startLine": 2717,
+        "startChar": 8,
+        "endLine": 2718,
+        "endChar": 81
+      },
+      "revId": "b6cdd538055df78b695328ec154cdd644c8e7673",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
