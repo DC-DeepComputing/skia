@@ -264,3 +264,11 @@ void MarkGMBad(SkCanvas* canvas, SkScalar x, SkScalar y) {
                          -5,+5, paint);
     });
 }
+
+namespace skiagm {
+    void Register(skiagm::GM* gm) {
+        new skiagm::GMRegistry([=]() {
+            return std::unique_ptr<skiagm::GM>(gm);
+        });
+    }
+}
