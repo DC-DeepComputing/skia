@@ -223,6 +223,30 @@
       },
       "revId": "b6cdd538055df78b695328ec154cdd644c8e7673",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e35ab6d_49cc9d88",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2718,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-03T21:04:33Z",
+      "side": 1,
+      "message": "Err, _Dawn_ would need to fix up the binding number, not Tint; Tint\u0027s job isn\u0027t to renumber the binding.",
+      "parentUuid": "04ae0227_d99d0435",
+      "range": {
+        "startLine": 2717,
+        "startChar": 8,
+        "endLine": 2718,
+        "endChar": 81
+      },
+      "revId": "b6cdd538055df78b695328ec154cdd644c8e7673",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
