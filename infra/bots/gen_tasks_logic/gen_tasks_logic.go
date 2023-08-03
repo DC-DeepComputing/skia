@@ -930,8 +930,9 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 					"NUC9i7QN":       "x86-64-i7-9750H",
 				},
 				"AVX512": {
-					"GCE":  "x86-64-Skylake_GCE",
-					"Golo": "Intel64_Family_6_Model_85_Stepping_7__GenuineIntel",
+					"NUC11TZi5":      "x86-64-i5-1135G7",
+					"GCE":            "x86-64-Skylake_GCE",
+					"Golo":           "Intel64_Family_6_Model_85_Stepping_7__GenuineIntel",
 				},
 				"Rome": {
 					"GCE": "x86-64-AMD_Rome_GCE",
