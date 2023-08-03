@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2827824a_2b3d8152",
+        "filename": "src/core/SkMask.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-03T19:52:42Z",
+      "side": 1,
+      "message": "WDYT? Might be more idiomatic to just say:\n```return const_cast\u003cuint8_t*\u003e(this-\u003eSkMask::getAddr1(x, y));```",
+      "revId": "6102ac2211d710005e04b9e81af3554ad1d56272",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

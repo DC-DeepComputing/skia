@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41462e82_cd79f693",
+        "filename": "src/core/SkDraw_text.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-03T19:52:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f4a46a06_cbf15bc0",
+      "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33a0c001_5fd13ae9",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17720ee3_c02dbcc5",
+        "filename": "src/core/SkDraw_text.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-03T19:52:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "33a0c001_5fd13ae9",
+      "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a359801_65faa069",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-08-02T21:04:25Z",
       "side": 1,
       "message": "Slightly gave up here because this is already too big. This needs to call a function which takes an `SkBitmap`, but there is no such thing as a non-mutating `SkBitmap`. Also, this is a marker in the code that we don\u0027t want the bitmap to mutate, but this practically unenforced. `SkImage`(`SkImage_Raster`), `SkBitmap`, and `SkPixelRef` never actually enforce any sort of immutability and just blindly const cast everywhere. We may want to see about cleaning that up.",
+      "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f475b912_0e941363",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-03T19:52:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2a359801_65faa069",
       "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -99,6 +153,24 @@
       "writtenOn": "2023-08-02T21:04:25Z",
       "side": 1,
       "message": "This is another marked \"give up\". SkPixmap will just const cast away the constness of the image internally (in methods marked \"const\"!) but at least this currently documents that we didn\u0027t intend for the image to change.",
+      "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97163244_f65b93e5",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1415,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2023-08-03T19:52:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c43e3f07_7ae247ef",
       "revId": "8eb739a668916dc756ace65469eb90b569cfd9e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
