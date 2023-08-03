@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4d79354_0b6f3251",
+        "filename": "resources/sksl/wgsl/Sample.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-03T18:26:13Z",
+      "side": 1,
+      "message": "Good suggestions! Unfortunately, passing a sampler to a function is not yet supported (coming soon!) so the first two tests won\u0027t work yet. The third test is checking that a sampler explicitly specifies a texture and sampler binding location in its layout, which is not something the WGSL backend currently enforces (as described in my other comment, we fake it instead) so I\u0027m not sure the third test adds value.\n\nI will definitely borrow from `CombinedSamplerTypeDawnCompatMode` when I implement sampler passing.",
+      "parentUuid": "db4b4aae_b63e95bb",
+      "revId": "b6cdd538055df78b695328ec154cdd644c8e7673",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7608f5f8_68ce20e2",
