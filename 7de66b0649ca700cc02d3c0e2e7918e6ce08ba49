@@ -22,6 +22,30 @@
       },
       "revId": "7de66b0649ca700cc02d3c0e2e7918e6ce08ba49",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea0c3709_972772b1",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2018,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-03T18:14:11Z",
+      "side": 1,
+      "message": "Good call. Done.",
+      "parentUuid": "4d23ef12_21ddd2bc",
+      "range": {
+        "startLine": 2015,
+        "startChar": 19,
+        "endLine": 2018,
+        "endChar": 42
+      },
+      "revId": "7de66b0649ca700cc02d3c0e2e7918e6ce08ba49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
