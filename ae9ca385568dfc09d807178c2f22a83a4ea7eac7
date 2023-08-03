@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4cecf80_4ed821f9",
+        "filename": "modules/skunicode/src/SkUnicode_libgrapheme.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2023-08-03T13:30:37Z",
+      "side": 1,
+      "message": "Minor postsubmit drive-by nit.\n\nSince we\u0027re requiring `replaceTabs` to be `true` here...",
+      "revId": "ae9ca385568dfc09d807178c2f22a83a4ea7eac7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "260394c9_bcfbea4e",
+        "filename": "modules/skunicode/src/SkUnicode_libgrapheme.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2023-08-03T13:30:37Z",
+      "side": 1,
+      "message": "...then `replaceTabs` has to be `true` here.  We can remove this conditional and level of indentation for the next two lines of code, and make it slightly clearer what will always happen here.",
+      "revId": "ae9ca385568dfc09d807178c2f22a83a4ea7eac7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
