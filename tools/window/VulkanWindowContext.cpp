@@ -58,7 +58,8 @@ void VulkanWindowContext::initializeContext() {
     VkPhysicalDeviceFeatures2 features;
     if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc, &backendContext, &extensions,
                                              &features, &fDebugCallback, &fPresentQueueIndex,
-                                             fCanPresentFn)) {
+                                             fCanPresentFn,
+                                             fDisplayParams.fCreateProtectedNativeBackend)) {
         sk_gpu_test::FreeVulkanFeaturesStructs(&features);
         return;
     }
@@ -329,7 +330,8 @@ bool VulkanWindowContext::createSwapchain(int width, int height,
     return true;
 }
 
-bool VulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFlags usageFlags,
+bool VulkanWindowContext::createBuffers(VkFormat format,
+                                        VkImageUsageFlags usageFlags,
                                         SkColorType colorType,
                                         VkSharingMode sharingMode) {
     fGetSwapchainImagesKHR(fDevice, fSwapchain, &fImageCount, nullptr);
@@ -352,6 +354,7 @@ bool VulkanWindowContext::createBuffers(VkFormat format, VkImageUsageFlags usage
         info.fImageUsageFlags = usageFlags;
         info.fLevelCount = 1;
         info.fCurrentQueueFamily = fPresentQueueIndex;
+        info.fProtected = skgpu::Protected(fDisplayParams.fCreateProtectedNativeBackend);
         info.fSharingMode = sharingMode;
 
         if (usageFlags & VK_IMAGE_USAGE_SAMPLED_BIT) {
