@@ -27,6 +27,7 @@
 #include "tools/HashAndEncode.h"
 
 #include <ctime>
+#include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -130,7 +131,14 @@ static int gNumSkippedGMs = 0;
 // Runs a GM under the given surface config, and saves its output PNG file (and accompanying JSON
 // file with metadata) to the given output directory.
 void run_gm(std::unique_ptr<skiagm::GM> gm, std::string config, std::string outputDir) {
-    SkDebugf("[%s] GM: %s\n", now().c_str(), gm->getName());
+    if (!gm->getOutputFolder().isEmpty()) {
+        SkDebugf("[%s] GM: %s (output directory: %s)\n",
+                 now().c_str(),
+                 gm->getName(),
+                 gm->getOutputFolder().c_str());
+    } else {
+        SkDebugf("[%s] GM: %s\n", now().c_str(), gm->getName());
+    }
 
     // Create surface and canvas.
     std::unique_ptr<SurfaceManager> surface_manager =
@@ -183,8 +191,13 @@ void run_gm(std::unique_ptr<skiagm::GM> gm, std::string config, std::string outp
     // Save PNG and JSON file with MD5 hash to disk if the GM was successful.
     if (result == skiagm::DrawResult::kOk) {
         std::string name = std::string(gm->getName());
-        SkString pngPath = SkOSPath::Join(outputDir.c_str(), (name + ".png").c_str());
-        SkString jsonPath = SkOSPath::Join(outputDir.c_str(), (name + ".json").c_str());
+        SkString gmOutputDir = SkString(outputDir);
+        if (gm->getOutputFolder() != SkString("")) {
+            gmOutputDir = SkOSPath::Join(gmOutputDir.c_str(), gm->getOutputFolder().c_str());
+            std::filesystem::create_directories(gmOutputDir.c_str());
+        }
+        SkString pngPath = SkOSPath::Join(gmOutputDir.c_str(), (name + ".png").c_str());
+        SkString jsonPath = SkOSPath::Join(gmOutputDir.c_str(), (name + ".json").c_str());
 
         std::string pngAndJSONResult = write_png_and_json_files(
                 gm->getName(), config, bitmap, pngPath.c_str(), jsonPath.c_str());
