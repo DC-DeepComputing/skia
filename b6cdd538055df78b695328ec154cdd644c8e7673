@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bf395c4_732eab79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-03T17:24:21Z",
+      "side": 1,
+      "message": "Overall looks good. I have a suggestion about producing an error message in the case of a missing sampler index. Let me know what you think.",
+      "revId": "b6cdd538055df78b695328ec154cdd644c8e7673",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db4b4aae_b63e95bb",
+        "filename": "resources/sksl/wgsl/Sample.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-03T17:24:21Z",
+      "side": 1,
+      "message": "Consider enabling (or copying) the following tests for WGSL which exercise similar logic for the SPIR-V backend specifically for Dawn:\n\n* resources/sksl/spirv/CombinedSamplerTypeDawnCompatMode.sksl\n* resources/sksl/spirv/FunctionParametersOfTextureAndSamplerTypeDawnCompatMode.sksl\n* resources/sksl/spirv/WrongCombinedSamplerLayoutSPIRVDawnCompatMode.sksl",
+      "revId": "b6cdd538055df78b695328ec154cdd644c8e7673",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7608f5f8_68ce20e2",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-03T17:24:21Z",
+      "side": 1,
+      "message": "😁\n\nSPIR-V codegen tacks on a `_sampler` and `_texture` suffix when decorating the argument but this doesn\u0027t have to stay consistent with that. My only worry is that the superscript \u0027s\u0027 and \u0027t\u0027 can appear a little too tiny to distinguish at small font sizes which could be an issue while debugging.",
+      "revId": "b6cdd538055df78b695328ec154cdd644c8e7673",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6e5fb9a_83bb8ab8",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 2718,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2023-08-03T17:24:21Z",
+      "side": 1,
+      "message": "Is this for shared tests that are written like `layout(binding \u003d X) uniform sampler2D`? Ideally such a declaration should be disallowed (the SPIR-V codegen rejects that with a message like `SPIR-V dawn compatibility mode requires an explicit texture and sampler index` when using the DawnCompatMode setting).\n\nIt would be nice if this produced a similar error while authoring shaders. What do you think about adding a compiler setting to enable this fallback behavior in tests and adding some wgsl-specific tests that don\u0027t use the setting to demonstrate the error case?",
+      "range": {
+        "startLine": 2717,
+        "startChar": 8,
+        "endLine": 2718,
+        "endChar": 81
+      },
+      "revId": "b6cdd538055df78b695328ec154cdd644c8e7673",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
