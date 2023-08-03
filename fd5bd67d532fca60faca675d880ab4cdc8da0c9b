@@ -22,6 +22,30 @@
       },
       "revId": "fd5bd67d532fca60faca675d880ab4cdc8da0c9b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dcee54c_ffa30e50",
+        "filename": "src/sksl/ir/SkSLModifiersDeclaration.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2023-08-03T13:34:44Z",
+      "side": 1,
+      "message": "Wow, good eye! Yes.",
+      "parentUuid": "c5dfd572_f13a0b82",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 0
+      },
+      "revId": "fd5bd67d532fca60faca675d880ab4cdc8da0c9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
